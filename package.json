@@ -1,0 +1,35 @@
+{
+  "name": "vue-crud-x",
+  "version": "0.0.1",
+  "description": "A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, using GraphQL or REST to access various datastores. Uses Vuetify for layout components but can be changed to alternatives such as ElementUI (by changing components in the VueCrudX source code from Vuetify to ElementUI)",
+  "main": "dist/VueCrudX.js",
+  "scripts": {
+    "build": "npx poi build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ais-one/vue-crud-x.git"
+  },
+  "keywords": [
+    "vue",
+    "vuejs",
+    "vuetify",
+    "crud",
+    "pagination",
+    "sort",
+    "filter",
+    "graphql"
+  ],
+  "author": "Aaron Gong <aaronjxz@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ais-one/vue-crud-x/issues"
+  },
+  "homepage": "https://github.com/ais-one/vue-crud-x#readme",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "poi": "^9.6.10"
+  }
+}
