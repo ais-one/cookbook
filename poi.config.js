@@ -3,7 +3,7 @@ module.exports = {
   entry: './VueCrudX.vue',
   filename: {
     js: 'VueCrudX.js'
-//    css: 'vue-crud-x.css'
+    // css: 'vue-crud-x.css'
   },
   sourceMap: false,
   html: false,

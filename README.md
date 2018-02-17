@@ -64,3 +64,14 @@ or
 Important! Refer to the example project on how to use.
 
 [https://github.com/ais-one/vue-crud-x/example](https://github.com/ais-one/vue-crud-x/example)
+
+## Changes
+
+### Version 0.0.2
+
+* Initial Release
+
+### Version 0.0.3
+
+* Update packages
+* Fix example to handle updated Vuetify version 1.0.1

@@ -209,9 +209,9 @@
       submitFilter () {
         this.getRecordsHelper()
       },
-      clearFilter () { // can do test code here too
-        // this.$refs.searchForm.reset()
-      },
+      // clearFilter () { // can do test code here too
+      //   this.$refs.searchForm.reset()
+      // },
       goBack () {
         this.$router.back()
       }
@@ -227,7 +227,7 @@
         <v-form class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
           <crud-filter :filterData="filterData" :parentId="parentId" :storeName="storeName" />
           <v-btn @click="submitFilter" :disabled="!validFilter">apply</v-btn>
-          <v-btn @click="clearFilter">clear</v-btn>
+          <!-- v-btn @click="clearFilter">clear</v-btn -->
         </v-form>
       </v-expansion-panel-content>
     </v-expansion-panel>

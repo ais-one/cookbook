@@ -14,17 +14,17 @@ export default {
       commit('setUser', newUser)
     } else {
       commit('setError', {message: 'Error Signup'})
-/* TBD
-      if (error.code === 'auth/email-already-in-use') {
-        const auth = firebase.auth()
-        var credential = firebase.auth.EmailAuthProvider.credential(payload.email, payload.password)
-        user = await auth.currentUser.linkWithCredential(credential)
-        if (user) {
-          const newUser = {id: user.uid}
-          commit('setUser', newUser)
+      /* TBD
+        if (error.code === 'auth/email-already-in-use') {
+          const auth = firebase.auth()
+          var credential = firebase.auth.EmailAuthProvider.credential(payload.email, payload.password)
+          user = await auth.currentUser.linkWithCredential(credential)
+          if (user) {
+            const newUser = {id: user.uid}
+            commit('setUser', newUser)
+          }
         }
-      }
-*/
+      */
     }
   },
   async signUserIn ({commit}, payload) {
