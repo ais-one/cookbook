@@ -91,11 +91,12 @@ or
 > From local package file
 
     npm i --save /path-to/vue-crud-x-?.?.?.tgz
+    npm install --save regenerator-runtime
 
 ### 3 Running Example
 
-    npm install --save vue-crud-x
-    npm install --save regenerator-runtime
+    cd node_modules/vue-crud-x/example
+    npm install
 
     # configure the cfg.json file
     npm run dev
