@@ -46,8 +46,11 @@ However, the good part is that these parts need to be coded anyway and once you 
     npm pack
     # A local npm package will be created (a tgz file)
 
-### go to example & run it
+### go to example & install
     cd example
+    # install dependencies in package.json
+    npm install
+    # install the local npm package packed earlier...
     npm install ../vue-crud-x-?.?.?.tgz
     # ?.?.? is the version
 
