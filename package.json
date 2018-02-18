@@ -1,15 +1,45 @@
 {
-  "name": "vue-crud-x",
-  "version": "0.0.2",
+  "_from": "vue-crud-x",
+  "_id": "vue-crud-x@0.0.3",
+  "_inBundle": false,
+  "_integrity": "sha512-q9g7ER3wWEoOmM8GnPtJdOiaa6vX1pS/Pywh1B1Eqj0KKTRoc6RDqe5b1ulXcBk80Tnt4oGjoJc5BA/cw3WijA==",
+  "_location": "/vue-crud-x",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "vue-crud-x",
+    "name": "vue-crud-x",
+    "escapedName": "vue-crud-x",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/vue-crud-x/-/vue-crud-x-0.0.3.tgz",
+  "_shasum": "fda705ef0188e0118d00ab53d16f300e7c3f523e",
+  "_spec": "vue-crud-x",
+  "_where": "/Users/aaron/test/xxx",
+  "author": {
+    "name": "Aaron Gong",
+    "email": "aaronjxz@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/ais-one/vue-crud-x/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "lodash": "^4.17.4"
+  },
+  "deprecated": false,
   "description": "A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, using GraphQL or REST to access various datastores. Uses Vuetify for layout components but can be changed to alternatives such as ElementUI (by changing components in the VueCrudX source code from Vuetify to ElementUI)",
-  "main": "dist/VueCrudX.js",
-  "scripts": {
-    "build": "npx poi build"
+  "devDependencies": {
+    "poi": "^9.6.10"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ais-one/vue-crud-x.git"
-  },
+  "homepage": "https://github.com/ais-one/vue-crud-x#readme",
   "keywords": [
     "vue",
     "vuejs",
@@ -20,16 +50,15 @@
     "filter",
     "graphql"
   ],
-  "author": "Aaron Gong <aaronjxz@gmail.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ais-one/vue-crud-x/issues"
+  "main": "dist/VueCrudX.js",
+  "name": "vue-crud-x",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ais-one/vue-crud-x.git"
   },
-  "homepage": "https://github.com/ais-one/vue-crud-x#readme",
-  "dependencies": {
-    "lodash": "^4.17.4"
+  "scripts": {
+    "build": "npx poi build"
   },
-  "devDependencies": {
-    "poi": "^9.6.10"
-  }
+  "version": "0.0.3"
 }

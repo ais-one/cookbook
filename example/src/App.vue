@@ -3,30 +3,59 @@
      <v-navigation-drawer v-if="userIsAuthenticated" app clipped v-model="drawer" fixed>
       <v-list dense>
         <template v-for="(item, i) in menuItems">
-          <v-list-group :key="i" v-if="item.children" v-model="item.model" no-action>
-            <v-list-tile slot="item" @click="">
-              <v-list-tile-action>
-                <v-icon>{{ item.model ? item.icon : item['icon-alt'] }}</v-icon>
-              </v-list-tile-action>
+          <v-layout row
+            v-if="item.heading"
+            align-center
+            :key="item.heading"
+          >
+            <v-flex xs6>
+              <v-subheader v-if="item.heading">
+                {{ item.heading }}
+              </v-subheader>
+            </v-flex>
+            <v-flex xs6 class="text-xs-center">
+              <a href="#!" class="body-2 black--text">EDIT</a>
+            </v-flex>
+          </v-layout>
+
+          <v-list-group
+            :key="i"
+            v-else-if="item.children"
+            v-model="item.model" 
+            no-action
+            :prepend-icon="item.model ? item.icon : item['icon-alt']"
+            append-icon=""
+          >
+            <v-list-tile slot="activator">
               <v-list-tile-content>
-                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                <v-list-tile-title>
+                  {{ item.title }}
+                </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile v-for="(child, i) in item.children" :to="child.link" :key="i">
+            <v-list-tile
+              v-for="(child, i) in item.children"
+              :key="i"
+              :to="child.link"
+            >
               <v-list-tile-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>{{ child.title }}</v-list-tile-title>
+                <v-list-tile-title>
+                  {{ child.title }}
+                </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list-group>
-          <v-list-tile :key="i" v-else :to="item.link">
+          <v-list-tile v-else @click="" :key="item.title">
             <v-list-tile-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+              <v-list-tile-title>
+                {{ item.title }}
+              </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </template>

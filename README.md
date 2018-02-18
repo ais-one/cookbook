@@ -30,7 +30,11 @@ Because of its flexible nature, quite a number of things need to be coded to fit
 
 However, the good part is that these parts need to be coded anyway and once you find your way around the design, you will be able to quickly create custom CRUD in many of your use cases
 
-## Build Setup
+## Build Setup For Maintaining This Repository
+
+### clone the repository and go to the repository
+    git clone https://github.com/ais-one/vue-crud-x.git
+    cd vue-crud-x
 
 ### install dependencies
     npm install
@@ -38,8 +42,36 @@ However, the good part is that these parts need to be coded anyway and once you 
 ### build for production with minification
     npm run build
 
-### package locally
+### package vue-crud-x
     npm pack
+    # A local npm package will be created (a tgz file)
+
+### go to example & install
+    cd example
+    # install dependencies in package.json
+    npm install
+    # install the local npm package packed earlier...
+    npm install ../vue-crud-x-?.?.?.tgz
+    # ?.?.? is the version
+
+### create cfg.json file & put in your credentials
+    touch cfg.json
+    vi cfg.json
+
+    {
+      "firebaseCfg": {
+        "apiKey": "",
+        "authDomain": "",
+        "databaseURL": "",
+        "projectId": "",
+        "storageBucket": "",
+        "messagingSenderId": ""
+      },
+      "recaptchaSiteKey": ""  
+    }
+
+### run the app
+    npm run dev
 
 
 ## Usage
@@ -61,6 +93,18 @@ or
 
 ### 3 Example
 
-Important! Refer to the example project on how to use.
+Important! Refer to the Getting Started Article
 
-[https://github.com/ais-one/vue-crud-x/example](https://github.com/ais-one/vue-crud-x/example)
+[https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054)
+
+
+## Changes
+
+### Version 0.0.2
+
+* Initial Release
+
+### Version 0.0.3
+
+* Update packages
+* Fix example to handle updated Vuetify version 1.0.1

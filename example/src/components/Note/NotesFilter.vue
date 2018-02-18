@@ -41,23 +41,52 @@
       return-object
       :rules="approveStatusRules" required
     ></v-select>
-    <v-menu lazy :close-on-content-click="false" v-model="menuDateStart"
-      transition="scale-transition" offset-y full-width :nudge-right="40" max-width="290px" min-width="290px"
+
+    <v-menu
+      ref="refStartDate"
+      lazy
+      :close-on-content-click="false"
+      v-model="menuDateStart"
+      transition="scale-transition"
+      offset-y
+      full-width
+      :nudge-right="40"
+      max-width="290px"
+      min-width="290px"
+      :return-value.sync="filterData.dateStart"
     >
       <v-text-field slot="activator" label="Start Date" v-model="filterData.dateStart" prepend-icon="event" 
         readonly
         :rules="startDateRules"
       ></v-text-field>
-      <v-date-picker v-model="filterData.dateStart" no-title scrollable actions autosave />
+      <v-date-picker v-model="filterData.dateStart" no-title scrollable>
+        <v-spacer></v-spacer>
+        <v-btn flat color="primary" @click="menuDateStart = false">Cancel</v-btn>
+        <v-btn flat color="primary" @click="$refs.refStartDate.save(filterData.dateStart)">OK</v-btn>
+      </v-date-picker>
     </v-menu>
-    <v-menu lazy :close-on-content-click="false" v-model="menuDateEnd"
-      transition="scale-transition" offset-y full-width :nudge-right="40" max-width="290px" min-width="290px"
+
+    <v-menu
+      ref="refEndDate"
+      lazy :close-on-content-click="false"
+      v-model="menuDateEnd"
+      transition="scale-transition"
+      offset-y
+      full-width
+      :nudge-right="40"
+      max-width="290px"
+      min-width="290px"
+      :return-value.sync="filterData.dateEnd"
     >
       <v-text-field slot="activator" label="End Date" v-model="filterData.dateEnd" prepend-icon="event"
         readonly
         :rules="endDateRules"
       ></v-text-field>
-      <v-date-picker v-model="filterData.dateEnd" no-title scrollable actions autosave />
+      <v-date-picker v-model="filterData.dateEnd" no-title scrollable>
+        <v-spacer></v-spacer>
+        <v-btn flat color="primary" @click="menuDateEnd = false">Cancel</v-btn>
+        <v-btn flat color="primary" @click="$refs.refEndDate.save(filterData.dateEnd)">OK</v-btn>
+      </v-date-picker>
     </v-menu>
   </div>
 </template>
