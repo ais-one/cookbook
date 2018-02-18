@@ -30,7 +30,7 @@ Because of its flexible nature, quite a number of things need to be coded to fit
 
 However, the good part is that these parts need to be coded anyway and once you find your way around the design, you will be able to quickly create custom CRUD in many of your use cases
 
-## Build Setup For Maintaining This Repository
+## Build Setup For Maintaining This Repository (Github)
 
 ### clone the repository and go to the repository
     git clone https://github.com/ais-one/vue-crud-x.git
@@ -74,7 +74,7 @@ However, the good part is that these parts need to be coded anyway and once you 
     npm run dev
 
 
-## Usage
+## General Usage (using NPM)
 
 ### 1 Init a project
     npm init
@@ -83,7 +83,8 @@ However, the good part is that these parts need to be coded anyway and once you 
 
 > From NPM repo
 
-    npm i --save vue-crud-x
+    npm install --save vue-crud-x
+    npm install --save regenerator-runtime
 
 or
 
@@ -91,11 +92,15 @@ or
 
     npm i --save /path-to/vue-crud-x-?.?.?.tgz
 
-### 3 Example
+### 3 Running Example
 
-Important! Refer to the Getting Started Article
+    npm install --save vue-crud-x
+    npm install --save regenerator-runtime
 
-[https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054)
+    # configure the cfg.json file
+    npm run dev
+
+Important! Please Refer to the Getting Started Article For Details: [https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054)
 
 
 ## Changes
