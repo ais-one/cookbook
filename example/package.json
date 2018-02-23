@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "An example for vue-crud-x component usage",
   "author": "Aaron Gong <aaronjxz@gmail.com>",
   "private": true,
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@firebase/firestore": "^0.3.3",
+    "@firebase/storage": "^0.1.8",
     "firebase": "^4.10.0",
     "lodash": "^4.17.5",
     "moment": "^2.20.1",
@@ -20,7 +21,7 @@
     "vue-recaptcha": "^1.1.0",
     "vue-router": "^3.0.1",
     "vuefire": "^1.4.5",
-    "vuetify": "^1.0.1",
+    "vuetify": "^1.0.3",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

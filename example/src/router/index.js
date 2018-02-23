@@ -3,6 +3,7 @@ import Router from 'vue-router'
 // import SignUp from '@/components/User/SignUp'
 import SignIn from '@/components/User/SignIn'
 import AuthGuard from './auth-guard'
+import ExampleForm from '@/components/ExampleForm'
 
 import VueCrudX from 'vue-crud-x'
 import * as noteDefs from '@/components/Note/config'
@@ -58,6 +59,7 @@ export default new Router({
       },
       beforeEnter: AuthGuard
     },
+    { path: '/example-form', name: 'Example Form', component: ExampleForm },
     // { path: '/signup', name: 'SignUp', component: SignUp },
     { path: '/', name: 'SignIn', component: SignIn },
     { path: '*', redirect: '/' }

@@ -49,9 +49,10 @@ However, the good part is that these parts need to be coded anyway and once you 
 ### go to example & install
     cd example
     # install dependencies in package.json
+    # delete package-lock.json if you face problems
     npm install
-    # install the local npm package packed earlier...
-    npm install ../vue-crud-x-?.?.?.tgz
+    # install the local npm package packed earlier... (but do not install into package json)
+    npm install --no-save ../vue-crud-x-?.?.?.tgz
     # ?.?.? is the version
 
 ### create cfg.json file & put in your credentials
@@ -114,3 +115,8 @@ Important! Please Refer to the Getting Started Article For Details: [https://med
 
 * Update packages
 * Fix example to handle updated Vuetify version 1.0.1
+
+### Version 0.0.4
+
+* Update to Vuetify 1.0.3
+* Add file upload and image file upload sample form (ExampleForm.vue, it is not part of the crud, but can be included to the CRUD Form), file is uploaded to google cloud storage
