@@ -29,6 +29,7 @@ export const crudForm = {
 }
 
 export const crudOps = { // CRUD
+  export: null,
   delete: async (payload) => {
     const {id} = payload
     try {

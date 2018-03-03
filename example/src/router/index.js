@@ -6,6 +6,7 @@ import AuthGuard from './auth-guard'
 import ExampleForm from '@/components/ExampleForm'
 
 import VueCrudX from 'vue-crud-x'
+// import VueCrudX from '../../../VueCrudX' // if you want to debug from source
 import * as noteDefs from '@/components/Note/config'
 import * as noteDefs2 from '@/components/Note/config2'
 import * as noteDefsS from '@/components/Note/configS'

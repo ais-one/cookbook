@@ -104,19 +104,33 @@ or
 
 Important! Please Refer to the Getting Started Article For Details: [https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054)
 
+## Todo
+
+* Look into abort/timeout for async operations without abort/timeout feature
+* Add Locale
+  * either use (vue-i18n / vee-validation) to store
+* Check if it is possible to make compatible with NuxtJS
+  * route-link, to, nuxt-link
 
 ## Changes
 
-### Version 0.0.2
+### Version 0.0.5
 
-* Initial Release
+* Update to Vuetify 1.0.4
+* fix async await issues in methods (forgot to add it to some dispatch functions)
+* Add Export button function & example, included setTimeout IIFE to simulate poor network conditions (so that we can better handle it later)
+* Add locale selection and locale state store (preparation for handling locale)
+
+### Version 0.0.4
+
+* Update to Vuetify 1.0.3
+* Add file upload and image file upload sample form (ExampleForm.vue, it is not part of the crud, but can be included to the CRUD Form), file is uploaded to google cloud storage
 
 ### Version 0.0.3
 
 * Update packages
 * Fix example to handle updated Vuetify version 1.0.1
 
-### Version 0.0.4
+### Version 0.0.2
 
-* Update to Vuetify 1.0.3
-* Add file upload and image file upload sample form (ExampleForm.vue, it is not part of the crud, but can be included to the CRUD Form), file is uploaded to google cloud storage
+* Initial Release

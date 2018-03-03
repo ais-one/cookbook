@@ -1,7 +1,6 @@
 .DS_Store
 node_modules/
 **/cfg.json
-example/extras/
 
 npm-debug.log*
 yarn-debug.log*
