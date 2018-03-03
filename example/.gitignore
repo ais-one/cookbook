@@ -6,7 +6,6 @@ yarn-debug.log*
 yarn-error.log*
 cfg.json
 package-lock.json
-extras/
 
 # Editor directories and files
 .idea

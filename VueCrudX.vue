@@ -7,17 +7,19 @@
     state: {
       records: [], // get many - filter, page & sort
       totalRecs: 0,
-      record: { }, // selected
+      record: { }, // selected record
       pagination: { },
       filterData: { },
       defaultRec: { },
       crudOps: {
+        export: null,
         find: null,
         delete: null,
         findOne: null,
         create: null,
         update: null
-      }
+      },
+      locale: 'en' // for multi-language
     },
     getters: {
       record (state) { return state.record },
@@ -26,7 +28,8 @@
       filterData (state) { return state.filterData },
       pagination (state) { return state.pagination },
       defaultRec (state) { return state.defaultRec },
-      crudOps (state) { return state.crudOps }
+      crudOps (state) { return state.crudOps },
+      locale (state) { return state.locale }
     },
     mutations: {
       setRecords (state, payload) {
@@ -36,10 +39,14 @@
       setRecord (state, payload) {
         state.record = (payload !== undefined) ? payload : state.defaultRec
       },
+      setLocale (state, payload) { state.locale = payload },
       setPagination (state, payload) { state.pagination = payload },
       setFilterData (state, payload) { state.filterData = payload }
     },
     actions: { // Edit Actions
+      setLocale ({commit}, payload) {
+        commit('setLocale', payload)
+      },
       setPagination ({commit}, payload) {
         commit('setPagination', payload)
       },
@@ -56,6 +63,9 @@
         commit('setPagination', pagination)
         commit('setFilterData', payload.filterData)
         commit('setRecords', {records, totalRecs})
+      },
+      async exportRecords ({commit, getters}, payload) {
+        await getters.crudOps.export(payload)
       },
       async updateRecord ({commit, getters}, payload) {
         await getters.crudOps.update(payload)
@@ -152,13 +162,14 @@
       }
     },
     methods: {
-      getRecords (payload) { this.$store.dispatch(this.storeName + '/getRecords', payload) },
+      async getRecords (payload) { await this.$store.dispatch(this.storeName + '/getRecords', payload) },
       setPagination (payload) { this.$store.dispatch(this.storeName + '/setPagination', payload) },
-      deleteRecord (payload) { this.$store.dispatch(this.storeName + '/deleteRecord', payload) },
-      updateRecord (payload) { this.$store.dispatch(this.storeName + '/updateRecord', payload) },
-      createRecord (payload) { this.$store.dispatch(this.storeName + '/createRecord', payload) },
-      getRecord (payload) { this.$store.dispatch(this.storeName + '/getRecord', payload) },
+      async deleteRecord (payload) { await this.$store.dispatch(this.storeName + '/deleteRecord', payload) },
+      async updateRecord (payload) { await this.$store.dispatch(this.storeName + '/updateRecord', payload) },
+      async createRecord (payload) { await this.$store.dispatch(this.storeName + '/createRecord', payload) },
+      async getRecord (payload) { await this.$store.dispatch(this.storeName + '/getRecord', payload) },
       setRecord (payload) { this.$store.commit(this.storeName + '/setRecord', payload) },
+      async exportRecords (payload) { await this.$store.dispatch(this.storeName + '/exportRecords', payload) },
 
       closeAddEditDialog () {
         this.addEditDialogFlag = false
@@ -209,6 +220,15 @@
       submitFilter () {
         this.getRecordsHelper()
       },
+      async exportBtnClick () {
+        this.loading = true
+        await this.exportRecords({
+          pagination: this.pagination,
+          filterData: this.filterData,
+          addons: this.addons
+        })
+        this.loading = false
+      },
       // clearFilter () { // can do test code here too
       //   this.$refs.searchForm.reset()
       // },
@@ -226,7 +246,7 @@
         <div slot="header" >Search</div>
         <v-form class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
           <crud-filter :filterData="filterData" :parentId="parentId" :storeName="storeName" />
-          <v-btn @click="submitFilter" :disabled="!validFilter">apply</v-btn>
+          <v-btn @click="submitFilter" :disabled="!validFilter || loading">apply</v-btn>
           <!-- v-btn @click="clearFilter">clear</v-btn -->
         </v-form>
       </v-expansion-panel-content>
@@ -286,6 +306,9 @@
 
     <v-btn v-if="this.parentId" fab top color="blue" dark @click.stop="goBack"><v-icon>close</v-icon></v-btn>
     <v-btn v-if="this.crudOps.create" fab top color="pink" dark @click.stop="addEditDialogOpen()"><v-icon>add</v-icon></v-btn>
+    <v-btn v-if="this.crudOps.export" fab top color="green" @click.stop="exportBtnClick()" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
+      <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
+    </v-btn>
   </v-container>
 </template>
 

@@ -72,7 +72,7 @@
           <v-btn flat>
             <v-avatar size="36px">
               <img src="./assets/john_leider.jpg" alt="John">
-            </v-avatar> Somebody
+            </v-avatar>&nbsp;Somebody
           </v-btn>
           <v-btn flat @click="onLogout">
             <v-icon left dark>exit_to_app</v-icon>Exit
@@ -86,14 +86,14 @@
             <v-icon>notifications</v-icon>
           </v-btn>
         </div>
-        <v-menu :nudge-width="100" v-if="userIsAuthenticated && false">
+        <v-menu :nudge-width="100" v-if="userIsAuthenticated">
           <v-toolbar-title slot="activator">
-            <span>All</span>
+            <span>{{selectedLocale}}</span>
             <v-icon dark>arrow_drop_down</v-icon>
           </v-toolbar-title>
           <v-list>
-            <v-list-tile v-for="xxx in itemx" :key="xxx" @click="">
-              <v-list-tile-title v-text="xxx"></v-list-tile-title>
+            <v-list-tile v-for="locale in locales" :key="locale" @click="setLocale(locale)">
+              <v-list-tile-title v-text="locale"></v-list-tile-title>
             </v-list-tile>
           </v-list>
         </v-menu>
@@ -113,8 +113,9 @@ export default {
   data () {
     return {
       drawer: true,
-      itemx: [
-        'All', 'Family', 'Friends', 'Coworkers'
+      selectedLocale: 'EN',
+      locales: [
+        'EN', 'ID'
       ],
       menuItems: [
         { icon: 'settings', title: 'Example Form', link: '/example-form' },
@@ -137,6 +138,10 @@ export default {
     }
   },
   methods: {
+    setLocale (locale) {
+      console.log('set locale', locale)
+      this.selectedLocale = locale
+    },
     onLogout () {
       this.$store.dispatch('logout')
       window.location.replace('/')

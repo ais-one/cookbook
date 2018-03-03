@@ -44,6 +44,34 @@ export const crudForm = {
 }
 
 export const crudOps = { // CRUD
+  export: async (payload) => {
+    try {
+      const {dateStart, dateEnd, selectX} = payload.filterData
+      let dbCol = firestore.collection('note')
+        .where('datetime', '>=', new Date(dateStart + ' 00:00:00'))
+        .where('datetime', '<=', new Date(dateEnd + ' 23:59:59'))
+      if (selectX.value !== 'all') {
+        dbCol = dbCol.where('approveStatus', '==', selectX.value)
+      }
+      dbCol = dbCol.orderBy('datetime', 'desc').limit(200)
+      const rv = await dbCol.get()
+      await (function () { return new Promise(resolve => setTimeout(resolve, 5000)) })() // introduce a fake delay
+      let csvContent = 'data:text/csv;charset=utf-8,'
+      csvContent += `id,name,timestamp\r\n`
+      rv.forEach(record => {
+        let tmp = record.data()
+        csvContent += `${record.id},${tmp.party},${tmp.datetime}\r\n`
+      })
+      let encodedUri = encodeURI(csvContent)
+      let link = document.createElement('a')
+      link.setAttribute('href', encodedUri)
+      link.setAttribute('download', 'my_data.csv')
+      document.body.appendChild(link) // Required for FF
+      link.click()
+    } catch (e) {
+      console.log(e)
+    }
+  },
   delete: async (payload) => {
     const {id} = payload
     try {
@@ -55,11 +83,9 @@ export const crudOps = { // CRUD
     const {pagination} = payload
     try {
       const {dateStart, dateEnd, selectX} = payload.filterData
-      let start = new Date(dateStart + ' 00:00:00')
-      let end = new Date(dateEnd + ' 23:59:59')
       let dbCol = firestore.collection('note')
-        .where('datetime', '>=', start)
-        .where('datetime', '<=', end)
+        .where('datetime', '>=', new Date(dateStart + ' 00:00:00'))
+        .where('datetime', '<=', new Date(dateEnd + ' 23:59:59'))
       if (selectX.value !== 'all') {
         dbCol = dbCol.where('approveStatus', '==', selectX.value)
       }
