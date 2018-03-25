@@ -1,4 +1,5 @@
 import * as firebase from 'firebase'
+import router from '../router'
 
 export default {
   async signUserUp ({commit}, payload) {
@@ -27,27 +28,33 @@ export default {
       */
     }
   },
-  async signUserIn ({commit}, payload) {
+  async signUserIn ({dispatch, commit}, payload) {
     commit('setLoading', true)
     commit('setError', null)
     let user = null
     try {
       user = await firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-      // firebase.auth().signInWithPopup(new firebase.auth.GoogleAuthProvider()) // FacebookAuthProvider
+      console.log('signUserIn', user)
+      dispatch('autoSignIn', user)
     } catch (e) { }
-    if (!user) { // else ok - autoSignIn user to sign in user
-      commit('setError', {message: 'Sign In Error'}) // not null means error
+    if (!user) {
+      commit('setError', {message: 'Sign In Error'})
     }
     commit('setLoading', false)
   },
+  async logout ({commit}, payload) {
+    const {userLogout} = payload
+    if (userLogout) {
+      await firebase.auth().signOut()
+    }
+    commit('setUser', null)
+    commit('setLayout', 'layout-default')
+    router.push('/')
+  },
   autoSignIn ({commit}, payload) {
     commit('setUser', {id: payload.uid, email: payload.email || payload.uid})
-  },
-  logout ({commit}) {
-    firebase.auth().signOut()
-    commit('setUser', null)
-    window.location.replace('/')
-    this.$router.push('/')
+    commit('setLayout', 'layout-admin')
+    router.push('/notes')
   },
   clearError ({commit}) { commit('setError', null) }
 }
