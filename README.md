@@ -106,13 +106,26 @@ Important! Please Refer to the Getting Started Article For Details: [https://med
 
 ## Todo
 
-* Look into abort/timeout for async operations without abort/timeout feature
 * Add Locale
   * either use (vue-i18n / vee-validation) to store
 * Check if it is possible to make compatible with NuxtJS
   * route-link, to, nuxt-link
+* Infinite Scroll
+  * https://github.com/vuetifyjs/vuetify/issues/3538
+* Look into abort/timeout for async operations without abort/timeout feature
 
 ## Changes
+
+### Version 0.0.6
+
+* Update to Vuetify 1.0.10
+* Organize Layout (https://medium.com/@kasvith/multiple-layouts-for-vue-spa-app-fafda6b2bfc7)
+* change userId (a single property) change to user object to allow more than one property to define a unique user
+* Refactor and clean up firebase authentication in example
+* Take note of Vuetify fixed header pull-request
+  * https://github.com/vuetifyjs/vuetify/issues/1547
+  * https://github.com/vuetifyjs/vuetify/pull/2868
+
 
 ### Version 0.0.5
 

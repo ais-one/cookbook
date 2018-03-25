@@ -98,10 +98,10 @@ export const crudOps = { // CRUD
   update: async (payload) => {
     let {
       record: {id, approver, approveStatus},
-      addons: {userId}
+      addons: {user}
     } = payload
     const {value} = approveStatus
-    approver = (value === 'approved' || value === 'rejected') ? userId : ''
+    approver = (value === 'approved' || value === 'rejected') ? user.email : ''
     approveStatus = value
     try {
       const document = firestore.doc('note/' + id)

@@ -312,7 +312,7 @@
   </v-container>
 </template>
 
-<style scoped>
+<style lang="css" scoped>
   .make-modal {
     margin: 0;
     position: fixed;

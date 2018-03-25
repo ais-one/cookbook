@@ -65,7 +65,7 @@ Look at menuItems and see the how the menu items and link to are done
       addons {
         parentId: String
         jwtToken: JWT or some other token
-        userId: String
+        user: String
       }
     }
 

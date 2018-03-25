@@ -25,7 +25,7 @@ export default new Router({
           storeName: route.name,
           parentId: route.params.parentId || null,
           jwtToken: '',
-          userId: this.a.app.$store.getters.user.email,
+          user: this.a.app.$store.getters.user || null,
           ...noteDefs
         }
       }
@@ -40,7 +40,7 @@ export default new Router({
           storeName: route.name,
           parentId: route.params.parentId || null,
           jwtToken: '',
-          userId: this.a.app.$store.getters.user.email,
+          user: this.a.app.$store.getters.user || null,
           ...noteDefs2
         }
       }
@@ -54,7 +54,7 @@ export default new Router({
           storeName: route.name,
           parentId: route.params.parentId || null,
           jwtToken: '',
-          userId: this.a.app.$store.getters.user.email,
+          user: this.a.app.$store.getters.user || null,
           ...noteDefsS
         }
       },
