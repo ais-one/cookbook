@@ -1,5 +1,5 @@
 <script>
-  import _cloneDeep from 'lodash/cloneDeep'
+  import _cloneDeep from 'lodash.clonedeep'
 
   const CrudStore = {
     namespaced: true,
@@ -78,7 +78,7 @@
 
   export default {
     props: [
-      'parentId', 'jwtToken', 'userId', 'storeName', 'crudFilter', 'crudTable', 'crudForm', 'crudOps'
+      'parentId', 'token', 'user',  'storeName', 'crudFilter', 'crudTable', 'crudForm', 'crudOps'
     ],
     created () {
       console.log('CRUD component created', this, this.parentId)
@@ -105,8 +105,8 @@
 
       this.addons = {
         parentId: this.parentId,
-        jwtToken: this.jwtToken,
-        userId: this.userId
+        token: this.token,
+        user: this.user
       }
     },
     beforeUpdate () { },
@@ -150,7 +150,13 @@
           this.setPagination(value)
         }
       }
-
+    },
+    filters: {
+      capitalize: function (value) {
+        if (!value) return ''
+        value = value.toString()
+        return value.charAt(0).toUpperCase() + value.slice(1)
+      }
     },
     watch: {
       loading: function (newValue, oldValue) { },
@@ -217,8 +223,8 @@
         })
         this.loading = false
       },
-      submitFilter () {
-        this.getRecordsHelper()
+      async submitFilter () {
+        await this.getRecordsHelper()
       },
       async exportBtnClick () {
         this.loading = true
@@ -243,7 +249,7 @@
   <v-container v-bind:class="{ 'make-modal': parentId }">
     <v-expansion-panel>
       <v-expansion-panel-content class="grey lighten-1">
-        <div slot="header" >Search</div>
+        <div slot="header" >{{storeName | capitalize}} - Search</div>
         <v-form class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
           <crud-filter :filterData="filterData" :parentId="parentId" :storeName="storeName" />
           <v-btn @click="submitFilter" :disabled="!validFilter || loading">apply</v-btn>
