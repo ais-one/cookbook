@@ -64,7 +64,7 @@ Look at menuItems and see the how the menu items and link to are done
       filterData
       addons {
         parentId: String
-        jwtToken: JWT or some other token
+        token: JWT or some other token
         user: String
       }
     }

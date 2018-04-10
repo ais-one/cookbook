@@ -116,6 +116,11 @@ Important! Please Refer to the Getting Started Article For Details: [https://med
 
 ## Changes
 
+### Version 0.0.7
+
+See Github Repo Release Notes
+
+
 ### Version 0.0.6
 
 * Update to Vuetify 1.0.10
