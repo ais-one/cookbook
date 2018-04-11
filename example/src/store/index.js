@@ -14,8 +14,8 @@ export const store = new Vuex.Store({
     error: null
   },
   mutations: {
-    setLayout (state, payload) { state.layout = payload },
     signUserUp (state, payload) { }, // DISABLED
+    setLayout (state, payload) { state.layout = payload },
     setUser (state, payload) { state.user = payload },
     setLoading (state, payload) { state.loading = payload },
     setError (state, payload) { state.error = payload }

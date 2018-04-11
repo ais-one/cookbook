@@ -51,13 +51,17 @@
         commit('setPagination', payload)
       },
       async deleteRecord ({commit, getters}, payload) {
+        payload.user = this.getters.user
         await getters.crudOps.delete(payload)
       },
       async getRecord ({commit, getters}, payload) {
+        payload.user = this.getters.user
+        console.log('getRecord', this)
         let record = await getters.crudOps.findOne(payload)
         commit('setRecord', record)
       },
       async getRecords ({commit, getters}, payload) {
+        payload.user = this.getters.user
         let {records, pagination} = await getters.crudOps.find(payload)
         const totalRecs = records.length
         commit('setPagination', pagination)
@@ -65,23 +69,56 @@
         commit('setRecords', {records, totalRecs})
       },
       async exportRecords ({commit, getters}, payload) {
+        payload.user = this.getters.user
         await getters.crudOps.export(payload)
       },
       async updateRecord ({commit, getters}, payload) {
+        payload.user = this.getters.user
         await getters.crudOps.update(payload)
       },
       async createRecord ({commit, getters, dispatch}, payload) {
+        payload.user = this.getters.user
         await getters.crudOps.create(payload)
       }
     }
   }
 
   export default {
-    props: [
-      'parentId', 'token', 'user',  'storeName', 'crudFilter', 'crudTable', 'crudForm', 'crudOps'
-    ],
+    props: {
+      parentId: {
+        type: String,
+        default: null
+      },
+      storeName: {
+        type: String,
+        required: true
+      },
+      crudFilter: {
+        type: Object,
+        required: true
+      },
+      crudTable: {
+        type: Object,
+        required: true
+      },
+      crudForm: {
+        type: Object,
+        required: true
+      },
+      crudOps: {
+        type: Object,
+        required: true
+      },
+      crudTitle: {
+        type: String,
+      },
+      doPage: {
+        type: Boolean,
+        default: true
+      }
+    },
     created () {
-      console.log('CRUD component created', this, this.parentId)
+      // console.log('CRUD component created', this, this.parentId)
       const store = this.$store
       const name = this.storeName
       if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
@@ -89,9 +126,9 @@
         store.state[name].defaultRec = this.crudForm.defaultRec
         store.state[name].filterData = this.crudFilter.filterData
         store.state[name].crudOps = this.crudOps
-        console.log(`register module: ${name}`)
+        // console.log(`register module: ${name}`)
       } else { // re-use the already existing module
-        console.log(`reusing module: ${name}`)
+        // console.log(`reusing module: ${name}`)
       }
 
       this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
@@ -101,12 +138,6 @@
 
       if (this.record.id && !this.parentId) { // nested CRUD
         this.addEditDialogFlag = true
-      }
-
-      this.addons = {
-        parentId: this.parentId,
-        token: this.token,
-        user: this.user
       }
     },
     beforeUpdate () { },
@@ -118,18 +149,18 @@
         addEditDialogFlag: false,
         confirmDialogFlag: false,
         confirmDialogText: 'Would you like to proceed?',
+        validForm: true,
 
         // filter
         validFilter: true,
 
         // data-table
         loading: true,
-        headers: { }, // pass in
-
-        addons: { } // add to payload
+        headers: { } // pass in
       }
     },
     computed: {
+      showTitle () { return this.crudTitle || this.storeName },
       // ...mapGetters(storeModuleName, [ 'records', 'totalRecs', 'filterData', 'record' ]), // cannot use for multiple stores, try below
       records () { return this.$store.getters[this.storeName + '/records'] },
       totalRecs () { return this.$store.getters[this.storeName + '/totalRecs'] },
@@ -142,7 +173,7 @@
           try {
             rv = this.$store.state[this.storeName].pagination
           } catch (e) {
-            console.log('Catch computed pagination:', e.message)
+            // console.log('Catch computed pagination:', e.message)
           }
           return rv
         },
@@ -183,7 +214,7 @@
       },
       async addEditDialogOpen (id) {
         if (id) { // edit
-          await this.getRecord({id, addons: this.addons})
+          await this.getRecord({id})
         } else { // add
           this.setRecord()
         }
@@ -191,9 +222,9 @@
       },
       async addEditDialogSave (e) {
         if (this.record.id !== null) {
-          await this.updateRecord({record: this.record, addons: this.addons})
+          await this.updateRecord({record: this.record})
         } else {
-          await this.createRecord({record: this.record, addons: this.addons})
+          await this.createRecord({record: this.record, parentId: this.parentId})
         }
         await this.getRecordsHelper()
         this.closeAddEditDialog()
@@ -205,7 +236,7 @@
       async dialogConfirm (e) { // only for delete for now
         const {id} = this.record
         if (id != null) {
-          await this.deleteRecord({id, addons: this.addons})
+          await this.deleteRecord({id})
           await this.getRecordsHelper()
         }
         this.setRecord()
@@ -219,7 +250,7 @@
         await this.getRecords({
           pagination: this.pagination,
           filterData: this.filterData,
-          addons: this.addons
+          parentId: this.parentId
         })
         this.loading = false
       },
@@ -231,7 +262,7 @@
         await this.exportRecords({
           pagination: this.pagination,
           filterData: this.filterData,
-          addons: this.addons
+          parentId: this.parentId
         })
         this.loading = false
       },
@@ -249,7 +280,7 @@
   <v-container v-bind:class="{ 'make-modal': parentId }">
     <v-expansion-panel>
       <v-expansion-panel-content class="grey lighten-1">
-        <div slot="header" >{{storeName | capitalize}} - Search</div>
+        <div slot="header" >{{showTitle | capitalize}} - Search</div>
         <v-form class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
           <crud-filter :filterData="filterData" :parentId="parentId" :storeName="storeName" />
           <v-btn @click="submitFilter" :disabled="!validFilter || loading">apply</v-btn>
@@ -264,6 +295,7 @@
       :pagination.sync="pagination"
       :loading="loading"
       class="elevation-1"
+      :hide-actions=!doPage
     >
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => addEditDialogOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
@@ -300,17 +332,19 @@
             <v-toolbar-items></v-toolbar-items>
             <v-btn icon @click.native="closeAddEditDialog" dark><v-icon>close</v-icon></v-btn>
           </v-toolbar>
-          <crud-form :record="record" :parentId="parentId" :storeName="storeName" />
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn v-if="record.id && this.crudOps.delete" color="red darken-1" flat @click.native="addEditDialogDelete">Delete</v-btn>
-            <v-btn color="blue darken-1" flat @click.native="addEditDialogSave">Save</v-btn>
-          </v-card-actions>
+          <v-form class="grey lighten-3 pa-2" v-model="validForm" lazy-validation>
+            <crud-form :record="record" :parentId="parentId" :storeName="storeName" />
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn v-if="record.id && this.crudOps.delete" color="red darken-1" flat @click.native="addEditDialogDelete">Delete</v-btn>
+              <v-btn color="blue darken-1" :disabled="!validForm" flat @click.native="addEditDialogSave">Save</v-btn>
+            </v-card-actions>
+          </v-form>
         </v-card>
       </v-dialog>
     </v-layout>
 
-    <v-btn v-if="this.parentId" fab top color="blue" dark @click.stop="goBack"><v-icon>close</v-icon></v-btn>
+    <v-btn v-if="this.parentId" fab top color="blue" dark @click.stop="goBack"><v-icon>reply</v-icon></v-btn>
     <v-btn v-if="this.crudOps.create" fab top color="pink" dark @click.stop="addEditDialogOpen()"><v-icon>add</v-icon></v-btn>
     <v-btn v-if="this.crudOps.export" fab top color="green" @click.stop="exportBtnClick()" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
       <v-icon :class='[{"white--text": !loading }]'>print</v-icon>

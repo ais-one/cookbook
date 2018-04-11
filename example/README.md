@@ -59,35 +59,13 @@ Look at menuItems and see the how the menu items and link to are done
 
 ### payload passed into methods created in crudOps
 
-    find {
-      pagination
-      filterData
-      addons {
-        parentId: String
-        token: JWT or some other token
-        user: String
-      }
-    }
-
-    findOne {
-      id: String
-      addons: # see find method
-    }
-
-    update {
-      record: # depends on how you describe it in object crudForm.defaultRec
-      addons: # see find method
-    }
-
-    create {
-      record: # depends on how you describe it in object crudForm.defaultRec
-      addons: #see find method
-    }
-
-    delete {
-      id: String
-      addons:
-    }
+    -- user & token object get from vuex --
+    export {user, filterData}
+    find {user, pagination, parentId, filterData}
+    findOne {user, id}
+    update {user, record}
+    create {user, record, parentId}
+    delete {user, record}
 
 ## schema
 
@@ -130,7 +108,6 @@ Look at menuItems and see the how the menu items and link to are done
 0. look into id => name?
 1. add Field as hidden on table list
 2. parentId for creating new record - done
-3. add security token - done
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 

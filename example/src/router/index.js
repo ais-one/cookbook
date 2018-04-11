@@ -7,6 +7,7 @@ import ExampleForm from '@/components/ExampleForm'
 
 import VueCrudX from 'vue-crud-x'
 // import VueCrudX from '../../../VueCrudX' // if you want to debug from source
+
 import * as noteDefs from '@/components/Note/config'
 import * as noteDefs2 from '@/components/Note/config2'
 import * as noteDefsS from '@/components/Note/configS'
@@ -24,9 +25,9 @@ export default new Router({
         return {
           storeName: route.name,
           parentId: route.params.parentId || null,
-          token: '',
-          user: this.a.app.$store.getters.user || null,
-          ...noteDefs
+          ...noteDefs,
+          doPage: false,
+          crudTitle: 'NTX'
         }
       }
     },
@@ -39,8 +40,6 @@ export default new Router({
         return {
           storeName: route.name,
           parentId: route.params.parentId || null,
-          token: '',
-          user: this.a.app.$store.getters.user || null,
           ...noteDefs2
         }
       }
@@ -53,8 +52,6 @@ export default new Router({
         return {
           storeName: route.name,
           parentId: route.params.parentId || null,
-          token: '',
-          user: this.a.app.$store.getters.user || null,
           ...noteDefsS
         }
       },
