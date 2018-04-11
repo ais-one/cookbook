@@ -106,16 +106,19 @@ Important! Please Refer to the Getting Started Article For Details: [https://med
 
 ## Todo
 
+* Customise colours and fonts...
 * Add Locale
   * either use (vue-i18n / vee-validation) to store
+* Take note of the following issues
+  * Fixed Table Header: https://github.com/vuetifyjs/vuetify/issues/1547, https://github.com/vuetifyjs/vuetify/pull/2868
+  * Infinite Scroll:  https://github.com/vuetifyjs/vuetify/issues/3538
+* Look into abort/timeout for async operations without abort/timeout feature
 * Check if it is possible to make compatible with NuxtJS
   * route-link, to, nuxt-link
-* Infinite Scroll
-  * https://github.com/vuetifyjs/vuetify/issues/3538
-* Look into abort/timeout for async operations without abort/timeout feature
 
 ## Changes
 
+### Version 0.0.8
 ### Version 0.0.7
 
 See Github Repo Release Notes

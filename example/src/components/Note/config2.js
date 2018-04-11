@@ -41,15 +41,13 @@ export const crudOps = { // CRUD
   export: null,
   delete: async (payload) => {
     const {id} = payload
-    try {
-      await firestore.doc('note/' + id).delete()
-    } catch (e) { }
+    try { await firestore.doc('note/' + id).delete() } catch (e) { }
   },
   find: async (payload) => {
     let records = []
-    const {pagination} = payload
+    const {pagination, filterData} = payload // parentId
+    const {selectX} = filterData
     try {
-      const {selectX} = payload.filterData
       let dbCol = firestore.collection('note')
       if (selectX.value !== 'all') {
         dbCol = dbCol.where('approveStatus', '==', selectX.value)
@@ -78,16 +76,14 @@ export const crudOps = { // CRUD
     return record
   },
   create: async (payload) => {
-    const {
-      record: {party, type, value}
-    } = payload
+    const {record} = payload // parentId
     try {
       try {
         let data = {}
         const collectionNote = firestore.collection('note')
-        data.party = party
-        data.type = type
-        data.value = value
+        data.party = record.party
+        data.type = record.type
+        data.value = record.value
         data.datetime = new Date()
         data.approver = ''
         data.approveStatus = 'pending'
@@ -96,18 +92,15 @@ export const crudOps = { // CRUD
     } catch (e) { }
   },
   update: async (payload) => {
-    let {
-      record: {id, approver, approveStatus},
-      addons: {user}
-    } = payload
-    const {value} = approveStatus
-    approver = (value === 'approved' || value === 'rejected') ? user.email : ''
-    approveStatus = value
+    let {user, record} = payload
+    const {value} = record.approveStatus
+    record.approver = (value === 'approved' || value === 'rejected') ? user.email : ''
+    record.approveStatus = value
     try {
-      const document = firestore.doc('note/' + id)
+      const document = firestore.doc('note/' + record.id)
       await document.update({
-        approver,
-        approveStatus
+        approver: record.approver,
+        approveStatus: record.approveStatus
       })
     } catch (e) { }
   }

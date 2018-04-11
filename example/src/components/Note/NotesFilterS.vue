@@ -16,7 +16,7 @@
 
 <template>
   <div>
-    <v-select label="Active?" v-model="filterData.selectY" :items="filterSelectActive"
+    <v-select label="Active Status" v-model="filterData.selectY" :items="filterSelectActive"
       item-value="value" item-text="text"
       return-object
       :rules="activeStatusRules" required

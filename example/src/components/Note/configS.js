@@ -38,14 +38,9 @@ export const crudOps = { // CRUD
   },
   find: async (payload) => {
     let records = []
-    const {
-      pagination,
-      addons: {
-        parentId
-      }
-    } = payload
+    let {pagination, parentId} = payload // filterData
+    // const {active} = filterData
     try {
-      // const {active} = payload.filterData
       let dbCol = firestore.collection('subnote')
         .where('noteId', '==', parentId)
         // .where('active', '==', active)
@@ -71,29 +66,24 @@ export const crudOps = { // CRUD
     return record
   },
   create: async (payload) => {
-    const {
-      record: {active, info},
-      addons: {parentId}
-    } = payload
+    const {record, parentId} = payload
     try {
       let data = {}
       const collectionNote = firestore.collection('subnote')
       data.noteId = parentId
-      data.active = active
-      data.info = info
+      data.active = record.active
+      data.info = record.info
       await collectionNote.add(data)
     } catch (e) { }
   },
   update: async (payload) => {
-    let {
-      record: {id, noteId, info, active}
-    } = payload
+    let {record} = payload
     try {
-      const document = firestore.doc('subnote/' + id)
+      const document = firestore.doc('subnote/' + record.id)
       await document.update({
-        noteId,
-        active,
-        info
+        noteId: record.noteId,
+        active: record.active,
+        info: record.info
       })
     } catch (e) { }
   }

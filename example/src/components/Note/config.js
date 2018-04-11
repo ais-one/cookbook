@@ -46,7 +46,8 @@ export const crudForm = {
 export const crudOps = { // CRUD
   export: async (payload) => {
     try {
-      const {dateStart, dateEnd, selectX} = payload.filterData
+      const {filterData} = payload
+      const {dateStart, dateEnd, selectX} = filterData
       let dbCol = firestore.collection('note')
         .where('datetime', '>=', new Date(dateStart + ' 00:00:00'))
         .where('datetime', '<=', new Date(dateEnd + ' 23:59:59'))
@@ -80,9 +81,9 @@ export const crudOps = { // CRUD
   },
   find: async (payload) => {
     let records = []
-    const {pagination} = payload
+    const {pagination, filterData} = payload // parentId
+    const {dateStart, dateEnd, selectX} = filterData
     try {
-      const {dateStart, dateEnd, selectX} = payload.filterData
       let dbCol = firestore.collection('note')
         .where('datetime', '>=', new Date(dateStart + ' 00:00:00'))
         .where('datetime', '<=', new Date(dateEnd + ' 23:59:59'))
@@ -113,16 +114,14 @@ export const crudOps = { // CRUD
     return record
   },
   create: async (payload) => {
-    const {
-      record: {party, type, value}
-    } = payload
+    const {record} = payload // parentId
     try {
       try {
         let data = {}
         const collectionNote = firestore.collection('note')
-        data.party = party
-        data.type = type
-        data.value = value
+        data.party = record.party
+        data.type = record.type
+        data.value = record.value
         data.datetime = new Date()
         data.approver = ''
         data.approveStatus = 'pending'
@@ -131,18 +130,16 @@ export const crudOps = { // CRUD
     } catch (e) { }
   },
   update: async (payload) => {
-    let {
-      record: {id, approver, approveStatus},
-      addons: {user}
-    } = payload
-    const {value} = approveStatus
-    approver = (value === 'approved' || value === 'rejected') ? user.email : ''
-    approveStatus = value
+    let {user, record} = payload
+    const {value} = record.approveStatus
+    record.approver = (value === 'approved' || value === 'rejected') ? user.email : ''
+    record.approveStatus = value
     try {
-      const document = firestore.doc('note/' + id)
+      const document = firestore.doc('note/' + record.id)
       await document.update({
-        approver,
-        approveStatus
+        value: record.value,
+        approver: record.approver,
+        approveStatus: record.approveStatus
       })
     } catch (e) { }
   }
