@@ -1,6 +1,6 @@
 <script>
   export default {
-    name: 'formZ',
+    name: 'notes-form',
     props: ['parentId', 'storeName', 'record'], // static
     data () {
       return {
