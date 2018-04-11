@@ -1,7 +1,7 @@
 <script>
   import moment from 'moment'
   export default {
-    name: 'filterZ',
+    name: 'notes-filter',
     props: ['parentId', 'storeName', 'filterData'], // static
     data () {
       return {
@@ -29,6 +29,16 @@
         ],
         approveStatusRules: [v => !!v || 'Item is required']
       }
+    },
+    methods: {
+      setStartDate (date) {
+        this.filterData.dateStart = date
+        this.$refs.refStartDate.save(this.filterData.dateStart)
+      },
+      setEndDate (date) {
+        this.filterData.dateEnd = date
+        this.$refs.refEndDate.save(this.filterData.dateEnd)
+      }
     }
   }
 </script>
@@ -45,7 +55,7 @@
     <v-menu
       ref="refStartDate"
       lazy
-      :close-on-content-click="false"
+      :close-on-content-click="true"
       v-model="menuDateStart"
       transition="scale-transition"
       offset-y
@@ -55,20 +65,18 @@
       min-width="290px"
       :return-value.sync="filterData.dateStart"
     >
-      <v-text-field slot="activator" label="Start Date" v-model="filterData.dateStart" prepend-icon="event" 
-        readonly
-        :rules="startDateRules"
-      ></v-text-field>
-      <v-date-picker v-model="filterData.dateStart" no-title scrollable>
+      <v-text-field slot="activator" label="Start Date" v-model="filterData.dateStart" prepend-icon="event" readonly :rules="startDateRules"></v-text-field>
+      <v-date-picker v-model="filterData.dateStart" no-title scrollable @input="setStartDate">
         <v-spacer></v-spacer>
-        <v-btn flat color="primary" @click="menuDateStart = false">Cancel</v-btn>
-        <v-btn flat color="primary" @click="$refs.refStartDate.save(filterData.dateStart)">OK</v-btn>
+        <v-btn flat color="primary" @click="menuDateStart=false">Cancel</v-btn>
+        <!-- v-btn flat color="primary" @click="$refs.refStartDate.save(filterData.dateStart)">OK</v-btn -->
       </v-date-picker>
     </v-menu>
 
     <v-menu
       ref="refEndDate"
-      lazy :close-on-content-click="false"
+      lazy
+      :close-on-content-click="true"
       v-model="menuDateEnd"
       transition="scale-transition"
       offset-y
@@ -78,14 +86,11 @@
       min-width="290px"
       :return-value.sync="filterData.dateEnd"
     >
-      <v-text-field slot="activator" label="End Date" v-model="filterData.dateEnd" prepend-icon="event"
-        readonly
-        :rules="endDateRules"
-      ></v-text-field>
-      <v-date-picker v-model="filterData.dateEnd" no-title scrollable>
+      <v-text-field slot="activator" label="End Date" v-model="filterData.dateEnd" prepend-icon="event" readonly :rules="endDateRules"></v-text-field>
+      <v-date-picker v-model="filterData.dateEnd" no-title scrollable @input="setEndDate">
         <v-spacer></v-spacer>
-        <v-btn flat color="primary" @click="menuDateEnd = false">Cancel</v-btn>
-        <v-btn flat color="primary" @click="$refs.refEndDate.save(filterData.dateEnd)">OK</v-btn>
+        <v-btn flat color="primary" @click="menuDateEnd=false">Cancel</v-btn>
+        <!-- v-btn flat color="primary" @click="$refs.refEndDate.save(filterData.dateEnd)">OK</v-btn -->
       </v-date-picker>
     </v-menu>
   </div>
