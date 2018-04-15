@@ -23,8 +23,9 @@ new Vue({
     auth.onAuthStateChanged((user) => {
       console.log('onAuthStateChanged', user)
       if (user) {
+        this.$store.dispatch('autoSignIn', user) // server force keep login
       } else {
-        this.$store.dispatch('logout', {userLogout: false}) // server force logout
+        // this.$store.dispatch('logout', {userLogout: false}) // server force logout
       }
     })
   }

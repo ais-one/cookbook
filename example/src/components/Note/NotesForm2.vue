@@ -4,14 +4,17 @@
     props: ['parentId', 'storeName', 'record'], // static
     data () {
       return {
-        editSelectStatus: [
-          { text: 'Pending', value: 'pending' },
-          { text: 'Review', value: 'review' },
-          { text: 'Approved', value: 'approved' },
-          { text: 'Rejected', value: 'rejected' }
-        ],
+        editSelectStatus: [],
         selectApproveStatus: [v => !!v || 'Item is required']
       }
+    },
+    created () {
+      this.editSelectStatus = [
+        { text: 'Pending', value: 'pending' },
+        { text: 'Review', value: 'review' },
+        { text: 'Approved', value: 'approved' },
+        { text: 'Rejected', value: 'rejected' }
+      ]
     }
   }
 </script>

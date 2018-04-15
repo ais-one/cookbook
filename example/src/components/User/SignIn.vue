@@ -23,7 +23,7 @@
                     </v-flex>
                   </v-layout>
                   <v-layout row>
-                    <img src="~@/assets/email.png" />
+                    <img src="/static/email.png" />
                     <v-flex xs12>
                       <v-btn type="submit" :disabled="loading||unverified" :loading="loading">
                         Sign in
@@ -62,6 +62,10 @@
         email: '',
         password: ''
       }
+    },
+    created () {
+      console.log('comment out line below to test Google Recaptcha on localhost')
+      if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') this.unverified = false
     },
     computed: {
       ...mapGetters([ 'user', 'error', 'loading' ])

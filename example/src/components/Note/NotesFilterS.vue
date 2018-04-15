@@ -4,10 +4,7 @@
     props: ['parentId', 'storeName', 'filterData'], // static
     data () {
       return {
-        filterSelectActive: [
-          { text: 'active', value: true },
-          { text: 'inactive', value: false }
-        ],
+        filterSelectActive: [ 'active', 'inactive' ],
         activeStatusRules: [v => !!v || 'Item is required']
       }
     }
@@ -16,10 +13,7 @@
 
 <template>
   <div>
-    <v-select label="Active Status" v-model="filterData.selectY" :items="filterSelectActive"
-      item-value="value" item-text="text"
-      return-object
-      :rules="activeStatusRules" required
+    <v-select label="Active Status" v-model="filterData.selectActive" :items="filterSelectActive" :rules="activeStatusRules" required
     ></v-select>
   </div>
 </template>

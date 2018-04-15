@@ -118,6 +118,7 @@ Important! Please Refer to the Getting Started Article For Details: [https://med
 
 ## Changes
 
+### Version 0.0.9
 ### Version 0.0.8
 ### Version 0.0.7
 
@@ -132,7 +133,7 @@ See Github Repo Release Notes
 * Refactor and clean up firebase authentication in example
 * Take note of Vuetify fixed header pull-request
   * https://github.com/vuetifyjs/vuetify/issues/1547
-  * https://github.com/vuetifyjs/vuetify/pull/2868
+  * https://github.com/vuetifyjs/vuetify/pull/2868, https://github.com/vuetifyjs/vuetify/pull/3833
 
 
 ### Version 0.0.5
