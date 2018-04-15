@@ -4,13 +4,7 @@ export default {
   props: ['parentId', 'storeName', 'filterData'], // static
   data () {
     return {
-      filterSelectStatus: [
-        { text: 'All', value: 'all' },
-        { text: 'Pending', value: 'pending' },
-        { text: 'Review', value: 'review' },
-        { text: 'Approved', value: 'approved' },
-        { text: 'Rejected', value: 'rejected' }
-      ],
+      filterSelectStatus: [],
       name: '',
       nameRules: [
         (v) => !!v || 'Item is required',
@@ -18,6 +12,15 @@ export default {
       ],
       approveStatusRules: [v => !!v || 'Item is required']
     }
+  },
+  created () {
+    this.filterSelectStatus = [
+      { text: 'All', value: 'all' },
+      { text: 'Pending', value: 'pending' },
+      { text: 'Review', value: 'review' },
+      { text: 'Approved', value: 'approved' },
+      { text: 'Rejected', value: 'rejected' }
+    ]
   }
 }
 </script>

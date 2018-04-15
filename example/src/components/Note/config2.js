@@ -3,12 +3,12 @@ import {firestore} from '../../firebase'
 
 export const crudTable = {
   headers: [
-    { text: 'Party', value: 'party', align: 'left', sortable: false },
-    { text: 'Type', value: 'type', align: 'left' },
-    { text: 'Value', value: 'value', align: 'left' },
-    { text: 'Date Time', value: 'datetime', align: 'left' },
-    { text: 'Status', value: 'approveStatus', align: 'left' },
-    { text: 'Approver', value: 'approver', align: 'left' }
+    { text: 'Party', value: 'party', sortable: false },
+    { text: 'Type', value: 'type' },
+    { text: 'Value', value: 'value' },
+    { text: 'Date Time', value: 'datetime' },
+    { text: 'Status', value: 'approveStatus' },
+    { text: 'Approver', value: 'approver' }
   ],
   formatters: (value, _type) => {
     if (_type === 'datetime') return moment(value).format('YYYY MMM DD HH:mm')

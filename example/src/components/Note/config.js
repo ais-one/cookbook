@@ -1,14 +1,15 @@
 import moment from 'moment'
 import {firestore} from '../../firebase'
+import {exportCsv} from '@/assets/util'
 
 export const crudTable = {
   headers: [
     { text: 'Party', value: 'party', align: 'left', sortable: false },
-    { text: 'Type', value: 'type', align: 'left' },
-    { text: 'Value', value: 'value', align: 'left' },
-    { text: 'Date Time', value: 'datetime', align: 'left' },
-    { text: 'Status', value: 'approveStatus', align: 'left' },
-    { text: 'Approver', value: 'approver', align: 'left' }
+    { text: 'Type', value: 'type' },
+    { text: 'Value', value: 'value' },
+    { text: 'Date Time', value: 'datetime' },
+    { text: 'Status', value: 'approveStatus' },
+    { text: 'Approver', value: 'approver' }
   ],
   formatters: (value, _type) => {
     if (_type === 'datetime') return moment(value).format('YYYY MMM DD HH:mm')
@@ -57,40 +58,37 @@ export const crudOps = { // CRUD
       dbCol = dbCol.orderBy('datetime', 'desc').limit(200)
       const rv = await dbCol.get()
       await (function () { return new Promise(resolve => setTimeout(resolve, 5000)) })() // introduce a fake delay
-      let csvContent = 'data:text/csv;charset=utf-8,'
-      csvContent += `id,name,timestamp\r\n`
+      let csvContent = `id,name,timestamp\r\n`
       rv.forEach(record => {
         let tmp = record.data()
         csvContent += `${record.id},${tmp.party},${tmp.datetime}\r\n`
       })
-      let encodedUri = encodeURI(csvContent)
-      let link = document.createElement('a')
-      link.setAttribute('href', encodedUri)
-      link.setAttribute('download', 'my_data.csv')
-      document.body.appendChild(link) // Required for FF
-      link.click()
+      exportCsv(csvContent)
     } catch (e) {
       console.log(e)
     }
   },
   delete: async (payload) => {
     const {id} = payload
-    try {
-      await firestore.doc('note/' + id).delete()
-    } catch (e) { }
+    try { await firestore.doc('note/' + id).delete() } catch (e) { }
   },
   find: async (payload) => {
     let records = []
     const {pagination, filterData} = payload // parentId
     const {dateStart, dateEnd, selectX} = filterData
+    const {rowsPerPage, totalItems, sortBy, descending} = pagination
+    console.log(rowsPerPage, totalItems, sortBy, descending)
     try {
       let dbCol = firestore.collection('note')
-        .where('datetime', '>=', new Date(dateStart + ' 00:00:00'))
+        .where('datetime', '>=', new Date(dateStart + ' 00:00:00')) // create index
         .where('datetime', '<=', new Date(dateEnd + ' 23:59:59'))
       if (selectX.value !== 'all') {
         dbCol = dbCol.where('approveStatus', '==', selectX.value)
       }
-      dbCol = dbCol.orderBy('datetime', 'desc').limit(200)
+      if (sortBy === 'datetime') {
+        const order = descending ? 'desc' : 'asc'
+        dbCol = dbCol.orderBy(sortBy, order).limit(200)
+      }
       const rv = await dbCol.get()
       rv.forEach(record => {
         let tmp = record.data()
@@ -137,6 +135,7 @@ export const crudOps = { // CRUD
     try {
       const document = firestore.doc('note/' + record.id)
       await document.update({
+        party: record.party,
         value: record.value,
         approver: record.approver,
         approveStatus: record.approveStatus

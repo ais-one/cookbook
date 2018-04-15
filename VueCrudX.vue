@@ -221,7 +221,7 @@
         this.addEditDialogFlag = true
       },
       async addEditDialogSave (e) {
-        if (this.record.id !== null) {
+        if (this.record.id) {
           await this.updateRecord({record: this.record})
         } else {
           await this.createRecord({record: this.record, parentId: this.parentId})
@@ -235,7 +235,7 @@
       },
       async dialogConfirm (e) { // only for delete for now
         const {id} = this.record
-        if (id != null) {
+        if (id) {
           await this.deleteRecord({id})
           await this.getRecordsHelper()
         }
@@ -337,7 +337,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn v-if="record.id && this.crudOps.delete" color="red darken-1" flat @click.native="addEditDialogDelete">Delete</v-btn>
-              <v-btn color="blue darken-1" :disabled="!validForm" flat @click.native="addEditDialogSave">Save</v-btn>
+              <v-btn v-if="(record.id && this.crudOps.update) || (!record.id && this.crudOps.create)" color="blue darken-1" :disabled="!validForm" flat @click.native="addEditDialogSave">Save</v-btn>
             </v-card-actions>
           </v-form>
         </v-card>

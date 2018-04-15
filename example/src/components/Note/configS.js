@@ -3,9 +3,9 @@ import {firestore} from '../../firebase'
 export const crudTable = {
   headers: [
     { text: 'Id', value: 'id', align: 'left' },
-    { text: 'Note Id', value: 'noteId', align: 'left' },
-    { text: 'Info', value: 'info', align: 'left' },
-    { text: 'Active', value: 'active', align: 'left' }
+    { text: 'Note Id', value: 'noteId' },
+    { text: 'Info', value: 'info' },
+    { text: 'Status', value: 'active' }
   ],
   formatters: (value, _type) => {
     return value
@@ -15,7 +15,7 @@ export const crudTable = {
 export const crudFilter = {
   FilterVue: () => ({ component: import('./NotesFilterS.vue') }),
   filterData: {
-    selectY: { text: 'active', value: true }
+    selectActive: 'active'
   }
 }
 
@@ -24,7 +24,7 @@ export const crudForm = {
   defaultRec: {
     id: null,
     info: '',
-    active: true
+    active: 'active'
   }
 }
 
@@ -32,18 +32,17 @@ export const crudOps = { // CRUD
   export: null,
   delete: async (payload) => {
     const {id} = payload
-    try {
-      await firestore.doc('subnote/' + id).delete()
-    } catch (e) { }
+    try { await firestore.doc('subnote/' + id).delete() } catch (e) { }
   },
   find: async (payload) => {
     let records = []
-    let {pagination, parentId} = payload // filterData
-    // const {active} = filterData
+    let {pagination, parentId, filterData} = payload
+    const {selectActive} = filterData
+    console.log(parentId, filterData)
     try {
-      let dbCol = firestore.collection('subnote')
+      let dbCol = firestore.collection('subnote') // create index
         .where('noteId', '==', parentId)
-        // .where('active', '==', active)
+        .where('active', '==', selectActive)
       const rv = await dbCol.get()
       rv.forEach(record => {
         let tmp = record.data()
@@ -66,25 +65,12 @@ export const crudOps = { // CRUD
     return record
   },
   create: async (payload) => {
-    const {record, parentId} = payload
-    try {
-      let data = {}
-      const collectionNote = firestore.collection('subnote')
-      data.noteId = parentId
-      data.active = record.active
-      data.info = record.info
-      await collectionNote.add(data)
-    } catch (e) { }
+    const {record: {id, ...noIdData}, parentId} = payload
+    try { await firestore.collection('subnote').add({noteId: parentId, ...noIdData}) } catch (e) { }
   },
   update: async (payload) => {
-    let {record} = payload
-    try {
-      const document = firestore.doc('subnote/' + record.id)
-      await document.update({
-        noteId: record.noteId,
-        active: record.active,
-        info: record.info
-      })
-    } catch (e) { }
+    let {record: {id, ...noIdData}} = payload
+    console.log(id, noIdData)
+    try { await firestore.doc('subnote/' + id).update(noIdData) } catch (e) { }
   }
 }

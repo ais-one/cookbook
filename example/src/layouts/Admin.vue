@@ -71,7 +71,7 @@
         <v-toolbar-items v-if="userIsAuthenticated">
           <v-btn flat>
             <v-avatar size="36px">
-              <img src="../assets/john_leider.jpg" alt="John">
+              <img src="/static/john_leider.jpg" alt="John">
             </v-avatar>&nbsp;Somebody
           </v-btn>
           <v-btn flat @click="onLogout">
@@ -125,6 +125,7 @@ export default {
           title: 'Crud',
           model: true,
           children: [
+            { icon: 'home', title: 'Party', link: '/party' },
             { icon: 'home', title: 'Notes', link: '/notes' },
             { icon: 'announcement', title: 'Notes2', link: '/notes2' }
           ]
