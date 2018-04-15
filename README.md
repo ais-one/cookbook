@@ -118,7 +118,7 @@ Important! Please Refer to the Getting Started Article For Details: [https://med
 
 ## Changes
 
-### Version 0.0.9
+### Version 0.0.9 & 0.0.10
 ### Version 0.0.8
 ### Version 0.0.7
 

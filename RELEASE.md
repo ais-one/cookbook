@@ -1,4 +1,4 @@
-### Version 0.0.9
+### Version 0.0.9 & 0.0.10
 
 * add a simpler select option example (found in the NotesFormS.vue & NotesFilterS.vue)
 * disable recaptcha if testing on 127.0.0.1 or localhost
@@ -8,6 +8,7 @@
 * add exportCSV helper function in src/assets/util.js
 * hide Save button if update function = null (for update record) or create function = null (for add record), and if comparison error if (id === null) to if (id)
 * move images from /src/assets to /static
+* 0.0.10 import crud component from npm instead of source
 
 ### Version 0.0.8
 2018-04-11 2100 +8 GMT
