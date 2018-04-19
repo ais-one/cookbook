@@ -1,6 +1,6 @@
-import moment from 'moment'
 import {firestore} from '../../firebase'
 import {exportCsv} from '@/assets/util'
+import {format, subDays} from 'date-fns'
 
 export const crudTable = {
   headers: [
@@ -12,7 +12,7 @@ export const crudTable = {
     { text: 'Approver', value: 'approver' }
   ],
   formatters: (value, _type) => {
-    if (_type === 'datetime') return moment(value).format('YYYY MMM DD HH:mm')
+    if (_type === 'datetime') return format(value, 'YYYY MMM DD HH:mm')
     return value
   }
 }
@@ -26,8 +26,8 @@ export const crudFilter = {
     // timeout: 3000
   }),
   filterData: {
-    dateStart: moment().subtract(30, 'days').format('YYYY-MM-DD'),
-    dateEnd: moment().format('YYYY-MM-DD'),
+    dateStart: format(subDays(new Date(), 20), 'YYYY-MM-DD'),
+    dateEnd: format(new Date(), 'YYYY-MM-DD'),
     selectX: { text: 'All', value: 'all' }
   }
 }
@@ -64,9 +64,7 @@ export const crudOps = { // CRUD
         csvContent += `${record.id},${tmp.party},${tmp.datetime}\r\n`
       })
       exportCsv(csvContent)
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) { }
   },
   delete: async (payload) => {
     const {id} = payload
@@ -78,6 +76,7 @@ export const crudOps = { // CRUD
     const {dateStart, dateEnd, selectX} = filterData
     const {rowsPerPage, totalItems, sortBy, descending} = pagination
     console.log(rowsPerPage, totalItems, sortBy, descending)
+    console.log('xxx', filterData, selectX, dateStart, dateEnd)
     try {
       let dbCol = firestore.collection('note')
         .where('datetime', '>=', new Date(dateStart + ' 00:00:00')) // create index
@@ -95,7 +94,9 @@ export const crudOps = { // CRUD
         tmp.id = record.id
         records.push(tmp)
       })
-    } catch (e) { }
+    } catch (e) {
+      console.log(e) // if there is indexing error, use this output to help create the required indexes
+    }
     return {records, pagination}
   },
   findOne: async (payload) => {

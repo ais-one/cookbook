@@ -18,8 +18,7 @@
         findOne: null,
         create: null,
         update: null
-      },
-      locale: 'en' // for multi-language
+      }
     },
     getters: {
       record (state) { return state.record },
@@ -28,8 +27,7 @@
       filterData (state) { return state.filterData },
       pagination (state) { return state.pagination },
       defaultRec (state) { return state.defaultRec },
-      crudOps (state) { return state.crudOps },
-      locale (state) { return state.locale }
+      crudOps (state) { return state.crudOps }
     },
     mutations: {
       setRecords (state, payload) {
@@ -39,14 +37,10 @@
       setRecord (state, payload) {
         state.record = (payload !== undefined) ? payload : state.defaultRec
       },
-      setLocale (state, payload) { state.locale = payload },
       setPagination (state, payload) { state.pagination = payload },
       setFilterData (state, payload) { state.filterData = payload }
     },
     actions: { // Edit Actions
-      setLocale ({commit}, payload) {
-        commit('setLocale', payload)
-      },
       setPagination ({commit}, payload) {
         commit('setPagination', payload)
       },
@@ -118,7 +112,8 @@
       }
     },
     created () {
-      // console.log('CRUD component created', this, this.parentId)
+      // console.log('CRUD component created', this)
+      if (!this.$t || !this.$i18n) this.$t = null // if i18n is not found
       const store = this.$store
       const name = this.storeName
       if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
@@ -148,7 +143,6 @@
         // form
         addEditDialogFlag: false,
         confirmDialogFlag: false,
-        confirmDialogText: 'Would you like to proceed?',
         validForm: true,
 
         // filter
@@ -280,11 +274,11 @@
   <v-container v-bind:class="{ 'make-modal': parentId }">
     <v-expansion-panel>
       <v-expansion-panel-content class="grey lighten-1">
-        <div slot="header" >{{showTitle | capitalize}} - Search</div>
+        <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}}</div>
         <v-form class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
           <crud-filter :filterData="filterData" :parentId="parentId" :storeName="storeName" />
-          <v-btn @click="submitFilter" :disabled="!validFilter || loading">apply</v-btn>
-          <!-- v-btn @click="clearFilter">clear</v-btn -->
+          <v-btn fab @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
+          <!-- v-btn @click="clearFilter"><v-icon>close</v-icon></v-btn -->
         </v-form>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -305,21 +299,21 @@
         <!-- v-edit-dialog : Currently No Inline Editing -->
       </template>
       <template slot="no-data">
-        <v-alert :value="true" color="error" icon="warning">
-          Sorry, nothing to display here :(
-        </v-alert>
+        <v-flex class="text-xs-center">
+          <v-alert :value="true" color="error" icon=""><v-icon>warning</v-icon> {{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
+        </v-flex>
       </template>
     </v-data-table>
 
     <v-layout row justify-center>
       <v-dialog v-model="confirmDialogFlag" persistent max-width="290">
         <v-card>
-          <v-card-title class="headline">Confirmation</v-card-title>
-          <v-card-text>{{ confirmDialogText }}</v-card-text>
+          <v-card-title class="headline"><v-flex class="text-xs-center"> {{$t?$t('vueCrudX.confirm'):'PROCEED?'}}</v-flex></v-card-title>
           <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="green darken-1" flat @click.native="dialogConfirm">Yes</v-btn>
-            <v-btn color="green darken-1" flat @click.native="dialogAbort">No</v-btn>
+            <v-flex class="text-xs-center">
+              <v-btn fab flat @click.native="dialogConfirm"><v-icon>done</v-icon></v-btn>
+              <v-btn fab flat @click.native="dialogAbort"><v-icon>close</v-icon></v-btn>
+            </v-flex>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -327,7 +321,7 @@
       <v-dialog v-model="addEditDialogFlag" fullscreen transition="dialog-bottom-transition" :overlay="false">
         <v-card>
           <v-toolbar dark color="primary">
-            <v-toolbar-title>Settings</v-toolbar-title>
+            <v-toolbar-title><v-icon>mode_edit</v-icon> {{showTitle | capitalize}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items></v-toolbar-items>
             <v-btn icon @click.native="closeAddEditDialog" dark><v-icon>close</v-icon></v-btn>
@@ -336,17 +330,17 @@
             <crud-form :record="record" :parentId="parentId" :storeName="storeName" />
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn v-if="record.id && this.crudOps.delete" color="red darken-1" flat @click.native="addEditDialogDelete">Delete</v-btn>
-              <v-btn v-if="(record.id && this.crudOps.update) || (!record.id && this.crudOps.create)" color="blue darken-1" :disabled="!validForm" flat @click.native="addEditDialogSave">Save</v-btn>
+              <v-btn fab v-if="record.id && this.crudOps.delete" color="red" dark flat @click.native="addEditDialogDelete"><v-icon>delete</v-icon></v-btn>
+              <v-btn fab v-if="(record.id && this.crudOps.update) || (!record.id && this.crudOps.create)" flat :disabled="!validForm" @click.native="addEditDialogSave"><v-icon>check_box</v-icon></v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
       </v-dialog>
     </v-layout>
 
-    <v-btn v-if="this.parentId" fab top color="blue" dark @click.stop="goBack"><v-icon>reply</v-icon></v-btn>
-    <v-btn v-if="this.crudOps.create" fab top color="pink" dark @click.stop="addEditDialogOpen()"><v-icon>add</v-icon></v-btn>
-    <v-btn v-if="this.crudOps.export" fab top color="green" @click.stop="exportBtnClick()" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
+    <v-btn v-if="this.parentId" fab top dark @click.stop="goBack"><v-icon>reply</v-icon></v-btn>
+    <v-btn v-if="this.crudOps.create" fab top dark @click.stop="addEditDialogOpen"><v-icon>add</v-icon></v-btn>
+    <v-btn v-if="this.crudOps.export" fab top dark @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
       <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
     </v-btn>
   </v-container>

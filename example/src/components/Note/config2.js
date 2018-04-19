@@ -1,5 +1,5 @@
-import moment from 'moment'
 import {firestore} from '../../firebase'
+import {format, subDays} from 'date-fns'
 
 export const crudTable = {
   headers: [
@@ -11,7 +11,7 @@ export const crudTable = {
     { text: 'Approver', value: 'approver' }
   ],
   formatters: (value, _type) => {
-    if (_type === 'datetime') return moment(value).format('YYYY MMM DD HH:mm')
+    if (_type === 'datetime') return format(value, 'YYYY MMM DD HH:mm')
     return value
   }
 }
@@ -19,8 +19,8 @@ export const crudTable = {
 export const crudFilter = {
   FilterVue: () => ({ component: import('./NotesFilter2.vue') }),
   filterData: {
-    dateStart: moment().subtract(45, 'days').format('YYYY-MM-DD'),
-    dateEnd: moment().format('YYYY-MM-DD'),
+    dateStart: format(subDays(new Date(), 45), 'YYYY-MM-DD'),
+    dateEnd: format(new Date(), 'YYYY-MM-DD'),
     selectX: { text: 'Review', value: 'review' }
   }
 }

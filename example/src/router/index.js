@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 // import SignUp from '@/components/User/SignUp'
 import SignIn from '@/components/User/SignIn'
 import AuthGuard from './auth-guard'
@@ -28,7 +29,7 @@ export default new Router({
           parentId: route.params.parentId || null,
           ...noteDefs,
           doPage: false,
-          crudTitle: 'NTX'
+          crudTitle: 'My Title'
         }
       }
     },
@@ -38,7 +39,9 @@ export default new Router({
       component: VueCrudX,
       beforeEnter: AuthGuard,
       props: (route) => {
-        return { storeName: route.name, parentId: route.params.parentId || null, ...noteDefs2 }
+        return {
+          storeName: route.name, parentId: route.params.parentId || null, ...noteDefs2
+        }
       }
     },
     {
@@ -46,7 +49,8 @@ export default new Router({
       name: 'notesS',
       component: VueCrudX,
       props: (route) => {
-        return { storeName: route.name, parentId: route.params.parentId || null, ...noteDefsS
+        return {
+          storeName: route.name, parentId: route.params.parentId || null, ...noteDefsS
         }
       },
       beforeEnter: AuthGuard
@@ -56,7 +60,9 @@ export default new Router({
       name: 'party',
       component: VueCrudX,
       props: (route) => {
-        return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs }
+        return {
+          storeName: route.name, parentId: route.params.parentId || null, ...partyDefs
+        }
       },
       beforeEnter: AuthGuard
     },

@@ -1,5 +1,5 @@
 <script>
-  import moment from 'moment'
+  import {differenceInCalendarDays} from 'date-fns'
   export default {
     name: 'notes-filter',
     props: ['parentId', 'storeName', 'filterData'], // static
@@ -21,11 +21,11 @@
         ],
         startDateRules: [
           (v) => (v <= this.filterData.dateEnd) || 'Start date must be earlier or same as end date',
-          (v) => (moment(this.filterData.dateEnd, 'YYYY-MM-DD').diff(moment(v, 'YYYY-MM-DD'), 'days') <= 60) || 'Select only up to 60 days of records at a time'
+          (v) => (differenceInCalendarDays(this.filterData.dateEnd, v) <= 60) || 'Select only up to 60 days of records at a time'
         ],
         endDateRules: [
           (v) => (v >= this.filterData.dateStart) || 'End date must be later or same as start date',
-          (v) => (moment(v, 'YYYY-MM-DD').diff(moment(this.filterData.dateStart, 'YYYY-MM-DD'), 'days') <= 60) || 'Select only up to 60 days of records at a time'
+          (v) => (differenceInCalendarDays(v, this.filterData.dateStart) <= 60) || 'Select only up to 60 days of records at a time'
         ],
         approveStatusRules: [v => !!v || 'Item is required']
       }
