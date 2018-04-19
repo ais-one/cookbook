@@ -1,3 +1,10 @@
+### Version 0.0.11
+
+* replace moment with date-fns
+* update to vuetify 1.0.16
+* remove unused packages vuefire & toastr, install vue-i18n
+* add vue-i18n prop to pass into component & add functionality to example application (select language EN or ID, see 'no data' or 'confirm' text change)
+
 ### Version 0.0.9 & 0.0.10
 
 * add a simpler select option example (found in the NotesFormS.vue & NotesFilterS.vue)

@@ -70,13 +70,9 @@
       <v-spacer></v-spacer>
         <v-toolbar-items v-if="userIsAuthenticated">
           <v-btn flat>
-            <v-avatar size="36px">
-              <img src="/static/john_leider.jpg" alt="John">
-            </v-avatar>&nbsp;Somebody
+            <v-avatar size="36px"><img src="/static/john_leider.jpg" alt="John"></v-avatar>&nbsp;Somebody
           </v-btn>
-          <v-btn flat @click="onLogout">
-            <v-icon left dark>exit_to_app</v-icon>Exit
-          </v-btn>
+          <v-btn flat @click="onLogout"><v-icon left dark>exit_to_app</v-icon></v-btn>
         </v-toolbar-items>
         <div v-if="userIsAuthenticated && false">
           <v-btn icon>
@@ -133,6 +129,9 @@ export default {
       ]
     }
   },
+  created () {
+    if (this.$i18n) this.$i18n.locale = this.selectedLocale.toLowerCase()
+  },
   computed: {
     userIsAuthenticated () {
       // this.$store.getters.user !== null && this.$store.getters.user !== undefined
@@ -142,6 +141,7 @@ export default {
   methods: {
     setLocale (locale) {
       this.selectedLocale = locale
+      if (this.$i18n) this.$i18n.locale = this.selectedLocale.toLowerCase()
     },
     onLogout () {
       this.$store.dispatch('logout', {userLogout: true})
