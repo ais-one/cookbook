@@ -1,3 +1,12 @@
+### Version 0.0.12
+
+* Improved on the schema example
+  - Party collection (a party to lawsuit)
+  - Notes collection (case notes on party)
+  - 1 party can have 0 to N notes
+  - in the example: click on party, select a party, there is a button to go to case notes of that party
+* Align all icons right
+
 ### Version 0.0.11
 
 * replace moment with date-fns

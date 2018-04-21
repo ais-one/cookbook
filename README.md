@@ -104,20 +104,19 @@ or
 
 Important! Please Refer to the Getting Started Article For Details: [https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054)
 
-## Todo
+## Todo / KIV
 
-* Improve on the schema example, it is not intuitive now.
-* check if need to use vee-validate (most likely not needed)
 * Take note of the following github issues
   * Fixed Table Header: https://github.com/vuetifyjs/vuetify/issues/1547, https://github.com/vuetifyjs/vuetify/pull/2868
   * Infinite Scroll:  https://github.com/vuetifyjs/vuetify/issues/3538
 * Add D3 chart or leaflet map example
 * Look into abort/timeout for async operations without abort/timeout feature
-* Check if it is possible to make compatible with NuxtJS
-  * route-link, to, nuxt-link
+* Check if it is possible to make compatible with NuxtJS (route-link, to, nuxt-link)
+* Currently no need to use vuelidate or vee-validate, use the validation availble in Vuetify
 
 ## Changes
 
+### Version 0.0.12
 ### Version 0.0.11
 ### Version 0.0.9 & 0.0.10
 ### Version 0.0.8

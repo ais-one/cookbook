@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "An example for vue-crud-x component usage",
   "author": "Aaron Gong <aaronjxz@gmail.com>",
   "private": true,

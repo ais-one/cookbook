@@ -1,4 +1,4 @@
-import {firestore} from '../../firebase'
+import {firestore} from '@/firebase'
 import {exportCsv} from '@/assets/util'
 import {format, subDays} from 'date-fns'
 
@@ -19,11 +19,7 @@ export const crudTable = {
 
 export const crudFilter = {
   FilterVue: () => ({
-    component: import('./NotesFilter.vue')
-    // loading: LoadingComp,
-    // error: ErrorComp,
-    // delay: 200,
-    // timeout: 3000
+    component: import('./PartyNotesFilter.vue')
   }),
   filterData: {
     dateStart: format(subDays(new Date(), 20), 'YYYY-MM-DD'),
@@ -33,7 +29,7 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  FormVue: () => ({ component: import('./NotesForm.vue') }),
+  FormVue: () => ({ component: import('./PartyNotesForm.vue') }),
   defaultRec: {
     id: null,
     approver: null,
@@ -47,10 +43,11 @@ export const crudForm = {
 export const crudOps = { // CRUD
   export: async (payload) => {
     try {
-      const {filterData} = payload
+      const {filterData, parentId} = payload
       const {dateStart, dateEnd, selectX} = filterData
       let dbCol = firestore.collection('note')
-        .where('datetime', '>=', new Date(dateStart + ' 00:00:00'))
+        .where('party', '==', parentId)
+        .where('datetime', '>=', new Date(dateStart + ' 00:00:00')) // create index
         .where('datetime', '<=', new Date(dateEnd + ' 23:59:59'))
       if (selectX.value !== 'all') {
         dbCol = dbCol.where('approveStatus', '==', selectX.value)
@@ -72,13 +69,14 @@ export const crudOps = { // CRUD
   },
   find: async (payload) => {
     let records = []
-    const {pagination, filterData} = payload // parentId
+    const {pagination, parentId, filterData} = payload // parentId
     const {dateStart, dateEnd, selectX} = filterData
     const {rowsPerPage, totalItems, sortBy, descending} = pagination
     console.log(rowsPerPage, totalItems, sortBy, descending)
-    console.log('xxx', filterData, selectX, dateStart, dateEnd)
+    console.log(filterData, selectX, dateStart, dateEnd)
     try {
       let dbCol = firestore.collection('note')
+        .where('party', '==', parentId)
         .where('datetime', '>=', new Date(dateStart + ' 00:00:00')) // create index
         .where('datetime', '<=', new Date(dateEnd + ' 23:59:59'))
       if (selectX.value !== 'all') {
@@ -113,12 +111,12 @@ export const crudOps = { // CRUD
     return record
   },
   create: async (payload) => {
-    const {record} = payload // parentId
+    const {record, parentId} = payload
     try {
       try {
         let data = {}
         const collectionNote = firestore.collection('note')
-        data.party = record.party
+        data.party = parentId
         data.type = record.type
         data.value = record.value
         data.datetime = new Date()
