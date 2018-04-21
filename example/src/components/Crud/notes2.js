@@ -1,4 +1,4 @@
-import {firestore} from '../../firebase'
+import {firestore} from '@/firebase'
 import {format, subDays} from 'date-fns'
 
 export const crudTable = {

@@ -9,10 +9,10 @@ import ExampleForm from '@/components/ExampleForm'
 import VueCrudX from 'vue-crud-x'
 // import VueCrudX from '../../../VueCrudX' // if you want to debug from source
 
-import * as partyDefs from '@/components/Note/party'
-import * as noteDefs from '@/components/Note/config'
-import * as noteDefs2 from '@/components/Note/config2'
-import * as noteDefsS from '@/components/Note/configS'
+import * as partyDefs from '@/components/Crud/party'
+import * as partyNotesDefs from '@/components/Crud/party-notes'
+import * as noteDefs from '@/components/Crud/notes'
+import * as noteDefs2 from '@/components/Crud/notes2'
 
 Vue.use(Router)
 
@@ -39,31 +39,21 @@ export default new Router({
       component: VueCrudX,
       beforeEnter: AuthGuard,
       props: (route) => {
-        return {
-          storeName: route.name, parentId: route.params.parentId || null, ...noteDefs2
-        }
+        return { storeName: route.name, parentId: route.params.parentId || null, ...noteDefs2 }
       }
-    },
-    {
-      path: '/notesS/:parentId',
-      name: 'notesS',
-      component: VueCrudX,
-      props: (route) => {
-        return {
-          storeName: route.name, parentId: route.params.parentId || null, ...noteDefsS
-        }
-      },
-      beforeEnter: AuthGuard
     },
     {
       path: '/party',
       name: 'party',
       component: VueCrudX,
-      props: (route) => {
-        return {
-          storeName: route.name, parentId: route.params.parentId || null, ...partyDefs
-        }
-      },
+      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs } },
+      beforeEnter: AuthGuard
+    },
+    {
+      path: '/party-notes/:parentId',
+      name: 'party-notes',
+      component: VueCrudX,
+      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyNotesDefs } },
       beforeEnter: AuthGuard
     },
     { path: '/example-form', name: 'Example Form', component: ExampleForm },

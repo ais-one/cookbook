@@ -324,25 +324,28 @@
             <v-toolbar-title><v-icon>mode_edit</v-icon> {{showTitle | capitalize}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items></v-toolbar-items>
-            <v-btn icon @click.native="closeAddEditDialog" dark><v-icon>close</v-icon></v-btn>
+            <!-- v-btn icon @click.native="closeAddEditDialog" dark><v-icon>close</v-icon></v-btn -->
           </v-toolbar>
           <v-form class="grey lighten-3 pa-2" v-model="validForm" lazy-validation>
             <crud-form :record="record" :parentId="parentId" :storeName="storeName" />
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn fab v-if="record.id && this.crudOps.delete" color="red" dark flat @click.native="addEditDialogDelete"><v-icon>delete</v-icon></v-btn>
-              <v-btn fab v-if="(record.id && this.crudOps.update) || (!record.id && this.crudOps.create)" flat :disabled="!validForm" @click.native="addEditDialogSave"><v-icon>check_box</v-icon></v-btn>
+              <v-btn fab @click.native="closeAddEditDialog" dark><v-icon>reply</v-icon></v-btn>
+              <v-btn fab v-if="record.id && this.crudOps.delete" dark @click.native="addEditDialogDelete"><v-icon>delete</v-icon></v-btn>
+              <v-btn fab v-if="(record.id && this.crudOps.update) || (!record.id && this.crudOps.create)" :disabled="!validForm" @click.native="addEditDialogSave"><v-icon>done_all</v-icon></v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
       </v-dialog>
     </v-layout>
 
-    <v-btn v-if="this.parentId" fab top dark @click.stop="goBack"><v-icon>reply</v-icon></v-btn>
-    <v-btn v-if="this.crudOps.create" fab top dark @click.stop="addEditDialogOpen"><v-icon>add</v-icon></v-btn>
-    <v-btn v-if="this.crudOps.export" fab top dark @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
-      <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
-    </v-btn>
+    <v-layout row justify-end>
+      <v-btn v-if="this.parentId" fab top dark @click.stop="goBack"><v-icon>reply</v-icon></v-btn>
+      <v-btn v-if="this.crudOps.create" fab top dark @click.stop="addEditDialogOpen"><v-icon>add</v-icon></v-btn>
+      <v-btn v-if="this.crudOps.export" fab top dark @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
+        <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
+      </v-btn>
+    </v-layout>
   </v-container>
 </template>
 
