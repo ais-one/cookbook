@@ -15,7 +15,7 @@
   // https://academind.com/learn/vue-js/snippets/image-upload/
   // store file on firebase - https://www.youtube.com/watch?v=qZ1EFnFOGvE
   // import axios from 'axios'
-  import * as firebase from '../firebase'
+  import * as firebase from '@/firebase'
 
   export default {
     data () {

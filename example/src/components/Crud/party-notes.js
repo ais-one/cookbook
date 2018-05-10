@@ -1,5 +1,5 @@
 import {firestore} from '@/firebase'
-import {exportCsv} from '@/assets/util'
+import {makeCsvRow, exportCsv} from '@/assets/util'
 import {format, subDays} from 'date-fns'
 
 export const crudTable = {
@@ -55,12 +55,13 @@ export const crudOps = { // CRUD
       dbCol = dbCol.orderBy('datetime', 'desc').limit(200)
       const rv = await dbCol.get()
       await (function () { return new Promise(resolve => setTimeout(resolve, 5000)) })() // introduce a fake delay
-      let csvContent = `id,name,timestamp\r\n`
+
+      let csvContent = ''
       rv.forEach(record => {
         let tmp = record.data()
-        csvContent += `${record.id},${tmp.party},${tmp.datetime}\r\n`
+        csvContent += makeCsvRow(csvContent, tmp, `\r\n`, ';')
       })
-      exportCsv(csvContent)
+      exportCsv(csvContent, 'party-notes.csv')
     } catch (e) { }
   },
   delete: async (payload) => {
