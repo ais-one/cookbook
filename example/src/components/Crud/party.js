@@ -1,5 +1,5 @@
 import {firestore} from '@/firebase'
-import {exportCsv} from '@/assets/util'
+import {makeCsvRow, exportCsv} from '@/assets/util'
 
 export const crudTable = {
   headers: [
@@ -37,12 +37,13 @@ export const crudOps = { // CRUD
       let dbCol = firestore.collection('party') // create index
         .where('status', '==', selectActive)
       const rv = await dbCol.limit(200).get()
-      let csvContent = `id,name,status,remarks\r\n`
+
+      let csvContent = ''
       rv.forEach(record => {
         let tmp = record.data()
-        csvContent += `${record.id},${tmp.name},${tmp.status},${tmp.remarks},${tmp.languages}\r\n` // TBD delmiter...
+        csvContent += makeCsvRow(csvContent, tmp, `\r\n`, ';')
       })
-      exportCsv(csvContent)
+      exportCsv(csvContent, 'party.csv')
     } catch (e) { }
   },
   delete: null, // TBD if delete, must also delete all dependancies, move all buttons to right?

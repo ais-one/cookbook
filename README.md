@@ -1,3 +1,7 @@
+[![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x)
+
+[![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x)
+
 # IMPORTANT: Getting Started Article
 
 Read the following detailed article to get started, I will be making changes to instructions there based on feedback as I do not want to keep pushing documentation changes to github and npm.
@@ -106,53 +110,16 @@ Important! Please Refer to the Getting Started Article For Details: [https://med
 
 ## Todo / KIV
 
+* upgrade to vue-cli 3.0 when ready
+* add casl-vue, for casl authorization library
+* No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
 * Take note of the following github issues
   * Fixed Table Header: https://github.com/vuetifyjs/vuetify/issues/1547, https://github.com/vuetifyjs/vuetify/pull/2868
   * Infinite Scroll:  https://github.com/vuetifyjs/vuetify/issues/3538
 * Add D3 chart or leaflet map example
 * Look into abort/timeout for async operations without abort/timeout feature
 * Check if it is possible to make compatible with NuxtJS (route-link, to, nuxt-link)
-* Currently no need to use vuelidate or vee-validate, use the validation availble in Vuetify
 
 ## Changes
 
-### Version 0.0.12
-### Version 0.0.11
-### Version 0.0.9 & 0.0.10
-### Version 0.0.8
-### Version 0.0.7
-
-See Github Repo Release Notes
-
-
-### Version 0.0.6
-
-* Update to Vuetify 1.0.10
-* Organize Layout (https://medium.com/@kasvith/multiple-layouts-for-vue-spa-app-fafda6b2bfc7)
-* change userId (a single property) change to user object to allow more than one property to define a unique user
-* Refactor and clean up firebase authentication in example
-* Take note of Vuetify fixed header pull-request
-  * https://github.com/vuetifyjs/vuetify/issues/1547
-  * https://github.com/vuetifyjs/vuetify/pull/2868, https://github.com/vuetifyjs/vuetify/pull/3833
-
-
-### Version 0.0.5
-
-* Update to Vuetify 1.0.4
-* fix async await issues in methods (forgot to add it to some dispatch functions)
-* Add Export button function & example, included setTimeout IIFE to simulate poor network conditions (so that we can better handle it later)
-* Add locale selection and locale state store (preparation for handling locale)
-
-### Version 0.0.4
-
-* Update to Vuetify 1.0.3
-* Add file upload and image file upload sample form (ExampleForm.vue, it is not part of the crud, but can be included to the CRUD Form), file is uploaded to google cloud storage
-
-### Version 0.0.3
-
-* Update packages
-* Fix example to handle updated Vuetify version 1.0.1
-
-### Version 0.0.2
-
-* Initial Release
+See RELEASE.MD file

@@ -33,7 +33,7 @@
                       </v-btn>
                     </v-flex>
                   </v-layout>
-                  <v-layout row>
+                  <v-layout row v-if="sitekey">
                     <v-flex xs12>
                       <vue-recaptcha class="g-recaptcha" @verify="onVerify" @expired="onExpired" :sitekey="sitekey"></vue-recaptcha>
                     </v-flex>
@@ -65,7 +65,7 @@
     },
     created () {
       console.log('comment out line below to test Google Recaptcha on localhost')
-      if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost') this.unverified = false
+      if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || this.sitekey === '') this.unverified = false
     },
     computed: {
       ...mapGetters([ 'user', 'error', 'loading' ])

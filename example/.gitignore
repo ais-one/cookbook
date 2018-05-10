@@ -6,6 +6,8 @@ yarn-debug.log*
 yarn-error.log*
 cfg.json
 package-lock.json
+firebase.json
+.firbaserc
 
 # Editor directories and files
 .idea

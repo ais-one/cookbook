@@ -1,3 +1,8 @@
+### Version 0.0.13
+ * add badges to README.MD
+ * update to vuetify 1.0.17
+ * add makeCsvRow helper in assets/util.js, see export function for example
+
 ### Version 0.0.12
 
 * Improved on the schema example
@@ -43,3 +48,35 @@
 * change lodash to lodash.clonedeep as we only need clonedeep
 * add title to table form
 * change jwtToken to token... (breaking change)
+
+### Version 0.0.6
+
+* Update to Vuetify 1.0.10
+* Organize Layout (https://medium.com/@kasvith/multiple-layouts-for-vue-spa-app-fafda6b2bfc7)
+* change userId (a single property) change to user object to allow more than one property to define a unique user
+* Refactor and clean up firebase authentication in example
+* Take note of Vuetify fixed header pull-request
+  * https://github.com/vuetifyjs/vuetify/issues/1547
+  * https://github.com/vuetifyjs/vuetify/pull/2868, https://github.com/vuetifyjs/vuetify/pull/3833
+
+
+### Version 0.0.5
+
+* Update to Vuetify 1.0.4
+* fix async await issues in methods (forgot to add it to some dispatch functions)
+* Add Export button function & example, included setTimeout IIFE to simulate poor network conditions (so that we can better handle it later)
+* Add locale selection and locale state store (preparation for handling locale)
+
+### Version 0.0.4
+
+* Update to Vuetify 1.0.3
+* Add file upload and image file upload sample form (ExampleForm.vue, it is not part of the crud, but can be included to the CRUD Form), file is uploaded to google cloud storage
+
+### Version 0.0.3
+
+* Update packages
+* Fix example to handle updated Vuetify version 1.0.1
+
+### Version 0.0.2
+
+* Initial Release
