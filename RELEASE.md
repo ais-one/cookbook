@@ -1,7 +1,12 @@
+### Version 0.0.14
+ * Major Bug Fix
+   - Bad news, create operation does not populate record with default values (defaultRec)
+   - Good news, you only need to update this component, you need not do anything on your custom code
+
 ### Version 0.0.13
  * add badges to README.MD
  * update to vuetify 1.0.17
- * add makeCsvRow helper in assets/util.js, see export function for example
+ * add makeCsvRow helper in assets/util.js, see sample in the example application (just pass in an object from an array and get the CSV), some improvements still needed
 
 ### Version 0.0.12
 

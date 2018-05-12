@@ -35,7 +35,8 @@
         state.totalRecs = payload.totalRecs
       },
       setRecord (state, payload) {
-        state.record = (payload !== undefined) ? payload : state.defaultRec
+        if (payload === null) state.record = _cloneDeep(state.defaultRec)
+        else state.record = _cloneDeep(payload)
       },
       setPagination (state, payload) { state.pagination = payload },
       setFilterData (state, payload) { state.filterData = payload }
@@ -50,7 +51,7 @@
       },
       async getRecord ({commit, getters}, payload) {
         payload.user = this.getters.user
-        console.log('getRecord', this)
+        // console.log('getRecord', this)
         let record = await getters.crudOps.findOne(payload)
         commit('setRecord', record)
       },
@@ -104,7 +105,7 @@
         required: true
       },
       crudTitle: {
-        type: String,
+        type: String
       },
       doPage: {
         type: Boolean,
@@ -199,7 +200,7 @@
       async updateRecord (payload) { await this.$store.dispatch(this.storeName + '/updateRecord', payload) },
       async createRecord (payload) { await this.$store.dispatch(this.storeName + '/createRecord', payload) },
       async getRecord (payload) { await this.$store.dispatch(this.storeName + '/getRecord', payload) },
-      setRecord (payload) { this.$store.commit(this.storeName + '/setRecord', payload) },
+      setRecord (payload) { this.$store.commit(this.storeName + '/setRecord', null) },
       async exportRecords (payload) { await this.$store.dispatch(this.storeName + '/exportRecords', payload) },
 
       closeAddEditDialog () {
@@ -207,19 +208,13 @@
         this.setRecord()
       },
       async addEditDialogOpen (id) {
-        if (id) { // edit
-          await this.getRecord({id})
-        } else { // add
-          this.setRecord()
-        }
+        if (id) await this.getRecord({id}) // edit
+        else this.setRecord() // add
         this.addEditDialogFlag = true
       },
       async addEditDialogSave (e) {
-        if (this.record.id) {
-          await this.updateRecord({record: this.record})
-        } else {
-          await this.createRecord({record: this.record, parentId: this.parentId})
-        }
+        if (this.record.id) await this.updateRecord({record: this.record})
+        else await this.createRecord({record: this.record, parentId: this.parentId})
         await this.getRecordsHelper()
         this.closeAddEditDialog()
       },
@@ -341,7 +336,7 @@
 
     <v-layout row justify-end>
       <v-btn v-if="this.parentId" fab top dark @click.stop="goBack"><v-icon>reply</v-icon></v-btn>
-      <v-btn v-if="this.crudOps.create" fab top dark @click.stop="addEditDialogOpen"><v-icon>add</v-icon></v-btn>
+      <v-btn v-if="this.crudOps.create" fab top dark @click.stop="addEditDialogOpen(null)"><v-icon>add</v-icon></v-btn>
       <v-btn v-if="this.crudOps.export" fab top dark @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
         <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
       </v-btn>
