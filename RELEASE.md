@@ -1,4 +1,3 @@
-
 ### Version 0.0.14
  * Major Bug Fix
    - Bad news, create operation does not populate record with default values (defaultRec)
