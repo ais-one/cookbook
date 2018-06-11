@@ -269,11 +269,13 @@
   <v-container v-bind:class="{ 'make-modal': parentId }">
     <v-expansion-panel>
       <v-expansion-panel-content class="grey lighten-1">
-        <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}}</div>
+        <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</div>
         <v-form class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
           <crud-filter :filterData="filterData" :parentId="parentId" :storeName="storeName" />
-          <v-btn fab @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
-          <!-- v-btn @click="clearFilter"><v-icon>close</v-icon></v-btn -->
+          <v-layout row justify-end>
+            <!-- v-btn fab @click="clearFilter"><v-icon>close</v-icon></v-btn -->
+            <v-btn fab @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
+          </v-layout>
         </v-form>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -345,15 +347,15 @@
 </template>
 
 <style lang="css" scoped>
-  .make-modal {
-    margin: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 100;
-    padding: 0;
-    min-width: 100%;
-    min-height: 100%;
-    background-color: #fff;
-  }
+.make-modal {
+  margin: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  padding: 0;
+  min-width: 100%;
+  min-height: 100%;
+  background-color: #fff;
+}
 </style>
