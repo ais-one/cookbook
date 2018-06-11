@@ -1,4 +1,4 @@
-import {firestore} from '@/firebase'
+import {firestore, hasDuplicate} from '@/firebase'
 import {makeCsvRow, exportCsv} from '@/assets/util'
 
 export const crudTable = {
@@ -79,10 +79,12 @@ export const crudOps = { // CRUD
   },
   create: async (payload) => {
     const {record: {id, ...noIdData}} = payload
+    if (await hasDuplicate('party', 'name', noIdData['name'])) return alert('Duplicate name Found')
     try { await firestore.collection('party').add(noIdData) } catch (e) { }
   },
   update: async (payload) => {
     let {record: {id, ...noIdData}} = payload
+    if (await hasDuplicate('party', 'name', noIdData['name'], id)) return alert('Duplicate name Found')
     try { await firestore.doc('party/' + id).update(noIdData) } catch (e) { }
   }
 }

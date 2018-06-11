@@ -28,7 +28,6 @@ export default new Router({
           storeName: route.name,
           parentId: route.params.parentId || null,
           ...noteDefs,
-          doPage: false,
           crudTitle: 'My Title'
         }
       }
@@ -46,14 +45,14 @@ export default new Router({
       path: '/party',
       name: 'party',
       component: VueCrudX,
-      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs } },
+      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs, doPage: false } },
       beforeEnter: AuthGuard
     },
     {
       path: '/party-notes/:parentId',
       name: 'party-notes',
       component: VueCrudX,
-      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyNotesDefs } },
+      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyNotesDefs, doPage: false } },
       beforeEnter: AuthGuard
     },
     { path: '/example-form', name: 'Example Form', component: ExampleForm },

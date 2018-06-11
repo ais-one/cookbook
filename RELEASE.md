@@ -1,3 +1,9 @@
+### Version 0.0.15
+ * update to vuetify 1.0.19
+ * align filter apply icon to right (consistency)
+ * add hasDuplicate (for firestore) check in example (party)
+ * add total record at top to search if non paged result
+
 ### Version 0.0.14
  * Major Bug Fix
    - Bad news, create operation does not populate record with default values (defaultRec)
@@ -9,7 +15,6 @@
  * add makeCsvRow helper in assets/util.js, see sample in the example application (just pass in an object from an array and get the CSV), some improvements still needed
 
 ### Version 0.0.12
-
 * Improved on the schema example
   - Party collection (a party to lawsuit)
   - Notes collection (case notes on party)

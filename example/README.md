@@ -142,6 +142,27 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - https://vuex.vuejs.org
 
 
+### Hosting To At GCP Storage
+
+https://firebase.google.com/docs/hosting/quickstart
+
+npm install -g firebase-tools (first time)
+firebase login (first time)
+cd to project folder
+firebase init (first time)
+add files
+firebase deploy
+firebase logout
+
+
+
+
+
+
+
+
+
+
 ### FILTERS Usage...
 
     import DateFilter from './filters/date'
