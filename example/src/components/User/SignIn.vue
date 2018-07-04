@@ -49,53 +49,52 @@
 </template>
 
 <script>
-  import VueRecaptcha from 'vue-recaptcha'
-  import {mapGetters} from 'vuex'
-  import {recaptchaSiteKey} from '../../../cfg.json'
-
-  export default {
-    components: { VueRecaptcha },
-    data () {
-      return {
-        unverified: true,
-        sitekey: recaptchaSiteKey,
-        email: '',
-        password: ''
-      }
-    },
-    created () {
-      console.log('comment out line below to test Google Recaptcha on localhost')
-      if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || this.sitekey === '') this.unverified = false
-    },
-    computed: {
-      ...mapGetters([ 'user', 'error', 'loading' ])
-    },
-    watch: {
-      user (value) {
-        if (value !== null && value !== undefined) {
-          // this.$router.push('/notes')
-        } else {
-          // this.$router.push('/')
-        }
-      }
-    },
-    methods: {
-      onSignin () {
-        this.$store.dispatch('signUserIn', {email: this.email, password: this.password})
-      },
-      onDismissed () {
-        this.$store.dispatch('clearError')
-      },
-      onVerify (response) { this.unverified = false },
-      onExpired () { this.unverified = true }
+import VueRecaptcha from 'vue-recaptcha'
+import {mapGetters} from 'vuex'
+import {recaptchaSiteKey} from '../../../cfg.json'
+export default {
+  components: { VueRecaptcha },
+  data () {
+    return {
+      unverified: true,
+      sitekey: recaptchaSiteKey,
+      email: '',
+      password: ''
     }
+  },
+  created () {
+    console.log('comment out line below to test Google Recaptcha on localhost')
+    if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || this.sitekey === '') this.unverified = false
+  },
+  computed: {
+    ...mapGetters([ 'user', 'error', 'loading' ])
+  },
+  watch: {
+    user (value) {
+      if (value !== null && value !== undefined) {
+        // this.$router.push('/notes')
+      } else {
+        // this.$router.push('/')
+      }
+    }
+  },
+  methods: {
+    onSignin () {
+      this.$store.dispatch('signUserIn', {email: this.email, password: this.password})
+    },
+    onDismissed () {
+      this.$store.dispatch('clearError')
+    },
+    onVerify (response) { this.unverified = false },
+    onExpired () { this.unverified = true }
   }
+}
 </script>
 
 <style scoped>
 @media screen and (max-width: 450px) {
   #rc-imageselect, .g-recaptcha {
     transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;
-  } 
+  }
 }
 </style>

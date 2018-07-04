@@ -6,8 +6,9 @@ import SignIn from '@/components/User/SignIn'
 import AuthGuard from './auth-guard'
 import ExampleForm from '@/components/ExampleForm'
 
-import VueCrudX from 'vue-crud-x'
-// import VueCrudX from '../../../VueCrudX' // if you want to debug from source
+// vue-crud-x component
+import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
+// import VueCrudX from 'vue-crud-x' // usually we will install and import
 
 import * as partyDefs from '@/components/Crud/party'
 import * as partyNotesDefs from '@/components/Crud/party-notes'

@@ -1,22 +1,22 @@
 <script>
-  export default {
-    name: 'formZ2',
-    props: ['parentId', 'storeName', 'record'], // static
-    data () {
-      return {
-        editSelectStatus: [],
-        selectApproveStatus: [v => !!v || 'Item is required']
-      }
-    },
-    created () {
-      this.editSelectStatus = [
-        { text: 'Pending', value: 'pending' },
-        { text: 'Review', value: 'review' },
-        { text: 'Approved', value: 'approved' },
-        { text: 'Rejected', value: 'rejected' }
-      ]
+export default {
+  name: 'formZ2',
+  props: ['parentId', 'storeName', 'record'], // static
+  data () {
+    return {
+      editSelectStatus: [],
+      selectApproveStatus: [v => !!v || 'Item is required']
     }
+  },
+  created () {
+    this.editSelectStatus = [
+      { text: 'Pending', value: 'pending' },
+      { text: 'Review', value: 'review' },
+      { text: 'Approved', value: 'approved' },
+      { text: 'Rejected', value: 'rejected' }
+    ]
   }
+}
 </script>
 
 <template>
