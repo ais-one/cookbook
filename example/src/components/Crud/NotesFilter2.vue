@@ -35,4 +35,3 @@ export default {
     ></v-select>
   </div>
 </template>
-

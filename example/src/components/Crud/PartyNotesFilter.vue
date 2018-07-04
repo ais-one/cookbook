@@ -1,46 +1,46 @@
 <script>
-  import {differenceInCalendarDays} from 'date-fns'
-  export default {
-    name: 'notes-filter',
-    props: ['parentId', 'storeName', 'filterData'], // static
-    data () {
-      return {
-        menuDateStart: false,
-        menuDateEnd: false,
-        filterSelectStatus: [
-          { text: 'All', value: 'all' },
-          { text: 'Pending', value: 'pending' },
-          { text: 'Review', value: 'review' },
-          { text: 'Approved', value: 'approved' },
-          { text: 'Rejected', value: 'rejected' }
-        ],
-        name: '',
-        nameRules: [
-          (v) => !!v || 'Item is required',
-          (v) => (v && v.length <= 10) || 'Name must be less than 10 characters'
-        ],
-        startDateRules: [
-          (v) => (v <= this.filterData.dateEnd) || 'Start date must be earlier or same as end date',
-          (v) => (differenceInCalendarDays(this.filterData.dateEnd, v) <= 60) || 'Select only up to 60 days of records at a time'
-        ],
-        endDateRules: [
-          (v) => (v >= this.filterData.dateStart) || 'End date must be later or same as start date',
-          (v) => (differenceInCalendarDays(v, this.filterData.dateStart) <= 60) || 'Select only up to 60 days of records at a time'
-        ],
-        approveStatusRules: [v => !!v || 'Item is required']
-      }
+import {differenceInCalendarDays} from 'date-fns'
+export default {
+  name: 'notes-filter',
+  props: ['parentId', 'storeName', 'filterData'], // static
+  data () {
+    return {
+      menuDateStart: false,
+      menuDateEnd: false,
+      filterSelectStatus: [
+        { text: 'All', value: 'all' },
+        { text: 'Pending', value: 'pending' },
+        { text: 'Review', value: 'review' },
+        { text: 'Approved', value: 'approved' },
+        { text: 'Rejected', value: 'rejected' }
+      ],
+      name: '',
+      nameRules: [
+        (v) => !!v || 'Item is required',
+        (v) => (v && v.length <= 10) || 'Name must be less than 10 characters'
+      ],
+      startDateRules: [
+        (v) => (v <= this.filterData.dateEnd) || 'Start date must be earlier or same as end date',
+        (v) => (differenceInCalendarDays(this.filterData.dateEnd, v) <= 60) || 'Select only up to 60 days of records at a time'
+      ],
+      endDateRules: [
+        (v) => (v >= this.filterData.dateStart) || 'End date must be later or same as start date',
+        (v) => (differenceInCalendarDays(v, this.filterData.dateStart) <= 60) || 'Select only up to 60 days of records at a time'
+      ],
+      approveStatusRules: [v => !!v || 'Item is required']
+    }
+  },
+  methods: {
+    setStartDate (date) {
+      this.filterData.dateStart = date
+      this.$refs.refStartDate.save(this.filterData.dateStart)
     },
-    methods: {
-      setStartDate (date) {
-        this.filterData.dateStart = date
-        this.$refs.refStartDate.save(this.filterData.dateStart)
-      },
-      setEndDate (date) {
-        this.filterData.dateEnd = date
-        this.$refs.refEndDate.save(this.filterData.dateEnd)
-      }
+    setEndDate (date) {
+      this.filterData.dateEnd = date
+      this.$refs.refEndDate.save(this.filterData.dateEnd)
     }
   }
+}
 </script>
 
 <template>
@@ -95,4 +95,3 @@
     </v-menu>
   </div>
 </template>
-

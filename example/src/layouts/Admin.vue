@@ -21,7 +21,7 @@
           <v-list-group
             :key="i"
             v-else-if="item.children"
-            v-model="item.model" 
+            v-model="item.model"
             no-action
             :prepend-icon="item.model ? item.icon : item['icon-alt']"
             append-icon=""

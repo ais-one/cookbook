@@ -5,12 +5,12 @@
 </template>
 
 <script>
-  export default {
-    props: ['text'],
-    methods: {
-      onClose () {
-        this.$emit('dismissed')
-      }
+export default {
+  props: ['text'],
+  methods: {
+    onClose () {
+      this.$emit('dismissed')
     }
   }
+}
 </script>

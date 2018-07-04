@@ -1,3 +1,7 @@
+### Version 0.0.16
+ * now using vue-cli 3 scaffolding for example
+ * update to vuetify 1.1.1
+
 ### Version 0.0.15
  * update to vuetify 1.0.19
  * align filter apply icon to right (consistency)
