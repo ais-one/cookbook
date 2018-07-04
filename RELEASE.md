@@ -1,8 +1,11 @@
-### Version 0.0.15
+### Version 0.0.16
  * now using vue-cli 3 scaffolding for example
  * update to vuetify 1.1.1
+
+### Version 0.0.15
+ * update to vuetify 1.0.19
  * align filter apply icon to right (consistency)
- * add hasDuplicate check (for firestore) in example (party)
+ * add hasDuplicate (for firestore) check in example (party)
  * add total record at top to search if non paged result
 
 ### Version 0.0.14
