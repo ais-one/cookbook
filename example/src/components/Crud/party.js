@@ -14,7 +14,33 @@ export const crudTable = {
 export const crudFilter = {
   FilterVue: () => ({ component: import('./PartyFilter.vue') }),
   filterData: {
-    selectActive: 'active'
+    languages: {
+      type: 'v-select',
+      label: 'Languages',
+      multiple: false,
+      rules: [],
+      value: '',
+      itemsFn: async () => {
+        let records = []
+        try {
+          const rv = await firestore.collection('languages').limit(200).get() // create index
+          rv.forEach(record => {
+            let tmp = record.data()
+            records.push(tmp.name)
+          })
+        } catch (e) { }
+        return records
+      },
+      items: [ ]
+    },
+    active: {
+      type: 'v-select',
+      label: 'Active Status',
+      multiple: false,
+      items: [ 'active', 'inactive' ], // can be async loaded from db?
+      value: 'active',
+      rules: [v => !!v || 'Item is required']
+    }
   }
 }
 
@@ -50,11 +76,9 @@ export const crudOps = { // CRUD
   find: async (payload) => {
     let records = []
     const {pagination, filterData} = payload
-    const {selectActive} = filterData
     try {
-      console.log('find find', filterData)
       let dbCol = firestore.collection('party') // create index
-        .where('status', '==', selectActive)
+        .where('status', '==', filterData.active.value)
       const rv = await dbCol.limit(200).get()
       rv.forEach(record => {
         let tmp = record.data()

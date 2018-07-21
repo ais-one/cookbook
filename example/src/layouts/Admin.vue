@@ -61,7 +61,6 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-
     <v-toolbar class="success" dark app fixed clipped-left dense>
       <v-toolbar-title>
         <v-toolbar-side-icon v-if="userIsAuthenticated" @click.stop="drawer = !drawer"></v-toolbar-side-icon>

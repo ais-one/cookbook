@@ -1,3 +1,14 @@
+### TBD Roadmap
+ * make file upload a component
+ * map and table combined component
+ * charts
+
+### Version 0.0.17
+ * add progress indicator to all async operations
+ * use type="date" instead of datepicker, reduce code
+ * auto filter creation (in progress)
+ * update to vuetify 1.1.7
+
 ### Version 0.0.16
  * now using vue-cli 3 scaffolding for example
  * update to vuetify 1.1.1

@@ -46,12 +46,14 @@ export default {
 <template>
   <div>
     <v-text-field  v-show="false" label="Name" v-model="name" :rules="nameRules" :counter="10" required></v-text-field>
-    <v-select label="Approve Status" v-model="filterData.selectX" :items="filterSelectStatus"
-      item-value="value" item-text="text"
-      return-object
-      :rules="approveStatusRules" required
+    <v-select label="Approve Status" v-model="filterData.selectX"
+      :items="filterSelectStatus"
+      :rules="approveStatusRules"
+      item-value="value" item-text="text" return-object required
     ></v-select>
-
+    <v-text-field v-model="filterData.dateStart" type="date" label="Start Date"></v-text-field>
+    <v-text-field v-model="filterData.dateEnd" type="date" label="End Date"></v-text-field>
+<!--
     <v-menu
       ref="refStartDate"
       lazy
@@ -69,7 +71,6 @@ export default {
       <v-date-picker v-model="filterData.dateStart" no-title scrollable @input="setStartDate">
         <v-spacer></v-spacer>
         <v-btn flat color="primary" @click="menuDateStart=false">Cancel</v-btn>
-        <!-- v-btn flat color="primary" @click="$refs.refStartDate.save(filterData.dateStart)">OK</v-btn -->
       </v-date-picker>
     </v-menu>
 
@@ -90,8 +91,8 @@ export default {
       <v-date-picker v-model="filterData.dateEnd" no-title scrollable @input="setEndDate">
         <v-spacer></v-spacer>
         <v-btn flat color="primary" @click="menuDateEnd=false">Cancel</v-btn>
-        <!-- v-btn flat color="primary" @click="$refs.refEndDate.save(filterData.dateEnd)">OK</v-btn -->
       </v-date-picker>
     </v-menu>
+-->
   </div>
 </template>

@@ -164,7 +164,7 @@ firebase login (first time)
 cd to project folder
 firebase init (first time)
 add files
-firebase deploy
+firebase deploy --only hosting
 firebase logout
 
 

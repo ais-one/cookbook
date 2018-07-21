@@ -29,16 +29,6 @@ export default {
       ],
       approveStatusRules: [v => !!v || 'Item is required']
     }
-  },
-  methods: {
-    setStartDate (date) {
-      this.filterData.dateStart = date
-      this.$refs.refStartDate.save(this.filterData.dateStart)
-    },
-    setEndDate (date) {
-      this.filterData.dateEnd = date
-      this.$refs.refEndDate.save(this.filterData.dateEnd)
-    }
   }
 }
 </script>
@@ -51,47 +41,7 @@ export default {
       return-object
       :rules="approveStatusRules" required
     ></v-select>
-
-    <v-menu
-      ref="refStartDate"
-      lazy
-      :close-on-content-click="true"
-      v-model="menuDateStart"
-      transition="scale-transition"
-      offset-y
-      full-width
-      :nudge-right="40"
-      max-width="290px"
-      min-width="290px"
-      :return-value.sync="filterData.dateStart"
-    >
-      <v-text-field slot="activator" label="Start Date" v-model="filterData.dateStart" prepend-icon="event" readonly :rules="startDateRules"></v-text-field>
-      <v-date-picker v-model="filterData.dateStart" no-title scrollable @input="setStartDate">
-        <v-spacer></v-spacer>
-        <v-btn flat color="primary" @click="menuDateStart=false">Cancel</v-btn>
-        <!-- v-btn flat color="primary" @click="$refs.refStartDate.save(filterData.dateStart)">OK</v-btn -->
-      </v-date-picker>
-    </v-menu>
-
-    <v-menu
-      ref="refEndDate"
-      lazy
-      :close-on-content-click="true"
-      v-model="menuDateEnd"
-      transition="scale-transition"
-      offset-y
-      full-width
-      :nudge-right="40"
-      max-width="290px"
-      min-width="290px"
-      :return-value.sync="filterData.dateEnd"
-    >
-      <v-text-field slot="activator" label="End Date" v-model="filterData.dateEnd" prepend-icon="event" readonly :rules="endDateRules"></v-text-field>
-      <v-date-picker v-model="filterData.dateEnd" no-title scrollable @input="setEndDate">
-        <v-spacer></v-spacer>
-        <v-btn flat color="primary" @click="menuDateEnd=false">Cancel</v-btn>
-        <!-- v-btn flat color="primary" @click="$refs.refEndDate.save(filterData.dateEnd)">OK</v-btn -->
-      </v-date-picker>
-    </v-menu>
+    <v-text-field v-model="filterData.dateStart" type="date" label="Start Date" :rules="startDateRules"></v-text-field>
+    <v-text-field v-model="filterData.dateEnd" type="date" label="End Date" :rules="endDateRules"></v-text-field>
   </div>
 </template>
