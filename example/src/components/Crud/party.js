@@ -6,16 +6,14 @@ export const crudTable = {
     { text: 'Party Name', value: 'name' },
     { text: 'Status', value: 'status' }
   ],
-  formatters: (value, _type) => {
-    return value
-  }
+  formatters: (value, _type) => value
 }
 
 export const crudFilter = {
-  FilterVue: () => ({ component: import('./PartyFilter.vue') }),
+  FilterVue: () => ({ component: import('./Filter.vue') }),
   filterData: {
     languages: {
-      type: 'v-select',
+      type: 'select',
       label: 'Languages',
       multiple: false,
       rules: [],
@@ -34,7 +32,7 @@ export const crudFilter = {
       items: [ ]
     },
     active: {
-      type: 'v-select',
+      type: 'select',
       label: 'Active Status',
       multiple: false,
       items: [ 'active', 'inactive' ], // can be async loaded from db?
@@ -58,10 +56,9 @@ export const crudForm = {
 export const crudOps = { // CRUD
   export: async (payload) => {
     const {filterData} = payload // pagination
-    const {selectActive} = filterData
     try {
       let dbCol = firestore.collection('party') // create index
-        .where('status', '==', selectActive)
+        .where('status', '==', filterData.active.value)
       const rv = await dbCol.limit(200).get()
 
       let csvContent = ''

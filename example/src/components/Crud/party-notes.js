@@ -1,6 +1,6 @@
 import {firestore} from '@/firebase'
 import {makeCsvRow, exportCsv} from '@/assets/util'
-import {format, subDays} from 'date-fns'
+import {format, subDays, differenceInCalendarDays} from 'date-fns'
 
 export const crudTable = {
   headers: [
@@ -19,12 +19,47 @@ export const crudTable = {
 
 export const crudFilter = {
   FilterVue: () => ({
-    component: import('./PartyNotesFilter.vue')
+    component: import('./Filter.vue')
   }),
   filterData: {
-    dateStart: format(subDays(new Date(), 20), 'YYYY-MM-DD'),
-    dateEnd: format(new Date(), 'YYYY-MM-DD'),
-    selectX: { text: 'All', value: 'all' }
+    // dateStart: format(subDays(new Date(), 20), 'YYYY-MM-DD'),
+    // dateEnd: format(new Date(), 'YYYY-MM-DD'),
+    // selectX: { text: 'All', value: 'all' },
+    dateStart: {
+      type: 'date',
+      label: 'Date Start',
+      value: format(subDays(new Date(), 20), 'YYYY-MM-DD'),
+      rules: [
+        (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date',
+        (v) => (differenceInCalendarDays(crudFilter.filterData.dateEnd.value, v) <= 60) || 'Select only up to 60 days of records at a time'
+      ]
+    },
+
+    dateEnd: {
+      type: 'date',
+      label: 'Date Start',
+      value: format(new Date(), 'YYYY-MM-DD'),
+      rules: [
+        (v) => (v >= crudFilter.filterData.dateStart.value) || 'End date must be later or same as start date',
+        (v) => (differenceInCalendarDays(v, crudFilter.filterData.dateStart.value) <= 60) || 'Select only up to 60 days of records at a time'
+      ]
+    },
+
+    selectX: {
+      type: 'select-kv',
+      label: 'Active Status',
+      multiple: false,
+      items: [
+        { text: 'All', value: 'all' },
+        { text: 'Pending', value: 'pending' },
+        { text: 'Review', value: 'review' },
+        { text: 'Approved', value: 'approved' },
+        { text: 'Rejected', value: 'rejected' }
+      ],
+      value: { text: 'All', value: 'all' },
+      rules: [v => !!v || 'Item is required']
+    }
+
   }
 }
 
@@ -47,10 +82,10 @@ export const crudOps = { // CRUD
       const {dateStart, dateEnd, selectX} = filterData
       let dbCol = firestore.collection('note')
         .where('party', '==', parentId)
-        .where('datetime', '>=', new Date(dateStart + ' 00:00:00')) // create index
-        .where('datetime', '<=', new Date(dateEnd + ' 23:59:59'))
+        .where('datetime', '>=', new Date(dateStart.value + ' 00:00:00')) // create index
+        .where('datetime', '<=', new Date(dateEnd.value + ' 23:59:59'))
       if (selectX.value !== 'all') {
-        dbCol = dbCol.where('approveStatus', '==', selectX.value)
+        dbCol = dbCol.where('approveStatus', '==', selectX.value.value)
       }
       dbCol = dbCol.orderBy('datetime', 'desc').limit(200)
       const rv = await dbCol.get()
@@ -73,15 +108,15 @@ export const crudOps = { // CRUD
     const {pagination, parentId, filterData} = payload // parentId
     const {dateStart, dateEnd, selectX} = filterData
     const {rowsPerPage, totalItems, sortBy, descending} = pagination
-    console.log(rowsPerPage, totalItems, sortBy, descending)
-    console.log(filterData, selectX, dateStart, dateEnd)
+    console.log('aa', rowsPerPage, totalItems, sortBy, descending)
+    console.log('bb', filterData, selectX, dateStart.value, dateEnd.value)
     try {
       let dbCol = firestore.collection('note')
         .where('party', '==', parentId)
-        .where('datetime', '>=', new Date(dateStart + ' 00:00:00')) // create index
-        .where('datetime', '<=', new Date(dateEnd + ' 23:59:59'))
-      if (selectX.value !== 'all') {
-        dbCol = dbCol.where('approveStatus', '==', selectX.value)
+        .where('datetime', '>=', new Date(dateStart.value + ' 00:00:00')) // create index
+        .where('datetime', '<=', new Date(dateEnd.value + ' 23:59:59'))
+      if (selectX.value.value !== 'all') {
+        dbCol = dbCol.where('approveStatus', '==', selectX.value.value)
       }
       if (sortBy === 'datetime') {
         const order = descending ? 'desc' : 'asc'
