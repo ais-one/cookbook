@@ -9,6 +9,7 @@
  * enhanced filter example (Filter.vue example that auto generate filter fields from filter object)
  * update to vuetify 1.1.7
  * make file loading component
+ *
 
 ### Version 0.0.16
  * now using vue-cli 3 scaffolding for example
