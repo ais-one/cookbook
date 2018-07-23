@@ -36,7 +36,7 @@ export const crudFilter = {
     },
     dateEnd: {
       type: 'date',
-      label: 'Date Start',
+      label: 'Date End',
       value: format(new Date(), 'YYYY-MM-DD'),
       rules: [
         (v) => (v >= crudFilter.filterData.dateStart.value) || 'End date must be later or same as start date',
