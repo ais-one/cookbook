@@ -34,7 +34,6 @@ export const crudFilter = {
         (v) => (differenceInCalendarDays(crudFilter.filterData.dateEnd.value, v) <= 60) || 'Select only up to 60 days of records at a time'
       ]
     },
-
     dateEnd: {
       type: 'date',
       label: 'Date Start',
@@ -44,7 +43,6 @@ export const crudFilter = {
         (v) => (differenceInCalendarDays(v, crudFilter.filterData.dateStart.value) <= 60) || 'Select only up to 60 days of records at a time'
       ]
     },
-
     selectX: {
       type: 'select-kv',
       label: 'Active Status',
@@ -59,7 +57,6 @@ export const crudFilter = {
       value: { text: 'All', value: 'all' },
       rules: [v => !!v || 'Item is required']
     }
-
   }
 }
 

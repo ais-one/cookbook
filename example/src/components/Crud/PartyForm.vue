@@ -1,6 +1,11 @@
 <script>
+import ImageUpload from '../ImageUpload'
+
 export default {
   name: 'party-form',
+  components: {
+    ImageUpload
+  },
   props: ['parentId', 'storeName', 'record'], // static
   data () {
     return {
@@ -34,6 +39,7 @@ export default {
         hint="Languages Spoken"
         persistent-hint
       ></v-select>
+      <image-upload v-if="record.id" ref="upload" :url.sync="record.photo" />
       <v-btn @click.stop.prevent="gotoNote" dark>View My Notes</v-btn>
     </v-card-text>
   </div>

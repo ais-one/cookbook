@@ -10,7 +10,13 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  FilterVue: () => ({ component: import('./Filter.vue') }),
+  FilterVue: () => ({
+    component: import('./Filter.vue')
+    // loading: LoadingComp,
+    // error: ErrorComp,
+    // delay: 200,
+    // timeout: 3000
+  }),
   filterData: {
     languages: {
       type: 'select',
@@ -49,7 +55,8 @@ export const crudForm = {
     name: '',
     status: 'active',
     remarks: '',
-    languages: []
+    languages: [],
+    photo: ''
   }
 }
 
