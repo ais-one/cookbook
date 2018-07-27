@@ -15,8 +15,6 @@
 </template>
 
 <script>
-// TBD better bucket name, save image immediately?
-
 // https://academind.com/learn/vue-js/snippets/image-upload/
 // store file on firebase - https://www.youtube.com/watch?v=qZ1EFnFOGvE
 // import axios from 'axios'
@@ -29,11 +27,11 @@ export default {
     path: { type: String, default: '' }, // e.g. "mystore/"
     filename: { type: String, default: '' }, // if empty, use uploaded filename
 
-    collection: { type: String, required: true },
+    collection: { type: String, required: true }, // for firestore update
     id: { type: String, required: true },
     field: { type: String, required: true },
 
-    removeOld: { type: Boolean, default: true }
+    removeOld: { type: Boolean, default: true } // remove existing record
   },
   data () {
     return {
