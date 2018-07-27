@@ -1,11 +1,12 @@
 <template>
   <div>
     <input type="file" @change="onFileChanged" style="display:none;" ref="fileInput" accept="image/*">
-    <v-btn raised @click="$refs.fileInput.click()">Pick File {{ url }}</v-btn>
+    <v-btn raised @click="$refs.fileInput.click()">Pick File</v-btn>
     <v-btn @click="onUpload" :disabled="disableUploadBtn">Upload!</v-btn>
-    <v-avatar v-if="imageUrl">
-      <img :src="imageUrl" alt="No Image Loaded">
+    <v-avatar v-if="imageSrc||imageUrl">
+      <img :src="imageSrc || imageUrl" alt="No Image Loaded">
     </v-avatar>
+    <v-btn v-if="imageUrl" :href="`${imageUrl}`" target="_blank">{{ storageRef }}</v-btn>
     <v-snackbar v-model="snackbar">
       {{ snackbarText }}
       <v-btn fab flat @click="snackbar=false"><v-icon >close</v-icon></v-btn>
@@ -22,22 +23,34 @@
 import * as firebase from '@/firebase'
 export default {
   props: {
-    url: { type: String, default: '' } // sync
+    storageRef: { type: String, default: '' }, // sync
+
+    bucket: { type: String, required: true }, // viewing URL
+    path: { type: String, default: '' }, // e.g. "mystore/"
+    filename: { type: String, default: '' }, // if empty, use uploaded filename
+
+    collection: { type: String, required: true },
+    id: { type: String, required: true },
+    field: { type: String, required: true },
+
+    removeOld: { type: Boolean, default: true }
   },
   data () {
     return {
       disableUploadBtn: false,
       selectedFile: null,
+
       imageUrl: '',
+
+      imageSrc: '',
       image: null,
+
       snackbar: false,
-      snackbarText: '',
-      bucket: 'http://storage.googleapis.com/mybot-live.appspot.com'
+      snackbarText: ''
     }
   },
   mounted () {
-    console.log(this.url, this.bucket)
-    if (this.url) this.imageUrl = this.bucket + this.url
+    if (this.storageRef) this.imageUrl = this.bucket + this.storageRef
   },
   methods: {
     setSnackBar (text) {
@@ -47,14 +60,16 @@ export default {
     onFileChanged (event) {
       // this.selectedFile = event.target.files[0]
       const files = event.target.files
-      let filename = files[0].name
-      if (filename.lastIndexOf('.') <= 0) {
+      if (!files.length) return
+
+      let tmpFilename = files[0].name
+      if (tmpFilename.lastIndexOf('.') <= 0) {
         return this.setSnackBar('Please add a valid file')
       }
       const fileReader = new FileReader()
       fileReader.addEventListener('load', () => {
-        this.imageUrl = fileReader.result
-        // console.log('addEventListener', this.imageUrl)
+        this.imageSrc = fileReader.result
+        // console.log('addEventListener', this.imageSrc)
       })
       fileReader.readAsDataURL(files[0])
       this.image = files[0] // base64
@@ -66,17 +81,48 @@ export default {
         this.disableUploadBtn = false
         return this.setSnackBar('Error onUpload')
       }
-      const filename = this.image.name
-      const ext = filename.slice(filename.lastIndexOf('.'))
-      if (ext !== 'jpg') { // limit mime/type
-        return this.setSnackBar('Only JPG allowed')
+      const tmpFilename = this.image.name
+      const ext = tmpFilename.slice(tmpFilename.lastIndexOf('.')).toLowerCase()
+      if (ext !== '.jpg' && ext !== '.png') { // limit mime/type or use this.image.type to filter
+        this.disableUploadBtn = false
+        return this.setSnackBar('Only JPG / PNG files allowed')
       }
-      // TBD limit file size
-      this.setSnackBar(`Uploading ${filename}`)
+
+      const maxSize = 10000000
+      // const maxSize = 1
+      if (this.image.size > maxSize) {
+        this.disableUploadBtn = false
+        return this.setSnackBar('Only 10MB allowed')
+      }
+
+      console.log('aaa', this.removeOld, this.storageRef)
+      if (this.removeOld && this.storageRef) {
+        console.log('bbb')
+        this.setSnackBar(`Removing Old`)
+        try {
+          await firebase.storage.ref(this.storageRef).delete()
+          await firebase.firestore.doc(this.collection + '/' + this.id).update({ [this.field]: '' })
+        } catch (e) {
+          this.disableUploadBtn = false
+          return this.setSnackBar('Remove old image fail')
+        }
+        this.setSnackBar(`Removing Done`)
+      }
+
+      this.setSnackBar(`Uploading`)
       try {
-        let rv = await firebase.storage.ref('mystore/' + filename).put(this.image)
-        const theUrl = `/mystore/${filename}` // bucket name
-        this.$emit('update:url', theUrl)
+        let ref = this.path
+        if (!this.filename) ref += tmpFilename
+        else ref += this.filename
+
+        let rv = await firebase.storage.ref(ref).put(this.image)
+        const theUrl = `/${ref}` // bucket name
+
+        await firebase.firestore.doc(this.collection + '/' + this.id).update({ [this.field]: theUrl })
+
+        this.$emit('update:storageRef', theUrl)
+        this.imageUrl = this.bucket + theUrl
+
         this.setSnackBar(rv.metadata.downloadURLs[0])
       } catch (e) {
         this.setSnackBar('Error Saving Upload')
