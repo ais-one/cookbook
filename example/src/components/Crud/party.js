@@ -6,15 +6,45 @@ export const crudTable = {
     { text: 'Party Name', value: 'name' },
     { text: 'Status', value: 'status' }
   ],
-  formatters: (value, _type) => {
-    return value
-  }
+  formatters: (value, _type) => value
 }
 
 export const crudFilter = {
-  FilterVue: () => ({ component: import('./PartyFilter.vue') }),
+  FilterVue: () => ({
+    component: import('./Filter.vue')
+    // loading: LoadingComp,
+    // error: ErrorComp,
+    // delay: 200,
+    // timeout: 3000
+  }),
   filterData: {
-    selectActive: 'active'
+    languages: {
+      type: 'select',
+      label: 'Languages',
+      multiple: false,
+      rules: [],
+      value: '',
+      itemsFn: async () => {
+        let records = []
+        try {
+          const rv = await firestore.collection('languages').limit(200).get() // create index
+          rv.forEach(record => {
+            let tmp = record.data()
+            records.push(tmp.name)
+          })
+        } catch (e) { }
+        return records
+      },
+      items: [ ]
+    },
+    active: {
+      type: 'select',
+      label: 'Active Status',
+      multiple: false,
+      items: [ 'active', 'inactive' ], // can be async loaded from db?
+      value: 'active',
+      rules: [v => !!v || 'Item is required']
+    }
   }
 }
 
@@ -25,17 +55,17 @@ export const crudForm = {
     name: '',
     status: 'active',
     remarks: '',
-    languages: []
+    languages: [],
+    photo: ''
   }
 }
 
 export const crudOps = { // CRUD
   export: async (payload) => {
     const {filterData} = payload // pagination
-    const {selectActive} = filterData
     try {
       let dbCol = firestore.collection('party') // create index
-        .where('status', '==', selectActive)
+        .where('status', '==', filterData.active.value)
       const rv = await dbCol.limit(200).get()
 
       let csvContent = ''
@@ -50,11 +80,9 @@ export const crudOps = { // CRUD
   find: async (payload) => {
     let records = []
     const {pagination, filterData} = payload
-    const {selectActive} = filterData
     try {
-      console.log('find find', filterData)
       let dbCol = firestore.collection('party') // create index
-        .where('status', '==', selectActive)
+        .where('status', '==', filterData.active.value)
       const rv = await dbCol.limit(200).get()
       rv.forEach(record => {
         let tmp = record.data()

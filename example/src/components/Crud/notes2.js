@@ -1,5 +1,5 @@
 import {firestore} from '@/firebase'
-import {format, subDays} from 'date-fns'
+import {format} from 'date-fns'
 
 export const crudTable = {
   headers: [
@@ -17,12 +17,26 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  FilterVue: () => ({ component: import('./NotesFilter2.vue') }),
+  FilterVue: () => ({
+    component: import('./Filter.vue')
+  }),
   filterData: {
-    dateStart: format(subDays(new Date(), 45), 'YYYY-MM-DD'),
-    dateEnd: format(new Date(), 'YYYY-MM-DD'),
-    selectX: { text: 'Review', value: 'review' }
+    selectX: {
+      type: 'select-kv',
+      label: 'Active Status',
+      multiple: false,
+      items: [
+        { text: 'All', value: 'all' },
+        { text: 'Pending', value: 'pending' },
+        { text: 'Review', value: 'review' },
+        { text: 'Approved', value: 'approved' },
+        { text: 'Rejected', value: 'rejected' }
+      ],
+      value: { text: 'All', value: 'all' },
+      rules: [v => !!v || 'Item is required']
+    }
   }
+
 }
 
 export const crudForm = {
@@ -49,8 +63,8 @@ export const crudOps = { // CRUD
     const {selectX} = filterData
     try {
       let dbCol = firestore.collection('note')
-      if (selectX.value !== 'all') {
-        dbCol = dbCol.where('approveStatus', '==', selectX.value)
+      if (selectX.value.value !== 'all') {
+        dbCol = dbCol.where('approveStatus', '==', selectX.value.value)
       }
       dbCol = dbCol.orderBy('datetime', 'desc').limit(200)
       const rv = await dbCol.get()

@@ -155,7 +155,9 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - https://vuex.vuejs.org
 
 
-### Hosting To At GCP Storage
+### Firebase
+
+#### Hosting To Firebase
 
 https://firebase.google.com/docs/hosting/quickstart
 
@@ -164,15 +166,40 @@ firebase login (first time)
 cd to project folder
 firebase init (first time)
 add files
-firebase deploy
+firebase deploy --only hosting
 firebase logout
 
 
+#### Storage Rules
 
+```
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read;
+      allow write: if request.auth != null;
+    }
+  }
+}
+```
 
+#### Firestore NoSQL Rules & Indexes
 
+```
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      // allow read, write;
+      allow read, write: if request.auth.uid != null;
+    }
+  }
+}
+```
 
-
+- note: party ASC datetime ASC
+- note: approveStatus ASC datetime DESC
+- note approveStatus ASC datetime ASC
+- note datetime DESC approveStatus ASC
 
 
 
