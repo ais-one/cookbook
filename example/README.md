@@ -189,7 +189,8 @@ service firebase.storage {
 service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
-      allow read, write;
+      // allow read, write;
+      allow read, write: if request.auth.uid != null;
     }
   }
 }
