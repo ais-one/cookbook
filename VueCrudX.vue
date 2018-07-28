@@ -111,7 +111,6 @@ export default {
     }
   },
   created () {
-    // console.log('CRUD component created', this)
     if (!this.$t || !this.$i18n) this.$t = null // if i18n is not found
     const store = this.$store
     const name = this.storeName
@@ -120,9 +119,7 @@ export default {
       store.state[name].defaultRec = this.crudForm.defaultRec
       store.state[name].filterData = this.crudFilter.filterData
       store.state[name].crudOps = this.crudOps
-      // console.log(`register module: ${name}`)
     } else { // re-use the already existing module
-      // console.log(`reusing module: ${name}`)
     }
     this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
     this.headers = this.crudTable.headers
@@ -144,7 +141,7 @@ export default {
       // filter
       validFilter: true,
       // data-table
-      loading: true,
+      loading: false,
       headers: { } // pass in
     }
   },
@@ -201,13 +198,17 @@ export default {
       this.setRecord()
     },
     async addEditDialogOpen (id) {
+      this.loading = true
       if (id) await this.getRecord({id}) // edit
       else this.setRecord() // add
+      this.loading = false
       this.addEditDialogFlag = true
     },
     async addEditDialogSave (e) {
+      this.loading = true
       if (this.record.id) await this.updateRecord({record: this.record})
       else await this.createRecord({record: this.record, parentId: this.parentId})
+      this.loading = false
       await this.getRecordsHelper()
       this.closeAddEditDialog()
     },
@@ -316,6 +317,7 @@ export default {
             <v-toolbar-items></v-toolbar-items>
             <!-- v-btn icon @click.native="closeAddEditDialog" dark><v-icon>close</v-icon></v-btn -->
           </v-toolbar>
+          <v-progress-linear :indeterminate="loading" height="2"></v-progress-linear>
           <v-form class="grey lighten-3 pa-2" v-model="validForm" lazy-validation>
             <crud-form :record="record" :parentId="parentId" :storeName="storeName" />
             <v-card-actions>
