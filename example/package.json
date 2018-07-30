@@ -1,19 +1,20 @@
 {
   "name": "example",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "An example for vue-crud-x component usage",
   "author": "Aaron Gong <aaronjxz@gmail.com>",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "deploy": "firebase deploy --only hosting",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@firebase/firestore": "^0.3.7",
-    "@firebase/storage": "^0.1.8",
+    "@firebase/firestore": "^0.6.0",
+    "@firebase/storage": "^0.2.3",
     "date-fns": "^1.29.0",
-    "firebase": "^4.12.1",
+    "firebase": "^5.3.0",
     "vue": "^2.5.13",
     "vue-crud-x": "0.0.17",
     "vue-i18n": "^7.6.0",

@@ -5,6 +5,10 @@
  * improve input rules
  * check if it is better to use Vuetify i18n
 
+### Version 0.0.18
+ * update firebase packages
+ * set vue-crud-x dependency tag to latest in example folder package.json
+
 ### Version 0.0.17
  * add progress indicator (thin line to upper part) to all async operations
  * use type="date" instead of datepicker, reduce code

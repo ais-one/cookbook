@@ -48,6 +48,8 @@ export const crudFilter = {
   }
 }
 
+// how to settle this.$t here?
+
 export const crudForm = {
   FormVue: () => ({ component: import('./PartyForm.vue') }),
   defaultRec: {
