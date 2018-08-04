@@ -93,10 +93,8 @@ export default {
         return this.setSnackBar('Only 10MB allowed')
       }
 
-      console.log('aaa', this.removeOld, this.storageRef)
       if (this.removeOld && this.storageRef) {
-        console.log('bbb')
-        this.setSnackBar(`Removing Old`)
+        this.setSnackBar(`Removing Old Image`)
         try {
           await firebase.storage.ref(this.storageRef).delete()
           await firebase.firestore.doc(this.collection + '/' + this.id).update({ [this.field]: '' })

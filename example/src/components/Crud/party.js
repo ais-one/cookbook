@@ -1,5 +1,11 @@
 import {firestore, hasDuplicate} from '@/firebase'
 import {makeCsvRow, exportCsv} from '@/assets/util'
+import {app} from '@/main' // to use store, router, i18n, etc...
+import i18n from '@/lang' // to use store, router, i18n, etc...
+
+console.log(app, i18n, i18n.messages[i18n.locale])
+
+export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
   headers: [
@@ -20,7 +26,7 @@ export const crudFilter = {
   filterData: {
     languages: {
       type: 'select',
-      label: 'Languages',
+      label: i18n.messages[i18n.locale].myApp.languages, // 'Languages',
       multiple: false,
       rules: [],
       value: '',
@@ -47,8 +53,6 @@ export const crudFilter = {
     }
   }
 }
-
-// how to settle this.$t here?
 
 export const crudForm = {
   FormVue: () => ({ component: import('./PartyForm.vue') }),
@@ -109,12 +113,14 @@ export const crudOps = { // CRUD
   },
   create: async (payload) => {
     const {record: {id, ...noIdData}} = payload
-    if (await hasDuplicate('party', 'name', noIdData['name'])) return alert('Duplicate name Found')
-    try { await firestore.collection('party').add(noIdData) } catch (e) { }
+    if (await hasDuplicate('party', 'name', noIdData['name'])) return 'Duplicate Found'
+    try { await firestore.collection('party').add(noIdData) } catch (e) { return 'Create Error' }
+    return 'Create OK'
   },
   update: async (payload) => {
     let {record: {id, ...noIdData}} = payload
-    if (await hasDuplicate('party', 'name', noIdData['name'], id)) return alert('Duplicate name Found')
-    try { await firestore.doc('party/' + id).update(noIdData) } catch (e) { }
+    if (await hasDuplicate('party', 'name', noIdData['name'], id)) return 'Duplicate Found'
+    try { await firestore.doc('party/' + id).update(noIdData) } catch (e) { return 'Update Error' }
+    return 'Update OK'
   }
 }

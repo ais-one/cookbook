@@ -10,6 +10,9 @@ const messages = {
       noData: 'No Data',
       confirm: 'Confirm',
       itemRequired: 'Item is required'
+    },
+    myApp: {
+      languages: 'Languages'
     }
   },
   id: {
@@ -17,6 +20,9 @@ const messages = {
       noData: 'Tidak Ada Data',
       confirm: 'memastikan',
       itemRequired: 'Item wajib diisi'
+    },
+    myApp: {
+      languages: 'Bahasa'
     }
   }
 }

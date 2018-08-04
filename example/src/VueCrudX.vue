@@ -46,7 +46,8 @@ const CrudStore = {
     },
     async deleteRecord ({commit, getters}, payload) {
       payload.user = this.getters.user
-      await getters.crudOps.delete(payload)
+      let res = await getters.crudOps.delete(payload)
+      return res
     },
     async getRecord ({commit, getters}, payload) {
       payload.user = this.getters.user
@@ -68,46 +69,44 @@ const CrudStore = {
     },
     async updateRecord ({commit, getters}, payload) {
       payload.user = this.getters.user
-      await getters.crudOps.update(payload)
+      let res = await getters.crudOps.update(payload)
+      return res
     },
     async createRecord ({commit, getters, dispatch}, payload) {
       payload.user = this.getters.user
-      await getters.crudOps.create(payload)
+      let res = await getters.crudOps.create(payload)
+      return res
     }
   }
 }
 export default {
   props: {
     parentId: {
-      type: String,
-      default: null
+      type: String, default: null
     },
     storeName: {
-      type: String,
-      required: true
+      type: String, required: true
     },
     crudFilter: {
-      type: Object,
-      required: true
+      type: Object, required: true
     },
     crudTable: {
-      type: Object,
-      required: true
+      type: Object, required: true
     },
     crudForm: {
-      type: Object,
-      required: true
+      type: Object, required: true
     },
     crudOps: {
-      type: Object,
-      required: true
+      type: Object, required: true
     },
     crudTitle: {
       type: String
     },
     doPage: {
-      type: Boolean,
-      default: true
+      type: Boolean, default: true
+    },
+    crudSnackBar: {
+      type: Object, defult: null
     }
   },
   created () {
@@ -142,7 +141,10 @@ export default {
       validFilter: true,
       // data-table
       loading: false,
-      headers: { } // pass in
+      headers: { }, // pass in
+      // snackbar
+      snackbar: false,
+      snackbarText: ''
     }
   },
   computed: {
@@ -185,11 +187,26 @@ export default {
     }
   },
   methods: {
+    setSnackBar (text) {
+      if (this.crudSnackBar) {
+        this.snackbar = true
+        this.snackbarText = text
+      }
+    },
     async getRecords (payload) { await this.$store.dispatch(this.storeName + '/getRecords', payload) },
     setPagination (payload) { this.$store.dispatch(this.storeName + '/setPagination', payload) },
-    async deleteRecord (payload) { await this.$store.dispatch(this.storeName + '/deleteRecord', payload) },
-    async updateRecord (payload) { await this.$store.dispatch(this.storeName + '/updateRecord', payload) },
-    async createRecord (payload) { await this.$store.dispatch(this.storeName + '/createRecord', payload) },
+    async deleteRecord (payload) {
+      let res = await this.$store.dispatch(this.storeName + '/deleteRecord', payload)
+      return res
+    },
+    async updateRecord (payload) {
+      let res = await this.$store.dispatch(this.storeName + '/updateRecord', payload)
+      return res
+    },
+    async createRecord (payload) {
+      let res = await this.$store.dispatch(this.storeName + '/createRecord', payload)
+      return res
+    },
     async getRecord (payload) { await this.$store.dispatch(this.storeName + '/getRecord', payload) },
     setRecord (payload) { this.$store.commit(this.storeName + '/setRecord', null) },
     async exportRecords (payload) { await this.$store.dispatch(this.storeName + '/exportRecords', payload) },
@@ -205,10 +222,13 @@ export default {
       this.addEditDialogFlag = true
     },
     async addEditDialogSave (e) {
+      let res = ''
       this.loading = true
-      if (this.record.id) await this.updateRecord({record: this.record})
-      else await this.createRecord({record: this.record, parentId: this.parentId})
+      if (this.record.id) res = await this.updateRecord({record: this.record})
+      else res = await this.createRecord({record: this.record, parentId: this.parentId})
+      if (res) this.setSnackBar(res)
       this.loading = false
+
       await this.getRecordsHelper()
       this.closeAddEditDialog()
     },
@@ -219,8 +239,15 @@ export default {
     async dialogConfirm (e) { // only for delete for now
       const {id} = this.record
       if (id) {
-        await this.deleteRecord({id})
+        let res = ''
+        this.loading = true
+
+        res = await this.deleteRecord({id})
+        if (res) this.setSnackBar(res)
+
         await this.getRecordsHelper()
+
+        this.loading = false
       }
       this.setRecord()
       this.confirmDialogFlag = false
@@ -338,6 +365,11 @@ export default {
         <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
       </v-btn>
     </v-layout>
+
+    <v-snackbar v-if="crudSnackBar" v-model="snackbar" v-bind="crudSnackBar">
+      {{ snackbarText }}
+      <v-btn fab flat @click="snackbar=false"><v-icon >close</v-icon></v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 

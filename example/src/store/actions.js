@@ -34,7 +34,7 @@ export default {
     let user = null
     try {
       user = await firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-      console.log('signUserIn', user)
+      // console.log('signUserIn', user)
       dispatch('autoSignIn', user)
     } catch (e) { }
     if (!user) {

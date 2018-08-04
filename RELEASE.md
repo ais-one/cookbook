@@ -1,13 +1,7 @@
-### TBD Roadmap
- * map and table combined component
- * charts
- * add failure snackbars
- * improve input rules
- * check if it is better to use Vuetify i18n
-
 ### Version 0.0.18
- * update firebase packages
+ * update firebase packages & vuetify to 1.1.9
  * set vue-crud-x dependency tag to latest in example folder package.json
+ * add snackbar (optional)
 
 ### Version 0.0.17
  * add progress indicator (thin line to upper part) to all async operations
