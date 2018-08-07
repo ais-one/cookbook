@@ -118,7 +118,10 @@ Important! Please Refer to the Getting Started Article For Details: [https://med
  * add casl-vue, for casl authorization library
  * Google Map and CRUD combined component (can also be layout for other use cases such as chart mixed with CRUD)
  * Take note of the following github issues
-   * Fixed Table Header: https://github.com/vuetifyjs/vuetify/issues/1547, https://github.com/vuetifyjs/vuetify/pull/2868
+   * Fixed Table Header:
+     * https://github.com/vuetifyjs/vuetify/issues/1547
+     * https://github.com/vuetifyjs/vuetify/pull/2868
+     * https://github.com/vuetifyjs/vuetify/pull/3833
    * Infinite Scroll:  https://github.com/vuetifyjs/vuetify/issues/3538
  * Look into abort/timeout for async operations without abort/timeout feature
  * Check if it is possible to make compatible with NuxtJS (route-link, to, nuxt-link)

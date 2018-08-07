@@ -50,6 +50,7 @@ export default {
         field="photo"
         :remove-old="true"
       />
+      <v-text-field label="Created" v-model="record.created" readonly></v-text-field>
       <v-btn @click.stop.prevent="gotoNote" dark>View My Notes</v-btn>
     </v-card-text>
   </div>

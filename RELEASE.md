@@ -2,6 +2,9 @@
  * update firebase packages & vuetify to 1.1.9
  * set vue-crud-x dependency tag to latest in example folder package.json
  * add snackbar (optional)
+ * dynamic initial values (e.g. timestamp), see defaultRec implemented as function (no breaking change as you can still use defaultRec as object)
+ * confimation options for create / delete / update
+ * add inline-edit mode (use with care)
 
 ### Version 0.0.17
  * add progress indicator (thin line to upper part) to all async operations
