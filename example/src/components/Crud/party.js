@@ -7,9 +7,13 @@ import i18n from '@/lang' // to use store, router, i18n, etc...
 console.log(app, i18n, i18n.messages[i18n.locale])
 
 // set snackbar props in object to customize, or set as null to disable snackbar
-// export const crudSnackBar = { top: true, timeout: 6000 }
+export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
+  inline: null,
+  confirmCreate: true,
+  confirmUpdate: true,
+  confirmDelete: true,
   headers: [
     { text: 'Party Name', value: 'name' },
     { text: 'Status', value: 'status' }
@@ -28,7 +32,7 @@ export const crudFilter = {
   filterData: {
     languages: {
       type: 'select',
-      label: i18n.messages[i18n.locale].myApp.languages, // 'Languages',
+      label: i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
       multiple: false,
       rules: [],
       value: '',

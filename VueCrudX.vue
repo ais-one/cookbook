@@ -34,7 +34,7 @@ const CrudStore = {
       state.totalRecs = payload.totalRecs
     },
     setRecord (state, payload) {
-      if (payload === null) state.record = _cloneDeep(state.defaultRec)
+      if (payload === null) state.record = (typeof state.defaultRec === 'function') ? state.defaultRec() : _cloneDeep(state.defaultRec)
       else state.record = _cloneDeep(payload)
     },
     setPagination (state, payload) { state.pagination = payload },
@@ -46,11 +46,11 @@ const CrudStore = {
     },
     async deleteRecord ({commit, getters}, payload) {
       payload.user = this.getters.user
-      await getters.crudOps.delete(payload)
+      let res = await getters.crudOps.delete(payload)
+      return res
     },
     async getRecord ({commit, getters}, payload) {
       payload.user = this.getters.user
-      // console.log('getRecord', this)
       let record = await getters.crudOps.findOne(payload)
       commit('setRecord', record)
     },
@@ -68,47 +68,27 @@ const CrudStore = {
     },
     async updateRecord ({commit, getters}, payload) {
       payload.user = this.getters.user
-      await getters.crudOps.update(payload)
+      let res = await getters.crudOps.update(payload)
+      return res
     },
     async createRecord ({commit, getters, dispatch}, payload) {
       payload.user = this.getters.user
-      await getters.crudOps.create(payload)
+      let res = await getters.crudOps.create(payload)
+      return res
     }
   }
 }
 export default {
   props: {
-    parentId: {
-      type: String,
-      default: null
-    },
-    storeName: {
-      type: String,
-      required: true
-    },
-    crudFilter: {
-      type: Object,
-      required: true
-    },
-    crudTable: {
-      type: Object,
-      required: true
-    },
-    crudForm: {
-      type: Object,
-      required: true
-    },
-    crudOps: {
-      type: Object,
-      required: true
-    },
-    crudTitle: {
-      type: String
-    },
-    doPage: {
-      type: Boolean,
-      default: true
-    }
+    parentId: { type: String, default: null },
+    storeName: { type: String, required: true },
+    crudFilter: { type: Object, required: true },
+    crudTable: { type: Object, required: true },
+    crudForm: { type: Object, required: true },
+    crudOps: { type: Object, required: true },
+    crudTitle: { type: String },
+    doPage: { type: Boolean, default: true },
+    crudSnackBar: { type: Object, default: () => ({ bottom: true, timeout: 6000 }) }
   },
   created () {
     if (!this.$t || !this.$i18n) this.$t = null // if i18n is not found
@@ -122,7 +102,11 @@ export default {
     } else { // re-use the already existing module
     }
     this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
-    this.headers = this.crudTable.headers
+    this.headers = this.crudTable.headers || { }
+    this.inline = this.crudTable.inline || false
+    this.confirmCreate = this.crudTable.confirmCreate || false
+    this.confirmUpdate = this.crudTable.confirmUpdate || false
+    this.confirmDelete = this.crudTable.confirmDelete || false
     this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     this.$options.components['crud-form'] = this.crudForm.FormVue
     if (this.record.id && !this.parentId) { // nested CRUD
@@ -136,13 +120,21 @@ export default {
     return {
       // form
       addEditDialogFlag: false,
-      confirmDialogFlag: false,
+      // TOREMOVE
+      // confirmDialogFlag: false,
       validForm: true,
       // filter
       validFilter: true,
       // data-table
       loading: false,
-      headers: { } // pass in
+      headers: { }, // pass in
+      inline: false, // inline editing
+      confirmCreate: false, // confirmation required flags
+      confirmUpdate: false,
+      confirmDelete: true,
+      // snackbar
+      snackbar: false,
+      snackbarText: ''
     }
   },
   computed: {
@@ -185,49 +177,85 @@ export default {
     }
   },
   methods: {
+    setSnackBar (text) {
+      if (this.crudSnackBar) {
+        this.snackbar = true
+        this.snackbarText = text
+      }
+    },
     async getRecords (payload) { await this.$store.dispatch(this.storeName + '/getRecords', payload) },
     setPagination (payload) { this.$store.dispatch(this.storeName + '/setPagination', payload) },
-    async deleteRecord (payload) { await this.$store.dispatch(this.storeName + '/deleteRecord', payload) },
-    async updateRecord (payload) { await this.$store.dispatch(this.storeName + '/updateRecord', payload) },
-    async createRecord (payload) { await this.$store.dispatch(this.storeName + '/createRecord', payload) },
-    async getRecord (payload) { await this.$store.dispatch(this.storeName + '/getRecord', payload) },
+    async deleteRecord (payload) {
+      this.loading = true
+      let res = await this.$store.dispatch(this.storeName + '/deleteRecord', payload)
+      if (res) this.setSnackBar(res)
+      this.loading = false
+    },
+    async updateRecord (payload) {
+      this.loading = true
+      let res = await this.$store.dispatch(this.storeName + '/updateRecord', payload)
+      if (res) this.setSnackBar(res)
+      this.loading = false
+    },
+    async createRecord (payload) {
+      this.loading = true
+      let res = await this.$store.dispatch(this.storeName + '/createRecord', payload)
+      if (res) this.setSnackBar(res)
+      this.loading = false
+    },
+    async getRecord (payload) {
+      this.loading = true
+      await this.$store.dispatch(this.storeName + '/getRecord', payload)
+      this.loading = false
+    },
     setRecord (payload) { this.$store.commit(this.storeName + '/setRecord', null) },
     async exportRecords (payload) { await this.$store.dispatch(this.storeName + '/exportRecords', payload) },
     closeAddEditDialog () {
       this.addEditDialogFlag = false
-      this.setRecord()
+      // TOREMOVE this.setRecord() // no need this right?
     },
     async addEditDialogOpen (id) {
-      this.loading = true
       if (id) await this.getRecord({id}) // edit
       else this.setRecord() // add
-      this.loading = false
       this.addEditDialogFlag = true
     },
     async addEditDialogSave (e) {
-      this.loading = true
+      if (this.record.id && this.confirmCreate) if (!confirm(this.$t ? this.$t('vueCrudX.confirm') : 'PROCEED?')) return
+      if (!this.record.id && this.confirmUpdate) if (!confirm(this.$t ? this.$t('vueCrudX.confirm') : 'PROCEED?')) return
+
       if (this.record.id) await this.updateRecord({record: this.record})
       else await this.createRecord({record: this.record, parentId: this.parentId})
-      this.loading = false
       await this.getRecordsHelper()
       this.closeAddEditDialog()
     },
-    addEditDialogDelete (e) {
-      this.confirmDialogFlag = true
-      this.addEditDialogFlag = false
-    },
-    async dialogConfirm (e) { // only for delete for now
+    async addEditDialogDelete (e) {
+      if (this.confirmDelete) if (!confirm(this.$t ? this.$t('vueCrudX.confirm') : 'PROCEED?')) return
       const {id} = this.record
       if (id) {
         await this.deleteRecord({id})
         await this.getRecordsHelper()
       }
-      this.setRecord()
-      this.confirmDialogFlag = false
+      // TOREMOVE
+      // this.setRecord()
+      this.closeAddEditDialog()
+
+      // TOREMOVE
+      // this.confirmDialogFlag = true
+      // this.addEditDialogFlag = false
     },
-    dialogAbort (e) {
-      this.confirmDialogFlag = false
-    },
+    // TOREMOVE
+    // async dialogConfirm (e) { // only for delete for now
+    //   const {id} = this.record
+    //   if (id) {
+    //     await this.deleteRecord({id})
+    //     await this.getRecordsHelper()
+    //   }
+    //   this.setRecord()
+    //   this.confirmDialogFlag = false
+    // },
+    // dialogAbort (e) {
+    //   this.confirmDialogFlag = false
+    // },
     async getRecordsHelper () {
       this.loading = true
       await this.getRecords({
@@ -254,6 +282,21 @@ export default {
     // },
     goBack () {
       this.$router.back()
+    },
+    // inline
+    async inlineSave (item) { // set snackback
+      await this.updateRecord({record: item})
+    },
+    inlineCancel () { },
+    inlineOpen () { },
+    inlineClose () { },
+    async inlineAdd () {
+      await this.createRecord({record: (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : this.crudForm.defaultRec, parentId: this.parentId})
+      this.$nextTick(async function () { await this.getRecordsHelper() })
+    },
+    async inlineDel (id) {
+      await this.deleteRecord({id})
+      this.$nextTick(async function () { await this.getRecordsHelper() })
     }
   }
 }
@@ -284,10 +327,31 @@ export default {
     >
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => addEditDialogOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
-        <tr ref="props.item" @click.stop="addEditDialogOpen(props.item.id)">
+        <tr v-if="!inline" @click.stop="addEditDialogOpen(props.item.id)">
           <td :key="header.value" v-for="header in headers">{{ props.item[header.value] | formatters(header.value) }}</td>
         </tr>
-        <!-- v-edit-dialog : Currently No Inline Editing -->
+        <tr v-else>
+          <td :key="header.value" v-for="header in headers">
+            <v-edit-dialog v-if="inline[header.value]"
+              :return-value.sync="props.item[header.value]"
+              large
+              lazy
+              persistent
+              @save="inlineSave(props.item)"
+              @cancel="inlineCancel"
+              @open="inlineOpen"
+              @close="inlineClose"
+            >
+              <div>{{ props.item[header.value] }}</div>
+              <div slot="input" class="mt-3 title">Update Field</div>
+              <v-text-field slot="input" v-model="props.item[header.value]" label="Edit" :type="inline[header.value]" single-line counter autofocus></v-text-field>
+            </v-edit-dialog>
+            <span v-else>{{ props.item[header.value] }}</span>
+          </td>
+          <td>
+            <v-btn v-if="crudOps.delete" @click.native="inlineDel(props.item.id)"><v-icon>delete</v-icon></v-btn>
+          </td>
+        </tr>
       </template>
       <template slot="no-data">
         <v-flex class="text-xs-center">
@@ -297,7 +361,8 @@ export default {
     </v-data-table>
 
     <v-layout row justify-center>
-      <v-dialog v-model="confirmDialogFlag" persistent max-width="290">
+      <!-- TOREMOVE -->
+      <!-- <v-dialog v-model="confirmDialogFlag" persistent max-width="290">
         <v-card>
           <v-card-title class="headline"><v-flex class="text-xs-center"> {{$t?$t('vueCrudX.confirm'):'PROCEED?'}}</v-flex></v-card-title>
           <v-card-actions>
@@ -307,7 +372,7 @@ export default {
             </v-flex>
           </v-card-actions>
         </v-card>
-      </v-dialog>
+      </v-dialog> -->
 
       <v-dialog v-model="addEditDialogFlag" fullscreen transition="dialog-bottom-transition" :overlay="false">
         <v-card>
@@ -323,8 +388,8 @@ export default {
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn fab @click.native="closeAddEditDialog" dark><v-icon>reply</v-icon></v-btn>
-              <v-btn fab v-if="record.id && this.crudOps.delete" dark @click.native="addEditDialogDelete"><v-icon>delete</v-icon></v-btn>
-              <v-btn fab v-if="(record.id && this.crudOps.update) || (!record.id && this.crudOps.create)" :disabled="!validForm" @click.native="addEditDialogSave"><v-icon>done_all</v-icon></v-btn>
+              <v-btn fab v-if="record.id && crudOps.delete" dark @click.native="addEditDialogDelete"><v-icon>delete</v-icon></v-btn>
+              <v-btn fab v-if="(record.id && crudOps.update) || (!record.id && crudOps.create)" :disabled="!validForm" @click.native="addEditDialogSave"><v-icon>done_all</v-icon></v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -332,12 +397,18 @@ export default {
     </v-layout>
 
     <v-layout row justify-end>
-      <v-btn v-if="this.parentId" fab top dark @click.stop="goBack"><v-icon>reply</v-icon></v-btn>
-      <v-btn v-if="this.crudOps.create" fab top dark @click.stop="addEditDialogOpen(null)"><v-icon>add</v-icon></v-btn>
-      <v-btn v-if="this.crudOps.export" fab top dark @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
+      <v-btn v-if="parentId" fab top dark @click.stop="goBack"><v-icon>reply</v-icon></v-btn>
+      <v-btn v-if="crudOps.create && inline" fab top dark @click.stop="inlineAdd()" :disabled="loading"><v-icon>add</v-icon></v-btn>
+      <v-btn v-if="crudOps.create && !inline" fab top dark @click.stop="addEditDialogOpen(null)"><v-icon>add</v-icon></v-btn>
+      <v-btn v-if="crudOps.export" fab top dark @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
         <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
       </v-btn>
     </v-layout>
+
+    <v-snackbar v-if="crudSnackBar" v-model="snackbar" v-bind="crudSnackBar">
+      {{ snackbarText }}
+      <v-btn fab flat @click="snackbar=false"><v-icon >close</v-icon></v-btn>
+    </v-snackbar>
   </v-container>
 </template>
 

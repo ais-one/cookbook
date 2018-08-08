@@ -120,7 +120,8 @@ export default {
     return {
       // form
       addEditDialogFlag: false,
-      confirmDialogFlag: false,
+      // TOREMOVE
+      // confirmDialogFlag: false,
       validForm: true,
       // filter
       validFilter: true,
@@ -211,7 +212,7 @@ export default {
     async exportRecords (payload) { await this.$store.dispatch(this.storeName + '/exportRecords', payload) },
     closeAddEditDialog () {
       this.addEditDialogFlag = false
-      // this.setRecord() // no need this right?
+      // TOREMOVE this.setRecord() // no need this right?
     },
     async addEditDialogOpen (id) {
       if (id) await this.getRecord({id}) // edit
@@ -219,27 +220,42 @@ export default {
       this.addEditDialogFlag = true
     },
     async addEditDialogSave (e) {
+      if (this.record.id && this.confirmCreate) if (!confirm(this.$t ? this.$t('vueCrudX.confirm') : 'PROCEED?')) return
+      if (!this.record.id && this.confirmUpdate) if (!confirm(this.$t ? this.$t('vueCrudX.confirm') : 'PROCEED?')) return
+
       if (this.record.id) await this.updateRecord({record: this.record})
       else await this.createRecord({record: this.record, parentId: this.parentId})
       await this.getRecordsHelper()
       this.closeAddEditDialog()
     },
-    addEditDialogDelete (e) {
-      this.confirmDialogFlag = true
-      this.addEditDialogFlag = false
-    },
-    async dialogConfirm (e) { // only for delete for now
+    async addEditDialogDelete (e) {
+      if (this.confirmDelete) if (!confirm(this.$t ? this.$t('vueCrudX.confirm') : 'PROCEED?')) return
       const {id} = this.record
       if (id) {
         await this.deleteRecord({id})
         await this.getRecordsHelper()
       }
-      this.setRecord()
-      this.confirmDialogFlag = false
+      // TOREMOVE
+      // this.setRecord()
+      this.closeAddEditDialog()
+
+      // TOREMOVE
+      // this.confirmDialogFlag = true
+      // this.addEditDialogFlag = false
     },
-    dialogAbort (e) {
-      this.confirmDialogFlag = false
-    },
+    // TOREMOVE
+    // async dialogConfirm (e) { // only for delete for now
+    //   const {id} = this.record
+    //   if (id) {
+    //     await this.deleteRecord({id})
+    //     await this.getRecordsHelper()
+    //   }
+    //   this.setRecord()
+    //   this.confirmDialogFlag = false
+    // },
+    // dialogAbort (e) {
+    //   this.confirmDialogFlag = false
+    // },
     async getRecordsHelper () {
       this.loading = true
       await this.getRecords({
@@ -345,7 +361,8 @@ export default {
     </v-data-table>
 
     <v-layout row justify-center>
-      <v-dialog v-model="confirmDialogFlag" persistent max-width="290">
+      <!-- TOREMOVE -->
+      <!-- <v-dialog v-model="confirmDialogFlag" persistent max-width="290">
         <v-card>
           <v-card-title class="headline"><v-flex class="text-xs-center"> {{$t?$t('vueCrudX.confirm'):'PROCEED?'}}</v-flex></v-card-title>
           <v-card-actions>
@@ -355,7 +372,7 @@ export default {
             </v-flex>
           </v-card-actions>
         </v-card>
-      </v-dialog>
+      </v-dialog> -->
 
       <v-dialog v-model="addEditDialogFlag" fullscreen transition="dialog-bottom-transition" :overlay="false">
         <v-card>
