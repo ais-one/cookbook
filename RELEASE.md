@@ -1,3 +1,6 @@
+### Version 0.0.19
+ * use one Vue file for compilation
+
 ### Version 0.0.18
  * update firebase packages & vuetify to 1.1.10
  * set vue-crud-x dependency tag to latest in example folder package.json
