@@ -11,6 +11,7 @@ import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want t
 // import VueCrudX from 'vue-crud-x' // usually we will install and import
 
 import * as partyDefs from '@/components/Crud/party'
+import * as partyInlineDefs from '@/components/Crud/party-inline'
 import * as partyNotesDefs from '@/components/Crud/party-notes'
 import * as noteDefs from '@/components/Crud/notes'
 import * as noteDefs2 from '@/components/Crud/notes2'
@@ -41,6 +42,13 @@ export default new Router({
       props: (route) => {
         return { storeName: route.name, parentId: route.params.parentId || null, ...noteDefs2 }
       }
+    },
+    {
+      path: '/party-inline',
+      name: 'party-inline',
+      component: VueCrudX,
+      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyInlineDefs, doPage: false } },
+      beforeEnter: AuthGuard
     },
     {
       path: '/party',

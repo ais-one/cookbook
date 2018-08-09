@@ -63,7 +63,7 @@ export default {
     }
   },
   created () {
-    console.log('comment out line below to test Google Recaptcha on localhost')
+    // console.log('comment out line below to test Google Recaptcha on localhost')
     if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || this.sitekey === '') this.unverified = false
   },
   computed: {

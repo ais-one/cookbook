@@ -121,7 +121,8 @@ export default {
           model: true,
           children: [
             { icon: 'home', title: 'Party', link: '/party' },
-            { icon: 'home', title: 'Notes', link: '/notes' },
+            { icon: 'create', title: 'Party Inline', link: '/party-inline' },
+            { icon: 'list_alt', title: 'Notes', link: '/notes' },
             { icon: 'announcement', title: 'Notes2', link: '/notes2' }
           ]
         }

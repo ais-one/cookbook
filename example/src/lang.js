@@ -8,13 +8,21 @@ const messages = {
   en: {
     vueCrudX: {
       noData: 'No Data',
-      confirm: 'Confirm'
+      confirm: 'Confirm',
+      itemRequired: 'Item is required'
+    },
+    myApp: {
+      languages: 'Languages'
     }
   },
   id: {
     vueCrudX: {
       noData: 'Tidak Ada Data',
-      confirm: 'memastikan'
+      confirm: 'memastikan',
+      itemRequired: 'Item wajib diisi'
+    },
+    myApp: {
+      languages: 'Bahasa'
     }
   }
 }

@@ -1,54 +1,37 @@
 import {firestore, hasDuplicate} from '@/firebase'
 import {makeCsvRow, exportCsv} from '@/assets/util'
 import {format} from 'date-fns'
-import {app} from '@/main' // to use store, router, i18n, etc...
-import i18n from '@/lang' // to use store, router, i18n, etc...
-
-console.log(app, i18n, i18n.messages[i18n.locale])
 
 // set snackbar props in object to customize, or set as null to disable snackbar
 export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
-  inline: null,
+  inline: {
+    'remarks': 'text',
+    'created': 'date'
+  },
   confirmCreate: true,
   confirmUpdate: true,
   confirmDelete: true,
   headers: [
     { text: 'Party Name', value: 'name' },
-    { text: 'Status', value: 'status' }
+    { text: 'Remarks🖊️', value: 'remarks' }, // use pen emoji to indicate editable columns
+    { text: 'Languages', value: 'languages' },
+    { text: 'Status', value: 'status' },
+    { text: 'Created🖊️', value: 'created' },
+    { text: 'Photo URL', value: 'photo' }
   ],
-  formatters: (value, _type) => value
+  formatters: (value, _type) => {
+    if (_type === 'languages') return value.join(',')
+    return value
+  }
 }
 
 export const crudFilter = {
   FilterVue: () => ({
     component: import('./Filter.vue')
-    // loading: LoadingComp,
-    // error: ErrorComp,
-    // delay: 200,
-    // timeout: 3000
   }),
   filterData: {
-    languages: {
-      type: 'select',
-      label: i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
-      multiple: false,
-      rules: [],
-      value: '',
-      itemsFn: async () => {
-        let records = []
-        try {
-          const rv = await firestore.collection('languages').limit(200).get() // create index
-          rv.forEach(record => {
-            let tmp = record.data()
-            records.push(tmp.name)
-          })
-        } catch (e) { }
-        return records
-      },
-      items: [ ]
-    },
     active: {
       type: 'select',
       label: 'Active Status',
@@ -61,16 +44,7 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  FormVue: () => ({ component: import('./PartyForm.vue') }),
-  // defaultRec: {
-  //   id: '',
-  //   name: '',
-  //   status: 'active',
-  //   remarks: '',
-  //   languages: [],
-  //   created: '' // set value in the create() function
-  //   photo: ''
-  // }
+  FormVue: () => ({ component: null }), // not needed
   defaultRec: () => ({ // you can use function to initialize record as well
     id: '',
     name: '',
@@ -98,7 +72,11 @@ export const crudOps = { // CRUD
       exportCsv(csvContent, 'party.csv')
     } catch (e) { }
   },
-  delete: null, // TBD if delete, must also delete all dependancies, move all buttons to right?
+  delete: async (payload) => {
+    const {id} = payload
+    try { await firestore.doc('party/' + id).delete() } catch (e) { return 'Delete Error' }
+    return 'Delete OK'
+  },
   find: async (payload) => {
     let records = []
     const {pagination, filterData} = payload

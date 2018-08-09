@@ -100,25 +100,33 @@ or
 
 ### 3 Running Example
 
+    # go to the example folder (built using vue-cli 3)
     cd node_modules/vue-crud-x/example
     npm install
 
-    # configure the cfg.json file
-    npm run dev
+    # configure the cfg.json file & run
+    npm run serve
 
 Important! Please Refer to the Getting Started Article For Details: [https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054)
 
 ## Todo / KIV
 
-* upgrade to vue-cli 3.0 when ready
-* add casl-vue, for casl authorization library
-* No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
-* Take note of the following github issues
-  * Fixed Table Header: https://github.com/vuetifyjs/vuetify/issues/1547, https://github.com/vuetifyjs/vuetify/pull/2868
-  * Infinite Scroll:  https://github.com/vuetifyjs/vuetify/issues/3538
-* Add D3 chart or leaflet map example
-* Look into abort/timeout for async operations without abort/timeout feature
-* Check if it is possible to make compatible with NuxtJS (route-link, to, nuxt-link)
+ * Include Vuetify i18n, allow translations in the JS files
+ * Pagination in example (with firebase)
+ * Take note of the following github issues
+   * Fixed Table Header:
+     * https://github.com/vuetifyjs/vuetify/issues/1547
+     * https://github.com/vuetifyjs/vuetify/pull/2868
+     * https://github.com/vuetifyjs/vuetify/pull/3833
+   * Infinite Scroll:  https://github.com/vuetifyjs/vuetify/issues/3538
+ * add casl-vue, for casl authorization library
+ * Google Map and CRUD combined component (can also be layout for other use cases such as chart mixed with CRUD)
+ * Configurble theme
+ * Check if it is possible to make compatible with NuxtJS (route-link, to, nuxt-link)
+ * No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
+ * Look into abort/timeout for async operations without abort/timeout feature
+
+## Notes
 
 ## Changes
 

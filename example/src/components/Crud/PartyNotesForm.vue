@@ -17,7 +17,7 @@ export default {
     }
   },
   async created () {
-    console.log('party-notes created', this.parentId)
+    // console.log('party-notes created', this.parentId)
     try {
       const rv = await firestore.collection('party').get() // populate select
       rv.forEach(record => {

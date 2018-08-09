@@ -98,7 +98,8 @@ export const crudOps = { // CRUD
   },
   delete: async (payload) => {
     const {id} = payload
-    try { await firestore.doc('note/' + id).delete() } catch (e) { }
+    try { await firestore.doc('note/' + id).delete() } catch (e) { return 'Delete Error' }
+    return 'Delete OK'
   },
   find: async (payload) => {
     let records = []
@@ -146,18 +147,17 @@ export const crudOps = { // CRUD
   create: async (payload) => {
     const {record, parentId} = payload
     try {
-      try {
-        let data = {}
-        const collectionNote = firestore.collection('note')
-        data.party = parentId
-        data.type = record.type
-        data.value = record.value
-        data.datetime = new Date()
-        data.approver = ''
-        data.approveStatus = 'pending'
-        await collectionNote.add(data)
-      } catch (e) { }
-    } catch (e) { }
+      let data = {}
+      const collectionNote = firestore.collection('note')
+      data.party = parentId
+      data.type = record.type
+      data.value = record.value
+      data.datetime = new Date()
+      data.approver = ''
+      data.approveStatus = 'pending'
+      await collectionNote.add(data)
+    } catch (e) { return 'Create Error' }
+    return 'Create OK'
   },
   update: async (payload) => {
     let {user, record} = payload
@@ -172,6 +172,7 @@ export const crudOps = { // CRUD
         approver: record.approver,
         approveStatus: record.approveStatus
       })
-    } catch (e) { }
+    } catch (e) { return 'Update Error' }
+    return 'Update OK'
   }
 }
