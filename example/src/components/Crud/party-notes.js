@@ -99,6 +99,7 @@ export const crudOps = { // CRUD
   delete: async (payload) => {
     const {id} = payload
     try { await firestore.doc('note/' + id).delete() } catch (e) { return 'Delete Error' }
+    return 'Delete OK'
   },
   find: async (payload) => {
     let records = []
@@ -156,6 +157,7 @@ export const crudOps = { // CRUD
       data.approveStatus = 'pending'
       await collectionNote.add(data)
     } catch (e) { return 'Create Error' }
+    return 'Create OK'
   },
   update: async (payload) => {
     let {user, record} = payload
@@ -171,5 +173,6 @@ export const crudOps = { // CRUD
         approveStatus: record.approveStatus
       })
     } catch (e) { return 'Update Error' }
+    return 'Update OK'
   }
 }

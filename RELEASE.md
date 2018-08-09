@@ -1,9 +1,10 @@
 ### Version 0.0.18
- * update firebase packages & vuetify to 1.1.9
+ * update firebase packages & vuetify to 1.1.10
  * set vue-crud-x dependency tag to latest in example folder package.json
- * add snackbar (optional)
+ * add snackbar to notify results of CRUD operations (configurable and can be disabled)
  * dynamic initial values (e.g. timestamp), see defaultRec implemented as function (no breaking change as you can still use defaultRec as object)
- * confimation options for create / delete / update
+ * confimation for create / delete / update operations (confirmation can be individually disabled)
+ * use native Javascript instead of Vuetify confirm dialog (reduce code and simplify code), will use Vuetify again once I can come up with simpler logic for it.
  * add inline-edit mode (use with care)
 
 ### Version 0.0.17

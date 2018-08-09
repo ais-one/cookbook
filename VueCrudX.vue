@@ -120,8 +120,6 @@ export default {
     return {
       // form
       addEditDialogFlag: false,
-      // TOREMOVE
-      // confirmDialogFlag: false,
       validForm: true,
       // filter
       validFilter: true,
@@ -212,7 +210,6 @@ export default {
     async exportRecords (payload) { await this.$store.dispatch(this.storeName + '/exportRecords', payload) },
     closeAddEditDialog () {
       this.addEditDialogFlag = false
-      // TOREMOVE this.setRecord() // no need this right?
     },
     async addEditDialogOpen (id) {
       if (id) await this.getRecord({id}) // edit
@@ -220,8 +217,8 @@ export default {
       this.addEditDialogFlag = true
     },
     async addEditDialogSave (e) {
-      if (this.record.id && this.confirmCreate) if (!confirm(this.$t ? this.$t('vueCrudX.confirm') : 'PROCEED?')) return
-      if (!this.record.id && this.confirmUpdate) if (!confirm(this.$t ? this.$t('vueCrudX.confirm') : 'PROCEED?')) return
+      if (this.record.id && this.confirmCreate) if (!confirm(this.getConfirmText())) return
+      if (!this.record.id && this.confirmUpdate) if (!confirm(this.getConfirmText())) return
 
       if (this.record.id) await this.updateRecord({record: this.record})
       else await this.createRecord({record: this.record, parentId: this.parentId})
@@ -229,33 +226,14 @@ export default {
       this.closeAddEditDialog()
     },
     async addEditDialogDelete (e) {
-      if (this.confirmDelete) if (!confirm(this.$t ? this.$t('vueCrudX.confirm') : 'PROCEED?')) return
+      if (this.confirmDelete) if (!confirm(this.getConfirmText())) return
       const {id} = this.record
       if (id) {
         await this.deleteRecord({id})
         await this.getRecordsHelper()
       }
-      // TOREMOVE
-      // this.setRecord()
       this.closeAddEditDialog()
-
-      // TOREMOVE
-      // this.confirmDialogFlag = true
-      // this.addEditDialogFlag = false
     },
-    // TOREMOVE
-    // async dialogConfirm (e) { // only for delete for now
-    //   const {id} = this.record
-    //   if (id) {
-    //     await this.deleteRecord({id})
-    //     await this.getRecordsHelper()
-    //   }
-    //   this.setRecord()
-    //   this.confirmDialogFlag = false
-    // },
-    // dialogAbort (e) {
-    //   this.confirmDialogFlag = false
-    // },
     async getRecordsHelper () {
       this.loading = true
       await this.getRecords({
@@ -280,24 +258,26 @@ export default {
     // clearFilter () { // can do test code here too
     //   this.$refs.searchForm.reset()
     // },
-    goBack () {
-      this.$router.back()
-    },
+    goBack () { this.$router.back() },
     // inline
-    async inlineSave (item) { // set snackback
-      await this.updateRecord({record: item})
-    },
-    inlineCancel () { },
+    inlineCancel () { }, // do nothing for now
     inlineOpen () { },
     inlineClose () { },
-    async inlineAdd () {
+    async inlineSave (item) { // set snackback
+      if (this.confirmUpdate) if (!confirm(this.getConfirmText())) return
+      await this.updateRecord({record: item})
+    },
+    async inlineCreate () {
+      if (this.confirmCreate) if (!confirm(this.getConfirmText())) return
       await this.createRecord({record: (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : this.crudForm.defaultRec, parentId: this.parentId})
       this.$nextTick(async function () { await this.getRecordsHelper() })
     },
-    async inlineDel (id) {
+    async inlineDelete (id) {
+      if (this.confirmDelete) if (!confirm(this.getConfirmText())) return
       await this.deleteRecord({id})
       this.$nextTick(async function () { await this.getRecordsHelper() })
-    }
+    },
+    getConfirmText () { return this.$t ? this.$t('vueCrudX.confirm') : 'PROCEED?' }
   }
 }
 </script>
@@ -331,8 +311,9 @@ export default {
           <td :key="header.value" v-for="header in headers">{{ props.item[header.value] | formatters(header.value) }}</td>
         </tr>
         <tr v-else>
-          <td :key="header.value" v-for="header in headers">
-            <v-edit-dialog v-if="inline[header.value]"
+          <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
+          <td :key="header.value" v-for="header in headers" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
+            <v-edit-dialog v-if="inline[header.value] && crudOps.update"
               :return-value.sync="props.item[header.value]"
               large
               lazy
@@ -346,10 +327,10 @@ export default {
               <div slot="input" class="mt-3 title">Update Field</div>
               <v-text-field slot="input" v-model="props.item[header.value]" label="Edit" :type="inline[header.value]" single-line counter autofocus></v-text-field>
             </v-edit-dialog>
-            <span v-else>{{ props.item[header.value] }}</span>
+            <span v-else>{{ props.item[header.value] | formatters(header.value) }}</span>
           </td>
           <td>
-            <v-btn v-if="crudOps.delete" @click.native="inlineDel(props.item.id)"><v-icon>delete</v-icon></v-btn>
+            <v-btn v-if="crudOps.delete" @click.native="inlineDelete(props.item.id)"><v-icon>delete</v-icon></v-btn>
           </td>
         </tr>
       </template>
@@ -361,19 +342,6 @@ export default {
     </v-data-table>
 
     <v-layout row justify-center>
-      <!-- TOREMOVE -->
-      <!-- <v-dialog v-model="confirmDialogFlag" persistent max-width="290">
-        <v-card>
-          <v-card-title class="headline"><v-flex class="text-xs-center"> {{$t?$t('vueCrudX.confirm'):'PROCEED?'}}</v-flex></v-card-title>
-          <v-card-actions>
-            <v-flex class="text-xs-center">
-              <v-btn fab flat @click.native="dialogConfirm"><v-icon>done</v-icon></v-btn>
-              <v-btn fab flat @click.native="dialogAbort"><v-icon>close</v-icon></v-btn>
-            </v-flex>
-          </v-card-actions>
-        </v-card>
-      </v-dialog> -->
-
       <v-dialog v-model="addEditDialogFlag" fullscreen transition="dialog-bottom-transition" :overlay="false">
         <v-card>
           <v-toolbar dark color="primary">
@@ -397,9 +365,8 @@ export default {
     </v-layout>
 
     <v-layout row justify-end>
-      <v-btn v-if="parentId" fab top dark @click.stop="goBack"><v-icon>reply</v-icon></v-btn>
-      <v-btn v-if="crudOps.create && inline" fab top dark @click.stop="inlineAdd()" :disabled="loading"><v-icon>add</v-icon></v-btn>
-      <v-btn v-if="crudOps.create && !inline" fab top dark @click.stop="addEditDialogOpen(null)"><v-icon>add</v-icon></v-btn>
+      <v-btn v-if="parentId" fab top dark @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn>
+      <v-btn v-if="crudOps.create" fab top dark @click.stop="inline?inlineCreate():addEditDialogOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
       <v-btn v-if="crudOps.export" fab top dark @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
         <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
       </v-btn>

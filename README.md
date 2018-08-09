@@ -113,18 +113,18 @@ Important! Please Refer to the Getting Started Article For Details: [https://med
 
  * Include Vuetify i18n, allow translations in the JS files
  * Pagination in example (with firebase)
- * No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
- * Improve input rules
- * add casl-vue, for casl authorization library
- * Google Map and CRUD combined component (can also be layout for other use cases such as chart mixed with CRUD)
  * Take note of the following github issues
    * Fixed Table Header:
      * https://github.com/vuetifyjs/vuetify/issues/1547
      * https://github.com/vuetifyjs/vuetify/pull/2868
      * https://github.com/vuetifyjs/vuetify/pull/3833
    * Infinite Scroll:  https://github.com/vuetifyjs/vuetify/issues/3538
- * Look into abort/timeout for async operations without abort/timeout feature
+ * add casl-vue, for casl authorization library
+ * Google Map and CRUD combined component (can also be layout for other use cases such as chart mixed with CRUD)
+ * Configurble theme
  * Check if it is possible to make compatible with NuxtJS (route-link, to, nuxt-link)
+ * No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
+ * Look into abort/timeout for async operations without abort/timeout feature
 
 ## Notes
 
