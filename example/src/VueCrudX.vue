@@ -91,7 +91,8 @@ export default {
     crudSnackBar: { type: Object, default: () => ({ bottom: true, timeout: 6000 }) }
   },
   created () {
-    if (!this.$t || !this.$i18n) this.$t = null // if i18n is not found
+    console.log('aa', this)
+    // if (!this.$t || !this.$i18n) this.$t = null // if i18n is not found
     const store = this.$store
     const name = this.storeName
     if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist

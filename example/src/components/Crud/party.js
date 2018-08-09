@@ -1,10 +1,10 @@
 import {firestore, hasDuplicate} from '@/firebase'
 import {makeCsvRow, exportCsv} from '@/assets/util'
 import {format} from 'date-fns'
-import {app} from '@/main' // to use store, router, i18n, etc...
-import i18n from '@/lang' // to use store, router, i18n, etc...
+// import {app} from '@/main' // to use store, router, i18n, etc...
+// import i18n from '@/lang' // to use store, router, i18n, etc...
 
-console.log(app, i18n, i18n.messages[i18n.locale])
+// console.log(app, i18n, i18n.messages[i18n.locale])
 
 // set snackbar props in object to customize, or set as null to disable snackbar
 export const crudSnackBar = { top: true, timeout: 6000 }
@@ -32,7 +32,7 @@ export const crudFilter = {
   filterData: {
     languages: {
       type: 'select',
-      label: i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
+      label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
       multiple: false,
       rules: [],
       value: '',
