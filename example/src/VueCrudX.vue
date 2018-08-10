@@ -91,8 +91,6 @@ export default {
     crudSnackBar: { type: Object, default: () => ({ bottom: true, timeout: 6000 }) }
   },
   created () {
-    console.log('aa', this)
-    // if (!this.$t || !this.$i18n) this.$t = null // if i18n is not found
     const store = this.$store
     const name = this.storeName
     if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
@@ -218,8 +216,8 @@ export default {
       this.addEditDialogFlag = true
     },
     async addEditDialogSave (e) {
-      if (this.record.id && this.confirmCreate) if (!confirm(this.getConfirmText())) return
-      if (!this.record.id && this.confirmUpdate) if (!confirm(this.getConfirmText())) return
+      if (this.record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
+      if (!this.record.id && this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
 
       if (this.record.id) await this.updateRecord({record: this.record})
       else await this.createRecord({record: this.record, parentId: this.parentId})
@@ -227,7 +225,7 @@ export default {
       this.closeAddEditDialog()
     },
     async addEditDialogDelete (e) {
-      if (this.confirmDelete) if (!confirm(this.getConfirmText())) return
+      if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       const {id} = this.record
       if (id) {
         await this.deleteRecord({id})
@@ -265,20 +263,19 @@ export default {
     inlineOpen () { },
     inlineClose () { },
     async inlineSave (item) { // set snackback
-      if (this.confirmUpdate) if (!confirm(this.getConfirmText())) return
+      if (this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.updateRecord({record: item})
     },
     async inlineCreate () {
-      if (this.confirmCreate) if (!confirm(this.getConfirmText())) return
+      if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.createRecord({record: (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : this.crudForm.defaultRec, parentId: this.parentId})
       this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     async inlineDelete (id) {
-      if (this.confirmDelete) if (!confirm(this.getConfirmText())) return
+      if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.deleteRecord({id})
       this.$nextTick(async function () { await this.getRecordsHelper() })
-    },
-    getConfirmText () { return this.$t ? this.$t('vueCrudX.confirm') : 'PROCEED?' }
+    }
   }
 }
 </script>
@@ -349,7 +346,6 @@ export default {
             <v-toolbar-title><v-icon>mode_edit</v-icon> {{showTitle | capitalize}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items></v-toolbar-items>
-            <!-- v-btn icon @click.native="closeAddEditDialog" dark><v-icon>close</v-icon></v-btn -->
           </v-toolbar>
           <v-progress-linear :indeterminate="loading" height="2"></v-progress-linear>
           <v-form class="grey lighten-3 pa-2" v-model="validForm" lazy-validation>

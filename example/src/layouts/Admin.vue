@@ -113,7 +113,7 @@ export default {
       ],
       drawer: false,
       menuItems: [
-        { icon: 'settings', title: 'Example Form', link: '/example-form' },
+        { icon: 'dashboard', title: 'Party Component', link: '/party-component-example' },
         {
           icon: 'keyboard_arrow_up',
           'icon-alt': 'keyboard_arrow_down',

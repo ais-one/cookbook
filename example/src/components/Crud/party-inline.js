@@ -106,6 +106,11 @@ export const crudOps = { // CRUD
     return record
   },
   create: async (payload) => {
+    // const docRef = firestore.collection('paty').doc('_meta')
+    // let doc = await firestore.runTransaction(t => t.get(docRef));
+    // if (!doc.exists) {throw ('Update Meta Error') }
+    // const count = doc.data().count + 1;
+    // await doc.ref.update({ count });
     const {record: {id, ...noIdData}} = payload
     if (await hasDuplicate('party', 'name', noIdData['name'])) return 'Duplicate Found'
     try { await firestore.collection('party').add(noIdData) } catch (e) { return 'Create Error' }

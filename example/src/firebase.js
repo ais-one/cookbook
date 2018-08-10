@@ -1,4 +1,5 @@
-import Firebase from 'firebase'
+import Firebase from 'firebase/app'
+import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
 import {firebaseCfg} from '../cfg.json'
@@ -6,7 +7,6 @@ import {firebaseCfg} from '../cfg.json'
 const firebaseApp = Firebase.initializeApp(firebaseCfg)
 
 const storage = firebaseApp.storage()
-const db = firebaseApp.database()
 const firestore = firebaseApp.firestore()
 const auth = firebaseApp.auth()
 const hasDuplicate = async (collection, key, value, id = null) => {
@@ -25,4 +25,4 @@ const hasDuplicate = async (collection, key, value, id = null) => {
   return true
 }
 
-export { db, auth, firestore, storage, hasDuplicate }
+export { auth, firestore, storage, hasDuplicate }
