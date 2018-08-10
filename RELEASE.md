@@ -1,5 +1,11 @@
 ### Version 0.0.19
  * use one Vue file for compilation
+ * use VueI18n for translations, and include Vuetify i18n
+   * one for Vuetify
+   * one for VueCrudX
+   * the rest for your app
+ * clean up firebase code
+ * implement as component (you can use it on a page with charts or google maps, etc)
 
 ### Version 0.0.18
  * update firebase packages & vuetify to 1.1.10

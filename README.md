@@ -1,12 +1,11 @@
-[![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x)
+[![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![Gitter chat](https://badges.gitter.im/ais-one/gitter.png)](https://gitter.im/vuecrudx)
 
-[![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x)
+# IMPORTANT: Getting Started - Article
 
-# IMPORTANT: Getting Started Article
-
-Read the following detailed article to get started, I will be making changes to instructions there based on feedback as I do not want to keep pushing documentation changes to github and npm.
+Read the following detailed article (usage and explanations in the article are also updated as and when required)
 
 [https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054)
+
 
 # What Is vue-crud-x
 
@@ -14,19 +13,17 @@ Read the following detailed article to get started, I will be making changes to 
 
 ## Differentiating Features From Other CRUD Components
 
-* Able to do nested Crud
-* Allow you to configure how to write the CRUD calls
-  * find, findOne, update, edit, delete
-  * if you set update, edit or delete custom functions that you write to null, it will not allow such operations
-* Allow you to use any datastore(s) conection
-  * example uses firebase, but you can adapt it to use others such
-    * direct connection to store MySQL, Redis, postgres, mongodb, etc.
-    * rest API
-    * graphQL
-  * you can even write to connect a mixture of multiple connections in a crud call
-* Allow you to write how the CRUD Form will look like
-* Allow you to write how the CRUD Filter will look like
-* You can replace Vuetify with something else like ElementUI
+ * Able to do nested CRUD operations, e.g. selecting a post from a list of posts, and then selecting a comment from a list of comments of the selected post to edit
+ * Edit inline (New)
+ * Include handling of authentication tokens, and any other information
+ * Customise
+   * Table data format for each cell (e.g., currency to 3 decimal places)
+   * Search filters
+   * CRUD Form layout & validation
+   * CRUD operations (e.g. disallow delete)
+ * For CRUD operations, you can Use direct call (e.g. Firestore), or API (REST, GraphQL) to one or more types of datastore (MySQL, MongoDB, Redis, ElasticSearch, etc.)
+ * Export to CSV, File/Image Upload, i18n
+ * Possibly replace Vuetify with something else like ElementUI, Buefy, etc.
 
 ## What is bad about this CRUD Component
 
@@ -34,32 +31,21 @@ Because of its flexible nature, quite a number of things need to be coded to fit
 
 However, the good part is that these parts need to be coded anyway and once you find your way around the design, you will be able to quickly create custom CRUD in many of your use cases
 
-## Build Setup For Maintaining This Repository (Github)
+# Getting Started - Hands On
 
-### clone the repository and go to the repository
+## Learning To Use Or Maintaining Component (Github)
+
+### Learning
+
+#### clone the repository and go to the repository example
     git clone https://github.com/ais-one/vue-crud-x.git
-    cd vue-crud-x
+    cd vue-crud-x/example
 
-### install dependencies
+#### install dependencies
     npm install
-
-### build for production with minification
-    npm run build
-
-### package vue-crud-x
-    npm pack
-    # A local npm package will be created (a tgz file)
-
-### go to example & install
-    cd example
-    # install dependencies in package.json
     # delete package-lock.json if you face problems
-    npm install
-    # install the local npm package packed earlier... (but do not install into package json)
-    npm install --no-save ../vue-crud-x-?.?.?.tgz
-    # ?.?.? is the version
 
-### create cfg.json file & put in your credentials
+#### create cfg.json file & put in your credentials
     touch cfg.json
     vi cfg.json
 
@@ -75,58 +61,53 @@ However, the good part is that these parts need to be coded anyway and once you 
       "recaptchaSiteKey": ""  
     }
 
-### run the app
-    npm run dev
-
-
-## General Usage (using NPM)
-
-### 1 Init a project
-    npm init
-
-### 2 Install
-
-> From NPM repo
-
-    npm install --save vue-crud-x
-    npm install --save regenerator-runtime
-
-or
-
-> From local package file
-
-    npm i --save /path-to/vue-crud-x-?.?.?.tgz
-    npm install --save regenerator-runtime
-
-### 3 Running Example
-
-    # go to the example folder (built using vue-cli 3)
-    cd node_modules/vue-crud-x/example
-    npm install
-
-    # configure the cfg.json file & run
+#### run the app (vue-cli 3)
     npm run serve
 
-Important! Please Refer to the Getting Started Article For Details: [https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054)
+
+### General Usage - Option 1 use NPM package
+
+Install it as in NPM package and import it
+    npm i vue-crud-x
+
+### General Usage - Option 2 use from source file
+
+Just copy the VueCrudX.vue file into your project and include it as a component
+
+
+### Building NPM Package (For Others To Use)
+
+#### go to repo root directory and build for production with minification
+    cd [path-to]/vue-crud-x
+    npm run build
+
+#### Either upload as published package
+    npm publish
+
+#### local package vue-crud-x
+    npm pack
+    # A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
+    # If you want to install without saving to package.json, npm i --no-save vue-crud-x-?.?.?.tgz
+
+
 
 ## Todo / KIV
-
- * Include Vuetify i18n, allow translations in the JS files
  * Pagination in example (with firebase)
+ * Is it possible to make compatible with NuxtJS (route-link, to, nuxt-link)
+ * add casl-vue, for casl authorization library
+ * Configurble theme
  * Take note of the following github issues
    * Fixed Table Header:
      * https://github.com/vuetifyjs/vuetify/issues/1547
      * https://github.com/vuetifyjs/vuetify/pull/2868
      * https://github.com/vuetifyjs/vuetify/pull/3833
    * Infinite Scroll:  https://github.com/vuetifyjs/vuetify/issues/3538
- * add casl-vue, for casl authorization library
- * Google Map and CRUD combined component (can also be layout for other use cases such as chart mixed with CRUD)
- * Configurble theme
- * Check if it is possible to make compatible with NuxtJS (route-link, to, nuxt-link)
  * No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
  * Look into abort/timeout for async operations without abort/timeout feature
 
 ## Notes
+
+None at the moment
 
 ## Changes
 
