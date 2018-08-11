@@ -15,7 +15,7 @@ const hasDuplicate = async (collection, key, value, id = null) => {
       const rv = await firestore.collection(collection).doc(id).get()
       if (rv.exists) {
         const data = rv.data()
-        if (data[key] === value) return false
+        if (data[key] !== value) return false
       }
     } else { // insert
       const rv = await firestore.collection(collection).where(key, '==', value).limit(1).get()

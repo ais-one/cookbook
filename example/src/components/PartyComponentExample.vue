@@ -1,5 +1,5 @@
 <template>
-  <v-div>
+  <div>
     <v-layout row>
       <v-flex xs12>
         <h1>You can also add a chart, map or some other component on the right, something components below, etc.</h1>
@@ -30,7 +30,7 @@
         </v-container>
       </v-flex>
     </v-layout>
-  </v-div>
+  </div>
 </template>
 
 <script>
