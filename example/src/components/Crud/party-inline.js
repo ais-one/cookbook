@@ -7,6 +7,7 @@ export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
   inline: {
+    'name': 'text',
     'remarks': 'text',
     'created': 'date'
   },
@@ -63,27 +64,48 @@ export const crudOps = { // CRUD
       let dbCol = firestore.collection('party') // create index
         .where('status', '==', filterData.active.value)
       const rv = await dbCol.limit(200).get()
-
       let csvContent = ''
       rv.forEach(record => {
         let tmp = record.data()
         csvContent += makeCsvRow(csvContent, tmp, `\r\n`, ';')
       })
+      // rv.reduce((accumulator, currentValue) => accumulator + currentValue, '')
       exportCsv(csvContent, 'party.csv')
     } catch (e) { }
   },
   delete: async (payload) => {
     const {id} = payload
-    try { await firestore.doc('party/' + id).delete() } catch (e) { return 'Delete Error' }
+    const metaRef = firestore.collection('meta').doc('party')
+    const docRef = firestore.collection('party').doc(id)
+    try {
+      await firestore.runTransaction(async t => {
+        const meta = await t.get(metaRef)
+        const doc = await t.get(docRef)
+        if (!meta.exists) throw new Error('No Meta')
+        if (!doc.exists) throw new Error('Not Found')
+        await t.delete(docRef)
+        let tmp = meta.data()
+        tmp.count--
+        await t.update(metaRef, tmp)
+      })
+    } catch (e) { return e }
     return 'Delete OK'
+    // try { await firestore.collection('party').doc(id).delete() } catch (e) { return 'Delete Error' }
+    // return 'Delete OK'
   },
   find: async (payload) => {
     let records = []
     const {pagination, filterData} = payload
+    console.log(pagination)
+    // const {rowsPerPage, totalItems, sortBy, descending} = pagination
     try {
+      // let dbCol = firestore.collection('party').where('status', '==', filterData.active.value)
+      // const rv = await dbCol.limit(200).get()
+      const meta = await firestore.collection('meta').doc('party').get()
+      if (meta.exists) pagination.totalItems = meta.data().count
       let dbCol = firestore.collection('party') // create index
         .where('status', '==', filterData.active.value)
-      const rv = await dbCol.limit(200).get()
+      const rv = await dbCol.orderBy('name').startAt(1).limit(pagination.rowsPerPage).get()
       rv.forEach(record => {
         let tmp = record.data()
         records.push({id: record.id, ...tmp})
@@ -106,20 +128,43 @@ export const crudOps = { // CRUD
     return record
   },
   create: async (payload) => {
-    // const docRef = firestore.collection('paty').doc('_meta')
-    // let doc = await firestore.runTransaction(t => t.get(docRef));
-    // if (!doc.exists) {throw ('Update Meta Error') }
-    // const count = doc.data().count + 1;
-    // await doc.ref.update({ count });
     const {record: {id, ...noIdData}} = payload
-    if (await hasDuplicate('party', 'name', noIdData['name'])) return 'Duplicate Found'
-    try { await firestore.collection('party').add(noIdData) } catch (e) { return 'Create Error' }
+    const metaRef = firestore.collection('meta').doc('party')
+    const newDocRef = firestore.collection('party').doc()
+    try {
+      await firestore.runTransaction(async t => {
+        if (await hasDuplicate('party', 'name', noIdData['name'])) throw new Error('Duplicate Found')
+        const meta = await t.get(metaRef)
+        if (!meta.exists) throw new Error('No Meta')
+        await t.set(newDocRef, noIdData)
+        let tmp = meta.data()
+        tmp.count++
+        await t.update(metaRef, tmp)
+      })
+    } catch (e) {
+      return e.toString()
+    }
     return 'Create OK'
+    // if (await hasDuplicate('party', 'name', noIdData['name'])) return 'Duplicate Found'
+    // try { await firestore.collection('party').add(noIdData) } catch (e) { return 'Create Error' }
+    // return 'Create OK'
   },
   update: async (payload) => {
     let {record: {id, ...noIdData}} = payload
-    if (await hasDuplicate('party', 'name', noIdData['name'], id)) return 'Duplicate Found'
-    try { await firestore.doc('party/' + id).update(noIdData) } catch (e) { return 'Update Error' }
+    const docRef = firestore.collection('party').doc(id)
+    try {
+      await firestore.runTransaction(async t => {
+        const doc = await t.get(docRef)
+        if (!doc.exists) throw new Error('Not Found')
+        if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error('Duplicate Found')
+        await t.set(docRef, noIdData)
+      })
+    } catch (e) {
+      return e.toString()
+    }
     return 'Update OK'
+    // if (await hasDuplicate('party', 'name', noIdData['name'], id)) return 'Duplicate Found'
+    // try { await firestore.doc('party/' + id).update(noIdData) } catch (e) { return 'Update Error' }
+    // return 'Update OK'
   }
 }

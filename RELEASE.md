@@ -4,8 +4,13 @@
    * one for Vuetify
    * one for VueCrudX
    * the rest for your app
- * clean up firebase code
- * implement as component (you can use it on a page with charts or google maps, etc)
+ * clean up firebase code, fix firestore duplicate check for update (thanks @gakera)
+ * example implementation as component (you can use it on a page with charts or google maps, etc)
+ * firebase pagination & transaction (in progress)
+ * No breaking changes but...
+   * need to install vuei18n
+   * need meta collection for pagination
+ * update vuetify to 1.1.11
 
 ### Version 0.0.18
  * update firebase packages & vuetify to 1.1.10

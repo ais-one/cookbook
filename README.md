@@ -64,24 +64,13 @@ However, the good part is that these parts need to be coded anyway and once you 
 #### run the app (vue-cli 3)
     npm run serve
 
-
-### General Usage - Option 1 use NPM package
-
-Install it as in NPM package and import it
-    npm i vue-crud-x
-
-### General Usage - Option 2 use from source file
-
-Just copy the VueCrudX.vue file into your project and include it as a component
-
-
-### Building NPM Package (For Others To Use)
+### Maintaining - Build NPM Package
 
 #### go to repo root directory and build for production with minification
     cd [path-to]/vue-crud-x
     npm run build
 
-#### Either upload as published package
+#### Either upload as published package (only for repo owner)
     npm publish
 
 #### local package vue-crud-x
@@ -90,12 +79,22 @@ Just copy the VueCrudX.vue file into your project and include it as a component
     # If you want to install without saving to package.json, npm i --no-save vue-crud-x-?.?.?.tgz
 
 
+## General Usage
 
-## Todo / KIV
+### Option 1 use NPM package
+
+Install it as in NPM package and import it
+    npm i vue-crud-x
+
+### Option 2 use from source file
+
+Just copy the VueCrudX.vue file into your project and include it as a component
+
+# Todo / KIV
  * Pagination in example (with firebase)
  * Is it possible to make compatible with NuxtJS (route-link, to, nuxt-link)
  * add casl-vue, for casl authorization library
- * Configurble theme
+ * Configurable theme
  * Take note of the following github issues
    * Fixed Table Header:
      * https://github.com/vuetifyjs/vuetify/issues/1547
@@ -105,10 +104,10 @@ Just copy the VueCrudX.vue file into your project and include it as a component
  * No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
  * Look into abort/timeout for async operations without abort/timeout feature
 
-## Notes
+# Notes
 
 None at the moment
 
-## Changes
+# Changes
 
 See RELEASE.MD file

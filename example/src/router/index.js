@@ -48,7 +48,7 @@ export default new Router({
       path: '/party-inline',
       name: 'party-inline',
       component: VueCrudX,
-      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyInlineDefs, doPage: false } },
+      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyInlineDefs, doPage: true } },
       beforeEnter: AuthGuard
     },
     {

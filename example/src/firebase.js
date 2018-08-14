@@ -12,11 +12,14 @@ const auth = firebaseApp.auth()
 const hasDuplicate = async (collection, key, value, id = null) => {
   try {
     if (id) { // update
-      const rv = await firestore.collection(collection).doc(id).get()
-      if (rv.exists) {
-        const data = rv.data()
-        if (data[key] !== value) return false
-      }
+      const rv = await firestore.collection(collection).where(key, '==', value).limit(1).get()
+      if (rv.size === 0) return false
+      else if (rv[0].id === id) return false
+      // if (rv.exists) {
+      //   const data = rv.data()
+      //   console.log(data[key], value)
+      //   if (data[key] !== value) return false
+      // }
     } else { // insert
       const rv = await firestore.collection(collection).where(key, '==', value).limit(1).get()
       if (rv.size === 0) return false

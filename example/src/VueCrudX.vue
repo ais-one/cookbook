@@ -185,20 +185,20 @@ export default {
     async deleteRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/deleteRecord', payload)
-      if (res) this.setSnackBar(res)
       this.loading = false
+      if (res) this.setSnackBar(res)
     },
     async updateRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/updateRecord', payload)
-      if (res) this.setSnackBar(res)
       this.loading = false
+      if (res) this.setSnackBar(res)
     },
     async createRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/createRecord', payload)
-      if (res) this.setSnackBar(res)
       this.loading = false
+      if (res) this.setSnackBar(res)
     },
     async getRecord (payload) {
       this.loading = true
