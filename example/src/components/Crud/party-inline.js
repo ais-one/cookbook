@@ -96,23 +96,26 @@ export const crudOps = { // CRUD
   find: async (payload) => {
     let records = []
     const {pagination, filterData} = payload
-    console.log(pagination)
-    // const {rowsPerPage, totalItems, sortBy, descending} = pagination
+    const {rowsPerPage, page} = pagination // , totalItems, sortBy, descending
     try {
-      // let dbCol = firestore.collection('party').where('status', '==', filterData.active.value)
-      // const rv = await dbCol.limit(200).get()
-      const meta = await firestore.collection('meta').doc('party').get()
-      if (meta.exists) pagination.totalItems = meta.data().count
-      let dbCol = firestore.collection('party') // create index
-        .where('status', '==', filterData.active.value)
-      const rv = await dbCol.orderBy('name').startAt(1).limit(pagination.rowsPerPage).get()
+      // no need to get meta yet
+      // const meta = await firestore.collection('meta').doc('party').get()
+      // if (meta.exists) pagination.totalItems = meta.data().count
+      let dbCol = firestore.collection('party').where('status', '==', filterData.active.value)
+      const rv = await dbCol.limit(50).get()
+      let index = 0
       rv.forEach(record => {
         let tmp = record.data()
-        records.push({id: record.id, ...tmp})
+        if (
+          (index >= (page - 1) * rowsPerPage && index < page * rowsPerPage) ||
+          !rowsPerPage
+        ) {
+          records.push({id: record.id, ...tmp})
+        }
+        index++
       })
-    } catch (e) {
-      console.log(e)
-    }
+      pagination.totalItems = index
+    } catch (e) { console.log(e) }
     return {records, pagination}
   },
   findOne: async (payload) => {

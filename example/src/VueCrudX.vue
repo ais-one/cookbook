@@ -57,7 +57,7 @@ const CrudStore = {
     async getRecords ({commit, getters}, payload) {
       payload.user = this.getters.user
       let {records, pagination} = await getters.crudOps.find(payload)
-      const totalRecs = records.length
+      let totalRecs = pagination.totalItems
       commit('setPagination', pagination)
       commit('setFilterData', payload.filterData)
       commit('setRecords', {records, totalRecs})
