@@ -57,7 +57,7 @@ const CrudStore = {
     async getRecords ({commit, getters}, payload) {
       payload.user = this.getters.user
       let {records, pagination} = await getters.crudOps.find(payload)
-      let totalRecs = pagination.totalItems
+      let totalRecs = payload.doPage ? pagination.totalItems : records.length
       commit('setPagination', pagination)
       commit('setFilterData', payload.filterData)
       commit('setRecords', {records, totalRecs})
@@ -236,6 +236,7 @@ export default {
     async getRecordsHelper () {
       this.loading = true
       await this.getRecords({
+        doPage: this.doPage,
         pagination: this.pagination,
         filterData: this.filterData,
         parentId: this.parentId
@@ -259,11 +260,7 @@ export default {
     // },
     goBack () { this.$router.back() },
     // inline
-    inlineCancel () { }, // do nothing for now
-    inlineOpen () { },
-    inlineClose () { },
-    async inlineSave (item) { // set snackback
-      if (this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
+    async inlineUpdate (item) { // set snackback
       await this.updateRecord({record: item})
     },
     async inlineCreate () {
@@ -316,10 +313,10 @@ export default {
               large
               lazy
               persistent
-              @save="inlineSave(props.item)"
-              @cancel="inlineCancel"
-              @open="inlineOpen"
-              @close="inlineClose"
+              @save="inlineUpdate(props.item)"
+              @cancel="()=>{}"
+              @open="()=>{}"
+              @close="()=>{}"
             >
               <div>{{ props.item[header.value] }}</div>
               <div slot="input" class="mt-3 title">Update Field</div>

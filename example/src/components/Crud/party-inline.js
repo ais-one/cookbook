@@ -63,7 +63,7 @@ export const crudOps = { // CRUD
     try {
       let dbCol = firestore.collection('party') // create index
         .where('status', '==', filterData.active.value)
-      const rv = await dbCol.limit(200).get()
+      const rv = await dbCol.limit(50).get()
       let csvContent = ''
       rv.forEach(record => {
         let tmp = record.data()
@@ -107,8 +107,7 @@ export const crudOps = { // CRUD
       rv.forEach(record => {
         let tmp = record.data()
         if (
-          (index >= (page - 1) * rowsPerPage && index < page * rowsPerPage) ||
-          !rowsPerPage
+          (index >= (page - 1) * rowsPerPage && index < page * rowsPerPage)
         ) {
           records.push({id: record.id, ...tmp})
         }

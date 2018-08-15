@@ -100,9 +100,7 @@ export const crudOps = { // CRUD
     let records = []
     const {pagination, filterData} = payload // parentId
     const {dateStart, dateEnd, selectX} = filterData
-    const {rowsPerPage, totalItems, sortBy, descending} = pagination
-    console.log(rowsPerPage, totalItems, sortBy, descending)
-    console.log(filterData, selectX, dateStart, dateEnd)
+    const {sortBy, descending} = pagination // rowsPerPage, totalItems
     try {
       let dbCol = firestore.collection('note')
         .where('datetime', '>=', new Date(dateStart.value + ' 00:00:00')) // create index

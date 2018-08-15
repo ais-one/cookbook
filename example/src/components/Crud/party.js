@@ -39,7 +39,7 @@ export const crudFilter = {
       itemsFn: async () => {
         let records = []
         try {
-          const rv = await firestore.collection('languages').limit(200).get() // create index
+          const rv = await firestore.collection('languages').limit(10).get() // create index
           rv.forEach(record => {
             let tmp = record.data()
             records.push(tmp.name)
@@ -88,7 +88,7 @@ export const crudOps = { // CRUD
     try {
       let dbCol = firestore.collection('party') // create index
         .where('status', '==', filterData.active.value)
-      const rv = await dbCol.limit(200).get()
+      const rv = await dbCol.limit(50).get()
 
       let csvContent = ''
       rv.forEach(record => {
@@ -105,7 +105,7 @@ export const crudOps = { // CRUD
     try {
       let dbCol = firestore.collection('party') // create index
         .where('status', '==', filterData.active.value)
-      const rv = await dbCol.limit(200).get()
+      const rv = await dbCol.limit(50).get()
       rv.forEach(record => {
         let tmp = record.data()
         records.push({id: record.id, ...tmp})
