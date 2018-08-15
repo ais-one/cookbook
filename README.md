@@ -91,8 +91,9 @@ Install it as in NPM package and import it
 Just copy the VueCrudX.vue file into your project and include it as a component
 
 # Todo / KIV
- * Pagination in example (with firebase)
  * Is it possible to make compatible with NuxtJS (route-link, to, nuxt-link)
+ * fix Date Range Issues... or check filters only on submit
+ * GraphQL using Prisma or Hasura
  * add casl-vue, for casl authorization library
  * Configurable theme
  * Take note of the following github issues

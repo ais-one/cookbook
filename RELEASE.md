@@ -6,11 +6,12 @@
    * the rest for your app
  * clean up firebase code, fix firestore duplicate check for update (thanks @gakera)
  * example implementation as component (you can use it on a page with charts or google maps, etc)
- * firebase pagination & transaction (in progress)
  * No breaking changes but...
    * need to install vuei18n
-   * need meta collection for pagination
- * update vuetify to 1.1.11
+ * update vuetify to 1.1.12
+ * Firebase transactions and pagination example in party-inline.js
+   * not really true server side pagination as limit / offset is expensive in firebase (skipped records are charged)
+   * but it serves as a good example for server side pagination implementation
 
 ### Version 0.0.18
  * update firebase packages & vuetify to 1.1.10
