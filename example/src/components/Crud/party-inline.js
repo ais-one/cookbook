@@ -81,17 +81,20 @@ export const crudOps = { // CRUD
       await firestore.runTransaction(async t => {
         const meta = await t.get(metaRef)
         const doc = await t.get(docRef)
-        if (!meta.exists) throw new Error('No Meta')
-        if (!doc.exists) throw new Error('Not Found')
+        if (!meta.exists) throw new Error(500)
+        if (!doc.exists) throw new Error(409)
         await t.delete(docRef)
         let tmp = meta.data()
         tmp.count--
         await t.update(metaRef, tmp)
       })
-    } catch (e) { return e }
-    return 'Delete OK'
+    } catch (e) {
+      if (parseInt(e.message) === 409) return 409
+      else return 500
+    }
+    return 200
     // try { await firestore.collection('party').doc(id).delete() } catch (e) { return 'Delete Error' }
-    // return 'Delete OK'
+    // return ''
   },
   find: async (payload) => {
     let records = []
@@ -135,21 +138,22 @@ export const crudOps = { // CRUD
     const newDocRef = firestore.collection('party').doc()
     try {
       await firestore.runTransaction(async t => {
-        if (await hasDuplicate('party', 'name', noIdData['name'])) throw new Error('Duplicate Found')
+        if (await hasDuplicate('party', 'name', noIdData['name'])) throw new Error(409)
         const meta = await t.get(metaRef)
-        if (!meta.exists) throw new Error('No Meta')
+        if (!meta.exists) throw new Error(500)
         await t.set(newDocRef, noIdData)
         let tmp = meta.data()
         tmp.count++
         await t.update(metaRef, tmp)
       })
     } catch (e) {
-      return e.toString()
+      if (parseInt(e.message) === 409) return 409
+      else return 500
     }
-    return 'Create OK'
+    return 201
     // if (await hasDuplicate('party', 'name', noIdData['name'])) return 'Duplicate Found'
     // try { await firestore.collection('party').add(noIdData) } catch (e) { return 'Create Error' }
-    // return 'Create OK'
+    // return ''
   },
   update: async (payload) => {
     let {record: {id, ...noIdData}} = payload
@@ -157,16 +161,17 @@ export const crudOps = { // CRUD
     try {
       await firestore.runTransaction(async t => {
         const doc = await t.get(docRef)
-        if (!doc.exists) throw new Error('Not Found')
-        if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error('Duplicate Found')
+        if (!doc.exists) throw new Error(409)
+        if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
         await t.set(docRef, noIdData)
       })
     } catch (e) {
-      return e.toString()
+      if (parseInt(e.message) === 409) return 409
+      else return 500
     }
-    return 'Update OK'
-    // if (await hasDuplicate('party', 'name', noIdData['name'], id)) return 'Duplicate Found'
-    // try { await firestore.doc('party/' + id).update(noIdData) } catch (e) { return 'Update Error' }
-    // return 'Update OK'
+    return 200
+    // if (await hasDuplicate('party', 'name', noIdData['name'], id)) return 409
+    // try { await firestore.doc('party/' + id).update(noIdData) } catch (e) { return 500 }
+    // return 200
   }
 }

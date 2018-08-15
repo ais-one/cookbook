@@ -126,6 +126,7 @@ export default {
       loading: false,
       headers: { }, // pass in
       inline: false, // inline editing
+      inlineValue: null,
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
       confirmDelete: true,
@@ -174,10 +175,13 @@ export default {
     }
   },
   methods: {
-    setSnackBar (text) {
-      if (this.crudSnackBar) {
+    setSnackBar (statusCode) {
+      if (this.crudSnackBar && statusCode) {
+        this.snackbarText = 'Unknown Operation'
+        if (statusCode === 200 || statusCode === 201) this.snackbarText = 'OK'
+        else if (statusCode === 500) this.snackbarText = 'Operation Error'
+        else if (statusCode === 409) this.snackbarText = 'Duplicate Error'
         this.snackbar = true
-        this.snackbarText = text
       }
     },
     async getRecords (payload) { await this.$store.dispatch(this.storeName + '/getRecords', payload) },
@@ -186,19 +190,22 @@ export default {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/deleteRecord', payload)
       this.loading = false
-      if (res) this.setSnackBar(res)
+      this.setSnackBar(res)
+      return res === 200
     },
     async updateRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/updateRecord', payload)
       this.loading = false
-      if (res) this.setSnackBar(res)
+      this.setSnackBar(res)
+      return res === 200
     },
     async createRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/createRecord', payload)
       this.loading = false
-      if (res) this.setSnackBar(res)
+      this.setSnackBar(res)
+      return res === 201
     },
     async getRecord (payload) {
       this.loading = true
@@ -260,8 +267,12 @@ export default {
     // },
     goBack () { this.$router.back() },
     // inline
-    async inlineUpdate (item) { // set snackback
-      await this.updateRecord({record: item})
+    inlineOpen (value) {
+      this.inlineValue = value
+    },
+    async inlineUpdate (item, field) {
+      const rv = await this.updateRecord({record: item})
+      if (!rv) item[field] = this.inlineValue // if false undo changes
     },
     async inlineCreate () {
       if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
@@ -313,9 +324,9 @@ export default {
               large
               lazy
               persistent
-              @save="inlineUpdate(props.item)"
+              @save="inlineUpdate(props.item, header.value)"
               @cancel="()=>{}"
-              @open="()=>{}"
+              @open="inlineOpen(props.item[header.value])"
               @close="()=>{}"
             >
               <div>{{ props.item[header.value] }}</div>

@@ -129,14 +129,14 @@ export const crudOps = { // CRUD
   },
   create: async (payload) => {
     const {record: {id, ...noIdData}} = payload
-    if (await hasDuplicate('party', 'name', noIdData['name'])) return 'Duplicate Found'
-    try { await firestore.collection('party').add(noIdData) } catch (e) { return 'Create Error' }
-    return 'Create OK'
+    if (await hasDuplicate('party', 'name', noIdData['name'])) return 409
+    try { await firestore.collection('party').add(noIdData) } catch (e) { return 500 }
+    return 201
   },
   update: async (payload) => {
     let {record: {id, ...noIdData}} = payload
-    if (await hasDuplicate('party', 'name', noIdData['name'], id)) return 'Duplicate Found'
-    try { await firestore.doc('party/' + id).update(noIdData) } catch (e) { return 'Update Error' }
-    return 'Update OK'
+    if (await hasDuplicate('party', 'name', noIdData['name'], id)) return 409
+    try { await firestore.doc('party/' + id).update(noIdData) } catch (e) { return 500 }
+    return 200
   }
 }

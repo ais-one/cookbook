@@ -77,7 +77,7 @@ Look at menuItems and see the how the menu items and link to are done
 
     -- user & token object get from vuex --
     export {user, filterData}
-    find {user, pagination, parentId, filterData}
+    find {user, pagination, parentId, filterData, doPage}
     findOne {user, id}
     update {user, record}
     create {user, record, parentId}
@@ -100,6 +100,7 @@ note - party a, datetime a
       remarks: String
       status: String (select)
       languages: Array of String
+      photo: String
     }
 
     note {
@@ -117,17 +118,6 @@ note - party a, datetime a
 
     1 party :-> N notes
 
-
-## Build Setup
-
-### install dependencies
-    npm install
-
-### serve with hot reload at localhost:8080
-    npm run dev
-
-### build for production with minification
-    npm run build
 
 ### build for production and view the bundle analyzer report
     npm run build --report
