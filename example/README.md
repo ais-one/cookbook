@@ -119,46 +119,37 @@ note - party a, datetime a
     1 party :-> N notes
 
 
-### build for production and view the bundle analyzer report
-    npm run build --report
-
-
-
-### other notes
-
-0. look into id => name?
-1. add Field as hidden on table list
-2. parentId for creating new record - done
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
-
-- ! config info for dev and build
-- fix "global rules"
-- close filter/search component programatically
-- async select dropdown
-- multiple select
-- recaptcha (https://github.com/DanSnow/vue-recaptcha)
-
-- https://stackoverflow.com/questions/44324454/vuejs-accessing-store-data-inside-mounted
-- https://vuex.vuejs.org/en/forms.html
-- https://forum.vuejs.org/t/dont-understand-how-to-use-mapstate-from-the-docs/14454/12
-- https://vuex.vuejs.org
-
-
 ### Firebase
 
 #### Hosting To Firebase
 
 https://firebase.google.com/docs/hosting/quickstart
 
+
+1. Install Firebase
+
+```
 npm install -g firebase-tools (first time)
 firebase login (first time)
 cd to project folder
 firebase init (first time)
 add files
+```
+
+2. Build the production version first
+
+```
+npm run build
+# optional: build for production and view the bundle analyzer report
+# npm run build --report
+```
+
+3. Deploy to Firebase
+
+```
 firebase deploy --only hosting
 firebase logout
-
+```
 
 #### Storage Rules
 
@@ -342,3 +333,25 @@ ref is non-reactive
 vue lifecycle avoid beforeUpdate or update, use computer & watchers first
 
 https://firebase.google.com/docs/auth/web/google-signin
+
+### Other notes
+
+0. look into id => name?
+1. add Field as hidden on table list
+2. parentId for creating new record - done
+
+For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+- ! config info for dev and build
+- fix "global rules"
+- close filter/search component programatically
+- async select dropdown
+- multiple select
+- recaptcha (https://github.com/DanSnow/vue-recaptcha)
+
+- https://stackoverflow.com/questions/44324454/vuejs-accessing-store-data-inside-mounted
+- https://vuex.vuejs.org/en/forms.html
+- https://forum.vuejs.org/t/dont-understand-how-to-use-mapstate-from-the-docs/14454/12
+- https://vuex.vuejs.org
+
+

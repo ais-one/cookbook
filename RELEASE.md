@@ -1,4 +1,5 @@
 ### Version 0.0.19
+ * Able to do nested CRUD operations, e.g. selecting a post from a list of posts, and then selecting a comment from a list of comments of the selected post to edit
  * use one Vue file for compilation
  * use VueI18n for translations, and include Vuetify i18n
    * one for Vuetify
@@ -6,12 +7,13 @@
    * the rest for your app
  * clean up firebase code, fix firestore duplicate check for update (thanks @gakera)
  * example implementation as component (you can use it on a page with charts or google maps, etc)
- * No breaking changes but...
-   * need to install vuei18n
+ * no breaking changes but... need to install vue-i18n
  * update vuetify to 1.1.12
- * Firebase transactions and pagination example in party-inline.js
+ * firebase transactions and pagination example in party-inline.js
    * not really true server side pagination as limit / offset is expensive in firebase (skipped records are charged)
    * but it serves as a good example for server side pagination implementation
+ * use HTTP status codes as CRUD operation result return values, for use with snackbar and calling function (non breaking change)
+ * it is possible to work with NuxtJS (https://github.com/ais-one/nuxt-vcx)
 
 ### Version 0.0.18
  * update firebase packages & vuetify to 1.1.10

@@ -14,7 +14,9 @@ Read the following detailed article (usage and explanations in the article are a
 ## Differentiating Features From Other CRUD Components
 
  * Able to do nested CRUD operations, e.g. selecting a post from a list of posts, and then selecting a comment from a list of comments of the selected post to edit
- * Edit inline (New)
+ * (New can work with NUXT - https://github.com/ais-one/nuxt-vcx)
+ * (New Features) Edit inline
+ * (New Examples) Pagination, Use as component in a page
  * Include handling of authentication tokens, and any other information
  * Customise
    * Table data format for each cell (e.g., currency to 3 decimal places)
@@ -78,7 +80,6 @@ However, the good part is that these parts need to be coded anyway and once you 
     # A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
     # If you want to install without saving to package.json, npm i --no-save vue-crud-x-?.?.?.tgz
 
-
 ## General Usage
 
 ### Option 1 use NPM package
@@ -91,7 +92,6 @@ Install it as in NPM package and import it
 Just copy the VueCrudX.vue file into your project and include it as a component
 
 # Todo / KIV
- * Is it possible to make compatible with NuxtJS (route-link, to, nuxt-link)
  * fix Date Range Issues... or check filters only on submit
  * GraphQL using Prisma or Hasura
  * add casl-vue, for casl authorization library
