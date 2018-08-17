@@ -6,6 +6,20 @@ Vue.use(VueI18n)
 // Ready translated locale messages
 const messages = {
   en: {
+    $vuetify: {
+      dataIterator: {
+        rowsPerPageText: 'Items per page:',
+        rowsPerPageAll: 'All',
+        pageText: '{0}-{1} of {2}',
+        noResultsText: 'No matching records found',
+        nextPage: 'Next page',
+        prevPage: 'Previous page'
+      },
+      dataTable: {
+        rowsPerPageText: 'Rows per page:'
+      },
+      noDataText: 'No data available'
+    },
     vueCrudX: {
       noData: 'No Data',
       confirm: 'Confirm',
@@ -16,9 +30,23 @@ const messages = {
     }
   },
   id: {
+    $vuetify: {
+      dataIterator: {
+        rowsPerPageText: 'Item Per Halaman:',
+        rowsPerPageAll: 'Semua',
+        pageText: '{0}-{1} dari {2}',
+        noResultsText: 'Tidak ada catatan yang cocok',
+        nextPage: 'Halaman selanjutnya',
+        prevPage: 'Halaman sebelumnya'
+      },
+      dataTable: {
+        rowsPerPageText: 'Baris per halaman:'
+      },
+      noDataText: 'Tidak ada data yang tersedia'
+    },
     vueCrudX: {
       noData: 'Tidak Ada Data',
-      confirm: 'memastikan',
+      confirm: 'Memastikan',
       itemRequired: 'Item wajib diisi'
     },
     myApp: {

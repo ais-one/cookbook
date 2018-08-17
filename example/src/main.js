@@ -10,7 +10,11 @@ import Alert from './components/User/Alert.vue'
 
 Vue.config.productionTip = false
 
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  lang: {
+    t: (key, ...params) => i18n.t(key, params)
+  }
+})
 
 Vue.component('app-alert', Alert) // Global - components
 

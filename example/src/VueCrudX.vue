@@ -57,7 +57,7 @@ const CrudStore = {
     async getRecords ({commit, getters}, payload) {
       payload.user = this.getters.user
       let {records, pagination} = await getters.crudOps.find(payload)
-      const totalRecs = records.length
+      let totalRecs = payload.doPage ? pagination.totalItems : records.length
       commit('setPagination', pagination)
       commit('setFilterData', payload.filterData)
       commit('setRecords', {records, totalRecs})
@@ -91,7 +91,6 @@ export default {
     crudSnackBar: { type: Object, default: () => ({ bottom: true, timeout: 6000 }) }
   },
   created () {
-    if (!this.$t || !this.$i18n) this.$t = null // if i18n is not found
     const store = this.$store
     const name = this.storeName
     if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
@@ -127,6 +126,7 @@ export default {
       loading: false,
       headers: { }, // pass in
       inline: false, // inline editing
+      inlineValue: null,
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
       confirmDelete: true,
@@ -175,10 +175,13 @@ export default {
     }
   },
   methods: {
-    setSnackBar (text) {
-      if (this.crudSnackBar) {
+    setSnackBar (statusCode) {
+      if (this.crudSnackBar && statusCode) {
+        this.snackbarText = 'Unknown Operation'
+        if (statusCode === 200 || statusCode === 201) this.snackbarText = 'OK'
+        else if (statusCode === 500) this.snackbarText = 'Operation Error'
+        else if (statusCode === 409) this.snackbarText = 'Duplicate Error'
         this.snackbar = true
-        this.snackbarText = text
       }
     },
     async getRecords (payload) { await this.$store.dispatch(this.storeName + '/getRecords', payload) },
@@ -186,20 +189,23 @@ export default {
     async deleteRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/deleteRecord', payload)
-      if (res) this.setSnackBar(res)
       this.loading = false
+      this.setSnackBar(res)
+      return res === 200
     },
     async updateRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/updateRecord', payload)
-      if (res) this.setSnackBar(res)
       this.loading = false
+      this.setSnackBar(res)
+      return res === 200
     },
     async createRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/createRecord', payload)
-      if (res) this.setSnackBar(res)
       this.loading = false
+      this.setSnackBar(res)
+      return res === 201
     },
     async getRecord (payload) {
       this.loading = true
@@ -217,8 +223,8 @@ export default {
       this.addEditDialogFlag = true
     },
     async addEditDialogSave (e) {
-      if (this.record.id && this.confirmCreate) if (!confirm(this.getConfirmText())) return
-      if (!this.record.id && this.confirmUpdate) if (!confirm(this.getConfirmText())) return
+      if (this.record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
+      if (!this.record.id && this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
 
       if (this.record.id) await this.updateRecord({record: this.record})
       else await this.createRecord({record: this.record, parentId: this.parentId})
@@ -226,7 +232,7 @@ export default {
       this.closeAddEditDialog()
     },
     async addEditDialogDelete (e) {
-      if (this.confirmDelete) if (!confirm(this.getConfirmText())) return
+      if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       const {id} = this.record
       if (id) {
         await this.deleteRecord({id})
@@ -237,6 +243,7 @@ export default {
     async getRecordsHelper () {
       this.loading = true
       await this.getRecords({
+        doPage: this.doPage,
         pagination: this.pagination,
         filterData: this.filterData,
         parentId: this.parentId
@@ -260,24 +267,23 @@ export default {
     // },
     goBack () { this.$router.back() },
     // inline
-    inlineCancel () { }, // do nothing for now
-    inlineOpen () { },
-    inlineClose () { },
-    async inlineSave (item) { // set snackback
-      if (this.confirmUpdate) if (!confirm(this.getConfirmText())) return
-      await this.updateRecord({record: item})
+    inlineOpen (value) {
+      this.inlineValue = value
+    },
+    async inlineUpdate (item, field) {
+      const rv = await this.updateRecord({record: item})
+      if (!rv) item[field] = this.inlineValue // if false undo changes
     },
     async inlineCreate () {
-      if (this.confirmCreate) if (!confirm(this.getConfirmText())) return
+      if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.createRecord({record: (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : this.crudForm.defaultRec, parentId: this.parentId})
       this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     async inlineDelete (id) {
-      if (this.confirmDelete) if (!confirm(this.getConfirmText())) return
+      if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.deleteRecord({id})
       this.$nextTick(async function () { await this.getRecordsHelper() })
-    },
-    getConfirmText () { return this.$t ? this.$t('vueCrudX.confirm') : 'PROCEED?' }
+    }
   }
 }
 </script>
@@ -318,10 +324,10 @@ export default {
               large
               lazy
               persistent
-              @save="inlineSave(props.item)"
-              @cancel="inlineCancel"
-              @open="inlineOpen"
-              @close="inlineClose"
+              @save="inlineUpdate(props.item, header.value)"
+              @cancel="()=>{}"
+              @open="inlineOpen(props.item[header.value])"
+              @close="()=>{}"
             >
               <div>{{ props.item[header.value] }}</div>
               <div slot="input" class="mt-3 title">Update Field</div>
@@ -348,7 +354,6 @@ export default {
             <v-toolbar-title><v-icon>mode_edit</v-icon> {{showTitle | capitalize}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items></v-toolbar-items>
-            <!-- v-btn icon @click.native="closeAddEditDialog" dark><v-icon>close</v-icon></v-btn -->
           </v-toolbar>
           <v-progress-linear :indeterminate="loading" height="2"></v-progress-linear>
           <v-form class="grey lighten-3 pa-2" v-model="validForm" lazy-validation>

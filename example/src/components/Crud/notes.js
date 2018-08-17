@@ -94,15 +94,14 @@ export const crudOps = { // CRUD
   },
   delete: async (payload) => {
     const {id} = payload
-    try { await firestore.doc('note/' + id).delete() } catch (e) { return 'Delete Error' }
+    try { await firestore.doc('note/' + id).delete() } catch (e) { return 500 }
+    return 200
   },
   find: async (payload) => {
     let records = []
     const {pagination, filterData} = payload // parentId
     const {dateStart, dateEnd, selectX} = filterData
-    const {rowsPerPage, totalItems, sortBy, descending} = pagination
-    console.log(rowsPerPage, totalItems, sortBy, descending)
-    console.log(filterData, selectX, dateStart, dateEnd)
+    const {sortBy, descending} = pagination // rowsPerPage, totalItems
     try {
       let dbCol = firestore.collection('note')
         .where('datetime', '>=', new Date(dateStart.value + ' 00:00:00')) // create index
@@ -150,7 +149,8 @@ export const crudOps = { // CRUD
       data.approver = ''
       data.approveStatus = 'pending'
       await collectionNote.add(data)
-    } catch (e) { return 'Create Error' }
+    } catch (e) { return 500 }
+    return 201
   },
   update: async (payload) => {
     let {user, record} = payload
@@ -165,6 +165,7 @@ export const crudOps = { // CRUD
         approver: record.approver,
         approveStatus: record.approveStatus
       })
-    } catch (e) { return 'Update Error' }
+    } catch (e) { return 500 }
+    return 200
   }
 }

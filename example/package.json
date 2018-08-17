@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "An example for vue-crud-x component usage",
   "author": "Aaron Gong <aaronjxz@gmail.com>",
   "private": true,
@@ -20,7 +20,7 @@
     "vue-i18n": "^7.6.0",
     "vue-recaptcha": "^1.1.0",
     "vue-router": "^3.0.1",
-    "vuetify": "^1.1.10",
+    "vuetify": "^1.1.12",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

@@ -19,14 +19,12 @@ export default {
   async created () {
     // console.log('party-notes created', this.parentId)
     try {
-      const rv = await firestore.collection('party').get() // populate select
+      const rv = await firestore.collection('party').get().limit(50) // populate select
       rv.forEach(record => {
         let data = record.data()
         this.partyList.push(data.name)
       })
     } catch (e) { }
-  },
-  methods: {
   }
 }
 </script>

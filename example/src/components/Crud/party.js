@@ -1,10 +1,10 @@
 import {firestore, hasDuplicate} from '@/firebase'
 import {makeCsvRow, exportCsv} from '@/assets/util'
 import {format} from 'date-fns'
-import {app} from '@/main' // to use store, router, i18n, etc...
-import i18n from '@/lang' // to use store, router, i18n, etc...
+// import {app} from '@/main' // to use store, router, i18n, etc...
+// import i18n from '@/lang' // to use store, router, i18n, etc...
 
-console.log(app, i18n, i18n.messages[i18n.locale])
+// console.log(app, i18n, i18n.messages[i18n.locale])
 
 // set snackbar props in object to customize, or set as null to disable snackbar
 export const crudSnackBar = { top: true, timeout: 6000 }
@@ -32,14 +32,14 @@ export const crudFilter = {
   filterData: {
     languages: {
       type: 'select',
-      label: i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
+      label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
       multiple: false,
       rules: [],
       value: '',
       itemsFn: async () => {
         let records = []
         try {
-          const rv = await firestore.collection('languages').limit(200).get() // create index
+          const rv = await firestore.collection('languages').limit(10).get() // create index
           rv.forEach(record => {
             let tmp = record.data()
             records.push(tmp.name)
@@ -88,7 +88,7 @@ export const crudOps = { // CRUD
     try {
       let dbCol = firestore.collection('party') // create index
         .where('status', '==', filterData.active.value)
-      const rv = await dbCol.limit(200).get()
+      const rv = await dbCol.limit(50).get()
 
       let csvContent = ''
       rv.forEach(record => {
@@ -105,7 +105,7 @@ export const crudOps = { // CRUD
     try {
       let dbCol = firestore.collection('party') // create index
         .where('status', '==', filterData.active.value)
-      const rv = await dbCol.limit(200).get()
+      const rv = await dbCol.limit(50).get()
       rv.forEach(record => {
         let tmp = record.data()
         records.push({id: record.id, ...tmp})
@@ -129,14 +129,42 @@ export const crudOps = { // CRUD
   },
   create: async (payload) => {
     const {record: {id, ...noIdData}} = payload
-    if (await hasDuplicate('party', 'name', noIdData['name'])) return 'Duplicate Found'
-    try { await firestore.collection('party').add(noIdData) } catch (e) { return 'Create Error' }
-    return 'Create OK'
+    const metaRef = firestore.collection('meta').doc('party')
+    const newDocRef = firestore.collection('party').doc()
+    try {
+      await firestore.runTransaction(async t => {
+        if (await hasDuplicate('party', 'name', noIdData['name'])) throw new Error(409)
+        const meta = await t.get(metaRef)
+        if (!meta.exists) throw new Error(500)
+        await t.set(newDocRef, noIdData)
+        let tmp = meta.data()
+        tmp.count++
+        await t.update(metaRef, tmp)
+      })
+    } catch (e) {
+      if (parseInt(e.message) === 409) return 409
+      else return 500
+    }
+    // if (await hasDuplicate('party', 'name', noIdData['name'])) return 409
+    // try { await firestore.collection('party').add(noIdData) } catch (e) { return 500 }
+    return 201
   },
   update: async (payload) => {
     let {record: {id, ...noIdData}} = payload
-    if (await hasDuplicate('party', 'name', noIdData['name'], id)) return 'Duplicate Found'
-    try { await firestore.doc('party/' + id).update(noIdData) } catch (e) { return 'Update Error' }
-    return 'Update OK'
+    const docRef = firestore.collection('party').doc(id)
+    try {
+      await firestore.runTransaction(async t => {
+        const doc = await t.get(docRef)
+        if (!doc.exists) throw new Error(409)
+        if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
+        await t.set(docRef, noIdData)
+      })
+    } catch (e) {
+      if (parseInt(e.message) === 409) return 409
+      else return 500
+    }
+    // if (await hasDuplicate('party', 'name', noIdData['name'], id)) return 409
+    // try { await firestore.doc('party/' + id).update(noIdData) } catch (e) { return 500 }
+    return 200
   }
 }
