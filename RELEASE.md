@@ -1,3 +1,6 @@
+### Version 0.0.20
+ * update vuetify to 1.1.13
+
 ### Version 0.0.19
  * Able to do nested CRUD operations, e.g. selecting a post from a list of posts, and then selecting a comment from a list of comments of the selected post to edit
  * use one Vue file for compilation
