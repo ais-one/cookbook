@@ -289,7 +289,7 @@ export default {
 </script>
 
 <template>
-  <v-container v-bind:class="{ 'make-modal': parentId }">
+  <v-container v-bind:class="{ 'make-modal': parentId }" fluid>
     <v-expansion-panel>
       <v-expansion-panel-content class="grey lighten-1">
         <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</div>
@@ -331,7 +331,7 @@ export default {
             >
               <div>{{ props.item[header.value] }}</div>
               <div slot="input" class="mt-3 title">Update Field</div>
-              <v-text-field slot="input" v-model="props.item[header.value]" label="Edit" :type="inline[header.value]" single-line counter autofocus></v-text-field>
+              <component :is="inline[header.value]==='textarea'?'v-textarea':'v-text-field'" slot="input" v-model="props.item[header.value]" label="Edit" :type="inline[header.value]" single-line counter autofocus></component>
             </v-edit-dialog>
             <span v-else>{{ props.item[header.value] | formatters(header.value) }}</span>
           </td>
