@@ -371,7 +371,7 @@ export default {
 
     <v-layout row justify-end>
       <v-btn v-if="parentId" fab top dark @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn>
-      <v-btn v-if="crudOps.create" fab top dark @click.stop="inline?inlineCreate():addEditDialogOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
+      <v-btn v-if="crudOps.create" fab top dark @click.stop="(inline && !crudForm.FormVue().component)?inlineCreate():addEditDialogOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
       <v-btn v-if="crudOps.export" fab top dark @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
         <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
       </v-btn>
