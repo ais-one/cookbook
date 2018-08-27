@@ -12,6 +12,8 @@ export const crudTable = {
     'remarks': 'text',
     'created': 'date'
   },
+  actionColumnDelete: true,
+  actionColumnUpdate: true,
   confirmCreate: true,
   confirmUpdate: true,
   confirmDelete: true,

@@ -1,5 +1,5 @@
 ### Version 0.0.20
- * update vuetify to 1.1.14
+ * update vuetify to 1.1.14 (please update for clickable v-icon)
  * handle textarea for inline edits
  * inline edit mode, Create operation, if there is a Form, use it for creation instead of row insert
  * TBD: fluid property

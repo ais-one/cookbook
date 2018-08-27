@@ -101,8 +101,14 @@ export default {
     } else { // re-use the already existing module
     }
     this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
-    this.headers = this.crudTable.headers || { }
     this.inline = this.crudTable.inline || false
+    this.actionColumnDelete = this.crudOps.delete && (this.crudTable.actionColumnDelete || true)
+    this.actionColumnUpdate = this.crudOps.update && !!this.crudForm.FormVue().component && (this.crudTable.actionColumnUpdate || true)
+    if (this.actionColumnDelete || this.actionColumnUpdate) {
+      this.headers = [{ text: 'Actions', value: 'id', sortable: false }, ...this.crudTable.headers]
+    } else {
+      this.headers = this.crudTable.headers
+    }
     this.confirmCreate = this.crudTable.confirmCreate || false
     this.confirmUpdate = this.crudTable.confirmUpdate || false
     this.confirmDelete = this.crudTable.confirmDelete || false
@@ -124,9 +130,11 @@ export default {
       validFilter: true,
       // data-table
       loading: false,
-      headers: { }, // pass in
+      headers: [ ], // pass in
       inline: false, // inline editing
       inlineValue: null,
+      actionColumnDelete: true, // action column
+      actionColumnUpdate: true, // action column
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
       confirmDelete: true,
@@ -215,6 +223,7 @@ export default {
     setRecord (payload) { this.$store.commit(this.storeName + '/setRecord', null) },
     async exportRecords (payload) { await this.$store.dispatch(this.storeName + '/exportRecords', payload) },
     closeAddEditDialog () {
+      this.setRecord() // clear it
       this.addEditDialogFlag = false
     },
     async addEditDialogOpen (id) {
@@ -283,13 +292,19 @@ export default {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.deleteRecord({id})
       this.$nextTick(async function () { await this.getRecordsHelper() })
+    },
+    rowClicked (item, event) {
+      this.$emit('selected', {item, event}) // emit 'selected' event with following data {item, event}
     }
   }
 }
+
+// properties to handle: fluid, dark, light, hide-headers, select-all
+// to consider: expand, item-key
 </script>
 
 <template>
-  <v-container v-bind:class="{ 'make-modal': parentId }" fluid>
+  <v-container v-bind:class="{ 'make-modal': parentId }" :fluid="true">
     <v-expansion-panel>
       <v-expansion-panel-content class="grey lighten-1">
         <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</div>
@@ -312,13 +327,19 @@ export default {
       :hide-actions=!doPage
     >
       <template slot="items" slot-scope="props">
+        <!-- TOREMOVE -->
+        <!-- <tr v-if="!inline" @click.stop="addEditDialogOpen(props.item.id)">
+          <td :key="header.value" v-for="(header, index) in headers" v-if="index>0">{{ props.item[header.value] | formatters(header.value) }}</td>
+        </tr> -->
+        <!-- <tr v-else> -->
         <!-- tr @click.stop="(e) => addEditDialogOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
-        <tr v-if="!inline" @click.stop="addEditDialogOpen(props.item.id)">
-          <td :key="header.value" v-for="header in headers">{{ props.item[header.value] | formatters(header.value) }}</td>
-        </tr>
-        <tr v-else>
+        <tr @click.stop="rowClicked(props.item, $event)">
+          <td v-if="actionColumnDelete||actionColumnUpdate" class="justify-left layout">
+            <v-icon v-if="actionColumnUpdate" small class="mr-2" @click.stop="addEditDialogOpen(props.item.id)">edit</v-icon>
+            <v-icon v-if="actionColumnDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)">delete</v-icon>
+          </td>
           <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
-          <td :key="header.value" v-for="header in headers" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
+          <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumnDelete||actionColumnUpdate?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
             <v-edit-dialog v-if="inline[header.value] && crudOps.update"
               :return-value.sync="props.item[header.value]"
               large
@@ -334,9 +355,6 @@ export default {
               <component :is="inline[header.value]==='textarea'?'v-textarea':'v-text-field'" slot="input" v-model="props.item[header.value]" label="Edit" :type="inline[header.value]" single-line counter autofocus></component>
             </v-edit-dialog>
             <span v-else>{{ props.item[header.value] | formatters(header.value) }}</span>
-          </td>
-          <td>
-            <v-btn v-if="crudOps.delete" @click.native="inlineDelete(props.item.id)"><v-icon>delete</v-icon></v-btn>
           </td>
         </tr>
       </template>
