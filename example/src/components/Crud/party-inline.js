@@ -28,7 +28,9 @@ export const crudTable = {
   formatters: (value, _type) => {
     if (_type === 'languages') return value.join(',')
     return value
-  }
+  },
+  doPage: true,
+  crudTitle: 'Custom Title'
 }
 
 export const crudFilter = {

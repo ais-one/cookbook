@@ -20,7 +20,8 @@ export const crudTable = {
     { text: 'Party Name', value: 'name' },
     { text: 'Status', value: 'status' }
   ],
-  formatters: (value, _type) => value
+  formatters: (value, _type) => value,
+  doPage: false
 }
 
 export const crudFilter = {

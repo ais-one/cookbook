@@ -91,8 +91,6 @@ export default {
     crudTable: { type: Object, required: true },
     crudForm: { type: Object, required: true },
     crudOps: { type: Object, required: true },
-    crudTitle: { type: String },
-    doPage: { type: Boolean, default: true },
     crudSnackBar: { type: Object, default: () => ({ bottom: true, timeout: 6000 }) }
   },
   created () {
@@ -131,6 +129,11 @@ export default {
     this.confirmUpdate = !!this.crudTable.confirmUpdate
     this.confirmDelete = !!this.crudTable.confirmDelete
 
+    // pagination
+    this.doPage = !!this.crudTable.doPage
+    // title
+    this.crudTitle = this.crudTable.crudTitle || ''
+
     // assign the components
     this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     this.$options.components['crud-form'] = this.crudForm.FormVue
@@ -150,9 +153,12 @@ export default {
       validFilter: true,
       // data-table
       loading: false,
+      // temporarily storing inline  edit values
+      inlineValue: null,
+
+      // crudTable
       headers: [ ], // pass in
       inline: false, // inline editing
-      inlineValue: null,
 
       actionColumn: false,
       canDelete: true,
@@ -163,6 +169,9 @@ export default {
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
       confirmDelete: true,
+      doPage: true, // paginate
+      crudTitle: '', // title
+
       // snackbar
       snackbar: false,
       snackbarText: ''

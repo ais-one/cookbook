@@ -27,12 +27,7 @@ export default new Router({
       component: VueCrudX, // () => import('@/components/Note') // lazy loading
       beforeEnter: AuthGuard,
       props: (route) => {
-        return {
-          storeName: route.name,
-          parentId: route.params.parentId || null,
-          ...noteDefs,
-          crudTitle: 'My Title'
-        }
+        return { storeName: route.name, parentId: route.params.parentId || null, ...noteDefs }
       }
     },
     {
@@ -48,21 +43,21 @@ export default new Router({
       path: '/party-inline',
       name: 'party-inline',
       component: VueCrudX,
-      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyInlineDefs, doPage: true } },
+      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyInlineDefs } },
       beforeEnter: AuthGuard
     },
     {
       path: '/party',
       name: 'party',
       component: VueCrudX,
-      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs, doPage: false } },
+      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs } },
       beforeEnter: AuthGuard
     },
     {
       path: '/party-notes/:parentId',
       name: 'party-notes',
       component: VueCrudX,
-      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyNotesDefs, doPage: false } },
+      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyNotesDefs } },
       beforeEnter: AuthGuard
     },
     { path: '/party-component-example', name: 'Party Component Example', component: PartyComponentExample },

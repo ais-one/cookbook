@@ -7,7 +7,7 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12 sm6>
-        <vue-crud-x crudTitle="Test1" storeName="test1" :parentId="null" v-bind="defs" />
+        <vue-crud-x storeName="test1" :parentId="null" v-bind="defs" />
       </v-flex>
       <v-flex xs12 sm6>
         <v-container>

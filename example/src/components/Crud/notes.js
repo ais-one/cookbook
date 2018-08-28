@@ -14,7 +14,8 @@ export const crudTable = {
   formatters: (value, _type) => {
     if (_type === 'datetime') return format(value, 'YYYY MMM DD HH:mm')
     return value
-  }
+  },
+  crudTitle: 'My Notes Title'
 }
 
 export const crudFilter = {
