@@ -296,10 +296,10 @@ export default {
       })
       this.loading = false
     },
-    // clearFilter () { // can do test code here too
-    //   this.$refs.searchForm.reset()
-    // },
+
+    // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
     goBack () { this.$router.back() },
+
     // inline
     inlineOpen (value) {
       this.inlineValue = value
@@ -351,7 +351,6 @@ export default {
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudDialogOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
         <tr @click.stop="actionColumn ? (inline ? '' : rowClicked(props.item, $event)) : crudDialogOpen(props.item.id)">
-        <!-- <tr @click.stop="actionColumn ? rowClicked(props.item, $event) : crudDialogOpen(props.item.id)"> -->
           <td v-if="actionColumn" class="justify-left layout">
             <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudDialogOpen(props.item.id)">edit</v-icon>
             <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)">delete</v-icon>
