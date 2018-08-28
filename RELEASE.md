@@ -6,7 +6,10 @@
    * add actionColumn (if true, table row has edit/delete icons)
    * option to create new record via dialog (current & default behaviour) or by adding row
    * if you have actionColumn but no inline edit fields, clicking on row will emit 'selected' event
- * TBD: customize table a bit more
+ * TBD
+   * customize table a bit more
+   * Move doPage from props
+   * actions-append
  
 ### Version 0.0.19
  * Able to do nested CRUD operations, e.g. selecting a post from a list of posts, and then selecting a comment from a list of comments of the selected post to edit
