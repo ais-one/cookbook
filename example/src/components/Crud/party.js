@@ -11,6 +11,8 @@ export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
   inline: null,
+  actionColumnDelete: false,
+  actionColumnUpdate: false,
   confirmCreate: true,
   confirmUpdate: true,
   confirmDelete: true,

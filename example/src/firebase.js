@@ -1,7 +1,7 @@
-import Firebase from 'firebase/app'
-import 'firebase/auth'
-import 'firebase/firestore'
-import 'firebase/storage'
+import Firebase from '@firebase/app'
+import '@firebase/auth'
+import '@firebase/firestore'
+import '@firebase/storage'
 import {firebaseCfg} from '../cfg.json'
 
 const firebaseApp = Firebase.initializeApp(firebaseCfg)

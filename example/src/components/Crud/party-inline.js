@@ -32,9 +32,7 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  FilterVue: () => ({
-    component: import('./Filter.vue')
-  }),
+  FilterVue: () => ({ component: import('./Filter.vue') }),
   filterData: {
     active: {
       type: 'select',
@@ -48,7 +46,8 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  FormVue: () => ({ component: null }), // not needed
+  FormVue: () => ({ component: import('./PartyForm.vue') }),
+  // FormVue: () => ({ component: null }), // not needed
   defaultRec: () => ({ // you can use function to initialize record as well
     id: '',
     name: '',

@@ -102,8 +102,8 @@ export default {
     }
     this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
     this.inline = this.crudTable.inline || false
-    this.actionColumnDelete = this.crudOps.delete && (this.crudTable.actionColumnDelete || true)
-    this.actionColumnUpdate = this.crudOps.update && !!this.crudForm.FormVue().component && (this.crudTable.actionColumnUpdate || true)
+    this.actionColumnDelete = this.crudOps.delete && !!this.crudTable.actionColumnDelete
+    this.actionColumnUpdate = this.crudOps.update && !!this.crudForm.FormVue().component && !!this.crudTable.actionColumnUpdate
     if (this.actionColumnDelete || this.actionColumnUpdate) {
       this.headers = [{ text: 'Actions', value: 'id', sortable: false }, ...this.crudTable.headers]
     } else {
@@ -340,7 +340,7 @@ export default {
         </tr> -->
         <!-- <tr v-else> -->
         <!-- tr @click.stop="(e) => addEditDialogOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
-        <tr @click.stop="(actionDialogUpdate && !actionColumnUpdate) ? addEditDialogOpen(props.item.id) : rowClicked(props.item, $event)">
+        <tr @click.stop="(actionDialogUpdate && !actionColumnUpdate) ? addEditDialogOpen(props.item.id) : inline ? '' : rowClicked(props.item, $event)">
           <td v-if="actionColumnDelete||actionColumnUpdate" class="justify-left layout">
             <v-icon v-if="actionColumnUpdate" small class="mr-2" @click.stop="addEditDialogOpen(props.item.id)">edit</v-icon>
             <v-icon v-if="actionColumnDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)">delete</v-icon>
