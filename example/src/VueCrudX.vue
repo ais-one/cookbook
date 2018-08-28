@@ -109,6 +109,10 @@ export default {
     } else {
       this.headers = this.crudTable.headers
     }
+
+    this.actionDialogUpdate = ((!this.record.id && this.crudOps.create) || (this.record.id && this.crudOps.update)) && !!this.crudForm.FormVue().component && (this.crudTable.actionDialogUpdate || true)
+    this.actionDialogDelete = this.record.id && this.crudOps.delete && !!this.crudForm.FormVue().component && (this.crudTable.actionDialogDelete || true)
+
     this.confirmCreate = this.crudTable.confirmCreate || false
     this.confirmUpdate = this.crudTable.confirmUpdate || false
     this.confirmDelete = this.crudTable.confirmDelete || false
@@ -133,8 +137,10 @@ export default {
       headers: [ ], // pass in
       inline: false, // inline editing
       inlineValue: null,
-      actionColumnDelete: true, // action column
-      actionColumnUpdate: true, // action column
+      actionColumnDelete: true, // show delete icon in action column
+      actionColumnUpdate: true, // show update icon in action column
+      actionDialogDelete: true, // show delete icon in dialog
+      actionDialogUpdate: true, // show update icon in dialog
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
       confirmDelete: true,
@@ -294,6 +300,7 @@ export default {
       this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     rowClicked (item, event) {
+      console.log('rowClicked')
       this.$emit('selected', {item, event}) // emit 'selected' event with following data {item, event}
     }
   }
@@ -333,7 +340,7 @@ export default {
         </tr> -->
         <!-- <tr v-else> -->
         <!-- tr @click.stop="(e) => addEditDialogOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
-        <tr @click.stop="rowClicked(props.item, $event)">
+        <tr @click.stop="(actionDialogUpdate && !actionColumnUpdate) ? addEditDialogOpen(props.item.id) : rowClicked(props.item, $event)">
           <td v-if="actionColumnDelete||actionColumnUpdate" class="justify-left layout">
             <v-icon v-if="actionColumnUpdate" small class="mr-2" @click.stop="addEditDialogOpen(props.item.id)">edit</v-icon>
             <v-icon v-if="actionColumnDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)">delete</v-icon>
@@ -379,8 +386,8 @@ export default {
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn fab @click.native="closeAddEditDialog" dark><v-icon>reply</v-icon></v-btn>
-              <v-btn fab v-if="record.id && crudOps.delete" dark @click.native="addEditDialogDelete"><v-icon>delete</v-icon></v-btn>
-              <v-btn fab v-if="(record.id && crudOps.update) || (!record.id && crudOps.create)" :disabled="!validForm" @click.native="addEditDialogSave"><v-icon>done_all</v-icon></v-btn>
+              <v-btn fab v-if="actionDialogDelete" dark @click.native="addEditDialogDelete"><v-icon>delete</v-icon></v-btn>
+              <v-btn fab v-if="actionDialogUpdate" :disabled="!validForm" @click.native="addEditDialogSave"><v-icon>done_all</v-icon></v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
