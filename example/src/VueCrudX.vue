@@ -1,4 +1,9 @@
 <script>
+// TBD
+// 1) properties to handle: fluid, dark or light, hide-headers, select-all, form toolbar color="success"
+// 2) to consider: expand, item-key
+// 3) user access control to operations
+
 import _cloneDeep from 'lodash.clonedeep'
 const CrudStore = {
   namespaced: true,
@@ -102,10 +107,11 @@ export default {
     }
     this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
 
+    // set inline edit fields
     if (this.crudTable.inline) this.inline = this.crudTable.inline
-    this.actionColumn = !!this.crudTable.actionColumn
 
     // is there an action column
+    this.actionColumn = !!this.crudTable.actionColumn
     if (this.actionColumn) { // WARNING what if this.crudTable.headers undefined or wrong?
       this.headers = [{ text: 'Actions', value: 'id', sortable: false }, ...this.crudTable.headers]
     } else {
@@ -318,9 +324,6 @@ export default {
     }
   }
 }
-
-// properties to handle: fluid, dark or light, hide-headers, select-all, form toolbar color="success"
-// to consider: expand, item-key
 </script>
 
 <template>
