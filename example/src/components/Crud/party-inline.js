@@ -7,13 +7,13 @@ import {crudOps as partyCrudOps} from './party'
 export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
+  actionColumn: true,
+  addrowCreate: true,
   inline: {
     'name': 'text',
     'remarks': 'text',
     'created': 'date'
   },
-  actionColumnDelete: true,
-  actionColumnUpdate: true,
   confirmCreate: true,
   confirmUpdate: true,
   confirmDelete: true,
@@ -75,29 +75,6 @@ export const crudOps = { // CRUD
       exportCsv(csvContent, 'party.csv')
     } catch (e) { }
   },
-  delete: async (payload) => {
-    const {id} = payload
-    const metaRef = firestore.collection('meta').doc('party')
-    const docRef = firestore.collection('party').doc(id)
-    try {
-      await firestore.runTransaction(async t => {
-        const meta = await t.get(metaRef)
-        const doc = await t.get(docRef)
-        if (!meta.exists) throw new Error(500)
-        if (!doc.exists) throw new Error(409)
-        await t.delete(docRef)
-        let tmp = meta.data()
-        tmp.count--
-        await t.update(metaRef, tmp)
-      })
-    } catch (e) {
-      if (parseInt(e.message) === 409) return 409
-      else return 500
-    }
-    return 200
-    // try { await firestore.collection('party').doc(id).delete() } catch (e) { return 'Delete Error' }
-    // return ''
-  },
   find: async (payload) => {
     let records = []
     const {pagination, filterData} = payload
@@ -135,5 +112,6 @@ export const crudOps = { // CRUD
     return record
   },
   create: partyCrudOps.create,
-  update: partyCrudOps.update
+  update: partyCrudOps.update,
+  delete: partyCrudOps.delete
 }

@@ -101,21 +101,31 @@ export default {
     } else { // re-use the already existing module
     }
     this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
-    this.inline = this.crudTable.inline || false
-    this.actionColumnDelete = this.crudOps.delete && !!this.crudTable.actionColumnDelete
-    this.actionColumnUpdate = this.crudOps.update && !!this.crudForm.FormVue().component && !!this.crudTable.actionColumnUpdate
-    if (this.actionColumnDelete || this.actionColumnUpdate) {
+
+    if (this.crudTable.inline) this.inline = this.crudTable.inline
+    this.actionColumn = !!this.crudTable.actionColumn
+
+    // is there an action column
+    if (this.actionColumn) { // WARNING what if this.crudTable.headers undefined or wrong?
       this.headers = [{ text: 'Actions', value: 'id', sortable: false }, ...this.crudTable.headers]
     } else {
       this.headers = this.crudTable.headers
     }
 
-    this.actionDialogUpdate = ((!this.record.id && this.crudOps.create) || (this.record.id && this.crudOps.update)) && !!this.crudForm.FormVue().component && (this.crudTable.actionDialogUpdate || true)
-    this.actionDialogDelete = this.record.id && this.crudOps.delete && !!this.crudForm.FormVue().component && (this.crudTable.actionDialogDelete || true)
+    // set the permissions
+    this.canUpdate = this.crudOps.update && !!this.crudForm.FormVue().component // add user permissions later
+    this.canDelete = this.crudOps.delete // add user permissions later
+    this.canCreate = this.crudOps.create && !!this.crudForm.FormVue().component // add user permissions later
 
-    this.confirmCreate = this.crudTable.confirmCreate || false
-    this.confirmUpdate = this.crudTable.confirmUpdate || false
-    this.confirmDelete = this.crudTable.confirmDelete || false
+    // use add row to create record
+    this.addrowCreate = !!this.crudTable.addrowCreate
+
+    // set confirmation
+    this.confirmCreate = !!this.crudTable.confirmCreate
+    this.confirmUpdate = !!this.crudTable.confirmUpdate
+    this.confirmDelete = !!this.crudTable.confirmDelete
+
+    // assign the components
     this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     this.$options.components['crud-form'] = this.crudForm.FormVue
     if (this.record.id && !this.parentId) { // nested CRUD
@@ -137,10 +147,13 @@ export default {
       headers: [ ], // pass in
       inline: false, // inline editing
       inlineValue: null,
-      actionColumnDelete: true, // show delete icon in action column
-      actionColumnUpdate: true, // show update icon in action column
-      actionDialogDelete: true, // show delete icon in dialog
-      actionDialogUpdate: true, // show update icon in dialog
+
+      actionColumn: false,
+      canDelete: true,
+      canUpdate: true,
+      canCreate: true,
+      addrowCreate: false, // add row to create instead of using dialog
+
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
       confirmDelete: true,
@@ -232,7 +245,7 @@ export default {
       this.setRecord() // clear it
       this.addEditDialogFlag = false
     },
-    async addEditDialogOpen (id) {
+    async crudDialogOpen (id) {
       if (id) await this.getRecord({id}) // edit
       else this.setRecord() // add
       this.addEditDialogFlag = true
@@ -246,7 +259,7 @@ export default {
       await this.getRecordsHelper()
       this.closeAddEditDialog()
     },
-    async addEditDialogDelete (e) {
+    async crudDialogDelete (e) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       const {id} = this.record
       if (id) {
@@ -306,7 +319,7 @@ export default {
   }
 }
 
-// properties to handle: fluid, dark, light, hide-headers, select-all
+// properties to handle: fluid, dark or light, hide-headers, select-all, form toolbar color="success"
 // to consider: expand, item-key
 </script>
 
@@ -334,19 +347,15 @@ export default {
       :hide-actions=!doPage
     >
       <template slot="items" slot-scope="props">
-        <!-- TOREMOVE -->
-        <!-- <tr v-if="!inline" @click.stop="addEditDialogOpen(props.item.id)">
-          <td :key="header.value" v-for="(header, index) in headers" v-if="index>0">{{ props.item[header.value] | formatters(header.value) }}</td>
-        </tr> -->
-        <!-- <tr v-else> -->
-        <!-- tr @click.stop="(e) => addEditDialogOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
-        <tr @click.stop="(actionDialogUpdate && !actionColumnUpdate) ? addEditDialogOpen(props.item.id) : inline ? '' : rowClicked(props.item, $event)">
-          <td v-if="actionColumnDelete||actionColumnUpdate" class="justify-left layout">
-            <v-icon v-if="actionColumnUpdate" small class="mr-2" @click.stop="addEditDialogOpen(props.item.id)">edit</v-icon>
-            <v-icon v-if="actionColumnDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)">delete</v-icon>
+        <!-- tr @click.stop="(e) => crudDialogOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
+        <tr @click.stop="actionColumn ? (inline ? '' : rowClicked(props.item, $event)) : crudDialogOpen(props.item.id)">
+        <!-- <tr @click.stop="actionColumn ? rowClicked(props.item, $event) : crudDialogOpen(props.item.id)"> -->
+          <td v-if="actionColumn" class="justify-left layout">
+            <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudDialogOpen(props.item.id)">edit</v-icon>
+            <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)">delete</v-icon>
           </td>
           <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
-          <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumnDelete||actionColumnUpdate?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
+          <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumn?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
             <v-edit-dialog v-if="inline[header.value] && crudOps.update"
               :return-value.sync="props.item[header.value]"
               large
@@ -386,8 +395,8 @@ export default {
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn fab @click.native="closeAddEditDialog" dark><v-icon>reply</v-icon></v-btn>
-              <v-btn fab v-if="actionDialogDelete" dark @click.native="addEditDialogDelete"><v-icon>delete</v-icon></v-btn>
-              <v-btn fab v-if="actionDialogUpdate" :disabled="!validForm" @click.native="addEditDialogSave"><v-icon>done_all</v-icon></v-btn>
+              <v-btn fab v-if="canDelete && record.id" dark @click.native="crudDialogDelete"><v-icon>delete</v-icon></v-btn>
+              <v-btn fab v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm" @click.native="addEditDialogSave"><v-icon>done_all</v-icon></v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -396,7 +405,7 @@ export default {
 
     <v-layout row justify-end>
       <v-btn v-if="parentId" fab top dark @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn>
-      <v-btn v-if="crudOps.create" fab top dark @click.stop="(inline && !crudForm.FormVue().component)?inlineCreate():addEditDialogOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
+      <v-btn v-if="canCreate" fab top dark @click.stop="addrowCreate?inlineCreate():crudDialogOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
       <v-btn v-if="crudOps.export" fab top dark @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
         <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
       </v-btn>

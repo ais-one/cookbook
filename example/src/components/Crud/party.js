@@ -10,9 +10,9 @@ import {format} from 'date-fns'
 export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
-  inline: null,
-  actionColumnDelete: false,
-  actionColumnUpdate: false,
+  actionColumn: false,
+  addrowCreate: false,
+  // inline: false,
   confirmCreate: true,
   confirmUpdate: true,
   confirmDelete: true,
@@ -100,7 +100,6 @@ export const crudOps = { // CRUD
       exportCsv(csvContent, 'party.csv')
     } catch (e) { }
   },
-  delete: null, // TBD if delete, must also delete all dependancies, move all buttons to right?
   find: async (payload) => {
     let records = []
     const {pagination, filterData} = payload
@@ -168,5 +167,29 @@ export const crudOps = { // CRUD
     // if (await hasDuplicate('party', 'name', noIdData['name'], id)) return 409
     // try { await firestore.doc('party/' + id).update(noIdData) } catch (e) { return 500 }
     return 200
+  },
+  // delete: null, // TBD if delete, must also delete all dependancies, move all buttons to right?
+  delete: async (payload) => {
+    const {id} = payload
+    const metaRef = firestore.collection('meta').doc('party')
+    const docRef = firestore.collection('party').doc(id)
+    try {
+      await firestore.runTransaction(async t => {
+        const meta = await t.get(metaRef)
+        const doc = await t.get(docRef)
+        if (!meta.exists) throw new Error(500)
+        if (!doc.exists) throw new Error(409)
+        await t.delete(docRef)
+        let tmp = meta.data()
+        tmp.count--
+        await t.update(metaRef, tmp)
+      })
+    } catch (e) {
+      if (parseInt(e.message) === 409) return 409
+      else return 500
+    }
+    return 200
+    // try { await firestore.collection('party').doc(id).delete() } catch (e) { return 'Delete Error' }
+    // return ''
   }
 }
