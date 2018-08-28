@@ -11,7 +11,7 @@ export const crudTable = {
   addrowCreate: true,
   inline: {
     'name': 'text',
-    'remarks': 'text',
+    'remarks': 'textarea',
     'created': 'date'
   },
   confirmCreate: true,
