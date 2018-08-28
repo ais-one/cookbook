@@ -384,11 +384,11 @@ export default {
           </td>
         </tr>
       </template>
-      <!-- TBD Start -->
-      <template slot="actions-append">
-        <v-icon v-if="canCreate" @click.stop="addrowCreate?inlineCreate():crudDialogOpen(null)" :disabled="loading">add</v-icon>
-      </template>
-      <!-- TBD End -->
+      <!-- IMPLEMENT IN FUTURE AS IT IS CHANGE THAT NEEDS VERSION 1.2.X
+        <template slot="actions-append">
+          <v-icon v-if="canCreate" @click.stop="addrowCreate?inlineCreate():crudDialogOpen(null)" :disabled="loading">add</v-icon>
+        </template>
+      -->
       <template slot="no-data">
         <v-flex class="text-xs-center">
           <v-alert :value="true" color="error" icon=""><v-icon>warning</v-icon> {{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
