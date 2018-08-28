@@ -319,7 +319,6 @@ export default {
       this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     rowClicked (item, event) {
-      console.log('rowClicked')
       this.$emit('selected', {item, event}) // emit 'selected' event with following data {item, event}
     }
   }

@@ -5,10 +5,11 @@ import '@firebase/storage'
 import {firebaseCfg} from '../cfg.json'
 
 const firebaseApp = Firebase.initializeApp(firebaseCfg)
-
 const storage = firebaseApp.storage()
 const firestore = firebaseApp.firestore()
+firestore.settings({timestampsInSnapshots: true})
 const auth = firebaseApp.auth()
+
 const hasDuplicate = async (collection, key, value, id = null) => {
   try {
     if (id) { // update

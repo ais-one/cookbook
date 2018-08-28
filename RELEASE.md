@@ -1,8 +1,12 @@
 ### Version 0.0.20
- * update vuetify to 1.1.14 (please update for clickable v-icon)
+ * update vuetify to 1.2.0
+   * see if can use actions-append (for add / export)
  * handle textarea for inline edits
- * inline edit mode, Create operation, if there is a Form, use it for creation instead of row insert
- * TBD: fluid property
+ * inline edit improvement
+   * add actionColumn (if true, table row has edit/delete icons)
+   * option to create new record via dialog (current & default behaviour) or by adding row
+   * if you have actionColumn but no inline edit fields, clicking on row will emit 'selected' event
+ * TBD: customize table a bit more
  
 ### Version 0.0.19
  * Able to do nested CRUD operations, e.g. selecting a post from a list of posts, and then selecting a comment from a list of comments of the selected post to edit
