@@ -247,7 +247,7 @@ export default {
     },
     setRecord (payload) { this.$store.commit(this.storeName + '/setRecord', null) },
     async exportRecords (payload) { await this.$store.dispatch(this.storeName + '/exportRecords', payload) },
-    closeAddEditDialog () {
+    closeCrudDialog () {
       this.setRecord() // clear it
       this.addEditDialogFlag = false
     },
@@ -256,14 +256,14 @@ export default {
       else this.setRecord() // add
       this.addEditDialogFlag = true
     },
-    async addEditDialogSave (e) {
+    async crudDialogSave (e) {
       if (this.record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
       if (!this.record.id && this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
 
       if (this.record.id) await this.updateRecord({record: this.record})
       else await this.createRecord({record: this.record, parentId: this.parentId})
       await this.getRecordsHelper()
-      this.closeAddEditDialog()
+      this.closeCrudDialog()
     },
     async crudDialogDelete (e) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
@@ -272,7 +272,7 @@ export default {
         await this.deleteRecord({id})
         await this.getRecordsHelper()
       }
-      this.closeAddEditDialog()
+      this.closeCrudDialog()
     },
     async getRecordsHelper () {
       this.loading = true
@@ -352,8 +352,8 @@ export default {
         <!-- tr @click.stop="(e) => crudDialogOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
         <tr @click.stop="actionColumn ? (inline ? '' : rowClicked(props.item, $event)) : crudDialogOpen(props.item.id)">
           <td v-if="actionColumn" class="justify-left layout">
-            <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudDialogOpen(props.item.id)">edit</v-icon>
-            <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)">delete</v-icon>
+            <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudDialogOpen(props.item.id)" :disabled="loading">edit</v-icon>
+            <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
           </td>
           <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
           <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumn?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
@@ -375,6 +375,11 @@ export default {
           </td>
         </tr>
       </template>
+      <!-- TBD Start -->
+      <template slot="actions-append">
+        <v-icon v-if="canCreate" @click.stop="addrowCreate?inlineCreate():crudDialogOpen(null)" :disabled="loading">add</v-icon>
+      </template>
+      <!-- TBD End -->
       <template slot="no-data">
         <v-flex class="text-xs-center">
           <v-alert :value="true" color="error" icon=""><v-icon>warning</v-icon> {{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
@@ -395,9 +400,9 @@ export default {
             <crud-form :record="record" :parentId="parentId" :storeName="storeName" />
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn fab @click.native="closeAddEditDialog" dark><v-icon>reply</v-icon></v-btn>
+              <v-btn fab @click.native="closeCrudDialog" dark><v-icon>reply</v-icon></v-btn>
               <v-btn fab v-if="canDelete && record.id" dark @click.native="crudDialogDelete"><v-icon>delete</v-icon></v-btn>
-              <v-btn fab v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm" @click.native="addEditDialogSave"><v-icon>done_all</v-icon></v-btn>
+              <v-btn fab v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm" @click.native="crudDialogSave"><v-icon>done_all</v-icon></v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
