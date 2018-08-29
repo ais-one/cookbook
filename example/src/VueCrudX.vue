@@ -141,8 +141,14 @@ export default {
       this.addEditDialogFlag = true
     }
   },
+  async mounted () {
+    if (this.crudFilter.FilterVue().component === null) {
+      for (var key in this.filterData) {
+        if (this.filterData[key].itemsFn) this.filterData[key].items = await this.filterData[key].itemsFn()
+      }
+    }
+  },
   beforeUpdate () { },
-  mounted () { },
   beforeRouteEnter (to, from, next) { next(vm => { }) },
   data () {
     return {
@@ -340,7 +346,15 @@ export default {
       <v-expansion-panel-content class="grey lighten-1">
         <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</div>
         <v-form class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
-          <crud-filter :filterData="filterData" :parentId="parentId" :storeName="storeName" />
+          <crud-filter v-if="crudFilter.FilterVue().component" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
+          <v-layout row wrap v-else>
+            <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.sm6" xs12 class="pa-2">
+              <component v-if="filter.type === 'select'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules"></component>
+              <component v-if="filter.type === 'select-kv'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules" item-value="value" item-text="text" return-object></component>
+              <component v-if="filter.type === 'date'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" type="date"></component>
+              <component v-if="filter.type === 'text'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" type="text"></component>
+            </v-flex>
+          </v-layout>
           <v-layout row justify-end>
             <!-- v-btn fab @click="clearFilter"><v-icon>close</v-icon></v-btn -->
             <v-btn fab @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>

@@ -17,9 +17,7 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  FilterVue: () => ({
-    component: import('./Filter.vue')
-  }),
+  FilterVue: () => ({ component: null }),
   filterData: {
     selectX: {
       type: 'select-kv',

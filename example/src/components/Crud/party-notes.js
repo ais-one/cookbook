@@ -19,13 +19,8 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  FilterVue: () => ({
-    component: import('./Filter.vue')
-  }),
+  FilterVue: () => ({ component: null }),
   filterData: {
-    // dateStart: format(subDays(new Date(), 20), 'YYYY-MM-DD'),
-    // dateEnd: format(new Date(), 'YYYY-MM-DD'),
-    // selectX: { text: 'All', value: 'all' },
     dateStart: {
       type: 'date',
       label: 'Date Start',
