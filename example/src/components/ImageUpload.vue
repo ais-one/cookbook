@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pa-2">
     <input type="file" @change="onFileChanged" style="display:none;" ref="fileInput" accept="image/*">
     <v-btn raised @click="$refs.fileInput.click()">Pick File</v-btn>
     <v-btn @click="onUpload" :disabled="disableUploadBtn">Upload!</v-btn>

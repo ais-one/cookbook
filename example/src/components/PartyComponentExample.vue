@@ -12,10 +12,10 @@
       <v-flex xs12 sm6>
         <v-container>
           <v-card>
-            <v-card-media
+            <v-img
               src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
               height="200px"
-            ></v-card-media>
+            ></v-img>
             <v-card-title primary-title>
               <div>
                 <h3 class="headline mb-0">Kangaroo Valley Safari</h3>

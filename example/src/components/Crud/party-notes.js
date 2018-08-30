@@ -28,7 +28,8 @@ export const crudFilter = {
       rules: [
         (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date',
         (v) => (differenceInCalendarDays(crudFilter.filterData.dateEnd.value, v) <= 60) || 'Select only up to 60 days of records at a time'
-      ]
+      ],
+      sm6: true
     },
     dateEnd: {
       type: 'date',
@@ -51,7 +52,8 @@ export const crudFilter = {
         { text: 'Rejected', value: 'rejected' }
       ],
       value: { text: 'All', value: 'all' },
-      rules: [v => !!v || 'Item is required']
+      rules: [v => !!v || 'Item is required'],
+      sm6: true
     }
   }
 }

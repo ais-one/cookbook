@@ -63,7 +63,7 @@
     </v-navigation-drawer>
     <v-toolbar class="success" dark app fixed clipped-left dense>
       <v-toolbar-title>
-        <v-toolbar-side-icon v-if="userIsAuthenticated" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <v-toolbar-side-icon v-if="userIsAuthenticated" v-show="!$route.params.parentId" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         Crud Test
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -96,7 +96,7 @@
     <main>
       <v-content>
         <v-container fluid>
-          <router-view :key="$route.fullPath"></router-view>
+          <router-view :key="$route.fullPath" dark></router-view>
         </v-container>
       </v-content>
     </main>
@@ -131,6 +131,11 @@ export default {
   },
   created () {
     if (this.$i18n) this.$i18n.locale = this.selectedLocale.toLowerCase()
+  },
+  watch: {
+    '$route' (to, from) {
+      console.log(to, from)
+    }
   },
   computed: {
     userIsAuthenticated () {

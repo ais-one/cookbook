@@ -1,7 +1,11 @@
 <script>
 // TBD
-// 1) properties to handle: fluid, dark or light, hide-headers, select-all, form toolbar color="success"
-// 2) to consider: expand, item-key
+// 1) properties to handle: fluid, hide-headers, dark or light
+// color="success"
+// form toolbar
+// no data error
+// dialog background
+// 2) to consider: expand, item-key="id", select-all
 // 3) user access control to operations
 
 import _cloneDeep from 'lodash.clonedeep'
@@ -94,6 +98,7 @@ export default {
     crudSnackBar: { type: Object, default: () => ({ bottom: true, timeout: 6000 }) }
   },
   created () {
+    console.log('TBD ATTRS', this.$attrs)
     const store = this.$store
     const name = this.storeName
     if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
@@ -370,6 +375,10 @@ export default {
       :loading="loading"
       class="elevation-1"
       :hide-actions=!doPage
+
+      :hide-headers="false"
+      :dark="false"
+      :light="false"
     >
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudDialogOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
@@ -457,6 +466,6 @@ export default {
   padding: 0;
   min-width: 100%;
   min-height: 100%;
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 </style>
