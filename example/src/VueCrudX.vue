@@ -113,7 +113,7 @@ export default {
     if (this.crudTable.inline) this.inline = this.crudTable.inline
 
     // is there an action column
-    this.actionColumn = !!this.crudTable.actionColumn
+    this.actionColumn = this.crudTable.actionColumn === true // default false
     if (this.actionColumn) { // WARNING what if this.crudTable.headers undefined or wrong?
       this.headers = [{ text: 'Actions', value: 'id', sortable: false }, ...this.crudTable.headers]
     } else {
@@ -126,15 +126,15 @@ export default {
     this.canCreate = this.crudOps.create && !!this.crudForm.FormVue().component // add user permissions later
 
     // open form on row click
-    this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm || true
+    this.c = this.crudTable.onRowClickOpenForm !== false // default true
 
     // use add row to create record
-    this.addrowCreate = !!this.crudTable.addrowCreate
+    this.addrowCreate = this.crudTable.addrowCreate === true // default false
 
     // set confirmation
     this.confirmCreate = this.crudTable.confirmCreate === true // default false
     this.confirmUpdate = this.crudTable.confirmUpdate === true // default false
-    this.confirmDelete = this.crudTable.confirmDelete === true // default false
+    this.confirmDelete = this.crudTable.confirmDelete !== false // default true
 
     // pagination
     this.doPage = this.crudTable.doPage !== false // default true
@@ -147,8 +147,8 @@ export default {
     this.onCreatedOpenForm = this.crudTable.onCreatedOpenForm === true // open form on create, default false
 
     // some styling
-    this.hideHeaders = this.crudTable.hideHeaders || false
-    this.isFluid = this.crudTable.isFluid || true
+    this.hideHeaders = this.crudTable.hideHeaders === true // default false
+    this.isFluid = this.crudTable.isFluid !== false // default true
     this.dark = !!this.$attrs.dark // from router-view?
     this.fab = !!this.$attrs.fab
 
