@@ -12,7 +12,7 @@ export const crudTable = {
     { text: 'Approver', value: 'approver' }
   ],
   formatters: (value, _type) => {
-    if (_type === 'datetime') return format(value, 'YYYY MMM DD HH:mm')
+    if (_type === 'datetime') return format(value.toDate(), 'YYYY MMM DD HH:mm')
     return value
   },
   doPage: false

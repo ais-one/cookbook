@@ -14,6 +14,9 @@ export default {
       languages: ['English', 'Bahasa', 'Chinese', 'Japanese', 'Thai']
     }
   },
+  mounted () {
+    console.log('mounted', this)
+  },
   methods: {
     gotoNote () {
       // usually use this.record.id

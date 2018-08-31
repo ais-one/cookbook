@@ -5,6 +5,9 @@
 // form toolbar
 // no data error
 // dialog background
+// :fullscreen - for dialog
+// formOpenOnCreated
+// rename dialog to form...
 // 2) to consider: expand, item-key="id", select-all
 // 3) user access control to operations
 
@@ -142,8 +145,10 @@ export default {
     // assign the components
     this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     this.$options.components['crud-form'] = this.crudForm.FormVue
-    if (this.record.id && !this.parentId) { // nested CRUD
-      this.addEditDialogFlag = true
+
+    if (this.formOpenOnCreated && this.record.id) { // nested CRUD, when coming back to a parent open a form
+    // if (this.formOpenOnCreated && this.record.id && !this.parentId) { // nested CRUD, when coming back to a parent open a form
+      this.crudDialogFlag = true
     }
   },
   async mounted () {
@@ -158,7 +163,8 @@ export default {
   data () {
     return {
       // form
-      addEditDialogFlag: false,
+      formOpenOnCreated: true, // open form on created? (preserve form open when created called - created is also called when navigating back)
+      crudDialogFlag: false,
       validForm: true,
       // filter
       validFilter: true,
@@ -269,12 +275,12 @@ export default {
     async exportRecords (payload) { await this.$store.dispatch(this.storeName + '/exportRecords', payload) },
     closeCrudDialog () {
       this.setRecord() // clear it
-      this.addEditDialogFlag = false
+      this.crudDialogFlag = false
     },
     async crudDialogOpen (id) {
       if (id) await this.getRecord({id}) // edit
       else this.setRecord() // add
-      this.addEditDialogFlag = true
+      this.crudDialogFlag = true
     },
     async crudDialogSave (e) {
       if (this.record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
@@ -420,7 +426,7 @@ export default {
     </v-data-table>
 
     <v-layout row justify-center>
-      <v-dialog v-model="addEditDialogFlag" fullscreen transition="dialog-bottom-transition" :overlay="false">
+      <v-dialog v-model="crudDialogFlag" :fullscreen="false" transition="dialog-bottom-transition" :overlay="false">
         <v-card>
           <v-toolbar dark color="primary">
             <v-toolbar-title><v-icon>mode_edit</v-icon> {{showTitle | capitalize}}</v-toolbar-title>
