@@ -14,14 +14,11 @@ export default {
       languages: ['English', 'Bahasa', 'Chinese', 'Japanese', 'Thai']
     }
   },
-  mounted () {
-    console.log('mounted', this)
-  },
   methods: {
     gotoNote () {
       // usually use this.record.id
       // for this example use this.record.name (please ensure name must be unique)
-      this.$router.push({path: '/party-notes/' + this.record.name})
+      this.$router.push({ path: '/party-notes/' + this.record.name })
     }
   }
 }

@@ -1,7 +1,7 @@
-import {firestore} from '@/firebase' // hasDuplicate
-import {makeCsvRow, exportCsv} from '@/assets/util'
-import {format} from 'date-fns'
-import {crudOps as partyCrudOps} from './party'
+import { firestore } from '@/firebase' // hasDuplicate
+import { makeCsvRow, exportCsv } from '@/assets/util'
+import { format } from 'date-fns'
+import { crudOps as partyCrudOps } from './party'
 
 // set snackbar props in object to customize, or set as null to disable snackbar
 export const crudSnackBar = { top: true, timeout: 6000 }
@@ -63,7 +63,7 @@ export const crudForm = {
 
 export const crudOps = { // CRUD
   export: async (payload) => {
-    const {filterData} = payload // pagination
+    const { filterData } = payload // pagination
     try {
       let dbCol = firestore.collection('party') // create index
         .where('status', '==', filterData.active.value)
@@ -79,8 +79,8 @@ export const crudOps = { // CRUD
   },
   find: async (payload) => {
     let records = []
-    const {pagination, filterData} = payload
-    const {rowsPerPage, page} = pagination // , totalItems, sortBy, descending
+    const { pagination, filterData } = payload
+    const { rowsPerPage, page } = pagination // , totalItems, sortBy, descending
     try {
       // no need to get meta yet
       // const meta = await firestore.collection('meta').doc('party').get()
@@ -93,16 +93,16 @@ export const crudOps = { // CRUD
         if (
           (index >= (page - 1) * rowsPerPage && index < page * rowsPerPage)
         ) {
-          records.push({id: record.id, ...tmp})
+          records.push({ id: record.id, ...tmp })
         }
         index++
       })
       pagination.totalItems = index
     } catch (e) { console.log(e) }
-    return {records, pagination}
+    return { records, pagination }
   },
   findOne: async (payload) => {
-    const {id} = payload
+    const { id } = payload
     let record = { }
     try {
       const doc = await firestore.collection('party').doc(id).get()

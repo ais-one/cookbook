@@ -1,9 +1,9 @@
 // import * as firebase from 'firebase'
-import {auth} from '@/firebase'
+import { auth } from '@/firebase'
 import router from '../router'
 
 export default {
-  async signUserUp ({commit}, payload) {
+  async signUserUp ({ commit }, payload) {
     commit('setLoading', true)
     commit('setError', null)
     let user = null
@@ -12,10 +12,10 @@ export default {
     } catch (e) { }
     commit('setLoading', false)
     if (user) {
-      const newUser = {id: user.uid, email: payload.email}
+      const newUser = { id: user.uid, email: payload.email }
       commit('setUser', newUser)
     } else {
-      commit('setError', {message: 'Error Signup'})
+      commit('setError', { message: 'Error Signup' })
       /* TBD
         if (error.code === 'auth/email-already-in-use') {
           var credential = auth.EmailAuthProvider.credential(payload.email, payload.password)
@@ -28,7 +28,7 @@ export default {
       */
     }
   },
-  async signUserIn ({dispatch, commit}, payload) {
+  async signUserIn ({ dispatch, commit }, payload) {
     commit('setLoading', true)
     commit('setError', null)
     let user = null
@@ -38,12 +38,12 @@ export default {
       dispatch('autoSignIn', user)
     } catch (e) { }
     if (!user) {
-      commit('setError', {message: 'Sign In Error'})
+      commit('setError', { message: 'Sign In Error' })
     }
     commit('setLoading', false)
   },
-  async logout ({commit}, payload) {
-    const {userLogout} = payload
+  async logout ({ commit }, payload) {
+    const { userLogout } = payload
     if (userLogout) {
       await auth.signOut()
     }
@@ -51,10 +51,10 @@ export default {
     commit('setLayout', 'layout-default')
     router.push('/')
   },
-  autoSignIn ({commit}, payload) {
-    commit('setUser', {id: payload.uid, email: payload.email || payload.uid})
+  autoSignIn ({ commit }, payload) {
+    commit('setUser', { id: payload.uid, email: payload.email || payload.uid })
     commit('setLayout', 'layout-admin')
     router.push('/party')
   },
-  clearError ({commit}) { commit('setError', null) }
+  clearError ({ commit }) { commit('setError', null) }
 }

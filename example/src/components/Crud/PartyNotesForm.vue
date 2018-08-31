@@ -1,5 +1,5 @@
 <script>
-import {firestore} from '@/firebase'
+import { firestore } from '@/firebase'
 
 export default {
   name: 'notes-form',

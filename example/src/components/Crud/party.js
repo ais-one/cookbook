@@ -1,6 +1,6 @@
-import {firestore, hasDuplicate} from '@/firebase'
-import {makeCsvRow, exportCsv} from '@/assets/util'
-import {format} from 'date-fns'
+import { firestore, hasDuplicate } from '@/firebase'
+import { makeCsvRow, exportCsv } from '@/assets/util'
+import { format } from 'date-fns'
 // import {app} from '@/main' // to use store, router, i18n, etc...
 // import i18n from '@/lang' // to use store, router, i18n, etc...
 
@@ -87,7 +87,7 @@ export const crudForm = {
 
 export const crudOps = { // CRUD
   export: async (payload) => {
-    const {filterData} = payload // pagination
+    const { filterData } = payload // pagination
     try {
       let dbCol = firestore.collection('party') // create index
         .where('status', '==', filterData.active.value)
@@ -103,22 +103,22 @@ export const crudOps = { // CRUD
   },
   find: async (payload) => {
     let records = []
-    const {pagination, filterData} = payload
+    const { pagination, filterData } = payload
     try {
       let dbCol = firestore.collection('party') // create index
         .where('status', '==', filterData.active.value)
       const rv = await dbCol.limit(50).get()
       rv.forEach(record => {
         let tmp = record.data()
-        records.push({id: record.id, ...tmp})
+        records.push({ id: record.id, ...tmp })
       })
     } catch (e) {
       console.log(e)
     }
-    return {records, pagination}
+    return { records, pagination }
   },
   findOne: async (payload) => {
-    const {id} = payload
+    const { id } = payload
     let record = { }
     try {
       const doc = await firestore.collection('party').doc(id).get()
@@ -130,7 +130,7 @@ export const crudOps = { // CRUD
     return record
   },
   create: async (payload) => {
-    const {record: {id, ...noIdData}} = payload
+    const { record: { id, ...noIdData } } = payload
     const metaRef = firestore.collection('meta').doc('party')
     const newDocRef = firestore.collection('party').doc()
     try {
@@ -152,7 +152,7 @@ export const crudOps = { // CRUD
     return 201
   },
   update: async (payload) => {
-    let {record: {id, ...noIdData}} = payload
+    let { record: { id, ...noIdData } } = payload
     const docRef = firestore.collection('party').doc(id)
     try {
       await firestore.runTransaction(async t => {
@@ -171,7 +171,7 @@ export const crudOps = { // CRUD
   },
   // delete: null, // TBD if delete, must also delete all dependancies, move all buttons to right?
   delete: async (payload) => {
-    const {id} = payload
+    const { id } = payload
     const metaRef = firestore.collection('meta').doc('party')
     const docRef = firestore.collection('party').doc(id)
     try {

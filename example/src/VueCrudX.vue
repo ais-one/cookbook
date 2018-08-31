@@ -2,12 +2,9 @@
 // TBD
 // 1) properties to handle: fluid, hide-headers, dark or light
 // color="success"
-// form toolbar
-// no data error
-// dialog background
-// :fullscreen - for dialog
-// formOpenOnCreated
-// rename dialog to form...
+//  - form toolbar
+//  - no data error
+//  - dialog background
 // 2) to consider: expand, item-key="id", select-all
 // 3) user access control to operations
 
@@ -53,37 +50,37 @@ const CrudStore = {
     setFilterData (state, payload) { state.filterData = payload }
   },
   actions: { // Edit Actions
-    setPagination ({commit}, payload) {
+    setPagination ({ commit }, payload) {
       commit('setPagination', payload)
     },
-    async deleteRecord ({commit, getters}, payload) {
+    async deleteRecord ({ commit, getters }, payload) {
       payload.user = this.getters.user
       let res = await getters.crudOps.delete(payload)
       return res
     },
-    async getRecord ({commit, getters}, payload) {
+    async getRecord ({ commit, getters }, payload) {
       payload.user = this.getters.user
       let record = await getters.crudOps.findOne(payload)
       commit('setRecord', record)
     },
-    async getRecords ({commit, getters}, payload) {
+    async getRecords ({ commit, getters }, payload) {
       payload.user = this.getters.user
-      let {records, pagination} = await getters.crudOps.find(payload)
+      let { records, pagination } = await getters.crudOps.find(payload)
       let totalRecs = payload.doPage ? pagination.totalItems : records.length
       commit('setPagination', pagination)
       commit('setFilterData', payload.filterData)
-      commit('setRecords', {records, totalRecs})
+      commit('setRecords', { records, totalRecs })
     },
-    async exportRecords ({commit, getters}, payload) {
+    async exportRecords ({ commit, getters }, payload) {
       payload.user = this.getters.user
       await getters.crudOps.export(payload)
     },
-    async updateRecord ({commit, getters}, payload) {
+    async updateRecord ({ commit, getters }, payload) {
       payload.user = this.getters.user
       let res = await getters.crudOps.update(payload)
       return res
     },
-    async createRecord ({commit, getters, dispatch}, payload) {
+    async createRecord ({ commit, getters, dispatch }, payload) {
       payload.user = this.getters.user
       let res = await getters.crudOps.create(payload)
       return res
@@ -139,16 +136,20 @@ export default {
 
     // pagination
     this.doPage = !!this.crudTable.doPage
+
     // title
     this.crudTitle = this.crudTable.crudTitle || ''
+
+    // form full screen?
+    this.fullscreenForm = this.crudTable.fullscreenForm || false
+    this.formOpenOnCreated = this.crudTable.fullscreenForm || false
 
     // assign the components
     this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     this.$options.components['crud-form'] = this.crudForm.FormVue
 
-    if (this.formOpenOnCreated && this.record.id) { // nested CRUD, when coming back to a parent open a form
-    // if (this.formOpenOnCreated && this.record.id && !this.parentId) { // nested CRUD, when coming back to a parent open a form
-      this.crudDialogFlag = true
+    if (this.formOpenOnCreated && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
+      this.crudFormFlag = true
     }
   },
   async mounted () {
@@ -163,15 +164,17 @@ export default {
   data () {
     return {
       // form
-      formOpenOnCreated: true, // open form on created? (preserve form open when created called - created is also called when navigating back)
-      crudDialogFlag: false,
+      formOpenOnCreated: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
+      crudFormFlag: false,
       validForm: true,
+
       // filter
       validFilter: true,
+
       // data-table
       loading: false,
-      // temporarily storing inline  edit values
-      inlineValue: null,
+      inlineValue: null, // temporarily storing inline  edit values
+      fullscreenForm: false,
 
       // crudTable
       headers: [ ], // pass in
@@ -181,7 +184,7 @@ export default {
       canDelete: true,
       canUpdate: true,
       canCreate: true,
-      addrowCreate: false, // add row to create instead of using dialog
+      addrowCreate: false, // add row to create instead of using form
 
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
@@ -273,32 +276,32 @@ export default {
     },
     setRecord (payload) { this.$store.commit(this.storeName + '/setRecord', null) },
     async exportRecords (payload) { await this.$store.dispatch(this.storeName + '/exportRecords', payload) },
-    closeCrudDialog () {
+    closeCrudForm () {
       this.setRecord() // clear it
-      this.crudDialogFlag = false
+      this.crudFormFlag = false
     },
-    async crudDialogOpen (id) {
-      if (id) await this.getRecord({id}) // edit
+    async crudFormOpen (id) {
+      if (id) await this.getRecord({ id }) // edit
       else this.setRecord() // add
-      this.crudDialogFlag = true
+      this.crudFormFlag = true
     },
-    async crudDialogSave (e) {
+    async crudFormSave (e) {
       if (this.record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
       if (!this.record.id && this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
 
-      if (this.record.id) await this.updateRecord({record: this.record})
-      else await this.createRecord({record: this.record, parentId: this.parentId})
+      if (this.record.id) await this.updateRecord({ record: this.record })
+      else await this.createRecord({ record: this.record, parentId: this.parentId })
       await this.getRecordsHelper()
-      this.closeCrudDialog()
+      this.closeCrudForm()
     },
-    async crudDialogDelete (e) {
+    async crudFormDelete (e) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
-      const {id} = this.record
+      const { id } = this.record
       if (id) {
-        await this.deleteRecord({id})
+        await this.deleteRecord({ id })
         await this.getRecordsHelper()
       }
-      this.closeCrudDialog()
+      this.closeCrudForm()
     },
     async getRecordsHelper () {
       this.loading = true
@@ -331,21 +334,21 @@ export default {
       this.inlineValue = value
     },
     async inlineUpdate (item, field) {
-      const rv = await this.updateRecord({record: item})
+      const rv = await this.updateRecord({ record: item })
       if (!rv) item[field] = this.inlineValue // if false undo changes
     },
     async inlineCreate () {
       if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
-      await this.createRecord({record: (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : this.crudForm.defaultRec, parentId: this.parentId})
+      await this.createRecord({ record: (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : this.crudForm.defaultRec, parentId: this.parentId })
       this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     async inlineDelete (id) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
-      await this.deleteRecord({id})
+      await this.deleteRecord({ id })
       this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     rowClicked (item, event) {
-      this.$emit('selected', {item, event}) // emit 'selected' event with following data {item, event}
+      this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}
     }
   }
 }
@@ -387,10 +390,10 @@ export default {
       :light="false"
     >
       <template slot="items" slot-scope="props">
-        <!-- tr @click.stop="(e) => crudDialogOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
-        <tr @click.stop="actionColumn ? (inline ? '' : rowClicked(props.item, $event)) : crudDialogOpen(props.item.id)">
+        <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
+        <tr @click.stop="actionColumn ? (inline ? '' : rowClicked(props.item, $event)) : crudFormOpen(props.item.id)">
           <td v-if="actionColumn" class="justify-left layout">
-            <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudDialogOpen(props.item.id)" :disabled="loading">edit</v-icon>
+            <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
             <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
           </td>
           <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
@@ -415,7 +418,7 @@ export default {
       </template>
       <!-- IMPLEMENT IN FUTURE AS IT IS CHANGE THAT NEEDS VERSION 1.2.X
         <template slot="actions-append">
-          <v-icon v-if="canCreate" @click.stop="addrowCreate?inlineCreate():crudDialogOpen(null)" :disabled="loading">add</v-icon>
+          <v-icon v-if="canCreate" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading">add</v-icon>
         </template>
       -->
       <template slot="no-data">
@@ -426,7 +429,7 @@ export default {
     </v-data-table>
 
     <v-layout row justify-center>
-      <v-dialog v-model="crudDialogFlag" :fullscreen="false" transition="dialog-bottom-transition" :overlay="false">
+      <v-dialog v-model="crudFormFlag" :fullscreen="fullscreenForm" scrollable transition="dialog-bottom-transition" :overlay="false">
         <v-card>
           <v-toolbar dark color="primary">
             <v-toolbar-title><v-icon>mode_edit</v-icon> {{showTitle | capitalize}}</v-toolbar-title>
@@ -438,9 +441,9 @@ export default {
             <crud-form :record="record" :parentId="parentId" :storeName="storeName" />
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn fab @click.native="closeCrudDialog" dark><v-icon>reply</v-icon></v-btn>
-              <v-btn fab v-if="canDelete && record.id" dark @click.native="crudDialogDelete"><v-icon>delete</v-icon></v-btn>
-              <v-btn fab v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm" @click.native="crudDialogSave"><v-icon>done_all</v-icon></v-btn>
+              <v-btn fab @click.native="closeCrudForm" dark><v-icon>reply</v-icon></v-btn>
+              <v-btn fab v-if="canDelete && record.id" dark @click.native="crudFormDelete"><v-icon>delete</v-icon></v-btn>
+              <v-btn fab v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm" @click.native="crudFormSave"><v-icon>done_all</v-icon></v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -449,7 +452,7 @@ export default {
 
     <v-layout row justify-end>
       <v-btn v-if="parentId" fab top dark @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn>
-      <v-btn v-if="canCreate" fab top dark @click.stop="addrowCreate?inlineCreate():crudDialogOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
+      <v-btn v-if="canCreate" fab top dark @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
       <v-btn v-if="crudOps.export" fab top dark @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
         <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
       </v-btn>
@@ -463,7 +466,8 @@ export default {
 </template>
 
 <style lang="css" scoped>
-.make-modal {
+/* should no longer need to make nested table a modal */
+.make-modal-disabled {
   margin: 0;
   position: fixed;
   top: 0;
@@ -472,6 +476,6 @@ export default {
   padding: 0;
   min-width: 100%;
   min-height: 100%;
-  /* background-color: #fff; */
+  background-color: #fff;
 }
 </style>

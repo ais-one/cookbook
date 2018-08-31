@@ -149,7 +149,7 @@ export default {
       if (this.$i18n) this.$i18n.locale = this.selectedLocale.toLowerCase()
     },
     onLogout () {
-      this.$store.dispatch('logout', {userLogout: true})
+      this.$store.dispatch('logout', { userLogout: true })
     }
   }
 }

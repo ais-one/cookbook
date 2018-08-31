@@ -1,5 +1,5 @@
 <script>
-import {firestore} from '@/firebase'
+import { firestore } from '@/firebase'
 
 export default {
   name: 'notes-form',
@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     goSubNote () {
-      this.$router.push({path: '/notesS/' + this.record.id})
+      this.$router.push({ path: '/notesS/' + this.record.id })
     }
   }
 }

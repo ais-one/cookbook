@@ -1,6 +1,6 @@
-import {firestore} from '@/firebase'
-import {makeCsvRow, exportCsv} from '@/assets/util'
-import {format, subDays, differenceInCalendarDays} from 'date-fns'
+import { firestore } from '@/firebase'
+import { makeCsvRow, exportCsv } from '@/assets/util'
+import { format, subDays, differenceInCalendarDays } from 'date-fns'
 
 export const crudTable = {
   headers: [
@@ -74,8 +74,8 @@ export const crudForm = {
 export const crudOps = { // CRUD
   export: async (payload) => {
     try {
-      const {filterData} = payload
-      const {dateStart, dateEnd, selectX} = filterData
+      const { filterData } = payload
+      const { dateStart, dateEnd, selectX } = filterData
       let dbCol = firestore.collection('note')
         .where('datetime', '>=', new Date(dateStart.value + ' 00:00:00'))
         .where('datetime', '<=', new Date(dateEnd.value + ' 23:59:59'))
@@ -94,15 +94,15 @@ export const crudOps = { // CRUD
     } catch (e) { }
   },
   delete: async (payload) => {
-    const {id} = payload
+    const { id } = payload
     try { await firestore.doc('note/' + id).delete() } catch (e) { return 500 }
     return 200
   },
   find: async (payload) => {
     let records = []
-    const {pagination, filterData} = payload // parentId
-    const {dateStart, dateEnd, selectX} = filterData
-    const {sortBy, descending} = pagination // rowsPerPage, totalItems
+    const { pagination, filterData } = payload // parentId
+    const { dateStart, dateEnd, selectX } = filterData
+    const { sortBy, descending } = pagination // rowsPerPage, totalItems
     try {
       let dbCol = firestore.collection('note')
         .where('datetime', '>=', new Date(dateStart.value + ' 00:00:00')) // create index
@@ -123,23 +123,23 @@ export const crudOps = { // CRUD
     } catch (e) {
       console.log(e) // if there is indexing error, use this output to help create the required indexes
     }
-    return {records, pagination}
+    return { records, pagination }
   },
   findOne: async (payload) => {
-    const {id} = payload
+    const { id } = payload
     let record = { }
     try {
       const doc = await firestore.collection('note').doc(id).get()
       if (doc.exists) {
         record = doc.data()
         record.id = id
-        record.approveStatus = {text: record.approveStatus, value: record.approveStatus}
+        record.approveStatus = { text: record.approveStatus, value: record.approveStatus }
       }
     } catch (e) { }
     return record
   },
   create: async (payload) => {
-    const {record} = payload // parentId
+    const { record } = payload // parentId
     try {
       let data = {}
       const collectionNote = firestore.collection('note')
@@ -154,8 +154,8 @@ export const crudOps = { // CRUD
     return 201
   },
   update: async (payload) => {
-    let {user, record} = payload
-    const {value} = record.approveStatus
+    let { user, record } = payload
+    const { value } = record.approveStatus
     record.approver = (value === 'approved' || value === 'rejected') ? user.email : ''
     record.approveStatus = value
     try {

@@ -1,5 +1,5 @@
-import {firestore} from '@/firebase'
-import {format} from 'date-fns'
+import { firestore } from '@/firebase'
+import { format } from 'date-fns'
 
 export const crudTable = {
   headers: [
@@ -52,14 +52,14 @@ export const crudForm = {
 export const crudOps = { // CRUD
   export: null,
   delete: async (payload) => {
-    const {id} = payload
+    const { id } = payload
     try { await firestore.doc('note/' + id).delete() } catch (e) { return 500 }
     return 200
   },
   find: async (payload) => {
     let records = []
-    const {pagination, filterData} = payload // parentId
-    const {selectX} = filterData
+    const { pagination, filterData } = payload // parentId
+    const { selectX } = filterData
     try {
       let dbCol = firestore.collection('note')
       if (selectX.value.value !== 'all') {
@@ -73,23 +73,23 @@ export const crudOps = { // CRUD
         records.push(tmp)
       })
     } catch (e) { }
-    return {records, pagination}
+    return { records, pagination }
   },
   findOne: async (payload) => {
-    const {id} = payload
+    const { id } = payload
     let record = { }
     try {
       const doc = await firestore.collection('note').doc(id).get()
       if (doc.exists) {
         record = doc.data()
         record.id = id
-        record.approveStatus = {text: record.approveStatus, value: record.approveStatus}
+        record.approveStatus = { text: record.approveStatus, value: record.approveStatus }
       }
     } catch (e) { }
     return record
   },
   create: async (payload) => {
-    const {record} = payload // parentId
+    const { record } = payload // parentId
     try {
       let data = {}
       const collectionNote = firestore.collection('note')
@@ -104,8 +104,8 @@ export const crudOps = { // CRUD
     return 201
   },
   update: async (payload) => {
-    let {user, record} = payload
-    const {value} = record.approveStatus
+    let { user, record } = payload
+    const { value } = record.approveStatus
     record.approver = (value === 'approved' || value === 'rejected') ? user.email : ''
     record.approveStatus = value
     try {
