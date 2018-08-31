@@ -2,12 +2,16 @@
   <div>
     <v-layout row>
       <v-flex xs12>
-        <h1>You can also add a chart, map or some other component on the right, something components below, etc.</h1>
+        <h2>You can add various components, cruds, a chart, map, etc.</h2>
+        <p>The clicking an item in left table will do a find() records in right table where Party Name matches Party. The right table also has the goBack() button to return to parent turned off</p>
       </v-flex>
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12 sm6>
-        <vue-crud-x storeName="test1" :parentId="null" v-bind="defs" />
+        <vue-crud-x storeName="component-party" :parentId="null" v-bind="partyDefs" @selected="onSelected" />
+      </v-flex>
+      <v-flex xs12 sm6>
+        <vue-crud-x ref="testref" storeName="component-party-notes" :parentId="selectedId" v-bind="partyNotesDefs" />
       </v-flex>
       <v-flex xs12 sm6>
         <v-container>
@@ -35,7 +39,12 @@
 
 <script>
 import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
-import * as partyInlineDefs from '@/components/Crud/party-inline'
+import * as partyDefs from '@/components/Crud/party'
+import * as partyNotesDefs from '@/components/Crud/party-notes'
+
+partyDefs.crudTable.onRowClickOpenForm = false
+partyDefs.crudTable.actionColumn = true
+partyNotesDefs.crudTable.showGoBack = false
 
 export default {
   name: 'party-component-example',
@@ -44,10 +53,17 @@ export default {
   },
   data () {
     return {
-      defs: partyInlineDefs
+      partyDefs,
+      partyNotesDefs,
+      selectedId: null
     }
   },
   methods: {
+    async onSelected (data) {
+      this.selectedId = data.item.name
+      // console.log('onSelected methods getRecordsHelper', this.selectedId)
+      await this.$refs.testref.getRecordsHelper()
+    }
   }
 }
 </script>

@@ -1,11 +1,11 @@
 <script>
 // TBD
-// 1) properties to handle: fluid, hide-headers, dark or light
+// 1) properties to handle: dark or light
 // color="success"
 //  - form toolbar
 //  - no data error
 //  - dialog background
-// 2) to consider: expand, item-key="id", select-all
+// 2) to consider: expand, select & select-all item-key="id"
 // 3) user access control to operations
 
 import _cloneDeep from 'lodash.clonedeep'
@@ -98,7 +98,6 @@ export default {
     crudSnackBar: { type: Object, default: () => ({ bottom: true, timeout: 6000 }) }
   },
   created () {
-    console.log('TBD ATTRS', this.$attrs)
     const store = this.$store
     const name = this.storeName
     if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
@@ -126,29 +125,38 @@ export default {
     this.canDelete = this.crudOps.delete // add user permissions later
     this.canCreate = this.crudOps.create && !!this.crudForm.FormVue().component // add user permissions later
 
+    // open form on row click
+    this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm || true
+
     // use add row to create record
     this.addrowCreate = !!this.crudTable.addrowCreate
 
     // set confirmation
-    this.confirmCreate = !!this.crudTable.confirmCreate
-    this.confirmUpdate = !!this.crudTable.confirmUpdate
-    this.confirmDelete = !!this.crudTable.confirmDelete
+    this.confirmCreate = this.crudTable.confirmCreate === true // default false
+    this.confirmUpdate = this.crudTable.confirmUpdate === true // default false
+    this.confirmDelete = this.crudTable.confirmDelete === true // default false
 
     // pagination
-    this.doPage = !!this.crudTable.doPage
+    this.doPage = this.crudTable.doPage !== false // default true
 
     // title
     this.crudTitle = this.crudTable.crudTitle || ''
 
-    // form full screen?
-    this.fullscreenForm = this.crudTable.fullscreenForm || false
-    this.formOpenOnCreated = this.crudTable.fullscreenForm || false
+    this.showGoBack = this.crudTable.showGoBack !== false // hide go back button - default true
+    this.fullscreenForm = this.crudTable.fullscreenForm !== false // form full screen? - default true
+    this.onCreatedOpenForm = this.crudTable.onCreatedOpenForm === true // open form on create, default false
+
+    // some styling
+    this.hideHeaders = this.crudTable.hideHeaders || false
+    this.isFluid = this.crudTable.isFluid || true
+    this.dark = !!this.$attrs.dark // from router-view?
+    this.fab = !!this.$attrs.fab
 
     // assign the components
     this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     this.$options.components['crud-form'] = this.crudForm.FormVue
 
-    if (this.formOpenOnCreated && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
+    if (this.onCreatedOpenForm && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
       this.crudFormFlag = true
     }
   },
@@ -164,9 +172,10 @@ export default {
   data () {
     return {
       // form
-      formOpenOnCreated: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
+      onCreatedOpenForm: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
       crudFormFlag: false,
       validForm: true,
+      onRowClickOpenForm: true, // set to false of you do not want row click to open form
 
       // filter
       validFilter: true,
@@ -191,6 +200,13 @@ export default {
       confirmDelete: true,
       doPage: true, // paginate
       crudTitle: '', // title
+      showGoBack: false,
+
+      // some styling
+      isFluid: true,
+      hideHeaders: false,
+      dark: false,
+      fab: false,
 
       // snackbar
       snackbar: false,
@@ -234,6 +250,9 @@ export default {
         this.getRecordsHelper()
       },
       deep: true
+    },
+    parentId (value) {
+      this.getRecordsHelper()
     }
   },
   methods: {
@@ -246,7 +265,9 @@ export default {
         this.snackbar = true
       }
     },
-    async getRecords (payload) { await this.$store.dispatch(this.storeName + '/getRecords', payload) },
+    async getRecords (payload) {
+      await this.$store.dispatch(this.storeName + '/getRecords', payload)
+    },
     setPagination (payload) { this.$store.dispatch(this.storeName + '/setPagination', payload) },
     async deleteRecord (payload) {
       this.loading = true
@@ -279,6 +300,7 @@ export default {
     closeCrudForm () {
       this.setRecord() // clear it
       this.crudFormFlag = false
+      this.$emit('form-close') // emit event if close form
     },
     async crudFormOpen (id) {
       if (id) await this.getRecord({ id }) // edit
@@ -314,6 +336,7 @@ export default {
       this.loading = false
     },
     async submitFilter () {
+      await this.getRecords()
       await this.getRecordsHelper()
     },
     async exportBtnClick () {
@@ -327,7 +350,9 @@ export default {
     },
 
     // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
-    goBack () { this.$router.back() },
+    goBack () {
+      this.$router.back()
+    },
 
     // inline
     inlineOpen (value) {
@@ -348,14 +373,16 @@ export default {
       this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     rowClicked (item, event) {
-      this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}
+      console.log('rowClicked', this.onRowClickOpenForm)
+      if (!this.actionColumn && this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
+      if (!this.inline) this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     }
   }
 }
 </script>
 
 <template>
-  <v-container v-bind:class="{ 'make-modal': parentId }" :fluid="true">
+  <v-container v-bind:class="{ 'make-modal': parentId }" :fluid="isFluid">
     <v-expansion-panel>
       <v-expansion-panel-content class="grey lighten-1">
         <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</div>
@@ -370,8 +397,8 @@ export default {
             </v-flex>
           </v-layout>
           <v-layout row justify-end>
-            <!-- v-btn fab @click="clearFilter"><v-icon>close</v-icon></v-btn -->
-            <v-btn fab @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
+            <!-- v-btn :fab="fab" @click="clearFilter"><v-icon>close</v-icon></v-btn -->
+            <v-btn :fab="fab" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
           </v-layout>
         </v-form>
       </v-expansion-panel-content>
@@ -383,15 +410,14 @@ export default {
       :pagination.sync="pagination"
       :loading="loading"
       class="elevation-1"
-      :hide-actions=!doPage
-
-      :hide-headers="false"
-      :dark="false"
-      :light="false"
+      :hide-actions="!doPage"
+      :hide-headers="hideHeaders"
+      :dark="dark"
+      :light="!dark"
     >
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
-        <tr @click.stop="actionColumn ? (inline ? '' : rowClicked(props.item, $event)) : crudFormOpen(props.item.id)">
+        <tr @click.stop="rowClicked(props.item, $event)">
           <td v-if="actionColumn" class="justify-left layout">
             <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
             <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
@@ -431,7 +457,7 @@ export default {
     <v-layout row justify-center>
       <v-dialog v-model="crudFormFlag" :fullscreen="fullscreenForm" scrollable transition="dialog-bottom-transition" :overlay="false">
         <v-card>
-          <v-toolbar dark color="primary">
+          <v-toolbar :dark="!dark" :light="dark" color="primary">
             <v-toolbar-title><v-icon>mode_edit</v-icon> {{showTitle | capitalize}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items></v-toolbar-items>
@@ -441,9 +467,9 @@ export default {
             <crud-form :record="record" :parentId="parentId" :storeName="storeName" />
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn fab @click.native="closeCrudForm" dark><v-icon>reply</v-icon></v-btn>
-              <v-btn fab v-if="canDelete && record.id" dark @click.native="crudFormDelete"><v-icon>delete</v-icon></v-btn>
-              <v-btn fab v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm" @click.native="crudFormSave"><v-icon>done_all</v-icon></v-btn>
+              <v-btn :fab="fab" :dark="!dark" :light="dark" @click.native="closeCrudForm"><v-icon>reply</v-icon></v-btn>
+              <v-btn :fab="fab" :dark="!dark" :light="dark" v-if="canDelete && record.id" @click.native="crudFormDelete"><v-icon>delete</v-icon></v-btn>
+              <v-btn :fab="fab" :dark="!dark" :light="dark" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm" @click.native="crudFormSave"><v-icon>done_all</v-icon></v-btn>
             </v-card-actions>
           </v-form>
         </v-card>
@@ -451,9 +477,9 @@ export default {
     </v-layout>
 
     <v-layout row justify-end>
-      <v-btn v-if="parentId" fab top dark @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn>
-      <v-btn v-if="canCreate" fab top dark @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
-      <v-btn v-if="crudOps.export" fab top dark @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
+      <v-btn v-if="parentId && showGoBack" :fab="fab" top :dark="!dark" :light="dark" @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn>
+      <v-btn v-if="canCreate" :fab="fab" top :dark="!dark" :light="dark" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
+      <v-btn v-if="crudOps.export" :fab="fab" top :dark="!dark" :light="dark" @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
         <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
       </v-btn>
     </v-layout>

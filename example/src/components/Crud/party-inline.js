@@ -30,7 +30,10 @@ export const crudTable = {
     return value
   },
   doPage: true,
-  crudTitle: 'Custom Title'
+  crudTitle: 'Custom Title',
+
+  isFluid: true, // some styling
+  hideHeaders: false
 }
 
 export const crudFilter = {

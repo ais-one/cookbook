@@ -1,6 +1,6 @@
 import { firestore } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
-import { format, subDays, differenceInCalendarDays } from 'date-fns'
+import { format, startOfMonth, endOfMonth } from 'date-fns'
 
 export const crudTable = {
   headers: [
@@ -24,21 +24,20 @@ export const crudFilter = {
     dateStart: {
       type: 'date',
       label: 'Date Start',
-      value: format(subDays(new Date(), 20), 'YYYY-MM-DD'),
+      value: format(startOfMonth(new Date()), 'YYYY-MM-DD'),
       rules: [
-        (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date',
-        (v) => (differenceInCalendarDays(crudFilter.filterData.dateEnd.value, v) <= 60) || 'Select only up to 60 days of records at a time'
+        (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date'
       ],
       sm6: true
     },
     dateEnd: {
       type: 'date',
       label: 'Date End',
-      value: format(new Date(), 'YYYY-MM-DD'),
+      value: format(endOfMonth(new Date()), 'YYYY-MM-DD'),
       rules: [
-        (v) => (v >= crudFilter.filterData.dateStart.value) || 'End date must be later or same as start date',
-        (v) => (differenceInCalendarDays(v, crudFilter.filterData.dateStart.value) <= 60) || 'Select only up to 60 days of records at a time'
-      ]
+        (v) => (v >= crudFilter.filterData.dateStart.value) || 'End date must be later or same as start date'
+      ],
+      sm6: true
     },
     selectX: {
       type: 'select-kv',
@@ -52,8 +51,7 @@ export const crudFilter = {
         { text: 'Rejected', value: 'rejected' }
       ],
       value: { text: 'All', value: 'all' },
-      rules: [v => !!v || 'Item is required'],
-      sm6: true
+      rules: [v => !!v || 'Item is required']
     }
   }
 }
