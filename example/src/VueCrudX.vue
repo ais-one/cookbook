@@ -1,12 +1,7 @@
 <script>
 // TBD
-// 1) properties to handle: dark or light
-// color="success"
-//  - form toolbar
-//  - no data error
-//  - dialog background
-// 2) to consider: expand, select & select-all item-key="id"
-// 3) user access control to operations
+// 1) to consider: expand, select & select-all item-key="id"
+// 2) user access control to operations
 
 import _cloneDeep from 'lodash.clonedeep'
 const CrudStore = {
@@ -126,7 +121,7 @@ export default {
     this.canCreate = this.crudOps.create && !!this.crudForm.FormVue().component // add user permissions later
 
     // open form on row click
-    this.c = this.crudTable.onRowClickOpenForm !== false // default true
+    this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // default true
 
     // use add row to create record
     this.addrowCreate = this.crudTable.addrowCreate === true // default false
@@ -150,7 +145,10 @@ export default {
     this.hideHeaders = this.crudTable.hideHeaders === true // default false
     this.isFluid = this.crudTable.isFluid !== false // default true
     this.dark = !!this.$attrs.dark // from router-view?
-    this.fab = !!this.$attrs.fab
+    this.fab = this.$attrs.fab !== false // default true
+    this.noDataColor = this.crudTable.noDataColor || 'grey'
+    this.formToolbarColor = this.crudTable.formToolbarColor || 'grey'
+    this.filterHeaderColor = this.crudTable.filterHeaderColor || 'grey'
 
     // assign the components
     this.$options.components['crud-filter'] = this.crudFilter.FilterVue
@@ -207,6 +205,9 @@ export default {
       hideHeaders: false,
       dark: false,
       fab: false,
+      noDataColor: 'grey',
+      formToolbarColor: 'grey',
+      filterHeaderColor: 'grey',
 
       // snackbar
       snackbar: false,
@@ -384,7 +385,7 @@ export default {
 <template>
   <v-container v-bind:class="{ 'make-modal': parentId }" :fluid="isFluid">
     <v-expansion-panel>
-      <v-expansion-panel-content class="grey lighten-1">
+      <v-expansion-panel-content :class="filterHeaderColor">
         <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</div>
         <v-form class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
           <crud-filter v-if="crudFilter.FilterVue().component" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
@@ -449,7 +450,7 @@ export default {
       -->
       <template slot="no-data">
         <v-flex class="text-xs-center">
-          <v-alert :value="true" color="error" icon=""><v-icon>warning</v-icon> {{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
+          <v-alert :value="true" :color="noDataColor" icon=""><v-icon>warning</v-icon> {{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
         </v-flex>
       </template>
     </v-data-table>
@@ -457,7 +458,7 @@ export default {
     <v-layout row justify-center>
       <v-dialog v-model="crudFormFlag" :fullscreen="fullscreenForm" scrollable transition="dialog-bottom-transition" :overlay="false">
         <v-card>
-          <v-toolbar :dark="!dark" :light="dark" color="primary">
+          <v-toolbar :dark="!dark" :light="dark" :color="formToolbarColor">
             <v-toolbar-title><v-icon>mode_edit</v-icon> {{showTitle | capitalize}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items></v-toolbar-items>
