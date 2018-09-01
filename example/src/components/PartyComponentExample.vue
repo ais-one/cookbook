@@ -61,7 +61,6 @@ export default {
   methods: {
     async onSelected (data) {
       this.selectedId = data.item.name
-      // console.log('onSelected methods getRecordsHelper', this.selectedId)
       await this.$refs.testref.getRecordsHelper()
     }
   }

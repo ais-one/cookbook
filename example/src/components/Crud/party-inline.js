@@ -7,14 +7,14 @@ import { crudOps as partyCrudOps } from './party'
 export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
-  actionColumn: true,
-  addrowCreate: true,
-  inline: {
+  actionColumn: true, // action buttons (edit/delete)on the left most table column
+  addrowCreate: true, // add button creates new record by adding row
+  inline: { // editable fields on the table and what type of edit are they
     'name': 'text',
     'remarks': 'textarea',
     'created': 'date'
   },
-  confirmCreate: true,
+  confirmCreate: true, // show operation confirmation dialog flags
   confirmUpdate: true,
   confirmDelete: true,
   headers: [
@@ -29,11 +29,23 @@ export const crudTable = {
     if (_type === 'languages') return value.join(',')
     return value
   },
-  doPage: true,
   crudTitle: 'Custom Title',
 
-  isFluid: true, // some styling
-  hideHeaders: false
+  onCreatedOpenForm: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
+  onRowClickOpenForm: true, // set to false of you do not want row click to open form
+
+  doPage: true, // pagination enabled
+  fullscreenForm: false, // dialog form is not fullscreen
+
+  isFluid: true, // fluid layout
+  hideHeaders: false, // do not hide headers
+  showGoBack: false, // do net show go back button on table
+
+  dark: false, // setting theme and colors
+  fab: false,
+  noDataColor: 'grey',
+  formToolbarColor: 'grey',
+  filterHeaderColor: 'grey'
 }
 
 export const crudFilter = {

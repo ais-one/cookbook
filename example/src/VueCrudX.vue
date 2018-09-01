@@ -59,7 +59,6 @@ const CrudStore = {
       commit('setRecord', record)
     },
     async getRecords ({ commit, getters }, payload) {
-      console.log('actions getRecords', payload)
       payload.user = this.getters.user
       let { records, pagination } = await getters.crudOps.find(payload)
       let totalRecs = payload.doPage ? pagination.totalItems : records.length
@@ -93,7 +92,7 @@ export default {
     crudOps: { type: Object, required: true },
     crudSnackBar: { type: Object, default: () => ({ bottom: true, timeout: 6000 }) }
   },
-  created () {
+  async created () {
     const store = this.$store
     const name = this.storeName
     if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
@@ -117,9 +116,12 @@ export default {
     }
 
     // set the permissions
-    this.canUpdate = this.crudOps.update && !!this.crudForm.FormVue().component // add user permissions later
+    let hasFormVue = !!(await this.crudForm.FormVue().component)
+    this.canCreate = this.crudOps.create && hasFormVue // add user permissions later
+    this.canUpdate = this.crudOps.update && hasFormVue // add user permissions later
     this.canDelete = this.crudOps.delete // add user permissions later
-    this.canCreate = this.crudOps.create && !!this.crudForm.FormVue().component // add user permissions later
+
+    this.hasFilterVue = !!(await this.crudFilter.FilterVue().component)
 
     // open form on row click
     this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // default true
@@ -139,7 +141,7 @@ export default {
     this.crudTitle = this.crudTable.crudTitle || ''
 
     this.showGoBack = this.crudTable.showGoBack !== false // hide go back button - default true
-    this.fullscreenForm = this.crudTable.fullscreenForm !== false // form full screen? - default true
+    this.fullscreenForm = this.crudTable.fullscreenForm === true // form full screen? - default false
     this.onCreatedOpenForm = this.crudTable.onCreatedOpenForm === true // open form on create, default false
 
     // some styling
@@ -160,7 +162,8 @@ export default {
     }
   },
   async mounted () {
-    if (this.crudFilter.FilterVue().component === null) {
+    console.log('m', this.hasFilterVue)
+    if (!this.hasFilterVue) {
       for (var key in this.filterData) {
         if (this.filterData[key].itemsFn) this.filterData[key].items = await this.filterData[key].itemsFn()
       }
@@ -171,13 +174,14 @@ export default {
   data () {
     return {
       // form
-      onCreatedOpenForm: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
       crudFormFlag: false,
       validForm: true,
+      onCreatedOpenForm: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
       onRowClickOpenForm: true, // set to false of you do not want row click to open form
 
       // filter
       validFilter: true,
+      hasFilterVue: false,
 
       // data-table
       loading: false,
@@ -388,10 +392,10 @@ export default {
     <v-expansion-panel>
       <v-expansion-panel-content :class="filterHeaderColor">
         <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</div>
-        <v-form v-if="filterData.length" class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
-          <crud-filter v-if="crudFilter.FilterVue().component" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
+        <v-form class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
+          <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
           <v-layout row wrap v-else>
-            <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.sm6" xs12 class="pa-2">
+            <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12 class="pa-2">
               <component v-if="filter.type === 'select'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules"></component>
               <component v-if="filter.type === 'select-kv'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules" item-value="value" item-text="text" return-object></component>
               <component v-if="filter.type === 'date'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" type="date"></component>
@@ -411,11 +415,11 @@ export default {
       :total-items="totalRecs"
       :pagination.sync="pagination"
       :loading="loading"
-      class="elevation-1"
       :hide-actions="!doPage"
       :hide-headers="hideHeaders"
       :dark="dark"
       :light="!dark"
+      class="elevation-1"
     >
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->

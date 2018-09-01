@@ -29,7 +29,7 @@ export const crudFilter = {
         (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date',
         (v) => (differenceInCalendarDays(crudFilter.filterData.dateEnd.value, v) <= 60) || 'Select only up to 60 days of records at a time'
       ],
-      sm6: true
+      halfSize: true
     },
     dateEnd: {
       type: 'date',
@@ -39,7 +39,7 @@ export const crudFilter = {
         (v) => (v >= crudFilter.filterData.dateStart.value) || 'End date must be later or same as start date',
         (v) => (differenceInCalendarDays(v, crudFilter.filterData.dateStart.value) <= 60) || 'Select only up to 60 days of records at a time'
       ],
-      sm6: true
+      halfSize: true
     },
     selectX: {
       type: 'select-kv',

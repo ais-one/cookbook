@@ -28,7 +28,7 @@ export const crudFilter = {
       rules: [
         (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date'
       ],
-      sm6: true
+      halfSize: true
     },
     dateEnd: {
       type: 'date',
@@ -37,7 +37,7 @@ export const crudFilter = {
       rules: [
         (v) => (v >= crudFilter.filterData.dateStart.value) || 'End date must be later or same as start date'
       ],
-      sm6: true
+      halfSize: true
     },
     selectX: {
       type: 'select-kv',

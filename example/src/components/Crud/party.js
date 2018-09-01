@@ -25,6 +25,7 @@ export const crudTable = {
 }
 
 export const crudFilter = {
+  hasForm: true,
   FilterVue: () => ({
     component: import('./Filter.vue')
     // loading: LoadingComp,
