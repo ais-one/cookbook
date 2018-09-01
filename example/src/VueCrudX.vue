@@ -59,6 +59,7 @@ const CrudStore = {
       commit('setRecord', record)
     },
     async getRecords ({ commit, getters }, payload) {
+      console.log('actions getRecords', payload)
       payload.user = this.getters.user
       let { records, pagination } = await getters.crudOps.find(payload)
       let totalRecs = payload.doPage ? pagination.totalItems : records.length
@@ -337,7 +338,7 @@ export default {
       this.loading = false
     },
     async submitFilter () {
-      await this.getRecords()
+      // TOREMOVE why was this here in the first place? await this.getRecords()
       await this.getRecordsHelper()
     },
     async exportBtnClick () {
@@ -387,7 +388,7 @@ export default {
     <v-expansion-panel>
       <v-expansion-panel-content :class="filterHeaderColor">
         <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</div>
-        <v-form class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
+        <v-form v-if="filterData.length" class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
           <crud-filter v-if="crudFilter.FilterVue().component" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
           <v-layout row wrap v-else>
             <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.sm6" xs12 class="pa-2">
