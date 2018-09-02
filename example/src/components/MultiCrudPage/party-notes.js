@@ -3,6 +3,7 @@ import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format, startOfMonth, endOfMonth } from 'date-fns'
 
 export const crudTable = {
+  name: 'party-notes',
   headers: [
     { text: 'Party', value: 'party', align: 'left', sortable: false },
     { text: 'Type', value: 'type' },
@@ -15,7 +16,8 @@ export const crudTable = {
     if (_type === 'datetime') return format(value.toDate(), 'YYYY MMM DD HH:mm')
     return value
   },
-  doPage: false
+  doPage: false,
+  showGoBack: false //  do not show go back
 }
 
 export const crudFilter = {
@@ -58,7 +60,13 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  FormVue: () => ({ component: import('./PartyNotesForm.vue') }),
+  FormVue: () => ({
+    component: import('./PartyNotesForm.vue'),
+    loading: null,
+    error: null,
+    delay: 200,
+    timeout: 3000
+  }),
   defaultRec: {
     id: null,
     approver: null,

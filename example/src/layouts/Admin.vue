@@ -113,7 +113,7 @@ export default {
       ],
       drawer: false,
       menuItems: [
-        { icon: 'dashboard', title: 'Party Component', link: '/party-component-example' },
+        { icon: 'dashboard', title: 'Party Component', link: '/multi-crud-page-example' },
         {
           icon: 'keyboard_arrow_up',
           'icon-alt': 'keyboard_arrow_down',

@@ -49,6 +49,7 @@ export const crudTable = {
 }
 
 export const crudFilter = {
+  hasFilterVue: false,
   FilterVue: () => ({ component: null }),
   filterData: {
     active: {

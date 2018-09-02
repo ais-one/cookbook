@@ -54,7 +54,7 @@ export default {
   autoSignIn ({ commit }, payload) {
     commit('setUser', { id: payload.uid, email: payload.email || payload.uid })
     commit('setLayout', 'layout-admin')
-    router.push('/party')
+    router.push('/multi-crud-page-example') // console.log party
   },
   clearError ({ commit }) { commit('setError', null) }
 }

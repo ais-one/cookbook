@@ -7,11 +7,11 @@
       </v-flex>
     </v-layout>
     <v-layout row wrap>
-      <v-flex xs12 sm6>
-        <vue-crud-x storeName="component-party" :parentId="null" v-bind="partyDefs" @selected="onSelected" />
+      <v-flex xs12 sm6 ref="aa">
+        <vue-crud-x :key="'ff1'" storeName="component-party" :parentId="null" v-bind="partyDefs" @selected="onSelected"></vue-crud-x>
       </v-flex>
-      <v-flex xs12 sm6>
-        <vue-crud-x ref="testref" storeName="component-party-notes" :parentId="selectedId" v-bind="partyNotesDefs" />
+      <v-flex xs12 sm6 ref="bb">
+        <vue-crud-x :key="'ff2'" ref="testref" storeName="component-party-notes" :parentId="selectedId" v-bind="partyNotesDefs"></vue-crud-x>
       </v-flex>
       <v-flex xs12 sm6>
         <v-container>
@@ -39,15 +39,25 @@
 
 <script>
 import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
-import * as partyDefs from '@/components/Crud/party'
-import * as partyNotesDefs from '@/components/Crud/party-notes'
+import * as partyDefs from './party'
+import * as partyNotesDefs from './party-notes'
 
-partyDefs.crudTable.onRowClickOpenForm = false
-partyDefs.crudTable.actionColumn = true
-partyNotesDefs.crudTable.showGoBack = false
+// var instance = new ComponentClass()
+// instance.$mount() // pass nothing
+// this.$refs.container.appendChild(instance.$el)
+
+// console.log('aa', partyDefs)
+// console.log('bb', partyNotesDefs)
+// const VueCrudX = () => ({
+//   component: import('@/VueCrudX'),
+//   loading: null,
+//   error: null,
+//   delay: 200,
+//   timeout: 3000
+// })
 
 export default {
-  name: 'party-component-example',
+  name: 'multi-crud-page-example',
   components: {
     VueCrudX
   },

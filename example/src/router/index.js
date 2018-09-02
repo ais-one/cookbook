@@ -15,7 +15,7 @@ import * as partyNotesDefs from '@/components/Crud/party-notes'
 import * as noteDefs from '@/components/Crud/notes'
 import * as noteDefs2 from '@/components/Crud/notes2'
 
-import PartyComponentExample from '@/components/PartyComponentExample'
+import MultiCrudPageExample from '@/components/MultiCrudPage/Example'
 
 Vue.use(Router)
 
@@ -60,7 +60,7 @@ export default new Router({
       props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyNotesDefs } },
       beforeEnter: AuthGuard
     },
-    { path: '/party-component-example', name: 'Party Component Example', component: PartyComponentExample },
+    { path: '/multi-crud-page-example', name: 'Multi Crud Page Example', component: MultiCrudPageExample, beforeEnter: AuthGuard },
     // { path: '/signup', name: 'SignUp', component: SignUp },
     { path: '/', name: 'SignIn', component: SignIn },
     { path: '*', redirect: '/' }

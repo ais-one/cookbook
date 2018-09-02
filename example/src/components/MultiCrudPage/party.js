@@ -10,7 +10,8 @@ import { format } from 'date-fns'
 export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
-  actionColumn: false,
+  name: 'party',
+  actionColumn: true, // have an action column
   addrowCreate: false,
   // inline: false,
   confirmCreate: true,
@@ -21,17 +22,18 @@ export const crudTable = {
     { text: 'Status', value: 'status' }
   ],
   formatters: (value, _type) => value,
-  doPage: false
+  doPage: false,
+  onRowClickOpenForm: false // do not open form on row click
 }
 
 export const crudFilter = {
   hasFilterVue: true,
   FilterVue: () => ({
-    component: import('./Filter.vue')
-    // loading: LoadingComp,
-    // error: ErrorComp,
-    // delay: 200,
-    // timeout: 3000
+    component: import('./Filter.vue'),
+    loading: null,
+    error: null,
+    delay: 200,
+    timeout: 3000
   }),
   filterData: {
     languages: {
@@ -66,16 +68,36 @@ export const crudFilter = {
 
 export const crudForm = {
   hasFormVue: true,
-  FormVue: () => ({ component: import('./PartyForm.vue') }),
-  // defaultRec: {
-  //   id: '',
-  //   name: '',
-  //   status: 'active',
-  //   remarks: '',
-  //   languages: [],
-  //   created: '' // set value in the create() function
-  //   photo: ''
-  // }
+  FormVue: () => ({
+    component: import('./PartyForm.vue'),
+    loading: null,
+    error: null,
+    delay: 200,
+    timeout: 3000
+  }),
+  formData: {
+    name: {
+      type: 'text',
+      label: 'Name',
+      rules: [v => !!v || 'Item is required'],
+      halfSize: true
+    },
+    status: {
+      type: 'select',
+      label: 'Active Status',
+      multiple: false,
+      items: [ 'active', 'inactive' ], // can be async loaded from db?
+      rules: [v => !!v || 'Item is required'],
+      halfSize: true
+    },
+    remarks: {
+      type: 'text',
+      label: 'Remarks'
+    },
+    photo: { type: 'hidden' },
+    languages: { type: 'hidden' }
+
+  },
   defaultRec: () => ({ // you can use function to initialize record as well
     id: '',
     name: '',

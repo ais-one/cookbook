@@ -2,7 +2,7 @@
 import ImageUpload from '../ImageUpload'
 
 export default {
-  name: 'party-form',
+  name: 'multi-page-party-form',
   components: {
     ImageUpload
   },
@@ -21,7 +21,9 @@ export default {
     gotoNote () {
       // usually use this.record.id
       // for this example use this.record.name (please ensure name must be unique)
+
       this.$router.push({ path: '/party-notes/' + this.record.name })
+      // console.log(this.record)
     }
   }
 }
