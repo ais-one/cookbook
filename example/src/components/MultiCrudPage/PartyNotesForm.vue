@@ -2,7 +2,7 @@
 import { firestore } from '@/firebase'
 
 export default {
-  name: 'multi-page-party-notes-form',
+  name: 'notes-form',
   props: ['parentId', 'storeName', 'record'], // static
   data () {
     return {
@@ -17,6 +17,7 @@ export default {
     }
   },
   async created () {
+    // console.log('party-notes created', this.parentId)
     try {
       const rv = await firestore.collection('party').get().limit(50) // populate select
       rv.forEach(record => {
@@ -30,6 +31,7 @@ export default {
 
 <template>
   <div>
+    <h1>Custom Party Notes Form</h1>
     <div v-if="record.id">
       <v-card-text>
         <v-select label="Party" v-model="record.party" :items="partyList" :rules="ruleFilled" required></v-select>

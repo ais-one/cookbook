@@ -4,14 +4,15 @@
       <v-flex xs12>
         <h2>You can add various components, cruds, a chart, map, etc.</h2>
         <p>The clicking an item in left table will do a find() records in right table where Party Name matches Party. The right table also has the goBack() button to return to parent turned off</p>
+        <p>Currently there is an issue for multi crud page. Only autugenerated filters and forms work. If you use use custom, what is seen is that the only 1 custom component is created. You can change FilterVue().component from null to import('./Filter.vue') to see the effect when you open the filters</p>
       </v-flex>
     </v-layout>
     <v-layout row wrap>
-      <v-flex xs12 sm6 ref="aa">
-        <vue-crud-x :key="'ff1'" storeName="component-party" :parentId="null" v-bind="partyDefs" @selected="onSelected"></vue-crud-x>
+      <v-flex xs12 sm6>
+        <vue-crud-x storeName="component-party" :parentId="null" v-bind="partyDefs" @selected="onSelected"></vue-crud-x>
       </v-flex>
-      <v-flex xs12 sm6 ref="bb">
-        <vue-crud-x :key="'ff2'" ref="testref" storeName="component-party-notes" :parentId="selectedId" v-bind="partyNotesDefs"></vue-crud-x>
+      <v-flex xs12 sm6>
+        <vue-crud-x ref="testref" storeName="component-party-notes" :parentId="selectedId" v-bind="partyNotesDefs"></vue-crud-x>
       </v-flex>
       <v-flex xs12 sm6>
         <v-container>
@@ -41,20 +42,6 @@
 import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
 import * as partyDefs from './party'
 import * as partyNotesDefs from './party-notes'
-
-// var instance = new ComponentClass()
-// instance.$mount() // pass nothing
-// this.$refs.container.appendChild(instance.$el)
-
-// console.log('aa', partyDefs)
-// console.log('bb', partyNotesDefs)
-// const VueCrudX = () => ({
-//   component: import('@/VueCrudX'),
-//   loading: null,
-//   error: null,
-//   delay: 200,
-//   timeout: 3000
-// })
 
 export default {
   name: 'multi-crud-page-example',

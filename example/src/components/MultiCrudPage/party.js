@@ -27,15 +27,9 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  hasFilterVue: true,
-  FilterVue: () => ({
-    component: import('./Filter.vue'),
-    loading: null,
-    error: null,
-    delay: 200,
-    timeout: 3000
-  }),
-  filterData: {
+  // FilterVue: null,
+  FilterVue: () => ({ component: import('./PartyFilter.vue') }),
+  filterData: { // this is for automated filter creation - if undefined use FilterVue
     languages: {
       type: 'select',
       label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
@@ -67,15 +61,9 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  hasFormVue: true,
-  FormVue: () => ({
-    component: import('./PartyForm.vue'),
-    loading: null,
-    error: null,
-    delay: 200,
-    timeout: 3000
-  }),
-  formData: {
+  FormVue: null,
+  // FormVue: () => ({ component: import('./PartyForm.vue') }),
+  formAutoData: { // this is for automated form creation - if undefined use FormVue
     name: {
       type: 'text',
       label: 'Name',
@@ -96,7 +84,6 @@ export const crudForm = {
     },
     photo: { type: 'hidden' },
     languages: { type: 'hidden' }
-
   },
   defaultRec: () => ({ // you can use function to initialize record as well
     id: '',

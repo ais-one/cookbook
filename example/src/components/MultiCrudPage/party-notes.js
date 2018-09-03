@@ -21,8 +21,8 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  hasFilterVue: false,
-  FilterVue: () => ({ component: null }),
+  // FilterVue: null,
+  FilterVue: () => ({ component: import('./PartyNotesFilter.vue') }),
   filterData: {
     dateStart: {
       type: 'date',
@@ -60,13 +60,31 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  FormVue: () => ({
-    component: import('./PartyNotesForm.vue'),
-    loading: null,
-    error: null,
-    delay: 200,
-    timeout: 3000
-  }),
+  FormVue: null,
+  // FormVue: () => ({ component: import('./PartyNotesForm.vue') }),
+  formAutoData: { // this is for automated form creation - if undefined use FormVue
+    approver: {
+      type: 'text',
+      label: 'Approver',
+      halfSize: true
+    },
+    party: {
+      type: 'text',
+      label: 'party',
+      halfSize: true
+    },
+    type: {
+      type: 'text',
+      label: 'Type',
+      halfSize: true
+    },
+    value: {
+      type: 'text',
+      label: 'Value',
+      halfSize: true
+    },
+    approveStatus: { type: 'hidden' }
+  },
   defaultRec: {
     id: null,
     approver: null,

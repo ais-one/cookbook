@@ -2,7 +2,7 @@
 import ImageUpload from '../ImageUpload'
 
 export default {
-  name: 'multi-page-party-form',
+  name: 'party-form',
   components: {
     ImageUpload
   },
@@ -14,16 +14,11 @@ export default {
       languages: ['English', 'Bahasa', 'Chinese', 'Japanese', 'Thai']
     }
   },
-  mounted () {
-    console.log('created', this.record)
-  },
   methods: {
     gotoNote () {
       // usually use this.record.id
       // for this example use this.record.name (please ensure name must be unique)
-
       this.$router.push({ path: '/party-notes/' + this.record.name })
-      // console.log(this.record)
     }
   }
 }
@@ -31,6 +26,7 @@ export default {
 
 <template>
   <div>
+    <h1>Custom Party Form</h1>
     <v-card-text>
       <v-text-field label="Name" v-model="record.name"></v-text-field>
       <v-select label="Status" v-model="record.status" :items="status" :rules="ruleStatus" required></v-select>

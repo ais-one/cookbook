@@ -1,7 +1,6 @@
 <script>
 // BUGS to FIX
-// 1. why records initially only 5
-// 2. Cannot resolve: "Unknown custom element" crud-form
+// 1. async component loading issue on multi-crud pages
 //
 // TBD
 // 1) to consider: expand, select & select-all item-key="id"
@@ -60,14 +59,12 @@ const CrudStore = {
     async getRecord ({ commit, getters }, payload) {
       payload.user = this.getters.user
       let record = await getters.crudOps.findOne(payload)
-      console.log('vvv', payload, 'zaazee', record)
       commit('setRecord', record)
     },
     async getRecords ({ commit, getters }, payload) {
       payload.user = this.getters.user
       let { records, pagination } = await getters.crudOps.find(payload)
       let totalRecs = payload.doPage ? pagination.totalItems : records.length
-      // console.log('totalRecs', records, totalRecs, payload, pagination.totalItems, records.length)
       commit('setPagination', pagination)
       commit('setFilterData', payload.filterData)
       commit('setRecords', { records, totalRecs })
@@ -121,15 +118,16 @@ export default {
       this.headers = this.crudTable.headers
     }
 
-    // set the permissions
-    this.hasFormVue = this.crudForm.hasFormVue === undefined || this.crudForm.hasFormVue === true // !!(await this.crudForm.FormVue().component)
-    this.canCreate = this.crudOps.create && this.hasFormVue // add user permissions later
-    this.canUpdate = this.crudOps.update && this.hasFormVue // add user permissions later
-    this.canDelete = this.crudOps.delete // add user permissions later
-    this.hasFilterVue = this.crudFilter.hasFilterVue === undefined || this.crudFilter.hasFilterVue === true
-    // this.hasFilterVue = !!(await this.crudFilter.FilterVue().component)
+    // check if components and datas are present
+    this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null
+    this.hasFormVue = typeof this.crudForm.FormVue === 'function' || this.formAutoData
+    this.hasFilterData = this.isObject(this.crudFilter.filterData)
+    this.hasFilterVue = typeof this.crudFilter.FilterVue === 'function'
 
-    console.log('c', name, this.hasFormVue, this.hasFilterVue, this.crudTable.doPage)
+    // set the permissions
+    this.canCreate = this.crudOps.create && (this.hasFormVue || this.formAutoData) // add user permissions later
+    this.canUpdate = this.crudOps.update && (this.hasFormVue || this.formAutoData) // add user permissions later
+    this.canDelete = this.crudOps.delete // add user permissions later
 
     // open form on row click
     this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // default true
@@ -162,27 +160,14 @@ export default {
     this.filterHeaderColor = this.crudTable.filterHeaderColor || 'grey'
 
     // assign the components
-    console.log(this.$options)
-    this.$options.components['crud-filter'] = this.crudFilter.FilterVue
-    this.$options.components['crud-form'] = this.crudForm.FormVue
-
-    this.formData = this.crudForm.formData
+    if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
+    if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue
 
     if (this.onCreatedOpenForm && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
       this.crudFormFlag = true
     }
   },
   async mounted () {
-    console.log(
-      'vcx m',
-      this.storeName,
-      this.$options.components['crud-filter'],
-      this.$options.components['crud-form']
-      // this.crudFilter.FilterVue,
-      // this.crudForm.FormVue
-    )
-
-    // console.log('m', this.hasFilterVue)
     if (!this.hasFilterVue) {
       for (var key in this.filterData) {
         if (this.filterData[key].itemsFn) this.filterData[key].items = await this.filterData[key].itemsFn()
@@ -199,17 +184,17 @@ export default {
       onCreatedOpenForm: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
       onRowClickOpenForm: true, // set to false of you do not want row click to open form
       hasFormVue: false,
-
-      formData: null,
+      formAutoData: null, // if present autogenerate form
+      fullscreenForm: false,
 
       // filter
       validFilter: true,
       hasFilterVue: false,
+      hasFilterData: false,
 
       // data-table
       loading: false,
       inlineValue: null, // temporarily storing inline  edit values
-      fullscreenForm: false,
 
       // crudTable
       headers: [ ], // pass in
@@ -285,6 +270,7 @@ export default {
     }
   },
   methods: {
+    isObject (obj) { return obj !== null && typeof obj === 'object' },
     setSnackBar (statusCode) {
       if (this.crudSnackBar && statusCode) {
         this.snackbarText = 'Unknown Operation'
@@ -320,7 +306,6 @@ export default {
       return res === 201
     },
     async getRecord (payload) {
-      console.log('getRecord - method', payload)
       this.loading = true
       await this.$store.dispatch(this.storeName + '/getRecord', payload)
       this.loading = false
@@ -333,7 +318,6 @@ export default {
       this.$emit('form-close') // emit event if close form
     },
     async crudFormOpen (id) {
-      console.log('crudFormOpen', id)
       if (id) await this.getRecord({ id }) // edit
       else this.setRecord() // add
       this.crudFormFlag = true
@@ -404,7 +388,6 @@ export default {
       this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     rowClicked (item, event) {
-      console.log('rowClicked', this.onRowClickOpenForm)
       if (!this.actionColumn && this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
       if (!this.inline) this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     }
@@ -417,7 +400,7 @@ export default {
     <v-expansion-panel>
       <v-expansion-panel-content :class="filterHeaderColor">
         <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</div>
-        <v-form class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
+        <v-form v-if="hasFilterData" class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
           <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
           <v-layout row wrap v-else>
             <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12 class="pa-2">
@@ -496,10 +479,10 @@ export default {
           </v-toolbar>
           <v-progress-linear :indeterminate="loading" height="2"></v-progress-linear>
 
-          <v-form class="grey lighten-3 pa-2" v-model="validForm" lazy-validation>
-            <crud-form v-if="!formData" :record="record" :parentId="parentId" :storeName="storeName" />
+          <v-form v-if="hasFormVue" class="grey lighten-3 pa-2" v-model="validForm" lazy-validation>
+            <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
             <v-layout row wrap v-else>
-              <v-flex v-for="(form, objKey, index) in formData" :key="index" :sm6="form.halfSize" xs12 class="pa-2">
+              <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12 class="pa-2">
                 <component v-if="form.type === 'select'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules"></component>
                 <component v-if="form.type === 'select-kv'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules" item-value="value" item-text="text" return-object></component>
                 <component v-if="form.type === 'date'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="date"></component>
