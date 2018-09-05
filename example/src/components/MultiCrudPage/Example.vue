@@ -9,10 +9,22 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12 sm6>
-        <vue-crud-x storeName="component-party" :parentId="null" v-bind="partyDefs" @selected="onSelected"></vue-crud-x>
+        <vue-crud-x
+          storeName="component-party"
+          :parentId="null"
+          v-bind="partyDefs"
+          @selected="onSelected"
+        >
+        </vue-crud-x>
       </v-flex>
       <v-flex xs12 sm6>
-        <vue-crud-x ref="testref" storeName="component-party-notes" :parentId="selectedId" v-bind="partyNotesDefs"></vue-crud-x>
+        <vue-crud-x
+          ref="testref"
+          storeName="component-party-notes"
+          :parentId="selectedId"
+          v-bind="partyNotesDefs"
+        >
+        </vue-crud-x>
       </v-flex>
       <v-flex xs12 sm6>
         <v-container>
@@ -39,9 +51,9 @@
 </template>
 
 <script>
-import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
 import * as partyDefs from './party'
 import * as partyNotesDefs from './party-notes'
+import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
 
 export default {
   name: 'multi-crud-page-example',
@@ -54,6 +66,9 @@ export default {
       partyNotesDefs,
       selectedId: null
     }
+  },
+  created () {
+
   },
   methods: {
     async onSelected (data) {

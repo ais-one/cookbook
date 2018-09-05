@@ -2,7 +2,7 @@
 import { firestore } from '@/firebase'
 
 export default {
-  name: 'notes-form',
+  name: 'muli-crud-party-notes-form',
   props: ['parentId', 'storeName', 'record'], // static
   data () {
     return {

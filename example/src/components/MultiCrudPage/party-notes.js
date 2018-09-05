@@ -2,6 +2,8 @@ import { firestore } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format, startOfMonth, endOfMonth } from 'date-fns'
 
+import ComponentLoading from '@/components/ComponentLoading'
+
 export const crudTable = {
   name: 'party-notes',
   headers: [
@@ -22,7 +24,10 @@ export const crudTable = {
 
 export const crudFilter = {
   // FilterVue: null,
-  FilterVue: () => ({ component: import('./PartyNotesFilter.vue') }),
+  FilterVue: () => ({
+    component: import('./PartyNotesFilter.vue'),
+    loading: ComponentLoading
+  }),
   filterData: {
     dateStart: {
       type: 'date',

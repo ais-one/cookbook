@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'party-filter',
+  name: 'muli-crud-party-filter',
   props: ['parentId', 'storeName', 'filterData'], // static
   async mounted () {
     for (var key in this.filterData) {

@@ -2,7 +2,7 @@
 import ImageUpload from '../ImageUpload'
 
 export default {
-  name: 'party-form',
+  name: 'muli-crud-party-form',
   components: {
     ImageUpload
   },

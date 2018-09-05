@@ -1,12 +1,9 @@
 import { firestore, hasDuplicate } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format } from 'date-fns'
-// import {app} from '@/main' // to use store, router, i18n, etc...
-// import i18n from '@/lang' // to use store, router, i18n, etc...
 
-// console.log(app, i18n, i18n.messages[i18n.locale])
+import ComponentLoading from '@/components/ComponentLoading'
 
-// set snackbar props in object to customize, or set as null to disable snackbar
 export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
@@ -28,7 +25,10 @@ export const crudTable = {
 
 export const crudFilter = {
   // FilterVue: null,
-  FilterVue: () => ({ component: import('./PartyFilter.vue') }),
+  FilterVue: () => ({
+    component: import('./PartyFilter.vue'),
+    loading: ComponentLoading
+  }),
   filterData: { // this is for automated filter creation - if undefined use FilterVue
     languages: {
       type: 'select',

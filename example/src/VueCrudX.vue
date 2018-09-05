@@ -160,8 +160,10 @@ export default {
     this.filterHeaderColor = this.crudTable.filterHeaderColor || 'grey'
 
     // assign the components
+    console.log('vvvv', this.storeName, this.$options.components['crud-filter'], this.crudFilter.FilterVue)
     if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue
+    console.log('vvvv2', this.storeName, this.$options.components['crud-filter'], this.crudFilter.FilterVue)
 
     if (this.onCreatedOpenForm && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
       this.crudFormFlag = true
@@ -173,11 +175,17 @@ export default {
         if (this.filterData[key].itemsFn) this.filterData[key].items = await this.filterData[key].itemsFn()
       }
     }
+    this.aa = true
+    this.bb = true
   },
-  beforeUpdate () { },
+  beforeUpdate () {
+  },
   beforeRouteEnter (to, from, next) { next(vm => { }) },
   data () {
     return {
+      aa: null,
+      bb: null,
+
       // form
       crudFormFlag: false,
       validForm: true,
@@ -351,6 +359,10 @@ export default {
       this.loading = false
     },
     async submitFilter () {
+      this.$options.components['crud-filter'] = this.crudFilter.FilterVue
+      this.$forceUpdate()
+      console.log('vvvv', this.storeName, this.$options.components)
+      // console.log('vvvv', this.storeName, this.$options.components['crud-filter'], this.crudFilter.FilterVue)
       // TOREMOVE why was this here in the first place? await this.getRecords()
       await this.getRecordsHelper()
     },
@@ -401,7 +413,7 @@ export default {
       <v-expansion-panel-content :class="filterHeaderColor">
         <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</div>
         <v-form v-if="hasFilterData" class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
-          <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
+          <crud-filter v-if="hasFilterVue && aa" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
           <v-layout row wrap v-else>
             <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12 class="pa-2">
               <component v-if="filter.type === 'select'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules"></component>
@@ -480,7 +492,7 @@ export default {
           <v-progress-linear :indeterminate="loading" height="2"></v-progress-linear>
 
           <v-form v-if="hasFormVue" class="grey lighten-3 pa-2" v-model="validForm" lazy-validation>
-            <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
+            <crud-form v-if="!formAutoData && bb" :record="record" :parentId="parentId" :storeName="storeName" />
             <v-layout row wrap v-else>
               <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12 class="pa-2">
                 <component v-if="form.type === 'select'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules"></component>

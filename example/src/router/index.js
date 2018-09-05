@@ -60,7 +60,12 @@ export default new Router({
       props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyNotesDefs } },
       beforeEnter: AuthGuard
     },
-    { path: '/multi-crud-page-example', name: 'Multi Crud Page Example', component: MultiCrudPageExample, beforeEnter: AuthGuard },
+    {
+      path: '/multi-crud-page-example',
+      name: 'Multi Crud Page Example',
+      component: MultiCrudPageExample,
+      beforeEnter: AuthGuard
+    },
     // { path: '/signup', name: 'SignUp', component: SignUp },
     { path: '/', name: 'SignIn', component: SignIn },
     { path: '*', redirect: '/' }
