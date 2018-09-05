@@ -14,16 +14,18 @@ Read the following detailed article (usage and explanations in the article are a
 ## Differentiating Features From Other CRUD Components
 
  * Able to do nested CRUD operations, e.g. selecting a post from a list of posts, and then selecting a comment from a list of comments of the selected post to edit
- * (New can work with NUXT - https://github.com/ais-one/nuxt-vcx)
- * (New Features) Edit inline
- * (New Examples) Pagination, Use as component in a page
+ * Edit inline
+ * Pagination, Use as component in a page
  * Include handling of authentication tokens, and any other information
  * Customise
    * Table data format for each cell (e.g., currency to 3 decimal places)
    * Search filters
-   * CRUD Form layout & validation
+   * CRUD Form layout & validation (can also be automated)
    * CRUD operations (e.g. disallow delete)
+ * (Optional) auto configure Search filters, CRUD Forms using JSON data
  * For CRUD operations, you can Use direct call (e.g. Firestore), or API (REST, GraphQL) to one or more types of datastore (MySQL, MongoDB, Redis, ElasticSearch, etc.)
+   * REST Example - https://github.com/ais-one/udemy/tree/master/vue-firebase
+   * NUXT Example - https://github.com/ais-one/nuxt-vcx
  * Export to CSV, File/Image Upload, i18n
  * Possibly replace Vuetify with something else like ElementUI, Buefy, etc.
 
