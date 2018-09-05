@@ -1,4 +1,9 @@
 <script>
+// Notes:
+// IMPORTANT - important point to take not of
+// TBD - to be done
+// TOREMOVE - to be removed
+// 
 // TBD
 // 1) to consider: expand, select & select-all item-key="id"
 // 2) user access control to operations
@@ -176,8 +181,11 @@ export default {
     this.isMounted = true
   },
   beforeUpdate () {
-    // Spent 5 days just to get this to work
+    // IMPORTANT: Spent 5 days just to get this to work
     // somehow even if assign on mounted, and with using nextTick, things are still corrupt, until here!
+    // this.$forceUpdate, helped to show what was happening after I assign the value (I used submitFilter to assign and forceUpdate to see)
+    // suspected problem is because of async component
+    //
     // if (this.storeName === 'multi-crud-party') console.log('vvvv4', this.storeName, this.$options.components['crud-filter'], this.crudFilter.FilterVue)
     if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue
