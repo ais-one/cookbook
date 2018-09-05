@@ -13,7 +13,7 @@
   "dependencies": {
     "@firebase/app": "^0.3.3",
     "@firebase/auth": "^0.7.3",
-    "@firebase/firestore": "^0.7.1",
+    "@firebase/firestore": "^0.7.2",
     "@firebase/storage": "^0.2.3",
     "date-fns": "^1.29.0",
     "vue": "^2.5.17",

@@ -14,10 +14,10 @@
  * many customization on table look and feel
    * colors, action columns, dark or light theme
    * see party-inline.js for example settings and comments
-* FIXED: fix custom filters and forms in multi CRUD page (e.g. filter component gets overwritten)
+ * FIXED: fix custom filters and forms in multi CRUD page (e.g. filter component gets overwritten)
  * next Update (in order of priority)
    * delete related records (e.g. deleting a party will also delete all notes belonging to that party)
-   * back to top
+   * back to top - do it outsude vue-crud-x, scrollToTop () { this.$nextTick(function () { this.$refs.someRef.scrollTop = 0 }) },
    * user permissions
    * v-data-table actions-append: implement later, requires vuetifyjs 1.2.X
    * auto-generated form
