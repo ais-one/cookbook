@@ -26,5 +26,5 @@ export const store = new Vuex.Store({
     loading (state) { return state.loading },
     error (state) { return state.error }
   },
-  actions: {...actions}
+  actions: { ...actions }
 })

@@ -2,7 +2,10 @@ import { firestore } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format, startOfMonth, endOfMonth } from 'date-fns'
 
+// import ComponentLoading from '@/components/ComponentLoading'
+
 export const crudTable = {
+  name: 'party-notes',
   headers: [
     { text: 'Party', value: 'party', align: 'left', sortable: false },
     { text: 'Type', value: 'type' },
@@ -15,12 +18,15 @@ export const crudTable = {
     if (_type === 'datetime') return format(value.toDate(), 'YYYY MMM DD HH:mm')
     return value
   },
-  doPage: false
+  doPage: false,
+  showGoBack: false //  do not show go back
 }
 
 export const crudFilter = {
-  hasFilterVue: false,
-  FilterVue: () => ({ component: null }),
+  // FilterVue: null,
+  FilterVue: () => ({
+    component: import('./PartyNotesFilter.vue')
+  }),
   filterData: {
     dateStart: {
       type: 'date',
@@ -58,7 +64,31 @@ export const crudFilter = {
 }
 
 export const crudForm = {
+  // FormVue: null,
   FormVue: () => ({ component: import('./PartyNotesForm.vue') }),
+  formAutoData: { // this is for automated form creation - if undefined use FormVue
+    approver: {
+      type: 'text',
+      label: 'Approver',
+      halfSize: true
+    },
+    party: {
+      type: 'text',
+      label: 'party',
+      halfSize: true
+    },
+    type: {
+      type: 'text',
+      label: 'Type',
+      halfSize: true
+    },
+    value: {
+      type: 'text',
+      label: 'Value',
+      halfSize: true
+    },
+    approveStatus: { type: 'hidden' }
+  },
   defaultRec: {
     id: null,
     approver: null,

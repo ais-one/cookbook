@@ -1,16 +1,14 @@
 import { firestore, hasDuplicate } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format } from 'date-fns'
-// import {app} from '@/main' // to use store, router, i18n, etc...
-// import i18n from '@/lang' // to use store, router, i18n, etc...
 
-// console.log(app, i18n, i18n.messages[i18n.locale])
+// import ComponentLoading from '@/components/ComponentLoading'
 
-// set snackbar props in object to customize, or set as null to disable snackbar
 export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
-  actionColumn: false,
+  name: 'party',
+  actionColumn: true, // have an action column
   addrowCreate: false,
   // inline: false,
   confirmCreate: true,
@@ -21,19 +19,16 @@ export const crudTable = {
     { text: 'Status', value: 'status' }
   ],
   formatters: (value, _type) => value,
-  doPage: false
+  doPage: false,
+  onRowClickOpenForm: false // do not open form on row click
 }
 
 export const crudFilter = {
-  hasFilterVue: true,
+  // FilterVue: null,
   FilterVue: () => ({
-    component: import('./Filter.vue')
-    // loading: LoadingComp,
-    // error: ErrorComp,
-    // delay: 200,
-    // timeout: 3000
+    component: import('./PartyFilter.vue')
   }),
-  filterData: {
+  filterData: { // this is for automated filter creation - if undefined use FilterVue
     languages: {
       type: 'select',
       label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
@@ -65,17 +60,30 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  hasFormVue: true,
+  // FormVue: null,
   FormVue: () => ({ component: import('./PartyForm.vue') }),
-  // defaultRec: {
-  //   id: '',
-  //   name: '',
-  //   status: 'active',
-  //   remarks: '',
-  //   languages: [],
-  //   created: '' // set value in the create() function
-  //   photo: ''
-  // }
+  formAutoData: { // this is for automated form creation - if undefined use FormVue
+    name: {
+      type: 'text',
+      label: 'Name',
+      rules: [v => !!v || 'Item is required'],
+      halfSize: true
+    },
+    status: {
+      type: 'select',
+      label: 'Active Status',
+      multiple: false,
+      items: [ 'active', 'inactive' ], // can be async loaded from db?
+      rules: [v => !!v || 'Item is required'],
+      halfSize: true
+    },
+    remarks: {
+      type: 'text',
+      label: 'Remarks'
+    },
+    photo: { type: 'hidden' },
+    languages: { type: 'hidden' }
+  },
   defaultRec: () => ({ // you can use function to initialize record as well
     id: '',
     name: '',

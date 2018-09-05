@@ -50,8 +50,8 @@
 
 <script>
 import VueRecaptcha from 'vue-recaptcha'
-import {mapGetters} from 'vuex'
-import {recaptchaSiteKey} from '../../../cfg.json'
+import { mapGetters } from 'vuex'
+import { recaptchaSiteKey } from '../../../cfg.json'
 export default {
   components: { VueRecaptcha },
   data () {
@@ -80,7 +80,7 @@ export default {
   },
   methods: {
     onSignin () {
-      this.$store.dispatch('signUserIn', {email: this.email, password: this.password})
+      this.$store.dispatch('signUserIn', { email: this.email, password: this.password })
     },
     onDismissed () {
       this.$store.dispatch('clearError')

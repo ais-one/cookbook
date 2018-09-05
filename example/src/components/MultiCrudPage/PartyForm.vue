@@ -2,7 +2,7 @@
 import ImageUpload from '../ImageUpload'
 
 export default {
-  name: 'party-form',
+  name: 'muli-crud-party-form',
   components: {
     ImageUpload
   },
@@ -26,6 +26,7 @@ export default {
 
 <template>
   <div>
+    <h1>Custom Party Form</h1>
     <v-card-text>
       <v-text-field label="Name" v-model="record.name"></v-text-field>
       <v-select label="Status" v-model="record.status" :items="status" :rules="ruleStatus" required></v-select>
