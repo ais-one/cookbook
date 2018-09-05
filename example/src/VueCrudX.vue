@@ -547,7 +547,7 @@ export default {
   min-height: 100%;
   background-color: #fff;
 }
-/*
+/* fixed-header - not working yet
 https://github.com/vuetifyjs/vuetify/issues/1547#issuecomment-418698573
 */
 </style>
