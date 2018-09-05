@@ -547,4 +547,7 @@ export default {
   min-height: 100%;
   background-color: #fff;
 }
+/*
+https://github.com/vuetifyjs/vuetify/issues/1547#issuecomment-418698573
+*/
 </style>
