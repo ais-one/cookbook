@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-layout row>
+  <div id="abc">
+    <v-layout row ref="pageTop">
       <v-flex xs12>
         <h2>You can add various components, cruds, a chart, map, etc.</h2>
         <p>The clicking an item in left table will do a find() records in right table where Party Name matches Party. The right table also has the goBack() button to return to parent turned off</p>
@@ -47,6 +47,7 @@
         </v-container>
       </v-flex>
     </v-layout>
+    <v-btn fab fixed dark bottom right @click.stop="scrollToTop"><v-icon>arrow_upward</v-icon></v-btn>
   </div>
 </template>
 
@@ -67,10 +68,12 @@ export default {
       selectedId: null
     }
   },
-  created () {
-
-  },
   methods: {
+    scrollToTop () {
+      this.$nextTick(function () {
+        this.$refs.pageTop.scrollIntoView()
+      })
+    },
     async onSelected (data) {
       this.selectedId = data.item.name
       await this.$refs.testref.getRecordsHelper()
