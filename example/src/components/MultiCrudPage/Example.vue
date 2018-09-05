@@ -1,6 +1,6 @@
 <template>
   <div id="abc">
-    <v-layout row ref="pageTop">
+    <v-layout row ref="pageTop" v-scroll="onScroll">
       <v-flex xs12>
         <h2>You can add various components, cruds, a chart, map, etc.</h2>
         <p>The clicking an item in left table will do a find() records in right table where Party Name matches Party. The right table also has the goBack() button to return to parent turned off</p>
@@ -47,7 +47,7 @@
         </v-container>
       </v-flex>
     </v-layout>
-    <v-btn fab fixed dark bottom right @click.stop="scrollToTop"><v-icon>arrow_upward</v-icon></v-btn>
+    <v-btn v-if="offsetTop" fab fixed dark bottom right @click.stop="scrollToTop"><v-icon>arrow_upward</v-icon></v-btn>
   </div>
 </template>
 
@@ -65,7 +65,8 @@ export default {
     return {
       partyDefs,
       partyNotesDefs,
-      selectedId: null
+      selectedId: null,
+      offsetTop: 0
     }
   },
   methods: {
@@ -73,6 +74,9 @@ export default {
       this.$nextTick(function () {
         this.$refs.pageTop.scrollIntoView()
       })
+    },
+    onScroll (e) {
+      this.offsetTop = window.pageYOffset || document.documentElement.scrollTop
     },
     async onSelected (data) {
       this.selectedId = data.item.name
