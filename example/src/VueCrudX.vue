@@ -1,7 +1,4 @@
 <script>
-// BUGS to FIX
-// 1. async component loading issue on multi-crud pages
-//
 // TBD
 // 1) to consider: expand, select & select-all item-key="id"
 // 2) user access control to operations
@@ -160,14 +157,15 @@ export default {
     this.filterHeaderColor = this.crudTable.filterHeaderColor || 'grey'
 
     // assign the components
-    console.log('vvvv', this.storeName, this.$options.components['crud-filter'], this.crudFilter.FilterVue)
     if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue
-    console.log('vvvv2', this.storeName, this.$options.components['crud-filter'], this.crudFilter.FilterVue)
 
     if (this.onCreatedOpenForm && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
       this.crudFormFlag = true
     }
+
+    // not needed in data() because it does not exist in template, an optimization which should be done for others as well
+    this.isMounted = false // for future usage if any
   },
   async mounted () {
     if (!this.hasFilterVue) {
@@ -175,17 +173,18 @@ export default {
         if (this.filterData[key].itemsFn) this.filterData[key].items = await this.filterData[key].itemsFn()
       }
     }
-    this.aa = true
-    this.bb = true
+    this.isMounted = true
   },
   beforeUpdate () {
+    // Spent 5 days just to get this to work
+    // somehow even if assign on mounted, and with using nextTick, things are still corrupt, until here!
+    // if (this.storeName === 'multi-crud-party') console.log('vvvv4', this.storeName, this.$options.components['crud-filter'], this.crudFilter.FilterVue)
+    if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
+    if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue
   },
   beforeRouteEnter (to, from, next) { next(vm => { }) },
   data () {
     return {
-      aa: null,
-      bb: null,
-
       // form
       crudFormFlag: false,
       validForm: true,
@@ -361,8 +360,7 @@ export default {
     async submitFilter () {
       this.$options.components['crud-filter'] = this.crudFilter.FilterVue
       this.$forceUpdate()
-      console.log('vvvv', this.storeName, this.$options.components)
-      // console.log('vvvv', this.storeName, this.$options.components['crud-filter'], this.crudFilter.FilterVue)
+      if (this.storeName === 'multi-crud-party') console.log('vvvv', this.storeName, this.$options.components)
       // TOREMOVE why was this here in the first place? await this.getRecords()
       await this.getRecordsHelper()
     },
@@ -413,7 +411,7 @@ export default {
       <v-expansion-panel-content :class="filterHeaderColor">
         <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</div>
         <v-form v-if="hasFilterData" class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
-          <crud-filter v-if="hasFilterVue && aa" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
+          <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
           <v-layout row wrap v-else>
             <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12 class="pa-2">
               <component v-if="filter.type === 'select'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules"></component>
@@ -492,7 +490,7 @@ export default {
           <v-progress-linear :indeterminate="loading" height="2"></v-progress-linear>
 
           <v-form v-if="hasFormVue" class="grey lighten-3 pa-2" v-model="validForm" lazy-validation>
-            <crud-form v-if="!formAutoData && bb" :record="record" :parentId="parentId" :storeName="storeName" />
+            <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
             <v-layout row wrap v-else>
               <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12 class="pa-2">
                 <component v-if="form.type === 'select'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules"></component>

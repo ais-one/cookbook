@@ -2,7 +2,7 @@ import { firestore, hasDuplicate } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format } from 'date-fns'
 
-import ComponentLoading from '@/components/ComponentLoading'
+// import ComponentLoading from '@/components/ComponentLoading'
 
 export const crudSnackBar = { top: true, timeout: 6000 }
 
@@ -26,8 +26,7 @@ export const crudTable = {
 export const crudFilter = {
   // FilterVue: null,
   FilterVue: () => ({
-    component: import('./PartyFilter.vue'),
-    loading: ComponentLoading
+    component: import('./PartyFilter.vue')
   }),
   filterData: { // this is for automated filter creation - if undefined use FilterVue
     languages: {
@@ -61,8 +60,8 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  FormVue: null,
-  // FormVue: () => ({ component: import('./PartyForm.vue') }),
+  // FormVue: null,
+  FormVue: () => ({ component: import('./PartyForm.vue') }),
   formAutoData: { // this is for automated form creation - if undefined use FormVue
     name: {
       type: 'text',

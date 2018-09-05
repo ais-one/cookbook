@@ -10,7 +10,7 @@
     <v-layout row wrap>
       <v-flex xs12 sm6>
         <vue-crud-x
-          storeName="component-party"
+          storeName="multi-crud-party"
           :parentId="null"
           v-bind="partyDefs"
           @selected="onSelected"
@@ -20,7 +20,7 @@
       <v-flex xs12 sm6>
         <vue-crud-x
           ref="testref"
-          storeName="component-party-notes"
+          storeName="multi-crud-party-notes"
           :parentId="selectedId"
           v-bind="partyNotesDefs"
         >

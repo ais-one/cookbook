@@ -2,7 +2,7 @@ import { firestore } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format, startOfMonth, endOfMonth } from 'date-fns'
 
-import ComponentLoading from '@/components/ComponentLoading'
+// import ComponentLoading from '@/components/ComponentLoading'
 
 export const crudTable = {
   name: 'party-notes',
@@ -25,8 +25,7 @@ export const crudTable = {
 export const crudFilter = {
   // FilterVue: null,
   FilterVue: () => ({
-    component: import('./PartyNotesFilter.vue'),
-    loading: ComponentLoading
+    component: import('./PartyNotesFilter.vue')
   }),
   filterData: {
     dateStart: {
@@ -65,8 +64,8 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  FormVue: null,
-  // FormVue: () => ({ component: import('./PartyNotesForm.vue') }),
+  // FormVue: null,
+  FormVue: () => ({ component: import('./PartyNotesForm.vue') }),
   formAutoData: { // this is for automated form creation - if undefined use FormVue
     approver: {
       type: 'text',
