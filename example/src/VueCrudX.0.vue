@@ -111,7 +111,6 @@ export default {
 
     // set inline edit fields
     if (this.crudTable.inline) this.inline = this.crudTable.inline
-    this.inlineButtons = this.crudTable.inlineButtons !== false // default true
 
     // is there an action column
     this.actionColumn = this.crudTable.actionColumn === true // default false
@@ -215,7 +214,6 @@ export default {
       // crudTable
       headers: [ ], // pass in
       inline: false, // inline editing
-      inlineButtons: true, // has save and cancel buttons
 
       actionColumn: false,
       canDelete: true,
@@ -427,7 +425,7 @@ export default {
               <component v-if="filter.type === 'select'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules"></component>
               <component v-if="filter.type === 'select-kv'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules" item-value="value" item-text="text" return-object></component>
               <component v-if="filter.type === 'date'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" type="date"></component>
-              <component v-if="filter.type === 'text'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" :clearable="!!filter.clearable" type="text"></component>
+              <component v-if="filter.type === 'text'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" type="text"></component>
             </v-flex>
           </v-layout>
           <v-layout row justify-end>
@@ -460,9 +458,9 @@ export default {
           <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumn?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
             <v-edit-dialog v-if="inline[header.value] && crudOps.update"
               :return-value.sync="props.item[header.value]"
-              :large="inlineButtons"
-              :persistent="inlineButtons"
+              large
               lazy
+              persistent
               @save="inlineUpdate(props.item, header.value)"
               @cancel="()=>{}"
               @open="inlineOpen(props.item[header.value])"
@@ -471,17 +469,7 @@ export default {
             >
               <div>{{ props.item[header.value] }}</div>
               <div slot="input" class="mt-3 title">Update Field</div>
-              <component
-                :is="inline[header.value]==='textarea'?'v-textarea':'v-text-field'"
-                slot="input"
-                v-model="props.item[header.value]"
-                label="Edit"
-                :type="inline[header.value]"
-                single-line
-                counter
-                autofocus
-              >
-              </component>
+              <component :is="inline[header.value]==='textarea'?'v-textarea':'v-text-field'" slot="input" v-model="props.item[header.value]" label="Edit" :type="inline[header.value]" single-line counter autofocus></component>
             </v-edit-dialog>
             <span v-else>{{ props.item[header.value] | formatters(header.value) }}</span>
           </td>
@@ -516,7 +504,7 @@ export default {
                 <component v-if="form.type === 'select'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules"></component>
                 <component v-if="form.type === 'select-kv'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules" item-value="value" item-text="text" return-object></component>
                 <component v-if="form.type === 'date'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="date"></component>
-                <component v-if="form.type === 'text'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" :clearable="!!filter.clearable" type="text"></component>
+                <component v-if="form.type === 'text'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="text"></component>
               </v-flex>
             </v-layout>
 

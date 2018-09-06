@@ -14,6 +14,7 @@ export const crudTable = {
     'remarks': 'textarea',
     'created': 'date'
   },
+  inlineButtons: true,
   confirmCreate: true, // show operation confirmation dialog flags
   confirmUpdate: true,
   confirmDelete: true,

@@ -1,4 +1,5 @@
 ### Version 0.0.21
+ * clearble input
  * user permissions & delete related records (e.g. deleting a party will also delete all notes belonging to that party)
  * v-data-table actions-append: implement later, requires vuetifyjs 1.2.X
 
