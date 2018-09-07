@@ -472,7 +472,7 @@ export default {
               <div>{{ props.item[header.value] }}</div>
               <div slot="input" class="mt-3 title">Update Field</div>
               <component
-                :is="inline[header.value]==='textarea'?'v-textarea':'v-text-field'"
+                :is="inline[header.value]==='textarea'?'v-textarea':(inline[header.value]==='date')?'v-date-picker':'v-text-field'"
                 slot="input"
                 v-model="props.item[header.value]"
                 label="Edit"

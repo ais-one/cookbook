@@ -1,7 +1,9 @@
 ### Version 0.0.21
- * clearble input
- * user permissions & delete related records (e.g. deleting a party will also delete all notes belonging to that party)
- * v-data-table actions-append: implement later, requires vuetifyjs 1.2.X
+ * clearble input (v-text-field in filter)
+ * add dateicker to inline edit
+ * add DatePicker component that integrates v-text-field with v-date-picker
+  * user permissions & delete related records (e.g. deleting a party will also delete all notes belonging to that party)
+  * v-data-table actions-append: implement later, requires vuetifyjs 1.2.X
 
 ### Version 0.0.20
  * Move the doPage & crudTitle props into crudTable props as objects (breaking change on pagination flag)
