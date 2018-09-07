@@ -452,7 +452,7 @@ export default {
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
         <tr @click.stop="rowClicked(props.item, $event)">
-          <td v-if="actionColumn" class="justify-left layout">
+          <td v-if="actionColumn" class="justify-center layout">
             <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
             <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
           </td>
