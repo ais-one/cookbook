@@ -1,7 +1,7 @@
 ### Version 0.0.21
  * clearble input (v-text-field in filter)
- * add dateicker to inline edit
- * add DatePicker component that integrates v-text-field with v-date-picker
+ * add v-datepicker to inline edit, have inline edit without using dialog (blur will update contents if it has been changed)
+ * created DatePicker component that integrates v-text-field with v-date-picker, so you write less boilerplate code
   * user permissions & delete related records (e.g. deleting a party will also delete all notes belonging to that party)
   * v-data-table actions-append: implement later, requires vuetifyjs 1.2.X
 

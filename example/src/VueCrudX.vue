@@ -116,7 +116,7 @@ export default {
     // is there an action column
     this.actionColumn = this.crudTable.actionColumn === true // default false
     if (this.actionColumn) { // WARNING what if this.crudTable.headers undefined or wrong?
-      this.headers = [{ text: 'Actions', value: 'id', sortable: false }, ...this.crudTable.headers]
+      this.headers = [{ text: this.$t('vueCrudX.actions'), value: 'id', sortable: false }, ...this.crudTable.headers]
     } else {
       this.headers = this.crudTable.headers
     }
@@ -127,16 +127,16 @@ export default {
     this.hasFilterData = this.isObject(this.crudFilter.filterData)
     this.hasFilterVue = typeof this.crudFilter.FilterVue === 'function'
 
+    // use add row to create record
+    this.addrowCreate = this.crudTable.addrowCreate === true // default false
+
     // set the permissions
-    this.canCreate = this.crudOps.create && (this.hasFormVue || this.formAutoData) // add user permissions later
+    this.canCreate = this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData) // add user permissions later
     this.canUpdate = this.crudOps.update && (this.hasFormVue || this.formAutoData) // add user permissions later
     this.canDelete = this.crudOps.delete // add user permissions later
 
     // open form on row click
     this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // default true
-
-    // use add row to create record
-    this.addrowCreate = this.crudTable.addrowCreate === true // default false
 
     // set confirmation
     this.confirmCreate = this.crudTable.confirmCreate === true // default false
@@ -290,10 +290,10 @@ export default {
     isObject (obj) { return obj !== null && typeof obj === 'object' },
     setSnackBar (statusCode) {
       if (this.crudSnackBar && statusCode) {
-        this.snackbarText = 'Unknown Operation'
-        if (statusCode === 200 || statusCode === 201) this.snackbarText = 'OK'
-        else if (statusCode === 500) this.snackbarText = 'Operation Error'
-        else if (statusCode === 409) this.snackbarText = 'Duplicate Error'
+        this.snackbarText = this.$t('vueCrudX.unknownOperation')
+        if (statusCode === 200 || statusCode === 201) this.snackbarText = this.$t('vueCrudX.operationOk')
+        else if (statusCode === 500) this.snackbarText = this.$t('vueCrudX.operationError')
+        else if (statusCode === 409) this.snackbarText = this.$t('vueCrudX.duplicateError')
         this.snackbar = true
       }
     },
@@ -370,7 +370,6 @@ export default {
     async submitFilter () {
       this.$options.components['crud-filter'] = this.crudFilter.FilterVue
       this.$forceUpdate()
-      if (this.storeName === 'multi-crud-party') console.log('vvvv', this.storeName, this.$options.components)
       // TOREMOVE why was this here in the first place? await this.getRecords()
       await this.getRecordsHelper()
     },
@@ -394,8 +393,12 @@ export default {
       this.inlineValue = value
     },
     async inlineUpdate (item, field) {
-      const rv = await this.updateRecord({ record: item })
-      if (!rv) item[field] = this.inlineValue // if false undo changes
+      if (item[field] !== this.inlineValue) {
+        const rv = await this.updateRecord({ record: item })
+        if (!rv) item[field] = this.inlineValue // if false undo changes
+      } else {
+        console.log('no changes')
+      }
     },
     async inlineCreate () {
       if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
@@ -452,37 +455,47 @@ export default {
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
         <tr @click.stop="rowClicked(props.item, $event)">
-          <td v-if="actionColumn" class="justify-center layout">
+          <td v-if="actionColumn" class="justify-center layout" valign="middle">
             <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
             <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
           </td>
           <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
           <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumn?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
-            <v-edit-dialog v-if="inline[header.value] && crudOps.update"
-              :return-value.sync="props.item[header.value]"
-              :large="inlineButtons"
-              :persistent="inlineButtons"
-              lazy
-              @save="inlineUpdate(props.item, header.value)"
-              @cancel="()=>{}"
-              @open="inlineOpen(props.item[header.value])"
-              @close="()=>{}"
-              fixed-header
-            >
-              <div>{{ props.item[header.value] }}</div>
-              <div slot="input" class="mt-3 title">Update Field</div>
-              <component
-                :is="inline[header.value]==='textarea'?'v-textarea':(inline[header.value]==='date')?'v-date-picker':'v-text-field'"
-                slot="input"
-                v-model="props.item[header.value]"
-                label="Edit"
-                :type="inline[header.value]"
-                single-line
-                counter
-                autofocus
+            <span v-if="inline[header.value] && crudOps.update"> 
+              <v-edit-dialog
+                v-if="inline[header.value]==='textarea'||inline[header.value]==='date'||inline[header.value]==='textdialog'"
+                :return-value.sync="props.item[header.value]"
+                :large="inlineButtons"
+                :persistent="inlineButtons"
+                lazy
+                @save="inlineUpdate(props.item, header.value)"
+                @cancel="()=>{}"
+                @open="inlineOpen(props.item[header.value])"
+                @close="()=>{}"
+                fixed-header
               >
-              </component>
-            </v-edit-dialog>
+                <div>{{ props.item[header.value] }}</div>
+                <!-- <div slot="input" class="mt-3 title">Update Field</div> -->
+                <component
+                  :is="inline[header.value]==='textarea'?'v-textarea':(inline[header.value]==='date')?'v-date-picker':'v-text-field'"
+                  slot="input"
+                  v-model="props.item[header.value]"
+                  label="Edit"
+                  :type="inline[header.value]"
+                  single-line
+                  counter
+                  autofocus
+                >
+                </component>
+              </v-edit-dialog>
+              <v-text-field v-else
+                class="caption"
+                type="text"
+                v-model="props.item[header.value]"
+                @focus="inlineOpen(props.item[header.value])"
+                @blur="inlineUpdate(props.item, header.value)"
+              />
+            </span>
             <span v-else>{{ props.item[header.value] | formatters(header.value) }}</span>
           </td>
         </tr>
