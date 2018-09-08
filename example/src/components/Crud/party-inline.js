@@ -20,7 +20,7 @@ export const crudTable = {
   confirmUpdate: true,
   confirmDelete: true,
   headers: [
-    { text: 'Party Name', value: 'name' },
+    { text: 'Party Name', value: 'name', fixed: true },
     { text: 'Remarks🖊️', value: 'remarks' }, // use pen emoji to indicate editable columns
     { text: 'Languages', value: 'languages' },
     { text: 'Status', value: 'status' },

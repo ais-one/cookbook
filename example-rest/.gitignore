@@ -1,0 +1,5 @@
+node_modules
+.DS_Store
+config.json
+serviceAccountKey.json
+package-lock.json

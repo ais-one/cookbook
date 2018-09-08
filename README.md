@@ -11,6 +11,11 @@ Read the following detailed article (usage and explanations in the article are a
 
 > A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, use of GraphQL or REST to access various datastores. Vuetify is used for layout components but can be changed to alternatives such as ElementUI (by changing components from Vuetify to ElementUI)
 
+## Examples Available
+ * Serverless (best for starters) - https://github.com/ais-one/vue-crud-x/tree/master/example
+ * REST - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
+ * NUXT - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
+
 ## Differentiating Features From Other CRUD Components
 
  * Able to do nested CRUD operations, e.g. selecting a post from a list of posts, and then selecting a comment from a list of comments of the selected post to edit
@@ -22,11 +27,10 @@ Read the following detailed article (usage and explanations in the article are a
    * Search filters
    * CRUD Form layout & validation (can also be automated)
    * CRUD operations (e.g. disallow delete)
- * (Optional) auto configure Search filters, CRUD Forms using JSON data
+ * (Optional) Auto-configure Search filters, CRUD Forms using JSON data
  * For CRUD operations, you can Use direct call (e.g. Firestore), or API (REST, GraphQL) to one or more types of datastore (MySQL, MongoDB, Redis, ElasticSearch, etc.)
-   * REST Example - https://github.com/ais-one/udemy/tree/master/vue-firebase
-   * NUXT Example - https://github.com/ais-one/nuxt-vcx
  * Export to CSV, File/Image Upload, i18n
+ * (New) Permissions
  * Possibly replace Vuetify with something else like ElementUI, Buefy, etc.
 
 ## What is bad about this CRUD Component
@@ -34,6 +38,8 @@ Read the following detailed article (usage and explanations in the article are a
 Because of its flexible nature, quite a number of things need to be coded to fit your needs.
 
 However, the good part is that these parts need to be coded anyway and once you find your way around the design, you will be able to quickly create custom CRUD in many of your use cases
+
+---
 
 # Getting Started - Hands On
 
@@ -94,10 +100,10 @@ Install it as in NPM package and import it
 Just copy the VueCrudX.vue file into your project and include it as a component
 
 # Todo / KIV
+ * add casl-vue, for casl authorization library
+ * Fixed Column: https://github.com/lzhoucs/vuetify/pull/4
  * fix Date Range Issues... or check filters only on submit
  * GraphQL using Prisma or Hasura
- * add casl-vue, for casl authorization library
- * Configurable theme
  * Take note of the following github issues
    * Fixed Table Header:
      * https://github.com/vuetifyjs/vuetify/issues/1547

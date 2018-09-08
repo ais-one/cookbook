@@ -1,0 +1,317 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Udemy Rest API
+# during dev, should point to your local machine
+host: 127.0.0.1:3000
+# basePath prefixes all resource paths
+basePath: /
+tags:
+  - name: "Base"
+    description: "Base path controller"
+  - name: "User"
+    description: "User path controller"
+  - name: "Resource"
+    description: "Resource path controller"
+# TEST
+schemes:
+  - http
+  - https
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: token # Authorization
+    in: header
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /signup:
+    post:
+      # x-swagger-router-controller: "Job"
+      # operationId: "DoLogin"
+      tags:
+      - "Base"
+      parameters:
+      - in: "body"
+        name: "my_cred"
+        description: "signup credentials"
+        required: true
+        schema:
+          $ref: "#/definitions/LoginCredentials"
+      responses:
+        "201":
+          description: "Success"
+        "500":
+          description: "Error"
+  /login:
+    post:
+      tags:
+      - "Base"
+      parameters:
+      - in: "body"
+        name: "my_cred"
+        description: "login credentials"
+        required: true
+        schema:
+          $ref: "#/definitions/LoginCredentials"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        "500":
+          description: "Error"
+  /logout:
+    get:
+      tags:
+      - "Base"
+      security:
+        - Bearer: []
+      responses:
+        "200":
+          description: "Log out"
+        default:
+          description: "Error"
+  /user:
+    get:
+      tags:
+      - "User"
+      security:
+        - Bearer: []
+      parameters:
+        - in: "query"
+          description: search using email
+          name: "email"
+          required: false
+          type: "string"
+      responses:
+        "200":
+          description: "Array of users"
+          schema:
+            type: "object"
+        default:
+          description: "Error"
+    post:
+      tags:
+      - "User"
+      security:
+        - Bearer: []
+      parameters:
+      - in: "body"
+        name: "my_cred"
+        description: "create user info"
+        required: true
+        schema:
+          $ref: "#/definitions/LoginCredentials"
+      responses:
+        "201":
+          description: "Create user"
+        default:
+          description: "Error"
+  /user/{id}:
+    get:
+      tags:
+        - "User"
+      security:
+        - Bearer: []
+      parameters:
+        - in: "path"
+          name: "id"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Get user"
+          schema:
+            type: "object"
+        default:
+          description: Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - "User"
+      parameters:
+        - in: "path"
+          name: "id"
+          required: true
+          type: "string"
+        - in: "body"
+          name: "updated_user"
+          required: true
+          schema:
+            $ref: "#/definitions/UserUpdate"
+            # type: "object"
+      responses:
+        "200":
+          description: "Updated"
+        default:
+          description: "Error"
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - "User"
+      parameters:
+        - in: "path"
+          name: "id"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Deleted"
+        default:
+          description: "Error"
+  /resource:
+    get:
+      tags:
+      - "Resource"
+      security:
+        - Bearer: []
+      parameters:
+        - in: "query"
+          description: create date start
+          name: "from"
+          required: false
+          type: "string"
+        - in: "query"
+          description: create date end
+          name: "to"
+          required: false
+          type: "string"
+      responses:
+        "200":
+          description: "Array of resources"
+          schema:
+            type: "object"
+        default:
+          description: "Error"
+    post:
+      tags:
+      - "Resource"
+      security:
+        - Bearer: []
+      parameters:
+      - in: "body"
+        name: "my_cred"
+        description: "creator user uid"
+        required: false
+        schema:
+          type: "object"
+          properties:
+            uid:
+              type: "string"
+      responses:
+        "201":
+          description: "Create resource"
+        default:
+          description: "Error"
+  /resource/{id}:
+    get:
+      tags:
+        - "Resource"
+      security:
+        - Bearer: []
+      parameters:
+        - in: "path"
+          name: "id"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Get resource"
+          schema:
+            type: "object"
+        default:
+          description: Error
+    delete:
+      security:
+        - Bearer: []
+      tags:
+        - "Resource"
+      parameters:
+        - in: "path"
+          name: "id"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Deleted"
+        default:
+          description: "Error"
+
+  # /job:
+  #   get:
+  #     security:
+  #       - Bearer: []
+  #     x-swagger-router-controller: "Job"
+  #     operationId: "index"
+  #     parameters:
+  #       - in: "query"
+  #         description: selected page (1-based index)
+  #         name: "page"
+  #         required: false
+  #         type: "integer"
+  #       - in: "query"
+  #         description: page size
+  #         name: "pgsz"
+  #         required: false
+  #         type: "integer"
+  #       - in: "query"
+  #         description: query mode 1 is query own company, 2 is query others
+  #         name: "q"
+  #         required: false
+  #         type: "integer"
+  #     responses:
+  #       "200":
+  #         description: "Array of jobs"
+  #         schema:
+  #           type: "object"
+  #       default:
+  #         description: Error
+  #         schema:
+  #           $ref: "#/definitions/ErrorResponse"
+  #   post:
+  #     security:
+  #       - Bearer: []
+  #     x-swagger-router-controller: "Job"
+  #     operationId: "add"
+  #     parameters:
+  #       - in: "body"
+  #         name: "new_job"
+  #         required: true
+  #         schema:
+  #           type: "object"
+  #     responses:
+  #       "200":
+  #         description: "Job Added"
+  #         schema:
+  #           $ref: "#/definitions/ErrorResponse"
+# complex objects have schema definitions
+definitions:
+  LoginResponse:
+    type: "object"
+    properties:
+      token:
+        type: string
+        description: "JWT"
+  LoginCredentials:
+    type: "object"
+#    required:
+#      - email
+#      - password
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+  UserUpdate:
+    type: "object"
+    properties:
+      quotaAllocated:
+        type: "integer"
+  ErrorResponse:
+    type: "object"

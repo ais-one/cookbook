@@ -130,11 +130,6 @@ export default {
     // use add row to create record
     this.addrowCreate = this.crudTable.addrowCreate === true // default false
 
-    // set the permissions
-    this.canCreate = this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData) // add user permissions later
-    this.canUpdate = this.crudOps.update && (this.hasFormVue || this.formAutoData) // add user permissions later
-    this.canDelete = this.crudOps.delete // add user permissions later
-
     // open form on row click
     this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // default true
 
@@ -218,9 +213,6 @@ export default {
       inlineButtons: true, // has save and cancel buttons
 
       actionColumn: false,
-      canDelete: true,
-      canUpdate: true,
-      canCreate: true,
       addrowCreate: false, // add row to create instead of using form
 
       confirmCreate: false, // confirmation required flags
@@ -265,6 +257,23 @@ export default {
       set: function (value) {
         this.setPagination(value)
       }
+    },
+    // computed permissions
+    canCreate () {
+      // this.$store.getters.user
+      if (this.$store.getters.user && this.$store.getters.user.rules) {
+        const { rules } = this.$store.getters.user
+        console.log(rules)
+        // if (rules[this.storeName] && rules[this.storeName] === '*' ||)
+        return this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData) // add user permissions later
+      }
+      return true
+    },
+    canUpdate () {
+      return this.crudOps.update && (this.hasFormVue || this.formAutoData) // add user permissions later
+    },
+    canDelete () {
+      return this.crudOps.delete // add user permissions later
     }
   },
   filters: {
