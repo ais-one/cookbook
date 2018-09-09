@@ -2,11 +2,7 @@
 
 # IMPORTANT: Getting Started - Article
 
-Read the following detailed article (usage and explanations in the article are also updated as and when required)
-
-<a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Article</a>
-
-[https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054)
+Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">detailed article</a> (usage and explanations in the article are also updated as and when required)
 
 
 # What Is vue-crud-x

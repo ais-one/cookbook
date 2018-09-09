@@ -1,3 +1,6 @@
+### Version 0.0.22
+ * https://github.com/ais-one/vue-crud-x/issues/32
+
 ### Version 0.0.21
  * clearble input (v-text-field in filter)
  * add v-datepicker to inline edit, have inline edit without using dialog (blur will update contents if it has been changed)
