@@ -72,7 +72,7 @@ Just copy the VueCrudX.vue file into your project and include it as a component
 * there is a user state which is passed into payload
  - you pass in email or id, to be used in createdBy field, to indicate who created the document/record (optional)
  - you pass in rules object to determine whether to show add, edit, delete button, etc. 
-
+* events emitted: form-close, selected
     # see using in VueCrudX.vue, you can populate the user state or leave it undefined
     async createRecord ({ commit, getters, dispatch }, payload) {
       payload.user = this.getters.user
@@ -92,6 +92,7 @@ Just copy the VueCrudX.vue file into your project and include it as a component
 
       }
     }
+
 
 ## Folders & Files to take note of
 

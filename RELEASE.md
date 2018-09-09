@@ -1,13 +1,18 @@
 ### Version 0.0.22
  * https://github.com/ais-one/vue-crud-x/issues/32
+ * improve on progress loaders
+ * any more events needed? also, check on disabling
+ * remove VueCrudX.0.vue file!
+ * fix Date Range Issues... or check filters only on submit
+ * GraphQL using Prisma or Hasura
 
 ### Version 0.0.21
- * clearble input (v-text-field in filter)
- * add v-datepicker to inline edit, have inline edit without using dialog (blur will update contents if it has been changed)
- * created DatePicker component that integrates v-text-field with v-date-picker, so you write less boilerplate code
+ * user permissions
+ * inline edit improvements, add v-datepicker to inline edit, have inline edit without using dialog (blur will update contents if it has been changed)
+ * created DatePicker component in example that integrates v-text-field with v-date-picker, so you write less boilerplate code
  * move nuxt example from external repo to here...
  * move rest example from external repo to here...
- * user permissions
+ * clearble input (v-text-field in filter)
 
 ### Version 0.0.20
  * Move the doPage & crudTitle props into crudTable props as objects (breaking change on pagination flag)

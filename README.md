@@ -43,8 +43,6 @@ However, the good part is that these parts need to be coded anyway and once you 
 ---
 
 # Todo / KIV
- * fix Date Range Issues... or check filters only on submit
- * GraphQL using Prisma or Hasura
  * Take note of the following github issues
    * Fixed Table Header:
      * Fixed Column: https://github.com/lzhoucs/vuetify/pull/4
