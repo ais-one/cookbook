@@ -1,0 +1,56 @@
+/** Stylus Styles */
+
+@require '../../node_modules/vuetify/src/stylus/settings/_colors'
+
+$theme := {
+  primary: $red.darken-2
+  accent: $red.accent-2
+  secondary: $grey.lighten-1
+  info: $blue.darken-1
+  warning: $amber.darken-2
+  error: $red.accent-4
+  success: $deep-orange.darken-1
+}
+
+@import '../../node_modules/vuetify/src/stylus/main'
+
+#nameLocation {
+  margin-top: 19px;
+  margin-left: 6px;
+}
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

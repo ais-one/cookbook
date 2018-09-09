@@ -10,15 +10,17 @@ export const crudTable = {
   actionColumn: true, // action buttons (edit/delete)on the left most table column
   addrowCreate: true, // add button creates new record by adding row
   inline: { // editable fields on the table and what type of edit are they
-    'name': 'text',
-    'remarks': 'textarea',
-    'created': 'date'
+    'name': 'text', // v-text-field (blur will update contents if it was changed)
+    'remarks': 'textarea', // edit dialog with v-textarea
+    'created': 'date', // edit dialog with v-date-picker
+    'photo': 'textdialog' // edit dialog with v-text-field (text)
   },
+  inlineButtons: true,
   confirmCreate: true, // show operation confirmation dialog flags
   confirmUpdate: true,
   confirmDelete: true,
   headers: [
-    { text: 'Party Name', value: 'name' },
+    { text: 'Party Name', value: 'name', fixed: true },
     { text: 'Remarks🖊️', value: 'remarks' }, // use pen emoji to indicate editable columns
     { text: 'Languages', value: 'languages' },
     { text: 'Status', value: 'status' },

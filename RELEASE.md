@@ -1,3 +1,11 @@
+### Version 0.0.21
+ * clearble input (v-text-field in filter)
+ * add v-datepicker to inline edit, have inline edit without using dialog (blur will update contents if it has been changed)
+ * created DatePicker component that integrates v-text-field with v-date-picker, so you write less boilerplate code
+ * move nuxt example from external repo to here...
+ * move rest example from external repo to here...
+ * user permissions
+
 ### Version 0.0.20
  * Move the doPage & crudTitle props into crudTable props as objects (breaking change on pagination flag)
  * update vuetify to 1.2.2
@@ -6,7 +14,7 @@
    * add actionColumn (if true, table row has edit/delete icons)
    * option to create new record via dialog (current & default behaviour) or by adding row
    * if you have actionColumn but no inline edit fields, clicking on row will emit 'selected' event
-   * REST API example repository
+   * REST API example repository (https://github.com/ais-one/udemy/tree/master/vue-firebase)
    * Mutiple CRUD in a page
      * Working example on using parent and child table in same page
      * Scroll to top example included
@@ -17,9 +25,6 @@
    * colors, action columns, dark or light theme
    * see party-inline.js for example settings and comments
  * FIXED: fix custom filters and forms in multi CRUD page (e.g. filter component gets overwritten)
- * next Update (in order of priority)
-   * user permissions & delete related records (e.g. deleting a party will also delete all notes belonging to that party)
-   * v-data-table actions-append: implement later, requires vuetifyjs 1.2.X
 
 ### Version 0.0.19
  * pagination example (yes with firebase — only problem is that all records are loaded (e.g. 50 records) every time find is triggered, and page size is 5). Good thing is, you can use the example and it will work well on a DB supporting Total record count, Limit and Offset.

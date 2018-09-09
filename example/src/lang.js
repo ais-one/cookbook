@@ -21,9 +21,14 @@ const messages = {
       noDataText: 'No data available'
     },
     vueCrudX: {
+      actions: 'Actions',
       noData: 'No Data',
       confirm: 'Confirm',
-      itemRequired: 'Item is required'
+      itemRequired: 'Item is required',
+      duplicateError: 'Duplicate Error',
+      operationError: 'Operation Error',
+      unknownOperation: 'Unknown Operation',
+      operationOk: 'OK'
     },
     myApp: {
       languages: 'Languages'
@@ -45,9 +50,14 @@ const messages = {
       noDataText: 'Tidak ada data yang tersedia'
     },
     vueCrudX: {
+      actions: 'Actions',
       noData: 'Tidak Ada Data',
       confirm: 'Memastikan',
-      itemRequired: 'Item wajib diisi'
+      itemRequired: 'Item wajib diisi',
+      duplicateError: 'Duplicate Error',
+      operationError: 'Operation Error',
+      unknownOperation: 'Unknown Operation',
+      operationOk: 'OK'
     },
     myApp: {
       languages: 'Bahasa'
