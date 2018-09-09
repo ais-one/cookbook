@@ -366,9 +366,6 @@ export default {
       this.loading = false
     },
     async submitFilter () {
-      this.$options.components['crud-filter'] = this.crudFilter.FilterVue
-      this.$forceUpdate()
-      if (this.storeName === 'multi-crud-party') console.log('vvvv', this.storeName, this.$options.components)
       // TOREMOVE why was this here in the first place? await this.getRecords()
       await this.getRecordsHelper()
     },

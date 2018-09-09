@@ -259,22 +259,9 @@ export default {
       }
     },
     // computed permissions
-    canCreate () {
-      // this.$store.getters.user
-      if (this.$store.getters.user && this.$store.getters.user.rules) {
-        const { rules } = this.$store.getters.user
-        console.log(rules)
-        // if (rules[this.storeName] && rules[this.storeName] === '*' ||)
-        return this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData) // add user permissions later
-      }
-      return true
-    },
-    canUpdate () {
-      return this.crudOps.update && (this.hasFormVue || this.formAutoData) // add user permissions later
-    },
-    canDelete () {
-      return this.crudOps.delete // add user permissions later
-    }
+    canCreate () { return this.can('create', this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData)) },
+    canUpdate () { return this.can('update', this.crudOps.update && (this.hasFormVue || this.formAutoData)) },
+    canDelete () { return this.can('delete', this.crudOps.delete) }
   },
   filters: {
     capitalize: function (value) {
@@ -296,6 +283,20 @@ export default {
     }
   },
   methods: {
+    can (operation, flag) {
+      if (this.$store.getters.user && this.$store.getters.user.rules) {
+        const { rules } = this.$store.getters.user
+        if (
+          (rules[this.storeName] && (rules[this.storeName].indexOf(operation) !== -1 || rules[this.storeName].indexOf('*') !== -1)) ||
+          (rules['*'] && (rules['*'].indexOf(operation) !== -1 || rules['*'].indexOf('*') !== -1))
+        ) {
+          return true && flag
+        } else {
+          return false
+        }
+      }
+      return true
+    },
     isObject (obj) { return obj !== null && typeof obj === 'object' },
     setSnackBar (statusCode) {
       if (this.crudSnackBar && statusCode) {
@@ -377,8 +378,6 @@ export default {
       this.loading = false
     },
     async submitFilter () {
-      this.$options.components['crud-filter'] = this.crudFilter.FilterVue
-      this.$forceUpdate()
       // TOREMOVE why was this here in the first place? await this.getRecords()
       await this.getRecordsHelper()
     },
@@ -470,7 +469,7 @@ export default {
           </td>
           <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
           <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumn?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
-            <span v-if="inline[header.value] && crudOps.update"> 
+            <span v-if="inline[header.value] && crudOps.update">
               <v-edit-dialog
                 v-if="inline[header.value]==='textarea'||inline[header.value]==='date'||inline[header.value]==='textdialog'"
                 :return-value.sync="props.item[header.value]"
@@ -538,7 +537,7 @@ export default {
                 <component v-if="form.type === 'select'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules"></component>
                 <component v-if="form.type === 'select-kv'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules" item-value="value" item-text="text" return-object></component>
                 <component v-if="form.type === 'date'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="date"></component>
-                <component v-if="form.type === 'text'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" :clearable="!!filter.clearable" type="text"></component>
+                <component v-if="form.type === 'text'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="text"></component>
               </v-flex>
             </v-layout>
 

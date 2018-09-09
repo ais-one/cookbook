@@ -100,12 +100,11 @@ Install it as in NPM package and import it
 Just copy the VueCrudX.vue file into your project and include it as a component
 
 # Todo / KIV
- * add casl-vue, for casl authorization library
- * Fixed Column: https://github.com/lzhoucs/vuetify/pull/4
  * fix Date Range Issues... or check filters only on submit
  * GraphQL using Prisma or Hasura
  * Take note of the following github issues
    * Fixed Table Header:
+     * Fixed Column: https://github.com/lzhoucs/vuetify/pull/4
      * https://github.com/vuetifyjs/vuetify/issues/1547
      * https://github.com/vuetifyjs/vuetify/pull/2868
      * https://github.com/vuetifyjs/vuetify/pull/3833
