@@ -4,6 +4,8 @@
 
 Read the following detailed article (usage and explanations in the article are also updated as and when required)
 
+<a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Article</a>
+
 [https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054)
 
 
@@ -11,10 +13,13 @@ Read the following detailed article (usage and explanations in the article are a
 
 > A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, use of GraphQL or REST to access various datastores. Vuetify is used for layout components but can be changed to alternatives such as ElementUI (by changing components from Vuetify to ElementUI)
 
-## Examples Available
+## Examples To Get You Up And Running
+
+See the respective README.md files for more information on starting
+
  * Serverless (best for starters) - https://github.com/ais-one/vue-crud-x/tree/master/example
- * REST - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
- * NUXT - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
+ * REST (README.md work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
+ * NUXT (README.md work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
 
 ## Differentiating Features From Other CRUD Components
 
@@ -41,64 +46,6 @@ However, the good part is that these parts need to be coded anyway and once you 
 
 ---
 
-# Getting Started - Hands On
-
-## Learning To Use Or Maintaining Component (Github)
-
-### Learning
-
-#### clone the repository and go to the repository example
-    git clone https://github.com/ais-one/vue-crud-x.git
-    cd vue-crud-x/example
-
-#### install dependencies
-    npm install
-    # delete package-lock.json if you face problems
-
-#### create cfg.json file & put in your credentials
-    touch cfg.json
-    vi cfg.json
-
-    {
-      "firebaseCfg": {
-        "apiKey": "",
-        "authDomain": "",
-        "databaseURL": "",
-        "projectId": "",
-        "storageBucket": "",
-        "messagingSenderId": ""
-      },
-      "recaptchaSiteKey": ""  
-    }
-
-#### run the app (vue-cli 3)
-    npm run serve
-
-### Maintaining - Build NPM Package
-
-#### go to repo root directory and build for production with minification
-    cd [path-to]/vue-crud-x
-    npm run build
-
-#### Either upload as published package (only for repo owner)
-    npm publish
-
-#### local package vue-crud-x
-    npm pack
-    # A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
-    # If you want to install without saving to package.json, npm i --no-save vue-crud-x-?.?.?.tgz
-
-## General Usage
-
-### Option 1 use NPM package
-
-Install it as in NPM package and import it
-    npm i vue-crud-x
-
-### Option 2 use from source file
-
-Just copy the VueCrudX.vue file into your project and include it as a component
-
 # Todo / KIV
  * fix Date Range Issues... or check filters only on submit
  * GraphQL using Prisma or Hasura
@@ -109,6 +56,8 @@ Just copy the VueCrudX.vue file into your project and include it as a component
      * https://github.com/vuetifyjs/vuetify/pull/2868
      * https://github.com/vuetifyjs/vuetify/pull/3833
    * Infinite Scroll:  https://github.com/vuetifyjs/vuetify/issues/3538
+ * Not Urgent: delete related records (e.g. deleting a party will also delete all notes belonging to that party)
+ * Not Urgent: v-data-table actions-append: implement later, requires vuetifyjs 1.2.X
  * No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
  * Look into abort/timeout for async operations without abort/timeout feature
 

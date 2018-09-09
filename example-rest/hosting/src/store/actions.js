@@ -32,7 +32,7 @@ export default {
         email,
         password
       })
-      rv.data.rules = { '*': '*' }
+      rv.data.rules = { '*': ['*'] }
       dispatch('autoSignIn', rv.data) // token
     } catch (e) { }
     if (!rv) {

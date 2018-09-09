@@ -52,7 +52,7 @@ export default {
     router.push('/')
   },
   autoSignIn ({ commit }, payload) {
-    commit('setUser', { id: payload.uid, email: payload.email || payload.uid, rules: { '*': '*' } })
+    commit('setUser', { id: payload.uid, email: payload.email || payload.uid, rules: { '*': ['*'] } })
     commit('setLayout', 'layout-admin')
     router.push('/multi-crud-page-example') // console.log party
   },

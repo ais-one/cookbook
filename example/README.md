@@ -1,32 +1,97 @@
-# example
+# Getting Started - Hands On
 
 > A example project using vue-crud-x component
 
-### Installation
+## Learning To Use Or Maintaining Component (Github)
 
-Refer to README.md in parent repository
+### Learning
 
-### Creation From Scratch
+#### clone the repository and go to the repository example
+    git clone https://github.com/ais-one/vue-crud-x.git
+    cd vue-crud-x/example
 
-Use vue-cli 3
+#### install dependencies
+    npm install
+    # delete package-lock.json if you face problems
 
-vue create [project name]
-Manually select features
-Babel, Linter, CSS Preporcessors
-Stylus
-ESLint + Standard config
-Lint on save
-dedicated config file (for babel, postcss, eslint, etc)
-Save this as a preset? N
+#### create cfg.json file & put in your credentials
+    touch cfg.json
+    vi cfg.json
 
-### Important notes
+    {
+      "firebaseCfg": {
+        "apiKey": "",
+        "authDomain": "",
+        "databaseURL": "",
+        "projectId": "",
+        "storageBucket": "",
+        "messagingSenderId": ""
+      },
+      "recaptchaSiteKey": ""  
+    }
+
+#### run the app (vue-cli 3)
+    npm run serve
+
+### Maintaining - Build NPM Package
+
+#### go to repo root directory and build for production with minification
+    cd [path-to]/vue-crud-x
+    npm run build
+
+#### Either upload as published package (only for repo owner)
+    npm publish
+
+#### local package vue-crud-x
+    npm pack
+    # A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
+    # If you want to install without saving to package.json, npm i --no-save vue-crud-x-?.?.?.tgz
+
+## General Usage
+
+### Option 1 use NPM package
+
+Install it as in NPM package and import it
+    npm i vue-crud-x
+
+### Option 2 use from source file
+
+Just copy the VueCrudX.vue file into your project and include it as a component
+
+---
+
+# A Deeper Dive Into The Example
+
+## VueCrudX Important Notes
 
 * primary key field name must be id - for now
 * the example uses firestore, please signup for firebase and create user on firebase to access
 * please see Schema section below for simple schema description, indexing, etc.
  - party collection (e.g. a party to a lawsuit)
  - note collection (case notes on each party)
+* there is a user state which is passed into payload
+ - you pass in email or id, to be used in createdBy field, to indicate who created the document/record (optional)
+ - you pass in rules object to determine whether to show add, edit, delete button, etc. 
 
+    # see using in VueCrudX.vue, you can populate the user state or leave it undefined
+    async createRecord ({ commit, getters, dispatch }, payload) {
+      payload.user = this.getters.user
+      let res = await getters.crudOps.create(payload)
+      return res
+    }
+
+    # sample user JSON - obtained from backend, decoded from JWT or some other means
+    {
+      id: '1726388390',
+      email: 'abc@mail.com',
+      rules: { // if this is not present, all front end permissions are enabled (but backend can still disallow)
+        '*': ['*'], // evereything thing allowed also in this setting
+        'storename1': ['*'] // all operations available for certain storename (each crud component has a unique storename)
+        '*': ['create,update,delete'] // all operations available for all stores also
+        'storename2': ['create', 'update'] // only create and update allowed for storename2
+
+      }
+    }
 
 ## Folders & Files to take note of
 
@@ -54,8 +119,6 @@ Two components are shown on a single page (you can also add other components on 
 * party-notes.js
 * partyNotesForm.vue - customized crud form
 * PartyNotesFilter.vue - customize search form
-
-
 
 ### Single CRUD Component on a page [created in router]
 
@@ -97,8 +160,6 @@ The files below show inline edit example
 
 * party-inline.js
 
-
-
 ### Things to take note of in /src/router/index.js
 
 Look at the routes and how the props are passed in
@@ -117,7 +178,8 @@ Look at menuItems and see the how the menu items and link to are done
     create {user, record, parentId}
     delete {user, record}
 
- 
+---
+
 ## Schema
 
 ### indexes
@@ -152,10 +214,22 @@ note - party a, datetime a
 
     1 party :-> N notes
 
+## Notes Creation Of vue-cli3 project From Scratch
 
-### Firebase
+vue create [project name]
+Manually select features
+Babel, Linter, CSS Preporcessors
+Stylus
+ESLint + Standard config
+Lint on save
+dedicated config file (for babel, postcss, eslint, etc)
+Save this as a preset? N
 
-#### Hosting To Firebase
+---
+
+# Firebase
+
+## Hosting To Firebase
 
 https://firebase.google.com/docs/hosting/quickstart
 
@@ -185,7 +259,7 @@ firebase deploy --only hosting
 firebase logout
 ```
 
-#### Storage Rules
+## Storage Rules
 
 ```
 service firebase.storage {
@@ -198,7 +272,7 @@ service firebase.storage {
 }
 ```
 
-#### Firestore NoSQL Rules & Indexes
+## Firestore NoSQL Rules & Indexes
 
 ```
 service cloud.firestore {
@@ -217,8 +291,9 @@ service cloud.firestore {
 - note datetime DESC approveStatus ASC
 
 
+# Other Notes (Related To VueJS only)
 
-### FILTERS Usage...
+## FILTERS Usage...
 
     import DateFilter from './filters/date'
 
@@ -242,8 +317,7 @@ service cloud.firestore {
     })
 
 
-
-### Debounce Example
+## Debounce Example
 
     var watchExampleVM = new Vue({
       el: '#watch-example',
@@ -289,62 +363,7 @@ service cloud.firestore {
       }
     })
 
-### YES-NO Component Example (Global Component)
-
-    <!-- YesNo.vue component example usage of emit
-    1. import & register the component (global example)
-    import YesNo from './components/Shared/YesNo.vue'
-    Vue.component('app-yesno', YesNo)
-
-    2. add component to where you want to use
-    <app-yesno v-if="confirmDialogFlag" @sayYes="dialogConfirm" @sayNo="dialogAbort" :text="confirmDialogText" />
-
-    3. the v-if "confirmDialogFlag" is a boolean to show/hide the dialog
-
-    4. bind :text to a data e.g. confirmDialogText
-
-    5. bind @sayYes and @sayNo to a methods e.g. dialogConfirm, dialogAbort
-    -->
-
-    <template>
-      <v-layout row justify-center>
-        <v-dialog v-model="dialog" persistent max-width="290">
-          <!-- v-btn color="primary" dark slot="activator">Open Dialog</v-btn -->
-          <v-card>
-            <v-card-title class="headline">Confirmation</v-card-title>
-            <v-card-text>{{ text }}</v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="green darken-1" flat @click.native="doYes">Yes</v-btn>
-              <v-btn color="green darken-1" flat @click.native="doNo">No</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-layout>
-    </template>
-
-    <script>
-      export default {
-        props: ['text'],
-        methods: {
-          doYes () {
-            this.dialog = false
-            this.$emit('sayYes')
-          },
-          doNo () {
-            this.dialog = false
-            this.$emit('sayNo')
-          }
-        },
-        data () {
-          return {
-            dialog: true
-          }
-        }
-      }
-    </script>
-
-### Others
+## Others
 
 v-model.lazy.trim.number (v-model modifiers)
 
@@ -364,11 +383,13 @@ or (value, key, index) if looping object
 
 ref is non-reactive
 
-vue lifecycle avoid beforeUpdate or update, use computer & watchers first
+vue lifecycle avoid beforeUpdate or update, use computed & watchers first
 
 https://firebase.google.com/docs/auth/web/google-signin
 
-### Other notes
+---
+
+# Other notes
 
 0. look into id => name?
 1. add Field as hidden on table list

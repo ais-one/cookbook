@@ -4,8 +4,7 @@
  * created DatePicker component that integrates v-text-field with v-date-picker, so you write less boilerplate code
  * move nuxt example from external repo to here...
  * move rest example from external repo to here...
- * user permissions & delete related records (e.g. deleting a party will also delete all notes belonging to that party)
-   * v-data-table actions-append: implement later, requires vuetifyjs 1.2.X
+ * user permissions
 
 ### Version 0.0.20
  * Move the doPage & crudTitle props into crudTable props as objects (breaking change on pagination flag)

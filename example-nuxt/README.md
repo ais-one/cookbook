@@ -2,7 +2,7 @@
 
 > Nuxt.js + Vuetify.js project
 
-TBD create user during login... set rules { '*': '*' }
+TBD create user during login... set rules { '*': ['*'] }
 
 ## Build Setup
 

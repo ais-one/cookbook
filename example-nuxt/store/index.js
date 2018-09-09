@@ -9,7 +9,7 @@ const createStore = () => {
       user: {
         email: 'test@abc.com',
         id: '123456',
-        rules: { '*': '*' }
+        rules: { '*': ['*'] }
       },
       counter: 0
     },
