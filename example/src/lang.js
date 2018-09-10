@@ -28,7 +28,9 @@ const messages = {
       duplicateError: 'Duplicate Error',
       operationError: 'Operation Error',
       unknownOperation: 'Unknown Operation',
-      operationOk: 'OK'
+      operationOk: 'OK',
+      save: 'Save',
+      cancel: 'Cancel'
     },
     myApp: {
       languages: 'Languages'
@@ -57,7 +59,9 @@ const messages = {
       duplicateError: 'Duplicate Error',
       operationError: 'Operation Error',
       unknownOperation: 'Unknown Operation',
-      operationOk: 'OK'
+      operationOk: 'OK',
+      save: 'Save',
+      cancel: 'Cancel'
     },
     myApp: {
       languages: 'Bahasa'

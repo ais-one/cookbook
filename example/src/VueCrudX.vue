@@ -404,9 +404,7 @@ export default {
       if (item[field] !== this.inlineValue) {
         const rv = await this.updateRecord({ record: item })
         if (!rv) item[field] = this.inlineValue // if false undo changes
-      } else {
-        console.log('no changes')
-      }
+      } // else console.log('no changes')
     },
     async inlineCreate () {
       if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
@@ -469,41 +467,42 @@ export default {
           </td>
           <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
           <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumn?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
-            <span v-if="inline[header.value] && crudOps.update">
-              <v-edit-dialog
-                v-if="inline[header.value]==='textarea'||inline[header.value]==='date'||inline[header.value]==='textdialog'"
-                :return-value.sync="props.item[header.value]"
-                :large="inlineButtons"
-                :persistent="inlineButtons"
-                lazy
-                @save="inlineUpdate(props.item, header.value)"
-                @cancel="()=>{}"
-                @open="inlineOpen(props.item[header.value])"
-                @close="()=>{}"
-                fixed-header
-              >
-                <div>{{ props.item[header.value] }}</div>
-                <!-- <div slot="input" class="mt-3 title">Update Field</div> -->
-                <component
-                  :is="inline[header.value]==='textarea'?'v-textarea':(inline[header.value]==='date')?'v-date-picker':'v-text-field'"
-                  slot="input"
-                  v-model="props.item[header.value]"
-                  label="Edit"
-                  :type="inline[header.value]"
-                  single-line
-                  counter
-                  autofocus
-                >
-                </component>
-              </v-edit-dialog>
-              <v-text-field v-else
-                class="caption"
-                type="text"
+            <v-edit-dialog
+              v-if="(inline[header.value]==='textarea'||inline[header.value]==='date'||inline[header.value]==='textdialog') && crudOps.update"
+              :return-value.sync="props.item[header.value]"
+              :large="inlineButtons"
+              :persistent="inlineButtons"
+              lazy
+              :cancel-text="$t('vueCrudX.save')"
+              :save-text="$t('vueCrudX.cancel')"
+              @save="inlineUpdate(props.item, header.value)"
+              @cancel="()=>{}"
+              @open="inlineOpen(props.item[header.value])"
+              @close="()=>{}"
+              fixed-header
+            >
+              <div>{{ props.item[header.value] }}</div>
+              <!-- <div slot="input" class="mt-3 title">Update Field</div> -->
+              <component
+                :is="inline[header.value]==='textarea'?'v-textarea':(inline[header.value]==='date')?'v-date-picker':'v-text-field'"
+                slot="input"
                 v-model="props.item[header.value]"
-                @focus="inlineOpen(props.item[header.value])"
-                @blur="inlineUpdate(props.item, header.value)"
-              />
-            </span>
+                label=""
+                :type="inline[header.value]"
+                single-line
+                counter
+                autofocus
+              >
+              </component>
+            </v-edit-dialog>
+            <v-text-field
+              v-else-if="inline[header.value]==='text' && crudOps.update"
+              class="caption"
+              type="text"
+              v-model="props.item[header.value]"
+              @focus="inlineOpen(props.item[header.value])"
+              @blur="inlineUpdate(props.item, header.value)"
+            />
             <span v-else>{{ props.item[header.value] | formatters(header.value) }}</span>
           </td>
         </tr>
