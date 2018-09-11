@@ -1,17 +1,13 @@
-[![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![Gitter chat](https://badges.gitter.im/ais-one/gitter.png)](https://gitter.im/vuecrudx)
+[![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x)
 
 # IMPORTANT: Getting Started - Article
 
-Read the following detailed article (usage and explanations in the article are also updated as and when required)
-
-<a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Article</a>
-
-[https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054)
+Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">detailed article</a> (usage and explanations in the article are also updated as and when required)
 
 
 # What Is vue-crud-x
 
-> A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, use of GraphQL or REST to access various datastores. Vuetify is used for layout components but can be changed to alternatives such as ElementUI (by changing components from Vuetify to ElementUI)
+> A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, forms, use of GraphQL or REST to access various datastores. Vuetify is used for layout components but can be changed to alternatives such as ElementUI (by changing components from Vuetify to ElementUI)
 
 ## Examples To Get You Up And Running
 
@@ -47,8 +43,6 @@ However, the good part is that these parts need to be coded anyway and once you 
 ---
 
 # Todo / KIV
- * fix Date Range Issues... or check filters only on submit
- * GraphQL using Prisma or Hasura
  * Take note of the following github issues
    * Fixed Table Header:
      * Fixed Column: https://github.com/lzhoucs/vuetify/pull/4
