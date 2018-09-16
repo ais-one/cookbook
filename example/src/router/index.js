@@ -17,6 +17,8 @@ import * as noteDefs2 from '@/components/Crud/notes2'
 
 import MultiCrudPageExample from '@/components/MultiCrudPage/Example'
 
+import Test from '@/components/Test'
+
 Vue.use(Router)
 
 export default new Router({
@@ -66,6 +68,7 @@ export default new Router({
       component: MultiCrudPageExample,
       beforeEnter: AuthGuard
     },
+    { path: '/test', name: 'Test', component: Test },
     // { path: '/signup', name: 'SignUp', component: SignUp },
     { path: '/', name: 'SignIn', component: SignIn },
     { path: '*', redirect: '/' }

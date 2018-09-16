@@ -125,7 +125,8 @@ export default {
             { icon: 'list_alt', title: 'Notes', link: '/notes' },
             { icon: 'announcement', title: 'Notes2', link: '/notes2' }
           ]
-        }
+        },
+        { icon: 'dashboard', title: 'Test', link: '/test' }
       ]
     }
   },
