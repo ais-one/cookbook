@@ -397,14 +397,33 @@ export default {
     },
 
     // inline
-    inlineOpen (value) {
+    inlineOpen (value, row, col) {
       this.inlineValue = value
+      if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
+        const ref = this.$refs[`edit-${row}-${col}`][0]
+        /* does not appear so quickly... */
+        this.$nextTick(() => {
+          const component = ref.$children[0].$children[0].$children[0]
+          const tag = component.$options._componentTag
+          console.log(tag, component)
+          if (tag === 'v-textarea') {
+            this.$nextTick(() => {
+              component.focus() // = false
+            })
+          }
+        })
+      }
     },
-    async inlineUpdate (item, field) {
+    async inlineUpdate (item, field, row, col) {
       if (item[field] !== this.inlineValue) {
         const rv = await this.updateRecord({ record: item })
         if (!rv) item[field] = this.inlineValue // if false undo changes
       } // else console.log('no changes')
+      if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
+        const ref = this.$refs[`edit-${row}-${col}`][0]
+        const tag = ref.$children[0].$children[0].$children[0].$options._componentTag
+        if (tag === 'v-date-picker' || tag === 'v-time-picker') ref.save(item[field]) // = false
+      }
     },
     async inlineCreate () {
       if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
@@ -419,6 +438,8 @@ export default {
     rowClicked (item, event) {
       if (!this.actionColumn && this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
       if (!this.inline) this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
+    },
+    testFunction () { // for testing anything
     }
   }
 }
@@ -468,43 +489,47 @@ export default {
           </td>
           <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
           <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumn?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
+            <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span>
+            <!-- date / time -->
             <v-edit-dialog
-              v-if="(inline[header.value]==='textarea'||inline[header.value]==='date'||inline[header.value]==='textdialog') && crudOps.update"
+              v-else-if="inline[header.value].field==='date'||inline[header.value].field==='time'||inline[header.value].field==='textarea'"
+              :ref="`edit-${props.index}-${index}`"
               :return-value.sync="props.item[header.value]"
-              :large="inlineButtons"
-              :persistent="inlineButtons"
+              :large="inline[header.value].field==='textarea'"
+              :persistent="inline[header.value].field==='textarea'"
+              :cancel-text="$t('vueCrudX.cancel')"
+              :save-text="$t('vueCrudX.save')"
               lazy
-              :cancel-text="$t('vueCrudX.save')"
-              :save-text="$t('vueCrudX.cancel')"
               @save="inlineUpdate(props.item, header.value)"
-              @cancel="()=>{}"
-              @open="inlineOpen(props.item[header.value])"
-              @close="()=>{}"
-              fixed-header
+              @cancel="()=>{ }"
+              @open="inlineOpen(props.item[header.value], props.index, index)"
+              @close="()=>{ }"
             >
               <div>{{ props.item[header.value] }}</div>
-              <!-- <div slot="input" class="mt-3 title">Update Field</div> -->
               <component
-                :is="inline[header.value]==='textarea'?'v-textarea':(inline[header.value]==='date')?'v-date-picker':'v-text-field'"
+                v-if="inline[header.value].field==='textarea'"
+                :is="'v-textarea'"
                 slot="input"
                 v-model="props.item[header.value]"
-                label=""
-                :type="inline[header.value]"
-                single-line
-                counter
-                autofocus
-              >
-              </component>
+                v-bind="inline[header.value].attrs"
+              ></component>
+              <component
+                v-else
+                :is="inline[header.value].field==='date'?'v-date-picker':'v-time-picker'"
+                slot="input"
+                @input="inlineUpdate(props.item, header.value, props.index, index)"
+                v-model="props.item[header.value]"
+                v-bind="inline[header.value].attrs"
+              ></component>
             </v-edit-dialog>
-            <v-text-field
-              v-else-if="inline[header.value]==='text' && crudOps.update"
-              class="caption"
-              type="text"
+            <component
+              v-else-if="inline[header.value].field==='text-field'||inline[header.value].field==='select'||inline[header.value].field==='combobox'"
+              :is="'v-'+inline[header.value].field"
+              v-bind="inline[header.value].attrs"
               v-model="props.item[header.value]"
               @focus="inlineOpen(props.item[header.value])"
               @blur="inlineUpdate(props.item, header.value)"
-            />
-            <span v-else>{{ props.item[header.value] | formatters(header.value) }}</span>
+            ></component>
           </td>
         </tr>
       </template>
