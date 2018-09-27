@@ -399,7 +399,7 @@ export default {
     // inline
     inlineOpen (value, row, col) {
       this.inlineValue = value
-      if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
+      if (row !== undefined && col !== undefined) {
         const ref = this.$refs[`edit-${row}-${col}`][0]
         this.$nextTick(() => {
           const component = ref.$children[0].$children[0].$children[0]
