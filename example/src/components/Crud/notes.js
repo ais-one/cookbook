@@ -19,7 +19,7 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  FilterVue: () => ({ component: null }),
+  FilterVue: null, // () => ({ component: null }),
   filterData: {
     dateStart: {
       type: 'date',

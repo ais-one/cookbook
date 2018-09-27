@@ -17,7 +17,7 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  FilterVue: () => ({ component: null }),
+  FilterVue: null, // () => ({ component: null }),
   filterData: {
     selectX: {
       type: 'select-kv',

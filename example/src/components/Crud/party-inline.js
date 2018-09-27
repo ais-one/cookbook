@@ -10,10 +10,35 @@ export const crudTable = {
   actionColumn: true, // action buttons (edit/delete)on the left most table column
   addrowCreate: true, // add button creates new record by adding row
   inline: { // editable fields on the table and what type of edit are they
-    'name': 'text', // v-text-field (blur will update contents if it was changed)
-    'remarks': 'textarea', // edit dialog with v-textarea
-    'created': 'date', // edit dialog with v-date-picker
-    'photo': 'textdialog' // edit dialog with v-text-field (text)
+    // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
+    'name': {
+      field: 'text-field', // v-text-field (blur will update contents if it was changed)
+      attrs: {
+        type: 'text', // number, email, password
+        class: ['caption']
+      }
+    },
+    'remarks': {
+      field: 'textarea', // edit dialog with v-textarea
+      buttons: false
+    },
+    'languages': {
+      field: 'select', // select, combobox
+      attrs: {
+        items: ['French', 'Thai', 'Chinese', 'Bahasa'],
+        multiple: true,
+        dense: true,
+        class: ['caption']
+      }
+    },
+    'created': {
+      field: 'date-picker', // edit dialog with v-date-picker or v-time-picker
+      attrs: { }
+    },
+    'photo': {
+      field: 'textarea',
+      buttons: true
+    }
   },
   inlineButtons: true,
   confirmCreate: true, // show operation confirmation dialog flags
@@ -52,15 +77,19 @@ export const crudTable = {
 
 export const crudFilter = {
   hasFilterVue: false,
-  FilterVue: () => ({ component: null }),
+  FilterVue: null, // () => ({ component: null }),
   filterData: {
+    // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
+    // new way of defining, use attrs
     active: {
       type: 'select',
-      label: 'Active Status',
-      multiple: false,
-      items: [ 'active', 'inactive' ], // can be async loaded from db?
       value: 'active',
-      rules: [v => !!v || 'Item is required']
+      attrs: {
+        label: 'Active Status',
+        multiple: false,
+        items: [ 'active', 'inactive' ], // can be async loaded from db?
+        rules: [v => !!v || 'Item is required']
+      }
     }
   }
 }
@@ -68,6 +97,35 @@ export const crudFilter = {
 export const crudForm = {
   FormVue: () => ({ component: import('./PartyForm.vue') }),
   // FormVue: () => ({ component: null }), // not needed
+  formAutoData: { // this is for automated form creation - if undefined use FormVue
+    name: {
+      type: 'text-field',
+      halfSize: true,
+      attrs: {
+        label: 'Name',
+        rules: [v => !!v || 'Item is required']
+      }
+    },
+    status: {
+      type: 'select',
+      halfSize: true,
+      attrs: {
+        label: 'Active Status',
+        multiple: false,
+        items: [ 'active', 'inactive' ], // can be async loaded from db?
+        rules: [v => !!v || 'Item is required']
+      }
+    },
+    remarks: {
+      type: 'textarea',
+      attrs: {
+        label: 'Remarks'
+      }
+    },
+    photo: { type: 'hidden' },
+    languages: { type: 'hidden' }
+  },
+
   defaultRec: () => ({ // you can use function to initialize record as well
     id: '',
     name: '',

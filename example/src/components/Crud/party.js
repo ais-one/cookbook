@@ -25,7 +25,6 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  hasFilterVue: true,
   FilterVue: () => ({
     component: import('./Filter.vue')
     // loading: LoadingComp,
@@ -35,6 +34,7 @@ export const crudFilter = {
   }),
   filterData: {
     languages: {
+      // this will be deprecated
       type: 'select',
       label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
       multiple: false,
@@ -65,7 +65,6 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  hasFormVue: true,
   FormVue: () => ({ component: import('./PartyForm.vue') }),
   // defaultRec: {
   //   id: '',

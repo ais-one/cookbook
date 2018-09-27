@@ -171,7 +171,7 @@ export default {
   async mounted () {
     if (!this.hasFilterVue) {
       for (var key in this.filterData) {
-        if (this.filterData[key].itemsFn) this.filterData[key].items = await this.filterData[key].itemsFn()
+        if (this.filterData[key].attrs && this.filterData[key].attrs.itemsFn) this.filterData[key].attrs.items = await this.filterData[key].attrs.itemsFn()
       }
     }
     this.isMounted = true
@@ -337,7 +337,7 @@ export default {
       await this.$store.dispatch(this.storeName + '/getRecord', payload)
       this.loading = false
     },
-    setRecord (payload) { this.$store.commit(this.storeName + '/setRecord', null) },
+    setRecord (payload) { this.$store.commit(this.storeName + '/setRecord', null) }, // NOTE: mutated here without dispatching action
     async exportRecords (payload) { await this.$store.dispatch(this.storeName + '/exportRecords', payload) },
     closeCrudForm () {
       this.setRecord() // clear it
@@ -397,14 +397,32 @@ export default {
     },
 
     // inline
-    inlineOpen (value) {
+    inlineOpen (value, row, col) {
       this.inlineValue = value
+      if (row !== undefined && col !== undefined) {
+        const ref = this.$refs[`edit-${row}-${col}`][0]
+        this.$nextTick(() => {
+          const component = ref.$children[0].$children[0].$children[0]
+          const tag = component.$options._componentTag
+          if (tag === 'v-textarea') {
+            // component.focus()
+            // this.$nextTick(() => component.focus())
+            // this.$forceUpdate()
+            setTimeout(() => component.focus(), 50) // only this works
+          }
+        })
+      }
     },
-    async inlineUpdate (item, field) {
+    async inlineUpdate (item, field, row, col) {
       if (item[field] !== this.inlineValue) {
         const rv = await this.updateRecord({ record: item })
         if (!rv) item[field] = this.inlineValue // if false undo changes
       } // else console.log('no changes')
+      if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
+        const ref = this.$refs[`edit-${row}-${col}`][0]
+        const tag = ref.$children[0].$children[0].$children[0].$options._componentTag
+        if (tag === 'v-date-picker' || tag === 'v-time-picker' || tag === 'v-textarea') ref.save(item[field]) // = false
+      }
     },
     async inlineCreate () {
       if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
@@ -419,6 +437,8 @@ export default {
     rowClicked (item, event) {
       if (!this.actionColumn && this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
       if (!this.inline) this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
+    },
+    async testFunction () { // for testing anything
     }
   }
 }
@@ -433,10 +453,16 @@ export default {
           <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
           <v-layout row wrap v-else>
             <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12 class="pa-2">
-              <component v-if="filter.type === 'select'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules"></component>
+              <!-- TOREMOVE THESE IN FUTURE -->
               <component v-if="filter.type === 'select-kv'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules" item-value="value" item-text="text" return-object></component>
-              <component v-if="filter.type === 'date'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" type="date"></component>
-              <component v-if="filter.type === 'text'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" :clearable="!!filter.clearable" type="text"></component>
+              <component v-else-if="filter.type === 'date'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" type="date"></component>
+              <component v-else-if="filter.type === 'text'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" :clearable="!!filter.clearable" type="text"></component>
+              <!-- TOREMOVE <component v-else-if="filter.type === 'select'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules"></component> -->
+              <component v-else
+                :is="'v-' + filter.type"
+                v-model="filter.value"
+                v-bind="filter.attrs"
+              ></component>
             </v-flex>
           </v-layout>
           <v-layout row justify-end>
@@ -456,7 +482,6 @@ export default {
       :hide-headers="hideHeaders"
       :dark="dark"
       :light="!dark"
-      class="elevation-1"
     >
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
@@ -467,43 +492,40 @@ export default {
           </td>
           <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
           <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumn?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
+            <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span>
+            <!-- date / time -->
             <v-edit-dialog
-              v-if="(inline[header.value]==='textarea'||inline[header.value]==='date'||inline[header.value]==='textdialog') && crudOps.update"
+              v-else-if="inline[header.value].field==='date-picker'||inline[header.value].field==='time-picker'||inline[header.value].field==='textarea'"
+              :ref="`edit-${props.index}-${index}`"
               :return-value.sync="props.item[header.value]"
-              :large="inlineButtons"
-              :persistent="inlineButtons"
+              :large="inline[header.value].buttons"
+              :persistent="false"
+              :cancel-text="$t('vueCrudX.cancel')"
+              :save-text="$t('vueCrudX.save')"
               lazy
-              :cancel-text="$t('vueCrudX.save')"
-              :save-text="$t('vueCrudX.cancel')"
               @save="inlineUpdate(props.item, header.value)"
-              @cancel="()=>{}"
-              @open="inlineOpen(props.item[header.value])"
-              @close="()=>{}"
-              fixed-header
+              @cancel="()=>{ }"
+              @open="inlineOpen(props.item[header.value], props.index, index)"
+              @close="()=>{ }"
             >
               <div>{{ props.item[header.value] }}</div>
-              <!-- <div slot="input" class="mt-3 title">Update Field</div> -->
               <component
-                :is="inline[header.value]==='textarea'?'v-textarea':(inline[header.value]==='date')?'v-date-picker':'v-text-field'"
+                :is="'v-'+inline[header.value].field"
                 slot="input"
+                @input="inline[header.value].field!=='textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
+                @blur="inline[header.value].field==='textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
                 v-model="props.item[header.value]"
-                label=""
-                :type="inline[header.value]"
-                single-line
-                counter
-                autofocus
-              >
-              </component>
+                v-bind="inline[header.value].attrs"
+              ></component>
             </v-edit-dialog>
-            <v-text-field
-              v-else-if="inline[header.value]==='text' && crudOps.update"
-              class="caption"
-              type="text"
+            <component
+              v-else-if="inline[header.value].field==='text-field'||inline[header.value].field==='select'||inline[header.value].field==='combobox'||inline[header.value].field==='autocomplete'"
+              :is="'v-'+inline[header.value].field"
+              v-bind="inline[header.value].attrs"
               v-model="props.item[header.value]"
               @focus="inlineOpen(props.item[header.value])"
               @blur="inlineUpdate(props.item, header.value)"
-            />
-            <span v-else>{{ props.item[header.value] | formatters(header.value) }}</span>
+            ></component>
           </td>
         </tr>
       </template>
@@ -527,16 +549,24 @@ export default {
             <v-spacer></v-spacer>
             <v-toolbar-items></v-toolbar-items>
           </v-toolbar>
-          <v-progress-linear :indeterminate="loading" height="2"></v-progress-linear>
+          <v-progress-linear :indeterminate="loading" ma-0></v-progress-linear>
 
           <v-form v-if="hasFormVue" class="grey lighten-3 pa-2" v-model="validForm" lazy-validation>
             <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
             <v-layout row wrap v-else>
               <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12 class="pa-2">
-                <component v-if="form.type === 'select'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules"></component>
+                <!-- TOREMOVE THESE IN FUTURE -->
                 <component v-if="form.type === 'select-kv'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules" item-value="value" item-text="text" return-object></component>
-                <component v-if="form.type === 'date'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="date"></component>
-                <component v-if="form.type === 'text'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="text"></component>
+                <component v-else-if="form.type === 'date'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="date"></component>
+                <component v-else-if="form.type === 'text'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="text"></component>
+                <!-- TOREMOVE <component v-else-if="form.type === 'select'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules"></component> -->
+                <component v-else-if="form.type === 'hidden'" :is="'div'"></component>
+                <component
+                  v-else
+                  :is="'v-'+form.type"
+                  v-model="record[objKey]"
+                  v-bind="form.attrs"
+                ></component>
               </v-flex>
             </v-layout>
 
