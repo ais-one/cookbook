@@ -453,7 +453,7 @@ export default {
           <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
           <v-layout row wrap v-else>
             <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12 class="pa-2">
-              <!-- TOREMOVE THESE ALSO -->
+              <!-- TOREMOVE THESE IN FUTURE -->
               <component v-if="filter.type === 'select-kv'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules" item-value="value" item-text="text" return-object></component>
               <component v-else-if="filter.type === 'date'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" type="date"></component>
               <component v-else-if="filter.type === 'text'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" :clearable="!!filter.clearable" type="text"></component>
@@ -555,7 +555,7 @@ export default {
             <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
             <v-layout row wrap v-else>
               <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12 class="pa-2">
-                <!-- TOREMOVE THESE ALSO -->
+                <!-- TOREMOVE THESE IN FUTURE -->
                 <component v-if="form.type === 'select-kv'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules" item-value="value" item-text="text" return-object></component>
                 <component v-else-if="form.type === 'date'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="date"></component>
                 <component v-else-if="form.type === 'text'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="text"></component>
