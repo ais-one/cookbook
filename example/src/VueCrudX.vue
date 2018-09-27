@@ -414,7 +414,6 @@ export default {
       }
     },
     async inlineUpdate (item, field, row, col) {
-      console.log('aaa')
       if (item[field] !== this.inlineValue) {
         const rv = await this.updateRecord({ record: item })
         if (!rv) item[field] = this.inlineValue // if false undo changes
@@ -483,7 +482,6 @@ export default {
       :hide-headers="hideHeaders"
       :dark="dark"
       :light="!dark"
-      class="elevation-1"
     >
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
@@ -500,7 +498,7 @@ export default {
               v-else-if="inline[header.value].field==='date-picker'||inline[header.value].field==='time-picker'||inline[header.value].field==='textarea'"
               :ref="`edit-${props.index}-${index}`"
               :return-value.sync="props.item[header.value]"
-              :large="inline[header.value].field==='textarea'"
+              :large="inline[header.value].buttons"
               :persistent="false"
               :cancel-text="$t('vueCrudX.cancel')"
               :save-text="$t('vueCrudX.save')"
@@ -551,7 +549,7 @@ export default {
             <v-spacer></v-spacer>
             <v-toolbar-items></v-toolbar-items>
           </v-toolbar>
-          <v-progress-linear :indeterminate="loading" height="2"></v-progress-linear>
+          <v-progress-linear :indeterminate="loading" ma-0></v-progress-linear>
 
           <v-form v-if="hasFormVue" class="grey lighten-3 pa-2" v-model="validForm" lazy-validation>
             <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />

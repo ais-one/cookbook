@@ -19,7 +19,8 @@ export const crudTable = {
       }
     },
     'remarks': {
-      field: 'textarea' // edit dialog with v-textarea
+      field: 'textarea', // edit dialog with v-textarea
+      buttons: false
     },
     'languages': {
       field: 'select', // select, combobox
@@ -35,7 +36,8 @@ export const crudTable = {
       attrs: { }
     },
     'photo': {
-      field: 'textarea'
+      field: 'textarea',
+      buttons: true
     }
   },
   inlineButtons: true,
