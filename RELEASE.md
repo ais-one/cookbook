@@ -4,6 +4,10 @@
  * fix Date Range Issues... or check filters only on submit
  * GraphQL using Prisma or Hasura
 
+### Version 0.0.24
+ * updated packages
+ * update to Nuxt example to use Nuxt 2.0
+
 ### Version 0.0.23
  * [Major Breaking Change] improved Inline Edit, use attributes object with v-bind instead of hardcoding attributes
    * supports: v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker

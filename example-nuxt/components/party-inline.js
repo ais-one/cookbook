@@ -1,20 +1,50 @@
-import {firestore, hasDuplicate} from '@/firebase'
+import {firestore, hasDuplicate} from '@/components/firebase'
 import {format} from 'date-fns'
 
 // set snackbar props in object to customize, or set as null to disable snackbar
 export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
-  inline: {
-    'name': 'text',
-    'remarks': 'text',
-    'created': 'date'
+  actionColumn: true, // action buttons (edit/delete)on the left most table column
+  addrowCreate: true, // add button creates new record by adding row
+
+  inline: { // editable fields on the table and what type of edit are they
+    // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
+    'name': {
+      field: 'text-field', // v-text-field (blur will update contents if it was changed)
+      attrs: {
+        type: 'text', // number, email, password
+        class: ['caption']
+      }
+    },
+    'remarks': {
+      field: 'textarea', // edit dialog with v-textarea
+      buttons: false
+    },
+    'languages': {
+      field: 'select', // select, combobox
+      attrs: {
+        items: ['French', 'Thai', 'Chinese', 'Bahasa'],
+        multiple: true,
+        dense: true,
+        class: ['caption']
+      }
+    },
+    'created': {
+      field: 'date-picker', // edit dialog with v-date-picker or v-time-picker
+      attrs: { }
+    },
+    'photo': {
+      field: 'textarea',
+      buttons: true
+    }
   },
-  confirmCreate: true,
+  inlineButtons: true,
+  confirmCreate: true, // show operation confirmation dialog flags
   confirmUpdate: true,
   confirmDelete: true,
   headers: [
-    { text: 'Party Name', value: 'name' },
+    { text: 'Party Name', value: 'name', fixed: true },
     { text: 'Remarks🖊️', value: 'remarks' }, // use pen emoji to indicate editable columns
     { text: 'Languages', value: 'languages' },
     { text: 'Status', value: 'status' },
@@ -24,27 +54,77 @@ export const crudTable = {
   formatters: (value, _type) => {
     if (_type === 'languages') return value.join(',')
     return value
-  }
+  },
+  crudTitle: 'Custom Title',
+
+  onCreatedOpenForm: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
+  onRowClickOpenForm: true, // set to false of you do not want row click to open form
+
+  doPage: true, // pagination enabled
+  fullscreenForm: false, // dialog form is not fullscreen
+
+  isFluid: true, // fluid layout
+  hideHeaders: false, // do not hide headers
+  showGoBack: false, // do net show go back button on table
+
+  dark: false, // setting theme and colors
+  fab: false,
+  noDataColor: 'grey',
+  formToolbarColor: 'grey',
+  filterHeaderColor: 'grey'
 }
 
 export const crudFilter = {
-  FilterVue: () => ({
-    component: import('./Filter.vue')
-  }),
+  hasFilterVue: false,
+  FilterVue: null, // () => ({ component: null }),
   filterData: {
+    // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
+    // new way of defining, use attrs
     active: {
       type: 'select',
-      label: 'Active Status',
-      multiple: false,
-      items: [ 'active', 'inactive' ], // can be async loaded from db?
       value: 'active',
-      rules: [v => !!v || 'Item is required']
+      attrs: {
+        label: 'Active Status',
+        multiple: false,
+        items: [ 'active', 'inactive' ], // can be async loaded from db?
+        rules: [v => !!v || 'Item is required']
+      }
     }
   }
 }
 
 export const crudForm = {
-  FormVue: () => ({ component: null }), // not needed
+  FormVue: null, // () => ({ component: null }), // not needed
+  // FormVue: () => ({ component: import('./PartyForm.vue') }),
+  // FormVue: () => ({ component: null }), // not needed
+  formAutoData: { // this is for automated form creation - if undefined use FormVue
+    name: {
+      type: 'text-field',
+      halfSize: true,
+      attrs: {
+        label: 'Name',
+        rules: [v => !!v || 'Item is required']
+      }
+    },
+    status: {
+      type: 'select',
+      halfSize: true,
+      attrs: {
+        label: 'Active Status',
+        multiple: false,
+        items: [ 'active', 'inactive' ], // can be async loaded from db?
+        rules: [v => !!v || 'Item is required']
+      }
+    },
+    remarks: {
+      type: 'textarea',
+      attrs: {
+        label: 'Remarks'
+      }
+    },
+    photo: { type: 'hidden' },
+    languages: { type: 'hidden' }
+  },
   defaultRec: () => ({ // you can use function to initialize record as well
     id: '',
     name: '',
