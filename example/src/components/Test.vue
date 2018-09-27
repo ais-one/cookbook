@@ -42,6 +42,8 @@
         </v-list-tile>
       </v-list>
     </v-expand-transition>
+    <drawing-board />
+    <web-cam />
   </v-container>
 </template>
 
@@ -77,7 +79,14 @@
 
 <script>
 import axios from 'axios'
+import DrawingBoard from '@/components/DrawingBoard'
+import WebCam from '@/components/WebCam'
+
 export default {
+  components: {
+    DrawingBoard,
+    WebCam
+  },
   data: () => ({
     select: ['Vuetify', 'Programming'],
     itemsz: [

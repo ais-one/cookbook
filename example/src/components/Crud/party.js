@@ -25,7 +25,6 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  hasFilterVue: true,
   FilterVue: () => ({
     component: import('./Filter.vue')
     // loading: LoadingComp,
@@ -35,6 +34,7 @@ export const crudFilter = {
   }),
   filterData: {
     languages: {
+      // this will be deprecated
       type: 'select',
       label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
       multiple: false,
@@ -65,8 +65,35 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  hasFormVue: true,
   FormVue: () => ({ component: import('./PartyForm.vue') }),
+  formAutoData: { // this is for automated form creation - if undefined use FormVue
+    name: {
+      type: 'text-field',
+      halfSize: true,
+      attrs: {
+        label: 'Name',
+        rules: [v => !!v || 'Item is required']
+      }
+    },
+    status: {
+      type: 'select',
+      halfSize: true,
+      attrs: {
+        label: 'Active Status',
+        multiple: false,
+        items: [ 'active', 'inactive' ], // can be async loaded from db?
+        rules: [v => !!v || 'Item is required']
+      }
+    },
+    remarks: {
+      type: 'textarea',
+      attrs: {
+        label: 'Remarks'
+      }
+    },
+    photo: { type: 'hidden' },
+    languages: { type: 'hidden' }
+  },
   // defaultRec: {
   //   id: '',
   //   name: '',
