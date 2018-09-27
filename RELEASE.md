@@ -7,9 +7,16 @@
  * GraphQL using Prisma or Hasura
 
 ### Version 0.0.23
- * Breaking Changes
-   * improved inline edit fields support: v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
-   * 
+ * [Major Breaking Change] improved Inline Edit, use attributes object with v-bind instead of hardcoding attributes
+   * supports: v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
+   * all inputs need to use the new way of defining the objects
+   * Example Usage: @/Components/Crud/party-inline.js
+ * [MINOR breaking change] improved Auto-generated Filters and Forms, use attributes object with v-bind instead of hardcoding attributes
+   * supports: v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
+   * v-select is broken and needs to use the new way of defining the objects
+   * Example Usage: @/Components/Crud/party-inline.js
+ * added WebCam and DrawingCanvas components for example on capture of photo an signatures in a form
+ * still using vuetify 1.2.3, as the popup dialog transparency from 1.2.4 is a problem
 
 ### Version 0.0.22
  * fix issue with inline edit where empty columns does not open dialog

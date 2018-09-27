@@ -66,34 +66,6 @@ export const crudFilter = {
 
 export const crudForm = {
   FormVue: () => ({ component: import('./PartyForm.vue') }),
-  formAutoData: { // this is for automated form creation - if undefined use FormVue
-    name: {
-      type: 'text-field',
-      halfSize: true,
-      attrs: {
-        label: 'Name',
-        rules: [v => !!v || 'Item is required']
-      }
-    },
-    status: {
-      type: 'select',
-      halfSize: true,
-      attrs: {
-        label: 'Active Status',
-        multiple: false,
-        items: [ 'active', 'inactive' ], // can be async loaded from db?
-        rules: [v => !!v || 'Item is required']
-      }
-    },
-    remarks: {
-      type: 'textarea',
-      attrs: {
-        label: 'Remarks'
-      }
-    },
-    photo: { type: 'hidden' },
-    languages: { type: 'hidden' }
-  },
   // defaultRec: {
   //   id: '',
   //   name: '',

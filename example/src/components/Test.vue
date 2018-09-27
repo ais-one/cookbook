@@ -42,7 +42,7 @@
         </v-list-tile>
       </v-list>
     </v-expand-transition>
-    <drawing-board />
+    <drawing-canvas />
     <web-cam />
   </v-container>
 </template>
@@ -79,12 +79,12 @@
 
 <script>
 import axios from 'axios'
-import DrawingBoard from '@/components/DrawingBoard'
+import DrawingCanvas from '@/components/DrawingCanvas'
 import WebCam from '@/components/WebCam'
 
 export default {
   components: {
-    DrawingBoard,
+    DrawingCanvas,
     WebCam
   },
   data: () => ({

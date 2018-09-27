@@ -171,7 +171,7 @@ export default {
   async mounted () {
     if (!this.hasFilterVue) {
       for (var key in this.filterData) {
-        if (this.filterData[key].itemsFn) this.filterData[key].items = await this.filterData[key].itemsFn()
+        if (this.filterData[key].attrs && this.filterData[key].attrs.itemsFn) this.filterData[key].attrs.items = await this.filterData[key].attrs.itemsFn()
       }
     }
     this.isMounted = true
@@ -414,6 +414,7 @@ export default {
       }
     },
     async inlineUpdate (item, field, row, col) {
+      console.log('aaa')
       if (item[field] !== this.inlineValue) {
         const rv = await this.updateRecord({ record: item })
         if (!rv) item[field] = this.inlineValue // if false undo changes
@@ -453,10 +454,11 @@ export default {
           <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
           <v-layout row wrap v-else>
             <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12 class="pa-2">
+              <!-- TOREMOVE THESE ALSO -->
               <component v-if="filter.type === 'select-kv'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules" item-value="value" item-text="text" return-object></component>
               <component v-else-if="filter.type === 'date'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" type="date"></component>
               <component v-else-if="filter.type === 'text'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" :clearable="!!filter.clearable" type="text"></component>
-              <!-- <component v-else-if="filter.type === 'select'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules"></component> -->
+              <!-- TOREMOVE <component v-else-if="filter.type === 'select'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules"></component> -->
               <component v-else
                 :is="'v-' + filter.type"
                 v-model="filter.value"
@@ -555,10 +557,11 @@ export default {
             <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
             <v-layout row wrap v-else>
               <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12 class="pa-2">
-                <component v-if="form.type === 'select'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules"></component>
-                <component v-else-if="form.type === 'select-kv'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules" item-value="value" item-text="text" return-object></component>
+                <!-- TOREMOVE THESE ALSO -->
+                <component v-if="form.type === 'select-kv'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules" item-value="value" item-text="text" return-object></component>
                 <component v-else-if="form.type === 'date'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="date"></component>
                 <component v-else-if="form.type === 'text'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="text"></component>
+                <!-- TOREMOVE <component v-else-if="form.type === 'select'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules"></component> -->
                 <component v-else-if="form.type === 'hidden'" :is="'div'"></component>
                 <component
                   v-else

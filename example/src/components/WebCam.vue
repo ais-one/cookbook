@@ -41,11 +41,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 body {
    background-color: #F0F0F0;
 }
-#app {
+#app-not-in-use {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;

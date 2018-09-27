@@ -31,30 +31,34 @@ export const crudFilter = {
   filterData: { // this is for automated filter creation - if undefined use FilterVue
     languages: {
       type: 'select',
-      label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
-      multiple: false,
-      rules: [],
       value: '',
-      itemsFn: async () => {
-        let records = []
-        try {
-          const rv = await firestore.collection('languages').limit(10).get() // create index
-          rv.forEach(record => {
-            let tmp = record.data()
-            records.push(tmp.name)
-          })
-        } catch (e) { }
-        return records
-      },
-      items: [ ]
+      attrs: {
+        label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
+        multiple: false,
+        rules: [],
+        itemsFn: async () => {
+          let records = []
+          try {
+            const rv = await firestore.collection('languages').limit(10).get() // create index
+            rv.forEach(record => {
+              let tmp = record.data()
+              records.push(tmp.name)
+            })
+          } catch (e) { }
+          return records
+        },
+        items: [ ]
+      }
     },
     active: {
       type: 'select',
-      label: 'Active Status',
-      multiple: false,
-      items: [ 'active', 'inactive' ], // can be async loaded from db?
       value: 'active',
-      rules: [v => !!v || 'Item is required']
+      attrs: {
+        label: 'Active Status',
+        multiple: false,
+        items: [ 'active', 'inactive' ], // can be async loaded from db?
+        rules: [v => !!v || 'Item is required']
+      }
     }
   }
 }
@@ -71,11 +75,13 @@ export const crudForm = {
     },
     status: {
       type: 'select',
-      label: 'Active Status',
-      multiple: false,
-      items: [ 'active', 'inactive' ], // can be async loaded from db?
-      rules: [v => !!v || 'Item is required'],
-      halfSize: true
+      halfSize: true,
+      attrs: {
+        label: 'Active Status',
+        multiple: false,
+        items: [ 'active', 'inactive' ], // can be async loaded from db?
+        rules: [v => !!v || 'Item is required']
+      }
     },
     remarks: {
       type: 'text',
