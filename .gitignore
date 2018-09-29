@@ -11,3 +11,6 @@ yarn-error.log*
 package-lock.json
 
 *.tgz
+
+# temporary to remove once it is ready
+example-rest2/

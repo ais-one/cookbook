@@ -9,6 +9,7 @@ export const crudSnackBar = { top: true, timeout: 6000 }
 export const crudTable = {
   actionColumn: true, // action buttons (edit/delete)on the left most table column
   addrowCreate: true, // add button creates new record by adding row
+  saveRow: true, // add save row button , used with inline edit only and action column
   inline: { // editable fields on the table and what type of edit are they
     // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
     'name': {
@@ -32,6 +33,7 @@ export const crudTable = {
       }
     },
     'created': {
+      buttons: true,
       field: 'date-picker', // edit dialog with v-date-picker or v-time-picker
       attrs: { }
     },

@@ -7,6 +7,7 @@
 ### Version 0.0.24
  * updated packages
  * update to Nuxt example to use Nuxt 2.0
+ * save row button for inline edit
 
 ### Version 0.0.23
  * [Major Breaking Change] improved Inline Edit, use attributes object with v-bind instead of hardcoding attributes

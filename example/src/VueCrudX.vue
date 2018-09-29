@@ -121,6 +121,9 @@ export default {
       this.headers = this.crudTable.headers
     }
 
+    // save by row?
+    this.saveRow = this.crudTable.saveRow === true // default false
+
     // check if components and datas are present
     this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null
     this.hasFormVue = typeof this.crudForm.FormVue === 'function' || this.formAutoData
@@ -214,6 +217,7 @@ export default {
 
       actionColumn: false,
       addrowCreate: false, // add row to create instead of using form
+      saveRow: false,
 
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
@@ -414,7 +418,7 @@ export default {
       }
     },
     async inlineUpdate (item, field, row, col) {
-      if (item[field] !== this.inlineValue) {
+      if (!field || (item[field] !== this.inlineValue && !this.saveRow)) { // field undefined means update row
         const rv = await this.updateRecord({ record: item })
         if (!rv) item[field] = this.inlineValue // if false undo changes
       } // else console.log('no changes')
@@ -422,6 +426,13 @@ export default {
         const ref = this.$refs[`edit-${row}-${col}`][0]
         const tag = ref.$children[0].$children[0].$children[0].$options._componentTag
         if (tag === 'v-date-picker' || tag === 'v-time-picker' || tag === 'v-textarea') ref.save(item[field]) // = false
+      }
+    },
+    async inlineCancel (row, col) {
+      console.log('inlineCancel')
+      if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
+        const ref = this.$refs[`edit-${row}-${col}`][0]
+        ref.cancel()
       }
     },
     async inlineCreate () {
@@ -489,6 +500,7 @@ export default {
           <td v-if="actionColumn" class="justify-center layout" valign="middle">
             <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
             <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
+            <v-icon v-if="canUpdate&&saveRow" small class="mr-2" @click.stop="inlineUpdate(props.item)" :disabled="loading">save</v-icon>
           </td>
           <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
           <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumn?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
@@ -503,7 +515,7 @@ export default {
               :cancel-text="$t('vueCrudX.cancel')"
               :save-text="$t('vueCrudX.save')"
               lazy
-              @save="inlineUpdate(props.item, header.value)"
+              @save="saveRow?'':inlineUpdate(props.item, header.value)"
               @cancel="()=>{ }"
               @open="inlineOpen(props.item[header.value], props.index, index)"
               @close="()=>{ }"
