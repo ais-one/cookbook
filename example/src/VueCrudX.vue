@@ -131,7 +131,7 @@ export default {
     this.hasFilterVue = typeof this.crudFilter.FilterVue === 'function'
 
     // use add row to create record
-    this.addrowCreate = this.crudTable.addrowCreate === true // default false
+    this.addrowCreate = this.crudTable.addrowCreate ? this.crudTable.addrowCreate : false
 
     // open form on row click
     this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // default true
@@ -429,15 +429,22 @@ export default {
       }
     },
     async inlineCancel (row, col) {
-      console.log('inlineCancel')
       if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
         const ref = this.$refs[`edit-${row}-${col}`][0]
         ref.cancel()
       }
     },
     async inlineCreate () {
+      let record = (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : this.crudForm.defaultRec
+      for (let i = 0; i < this.addrowCreate.length; i++) {
+        const { field, label } = this.addrowCreate[i]
+        const val = prompt(label, record[field])
+        if (val) {
+          record[field] = val
+        }
+      }
       if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
-      await this.createRecord({ record: (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : this.crudForm.defaultRec, parentId: this.parentId })
+      await this.createRecord({ record, parentId: this.parentId })
       this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     async inlineDelete (id) {
@@ -470,7 +477,7 @@ export default {
               <component v-else-if="filter.type === 'text'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" :clearable="!!filter.clearable" type="text"></component>
               <!-- TOREMOVE <component v-else-if="filter.type === 'select'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules"></component> -->
               <component v-else
-                :is="'v-' + filter.type"
+                :is="filter.type"
                 v-model="filter.value"
                 v-bind="filter.attrs"
               ></component>
@@ -500,14 +507,14 @@ export default {
           <td v-if="actionColumn" class="justify-center layout" valign="middle">
             <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
             <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
-            <v-icon v-if="canUpdate&&saveRow" small class="mr-2" @click.stop="inlineUpdate(props.item)" :disabled="loading">save</v-icon>
+            <v-icon v-if="saveRow" small class="mr-2" @click.stop="inlineUpdate(props.item)" :disabled="loading">save</v-icon>
           </td>
           <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
           <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumn?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
             <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span>
             <!-- date / time -->
             <v-edit-dialog
-              v-else-if="inline[header.value].field==='date-picker'||inline[header.value].field==='time-picker'||inline[header.value].field==='textarea'"
+              v-else-if="inline[header.value].field==='v-date-picker'||inline[header.value].field==='v-time-picker'||inline[header.value].field==='v-textarea'"
               :ref="`edit-${props.index}-${index}`"
               :return-value.sync="props.item[header.value]"
               :large="inline[header.value].buttons"
@@ -522,17 +529,17 @@ export default {
             >
               <div>{{ props.item[header.value] }}</div>
               <component
-                :is="'v-'+inline[header.value].field"
+                :is="inline[header.value].field"
                 slot="input"
-                @input="inline[header.value].field!=='textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
-                @blur="inline[header.value].field==='textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
+                @input="inline[header.value].field!=='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
+                @blur="inline[header.value].field==='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
                 v-model="props.item[header.value]"
                 v-bind="inline[header.value].attrs"
               ></component>
             </v-edit-dialog>
             <component
-              v-else-if="inline[header.value].field==='text-field'||inline[header.value].field==='select'||inline[header.value].field==='combobox'||inline[header.value].field==='autocomplete'"
-              :is="'v-'+inline[header.value].field"
+              v-else-if="inline[header.value].field==='v-text-field'||inline[header.value].field==='v-select'||inline[header.value].field==='v-combobox'||inline[header.value].field==='v-autocomplete'"
+              :is="inline[header.value].field"
               v-bind="inline[header.value].attrs"
               v-model="props.item[header.value]"
               @focus="inlineOpen(props.item[header.value])"
@@ -572,12 +579,9 @@ export default {
                 <component v-else-if="form.type === 'date'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="date"></component>
                 <component v-else-if="form.type === 'text'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="text"></component>
                 <!-- TOREMOVE <component v-else-if="form.type === 'select'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules"></component> -->
-                <component v-else-if="form.type === 'hidden'" :is="'div'"></component>
+                <component v-else-if="form.type==='hidden'" :is="'div'"></component>
                 <component
-                  v-else
-                  :is="'v-'+form.type"
-                  v-model="record[objKey]"
-                  v-bind="form.attrs"
+                  v-else :is="form.type" v-model="record[objKey]" v-bind="form.attrs"
                 ></component>
               </v-flex>
             </v-layout>

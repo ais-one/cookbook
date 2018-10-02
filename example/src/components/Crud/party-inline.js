@@ -8,23 +8,30 @@ export const crudSnackBar = { top: true, timeout: 6000 }
 
 export const crudTable = {
   actionColumn: true, // action buttons (edit/delete)on the left most table column
-  addrowCreate: true, // add button creates new record by adding row
+  addrowCreate: [
+    {
+      field: 'name',
+      label: 'Name'
+    }
+  ], // add button creates new record by adding row, you can specified fields that use needs to pre-enter data,
+  // empty array if no need to,
+  // false if no need addrowCreate button
   saveRow: true, // add save row button , used with inline edit only and action column
   inline: { // editable fields on the table and what type of edit are they
     // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
     'name': {
-      field: 'text-field', // v-text-field (blur will update contents if it was changed)
+      field: 'v-text-field', // v-text-field (blur will update contents if it was changed)
       attrs: {
         type: 'text', // number, email, password
         class: ['caption']
       }
     },
     'remarks': {
-      field: 'textarea', // edit dialog with v-textarea
+      field: 'v-textarea', // edit dialog with v-textarea
       buttons: false
     },
     'languages': {
-      field: 'select', // select, combobox
+      field: 'v-select', // select, combobox
       attrs: {
         items: ['French', 'Thai', 'Chinese', 'Bahasa'],
         multiple: true,
@@ -34,11 +41,11 @@ export const crudTable = {
     },
     'created': {
       buttons: true,
-      field: 'date-picker', // edit dialog with v-date-picker or v-time-picker
+      field: 'v-date-picker', // edit dialog with v-date-picker or v-time-picker
       attrs: { }
     },
     'photo': {
-      field: 'textarea',
+      field: 'v-textarea',
       buttons: true
     }
   },
@@ -84,7 +91,7 @@ export const crudFilter = {
     // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
     // new way of defining, use attrs
     active: {
-      type: 'select',
+      type: 'v-select',
       value: 'active',
       attrs: {
         label: 'Active Status',
@@ -101,7 +108,7 @@ export const crudForm = {
   // FormVue: () => ({ component: null }), // not needed
   formAutoData: { // this is for automated form creation - if undefined use FormVue
     name: {
-      type: 'text-field',
+      type: 'v-text-field',
       halfSize: true,
       attrs: {
         label: 'Name',
@@ -109,7 +116,7 @@ export const crudForm = {
       }
     },
     status: {
-      type: 'select',
+      type: 'v-select',
       halfSize: true,
       attrs: {
         label: 'Active Status',
@@ -119,7 +126,7 @@ export const crudForm = {
       }
     },
     remarks: {
-      type: 'textarea',
+      type: 'v-textarea',
       attrs: {
         label: 'Remarks'
       }
