@@ -612,6 +612,15 @@ export default {
   </v-container>
 </template>
 
+<style lang="css">
+.theme--dark .v-menu__content {
+  background-color: #424242 !important;
+}
+.theme--light .v-menu__content {
+  background-color: #ffffff !important;
+}
+</style>
+
 <style lang="css" scoped>
 /* should no longer need to make nested table a modal */
 .make-modal-disabled {

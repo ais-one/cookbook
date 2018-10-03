@@ -5,12 +5,11 @@
  * GraphQL using Prisma or Hasura
 
 ### Version 0.0.24
- * no breaking changes so far
- * updated packages
+ * updated packages & vuetify to 1.2.6
  * update to Nuxt example to use Nuxt 2.0
  * save row button for inline edit (reduce API calls)
- * add row button, allow popup for user to enter data for field/s before row is added
- * use full component name for inline edit (v-select instead of select, so in future you can include your own)
+ * add row button, allow popup for user to enter data for field/s before row is added (e.g. specify a date or name)
+ * [Breaking Change - really sorry for this] use full component name for inline edit (v-select instead of select, so in future you can include your own)
 
 ### Version 0.0.23
  * [Major Breaking Change] improved Inline Edit, use attributes object with v-bind instead of hardcoding attributes
