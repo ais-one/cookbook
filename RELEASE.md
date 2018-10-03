@@ -4,6 +4,11 @@
  * fix Date Range Issues... or check filters only on submit
  * GraphQL using Prisma or Hasura
 
+### Version 0.0.25
+ * vuetify 1.3.0?
+ * REST API example (with configuration management)
+ * update packages
+
 ### Version 0.0.24
  * updated packages & vuetify to 1.2.6
  * update to Nuxt example to use Nuxt 2.0
