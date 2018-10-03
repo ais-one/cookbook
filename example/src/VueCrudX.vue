@@ -299,7 +299,7 @@ export default {
           return false
         }
       }
-      return true
+      return true && flag
     },
     isObject (obj) { return obj !== null && typeof obj === 'object' },
     setSnackBar (statusCode) {
