@@ -244,7 +244,7 @@ export default {
           'rows-per-page-items': [2, 5, 10, 20],
           'hide-headers': false,
           style: { // this may need to be changed once Vuetify version 2.0 is out
-            'height': '100%',
+            'max-height': '80vh',
             'overflow-y': 'scroll',
             'backface-visibility': 'hidden'
           }

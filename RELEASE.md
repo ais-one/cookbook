@@ -1,8 +1,10 @@
 ### Upcoming
+ * improve saving for online edit... sometimes user forgets to press save row button
  * https://github.com/ais-one/vue-crud-x/issues/32
  * any more events needed? also, check on disabling
  * fix Date Range Issues... or check filters only on submit
  * GraphQL using Prisma or Hasura
+ * https://github.com/vuetifyjs/vuetify/pull/5232
 
 ### Version 0.0.25
  * fixed bug in can function which shows button even though flag is false
@@ -10,8 +12,7 @@
  * upgrade to vuetify 1.2.8
  * improve usability
    * make all buttons accessible, put them at top bar (done)
-   * make top bar sticky - fixed
-   * save all & save on exit for inline edits ?
+   * make top bar sticky - fixed (done - will need to revisit in Vuetify 2.0)
  * [WORK IN PROGRESS] REST API example (with authorization & with configuration management)
 
 ### Version 0.0.24
