@@ -152,13 +152,10 @@ export default {
     this.onCreatedOpenForm = this.crudTable.onCreatedOpenForm === true // open form on create, default false
 
     // some styling
-    this.hideHeaders = this.crudTable.hideHeaders === true // default false
     this.isFluid = this.crudTable.isFluid !== false // default true
-    this.dark = !!this.$attrs.dark // from router-view?
-    this.fab = this.$attrs.fab !== false // default true
-    this.noDataColor = this.crudTable.noDataColor || 'grey'
-    this.formToolbarColor = this.crudTable.formToolbarColor || 'grey'
-    this.filterHeaderColor = this.crudTable.filterHeaderColor || 'grey'
+
+    // more attributes
+    this.attrs = Object.assign(this.attrs, this.crudTable.attrs || {})
 
     // assign the components
     if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
@@ -228,12 +225,32 @@ export default {
 
       // some styling
       isFluid: true,
-      hideHeaders: false,
-      dark: false,
-      fab: false,
-      noDataColor: 'grey',
-      formToolbarColor: 'grey',
-      filterHeaderColor: 'grey',
+
+      attrs: {
+        alert: {
+          color: 'grey',
+          icon: ''
+        },
+        toolbar: {
+          height: 48,
+          dark: false,
+          light: true,
+          color: 'grey',
+          fixed: false
+        },
+        table: {
+          dark: false,
+          light: true,
+          'rows-per-page-items': [2, 5, 10, 20],
+          'hide-headers': false
+        },
+        button: {
+          dark: false,
+          light: true,
+          fab: false
+        }
+      },
+      showFilter: false,
 
       // snackbar
       snackbar: false,
@@ -385,6 +402,7 @@ export default {
       // TOREMOVE why was this here in the first place? await this.getRecords()
       await this.getRecordsHelper()
     },
+    // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
     async exportBtnClick () {
       this.loading = true
       await this.exportRecords({
@@ -394,13 +412,10 @@ export default {
       })
       this.loading = false
     },
-
-    // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
     goBack () {
       this.$router.back()
     },
-
-    // inline
+    // inline edit
     inlineOpen (value, row, col) {
       this.inlineValue = value
       if (row !== undefined && col !== undefined) {
@@ -439,9 +454,8 @@ export default {
       for (let i = 0; i < this.addrowCreate.length; i++) {
         const { field, label } = this.addrowCreate[i]
         const val = prompt(label, record[field])
-        if (val) {
-          record[field] = val
-        }
+        if (val) record[field] = val
+        else return
       }
       if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.createRecord({ record, parentId: this.parentId })
@@ -464,32 +478,35 @@ export default {
 
 <template>
   <v-container v-bind:class="{ 'make-modal': parentId }" :fluid="isFluid">
-    <v-expansion-panel>
-      <v-expansion-panel-content :class="filterHeaderColor">
-        <div slot="header" ><v-icon>search</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</div>
-        <v-form v-if="hasFilterData" class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
-          <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
-          <v-layout row wrap v-else>
-            <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12 class="pa-2">
-              <!-- TOREMOVE THESE IN FUTURE -->
-              <component v-if="filter.type === 'select-kv'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules" item-value="value" item-text="text" return-object></component>
-              <component v-else-if="filter.type === 'date'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" type="date"></component>
-              <component v-else-if="filter.type === 'text'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" :clearable="!!filter.clearable" type="text"></component>
-              <!-- TOREMOVE <component v-else-if="filter.type === 'select'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules"></component> -->
-              <component v-else
-                :is="filter.type"
-                v-model="filter.value"
-                v-bind="filter.attrs"
-              ></component>
-            </v-flex>
-          </v-layout>
-          <v-layout row justify-end>
-            <!-- v-btn :fab="fab" @click="clearFilter"><v-icon>close</v-icon></v-btn -->
-            <v-btn :fab="fab" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
-          </v-layout>
-        </v-form>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
+    <v-toolbar v-bind="attrs.toolbar">
+      <v-btn v-if="parentId && showGoBack" icon v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn>
+      <v-toolbar-side-icon>
+        <v-icon @click="showFilter=!showFilter">{{ showFilter ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</v-icon>
+      </v-toolbar-side-icon>
+      <v-btn icon v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
+      <v-toolbar-title>{{showTitle | capitalize}} {{ doPage ? '' : ` - ${records.length} Records` }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn v-if="canCreate" icon v-bind="attrs.button" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
+      <v-btn v-if="crudOps.export" icon v-bind="attrs.button" @click.stop="exportBtnClick" :disabled="loading"><v-icon>print</v-icon></v-btn>
+    </v-toolbar>
+    <div v-if="showFilter">
+      <v-form v-if="hasFilterData" class="grey lighten-3 pa-2" v-model="validFilter" ref="searchForm" lazy-validation>
+        <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
+        <v-layout row wrap v-else>
+          <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12 class="pa-2">
+            <!-- TOREMOVE THESE IN FUTURE -->
+            <component v-if="filter.type === 'select-kv'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules" item-value="value" item-text="text" return-object></component>
+            <component v-else-if="filter.type === 'date'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" type="date"></component>
+            <component v-else-if="filter.type === 'text'" :is="'v-text-field'" v-model="filter.value" :label="filter.label" :rules="filter.rules" :clearable="!!filter.clearable" type="text"></component>
+            <!-- TOREMOVE <component v-else-if="filter.type === 'select'" :is="'v-select'" v-model="filter.value" :multiple="filter.multiple" :label="filter.label" :items="filter.items" :rules="filter.rules"></component> -->
+            <component v-else :is="filter.type" v-model="filter.value" v-bind="filter.attrs"></component>
+          </v-flex>
+        </v-layout>
+        <!-- <v-layout row justify-end>
+          <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
+        </v-layout> -->
+      </v-form>
+    </div>
     <v-data-table
       :headers="headers"
       :items="records"
@@ -497,9 +514,7 @@ export default {
       :pagination.sync="pagination"
       :loading="loading"
       :hide-actions="!doPage"
-      :hide-headers="hideHeaders"
-      :dark="dark"
-      :light="!dark"
+      v-bind="attrs.table?attrs.table:null"
     >
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
@@ -555,7 +570,7 @@ export default {
       -->
       <template slot="no-data">
         <v-flex class="text-xs-center">
-          <v-alert :value="true" :color="noDataColor" icon=""><v-icon>warning</v-icon> {{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
+          <v-alert :value="true" v-bind="attrs.alert"><v-icon>warning</v-icon> {{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
         </v-flex>
       </template>
     </v-data-table>
@@ -563,12 +578,15 @@ export default {
     <v-layout row justify-center>
       <v-dialog v-model="crudFormFlag" :fullscreen="fullscreenForm" scrollable transition="dialog-bottom-transition" :overlay="false">
         <v-card>
-          <v-toolbar :dark="!dark" :light="dark" :color="formToolbarColor">
+          <v-toolbar v-bind="attrs.toolbar">
             <v-toolbar-title><v-icon>mode_edit</v-icon> {{showTitle | capitalize}}</v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-btn v-bind="attrs.button" icon @click.native="closeCrudForm"><v-icon>close</v-icon></v-btn>
+            <v-btn v-bind="attrs.button" icon v-if="canDelete && record.id" @click.native="crudFormDelete"><v-icon>delete</v-icon></v-btn>
+            <v-btn v-bind="attrs.button" icon v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm" @click.native="crudFormSave"><v-icon>done_all</v-icon></v-btn>
             <v-toolbar-items></v-toolbar-items>
           </v-toolbar>
-          <v-progress-linear :indeterminate="loading" ma-0></v-progress-linear>
+          <v-progress-linear :indeterminate="loading" class="ma-0"></v-progress-linear>
 
           <v-form v-if="hasFormVue" class="grey lighten-3 pa-2" v-model="validForm" lazy-validation>
             <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
@@ -580,29 +598,12 @@ export default {
                 <component v-else-if="form.type === 'text'" :is="'v-text-field'" v-model="record[objKey]" :label="form.label" :rules="form.rules" type="text"></component>
                 <!-- TOREMOVE <component v-else-if="form.type === 'select'" :is="'v-select'" v-model="record[objKey]" :multiple="form.multiple" :label="form.label" :items="form.items" :rules="form.rules"></component> -->
                 <component v-else-if="form.type==='hidden'" :is="'div'"></component>
-                <component
-                  v-else :is="form.type" v-model="record[objKey]" v-bind="form.attrs"
-                ></component>
+                <component v-else :is="form.type" v-model="record[objKey]" v-bind="form.attrs"></component>
               </v-flex>
             </v-layout>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn :fab="fab" :dark="!dark" :light="dark" @click.native="closeCrudForm"><v-icon>reply</v-icon></v-btn>
-              <v-btn :fab="fab" :dark="!dark" :light="dark" v-if="canDelete && record.id" @click.native="crudFormDelete"><v-icon>delete</v-icon></v-btn>
-              <v-btn :fab="fab" :dark="!dark" :light="dark" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm" @click.native="crudFormSave"><v-icon>done_all</v-icon></v-btn>
-            </v-card-actions>
           </v-form>
         </v-card>
       </v-dialog>
-    </v-layout>
-
-    <v-layout row justify-end>
-      <v-btn v-if="parentId && showGoBack" :fab="fab" top :dark="!dark" :light="dark" @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn>
-      <v-btn v-if="canCreate" :fab="fab" top :dark="!dark" :light="dark" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
-      <v-btn v-if="crudOps.export" :fab="fab" top :dark="!dark" :light="dark" @click.stop="exportBtnClick" :disabled="loading"><!-- handle disabled FAB in Vuetify -->
-        <v-icon :class='[{"white--text": !loading }]'>print</v-icon>
-      </v-btn>
     </v-layout>
 
     <v-snackbar v-if="crudSnackBar" v-model="snackbar" v-bind="crudSnackBar">
@@ -613,12 +614,18 @@ export default {
 </template>
 
 <style lang="css">
+/*
+customizing v-edit-dialog background colors
+scoped made it not work...
+*/
+/*
 .theme--dark .v-menu__content {
   background-color: #424242 !important;
 }
 .theme--light .v-menu__content {
   background-color: #ffffff !important;
 }
+*/
 </style>
 
 <style lang="css" scoped>

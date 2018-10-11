@@ -20,21 +20,22 @@ export const crudFilter = {
   FilterVue: null, // () => ({ component: null }),
   filterData: {
     selectX: {
-      type: 'select-kv',
-      label: 'Active Status',
-      multiple: false,
-      items: [
-        { text: 'All', value: 'all' },
-        { text: 'Pending', value: 'pending' },
-        { text: 'Review', value: 'review' },
-        { text: 'Approved', value: 'approved' },
-        { text: 'Rejected', value: 'rejected' }
-      ],
+      type: 'v-select',
       value: { text: 'All', value: 'all' },
-      rules: [v => !!v || 'Item is required']
+      attrs: {
+        label: 'Active Status',
+        multiple: false,
+        items: [
+          { text: 'All', value: 'all' },
+          { text: 'Pending', value: 'pending' },
+          { text: 'Review', value: 'review' },
+          { text: 'Approved', value: 'approved' },
+          { text: 'Rejected', value: 'rejected' }
+        ],
+        rules: [v => !!v || 'Item is required']
+      }
     }
   }
-
 }
 
 export const crudForm = {

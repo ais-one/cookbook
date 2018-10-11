@@ -74,14 +74,29 @@ export const crudTable = {
   fullscreenForm: false, // dialog form is not fullscreen
 
   isFluid: true, // fluid layout
-  hideHeaders: false, // do not hide headers
   showGoBack: false, // do net show go back button on table
 
-  dark: false, // setting theme and colors
-  fab: false,
-  noDataColor: 'grey',
-  formToolbarColor: 'grey',
-  filterHeaderColor: 'grey'
+  attrs: {
+    alert: {
+      color: 'grey',
+      icon: ''
+    },
+    toolbar: {
+      dark: false,
+      light: true,
+      color: 'grey'
+    },
+    table: {
+      dark: false,
+      light: true,
+      'rows-per-page-items': [2, 5, 10, 20],
+      'hide-headers': false
+    },
+    button: {
+      dark: false,
+      light: true
+    }
+  }
 }
 
 export const crudFilter = {

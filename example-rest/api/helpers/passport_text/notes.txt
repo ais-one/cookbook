@@ -1,0 +1,27 @@
+Todo:
+- google
+- linkedin
+- wechat / tqq
+- jwt
+- totp
+
+FB button: https://developers.facebook.com/docs/facebook-login/web/login-button
+
+
+Step 1:  Choose your App ID and Language (e.g. en_US)
+
+Step 2: Include the JavaScript SDK on your page once, ideally right after the opening <body> tag.
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.9&appId=<app id>";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+Step 3: Place this code wherever you want the plugin to appear on your page.
+
+<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false"></div>

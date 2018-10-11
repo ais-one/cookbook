@@ -30,7 +30,7 @@ export const crudFilter = {
   }),
   filterData: { // this is for automated filter creation - if undefined use FilterVue
     languages: {
-      type: 'select',
+      type: 'v-select',
       value: '',
       attrs: {
         label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
@@ -51,7 +51,7 @@ export const crudFilter = {
       }
     },
     active: {
-      type: 'select',
+      type: 'v-select',
       value: 'active',
       attrs: {
         label: 'Active Status',
@@ -68,24 +68,28 @@ export const crudForm = {
   FormVue: () => ({ component: import('./PartyForm.vue') }),
   formAutoData: { // this is for automated form creation - if undefined use FormVue
     name: {
-      type: 'text',
-      label: 'Name',
-      rules: [v => !!v || 'Item is required'],
+      type: 'v-text-field',
+      attrs: {
+        label: 'Name',
+        rules: [v => !!v || 'Item is required']
+      },
       halfSize: true
     },
     status: {
-      type: 'select',
-      halfSize: true,
+      type: 'v-select',
       attrs: {
         label: 'Active Status',
         multiple: false,
         items: [ 'active', 'inactive' ], // can be async loaded from db?
         rules: [v => !!v || 'Item is required']
-      }
+      },
+      halfSize: true
     },
     remarks: {
-      type: 'text',
-      label: 'Remarks'
+      type: 'v-textarea',
+      attrs: {
+        label: 'Remarks'
+      }
     },
     photo: { type: 'hidden' },
     languages: { type: 'hidden' }

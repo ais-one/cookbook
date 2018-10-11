@@ -32,7 +32,9 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "lodash.clonedeep": "^4.5.0"
+    "del": "^3.0.0",
+    "lodash.clonedeep": "^4.5.0",
+    "multer": "^1.4.0"
   },
   "deprecated": false,
   "description": "A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, using GraphQL or REST to access various datastores. Uses Vuetify for layout components but can be changed to alternatives such as ElementUI (by changing components in the VueCrudX source code from Vuetify to ElementUI)",

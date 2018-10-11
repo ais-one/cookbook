@@ -5,9 +5,14 @@
  * GraphQL using Prisma or Hasura
 
 ### Version 0.0.25
- * vuetify 1.3.0?
- * REST API example (with configuration management)
- * update packages
+ * fixed bug in can function which shows button even though flag is false
+ * improved configurability of v-data-table in vue-crud-x (some props will be deprecated in later releases), please see party-inline.js for example
+ * upgrade to vuetify 1.2.8
+ * improve usability
+   * make all buttons accessible, put them at top bar (done)
+   * make top bar sticky - fixed
+   * save all & save on exit for inline edits ?
+ * [WORK IN PROGRESS] REST API example (with authorization & with configuration management)
 
 ### Version 0.0.24
  * updated packages & vuetify to 1.2.6
