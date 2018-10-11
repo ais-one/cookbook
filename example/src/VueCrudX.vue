@@ -242,7 +242,12 @@ export default {
           dark: false,
           light: true,
           'rows-per-page-items': [2, 5, 10, 20],
-          'hide-headers': false
+          'hide-headers': false,
+          style: { // this may need to be changed once Vuetify version 2.0 is out
+            'height': '100%',
+            'overflow-y': 'scroll',
+            'backface-visibility': 'hidden'
+          }
         },
         button: {
           dark: false,
@@ -477,7 +482,7 @@ export default {
 </script>
 
 <template>
-  <v-container v-bind:class="{ 'make-modal': parentId }" :fluid="isFluid">
+  <v-container v-bind:class="{ 'make-modal': parentId }" :fluid="isFluid" class="x-content">
     <v-toolbar v-bind="attrs.toolbar">
       <v-btn v-if="parentId && showGoBack" icon v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn>
       <v-toolbar-side-icon>
