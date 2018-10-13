@@ -107,7 +107,6 @@ export default {
 
     // set inline edit fields
     if (this.crudTable.inline) this.inline = this.crudTable.inline
-    this.inlineButtons = this.crudTable.inlineButtons !== false // default true
 
     // is there an action column
     this.actionColumn = this.crudTable.actionColumn === true // default false
@@ -200,7 +199,6 @@ export default {
       // crudTable
       headers: [ ], // pass in
       inline: false, // inline editing
-      inlineButtons: true, // has save and cancel buttons
 
       actionColumn: false,
       addrowCreate: false, // add row to create instead of using form
@@ -220,10 +218,10 @@ export default {
           timeout: 6000
         },
         container: {
+          // v-bind:class="{ 'make-modal': parentId }"
           fluid: true,
-          style: {
-            padding: 0
-          }
+          class: 'pa-2',
+          style: { }
         },
         dialog: { // dialog
           fullscreen: false,
@@ -260,6 +258,7 @@ export default {
         button: {
           dark: false,
           light: true,
+          icon: true,
           fab: false
         }
       },
@@ -490,16 +489,15 @@ export default {
 </script>
 
 <template>
-  <v-container v-bind:class="{ 'make-modal': parentId }" v-bind="attrs.container">
+  <v-container v-bind="attrs.container">
     <v-toolbar v-bind="attrs.toolbar">
-      <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
-      <v-toolbar-title><v-icon>list</v-icon> {{showTitle | capitalize}} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
+      <!-- <v-toolbar-side-icon ></v-toolbar-side-icon> -->
+      <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn> {{showTitle | capitalize}} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="parentId && showGoBack" icon v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn>
-      <v-btn icon v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? 'keyboard_arrow_up' : 'search'}}</v-icon></v-btn>
-      <v-btn icon v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
-      <v-btn v-if="canCreate" icon v-bind="attrs.button" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
-      <v-btn v-if="crudOps.export" icon v-bind="attrs.button" @click.stop="exportBtnClick" :disabled="loading"><v-icon>print</v-icon></v-btn>
+      <v-btn v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? 'keyboard_arrow_up' : 'search'}}</v-icon></v-btn>
+      <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
+      <v-btn v-if="canCreate" v-bind="attrs.button" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
+      <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop="exportBtnClick" :disabled="loading"><v-icon>print</v-icon></v-btn>
     </v-toolbar>
     <div v-if="showFilter">
       <v-form v-if="hasFilterData" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
@@ -521,7 +519,7 @@ export default {
       :pagination.sync="pagination"
       :loading="loading"
       :hide-actions="!doPage"
-      v-bind="attrs.table?attrs.table:null"
+      v-bind="attrs.table"
     >
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
@@ -532,7 +530,7 @@ export default {
             <v-icon v-if="saveRow" small class="mr-2" @click.stop="inlineUpdate(props.item)" :disabled="loading">save</v-icon>
           </td>
           <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
-          <td :key="header.value" v-for="(header, index) in headers"  v-if="actionColumn?index>0:index>=0" :class="{ 'grey lighten-4': (inline[header.value] && crudOps.update) }">
+          <td :key="header.value" v-for="(header, index) in headers" v-if="actionColumn?index>0:index>=0">
             <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span>
             <!-- date / time -->
             <v-edit-dialog
@@ -549,7 +547,7 @@ export default {
               @open="inlineOpen(props.item[header.value], props.index, index)"
               @close="()=>{ }"
             >
-              <div>{{ props.item[header.value] }}</div>
+              <div>🖊️{{ props.item[header.value] }}</div>
               <component
                 :is="inline[header.value].field"
                 slot="input"
@@ -586,11 +584,10 @@ export default {
       <v-dialog v-model="crudFormFlag" v-bind="attrs.dialog">
         <v-card>
           <v-toolbar v-bind="attrs.toolbar">
-            <v-toolbar-title><v-icon>mode_edit</v-icon> {{showTitle | capitalize}}</v-toolbar-title>
+            <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>close</v-icon></v-btn> {{showTitle | capitalize}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn v-bind="attrs.button" icon v-if="canDelete && record.id" @click.native="crudFormDelete"><v-icon>delete</v-icon></v-btn>
-            <v-btn v-bind="attrs.button" icon v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm" @click.native="crudFormSave"><v-icon>done_all</v-icon></v-btn>
-            <v-btn v-bind="attrs.button" icon @click.native="closeCrudForm"><v-icon>close</v-icon></v-btn>
+            <v-btn v-bind="attrs.button" v-if="canDelete && record.id" @click.native="crudFormDelete" :disabled="loading"><v-icon>delete</v-icon></v-btn>
+            <v-btn v-bind="attrs.button" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>done_all</v-icon></v-btn>
             <v-toolbar-items></v-toolbar-items>
           </v-toolbar>
           <v-progress-linear :indeterminate="loading" class="ma-0"></v-progress-linear>

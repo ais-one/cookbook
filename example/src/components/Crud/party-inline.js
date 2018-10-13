@@ -5,6 +5,7 @@ import { crudOps as partyCrudOps } from './party'
 
 export const crudTable = {
   actionColumn: true, // action buttons (edit/delete)on the left most table column
+  saveRow: true, // add save row button , used with inline edit only and action column
   addrowCreate: [
     {
       field: 'name',
@@ -13,7 +14,6 @@ export const crudTable = {
   ], // add button creates new record by adding row, you can specified fields that use needs to pre-enter data,
   // empty array if no need to,
   // false if no need addrowCreate button
-  saveRow: true, // add save row button , used with inline edit only and action column
   inline: { // editable fields on the table and what type of edit are they
     // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
     'name': {
@@ -46,16 +46,15 @@ export const crudTable = {
       buttons: true
     }
   },
-  inlineButtons: true,
   confirmCreate: true, // show operation confirmation dialog flags
   confirmUpdate: true,
   confirmDelete: true,
   headers: [
     { text: 'Party Name', value: 'name', fixed: true },
-    { text: 'Remarks🖊️', value: 'remarks' }, // use pen emoji to indicate editable columns
+    { text: 'Remarks', value: 'remarks' }, // use pen emoji to indicate editable columns
     { text: 'Languages', value: 'languages' },
     { text: 'Status', value: 'status' },
-    { text: 'Created🖊️', value: 'created' },
+    { text: 'Created', value: 'created' },
     { text: 'Photo URL', value: 'photo' }
   ],
   formatters: (value, _type) => {
@@ -77,9 +76,8 @@ export const crudTable = {
     },
     container: {
       fluid: true,
-      style: {
-        padding: 0
-      }
+      class: 'pa-0',
+      style: { }
     },
     dialog: { // dialog
       fullscreen: false, // dialog form is not fullscreen
@@ -109,7 +107,8 @@ export const crudTable = {
     },
     button: {
       dark: false,
-      light: true
+      light: true,
+      icon: true
     }
   }
 }

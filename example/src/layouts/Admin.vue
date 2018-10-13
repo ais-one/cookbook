@@ -95,7 +95,7 @@
     </v-toolbar>
     <main>
       <v-content>
-        <v-container fluid>
+        <v-container fluid class="pa-2">
           <router-view :key="$route.fullPath" dark></router-view>
         </v-container>
       </v-content>
