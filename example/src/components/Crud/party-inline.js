@@ -70,42 +70,43 @@ export const crudTable = {
   showGoBack: false, // do net show go back button on table
 
   attrs: {
-    snackbar: { // null means no snack bar
+    // you can add attributes used by the component and customize style and classes
+    snackbar: { // v-snackbar Component - null means no snack bar
       bottom: true,
       timeout: 6000
     },
-    container: {
+    container: { // v-container Component
       fluid: true,
       class: 'pa-0',
-      style: { }
+      style: { } // you can add more styles here
     },
-    dialog: { // dialog
+    dialog: { // v-dialog Component
       fullscreen: false, // dialog form is not fullscreen
       scrollable: true,
       transition: 'dialog-bottom-transition',
       overlay: false
     },
-    form: { // dialog form
+    form: { // v-form Component
       class: 'grey lighten-3 pa-2',
       'lazy-validation': true
     },
-    alert: {
+    alert: { // v-alert Component
       color: 'grey',
       icon: ''
     },
-    toolbar: {
+    toolbar: { // v-toolbar Component
       height: 48,
       dark: false,
       light: true,
       color: 'grey'
     },
-    table: {
+    table: { // v-data-table Component
       dark: false,
       light: true,
       'rows-per-page-items': [2, 5, 10, 20],
       'hide-headers': false
     },
-    button: {
+    button: { // v-btn Component
       dark: false,
       light: true,
       icon: true

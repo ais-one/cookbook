@@ -213,38 +213,39 @@ export default {
 
       // styling
       attrs: {
-        snackbar: { // null means no snack bar
+        // you can add attributes used by the component and customize style and classes
+        snackbar: { // v-snackbar Component - null means no snack bar
           bottom: true,
           timeout: 6000
         },
-        container: {
+        container: { // v-container Component
           // v-bind:class="{ 'make-modal': parentId }"
           fluid: true,
           class: 'pa-2',
           style: { }
         },
-        dialog: { // dialog
+        dialog: { // v-dialog Component
           fullscreen: false,
           scrollable: true,
           transition: 'dialog-bottom-transition',
           overlay: false
         },
-        form: { // dialog form
+        form: { // v-form Component
           class: 'grey lighten-3 pa-2',
           'lazy-validation': true
         },
-        alert: {
+        alert: { // v-alert Component
           color: 'grey',
           icon: ''
         },
-        toolbar: {
+        toolbar: { // v-toolbar Component
           height: 48,
           dark: false,
           light: true,
           color: 'grey',
           fixed: false
         },
-        table: {
+        table: { // v-data-table Component
           dark: false,
           light: true,
           'rows-per-page-items': [2, 5, 10, 20],
@@ -255,15 +256,16 @@ export default {
             'backface-visibility': 'hidden'
           }
         },
-        button: {
+        button: { // v-btn Component
           dark: false,
           light: true,
           icon: true,
           fab: false
         }
       },
-      showFilter: false,
 
+      // show/hide filter
+      showFilter: false,
       // snackbar
       snackbar: false,
       snackbarText: ''
@@ -587,7 +589,7 @@ export default {
             <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>close</v-icon></v-btn> {{showTitle | capitalize}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn v-bind="attrs.button" v-if="canDelete && record.id" @click.native="crudFormDelete" :disabled="loading"><v-icon>delete</v-icon></v-btn>
-            <v-btn v-bind="attrs.button" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>done_all</v-icon></v-btn>
+            <v-btn v-bind="attrs.button" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>save</v-icon></v-btn>
             <v-toolbar-items></v-toolbar-items>
           </v-toolbar>
           <v-progress-linear :indeterminate="loading" class="ma-0"></v-progress-linear>
