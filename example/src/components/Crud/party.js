@@ -6,9 +6,6 @@ import { format } from 'date-fns'
 
 // console.log(app, i18n, i18n.messages[i18n.locale])
 
-// set snackbar props in object to customize, or set as null to disable snackbar
-export const crudSnackBar = { top: true, timeout: 6000 }
-
 export const crudTable = {
   actionColumn: false,
   addrowCreate: false,
@@ -36,10 +33,13 @@ export const crudFilter = {
     languages: {
       // this will be deprecated
       type: 'select',
-      label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
-      multiple: false,
-      rules: [],
       value: '',
+      attrs: {
+        label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
+        multiple: false,
+        rules: [],
+        items: []
+      },
       itemsFn: async () => {
         let records = []
         try {
@@ -50,16 +50,17 @@ export const crudFilter = {
           })
         } catch (e) { }
         return records
-      },
-      items: [ ]
+      }
     },
     active: {
       type: 'select',
-      label: 'Active Status',
-      multiple: false,
-      items: [ 'active', 'inactive' ], // can be async loaded from db?
       value: 'active',
-      rules: [v => !!v || 'Item is required']
+      attrs: {
+        label: 'Active Status',
+        multiple: false,
+        items: [ 'active', 'inactive' ], // can be async loaded from db?
+        rules: [v => !!v || 'Item is required']
+      }
     }
   }
 }

@@ -4,7 +4,6 @@
       <v-flex xs12>
         <h2>You can add various components, cruds, a chart, map, etc.</h2>
         <p>The clicking an item in left table will do a find() records in right table where Party Name matches Party. The right table also has the goBack() button to return to parent turned off</p>
-        <p>Currently there is an issue for multi crud page. Only autugenerated filters and forms work. If you use use custom, what is seen is that the only 1 custom component is created. You can change FilterVue().component from null to import('./Filter.vue') to see the effect when you open the filters</p>
       </v-flex>
     </v-layout>
     <v-layout row wrap>

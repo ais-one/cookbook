@@ -4,8 +4,6 @@ import { format } from 'date-fns'
 
 // import ComponentLoading from '@/components/ComponentLoading'
 
-export const crudSnackBar = { top: true, timeout: 6000 }
-
 export const crudTable = {
   name: 'party',
   actionColumn: true, // have an action column
@@ -36,18 +34,18 @@ export const crudFilter = {
         label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
         multiple: false,
         rules: [],
-        itemsFn: async () => {
-          let records = []
-          try {
-            const rv = await firestore.collection('languages').limit(10).get() // create index
-            rv.forEach(record => {
-              let tmp = record.data()
-              records.push(tmp.name)
-            })
-          } catch (e) { }
-          return records
-        },
-        items: [ ]
+        items: []
+      },
+      itemsFn: async () => {
+        let records = []
+        try {
+          const rv = await firestore.collection('languages').limit(10).get() // create index
+          rv.forEach(record => {
+            let tmp = record.data()
+            records.push(tmp.name)
+          })
+        } catch (e) { }
+        return records
       }
     },
     active: {

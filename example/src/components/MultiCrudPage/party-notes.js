@@ -68,38 +68,6 @@ export const crudFilter = {
         rules: [v => !!v || 'Item is required']
       }
     }
-    // dateStart: {
-    //   type: 'date',
-    //   label: 'Date Start',
-    //   value: format(startOfMonth(new Date()), 'YYYY-MM-DD'),
-    //   rules: [
-    //     (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date'
-    //   ],
-    //   halfSize: true
-    // },
-    // dateEnd: {
-    //   type: 'date',
-    //   label: 'Date End',
-    //   value: format(endOfMonth(new Date()), 'YYYY-MM-DD'),
-    //   rules: [
-    //     (v) => (v >= crudFilter.filterData.dateStart.value) || 'End date must be later or same as start date'
-    //   ],
-    //   halfSize: true
-    // },
-    // selectX: {
-    //   type: 'select-kv',
-    //   label: 'Active Status',
-    //   multiple: false,
-    //   items: [
-    //     { text: 'All', value: 'all' },
-    //     { text: 'Pending', value: 'pending' },
-    //     { text: 'Review', value: 'review' },
-    //     { text: 'Approved', value: 'approved' },
-    //     { text: 'Rejected', value: 'rejected' }
-    //   ],
-    //   value: { text: 'All', value: 'all' },
-    //   rules: [v => !!v || 'Item is required']
-    // }
   }
 }
 

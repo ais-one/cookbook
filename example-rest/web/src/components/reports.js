@@ -2,9 +2,6 @@
 import { format, subDays } from 'date-fns'
 import { http } from '@/axios'
 
-// set snackbar props in object to customize, or set as null to disable snackbar
-export const crudSnackBar = { top: true, timeout: 6000 }
-
 export const crudTable = {
   actionColumn: false, // action buttons (edit/delete)on the left most table column
   addrowCreate: false,

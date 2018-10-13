@@ -3,9 +3,6 @@ import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format } from 'date-fns'
 import { crudOps as partyCrudOps } from './party'
 
-// set snackbar props in object to customize, or set as null to disable snackbar
-export const crudSnackBar = { top: true, timeout: 6000 }
-
 export const crudTable = {
   actionColumn: true, // action buttons (edit/delete)on the left most table column
   addrowCreate: [
@@ -71,17 +68,35 @@ export const crudTable = {
   onRowClickOpenForm: true, // set to false of you do not want row click to open form
 
   doPage: true, // pagination enabled
-  fullscreenForm: false, // dialog form is not fullscreen
-
-  isFluid: true, // fluid layout
   showGoBack: false, // do net show go back button on table
 
   attrs: {
+    snackbar: { // null means no snack bar
+      bottom: true,
+      timeout: 6000
+    },
+    container: {
+      fluid: true,
+      style: {
+        padding: 0
+      }
+    },
+    dialog: { // dialog
+      fullscreen: false, // dialog form is not fullscreen
+      scrollable: true,
+      transition: 'dialog-bottom-transition',
+      overlay: false
+    },
+    form: { // dialog form
+      class: 'grey lighten-3 pa-2',
+      'lazy-validation': true
+    },
     alert: {
       color: 'grey',
       icon: ''
     },
     toolbar: {
+      height: 48,
       dark: false,
       light: true,
       color: 'grey'
@@ -101,7 +116,7 @@ export const crudTable = {
 
 export const crudFilter = {
   hasFilterVue: false,
-  FilterVue: null, // () => ({ component: null }),
+  FilterVue: null,
   filterData: {
     // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
     // new way of defining, use attrs
@@ -120,7 +135,7 @@ export const crudFilter = {
 
 export const crudForm = {
   FormVue: () => ({ component: import('./PartyForm.vue') }),
-  // FormVue: () => ({ component: null }), // not needed
+  // FormVue: null, // not needed
   formAutoData: { // this is for automated form creation - if undefined use FormVue
     name: {
       type: 'v-text-field',
