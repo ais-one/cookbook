@@ -104,13 +104,19 @@ export const crudTable = {
       dark: false,
       light: true,
       'rows-per-page-items': [2, 5, 10, 20],
-      'hide-headers': false
+      'hide-headers': false,
+      'loading-color': 'primary'
     },
     button: { // v-btn Component
       dark: false,
       light: true,
-      icon: true
+      icon: true,
+      fab: false
+    },
+    'v-progress-linear': { // v-progress-linear, can also be v-progress-circular
+      class: 'ma-0'
     }
+
   }
 }
 

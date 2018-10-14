@@ -32,7 +32,7 @@ export const crudFilter = {
   filterData: {
     languages: {
       // this will be deprecated
-      type: 'select',
+      type: 'v-select',
       value: '',
       attrs: {
         label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
@@ -53,7 +53,7 @@ export const crudFilter = {
       }
     },
     active: {
-      type: 'select',
+      type: 'v-select',
       value: 'active',
       attrs: {
         label: 'Active Status',

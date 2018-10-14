@@ -7,6 +7,7 @@
  * https://github.com/vuetifyjs/vuetify/pull/5232
 
 ### Version 0.1.0
+ * first minor version change!
  * fixed bug in can() function which shows button even though flag is false
  * improved configurability of vue-crud-x
    * see party-inline.js crudTable property for full details (some properties and props have been removed)
@@ -15,8 +16,10 @@
  * improve usability
    * make all buttons accessible, put them at top bar (done)
    * make top bar sticky - fixed (done - will need to revisit in Vuetify 2.0)
- * upgrade to vuetify 1.2.8
+ * upgrade to vuetify 1.2.8 and updated other packages including poi
  * [WORK IN PROGRESS] REST API example (with authorization & with configuration management)
+   * jwt, google authenticator 2FA
+   * knex, objectionjs, sqlite, keyv
 
 ### Version 0.0.24
  * updated packages & vuetify to 1.2.6

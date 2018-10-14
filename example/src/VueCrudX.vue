@@ -219,9 +219,8 @@ export default {
           timeout: 6000
         },
         container: { // v-container Component
-          // v-bind:class="{ 'make-modal': parentId }"
           fluid: true,
-          class: 'pa-2',
+          class: 'pa-2', // parentId ? 'make-modal' : ''
           style: { }
         },
         dialog: { // v-dialog Component
@@ -250,6 +249,7 @@ export default {
           light: true,
           'rows-per-page-items': [2, 5, 10, 20],
           'hide-headers': false,
+          'loading-color': 'primary',
           style: { // this may need to be changed once Vuetify version 2.0 is out
             'max-height': 'calc(100vh - 144px)',
             'overflow-y': 'scroll',
@@ -261,7 +261,15 @@ export default {
           light: true,
           icon: true,
           fab: false
-        }
+        },
+        'v-progress-linear': { // v-progress-linear, can also be v-progress-circular
+          class: 'ma-0'
+        },
+        'v-edit-dialog': {
+          // style: 'background-color: #ff8888 !important;' // 424242
+        },
+        'left-indicator': '', // ️'🖊️'
+        'right-indicator': ''
       },
 
       // show/hide filter
@@ -496,7 +504,7 @@ export default {
       <!-- <v-toolbar-side-icon ></v-toolbar-side-icon> -->
       <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn> {{showTitle | capitalize}} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? 'keyboard_arrow_up' : 'search'}}</v-icon></v-btn>
+      <v-btn v-bind="attrs.button" @click="showFilter=!showFilter" :disabled="!hasFilterData"><v-icon>{{ showFilter ? 'keyboard_arrow_up' : 'search'}}</v-icon></v-btn>
       <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
       <v-btn v-if="canCreate" v-bind="attrs.button" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
       <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop="exportBtnClick" :disabled="loading"><v-icon>print</v-icon></v-btn>
@@ -519,22 +527,20 @@ export default {
       :items="records"
       :total-items="totalRecs"
       :pagination.sync="pagination"
-      :loading="loading"
+      :loading="loading?attrs.table['loading-color']:false"
       :hide-actions="!doPage"
       v-bind="attrs.table"
     >
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
         <tr @click.stop="rowClicked(props.item, $event)">
-          <td v-if="actionColumn" class="justify-center layout" valign="middle">
+          <td v-if="actionColumn" class="justify-center layout pa-4" valign="middle">
             <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
             <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
             <v-icon v-if="saveRow" small class="mr-2" @click.stop="inlineUpdate(props.item)" :disabled="loading">save</v-icon>
           </td>
-          <!-- for now, lighten (grey lighten-4) editable columns until fixed header is implemented -->
-          <td :key="header.value" v-for="(header, index) in headers" v-if="actionColumn?index>0:index>=0">
+          <td :key="header.value" v-for="(header, index) in headers" v-if="actionColumn?index>0:index>=0" class="pa-4">
             <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span>
-            <!-- date / time -->
             <v-edit-dialog
               v-else-if="inline[header.value].field==='v-date-picker'||inline[header.value].field==='v-time-picker'||inline[header.value].field==='v-textarea'"
               :ref="`edit-${props.index}-${index}`"
@@ -548,8 +554,9 @@ export default {
               @cancel="()=>{ }"
               @open="inlineOpen(props.item[header.value], props.index, index)"
               @close="()=>{ }"
+              v-bind="attrs['v-edit-dialog']"
             >
-              <div>🖊️{{ props.item[header.value] }}</div>
+              <div>{{attrs['left-indicator']}}{{ props.item[header.value] }}{{attrs['right-indicator']}}</div>
               <component
                 :is="inline[header.value].field"
                 slot="input"
@@ -592,7 +599,7 @@ export default {
             <v-btn v-bind="attrs.button" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>save</v-icon></v-btn>
             <v-toolbar-items></v-toolbar-items>
           </v-toolbar>
-          <v-progress-linear :indeterminate="loading" class="ma-0"></v-progress-linear>
+          <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading"></component>
 
           <v-form v-if="hasFormVue" v-model="validForm" v-bind="attrs.form">
             <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
@@ -631,7 +638,7 @@ scoped made it not work...
 
 <style lang="css" scoped>
 /* should no longer need to make nested table a modal */
-.make-modal-disabled {
+.make-modal {
   margin: 0;
   position: fixed;
   top: 0;
