@@ -1,8 +1,27 @@
 ### Upcoming
+ * improve saving for online edit... sometimes user forgets to press save row button
  * https://github.com/ais-one/vue-crud-x/issues/32
  * any more events needed? also, check on disabling
  * fix Date Range Issues... or check filters only on submit
  * GraphQL using Prisma or Hasura
+ * https://github.com/vuetifyjs/vuetify/pull/5232
+
+### Version 0.1.0
+ * first minor version change!
+ * fixed bug in can() function which shows button even though flag is false
+ * improved configurability & look-and-feel customization (spacing, color, alignment, etc.) of vue-crud-x
+   * see party-inline.js crudTable property for full details (some properties and props have been removed)
+   * crudTable.attrs shows the customizations for the various parts of the component
+   * the attrs are not limited to what is in the party-inline.js file (details of this are explained in party-inline.js)
+   * [BREAKING CHANGE] Action Column, now indicated in headers array instead of actionColumn flag, see party-inline.j]
+ * improve usability
+   * make all buttons accessible, put them at top bar (done)
+   * make top bar sticky - fixed (done - will need to revisit in Vuetify 2.0)
+ * upgrade to vuetify 1.2.9 and updated outdated packages
+ * [WORK IN PROGRESS] REST API example (with authorization & with configuration management)
+   * jwt, google authenticator 2FA
+   * knex, objectionjs, sqlite, keyv
+   * update VueCrudX component in Nuxt example
 
 ### Version 0.0.24
  * updated packages & vuetify to 1.2.6

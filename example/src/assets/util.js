@@ -1,4 +1,4 @@
-function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';') { // TBD Make alphbetical order?
+function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';') {
   if (!csvContent) {
     csvContent += `id` // set id as first columns
     for (let k1 in tmp) {

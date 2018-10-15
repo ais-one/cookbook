@@ -22,41 +22,47 @@ export const crudFilter = {
   FilterVue: null, // () => ({ component: null }),
   filterData: {
     dateStart: {
-      type: 'date',
-      label: 'Date Start',
+      type: 'app-date-picker',
       value: format(subDays(new Date(), 20), 'YYYY-MM-DD'),
-      rules: [
-        (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date',
-        (v) => (differenceInCalendarDays(crudFilter.filterData.dateEnd.value, v) <= 60) || 'Select only up to 60 days of records at a time'
-      ],
+      attrs: {
+        label: 'Date Start'
+        // rules: [
+        //   (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date',
+        //   (v) => (differenceInCalendarDays(crudFilter.filterData.dateEnd.value, v) <= 60) || 'Select only up to 60 days of records at a time'
+        // ],
+      },
       halfSize: true
     },
     dateEnd: {
-      type: 'date',
-      label: 'Date Start',
+      type: 'v-text-field',
       value: format(new Date(), 'YYYY-MM-DD'),
-      rules: [
-        (v) => (v >= crudFilter.filterData.dateStart.value) || 'End date must be later or same as start date',
-        (v) => (differenceInCalendarDays(v, crudFilter.filterData.dateStart.value) <= 60) || 'Select only up to 60 days of records at a time'
-      ],
+      attrs: {
+        label: 'Date End',
+        type: 'date',
+        rules: [
+          (v) => (v >= crudFilter.filterData.dateStart.value) || 'End date must be later or same as start date',
+          (v) => (differenceInCalendarDays(v, crudFilter.filterData.dateStart.value) <= 60) || 'Select only up to 60 days of records at a time'
+        ]
+      },
       halfSize: true
     },
     selectX: {
-      type: 'select-kv',
-      label: 'Active Status',
-      multiple: false,
-      items: [
-        { text: 'All', value: 'all' },
-        { text: 'Pending', value: 'pending' },
-        { text: 'Review', value: 'review' },
-        { text: 'Approved', value: 'approved' },
-        { text: 'Rejected', value: 'rejected' }
-      ],
+      type: 'v-select',
       value: { text: 'All', value: 'all' },
-      rules: [v => !!v || 'Item is required']
+      attrs: {
+        label: 'Active Status',
+        multiple: false,
+        items: [
+          { text: 'All', value: 'all' },
+          { text: 'Pending', value: 'pending' },
+          { text: 'Review', value: 'review' },
+          { text: 'Approved', value: 'approved' },
+          { text: 'Rejected', value: 'rejected' }
+        ],
+        rules: [v => !!v || 'Item is required']
+      }
     }
   }
-
 }
 
 export const crudForm = {

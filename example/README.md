@@ -409,4 +409,15 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - https://forum.vuejs.org/t/dont-understand-how-to-use-mapstate-from-the-docs/14454/12
 - https://vuex.vuejs.org
 
-
+- https://medium.com/@paul.allies/stateless-auth-with-express-passport-jwt-7a55ffae0a5c
+- https://medium.com/front-end-hacking/learn-using-jwt-with-passport-authentication-9761539c4314
+- https://bigcodenerd.org/enforce-cloud-firestore-unique-field-values/
+- https://medium.com/@jqualls/firebase-firestore-unique-constraints-d0673b7a4952
+- https://scotch.io/tutorials/vue-authentication-and-route-handling-using-vue-router
+- https://scotch.io/tutorials/managing-user-permissions-in-vue-using-casl
+- https://medium.com/@jqualls/firebase-firestore-unique-constraints-d0673b7a4952
+- https://timonweb.com/posts/how-to-enable-es6-imports-in-nodejs/
+- https://medium.com/@pariola/using-es6-in-cloud-functions-387af36bcee3
+- https://codeburst.io/es6-in-cloud-functions-for-firebase-959b35e31cb0
+- https://github.com/jthegedus/firebase-gcp-examples/tree/master/firebase-functions-es6-babel
+- https://itnext.io/csv-or-json-export-with-firebase-functions-fa4a4b1416aa

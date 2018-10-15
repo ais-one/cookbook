@@ -7,16 +7,19 @@ import router from './router'
 import { auth } from './firebase'
 import { store } from './store'
 import Alert from './components/User/Alert.vue'
+import DatePicker from './components/DatePicker.vue'
 
 Vue.config.productionTip = false
+
+// Global components
+Vue.component('app-alert', Alert)
+Vue.component('app-date-picker', DatePicker)
 
 Vue.use(Vuetify, {
   lang: {
     t: (key, ...params) => i18n.t(key, params)
   }
 })
-
-Vue.component('app-alert', Alert) // Global - components
 
 /* eslint-disable no-new */
 export const app = new Vue({

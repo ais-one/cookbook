@@ -29,36 +29,44 @@ export const crudFilter = {
   }),
   filterData: {
     dateStart: {
-      type: 'date',
-      label: 'Date Start',
+      type: 'app-date-picker',
       value: format(startOfMonth(new Date()), 'YYYY-MM-DD'),
-      rules: [
-        (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date'
-      ],
+      attrs: {
+        label: 'Date Start'
+        // rules: [
+        //   (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date',
+        //   (v) => (differenceInCalendarDays(crudFilter.filterData.dateEnd.value, v) <= 60) || 'Select only up to 60 days of records at a time'
+        // ],
+      },
       halfSize: true
     },
     dateEnd: {
-      type: 'date',
-      label: 'Date End',
+      type: 'app-date-picker',
       value: format(endOfMonth(new Date()), 'YYYY-MM-DD'),
-      rules: [
-        (v) => (v >= crudFilter.filterData.dateStart.value) || 'End date must be later or same as start date'
-      ],
+      attrs: {
+        label: 'Date End'
+        // rules: [
+        //   (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date',
+        //   (v) => (differenceInCalendarDays(crudFilter.filterData.dateEnd.value, v) <= 60) || 'Select only up to 60 days of records at a time'
+        // ],
+      },
       halfSize: true
     },
     selectX: {
-      type: 'select-kv',
-      label: 'Active Status',
-      multiple: false,
-      items: [
-        { text: 'All', value: 'all' },
-        { text: 'Pending', value: 'pending' },
-        { text: 'Review', value: 'review' },
-        { text: 'Approved', value: 'approved' },
-        { text: 'Rejected', value: 'rejected' }
-      ],
+      type: 'v-select',
       value: { text: 'All', value: 'all' },
-      rules: [v => !!v || 'Item is required']
+      attrs: {
+        label: 'Active Status',
+        multiple: false,
+        items: [
+          { text: 'All', value: 'all' },
+          { text: 'Pending', value: 'pending' },
+          { text: 'Review', value: 'review' },
+          { text: 'Approved', value: 'approved' },
+          { text: 'Rejected', value: 'rejected' }
+        ],
+        rules: [v => !!v || 'Item is required']
+      }
     }
   }
 }
@@ -68,23 +76,31 @@ export const crudForm = {
   FormVue: () => ({ component: import('./PartyNotesForm.vue') }),
   formAutoData: { // this is for automated form creation - if undefined use FormVue
     approver: {
-      type: 'text',
-      label: 'Approver',
+      type: 'v-text-field',
+      attrs: {
+        label: 'Approver'
+      },
       halfSize: true
     },
     party: {
-      type: 'text',
-      label: 'party',
+      type: 'v-text-field',
+      attrs: {
+        label: 'Party'
+      },
       halfSize: true
     },
     type: {
-      type: 'text',
-      label: 'Type',
+      type: 'v-text-field',
+      attrs: {
+        label: 'Type'
+      },
       halfSize: true
     },
     value: {
-      type: 'text',
-      label: 'Value',
+      type: 'v-text-field',
+      attrs: {
+        label: 'Value'
+      },
       halfSize: true
     },
     approveStatus: { type: 'hidden' }

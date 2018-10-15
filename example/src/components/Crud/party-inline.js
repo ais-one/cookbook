@@ -3,11 +3,8 @@ import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format } from 'date-fns'
 import { crudOps as partyCrudOps } from './party'
 
-// set snackbar props in object to customize, or set as null to disable snackbar
-export const crudSnackBar = { top: true, timeout: 6000 }
-
 export const crudTable = {
-  actionColumn: true, // action buttons (edit/delete)on the left most table column
+  saveRow: true, // add save row button , used with inline edit only and action column
   addrowCreate: [
     {
       field: 'name',
@@ -16,7 +13,6 @@ export const crudTable = {
   ], // add button creates new record by adding row, you can specified fields that use needs to pre-enter data,
   // empty array if no need to,
   // false if no need addrowCreate button
-  saveRow: true, // add save row button , used with inline edit only and action column
   inline: { // editable fields on the table and what type of edit are they
     // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
     'name': {
@@ -49,16 +45,17 @@ export const crudTable = {
       buttons: true
     }
   },
-  inlineButtons: true,
   confirmCreate: true, // show operation confirmation dialog flags
   confirmUpdate: true,
   confirmDelete: true,
+  // REMOVE THIS, NO LONGER NEEDED: actionColumn: true, // action buttons (edit/delete)on the left most table column
   headers: [
+    { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' }, // IMPORTANT: blank value means it is action column
     { text: 'Party Name', value: 'name', fixed: true },
-    { text: 'Remarks🖊️', value: 'remarks' }, // use pen emoji to indicate editable columns
+    { text: 'Remarks', value: 'remarks', align: 'right', class: 'pa-1', 'cell-class': 'text-xs-right pa-1' }, // align header and cell
     { text: 'Languages', value: 'languages' },
     { text: 'Status', value: 'status' },
-    { text: 'Created🖊️', value: 'created' },
+    { text: 'Created', value: 'created' },
     { text: 'Photo URL', value: 'photo' }
   ],
   formatters: (value, _type) => {
@@ -71,22 +68,67 @@ export const crudTable = {
   onRowClickOpenForm: true, // set to false of you do not want row click to open form
 
   doPage: true, // pagination enabled
-  fullscreenForm: false, // dialog form is not fullscreen
-
-  isFluid: true, // fluid layout
-  hideHeaders: false, // do not hide headers
   showGoBack: false, // do net show go back button on table
 
-  dark: false, // setting theme and colors
-  fab: false,
-  noDataColor: 'grey',
-  formToolbarColor: 'grey',
-  filterHeaderColor: 'grey'
+  attrs: {
+    // you can add attributes used by the component and customize style and classes
+    snackbar: { // v-snackbar Component - null means no snack bar
+      bottom: true,
+      timeout: 6000
+    },
+    container: { // v-container Component
+      fluid: true,
+      class: 'pa-0',
+      style: { } // you can add more styles here
+    },
+    dialog: { // v-dialog Component
+      fullscreen: false, // dialog form is not fullscreen
+      scrollable: true,
+      transition: 'dialog-bottom-transition',
+      overlay: false
+    },
+    form: { // v-form Component
+      class: 'grey lighten-3 pa-2',
+      'lazy-validation': true
+    },
+    alert: { // v-alert Component
+      color: 'grey',
+      icon: ''
+    },
+    toolbar: { // v-toolbar Component
+      height: 48,
+      dark: false,
+      light: true,
+      color: 'grey'
+    },
+    table: { // v-data-table Component
+      dark: false,
+      light: true,
+      'rows-per-page-items': [2, 5, 10, 20],
+      'hide-headers': false,
+      'loading-color': '#ff0000'
+    },
+    button: { // v-btn Component
+      dark: false,
+      light: true,
+      icon: true,
+      fab: false
+    },
+    'v-progress-linear': { // v-progress-linear, can also be v-progress-circular
+      class: 'ma-0'
+    },
+    'edit-indicator-left': '🖊️',
+    'edit-indicator-right': '',
+    'action-icon': { // for the action column
+      small: true,
+      class: 'mr-1'
+    }
+  }
 }
 
 export const crudFilter = {
   hasFilterVue: false,
-  FilterVue: null, // () => ({ component: null }),
+  FilterVue: null,
   filterData: {
     // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
     // new way of defining, use attrs
@@ -105,7 +147,7 @@ export const crudFilter = {
 
 export const crudForm = {
   FormVue: () => ({ component: import('./PartyForm.vue') }),
-  // FormVue: () => ({ component: null }), // not needed
+  // FormVue: null, // not needed
   formAutoData: { // this is for automated form creation - if undefined use FormVue
     name: {
       type: 'v-text-field',

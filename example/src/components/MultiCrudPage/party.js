@@ -4,8 +4,6 @@ import { format } from 'date-fns'
 
 // import ComponentLoading from '@/components/ComponentLoading'
 
-export const crudSnackBar = { top: true, timeout: 6000 }
-
 export const crudTable = {
   name: 'party',
   actionColumn: true, // have an action column
@@ -30,28 +28,28 @@ export const crudFilter = {
   }),
   filterData: { // this is for automated filter creation - if undefined use FilterVue
     languages: {
-      type: 'select',
+      type: 'v-select',
       value: '',
       attrs: {
         label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
         multiple: false,
         rules: [],
-        itemsFn: async () => {
-          let records = []
-          try {
-            const rv = await firestore.collection('languages').limit(10).get() // create index
-            rv.forEach(record => {
-              let tmp = record.data()
-              records.push(tmp.name)
-            })
-          } catch (e) { }
-          return records
-        },
-        items: [ ]
+        items: []
+      },
+      itemsFn: async () => {
+        let records = []
+        try {
+          const rv = await firestore.collection('languages').limit(10).get() // create index
+          rv.forEach(record => {
+            let tmp = record.data()
+            records.push(tmp.name)
+          })
+        } catch (e) { }
+        return records
       }
     },
     active: {
-      type: 'select',
+      type: 'v-select',
       value: 'active',
       attrs: {
         label: 'Active Status',
@@ -68,24 +66,28 @@ export const crudForm = {
   FormVue: () => ({ component: import('./PartyForm.vue') }),
   formAutoData: { // this is for automated form creation - if undefined use FormVue
     name: {
-      type: 'text',
-      label: 'Name',
-      rules: [v => !!v || 'Item is required'],
+      type: 'v-text-field',
+      attrs: {
+        label: 'Name',
+        rules: [v => !!v || 'Item is required']
+      },
       halfSize: true
     },
     status: {
-      type: 'select',
-      halfSize: true,
+      type: 'v-select',
       attrs: {
         label: 'Active Status',
         multiple: false,
         items: [ 'active', 'inactive' ], // can be async loaded from db?
         rules: [v => !!v || 'Item is required']
-      }
+      },
+      halfSize: true
     },
     remarks: {
-      type: 'text',
-      label: 'Remarks'
+      type: 'v-textarea',
+      attrs: {
+        label: 'Remarks'
+      }
     },
     photo: { type: 'hidden' },
     languages: { type: 'hidden' }
