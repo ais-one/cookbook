@@ -14,8 +14,8 @@ export const crudTable = {
   confirmUpdate: true,
   confirmDelete: true,
   headers: [
-    { text: 'Party Name', value: 'name' },
-    { text: 'Status', value: 'status' }
+    { text: 'Party Name', value: 'name', class: 'pa-1' },
+    { text: 'Status', value: 'status', class: 'pa-1' }
   ],
   formatters: (value, _type) => value,
   doPage: false

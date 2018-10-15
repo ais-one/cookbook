@@ -108,13 +108,8 @@ export default {
     // set inline edit fields
     if (this.crudTable.inline) this.inline = this.crudTable.inline
 
-    // is there an action column
-    this.actionColumn = this.crudTable.actionColumn === true // default false
-    if (this.actionColumn) { // WARNING what if this.crudTable.headers undefined or wrong?
-      this.headers = [{ text: this.$t('vueCrudX.actions'), value: 'id', sortable: false }, ...this.crudTable.headers]
-    } else {
-      this.headers = this.crudTable.headers
-    }
+    this.headers = this.crudTable.headers
+    this.actionColumn = this.headers.findIndex(header => header.value === '') !== -1
 
     // save by row?
     this.saveRow = this.crudTable.saveRow === true // default false
@@ -265,11 +260,8 @@ export default {
         'v-progress-linear': { // v-progress-linear, can also be v-progress-circular
           class: 'ma-0'
         },
-        'v-edit-dialog': {
-          // style: 'background-color: #ff8888 !important;' // 424242
-        },
-        'left-indicator': '', // ️'🖊️'
-        'right-indicator': ''
+        'edit-indicator-left': '', // ️'🖊️'
+        'edit-indicator-right': ''
       },
 
       // show/hide filter
@@ -513,7 +505,7 @@ export default {
       <v-form v-if="hasFilterData" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
         <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
         <v-layout row wrap v-else>
-          <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12 class="pa-2">
+          <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12>
             <component :is="filter.type" v-model="filter.value" v-bind="filter.attrs"></component>
           </v-flex>
         </v-layout>
@@ -534,12 +526,12 @@ export default {
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
         <tr @click.stop="rowClicked(props.item, $event)">
-          <td v-if="actionColumn" class="justify-center layout pa-4" valign="middle">
-            <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
-            <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
-            <v-icon v-if="saveRow" small class="mr-2" @click.stop="inlineUpdate(props.item)" :disabled="loading">save</v-icon>
-          </td>
-          <td :key="header.value" v-for="(header, index) in headers" v-if="actionColumn?index>0:index>=0" class="pa-4">
+          <td :key="header.value" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
+            <span v-if="header.value===''">
+              <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
+              <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
+              <v-icon v-if="saveRow" small class="mr-2" @click.stop="inlineUpdate(props.item)" :disabled="loading">save</v-icon>
+            </span>
             <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span>
             <v-edit-dialog
               v-else-if="inline[header.value].field==='v-date-picker'||inline[header.value].field==='v-time-picker'||inline[header.value].field==='v-textarea'"
@@ -554,9 +546,8 @@ export default {
               @cancel="()=>{ }"
               @open="inlineOpen(props.item[header.value], props.index, index)"
               @close="()=>{ }"
-              v-bind="attrs['v-edit-dialog']"
             >
-              <div>{{attrs['left-indicator']}}{{ props.item[header.value] }}{{attrs['right-indicator']}}</div>
+              <div>{{attrs['edit-indicator-left']}}{{ props.item[header.value] }}{{attrs['edit-indicator-right']}}</div>
               <component
                 :is="inline[header.value].field"
                 slot="input"
@@ -604,7 +595,7 @@ export default {
           <v-form v-if="hasFormVue" v-model="validForm" v-bind="attrs.form">
             <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
             <v-layout row wrap v-else>
-              <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12 class="pa-2">
+              <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12>
                 <component v-if="form.type==='hidden'" :is="'div'"></component>
                 <component v-else :is="form.type" v-model="record[objKey]" v-bind="form.attrs"></component>
               </v-flex>

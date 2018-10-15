@@ -4,7 +4,6 @@ import { format } from 'date-fns'
 import { crudOps as partyCrudOps } from './party'
 
 export const crudTable = {
-  actionColumn: true, // action buttons (edit/delete)on the left most table column
   saveRow: true, // add save row button , used with inline edit only and action column
   addrowCreate: [
     {
@@ -49,9 +48,11 @@ export const crudTable = {
   confirmCreate: true, // show operation confirmation dialog flags
   confirmUpdate: true,
   confirmDelete: true,
+  // REMOVE THIS, NO LONGER NEEDED: actionColumn: true, // action buttons (edit/delete)on the left most table column
   headers: [
+    { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' }, // IMPORTANT: blank value means it is action column
     { text: 'Party Name', value: 'name', fixed: true },
-    { text: 'Remarks', value: 'remarks' }, // use pen emoji to indicate editable columns
+    { text: 'Remarks', value: 'remarks', align: 'right', class: 'pa-1', 'cell-class': 'text-xs-right pa-1' }, // align header and cell
     { text: 'Languages', value: 'languages' },
     { text: 'Status', value: 'status' },
     { text: 'Created', value: 'created' },
@@ -105,7 +106,7 @@ export const crudTable = {
       light: true,
       'rows-per-page-items': [2, 5, 10, 20],
       'hide-headers': false,
-      'loading-color': 'primary'
+      'loading-color': '#ff0000'
     },
     button: { // v-btn Component
       dark: false,
@@ -115,8 +116,9 @@ export const crudTable = {
     },
     'v-progress-linear': { // v-progress-linear, can also be v-progress-circular
       class: 'ma-0'
-    }
-
+    },
+    'edit-indicator-left': '🖊️',
+    'edit-indicator-right': ''
   }
 }
 

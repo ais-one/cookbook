@@ -13,6 +13,7 @@
    * see party-inline.js crudTable property for full details (some properties and props have been removed)
    * crudTable.attrs shows the customizations for the various parts of the component
    * the attrs are not limited to what is in the party-inline.js file (details of this are explained in party-inline.js)
+   * [BREAKING CHANGE - Action Column, now indicated in headers array instead of actionColumn flag, see party-inline.js]
  * improve usability
    * make all buttons accessible, put them at top bar (done)
    * make top bar sticky - fixed (done - will need to revisit in Vuetify 2.0)
