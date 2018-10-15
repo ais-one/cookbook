@@ -118,7 +118,11 @@ export const crudTable = {
       class: 'ma-0'
     },
     'edit-indicator-left': '🖊️',
-    'edit-indicator-right': ''
+    'edit-indicator-right': '',
+    'action-icon': { // for the action column
+      small: true,
+      class: 'mr-1'
+    }
   }
 }
 

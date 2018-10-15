@@ -261,7 +261,11 @@ export default {
           class: 'ma-0'
         },
         'edit-indicator-left': '', // ️'🖊️'
-        'edit-indicator-right': ''
+        'edit-indicator-right': '',
+        'action-icon': { // for the action column
+          small: true,
+          class: 'mr-1'
+        }
       },
 
       // show/hide filter
@@ -528,9 +532,9 @@ export default {
         <tr @click.stop="rowClicked(props.item, $event)">
           <td :key="header.value" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
             <span v-if="header.value===''">
-              <v-icon v-if="canUpdate" small class="mr-2" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
-              <v-icon v-if="canDelete" small class="mr-2" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
-              <v-icon v-if="saveRow" small class="mr-2" @click.stop="inlineUpdate(props.item)" :disabled="loading">save</v-icon>
+              <v-icon v-if="canUpdate" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
+              <v-icon v-if="canDelete" v-bind="attrs['action-icon']" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
+              <v-icon v-if="saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item)" :disabled="loading">save</v-icon>
             </span>
             <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span>
             <v-edit-dialog
