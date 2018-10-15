@@ -119,6 +119,7 @@ export default {
     this.hasFormVue = typeof this.crudForm.FormVue === 'function' || this.formAutoData
     this.hasFilterData = this.isObject(this.crudFilter.filterData)
     this.hasFilterVue = typeof this.crudFilter.FilterVue === 'function'
+    this.hasSummaryVue = typeof this.crudTable.SummaryVue === 'function'
 
     // use add row to create record
     this.addrowCreate = this.crudTable.addrowCreate ? this.crudTable.addrowCreate : false
@@ -145,6 +146,7 @@ export default {
     // assign the components
     if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue
+    if (this.hasSummaryVue) this.$options.components['crud-summary'] = this.crudTable.SummaryVue
 
     if (this.onCreatedOpenForm && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
       this.crudFormFlag = true
@@ -170,6 +172,7 @@ export default {
     // if (this.storeName === 'multi-crud-party') console.log('vvvv4', this.storeName, this.$options.components['crud-filter'], this.crudFilter.FilterVue)
     if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue
+    if (this.hasSummaryVue) this.$options.components['crud-summary'] = this.crudTable.SummaryVue
   },
   beforeRouteEnter (to, from, next) { next(vm => { }) },
   data () {
@@ -186,6 +189,9 @@ export default {
       validFilter: true,
       hasFilterVue: false,
       hasFilterData: false,
+
+      // summary
+      hasSummaryVue: false,
 
       // data-table
       loading: false,
@@ -268,8 +274,10 @@ export default {
         }
       },
 
-      // show/hide filter
+      // show/hide
       showFilter: false,
+      showSummary: false,
+
       // snackbar
       snackbar: false,
       snackbarText: ''
@@ -499,6 +507,7 @@ export default {
     <v-toolbar v-bind="attrs.toolbar">
       <!-- <v-toolbar-side-icon ></v-toolbar-side-icon> -->
       <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn> {{showTitle | capitalize}} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
+      <v-btn v-if="hasSummaryVue" v-bind="attrs.button" @click="showSummary=!showSummary" :disabled="loading"><v-icon>{{ showSummary ? 'keyboard_arrow_up' : 'list'}}</v-icon></v-btn>
       <v-spacer></v-spacer>
       <v-btn v-bind="attrs.button" @click="showFilter=!showFilter" :disabled="!hasFilterData"><v-icon>{{ showFilter ? 'keyboard_arrow_up' : 'search'}}</v-icon></v-btn>
       <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
@@ -583,6 +592,10 @@ export default {
         </v-flex>
       </template>
     </v-data-table>
+
+    <div v-if="showSummary">
+      <crud-summary v-if="hasSummaryVue" :records="records" :parentId="parentId" :storeName="storeName" />
+    </div>
 
     <v-layout row justify-center>
       <v-dialog v-model="crudFormFlag" v-bind="attrs.dialog">

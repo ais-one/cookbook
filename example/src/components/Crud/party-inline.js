@@ -123,7 +123,8 @@ export const crudTable = {
       small: true,
       class: 'mr-1'
     }
-  }
+  },
+  SummaryVue: () => ({ component: import('./Summary.vue') })
 }
 
 export const crudFilter = {

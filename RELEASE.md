@@ -6,6 +6,11 @@
  * GraphQL using Prisma or Hasura
  * https://github.com/vuetifyjs/vuetify/pull/5232
 
+### Version 0.1.1
+ * Removed wrongly installed dependencies in package.json
+ * Add summary component
+ * REST API Example
+
 ### Version 0.1.0
  * first minor version change!
  * fixed bug in can() function which shows button even though flag is false
@@ -13,7 +18,7 @@
    * see party-inline.js crudTable property for full details (some properties and props have been removed)
    * crudTable.attrs shows the customizations for the various parts of the component
    * the attrs are not limited to what is in the party-inline.js file (details of this are explained in party-inline.js)
-   * [BREAKING CHANGE] Action Column, now indicated in headers array instead of actionColumn flag, see party-inline.j]
+   * [BREAKING CHANGE] Action Column, now indicated in headers array instead of actionColumn flag, see party-inline.js
  * improve usability
    * make all buttons accessible, put them at top bar (done)
    * make top bar sticky - fixed (done - will need to revisit in Vuetify 2.0)
