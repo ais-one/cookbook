@@ -8,8 +8,10 @@
 
 ### Version 0.1.1
  * Removed wrongly installed dependencies in package.json
+ * upgraded to Vuetify 1.3.0
  * Add summary component
- * REST API Example
+ * html in table cell
+ * [Work In Progress] REST API Example
 
 ### Version 0.1.0
  * first minor version change!

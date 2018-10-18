@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'summary',
+  name: 'party-inline-summary',
   props: ['parentId', 'storeName', 'records'], // static
   data () {
     return {
