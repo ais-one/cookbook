@@ -10,7 +10,8 @@
  * Removed wrongly installed dependencies in package.json
  * upgraded to Vuetify 1.3.0
  * Add summary component
- * html in table cell
+ * html in table cell (not header yet)
+ * improve save row function by allowing background color to indicate change has been done on a cell in the row
  * [Work In Progress] REST API Example
 
 ### Version 0.1.0

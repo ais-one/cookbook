@@ -21,8 +21,10 @@ See the respective README.md files for more information on starting
 
  * Able to do nested CRUD operations, e.g. selecting a post from a list of posts, and then selecting a comment from a list of comments of the selected post to edit
  * Edit inline
- * Pagination, Use as component in a page
- * Include handling of authentication tokens, and any other information
+ * Pagination
+ * Use as component in a page (you can even have multiple components in a single page)
+ * Include handling of authentication tokens, and any other user information
+ * Permissions
  * Customise
    * Table data format for each cell (e.g., currency to 3 decimal places)
    * Search filters
@@ -31,8 +33,7 @@ See the respective README.md files for more information on starting
  * (Optional) Auto-configure Search filters, CRUD Forms using JSON data
  * For CRUD operations, you can Use direct call (e.g. Firestore), or API (REST, GraphQL) to one or more types of datastore (MySQL, MongoDB, Redis, ElasticSearch, etc.)
  * Export to CSV, File/Image Upload, i18n
- * (New) Permissions
- * Possibly replace Vuetify with something else like ElementUI, Buefy, etc.
+ * Possibly replace Vuetify with something else like ElementUI, Buefy, etc. [Can be done but will be painful]
 
 ## What is bad about this CRUD Component
 
@@ -43,6 +44,7 @@ However, the good part is that these parts need to be coded anyway and once you 
 ---
 
 # Todo / KIV
+ * Look into abort/timeout for async operations without abort/timeout feature (abortable fetch)
  * Take note of the following github issues
    * Fixed Table Header:
      * Fixed Column: https://github.com/lzhoucs/vuetify/pull/4
@@ -53,7 +55,6 @@ However, the good part is that these parts need to be coded anyway and once you 
  * Not Urgent: delete related records (e.g. deleting a party will also delete all notes belonging to that party)
  * Not Urgent: v-data-table actions-append: implement later, requires vuetifyjs 1.2.X
  * No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
- * Look into abort/timeout for async operations without abort/timeout feature
 
 # Notes
 

@@ -112,7 +112,7 @@ export default {
     this.actionColumn = this.headers.findIndex(header => header.value === '') !== -1
 
     // save by row?
-    this.saveRow = this.crudTable.saveRow ? this.crudTable.saveRow : false // default false
+    this.saveRow = this.crudTable.saveRow === true // default false
 
     // check if components and datas are present
     this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null
@@ -425,11 +425,6 @@ export default {
       this.loading = false
     },
     async submitFilter () {
-      if (this.saveRow) {
-        for (let i = 0; i < this.records.length; i++) {
-          this.$refs[`edit-${i}`].style['background-color'] = ''
-        }
-      }
       // TOREMOVE why was this here in the first place? await this.getRecords()
       await this.getRecordsHelper()
     },
@@ -464,26 +459,14 @@ export default {
       }
     },
     async inlineUpdate (item, field, row, col) {
-      // if (!field || (item[field] !== this.inlineValue && !this.saveRow)) { // field undefined means saverow button clicked
-      if (!field || item[field] !== this.inlineValue) { // field undefined means saverow button clicked
-        if (field && this.saveRow) { // change cell color
-          // console.log(this.$refs[`edit-${row}`].style)
-          console.log(this.saveRow)
-          if (this.saveRow !== true) {
-            this.$refs[`edit-${row}`].style['background-color'] = this.saveRow // TBD - configurable colors
-          }
-        } else {
-          this.$refs[`edit-${row}`].style['background-color'] = ''
-          const rv = await this.updateRecord({ record: item })
-          if (!rv) item[field] = this.inlineValue // if false undo changes
-        }
+      if (!field || (item[field] !== this.inlineValue && !this.saveRow)) { // field undefined means update row
+        const rv = await this.updateRecord({ record: item })
+        if (!rv) item[field] = this.inlineValue // if false undo changes
       } // else console.log('no changes')
       if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
-        const ref = this.$refs[`edit-${row}-${col}`] && this.$refs[`edit-${row}-${col}`][0] ? this.$refs[`edit-${row}-${col}`][0] : null
-        if (ref && ref.$children[0].$children[0].$children[0]) {
-          const tag = ref.$children[0].$children[0].$children[0].$options._componentTag
-          if (tag === 'v-date-picker' || tag === 'v-time-picker' || tag === 'v-textarea') ref.save(item[field]) // = false
-        }
+        const ref = this.$refs[`edit-${row}-${col}`][0]
+        const tag = ref.$children[0].$children[0].$children[0].$options._componentTag
+        if (tag === 'v-date-picker' || tag === 'v-time-picker' || tag === 'v-textarea') ref.save(item[field]) // = false
       }
     },
     async inlineCancel (row, col) {
@@ -509,11 +492,9 @@ export default {
       await this.deleteRecord({ id })
       this.$nextTick(async function () { await this.getRecordsHelper() })
     },
-    rowClicked (item, event, row) {
+    rowClicked (item, event) {
       if (!this.actionColumn && this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
-      if (!this.inline) {
-        this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
-      }
+      if (!this.inline) this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     },
     async testFunction () { // for testing anything
     }
@@ -555,36 +536,14 @@ export default {
       :hide-actions="!doPage"
       v-bind="attrs.table"
     >
-      <!-- <template slot="headers" slot-scope="props">
-        <tr>
-          <th>
-            <v-checkbox
-              :input-value="props.all"
-              :indeterminate="props.indeterminate"
-              primary
-              hide-details
-              @click.native="toggleAll"
-            ></v-checkbox>
-          </th>
-          <th
-            v-for="header in props.headers"
-            :key="header.text"
-            :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-            @click="changeSort(header.value)"
-          >
-            <v-icon small>arrow_upward</v-icon>
-            {{ header.text }}
-          </th>
-        </tr>
-      </template> -->
       <template slot="items" slot-scope="props">
         <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
-        <tr :ref="`edit-${props.index}`" @click.stop="rowClicked(props.item, $event, props.index)">
+        <tr @click.stop="rowClicked(props.item, $event)">
           <td :key="header.value" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
             <span v-if="header.value===''">
               <v-icon v-if="canUpdate" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
               <v-icon v-if="canDelete" v-bind="attrs['action-icon']" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
-              <v-icon v-if="saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item, null, props.index, index)" :disabled="loading">save</v-icon>
+              <v-icon v-if="saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item)" :disabled="loading">save</v-icon>
             </span>
             <span v-if="!inline[header.value]" v-html="$options.filters.formatters(props.item[header.value], header.value)"></span>
             <!-- <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span> -->
@@ -597,7 +556,7 @@ export default {
               :cancel-text="$t('vueCrudX.cancel')"
               :save-text="$t('vueCrudX.save')"
               lazy
-              @save="saveRow?'':inlineUpdate(props.item, header.value, props.index, index)"
+              @save="saveRow?'':inlineUpdate(props.item, header.value)"
               @cancel="()=>{ }"
               @open="inlineOpen(props.item[header.value], props.index, index)"
               @close="()=>{ }"
@@ -614,12 +573,11 @@ export default {
             </v-edit-dialog>
             <component
               v-else-if="inline[header.value].field==='v-text-field'||inline[header.value].field==='v-select'||inline[header.value].field==='v-combobox'||inline[header.value].field==='v-autocomplete'"
-              :ref="`edit-${props.index}-${index}`"
               :is="inline[header.value].field"
               v-bind="inline[header.value].attrs"
               v-model="props.item[header.value]"
               @focus="inlineOpen(props.item[header.value])"
-              @blur="inlineUpdate(props.item, header.value, props.index, index)"
+              @blur="inlineUpdate(props.item, header.value)"
             ></component>
           </td>
         </tr>
