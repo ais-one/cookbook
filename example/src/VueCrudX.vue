@@ -555,6 +555,9 @@ export default {
       :hide-actions="!doPage"
       v-bind="attrs.table"
     >
+      <template slot="headerCell" slot-scope="props">
+        <span v-html="props.header.text"></span>
+      </template>
       <!-- <template slot="headers" slot-scope="props">
         <tr>
           <th>
