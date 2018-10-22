@@ -232,6 +232,9 @@ export default {
         },
         form: { // v-form Component
           class: 'grey lighten-3 pa-2',
+          style: {
+            overflow: 'auto'
+          },
           'lazy-validation': true
         },
         alert: { // v-alert Component
@@ -653,8 +656,7 @@ export default {
             <v-btn v-bind="attrs.button" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>save</v-icon></v-btn>
             <v-toolbar-items></v-toolbar-items>
           </v-toolbar>
-          <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading"></component>
-
+          <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading" v-bind="attrs['v-progress-circular']?attrs['v-progress-circular']:attrs['v-progress-linear']"></component>
           <v-form v-if="hasFormVue" v-model="validForm" v-bind="attrs.form">
             <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
             <v-layout row wrap v-else>

@@ -1,5 +1,4 @@
 ### Upcoming
- * improve saving for online edit... sometimes user forgets to press save row button
  * https://github.com/ais-one/vue-crud-x/issues/32
  * any more events needed? also, check on disabling
  * fix Date Range Issues... or check filters only on submit
@@ -8,7 +7,7 @@
 
 ### Version 0.1.1
  * Removed wrongly installed dependencies in package.json
- * upgraded to Vuetify 1.3.0
+ * upgraded to vuetify 1.3.1
  * Add summary component
  * html in table cell & header cell
  * improve save row function by allowing background color to indicate change has been done on a cell in the row
