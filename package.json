@@ -30,7 +30,7 @@
   "bugs": {
     "url": "https://github.com/ais-one/vue-crud-x/issues"
   },
-  "bundleDependencies": false,
+  "bundleDependencies": [],
   "dependencies": {
     "lodash.clonedeep": "^4.5.0"
   },

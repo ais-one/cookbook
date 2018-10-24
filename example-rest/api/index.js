@@ -39,11 +39,13 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // app.auth = auth
 
 const authRoutes = require('./routes/auth')
+const apiRoutes = require('./routes/api')
 const baseRoutes = require('./routes/base')
 
 app.use(cors())
 app.use('/', baseRoutes)
 app.use('/auth', authRoutes)
+app.use('/api', apiRoutes)
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.get("*", async (req, res) => {

@@ -7,10 +7,12 @@
 
 ### Version 0.1.1
  * Removed wrongly installed dependencies in package.json
- * upgraded to vuetify 1.3.1
+ * upgraded to vuetify 1.3.2
  * Add summary component
  * html in table cell & header cell
  * improve save row function by allowing background color to indicate change has been done on a cell in the row
+ * fix CSV export function
+ * add secondary firebase app for auth user creation (https://stackoverflow.com/questions/37517208/firebase-kicks-out-current-user/38013551#38013551)
  * [Work In Progress] REST API Example
 
 ### Version 0.1.0
