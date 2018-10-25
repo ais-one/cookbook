@@ -483,9 +483,15 @@ export default {
       } // else console.log('no changes')
       if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
         const ref = this.$refs[`edit-${row}-${col}`] && this.$refs[`edit-${row}-${col}`][0] ? this.$refs[`edit-${row}-${col}`][0] : null
-        if (ref && ref.$children[0].$children[0].$children[0]) {
-          const tag = ref.$children[0].$children[0].$children[0].$options._componentTag
-          if (tag === 'v-date-picker' || tag === 'v-time-picker' || tag === 'v-textarea') ref.save(item[field]) // = false
+        if (ref) {
+          let vEditDialogInput = null
+          try {
+            vEditDialogInput = ref.$children[0].$children[0].$children[0]
+          } catch (e) { }
+          if (vEditDialogInput) {
+            const tag = vEditDialogInput.$options._componentTag
+            if (tag === 'v-date-picker' || tag === 'v-time-picker' || tag === 'v-textarea') ref.save(item[field]) // = false
+          }
         }
       }
     },
@@ -618,14 +624,16 @@ export default {
                 v-bind="inline[header.value].attrs"
               ></component>
             </v-edit-dialog>
+            <!-- v-else-if="inline[header.value].field==='v-text-field'||inline[header.value].field==='v-select'||inline[header.value].field==='v-combobox'||inline[header.value].field==='v-autocomplete'" -->
             <component
-              v-else-if="inline[header.value].field==='v-text-field'||inline[header.value].field==='v-select'||inline[header.value].field==='v-combobox'||inline[header.value].field==='v-autocomplete'"
+              v-else
               :ref="`edit-${props.index}-${index}`"
               :is="inline[header.value].field"
               v-bind="inline[header.value].attrs"
               v-model="props.item[header.value]"
               @focus="inlineOpen(props.item[header.value])"
-              @blur="inlineUpdate(props.item, header.value, props.index, index)"
+              @blur="inline[header.value].field!=='v-autocomplete'&&inline[header.value].field!=='v-switch'&&inline[header.value].field!=='v-select'&&inline[header.value].field!=='v-combobox'?inlineUpdate(props.item, header.value, props.index, index):''"
+              @change="inline[header.value].field==='v-autocomplete'||inline[header.value].field==='v-switch'||inline[header.value].field==='v-select'||inline[header.value].field==='v-combobox'?inlineUpdate(props.item, header.value, props.index, index):''"
             ></component>
           </td>
         </tr>
