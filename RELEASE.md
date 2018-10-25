@@ -11,7 +11,8 @@
  * Add summary component
  * html in table cell & header cell
  * improve save row function by allowing background color to indicate change has been done on a cell in the row
- * fix CSV export function
+ * fix CSV export function - use " (double quote) for field delimiter and escape "(double quote) using 2 "s
+ * add JSON export
  * add secondary firebase app for auth user creation (https://stackoverflow.com/questions/37517208/firebase-kicks-out-current-user/38013551#38013551)
  * [Work In Progress] REST API Example
 
