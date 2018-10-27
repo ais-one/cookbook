@@ -195,7 +195,6 @@ export default {
 
       // data-table
       loading: false,
-      editing: 0, // inline edit in progress, start time Date.now(), 0 means not editing
       inlineValue: null, // temporarily storing inline  edit values
 
       // crudTable
@@ -452,7 +451,6 @@ export default {
     },
     // inline edit
     inlineOpen (value, row, col) {
-      if (!this.editing) this.editing = Date.now()
       this.inlineValue = value
       if (row !== undefined && col !== undefined) {
         const ref = this.$refs[`edit-${row}-${col}`][0]
@@ -469,13 +467,15 @@ export default {
       }
     },
     async inlineUpdate (item, field, row, col) {
+      // if (!field || (item[field] !== this.inlineValue && !this.saveRow)) { // field undefined means saverow button clicked
       if (!field || item[field] !== this.inlineValue) { // field undefined means saverow button clicked
         if (field && this.saveRow) { // change cell color
+          // console.log(this.$refs[`edit-${row}`].style)
+          console.log(this.saveRow)
           if (this.saveRow !== true) {
-            this.$refs[`edit-${row}`].style['background-color'] = this.saveRow
+            this.$refs[`edit-${row}`].style['background-color'] = this.saveRow // TBD - configurable colors
           }
         } else {
-          this.editing = 0
           this.$refs[`edit-${row}`].style['background-color'] = ''
           const rv = await this.updateRecord({ record: item })
           if (!rv) item[field] = this.inlineValue // if false undo changes
@@ -494,10 +494,8 @@ export default {
           }
         }
       }
-      if (!this.saveRow) this.editing = 0 // if individual field saves
     },
     async inlineCancel (row, col) {
-      if (!this.saveRow) this.editing = 0 // if individual field saves
       if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
         const ref = this.$refs[`edit-${row}-${col}`][0]
         ref.cancel()
