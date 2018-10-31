@@ -1,13 +1,21 @@
-import { Model } from 'objection'
-import Author from './Author'
-import Page from './Page'
-
+// import { Model } from 'objection'
+// import Author from './Author'
+// import Page from './Page'
 // persons == books
 // movies == authors
 
-export default class Book extends Model {
+'use strict'
+
+const Model = require('objection').Model
+const Author = require('./Author')
+const Page = require('./Page')
+
+// export default 
+class Book extends Model {
   // Table name is the only required property.
-  static tableName = 'books'
+
+  // static tableName = 'books'
+  static get tableName() { return 'books' }
 
   // Optional JSON schema. This is not the database schema! Nothing is generated
   // based on this. This is only used for validation. Whenever a model instance
@@ -35,7 +43,8 @@ export default class Book extends Model {
   // }
 
   // This object defines the relations to other models.
-  static relationMappings = {
+  // static relationMappings = {
+  static get relationMappings() { return {
     // pets: {
     //   relation: Model.HasManyRelation,
     //   // The related model. This can be either a Model subclass constructor or an
@@ -91,5 +100,7 @@ export default class Book extends Model {
     //     to: 'persons.id'
     //   }
     // }
-  }
+  } }
 }
+
+module.exports = Book

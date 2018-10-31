@@ -9,8 +9,9 @@ import Dashboard from '@/pages/Dashboard'
 
 // import Reports from '@/pages/Reports'
 
-import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
-import * as reportsDefs from '@/components/reports'
+// import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
+// import * as reportsDefs from '@/components/reports'
+import Reports from '@/pages/Reports'
 
 Vue.use(Router)
 
@@ -22,13 +23,18 @@ export default new Router({
       component: Dashboard,
       beforeEnter: AuthGuard
     },
+    // {
+    //   path: '/reports',
+    //   name: 'reports',
+    //   beforeEnter: AuthGuard,
+    //   component: VueCrudX,
+    //   props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...reportsDefs } }
+    // },
     {
       path: '/reports',
       name: 'reports',
-      beforeEnter: AuthGuard,
-      // component: Reports,
-      component: VueCrudX,
-      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...reportsDefs } }
+      component: Reports,
+      beforeEnter: AuthGuard
     },
     { path: '/signup', name: 'SignUp', component: SignUp },
     { path: '/', name: 'SignIn', component: SignIn },

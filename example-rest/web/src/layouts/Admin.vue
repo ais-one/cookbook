@@ -51,7 +51,7 @@
         <v-toolbar-side-icon v-if="userIsAuthenticated" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       </v-toolbar-title>
       <div class="text-xs-center">
-        <v-img src="/static/logo.png" contain height="40" width="172" class="ma-2" />
+        <v-img src="/static/email.png" contain height="40" width="172" class="ma-2" />
       </div>
       {{ currentTime }}
       <v-spacer>

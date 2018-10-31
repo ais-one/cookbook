@@ -596,7 +596,7 @@ export default {
         <tr :ref="`edit-${props.index}`" @click.stop="rowClicked(props.item, $event, props.index)">
           <td :key="header.value" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
             <span v-if="header.value===''">
-              <v-icon v-if="canUpdate" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
+              <v-icon v-if="canUpdate&&!saveRow" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
               <v-icon v-if="canDelete" v-bind="attrs['action-icon']" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
               <v-icon v-if="saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item, null, props.index, index)" :disabled="loading">save</v-icon>
             </span>
