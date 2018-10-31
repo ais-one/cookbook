@@ -17,6 +17,10 @@
  * add editing flag so to indicate if user is editing inline
  (https://stackoverflow.com/questions/37517208/firebase-kicks-out-current-user/38013551#38013551)
  * [Work In Progress] REST API Example
+   * Login - Done
+   * Show table - In progress
+   * Show nested table (one to many) - In progress
+   * Show table (many to many) - In progress
 
 ### Version 0.1.0
  * first minor version change!

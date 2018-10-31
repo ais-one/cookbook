@@ -1,5 +1,17 @@
 # REST Example
 
+## Quick Start
+
+```
+cd api
+npm run dev
+cd ..
+cd web
+npm run serve
+```
+
+
+
 ## Frontend
 
 VueJS SPA
