@@ -1,4 +1,6 @@
 ### Upcoming
+ * continue with REST implementation
+ * add example of using firebase onSnapshot
  * https://github.com/ais-one/vue-crud-x/issues/32
  * any more events needed? also, check on disabling
  * fix Date Range Issues... or check filters only on submit
@@ -7,14 +9,14 @@
 
 ### Version 0.1.1
  * Removed wrongly installed dependencies in package.json
- * upgraded to vuetify 1.3.4
- * Add summary component
+ * upgraded to vuetify 1.3.5
+ * Add summary component (optional)
  * html in table cell & header cell
  * improve save row function by allowing background color to indicate change has been done on a cell in the row
  * fix CSV export function - use " (double quote) for field delimiter and escape "(double quote) using 2 "s
- * add JSON export
- * add secondary firebase app for auth user creation
- * add editing flag so to indicate if user is editing inline
+ * add JSON export (@/assets/util)
+ * add secondary firebase app for auth user creation (@/firebase)
+ * add editing object so as to indicate which rows user has edited inline and at what time (@/VueCrudX)
  (https://stackoverflow.com/questions/37517208/firebase-kicks-out-current-user/38013551#38013551)
  * [Work In Progress] REST API Example
    * Login - Done

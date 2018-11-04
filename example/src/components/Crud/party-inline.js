@@ -4,7 +4,8 @@ import { format } from 'date-fns'
 import { crudOps as partyCrudOps } from './party'
 
 export const crudTable = {
-  saveRow: true, // add save row button , used with inline edit only and action column
+  saveRow: '#ffaaaa', // add save row button & specify color when row is changed, used with inline edit only and action column
+  reloadAfterInlineSave: false, // set to true and use snapshot for large firestore dataset (or similar mechanisms)
   addrowCreate: [
     {
       field: 'name',

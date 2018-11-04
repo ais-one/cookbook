@@ -113,6 +113,7 @@ export default {
 
     // save by row?
     this.saveRow = this.crudTable.saveRow ? this.crudTable.saveRow : false // default false
+    this.reloadAfterInlineSave = this.crudTable.reloadAfterInlineSave !== false // default true
 
     // check if components and datas are present
     this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null
@@ -195,16 +196,17 @@ export default {
 
       // data-table
       loading: false,
-      editing: 0, // inline edit in progress, start time Date.now(), 0 means not editing
+      editing: null, // inline edit in progress, start time Date.now(), 0 means not editing
       inlineValue: null, // temporarily storing inline  edit values
 
       // crudTable
       headers: [ ], // pass in
-      inline: false, // inline editing
 
+      inline: false, // inline editing
+      saveRow: false, // otherwise it is the color string
+      reloadAfterInlineSave: true, // set to false for services where record read is chargeable, e.g. Google Firestore
       actionColumn: false,
       addrowCreate: false, // add row to create instead of using form
-      saveRow: false,
 
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
@@ -430,9 +432,7 @@ export default {
     },
     async submitFilter () {
       if (this.saveRow) {
-        for (let i = 0; i < this.records.length; i++) {
-          this.$refs[`edit-${i}`].style['background-color'] = ''
-        }
+        this.clearEditing()
       }
       // TOREMOVE why was this here in the first place? await this.getRecords()
       await this.getRecordsHelper()
@@ -450,9 +450,31 @@ export default {
     goBack () {
       this.$router.back()
     },
+    isEditing () {
+      // for (let i = 0; i < this.records.length; i++) {
+      //   if (this.$refs[`edit-${i}`].style['background-color']) return true
+      // }
+      // return false
+      // console.log('isEditing', this.editing)
+      return this.editing
+    },
+    setEditing (row, item) {
+      this.$refs[`edit-${row}`].style['background-color'] = this.saveRow
+      if (this.editing === null) this.editing = {}
+      this.editing[row] = { item, ts: Date.now() }
+    },
+    clearEditing (row, item) {
+      if (row) {
+        this.$refs[`edit-${row}`].style['background-color'] = ''
+        delete this.editing[row]
+        if (Object.keys(this.editing).length === 0) this.editing = null
+      } else {
+        for (let i = 0; i < this.records.length; i++) this.$refs[`edit-${i}`].style['background-color'] = ''
+        this.editing = null
+      }
+    },
     // inline edit
     inlineOpen (value, row, col) {
-      if (!this.editing) this.editing = Date.now()
       this.inlineValue = value
       if (row !== undefined && col !== undefined) {
         const ref = this.$refs[`edit-${row}-${col}`][0]
@@ -468,17 +490,24 @@ export default {
         })
       }
     },
-    async inlineUpdate (item, field, row, col) {
+    async inlineClose (item, field, row, col) {
       if (!field || item[field] !== this.inlineValue) { // field undefined means saverow button clicked
         if (field && this.saveRow) { // change cell color
           if (this.saveRow !== true) {
-            this.$refs[`edit-${row}`].style['background-color'] = this.saveRow
+            this.setEditing(row, item)
           }
+        }
+      }
+    },
+    async inlineUpdate (item, field, row, col) {
+      if (!field || item[field] !== this.inlineValue) { // field undefined means saverow button clicked
+        if (field && this.saveRow) { // change cell color
+          this.setEditing(row, item)
         } else {
-          this.editing = 0
-          this.$refs[`edit-${row}`].style['background-color'] = ''
+          this.clearEditing(row, item)
           const rv = await this.updateRecord({ record: item })
           if (!rv) item[field] = this.inlineValue // if false undo changes
+          else if (this.reloadAfterInlineSave) this.$nextTick(async function () { await this.getRecordsHelper() })
         }
       } // else console.log('no changes')
       if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
@@ -494,10 +523,12 @@ export default {
           }
         }
       }
-      if (!this.saveRow) this.editing = 0 // if individual field saves
+      // TOREMOVE Not Needed For Individual Saves
+      // if (!this.saveRow) {
+      //   this.editing pop // if individual field saves
+      // }
     },
-    async inlineCancel (row, col) {
-      if (!this.saveRow) this.editing = 0 // if individual field saves
+    async inlineCancel (row, col) { // UNUSED...
       if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
         const ref = this.$refs[`edit-${row}-${col}`][0]
         ref.cancel()
@@ -505,6 +536,10 @@ export default {
     },
     async inlineCreate () {
       let record = (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : this.crudForm.defaultRec
+
+      if (this.saveRow) {
+        if (this.isEditing()) return alert(this.$t('vueCrudX.pleaseSave'))
+      }
       for (let i = 0; i < this.addrowCreate.length; i++) {
         const { field, label } = this.addrowCreate[i]
         const val = prompt(label, record[field])
@@ -513,12 +548,14 @@ export default {
       }
       if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.createRecord({ record, parentId: this.parentId })
-      this.$nextTick(async function () { await this.getRecordsHelper() })
+      // add
+      if (this.reloadAfterInlineSave) this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     async inlineDelete (id) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.deleteRecord({ id })
-      this.$nextTick(async function () { await this.getRecordsHelper() })
+      // find index & delete
+      if (this.reloadAfterInlineSave) this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     rowClicked (item, event, row) {
       if (!this.actionColumn && this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
@@ -526,7 +563,8 @@ export default {
         this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
       }
     },
-    async testFunction () { // for testing anything
+    async testFunction (_in) { // for testing anything
+      console.log(_in)
     }
   }
 }
@@ -612,16 +650,16 @@ export default {
               :save-text="$t('vueCrudX.save')"
               lazy
               @save="saveRow?'':inlineUpdate(props.item, header.value, props.index, index)"
-              @cancel="()=>{ }"
+              @cancel="()=>{}"
               @open="inlineOpen(props.item[header.value], props.index, index)"
-              @close="()=>{ }"
+              @close="()=>{}"
             >
               <div>{{attrs['edit-indicator-left']}}{{ props.item[header.value] }}{{attrs['edit-indicator-right']}}</div>
               <component
                 :is="inline[header.value].field"
                 slot="input"
                 @input="inline[header.value].field!=='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
-                @blur="inline[header.value].field==='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
+                @blur="inline[header.value].field==='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):inlineClose(props.item, header.value, props.index, index)"
                 v-model="props.item[header.value]"
                 v-bind="inline[header.value].attrs"
               ></component>
