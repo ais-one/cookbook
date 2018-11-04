@@ -2,7 +2,7 @@
   <v-app>
     <v-toolbar dark app fixed clipped-left class="primary">
       <v-toolbar-items>
-        <v-img src="/static/logo.png" contain height="40" width="172" class="mt-2" />
+        <v-img src="/static/email.png" contain height="40" width="172" class="mt-2" />
       </v-toolbar-items>
       <!-- <v-toolbar-title></v-toolbar-title> -->
       <v-spacer></v-spacer>

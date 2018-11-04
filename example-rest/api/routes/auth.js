@@ -28,6 +28,17 @@ authRoutes
     const { id, clientId } = user
     const token = createToken({ id, clientId }, SECRET_KEY, USE_OTP ? '5m' : KEY_EXPIRY) // 5 minute expire for login
     await keyv.set(token, token)
+    if (process.env.USE_OTP === 'SMS') {
+      // Generate PIN
+      const pin = (Math.floor(Math.random() * (999999 - 0 + 1)) + 0).toString().padStart(6, "0")
+      const ts = new Date() // utc?
+      // update pin where ts > ?
+      // set user SMS
+      if (process.env.NODE_ENV === 'development') {
+
+      }
+      // TBD send SMS
+    }
     res.status(200).json({ token })
   })
   .post('/otp', async (req,res) => {

@@ -1,8 +1,9 @@
-# example
+# Example
 
 > A example project using vue-crud-x component
 
-### Installation
+
+## Installation
 
 Refer to README.md in parent repository
 

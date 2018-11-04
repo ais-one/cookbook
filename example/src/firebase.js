@@ -28,4 +28,8 @@ const hasDuplicate = async (collection, key, value, id = null) => {
   return true
 }
 
-export { auth, firestore, storage, hasDuplicate }
+// for auth user creation
+const secondaryApp = Firebase.initializeApp(firebaseCfg, 'Secondary')
+const auth2 = secondaryApp.auth()
+
+export { auth, auth2, firestore, storage, hasDuplicate }

@@ -6,8 +6,6 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "stage": "vue-cli-service build --mode staging && scp -r -i ../../test.pem dist/* ubuntu@127.0.0.1:~/app/public",
-    "demo": "vue-cli-service build --mode demo && scp -r -i ../../test.pem dist/* ubuntu@127.0.0.2:~/app/public",
     "prod": "vue-cli-service build --mode production && scp -r -i ../../test.pem dist/* ubuntu@127.0.0.3:~/app/public",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -24,7 +22,7 @@
     "vue-i18n": "^8.1.0",
     "vue-native-websocket": "^2.0.11",
     "vue-router": "^3.0.1",
-    "vuetify": "^1.2.3",
+    "vuetify": "^1.3.1",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

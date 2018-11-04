@@ -134,7 +134,7 @@ export const crudOps = { // CRUD
       let csvContent = ''
       rv.forEach(record => {
         let tmp = record.data()
-        csvContent += makeCsvRow(csvContent, tmp, `\r\n`, ';')
+        csvContent = makeCsvRow(csvContent, tmp, `\r\n`, ';')
       })
       exportCsv(csvContent, 'party-notes.csv')
     } catch (e) { }

@@ -9,6 +9,11 @@ exports.up = function(knex, Promise) {
       table.string('password') // hashed
       table.string('role')
 
+      // retry limit
+      table.integer('retryLimit', 3)
+      table.integer('retryCount', 0)
+      table.integer('retryReset', 30) // number of seconds before user can retry
+
       // authenticators
       table.string('gaKey', 32).comment('Google Authenticator Key')
 

@@ -6,6 +6,7 @@ import SignIn from '@/components/User/SignIn'
 import AuthGuard from './auth-guard'
 
 // vue-crud-x component
+// import VueCrudX from '../../../VueCrudX' // @/VueCrudX // copy the source vue file here if you want to tinker with it
 import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
 // import VueCrudX from 'vue-crud-x' // usually we will install and import
 

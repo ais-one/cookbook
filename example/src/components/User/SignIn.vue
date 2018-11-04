@@ -3,9 +3,16 @@
     <v-container>
       <v-layout row v-if="error">
         <v-flex xs12 sm6 offset-sm3>
-          <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
+          <v-alert :value="error" color="error">
+            <v-btn icon><v-icon @click="onDismissed">close</v-icon></v-btn> {{error.message}}
+          </v-alert>
         </v-flex>
       </v-layout>
+      <!-- <v-layout row justify-center align-center>
+        <v-flex xs12 py-4 class="text-xs-center">
+          <v-img src="/static/final.png" class="h-center" max-width="320px" />
+        </v-flex>
+      </v-layout> -->
       <v-layout row>
         <v-flex xs12 sm6 offset-sm3>
           <v-card>
@@ -96,5 +103,14 @@ export default {
   #rc-imageselect, .g-recaptcha {
     transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;
   }
+}
+.center-all {
+  display: flex;
+  align-items: center; /* v */
+  justify-content: center; /* h */
+}
+.h-center {
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>

@@ -53,6 +53,7 @@
 <script>
 import * as partyDefs from './party'
 import * as partyNotesDefs from './party-notes'
+// import VueCrudX from '../../../../VueCrudX' // @/VueCrudX // copy the source vue file here if you want to tinker with it
 import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
 
 export default {

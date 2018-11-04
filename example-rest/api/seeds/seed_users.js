@@ -10,8 +10,8 @@ exports.seed = function(knex, Promise) {
           orgId: 1,
           username: 'test',
           email: 'test',
-          password: '$2b$12$Rr1kYTVjZ.9Mnz8EpvRHk.EccoXNtt574A5mwvDn97S5Gu2xIMFhO',
-          gaKey: 'IZDXCUDYNQ4ESMZZNY4HGZSDJRAVGZCO',
+          password: '$2b$12$Rr1kYTVjZ.9Mnz8EpvRHk.EccoXNtt574A5mwvDn97S5Gu2xIMFhO', // test
+          gaKey: 'IJFWQ4TVN5QUU3RZMZDXIU32NZXUWR2F',
           sms: '6596935500',
           // smsLastSent
           // smsOtpPin

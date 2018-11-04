@@ -8,8 +8,8 @@ const keyv = require('../middleware/keyv')
 // const {get} = require('../middleware/wss')
 // const WebSocket = require('ws')
 
-const UPLOAD_PATH = 'uploads';
-const upload = multer({ dest: `${UPLOAD_PATH}/` }); // multer configuration
+const UPLOAD_PATH = 'uploads/';
+const upload = multer({ dest: `${UPLOAD_PATH}` }); // multer configuration
 
 baseRoutes
   .get('/logout', authUser, async (req,res) => {
@@ -18,8 +18,9 @@ baseRoutes
     // clear the token
     res.status(200).json({ message: 'Logged Out' })
   })
-  .post('/upload', upload.single('avatar'), async (req,res) => {
-    console.log(req.file)
+  // test uploads
+  .post('/upload', upload.single('avatar'), async (req,res) => { // avatar is form input name
+    console.log(req.file, req.body)
     res.status(200).json({ message: 'Uploaded' })
   })
   .post('/uploads', upload.array('photos', 3), function (req, res, next) {

@@ -1,5 +1,17 @@
 # REST Example
 
+## Quick Start
+
+```
+cd api
+npm run dev
+cd ..
+cd web
+npm run serve
+```
+
+
+
 ## Frontend
 
 VueJS SPA
@@ -25,6 +37,9 @@ Config Files
     knexfile.js
     ecosystem.config.js (pm2 start & stop)
 
+
+
+# DEPLOYMENT ON CLOUD (OPTIONAL)
 
 ## Generate Self-Signed SSL keys
 
