@@ -1,11 +1,17 @@
 ### Upcoming
  * continue with REST implementation
  * add example of using firebase onSnapshot
+ * automated testing
+ * multi-lang dependency...
  * https://github.com/ais-one/vue-crud-x/issues/32
  * any more events needed? also, check on disabling
  * fix Date Range Issues... or check filters only on submit
  * GraphQL using Prisma or Hasura
  * https://github.com/vuetifyjs/vuetify/pull/5232
+
+### Version 0.1.2
+ * fixed missing pleaseSave key in '@/lang', user needs to save changes or cancel them (by refreshing) before they can add inline record
+ * add time picker '@/TimePicker', improve date picker '@/DatePicker' (customize date format, prepend-icon now optional)
 
 ### Version 0.1.1
  * Removed wrongly installed dependencies in package.json

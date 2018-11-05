@@ -15,7 +15,7 @@
       slot="activator"
       v-model="computedDateFormatted"
       :label="label"
-      prepend-icon="event"
+      :prepend-icon="iconName"
       readonly
     ></v-text-field>
     <v-date-picker v-model="date" no-title scrollable @input="changeDate"></v-date-picker>
@@ -23,7 +23,7 @@
 </template>
 
 <script>
-// import {format} from 'date-fns'
+import { format } from 'date-fns'
 
 export default {
   data: () => ({
@@ -39,6 +39,14 @@ export default {
     label: {
       type: String,
       default: 'Date'
+    },
+    iconName: {
+      type: String,
+      default: 'event'
+    },
+    format: {
+      type: String,
+      default: 'YYYY-MM-DD'
     }
   },
   computed: {
@@ -57,9 +65,8 @@ export default {
     },
     formatDate (date) {
       if (!date) return null
-
       const [year, month, day] = date.split('-')
-      return `${day}-${month}-${year}`
+      return format(new Date(year, month - 1, day), this.format) // `${day}-${month}-${year}`
     }
   }
 }

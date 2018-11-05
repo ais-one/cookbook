@@ -30,7 +30,8 @@ const messages = {
       unknownOperation: 'Unknown Operation',
       operationOk: 'OK',
       save: 'Save',
-      cancel: 'Cancel'
+      cancel: 'Cancel',
+      pleaseSave: 'Please Save'
     },
     myApp: {
       languages: 'Languages'
@@ -61,7 +62,8 @@ const messages = {
       unknownOperation: 'Unknown Operation',
       operationOk: 'OK',
       save: 'Save',
-      cancel: 'Cancel'
+      cancel: 'Cancel',
+      pleaseSave: 'Please Save'
     },
     myApp: {
       languages: 'Bahasa'
