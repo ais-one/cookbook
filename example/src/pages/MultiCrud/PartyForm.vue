@@ -1,5 +1,5 @@
 <script>
-import ImageUpload from '../ImageUpload'
+import ImageUpload from '@/components/ImageUpload'
 
 export default {
   name: 'muli-crud-party-form',

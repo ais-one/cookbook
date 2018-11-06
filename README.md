@@ -65,3 +65,39 @@ None at the moment
 # Changes
 
 See RELEASE.MD file
+
+
+# DOCUMENTATION (WIP)
+
+## Properties
+
+crudTable: {
+
+}
+
+crudFilter: {
+
+}
+
+crudForm: {
+
+}
+
+crudOps: {
+
+}
+
+
+## Events
+
+form-close - emit event if close form
+
+selected - row selected, returns object with row item and event, does not fire if inline is truthy...
+
+loaded - table data is loaded, returns Date.now()
+
+created - emitted in createRecord(), returns success ? payload : null (no create ID yet, will be improved)
+
+updated - emitted in updateRecord(), returns success ? payload : null
+
+deleted - emitted in deleteRecord(), returns success ? payload : null

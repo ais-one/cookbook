@@ -10,8 +10,11 @@
  * https://github.com/vuetifyjs/vuetify/pull/5232
 
 ### Version 0.1.2
- * fixed missing pleaseSave key in '@/lang', user needs to save changes or cancel them (by refreshing) before they can add inline record
- * add time picker '@/TimePicker', improve date picker '@/DatePicker' (customize date format, prepend-icon now optional)
+ * bug fix: missing pleaseSave key in '@/lang', user needs to save changes or cancel them (by refreshing) before they can add inline record
+ * bug fix: many inline save row issues (due to handling of realtime firebase snaphot updates, CRUD unaffected)
+ * improvement: only save row if the row has been edited
+ * improvement: add loaded event (when submitFilter() is called)
+ * improvement: add time picker '@/TimePicker', improve date picker '@/DatePicker' (customize date format, prepend-icon now optional)
 
 ### Version 0.1.1
  * Removed wrongly installed dependencies in package.json

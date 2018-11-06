@@ -2,7 +2,9 @@
   <v-container>
     <v-layout row v-if="error">
       <v-flex xs12 sm6 offset-sm3>
-        <app-alert @dismissed="onDismissed" :text="error.message"></app-alert>
+        <v-alert :value="error" color="error">
+          <v-btn icon><v-icon @click="onDismissed">close</v-icon></v-btn> {{error.message}}
+        </v-alert>
       </v-flex>
     </v-layout>
     <v-layout row>

@@ -1,19 +1,19 @@
 'use strict'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import App from './App'
-import i18n from './lang'
-import router from './router'
-import { auth } from './firebase'
-import { store } from './store'
-import Alert from './components/User/Alert.vue'
-import DatePicker from './components/DatePicker.vue'
+import App from '@/App'
+import i18n from '@/lang'
+import router from '@/router'
+import { auth } from '@/firebase'
+import { store } from '@/store'
+import TimePicker from '@/components/TimePicker.vue'
+import DatePicker from '@/components/DatePicker.vue'
 
 Vue.config.productionTip = false
 
 // Global components
-Vue.component('app-alert', Alert)
 Vue.component('app-date-picker', DatePicker)
+Vue.component('app-time-picker', TimePicker)
 
 Vue.use(Vuetify, {
   lang: {
