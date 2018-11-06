@@ -157,6 +157,9 @@ export default {
     this.isMounted = false // for future usage if any
   },
   async mounted () {
+    if (typeof this.$t !== 'function') { // if no internationalization
+      this.$t = text => text
+    }
     if (!this.hasFilterVue) {
       for (var key in this.filterData) {
         if (this.filterData[key].attrs && this.filterData[key].itemsFn) this.filterData[key].attrs.items = await this.filterData[key].itemsFn()
@@ -367,6 +370,7 @@ export default {
     async deleteRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/deleteRecord', payload)
+      this.$emit('deleted', res === 200 ? payload : null)
       this.loading = false
       this.setSnackBar(res)
       return res === 200
@@ -374,6 +378,7 @@ export default {
     async updateRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/updateRecord', payload)
+      this.$emit('updated', res === 200 ? payload : null)
       this.loading = false
       this.setSnackBar(res)
       return res === 200
@@ -381,6 +386,7 @@ export default {
     async createRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/createRecord', payload)
+      this.$emit('created', res === 201 ? payload : null) // no ID yet, TBD...
       this.loading = false
       this.setSnackBar(res)
       return res === 201
@@ -436,6 +442,7 @@ export default {
       }
       // TOREMOVE why was this here in the first place? await this.getRecords()
       await this.getRecordsHelper()
+      this.$emit('loaded', Date.now())
     },
     // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
     async exportBtnClick () {
@@ -450,24 +457,33 @@ export default {
     goBack () {
       this.$router.back()
     },
-    isEditing () {
+    isEditing (row) { // check if a row is editing
       // for (let i = 0; i < this.records.length; i++) {
       //   if (this.$refs[`edit-${i}`].style['background-color']) return true
       // }
       // return false
       // console.log('isEditing', this.editing)
-      return this.editing
+      if (row) {
+        if (this.editing && this.editing[row]) return true
+        else return false
+      } else { // check if entire table is editing
+        return this.editing
+      }
     },
     setEditing (row, item) {
       this.$refs[`edit-${row}`].style['background-color'] = this.saveRow
       if (this.editing === null) this.editing = {}
       this.editing[row] = { item, ts: Date.now() }
+      console.log('set', this.editing)
     },
-    clearEditing (row, item) {
-      if (row) {
-        this.$refs[`edit-${row}`].style['background-color'] = ''
-        delete this.editing[row]
-        if (Object.keys(this.editing).length === 0) this.editing = null
+    clearEditing (row) {
+      console.log('clear', this.editing, row)
+      if (row !== undefined) {
+        if (this.editing && this.editing[row]) {
+          this.$refs[`edit-${row}`].style['background-color'] = ''
+          delete this.editing[row]
+          if (Object.keys(this.editing).length === 0) this.editing = null
+        }
       } else {
         for (let i = 0; i < this.records.length; i++) this.$refs[`edit-${i}`].style['background-color'] = ''
         this.editing = null
@@ -491,23 +507,27 @@ export default {
       }
     },
     async inlineClose (item, field, row, col) {
-      if (!field || item[field] !== this.inlineValue) { // field undefined means saverow button clicked
-        if (field && this.saveRow) { // change cell color
-          if (this.saveRow !== true) {
-            this.setEditing(row, item)
-          }
+      if (!field || item[field] !== this.inlineValue) { // field undefined means saveRow button clicked
+        if (field && this.saveRow) { // cell changed
+          this.setEditing(row, item)
         }
       }
     },
     async inlineUpdate (item, field, row, col) {
-      if (!field || item[field] !== this.inlineValue) { // field undefined means saverow button clicked
-        if (field && this.saveRow) { // change cell color
+      if (!field || item[field] !== this.inlineValue) { // field undefined means saveRow button clicked
+        if (field && this.saveRow) { // cell changed
           this.setEditing(row, item)
         } else {
-          this.clearEditing(row, item)
+          if (this.saveRow && !this.isEditing(row)) return
+          console.log('inlineUpdate Save!', row, item)
           const rv = await this.updateRecord({ record: item })
-          if (!rv) item[field] = this.inlineValue // if false undo changes
-          else if (this.reloadAfterInlineSave) this.$nextTick(async function () { await this.getRecordsHelper() })
+          if (!rv) { // error
+            console.log('error')
+            if (!this.saveRow) item[field] = this.inlineValue // if false undo changes
+          } else { // success
+            if (this.saveRow) this.clearEditing(row)
+            if (this.reloadAfterInlineSave) this.$nextTick(async function () { await this.getRecordsHelper() })
+          }
         }
       } // else console.log('no changes')
       if (row !== undefined && col !== undefined) { // datepicker / timepicker for now

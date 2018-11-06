@@ -1,22 +1,22 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// import SignUp from '@/components/User/SignUp'
-import SignIn from '@/components/User/SignIn'
-import AuthGuard from './auth-guard'
-
 // vue-crud-x component
-// import VueCrudX from '../../../VueCrudX' // @/VueCrudX // copy the source vue file here if you want to tinker with it
-import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
+import VueCrudX from '@/VueCrudX' // use the source vue file
 // import VueCrudX from 'vue-crud-x' // usually we will install and import
 
-import * as partyDefs from '@/components/Crud/party'
-import * as partyInlineDefs from '@/components/Crud/party-inline'
-import * as partyNotesDefs from '@/components/Crud/party-notes'
-import * as noteDefs from '@/components/Crud/notes'
-import * as noteDefs2 from '@/components/Crud/notes2'
+// import SignUp from '@/pages/User/SignUp'
+import AuthGuard from './auth-guard'
 
-import MultiCrudPageExample from '@/components/MultiCrudPage/Example'
+import SignIn from '@/pages/User/SignIn'
+import MultiCrudExample from '@/pages/MultiCrud/Example'
+import RealtimeExample from '@/pages/Realtime/Example'
+
+import * as partyDefs from '@/pages/Crud/party'
+import * as partyInlineDefs from '@/pages/Crud/party-inline'
+import * as partyNotesDefs from '@/pages/Crud/party-notes'
+import * as noteDefs from '@/pages/Crud/notes'
+import * as noteDefs2 from '@/pages/Crud/notes2'
 
 import Test from '@/components/Test'
 
@@ -64,9 +64,15 @@ export default new Router({
       beforeEnter: AuthGuard
     },
     {
-      path: '/multi-crud-page-example',
-      name: 'Multi Crud Page Example',
-      component: MultiCrudPageExample,
+      path: '/multi-crud-example',
+      name: 'Multi Crud Example',
+      component: MultiCrudExample,
+      beforeEnter: AuthGuard
+    },
+    {
+      path: '/realtime-example',
+      name: 'Realtime Example',
+      component: RealtimeExample,
       beforeEnter: AuthGuard
     },
     { path: '/test', name: 'Test', component: Test },

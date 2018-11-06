@@ -4,6 +4,8 @@
 
 Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">detailed article</a> (usage and explanations in the article are also updated as and when required)
 
+Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>
+
 
 # What Is vue-crud-x
 
@@ -63,3 +65,41 @@ None at the moment
 # Changes
 
 See RELEASE.MD file
+
+
+# DOCUMENTATION (WIP)
+
+## Properties
+
+Refer to @/pages/Crud/party-inline.js for more description for now...
+
+crudTable: {
+
+}
+
+crudFilter: {
+
+}
+
+crudForm: {
+
+}
+
+crudOps: {
+
+}
+
+
+## Events
+
+form-close - emit event if close form
+
+selected - row selected, returns object with row item and event, does not fire if inline is truthy...
+
+loaded - table data is loaded, returns Date.now()
+
+created - emitted in createRecord(), returns success ? payload : null (no create ID yet, will be improved)
+
+updated - emitted in updateRecord(), returns success ? payload : null
+
+deleted - emitted in deleteRecord(), returns success ? payload : null

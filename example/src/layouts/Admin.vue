@@ -113,7 +113,8 @@ export default {
       ],
       drawer: false,
       menuItems: [
-        { icon: 'dashboard', title: 'Multi CRUD', link: '/multi-crud-page-example' },
+        { icon: 'dashboard', title: 'Multi CRUD', link: '/multi-crud-example' },
+        { icon: 'schedule', title: 'Realtime', link: '/realtime-example' },
         {
           icon: 'keyboard_arrow_up',
           'icon-alt': 'keyboard_arrow_down',
