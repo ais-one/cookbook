@@ -1,8 +1,6 @@
 ### Upcoming
  * continue with REST implementation
- * add example of using firebase onSnapshot
  * automated testing
- * multi-lang dependency...
  * https://github.com/ais-one/vue-crud-x/issues/32
  * any more events needed? also, check on disabling
  * fix Date Range Issues... or check filters only on submit
@@ -14,7 +12,7 @@
  * bug fix: many inline save row issues (due to handling of realtime firebase snaphot updates, CRUD unaffected)
  * improvement: only save row if the row has been edited
  * improvement: add loaded event (when submitFilter() is called)
- * improvement: detect if i18n is present during mounted() of vue-crud-x and handle if not present
+ * improvement: detect if i18n (multi-lang dependency) is present during mounted() of vue-crud-x and handle if not present
  * improvement: add time picker '@/TimePicker', improve date picker '@/DatePicker' (customize date format, prepend-icon now optional)
  * improvement: add realtime firebase in example project (Select "Real Time" on menu)
  * chore: clean up folder organization in example project

@@ -71,6 +71,8 @@ See RELEASE.MD file
 
 ## Properties
 
+Refer to @/pages/Crud/party-inline.js for more description for now...
+
 crudTable: {
 
 }
