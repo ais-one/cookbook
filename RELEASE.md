@@ -7,6 +7,13 @@
  * GraphQL using Prisma or Hasura
  * https://github.com/vuetifyjs/vuetify/pull/5232
 
+### Version 0.1.3
+ * work in progress: REST API Example
+   * Login - Done
+   * Show table - In progress
+   * Show nested table (one to many) - In progress
+   * Show table (many to many) - In progress
+
 ### Version 0.1.2
  * bug fix: missing pleaseSave key in '@/lang', user needs to save changes or cancel them (by refreshing) before they can add inline record
  * bug fix: many inline save row issues (due to handling of realtime firebase snaphot updates, CRUD unaffected)
