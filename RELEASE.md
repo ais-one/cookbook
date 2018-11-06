@@ -14,7 +14,16 @@
  * bug fix: many inline save row issues (due to handling of realtime firebase snaphot updates, CRUD unaffected)
  * improvement: only save row if the row has been edited
  * improvement: add loaded event (when submitFilter() is called)
+ * improvement: detect if i18n is present during mounted() of vue-crud-x and handle if not present
  * improvement: add time picker '@/TimePicker', improve date picker '@/DatePicker' (customize date format, prepend-icon now optional)
+ * improvement: add realtime firebase in example project (Select "Real Time" on menu)
+ * chore: clean up folder organization in example project
+ * chore: improve documentation
+ * work in progress: REST API Example
+   * Login - Done
+   * Show table - In progress
+   * Show nested table (one to many) - In progress
+   * Show table (many to many) - In progress
 
 ### Version 0.1.1
  * Removed wrongly installed dependencies in package.json

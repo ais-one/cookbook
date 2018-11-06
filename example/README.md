@@ -123,7 +123,7 @@ Two components are shown on a single page (you can also add other components on 
 
 ### Single CRUD Component on a page [created in router]
 
-**/src/components/Crud**
+**/src/pages/Crud**
 
 The files below shows the usual usage for a single crud component which is able to open child crud
 

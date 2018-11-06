@@ -12,11 +12,11 @@ import SignIn from '@/pages/User/SignIn'
 import MultiCrudExample from '@/pages/MultiCrud/Example'
 import RealtimeExample from '@/pages/Realtime/Example'
 
-import * as partyDefs from '@/components/Crud/party'
-import * as partyInlineDefs from '@/components/Crud/party-inline'
-import * as partyNotesDefs from '@/components/Crud/party-notes'
-import * as noteDefs from '@/components/Crud/notes'
-import * as noteDefs2 from '@/components/Crud/notes2'
+import * as partyDefs from '@/pages/Crud/party'
+import * as partyInlineDefs from '@/pages/Crud/party-inline'
+import * as partyNotesDefs from '@/pages/Crud/party-notes'
+import * as noteDefs from '@/pages/Crud/notes'
+import * as noteDefs2 from '@/pages/Crud/notes2'
 
 import Test from '@/components/Test'
 

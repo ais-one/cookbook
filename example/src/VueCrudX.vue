@@ -157,7 +157,9 @@ export default {
     this.isMounted = false // for future usage if any
   },
   async mounted () {
-    // typeof this.$t === 'function')
+    if (typeof this.$t !== 'function') { // if no internationalization
+      this.$t = text => text
+    }
     if (!this.hasFilterVue) {
       for (var key in this.filterData) {
         if (this.filterData[key].attrs && this.filterData[key].itemsFn) this.filterData[key].attrs.items = await this.filterData[key].itemsFn()
