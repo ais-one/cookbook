@@ -31,7 +31,7 @@ const messages = {
       operationOk: 'OK',
       save: 'Save',
       cancel: 'Cancel',
-      XXpleaseSave: 'Please Save'
+      pleaseSave: 'Please Save'
     },
     myApp: {
       languages: 'Languages'
