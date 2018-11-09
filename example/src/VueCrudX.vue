@@ -226,7 +226,7 @@ export default {
 
       // supported controls
       selectControls: ['v-autocomplete', 'v-switch', 'v-select', 'v-combobox', 'v-checkbox'],
-      // groupControls: 'v-btn-toggle' // need to check if iteration is common? if not need to find a way to handle it, v-radio-group is different
+      groupControls: ['v-btn-toggle', 'v-radio-group'], // need to check if iteration is common? if not need to find a way to handle it, v-radio-group is different
 
       // styling
       attrs: {
@@ -529,10 +529,10 @@ export default {
           this.setEditing(row, item)
         } else {
           if (this.saveRow && !this.isEditing(row)) return
-          console.log('inlineUpdate Save!', row, item)
+          // console.log('inlineUpdate Save!', row, item)
           const rv = await this.updateRecord({ record: item })
           if (!rv) { // error
-            console.log('error')
+            // console.log('inlineUpdate Save Error!')
             if (!this.saveRow) item[field] = this.inlineValue // if false undo changes
           } else { // success
             if (this.saveRow) this.clearEditing(row)
@@ -625,7 +625,10 @@ export default {
             </component> -->
             <component :is="filter.field" v-model="filter.value" v-bind="filter.attrs">
               <template v-if="filter.field==='v-btn-toggle'">
-                <component :is="filter.group.field" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" v-bind="filter.group.attrs">{{ value }}</component>
+                <component :is="'v-btn'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" v-bind="filter.group.attrs">{{ value }}</component>
+              </template>
+              <template v-else-if="filter.field==='v-radio-group'">
+                <component :is="'v-radio'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" :label="value" v-bind="filter.group.attrs"></component>
               </template>
             </component>
           </v-flex>
@@ -705,14 +708,20 @@ export default {
               ></component>
             </v-edit-dialog>
             <component
-              v-else-if="inline[header.value].field==='v-btn-toggle'"
+              v-else-if="groupControls.indexOf(inline[header.value].field)!==-1"
               :ref="`edit-${props.index}-${index}`"
               :is="inline[header.value].field"
               v-bind="inline[header.value].attrs"
               v-model="props.item[header.value]"
               @change="inlineUpdate(props.item, header.value, props.index, index)"
             >
-              <v-btn v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" v-bind="inline[header.value].group.attrs">{{ value }}</v-btn>
+              <template v-if="inline[header.value].field==='v-btn-toggle'">
+                <!-- <v-btn v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" v-bind="inline[header.value].group.attrs">{{ value }}</v-btn> -->
+                <component :is="'v-btn'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
+              </template>
+              <template v-else-if="inline[header.value].field==='v-radio-group'">
+                <component :is="'v-radio'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
+              </template>
             </component>
             <component
               v-else
@@ -765,8 +774,11 @@ export default {
                 </component>
                 <component v-else-if="record[objKey]!==undefined" :is="form.field" v-model="record[objKey]" v-bind="form.attrs"></component> -->
                 <component v-else-if="record[objKey]!==undefined" :is="form.field" v-model="record[objKey]" v-bind="form.attrs">
-                  <template v-if="form.group&&form.group.items">
-                    <component :is="form.group.field" v-for="(value, key, index) in form.group.items" :key="index" :value="key" v-bind="form.group.attrs">{{ value }}</component>
+                  <template v-if="form.field==='v-btn-toggle'">
+                    <component :is="'v-btn'" v-for="(value, key, index) in form.group.items" :key="index" :value="key" v-bind="form.group.attrs">{{ value }}</component>
+                  </template>
+                  <template v-else-if="form.field==='v-radio-group'">
+                    <component :is="'v-radio'" v-for="(value, key, index) in form.group.items" :key="index" :value="key" :label="value" v-bind="form.group.attrs"></component>
                   </template>
                 </component>
               </v-flex>
