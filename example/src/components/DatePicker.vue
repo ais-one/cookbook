@@ -55,7 +55,6 @@ export default {
     }
   },
   created () {
-    // console.log(this.date, this.value)
     if (this.value) {
       this.date = this.value // format(this.value, 'YYYY-MM-DD')
     } else {

@@ -45,6 +45,7 @@ export const crudTable = {
       field: 'v-textarea',
       buttons: true
     }
+    // base: { field: 'v-btn-toggle', attrs: { }, group: { type: 'v-btn', attrs: { flat: true, block: true }, items: { 'WCP': 'WCP', 'MSP': 'MSP' } } },
   },
   confirmCreate: true, // show operation confirmation dialog flags
   confirmUpdate: true,
@@ -151,6 +152,7 @@ export const crudForm = {
   FormVue: () => ({ component: import('./PartyForm.vue') }),
   // FormVue: null, // not needed
   formAutoData: { // this is for automated form creation - if undefined use FormVue
+    id: { type: 'v-text-field', attrs: { hidden: true } }, // need id if there is delete
     name: {
       type: 'v-text-field',
       halfSize: true,

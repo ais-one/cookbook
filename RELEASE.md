@@ -8,6 +8,10 @@
  * https://github.com/vuetifyjs/vuetify/pull/5232
 
 ### Version 0.1.3
+ * chore: upgraded to vuetify 1.3.7
+ * improvement: add v-btn-toggle
+ * improvement: [NON BREAKING CHANGE] please use 'field' instead of 'type' for Form & Filter inputs, 'type' will be deprecated
+ * bug fix: confirmation dialog logic for update and create was wrong
  * work in progress: REST API Example
    * Login - Done
    * Show table - In progress

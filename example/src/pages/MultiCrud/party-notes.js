@@ -75,6 +75,7 @@ export const crudForm = {
   // FormVue: null,
   FormVue: () => ({ component: import('./PartyNotesForm.vue') }),
   formAutoData: { // this is for automated form creation - if undefined use FormVue
+    id: { type: 'v-text-field', attrs: { hidden: true } }, // need id if there is delete
     approver: {
       type: 'v-text-field',
       attrs: {
