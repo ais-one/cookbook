@@ -5,7 +5,7 @@ import { crudOps as partyCrudOps } from './party'
 
 export const crudTable = {
   saveRow: '#ffaaaa', // add save row button & specify color when row is changed, used with inline edit only and action column
-  reloadAfterInlineSave: false, // set to true and use snapshot for large firestore dataset (or similar mechanisms)
+  reloadAfterInlineSave: true, // default true, set to false and use snapshot for large firestore dataset (or similar mechanisms where reads are chargeable)
   addrowCreate: [
     {
       field: 'name',
