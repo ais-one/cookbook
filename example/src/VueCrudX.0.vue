@@ -161,14 +161,8 @@ export default {
       this.$t = text => text
     }
     if (!this.hasFilterVue) {
-      for (let key in this.filterData) { // type to field
-        if (this.filterData[key].type) this.filterData[key].field = this.filterData[key].type
+      for (var key in this.filterData) {
         if (this.filterData[key].attrs && this.filterData[key].itemsFn) this.filterData[key].attrs.items = await this.filterData[key].itemsFn()
-      }
-    }
-    if (this.formAutoData) { // type to field
-      for (let key in this.formAutoData) {
-        if (this.formAutoData[key].type) this.formAutoData[key].field = this.formAutoData[key].type
       }
     }
     this.isMounted = true
@@ -223,10 +217,6 @@ export default {
       doPage: true, // paginate
       crudTitle: '', // title
       showGoBack: false,
-
-      // supported controls
-      selectControls: ['v-autocomplete', 'v-switch', 'v-select', 'v-combobox', 'v-checkbox'],
-      // groupControls: 'v-btn-toggle' // need to check if iteration is common? if not need to find a way to handle it, v-radio-group is different
 
       // styling
       attrs: {
@@ -419,8 +409,8 @@ export default {
       this.crudFormFlag = true
     },
     async crudFormSave (e) {
-      if (!this.record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
-      if (this.record.id && this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
+      if (this.record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
+      if (!this.record.id && this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
 
       if (this.record.id) await this.updateRecord({ record: this.record })
       else await this.createRecord({ record: this.record, parentId: this.parentId })
@@ -484,10 +474,10 @@ export default {
       this.$refs[`edit-${row}`].style['background-color'] = this.saveRow
       if (this.editing === null) this.editing = {}
       this.editing[row] = { item, ts: Date.now() }
-      // console.log('set', this.editing)
+      console.log('set', this.editing)
     },
     clearEditing (row) {
-      // console.log('clear', this.editing, row)
+      console.log('clear', this.editing, row)
       if (row !== undefined) {
         if (this.editing && this.editing[row]) {
           this.$refs[`edit-${row}`].style['background-color'] = ''
@@ -617,17 +607,7 @@ export default {
         <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
         <v-layout row wrap v-else>
           <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12>
-            <!-- TOREMOVE -->
-            <!-- <component v-if="filter.field==='v-btn-toggle'" :is="filter.field" v-model="record[objKey]" v-bind="filter.attrs">
-              <v-btn v-for="(value, key, index) in filter.group.items" :key="index" :value="key" v-bind="filter.group.attrs">{{ value }}</v-btn>
-            </component>
-            <component v-else :is="filter.field" v-model="filter.value" v-bind="filter.attrs">
-            </component> -->
-            <component :is="filter.field" v-model="filter.value" v-bind="filter.attrs">
-              <template v-if="filter.field==='v-btn-toggle'">
-                <component :is="filter.group.field" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" v-bind="filter.group.attrs">{{ value }}</component>
-              </template>
-            </component>
+            <component :is="filter.type" v-model="filter.value" v-bind="filter.attrs"></component>
           </v-flex>
         </v-layout>
         <!-- <v-layout row justify-end>
@@ -704,16 +684,7 @@ export default {
                 v-bind="inline[header.value].attrs"
               ></component>
             </v-edit-dialog>
-            <component
-              v-else-if="inline[header.value].field==='v-btn-toggle'"
-              :ref="`edit-${props.index}-${index}`"
-              :is="inline[header.value].field"
-              v-bind="inline[header.value].attrs"
-              v-model="props.item[header.value]"
-              @change="inlineUpdate(props.item, header.value, props.index, index)"
-            >
-              <v-btn v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" v-bind="inline[header.value].group.attrs">{{ value }}</v-btn>
-            </component>
+            <!-- v-else-if="inline[header.value].field==='v-text-field'||inline[header.value].field==='v-select'||inline[header.value].field==='v-combobox'||inline[header.value].field==='v-autocomplete'" -->
             <component
               v-else
               :ref="`edit-${props.index}-${index}`"
@@ -721,8 +692,8 @@ export default {
               v-bind="inline[header.value].attrs"
               v-model="props.item[header.value]"
               @focus="inlineOpen(props.item[header.value])"
-              @blur="selectControls.indexOf(inline[header.value].field)===-1?inlineUpdate(props.item, header.value, props.index, index):''"
-              @change="selectControls.indexOf(inline[header.value].field)!==-1?inlineUpdate(props.item, header.value, props.index, index):''"
+              @blur="inline[header.value].field!=='v-autocomplete'&&inline[header.value].field!=='v-switch'&&inline[header.value].field!=='v-select'&&inline[header.value].field!=='v-combobox'?inlineUpdate(props.item, header.value, props.index, index):''"
+              @change="inline[header.value].field==='v-autocomplete'||inline[header.value].field==='v-switch'||inline[header.value].field==='v-select'||inline[header.value].field==='v-combobox'?inlineUpdate(props.item, header.value, props.index, index):''"
             ></component>
           </td>
         </tr>
@@ -758,23 +729,15 @@ export default {
             <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
             <v-layout row wrap v-else>
               <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12>
-                <component v-if="form.field==='hidden'" :is="'div'"></component>
-                <!-- TOREMOVE -->
-                <!-- <component v-else-if="form.field==='v-btn-toggle'" :is="form.field" v-model="record[objKey]" v-bind="form.attrs">
-                  <v-btn v-for="(value, key, index) in form.group.items" :key="index" :value="key" v-bind="form.group.attrs">{{ value }}</v-btn>
-                </component>
-                <component v-else-if="record[objKey]!==undefined" :is="form.field" v-model="record[objKey]" v-bind="form.attrs"></component> -->
-                <component v-else-if="record[objKey]!==undefined" :is="form.field" v-model="record[objKey]" v-bind="form.attrs">
-                  <template v-if="form.group&&form.group.items">
-                    <component :is="form.group.field" v-for="(value, key, index) in form.group.items" :key="index" :value="key" v-bind="form.group.attrs">{{ value }}</component>
-                  </template>
-                </component>
+                <component v-if="form.type==='hidden'" :is="'div'"></component>
+                <component v-else :is="form.type" v-model="record[objKey]" v-bind="form.attrs"></component>
               </v-flex>
             </v-layout>
           </v-form>
         </v-card>
       </v-dialog>
     </v-layout>
+
     <v-snackbar v-if="attrs.snackbar" v-model="snackbar" v-bind="attrs.snackbar">
       {{ snackbarText }}
       <v-btn fab flat @click="snackbar=false"><v-icon >close</v-icon></v-btn>

@@ -152,7 +152,7 @@ export const crudForm = {
   FormVue: () => ({ component: import('./PartyForm.vue') }),
   // FormVue: null, // not needed
   formAutoData: { // this is for automated form creation - if undefined use FormVue
-    id: { type: 'v-text-field', attrs: { hidden: true } }, // need id if there is delete
+    id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
     name: {
       type: 'v-text-field',
       halfSize: true,
