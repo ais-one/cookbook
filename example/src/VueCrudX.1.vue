@@ -113,7 +113,7 @@ export default {
 
     // save by row?
     this.saveRow = this.crudTable.saveRow ? this.crudTable.saveRow : false // default false
-    this.inlineReload = Object.assign(this.inlineReload, this.crudTable.inlineReload || {}) // default true
+    this.reloadAfterInlineSave = this.crudTable.reloadAfterInlineSave !== false // default true
 
     // check if components and datas are present
     this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null
@@ -162,11 +162,11 @@ export default {
     }
     if (!this.hasFilterVue) {
       for (let key in this.filterData) { // type to field
-        if (this.filterData[key].type) this.filterData[key].field = this.filterData[key].type // TODEPRECATE
+        if (this.filterData[key].type) this.filterData[key].field = this.filterData[key].type
         if (this.filterData[key].attrs && this.filterData[key].itemsFn) this.filterData[key].attrs.items = await this.filterData[key].itemsFn()
       }
     }
-    if (this.formAutoData) { // type to field // TODEPRECATE
+    if (this.formAutoData) { // type to field
       for (let key in this.formAutoData) {
         if (this.formAutoData[key].type) this.formAutoData[key].field = this.formAutoData[key].type
       }
@@ -213,11 +213,7 @@ export default {
 
       inline: false, // inline editing
       saveRow: false, // otherwise it is the color string
-      inlineReload: { // set to false for services where record read is chargeable, e.g. Google Firestore (use listeners instead)
-        create: true,
-        update: true,
-        delete: true
-      },
+      reloadAfterInlineSave: true, // set to false for services where record read is chargeable, e.g. Google Firestore
       actionColumn: false,
       addrowCreate: false, // add row to create instead of using form
 
@@ -540,7 +536,7 @@ export default {
             if (!this.saveRow) item[field] = this.inlineValue // if false undo changes
           } else { // success
             if (this.saveRow) this.clearEditing(row)
-            if (this.inlineReload.update) this.$nextTick(async function () { await this.getRecordsHelper() })
+            if (this.reloadAfterInlineSave) this.$nextTick(async function () { await this.getRecordsHelper() })
           }
         }
       } // else console.log('no changes')
@@ -583,13 +579,13 @@ export default {
       if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.createRecord({ record, parentId: this.parentId })
       // add
-      if (this.inlineReload.create) this.$nextTick(async function () { await this.getRecordsHelper() })
+      if (this.reloadAfterInlineSave) this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     async inlineDelete (id) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.deleteRecord({ id })
       // find index & delete
-      if (this.inlineReload.delete) this.$nextTick(async function () { await this.getRecordsHelper() })
+      if (this.reloadAfterInlineSave) this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     rowClicked (item, event, row) {
       if (!this.actionColumn && this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
@@ -618,9 +614,15 @@ export default {
     </v-toolbar>
     <div v-if="showFilter">
       <v-form v-if="hasFilterData" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
-        <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
+        <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
         <v-layout row wrap v-else>
           <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12>
+            <!-- TOREMOVE -->
+            <!-- <component v-if="filter.field==='v-btn-toggle'" :is="filter.field" v-model="record[objKey]" v-bind="filter.attrs">
+              <v-btn v-for="(value, key, index) in filter.group.items" :key="index" :value="key" v-bind="filter.group.attrs">{{ value }}</v-btn>
+            </component>
+            <component v-else :is="filter.field" v-model="filter.value" v-bind="filter.attrs">
+            </component> -->
             <component :is="filter.field" v-model="filter.value" v-bind="filter.attrs">
               <template v-if="filter.field==='v-btn-toggle'">
                 <component :is="'v-btn'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" v-bind="filter.group.attrs">{{ value }}</component>
@@ -631,7 +633,9 @@ export default {
             </component>
           </v-flex>
         </v-layout>
-        <!-- <v-layout row justify-end></v-layout> -->
+        <!-- <v-layout row justify-end>
+          <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
+        </v-layout> -->
       </v-form>
     </div>
     <v-data-table
@@ -712,6 +716,7 @@ export default {
               @change="inlineUpdate(props.item, header.value, props.index, index)"
             >
               <template v-if="inline[header.value].field==='v-btn-toggle'">
+                <!-- <v-btn v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" v-bind="inline[header.value].group.attrs">{{ value }}</v-btn> -->
                 <component :is="'v-btn'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
               </template>
               <template v-else-if="inline[header.value].field==='v-radio-group'">
@@ -753,17 +758,21 @@ export default {
           <v-toolbar v-bind="attrs.toolbar">
             <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>close</v-icon></v-btn> {{showTitle | capitalize}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-toolbar-items>
-              <v-btn v-bind="attrs.button" v-if="canDelete && record.id" @click.native="crudFormDelete" :disabled="loading"><v-icon>delete</v-icon></v-btn>
-              <v-btn v-bind="attrs.button" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>save</v-icon></v-btn>
-            </v-toolbar-items>
+            <v-btn v-bind="attrs.button" v-if="canDelete && record.id" @click.native="crudFormDelete" :disabled="loading"><v-icon>delete</v-icon></v-btn>
+            <v-btn v-bind="attrs.button" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>save</v-icon></v-btn>
+            <v-toolbar-items></v-toolbar-items>
           </v-toolbar>
           <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading" v-bind="attrs['v-progress-circular']?attrs['v-progress-circular']:attrs['v-progress-linear']"></component>
           <v-form v-if="hasFormVue" v-model="validForm" v-bind="attrs.form">
-            <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
+            <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
             <v-layout row wrap v-else>
               <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12>
                 <component v-if="form.field==='hidden'" :is="'div'"></component>
+                <!-- TOREMOVE -->
+                <!-- <component v-else-if="form.field==='v-btn-toggle'" :is="form.field" v-model="record[objKey]" v-bind="form.attrs">
+                  <v-btn v-for="(value, key, index) in form.group.items" :key="index" :value="key" v-bind="form.group.attrs">{{ value }}</v-btn>
+                </component>
+                <component v-else-if="record[objKey]!==undefined" :is="form.field" v-model="record[objKey]" v-bind="form.attrs"></component> -->
                 <component v-else-if="record[objKey]!==undefined" :is="form.field" v-model="record[objKey]" v-bind="form.attrs">
                   <template v-if="form.field==='v-btn-toggle'">
                     <component :is="'v-btn'" v-for="(value, key, index) in form.group.items" :key="index" :value="key" v-bind="form.group.attrs">{{ value }}</component>
@@ -784,6 +793,21 @@ export default {
     </v-snackbar>
   </v-container>
 </template>
+
+<style lang="css">
+/*
+customizing v-edit-dialog background colors
+scoped made it not work...
+*/
+/*
+.theme--dark .v-menu__content {
+  background-color: #424242 !important;
+}
+.theme--light .v-menu__content {
+  background-color: #ffffff !important;
+}
+*/
+</style>
 
 <style lang="css" scoped>
 /* should no longer need to make nested table a modal */

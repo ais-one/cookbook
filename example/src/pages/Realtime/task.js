@@ -31,7 +31,11 @@ export const crudTable = {
   addrowCreate: [ ],
   doPage: false,
   crudTitle: 'Task',
-  reloadAfterInlineSave: false
+  inlineReload: { // default true, set to false and use snapshot for large firestore dataset (or similar mechanisms where reads are chargeable)
+    update: false,
+    create: false,
+    delete: false
+  }
 }
 
 export const crudFilter = {
