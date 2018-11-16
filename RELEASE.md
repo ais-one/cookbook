@@ -8,7 +8,7 @@
  * https://github.com/vuetifyjs/vuetify/pull/5232
 
 ### Version 0.1.3
- * chore: upgraded to vuetify 1.3.7
+ * chore: upgraded to vuetify 1.3.8
  * improvement: add v-btn-toggle, grouped input [Alpha Version - Specification May Change]
  * improvement: [NON BREAKING CHANGE] please use 'field' instead of 'type' for Form & Filter inputs, 'type' will be deprecated
  * improvement: pass in 'this._self' as props to <crud-form> and <crud-filter> so that your custom forms or filters can access the parent vue-crud-x component
