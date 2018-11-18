@@ -1,20 +1,17 @@
 function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';') {
   if (!csvContent) {
-    // csvContent += `"id"` // set id as first columns
     let hdrData = 0
     for (let k1 in tmp) {
-      // if (tmp.hasOwnProperty(k1) && k1 !== 'id') { // set id as first columns
-      if (tmp.hasOwnProperty(k1)) { // set id as first columns
+      if (tmp.hasOwnProperty(k1)) {
         csvContent += (hdrData ? ',"' : '"') + k1.replace(/"/g, '""') + '"'
         hdrData++
       }
     }
     csvContent += rowDelimiter
   }
-  // csvContent += `"${tmp.id}"`
+
   let colData = 0
   for (let k2 in tmp) {
-    // if (tmp.hasOwnProperty(k2) && k2 !== 'id') {
     if (tmp.hasOwnProperty(k2)) {
       let value = ''
       if (typeof tmp[k2] === 'undefined' || !tmp[k2]) {

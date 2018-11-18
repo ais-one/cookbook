@@ -13,6 +13,7 @@
  * improvement: [NON BREAKING CHANGE] please use 'field' instead of 'type' for Form & Filter inputs, 'type' will be deprecated
  * improvement: pass in 'this._self' as props to <crud-form> and <crud-filter> so that your custom forms or filters can access the parent vue-crud-x component
  * bug fix: confirmation dialog logic for update and create was wrong
+ * bug fix: CRUD update permissions in saveRow
  * improvement: export csv now does not require id to be first column - @/assts/util.js
  * work in progress: REST API Example
    * Login - Done
