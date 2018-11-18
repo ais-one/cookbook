@@ -7,6 +7,13 @@
  * GraphQL using Prisma or Hasura
  * https://github.com/vuetifyjs/vuetify/pull/5232
 
+### Version 0.1.4
+ * work in progress: REST API Example
+   * Login - Done
+   * Show table - In progress
+   * Show nested table (one to many) - In progress
+   * Show table (many to many) - In progress
+
 ### Version 0.1.3
  * chore: upgraded to vuetify 1.3.8
  * improvement: add v-btn-toggle, grouped input [Alpha Version - Specification May Change]
