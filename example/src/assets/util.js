@@ -1,23 +1,23 @@
 function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';') {
   if (!csvContent) {
-    csvContent += `"id"` // set id as first columns
+    // csvContent += `"id"` // set id as first columns
+    let hdrData = 0
     for (let k1 in tmp) {
-      if (tmp.hasOwnProperty(k1) && k1 !== 'id') { // set id as first columns
-        // let text = k1.replace(/;/g, ' ') // ; is used as field delimiter... strip it off
-        // text = text.replace(/([A-Z])/g, ' $1')
-        // text = text.charAt(0).toUpperCase() + text.slice(1) // capitalize the first letter - as an example.
-        // csvContent += ';' + text
-        csvContent += ',"' + k1.replace(/"/g, '""') + '"'
+      // if (tmp.hasOwnProperty(k1) && k1 !== 'id') { // set id as first columns
+      if (tmp.hasOwnProperty(k1)) { // set id as first columns
+        csvContent += (hdrData ? ',"' : '"') + k1.replace(/"/g, '""') + '"'
+        hdrData++
       }
     }
     csvContent += rowDelimiter
   }
-  csvContent += `"${tmp.id}"`
+  // csvContent += `"${tmp.id}"`
+  let colData = 0
   for (let k2 in tmp) {
-    if (tmp.hasOwnProperty(k2) && k2 !== 'id') {
+    // if (tmp.hasOwnProperty(k2) && k2 !== 'id') {
+    if (tmp.hasOwnProperty(k2)) {
       let value = ''
       if (typeof tmp[k2] === 'undefined' || !tmp[k2]) {
-        // do nothing
       } else if (typeof tmp[k2] === 'string') {
         value = tmp[k2]
       } else if (Array.isArray(tmp[k2])) {
@@ -29,20 +29,20 @@ function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';
           value = tmp[k2].toString()
         } catch (e) { }
       }
-
       value.replace(/"/g, '""')
-      csvContent += ',"' + value + '"'
+      csvContent += (colData ? ',"' : '"') + value + '"'
+      colData++
     }
   }
   csvContent += rowDelimiter
   return csvContent
 }
 
-function exportCsv (csvContent) {
+function exportCsv (csvContent, filename) {
   let encodedUri = encodeURI('data:text/csv;charset=utf-8,' + csvContent)
   let link = document.createElement('a')
   link.setAttribute('href', encodedUri)
-  link.setAttribute('download', 'vessel.csv')
+  link.setAttribute('download', filename)
   document.body.appendChild(link) // Required for FF
   link.click()
 }
