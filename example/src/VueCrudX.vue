@@ -113,7 +113,7 @@ export default {
 
     // save by row?
     this.saveRow = this.crudTable.saveRow ? this.crudTable.saveRow : false // default false
-    this.reloadAfterInlineSave = this.crudTable.reloadAfterInlineSave !== false // default true
+    this.inlineReload = Object.assign(this.inlineReload, this.crudTable.inlineReload || {}) // default true
 
     // check if components and datas are present
     this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null
@@ -161,8 +161,14 @@ export default {
       this.$t = text => text
     }
     if (!this.hasFilterVue) {
-      for (var key in this.filterData) {
+      for (let key in this.filterData) { // type to field
+        if (this.filterData[key].type) this.filterData[key].field = this.filterData[key].type // TODEPRECATE
         if (this.filterData[key].attrs && this.filterData[key].itemsFn) this.filterData[key].attrs.items = await this.filterData[key].itemsFn()
+      }
+    }
+    if (this.formAutoData) { // type to field // TODEPRECATE
+      for (let key in this.formAutoData) {
+        if (this.formAutoData[key].type) this.formAutoData[key].field = this.formAutoData[key].type
       }
     }
     this.isMounted = true
@@ -207,7 +213,11 @@ export default {
 
       inline: false, // inline editing
       saveRow: false, // otherwise it is the color string
-      reloadAfterInlineSave: true, // set to false for services where record read is chargeable, e.g. Google Firestore
+      inlineReload: { // set to false for services where record read is chargeable, e.g. Google Firestore (use listeners instead)
+        create: true,
+        update: true,
+        delete: true
+      },
       actionColumn: false,
       addrowCreate: false, // add row to create instead of using form
 
@@ -217,6 +227,10 @@ export default {
       doPage: true, // paginate
       crudTitle: '', // title
       showGoBack: false,
+
+      // supported controls
+      selectControls: ['v-autocomplete', 'v-switch', 'v-select', 'v-combobox', 'v-checkbox'],
+      groupControls: ['v-btn-toggle', 'v-radio-group'], // need to check if iteration is common? if not need to find a way to handle it, v-radio-group is different
 
       // styling
       attrs: {
@@ -409,8 +423,8 @@ export default {
       this.crudFormFlag = true
     },
     async crudFormSave (e) {
-      if (this.record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
-      if (!this.record.id && this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
+      if (!this.record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
+      if (this.record.id && this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
 
       if (this.record.id) await this.updateRecord({ record: this.record })
       else await this.createRecord({ record: this.record, parentId: this.parentId })
@@ -474,10 +488,10 @@ export default {
       this.$refs[`edit-${row}`].style['background-color'] = this.saveRow
       if (this.editing === null) this.editing = {}
       this.editing[row] = { item, ts: Date.now() }
-      console.log('set', this.editing)
+      // console.log('set', this.editing)
     },
     clearEditing (row) {
-      console.log('clear', this.editing, row)
+      // console.log('clear', this.editing, row)
       if (row !== undefined) {
         if (this.editing && this.editing[row]) {
           this.$refs[`edit-${row}`].style['background-color'] = ''
@@ -519,14 +533,14 @@ export default {
           this.setEditing(row, item)
         } else {
           if (this.saveRow && !this.isEditing(row)) return
-          console.log('inlineUpdate Save!', row, item)
+          // console.log('inlineUpdate Save!', row, item)
           const rv = await this.updateRecord({ record: item })
           if (!rv) { // error
-            console.log('error')
+            // console.log('inlineUpdate Save Error!')
             if (!this.saveRow) item[field] = this.inlineValue // if false undo changes
           } else { // success
             if (this.saveRow) this.clearEditing(row)
-            if (this.reloadAfterInlineSave) this.$nextTick(async function () { await this.getRecordsHelper() })
+            if (this.inlineReload.update) this.$nextTick(async function () { await this.getRecordsHelper() })
           }
         }
       } // else console.log('no changes')
@@ -569,13 +583,13 @@ export default {
       if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.createRecord({ record, parentId: this.parentId })
       // add
-      if (this.reloadAfterInlineSave) this.$nextTick(async function () { await this.getRecordsHelper() })
+      if (this.inlineReload.create) this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     async inlineDelete (id) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       await this.deleteRecord({ id })
       // find index & delete
-      if (this.reloadAfterInlineSave) this.$nextTick(async function () { await this.getRecordsHelper() })
+      if (this.inlineReload.delete) this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     rowClicked (item, event, row) {
       if (!this.actionColumn && this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
@@ -604,15 +618,20 @@ export default {
     </v-toolbar>
     <div v-if="showFilter">
       <v-form v-if="hasFilterData" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
-        <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" />
+        <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
         <v-layout row wrap v-else>
           <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12>
-            <component :is="filter.type" v-model="filter.value" v-bind="filter.attrs"></component>
+            <component :is="filter.field" v-model="filter.value" v-bind="filter.attrs">
+              <template v-if="filter.field==='v-btn-toggle'">
+                <component :is="'v-btn'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" v-bind="filter.group.attrs">{{ value }}</component>
+              </template>
+              <template v-else-if="filter.field==='v-radio-group'">
+                <component :is="'v-radio'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" :label="value" v-bind="filter.group.attrs"></component>
+              </template>
+            </component>
           </v-flex>
         </v-layout>
-        <!-- <v-layout row justify-end>
-          <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
-        </v-layout> -->
+        <!-- <v-layout row justify-end></v-layout> -->
       </v-form>
     </div>
     <v-data-table
@@ -656,7 +675,7 @@ export default {
             <span v-if="header.value===''">
               <v-icon v-if="canUpdate&&!saveRow" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
               <v-icon v-if="canDelete" v-bind="attrs['action-icon']" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
-              <v-icon v-if="saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item, null, props.index, index)" :disabled="loading">save</v-icon>
+              <v-icon v-if="canUpdate&&saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item, null, props.index, index)" :disabled="loading">save</v-icon>
             </span>
             <span v-if="!inline[header.value]" v-html="$options.filters.formatters(props.item[header.value], header.value)"></span>
             <!-- <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span> -->
@@ -684,7 +703,21 @@ export default {
                 v-bind="inline[header.value].attrs"
               ></component>
             </v-edit-dialog>
-            <!-- v-else-if="inline[header.value].field==='v-text-field'||inline[header.value].field==='v-select'||inline[header.value].field==='v-combobox'||inline[header.value].field==='v-autocomplete'" -->
+            <component
+              v-else-if="groupControls.indexOf(inline[header.value].field)!==-1"
+              :ref="`edit-${props.index}-${index}`"
+              :is="inline[header.value].field"
+              v-bind="inline[header.value].attrs"
+              v-model="props.item[header.value]"
+              @change="inlineUpdate(props.item, header.value, props.index, index)"
+            >
+              <template v-if="inline[header.value].field==='v-btn-toggle'">
+                <component :is="'v-btn'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
+              </template>
+              <template v-else-if="inline[header.value].field==='v-radio-group'">
+                <component :is="'v-radio'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
+              </template>
+            </component>
             <component
               v-else
               :ref="`edit-${props.index}-${index}`"
@@ -692,8 +725,8 @@ export default {
               v-bind="inline[header.value].attrs"
               v-model="props.item[header.value]"
               @focus="inlineOpen(props.item[header.value])"
-              @blur="inline[header.value].field!=='v-autocomplete'&&inline[header.value].field!=='v-switch'&&inline[header.value].field!=='v-select'&&inline[header.value].field!=='v-combobox'?inlineUpdate(props.item, header.value, props.index, index):''"
-              @change="inline[header.value].field==='v-autocomplete'||inline[header.value].field==='v-switch'||inline[header.value].field==='v-select'||inline[header.value].field==='v-combobox'?inlineUpdate(props.item, header.value, props.index, index):''"
+              @blur="selectControls.indexOf(inline[header.value].field)===-1?inlineUpdate(props.item, header.value, props.index, index):''"
+              @change="selectControls.indexOf(inline[header.value].field)!==-1?inlineUpdate(props.item, header.value, props.index, index):''"
             ></component>
           </td>
         </tr>
@@ -720,45 +753,37 @@ export default {
           <v-toolbar v-bind="attrs.toolbar">
             <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>close</v-icon></v-btn> {{showTitle | capitalize}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn v-bind="attrs.button" v-if="canDelete && record.id" @click.native="crudFormDelete" :disabled="loading"><v-icon>delete</v-icon></v-btn>
-            <v-btn v-bind="attrs.button" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>save</v-icon></v-btn>
-            <v-toolbar-items></v-toolbar-items>
+            <v-toolbar-items>
+              <v-btn v-bind="attrs.button" v-if="canDelete && record.id" @click.native="crudFormDelete" :disabled="loading"><v-icon>delete</v-icon></v-btn>
+              <v-btn v-bind="attrs.button" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>save</v-icon></v-btn>
+            </v-toolbar-items>
           </v-toolbar>
           <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading" v-bind="attrs['v-progress-circular']?attrs['v-progress-circular']:attrs['v-progress-linear']"></component>
           <v-form v-if="hasFormVue" v-model="validForm" v-bind="attrs.form">
-            <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" />
+            <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
             <v-layout row wrap v-else>
               <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12>
-                <component v-if="form.type==='hidden'" :is="'div'"></component>
-                <component v-else :is="form.type" v-model="record[objKey]" v-bind="form.attrs"></component>
+                <component v-if="form.field==='hidden'" :is="'div'"></component>
+                <component v-else-if="record[objKey]!==undefined" :is="form.field" v-model="record[objKey]" v-bind="form.attrs">
+                  <template v-if="form.field==='v-btn-toggle'">
+                    <component :is="'v-btn'" v-for="(value, key, index) in form.group.items" :key="index" :value="key" v-bind="form.group.attrs">{{ value }}</component>
+                  </template>
+                  <template v-else-if="form.field==='v-radio-group'">
+                    <component :is="'v-radio'" v-for="(value, key, index) in form.group.items" :key="index" :value="key" :label="value" v-bind="form.group.attrs"></component>
+                  </template>
+                </component>
               </v-flex>
             </v-layout>
           </v-form>
         </v-card>
       </v-dialog>
     </v-layout>
-
     <v-snackbar v-if="attrs.snackbar" v-model="snackbar" v-bind="attrs.snackbar">
       {{ snackbarText }}
       <v-btn fab flat @click="snackbar=false"><v-icon >close</v-icon></v-btn>
     </v-snackbar>
   </v-container>
 </template>
-
-<style lang="css">
-/*
-customizing v-edit-dialog background colors
-scoped made it not work...
-*/
-/*
-.theme--dark .v-menu__content {
-  background-color: #424242 !important;
-}
-.theme--light .v-menu__content {
-  background-color: #ffffff !important;
-}
-*/
-</style>
 
 <style lang="css" scoped>
 /* should no longer need to make nested table a modal */

@@ -5,7 +5,11 @@ import { crudOps as partyCrudOps } from './party'
 
 export const crudTable = {
   saveRow: '#ffaaaa', // add save row button & specify color when row is changed, used with inline edit only and action column
-  reloadAfterInlineSave: false, // set to true and use snapshot for large firestore dataset (or similar mechanisms)
+  inlineReload: { // default true, set to false and use snapshot for large firestore dataset (or similar mechanisms where reads are chargeable)
+    update: false,
+    create: true,
+    delete: true
+  },
   addrowCreate: [
     {
       field: 'name',
@@ -45,6 +49,7 @@ export const crudTable = {
       field: 'v-textarea',
       buttons: true
     }
+    // base: { field: 'v-btn-toggle', attrs: { }, group: { type: 'v-btn', attrs: { flat: true, block: true }, items: { 'WCP': 'WCP', 'MSP': 'MSP' } } },
   },
   confirmCreate: true, // show operation confirmation dialog flags
   confirmUpdate: true,
@@ -151,6 +156,7 @@ export const crudForm = {
   FormVue: () => ({ component: import('./PartyForm.vue') }),
   // FormVue: null, // not needed
   formAutoData: { // this is for automated form creation - if undefined use FormVue
+    id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
     name: {
       type: 'v-text-field',
       halfSize: true,

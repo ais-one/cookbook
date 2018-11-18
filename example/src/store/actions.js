@@ -35,7 +35,7 @@ export default {
     try {
       user = await auth.signInWithEmailAndPassword(payload.email, payload.password)
       // console.log('signUserIn', user)
-      dispatch('autoSignIn', user)
+      // dispatch('autoSignIn', user) // no need this for firebase auth due to auth listener
     } catch (e) { }
     if (!user) {
       commit('setError', { message: 'Sign In Error' })
@@ -52,7 +52,7 @@ export default {
     router.push('/')
   },
   autoSignIn ({ commit }, payload) {
-    commit('setUser', { id: payload.uid, email: payload.email || payload.uid, rules: { '*': ['*'] } })
+    commit('setUser', { id: payload.uid, email: payload.email, rules: { '*': ['*'] } })
     commit('setLayout', 'layout-admin')
     router.push('/multi-crud-example') // console.log party
   },
