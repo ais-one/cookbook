@@ -368,30 +368,13 @@ export default {
       return true && flag
     },
     isObject (obj) { return obj !== null && typeof obj === 'object' },
-    setSnackBar (res) {
-      if (!res) return
-      if (this.attrs.snackbar) {
-        let code
-        this.snackbarText = ''
-        this.snackbar = false
-        if (typeof res === 'object') { // TODEPRECATE this check
-          // if message is empty use code... 200 (ok), 201 (ok created), 409 (duplicate), 500 (server error)
-          // not implemented - 401 (client error), 403 (forbidden), 404 (not found)
-          if (res.msg) {
-            this.snackbarText = this.$t(res.msg) // code will be undefined
-          } else {
-            code = res.code
-          }
-        } else {
-          code = res // TODEPRECATE
-        }
-        if (code) {
-          this.snackbarText = this.$t('vueCrudX.unknownOperation')
-          if (code === 200 || code === 201) this.snackbarText = this.$t('vueCrudX.operationOk')
-          else if (code === 500) this.snackbarText = this.$t('vueCrudX.operationError')
-          else if (code === 409) this.snackbarText = this.$t('vueCrudX.duplicateError')
-        }
-        this.snackbar = !!this.snackbarText
+    setSnackBar (statusCode) {
+      if (this.attrs.snackbar && statusCode) {
+        this.snackbarText = this.$t('vueCrudX.unknownOperation')
+        if (statusCode === 200 || statusCode === 201) this.snackbarText = this.$t('vueCrudX.operationOk')
+        else if (statusCode === 500) this.snackbarText = this.$t('vueCrudX.operationError')
+        else if (statusCode === 409) this.snackbarText = this.$t('vueCrudX.duplicateError')
+        this.snackbar = true
       }
     },
     async getRecords (payload) {
@@ -401,25 +384,26 @@ export default {
     async deleteRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/deleteRecord', payload)
+      this.$emit('deleted', res === 200 ? payload : null)
       this.loading = false
-      this.$emit('deleted', { res, payload })
       this.setSnackBar(res)
+      return res === 200
     },
     async updateRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/updateRecord', payload)
+      this.$emit('updated', res === 200 ? payload : null)
       this.loading = false
-      this.$emit('updated', { res, payload })
       this.setSnackBar(res)
-      if (typeof res === 'object') return res.ok // TODEPRECATE this check
-      else return res === 200 // TODEPRECATE
+      return res === 200
     },
     async createRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/createRecord', payload)
+      this.$emit('created', res === 201 ? payload : null) // no ID yet, TBD...
       this.loading = false
-      this.$emit('created', { res, payload }) // no ID yet, TBD...
       this.setSnackBar(res)
+      return res === 201
     },
     async getRecord (payload) {
       this.loading = true
@@ -691,7 +675,7 @@ export default {
             <span v-if="header.value===''">
               <v-icon v-if="canUpdate&&!saveRow" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
               <v-icon v-if="canDelete" v-bind="attrs['action-icon']" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
-              <v-icon v-if="crudOps.update&&saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item, null, props.index, index)" :disabled="loading">save</v-icon>
+              <v-icon v-if="canUpdate&&saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item, null, props.index, index)" :disabled="loading">save</v-icon>
             </span>
             <span v-if="!inline[header.value]" v-html="$options.filters.formatters(props.item[header.value], header.value)"></span>
             <!-- <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span> -->

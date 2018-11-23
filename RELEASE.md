@@ -7,7 +7,15 @@
  * GraphQL using Prisma or Hasura
  * https://github.com/vuetifyjs/vuetify/pull/5232
 
+### DEPRECATED CODE REMOVAL RELEASE
+ * CRUD operations to return object instead of number - v0.2.0
+ * use 'field' instead of 'type' for Form and Filter inputs - v0.2.0
+
 ### Version 0.1.4
+ * chore: upgraded to vuetify 1.3.8
+ * improvement: hide vue-i18n warning messages - @/lang.js
+ * improvement: [NON BREAKING CHANGE] you can return your own object for CRUD operations (see readme). return of hardcoded numbers will be DEPRECATED
+ * improvement: create, update & delete events also emit the crudOps result (property named 'res'). if the operation did not return anything, res is undefined
  * work in progress: REST API Example
    * Login - Done
    * Show table - In progress
@@ -21,7 +29,7 @@
  * improvement: pass in 'this._self' as props to <crud-form> and <crud-filter> so that your custom forms or filters can access the parent vue-crud-x component
  * bug fix: confirmation dialog logic for update and create was wrong
  * bug fix: CRUD update permissions in saveRow
- * improvement: export csv now does not require id to be first column - @/assts/util.js
+ * improvement: export csv now does not require id to be first column - @/assets/util.js
  * work in progress: REST API Example
    * Login - Done
    * Show table - In progress

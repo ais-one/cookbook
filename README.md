@@ -85,21 +85,67 @@ crudForm: {
 
 }
 
-crudOps: {
+/* crudOps NOTES
+1. user property in payload can be used for authentication, and logging
 
+2. crudOps create, update & delete operation - return object properties
+
+msg: if defined and not blank, snackbar will show the string in msg if enabled (msg can be an vue-i18n keystring)
+code: if defined, snackbar will show message based on code number. 200, 201, 509, 500 is handled, other values will show 'unknown operation'
+ok:  is operation success or not, used by inline update to revert data to original value on the table
+
+The return object and properties are optional, if you do not return, then the following can potentially result:
+- no snackbar (you will need to listen to event emitted do your own error display instead)
+- value will not revert to original for failed inline update
+*/
+crudOps: {
+  'export': {
+    const { user } = payload
+    ...
+    // no return
+  },
+  create: {
+    const { record: { id, ...noIdData }, user } = payload
+    ...
+    return { // EXAMPLE return object with code property omitted
+      ok: true,
+      msg: 'OK'
+    }
+  },
+  update: {
+    const { record: { id, ...noIdData }, user } = payload
+    ...
+    return { // EXAMPLE return object with ok property only
+      ok: true
+    }
+  },
+  delete: {
+    const { id, user } = payload
+    ...
+    // EXAMPLE no return at all
+  },
+  find: {
+    let records = []
+    const { pagination, user } = payload // sort order is in pagination
+    ...
+    return { records, pagination }
+  },
+  findOne: {
+    const { id, user } = payload
+    let record = { }
+    ...
+    return record
+  }
 }
 
 
 ## Events
 
 form-close - emit event if close form
-
 selected - row selected, returns object with row item and event, does not fire if inline is truthy...
-
 loaded - table data is loaded, returns Date.now()
 
-created - emitted in createRecord(), returns success ? payload : null (no create ID yet, will be improved)
-
-updated - emitted in updateRecord(), returns success ? payload : null
-
-deleted - emitted in deleteRecord(), returns success ? payload : null
+// res is the result for the C, U, D operation, payload is the payload passed in to the C, U, D operation
+created - emitted in createRecord(), returns { res, payload } (no create ID yet, will be improved)
+updated - emitted in updateRecord(), returns { res, payload }
+deleted - emitted in deleteRecord(), returns { res, payload }
