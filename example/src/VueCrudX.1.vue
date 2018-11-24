@@ -276,7 +276,7 @@ export default {
           'loading-color': 'primary',
           style: { // this may need to be changed once Vuetify version 2.0 is out
             'max-height': 'calc(100vh - 144px)',
-            // 'overflow-y': 'scroll',
+            'overflow-y': 'scroll',
             'backface-visibility': 'hidden'
           }
         },
@@ -658,7 +658,6 @@ export default {
       :loading="loading?attrs.table['loading-color']:false"
       :hide-actions="!doPage"
       v-bind="attrs.table"
-      class="fixed-header v-table__overflow"
     >
       <template slot="headerCell" slot-scope="props">
         <span v-html="props.header.text"></span>
@@ -818,84 +817,4 @@ export default {
 /* fixed-header - not working yet
 https://github.com/vuetifyjs/vuetify/issues/1547#issuecomment-418698573
 */
-</style>
-
-<style lang="stylus" scoped>
-/*
-@import '~vuetify/src/stylus/bootstrap'
-@import '~vuetify/src/stylus/settings/_theme.styl'
-fixed-header($material)
-    &
-        background-color: $material.cards
-
-    th
-        background-color: $material.cards
-
-        &:after
-            border-bottom: 1px solid rgba($material.fg-color, $material.divider-percent)
-theme($component, $name)
-  light($component, $name)
-  dark($component, $name)
-
-light($component, $name)
-  .theme--light .{$name}
-    $component($material-light)
-
-dark($component, $name)
-  .theme--dark .{$name}
-    $component($material-dark)
-*/
-
->>> .theme--dark.v-table thead th {
-  background-color: #424242;
-}
-
->>> .theme--light.v-table thead th {
-  background-color: #ffffff;
-}
-
-/* Theme */
->>> .fixed-header
-    &
-        display: flex
-        flex-direction: column
-        height: 100%
-
-    table
-        table-layout: fixed
-
-    th
-        position: sticky
-        top: 0
-        z-index: 5
-
-        &:after
-            content: ''
-            position: absolute
-            left: 0
-            bottom: 0
-            width: 100%
-
-    tr.v-datatable__progress
-        th
-            // top: 56px
-            height: 1px;
-
-    .v-table__overflow
-        flex-grow: 1
-        flex-shrink: 1
-        overflow-x: auto
-        overflow-y: auto
-        // overflow: auto
-        // height: 100%
-
-    .v-datatable.v-table
-        flex-grow: 0
-        flex-shrink: 1
-
-        .v-datatable__actions
-            flex-wrap: nowrap
-
-            .v-datatable__actions__pagination
-                white-space: nowrap
 </style>
