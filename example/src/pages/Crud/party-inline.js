@@ -56,8 +56,8 @@ export const crudTable = {
   confirmDelete: true,
   // REMOVE THIS, NO LONGER NEEDED: actionColumn: true, // action buttons (edit/delete)on the left most table column
   headers: [
-    { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' }, // IMPORTANT: blank value means it is action column
-    { text: 'Party Name', value: 'name', fixed: true },
+    { text: 'Action', value: '', align: 'center', sortable: false, class: 'pa-1 text-xs-center' }, // IMPORTANT: blank value means it is action column
+    { text: 'Party Name', value: 'name' },
     { text: 'Remarks', value: 'remarks', align: 'right', class: 'pa-1', 'cell-class': 'text-xs-right pa-1' }, // align header and cell
     { text: 'Languages', value: 'languages' },
     { text: 'Status', value: 'status' },

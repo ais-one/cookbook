@@ -16,7 +16,7 @@
  * improvement: hide vue-i18n warning messages - @/lang.js
  * improvement: [NON BREAKING CHANGE] you can return your own object for CRUD operations (see readme). return of hardcoded numbers will be DEPRECATED
  * improvement: create, update & delete events also emit the crudOps result (property named 'res'). if the operation did not return anything, res is undefined
- * improvement: [SOMEWHAT - NEEDS MORE TESTING]: fixed header [https://github.com/vuetifyjs/vuetify/issues/1547](https://github.com/vuetifyjs/vuetify/issues/1547)
+ * improvement: [SOMEWHAT - NEEDS MORE TESTING] - fixed header [https://github.com/vuetifyjs/vuetify/issues/1547](https://github.com/vuetifyjs/vuetify/issues/1547)
  * work in progress: REST API Example
    * Login - Done
    * Show table - In progress
