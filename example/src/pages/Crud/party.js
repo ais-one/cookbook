@@ -18,7 +18,20 @@ export const crudTable = {
     { text: 'Status', value: 'status', class: 'pa-1' }
   ],
   formatters: (value, _type) => value,
-  doPage: false
+  doPage: false,
+  buttons: {
+    // table
+    back: { icon: 'reply', label: 'Back' },
+    summary: { icon: 'list', label: 'Sumary', icon2: 'keyboard_arrow_up' },
+    filter: { icon: 'search', label: 'Search', icon2: 'keyboard_arrow_up' },
+    reload: { icon: 'replay', label: 'Reload' },
+    create: { icon: 'add', label: 'Add' },
+    export: { icon: 'print', label: 'Export' },
+    // form
+    close: { icon: 'close', label: 'Close' },
+    delete: { icon: 'delete', label: 'Delete' },
+    update: { icon: 'save', label: 'Save' }
+  }
 }
 
 export const crudFilter = {

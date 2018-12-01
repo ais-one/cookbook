@@ -75,6 +75,7 @@ export const crudTable = {
 
   doPage: true, // pagination enabled
   showGoBack: false, // do net show go back button on table
+  showFilterButton: true, // show expand filter button on toolbar? if hide means you do not want user to play with the filters
 
   attrs: {
     // you can add attributes used by the component and customize style and classes
@@ -128,6 +129,19 @@ export const crudTable = {
     'action-icon': { // for the action column
       small: true,
       class: 'mr-1'
+    },
+    buttons: {
+      // table
+      back: { icon: 'reply', label: '' },
+      summary: { icon: 'list', label: '', icon2: 'keyboard_arrow_up' },
+      filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up' },
+      reload: { icon: 'replay', label: '' },
+      create: { icon: 'add', label: '' },
+      export: { icon: 'print', label: '' },
+      // form
+      close: { icon: 'close', label: '' },
+      delete: { icon: 'delete', label: '' },
+      update: { icon: 'save', label: '' }
     }
   },
   SummaryVue: () => ({ component: import('./Summary.vue') })

@@ -11,12 +11,15 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
-### Version 0.1.4
- * chore: upgraded to vuetify 1.3.9
+### Version 0.1.4 
+ * NO BREAKING CHANGES
+ * chore: upgraded to vuetify 1.3.11
  * improvement: hide vue-i18n warning messages - @/lang.js
- * improvement: [NON BREAKING CHANGE] you can return your own object for CRUD operations (see readme). return of hardcoded numbers will be DEPRECATED
+ * improvement: you can return your own object for CRUD operations (see readme). return of hard-coded numbers will be DEPRECATED
+ * improvement: you can customize toolbar buttons and optionally have text below toolbar button (space limited though) - see @/pages/Crud/party.js & @/pages/Crud/party-inline.js
  * improvement: create, update & delete events also emit the crudOps result (property named 'res'). if the operation did not return anything, res is undefined
  * improvement: [SOMEWHAT - NEEDS MORE TESTING] - fixed header [https://github.com/vuetifyjs/vuetify/issues/1547](https://github.com/vuetifyjs/vuetify/issues/1547)
+ * improvement: allow user to hide filter button on toolbar (crudTable.showFilterButton = false)
  * work in progress: REST API Example
    * Login - Done
    * Show table - In progress
