@@ -73,6 +73,7 @@ See RELEASE.MD file
 
 Refer to @/pages/Crud/party-inline.js for more description for now...
 
+```
 crudTable: {
 
 }
@@ -137,7 +138,7 @@ crudOps: {
     return record
   }
 }
-
+```
 
 ## Events
 
