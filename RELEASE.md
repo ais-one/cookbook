@@ -11,7 +11,14 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
-### Version 0.1.4 
+### Version 0.1.5
+ * work in progress: REST API Example
+   * Login - Done
+   * Show table - In progress
+   * Show nested table (one to many) - In progress
+   * Show table (many to many) - In progress
+
+### Version 0.1.4
  * NO BREAKING CHANGES
  * chore: upgraded to vuetify 1.3.11
  * improvement: hide vue-i18n warning messages - @/lang.js
