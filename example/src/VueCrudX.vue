@@ -139,10 +139,12 @@ export default {
     // title
     this.crudTitle = this.crudTable.crudTitle || ''
     this.showGoBack = this.crudTable.showGoBack !== false // hide go back button - default true
-    this.onCreatedOpenForm = this.crudTable.onCreatedOpenForm === true // open form on create, default false
+    this.onCreatedOpenForm = this.crudTable.onCreatedOpenForm === true // open form on create - default false
+    this.showFilterButton = this.crudTable.showFilterButton !== false // show filter button - default true
 
     // more attributes
     this.attrs = Object.assign(this.attrs, this.crudTable.attrs || {})
+    this.buttons = Object.assign(this.buttons, this.crudTable.buttons || {})
 
     // assign the components
     if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
@@ -276,7 +278,7 @@ export default {
           'loading-color': 'primary',
           style: { // this may need to be changed once Vuetify version 2.0 is out
             'max-height': 'calc(100vh - 144px)',
-            'overflow-y': 'scroll',
+            // 'overflow-y': 'scroll',
             'backface-visibility': 'hidden'
           }
         },
@@ -296,9 +298,23 @@ export default {
           class: 'mr-1'
         }
       },
+      buttons: {
+        // table
+        back: { icon: 'reply', label: '' },
+        summary: { icon: 'list', label: '', icon2: 'keyboard_arrow_up' },
+        filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up' },
+        reload: { icon: 'replay', label: '' },
+        create: { icon: 'add', label: '' },
+        export: { icon: 'print', label: '' },
+        // form
+        close: { icon: 'close', label: '' },
+        delete: { icon: 'delete', label: '' },
+        update: { icon: 'save', label: '' }
+      },
 
       // show/hide
-      showFilter: false,
+      showFilterButton: true, // should the filter button be shown?
+      expandFilter: false,
       showSummary: false,
 
       // snackbar
@@ -368,13 +384,30 @@ export default {
       return true && flag
     },
     isObject (obj) { return obj !== null && typeof obj === 'object' },
-    setSnackBar (statusCode) {
-      if (this.attrs.snackbar && statusCode) {
-        this.snackbarText = this.$t('vueCrudX.unknownOperation')
-        if (statusCode === 200 || statusCode === 201) this.snackbarText = this.$t('vueCrudX.operationOk')
-        else if (statusCode === 500) this.snackbarText = this.$t('vueCrudX.operationError')
-        else if (statusCode === 409) this.snackbarText = this.$t('vueCrudX.duplicateError')
-        this.snackbar = true
+    setSnackBar (res) {
+      if (!res) return
+      if (this.attrs.snackbar) {
+        let code
+        this.snackbarText = ''
+        this.snackbar = false
+        if (typeof res === 'object') { // TODEPRECATE this check
+          // if message is empty use code... 200 (ok), 201 (ok created), 409 (duplicate), 500 (server error)
+          // not implemented - 401 (client error), 403 (forbidden), 404 (not found)
+          if (res.msg) {
+            this.snackbarText = this.$t(res.msg) // code will be undefined
+          } else {
+            code = res.code
+          }
+        } else {
+          code = res // TODEPRECATE
+        }
+        if (code) {
+          this.snackbarText = this.$t('vueCrudX.unknownOperation')
+          if (code === 200 || code === 201) this.snackbarText = this.$t('vueCrudX.operationOk')
+          else if (code === 500) this.snackbarText = this.$t('vueCrudX.operationError')
+          else if (code === 409) this.snackbarText = this.$t('vueCrudX.duplicateError')
+        }
+        this.snackbar = !!this.snackbarText
       }
     },
     async getRecords (payload) {
@@ -384,26 +417,25 @@ export default {
     async deleteRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/deleteRecord', payload)
-      this.$emit('deleted', res === 200 ? payload : null)
       this.loading = false
+      this.$emit('deleted', { res, payload })
       this.setSnackBar(res)
-      return res === 200
     },
     async updateRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/updateRecord', payload)
-      this.$emit('updated', res === 200 ? payload : null)
       this.loading = false
+      this.$emit('updated', { res, payload })
       this.setSnackBar(res)
-      return res === 200
+      if (typeof res === 'object') return res.ok // TODEPRECATE this check
+      else return res === 200 // TODEPRECATE
     },
     async createRecord (payload) {
       this.loading = true
       let res = await this.$store.dispatch(this.storeName + '/createRecord', payload)
-      this.$emit('created', res === 201 ? payload : null) // no ID yet, TBD...
       this.loading = false
+      this.$emit('created', { res, payload }) // no ID yet, TBD...
       this.setSnackBar(res)
-      return res === 201
     },
     async getRecord (payload) {
       this.loading = true
@@ -608,15 +640,15 @@ export default {
   <v-container v-bind="attrs.container">
     <v-toolbar v-bind="attrs.toolbar">
       <!-- <v-toolbar-side-icon ></v-toolbar-side-icon> -->
-      <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>reply</v-icon></v-btn> {{showTitle | capitalize}} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
-      <v-btn v-if="hasSummaryVue" v-bind="attrs.button" @click="showSummary=!showSummary" :disabled="loading"><v-icon>{{ showSummary ? 'keyboard_arrow_up' : 'list'}}</v-icon></v-btn>
+      <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{showTitle | capitalize}} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
+      <v-btn v-if="hasSummaryVue" v-bind="attrs.button" @click="showSummary=!showSummary" :disabled="loading"><v-icon>{{ showSummary ? buttons.summary.icon2 : buttons.summary.icon }}</v-icon><span>{{buttons.summary.label}}</span></v-btn>
       <v-spacer></v-spacer>
-      <v-btn v-bind="attrs.button" @click="showFilter=!showFilter" :disabled="!hasFilterData"><v-icon>{{ showFilter ? 'keyboard_arrow_up' : 'search'}}</v-icon></v-btn>
-      <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>replay</v-icon></v-btn>
-      <v-btn v-if="canCreate" v-bind="attrs.button" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>add</v-icon></v-btn>
-      <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop="exportBtnClick" :disabled="loading"><v-icon>print</v-icon></v-btn>
+      <v-btn v-if="showFilterButton" v-bind="attrs.button" @click="expandFilter=!expandFilter" :disabled="!hasFilterData"><v-icon>{{ expandFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
+      <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
+      <v-btn v-if="canCreate" v-bind="attrs.button" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
+      <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop.prevent="exportBtnClick" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
     </v-toolbar>
-    <div v-if="showFilter">
+    <div v-if="expandFilter">
       <v-form v-if="hasFilterData" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
         <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
         <v-layout row wrap v-else>
@@ -642,6 +674,7 @@ export default {
       :loading="loading?attrs.table['loading-color']:false"
       :hide-actions="!doPage"
       v-bind="attrs.table"
+      class="fixed-header v-table__overflow"
     >
       <template slot="headerCell" slot-scope="props">
         <span v-html="props.header.text"></span>
@@ -675,9 +708,9 @@ export default {
             <span v-if="header.value===''">
               <v-icon v-if="canUpdate&&!saveRow" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
               <v-icon v-if="canDelete" v-bind="attrs['action-icon']" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
-              <v-icon v-if="canUpdate&&saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item, null, props.index, index)" :disabled="loading">save</v-icon>
+              <v-icon v-if="crudOps.update&&saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item, null, props.index, index)" :disabled="loading">save</v-icon>
             </span>
-            <span v-if="!inline[header.value]" v-html="$options.filters.formatters(props.item[header.value], header.value)"></span>
+            <span v-else-if="!inline[header.value]" v-html="$options.filters.formatters(props.item[header.value], header.value)"></span>
             <!-- <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span> -->
             <v-edit-dialog
               v-else-if="inline[header.value].field==='v-date-picker'||inline[header.value].field==='v-time-picker'||inline[header.value].field==='v-textarea'"
@@ -751,11 +784,11 @@ export default {
       <v-dialog v-model="crudFormFlag" v-bind="attrs.dialog">
         <v-card>
           <v-toolbar v-bind="attrs.toolbar">
-            <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>close</v-icon></v-btn> {{showTitle | capitalize}}</v-toolbar-title>
+            <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle | capitalize}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
-              <v-btn v-bind="attrs.button" v-if="canDelete && record.id" @click.native="crudFormDelete" :disabled="loading"><v-icon>delete</v-icon></v-btn>
-              <v-btn v-bind="attrs.button" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>save</v-icon></v-btn>
+              <v-btn v-bind="attrs.button" v-if="canDelete && record.id" @click.native="crudFormDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
+              <v-btn v-bind="attrs.button" v-if="canUpdate && record.id||canCreate && !record.id" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
             </v-toolbar-items>
           </v-toolbar>
           <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading" v-bind="attrs['v-progress-circular']?attrs['v-progress-circular']:attrs['v-progress-linear']"></component>
@@ -801,4 +834,89 @@ export default {
 /* fixed-header - not working yet
 https://github.com/vuetifyjs/vuetify/issues/1547#issuecomment-418698573
 */
+</style>
+
+<style lang="stylus" scoped>
+.v-toolbar >>> .v-btn__content {
+  flex-direction: column;
+  font-size: 75%;
+}
+
+/*
+@import '~vuetify/src/stylus/bootstrap'
+@import '~vuetify/src/stylus/settings/_theme.styl'
+fixed-header($material)
+    &
+        background-color: $material.cards
+
+    th
+        background-color: $material.cards
+
+        &:after
+            border-bottom: 1px solid rgba($material.fg-color, $material.divider-percent)
+theme($component, $name)
+  light($component, $name)
+  dark($component, $name)
+
+light($component, $name)
+  .theme--light .{$name}
+    $component($material-light)
+
+dark($component, $name)
+  .theme--dark .{$name}
+    $component($material-dark)
+*/
+
+>>> .theme--dark.v-table thead th {
+  background-color: #424242;
+}
+
+>>> .theme--light.v-table thead th {
+  background-color: #ffffff;
+}
+
+/* Theme */
+>>> .fixed-header
+    &
+        display: flex
+        flex-direction: column
+        height: 100%
+
+    table
+        table-layout: fixed
+
+    th
+        position: sticky
+        top: 0
+        z-index: 5
+
+        &:after
+            content: ''
+            position: absolute
+            left: 0
+            bottom: 0
+            width: 100%
+
+    tr.v-datatable__progress
+        th
+            // top: 56px
+            height: 1px;
+
+    .v-table__overflow
+        flex-grow: 1
+        flex-shrink: 1
+        overflow-x: auto
+        overflow-y: auto
+        // overflow: auto
+        // height: 100%
+
+    .v-datatable.v-table
+        flex-grow: 0
+        flex-shrink: 1
+
+        .v-datatable__actions
+            flex-wrap: nowrap
+
+            .v-datatable__actions__pagination
+                white-space: nowrap
 </style>

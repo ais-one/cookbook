@@ -7,6 +7,25 @@
  * GraphQL using Prisma or Hasura
  * https://github.com/vuetifyjs/vuetify/pull/5232
 
+### DEPRECATED CODE TO BE REMOVED IN v0.2.0
+ * v0.1.4 - CRUD operations to return object instead of number
+ * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
+
+### Version 0.1.4 
+ * NO BREAKING CHANGES
+ * chore: upgraded to vuetify 1.3.11
+ * improvement: hide vue-i18n warning messages - @/lang.js
+ * improvement: you can return your own object for CRUD operations (see readme). return of hard-coded numbers will be DEPRECATED
+ * improvement: you can customize toolbar buttons and optionally have text below toolbar button (space limited though) - see @/pages/Crud/party.js & @/pages/Crud/party-inline.js
+ * improvement: create, update & delete events also emit the crudOps result (property named 'res'). if the operation did not return anything, res is undefined
+ * improvement: [SOMEWHAT - NEEDS MORE TESTING] - fixed header [https://github.com/vuetifyjs/vuetify/issues/1547](https://github.com/vuetifyjs/vuetify/issues/1547)
+ * improvement: allow user to hide filter button on toolbar (crudTable.showFilterButton = false)
+ * work in progress: REST API Example
+   * Login - Done
+   * Show table - In progress
+   * Show nested table (one to many) - In progress
+   * Show table (many to many) - In progress
+
 ### Version 0.1.3
  * chore: upgraded to vuetify 1.3.8
  * improvement: add v-btn-toggle, grouped input [Alpha Version - Specification May Change]
@@ -14,7 +33,7 @@
  * improvement: pass in 'this._self' as props to <crud-form> and <crud-filter> so that your custom forms or filters can access the parent vue-crud-x component
  * bug fix: confirmation dialog logic for update and create was wrong
  * bug fix: CRUD update permissions in saveRow
- * improvement: export csv now does not require id to be first column - @/assts/util.js
+ * improvement: export csv now does not require id to be first column - @/assets/util.js
  * work in progress: REST API Example
    * Login - Done
    * Show table - In progress

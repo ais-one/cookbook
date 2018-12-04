@@ -56,8 +56,8 @@ export const crudTable = {
   confirmDelete: true,
   // REMOVE THIS, NO LONGER NEEDED: actionColumn: true, // action buttons (edit/delete)on the left most table column
   headers: [
-    { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' }, // IMPORTANT: blank value means it is action column
-    { text: 'Party Name', value: 'name', fixed: true },
+    { text: 'Action', value: '', align: 'center', sortable: false, class: 'pa-1 text-xs-center' }, // IMPORTANT: blank value means it is action column
+    { text: 'Party Name', value: 'name' },
     { text: 'Remarks', value: 'remarks', align: 'right', class: 'pa-1', 'cell-class': 'text-xs-right pa-1' }, // align header and cell
     { text: 'Languages', value: 'languages' },
     { text: 'Status', value: 'status' },
@@ -75,6 +75,7 @@ export const crudTable = {
 
   doPage: true, // pagination enabled
   showGoBack: false, // do net show go back button on table
+  showFilterButton: true, // show expand filter button on toolbar? if hide means you do not want user to play with the filters
 
   attrs: {
     // you can add attributes used by the component and customize style and classes
@@ -128,6 +129,19 @@ export const crudTable = {
     'action-icon': { // for the action column
       small: true,
       class: 'mr-1'
+    },
+    buttons: {
+      // table
+      back: { icon: 'reply', label: '' },
+      summary: { icon: 'list', label: '', icon2: 'keyboard_arrow_up' },
+      filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up' },
+      reload: { icon: 'replay', label: '' },
+      create: { icon: 'add', label: '' },
+      export: { icon: 'print', label: '' },
+      // form
+      close: { icon: 'close', label: '' },
+      delete: { icon: 'delete', label: '' },
+      update: { icon: 'save', label: '' }
     }
   },
   SummaryVue: () => ({ component: import('./Summary.vue') })
