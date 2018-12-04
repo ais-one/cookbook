@@ -142,16 +142,16 @@ crudOps: {
 
 ## Events
 
-1. form-close - emit event if close form
+1. **form-close** - emit event if close form
 
-2. selected - row selected, returns object with row item and event, does not fire if inline is truthy...
+2. **selected** - row selected, returns object with row item and event, does not fire if inline is truthy...
 
-3. loaded - table data is loaded, returns Date.now()
+3. **loaded** - table data is loaded, returns Date.now()
 
-4. created - emitted in createRecord(), returns { res, payload } (no create ID yet, will be improved)
+4. **created** - emitted in createRecord(), returns { res, payload } (no create ID yet, will be improved)
 
-5. updated - emitted in updateRecord(), returns { res, payload }
+5. **updated** - emitted in updateRecord(), returns { res, payload }
 
-6. deleted - emitted in deleteRecord(), returns { res, payload }
+6. **deleted** - emitted in deleteRecord(), returns { res, payload }
 
 Note: **res** is the result for the C, U, D operation, payload is the payload passed in to the C, U, D operation
