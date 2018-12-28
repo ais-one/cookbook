@@ -4,12 +4,7 @@ let mongo
 console.log('MONGO_URL', process.env.MONGO_URL)
 
 if (!mongo) {
-  const dbName = 'ssntest'
-  const user = encodeURIComponent('test')
-  const password = encodeURIComponent('test123')
-  const authMechanism = 'SCRAM-SHA-1' // 'DEFAULT'
-  const host = 'ds119164.mlab.com:19164'
-  const url = `mongodb://${user}:${password}@${host}/${dbName}?authMechanism=${authMechanism}&authSource=${dbName}`
+  const url = process.env.MONGO_URL
   const MongoClient = require('mongodb').MongoClient
   // (async function() {
   mongo = new MongoClient(url, {
