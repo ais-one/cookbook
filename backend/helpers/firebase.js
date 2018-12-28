@@ -1,6 +1,7 @@
 'use strict'
-
 const admin = require('firebase-admin')
+
+console.log('FIREBASE INIT')
 
 if (admin.apps.length === 0) {
   console.log('Init Firebase')
@@ -8,15 +9,7 @@ if (admin.apps.length === 0) {
   // const credential = admin.credential.applicationDefault() // if hosted on Firebase Functions
   // const config = require('./config.json')
   admin.initializeApp({
-    credential,
-    // storageBucket: "<BUCKET_NAME>.appspot.com"
-    // "apiKey": "",
-    // "authDomain": ".firebaseapp.com",
-    // "databaseURL": "https://.firebaseio.com",
-    // "projectId": "",
-    // "storageBucket": ".appspot.com",
-    // "messagingSenderId": ""
-      // ...config
+    credential
   })
   admin.firestore().settings({ timestampsInSnapshots: true })
 }
@@ -25,4 +18,4 @@ const firestore = admin.firestore()
 const auth = admin.auth()
 const bucket = admin.storage().bucket()
 
-module.exports = {firestore, auth, bucket}
+module.exports = { firestore, auth, bucket }

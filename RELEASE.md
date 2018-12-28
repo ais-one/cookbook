@@ -12,7 +12,7 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.5
- * chore: upgraded to vuetify 1.3.14
+ * chore: upgraded to vuetify 1.3.15
  * work in progress: REST API Example (merge Nuxt & REST example, use Nuxt SPA)
    * Login - Done
    * Show table - In progress

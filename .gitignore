@@ -1,16 +1,33 @@
 .DS_Store
-node_modules/
+node_modules
 **/cfg.json
 **/firebase.json
 **/.firebaserc
 
+package-lock.json
+*.tgz
+dist
+dev.sqlite3
+.rnd
+
+# Log files
+npm-debug.log*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+ 
+# local env files
+.env
+.env.*
 
-package-lock.json
-
-*.tgz
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
 
 # temporary to remove once it is ready
 example-rest2/
