@@ -666,115 +666,118 @@ export default {
         <!-- <v-layout row justify-end></v-layout> -->
       </v-form>
     </div>
-    <v-data-table
-      :headers="headers"
-      :items="records"
-      :total-items="totalRecs"
-      :pagination.sync="pagination"
-      :loading="loading?attrs.table['loading-color']:false"
-      :hide-actions="!doPage"
-      v-bind="attrs.table"
-      class="fixed-header v-table__overflow"
-    >
-      <template slot="headerCell" slot-scope="props">
-        <span v-html="props.header.text"></span>
-      </template>
-      <!-- <template slot="headers" slot-scope="props">
-        <tr>
-          <th>
-            <v-checkbox
-              :input-value="props.all"
-              :indeterminate="props.indeterminate"
-              primary
-              hide-details
-              @click.native="toggleAll"
-            ></v-checkbox>
-          </th>
-          <th
-            v-for="header in props.headers"
-            :key="header.text"
-            :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-            @click="changeSort(header.value)"
-          >
-            <v-icon small>arrow_upward</v-icon>
-            {{ header.text }}
-          </th>
-        </tr>
-      </template> -->
-      <template slot="items" slot-scope="props">
-        <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
-        <tr :ref="`edit-${props.index}`" @click.stop="rowClicked(props.item, $event, props.index)">
-          <td :key="header.value" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
-            <span v-if="header.value===''">
-              <v-icon v-if="canUpdate&&!saveRow" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
-              <v-icon v-if="canDelete" v-bind="attrs['action-icon']" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
-              <v-icon v-if="crudOps.update&&saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item, null, props.index, index)" :disabled="loading">save</v-icon>
-            </span>
-            <span v-else-if="!inline[header.value]" v-html="$options.filters.formatters(props.item[header.value], header.value)"></span>
-            <!-- <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span> -->
-            <v-edit-dialog
-              v-else-if="inline[header.value].field==='v-date-picker'||inline[header.value].field==='v-time-picker'||inline[header.value].field==='v-textarea'"
-              :ref="`edit-${props.index}-${index}`"
-              :return-value.sync="props.item[header.value]"
-              :large="inline[header.value].buttons"
-              :persistent="false"
-              :cancel-text="$t('vueCrudX.cancel')"
-              :save-text="$t('vueCrudX.save')"
-              lazy
-              @save="saveRow?'':inlineUpdate(props.item, header.value, props.index, index)"
-              @cancel="()=>{}"
-              @open="inlineOpen(props.item[header.value], props.index, index)"
-              @close="()=>{}"
-            >
-              <div>{{attrs['edit-indicator-left']}}{{ props.item[header.value] }}{{attrs['edit-indicator-right']}}</div>
-              <component
-                :is="inline[header.value].field"
-                slot="input"
-                @input="inline[header.value].field!=='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
-                @blur="inline[header.value].field==='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):inlineClose(props.item, header.value, props.index, index)"
-                v-model="props.item[header.value]"
-                v-bind="inline[header.value].attrs"
-              ></component>
-            </v-edit-dialog>
-            <component
-              v-else-if="groupControls.indexOf(inline[header.value].field)!==-1"
-              :ref="`edit-${props.index}-${index}`"
-              :is="inline[header.value].field"
-              v-bind="inline[header.value].attrs"
-              v-model="props.item[header.value]"
-              @change="inlineUpdate(props.item, header.value, props.index, index)"
-            >
-              <template v-if="inline[header.value].field==='v-btn-toggle'">
-                <component :is="'v-btn'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
-              </template>
-              <template v-else-if="inline[header.value].field==='v-radio-group'">
-                <component :is="'v-radio'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
-              </template>
-            </component>
-            <component
-              v-else
-              :ref="`edit-${props.index}-${index}`"
-              :is="inline[header.value].field"
-              v-bind="inline[header.value].attrs"
-              v-model="props.item[header.value]"
-              @focus="inlineOpen(props.item[header.value])"
-              @blur="selectControls.indexOf(inline[header.value].field)===-1?inlineUpdate(props.item, header.value, props.index, index):''"
-              @change="selectControls.indexOf(inline[header.value].field)!==-1?inlineUpdate(props.item, header.value, props.index, index):''"
-            ></component>
-          </td>
-        </tr>
-      </template>
-      <!-- IMPLEMENT IN FUTURE AS IT IS CHANGE THAT NEEDS VERSION 1.2.X
-        <template slot="actions-append">
-          <v-icon v-if="canCreate" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading">add</v-icon>
+    <slot v-bind:records="records">
+      <v-data-table
+        :headers="headers"
+        :items="records"
+        :total-items="totalRecs"
+        :pagination.sync="pagination"
+        :loading="loading?attrs.table['loading-color']:false"
+        :hide-actions="!doPage"
+        v-bind="attrs.table"
+        class="fixed-header v-table__overflow"
+      >
+        <template slot="headerCell" slot-scope="props">
+          <span v-html="props.header.text"></span>
         </template>
-      -->
-      <template slot="no-data">
-        <v-flex class="text-xs-center">
-          <v-alert :value="true" v-bind="attrs.alert"><v-icon>warning</v-icon> {{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
-        </v-flex>
-      </template>
-    </v-data-table>
+        <!-- <template slot="headers" slot-scope="props">
+          <tr>
+            <th>
+              <v-checkbox
+                :input-value="props.all"
+                :indeterminate="props.indeterminate"
+                primary
+                hide-details
+                @click.native="toggleAll"
+              ></v-checkbox>
+            </th>
+            <th
+              v-for="header in props.headers"
+              :key="header.text"
+              :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
+              @click="changeSort(header.value)"
+            >
+              <v-icon small>arrow_upward</v-icon>
+              {{ header.text }}
+            </th>
+          </tr>
+        </template> -->
+        <template slot="items" slot-scope="props">
+          <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
+          <tr :ref="`edit-${props.index}`" @click.stop="rowClicked(props.item, $event, props.index)">
+            <td :key="header.value" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
+              <span v-if="header.value===''">
+                <v-icon v-if="canUpdate&&!saveRow" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(props.item.id)" :disabled="loading">edit</v-icon>
+                <v-icon v-if="canDelete" v-bind="attrs['action-icon']" @click.stop="inlineDelete(props.item.id)" :disabled="loading">delete</v-icon>
+                <v-icon v-if="crudOps.update&&saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item, null, props.index, index)" :disabled="loading">save</v-icon>
+              </span>
+              <span v-else-if="!inline[header.value]" v-html="$options.filters.formatters(props.item[header.value], header.value)"></span>
+              <!-- <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span> -->
+              <v-edit-dialog
+                v-else-if="inline[header.value].field==='v-date-picker'||inline[header.value].field==='v-time-picker'||inline[header.value].field==='v-textarea'"
+                :ref="`edit-${props.index}-${index}`"
+                :return-value.sync="props.item[header.value]"
+                :large="inline[header.value].buttons"
+                :persistent="false"
+                :cancel-text="$t('vueCrudX.cancel')"
+                :save-text="$t('vueCrudX.save')"
+                lazy
+                @save="saveRow?'':inlineUpdate(props.item, header.value, props.index, index)"
+                @cancel="()=>{}"
+                @open="inlineOpen(props.item[header.value], props.index, index)"
+                @close="()=>{}"
+              >
+                <div>{{attrs['edit-indicator-left']}}{{ props.item[header.value] }}{{attrs['edit-indicator-right']}}</div>
+                <!-- new Date('2018-11-30').toLocaleDateString('en-GB', { month: "short", day: "numeric" }) -->
+                <component
+                  :is="inline[header.value].field"
+                  slot="input"
+                  @input="inline[header.value].field!=='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
+                  @blur="inline[header.value].field==='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):inlineClose(props.item, header.value, props.index, index)"
+                  v-model="props.item[header.value]"
+                  v-bind="inline[header.value].attrs"
+                ></component>
+              </v-edit-dialog>
+              <component
+                v-else-if="groupControls.indexOf(inline[header.value].field)!==-1"
+                :ref="`edit-${props.index}-${index}`"
+                :is="inline[header.value].field"
+                v-bind="inline[header.value].attrs"
+                v-model="props.item[header.value]"
+                @change="inlineUpdate(props.item, header.value, props.index, index)"
+              >
+                <template v-if="inline[header.value].field==='v-btn-toggle'">
+                  <component :is="'v-btn'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
+                </template>
+                <template v-else-if="inline[header.value].field==='v-radio-group'">
+                  <component :is="'v-radio'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
+                </template>
+              </component>
+              <component
+                v-else
+                :ref="`edit-${props.index}-${index}`"
+                :is="inline[header.value].field"
+                v-bind="inline[header.value].attrs"
+                v-model="props.item[header.value]"
+                @focus="inlineOpen(props.item[header.value])"
+                @blur="selectControls.indexOf(inline[header.value].field)===-1?inlineUpdate(props.item, header.value, props.index, index):''"
+                @change="selectControls.indexOf(inline[header.value].field)!==-1?inlineUpdate(props.item, header.value, props.index, index):''"
+              ></component>
+            </td>
+          </tr>
+        </template>
+        <!-- IMPLEMENT IN FUTURE AS IT IS CHANGE THAT NEEDS VERSION 1.2.X
+          <template slot="actions-append">
+            <v-icon v-if="canCreate" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading">add</v-icon>
+          </template>
+        -->
+        <template slot="no-data">
+          <v-flex class="text-xs-center">
+            <v-alert :value="true" v-bind="attrs.alert"><v-icon>warning</v-icon> {{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
+          </v-flex>
+        </template>
+      </v-data-table>
+    </slot>
 
     <div v-if="showSummary">
       <crud-summary v-if="hasSummaryVue" :records="records" :parentId="parentId" :storeName="storeName" />

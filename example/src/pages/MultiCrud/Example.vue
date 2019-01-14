@@ -1,5 +1,5 @@
 <template>
-  <div id="abc">
+  <div id="not-needed">
     <v-layout row ref="pageTop" v-scroll="onScroll">
       <v-flex xs12>
         <h2>You can add various components, cruds, a chart, map, etc.</h2>
@@ -8,12 +8,17 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12 sm6>
+        <v-btn @click="showCustomTable=!showCustomTable">Toggle Table ({{ showCustomTable ?'Custom Slot':'Default Slot'}})</v-btn>
         <vue-crud-x
+          ref="my-table"
           storeName="multi-crud-party"
           :parentId="null"
           v-bind="partyDefs"
           @selected="onSelected"
         >
+          <template v-if="showCustomTable" slot-scope="{ records }">
+            <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['my-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
+          </template>
         </vue-crud-x>
       </v-flex>
       <v-flex xs12 sm6>
@@ -65,7 +70,8 @@ export default {
       partyDefs,
       partyNotesDefs,
       selectedId: null,
-      offsetTop: 0
+      offsetTop: 0,
+      showCustomTable: false
     }
   },
   methods: {

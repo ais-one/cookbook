@@ -10,7 +10,6 @@ const mongo = require('../helpers/mongo')
 const UPLOAD_PATH = 'uploads/';
 const upload = multer({ dest: `${UPLOAD_PATH}` }); // multer configuration
 
-
 baseRoutes
   .get('/test', async (req,res) => {
     try {
