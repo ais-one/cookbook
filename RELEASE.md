@@ -11,6 +11,14 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
+### Version 0.1.6
+ * work in progress: REST API Example (merge Nuxt & REST example, use Nuxt SPA - decision still in progress)
+   * Important: deciding whether to use MongoDB or SQLite
+   * Login - Done
+   * Show table - In progress
+   * Show nested table (one to many) - In progress
+   * Show table (many to many) - In progress
+
 ### Version 0.1.5
  * chore: upgraded to vuetify 1.4.1
  * improvement: you can now customize table content, see @/pages/MultiCrud/Example.vue, Toggle Table button shows how it works
