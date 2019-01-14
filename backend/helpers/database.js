@@ -52,4 +52,15 @@ pool.getConnection((err, connection) => {
 
 pool.query = util.promisify(pool.query)
 module.exports = pool
+
+import knex from 'knex'
+const db = knex({
+  client: 'pg',
+  connection: process.env.DATABASE_URL,
+  migrations: {
+    tableName: 'migrations'
+  },
+  debug: process.env.DATABASE_DEBUG === 'true'
+})
+export default db
 */

@@ -4,7 +4,6 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha --timeout 15000 --recursive",
-    "dev-jsonserver": "set NODE_ENV=development&&nodemon server.js",
     "dev": "set NODE_ENV=development&&nodemon index.js",
     "prod-deploy": "mv node_modules ../node_modules_tmp&&scp -r -i ../../test.pem . ubuntu@127.0.0.1:~/api&&mv ../node_modules_tmp ./node_modules",
     "prod-list": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"pm2 list\"",
@@ -32,7 +31,8 @@
     "ioredis": "^4.0.0",
     "jsonwebtoken": "^8.3.0",
     "keyv": "^3.1.0",
-    "knex": "^0.15.2",
+    "knex": "^0.16.3",
+    "mongodb": "^3.1.8",
     "multer": "^1.4.1",
     "mysql": "^2.16.0",
     "objection": "^1.2.6",
@@ -47,9 +47,8 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
-    "eslint": "^4.12.0",
-    "eslint-plugin-promise": "^3.6.0",
-    "json-server": "^0.14.0",
+    "eslint": "^5.11.1",
+    "eslint-plugin-promise": "^4.0.1",
     "mocha": "^5.2.0"
   },
   "private": true

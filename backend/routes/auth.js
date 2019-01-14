@@ -2,9 +2,10 @@ const express = require('express')
 const authRoutes = express.Router()
 const otplib = require('otplib')
 
-const {createToken, verifyToken, isAuthenticated, authUser} = require('../helpers')
+const { createToken, verifyToken, isAuthenticated } = require('../helpers')
+
 const User = require('../models/user')
-const keyv = require('../middleware/keyv')
+const keyv = require('../helpers/keyv')
 
 const USE_OTP = process.env.USE_OTP || ''
 const KEY_EXPIRY = process.env.KEY_EXPIRY || '15m'

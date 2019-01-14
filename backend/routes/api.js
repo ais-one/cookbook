@@ -1,7 +1,7 @@
 const express = require('express')
 const apiRoutes = express.Router()
 
-const {authUser} = require('../helpers')
+const { authUser } = require('../middleware/auth')
 
 const Book = require('../models/Book')
 const Author = require('../models/Author')

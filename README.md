@@ -18,6 +18,7 @@ See the respective README.md files for more information on starting
  * Serverless (best for starters) - https://github.com/ais-one/vue-crud-x/tree/master/example
  * REST (README.md work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
  * NUXT (README.md work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
+ * Backend Project - https://github.com/ais-one/vue-crud-x/tree/master/backend (common backend used by both REST and NUXT)
 
 ## Differentiating Features From Other CRUD Components
 
