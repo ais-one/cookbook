@@ -13,7 +13,7 @@
 
 ### Version 0.1.6
  * work in progress: REST API Example (merge Nuxt & REST example, use Nuxt SPA - decision still in progress)
-   * Important: deciding whether to use MongoDB or SQLite
+   * Important: deciding whether to use MongoDB or SQLite - Will Use Both...
    * Login - Done
    * Show table - In progress
    * Show nested table (one to many) - In progress

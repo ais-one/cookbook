@@ -3,20 +3,25 @@ exports.seed = async (knex, Promise) => {
   // Deletes ALL existing entries
   await knex('authors_books').del()
   await knex('pages').del()
-  await knex('authors').del()
   await knex('books').del()
+  await knex('authors').del()
+  await knex('categories').del()
   
   await knex('authors').insert([
     {id: 1, name: 'author1'},
     {id: 2, name: 'author2'},
     {id: 3, name: 'author3'}
   ])
+  await knex('categories').insert([
+    {id: 1, name: 'fiction'},
+    {id: 2, name: 'non-fiction'}
+  ])
   await knex('books').insert([
-    {id: 1, name: 'book1', category: 'fiction'},
-    {id: 2, name: 'book2', category: 'fiction'},
-    {id: 3, name: 'book3', category: 'non-fiction'},
-    {id: 4, name: 'book1_2', category: 'fiction'},
-    {id: 5, name: 'book2a', category: 'non-fiction'}
+    {id: 1, name: 'book1', categoryId: 1 },
+    {id: 2, name: 'book2', categoryId: 1 },
+    {id: 3, name: 'book3', categoryId: 2 },
+    {id: 4, name: 'book1_2', categoryId: 1 },
+    {id: 5, name: 'book2a', categoryId: 2 }
   ])
   await knex('authors_books').insert([
     {authorId: 1, bookId: 1},
