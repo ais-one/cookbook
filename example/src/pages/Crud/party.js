@@ -152,11 +152,14 @@ export const crudOps = { // CRUD
       await firestore.runTransaction(async t => {
         if (await hasDuplicate('party', 'name', noIdData['name'])) throw new Error(409)
         const meta = await t.get(metaRef)
-        if (!meta.exists) throw new Error(500)
+        if (!meta.exists) {
+          await t.set(metaRef, { count: 1 })
+        } else {
+          let tmp = meta.data()
+          tmp.count++
+          await t.update(metaRef, tmp)
+        }
         await t.set(newDocRef, noIdData)
-        let tmp = meta.data()
-        tmp.count++
-        await t.update(metaRef, tmp)
       })
     } catch (e) {
       if (parseInt(e.message) === 409) return 409
