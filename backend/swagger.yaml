@@ -9,10 +9,10 @@ basePath: /
 tags:
   - name: "Base"
     description: "Base path controller"
-  - name: "User"
-    description: "User path controller"
-  - name: "Resource"
-    description: "Resource path controller"
+  - name: "Auth"
+    description: "Auth path controller"
+  - name: "Api"
+    description: "Api path controller"
 # TEST
 schemes:
   - http
@@ -20,7 +20,7 @@ schemes:
 securityDefinitions:
   Bearer:
     type: apiKey
-    name: token # Authorization
+    name: Authorization
     in: header
 consumes:
   - application/json
@@ -46,10 +46,10 @@ paths:
           description: "Success"
         "500":
           description: "Error"
-  /login:
+  /auth/login:
     post:
       tags:
-      - "Base"
+      - "Auth"
       parameters:
       - in: "body"
         name: "my_cred"
@@ -62,8 +62,34 @@ paths:
           description: "Success"
           schema:
             $ref: "#/definitions/LoginResponse"
+        "401":
+          description: "Auth Error"
         "500":
-          description: "Error"
+          description: "Service Error"
+  /auth/otp:
+    post:
+      tags:
+      - "Auth"
+      security:
+        - Bearer: []
+      parameters:
+      - in: "body"
+        name: "my_cred"
+        description: "otp credentials"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            pin:
+              type: string
+              description: "OTP"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        "401":
+          description: "OTP Error"
   /logout:
     get:
       tags:
@@ -72,7 +98,31 @@ paths:
         - Bearer: []
       responses:
         "200":
-          description: "Log out"
+          description: "Success"
+        default:
+          description: "Service Error"
+  /api/authors:
+    get:
+      tags:
+      - "Api"
+      # security:
+      #  - Bearer: []
+      parameters:
+        - in: "query"
+          description: page limit
+          name: "limit"
+          required: false
+          type: "integer"
+        - in: "query"
+          description: page size
+          name: "page"
+          required: false
+          type: "integer"
+      responses:
+        "200":
+          description: "Array of authors"
+          schema:
+            type: "object"
         default:
           description: "Error"
   /user:

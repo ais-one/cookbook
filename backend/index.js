@@ -21,9 +21,9 @@ const express = require('express')
 const cors = require('cors')
 const https = require('https')
 
-// const swaggerUi = require('swagger-ui-express')
-// const YAML = require('yamljs')
-// const swaggerDocument = YAML.load('./swagger.yaml') // require('./swagger.json')
+const swaggerUi = require('swagger-ui-express')
+const YAML = require('yamljs')
+const swaggerDocument = YAML.load('./swagger.yaml')
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -46,7 +46,7 @@ app.use(cors())
 app.use('/', baseRoutes)
 app.use('/auth', authRoutes)
 app.use('/api', apiRoutes)
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.get("*", async (req, res) => {
   return res.status(404).json({ data: 'Not Found...' })

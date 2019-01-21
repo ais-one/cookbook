@@ -21,12 +21,20 @@ baseRoutes
     // console.log('mongo connected:', !!mongo)
     res.status(200).json({ message: 'Test' })
   })
-
+  .post('/signup', async (req,res) => {
+    // const {email, password} = req.body
+    // password = bcrypt.hashSync(password, SALT_ROUNDS)
+    // const rv = await createUser(email, password)
+    res.status(201).end()
+  })
   .get('/logout', authUser, async (req,res) => {
-    const incomingToken = req.headers.authorization.split(' ')[1]
-    await keyv.delete(incomingToken)
-    // clear the token
-    res.status(200).json({ message: 'Logged Out' })
+    try {
+      const incomingToken = req.headers.authorization.split(' ')[1]
+      await keyv.delete(incomingToken)
+      // clear the token
+      return res.status(200).json({ message: 'Logged Out' })  
+    } catch (e) { }
+    return res.status(500).json()  
   })
   // test uploads
   .post('/upload', upload.single('avatar'), async (req,res) => { // avatar is form input name
