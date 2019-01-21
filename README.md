@@ -1,5 +1,13 @@
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
+# UPDATE NOTICE
+
+In order to keep this library current, we are monitoring the release progress for:
+ * VueJS 3
+ * Vuetify 2
+
+We will remove this notice once we have migrated to VueJS 3 & Vuetify 2
+
 # IMPORTANT: Getting Started - Article
 
 Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">detailed article</a> (usage and explanations in the article are also updated as and when required)

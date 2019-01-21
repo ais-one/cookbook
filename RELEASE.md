@@ -12,6 +12,7 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.6
+ * fix: (issue 44) metadata from firestore
  * work in progress: REST API Example (merge Nuxt & REST example, use Nuxt SPA - decision still in progress)
    * Important: deciding whether to use MongoDB or SQLite - Will Use Both...
    * Login - Done

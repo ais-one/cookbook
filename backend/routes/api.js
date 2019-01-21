@@ -24,7 +24,7 @@ apiRoutes
     } catch (e) { }
     return res.status(500).json()
   })
-  .get('/authors/:id', async (req, res) => { // edit a page
+  .get('/authors/:id', async (req, res) => {
     try {
       const author = await Author.query().findById(req.params.id);
       if (author) return res.status(404).json()
@@ -32,7 +32,7 @@ apiRoutes
     } catch (e) { }
     return res.status(500).json()
   })
-  .get('/authors', async (req, res) => { // edit a page
+  .get('/authors', async (req, res) => {
     try {
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
@@ -67,18 +67,23 @@ apiRoutes
   .get('/books/:id', async (req, res) => {
     try {
       const book = await Book.query().findById(req.params.id)
-        .eager('pages')
+        .eager('[pages, authors]') // show pages
         .modifyEager('pages', builder => {
           // builder.where('age', '>', 10).select('name');
           builder.limit(2)
         })
+        // .modifyEager('authors', builder => {
+        //   builder.limit(1)
+        // })
       console.log(book.pages.length)
       if (book) return res.status(200).json(book)
       else return res.status(404).json()
-    } catch (e) { }
+    } catch (e) { 
+      console.log(e)
+    }
     return res.status(500).json()
   })
-  .get('/books', async (req,res) => { // need to return authors?
+  .get('/books', async (req,res) => {
     try {
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
@@ -92,31 +97,70 @@ apiRoutes
         // .eager('category') // OK
         // .select('books.*', 'categories.name as catName')
         // .join('categories', 'books.categoryId', 'categories.id')
-        .select('books.*', 'category.name as catName')
+        .select(
+          'books.*',
+          'category.name as catName',
+          Book.relatedQuery('pages').count().as('pageCount'),
+          Book.relatedQuery('authors').count().as('authorCount')
+          )
         .joinRelation('category')
+        // TBD count pages
+        // TBD add authors
 
-      console.log(books[0])
+      // console.log(books[0])
       return res.status(200).json(books)  
     } catch (e) { console.log(e) }
     return res.status(500).json()
   })
+  // get pages from a book - not needed yet
   .post('/books/:id/pages', async (req, res) => { // add page to book
-    const book = await Book.query().findById(req.params.id);
-    if (!book) {
-      return res.status(404).json()
-    }
-    const page = await book.$relatedQuery('pages').insert(req.body);
-    res.status(201).json(page)
+    try {
+      const book = await Book.query().findById(req.params.id)
+      if (!book) return res.status(404).json()
+      const page = await book.$relatedQuery('pages').insert(req.body)
+      return res.status(201).json(page)
+    } catch (e) { console.log(e) }
+    return res.status(500).json()
   })
-
-  // TBD remove  page from a book
-
+  .delete('/pages/:id', async (req, res) => { // delete page to book
+    try {
+      // const page = await Page.query().findById(req.params.id);
+      // if (!page) return res.status(404).json()
+      const deletedRows = await Page.query().deleteById(req.params.id)
+      if (deletedRows) return res.status(200).json()
+      else return res.status(404).json()
+      // return res.status(200).json(page)
+    } catch (e) { console.log(e) }
+    return res.status(500).json()
+  })
   .patch('/pages/:id', async (req, res) => { // edit a page
-    const page = await Page.query().patchAndFetchById(req.params.id, req.body);
-    res.status(200).json(page)
+    try {
+      const page = await Page.query().patchAndFetchById(req.params.id, req.body);
+      return res.status(200).json(page)
+    } catch (e) { }
+    return res.status(500).json()
   })
-
-  // get pages from a book
+  .post('/books/:id/authors/:authorId', async (req, res) => { // relate author to book - set unique index to prevent duplicates...
+    // unique index does not seem to work...
+    try {
+      const book = await Book.query().findById(req.params.id);
+      if (!book) return res.status(404).json()
+      const relatedRows = await book.$relatedQuery('authors').relate(req.params.authorId)
+      if (relatedRows) return res.status(201).json()
+      else return res.status(404).json()
+    } catch (e) { console.log(e) }
+    return res.status(500).json()
+  })
+  .delete('/books/:id/authors/:authorId', async (req, res) => { // unrelate author from book
+    try {
+      const book = await Book.query().findById(req.params.id)
+      if (!book) return res.status(404).json()
+      const deletedRows = await book.$relatedQuery('authors').unrelate().where('authorId', req.params.authorId)
+      if (deletedRows) return res.status(200).json()
+      else return res.status(404).json()
+    } catch (e) { console.log(e) }
+    return res.status(500).json()
+  })
 
   // deletions
   .delete('/books/:id', async (req, res) => {
