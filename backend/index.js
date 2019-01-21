@@ -9,7 +9,6 @@ if (process.env.NODE_ENV) {
 console.log('Environment: ', process.env.NODE_ENV)
 
 const API_PORT = process.env.API_PORT
-const WS_PORT = process.env.WS_PORT
 const USE_HTTPS = process.env.USE_HTTPS || false // USE_HTTPS should be path to letsencrypt location OR false 
 console.log('HTTPS: ', USE_HTTPS ? 'Yes' : 'No')
 let credentials
@@ -23,16 +22,20 @@ const https = require('https')
 
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
-const swaggerDocument = YAML.load('./swagger.yaml')
+const swaggerDocument = YAML.load('./docs/swagger.yaml')
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
 const app = express()
 app.use(cors())
-app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(express.static('public')) // for html content
+
+app.use('/api-docs', express.static('docs')) // for OpenAPI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)) // for OpenAPI
 
 // const {db, auth} = require('./firebase') // no longer need to do this
 // app.db = db
@@ -40,13 +43,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 const authRoutes = require('./routes/auth')
 const apiRoutes = require('./routes/api')
-const baseRoutes = require('./routes/base')
 
 app.use(cors())
-app.use('/', baseRoutes)
 app.use('/auth', authRoutes)
 app.use('/api', apiRoutes)
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.get("*", async (req, res) => {
   return res.status(404).json({ data: 'Not Found...' })

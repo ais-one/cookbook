@@ -2,6 +2,7 @@ const express = require('express')
 const authRoutes = express.Router()
 const otplib = require('otplib')
 
+const { authUser } = require('../middleware/auth')
 const { createToken, verifyToken, isAuthenticated } = require('../helpers')
 
 const User = require('../models/user')
@@ -13,7 +14,22 @@ const SECRET_KEY = process.env.SECRET_KEY || '123456789'
 const OTP_SECRET_KEY = process.env.OTP_SECRET_KEY || '987654321'
 
 authRoutes
-  .post('/login', async (req,res) => {
+.post('/signup', async (req,res) => {
+  // const {email, password} = req.body
+  // password = bcrypt.hashSync(password, SALT_ROUNDS)
+  // const rv = await createUser(email, password)
+  res.status(201).end()
+})
+.get('/logout', authUser, async (req,res) => {
+  try {
+    const incomingToken = req.headers.authorization.split(' ')[1]
+    await keyv.delete(incomingToken)
+    // clear the token
+    return res.status(200).json({ message: 'Logged Out' })  
+  } catch (e) { }
+  return res.status(500).json()  
+})
+.post('/login', async (req,res) => {
     try {
       const { email, password } = req.body
       const user = await isAuthenticated({ email, password })

@@ -1,3 +1,5 @@
+# https://swagger.io/docs/specification/using-ref/
+# https://swagger.io/docs/specification/describing-request-body/file-upload/
 swagger: "2.0"
 info:
   version: "0.0.1"
@@ -7,8 +9,6 @@ host: 127.0.0.1:3000
 # basePath prefixes all resource paths
 basePath: /
 tags:
-  - name: "Base"
-    description: "Base path controller"
   - name: "Auth"
     description: "Auth path controller"
   - name: "Api"
@@ -28,12 +28,12 @@ consumes:
 produces:
   - application/json
 paths:
-  /signup:
+  /auth/signup:
     post:
       # x-swagger-router-controller: "Job"
       # operationId: "DoLogin"
       tags:
-      - "Base"
+      - "Auth"
       parameters:
       - in: "body"
         name: "my_cred"
@@ -56,7 +56,8 @@ paths:
         description: "login credentials"
         required: true
         schema:
-          $ref: "#/definitions/LoginCredentials"
+          $ref: "http://127.0.0.1:3000/api-docs/test.yaml#/definitions/LoginCredentials"
+          # $ref: "#/definitions/LoginCredentials"
       responses:
         "200":
           description: "Success"
@@ -90,10 +91,10 @@ paths:
             $ref: "#/definitions/LoginResponse"
         "401":
           description: "OTP Error"
-  /logout:
+  /auth/logout:
     get:
       tags:
-      - "Base"
+      - "Auth"
       security:
         - Bearer: []
       responses:

@@ -4,7 +4,7 @@
 
 Do not add to req because you do not have access to req in websocket
 
-1. Do not add to app?
+2. Do not add to app?
 
 app cannot be used globally and should not be exported by the main index.js
 
@@ -18,22 +18,26 @@ app cannot be used globally and should not be exported by the main index.js
 
 ### Simple Table Schema
  * authors - id, name
+ 1, author1
+ 2, author2
+
  * categories - id, name
+ 1, cat1
+ 2, cat2
+
  * books - id, name, categoryId
+ 1, book1, 1
+ 2, book2, 1
+
  * pages - id, name, bookId
+ 1, pageA, 1
+ 2, pageB, 1
+ 3, pageC, 2
+ 4, pageD, 2
+ 5, pageE, 2
+
  * book_author - bookId, authorId
-
-categories - customers
-authors - items
-pages - orderline
-books - orders
-
-customers - id, name, address, contact
-items - id, name, sku, price
-orders - id, date, customerId, totalPrice
-lines - id, orderId, quantity, price, tax, totalAmount (WIP)
-line_item - lineId, itemId
-
-orders <- 1 --- 1 -> customers
-orders <- M --- N -> items
-orders <- 1 --- M -> ?
+ 1, 1
+ 1, 2
+ 2, 1
+ 2, 2

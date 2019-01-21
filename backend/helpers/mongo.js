@@ -1,7 +1,7 @@
 // const ObjectID = require('mongodb').ObjectID
 let mongo
 
-console.log('MONGO_URL', process.env.MONGO_URL)
+console.log('MONGO_URL', process.env.MONGO_URL) // TBD: if undefined?
 
 if (!mongo) {
   try {

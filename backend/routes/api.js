@@ -7,7 +7,34 @@ const Book = require('../models/Book')
 const Author = require('../models/Author')
 const Page = require('../models/Page')
 
+const multer = require('multer')
+const mongo = require('../helpers/mongo')
+const UPLOAD_PATH = 'uploads/';
+const upload = multer({ dest: `${UPLOAD_PATH}` }); // multer configuration
+
 apiRoutes
+  .get('/test', async (req,res) => {
+    try {
+      results = await mongo.db().collection('users').find({}).toArray()
+      console.log(results)
+    } catch (e) {
+      console.log(e)
+    }
+    // console.log('mongo connected:', !!mongo)
+    res.status(200).json({ message: 'Test' })
+  })
+  // test uploads
+  .post('/upload', upload.single('avatar'), async (req,res) => { // avatar is form input name
+    console.log(req.file, req.body)
+    res.status(200).json({ message: 'Uploaded' })
+  })
+  .post('/uploads', upload.array('photos', 3), function (req, res, next) {
+    console.log(req.files)
+    res.status(200).json({ message: 'Uploaded' })
+    // req.files is array of `photos` files
+    // req.body will contain the text fields, if there were any
+  })
+
   // authors
   .post('/authors', async (req, res) => {
     try {
