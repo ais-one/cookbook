@@ -1,0 +1,341 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: Udemy Rest API
+tags:
+  - name: Author
+    description: Author path controller
+  - name: Auth
+    description: Authorization path controller
+paths:
+  /api/authors:
+    $ref: "http://127.0.0.1:3000/api-docs/author.yaml#/AuthorController"
+  "/api/authors/{id}":
+    $ref: http://127.0.0.1:3000/api-docs/author.yaml#/AuthorControllerWithId
+  /auth/signup:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginCredentials"
+        description: signup credentials
+        required: true
+      responses:
+        "201":
+          description: Success
+        "500":
+          description: Error
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: http://127.0.0.1:3000/api-docs/body.yaml#/definitions/LoginCredentials
+        description: login credentials
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Auth Error
+        "500":
+          description: Service Error
+  /auth/otp:
+    post:
+      tags:
+        - Auth
+      security:
+        - Bearer:
+            []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pin:
+                  type: string
+                  description: OTP
+        description: otp credentials
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: OTP Error
+  /auth/logout:
+    get:
+      tags:
+        - Auth
+      security:
+        - Bearer:
+            []
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Service Error
+  # /api/authors:
+  #   get:
+  #     tags:
+  #       - Api
+  #     parameters:
+  #       - in: query
+  #         description: page limit
+  #         name: limit
+  #         required: false
+  #         schema:
+  #           type: integer
+  #       - in: query
+  #         description: page size
+  #         name: page
+  #         required: false
+  #         schema:
+  #           type: integer
+  #     responses:
+  #       "200":
+  #         description: Array of authors
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #       default:
+  #         description: Error
+  /user:
+    get:
+      tags:
+        - User
+      security:
+        - Bearer:
+            []
+      parameters:
+        - in: query
+          description: search using email
+          name: email
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Array of users
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          description: Error
+    post:
+      tags:
+        - User
+      security:
+        - Bearer:
+            []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginCredentials"
+        description: create user info
+        required: true
+      responses:
+        "201":
+          description: Create user
+        default:
+          description: Error
+  "/user/{id}":
+    get:
+      tags:
+        - User
+      security:
+        - Bearer:
+            []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Get user
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          description: Error
+    put:
+      security:
+        - Bearer:
+            []
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+        required: true
+      responses:
+        "200":
+          description: Updated
+        default:
+          description: Error
+    delete:
+      security:
+        - Bearer:
+            []
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+        default:
+          description: Error
+  /resource:
+    get:
+      tags:
+        - Resource
+      security:
+        - Bearer:
+            []
+      parameters:
+        - in: query
+          description: create date start
+          name: from
+          required: false
+          schema:
+            type: string
+        - in: query
+          description: create date end
+          name: to
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Array of resources
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          description: Error
+    post:
+      tags:
+        - Resource
+      security:
+        - Bearer:
+            []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+        description: creator user uid
+      responses:
+        "201":
+          description: Create resource
+        default:
+          description: Error
+  "/resource/{id}":
+    get:
+      tags:
+        - Resource
+      security:
+        - Bearer:
+            []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Get resource
+          content:
+            application/json:
+              schema:
+                type: object
+        default:
+          description: Error
+    delete:
+      security:
+        - Bearer:
+            []
+      tags:
+        - Resource
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Deleted
+        default:
+          description: Error
+servers:
+  - url: http://127.0.0.1:3000/
+  - url: https://127.0.0.1:3000/
+components:
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+  schemas:
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT
+    LoginCredentials:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    UserUpdate:
+      type: object
+      properties:
+        quotaAllocated:
+          type: integer
+    ErrorResponse:
+      type: object

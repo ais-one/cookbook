@@ -22,7 +22,7 @@ const https = require('https')
 
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
-const swaggerDocument = YAML.load('./docs/swagger.yaml')
+const swaggerDocument = YAML.load('./docs/openapi.yaml')
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions

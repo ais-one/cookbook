@@ -56,7 +56,7 @@ paths:
         description: "login credentials"
         required: true
         schema:
-          $ref: "http://127.0.0.1:3000/api-docs/test.yaml#/definitions/LoginCredentials"
+          $ref: "http://127.0.0.1:3000/api-docs/body.yaml#/definitions/LoginCredentials"
           # $ref: "#/definitions/LoginCredentials"
       responses:
         "200":
@@ -351,9 +351,9 @@ definitions:
         description: "JWT"
   LoginCredentials:
     type: "object"
-#    required:
-#      - email
-#      - password
+    required:
+      - email
+      - password
     properties:
       email:
         type: "string"

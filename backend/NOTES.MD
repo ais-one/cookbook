@@ -41,3 +41,36 @@ app cannot be used globally and should not be exported by the main index.js
  1, 2
  2, 1
  2, 2
+
+
+* POST /auth/signup
+* POST /auth/login
+* GET /auth/logout
+* POST /auth/otp
+
+POST /api/authors
+PATCH /api/authors/:id
+GET /api/authors/:id
+GET /api/authors
+
+POST /api/categories
+PATCH /api/categories/:id
+GET /api/categories/:id
+GET /api/categories
+
+POST /api/books
+PATCH /api/books/:id
+GET /api/books/:id
+GET /api/books
+
+POST /books/:id/pages - add page to book
+DELETE /pages/:id
+PATCH /pages/:id
+
+POST /books/:id/authors/:authorId - relate author to book
+DELETE /books/:id/authors/:authorId - unrelate author to book
+
+GET /api/test
+POST /api/upload
+POST /api/uploads
+

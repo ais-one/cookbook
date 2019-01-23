@@ -6,6 +6,7 @@ const { authUser } = require('../middleware/auth')
 const Book = require('../models/Book')
 const Author = require('../models/Author')
 const Page = require('../models/Page')
+const Category = require('../models/Category')
 
 const multer = require('multer')
 const mongo = require('../helpers/mongo')
@@ -68,6 +69,40 @@ apiRoutes
         // .orderBy
         .page(page, limit);
       res.status(200).json(authors)  
+    } catch (e) { }
+    return res.status(500).json()
+  })
+
+  // categories
+  .post('/categories', async (req, res) => {
+    try {
+      const category = await Category.query().insert(req.body)
+      if (category) return res.status(201).json(category)
+    } catch (e) { }
+    return res.status(500).json()
+  })
+  .patch('/categories/:id', async (req, res) => {
+    try {
+      const category = await Category.query().patchAndFetchById(req.params.id, req.body)
+      if (category) return res.status(200).json(category)
+      else return res.status(404).json()
+    } catch (e) { }
+    return res.status(500).json()
+  })
+  .get('/categories/:id', async (req, res) => {
+    try {
+      const category = await Category.query().findById(req.params.id);
+      if (category) return res.status(404).json()
+      else return res.status(200).json(category)
+    } catch (e) { }
+    return res.status(500).json()
+  })
+  .get('/categories', async (req, res) => {
+    try {
+      const limit = req.query.limit ? req.query.limit : 2
+      const page = req.query.page ? req.query.page : 0
+      const categories = await Category.query().page(page, limit);
+      res.status(200).json(categories)  
     } catch (e) { }
     return res.status(500).json()
   })
@@ -195,9 +230,6 @@ apiRoutes
   })
   .delete('/authors/:id', async (req, res) => {
     await Author.query().deleteById(req.params.id)
-  })
-  .delete('/pages/:id', async (req, res) => {
-    await Page.query().deleteById(req.params.id)
   })
 
 module.exports = apiRoutes

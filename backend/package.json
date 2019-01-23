@@ -10,6 +10,7 @@
     "prod-start": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"cd ~/api; authbind --deep pm2 start --only api --env production;\"",
     "prod-stop": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"cd ~/api; pm2 delete api;\"",
     "prod-nodemon": "sudo NODE_ENV=production nodemon server.js",
+    "prod": "npm run prod-stop&&npm run prod-deploy&&npm run prod-start",
     "example": "pm2 delete APP1 APP2 && pm2 start --only APP1,APP2 --env production"
   },
   "engines": {
