@@ -21,12 +21,12 @@ Roadmap and latest updates can be found on the <a href="https://github.com/ais-o
 
 ## Examples To Get You Up And Running
 
-See the respective README.md files for more information on starting
+See the respective README.MD files for more information on starting
 
- * Serverless (best for starters) - https://github.com/ais-one/vue-crud-x/tree/master/example
- * REST (README.md work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
- * NUXT (README.md work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
- * Backend Project - https://github.com/ais-one/vue-crud-x/tree/master/backend (common backend used by both REST and NUXT)
+ * Serverless (best for starters, use Firebase as backend) - https://github.com/ais-one/vue-crud-x/tree/master/example
+ * Backend Project (backend for REST and NUXT examples) - https://github.com/ais-one/vue-crud-x/tree/master/backend
+ * REST (README.MD work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
+ * NUXT (README.MD work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
 
 ## Differentiating Features From Other CRUD Components
 
