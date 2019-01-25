@@ -18,11 +18,20 @@ npx knex migrate:latest --env development
 npx knex seed:run --env development
 ```
 
-4. Run the server 
+4. Run the server
+
+4.1 Windows
 
 ```
 npm run dev
 ```
+
+4.2 Linux
+
+```
+NODE_ENV=development nodemon index.js
+```
+
 
 5. Test Out The REST APIs
 
