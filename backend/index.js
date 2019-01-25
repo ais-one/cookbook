@@ -35,7 +35,12 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public')) // for html content
 
 app.use('/api-docs', express.static('docs')) // for OpenAPI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument)) // for OpenAPI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { // for OpenAPI
+  swaggerOptions: {
+    docExpansion: 'none'
+  },  
+  explorer: true 
+}))
 
 // const {db, auth} = require('./firebase') // no longer need to do this
 // app.db = db

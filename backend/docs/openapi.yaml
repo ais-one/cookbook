@@ -3,309 +3,48 @@ info:
   version: 0.0.1
   title: Udemy Rest API
 tags:
-  - name: Author
-    description: Author path controller
   - name: Auth
     description: Authorization path controller
+  - name: Author
+    description: Author path controller
+  - name: Category
+    description: Category path controller
+  - name: Book
+    description: Book path controller
+  - name: Page
+    description: Page path controller
 paths:
+  # Author
   /api/authors:
     $ref: "http://127.0.0.1:3000/api-docs/author.yaml#/AuthorController"
   "/api/authors/{id}":
-    $ref: http://127.0.0.1:3000/api-docs/author.yaml#/AuthorControllerWithId
+    $ref: "http://127.0.0.1:3000/api-docs/author.yaml#/AuthorControllerWithId"
+  # Category
+  /api/categories:
+    $ref: "http://127.0.0.1:3000/api-docs/category.yaml#/CategoryController"
+  "/api/categories/{id}":
+    $ref: "http://127.0.0.1:3000/api-docs/category.yaml#/CategoryControllerWithId"
+  # Book
+  /api/books:
+    $ref: "http://127.0.0.1:3000/api-docs/book.yaml#/BookController"
+  "/api/books/{id}":
+    $ref: "http://127.0.0.1:3000/api-docs/book.yaml#/BookWithIdController"
+  "/api/books/{id}/authors/{authorId}":
+    $ref: "http://127.0.0.1:3000/api-docs/book.yaml#/BookWithIdWithAuthorWithAuthorIdController"
+  # Page
+  /api/books/{id}/pages:
+    $ref: "http://127.0.0.1:3000/api-docs/page.yaml#/BookWithIdWithPageController"
+  "/api/pages/{id}":
+    $ref: "http://127.0.0.1:3000/api-docs/page.yaml#/PageWithIdController"
+  # Auth
   /auth/signup:
-    post:
-      tags:
-        - Auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LoginCredentials"
-        description: signup credentials
-        required: true
-      responses:
-        "201":
-          description: Success
-        "500":
-          description: Error
+    $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/signup"
   /auth/login:
-    post:
-      tags:
-        - Auth
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: http://127.0.0.1:3000/api-docs/body.yaml#/definitions/LoginCredentials
-        description: login credentials
-        required: true
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LoginResponse"
-        "401":
-          description: Auth Error
-        "500":
-          description: Service Error
+    $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/login"
   /auth/otp:
-    post:
-      tags:
-        - Auth
-      security:
-        - Bearer:
-            []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                pin:
-                  type: string
-                  description: OTP
-        description: otp credentials
-        required: true
-      responses:
-        "200":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LoginResponse"
-        "401":
-          description: OTP Error
+    $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/otp"
   /auth/logout:
-    get:
-      tags:
-        - Auth
-      security:
-        - Bearer:
-            []
-      responses:
-        "200":
-          description: Success
-        default:
-          description: Service Error
-  # /api/authors:
-  #   get:
-  #     tags:
-  #       - Api
-  #     parameters:
-  #       - in: query
-  #         description: page limit
-  #         name: limit
-  #         required: false
-  #         schema:
-  #           type: integer
-  #       - in: query
-  #         description: page size
-  #         name: page
-  #         required: false
-  #         schema:
-  #           type: integer
-  #     responses:
-  #       "200":
-  #         description: Array of authors
-  #         content:
-  #           application/json:
-  #             schema:
-  #               type: object
-  #       default:
-  #         description: Error
-  /user:
-    get:
-      tags:
-        - User
-      security:
-        - Bearer:
-            []
-      parameters:
-        - in: query
-          description: search using email
-          name: email
-          required: false
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Array of users
-          content:
-            application/json:
-              schema:
-                type: object
-        default:
-          description: Error
-    post:
-      tags:
-        - User
-      security:
-        - Bearer:
-            []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LoginCredentials"
-        description: create user info
-        required: true
-      responses:
-        "201":
-          description: Create user
-        default:
-          description: Error
-  "/user/{id}":
-    get:
-      tags:
-        - User
-      security:
-        - Bearer:
-            []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Get user
-          content:
-            application/json:
-              schema:
-                type: object
-        default:
-          description: Error
-    put:
-      security:
-        - Bearer:
-            []
-      tags:
-        - User
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserUpdate"
-        required: true
-      responses:
-        "200":
-          description: Updated
-        default:
-          description: Error
-    delete:
-      security:
-        - Bearer:
-            []
-      tags:
-        - User
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Deleted
-        default:
-          description: Error
-  /resource:
-    get:
-      tags:
-        - Resource
-      security:
-        - Bearer:
-            []
-      parameters:
-        - in: query
-          description: create date start
-          name: from
-          required: false
-          schema:
-            type: string
-        - in: query
-          description: create date end
-          name: to
-          required: false
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Array of resources
-          content:
-            application/json:
-              schema:
-                type: object
-        default:
-          description: Error
-    post:
-      tags:
-        - Resource
-      security:
-        - Bearer:
-            []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                uid:
-                  type: string
-        description: creator user uid
-      responses:
-        "201":
-          description: Create resource
-        default:
-          description: Error
-  "/resource/{id}":
-    get:
-      tags:
-        - Resource
-      security:
-        - Bearer:
-            []
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Get resource
-          content:
-            application/json:
-              schema:
-                type: object
-        default:
-          description: Error
-    delete:
-      security:
-        - Bearer:
-            []
-      tags:
-        - Resource
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Deleted
-        default:
-          description: Error
+    $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/logout"
 servers:
   - url: http://127.0.0.1:3000/
   - url: https://127.0.0.1:3000/
@@ -316,26 +55,6 @@ components:
       name: Authorization
       in: header
   schemas:
-    LoginResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          description: JWT
-    LoginCredentials:
-      type: object
-      required:
-        - email
-        - password
-      properties:
-        email:
-          type: string
-        password:
-          type: string
-    UserUpdate:
-      type: object
-      properties:
-        quotaAllocated:
-          type: integer
     ErrorResponse:
+      description: Default error response
       type: object

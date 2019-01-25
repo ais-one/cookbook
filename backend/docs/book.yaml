@@ -1,7 +1,8 @@
-AuthorController:
+BookController:
   get:
+    summary: Get books
     tags:
-      - Author
+      - Book
     security:
       - Bearer:
           []
@@ -20,7 +21,7 @@ AuthorController:
           type: integer
     responses:
       "200":
-        description: Get Authors
+        description: Get books
         content:
           application/json:
             schema:
@@ -28,10 +29,10 @@ AuthorController:
       default:
         description: Error
   post:
-    summary: Create Author
-    description: Create An Author
+    summary: Create Book
+    description: Create A book
     tags:
-      - Author
+      - Book
     security:
       - Bearer:
           []
@@ -39,20 +40,21 @@ AuthorController:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/BodyAuthorPost"
-      description: Create Author
+            $ref: "#/components/schemas/BodyBookPost"
+      description: Create book
       required: true
     responses:
       "201":
         description: Success
       "500":
         $ref: "http://127.0.0.1:3000/api-docs/defaults.yaml#/definitions/DefaultResponse"
-AuthorControllerWithId:
+BookWithIdController:
   patch:
     security:
-      - Bearer: []
+      - Bearer:
+          []
     tags:
-      - Author
+      - Book
     parameters:
       - in: path
         name: id
@@ -72,7 +74,7 @@ AuthorControllerWithId:
         description: Error
   get:
     tags:
-      - Author
+      - Book
     security:
       - Bearer:
           []
@@ -84,19 +86,80 @@ AuthorControllerWithId:
           type: string
     responses:
       "200":
-        description: Get Author
+        description: Get book
         content:
           application/json:
             schema:
               type: object
   # NOT IMPLMEMENTED delete:
+BookWithIdWithAuthorWithAuthorIdController:
+  post:
+    description: Relate author to a book
+    security:
+      - Bearer: []
+    tags:
+      - Book
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: authorId
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+      required: true
+    responses:
+      "201":
+        description: Updated
+      default:
+        description: Error
+  patch:
+    description: Unrelate author to a book
+    security:
+      - Bearer: []
+    tags:
+      - Book
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: authorId
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+      required: true
+    responses:
+      "200":
+        description: Updated
+      default:
+        description: Error
 components:
   schemas:
-    BodyAuthorPost:
+    BodyBookPost:
       type: object
       required:
         - name
+        - categoryId
       properties:
         name:
           type: string
-          description: The Author Name
+          description: The book name
+        categoryId:
+          type: integer
+          description: The book category Id

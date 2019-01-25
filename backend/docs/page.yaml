@@ -1,58 +1,29 @@
-AuthorController:
-  get:
-    tags:
-      - Author
-    security:
-      - Bearer:
-          []
-    parameters:
-      - in: query
-        description: page limit
-        name: limit
-        required: false
-        schema:
-          type: integer
-      - in: query
-        description: page size
-        name: page
-        required: false
-        schema:
-          type: integer
-    responses:
-      "200":
-        description: Get Authors
-        content:
-          application/json:
-            schema:
-              type: object
-      default:
-        description: Error
+BookWithIdWithPageController:
   post:
-    summary: Create Author
-    description: Create An Author
+    summary: Create page in a book
+    description: Create page in a book
     tags:
-      - Author
+      - Page
     security:
-      - Bearer:
-          []
+      - Bearer: []
     requestBody:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/BodyAuthorPost"
-      description: Create Author
+            $ref: "#/components/schemas/BodyPagePost"
+      description: Create page in a book
       required: true
     responses:
       "201":
         description: Success
       "500":
         $ref: "http://127.0.0.1:3000/api-docs/defaults.yaml#/definitions/DefaultResponse"
-AuthorControllerWithId:
+PageWithIdController:
   patch:
     security:
       - Bearer: []
     tags:
-      - Author
+      - Page
     parameters:
       - in: path
         name: id
@@ -70,12 +41,11 @@ AuthorControllerWithId:
         description: Updated
       default:
         description: Error
-  get:
+  delete:
     tags:
-      - Author
+      - Page
     security:
-      - Bearer:
-          []
+      - Bearer: []
     parameters:
       - in: path
         name: id
@@ -84,19 +54,22 @@ AuthorControllerWithId:
           type: string
     responses:
       "200":
-        description: Get Author
+        description: Delete page
         content:
           application/json:
             schema:
               type: object
-  # NOT IMPLMEMENTED delete:
 components:
   schemas:
-    BodyAuthorPost:
+    BodyPagePost:
       type: object
       required:
         - name
+        - bookId
       properties:
         name:
           type: string
-          description: The Author Name
+          description: The page name
+        bookId:
+          type: integer
+          description: The book Id

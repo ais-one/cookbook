@@ -1,0 +1,101 @@
+AuthController:
+  login:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginCredentials"
+        description: login credentials
+        required: true
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: Auth Error
+        "500":
+          description: Service Error
+  otp:
+    post:
+      tags:
+        - Auth
+      security:
+        - Bearer:
+            []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pin:
+                  type: string
+                  description: OTP
+        description: otp credentials
+        required: true
+      responses:
+        "200":
+          description: OTP Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "401":
+          description: OTP Error
+  logout:
+    get:
+      tags:
+        - Auth
+      security:
+        - Bearer:
+            []
+      responses:
+        "200":
+          description: Logout Success
+        default:
+          description: Logout Error
+  signup:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginCredentials"
+        description: signup credentials
+        required: true
+      responses:
+        "201":
+          description: Signup Success
+        "500":
+          description: Signup Error
+components:
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+  schemas:
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT
+    LoginCredentials:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string

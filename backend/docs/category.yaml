@@ -1,7 +1,8 @@
-AuthorController:
+CategoryController:
+  summary: Get Categories
   get:
     tags:
-      - Author
+      - Category
     security:
       - Bearer:
           []
@@ -20,7 +21,7 @@ AuthorController:
           type: integer
     responses:
       "200":
-        description: Get Authors
+        description: Get Categories
         content:
           application/json:
             schema:
@@ -28,10 +29,10 @@ AuthorController:
       default:
         description: Error
   post:
-    summary: Create Author
-    description: Create An Author
+    summary: Create Category
+    description: Create A Category
     tags:
-      - Author
+      - Category
     security:
       - Bearer:
           []
@@ -39,20 +40,20 @@ AuthorController:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/BodyAuthorPost"
-      description: Create Author
+            $ref: "#/components/schemas/BodyCategoryPost"
+      description: Create Category
       required: true
     responses:
       "201":
         description: Success
       "500":
         $ref: "http://127.0.0.1:3000/api-docs/defaults.yaml#/definitions/DefaultResponse"
-AuthorControllerWithId:
+CategoryControllerWithId:
   patch:
     security:
       - Bearer: []
     tags:
-      - Author
+      - Category
     parameters:
       - in: path
         name: id
@@ -72,7 +73,7 @@ AuthorControllerWithId:
         description: Error
   get:
     tags:
-      - Author
+      - Category
     security:
       - Bearer:
           []
@@ -84,7 +85,7 @@ AuthorControllerWithId:
           type: string
     responses:
       "200":
-        description: Get Author
+        description: Get Category
         content:
           application/json:
             schema:
@@ -92,11 +93,11 @@ AuthorControllerWithId:
   # NOT IMPLMEMENTED delete:
 components:
   schemas:
-    BodyAuthorPost:
+    BodyCategoryPost:
       type: object
       required:
         - name
       properties:
         name:
           type: string
-          description: The Author Name
+          description: The Category Name
