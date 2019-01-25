@@ -11,6 +11,21 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
+### Version 0.1.7
+ * work in progress: Frontend REST example
+   * TBD - Nuxt (SPA first then transition to SSR)
+   * TBD - Vanilla VueJS
+ * work in progress: RESTful++ Backend For Testing
+   * Non-essential items
+     * WIP - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
+     * TBD - Multiple File upload example (to local folder)
+     * TBD - Single File upload example (to firestore)
+     * TBD - Graphql
+     * TBD - Logging
+     * TBD- Security Improvements
+     * TBD - Social Logins
+ * chore: implement testing
+
 ### Version 0.1.6
  * chore: update npm packages (vuetify@1.4.3)
  * fix: (issue 44) metadata from firestore
