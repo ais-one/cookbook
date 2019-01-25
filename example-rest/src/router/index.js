@@ -12,6 +12,7 @@ import Dashboard from '@/pages/Dashboard'
 // import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
 // import * as reportsDefs from '@/components/reports'
 import Reports from '@/pages/Reports'
+import * as authorDefs from '@/pages/author'
 
 Vue.use(Router)
 
@@ -30,6 +31,13 @@ export default new Router({
     //   component: VueCrudX,
     //   props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...reportsDefs } }
     // },
+    {
+      path: '/authors',
+      name: 'authors',
+      component: VueCrudX,
+      beforeEnter: AuthGuard,
+      props: (route) => ({ storeName: route.name, parentId: route.params.parentId || null, ...authorDefs })
+    },
     {
       path: '/reports',
       name: 'reports',

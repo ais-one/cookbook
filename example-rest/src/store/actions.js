@@ -10,7 +10,7 @@ export default {
     let rv = null
     const { email, password } = payload
     try {
-      rv = await http.post('/signup', { email, password })
+      rv = await http.post('/auth/signup', { email, password })
     } catch (e) { }
     commit('setLoading', false)
     if (rv) {
@@ -59,7 +59,7 @@ export default {
     if (payload.forced) { // auth failure detected
     } else { // logout button clicked
       try {
-        await http.get('/logout')
+        await http.get('/auth/logout')
       } catch (e) {
         if (!e.response || e.response.status === 401) { // server or authorization error
           // ok please continue

@@ -5,31 +5,34 @@
   "author": "Aaron Gong <aaronjxz@gmail.com>",
   "private": true,
   "scripts": {
+    "rest": "cd ../backend&&npm run-script dev",
     "serve": "vue-cli-service serve",
     "prod": "vue-cli-service build --mode production && scp -r -i ../../test.pem dist/* ubuntu@127.0.0.3:~/app/public",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "start": "concurrently \"npm run rest\" \"npm run serve\""
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "date-fns": "^1.29.0",
+    "date-fns": "^1.30.1",
     "jwt-decode": "^2.2.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.omit": "^4.5.0",
-    "vue": "^2.5.13",
+    "vue": "^2.5.22",
     "vue-authenticate": "^1.3.4",
     "vue-crud-x": "latest",
-    "vue-i18n": "^8.1.0",
-    "vue-native-websocket": "^2.0.11",
-    "vue-router": "^3.0.1",
+    "vue-i18n": "^8.7.0",
+    "vue-native-websocket": "^2.0.12",
+    "vue-router": "^3.0.2",
     "vuetify": "^1.4.3",
-    "vuex": "^3.0.1"
+    "vuex": "^3.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-beta.15",
     "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
     "@vue/cli-service": "^3.0.0-beta.15",
-    "@vue/eslint-config-standard": "^3.0.0-rc.3",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "concurrently": "^4.1.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue-template-compiler": "^2.5.16"

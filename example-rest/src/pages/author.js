@@ -1,0 +1,122 @@
+import { makeCsvRow, exportCsv } from '@/assets/util'
+import { http } from '@/axios'
+import { format } from 'date-fns'
+// import {app} from '@/main' // to use store, router, i18n, etc...
+// import i18n from '@/lang' // to use store, router, i18n, etc...
+// console.log(app, i18n, i18n.messages[i18n.locale])
+
+export const crudTable = {
+  actionColumn: false,
+  addrowCreate: false,
+  // inline: false,
+  confirmCreate: true,
+  confirmUpdate: true,
+  confirmDelete: true,
+  headers: [
+    { text: 'Author Name', value: 'name', class: 'pa-1' },
+  ],
+  formatters: (value, _type) => value,
+  doPage: true,
+}
+
+export const crudFilter = {
+  hasFilterVue: false,
+  FilterVue: null,
+  filterData: { }
+}
+
+export const crudForm = {
+  FormVue: null,
+  formAutoData: {
+    id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
+    name: {
+      type: 'v-text-field',
+      attrs: {
+        label: 'Name',
+        rules: [v => !!v || 'Item is required']
+      },
+      halfSize: false
+    }
+  },
+  defaultRec: () => ({
+    id: '',
+    name: ''
+  })
+}
+
+export const crudOps = { // CRUD
+  export: async (payload) => {
+    const { filterData } = payload // pagination
+    try {
+      let dbCol = firestore.collection('party') // create index
+        .where('status', '==', filterData.active.value)
+      const rv = await dbCol.limit(50).get()
+
+      let csvContent = ''
+      rv.forEach(record => {
+        let tmp = record.data()
+        csvContent = makeCsvRow(csvContent, tmp, `\r\n`, ';')
+      })
+      exportCsv(csvContent, 'party.csv')
+    } catch (e) { }
+  },
+  find: async (payload) => {
+    console.log('find', payload)
+    let records = []
+    const { pagination, filterData } = payload
+    try {
+      const rv = await http.get('/api/author') // page, limit
+      console.log(rv)
+      // rv.forEach(record => {
+      //   let tmp = record.data()
+      //   records.push({ id: record.id, ...tmp })
+      // })
+    } catch (e) {
+      console.log(e)
+    }
+    return { records, pagination }
+  },
+  findOne: async (payload) => {
+    console.log('findOne', payload)
+    // const { id } = payload
+    let record = { }
+    // try {
+    //   const doc = await firestore.collection('party').doc(id).get()
+    //   if (doc.exists) {
+    //     record = doc.data()
+    //     record.id = id
+    //   }
+    // } catch (e) { }
+    return record
+  },
+  create: async (payload) => {
+    try {
+      console.log(payload)
+      // const rv = await http.post('/api/author', payload)
+    } catch (e) {
+      return 500
+    }
+    // return { // EXAMPLE return object with code property omitted
+    //   ok: true,
+    //   msg: 'OK'
+    // }
+    return 201
+  },
+  update: async (payload) => {
+    let { record: { id, ...noIdData } } = payload
+    const docRef = firestore.collection('party').doc(id)
+    try {
+      await firestore.runTransaction(async t => {
+        const doc = await t.get(docRef)
+        if (!doc.exists) throw new Error(409)
+        if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
+        await t.set(docRef, noIdData)
+      })
+    } catch (e) {
+      if (parseInt(e.message) === 409) return 409
+      else return 500
+    }
+    return 200
+  },
+  delete: null // TBD if delete, must also delete all dependancies, move all buttons to right?
+}
