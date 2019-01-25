@@ -24,15 +24,20 @@ npx knex seed:run --env development
 npm run dev
 ```
 
+5. Test Out The REST APIs
+
+http://127.0.0.1:3000/api-docs
+
+
 ## Backend Notes
 
-1. Do not add to req
+1. Add to req?
 
 Do not add to req because you do not have access to req in websocket
 
-2. Do not add to app?
+2. Add to app?
 
-app cannot be used globally and should not be exported by the main index.js
+Do not add to app because app is not global and needs to be exported for other modules to use
 
 
 ### Database Schema

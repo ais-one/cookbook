@@ -31,6 +31,7 @@
  * work in progress: Frontend REST example
    * TBD - Nuxt (SPA first then transition to SSR)
    * TBD - Vanilla VueJS
+ * chore: implement testing
 
 ### Version 0.1.5
  * chore: upgraded to vuetify 1.4.1
