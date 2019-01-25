@@ -11,6 +11,28 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
+### Version 0.1.6
+ * chore: update npm packages (vuetify@1.4.3)
+ * fix: (issue 44) metadata from firestore
+ * work in progress: RESTful++ Backend For Testing
+   * Priority Items
+     * Done - Use ObjectionJS + SQLite for example, Mongo will have basic example with reconnect, and a simple find
+     * Done - Login & OTP, Key-Value Store for user token storage on server (can replace with redis)
+     * Done - Sample relational database implementation with (1-1, 1-m, m-n use cases) migrations, seeders, swagger documentation - Done
+     * Done - Implementation of RESTful routes
+   * Non-essential items
+     * WIP - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
+     * TBD - Multiple File upload example (to local folder)
+     * TBD - Single File upload example (to firestore)
+     * TBD - Graphql
+     * TBD - Logging
+     * TBD- Security Improvements
+     * TBD - Social Logins
+ * work in progress: Frontend REST example
+   * TBD - Nuxt (SPA first then transition to SSR)
+   * TBD - Vanilla VueJS
+ * chore: implement testing
+
 ### Version 0.1.5
  * chore: upgraded to vuetify 1.4.1
  * improvement: you can now customize table content, see @/pages/MultiCrud/Example.vue, Toggle Table button shows how it works

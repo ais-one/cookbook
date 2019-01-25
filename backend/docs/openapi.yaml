@@ -1,0 +1,60 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: Udemy Rest API
+tags:
+  - name: Auth
+    description: Authorization path controller
+  - name: Author
+    description: Author path controller
+  - name: Category
+    description: Category path controller
+  - name: Book
+    description: Book path controller
+  - name: Page
+    description: Page path controller
+paths:
+  # Author
+  /api/authors:
+    $ref: "http://127.0.0.1:3000/api-docs/author.yaml#/AuthorController"
+  "/api/authors/{id}":
+    $ref: "http://127.0.0.1:3000/api-docs/author.yaml#/AuthorControllerWithId"
+  # Category
+  /api/categories:
+    $ref: "http://127.0.0.1:3000/api-docs/category.yaml#/CategoryController"
+  "/api/categories/{id}":
+    $ref: "http://127.0.0.1:3000/api-docs/category.yaml#/CategoryControllerWithId"
+  # Book
+  /api/books:
+    $ref: "http://127.0.0.1:3000/api-docs/book.yaml#/BookController"
+  "/api/books/{id}":
+    $ref: "http://127.0.0.1:3000/api-docs/book.yaml#/BookWithIdController"
+  "/api/books/{id}/authors/{authorId}":
+    $ref: "http://127.0.0.1:3000/api-docs/book.yaml#/BookWithIdWithAuthorWithAuthorIdController"
+  # Page
+  /api/books/{id}/pages:
+    $ref: "http://127.0.0.1:3000/api-docs/page.yaml#/BookWithIdWithPageController"
+  "/api/pages/{id}":
+    $ref: "http://127.0.0.1:3000/api-docs/page.yaml#/PageWithIdController"
+  # Auth
+  /auth/signup:
+    $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/signup"
+  /auth/login:
+    $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/login"
+  /auth/otp:
+    $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/otp"
+  /auth/logout:
+    $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/logout"
+servers:
+  - url: http://127.0.0.1:3000/
+  - url: https://127.0.0.1:3000/
+components:
+  securitySchemes:
+    Bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+  schemas:
+    ErrorResponse:
+      description: Default error response
+      type: object

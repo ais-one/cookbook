@@ -1,5 +1,13 @@
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
+# UPDATE NOTICE
+
+In order to keep this library current, we are monitoring the release progress for:
+ * VueJS 3
+ * Vuetify 2
+
+We will remove this notice once we have migrated to VueJS 3 & Vuetify 2
+
 # IMPORTANT: Getting Started - Article
 
 Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">detailed article</a> (usage and explanations in the article are also updated as and when required)
@@ -13,12 +21,12 @@ Roadmap and latest updates can be found on the <a href="https://github.com/ais-o
 
 ## Examples To Get You Up And Running
 
-See the respective README.md files for more information on starting
+See the respective README.MD files for more information on starting
 
- * Serverless (best for starters) - https://github.com/ais-one/vue-crud-x/tree/master/example
- * REST (README.md work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
- * NUXT (README.md work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
- * Backend Project - https://github.com/ais-one/vue-crud-x/tree/master/backend (common backend used by both REST and NUXT)
+ * Serverless (best for starters, use Firebase as backend) - https://github.com/ais-one/vue-crud-x/tree/master/example
+ * Backend Project (backend for REST and NUXT examples) - https://github.com/ais-one/vue-crud-x/tree/master/backend
+ * REST (README.MD work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
+ * NUXT (README.MD work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
 
 ## Differentiating Features From Other CRUD Components
 

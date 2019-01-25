@@ -1,0 +1,27 @@
+definitions:
+  DefaultResponse:
+    description: Default Response
+    content:
+      application/json:
+        schema: 
+          type: object
+          # type: array
+          #   items:
+          #   $ref: '#/components/schemas/VeryComplexType'
+  DefaultBody:
+    description: Default body content
+    type: object
+  DefaultPageLimit:
+    - in: query
+      description: page limit
+      name: limit
+      required: false
+      schema:
+        type: integer
+  DefaultPageSize:
+    - in: query
+      description: page size
+      name: page
+      required: false
+      schema:
+        type: integer

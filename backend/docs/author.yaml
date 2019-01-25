@@ -1,0 +1,102 @@
+AuthorController:
+  get:
+    tags:
+      - Author
+    security:
+      - Bearer:
+          []
+    parameters:
+      - in: query
+        description: page limit
+        name: limit
+        required: false
+        schema:
+          type: integer
+      - in: query
+        description: page size
+        name: page
+        required: false
+        schema:
+          type: integer
+    responses:
+      "200":
+        description: Get Authors
+        content:
+          application/json:
+            schema:
+              type: object
+      default:
+        description: Error
+  post:
+    summary: Create Author
+    description: Create An Author
+    tags:
+      - Author
+    security:
+      - Bearer:
+          []
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BodyAuthorPost"
+      description: Create Author
+      required: true
+    responses:
+      "201":
+        description: Success
+      "500":
+        $ref: "http://127.0.0.1:3000/api-docs/defaults.yaml#/definitions/DefaultResponse"
+AuthorControllerWithId:
+  patch:
+    security:
+      - Bearer: []
+    tags:
+      - Author
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+      required: true
+    responses:
+      "200":
+        description: Updated
+      default:
+        description: Error
+  get:
+    tags:
+      - Author
+    security:
+      - Bearer:
+          []
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Get Author
+        content:
+          application/json:
+            schema:
+              type: object
+  # NOT IMPLMEMENTED delete:
+components:
+  schemas:
+    BodyAuthorPost:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The Author Name

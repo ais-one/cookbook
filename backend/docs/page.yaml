@@ -1,0 +1,75 @@
+BookWithIdWithPageController:
+  post:
+    summary: Create page in a book
+    description: Create page in a book
+    tags:
+      - Page
+    security:
+      - Bearer: []
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/BodyPagePost"
+      description: Create page in a book
+      required: true
+    responses:
+      "201":
+        description: Success
+      "500":
+        $ref: "http://127.0.0.1:3000/api-docs/defaults.yaml#/definitions/DefaultResponse"
+PageWithIdController:
+  patch:
+    security:
+      - Bearer: []
+    tags:
+      - Page
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+      required: true
+    responses:
+      "200":
+        description: Updated
+      default:
+        description: Error
+  delete:
+    tags:
+      - Page
+    security:
+      - Bearer: []
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Delete page
+        content:
+          application/json:
+            schema:
+              type: object
+components:
+  schemas:
+    BodyPagePost:
+      type: object
+      required:
+        - name
+        - bookId
+      properties:
+        name:
+          type: string
+          description: The page name
+        bookId:
+          type: integer
+          description: The book Id

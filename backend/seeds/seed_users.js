@@ -11,7 +11,7 @@ exports.seed = function(knex, Promise) {
           username: 'test',
           email: 'test',
           password: '$2b$12$Rr1kYTVjZ.9Mnz8EpvRHk.EccoXNtt574A5mwvDn97S5Gu2xIMFhO', // test
-          gaKey: 'IJFWQ4TVN5QUU3RZMZDXIU32NZXUWR2F',
+          gaKey: 'IZDXCUDYNQ4ESMZZNY4HGZSDJRAVGZCO',
           sms: '6596935500',
           // smsLastSent
           // smsOtpPin
