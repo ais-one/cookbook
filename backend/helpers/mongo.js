@@ -3,7 +3,7 @@ let mongo
 
 console.log('MONGO_URL', process.env.MONGO_URL) // TBD: if undefined?
 
-if (!mongo) {
+if (!mongo && process.env.MONGO_URL) {
   try {
     const url = process.env.MONGO_URL
     const MongoClient = require('mongodb').MongoClient

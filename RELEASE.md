@@ -12,13 +12,25 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.6
+ * chore: update npm packages (vuetify@1.4.3)
  * fix: (issue 44) metadata from firestore
- * work in progress: REST API Example (merge Nuxt & REST example, use Nuxt SPA - decision still in progress)
-   * Important: deciding whether to use MongoDB or SQLite - Will Use Both...
-   * Login - Done
-   * Show table - In progress
-   * Show nested table (one to many) - In progress
-   * Show table (many to many) - In progress
+ * work in progress: RESTful++ Backend For Testing
+   * Priority Items
+     * Done - Use ObjectionJS + SQLite for example, Mongo will have basic example with reconnect, and a simple find
+     * Done - Login & OTP, Key-Value Store for user token storage on server (can replace with redis)
+     * Done - Sample relational database implementation with (1-1, 1-m, m-n use cases) migrations, seeders, swagger documentation - Done
+     * Done - Implementation of RESTful routes
+   * Non-essential items
+     * WIP - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
+     * TBD - Multiple File upload example (to local folder)
+     * TBD - Single File upload example (to firestore)
+     * TBD - Graphql
+     * TBD - Logging
+     * TBD- Security Improvements
+     * TBD - Social Logins
+ * work in progress: Frontend REST example
+   * TBD - Nuxt (SPA first then transition to SSR)
+   * TBD - Vanilla VueJS
 
 ### Version 0.1.5
  * chore: upgraded to vuetify 1.4.1

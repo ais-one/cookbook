@@ -16,7 +16,7 @@ const upload = multer({ dest: `${UPLOAD_PATH}` }); // multer configuration
 apiRoutes
   .get('/test', async (req,res) => {
     try {
-      results = await mongo.db().collection('users').find({}).toArray()
+      results = mongo ? await mongo.db().collection('users').find({}).toArray() : []
       console.log(results)
     } catch (e) {
       console.log(e)
