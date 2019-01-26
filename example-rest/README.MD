@@ -1,9 +1,13 @@
-# Example
+# REST Example
 
-> A example project using vue-crud-x component
+> A REST example project using vue-crud-x component
 
 
 ## Quickstart
+
+**Pre-requisites**
+
+Please install REST backend using the README.MD in the "backend" project folder
 
 1. Rename .env-sample file to .env.development
 
@@ -13,13 +17,7 @@
 npm i
 ```
 
-3. Start The Server
-
-```
-npm run server
-```
-
-4. Run The App
+3. Start The Client & Server
 
 ```
 npm run start

@@ -14,8 +14,7 @@ export default {
     } catch (e) { }
     commit('setLoading', false)
     if (rv) {
-      // const newUser = {id: user.uid, email: payload.email}
-      // commit('setUser', newUser)
+      // TBD const newUser = {id: user.uid, email: payload.email} commit('setUser', newUser)
       commit('setError', { message: 'User Registered' })
     } else {
       commit('setError', { message: 'Error Signup' })
@@ -69,7 +68,6 @@ export default {
         }
       }
     }
-    delete http.defaults.headers.common['Authorization']
     commit('setUser', null)
     commit('setLayout', 'layout-default')
     router.push('/')
@@ -78,7 +76,6 @@ export default {
   },
 
   autoSignIn ({ commit }, payload) { // payload.token
-    http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
     commit('setUser', payload)
     if (!USE_OTP) {
       commit('setLayout', 'layout-admin')
@@ -87,7 +84,6 @@ export default {
   },
 
   autoVerify ({ commit }, payload) { // payload.token
-    http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
     commit('setUser', payload)
     commit('setLayout', 'layout-admin')
     router.push('/reports')
