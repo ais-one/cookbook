@@ -10,7 +10,7 @@ export const store = new Vuex.Store({
   },
   state: {
     layout: 'layout-default',
-    user: null, // token, verified, (id - maybe to remove) // localStorage.getItem('user-token') || null
+    user: null,
     loading: false,
     error: null,
     networkError: false

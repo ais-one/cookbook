@@ -29,7 +29,7 @@ http.interceptors.response.use((response) => {
   // console.log('intercept', JSON.stringify(error))
   if (error.response && error.response.status === 401) { // auth failed
     const myURL = new URL(error.config.url)
-    if (myURL.pathname !== '/logout' && myURL.pathname !== '/auth/otp') {
+    if (myURL.pathname !== '/auth/logout' && myURL.pathname !== '/auth/otp') {
       error.config.store.dispatch('logout', { forced: true })
     }
   }

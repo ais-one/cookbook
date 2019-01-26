@@ -28,7 +28,9 @@ export default {
     const { email, password } = payload
     try {
       rv = await http.post('/auth/login', { email, password })
-      dispatch('autoSignIn', rv.data) // token
+      const { data } = rv
+      data.verified = !USE_OTP
+      dispatch('autoSignIn', data) // token
     } catch (e) { }
     if (!rv) {
       commit('setError', { message: 'Sign In Error' })
@@ -42,12 +44,11 @@ export default {
     const { pin } = payload
     try {
       rv = await http.post('/auth/otp', { pin })
-      console.log('rv', rv)
-      // localStorage.setItem('user-token', token) // store the token in localstorage
-      dispatch('autoVerify', rv.data) // token
+      const { data } = rv
+      data.verified = true
+      dispatch('autoVerify', data) // token
     } catch (e) { }
     if (!rv) {
-      // localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possibl
       commit('setError', { message: 'Verify Error' })
     }
     commit('setLoading', false)
@@ -69,7 +70,6 @@ export default {
       }
     }
     delete http.defaults.headers.common['Authorization']
-    // localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possibl
     commit('setUser', null)
     commit('setLayout', 'layout-default')
     router.push('/')
@@ -78,10 +78,8 @@ export default {
   },
 
   autoSignIn ({ commit }, payload) { // payload.token
-    payload.verified = !USE_OTP
-    // console.log('autoSignIn', payload)
-    commit('setUser', payload)
     http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
+    commit('setUser', payload)
     if (!USE_OTP) {
       commit('setLayout', 'layout-admin')
       router.push('/reports')
@@ -89,9 +87,8 @@ export default {
   },
 
   autoVerify ({ commit }, payload) { // payload.token
-    payload.verified = true
-    commit('setUser', payload)
     http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
+    commit('setUser', payload)
     commit('setLayout', 'layout-admin')
     router.push('/reports')
   },
