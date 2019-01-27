@@ -9,7 +9,7 @@ const Page = require('../models/Page')
 const Category = require('../models/Category')
 
 const multer = require('multer')
-const mongo = require('../helpers/mongo')
+const mongo = require('../services/mongo')
 const UPLOAD_PATH = 'uploads/';
 const upload = multer({ dest: `${UPLOAD_PATH}` }); // multer configuration
 
@@ -67,21 +67,21 @@ apiRoutes
       const authors = await Author.query()
         // .where
         // .orderBy
-        .page(page, limit);
+        .page(page, limit)
       return res.status(200).json(authors)  
     } catch (e) { }
     return res.status(500).json()
   })
 
   // categories
-  .post('/categories', async (req, res) => {
+  .post('/categories', authUser, async (req, res) => {
     try {
       const category = await Category.query().insert(req.body)
       if (category) return res.status(201).json(category)
     } catch (e) { }
     return res.status(500).json()
   })
-  .patch('/categories/:id', async (req, res) => {
+  .patch('/categories/:id', authUser, async (req, res) => {
     try {
       const category = await Category.query().patchAndFetchById(req.params.id, req.body)
       if (category) return res.status(200).json(category)
@@ -89,7 +89,7 @@ apiRoutes
     } catch (e) { }
     return res.status(500).json()
   })
-  .get('/categories/:id', async (req, res) => {
+  .get('/categories/:id', authUser, async (req, res) => {
     try {
       const category = await Category.query().findById(req.params.id);
       if (category) return res.status(200).json(category)
@@ -97,7 +97,7 @@ apiRoutes
     } catch (e) { }
     return res.status(500).json()
   })
-  .get('/categories', async (req, res) => {
+  .get('/categories', authUser, async (req, res) => {
     try {
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
@@ -168,6 +168,7 @@ apiRoutes
         .joinRelation('category')
         // TBD count pages
         // TBD add authors
+        .page(page, limit)
 
       // console.log(books[0])
       return res.status(200).json(books)  

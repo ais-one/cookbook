@@ -12,9 +12,11 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.7
- * improvement: code refactor inprogress (make it easier to use)
+ * improvement: code refactor in progress (make it easier to use)
  * improvement: add slots for filter form and edit form
  * improvement: remove summary component (use slot instead)
+ * chore: version updates for Vuetify & VueJS
+ * chore: implement testing
  * work in progress: Frontend REST example
    * TBD - Nuxt (SPA first then transition to SSR)
    * TBD - Vanilla VueJS
@@ -27,7 +29,6 @@
      * TBD - Logging
      * TBD- Security Improvements
      * TBD - Social Logins
- * chore: implement testing
 
 ### Version 0.1.6
  * chore: update npm packages (vuetify@1.4.3)

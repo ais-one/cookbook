@@ -73,7 +73,7 @@ if (USE_HTTPS) {
 }
 
 const WebSocket = require('ws')
-const wss = require('./helpers/websocket')
+const wss = require('./services/websocket')
 
 wss.on('connection', function connection(ws) {
   console.log('connected')

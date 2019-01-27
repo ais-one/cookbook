@@ -14,6 +14,7 @@ import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want t
 import Reports from '@/pages/Reports'
 import * as authorDefs from '@/pages/author'
 import * as categoryDefs from '@/pages/category'
+import Book from '@/pages/Book'
 
 Vue.use(Router)
 
@@ -38,6 +39,12 @@ export default new Router({
       component: VueCrudX,
       beforeEnter: AuthGuard,
       props: (route) => ({ storeName: route.name, parentId: route.params.parentId || null, ...categoryDefs })
+    },
+    {
+      path: '/books',
+      name: 'books',
+      component: Book,
+      beforeEnter: AuthGuard
     },
     {
       path: '/reports',

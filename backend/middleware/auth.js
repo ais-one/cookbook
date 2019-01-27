@@ -1,5 +1,5 @@
-const { createToken, verifyToken } = require('../helpers')
-const keyv = require('../helpers/keyv')
+const { createToken, verifyToken } = require('../services')
+const keyv = require('../services/keyv')
 
 const USE_OTP = process.env.USE_OTP || '' // Make DRY
 const KEY_EXPIRY = process.env.KEY_EXPIRY || '15m'

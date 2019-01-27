@@ -1,11 +1,5 @@
-const Knex = require('knex')
-const connection = require('../knexfile')
-const { Model } = require('objection')
-
-const knexConnection = Knex(connection[process.env.NODE_ENV])
-
-Model.knex(knexConnection)
-
+'use strict'
+const Model = require('../services/database')
 
 class User extends Model {
   static get tableName () {

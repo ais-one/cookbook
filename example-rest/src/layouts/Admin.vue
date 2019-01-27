@@ -51,7 +51,7 @@
         <v-toolbar-side-icon v-if="userIsAuthenticated" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       </v-toolbar-title>
       <div class="text-xs-center">
-        <v-img src="/static/email.png" contain height="40" width="172" class="ma-2" />
+        <v-img src="/static/email.png" contain height="40" width="40" class="ma-2" />
       </div>
       {{ currentTime }}
       <v-spacer>
@@ -123,6 +123,7 @@ export default {
         { icon: 'dashboard', title: 'Dashboard', link: '/dashboard' },
         { icon: 'list_alt', title: 'Authors', link: '/authors' },
         { icon: 'list_alt', title: 'Categories', link: '/categories' },
+        { icon: 'list_alt', title: 'Books', link: '/books' },
         { icon: 'list_alt', title: 'Reports', link: '/reports' }
       ]
     }

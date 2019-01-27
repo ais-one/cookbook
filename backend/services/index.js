@@ -6,7 +6,7 @@ const otplib = require('otplib')
 
 const keyv = require('./keyv')
 
-const User = require('../models/user')
+const User = require('../models/User')
 
 // const {firestore} = require('../middleware/firebase')
 const SALT_ROUNDS = 12

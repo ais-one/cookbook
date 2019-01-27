@@ -40,14 +40,30 @@ http://127.0.0.1:3000/api-docs
 
 ## Backend Notes
 
-1. Add to req?
+### Project Structure
 
-Do not add to req because you do not have access to req in websocket
+```
+Folders
+ +-certs (SSL certs, for lets encrypt, use the folder that they generate)
+ +-docs (OpenAPI documentation)
+ +-middleware (auth, logging, etc...)
+ +-migrations (create database)
+ +-models (database models)
+ +-public (location for SPA, etc)
+ +-routes (REST API routes)
+ +-seeds (populate database)
+ +-services (e.g. ORM, mongo, websockets, redis, etc)
+ +-tests (TBD)
+ +-uploads (local storage for file uploads)
 
-2. Add to app?
-
-Do not add to app because app is not global and needs to be exported for other modules to use
-
+Files
+ - .env.[env] (environment file)
+ - ecosystem.config.js (PM2 configuration)
+ - ga.js (utility program: generation of user passwords, GA Key, QR Codes)
+ - index.js
+ - knexfile.js (database configuration)
+ - package.json
+```
 
 ### Database Schema
 
@@ -83,6 +99,7 @@ Do not add to app because app is not global and needs to be exported for other m
  2, 2
 
 
+### Routes
 [* === COMPLETED, ** === TESTED]
 * POST /auth/signup
 * POST /auth/login
@@ -115,6 +132,7 @@ GET /api/test
 POST /api/upload
 POST /api/uploads
 
+
 ## DEPLOYMENT NOTES
 
 ExpressJS Server
@@ -130,6 +148,8 @@ Config Files
     ecosystem.config.js (pm2 start & stop)
 
 Do not rely on req object, e.g. putting mongo, redis, etc. objects in req as you may also need them in websockets
+
+Do not add to app object because app is not global and needs to be exported for other modules to use
 
 # DEPLOYMENT ON CLOUD (OPTIONAL)
 

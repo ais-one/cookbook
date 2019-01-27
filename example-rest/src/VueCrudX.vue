@@ -120,7 +120,6 @@ export default {
     this.hasFormVue = typeof this.crudForm.FormVue === 'function' || this.formAutoData
     this.hasFilterData = this.isObject(this.crudFilter.filterData)
     this.hasFilterVue = typeof this.crudFilter.FilterVue === 'function'
-    this.hasSummaryVue = typeof this.crudTable.SummaryVue === 'function'
 
     // use add row to create record
     this.addrowCreate = this.crudTable.addrowCreate ? this.crudTable.addrowCreate : false
@@ -149,7 +148,6 @@ export default {
     // assign the components
     if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue
-    if (this.hasSummaryVue) this.$options.components['crud-summary'] = this.crudTable.SummaryVue
 
     if (this.onCreatedOpenForm && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
       this.crudFormFlag = true
@@ -184,7 +182,6 @@ export default {
     // if (this.storeName === 'multi-crud-party') console.log('vvvv4', this.storeName, this.$options.components['crud-filter'], this.crudFilter.FilterVue)
     if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
     if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue
-    if (this.hasSummaryVue) this.$options.components['crud-summary'] = this.crudTable.SummaryVue
   },
   beforeRouteEnter (to, from, next) { next(vm => { }) },
   data () {
@@ -201,9 +198,6 @@ export default {
       validFilter: true,
       hasFilterVue: false,
       hasFilterData: false,
-
-      // summary
-      hasSummaryVue: false,
 
       // data-table
       loading: false,
@@ -301,7 +295,6 @@ export default {
       buttons: {
         // table
         back: { icon: 'reply', label: '' },
-        summary: { icon: 'list', label: '', icon2: 'keyboard_arrow_up' },
         filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up' },
         reload: { icon: 'replay', label: '' },
         create: { icon: 'add', label: '' },
@@ -315,7 +308,6 @@ export default {
       // show/hide
       showFilterButton: true, // should the filter button be shown?
       expandFilter: false,
-      showSummary: false,
 
       // snackbar
       snackbar: false,
@@ -641,7 +633,6 @@ export default {
     <v-toolbar v-bind="attrs.toolbar">
       <!-- <v-toolbar-side-icon ></v-toolbar-side-icon> -->
       <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{showTitle | capitalize}} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
-      <v-btn v-if="hasSummaryVue" v-bind="attrs.button" @click="showSummary=!showSummary" :disabled="loading"><v-icon>{{ showSummary ? buttons.summary.icon2 : buttons.summary.icon }}</v-icon><span>{{buttons.summary.label}}</span></v-btn>
       <v-spacer></v-spacer>
       <v-btn v-if="showFilterButton" v-bind="attrs.button" @click="expandFilter=!expandFilter" :disabled="!hasFilterData"><v-icon>{{ expandFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
       <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
@@ -650,23 +641,25 @@ export default {
     </v-toolbar>
     <div v-if="expandFilter">
       <v-form v-if="hasFilterData" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
-        <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
-        <v-layout row wrap v-else>
-          <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12>
-            <component :is="filter.field" v-model="filter.value" v-bind="filter.attrs">
-              <template v-if="filter.field==='v-btn-toggle'">
-                <component :is="'v-btn'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" v-bind="filter.group.attrs">{{ value }}</component>
-              </template>
-              <template v-else-if="filter.field==='v-radio-group'">
-                <component :is="'v-radio'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" :label="value" v-bind="filter.group.attrs"></component>
-              </template>
-            </component>
-          </v-flex>
-        </v-layout>
+        <slot name="filter" :filterData="filterData" :parentId="parentId" :storeName="storeName">
+          <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
+          <v-layout row wrap v-else>
+              <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12>
+                <component :is="filter.field" v-model="filter.value" v-bind="filter.attrs">
+                  <template v-if="filter.field==='v-btn-toggle'">
+                    <component :is="'v-btn'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" v-bind="filter.group.attrs">{{ value }}</component>
+                  </template>
+                  <template v-else-if="filter.field==='v-radio-group'">
+                    <component :is="'v-radio'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" :label="value" v-bind="filter.group.attrs"></component>
+                  </template>
+                </component>
+              </v-flex>
+            </v-layout>
+        </slot>
         <!-- <v-layout row justify-end></v-layout> -->
       </v-form>
     </div>
-    <slot v-bind:records="records">
+    <slot name="table" :records="records" :totalRecs="totalRecs" :pagination="pagination">
       <v-data-table
         :headers="headers"
         :items="records"
@@ -779,9 +772,7 @@ export default {
       </v-data-table>
     </slot>
 
-    <div v-if="showSummary">
-      <crud-summary v-if="hasSummaryVue" :records="records" :parentId="parentId" :storeName="storeName" />
-    </div>
+    <slot name="summary"></slot>
 
     <v-layout row justify-center>
       <v-dialog v-model="crudFormFlag" v-bind="attrs.dialog">
@@ -796,20 +787,22 @@ export default {
           </v-toolbar>
           <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading" v-bind="attrs['v-progress-circular']?attrs['v-progress-circular']:attrs['v-progress-linear']"></component>
           <v-form v-if="hasFormVue" v-model="validForm" v-bind="attrs.form">
-            <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
-            <v-layout row wrap v-else>
-              <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12>
-                <component v-if="form.field==='hidden'" :is="'div'"></component>
-                <component v-else-if="record[objKey]!==undefined" :is="form.field" v-model="record[objKey]" v-bind="form.attrs">
-                  <template v-if="form.field==='v-btn-toggle'">
-                    <component :is="'v-btn'" v-for="(value, key, index) in form.group.items" :key="index" :value="key" v-bind="form.group.attrs">{{ value }}</component>
-                  </template>
-                  <template v-else-if="form.field==='v-radio-group'">
-                    <component :is="'v-radio'" v-for="(value, key, index) in form.group.items" :key="index" :value="key" :label="value" v-bind="form.group.attrs"></component>
-                  </template>
-                </component>
-              </v-flex>
-            </v-layout>
+            <slot name="form" :record="record" :parentId="parentId" :storeName="storeName">
+              <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
+              <v-layout row wrap v-else>
+                <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12>
+                  <component v-if="form.field==='hidden'" :is="'div'"></component>
+                  <component v-else-if="record[objKey]!==undefined" :is="form.field" v-model="record[objKey]" v-bind="form.attrs">
+                    <template v-if="form.field==='v-btn-toggle'">
+                      <component :is="'v-btn'" v-for="(value, key, index) in form.group.items" :key="index" :value="key" v-bind="form.group.attrs">{{ value }}</component>
+                    </template>
+                    <template v-else-if="form.field==='v-radio-group'">
+                      <component :is="'v-radio'" v-for="(value, key, index) in form.group.items" :key="index" :value="key" :label="value" v-bind="form.group.attrs"></component>
+                    </template>
+                  </component>
+                </v-flex>
+              </v-layout>
+            </slot>
           </v-form>
         </v-card>
       </v-dialog>

@@ -1,12 +1,5 @@
-// import { Model } from 'objection'
-// import Author from './Author'
-// import Page from './Page'
-// persons == books
-// movies == authors
-
 'use strict'
-
-const Model = require('objection').Model
+const Model = require('../services/database')
 
 // export default 
 class Book extends Model {
