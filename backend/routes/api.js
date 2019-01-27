@@ -129,6 +129,8 @@ apiRoutes
   .get('/books/:id', async (req, res) => {
     try {
       const book = await Book.query().findById(req.params.id)
+        .select('books.*', 'category.name as categoryName')
+        .joinRelation('category')
         .eager('[pages, authors]') // show pages
         .modifyEager('pages', builder => {
           // builder.where('age', '>', 10).select('name');
@@ -154,14 +156,14 @@ apiRoutes
         // .orderBy
         // .page(page, limit);
         // .joinRelation('category') // NEED TO GET THIS TO WORK
-        // select("books.name, categories.name")
+        // select("books.name, category.name")
         // .joinRelation("[category]")
         // .eager('category') // OK
-        // .select('books.*', 'categories.name as catName')
+        // .select('books.*', 'category.name as categoryName')
         // .join('categories', 'books.categoryId', 'categories.id')
         .select(
           'books.*',
-          'category.name as catName',
+          'category.name as categoryName',
           Book.relatedQuery('pages').count().as('pageCount'),
           Book.relatedQuery('authors').count().as('authorCount')
           )

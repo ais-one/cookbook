@@ -18,9 +18,15 @@
             <div>{{ totalRecs }} {{ pagination }}</div>
           </template> -->
           <template slot="form" slot-scope="{ record, parentId, storeName }">
-            <div>{{ record }}</div>
-            <hr/>
-            <div>{{ !!parentId }} {{ storeName }}</div>
+            <div>
+              <div>{{ record }} {{ !!parentId }} {{ storeName }}</div>
+              <!-- <h1>Book Form</h1>
+              <v-card-text>
+                <v-text-field label="Name" v-model="record.name"></v-text-field>
+                <v-select label="Category" v-model="record.categoryName" :items="categories" required></v-select>
+                <v-btn @click.stop.prevent="gotoNote" dark>View Book Pages</v-btn>
+              </v-card-text> -->
+            </div>
           </template>
         </vue-crud-x>
       </v-flex>
@@ -41,6 +47,10 @@ export default {
   },
   data () {
     return {
+      categories: [
+        'cat1',
+        'cat2'
+      ],
       bookDefs: {
         crudTable: {
           actionColumn: false,
@@ -51,7 +61,7 @@ export default {
           confirmDelete: true,
           headers: [
             { text: 'Book Name', value: 'name', class: 'pa-1' },
-            { text: 'Category', value: 'category', class: 'pa-1' }
+            { text: 'Category', value: 'categoryName', class: 'pa-1' }
           ],
           formatters: (value, _type) => value,
           doPage: true
@@ -60,22 +70,12 @@ export default {
         crudFilter: { hasFilterVue: false, FilterVue: null, filterData: { } },
 
         crudForm: {
-          FormVue: null,
-          formAutoData: {
-            id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
-            name: {
-              type: 'v-text-field',
-              attrs: {
-                label: 'Name',
-                rules: [v => !!v || 'Item is required']
-              },
-              halfSize: false
-            }
-          },
+          FormVue: () => {},
+          formAutoData: null,
           defaultRec: () => ({
             id: '',
             name: '',
-            categoryId: ''
+            categoryName: ''
           })
         },
 
@@ -106,7 +106,7 @@ export default {
           findOne: async (payload) => {
             const { id } = payload
             try {
-              const { data } = await http.get(`/api/authors/${id}`)
+              const { data } = await http.get(`/api/books/${id}`)
               return data
             } catch (e) { }
             return { }
