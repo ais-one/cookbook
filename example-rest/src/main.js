@@ -1,5 +1,6 @@
 'use strict'
 import Vue from 'vue'
+import VueRx from 'vue-rx'
 import Vuetify from 'vuetify'
 import App from './App'
 import i18n from './lang'
@@ -8,6 +9,8 @@ import { store } from './store'
 import VueNativeSock from 'vue-native-websocket'
 
 Vue.config.productionTip = false
+
+Vue.use(VueRx)
 
 // Vue.prototype.$http = base
 const WS_URL = process.env.VUE_APP_WS_URL // 'wss://echo.websocket.org'

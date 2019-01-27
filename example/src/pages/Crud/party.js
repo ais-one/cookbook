@@ -22,7 +22,6 @@ export const crudTable = {
   buttons: {
     // table
     back: { icon: 'reply', label: 'Back' },
-    summary: { icon: 'list', label: 'Sumary', icon2: 'keyboard_arrow_up' },
     filter: { icon: 'search', label: 'Search', icon2: 'keyboard_arrow_up' },
     reload: { icon: 'replay', label: 'Reload' },
     create: { icon: 'add', label: 'Add' },

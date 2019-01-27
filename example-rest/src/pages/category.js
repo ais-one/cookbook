@@ -1,8 +1,5 @@
 // import { makeCsvRow, exportCsv } from '@/assets/util'
 import { http } from '@/axios'
-// import {app} from '@/main' // to use store, router, i18n, etc...
-// import i18n from '@/lang' // to use store, router, i18n, etc...
-// console.log(app, i18n, i18n.messages[i18n.locale])
 
 export const crudTable = {
   actionColumn: false,
@@ -12,7 +9,7 @@ export const crudTable = {
   confirmUpdate: true,
   confirmDelete: true,
   headers: [
-    { text: 'Author Name', value: 'name', class: 'pa-1' }
+    { text: 'Category Name', value: 'name', class: 'pa-1' }
   ],
   formatters: (value, _type) => value,
   doPage: true
@@ -45,26 +42,13 @@ export const crudForm = {
 
 export const crudOps = { // CRUD
   export: async (payload) => {
-    // const { filterData } = payload // pagination
-    // try {
-    //   let dbCol = firestore.collection('party') // create index
-    //     .where('status', '==', filterData.active.value)
-    //   const rv = await dbCol.limit(50).get()
-
-    //   let csvContent = ''
-    //   rv.forEach(record => {
-    //     let tmp = record.data()
-    //     csvContent = makeCsvRow(csvContent, tmp, `\r\n`, ';')
-    //   })
-    //   exportCsv(csvContent, 'party.csv')
-    // } catch (e) { }
   },
   find: async (payload) => {
     let records = []
     const { pagination } = payload // filterData // pagination: { sortBy, descending }
     const { page, rowsPerPage } = pagination
     try {
-      const { data: { results, total } } = await http.get('/api/authors', {
+      const { data: { results, total } } = await http.get('/api/categories', {
         params: {
           page: page > 0 ? page - 1 : 0,
           limit: rowsPerPage
@@ -82,7 +66,7 @@ export const crudOps = { // CRUD
   findOne: async (payload) => {
     const { id } = payload
     try {
-      const { data } = await http.get(`/api/authors/${id}`)
+      const { data } = await http.get(`/api/categories/${id}`)
       return data
     } catch (e) { }
     return { }
@@ -90,7 +74,7 @@ export const crudOps = { // CRUD
   create: async (payload) => {
     try {
       let { record: { id, ...noIdData } } = payload
-      const rv = await http.post('/api/authors', noIdData)
+      const rv = await http.post('/api/categories', noIdData)
       console.log(rv)
     } catch (e) {
       return 500
@@ -105,7 +89,7 @@ export const crudOps = { // CRUD
     console.log(payload)
     try {
       let { record: { id, ...noIdData } } = payload
-      const rv = await http.patch(`/api/authors/${id}`, noIdData)
+      const rv = await http.patch(`/api/categories/${id}`, noIdData)
       console.log(rv)
       // if (!doc.exists) throw new Error(409)
       // if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)

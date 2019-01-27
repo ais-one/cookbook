@@ -12,6 +12,8 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.7
+ * improvement: add slots for filter form and edit form
+ * improvement: remove summary component (use slot instead)
  * work in progress: Frontend REST example
    * TBD - Nuxt (SPA first then transition to SSR)
    * TBD - Vanilla VueJS

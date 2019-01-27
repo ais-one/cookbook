@@ -133,7 +133,6 @@ export const crudTable = {
     buttons: {
       // table
       back: { icon: 'reply', label: '' },
-      summary: { icon: 'list', label: '', icon2: 'keyboard_arrow_up' },
       filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up' },
       reload: { icon: 'replay', label: '' },
       create: { icon: 'add', label: '' },
@@ -143,8 +142,7 @@ export const crudTable = {
       delete: { icon: 'delete', label: '' },
       update: { icon: 'save', label: '' }
     }
-  },
-  SummaryVue: () => ({ component: import('./Summary.vue') })
+  }
 }
 
 export const crudFilter = {

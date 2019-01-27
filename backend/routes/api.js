@@ -55,8 +55,8 @@ apiRoutes
   .get('/authors/:id', async (req, res) => {
     try {
       const author = await Author.query().findById(req.params.id);
-      if (author) return res.status(404).json()
-      else return res.status(200).json(author)
+      if (author) return res.status(200).json(author)
+      else return res.status(404).json()
     } catch (e) { }
     return res.status(500).json()
   })
@@ -68,7 +68,7 @@ apiRoutes
         // .where
         // .orderBy
         .page(page, limit);
-      res.status(200).json(authors)  
+      return res.status(200).json(authors)  
     } catch (e) { }
     return res.status(500).json()
   })
@@ -92,8 +92,8 @@ apiRoutes
   .get('/categories/:id', async (req, res) => {
     try {
       const category = await Category.query().findById(req.params.id);
-      if (category) return res.status(404).json()
-      else return res.status(200).json(category)
+      if (category) return res.status(200).json(category)
+      else return res.status(404).json()
     } catch (e) { }
     return res.status(500).json()
   })
@@ -102,7 +102,7 @@ apiRoutes
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
       const categories = await Category.query().page(page, limit);
-      res.status(200).json(categories)  
+      return res.status(200).json(categories)  
     } catch (e) { }
     return res.status(500).json()
   })

@@ -16,7 +16,7 @@
           v-bind="partyDefs"
           @selected="onSelected"
         >
-          <template v-if="showCustomTable" slot-scope="{ records }">
+          <template v-if="showCustomTable" slot="table" slot-scope="{ records }">
             <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['my-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
           </template>
         </vue-crud-x>
