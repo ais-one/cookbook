@@ -5,9 +5,7 @@
 
 ## Quickstart
 
-**Pre-requisites**
-
-Please install REST backend using the README.MD in the "backend" project folder
+**Pre-requisites:** Please install REST backend using the README.MD in the "backend" project folder
 
 1. Rename .env-sample file to .env.development
 

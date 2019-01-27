@@ -8,7 +8,7 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs12 sm6>
-        <v-btn @click="showCustomTable=!showCustomTable">Toggle Table ({{ showCustomTable ?'Custom Slot':'Default Slot'}})</v-btn>
+        <v-btn @click="showCustomTable=!showCustomTable">Toggle Slot: ({{ showCustomTable ?'Custom':'Default'}})</v-btn>
         <vue-crud-x
           ref="my-table"
           storeName="multi-crud-party"
@@ -16,8 +16,19 @@
           v-bind="partyDefs"
           @selected="onSelected"
         >
-          <template v-if="showCustomTable" slot="table" slot-scope="{ records }">
+          <template v-if="showCustomTable" slot="filter" slot-scope="{ filterData, parentId, storeName }">
+            <div>{{ filterData }}</div>
+            <hr/>
+            <div>{{ !!parentId }} {{ storeName }}</div>
+          </template>
+          <template v-if="showCustomTable" slot="table" slot-scope="{ records, totalRecs, pagination }">
             <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['my-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
+            <div>{{ totalRecs }} {{ pagination }}</div>
+          </template>
+          <template v-if="showCustomTable" slot="form" slot-scope="{ record, parentId, storeName }">
+            <div>{{ record }}</div>
+            <hr/>
+            <div>{{ !!parentId }} {{ storeName }}</div>
           </template>
         </vue-crud-x>
       </v-flex>
