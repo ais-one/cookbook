@@ -171,13 +171,22 @@ apiRoutes
         // TBD count pages
         // TBD add authors
         .page(page, limit)
-
       // console.log(books[0])
       return res.status(200).json(books)  
     } catch (e) { console.log(e) }
     return res.status(500).json()
   })
-  // get pages from a book - not needed yet
+  .get('/books/:id/pages', async (req, res) => { // get pages of a book
+    try {
+      const limit = req.query.limit ? req.query.limit : 2
+      const page = req.query.page ? req.query.page : 0
+      const pages = await Page.query()
+        .where('bookId', req.params.id)
+        .page(page, limit)
+      return res.status(200).json(pages)
+    } catch (e) { console.log(e) }
+    return res.status(500).json()
+  })
   .post('/books/:id/pages', async (req, res) => { // add page to book
     try {
       const book = await Book.query().findById(req.params.id)

@@ -19,7 +19,6 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  hasFilterVue: false,
   FilterVue: null,
   filterData: { }
 }
@@ -102,7 +101,6 @@ export const crudOps = { // CRUD
     return 201
   },
   update: async (payload) => {
-    console.log(payload)
     try {
       let { record: { id, ...noIdData } } = payload
       const rv = await http.patch(`/api/authors/${id}`, noIdData)

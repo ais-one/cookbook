@@ -160,11 +160,9 @@ export default {
     if (typeof this.$t !== 'function') { // if no internationalization
       this.$t = text => text
     }
-    if (!this.hasFilterVue) {
-      for (let key in this.filterData) { // type to field
-        if (this.filterData[key].type) this.filterData[key].field = this.filterData[key].type // TODEPRECATE
-        if (this.filterData[key].attrs && this.filterData[key].itemsFn) this.filterData[key].attrs.items = await this.filterData[key].itemsFn()
-      }
+    for (let key in this.filterData) { // type to field
+      if (this.filterData[key].type) this.filterData[key].field = this.filterData[key].type // TODEPRECATE
+      if (this.filterData[key].attrs && this.filterData[key].itemsFn) this.filterData[key].attrs.items = await this.filterData[key].itemsFn()
     }
     if (this.formAutoData) { // type to field // TODEPRECATE
       for (let key in this.formAutoData) {
@@ -315,6 +313,8 @@ export default {
     }
   },
   computed: {
+    hasFormSlot () { return !!this.$scopedSlots['form'] },
+    hasFilterSlot () { return !!this.$scopedSlots['filter'] },
     showTitle () { return this.crudTitle || this.storeName },
     // ...mapGetters(storeModuleName, [ 'records', 'totalRecs', 'filterData', 'record' ]), // cannot use for multiple stores, try below
     records () { return this.$store.getters[this.storeName + '/records'] },
@@ -634,7 +634,7 @@ export default {
       <!-- <v-toolbar-side-icon ></v-toolbar-side-icon> -->
       <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{showTitle | capitalize}} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn v-if="showFilterButton" v-bind="attrs.button" @click="expandFilter=!expandFilter" :disabled="!hasFilterData"><v-icon>{{ expandFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
+      <v-btn v-if="showFilterButton||hasFilterSlot" v-bind="attrs.button" @click="expandFilter=!expandFilter" :disabled="!hasFilterData"><v-icon>{{ expandFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
       <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
       <v-btn v-if="canCreate" v-bind="attrs.button" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
       <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop.prevent="exportBtnClick" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>

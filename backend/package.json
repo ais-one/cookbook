@@ -4,14 +4,15 @@
   "scripts": {
     "lint": "eslint .",
     "test": "mocha --timeout 15000 --recursive",
+    "init-db": "rm -f dev.sqlite3&&npx knex migrate:latest --env development&&npx knex seed:run --env development",
     "dev": "set NODE_ENV=development&&nodemon index.js",
+    "example": "pm2 delete APP1 APP2 && pm2 start --only APP1,APP2 --env production",
     "prod-deploy": "mv node_modules ../node_modules_tmp&&scp -r -i ../../test.pem . ubuntu@127.0.0.1:~/api&&mv ../node_modules_tmp ./node_modules",
     "prod-list": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"pm2 list\"",
     "prod-start": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"cd ~/api; authbind --deep pm2 start --only api --env production;\"",
     "prod-stop": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"cd ~/api; pm2 delete api;\"",
     "prod-nodemon": "sudo NODE_ENV=production nodemon server.js",
-    "prod": "npm run prod-stop&&npm run prod-deploy&&npm run prod-start",
-    "example": "pm2 delete APP1 APP2 && pm2 start --only APP1,APP2 --env production"
+    "prod": "npm run prod-stop&&npm run prod-deploy&&npm run prod-start"
   },
   "engines": {
     "node": "8"

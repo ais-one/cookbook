@@ -13,19 +13,19 @@
             <hr/>
             <div>{{ !!parentId }} {{ storeName }}</div>
           </template>
-          <!-- <template v-if="showCustomTable" slot="table" slot-scope="{ records, totalRecs, pagination }">
+          <!-- <template slot="table" slot-scope="{ records, totalRecs, pagination }">
             <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['my-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
             <div>{{ totalRecs }} {{ pagination }}</div>
           </template> -->
           <template slot="form" slot-scope="{ record, parentId, storeName }">
             <div>
               <div>{{ record }} {{ !!parentId }} {{ storeName }}</div>
-              <!-- <h1>Book Form</h1>
+              <h1>Book Form</h1>
               <v-card-text>
                 <v-text-field label="Name" v-model="record.name"></v-text-field>
                 <v-select label="Category" v-model="record.categoryName" :items="categories" required></v-select>
-                <v-btn @click.stop.prevent="gotoNote" dark>View Book Pages</v-btn>
-              </v-card-text> -->
+                <v-btn @click.stop.prevent="gotoPages(record.id)" dark>View Book Pages</v-btn>
+              </v-card-text>
             </div>
           </template>
         </vue-crud-x>
@@ -36,8 +36,6 @@
 
 <script>
 import { http } from '@/axios'
-
-// import * as partyDefs from './party'
 import VueCrudX from '@/VueCrudX'
 
 export default {
@@ -64,10 +62,11 @@ export default {
             { text: 'Category', value: 'categoryName', class: 'pa-1' }
           ],
           formatters: (value, _type) => value,
-          doPage: true
+          doPage: true,
+          showFilterButton: false
         },
 
-        crudFilter: { hasFilterVue: false, FilterVue: null, filterData: { } },
+        crudFilter: { FilterVue: null, filterData: { } },
 
         crudForm: {
           FormVue: () => {},
@@ -146,6 +145,10 @@ export default {
     }
   },
   methods: {
+    gotoPages (id) {
+      // console.log('gotoPages - BookId: ', id)
+      this.$router.push({ path: `/books/${id}/pages` })
+    }
   }
 }
 </script>

@@ -146,7 +146,6 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  hasFilterVue: false,
   FilterVue: null,
   filterData: {
     // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker

@@ -1,25 +1,5 @@
 ### Upcoming
- * continue with REST implementation
  * automated testing
- * https://github.com/ais-one/vue-crud-x/issues/32
- * any more events needed? also, check on disabling
- * fix Date Range Issues... or check filters only on submit
- * GraphQL using Prisma or Hasura
- * https://github.com/vuetifyjs/vuetify/pull/5232
-
-### DEPRECATED CODE TO BE REMOVED IN v0.2.0
- * v0.1.4 - CRUD operations to return object instead of number
- * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
-
-### Version 0.1.7
- * improvement: code refactor in progress (make it easier to use)
- * improvement: add slots for filter form and edit form
- * improvement: remove summary component (use slot instead)
- * chore: version updates for Vuetify & VueJS
- * chore: implement testing
- * work in progress: Frontend REST example
-   * TBD - Nuxt (SPA first then transition to SSR)
-   * TBD - Vanilla VueJS
  * work in progress: RESTful++ Backend For Testing
    * Non-essential items
      * WIP - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
@@ -29,6 +9,23 @@
      * TBD - Logging
      * TBD- Security Improvements
      * TBD - Social Logins
+ * https://github.com/ais-one/vue-crud-x/issues/32
+ * https://github.com/vuetifyjs/vuetify/pull/5232
+ * GraphQL using Prisma or Hasura
+
+### DEPRECATED CODE TO BE REMOVED IN v0.2.0
+ * v0.1.4 - CRUD operations to return object instead of number
+ * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
+
+### Version 0.1.7
+ * improvement: add sceped-slots for filter & edit form [IMPORTANT] please use this from now for customizing the CRUD, please see the following files for reference:
+   * example/src/pages/MultiCrud/Example.vue
+   * example-rest/src/pages/Book.vue
+ * improvement: remove summary component (use scoped-slot instead)
+ * improvement: code refactor in progress (make it easier to use)
+ * work in progress:
+   * example-rest: Vanilla VueJS connecting to REST backend
+   * example-nuxt: Nuxt (SPA first then transition to SSR) connecting to REST backend
 
 ### Version 0.1.6
  * chore: update npm packages (vuetify@1.4.3)

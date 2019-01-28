@@ -39,7 +39,6 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  hasFilterVue: false,
   FilterVue: null,
   filterData: {
     area: { type: 'v-autocomplete', halfSize: true, value: '', attrs: { label: 'Area', class: 'pa-2', items: area, clearable: true } },

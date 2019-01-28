@@ -16,7 +16,6 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  hasFilterVue: false,
   FilterVue: null,
   filterData: { }
 }

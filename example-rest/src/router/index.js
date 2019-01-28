@@ -15,6 +15,7 @@ import Reports from '@/pages/Reports'
 import * as authorDefs from '@/pages/author'
 import * as categoryDefs from '@/pages/category'
 import Book from '@/pages/Book'
+import Page from '@/pages/Page'
 
 Vue.use(Router)
 
@@ -44,6 +45,12 @@ export default new Router({
       path: '/books',
       name: 'books',
       component: Book,
+      beforeEnter: AuthGuard
+    },
+    {
+      path: '/books/:id/pages',
+      name: 'pages',
+      component: Page,
       beforeEnter: AuthGuard
     },
     {
