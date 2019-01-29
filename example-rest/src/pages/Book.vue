@@ -15,7 +15,7 @@
             <div>{{ !!parentId }} {{ storeName }}</div>
           </template>
           <!-- <template slot="table" slot-scope="{ records, totalRecs, pagination }">
-            <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['my-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
+            <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['book-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
             <div>{{ totalRecs }} {{ pagination }}</div>
           </template> -->
           <template slot="form" slot-scope="{ record, parentId, storeName }">
@@ -28,18 +28,16 @@
                 <!-- deletable-chips -->
                 <v-autocomplete
                   multiple
-                  v-model="record.authorIds"
+                  v-model="authorIds"
                   :items="items"
                   :loading="isLoading"
                   :search-input.sync="search"
                   chips
                   clearable
-                  hide-details
                   hide-selected
                   item-text="name"
                   item-value="id"
-                  label="Search for a author..."
-                  solo
+                  label="Search for a author... (Maximum 2)"
                 >
                   <template slot="no-data">
                     <v-list-tile>
@@ -55,7 +53,6 @@
                     <v-chip
                       :selected="selected"
                       close
-                      class="chip--select-multi"
                       @input="remove(item)"
                     >
                       <span v-text="item.name"></span>
@@ -63,11 +60,10 @@
                   </template>
                   <template
                     slot="item"
-                    slot-scope="{ item, tile }"
+                    slot-scope="{ item }"
                   >
                     <v-list-tile-content>
                       <v-list-tile-title v-text="item.name"></v-list-tile-title>
-                      <v-list-tile-sub-title v-text="item.id"></v-list-tile-sub-title>
                     </v-list-tile-content>
                   </template>
                 </v-autocomplete>
@@ -97,10 +93,7 @@ export default {
       items: this.$watchAsObservable('search').pipe(
         // startWith - not needed in VueJS
         pluck('newValue'),
-        filter(text => {
-          console.log('text', text)
-          return text ? text.length > 2 : false
-        }),
+        filter(text => text ? text.length > 2 : false),
         debounceTime(500),
         distinctUntilChanged(),
         switchMap(this.fetchTerm)
@@ -116,9 +109,9 @@ export default {
     return {
       // lazy load start
       isLoading: false,
-      // TOREMOVE - items: [], - use subscription
-      // TOREMOVE - authorIds: null, - use record
-      search: null,
+      // TOREMOVE - items: [], // use subscription
+      authorIds: [], // use record
+      search: '',
       // lazy load end
       categories: [
         { id: 1, name: 'cat1' },
@@ -170,7 +163,7 @@ export default {
                   limit: rowsPerPage
                 }
               })
-              console.log(results)
+              // console.log('find books', results)
               results.forEach(row => {
                 records.push(row)
               })
@@ -193,9 +186,7 @@ export default {
               let { record: { id, ...noIdData } } = payload
               const rv = await http.post('/api/authors', noIdData)
               console.log(rv)
-            } catch (e) {
-              return 500
-            }
+            } catch (e) { return 500 }
             // return { // EXAMPLE return object with code property omitted
             //   ok: true,
             //   msg: 'OK'
@@ -204,12 +195,12 @@ export default {
           },
           // TBD Set the linkages also
           update: async (payload) => {
-            console.log(payload)
+            // console.log('update payload', payload)
             try {
-              let { record: { id, name, categoryId } } = payload // authorIds
+              let { record: { id, name, categoryId, authorIds } } = payload // authorIds
               // check that you only save what is needed...
               // console.log('record', id, noIdData)
-              const rv = await http.patch(`/api/books/${id}`, { name, categoryId }) // TBD also update the author ids...?
+              const rv = await http.patch(`/api/books/${id}`, { name, categoryId, authorIds }) // TBD also update the author ids...?
               console.log('patch rv', rv)
               // if (!doc.exists) throw new Error(409)
             } catch (e) {
@@ -234,17 +225,27 @@ export default {
   //       .finally(() => (this.isLoading = false))
   //   }
   // },
+  watch: {
+    authorIds (val) {
+      if (val.length > 2) val.pop()
+      if (this.$refs['book-table']) this.$refs['book-table'].record.authorIds = val
+      // console.log('watch')
+    }
+  },
   methods: {
     gotoPages (id) {
       // console.log('gotoPages - BookId: ', id)
       this.$router.push({ path: `/books/${id}/pages` })
     },
     remove (item) {
-      console.log('remove', item)
-      console.log(this)
+      // console.log('remove', item)
+      const index = this.authorIds.indexOf(item.id)
+      if (index >= 0) this.authorIds.splice(index, 1)
+      // console.log(this.authorIds, this.$refs['book-table'].record.authorIds)
     },
     openBookForm (item) {
       // console.log('openBookForm', item)
+      this.authorIds = item.authorIds
       this.items = item.authors
     },
     fetchTerm (term) {

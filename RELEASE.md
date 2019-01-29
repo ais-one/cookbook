@@ -25,6 +25,7 @@
  * improvement: remove summary component (use scoped-slot instead)
  * improvement: code refactor in progress (make it easier to use)
  * improvement: use RxJS in example-rest/src/pages/Book.vue for debounce and fetch handling 
+ * improvement: add transaction in DB query
  * work in progress:
    * example-rest: Vanilla VueJS connecting to REST backend
    * example-nuxt: Nuxt (SPA first then transition to SSR) connecting to REST backend

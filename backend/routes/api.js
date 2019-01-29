@@ -13,6 +13,10 @@ const mongo = require('../services/mongo')
 const UPLOAD_PATH = 'uploads/';
 const upload = multer({ dest: `${UPLOAD_PATH}` }); // multer configuration
 
+
+const { transaction } = require('objection');
+const knex = Book.knex(); // You can access `knex` instance anywhere you want.  One way is to get it through any model.
+
 apiRoutes
   .get('/test', async (req,res) => {
     try {
@@ -121,11 +125,25 @@ apiRoutes
     return res.status(500).json()
   })
   .patch('/books/:id', async (req,res) => {
+    let trx
+    const data = { name, categoryId, authorIds } = req.body
     try {
-      const book = await Book.query().patchAndFetchById(req.params.id, req.body);
-      if (book) return res.status(200).json(book)
-      else return res.status(404).json()
-    } catch (e) { }
+      trx = await transaction.start(knex)
+      const book = await Book.query(trx).findById(req.params.id)
+      await book.$relatedQuery('authors', trx).unrelate().where('bookId', req.params.id)
+      Promise.all(
+        authorIds.map(async authorId => {
+          await book.$relatedQuery('authors', trx).relate(authorId)
+        })
+      )    
+      // only for Postgresql - await book.$relatedQuery('authors', trx).relate(authorIds)
+      await Book.query(trx).patchAndFetchById(req.params.id, { name, categoryId })
+      await trx.commit()
+      return res.status(200).json(book)
+    } catch (e) {
+      await trx.rollback();      
+      console.log(e);
+    }
     return res.status(500).json()
   })
   .get('/books/:id', async (req, res) => {
