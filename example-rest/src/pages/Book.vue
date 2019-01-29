@@ -7,6 +7,7 @@
           storeName="book-table"
           :parentId="null"
           v-bind="bookDefs"
+          @form-open="openBookForm"
         >
           <template slot="filter" slot-scope="{ filterData, parentId, storeName }">
             <div>{{ filterData }}</div>
@@ -23,7 +24,53 @@
               <h1>Book Form</h1>
               <v-card-text>
                 <v-text-field label="Name" v-model="record.name"></v-text-field>
-                <v-select label="Category" v-model="record.categoryName" :items="categories" required></v-select>
+                <v-select label="Category" v-model="record.categoryId" :items="categories" required item-text="name" item-value="id"></v-select>
+                <!-- deletable-chips -->
+                <v-autocomplete
+                  multiple
+                  v-model="record.authorIds"
+                  :items="items"
+                  :loading="isLoading"
+                  :search-input.sync="search"
+                  chips
+                  clearable
+                  hide-details
+                  hide-selected
+                  item-text="name"
+                  item-value="id"
+                  label="Search for a author..."
+                  solo
+                >
+                  <template slot="no-data">
+                    <v-list-tile>
+                      <v-list-tile-title>
+                        No author yet...
+                      </v-list-tile-title>
+                    </v-list-tile>
+                  </template>
+                  <template
+                    slot="selection"
+                    slot-scope="{ item, selected }"
+                  >
+                    <v-chip
+                      :selected="selected"
+                      close
+                      class="chip--select-multi"
+                      @input="remove(item)"
+                    >
+                      <span v-text="item.name"></span>
+                    </v-chip>
+                  </template>
+                  <template
+                    slot="item"
+                    slot-scope="{ item, tile }"
+                  >
+                    <v-list-tile-content>
+                      <v-list-tile-title v-text="item.name"></v-list-tile-title>
+                      <v-list-tile-sub-title v-text="item.id"></v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </template>
+                </v-autocomplete>
                 <v-btn @click.stop.prevent="gotoPages(record.id)" dark>View Book Pages</v-btn>
               </v-card-text>
             </div>
@@ -35,19 +82,47 @@
 </template>
 
 <script>
+// TBD
+// 1. set initial value of selected authors (id, name)
+// 2. set initial value of authors // record.authors
+import { from } from 'rxjs'
+import { pluck, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators' // map
+
 import { http } from '@/axios'
 import VueCrudX from '@/VueCrudX'
 
 export default {
+  subscriptions () {
+    return {
+      items: this.$watchAsObservable('search').pipe(
+        // startWith - not needed in VueJS
+        pluck('newValue'),
+        filter(text => {
+          console.log('text', text)
+          return text ? text.length > 2 : false
+        }),
+        debounceTime(500),
+        distinctUntilChanged(),
+        switchMap(this.fetchTerm)
+        // map(this.formatResult)
+      )
+    }
+  },
   name: 'book',
   components: {
     VueCrudX
   },
   data () {
     return {
+      // lazy load start
+      isLoading: false,
+      // TOREMOVE - items: [], - use subscription
+      // TOREMOVE - authorIds: null, - use record
+      search: null,
+      // lazy load end
       categories: [
-        'cat1',
-        'cat2'
+        { id: 1, name: 'cat1' },
+        { id: 2, name: 'cat2' }
       ],
       bookDefs: {
         crudTable: {
@@ -74,7 +149,10 @@ export default {
           defaultRec: () => ({
             id: '',
             name: '',
-            categoryName: ''
+            categoryId: '',
+            categoryName: '',
+            authorIds: [],
+            authors: []
           })
         },
 
@@ -124,15 +202,16 @@ export default {
             // }
             return 201
           },
+          // TBD Set the linkages also
           update: async (payload) => {
             console.log(payload)
             try {
-              let { record: { id, ...noIdData } } = payload
-              const rv = await http.patch(`/api/authors/${id}`, noIdData)
-              console.log(rv)
+              let { record: { id, name, categoryId } } = payload // authorIds
+              // check that you only save what is needed...
+              // console.log('record', id, noIdData)
+              const rv = await http.patch(`/api/books/${id}`, { name, categoryId }) // TBD also update the author ids...?
+              console.log('patch rv', rv)
               // if (!doc.exists) throw new Error(409)
-              // if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
-              // await t.set(docRef, noIdData)
             } catch (e) {
               if (parseInt(e.message) === 409) return 409
               else return 500
@@ -144,11 +223,48 @@ export default {
       }
     }
   },
+  // watch: {
+  //   search (val) {
+  //     if (this.items.length > 0) return // Items have already been loaded
+  //     this.isLoading = true
+  //     fetch('https://api.coinmarketcap.com/v2/listings/') // Lazily load input items
+  //       .then(res => res.json())
+  //       .then(res => this.items = res.data)
+  //       .catch(err => console.log(err))
+  //       .finally(() => (this.isLoading = false))
+  //   }
+  // },
   methods: {
     gotoPages (id) {
       // console.log('gotoPages - BookId: ', id)
       this.$router.push({ path: `/books/${id}/pages` })
+    },
+    remove (item) {
+      console.log('remove', item)
+      console.log(this)
+    },
+    openBookForm (item) {
+      // console.log('openBookForm', item)
+      this.items = item.authors
+    },
+    fetchTerm (term) {
+      return from(
+        http.get('/api/authors', { params: { page: 0, limit: 20, search: term } }).then(res => {
+          // this.items = res.data
+          return res.data.results
+        })
+        // fetch('https://api.coinmarketcap.com/v2/listings/')
+        //   .then(res => res.json())
+        //   .then(res => {
+        //     // this.items = res.data
+        //     return res.data
+        //   })
+        //   .finally(() => (this.isLoading = false))
+      )
     }
+    // formatResult (res) {
+    //   return { term: res[0], matches: res[1].map((title, i) => ({ title, description: res[2][i], url: res[3][i] })) }
+    // }
   }
 }
 </script>

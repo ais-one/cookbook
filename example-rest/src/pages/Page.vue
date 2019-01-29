@@ -33,10 +33,7 @@
 </template>
 
 <script>
-// import { firestore } from '@/firebase'
 // import { makeCsvRow, exportCsv } from '@/assets/util'
-// import { format, startOfMonth, endOfMonth } from 'date-fns'
-// import ComponentLoading from '@/components/ComponentLoading'
 import { http } from '@/axios'
 import VueCrudX from '@/VueCrudX'
 
@@ -50,8 +47,34 @@ export default {
       parentId: null,
       pageDefs: {
         crudTable: {
-          name: 'book-pages',
+          saveRow: '#ffaaaa', // add save row button & specify color when row is changed, used with inline edit only and action column
+          inlineReload: { // default true, set to false and use snapshot for large firestore dataset (or similar mechanisms where reads are chargeable)
+            update: true,
+            create: true,
+            delete: true
+          },
+          addrowCreate: [
+            {
+              field: 'content',
+              label: 'Content'
+            }
+          ], // add button creates new record by adding row, you can specified fields that use needs to pre-enter data,
+          inline: { // editable fields on the table and what type of edit are they
+            // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
+            'content': {
+              field: 'v-text-field', // v-text-field (blur will update contents if it was changed)
+              attrs: {
+                type: 'text', // number, email, password
+                class: ['caption']
+              }
+            }
+          },
+          onCreatedOpenForm: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
+          onRowClickOpenForm: false, // set to false of you do not want row click to open form
+
+          // name: 'book-pages',
           headers: [
+            { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' },
             { text: 'Page Content', value: 'content', align: 'left', sortable: false }
           ],
           formatters: (value, _type) => { return value },
@@ -64,7 +87,7 @@ export default {
           formAutoData: null,
           defaultRec: {
             id: null,
-            content: null,
+            content: '',
             bookId: null
           }
         },
@@ -89,22 +112,10 @@ export default {
             } catch (e) {
               console.log(e)
             }
-            console.log('pages', records)
+            console.log('find pages of a book', records)
             return { records, pagination }
           },
-          findOne: async (payload) => {
-            // const { id } = payload
-            let record = { }
-            // try {
-            //   const doc = await firestore.collection('note').doc(id).get()
-            //   if (doc.exists) {
-            //     record = doc.data()
-            //     record.id = id
-            //     record.approveStatus = { text: record.approveStatus, value: record.approveStatus }
-            //   }
-            // } catch (e) { }
-            return record
-          },
+          findOne: (payload) => {},
           create: async (payload) => {
             try {
               let { record: { content }, parentId } = payload
@@ -116,17 +127,21 @@ export default {
           update: async (payload) => {
             try {
               let { record: { id, content } } = payload
-              const rv = await http.patch(`/pages/${id}`, { content })
+              const rv = await http.patch(`/api/pages/${id}`, { content })
               console.log('update page', rv)
             } catch (e) { return 500 }
             return 200
           },
-          delete: async (payload) => {
+          'delete': async (payload) => {
+            console.log('deleting page', payload)
             try {
-              let { record: { id } } = payload
-              const rv = await http.delete(`/pages/${id}`)
+              let { id } = payload
+              const rv = await http.delete(`/api/pages/${id}`)
               console.log('delete page', rv)
-            } catch (e) { return 500 }
+            } catch (e) {
+              console.log(e)
+              return 500
+            }
             return 200
           }
         }

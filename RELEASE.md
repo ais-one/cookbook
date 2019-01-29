@@ -18,11 +18,13 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.7
+ * improvement: add form-open event - with data loaded when form opens
  * improvement: add sceped-slots for filter & edit form [IMPORTANT] please use this from now for customizing the CRUD, please see the following files for reference:
    * example/src/pages/MultiCrud/Example.vue
    * example-rest/src/pages/Book.vue
  * improvement: remove summary component (use scoped-slot instead)
  * improvement: code refactor in progress (make it easier to use)
+ * improvement: use RxJS in example-rest/src/pages/Book.vue for debounce and fetch handling 
  * work in progress:
    * example-rest: Vanilla VueJS connecting to REST backend
    * example-nuxt: Nuxt (SPA first then transition to SSR) connecting to REST backend

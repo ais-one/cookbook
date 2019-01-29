@@ -64,8 +64,10 @@ apiRoutes
     try {
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
+      const search = req.query.search ? req.query.search : ''
       const authors = await Author.query()
-        // .where
+        .where('name', 'like', `%${search}%`)
+        // .where('bookId', req.params.id)
         // .orderBy
         .page(page, limit)
       return res.status(200).json(authors)  
@@ -136,10 +138,8 @@ apiRoutes
           // builder.where('age', '>', 10).select('name');
           builder.limit(2)
         })
-        // .modifyEager('authors', builder => {
-        //   builder.limit(1)
-        // })
-      console.log(book.pages.length)
+      // console.log(book.pages.length)
+      if (book.authors) book.authorIds = book.authors.map(item => item.id)
       if (book) return res.status(200).json(book)
       else return res.status(404).json()
     } catch (e) { 
