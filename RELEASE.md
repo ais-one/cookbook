@@ -3,16 +3,24 @@
  * example-nuxt - Nuxt (SPA first then transition to SSR) connecting to REST backend
  * RESTful++ Backend For Testing
    * Non-essential items
-     * WIP - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
-     * TBD - Multiple File upload example (to local folder)
-     * TBD - Single File upload example (to firestore)
-     * TBD - Graphql
-     * TBD - Logging
-     * TBD- Security Improvements
-     * TBD - Social Logins
+     * Multiple File upload example (to local folder)
+     * Single File upload example (to firebase storage)
+     * Graphql
+     * Logging
+     * Security Improvements
+     * Social Logins
+ * improve i18n
  * https://github.com/ais-one/vue-crud-x/issues/32
  * https://github.com/vuetifyjs/vuetify/pull/5232
  * GraphQL using Prisma or Hasura
+ * Take note of the following github issues
+   * Fixed Table Header:
+     * Fixed Column: https://github.com/lzhoucs/vuetify/pull/4
+     * https://github.com/vuetifyjs/vuetify/issues/1547
+     * https://github.com/vuetifyjs/vuetify/pull/2868
+     * https://github.com/vuetifyjs/vuetify/pull/3833
+   * Infinite Scroll:  https://github.com/vuetifyjs/vuetify/issues/3538
+ * No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
 
 ### DEPRECATED CODE TO BE REMOVED IN v0.2.0
  * v0.1.4 - CRUD operations to return object instead of number
@@ -26,7 +34,8 @@
    * example-rest/src/pages/Page.vue
  * improvement: remove summary component (use scoped-slot instead)
  * improvement: code refactor in progress (make it easier to use)
- * work in progress (example-rest - Vanilla VueJS connecting to REST backend)
+ * done: (example-rest) - Vanilla VueJS connecting to REST backend)
+   * improvement: Websocket (can use https://www.websocket.org/echo.html & ngrok to test)
    * improvement: use RxJS in example-rest/src/pages/Book.vue for debounce and fetch handling 
    * improvement: add transaction in DB query
 

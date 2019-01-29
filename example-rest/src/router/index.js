@@ -7,13 +7,9 @@ import AuthGuard from './auth-guard'
 
 import Dashboard from '@/pages/Dashboard'
 
-// import Reports from '@/pages/Reports'
-
 import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
-// import * as reportsDefs from '@/components/reports'
-import Reports from '@/pages/Reports'
-import * as authorDefs from '@/pages/author'
-import * as categoryDefs from '@/pages/category'
+import * as authorDefs from '@/components/author'
+import * as categoryDefs from '@/components/category'
 import Book from '@/pages/Book'
 import Page from '@/pages/Page'
 
@@ -51,12 +47,6 @@ export default new Router({
       path: '/books/:id/pages',
       name: 'pages',
       component: Page,
-      beforeEnter: AuthGuard
-    },
-    {
-      path: '/reports',
-      name: 'reports',
-      component: Reports,
       beforeEnter: AuthGuard
     },
     { path: '/signup', name: 'SignUp', component: SignUp },

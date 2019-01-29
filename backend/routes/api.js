@@ -10,12 +10,12 @@ const Category = require('../models/Category')
 
 const multer = require('multer')
 const mongo = require('../services/mongo')
-const UPLOAD_PATH = 'uploads/';
-const upload = multer({ dest: `${UPLOAD_PATH}` }); // multer configuration
+const UPLOAD_PATH = 'uploads/'
+const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
 
 
-const { transaction } = require('objection');
-const knex = Book.knex(); // You can access `knex` instance anywhere you want.  One way is to get it through any model.
+const { transaction } = require('objection')
+const knex = Book.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
 
 apiRoutes
   .get('/test', async (req,res) => {
@@ -43,14 +43,14 @@ apiRoutes
   // authors
   .post('/authors', async (req, res) => {
     try {
-      const author = await Author.query().insert(req.body);
+      const author = await Author.query().insert(req.body)
       if (author) return res.status(201).json(author)  
     } catch (e) { }
     return res.status(500).json()
   })
   .patch('/authors/:id', async (req, res) => {
     try {
-      const author = await Author.query().patchAndFetchById(req.params.id, req.body);
+      const author = await Author.query().patchAndFetchById(req.params.id, req.body)
       if (author) return res.status(200).json(author)
       else return res.status(404).json()
     } catch (e) { }
@@ -58,7 +58,7 @@ apiRoutes
   })
   .get('/authors/:id', async (req, res) => {
     try {
-      const author = await Author.query().findById(req.params.id);
+      const author = await Author.query().findById(req.params.id)
       if (author) return res.status(200).json(author)
       else return res.status(404).json()
     } catch (e) { }
@@ -97,7 +97,7 @@ apiRoutes
   })
   .get('/categories/:id', authUser, async (req, res) => {
     try {
-      const category = await Category.query().findById(req.params.id);
+      const category = await Category.query().findById(req.params.id)
       if (category) return res.status(200).json(category)
       else return res.status(404).json()
     } catch (e) { }
@@ -107,7 +107,7 @@ apiRoutes
     try {
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
-      const categories = await Category.query().page(page, limit);
+      const categories = await Category.query().page(page, limit)
       return res.status(200).json(categories)  
     } catch (e) { }
     return res.status(500).json()
@@ -118,7 +118,7 @@ apiRoutes
     try {
       const author = await Author.query().findById(req.body.authorId)
       if (author) {
-        const book = await Book.query().insert(req.body);
+        const book = await Book.query().insert(req.body)
         if (book) return res.status(201).json(book)
       }
     } catch (e) { }
@@ -126,12 +126,12 @@ apiRoutes
   })
   .patch('/books/:id', async (req,res) => {
     let trx
-    const data = { name, categoryId, authorIds } = req.body
+    const { name, categoryId, authorIds } = req.body
     try {
       trx = await transaction.start(knex)
       const book = await Book.query(trx).findById(req.params.id)
       await book.$relatedQuery('authors', trx).unrelate().where('bookId', req.params.id)
-      Promise.all(
+      await Promise.all(
         authorIds.map(async authorId => {
           await book.$relatedQuery('authors', trx).relate(authorId)
         })
@@ -141,8 +141,8 @@ apiRoutes
       await trx.commit()
       return res.status(200).json(book)
     } catch (e) {
-      await trx.rollback();      
-      console.log(e);
+      await trx.rollback()    
+      console.log(e)
     }
     return res.status(500).json()
   })
@@ -153,7 +153,7 @@ apiRoutes
         .joinRelation('category')
         .eager('[pages, authors]') // show pages
         .modifyEager('pages', builder => {
-          // builder.where('age', '>', 10).select('name');
+          // builder.where('age', '>', 10).select('name')
           builder.limit(2)
         })
       // console.log(book.pages.length)
@@ -172,7 +172,7 @@ apiRoutes
       const books = await Book.query()
         // .where
         // .orderBy
-        // .page(page, limit);
+        // .page(page, limit)
         // .joinRelation('category') // NEED TO GET THIS TO WORK
         // select("books.name, category.name")
         // .joinRelation("[category]")
@@ -216,7 +216,7 @@ apiRoutes
   })
   .delete('/pages/:id', async (req, res) => { // delete page to book
     try {
-      // const page = await Page.query().findById(req.params.id);
+      // const page = await Page.query().findById(req.params.id)
       // if (!page) return res.status(404).json()
       const deletedRows = await Page.query().deleteById(req.params.id)
       if (deletedRows) return res.status(200).json()
@@ -227,7 +227,7 @@ apiRoutes
   })
   .patch('/pages/:id', async (req, res) => { // edit a page
     try {
-      const page = await Page.query().patchAndFetchById(req.params.id, req.body);
+      const page = await Page.query().patchAndFetchById(req.params.id, req.body)
       return res.status(200).json(page)
     } catch (e) { }
     return res.status(500).json()
@@ -235,7 +235,7 @@ apiRoutes
   .post('/books/:id/authors/:authorId', async (req, res) => { // relate author to book - set unique index to prevent duplicates...
     // unique index does not seem to work...
     try {
-      const book = await Book.query().findById(req.params.id);
+      const book = await Book.query().findById(req.params.id)
       if (!book) return res.status(404).json()
       const relatedRows = await book.$relatedQuery('authors').relate(req.params.authorId)
       if (relatedRows) return res.status(201).json()

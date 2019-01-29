@@ -5,7 +5,10 @@
 
 ## Quickstart
 
-1. Rename .env-sample file to .env.development
+1. Set Up Environment
+
+Rename .env-sample file to .env.development in this folder
+Rename .env-sample file to .env.development in backend folder
 
 2. Install packages
 
@@ -26,6 +29,15 @@ npm run init-db
 npm run start
 ```
 
+5. View the web application
+
+- Web Application
+  - Host 127.0.0.1:8080
+  - User: test
+  - Password: test
+
+- API Documentation (using OpenAPI)
+  - Host 127.0.0.1:8000/api-docs
 
 ## Creation From Scratch
 

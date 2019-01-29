@@ -7,8 +7,8 @@ const passport = require('passport')
 // const InstagramStrategy = require('passport-instagram')
 // const LinkedinStrategy = require('passport-linkedin-oauth2').Strategy
 const axios = require('axios')
-// const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const GitHubStrategy = require('passport-github').Strategy;
+// const GoogleStrategy = require('passport-google-oauth20').Strategy
+const GitHubStrategy = require('passport-github').Strategy
 
 const express = require('express')
 const app = express()
@@ -59,7 +59,7 @@ function passport_strategy_set() {
 		//process.nextTick(function () {
 			// To keep the example simple, the user's Instagram profile is returned to represent the logged-in user.  In a typical application, you would want
 			// to associate the Instagram account with a user record in your database, and return that user instead.
-			//return done(null, profile);
+			//return done(null, profile)
 		//})
 
     }
@@ -100,7 +100,7 @@ app.use('/pass', isAuthenticted, (req, res, next) => { // the secure route
 		const url = 'https://api.instagram.com/v1/users/self/media/recent'
 		//const url = 'https://api.instagram.com/v1/users/leverandpunch/media/recent'
 		axios.get(url+'/?access_token='+token).then(function (response) {
-			// console.log(response.data);
+			// console.log(response.data)
 			res.send(response.data)
             const images = response.data.data
             console.log(images)
@@ -125,7 +125,7 @@ app.use('/pass', isAuthenticted, (req, res, next) => { // the secure route
 			})			
 			next()
 		}).catch(function (error) {
-			console.log(error);
+			console.log(error)
 			res.send('instagram authentication error!')
 			next()
 		})
@@ -163,11 +163,11 @@ app.get('/auth/github/callback', passport.authenticate('github', { session:true,
 app.get('/logout', (req, res, next) => {
 	req.session.destroy(function (err) {
 		console.log(err, 'bye')
-		req.logOut();
-		res.redirect('/'); //Inside a callback… bulletproof!
-	});
-    // req.session.destroy();
-    //req.logout();
+		req.logOut()
+		res.redirect('/') //Inside a callback… bulletproof!
+	})
+    // req.session.destroy()
+    //req.logout()
     //res.redirect('/')
 })
 
@@ -182,12 +182,12 @@ app.listen(3000, function () {
       appId      : '',
       xfbml      : true,
       version    : 'v2.9'
-    });
-    FB.AppEvents.logPageView();
-  };
+    })
+    FB.AppEvents.logPageView()
+  }
 
   (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
+     var js, fjs = d.getElementsByTagName(s)[0]
      if (d.getElementById(id)) {return;}
      js = d.createElement(s); js.id = id;
      js.src = "//connect.facebook.net/en_US/sdk.js";

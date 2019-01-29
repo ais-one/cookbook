@@ -12,8 +12,8 @@ console.log('secret', secret) // save for the user
 // // Generate OTP Path
 // const user = 'test'
 // const service = 'My Service'
-// // const token = authenticator.generate(secret);
-// const otpauth = otplib.authenticator.keyuri(user, service, secret);
+// // const token = authenticator.generate(secret)
+// const otpauth = otplib.authenticator.keyuri(user, service, secret)
 // console.log('otpauth', otpauth)
 // // Make QR Code From OTP Path
 // const qrcode = require('qrcode')
@@ -22,5 +22,5 @@ console.log('secret', secret) // save for the user
 //     console.log('Error with QR')
 //     return
 //   }
-//   console.log(imageUrl);
+//   console.log(imageUrl)
 // })

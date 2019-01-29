@@ -15,17 +15,17 @@ if (!redis) {
 
     // This is the default value of `retryStrategy`
     retryStrategy: function (times) {
-      var delay = Math.min(times * 50, 2000);
-      return delay;
+      var delay = Math.min(times * 50, 2000)
+      return delay
     },
     maxRetriesPerRequest: 20,
     autoResubscribe: true, // default
     // autoResendUnfulfilledCommands: true,
     reconnectOnError: function (err) {
-      var targetError = 'READONLY';
+      var targetError = 'READONLY'
       if (err.message.slice(0, targetError.length) === targetError) {
         // Only reconnect when the error starts with "READONLY"
-        return true; // or `return 1;`
+        return true // or `return 1`
       }
     }
   })
@@ -42,7 +42,7 @@ preferredSlaves = function(availableSlaves) {
     if (slave.ip === '127.0.0.1' && slave.port === '31234') return slave
   }
   // if no preferred slaves are available a random one is used
-  return false;
+  return false
 }
 
 var redis = new Redis({
@@ -50,7 +50,7 @@ var redis = new Redis({
   name: 'mymaster',
   role: 'slave',
   preferredSlaves: preferredSlaves
-});
+})
 */
 
 module.exports = redis

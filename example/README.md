@@ -33,31 +33,6 @@
 #### run the app (vue-cli 3)
     npm run serve
 
-### Maintaining - Build NPM Package
-
-#### go to repo root directory and build for production with minification
-    cd [path-to]/vue-crud-x
-    npm run build
-
-#### Either upload as published package (only for repo owner)
-    npm publish
-
-#### local package vue-crud-x
-    npm pack
-    # A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
-    # If you want to install without saving to package.json, npm i --no-save vue-crud-x-?.?.?.tgz
-
-## General Usage
-
-### Option 1 use NPM package
-
-Install it as in NPM package and import it
-    npm i vue-crud-x
-
-### Option 2 use from source file
-
-Just copy the VueCrudX.vue file into your project and include it as a component
-
 ---
 
 # A Deeper Dive Into The Example
@@ -317,52 +292,6 @@ service cloud.firestore {
     })
 
 
-## Debounce Example
-
-    var watchExampleVM = new Vue({
-      el: '#watch-example',
-      data: {
-        question: '',
-        answer: 'I cannot give you an answer until you ask a question!'
-      },
-      watch: {
-        // whenever question changes, this function will run
-        question: function (newQuestion) {
-          this.answer = 'Waiting for you to stop typing...'
-          this.getAnswer()
-        }
-      },
-      methods: {
-        // _.debounce is a function provided by lodash to limit how
-        // often a particularly expensive operation can be run.
-        // In this case, we want to limit how often we access
-        // yesno.wtf/api, waiting until the user has completely
-        // finished typing before making the ajax request. To learn
-        // more about the _.debounce function (and its cousin
-        // _.throttle), visit: https://lodash.com/docs#debounce
-        getAnswer: _.debounce(
-          function () {
-            if (this.question.indexOf('?') === -1) {
-              this.answer = 'Questions usually contain a question mark. ;-)'
-              return
-            }
-            this.answer = 'Thinking...'
-            var vm = this
-            axios.get('https://yesno.wtf/api')
-              .then(function (response) {
-                vm.answer = _.capitalize(response.data.answer)
-              })
-              .catch(function (error) {
-                vm.answer = 'Error! Could not reach the API. ' + error
-              })
-          },
-          // This is the number of milliseconds we wait for the
-          // user to stop typing.
-          500
-        )
-      }
-    })
-
 ## Others
 
 v-model.lazy.trim.number (v-model modifiers)
@@ -391,18 +320,7 @@ https://firebase.google.com/docs/auth/web/google-signin
 
 # Other notes
 
-0. look into id => name?
-1. add Field as hidden on table list
-2. parentId for creating new record - done
-
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
-
-- ! config info for dev and build
-- fix "global rules"
-- close filter/search component programatically
-- async select dropdown
-- multiple select
-- recaptcha (https://github.com/DanSnow/vue-recaptcha)
 
 - https://stackoverflow.com/questions/44324454/vuejs-accessing-store-data-inside-mounted
 - https://vuex.vuejs.org/en/forms.html

@@ -79,14 +79,14 @@ export default {
     commit('setUser', payload)
     if (!USE_OTP) {
       commit('setLayout', 'layout-admin')
-      router.push('/reports')
+      router.push('/dashboard')
     }
   },
 
   autoVerify ({ commit }, payload) { // payload.token
     commit('setUser', payload)
     commit('setLayout', 'layout-admin')
-    router.push('/reports')
+    router.push('/dashboard')
   },
   clearError ({ commit }) { commit('setError', null) },
 
