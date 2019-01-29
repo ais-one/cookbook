@@ -445,6 +445,7 @@ export default {
       if (id) await this.getRecord({ id }) // edit
       else this.setRecord() // add
       this.crudFormFlag = true
+      this.$emit('form-open', this.record) // emit event if close form
     },
     async crudFormSave (e) {
       if (!this.record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return

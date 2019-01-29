@@ -1,6 +1,7 @@
 ### Upcoming
  * automated testing
- * work in progress: RESTful++ Backend For Testing
+ * example-nuxt - Nuxt (SPA first then transition to SSR) connecting to REST backend
+ * RESTful++ Backend For Testing
    * Non-essential items
      * WIP - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
      * TBD - Multiple File upload example (to local folder)
@@ -19,16 +20,15 @@
 
 ### Version 0.1.7
  * improvement: add form-open event - with data loaded when form opens
- * improvement: add sceped-slots for filter & edit form [IMPORTANT] please use this from now for customizing the CRUD, please see the following files for reference:
+ * improvement: add scoped-slots for filter & edit form [IMPORTANT] please use this from now for customizing the CRUD, please see the following files for reference:
    * example/src/pages/MultiCrud/Example.vue
    * example-rest/src/pages/Book.vue
+   * example-rest/src/pages/Page.vue
  * improvement: remove summary component (use scoped-slot instead)
  * improvement: code refactor in progress (make it easier to use)
- * improvement: use RxJS in example-rest/src/pages/Book.vue for debounce and fetch handling 
- * improvement: add transaction in DB query
- * work in progress:
-   * example-rest: Vanilla VueJS connecting to REST backend
-   * example-nuxt: Nuxt (SPA first then transition to SSR) connecting to REST backend
+ * work in progress (example-rest - Vanilla VueJS connecting to REST backend)
+   * improvement: use RxJS in example-rest/src/pages/Book.vue for debounce and fetch handling 
+   * improvement: add transaction in DB query
 
 ### Version 0.1.6
  * chore: update npm packages (vuetify@1.4.3)

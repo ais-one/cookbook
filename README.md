@@ -8,26 +8,44 @@ In order to keep this library current, we are monitoring the release progress fo
 
 We will remove this notice once we have migrated to VueJS 3 & Vuetify 2
 
-# IMPORTANT: Getting Started - Article
-
-Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">detailed article</a> (usage and explanations in the article are also updated as and when required)
-
-Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>
-
-
 # What Is vue-crud-x
 
 > A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, forms, use of GraphQL or REST to access various datastores. Vuetify is used for layout components but can be changed to alternatives such as ElementUI (by changing components from Vuetify to ElementUI)
+
+# IMPORTANT: Getting Started
 
 ## Examples To Get You Up And Running
 
 See the respective README.MD files for more information on starting
 
- * Serverless (best for starters, use Firebase as backend) - https://github.com/ais-one/vue-crud-x/tree/master/example
- * Backend Project (backend for REST and NUXT examples) - https://github.com/ais-one/vue-crud-x/tree/master/backend
- * REST (README.MD work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
- * NUXT (README.MD work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
+ * REST (alpha release) - best for quickstart, everything runs locally - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
+ * Serverless (beta release) - use Firebase backend, real-time updates - https://github.com/ais-one/vue-crud-x/tree/master/example
+ * Backend (alpha release) - backend for REST and NUXT examples - https://github.com/ais-one/vue-crud-x/tree/master/backend
+ * NUXT (work in progress) - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
 
+## Article
+
+Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">detailed article</a> (usage and explanations in the article are also updated as and when required)
+
+Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>
+
+## Also Important To Note!**
+
+From Version 0.1.7 onwards, scoped-slots can be used for customized the form and filter. Please us this instead of the previous way of **importing component files**. It will be much cleaner.
+
+We will be deprecating **importing component files** in a later version to be determined.
+
+Usage example can be found in the files:
+- in the example-rest project
+  - example-rest/src/pages/Page.vue
+  - example-rest/src/pages/Book.vue
+  - example-rest/src/pages/author.js
+  - example-rest/src/pages/category.js
+- in the example project
+  - example/src/pages/MultiCrud/Example.vue
+
+Please see example-rest/README.MD on installtion (just a few commands, everything runs locally, no need to sign up any service), and a description of the data schema which includes 1-1, 1-m, m-n use cases.
+ 
 ## Differentiating Features From Other CRUD Components
 
  * Able to do nested CRUD operations, e.g. selecting a post from a list of posts, and then selecting a comment from a list of comments of the selected post to edit
