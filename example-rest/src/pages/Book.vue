@@ -2,17 +2,12 @@
   <div id="not-needed">
     <v-layout row wrap>
       <v-flex xs12>
-        <vue-crud-x
-          ref="book-table"
-          storeName="book-table"
-          :parentId="null"
-          v-bind="bookDefs"
-          @form-open="openBookForm"
-        >
+        <vue-crud-x ref="book-table" storeName="book-table" :parentId="null" v-bind="bookDefs" @form-open="openBookForm">
           <template slot="filter" slot-scope="{ filterData, parentId, storeName }">
-            <div>{{ filterData }}</div>
-            <hr/>
-            <div>{{ !!parentId }} {{ storeName }}</div>
+            <h1>Custom {{ storeName }} Filter Slot</h1>
+            <div v-for="(filter, index) in filterData" :key="index">
+              <component :is="filter.type" v-model="filter.value" v-bind="filter.attrs"></component>
+            </div>
           </template>
           <!-- <template slot="table" slot-scope="{ records, totalRecs, pagination }">
             <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['book-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
@@ -20,12 +15,10 @@
           </template> -->
           <template slot="form" slot-scope="{ record, parentId, storeName }">
             <div>
-              <div>{{ record }} {{ !!parentId }} {{ storeName }}</div>
-              <h1>Book Form</h1>
+              <h1>Custom {{ storeName }} Form Slot - Has Parent: {{ !!parentId }}</h1>
               <v-card-text>
                 <v-text-field label="Name" v-model="record.name"></v-text-field>
                 <v-select label="Category" v-model="record.categoryId" :items="categories" required item-text="name" item-value="id"></v-select>
-                <!-- deletable-chips -->
                 <v-autocomplete
                   multiple
                   v-model="authorIds"
@@ -46,22 +39,12 @@
                       </v-list-tile-title>
                     </v-list-tile>
                   </template>
-                  <template
-                    slot="selection"
-                    slot-scope="{ item, selected }"
-                  >
-                    <v-chip
-                      :selected="selected"
-                      close
-                      @input="remove(item)"
-                    >
+                  <template slot="selection" slot-scope="{ item, selected }">
+                    <v-chip :selected="selected" close @input="remove(item)">
                       <span v-text="item.name"></span>
                     </v-chip>
                   </template>
-                  <template
-                    slot="item"
-                    slot-scope="{ item }"
-                  >
+                  <template slot="item" slot-scope="{ item }">
                     <v-list-tile-content>
                       <v-list-tile-title v-text="item.name"></v-list-tile-title>
                     </v-list-tile-content>
@@ -78,9 +61,6 @@
 </template>
 
 <script>
-// TBD
-// 1. set initial value of selected authors (id, name)
-// 2. set initial value of authors // record.authors
 import { from } from 'rxjs'
 import { pluck, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators' // map
 
@@ -107,12 +87,11 @@ export default {
   },
   data () {
     return {
-      // lazy load start
+      // auto-complete
       isLoading: false,
-      // TOREMOVE - items: [], // use subscription
       authorIds: [], // use record
       search: '',
-      // lazy load end
+
       categories: [
         { id: 1, name: 'cat1' },
         { id: 2, name: 'cat2' }
@@ -134,7 +113,18 @@ export default {
           showFilterButton: false
         },
 
-        crudFilter: { FilterVue: null, filterData: { } },
+        crudFilter: {
+          FilterVue: null,
+          filterData: {
+            name: {
+              type: 'v-text-field',
+              value: '',
+              attrs: {
+                label: 'Book Name'
+              }
+            }
+          }
+        },
 
         crudForm: {
           FormVue: () => {},
@@ -154,15 +144,12 @@ export default {
           },
           find: async (payload) => {
             let records = []
-            const { pagination } = payload // filterData // pagination: { sortBy, descending }
+            const { pagination, filterData } = payload // pagination: { sortBy, descending }
             const { page, rowsPerPage } = pagination
+            let params = { page: page > 0 ? page - 1 : 0, limit: rowsPerPage } // set query params
+            params.name = filterData.name.value
             try {
-              const { data: { results, total } } = await http.get('/api/books', {
-                params: {
-                  page: page > 0 ? page - 1 : 0,
-                  limit: rowsPerPage
-                }
-              })
+              const { data: { results, total } } = await http.get('/api/books', { params })
               // console.log('find books', results)
               results.forEach(row => {
                 records.push(row)
@@ -233,7 +220,7 @@ export default {
     }
   },
   methods: {
-    gotoPages (id) {
+    gotoPages (id) { // go to pages table for selected book
       // console.log('gotoPages - BookId: ', id)
       this.$router.push({ path: `/books/${id}/pages` })
     },

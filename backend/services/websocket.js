@@ -1,7 +1,7 @@
 let wss
 
 if (!wss) {
-  const WS_PORT = process.env.WS_PORT || false
+  const WS_PORT = process.env.WS_PORT || 3001
   const USE_HTTPS = process.env.USE_HTTPS || false
   const WebSocket = require('ws')
   const https = require('https')

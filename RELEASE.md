@@ -38,6 +38,8 @@
    * improvement: Websocket (can use https://www.websocket.org/echo.html & ngrok to test)
    * improvement: use RxJS in example-rest/src/pages/Book.vue for debounce and fetch handling 
    * improvement: add transaction in DB query
+ * chore: update npm packages (vuetify@1.4.4)
+ * chore: update & improve documentation
 
 ### Version 0.1.6
  * chore: update npm packages (vuetify@1.4.3)

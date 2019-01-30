@@ -8,10 +8,7 @@ const { createToken, verifyToken, isAuthenticated } = require('../services')
 const User = require('../models/User')
 const keyv = require('../services/keyv')
 
-const USE_OTP = process.env.USE_OTP || '' // Make DRY
-const KEY_EXPIRY = process.env.KEY_EXPIRY || '15m'
-const SECRET_KEY = process.env.SECRET_KEY || '123456789'
-const OTP_SECRET_KEY = process.env.OTP_SECRET_KEY || '987654321'
+const { USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY } = require('../config')
 
 authRoutes
 .post('/signup', async (req,res) => {

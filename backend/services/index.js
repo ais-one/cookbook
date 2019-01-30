@@ -10,10 +10,7 @@ const User = require('../models/User')
 
 // const {firestore} = require('../middleware/firebase')
 const SALT_ROUNDS = 12
-const USE_OTP = process.env.USE_OTP || '' // true in production
-const SECRET_KEY = process.env.SECRET_KEY || '123456789'
-const OTP_SECRET_KEY = process.env.OTP_SECRET_KEY || '987654321'
-const KEY_EXPIRY = process.env.KEY_EXPIRY || '1h'
+const { USE_OTP, KEY_EXPIRY } = require('../config')
 
 // Create a token from a payload 
 function createToken(payload, secretKey, expiresIn = KEY_EXPIRY) {

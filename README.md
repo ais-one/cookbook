@@ -6,14 +6,14 @@
 
 The **example-rest** folder is now the preferred project for quickstart. Everything runs locally from a sample REST backend included in this repository, no firebase signup/setup required.
 
-Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (usage and explanations in the article are also updated as and when required)
+Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
 
 ## 2 Improvement Leading To Breaking Changes
 
 From Version 0.1.7 onwards, **scoped-slots** can and should be used for customized form and filter. Please use this instead of the previous way of **importing component files** as it is much cleaner. **importing component files** will be deprecated in a later version.
 
 Usage example can be found:
- - in **example-rest** project (see example-rest/README.MD on quickstart)
+ - in **example-rest** project (see example-rest/README.md on quickstart)
    - example-rest/src/pages/Page.vue
    - example-rest/src/pages/Book.vue
    - example-rest/src/pages/author.js
@@ -80,7 +80,7 @@ There are currently 4 example projects for show-casing vue-crud-x:
   - Supporting project backend for **example-rest** and **example-nuxt**
   - https://github.com/ais-one/vue-crud-x/tree/master/backend
 
-Refer to their respective README.MD files for more information
+Refer to the respective projects README.md files for more information
 
 
 ## Building vue-crud-x

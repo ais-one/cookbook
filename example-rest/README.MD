@@ -2,34 +2,28 @@
 
 > A REST example project using vue-crud-x component
 
+## Quick Start (default configuration used)
 
-## Quickstart
-
-1. Set Up Environment
-
-Rename .env-sample file to .env.development in this folder
-Rename .env-sample file to .env.development in backend folder
-
-2. Install packages
+1. Install packages
 
 ```
 npm i
 ```
 
-3. Build REST Server (in backend folder) & Init DB (dev.dqlite3 in backend folder)
+2. Build REST Server (in backend folder) & Init DB (dev.dqlite3 in backend folder)
 
 ```
 npm run build-rest
 npm run init-db
 ```
 
-4. Start The Client & Server
+3. Start The Client & Server
 
 ```
 npm run start
 ```
 
-5. View the web application
+4. View the web application
 
 - Web Application
   - Host 127.0.0.1:8080
@@ -38,6 +32,15 @@ npm run start
 
 - API Documentation (using OpenAPI)
   - Host 127.0.0.1:8000/api-docs
+
+## Configuration
+
+Refer to .env-sample file for configuration keys to edit
+
+Rename file to .env.development for development
+
+Rename file to .env.production for production
+
 
 ## Creation From Scratch
 

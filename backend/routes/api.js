@@ -169,8 +169,9 @@ apiRoutes
     try {
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
+      const name = req.query.name ? req.query.name : ''
       const books = await Book.query()
-        // .where
+        .where('books.name', 'like', `%${name}%`)
         // .orderBy
         // .page(page, limit)
         // .joinRelation('category') // NEED TO GET THIS TO WORK

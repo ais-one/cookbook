@@ -58,6 +58,7 @@
       </v-spacer>
       <v-toolbar-items v-if="userIsAuthenticated">
         <!-- <v-btn flat @click="onLogout"><v-icon left dark>exit_to_app</v-icon> Logout</v-btn> -->
+        <!-- <v-img src="/static/email.png" contain height="40" width="172" class="mt-2" /> -->
       </v-toolbar-items>
       <div v-if="userIsAuthenticated">
         <v-menu bottom left offset-y>

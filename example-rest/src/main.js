@@ -13,7 +13,7 @@ Vue.config.productionTip = false
 Vue.use(VueRx)
 
 // Vue.prototype.$http = base
-const WS_URL = process.env.VUE_APP_WS_URL // 'wss://echo.websocket.org'
+const WS_URL = process.env.VUE_APP_WS_URL || 'ws://127.0.0.1:3001' // 'wss://echo.websocket.org'
 console.log('WS_URL', WS_URL)
 Vue.use(VueNativeSock, WS_URL, {
   // connectManually: true,

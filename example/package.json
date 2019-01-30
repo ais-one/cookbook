@@ -19,10 +19,10 @@
     "date-fns": "^1.30.0",
     "vue": "^2.5.22",
     "vue-crud-x": "latest",
-    "vue-i18n": "^8.7.0",
+    "vue-i18n": "^8.8.0",
     "vue-recaptcha": "^1.1.1",
     "vue-router": "^3.0.2",
-    "vuetify": "1.4.3",
+    "vuetify": "1.4.4",
     "vuex": "^3.1.0"
   },
   "devDependencies": {

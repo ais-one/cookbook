@@ -1,42 +1,44 @@
 # REST++ Backend Example
 
-## Quick Start
+> An example REST backend that can be used by frontend for testing & proof of concept
 
+## Quick Start (default configuration used)
 
-1. Rename .env-sample file to .env.development
-
-2. Install packages
+1. Install packages
 
 ```
 npm i
 ```
 
-3. Create and seed the database
+2. Create and seed the database
 
 ```
 npx knex migrate:latest --env development
 npx knex seed:run --env development
 ```
 
-4. Run the server
-
-4.1 Windows
+3. Run the server
 
 ```
+# Windows
 npm run dev
-```
 
-4.2 Linux
-
-```
+# Linux
 NODE_ENV=development nodemon index.js
 ```
 
-
-5. Test Out The REST APIs
+4. Test Out The REST APIs
 
 http://127.0.0.1:3000/api-docs
 
+
+## Configuration
+
+Refer to .env-sample file for configuration keys to edit
+
+Rename file to .env.development for development
+
+Rename file to .env.production for production
 
 ## Backend Notes
 

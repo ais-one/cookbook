@@ -5,7 +5,9 @@ if (!Model) {
   const Knex = require('knex')
   const connection = require('../knexfile')
   Model = require('objection').Model
-  const knexConnection = Knex(connection[process.env.NODE_ENV])
+  const env = process.env.NODE_ENV || 'development'
+  console.log('env', env)
+  const knexConnection = Knex(connection[env])
   Model.knex(knexConnection)  
 }
 
