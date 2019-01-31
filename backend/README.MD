@@ -51,7 +51,7 @@ Folders
  +-middleware (auth, logging, etc...)
  +-migrations (create database)
  +-models (database models)
- +-public (location for SPA, etc)
+ +-public (location for frontend app)
  +-routes (REST API routes)
  +-seeds (populate database)
  +-services (e.g. ORM, mongo, websockets, redis, etc)
@@ -63,6 +63,7 @@ Files
  - ecosystem.config.js (PM2 configuration)
  - ga.js (utility program: generation of user passwords, GA Key, QR Codes)
  - index.js
+ - config.js (single source for environment variables)
  - knexfile.js (database configuration)
  - package.json
 ```

@@ -120,7 +120,20 @@ export default {
               type: 'v-text-field',
               value: '',
               attrs: {
-                label: 'Book Name'
+                label: 'Book Name', clearable: true
+              }
+            },
+            categoryName: {
+              type: 'v-select',
+              value: { text: 'All', value: 0 },
+              attrs: {
+                label: 'Category',
+                multiple: false,
+                'return-object': true,
+                items: [
+                  { text: 'All', value: 0 }, { text: 'cat1', value: 1 }, { text: 'cat2', value: 2 }
+                ],
+                rules: [v => !!v || 'Item is required']
               }
             }
           }
@@ -147,7 +160,8 @@ export default {
             const { pagination, filterData } = payload // pagination: { sortBy, descending }
             const { page, rowsPerPage } = pagination
             let params = { page: page > 0 ? page - 1 : 0, limit: rowsPerPage } // set query params
-            params.name = filterData.name.value
+            if (filterData.name.value) params.name = filterData.name.value
+            if (filterData.categoryName.value.value) params['category-id'] = filterData.categoryName.value.value
             try {
               const { data: { results, total } } = await http.get('/api/books', { params })
               // console.log('find books', results)

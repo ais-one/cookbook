@@ -18,8 +18,8 @@ exports.seed = async (knex, Promise) => {
   ])
   await knex('books').insert([
     {id: 1, name: 'book1', categoryId: 1 },
-    {id: 2, name: 'book2', categoryId: 1 },
-    {id: 3, name: 'book3', categoryId: 2 },
+    {id: 2, name: 'book2', categoryId: 2 },
+    {id: 3, name: 'book3', categoryId: 1 },
     {id: 4, name: 'book4', categoryId: 1 },
     {id: 5, name: 'book5', categoryId: 2 }
   ])

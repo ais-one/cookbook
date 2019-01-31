@@ -170,8 +170,10 @@ apiRoutes
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
       const name = req.query.name ? req.query.name : ''
-      const books = await Book.query()
-        .where('books.name', 'like', `%${name}%`)
+      const categoryId = req.query['category-id'] ? req.query['category-id'] : ''
+      const qb = Book.query()
+      if (name) qb.where('books.name', 'like', `%${name}%`)
+      if (categoryId) qb.where('books.categoryId', '=', categoryId)
         // .orderBy
         // .page(page, limit)
         // .joinRelation('category') // NEED TO GET THIS TO WORK
@@ -180,15 +182,13 @@ apiRoutes
         // .eager('category') // OK
         // .select('books.*', 'category.name as categoryName')
         // .join('categories', 'books.categoryId', 'categories.id')
-        .select(
+      const books = await qb.select(
           'books.*',
           'category.name as categoryName',
           Book.relatedQuery('pages').count().as('pageCount'),
           Book.relatedQuery('authors').count().as('authorCount')
           )
         .joinRelation('category')
-        // TBD count pages
-        // TBD add authors
         .page(page, limit)
       // console.log(books[0])
       return res.status(200).json(books)  
