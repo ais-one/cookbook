@@ -1,6 +1,6 @@
 # Getting Started - Hands On
 
-> A example project using vue-crud-x component
+> A firebase example project using vue-crud-x component
 
 ## Learning To Use Or Maintaining Component (Github)
 
@@ -8,7 +8,7 @@
 
 #### clone the repository and go to the repository example
     git clone https://github.com/ais-one/vue-crud-x.git
-    cd vue-crud-x/example
+    cd vue-crud-x/example-firebase
 
 #### install dependencies
     npm install

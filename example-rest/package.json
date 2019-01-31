@@ -1,7 +1,7 @@
 {
-  "name": "example",
+  "name": "example-rest",
   "version": "0.0.20",
-  "description": "An example for vue-crud-x component usage",
+  "description": "A rest backend example for vue-crud-x component usage",
   "author": "Aaron Gong <aaronjxz@gmail.com>",
   "private": true,
   "scripts": {

@@ -18,8 +18,8 @@ Usage example can be found:
    - example-rest/src/pages/Book.vue
    - example-rest/src/pages/author.js
    - example-rest/src/pages/category.js
- - in **example** (firebase) project
-   - example/src/pages/MultiCrud/Example.vue (also, demonstrates multiple vue-crud-x used in a single page)
+ - in **example-firebase** project
+   - example-firebase/src/pages/MultiCrud/Example.vue (also, demonstrates multiple vue-crud-x used in a single page)
 
 ## 3 Roadmap & Dependencies
 
@@ -45,7 +45,7 @@ Our examples showcase the following (unrelated to the vue-crud-x features above)
  - in **example-rest**
    - rxJs for cleaner code (auto-complete, debounce, fetch latest)
    - 2FA OTP signin with Google Authenticator
- - in **example**
+ - in **example-firebase**
    - Use multiple vue-crud-x in single page
    - recaptcha, image capture from webcam
 
@@ -65,10 +65,10 @@ There are currently 4 example projects for show-casing vue-crud-x:
   - you do not need to build and run the backend seperately, the run scripts here will help to build the backend and run it with the frontend
   - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
  
-2. example
+2. example-firebase
   - Serverless backend, using Firebase, need to register and setup
   - real-time updates from Firestore
-  - https://github.com/ais-one/vue-crud-x/tree/master/example
+  - https://github.com/ais-one/vue-crud-x/tree/master/example-firebase
 
 3. example-nuxt
   - NUXT implementation, show case SSR

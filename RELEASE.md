@@ -27,9 +27,10 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.7
+ * note: example folder is now renamed as example-firebase
  * improvement: add form-open event - with data loaded when form opens
  * improvement: add scoped-slots for filter & edit form [IMPORTANT] please use this from now for customizing the CRUD, please see the following files for reference:
-   * example/src/pages/MultiCrud/Example.vue
+   * example-firebase/src/pages/MultiCrud/Example.vue
    * example-rest/src/pages/Book.vue
    * example-rest/src/pages/Page.vue
  * improvement: remove summary component (use scoped-slot instead)

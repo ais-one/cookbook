@@ -1,7 +1,7 @@
 {
-  "name": "example",
+  "name": "example-firebase",
   "version": "0.1.7",
-  "description": "An example for vue-crud-x component usage",
+  "description": "A firebase example for vue-crud-x component usage",
   "author": "Aaron Gong <aaronjxz@gmail.com>",
   "private": true,
   "scripts": {

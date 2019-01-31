@@ -28,6 +28,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-
-# temporary to remove once it is ready
-example-rest2/
