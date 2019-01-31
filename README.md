@@ -60,8 +60,7 @@ This repository also contains an Express backend server for testing the vue-crud
 
 There are currently 4 example projects for show-casing vue-crud-x:
 
-1. example-rest
-  - best for quickstart
+1. example-rest **(Best for quick start - Please use this to try things out)**
   - everything runs locally
   - you do not need to build and run the backend seperately, the run scripts here will help to build the backend and run it with the frontend
   - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
@@ -82,10 +81,25 @@ There are currently 4 example projects for show-casing vue-crud-x:
 
 Refer to the respective projects README.md files for more information
 
+---
 
-## Building vue-crud-x
+## Usage
 
-If you every need to build this library from source...
+### Option 1 Use NPM package
+
+Install it as in NPM package and import it
+
+```
+npm i vue-crud-x
+```
+
+### Option 2 Use the source file
+
+Just copy the VueCrudX.vue file into your project and include it as a component
+
+### Option 3 Build and Install
+
+If you ever need to build this library from source...
 
 1. Install dependencies
 
@@ -114,21 +128,6 @@ npm pack
 # A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
 # If you want to install without saving to package.json, npm i --no-save vue-crud-x-?.?.?.tgz
 ```
-
-## General Usage
-
-### Option 1 use NPM package
-
-Install it as in NPM package and import it
-
-```
-npm i vue-crud-x
-```
-
-### Option 2 use from source file
-
-Just copy the VueCrudX.vue file into your project and include it as a component
-
 
 ## What is bad about this CRUD Component
 
