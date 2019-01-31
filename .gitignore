@@ -1,4 +1,5 @@
 .DS_Store
+dist
 node_modules
 **/cfg.json
 **/firebase.json
