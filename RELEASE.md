@@ -26,6 +26,11 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
+### Version 0.1.8
+ * improvement: add test
+ * work in progress: start on NUXT (do SPA first then SSR)
+ * chore: version updates for Vuetify & VueJS
+
 ### Version 0.1.7
  * note: example folder is now renamed as example-firebase
  * improvement: add form-open event - with data loaded when form opens
