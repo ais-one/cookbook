@@ -51,13 +51,14 @@
         <v-toolbar-side-icon v-if="userIsAuthenticated" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       </v-toolbar-title>
       <div class="text-xs-center">
-        <v-img src="/static/email.png" contain height="40" width="172" class="ma-2" />
+        <v-img src="/static/email.png" contain height="40" width="40" class="ma-2" />
       </div>
       {{ currentTime }}
       <v-spacer>
       </v-spacer>
       <v-toolbar-items v-if="userIsAuthenticated">
         <!-- <v-btn flat @click="onLogout"><v-icon left dark>exit_to_app</v-icon> Logout</v-btn> -->
+        <!-- <v-img src="/static/email.png" contain height="40" width="172" class="mt-2" /> -->
       </v-toolbar-items>
       <div v-if="userIsAuthenticated">
         <v-menu bottom left offset-y>
@@ -117,11 +118,12 @@ export default {
         //   model: true,
         //   children: [
         //     { icon: 'dashboard', title: 'Dashboard', link: '/dashboard' },
-        //     { icon: 'list_alt', title: 'Reports', link: '/reports' }
         //   ]
         // },
         { icon: 'dashboard', title: 'Dashboard', link: '/dashboard' },
-        { icon: 'list_alt', title: 'Reports', link: '/reports' }
+        { icon: 'list_alt', title: 'Authors', link: '/authors' },
+        { icon: 'list_alt', title: 'Categories', link: '/categories' },
+        { icon: 'list_alt', title: 'Books', link: '/books' }
       ]
     }
   },

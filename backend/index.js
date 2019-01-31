@@ -3,12 +3,16 @@ const dotenv = require('dotenv')
 dotenv.config()
 const fs = require('fs')
 if (process.env.NODE_ENV) {
-  const envConfig = dotenv.parse(fs.readFileSync('.env.' + process.env.NODE_ENV))
-  for (var k in envConfig) process.env[k] = envConfig[k]
+  try {
+    const envConfig = dotenv.parse(fs.readFileSync('.env.' + process.env.NODE_ENV))
+    for (var k in envConfig) process.env[k] = envConfig[k]  
+  } catch (e) {
+    console.log('missing configuration file, using defaults')
+  }
 }
 console.log('Environment: ', process.env.NODE_ENV)
 
-const API_PORT = process.env.API_PORT
+const API_PORT = process.env.API_PORT || 3000
 const USE_HTTPS = process.env.USE_HTTPS || false // USE_HTTPS should be path to letsencrypt location OR false 
 console.log('HTTPS: ', USE_HTTPS ? 'Yes' : 'No')
 let credentials
@@ -73,7 +77,7 @@ if (USE_HTTPS) {
 }
 
 const WebSocket = require('ws')
-const wss = require('./helpers/websocket')
+const wss = require('./services/websocket')
 
 wss.on('connection', function connection(ws) {
   console.log('connected')

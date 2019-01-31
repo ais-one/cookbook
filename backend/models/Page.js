@@ -1,9 +1,6 @@
-// import { Model } from 'objection'
-// import Book from './Book'
+'use strict'
+const Model = require('../services/database')
 
-const Model = require('objection').Model
-
-// export default
 class Page extends Model {
   // Table name is the only required property.
   // static tableName = 'pages'

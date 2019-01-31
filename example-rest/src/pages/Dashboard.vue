@@ -10,7 +10,9 @@
             <v-container fluid>
               <v-layout row wrap>
                 <v-flex xs12>
-                  <h2 class="py-2 text-xs-center">Alerts</h2>
+                  <h2 class="py-2 text-xs-center">Test Your Other Stuff Here</h2>
+                  <p class="py-2 text-xs-center">Click on the top left menu icon to navigate</p>
+                  <p class="py-2 text-xs-center">If you are on this page, web socket messages are sent to the server every 10 seconds. On the server console.log, you can see the messages</p>
                 </v-flex>
               </v-layout>
               <!-- There will be several rows -->
@@ -43,20 +45,11 @@ export default {
     this.$options.sockets.onmessage = (rv) => {
       console.log('onmessage', rv) // create listener
     }
-    /*
-      data: "{"call":"updateBalances","args":[{"balance":"0.24980000","pair":"LTC"},{"balance":"None","pair":"BTC"},{"balance":"1.86032896","pair":"ETH"}]}"
-      isTrusted: true
-      origin: "ws://3.0.20.82:8442"
-    */
-    // try {
-    //   const opts = { headers: { token: this.$store.getters.user.token } }
-    //   const rv = await http.get('/abc', opts)
-    // } catch (e) { }
-
+    // this.$store.getters.user.token
     this.priceTimerId = setInterval(async () => {
       this.$socket.sendObj({
-        call: 'aa',
-        args: 'bbc'
+        call: 'msg-from-client',
+        args: 'Hello from client!'
       })
       if (navigator.onLine) this.updateNetworkError(false)
       else this.updateNetworkError(true)

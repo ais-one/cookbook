@@ -1,4 +1,5 @@
-const Model = require('objection').Model
+'use strict'
+const Model = require('../services/database')
 
 // export default
 class Category extends Model {

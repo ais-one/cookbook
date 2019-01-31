@@ -38,7 +38,6 @@ module.exports = {
       max: 5
     }
   }
-
 };
 
 // npx knex migrate:make create_users --env development

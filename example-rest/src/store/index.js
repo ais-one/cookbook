@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import jwtDecode from 'jwt-decode'
 import actions from './actions'
+import { http } from '@/axios'
 
 Vue.use(Vuex)
 
@@ -10,7 +11,7 @@ export const store = new Vuex.Store({
   },
   state: {
     layout: 'layout-default',
-    user: null, // token, verified, (id - maybe to remove) // localStorage.getItem('user-token') || null
+    user: null,
     loading: false,
     error: null,
     networkError: false
@@ -27,6 +28,13 @@ export const store = new Vuex.Store({
         }
       }
       state.user = payload
+      if (payload) {
+        localStorage.setItem('session', JSON.stringify(payload))
+        http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
+      } else {
+        localStorage.removeItem('session')
+        delete http.defaults.headers.common['Authorization']
+      }
     },
     setLoading (state, payload) { state.loading = payload },
     setError (state, payload) { state.error = payload },

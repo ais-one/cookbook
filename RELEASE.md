@@ -1,15 +1,46 @@
 ### Upcoming
- * continue with REST implementation
  * automated testing
+ * example-nuxt - Nuxt (SPA first then transition to SSR) connecting to REST backend
+ * RESTful++ Backend For Testing
+   * Non-essential items
+     * Multiple File upload example (to local folder)
+     * Single File upload example (to firebase storage)
+     * Graphql
+     * Logging
+     * Security Improvements
+     * Social Logins
+ * improve i18n
  * https://github.com/ais-one/vue-crud-x/issues/32
- * any more events needed? also, check on disabling
- * fix Date Range Issues... or check filters only on submit
- * GraphQL using Prisma or Hasura
  * https://github.com/vuetifyjs/vuetify/pull/5232
+ * GraphQL using Prisma or Hasura
+ * Take note of the following github issues
+   * Fixed Table Header:
+     * Fixed Column: https://github.com/lzhoucs/vuetify/pull/4
+     * https://github.com/vuetifyjs/vuetify/issues/1547
+     * https://github.com/vuetifyjs/vuetify/pull/2868
+     * https://github.com/vuetifyjs/vuetify/pull/3833
+   * Infinite Scroll:  https://github.com/vuetifyjs/vuetify/issues/3538
+ * No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
 
 ### DEPRECATED CODE TO BE REMOVED IN v0.2.0
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
+
+### Version 0.1.7
+ * note: example folder is now renamed as example-firebase
+ * improvement: add form-open event - with data loaded when form opens
+ * improvement: add scoped-slots for filter & edit form [IMPORTANT] please use this from now for customizing the CRUD, please see the following files for reference:
+   * example-firebase/src/pages/MultiCrud/Example.vue
+   * example-rest/src/pages/Book.vue
+   * example-rest/src/pages/Page.vue
+ * improvement: remove summary component (use scoped-slot instead)
+ * improvement: code refactor in progress (make it easier to use)
+ * done: (example-rest) - Vanilla VueJS connecting to REST backend)
+   * improvement: Websocket (can use https://www.websocket.org/echo.html & ngrok to test)
+   * improvement: use RxJS in example-rest/src/pages/Book.vue for debounce and fetch handling 
+   * improvement: add transaction in DB query
+ * chore: update npm packages (vuetify@1.4.4)
+ * chore: update & improve documentation
 
 ### Version 0.1.6
  * chore: update npm packages (vuetify@1.4.3)

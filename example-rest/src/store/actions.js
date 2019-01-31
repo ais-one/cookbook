@@ -10,12 +10,11 @@ export default {
     let rv = null
     const { email, password } = payload
     try {
-      rv = await http.post('/signup', { email, password })
+      rv = await http.post('/auth/signup', { email, password })
     } catch (e) { }
     commit('setLoading', false)
     if (rv) {
-      // const newUser = {id: user.uid, email: payload.email}
-      // commit('setUser', newUser)
+      // TBD const newUser = {id: user.uid, email: payload.email} commit('setUser', newUser)
       commit('setError', { message: 'User Registered' })
     } else {
       commit('setError', { message: 'Error Signup' })
@@ -28,7 +27,9 @@ export default {
     const { email, password } = payload
     try {
       rv = await http.post('/auth/login', { email, password })
-      dispatch('autoSignIn', rv.data) // token
+      const { data } = rv
+      data.verified = !USE_OTP
+      dispatch('autoSignIn', data) // token
     } catch (e) { }
     if (!rv) {
       commit('setError', { message: 'Sign In Error' })
@@ -42,12 +43,11 @@ export default {
     const { pin } = payload
     try {
       rv = await http.post('/auth/otp', { pin })
-      console.log('rv', rv)
-      // localStorage.setItem('user-token', token) // store the token in localstorage
-      dispatch('autoVerify', rv.data) // token
+      const { data } = rv
+      data.verified = true
+      dispatch('autoVerify', data) // token
     } catch (e) { }
     if (!rv) {
-      // localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possibl
       commit('setError', { message: 'Verify Error' })
     }
     commit('setLoading', false)
@@ -59,7 +59,7 @@ export default {
     if (payload.forced) { // auth failure detected
     } else { // logout button clicked
       try {
-        await http.get('/logout')
+        await http.get('/auth/logout')
       } catch (e) {
         if (!e.response || e.response.status === 401) { // server or authorization error
           // ok please continue
@@ -68,8 +68,6 @@ export default {
         }
       }
     }
-    delete http.defaults.headers.common['Authorization']
-    // localStorage.removeItem('user-token') // if the request fails, remove any possible user token if possibl
     commit('setUser', null)
     commit('setLayout', 'layout-default')
     router.push('/')
@@ -78,22 +76,17 @@ export default {
   },
 
   autoSignIn ({ commit }, payload) { // payload.token
-    payload.verified = !USE_OTP
-    // console.log('autoSignIn', payload)
     commit('setUser', payload)
-    http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
     if (!USE_OTP) {
       commit('setLayout', 'layout-admin')
-      router.push('/reports')
+      router.push('/dashboard')
     }
   },
 
   autoVerify ({ commit }, payload) { // payload.token
-    payload.verified = true
     commit('setUser', payload)
-    http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
     commit('setLayout', 'layout-admin')
-    router.push('/reports')
+    router.push('/dashboard')
   },
   clearError ({ commit }) { commit('setError', null) },
 
