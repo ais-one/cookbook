@@ -63,9 +63,7 @@
 <script>
 import { from } from 'rxjs'
 import { pluck, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators' // map
-
 import { http } from '@/axios'
-import VueCrudX from '@/VueCrudX'
 
 export default {
   subscriptions () {
@@ -82,9 +80,6 @@ export default {
     }
   },
   name: 'book',
-  components: {
-    VueCrudX
-  },
   data () {
     return {
       // auto-complete

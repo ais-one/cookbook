@@ -8,18 +8,20 @@ import { auth } from '@/firebase'
 import { store } from '@/store'
 import TimePicker from '@/components/TimePicker.vue'
 import DatePicker from '@/components/DatePicker.vue'
+import VueCrudX from '../../VueCrudX' // Component shared between projects
 
 Vue.config.productionTip = false
-
-// Global components
-Vue.component('app-date-picker', DatePicker)
-Vue.component('app-time-picker', TimePicker)
 
 Vue.use(Vuetify, {
   lang: {
     t: (key, ...params) => i18n.t(key, params)
   }
 })
+
+// Global components
+Vue.component('app-date-picker', DatePicker)
+Vue.component('app-time-picker', TimePicker)
+Vue.component('vue-crud-x', VueCrudX)
 
 /* eslint-disable no-new */
 export const app = new Vue({

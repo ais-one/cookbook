@@ -35,13 +35,9 @@
 <script>
 // import { makeCsvRow, exportCsv } from '@/assets/util'
 import { http } from '@/axios'
-import VueCrudX from '@/VueCrudX'
 
 export default {
   name: 'book-pages',
-  components: {
-    VueCrudX
-  },
   data () {
     return {
       parentId: null,

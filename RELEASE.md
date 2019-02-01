@@ -27,7 +27,9 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.8
- * improvement: add test
+ * improvement: move VueCrudX.vue source file to location where all example projects can access
+ * improvement: add table-toolbar & form-toolbar scoped slots
+ * work in progress: add test
  * work in progress: start on NUXT (do SPA first then SSR)
  * chore: version updates for Vuetify & VueJS
 

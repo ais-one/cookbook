@@ -2,11 +2,12 @@
 import Vue from 'vue'
 import VueRx from 'vue-rx'
 import Vuetify from 'vuetify'
+import VueNativeSock from 'vue-native-websocket'
 import App from './App'
 import i18n from './lang'
 import router from './router'
 import { store } from './store'
-import VueNativeSock from 'vue-native-websocket'
+import VueCrudX from '../../VueCrudX' // Component shared between projects
 
 Vue.config.productionTip = false
 
@@ -39,6 +40,8 @@ Vue.use(Vuetify, {
     t: (key, ...params) => i18n.t(key, params)
   }
 })
+
+Vue.component('vue-crud-x', VueCrudX)
 
 /* eslint-disable no-new */
 export const app = new Vue({

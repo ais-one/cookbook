@@ -21,7 +21,6 @@
 <script>
 import { orderBy } from 'lodash'
 import { format } from 'date-fns'
-import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
 import { firestore } from '@/firebase'
 import * as taskDefs from './task'
 
@@ -29,9 +28,6 @@ const COL_NAME = 'task'
 
 export default {
   name: 'realtime-example',
-  components: {
-    VueCrudX
-  },
   data () {
     return {
       taskDefs,

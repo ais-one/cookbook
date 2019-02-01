@@ -8,7 +8,7 @@ The **example-rest** folder is now the preferred project for quickstart. Everyth
 
 Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
 
-## 2 Improvement Leading To Breaking Changes
+## 2 Major Improvements (Without Breaking Changes)
 
 From Version 0.1.7 onwards, **scoped-slots** can and should be used for customized form and filter. Please use this instead of the previous way of **importing component files** as it is much cleaner. **importing component files** will be deprecated in a later version.
 

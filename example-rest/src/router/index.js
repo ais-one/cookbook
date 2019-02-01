@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import VueCrudX from '@/VueCrudX' // copy the source vue file here if you want to tinker with it
-
 import AuthGuard from './auth-guard'
 
 import SignIn from '@/pages/SignIn'
@@ -22,14 +20,14 @@ export default new Router({
     {
       path: '/authors',
       name: 'authors',
-      component: VueCrudX,
+      component: Vue.component('vue-crud-x'),
       beforeEnter: AuthGuard,
       props: (route) => ({ storeName: route.name, parentId: route.params.parentId || null, ...authorDefs })
     },
     {
       path: '/categories',
       name: 'categories',
-      component: VueCrudX,
+      component: Vue.component('vue-crud-x'),
       beforeEnter: AuthGuard,
       props: (route) => ({ storeName: route.name, parentId: route.params.parentId || null, ...categoryDefs })
     },

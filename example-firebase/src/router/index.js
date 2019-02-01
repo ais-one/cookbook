@@ -1,10 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// vue-crud-x component
-import VueCrudX from '@/VueCrudX' // use the source vue file
-// import VueCrudX from 'vue-crud-x' // usually we will install and import
-
 // import SignUp from '@/pages/User/SignUp'
 import AuthGuard from './auth-guard'
 
@@ -27,7 +23,7 @@ export default new Router({
     {
       path: '/notes',
       name: 'notes',
-      component: VueCrudX, // () => import('@/components/Note') // lazy loading
+      component: Vue.component('vue-crud-x'), // () => import('@/components/Note') // lazy loading
       beforeEnter: AuthGuard,
       props: (route) => {
         return { storeName: route.name, parentId: route.params.parentId || null, ...noteDefs }
@@ -36,7 +32,7 @@ export default new Router({
     {
       path: '/notes2',
       name: 'notes2',
-      component: VueCrudX,
+      component: Vue.component('vue-crud-x'),
       beforeEnter: AuthGuard,
       props: (route) => {
         return { storeName: route.name, parentId: route.params.parentId || null, ...noteDefs2 }
@@ -45,21 +41,21 @@ export default new Router({
     {
       path: '/party-inline',
       name: 'party-inline',
-      component: VueCrudX,
+      component: Vue.component('vue-crud-x'),
       props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyInlineDefs } },
       beforeEnter: AuthGuard
     },
     {
       path: '/party',
       name: 'party',
-      component: VueCrudX,
+      component: Vue.component('vue-crud-x'),
       props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs } },
       beforeEnter: AuthGuard
     },
     {
       path: '/party-notes/:parentId',
       name: 'party-notes',
-      component: VueCrudX,
+      component: Vue.component('vue-crud-x'),
       props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyNotesDefs } },
       beforeEnter: AuthGuard
     },
