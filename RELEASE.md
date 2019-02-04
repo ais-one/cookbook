@@ -23,13 +23,14 @@
  * No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
 
 ### DEPRECATED CODE TO BE REMOVED IN v0.2.0
+ * v0.1.7 - remove import of vue components, use scoped-slots
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.8
  * improvement: move VueCrudX.vue source file to location where all example projects can access
- * improvement: add table-toolbar & form-toolbar scoped slots
- * work in progress: add test
+ * improvement: add table-toolbar & form-toolbar scoped slots, add reference to vue-crud-x in the slots
+ * work in progress: add test (deferred, to use dredd from apiary?)
  * work in progress: start on NUXT (do SPA first then SSR)
  * chore: version updates for Vuetify & VueJS
 

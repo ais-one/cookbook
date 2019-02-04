@@ -1,14 +1,12 @@
-# my-project
+# example-nuxt
 
-> Nuxt.js + Vuetify.js project
-
-TBD create user during login... set rules { '*': ['*'] }
+> My superior Nuxt.js project
 
 ## Build Setup
 
 ``` bash
 # install dependencies
-$ npm install # Or yarn install
+$ npm install
 
 # serve with hot reload at localhost:3000
 $ npm run dev
@@ -21,4 +19,4 @@ $ npm start
 $ npm run generate
 ```
 
-For detailed explanation on how things work, check out the [Nuxt.js](https://github.com/nuxt/nuxt.js) and [Vuetify.js](https://vuetifyjs.com/) documentation.
+For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).

@@ -1,30 +1,38 @@
 {
   "name": "example-nuxt",
   "version": "1.0.0",
-  "description": "Nuxt.js + Vuetify.js project",
-  "author": "ais-one <aaronjxz@gmail.com>",
+  "description": "My superior Nuxt.js project",
+  "author": "Aaron Gong",
   "private": true,
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint",
+    "rest": "cd ../backend&&npm run-script dev",
+    "ssr": "concurrently \"npm run rest\" \"npm run dev\""
   },
   "dependencies": {
-    "@firebase/app": "^0.3.8",
-    "@firebase/auth": "^0.7.9",
-    "@firebase/firestore": "^0.8.8",
-    "@firebase/storage": "^0.2.7",
-    "date-fns": "^1.30.1",
-    "lodash.clonedeep": "^4.5.0",
+    "@nuxtjs/auth": "^4.5.3",
+    "@nuxtjs/axios": "^5.0.0",
     "cross-env": "^5.2.0",
-    "nuxt": "^2.4.2",
-    "vue-i18n": "^8.8.0",
-    "vuetify": "^1.4.4"
+    "nuxt": "^2.0.0",
+    "nuxt-i18n": "^5.8.0",
+    "vuetify": "^1.2.4"
   },
   "devDependencies": {
+    "babel-eslint": "^8.2.1",
+    "concurrently": "^4.1.0",
+    "eslint": "^5.0.1",
+    "eslint-config-prettier": "^3.1.0",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-prettier": "2.6.2",
+    "eslint-plugin-vue": "^4.0.0",
     "nodemon": "^1.11.0",
+    "prettier": "1.14.3",
     "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.1"
+    "stylus-loader": "^3.0.2"
   }
 }

@@ -3,7 +3,7 @@
 // IMPORTANT - important point to take not of
 // TBD - to be done
 // TOREMOVE - to be removed
-//
+// TODEPRECATE - to deprecate & remove
 
 import _cloneDeep from 'lodash.clonedeep'
 const CrudStore = {
@@ -17,12 +17,7 @@ const CrudStore = {
     filterData: { },
     defaultRec: { },
     crudOps: {
-      export: null,
-      find: null,
-      delete: null,
-      findOne: null,
-      create: null,
-      update: null
+      export: null, find: null, delete: null, findOne: null, create: null, update: null
     }
   },
   getters: {
@@ -117,9 +112,9 @@ export default {
 
     // check if components and datas are present
     this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null
-    this.hasFormVue = typeof this.crudForm.FormVue === 'function' || this.formAutoData
+    this.hasFormVue = typeof this.crudForm.FormVue === 'function' || this.formAutoData // TODEPRECATE
     this.hasFilterData = this.isObject(this.crudFilter.filterData)
-    this.hasFilterVue = typeof this.crudFilter.FilterVue === 'function'
+    this.hasFilterVue = typeof this.crudFilter.FilterVue === 'function' // TODEPRECATE
 
     // use add row to create record
     this.addrowCreate = this.crudTable.addrowCreate ? this.crudTable.addrowCreate : false
@@ -146,8 +141,8 @@ export default {
     this.buttons = Object.assign(this.buttons, this.crudTable.buttons || {})
 
     // assign the components
-    if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
-    if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue
+    if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue // TODEPRECATE
+    if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue // TODEPRECATE
 
     if (this.onCreatedOpenForm && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
       this.crudFormFlag = true
@@ -178,8 +173,8 @@ export default {
     // suspected problem is because of async component
     //
     // if (this.storeName === 'multi-crud-party') console.log('vvvv4', this.storeName, this.$options.components['crud-filter'], this.crudFilter.FilterVue)
-    if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue
-    if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue
+    if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue // TODEPRECATE
+    if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue // TODEPRECATE
   },
   beforeRouteEnter (to, from, next) { next(vm => { }) },
   data () {
@@ -631,7 +626,7 @@ export default {
 
 <template>
   <v-container v-bind="attrs.container">
-    <slot name="table-toolbar">
+    <slot name="table-toolbar" :vcx="_self">
       <v-toolbar v-bind="attrs.toolbar">
         <!-- <v-toolbar-side-icon ></v-toolbar-side-icon> -->
         <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{showTitle | capitalize}} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
@@ -644,7 +639,7 @@ export default {
     </slot>
     <div v-if="expandFilter">
       <v-form v-if="hasFilterData" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
-        <slot name="filter" :filterData="filterData" :parentId="parentId" :storeName="storeName">
+        <slot name="filter" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vcx="_self">
           <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
           <v-layout row wrap v-else>
               <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12>
@@ -662,7 +657,7 @@ export default {
         <!-- <v-layout row justify-end></v-layout> -->
       </v-form>
     </div>
-    <slot name="table" :records="records" :totalRecs="totalRecs" :pagination="pagination">
+    <slot name="table" :records="records" :totalRecs="totalRecs" :pagination="pagination" :vcx="_self">
       <v-data-table
         :headers="headers"
         :items="records"
@@ -775,12 +770,12 @@ export default {
       </v-data-table>
     </slot>
 
-    <slot name="summary"></slot>
+    <slot name="summary" :vcx="_self"></slot>
 
     <v-layout row justify-center>
       <v-dialog v-model="crudFormFlag" v-bind="attrs.dialog">
         <v-card>
-          <slot name="form-toolbar">
+          <slot name="form-toolbar" :vcx="_self">
             <v-toolbar v-bind="attrs.toolbar">
               <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle | capitalize}}</v-toolbar-title>
               <v-spacer></v-spacer>
@@ -792,7 +787,7 @@ export default {
           </slot>
           <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading" v-bind="attrs['v-progress-circular']?attrs['v-progress-circular']:attrs['v-progress-linear']"></component>
           <v-form v-if="hasFormVue" v-model="validForm" v-bind="attrs.form">
-            <slot name="form" :record="record" :parentId="parentId" :storeName="storeName">
+            <slot name="form" :record="record" :parentId="parentId" :storeName="storeName" :vcx="_self">
               <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
               <v-layout row wrap v-else>
                 <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12>

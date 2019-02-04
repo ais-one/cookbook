@@ -2,7 +2,6 @@
 dist
 node_modules
 **/cfg.json
-**/firebase.json
 **/.firebaserc
 
 package-lock.json
