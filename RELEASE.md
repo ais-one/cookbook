@@ -29,7 +29,7 @@
 
 ### Version 0.1.8
  * improvement: move VueCrudX.vue source file to location where all example projects can access
- * improvement: add table-toolbar & form-toolbar scoped slots, add reference to vue-crud-x in the slots
+ * improvement: add table-toolbar & form-toolbar scoped slots, add reference to vue-crud-x in the slots (vcx)
  * work in progress: add test (deferred, to use dredd from apiary?)
  * work in progress: start on NUXT (do SPA first then SSR)
  * chore: version updates for Vuetify & VueJS

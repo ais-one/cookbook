@@ -1,8 +1,11 @@
 const pkg = require('./package')
 
 module.exports = {
+  server: {
+    port: 8080, // default: 3000
+    host: '0.0.0.0', // default: localhost
+  },
   mode: 'universal',
-
   /*
   ** Headers of the page
   */
@@ -35,7 +38,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/vuetify'
+    '@/plugins/vuetify',
+    '@/plugins/axios'
   ],
 
   /*
@@ -46,7 +50,16 @@ module.exports = {
     '@nuxtjs/axios',
     '@nuxtjs/auth',
     ['nuxt-i18n', {
-      locales: ['en', 'fr'],
+      locales: [
+        { 
+          code: 'en',
+          iso: 'en-US'
+        },
+        { 
+          code: 'fr',
+          iso: 'fr-FR'
+        }
+      ],
       defaultLocale: 'en',
       vueI18n: {
         silentTranslationWarn: true,
@@ -70,7 +83,7 @@ module.exports = {
     proxy: true
   },
   proxy: {
-    '/api': 'http://localhost:3000/api'
+    '/api/': 'http://localhost:3000'
   },
 
   auth: {
@@ -85,17 +98,12 @@ module.exports = {
     strategies: {
       local: {
         endpoints: {
-          login: { propertyName: 'token.accessToken' }
-        }
-      },
-      local: {
-        endpoints: {
-          login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
+          login: { url: 'http://127.0.0.1:3000/api/auth/login', method: 'post', propertyName: 'token' },
           logout: { url: '/api/auth/logout', method: 'post' },
-          user: { url: '/api/auth/user', method: 'get', propertyName: 'user' }
-        }
-        // tokenRequired: true,
-        // tokenType: 'bearer',
+          // user: { url: '/api/auth/user', method: 'get', propertyName: 'user' }
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer',
       },
       // auth0: {
       //   domain: 'nuxt-auth.auth0.com',

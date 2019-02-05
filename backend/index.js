@@ -54,7 +54,7 @@ const authRoutes = require('./routes/auth')
 const apiRoutes = require('./routes/api')
 
 app.use(cors())
-app.use('/auth', authRoutes)
+app.use('/api/auth', authRoutes)
 app.use('/api', apiRoutes)
 
 app.get("*", async (req, res) => {

@@ -7,7 +7,7 @@ import App from './App'
 import i18n from './lang'
 import router from './router'
 import { store } from './store'
-import VueCrudX from '../../VueCrudX' // Component shared between projects
+import VueCrudX from '../../src/VueCrudX' // Component shared between projects
 
 Vue.config.productionTip = false
 

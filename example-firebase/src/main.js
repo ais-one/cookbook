@@ -8,7 +8,7 @@ import { auth } from '@/firebase'
 import { store } from '@/store'
 import TimePicker from '@/components/TimePicker.vue'
 import DatePicker from '@/components/DatePicker.vue'
-import VueCrudX from '../../VueCrudX' // Component shared between projects
+import VueCrudX from '../../src/VueCrudX' // Component shared between projects
 
 Vue.config.productionTip = false
 
