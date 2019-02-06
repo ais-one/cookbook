@@ -26,7 +26,7 @@ apiRoutes
       console.log(e)
     }
     // console.log('mongo connected:', !!mongo)
-    res.status(200).json({ message: 'Test' })
+    res.status(200).json({ message: 'Test22' })
   })
   // test uploads
   .post('/upload', upload.single('avatar'), async (req,res) => { // avatar is form input name

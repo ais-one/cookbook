@@ -52,6 +52,25 @@ authRoutes
     } catch (e) { }
     return res.status(500).json()  
   })
+  .get('/user', async (req,res) => {
+    if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
+      return res.status(401).json({ message: 'Error in authorization format' })
+    }
+    try {
+      const incomingToken = req.headers.authorization.split(' ')[1]
+      const matchingToken = await keyv.get(incomingToken)
+      if (!matchingToken) {
+        return res.status(401).json({ message: 'Error token mismatch' })
+      }
+      let result = verifyToken(incomingToken, SECRET_KEY) // has iat & exp also
+      if (result) {
+        console.log(result)
+        const { id } = result
+        return res.status(200).json({ user: id })
+      }
+    } catch (e) { console.log(e) }
+    return res.status(401).json({ message: 'Error token revoked' })
+  })
   .post('/otp', async (req,res) => {
     if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
       return res.status(401).json({ message: 'Error in authorization format' })

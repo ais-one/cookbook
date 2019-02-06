@@ -87,6 +87,7 @@ module.exports = {
   },
 
   auth: {
+    plugins: [ '@/plugins/auth.js' ],
     // Options
     redirect: {
       callback: '/callback',
@@ -98,9 +99,10 @@ module.exports = {
     strategies: {
       local: {
         endpoints: {
-          login: { url: 'http://127.0.0.1:3000/api/auth/login', method: 'post', propertyName: 'token' },
-          logout: { url: '/api/auth/logout', method: 'post' },
-          // user: { url: '/api/auth/user', method: 'get', propertyName: 'user' }
+          login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
+          logout: { url: '/api/auth/logout', method: 'get' },
+          // user: false // { url: 'http://127.0.0.1:3000/api/auth/user', method: 'get', propertyName: false }
+          user: { url: 'http://127.0.0.1:3000/api/auth/user', method: 'get', propertyName: 'user' }
         },
         tokenRequired: true,
         tokenType: 'Bearer',
