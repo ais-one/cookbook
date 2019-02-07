@@ -48,6 +48,18 @@ AuthController:
                 $ref: "#/components/schemas/LoginResponse"
         "401":
           description: OTP Error
+  me:
+    get:
+      tags:
+        - Auth
+      security:
+        - Bearer:
+            []
+      responses:
+        "200":
+          description: Get Own Info
+        "401":
+          description: Own Info Error
   logout:
     get:
       tags:

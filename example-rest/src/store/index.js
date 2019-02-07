@@ -24,7 +24,6 @@ export const store = new Vuex.Store({
         const decoded = jwtDecode(payload.token)
         if (decoded) {
           payload.id = decoded.id
-          payload.clientId = decoded.clientId
         }
       }
       state.user = payload

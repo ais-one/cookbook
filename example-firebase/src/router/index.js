@@ -16,6 +16,8 @@ import * as noteDefs2 from '@/pages/Crud/notes2'
 
 import Test from '@/components/Test'
 
+import VueCrudX from '../../../src/VueCrudX' // Component shared between projects // const VueCrudX = Vue.component('vue-crud-x') this does not work...
+
 Vue.use(Router)
 
 export default new Router({
@@ -23,7 +25,7 @@ export default new Router({
     {
       path: '/notes',
       name: 'notes',
-      component: Vue.component('vue-crud-x'), // () => import('@/components/Note') // lazy loading
+      component: VueCrudX, // () => import('@/components/Note') // lazy loading
       beforeEnter: AuthGuard,
       props: (route) => {
         return { storeName: route.name, parentId: route.params.parentId || null, ...noteDefs }
@@ -32,7 +34,7 @@ export default new Router({
     {
       path: '/notes2',
       name: 'notes2',
-      component: Vue.component('vue-crud-x'),
+      component: VueCrudX,
       beforeEnter: AuthGuard,
       props: (route) => {
         return { storeName: route.name, parentId: route.params.parentId || null, ...noteDefs2 }
@@ -41,21 +43,21 @@ export default new Router({
     {
       path: '/party-inline',
       name: 'party-inline',
-      component: Vue.component('vue-crud-x'),
+      component: VueCrudX,
       props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyInlineDefs } },
       beforeEnter: AuthGuard
     },
     {
       path: '/party',
       name: 'party',
-      component: Vue.component('vue-crud-x'),
+      component: VueCrudX,
       props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs } },
       beforeEnter: AuthGuard
     },
     {
       path: '/party-notes/:parentId',
       name: 'party-notes',
-      component: Vue.component('vue-crud-x'),
+      component: VueCrudX,
       props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyNotesDefs } },
       beforeEnter: AuthGuard
     },

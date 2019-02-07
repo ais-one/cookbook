@@ -1,4 +1,12 @@
 export default function({ app }) {
+  if (process.server) {
+    // app.$auth.$storage.setState('otpVerified', false)
+    console.log('abc', app.store.getters)
+  } else {
+    console.log('def', app)
+    // setUser
+    // setToken
+  }
   // let token
   // try {
   //   token = app.$auth.$storage.getUniversal('_token.local')
@@ -15,6 +23,5 @@ export default function({ app }) {
   //   return
   // }
   // const username = app.$auth.user.username
-  // app.$auth.$storage.setState('otpVerified', false)
   // console.log('auth plugin', process.server, app.$auth) // fullPathRedirect, 2FA
 }

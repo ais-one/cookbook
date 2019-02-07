@@ -12,6 +12,9 @@ import * as categoryDefs from '@/components/category'
 import Book from '@/pages/Book'
 import Page from '@/pages/Page'
 
+import VueCrudX from '../../../src/VueCrudX' // Component shared between projects
+// const VueCrudX = Vue.component('vue-crud-x') // does not work!
+
 Vue.use(Router)
 
 export default new Router({
@@ -20,14 +23,15 @@ export default new Router({
     {
       path: '/authors',
       name: 'authors',
-      component: Vue.component('vue-crud-x'),
+      // component: () => Vue.component('vue-crud-x'), // not working
+      component: VueCrudX,
       beforeEnter: AuthGuard,
       props: (route) => ({ storeName: route.name, parentId: route.params.parentId || null, ...authorDefs })
     },
     {
       path: '/categories',
       name: 'categories',
-      component: Vue.component('vue-crud-x'),
+      component: VueCrudX,
       beforeEnter: AuthGuard,
       props: (route) => ({ storeName: route.name, parentId: route.params.parentId || null, ...categoryDefs })
     },

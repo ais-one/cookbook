@@ -3,10 +3,10 @@ import Vue from 'vue'
 import VueRx from 'vue-rx'
 import Vuetify from 'vuetify'
 import VueNativeSock from 'vue-native-websocket'
-import App from './App'
 import i18n from './lang'
-import router from './router'
 import { store } from './store'
+import router from './router'
+import App from './App'
 import VueCrudX from '../../src/VueCrudX' // Component shared between projects
 
 Vue.config.productionTip = false

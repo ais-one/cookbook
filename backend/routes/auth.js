@@ -18,6 +18,7 @@ authRoutes
   res.status(201).end()
 })
 .get('/logout', authUser, async (req,res) => {
+  // console.log('logging out')
   try {
     const incomingToken = req.headers.authorization.split(' ')[1]
     await keyv.delete(incomingToken)
@@ -34,8 +35,8 @@ authRoutes
         const message = 'Incorrect email or password'
         return res.status(401).json({ message })
       }
-      const { id, clientId } = user
-      const token = createToken({ id, clientId }, SECRET_KEY, USE_OTP ? '5m' : KEY_EXPIRY) // 5 minute expire for login
+      const { id } = user
+      const token = createToken({ id }, SECRET_KEY,  {expiresIn: USE_OTP ? '5m' : KEY_EXPIRY}) // 5 minute expire for login
       await keyv.set(token, token)
       if (process.env.USE_OTP === 'SMS') {
         // Generate PIN
@@ -52,46 +53,37 @@ authRoutes
     } catch (e) { }
     return res.status(500).json()  
   })
-  .get('/user', async (req,res) => {
-    if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
-      return res.status(401).json({ message: 'Error in authorization format' })
-    }
+  .get('/me', authUser, async (req,res) => {
     try {
-      const incomingToken = req.headers.authorization.split(' ')[1]
-      const matchingToken = await keyv.get(incomingToken)
-      if (!matchingToken) {
-        return res.status(401).json({ message: 'Error token mismatch' })
-      }
-      let result = verifyToken(incomingToken, SECRET_KEY) // has iat & exp also
-      if (result) {
-        console.log(result)
-        const { id } = result
-        return res.status(200).json({ user: id })
-      }
-    } catch (e) { console.log(e) }
+      const { id } = req.decoded
+      // you can also get more user information from here from a datastore
+      return res.status(200).json({ user: id })
+    } catch (e) { }
     return res.status(401).json({ message: 'Error token revoked' })
   })
-  .post('/otp', async (req,res) => {
-    if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
-      return res.status(401).json({ message: 'Error in authorization format' })
-    }
+  .post('/otp', authUser, async (req,res) => {
     try {
-      const incomingToken = req.headers.authorization.split(' ')[1]
-      const matchingToken = await keyv.get(incomingToken)
-      if (!matchingToken) {
-        return res.status(401).json({ message: 'Error token mismatch' })
-      }
-      let result = verifyToken(incomingToken, SECRET_KEY) // has iat & exp also
+      // if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
+      //   return res.status(401).json({ message: 'Error in authorization format' })
+      // }
+      // const incomingToken = req.headers.authorization.split(' ')[1]
+      // const matchingToken = await keyv.get(incomingToken)
+      // if (!matchingToken) {
+      //   return res.status(401).json({ message: 'Error token mismatch' })
+      // }
+      // let result = verifyToken(incomingToken, SECRET_KEY) // has iat & exp also
+      let result = req.decoded
       if (result) {
         const { id } = result
         const user = await User.query().where('id', '=', id)
         if (user) {
           const { pin } = req.body
-          const { gaKey, id, clientId } = user[0]
+          const { gaKey, id } = user[0]
           // process.env.USE_OTP === 'GA' // 'SMS'
           const isValid = process.env.NODE_ENV !== 'development' ? otplib.authenticator.check(pin, gaKey) : pin === '111111'
           if (isValid) {
-            const token = createToken({ id, clientId }, OTP_SECRET_KEY)
+            const incomingToken = req.headers.authorization.split(' ')[1]
+            const token = createToken({ id }, OTP_SECRET_KEY, {expiresIn: KEY_EXPIRY})
             await keyv.set(token, token)
             await keyv.delete(incomingToken)
             return res.status(200).json({ token })

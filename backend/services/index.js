@@ -8,13 +8,14 @@ const keyv = require('./keyv')
 
 const User = require('../models/User')
 
+// TOREMOVE
 // const {firestore} = require('../middleware/firebase')
-const SALT_ROUNDS = 12
-const { USE_OTP, KEY_EXPIRY } = require('../config')
+// const SALT_ROUNDS = 12
+// const { USE_OTP, KEY_EXPIRY } = require('../config')
 
 // Create a token from a payload 
-function createToken(payload, secretKey, expiresIn = KEY_EXPIRY) {
-  return jwt.sign(payload, secretKey, {expiresIn})
+function createToken(payload, secretKey, options) {
+  return jwt.sign(payload, secretKey, options)
 }
 
 // Verify the token 

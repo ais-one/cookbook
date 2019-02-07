@@ -1,5 +1,7 @@
 const pkg = require('./package')
 
+// import axios from 'axios'
+
 module.exports = {
   server: {
     port: 8080, // default: 3000
@@ -20,6 +22,20 @@ module.exports = {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
     ]
+  },
+
+  generate: {
+    // routes: function () {
+    //   return axios.get('https://my-api/users')
+    //   .then((res) => {
+    //     return res.data.map((user) => {
+    //       return {
+    //         route: '/users/' + user.id,
+    //         payload: user
+    //       }
+    //     })
+    //   })
+    // }
   },
 
   /*
@@ -102,7 +118,7 @@ module.exports = {
           login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
           logout: { url: '/api/auth/logout', method: 'get' },
           // user: false // { url: 'http://127.0.0.1:3000/api/auth/user', method: 'get', propertyName: false }
-          user: { url: 'http://127.0.0.1:3000/api/auth/user', method: 'get', propertyName: 'user' }
+          user: { url: 'http://127.0.0.1:3000/api/auth/me', method: 'get', propertyName: 'user' }
         },
         tokenRequired: true,
         tokenType: 'Bearer',

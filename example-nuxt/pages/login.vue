@@ -111,6 +111,10 @@ export default {
             password: this.password
           }
         })
+        .then(res => {
+          this.$auth.$storage.setState('otpVerified', true)
+          console.log('result')
+        })
         .catch(e => {
           this.error = e + ''
         })

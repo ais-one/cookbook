@@ -8,9 +8,11 @@ export default (to, from, next) => {
     const item = localStorage.getItem('session') // survive a refresh
     if (item) {
       const user = JSON.parse(item)
-      store.commit('setUser', user)
-      store.commit('setLayout', 'layout-admin')
-      return next()
+      if (user.verified) {
+        store.commit('setUser', user)
+        store.commit('setLayout', 'layout-admin')
+        return next()
+      }
     }
     return next('/')
   }
