@@ -71,10 +71,10 @@
 </style>
 
 <script>
-import busyOverlay from '~/components/busy-overlay'
+import busyOverlay from '../../src/BusyOverlay'
 export default {
   middleware: ['auth'],
-  components: { busyOverlay },
+  // components: { busyOverlay },
   data() {
     return {
       otpCount: 0,
@@ -125,17 +125,12 @@ export default {
     async otp() {
       this.error = null
       try {
-        const ttt = this.$auth.getToken('local')
-        console.log('totp', ttt)
+        const token = this.$auth.getToken('local')
         const { data } = await this.$axios.post(
           '/api/auth/otp',
+          { pin: this.pin },
           {
-            pin: this.pin
-          },
-          {
-            headers: {
-              Authorization: ttt
-            }
+            headers: { Authorization: token }
           }
         )
         console.log('data otp token', data.token)

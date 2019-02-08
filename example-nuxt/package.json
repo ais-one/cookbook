@@ -5,7 +5,7 @@
   "author": "Aaron Gong",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nuxt",
+    "dev": "cross-env NODE_ENV=development nuxt --spa",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
@@ -24,6 +24,7 @@
     "vuetify": "^1.5.0"
   },
   "devDependencies": {
+    "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^8.2.1",
     "concurrently": "^4.1.0",
     "eslint": "^5.0.1",
