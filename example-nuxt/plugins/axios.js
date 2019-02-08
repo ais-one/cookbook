@@ -1,10 +1,10 @@
 export default function({ $axios, app, redirect }) {
   $axios.onRequest(config => {
-    const token = app.$auth.getToken('local')
-    if (token) {
-      config.headers['Authorization'] = token
-    }
-    console.log('Making request to ' + config.url)
+    // const token = app.$auth.getToken('local')
+    // if (token) {
+    //   config.headers['Authorization'] = token
+    // }
+    // console.log('Making request to ' + config.url)
   })
   // onResponse (response)
 

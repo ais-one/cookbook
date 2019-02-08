@@ -37,8 +37,11 @@ export default {
   data: () => ({
     title: 'Index 1'
   }),
+  created() {
+    console.log('INDEX created', this.$auth.loggedIn)
+  },
   async asyncData({ params, env }) {
-    console.log('iii', params, process.server, env)
+    // console.log('iii', params, process.server, env)
     return { title: 'Index 2' }
   }
   // async fetch ({ store, params }) {

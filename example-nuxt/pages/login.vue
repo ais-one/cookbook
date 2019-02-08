@@ -7,7 +7,7 @@
         <v-card>
           <v-card-text>
             <!-- <v-container v-if="!(user && !user.verified)"> -->
-            <v-container v-if="!otpCount">
+            <v-container v-if="otpCount<=0">
               <!-- <v-img src="/static/logo-main.png" /> -->
               <form @keydown.enter="login">
                 <v-layout row>
@@ -117,26 +117,23 @@ export default {
           password: this.password
         })
         this.$auth.setToken('local', `Bearer ${data.token}`)
+        this.$auth.strategy._setToken(`Bearer ${data.token}`) // this.$axios.defaults.headers.common['Authorization']
         this.otpCount = 3 // 3 tries
       } catch (e) {
         this.error = e + ''
       }
     },
     async otp() {
+      if (this.otpCount <= 0) return
       this.error = null
       try {
-        const token = this.$auth.getToken('local')
-        const { data } = await this.$axios.post(
-          '/api/auth/otp',
-          { pin: this.pin },
-          {
-            headers: { Authorization: token }
-          }
-        )
-        console.log('data otp token', data.token)
+        const { data } = await this.$axios.post('/api/auth/otp', {
+          pin: this.pin
+        })
         this.$auth.setToken('local', `Bearer ${data.token}`)
-        const user = this.$auth.fetchUser()
-        this.$auth.setUser(user)
+        this.$auth.strategy._setToken(`Bearer ${data.token}`) // this.$axios.defaults.headers.common['Authorization']
+        const rv = await this.$axios.get('/api/auth/me')
+        this.$auth.setUser(rv.data)
         // this.$storage.setState('loggedIn', true)
         // this.$storage.setState('user', false)
         // return this.$auth

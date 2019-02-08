@@ -5,6 +5,31 @@
 </div>
 </template>
 
+<script>
+// GET /applications/:client_id/tokens/:access_token
+export default {
+  beforeRouteLeave(to, from, next) {
+    console.log('do not leave removed')
+    next(false)
+  },
+  beforeRouteUpdate(to, from, next) {
+    next(false)
+  },
+  created() {},
+  mounted() {
+    // window.onbeforeunload = function() {
+    //   return 'Are you sure you want to leave?'
+    // }
+    console.log('CB', this, this.$route.query)
+    console.log('ACB', this.$auth.loggedIn)
+    // window.location.href = '#'
+    // window.location.href = 'http://www.google.com'
+    // this.$router.push('http://www.google.com/')
+    // this.$router.push('/secure')
+  }
+}
+</script>
+
 <style scoped>
 .container {
   min-height: 70vh;
