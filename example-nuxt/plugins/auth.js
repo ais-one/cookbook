@@ -1,11 +1,10 @@
 export default function({ app }) {
   if (process.server) {
     // app.$auth.$storage.setState('otpVerified', false)
-    console.log('abc', app.store.getters)
+    // console.log('abc', app.$auth.$state)
   } else {
-    console.log('def', app)
-    // setUser
-    // setToken
+    // console.log('def', app.$auth.$state)
+    // app.$suth.strategy()
   }
   // let token
   // try {

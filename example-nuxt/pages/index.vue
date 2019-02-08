@@ -1,10 +1,7 @@
 <template>
-  <v-layout
-    column
-    justify-center
-    align-center>
+  <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <div class="text-xs-center">
+      <div class="text-xs-center">{{ title }}
         <!-- <logo/>
         <vuetify-logo/> -->
       </div>
@@ -28,8 +25,6 @@
   </v-layout>
 </template>
 
-
-
 <script>
 // import Logo from '~/components/Logo.vue'
 // import VuetifyLogo from '~/components/VuetifyLogo.vue'
@@ -38,6 +33,16 @@ export default {
   // components: {
   //   Logo,
   //   VuetifyLogo
+  // }
+  data: () => ({
+    title: 'Index 1'
+  }),
+  async asyncData({ params, env }) {
+    console.log('iii', params, process.server, env)
+    return { title: 'Index 2' }
+  }
+  // async fetch ({ store, params }) {
+  //   await store.dispatch('GET_STARS');
   // }
 }
 </script>

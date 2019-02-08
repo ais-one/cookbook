@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-alert show variant="success">You should see this page without need to authentication!</b-alert>
+    <v-alert :value="true" type="success">You should see this page without need to authentication!</v-alert>
   </div>
 </template>
 

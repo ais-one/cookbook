@@ -1,4 +1,15 @@
 const pkg = require('./package')
+const dotenv = require('dotenv')
+dotenv.config()
+const fs = require('fs')
+if (process.env.NODE_ENV) {
+  try {
+    const envConfig = dotenv.parse(fs.readFileSync('.env.' + process.env.NODE_ENV))
+    for (var k in envConfig) process.env[k] = envConfig[k]  
+  } catch (e) {
+    console.log('missing configuration file, using defaults')
+  }
+}
 
 // import axios from 'axios'
 
@@ -62,8 +73,10 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
-    // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios',
+    ['@nuxtjs/dotenv', {
+      filename: '.env.' + process.env.NODE_ENV
+    }],
+    '@nuxtjs/axios', // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/auth',
     ['nuxt-i18n', {
       locales: [
@@ -115,10 +128,10 @@ module.exports = {
     strategies: {
       local: {
         endpoints: {
-          login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
+          login: { url: '/api/auth/login', method: 'post', propertyName: 'token' }, // not used...
           logout: { url: '/api/auth/logout', method: 'get' },
           // user: false // { url: 'http://127.0.0.1:3000/api/auth/user', method: 'get', propertyName: false }
-          user: { url: 'http://127.0.0.1:3000/api/auth/me', method: 'get', propertyName: 'user' }
+          user: { url: '/api/auth/me', method: 'get', propertyName: 'user' } // or should we get rid of this?
         },
         tokenRequired: true,
         tokenType: 'Bearer',
