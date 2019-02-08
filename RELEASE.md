@@ -28,11 +28,14 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.8
- * improvement: move VueCrudX.vue source file to location where all example projects can access
- * improvement: add table-toolbar & form-toolbar scoped slots, add reference to vue-crud-x in the slots (vcx)
- * work in progress: add test (deferred, to use dredd from apiary?)
- * work in progress: start on NUXT (do SPA first then SSR)
+ * improvement: add table-toolbar & form-toolbar scoped slots, add reference to vue-crud-x in the slots (vcx), so that you can access its properties and methods
+ * improvement: move VueCrudX.vue source file to location for common components where all example projects can access
+ * feature: add Loading/BusyOverlay to common components
+ * work in progress: start on NUXT (do SPA first then SSR, then generated)
+ * feature: social login using github in example-nuxt
  * chore: version updates for Vuetify & VueJS
+ * chore: added firestore rules and index files in example-firebase
+ * work in progress: add test (deferred, to use dredd.io from apiary?)
 
 ### Version 0.1.7
  * note: example folder is now renamed as example-firebase
