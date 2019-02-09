@@ -3,6 +3,8 @@ const keyv = require('../services/keyv')
 
 const { USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY } = require('../config')
 
+const axios = require('axios')
+
 module.exports = {
   authUser: async (req, res, next) => {
     // console.log('auth express', req.path)
@@ -27,6 +29,13 @@ module.exports = {
           // console.log('update token')
           await keyv.set(incomingToken, createToken(result, key, {expiresIn: KEY_EXPIRY})) // do refresh token here...
           // }
+          return next()
+        }
+      } else { // try Github
+        const rvx = await axios.get(`https://api.github.com/user?access_token=${incomingToken}`)
+        if (rvx.status === 200) {
+          // await keyv.set(incomingToken, createToken(result, key, {expiresIn: KEY_EXPIRY})) // do refresh token here...
+          // console.log('GH', rvx.status) // 200 is OK
           return next()
         }
       }

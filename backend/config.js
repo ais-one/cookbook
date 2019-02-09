@@ -7,6 +7,7 @@ module.exports = {
   API_PORT: process.env.API_PORT || 3000,
   USE_HTTPS: process.env.USE_HTTPS || false, // USE_HTTPS should be path to letsencrypt location OR false 
   WS_PORT: process.env.WS_PORT || 3001,
+  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || '' // verify a github token
 }
 // process.env.KEYV_CACHE
 // process.env.MONGO_URL

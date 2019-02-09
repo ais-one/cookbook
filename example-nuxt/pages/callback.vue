@@ -8,14 +8,6 @@
 <script>
 // GET /applications/:client_id/tokens/:access_token
 export default {
-  beforeRouteLeave(to, from, next) {
-    console.log('do not leave removed')
-    next(false)
-  },
-  beforeRouteUpdate(to, from, next) {
-    next(false)
-  },
-  created() {},
   mounted() {
     // window.onbeforeunload = function() {
     //   return 'Are you sure you want to leave?'

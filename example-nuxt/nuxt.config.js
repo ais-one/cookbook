@@ -36,15 +36,26 @@ module.exports = {
   },
 
   generate: {
+    // https://github.com/nuxt/nuxt.js/issues/1018
     // routes: function () {
-    //   return axios.get('https://my-api/users')
-    //   .then((res) => {
-    //     return res.data.map((user) => {
+    //   let posts = axios.get('https://api.com/posts', {params: {size: 10}}).then((res) => {
+    //     return res.data.posts.map((post) => {
     //       return {
-    //         route: '/users/' + user.id,
-    //         payload: user
+    //         route: '/feed/' + post.id,
+    //         payload: post
     //       }
     //     })
+    //   })
+    //   let users = axios.get('https://api.com/users', {params: {size: 10}}).then((res) => {
+    //     return res.data.content.map((user) => {
+    //       return {
+    //          route: '/user/' + user.id,
+    //          payload: user
+    //        }
+    //     })
+    //   })
+    //   return Promise.all([posts, users]).then(values => {
+    //     return [...values[0], ...values[1]]
     //   })
     // }
   },
