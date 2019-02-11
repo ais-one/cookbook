@@ -1,5 +1,5 @@
 <template>
-  <vue-crud-x ref="authors" storeName="authors" :parentId="null" v-bind="authorDefs">
+  <vue-crud-x ref="categories" storeName="categories" :parentId="null" v-bind="categoryDefs">
   </vue-crud-x>
 </template>
 
@@ -8,13 +8,13 @@ import VueCrudX from '../../src/VueCrudX'
 
 export default {
   middleware: ['auth'],
-  name: 'authors',
+  name: 'categories',
   components: {
     VueCrudX
   },
   data() {
     return {
-      authorDefs: {
+      categoryDefs: {
         crudTable: {
           actionColumn: false,
           addrowCreate: false,
@@ -22,7 +22,7 @@ export default {
           confirmCreate: true,
           confirmUpdate: true,
           confirmDelete: true,
-          headers: [{ text: 'Author Name', value: 'name', class: 'pa-1' }],
+          headers: [{ text: 'Category Name', value: 'name', class: 'pa-1' }],
           formatters: (value, _type) => value,
           doPage: true
         },
@@ -58,7 +58,7 @@ export default {
             try {
               const {
                 data: { results, total }
-              } = await this.$axios.get('/api/authors', {
+              } = await this.$axios.get('/api/categories', {
                 params: {
                   page: page > 0 ? page - 1 : 0,
                   limit: rowsPerPage
@@ -76,7 +76,7 @@ export default {
           findOne: async payload => {
             const { id } = payload
             try {
-              const { data } = await this.$axios.get(`/api/authors/${id}`)
+              const { data } = await this.$axios.get(`/api/categories/${id}`)
               return data
             } catch (e) {}
             return {}
@@ -86,7 +86,7 @@ export default {
               let {
                 record: { id, ...noIdData }
               } = payload
-              const rv = await this.$axios.post('/api/authors', noIdData)
+              const rv = await this.$axios.post('/api/categories', noIdData)
               console.log(rv)
             } catch (e) {
               return 500
@@ -98,7 +98,10 @@ export default {
               let {
                 record: { id, ...noIdData }
               } = payload
-              const rv = await this.$axios.patch(`/api/authors/${id}`, noIdData)
+              const rv = await this.$axios.patch(
+                `/api/categories/${id}`,
+                noIdData
+              )
               console.log(rv)
             } catch (e) {
               if (parseInt(e.message) === 409) return 409

@@ -31,7 +31,7 @@ module.exports = {
           // }
           return next()
         }
-      } else { // try Github
+      } else { // try Github TOREMOVE
         const rvx = await axios.get(`https://api.github.com/user?access_token=${incomingToken}`)
         if (rvx.status === 200) {
           // await keyv.set(incomingToken, createToken(result, key, {expiresIn: KEY_EXPIRY})) // do refresh token here...

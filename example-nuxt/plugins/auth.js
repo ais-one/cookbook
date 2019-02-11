@@ -6,6 +6,23 @@ export default function({ app }) {
     // console.log('def', app.$auth.$state)
     // app.$suth.strategy()
   }
+  // console.log('yyyyy', app.$auth)
+  // app.$auth.onRedirect(to => {
+  //   console.log(to)
+  //   // return to
+  // })
+  // // CUSTOM WATCH LOGGEDIN - DOES NOT WORK
+  // // Only _actual_ login/outs (including resets) will be watched here.
+  // app.$auth.$storage.watchState('loggedIn', isLoggedIn => {
+  //   if (isLoggedIn) {
+  //     // Follow @nuxtjs/auth workflow.
+  //     // app.$auth.redirect('home')
+  //     console.log('LOGGING IN')
+  //   } else {
+  //     console.log('LOGGING OUT')
+  //   }
+  // })
+
   // let token
   // try {
   //   token = app.$auth.$storage.getUniversal('_token.local')

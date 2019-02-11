@@ -1,3 +1,4 @@
+const axios = require('axios')
 const express = require('express')
 const authRoutes = express.Router()
 const otplib = require('otplib')
@@ -16,6 +17,15 @@ authRoutes
   // password = bcrypt.hashSync(password, SALT_ROUNDS)
   // const rv = await createUser(email, password)
   res.status(201).end()
+})
+.get('/check-github', async (req,res) => {
+  if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
+    return res.status(401).json({ message: 'Error in authorization format' })
+  }
+  const incomingToken = req.headers.authorization.split(' ')[1]
+  const rv = await axios.get('https://github.com/login/oauth/user?access_token=' + incomingToken)
+  console.log(rv)
+  res.status(200).end(rv.data)
 })
 .get('/logout', authUser, async (req,res) => {
   // console.log('logging out')

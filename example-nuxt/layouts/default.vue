@@ -46,6 +46,8 @@ export default {
       fixed: false,
       items: [
         { icon: 'apps', title: 'Home', to: '/' },
+        { icon: 'bubble_chart', title: 'Dyn1', to: '/dyn1/a' },
+        { icon: 'bubble_chart', title: 'Dyn2', to: '/dyn2/aa' },
         { icon: 'bubble_chart', title: 'Public', to: '/public' },
         { icon: 'bubble_chart', title: 'Secure', to: '/secure' },
         { icon: 'bubble_chart', title: 'Authors', to: '/authors', auth: true },

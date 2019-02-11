@@ -35,7 +35,8 @@
                 <v-alert show v-if="$auth.$state.redirect">You have to login before accessing to <strong>{{ $auth.$state.redirect }}</strong></v-alert>
               </form>
               <div v-for="s in strategies" :key="s.key" class="mb-2">
-                <v-btn @click="$auth.loginWith(s.key)" block :style="{background: s.color}" class="login-button">Login with {{ s.name }}</v-btn>
+                <!-- <v-btn @click="$auth.loginWith(s.key)" block :style="{background: s.color}" class="login-button">Login with {{ s.name }}</v-btn> -->
+                <v-btn @click="mylogin(s.key)" block :style="{background: s.color}" class="login-button">Login with {{ s.name }}</v-btn>
               </div>
             </v-container>
             <v-container v-else>
@@ -105,9 +106,17 @@ export default {
     }
   },
   methods: {
+    mylogin(aaa) {
+      // console.log('aaaaa', this.$auth.strategies.github.options)
+      this.$auth.strategies.github.options.userinfo_endpoint =
+        'http://127.0.0.1/api/auth/check-github'
+      // https://api.github.com/user
+      // console.log(aaa, this.$auth.strategies.github.options)
+      this.$auth.loginWith(aaa)
+    },
     async test() {
       const rv = await this.$axios.get('/api/test')
-      console.log('rv', rv)
+      // console.log('rv', rv)
     },
     async login() {
       this.error = null
@@ -151,7 +160,7 @@ export default {
         //     this.error = e + ''
         //   })
       } catch (e) {
-        console.log('otp err', this.otpCount)
+        // console.log('otp err', this.otpCount)
         this.otpCount--
         this.error = e + ''
       }

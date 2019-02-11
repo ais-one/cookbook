@@ -11,7 +11,7 @@ if (process.env.NODE_ENV) {
   }
 }
 
-// import axios from 'axios'
+import axios from 'axios'
 
 module.exports = {
   server: {
@@ -38,24 +38,18 @@ module.exports = {
   generate: {
     // https://github.com/nuxt/nuxt.js/issues/1018
     // routes: function () {
-    //   let posts = axios.get('https://api.com/posts', {params: {size: 10}}).then((res) => {
+    //   let posts = axios.get('https://api.com/posts', {params: {size: 10}}).then((res) => { // get about 10 records from API to populate page
     //     return res.data.posts.map((post) => {
-    //       return {
-    //         route: '/feed/' + post.id,
-    //         payload: post
-    //       }
+    //       return '/feed/' + post.id
     //     })
     //   })
-    //   let users = axios.get('https://api.com/users', {params: {size: 10}}).then((res) => {
+    //   let users = axios.get('https://api.com/users', {params: {size: 10}}).then((res) => { // get about 10 records from API to populate page
     //     return res.data.content.map((user) => {
-    //       return {
-    //          route: '/user/' + user.id,
-    //          payload: user
-    //        }
+    //       return '/user/' + user.id
     //     })
     //   })
     //   return Promise.all([posts, users]).then(values => {
-    //     return [...values[0], ...values[1]]
+    //     return values.join().split(',');
     //   })
     // }
   },
@@ -119,14 +113,16 @@ module.exports = {
   ** Axios module configuration
   */
   axios: {
+    baseURL: 'http://localhost:3000'
     // See https://github.com/nuxt-community/axios-module#options
-    proxy: true
+    // proxy: true
   },
-  proxy: {
-    '/api/': 'http://localhost:3000'
-  },
+  // proxy: {
+  //   '/api/': 'http://localhost:3000'
+  // },
 
   auth: {
+    // watchLoggedIn: false, // CUSTOM WATCH LOGGEDIN - DOES NOT WORK
     plugins: [ '@/plugins/auth.js' ],
     // Options
     redirect: {

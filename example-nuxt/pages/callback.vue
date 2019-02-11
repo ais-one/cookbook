@@ -9,10 +9,11 @@
 // GET /applications/:client_id/tokens/:access_token
 export default {
   mounted() {
-    // window.onbeforeunload = function() {
-    //   return 'Are you sure you want to leave?'
+    // document.onbeforeunload = function() {
+    //   // return 'Are you sure you want to leave?'
+    //   console.log('UNLOADING')
     // }
-    console.log('CB', this, this.$route.query)
+    console.log('CB', this, this.$route.query.code, this.$route.query.state)
     console.log('ACB', this.$auth.loggedIn)
     // window.location.href = '#'
     // window.location.href = 'http://www.google.com'

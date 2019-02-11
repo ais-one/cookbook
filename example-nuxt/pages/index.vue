@@ -34,11 +34,40 @@ export default {
   //   Logo,
   //   VuetifyLogo
   // }
+  computed: {
+    loggedIn() {
+      // return this.$store.state.auth.loggedIn
+      return this.$store.state.auth.user
+    }
+  },
+  watch: {
+    // loggedIn(newVal, oldVal) {
+    //   if (newVal) console.log('XX LOGGED IN', newVal)
+    //   else console.log('XX LOGGED OUT', newVal)
+    // }
+    loggedIn: {
+      handler: function(after, before) {
+        // console.log('XXXXXXXX', after)
+      },
+      deep: true
+    }
+  },
   data: () => ({
     title: 'Index 1'
   }),
   created() {
-    console.log('INDEX created', this.$auth.loggedIn)
+    // console.log('INDEX created', this.$auth.loggedIn)
+    // console.log(
+    //   'INDEX redirect',
+    //   this.$route.query.redirect &&
+    //     decodeURIComponent(this.$route.query.redirect),
+    //   this.$route.query.redirect
+    // )
+    // console.log(
+    //   'INDEX callback',
+    //   Boolean(this.$route.query.callback),
+    //   this.$route.query.callback
+    // )
   },
   async asyncData({ params, env }) {
     // console.log('iii', params, process.server, env)
