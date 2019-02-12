@@ -37,10 +37,20 @@ async function isAuthenticated({ email, password }) {
   return null
 }
 
+async function isGithubAuthenticated(githubId) {
+  let user = null
+  try {
+    user = await User.query().where('githubId', '=', githubId)
+    if (user) return user[0]
+  } catch (e) { }
+  return null
+}
+
 module.exports = {
   createToken,
   verifyToken,
-  isAuthenticated
+  isAuthenticated,
+  isGithubAuthenticated
 /*
   processError: (e) => {
     const messages = {

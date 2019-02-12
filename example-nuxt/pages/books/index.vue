@@ -16,7 +16,6 @@
                 <v-text-field label="Name" v-model="record.name"></v-text-field>
                 <v-select label="Category" v-model="record.categoryId" :items="categories" required item-text="name" item-value="id"></v-select>
                 <v-autocomplete
-                  v-if="true"
                   multiple
                   v-model="authorIds"
                   :items="items"

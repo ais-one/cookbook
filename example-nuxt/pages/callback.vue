@@ -8,16 +8,23 @@
 <script>
 // GET /applications/:client_id/tokens/:access_token
 export default {
-  mounted() {
-    // document.onbeforeunload = function() {
-    //   // return 'Are you sure you want to leave?'
-    //   console.log('UNLOADING')
-    // }
-    console.log('CB', this, this.$route.query.code, this.$route.query.state)
-    console.log('ACB', this.$auth.loggedIn)
-    // window.location.href = '#'
-    // window.location.href = 'http://www.google.com'
-    // this.$router.push('http://www.google.com/')
+  async mounted() {
+    console.log('CB', this.$route.query.state)
+    // console.log('ACB', this.$auth.loggedIn)
+    try {
+      const { code, state } = this.$route.query
+      const { data } = await this.$axios.post('/api/auth/check-github', {
+        code,
+        state
+      })
+      this.$auth.setToken('social', `Bearer ${data.token}`)
+      this.$auth.strategy._setToken(`Bearer ${data.token}`) // this.$axios.defaults.headers.common['Authorization']
+      console.log('cb', data)
+      const rv = await this.$axios.get('/api/auth/me')
+      this.$auth.setUser(rv.data)
+    } catch (e) {
+      this.error = e + ''
+    }
     // this.$router.push('/secure')
   }
 }

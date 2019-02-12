@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
       table.integer('orgId')
       table.string('username')
       table.string('email').unique('email')
+      table.integer('githubId').unique('githubId').nullable()
       table.string('password') // hashed
       table.string('role')
 

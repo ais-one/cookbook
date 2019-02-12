@@ -4,12 +4,12 @@ const authRoutes = express.Router()
 const otplib = require('otplib')
 
 const { authUser } = require('../middleware/auth')
-const { createToken, verifyToken, isAuthenticated } = require('../services')
+const { createToken, isAuthenticated, isGithubAuthenticated } = require('../services')
 
 const User = require('../models/User')
 const keyv = require('../services/keyv')
 
-const { USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY } = require('../config')
+const { USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require('../config')
 
 authRoutes
 .post('/signup', async (req,res) => {
@@ -18,14 +18,40 @@ authRoutes
   // const rv = await createUser(email, password)
   res.status(201).end()
 })
-.get('/check-github', async (req,res) => {
-  if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
-    return res.status(401).json({ message: 'Error in authorization format' })
+.post('/check-github', async (req,res) => {
+  // if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
+  //   return res.status(401).json({ message: 'Error in authorization format' })
+  // }
+  // const incomingToken = req.headers.authorization.split(' ')[1]
+  // const rv = await axios.get('https://github.com/login/oauth/user?access_token=' + incomingToken)
+  // console.log(rv)
+  try {
+    const { code, state } = req.body
+    const { data } = await axios.post('https://github.com/login/oauth/access_token', {
+      client_id: GITHUB_CLIENT_ID,
+      client_secret: GITHUB_CLIENT_SECRET,
+      code,
+      state
+    }, {
+      headers: {
+        Accept: 'application/json'
+      }
+    })
+    const rv = await axios.get('https://api.github.com/user?access_token=' + data.access_token)
+    const githubId = rv.data.id // github id, email
+    const user = await isGithubAuthenticated(githubId)
+    if (!user) {
+      const message = 'Unauthorized'
+      return res.status(401).json({ message })
+    }
+    const { id } = user
+    const token = createToken({ id }, USE_OTP ? OTP_SECRET_KEY : SECRET_KEY, {expiresIn: KEY_EXPIRY}) // 5 minute expire for login
+    await keyv.set(token, token)
+    return res.status(200).json({ token })
+  } catch (e) {
+    console.log(e)
   }
-  const incomingToken = req.headers.authorization.split(' ')[1]
-  const rv = await axios.get('https://github.com/login/oauth/user?access_token=' + incomingToken)
-  console.log(rv)
-  res.status(200).end(rv.data)
+  return res.status(401).end()
 })
 .get('/logout', authUser, async (req,res) => {
   // console.log('logging out')

@@ -116,6 +116,7 @@ module.exports = {
   axios: {
     baseURL: 'http://localhost:3000'
     // See https://github.com/nuxt-community/axios-module#options
+    // cannot use proxy for nuxt generated
     // proxy: true
   },
   // proxy: {
@@ -143,6 +144,18 @@ module.exports = {
         },
         tokenRequired: true,
         tokenType: 'Bearer',
+      },
+      social: {
+        _scheme: 'oauth2',
+        authorization_endpoint: 'https://github.com/login/oauth/authorize',
+        access_token_endpoint: 'https://github.com/login/oauth/access_token',
+        userinfo_endpoint: 'https://api.github.com/user',
+        scope: ['user', 'email'],
+        response_type: 'token',
+        token_type: 'Bearer',
+        redirect_uri: undefined,
+        client_id: process.env.GITHUB_CLIENT_ID,
+        token_key: 'access_token'    
       },
       // auth0: {
       //   domain: 'nuxt-auth.auth0.com',

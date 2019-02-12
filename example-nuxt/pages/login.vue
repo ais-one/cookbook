@@ -35,8 +35,7 @@
                 <v-alert show v-if="$auth.$state.redirect">You have to login before accessing to <strong>{{ $auth.$state.redirect }}</strong></v-alert>
               </form>
               <div v-for="s in strategies" :key="s.key" class="mb-2">
-                <!-- <v-btn @click="$auth.loginWith(s.key)" block :style="{background: s.color}" class="login-button">Login with {{ s.name }}</v-btn> -->
-                <v-btn @click="mylogin(s.key)" block :style="{background: s.color}" class="login-button">Login with {{ s.name }}</v-btn>
+                <v-btn @click="$auth.loginWith(s.key)" block :style="{background: s.color}" class="login-button">Login with {{ s.name }}</v-btn>
               </div>
             </v-container>
             <v-container v-else>
@@ -106,16 +105,9 @@ export default {
     }
   },
   methods: {
-    mylogin(aaa) {
-      // console.log('aaaaa', this.$auth.strategies.github.options)
-      this.$auth.strategies.github.options.userinfo_endpoint =
-        'http://127.0.0.1/api/auth/check-github'
-      // https://api.github.com/user
-      // console.log(aaa, this.$auth.strategies.github.options)
-      this.$auth.loginWith(aaa)
-    },
     async test() {
-      const rv = await this.$axios.get('/api/test')
+      this.$auth.loginWith('social')
+      // const rv = await this.$axios.get('/api/test')
       // console.log('rv', rv)
     },
     async login() {
@@ -127,6 +119,7 @@ export default {
         })
         this.$auth.setToken('local', `Bearer ${data.token}`)
         this.$auth.strategy._setToken(`Bearer ${data.token}`) // this.$axios.defaults.headers.common['Authorization']
+        // if () USE_OTP
         this.otpCount = 3 // 3 tries
       } catch (e) {
         this.error = e + ''
