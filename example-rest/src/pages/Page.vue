@@ -108,7 +108,7 @@ export default {
             } catch (e) {
               console.log(e)
             }
-            console.log('find pages of a book', records)
+            console.log('find pages of a book')
             return { records, pagination }
           },
           findOne: (payload) => {},

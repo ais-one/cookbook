@@ -9,7 +9,7 @@
 // GET /applications/:client_id/tokens/:access_token
 export default {
   async mounted() {
-    console.log('CB', this.$route.query.state)
+    // console.log('CB', this.$route.query.state)
     // console.log('ACB', this.$auth.loggedIn)
     try {
       const { code, state } = this.$route.query
@@ -19,9 +19,10 @@ export default {
       })
       this.$auth.setToken('social', `Bearer ${data.token}`)
       this.$auth.strategy._setToken(`Bearer ${data.token}`) // this.$axios.defaults.headers.common['Authorization']
-      console.log('cb', data)
+      // console.log('cb', data)
       const rv = await this.$axios.get('/api/auth/me')
       this.$auth.setUser(rv.data)
+      this.$router.push('/secure')
     } catch (e) {
       this.error = e + ''
     }

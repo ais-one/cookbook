@@ -14,17 +14,21 @@ Vue.config.productionTip = false
 Vue.use(VueRx)
 
 // Vue.prototype.$http = base
-const WS_URL = process.env.VUE_APP_WS_URL || 'ws://127.0.0.1:3001' // 'wss://echo.websocket.org'
-console.log('WS_URL', WS_URL)
-Vue.use(VueNativeSock, WS_URL, {
-  // connectManually: true,
-  protocol: '', // default is empty string
-  reconnection: true, // (Boolean) whether to reconnect automatically (false)
-  // reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
-  reconnectionDelay: 5000, // (Number) how long to initially wait before attempting a new (1000)
-  // store: store, // VUEX Store
-  format: 'json'
-})
+const WS_URL = process.env.VUE_APP_WS_URL || process.env.VUE_APP_WS_URL === undefined ? 'ws://127.0.0.1:3001' : '' // 'wss://echo.websocket.org'
+console.log('WS_URL', WS_URL, process.env.VUE_APP_WS_URL)
+if (WS_URL) {
+  Vue.use(VueNativeSock, WS_URL, {
+    // connectManually: true,
+    protocol: '', // default is empty string
+    reconnection: true, // (Boolean) whether to reconnect automatically (false)
+    // reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
+    reconnectionDelay: 5000, // (Number) how long to initially wait before attempting a new (1000)
+    // store: store, // VUEX Store
+    format: 'json'
+  })
+} else {
+  console.log('NO WS...')
+}
 
 Vue.use(Vuetify, {
   theme: {

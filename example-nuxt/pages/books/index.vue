@@ -112,7 +112,7 @@ export default {
             { text: 'Category', value: 'categoryName', class: 'pa-1' }
           ],
           formatters: (value, _type) => value,
-          doPage: true,
+          doPage: 2,
           showFilterButton: false
         },
 

@@ -12,7 +12,8 @@ export const crudTable = {
     { text: 'Category Name', value: 'name', class: 'pa-1' }
   ],
   formatters: (value, _type) => value,
-  doPage: true
+  doPage: 2,
+  showFilterButton: false
 }
 
 export const crudFilter = {

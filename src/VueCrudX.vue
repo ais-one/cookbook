@@ -13,7 +13,7 @@ const CrudStore = {
     records: [], // get many - filter, page & sort
     totalRecs: 0,
     record: { }, // selected record
-    pagination: { },
+    pagination: { }, // TOREMOVE
     filterData: { },
     defaultRec: { },
     crudOps: {
@@ -25,7 +25,7 @@ const CrudStore = {
     records (state) { return state.records },
     totalRecs (state) { return state.totalRecs },
     filterData (state) { return state.filterData },
-    pagination (state) { return state.pagination },
+    pagination (state) { return state.pagination }, // TOREMOVE
     defaultRec (state) { return state.defaultRec },
     crudOps (state) { return state.crudOps }
   },
@@ -38,11 +38,13 @@ const CrudStore = {
       if (payload === null) state.record = (typeof state.defaultRec === 'function') ? state.defaultRec() : _cloneDeep(state.defaultRec)
       else state.record = _cloneDeep(payload)
     },
-    setPagination (state, payload) { state.pagination = payload },
-    setFilterData (state, payload) { state.filterData = payload }
+    setPagination (state, payload) { state.pagination = payload }, // TOREMOVE
+    setFilterData (state, payload) { state.filterData = payload },
+    setDefaultRec (state, payload) { state.defaultRec = payload },
+    setCrudOps (state, payload) { state.crudOps = payload }
   },
   actions: { // Edit Actions
-    setPagination ({ commit }, payload) {
+    setPagination ({ commit }, payload) { // TOREMOVE
       commit('setPagination', payload)
     },
     async deleteRecord ({ commit, getters }, payload) {
@@ -59,7 +61,7 @@ const CrudStore = {
       payload.user = this.getters.user
       let { records, pagination } = await getters.crudOps.find(payload)
       let totalRecs = payload.doPage ? pagination.totalItems : records.length
-      commit('setPagination', pagination)
+      commit('setPagination', pagination) // TOREMOVE
       commit('setFilterData', payload.filterData)
       commit('setRecords', { records, totalRecs })
     },
@@ -90,69 +92,13 @@ export default {
     crudOps: { type: Object, required: true }
   },
   async created () {
-    const store = this.$store
-    const name = this.storeName
-    if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
-      store.registerModule(name, _cloneDeep(CrudStore)) // make sure its a deep clone
-      store.state[name].defaultRec = this.crudForm.defaultRec
-      store.state[name].filterData = this.crudFilter.filterData
-      store.state[name].crudOps = this.crudOps
-    } else { // re-use the already existing module
-    }
-    this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
-
-    // set inline edit fields
-    if (this.crudTable.inline) this.inline = this.crudTable.inline
-
-    this.headers = this.crudTable.headers
-    this.actionColumn = this.headers.findIndex(header => header.value === '') !== -1
-
-    // save by row?
-    this.saveRow = this.crudTable.saveRow ? this.crudTable.saveRow : false // default false
-    this.inlineReload = Object.assign(this.inlineReload, this.crudTable.inlineReload || {}) // default true
-
-    // check if components and datas are present
-    this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null
-    this.hasFormVue = typeof this.crudForm.FormVue === 'function' || this.formAutoData // TODEPRECATE
-    this.hasFilterData = this.isObject(this.crudFilter.filterData)
-    this.hasFilterVue = typeof this.crudFilter.FilterVue === 'function' // TODEPRECATE
-
-    // use add row to create record
-    this.addrowCreate = this.crudTable.addrowCreate ? this.crudTable.addrowCreate : false
-
-    // open form on row click
-    this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // default true
-
-    // set confirmation
-    this.confirmCreate = this.crudTable.confirmCreate === true // default false
-    this.confirmUpdate = this.crudTable.confirmUpdate === true // default false
-    this.confirmDelete = this.crudTable.confirmDelete !== false // default true
-
-    // pagination
-    this.doPage = this.crudTable.doPage !== false // default true
-
-    // title
-    this.crudTitle = this.crudTable.crudTitle || ''
-    this.showGoBack = this.crudTable.showGoBack !== false // hide go back button - default true
-    this.onCreatedOpenForm = this.crudTable.onCreatedOpenForm === true // open form on create - default false
-    this.showFilterButton = this.crudTable.showFilterButton !== false // show filter button - default true
-
-    // more attributes
-    this.attrs = Object.assign(this.attrs, this.crudTable.attrs || {})
-    this.buttons = Object.assign(this.buttons, this.crudTable.buttons || {})
-
-    // assign the components
-    if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue // TODEPRECATE
-    if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue // TODEPRECATE
-
-    if (this.onCreatedOpenForm && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
-      this.crudFormFlag = true
-    }
-
-    // not needed in data() because it does not exist in template, an optimization which should be done for others as well
-    this.isMounted = false // for future usage if any
+    console.log('vcx created')
+    this.ready = false
   },
   async mounted () {
+    console.log('vcx mounted')
+    this.onCreated()
+
     if (typeof this.$t !== 'function') { // if no internationalization
       this.$t = text => text
     }
@@ -165,7 +111,7 @@ export default {
         if (this.formAutoData[key].type) this.formAutoData[key].field = this.formAutoData[key].type
       }
     }
-    this.isMounted = true
+    this.ready = true
   },
   beforeUpdate () {
     // IMPORTANT: Spent 5 days just to get this to work
@@ -180,6 +126,15 @@ export default {
   beforeRouteEnter (to, from, next) { next(vm => { }) },
   data () {
     return {
+      ready: false,
+      pagination: {
+        descending: false,
+        page: 1,
+        rowsPerPage: 20,
+        sortBy: '',
+        totalItems: 0
+      },
+
       // form
       crudFormFlag: false,
       validForm: true,
@@ -214,7 +169,7 @@ export default {
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
       confirmDelete: true,
-      doPage: true, // paginate
+      doPage: true, // pagination, false === no pagination, otherwise initial rowsPerPage
       crudTitle: '', // title
       showGoBack: false,
 
@@ -316,22 +271,23 @@ export default {
     records () { return this.$store.getters[this.storeName + '/records'] },
     totalRecs () { return this.$store.getters[this.storeName + '/totalRecs'] },
     filterData () { return this.$store.getters[this.storeName + '/filterData'] },
-    // pagination () { return this.$store.getters[this.storeName + '/pagination'] }, // not used
     record () { return this.$store.getters[this.storeName + '/record'] },
-    pagination: {
-      get: function () {
-        let rv = { }
-        try {
-          rv = this.$store.state[this.storeName].pagination
-        } catch (e) {
-          // console.log('Catch computed pagination:', e.message)
-        }
-        return rv
-      },
-      set: function (value) {
-        this.setPagination(value)
-      }
-    },
+    // pagination: { // TOREMOVE
+    //   // pagination () { return this.$store.getters[this.storeName + '/pagination'] }, // not used
+    //   get: function () {
+    //     let rv = { }
+    //     try {
+    //       rv = this.$store.state[this.storeName].pagination
+    //       console.log('get pagination', rv)
+    //     } catch (e) {
+    //       // console.log('Catch computed pagination:', e.message)
+    //     }
+    //     return rv
+    //   },
+    //   set: function (value) {
+    //     // this.setPagination(value)
+    //   }
+    // },
     // computed permissions
     canCreate () { return this.can('create', this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData)) },
     canUpdate () { return this.can('update', this.crudOps.update && (this.hasFormVue || this.formAutoData)) },
@@ -347,16 +303,98 @@ export default {
   watch: {
     loading: function (newValue, oldValue) { },
     pagination: {
-      handler () {
+      handler (value, oval) {
+        console.log('watch pagination', value, oval)
         this.getRecordsHelper()
       },
       deep: true
     },
     parentId (value) {
+      console.log('watch parentId', value)
       this.getRecordsHelper()
     }
   },
   methods: {
+    async onCreated () {
+      const store = this.$store
+      const name = this.storeName
+      if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
+        store.registerModule(name, _cloneDeep(CrudStore)) // make sure its a deep clone
+        // store.state[name].defaultRec = this.crudForm.defaultRec // TBD directly mutating state!
+        // store.state[name].filterData = this.crudFilter.filterData
+        // store.state[name].crudOps = this.crudOps
+        // console.log('bbb11a', this.crudFilter.filterData, this.$store)
+        this.$store.commit(`${name}/setFilterData`, this.crudFilter.filterData)
+        // console.log('bbb22')
+        this.$store.commit(`${name}/setDefaultRec`, this.crudForm.defaultRec)
+        // console.log('bbb33')
+        this.$store.commit(`${name}/setCrudOps`, this.crudOps)
+        // console.log('bbb44')
+      } else { // re-use the already existing module
+      }
+      // console.log('bbb00', this.storeName)
+      // const vv = this.$store.getters[this.storeName + '/filterData']
+      // console.log('bbb', vv)
+      this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
+
+      // set inline edit fields
+      if (this.crudTable.inline) this.inline = this.crudTable.inline
+
+      this.headers = this.crudTable.headers
+      this.actionColumn = this.headers.findIndex(header => header.value === '') !== -1
+
+      // save by row?
+      this.saveRow = this.crudTable.saveRow ? this.crudTable.saveRow : false // default false
+      this.inlineReload = Object.assign(this.inlineReload, this.crudTable.inlineReload || {}) // default true
+
+      // check if components and datas are present
+      this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null
+      this.hasFormVue = typeof this.crudForm.FormVue === 'function' || this.formAutoData // TODEPRECATE
+      this.hasFilterData = this.isObject(this.crudFilter.filterData)
+      this.hasFilterVue = typeof this.crudFilter.FilterVue === 'function' // TODEPRECATE
+
+      // use add row to create record
+      this.addrowCreate = this.crudTable.addrowCreate ? this.crudTable.addrowCreate : false
+
+      // open form on row click
+      this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // default true
+
+      // set confirmation
+      this.confirmCreate = this.crudTable.confirmCreate === true // default false
+      this.confirmUpdate = this.crudTable.confirmUpdate === true // default false
+      this.confirmDelete = this.crudTable.confirmDelete !== false // default true
+      console.log('ccc')
+
+      // pagination
+      if (this.crudTable.doPage === false) {
+        this.doPage = false // if not set
+        this.pagination.rowsPerPage = -1
+      } else {
+        this.doPage = isNaN(parseInt(this.crudTable.doPage)) ? 20 : parseInt(this.crudTable.doPage)
+        this.pagination.rowsPerPage = this.doPage
+      }
+
+      // title
+      this.crudTitle = this.crudTable.crudTitle || ''
+      this.showGoBack = this.crudTable.showGoBack !== false // hide go back button - default true
+      this.onCreatedOpenForm = this.crudTable.onCreatedOpenForm === true // open form on create - default false
+      this.showFilterButton = this.crudTable.showFilterButton !== false // show filter button - default true
+
+      // more attributes
+      this.attrs = Object.assign(this.attrs, this.crudTable.attrs || {})
+      this.buttons = Object.assign(this.buttons, this.crudTable.buttons || {})
+
+      // assign the components
+      if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue // TODEPRECATE
+      if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue // TODEPRECATE
+
+      if (this.onCreatedOpenForm && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
+        this.crudFormFlag = true
+      }
+
+      // not needed in data() because it does not exist in template, an optimization which should be done for others as well
+      // this.isMounted = false // for future usage if any
+    },
     can (operation, flag) {
       if (this.$store.getters.user && this.$store.getters.user.rules) {
         const { rules } = this.$store.getters.user
@@ -626,7 +664,7 @@ export default {
 </script>
 
 <template>
-  <v-container v-bind="attrs.container">
+  <v-container v-if="ready" v-bind="attrs.container">
     <slot name="table-toolbar" :vcx="_self">
       <v-toolbar v-bind="attrs.toolbar">
         <!-- <v-toolbar-side-icon ></v-toolbar-side-icon> -->

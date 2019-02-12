@@ -40,7 +40,7 @@ module.exports = {
         }
       }
     } catch (err) {
-      console.log('authUser', err)
+      console.log('authUser', err.toString())
     }
     return res.status(401).json({ message: 'Error in token' })
   }

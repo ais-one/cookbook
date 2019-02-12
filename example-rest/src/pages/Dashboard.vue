@@ -38,22 +38,26 @@ export default {
     this.priceTimerId = null
   },
   beforeDestroy () {
-    delete this.$options.sockets.onmessage
-    clearInterval(this.priceTimerId)
+    if (this.$socket) {
+      delete this.$options.sockets.onmessage
+      clearInterval(this.priceTimerId)
+    }
   },
   async mounted () {
-    this.$options.sockets.onmessage = (rv) => {
-      console.log('onmessage', rv) // create listener
+    if (this.$socket) {
+      this.$options.sockets.onmessage = (rv) => {
+        console.log('onmessage', rv) // create listener
+      }
+      // this.$store.getters.user.token
+      this.priceTimerId = setInterval(async () => {
+        this.$socket.sendObj({
+          call: 'msg-from-client',
+          args: 'Hello from client!'
+        })
+        if (navigator.onLine) this.updateNetworkError(false)
+        else this.updateNetworkError(true)
+      }, 10000)
     }
-    // this.$store.getters.user.token
-    this.priceTimerId = setInterval(async () => {
-      this.$socket.sendObj({
-        call: 'msg-from-client',
-        args: 'Hello from client!'
-      })
-      if (navigator.onLine) this.updateNetworkError(false)
-      else this.updateNetworkError(true)
-    }, 10000)
   },
   methods: {
     updateNetworkError (flag) {

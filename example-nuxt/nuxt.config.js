@@ -131,8 +131,7 @@ module.exports = {
       callback: '/callback',
       // login: '/login',
       // logout: '/',
-      // callback: '/login',
-      // home: '/'
+      home: false
     },
     strategies: {
       local: {

@@ -24,7 +24,7 @@ export default {
           confirmDelete: true,
           headers: [{ text: 'Author Name', value: 'name', class: 'pa-1' }],
           formatters: (value, _type) => value,
-          doPage: true
+          doPage: 2
         },
         crudFilter: {
           FilterVue: null,
