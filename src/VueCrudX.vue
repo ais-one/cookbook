@@ -641,7 +641,7 @@ export default {
     <div v-if="expandFilter">
       <v-form v-if="hasFilterData" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
         <slot name="filter" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vcx="_self">
-          <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
+          <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vcx="_self" />
           <v-layout row wrap v-else>
               <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12>
                 <component :is="filter.field" v-model="filter.value" v-bind="filter.attrs">
@@ -789,7 +789,7 @@ export default {
           <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading" v-bind="attrs['v-progress-circular']?attrs['v-progress-circular']:attrs['v-progress-linear']"></component>
           <v-form v-if="hasFormVue" v-model="validForm" v-bind="attrs.form">
             <slot name="form" :record="record" :parentId="parentId" :storeName="storeName" :vcx="_self">
-              <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" :vueCrudX="_self" />
+              <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" :vcx="_self" />
               <v-layout row wrap v-else>
                 <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12>
                   <component v-if="form.field==='hidden'" :is="'div'"></component>

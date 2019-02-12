@@ -23,6 +23,8 @@
     "http-server": "^0.11.1",
     "nuxt": "^2.4.3",
     "nuxt-i18n": "^5.8.0",
+    "rxjs": "^6.4.0",
+    "vue-rx": "^6.1.0",
     "vuetify": "^1.5.0"
   },
   "devDependencies": {
