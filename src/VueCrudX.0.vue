@@ -10,42 +10,40 @@ const CrudStore = {
   namespaced: true,
   // strict: true,
   state: {
-    // records: [], // get many - filter, page & sort // TOREMOVE
-    // totalRecs: 0, // TOREMOVE
+    records: [], // get many - filter, page & sort
+    totalRecs: 0,
     record: { }, // selected record
-    // pagination: { }, // TOREMOVE
+    pagination: { }, // TOREMOVE
     filterData: { },
-    defaultRec: { }
-    // TOREMOVE
-    // crudOps: {
-    //  export: null, find: null, delete: null, findOne: null, create: null, update: null
-    // }
+    defaultRec: { },
+    crudOps: {
+      export: null, find: null, delete: null, findOne: null, create: null, update: null
+    }
   },
   getters: {
     record (state) { return state.record },
-    // records (state) { return state.records }, // TOREMOVE
-    // totalRecs (state) { return state.totalRecs }, // TOREMOVE
+    records (state) { return state.records },
+    totalRecs (state) { return state.totalRecs },
     filterData (state) { return state.filterData },
-    defaultRec (state) { return state.defaultRec }
-    // pagination (state) { return state.pagination }, // TOREMOVE
-    // crudOps (state) { return state.crudOps } // TOREMOVE
+    pagination (state) { return state.pagination }, // TOREMOVE
+    defaultRec (state) { return state.defaultRec },
+    crudOps (state) { return state.crudOps }
   },
   mutations: {
-    // setRecords (state, payload) { // TOREMOVE
-    //   state.records = payload.records
-    //   state.totalRecs = payload.totalRecs
-    // },
+    setRecords (state, payload) {
+      state.records = payload.records
+      state.totalRecs = payload.totalRecs
+    },
     setRecord (state, payload) {
       if (payload === null) state.record = (typeof state.defaultRec === 'function') ? state.defaultRec() : _cloneDeep(state.defaultRec)
       else state.record = _cloneDeep(payload)
     },
-    // setPagination (state, payload) { state.pagination = payload }, // TOREMOVE
-    // setCrudOps (state, payload) { state.crudOps = payload }, // TOREMOVE
+    setPagination (state, payload) { state.pagination = payload }, // TOREMOVE
     setFilterData (state, payload) { state.filterData = payload },
-    setDefaultRec (state, payload) { state.defaultRec = payload }
+    setDefaultRec (state, payload) { state.defaultRec = payload },
+    setCrudOps (state, payload) { state.crudOps = payload }
   },
   actions: { // Edit Actions
-    /* TOREMOVE
     setPagination ({ commit }, payload) { // TOREMOVE
       commit('setPagination', payload)
     },
@@ -81,7 +79,6 @@ const CrudStore = {
       let res = await getters.crudOps.create(payload)
       return res
     }
-    */
   }
 }
 
@@ -138,8 +135,6 @@ export default {
         sortBy: '',
         totalItems: 0
       },
-      records: [], // get many - filter, page & sort
-      totalRecs: 0,
 
       // form
       crudFormFlag: false,
@@ -274,8 +269,8 @@ export default {
     hasFilterSlot () { return !!this.$scopedSlots['filter'] },
     showTitle () { return this.crudTitle || this.storeName },
     // ...mapGetters(storeModuleName, [ 'records', 'totalRecs', 'filterData', 'record' ]), // cannot use for multiple stores, try below
-    // records () { return this.$store.getters[this.storeName + '/records'] }, // TODELETE
-    // totalRecs () { return this.$store.getters[this.storeName + '/totalRecs'] }, // TODELETE
+    records () { return this.$store.getters[this.storeName + '/records'] },
+    totalRecs () { return this.$store.getters[this.storeName + '/totalRecs'] },
     filterData () { return this.$store.getters[this.storeName + '/filterData'] },
     record () { return this.$store.getters[this.storeName + '/record'] },
     // pagination: { // TOREMOVE
@@ -329,22 +324,24 @@ export default {
         // store.state[name].defaultRec = this.crudForm.defaultRec // TBD directly mutating state!
         // store.state[name].filterData = this.crudFilter.filterData
         // store.state[name].crudOps = this.crudOps
-        this.$store.commit(`${name}/setDefaultRec`, this.crudForm.defaultRec)
         this.$store.commit(`${name}/setFilterData`, this.crudFilter.filterData)
-        // this.$store.commit(`${name}/setCrudOps`, this.crudOps) // TOREMOVE
+        this.$store.commit(`${name}/setDefaultRec`, this.crudForm.defaultRec)
+        this.$store.commit(`${name}/setCrudOps`, this.crudOps)
       } else { // re-use the already existing module
       }
     },
     async onCreated () {
-      const store = this.$store
       const name = this.storeName
-      if (!this.$store._modulesNamespaceMap[name + '/'] || !store.state[name]) {
+      if (!this.$store._modulesNamespaceMap[name + '/']) {
         store.registerModule(name, _cloneDeep(CrudStore)) // make sure its a deep clone
-        this.$store.commit(`${name}/setDefaultRec`, this.crudForm.defaultRec)
-        this.$store.commit(`${name}/setFilterData`, this.crudFilter.filterData)
-        // this.$store.commit(`${name}/setCrudOps`, this.crudOps) // TOREMOVE
+        // this.$store.commit(`${name}/setFilterData`, this.crudFilter.filterData)
+        // this.$store.commit(`${name}/setDefaultRec`, this.crudForm.defaultRec)
+        // this.$store.commit(`${name}/setCrudOps`, this.crudOps)
       }
 
+      // console.log('bbb00', this.storeName)
+      // const vv = this.$store.getters[this.storeName + '/filterData']
+      // console.log('bbb', vv)
       this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
 
       // set inline edit fields
@@ -374,7 +371,7 @@ export default {
       this.confirmUpdate = this.crudTable.confirmUpdate === true // default false
       this.confirmDelete = this.crudTable.confirmDelete !== false // default true
 
-      // pagination - move this to created..., making too many calls
+      // pagination
       if (this.crudTable.doPage === false) {
         this.doPage = false // if not set
         this.pagination.rowsPerPage = -1
@@ -446,27 +443,19 @@ export default {
       }
     },
     async getRecords (payload) {
-      // await this.$store.dispatch(this.storeName + '/getRecords', payload) // TODELETE
-      let { records, pagination } = await this.crudOps.find(payload)
-      let totalRecs = payload.doPage ? pagination.totalItems : records.length
-      this.totalRecs = totalRecs
-      this.records = records
-      this.$store.commit(this.storeName + '/setFilterData', payload.filterData)
-      // this.$store.commit(this.storeName + '/setRecords', { records, totalRecs }) // TODELETE
+      await this.$store.dispatch(this.storeName + '/getRecords', payload)
     },
-    // setPagination (payload) { this.$store.dispatch(this.storeName + '/setPagination', payload) }, // TODELETE
+    setPagination (payload) { this.$store.dispatch(this.storeName + '/setPagination', payload) },
     async deleteRecord (payload) {
       this.loading = true
-      // let res = await this.$store.dispatch(this.storeName + '/deleteRecord', payload) // TODELETE
-      let res = await this.crudOps.delete(payload)
+      let res = await this.$store.dispatch(this.storeName + '/deleteRecord', payload)
       this.loading = false
       this.$emit('deleted', { res, payload })
       this.setSnackBar(res)
     },
     async updateRecord (payload) {
       this.loading = true
-      // let res = await this.$store.dispatch(this.storeName + '/updateRecord', payload) // TODELETE
-      let res = await this.crudOps.update(payload)
+      let res = await this.$store.dispatch(this.storeName + '/updateRecord', payload)
       this.loading = false
       this.$emit('updated', { res, payload })
       this.setSnackBar(res)
@@ -475,24 +464,18 @@ export default {
     },
     async createRecord (payload) {
       this.loading = true
-      // let res = await this.$store.dispatch(this.storeName + '/createRecord', payload) // TODELETE
-      let res = await this.crudOps.create(payload)
+      let res = await this.$store.dispatch(this.storeName + '/createRecord', payload)
       this.loading = false
       this.$emit('created', { res, payload }) // no ID yet, TBD...
       this.setSnackBar(res)
     },
     async getRecord (payload) {
       this.loading = true
-      // await this.$store.dispatch(this.storeName + '/getRecord', payload) // TODELETE
-      let record = await this.crudOps.findOne(payload)
-      this.$store.commit(this.storeName + '/setRecord', record)
+      await this.$store.dispatch(this.storeName + '/getRecord', payload)
       this.loading = false
     },
     setRecord (payload) { this.$store.commit(this.storeName + '/setRecord', null) }, // NOTE: mutated here without dispatching action
-    async exportRecords (payload) {
-      // await this.$store.dispatch(this.storeName + '/exportRecords', payload) // TODELETE
-      await this.crudOps.export(payload)
-    },
+    async exportRecords (payload) { await this.$store.dispatch(this.storeName + '/exportRecords', payload) },
     closeCrudForm () {
       this.setRecord() // clear it
       this.crudFormFlag = false

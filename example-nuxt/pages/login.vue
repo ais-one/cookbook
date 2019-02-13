@@ -107,7 +107,8 @@ export default {
   methods: {
     async loginGithub() {
       // console.log(process.env.GITHUB_CLIENT_ID)
-      this.$auth.loginWith('social')
+      await this.$auth.logout()
+      await this.$auth.loginWith('social')
     },
     async login() {
       this.error = null

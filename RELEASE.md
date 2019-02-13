@@ -28,9 +28,11 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.8
- * improvement: use doPage field to indicate if not using paging or page size, page size increments
- * Now works on NUXT: (SPA SSR and generated!!!)
+ * TBD: check pagination, it is making to many calls
+ * TBD: Now works on NUXT: (SPA SSR and generated!!!)
+ * TBD: records, totalRecs, crudOps, defaultRec no longer in store
  * fix: pagination no longer watched in store, we will save to store each time it changes, and only load from it when page is mounted
+ * improvement: use doPage field to indicate if not using paging or page size, page size increments
  * improvement: add table-toolbar & form-toolbar scoped slots, add reference to vue-crud-x in the slots (vcx), so that you can access its properties and methods
  * improvement: move VueCrudX.vue source file to location for common components where all example projects can access
  * feature: add Loading/BusyOverlay to common components
