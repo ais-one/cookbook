@@ -28,6 +28,7 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.8
+ * TBD: Save Last Page vuex, save last filterData
  * TBD: check pagination, it is making to many calls
  * TBD: Now works on NUXT: (SPA SSR and generated!!!)
  * TBD: records, totalRecs, crudOps, defaultRec no longer in store

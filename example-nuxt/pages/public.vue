@@ -49,10 +49,10 @@ export default {
     const store = this.$store
     // register a new module only if doesn't exist
     if (!(store && store.state && store.state[name])) {
-      console.log('a1', this.$store._actions, this.$store._modulesNamespaceMap)
+      // console.log('a1', this.$store._actions, this.$store._modulesNamespaceMap)
       this.$store.registerModule(name, _cloneDeep(XrudStore)) // make sure its a deep clone
       this.$store.commit(`blah/setCounter`, { counter: 0 })
-      console.log('a2', this.$store._actions, this.$store._modulesNamespaceMap)
+      // console.log('a2', this.$store._actions, this.$store._modulesNamespaceMap)
     }
   },
   mounted() {

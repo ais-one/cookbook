@@ -10,78 +10,18 @@ const CrudStore = {
   namespaced: true,
   // strict: true,
   state: {
-    // records: [], // get many - filter, page & sort // TOREMOVE
-    // totalRecs: 0, // TOREMOVE
-    record: { }, // selected record
-    // pagination: { }, // TOREMOVE
-    filterData: { },
-    defaultRec: { }
-    // TOREMOVE
-    // crudOps: {
-    //  export: null, find: null, delete: null, findOne: null, create: null, update: null
-    // }
+    filterData: {},
+    pageData: {}
   },
   getters: {
-    record (state) { return state.record },
-    // records (state) { return state.records }, // TOREMOVE
-    // totalRecs (state) { return state.totalRecs }, // TOREMOVE
     filterData (state) { return state.filterData },
-    defaultRec (state) { return state.defaultRec }
-    // pagination (state) { return state.pagination }, // TOREMOVE
-    // crudOps (state) { return state.crudOps } // TOREMOVE
+    pageData (state) { return state.pageData }
   },
   mutations: {
-    // setRecords (state, payload) { // TOREMOVE
-    //   state.records = payload.records
-    //   state.totalRecs = payload.totalRecs
-    // },
-    setRecord (state, payload) {
-      if (payload === null) state.record = (typeof state.defaultRec === 'function') ? state.defaultRec() : _cloneDeep(state.defaultRec)
-      else state.record = _cloneDeep(payload)
-    },
-    // setPagination (state, payload) { state.pagination = payload }, // TOREMOVE
-    // setCrudOps (state, payload) { state.crudOps = payload }, // TOREMOVE
     setFilterData (state, payload) { state.filterData = payload },
-    setDefaultRec (state, payload) { state.defaultRec = payload }
+    setPageData (state, payload) { state.pageData = payload }
   },
-  actions: { // Edit Actions
-    /* TOREMOVE
-    setPagination ({ commit }, payload) { // TOREMOVE
-      commit('setPagination', payload)
-    },
-    async deleteRecord ({ commit, getters }, payload) {
-      payload.user = this.getters.user
-      let res = await getters.crudOps.delete(payload)
-      return res
-    },
-    async getRecord ({ commit, getters }, payload) {
-      payload.user = this.getters.user
-      let record = await getters.crudOps.findOne(payload)
-      commit('setRecord', record)
-    },
-    async getRecords ({ commit, getters }, payload) {
-      payload.user = this.getters.user
-      let { records, pagination } = await getters.crudOps.find(payload)
-      let totalRecs = payload.doPage ? pagination.totalItems : records.length
-      commit('setPagination', pagination) // TOREMOVE
-      commit('setFilterData', payload.filterData)
-      commit('setRecords', { records, totalRecs })
-    },
-    async exportRecords ({ commit, getters }, payload) {
-      payload.user = this.getters.user
-      await getters.crudOps.export(payload)
-    },
-    async updateRecord ({ commit, getters }, payload) {
-      payload.user = this.getters.user
-      let res = await getters.crudOps.update(payload)
-      return res
-    },
-    async createRecord ({ commit, getters, dispatch }, payload) {
-      payload.user = this.getters.user
-      let res = await getters.crudOps.create(payload)
-      return res
-    }
-    */
+  actions: {
   }
 }
 
@@ -97,24 +37,11 @@ export default {
   async created () {
     console.log('vcx created')
     this.ready = false
-    this.onInit()
+    this.onCreated()
   },
   async mounted () {
     console.log('vcx mounted')
-    this.onCreated()
-
-    if (typeof this.$t !== 'function') { // if no internationalization
-      this.$t = text => text
-    }
-    for (let key in this.filterData) { // type to field
-      if (this.filterData[key].type) this.filterData[key].field = this.filterData[key].type // TODEPRECATE
-      if (this.filterData[key].attrs && this.filterData[key].itemsFn) this.filterData[key].attrs.items = await this.filterData[key].itemsFn()
-    }
-    if (this.formAutoData) { // type to field // TODEPRECATE
-      for (let key in this.formAutoData) {
-        if (this.formAutoData[key].type) this.formAutoData[key].field = this.formAutoData[key].type
-      }
-    }
+    this.onMounted()
     this.ready = true
   },
   beforeUpdate () {
@@ -140,6 +67,8 @@ export default {
       },
       records: [], // get many - filter, page & sort
       totalRecs: 0,
+      record: {}, // selected record
+      defaultRec: {},
 
       // form
       crudFormFlag: false,
@@ -274,10 +203,8 @@ export default {
     hasFilterSlot () { return !!this.$scopedSlots['filter'] },
     showTitle () { return this.crudTitle || this.storeName },
     // ...mapGetters(storeModuleName, [ 'records', 'totalRecs', 'filterData', 'record' ]), // cannot use for multiple stores, try below
-    // records () { return this.$store.getters[this.storeName + '/records'] }, // TODELETE
-    // totalRecs () { return this.$store.getters[this.storeName + '/totalRecs'] }, // TODELETE
     filterData () { return this.$store.getters[this.storeName + '/filterData'] },
-    record () { return this.$store.getters[this.storeName + '/record'] },
+    pageData() { return this.$store.getters[this.storeName + '/pageData'] },
     // pagination: { // TOREMOVE
     //   // pagination () { return this.$store.getters[this.storeName + '/pagination'] }, // not used
     //   get: function () {
@@ -321,59 +248,7 @@ export default {
     }
   },
   methods: {
-    onInit () {
-      const store = this.$store
-      const name = this.storeName
-      if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
-        store.registerModule(name, _cloneDeep(CrudStore)) // make sure its a deep clone
-        // store.state[name].defaultRec = this.crudForm.defaultRec // TBD directly mutating state!
-        // store.state[name].filterData = this.crudFilter.filterData
-        // store.state[name].crudOps = this.crudOps
-        this.$store.commit(`${name}/setDefaultRec`, this.crudForm.defaultRec)
-        this.$store.commit(`${name}/setFilterData`, this.crudFilter.filterData)
-        // this.$store.commit(`${name}/setCrudOps`, this.crudOps) // TOREMOVE
-      } else { // re-use the already existing module
-      }
-    },
-    async onCreated () {
-      const store = this.$store
-      const name = this.storeName
-      if (!this.$store._modulesNamespaceMap[name + '/'] || !store.state[name]) {
-        store.registerModule(name, _cloneDeep(CrudStore)) // make sure its a deep clone
-        this.$store.commit(`${name}/setDefaultRec`, this.crudForm.defaultRec)
-        this.$store.commit(`${name}/setFilterData`, this.crudFilter.filterData)
-        // this.$store.commit(`${name}/setCrudOps`, this.crudOps) // TOREMOVE
-      }
-
-      this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
-
-      // set inline edit fields
-      if (this.crudTable.inline) this.inline = this.crudTable.inline
-
-      this.headers = this.crudTable.headers
-      this.actionColumn = this.headers.findIndex(header => header.value === '') !== -1
-
-      // save by row?
-      this.saveRow = this.crudTable.saveRow ? this.crudTable.saveRow : false // default false
-      this.inlineReload = Object.assign(this.inlineReload, this.crudTable.inlineReload || {}) // default true
-
-      // check if components and datas are present
-      this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null
-      this.hasFormVue = typeof this.crudForm.FormVue === 'function' || this.formAutoData // TODEPRECATE
-      this.hasFilterData = this.isObject(this.crudFilter.filterData)
-      this.hasFilterVue = typeof this.crudFilter.FilterVue === 'function' // TODEPRECATE
-
-      // use add row to create record
-      this.addrowCreate = this.crudTable.addrowCreate ? this.crudTable.addrowCreate : false
-
-      // open form on row click
-      this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // default true
-
-      // set confirmation
-      this.confirmCreate = this.crudTable.confirmCreate === true // default false
-      this.confirmUpdate = this.crudTable.confirmUpdate === true // default false
-      this.confirmDelete = this.crudTable.confirmDelete !== false // default true
-
+    onCreated () {
       // pagination - move this to created..., making too many calls
       if (this.crudTable.doPage === false) {
         this.doPage = false // if not set
@@ -383,8 +258,43 @@ export default {
         this.pagination.rowsPerPage = this.doPage
       }
 
-      // title
-      this.crudTitle = this.crudTable.crudTitle || ''
+      const store = this.$store
+      const name = this.storeName
+      if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
+        console.log('vvvvvv')
+        store.registerModule(name, _cloneDeep(CrudStore)) // make sure its a deep clone
+        store.state[name] = {} // required for nuxt generated...
+        // console.log(store.state, store.state[name], this.$store._mutations)
+        // store.state[name].filterData = this.crudFilter.filterData // TBD directly mutating state!
+        // store.state[name].pageData = this.pagination // TBD directly mutating state!
+        store.commit(`${name}/setFilterData`, this.crudFilter.filterData)
+        store.commit(`${name}/setPageData`, this.pagination)
+      } else { // re-use the already existing module
+        this.pagination = this.pageData
+      }
+    },
+    async onMounted () {
+      this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
+      if (this.crudTable.inline) this.inline = this.crudTable.inline // set inline edit fields
+      this.headers = this.crudTable.headers
+      this.actionColumn = this.headers.findIndex(header => header.value === '') !== -1
+      this.saveRow = this.crudTable.saveRow ? this.crudTable.saveRow : false // save by row? default false
+      this.inlineReload = Object.assign(this.inlineReload, this.crudTable.inlineReload || {}) // default true
+
+      this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null // check if components and datas are present
+      this.hasFormVue = typeof this.crudForm.FormVue === 'function' || this.formAutoData // TODEPRECATE
+      this.hasFilterData = this.isObject(this.crudFilter.filterData)
+      this.hasFilterVue = typeof this.crudFilter.FilterVue === 'function' // TODEPRECATE
+
+      this.addrowCreate = this.crudTable.addrowCreate ? this.crudTable.addrowCreate : false // use add row to create record
+      this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // open form on row click? default true
+
+      // set confirmation
+      this.confirmCreate = this.crudTable.confirmCreate === true // default false
+      this.confirmUpdate = this.crudTable.confirmUpdate === true // default false
+      this.confirmDelete = this.crudTable.confirmDelete !== false // default true
+
+      this.crudTitle = this.crudTable.crudTitle || '' // title
       this.showGoBack = this.crudTable.showGoBack !== false // hide go back button - default true
       this.onCreatedOpenForm = this.crudTable.onCreatedOpenForm === true // open form on create - default false
       this.showFilterButton = this.crudTable.showFilterButton !== false // show filter button - default true
@@ -403,6 +313,18 @@ export default {
 
       // not needed in data() because it does not exist in template, an optimization which should be done for others as well
       // this.isMounted = false // for future usage if any
+      if (typeof this.$t !== 'function') { // if no internationalization
+        this.$t = text => text
+      }
+      for (let key in this.filterData) { // type to field
+        if (this.filterData[key].type) this.filterData[key].field = this.filterData[key].type // TODEPRECATE
+        if (this.filterData[key].attrs && this.filterData[key].itemsFn) this.filterData[key].attrs.items = await this.filterData[key].itemsFn()
+      }
+      if (this.formAutoData) { // type to field // TODEPRECATE
+        for (let key in this.formAutoData) {
+          if (this.formAutoData[key].type) this.formAutoData[key].field = this.formAutoData[key].type
+        }
+      }
     },
     can (operation, flag) {
       if (this.$store.getters.user && this.$store.getters.user.rules) {
@@ -446,18 +368,15 @@ export default {
       }
     },
     async getRecords (payload) {
-      // await this.$store.dispatch(this.storeName + '/getRecords', payload) // TODELETE
       let { records, pagination } = await this.crudOps.find(payload)
       let totalRecs = payload.doPage ? pagination.totalItems : records.length
       this.totalRecs = totalRecs
       this.records = records
       this.$store.commit(this.storeName + '/setFilterData', payload.filterData)
-      // this.$store.commit(this.storeName + '/setRecords', { records, totalRecs }) // TODELETE
+      this.$store.commit(this.storeName + '/setPageData', pagination)
     },
-    // setPagination (payload) { this.$store.dispatch(this.storeName + '/setPagination', payload) }, // TODELETE
     async deleteRecord (payload) {
       this.loading = true
-      // let res = await this.$store.dispatch(this.storeName + '/deleteRecord', payload) // TODELETE
       let res = await this.crudOps.delete(payload)
       this.loading = false
       this.$emit('deleted', { res, payload })
@@ -465,7 +384,6 @@ export default {
     },
     async updateRecord (payload) {
       this.loading = true
-      // let res = await this.$store.dispatch(this.storeName + '/updateRecord', payload) // TODELETE
       let res = await this.crudOps.update(payload)
       this.loading = false
       this.$emit('updated', { res, payload })
@@ -475,7 +393,6 @@ export default {
     },
     async createRecord (payload) {
       this.loading = true
-      // let res = await this.$store.dispatch(this.storeName + '/createRecord', payload) // TODELETE
       let res = await this.crudOps.create(payload)
       this.loading = false
       this.$emit('created', { res, payload }) // no ID yet, TBD...
@@ -483,14 +400,15 @@ export default {
     },
     async getRecord (payload) {
       this.loading = true
-      // await this.$store.dispatch(this.storeName + '/getRecord', payload) // TODELETE
       let record = await this.crudOps.findOne(payload)
-      this.$store.commit(this.storeName + '/setRecord', record)
+      this.setRecord(record)
       this.loading = false
     },
-    setRecord (payload) { this.$store.commit(this.storeName + '/setRecord', null) }, // NOTE: mutated here without dispatching action
+    setRecord (payload) {
+      if (!payload) this.record = (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : _cloneDeep(this.defaultRec)
+      else this.record = _cloneDeep(payload)
+    }, // NOTE: mutated here without dispatching action
     async exportRecords (payload) {
-      // await this.$store.dispatch(this.storeName + '/exportRecords', payload) // TODELETE
       await this.crudOps.export(payload)
     },
     closeCrudForm () {
@@ -651,8 +569,7 @@ export default {
       }
     },
     async inlineCreate () {
-      let record = (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : this.crudForm.defaultRec
-
+      let record = (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : _cloneDeep(this.crudForm.defaultRec)
       if (this.saveRow) {
         if (this.isEditing()) return alert(this.$t('vueCrudX.pleaseSave'))
       }
