@@ -35,13 +35,13 @@ export default {
     crudOps: { type: Object, required: true }
   },
   async created () {
-    console.log('vcx created')
     this.ready = false
     this.onCreated()
+    console.log('vcx created')
   },
   async mounted () {
-    console.log('vcx mounted')
     this.onMounted()
+    console.log('vcx mounted')
     this.ready = true
   },
   beforeUpdate () {
@@ -63,10 +63,10 @@ export default {
         page: 1,
         rowsPerPage: 20,
         sortBy: '',
-        totalItems: 0
+        totalItems: 0 // completely useless at the moment
       },
       records: [], // get many - filter, page & sort
-      totalRecs: 0,
+      totalRecords: 0,
       record: {}, // selected record
       defaultRec: {},
 
@@ -202,25 +202,10 @@ export default {
     hasFormSlot () { return !!this.$scopedSlots['form'] },
     hasFilterSlot () { return !!this.$scopedSlots['filter'] },
     showTitle () { return this.crudTitle || this.storeName },
-    // ...mapGetters(storeModuleName, [ 'records', 'totalRecs', 'filterData', 'record' ]), // cannot use for multiple stores, try below
+    // ...mapGetters(storeModuleName, [ 'records', 'totalRecords', 'filterData', 'record' ]), // cannot use for multiple stores, try below
     filterData () { return this.$store.getters[this.storeName + '/filterData'] },
-    pageData() { return this.$store.getters[this.storeName + '/pageData'] },
-    // pagination: { // TOREMOVE
-    //   // pagination () { return this.$store.getters[this.storeName + '/pagination'] }, // not used
-    //   get: function () {
-    //     let rv = { }
-    //     try {
-    //       rv = this.$store.state[this.storeName].pagination
-    //       console.log('get pagination', rv)
-    //     } catch (e) {
-    //       // console.log('Catch computed pagination:', e.message)
-    //     }
-    //     return rv
-    //   },
-    //   set: function (value) {
-    //     // this.setPagination(value)
-    //   }
-    // },
+    pageData () { return this.$store.getters[this.storeName + '/pageData'] },
+    // pagination: { get: function () { return something }, set: function (value) {} },  // TOREMOVE
     // computed permissions
     canCreate () { return this.can('create', this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData)) },
     canUpdate () { return this.can('update', this.crudOps.update && (this.hasFormVue || this.formAutoData)) },
@@ -261,19 +246,15 @@ export default {
       const store = this.$store
       const name = this.storeName
       if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
-        console.log('vvvvvv')
         store.registerModule(name, _cloneDeep(CrudStore)) // make sure its a deep clone
         store.state[name] = {} // required for nuxt generated...
-        // console.log(store.state, store.state[name], this.$store._mutations)
-        // store.state[name].filterData = this.crudFilter.filterData // TBD directly mutating state!
-        // store.state[name].pageData = this.pagination // TBD directly mutating state!
-        store.commit(`${name}/setFilterData`, this.crudFilter.filterData)
-        store.commit(`${name}/setPageData`, this.pagination)
+        store.commit(`${name}/setFilterData`, _cloneDeep(this.crudFilter.filterData))
+        store.commit(`${name}/setPageData`, _cloneDeep(this.pagination))
       } else { // re-use the already existing module
-        this.pagination = this.pageData
       }
     },
     async onMounted () {
+      this.pagination = this.pageData
       this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
       if (this.crudTable.inline) this.inline = this.crudTable.inline // set inline edit fields
       this.headers = this.crudTable.headers
@@ -367,14 +348,6 @@ export default {
         this.snackbar = !!this.snackbarText
       }
     },
-    async getRecords (payload) {
-      let { records, pagination } = await this.crudOps.find(payload)
-      let totalRecs = payload.doPage ? pagination.totalItems : records.length
-      this.totalRecs = totalRecs
-      this.records = records
-      this.$store.commit(this.storeName + '/setFilterData', payload.filterData)
-      this.$store.commit(this.storeName + '/setPageData', pagination)
-    },
     async deleteRecord (payload) {
       this.loading = true
       let res = await this.crudOps.delete(payload)
@@ -441,20 +414,27 @@ export default {
       this.closeCrudForm()
     },
     async getRecordsHelper () {
+      if (!this.ready) {
+        return
+      }
       this.loading = true
-      await this.getRecords({
+      this.$store.commit(this.storeName + '/setFilterData', _cloneDeep(this.filterData))
+      const payload = {
         doPage: this.doPage,
         pagination: this.pagination,
         filterData: this.filterData,
         parentId: this.parentId
-      })
+      }
+      let { records, pagination, totalRecords } = await this.crudOps.find(payload)
+      this.totalRecords = !totalRecords ? records.length : totalRecords
+      this.records = records
+      this.$store.commit(this.storeName + '/setPageData', _cloneDeep(pagination))
       this.loading = false
     },
     async submitFilter () {
       if (this.saveRow) {
         this.clearEditing()
       }
-      // TOREMOVE why was this here in the first place? await this.getRecords()
       await this.getRecordsHelper()
       this.$emit('loaded', Date.now())
     },
@@ -636,11 +616,11 @@ export default {
         <!-- <v-layout row justify-end></v-layout> -->
       </v-form>
     </div>
-    <slot name="table" :records="records" :totalRecs="totalRecs" :pagination="pagination" :vcx="_self">
+    <slot name="table" :records="records" :totalRecords="totalRecords" :pagination="pagination" :vcx="_self">
       <v-data-table
         :headers="headers"
         :items="records"
-        :total-items="totalRecs"
+        :total-items="totalRecords"
         :pagination.sync="pagination"
         :loading="loading?attrs.table['loading-color']:false"
         :hide-actions="!doPage"

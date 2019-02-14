@@ -91,6 +91,7 @@ export default {
           export: null,
           find: async (payload) => {
             let records = []
+            let totalRecords = 0
             const { pagination, parentId } = payload // filterData // pagination: { sortBy, descending }
             const { page, rowsPerPage } = pagination
             try {
@@ -100,16 +101,13 @@ export default {
                   limit: rowsPerPage
                 }
               })
-              console.log(results)
-              results.forEach(row => {
-                records.push(row)
-              })
-              pagination.totalItems = total
+              records = results
+              totalRecords = total
             } catch (e) {
               console.log(e)
             }
             console.log('find pages of a book')
-            return { records, pagination }
+            return { records, pagination, totalRecords }
           },
           findOne: (payload) => {},
           create: async (payload) => {

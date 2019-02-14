@@ -417,9 +417,10 @@ crudOps: {
   },
   find: {
     let records = []
+    let totalRecords = 0
     const { pagination, user } = payload // sort order is in pagination 
     ...
-    return { records, pagination }
+    return { records, pagination, totalRecords }
   },
   findOne: {
     const { id, user } = payload

@@ -152,6 +152,7 @@ export default {
           },
           find: async (payload) => {
             let records = []
+            let totalRecords = 0
             const { pagination, filterData } = payload // pagination: { sortBy, descending }
             const { page, rowsPerPage } = pagination
             let params = { page: page > 0 ? page - 1 : 0, limit: rowsPerPage } // set query params
@@ -160,14 +161,12 @@ export default {
             try {
               const { data: { results, total } } = await http.get('/api/books', { params })
               // console.log('find books', results)
-              results.forEach(row => {
-                records.push(row)
-              })
-              pagination.totalItems = total
+              records = results
+              totalRecords = total
             } catch (e) {
               console.log(e)
             }
-            return { records, pagination }
+            return { records, pagination, totalRecords }
           },
           findOne: async (payload) => {
             const { id } = payload

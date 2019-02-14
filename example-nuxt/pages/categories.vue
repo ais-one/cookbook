@@ -51,8 +51,8 @@ export default {
         crudOps: {
           export: async payload => {},
           find: async payload => {
-            // console.log('xxxxx', this.$axios)
             let records = []
+            let totalRecords = 0
             const { pagination } = payload // filterData // pagination: { sortBy, descending }
             const { page, rowsPerPage } = pagination
             try {
@@ -64,14 +64,12 @@ export default {
                   limit: rowsPerPage
                 }
               })
-              results.forEach(row => {
-                records.push(row)
-              })
-              pagination.totalItems = total
+              records = results
+              totalRecords = total
             } catch (e) {
               console.log(e)
             }
-            return { records, pagination }
+            return { records, pagination, totalRecords }
           },
           findOne: async payload => {
             const { id } = payload

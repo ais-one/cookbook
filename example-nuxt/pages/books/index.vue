@@ -163,25 +163,27 @@ export default {
           export: async payload => {},
           find: async payload => {
             let records = []
+            let totalRecords = 0
             const { pagination, filterData } = payload // pagination: { sortBy, descending }
-            const { page, rowsPerPage } = pagination
-            let params = { page: page > 0 ? page - 1 : 0, limit: rowsPerPage } // set query params
-            if (filterData.name.value) params.name = filterData.name.value
-            if (filterData.categoryName.value.value)
-              params['category-id'] = filterData.categoryName.value.value
             try {
-              const {
-                data: { results, total }
-              } = await this.$axios.get('/api/books', { params })
-              // console.log('find books', results)
-              results.forEach(row => {
-                records.push(row)
-              })
-              pagination.totalItems = total
+              const { page, rowsPerPage } = pagination
+              let params = { page: page > 0 ? page - 1 : 0, limit: rowsPerPage } // set query params
+              if (filterData.name.value) params.name = filterData.name.value
+              if (filterData.categoryName.value.value)
+                params['category-id'] = filterData.categoryName.value.value
+              try {
+                const {
+                  data: { results, total }
+                } = await this.$axios.get('/api/books', { params })
+                records = results
+                totalRecords = total
+              } catch (e) {
+                console.log(e)
+              }
             } catch (e) {
-              console.log(e)
+              console.log('foobar', e, pagination)
             }
-            return { records, pagination }
+            return { records, pagination, totalRecords }
           },
           findOne: async payload => {
             const { id } = payload
