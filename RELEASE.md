@@ -28,8 +28,8 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.8
- * NOTE: the only breaking change is the linter and prettier package updates, which MAY require you to format your code.
- * improvement: add totalRecords property for return object of find() function so { records, pagination, totalRecords }, totalRecords is needed if you are doing pagination
+ * chore: linter and prettier package updates (you MAY need to edit your code to avoid linting errors)
+ * improvement[MINOR BREAKING CHANGE]: add totalRecords property for return object of find() function so { records, pagination, totalRecords }, totalRecords is needed if you are doing pagination. We do not use "pagination.totalItems" any more are it has no effect, and we do not mutate pagination (there is no need to mutate explicitly). To indicate total records (including those not in the page limit), we now use a seperate property outside the "pagination" object, called totalRecords
  * improvement: reduce store usage (it was not necessary and added complexity)
    - remove from vuex: records, totalRecs, crudOps, defaultRec, pagination, filterData
    - save pagination and filterData into vuex when getRecordsHelper() is triggered or on initial store creating, retrieve on mounted, 
