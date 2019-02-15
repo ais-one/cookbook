@@ -151,7 +151,7 @@ See RELEASE.MD file
 
 Refer to @/pages/Crud/party-inline.js for more description for now...
 
-## Table - crudTable
+### Table - crudTable
 
 ```
 crudTable: {
@@ -297,7 +297,7 @@ crudTable: {
 }
 ```
 
-## Filter - crudFilter
+### Filter - crudFilter
 
 ```
 crudFilter: {
@@ -320,8 +320,7 @@ crudFilter: {
 
 ```
 
-## Form - crudForm
-
+### Form - crudForm
 
 ```
 crudForm: {
@@ -369,7 +368,7 @@ crudForm: {
 }
 ```
 
-## CRUD Operations - crudOps
+### CRUD Operations - crudOps
 
 1. user property in payload can be used for authentication, and logging
 
@@ -430,6 +429,36 @@ crudOps: {
   }
 }
 ```
+
+## Named Scoped SLots
+
+**table-toolbar**
+  - vcx: access to the component itself
+
+**filter**
+  - filterData: access to filterData
+  - parentId: access to parentId (if any)
+  - storeName: access to vuex store module name
+  - vcx: access to the component itself
+
+**table**
+  - records: the records found
+  - totalRecords: to total unpaged records
+  - pagination: the pagination object
+  - vcx: access to the component itself
+
+**summary**
+  - vcx: access to the component itself
+
+**form-toolbar**
+  - vcx: access to the component itself
+
+**form**
+  - record: the selected record
+  - parentId: access to parentId (if any)
+  - storeName: access to vuex store module name
+  - vcx: access to the component itself
+
 
 ## Events
 

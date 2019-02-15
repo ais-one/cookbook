@@ -591,24 +591,24 @@ export default {
       </v-toolbar>
     </slot>
     <div v-if="expandFilter">
-      <v-form v-if="hasFilterData" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
-        <slot name="filter" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vcx="_self">
+      <slot name="filter" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vcx="_self">
+        <v-form v-if="hasFilterData" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
           <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vcx="_self" />
           <v-layout row wrap v-else>
-              <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12>
-                <component :is="filter.field" v-model="filter.value" v-bind="filter.attrs">
-                  <template v-if="filter.field==='v-btn-toggle'">
-                    <component :is="'v-btn'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" v-bind="filter.group.attrs">{{ value }}</component>
-                  </template>
-                  <template v-else-if="filter.field==='v-radio-group'">
-                    <component :is="'v-radio'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" :label="value" v-bind="filter.group.attrs"></component>
-                  </template>
-                </component>
-              </v-flex>
-            </v-layout>
-        </slot>
+            <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12>
+              <component :is="filter.field" v-model="filter.value" v-bind="filter.attrs">
+                <template v-if="filter.field==='v-btn-toggle'">
+                  <component :is="'v-btn'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" v-bind="filter.group.attrs">{{ value }}</component>
+                </template>
+                <template v-else-if="filter.field==='v-radio-group'">
+                  <component :is="'v-radio'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" :label="value" v-bind="filter.group.attrs"></component>
+                </template>
+              </component>
+            </v-flex>
+          </v-layout>
+        </v-form>
         <!-- <v-layout row justify-end></v-layout> -->
-      </v-form>
+      </slot>
     </div>
     <slot name="table" :records="records" :totalRecords="totalRecords" :pagination="pagination" :vcx="_self">
       <v-data-table
@@ -739,8 +739,8 @@ export default {
             </v-toolbar>
           </slot>
           <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading" v-bind="attrs['v-progress-circular']?attrs['v-progress-circular']:attrs['v-progress-linear']"></component>
-          <v-form v-if="hasFormVue" v-model="validForm" v-bind="attrs.form">
-            <slot name="form" :record="record" :parentId="parentId" :storeName="storeName" :vcx="_self">
+          <slot name="form" :record="record" :parentId="parentId" :storeName="storeName" :vcx="_self">
+            <v-form v-if="hasFormVue" v-model="validForm" v-bind="attrs.form">
               <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" :vcx="_self" />
               <v-layout row wrap v-else>
                 <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12>
@@ -755,8 +755,8 @@ export default {
                   </component>
                 </v-flex>
               </v-layout>
-            </slot>
-          </v-form>
+            </v-form>
+          </slot>
         </v-card>
       </v-dialog>
     </v-layout>

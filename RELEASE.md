@@ -28,7 +28,7 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.8
- * NOTE: the only breaking change is the linter and prettier updates, which May require you to format your code.
+ * NOTE: the only breaking change is the linter and prettier package updates, which MAY require you to format your code.
  * improvement: add totalRecords property for return object of find() function so { records, pagination, totalRecords }, totalRecords is needed if you are doing pagination
  * improvement: reduce store usage (it was not necessary and added complexity)
    - remove from vuex: records, totalRecs, crudOps, defaultRec, pagination, filterData
