@@ -28,18 +28,17 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.8
- * TBD: check pagination, it is making to many calls (add totalRecords field for this!...) return from find() is only records & totalRecords, no more pagination needed
- * TBD: fix colours in nuxt example
- * improvement: reduce store usage
-   - move records, totalRecs, crudOps, defaultRec, pagination, filterData
-   - save pagination and filterData in vuex on update, retrieve on initial load
- * fix: pagination no longer watched in store, we will save to store each time it changes, and only load from it when page is mounted
+ * NOTE: the only breaking change is the linter and prettier updates, which May require you to format your code.
+ * improvement: add totalRecords property for return object of find() function so { records, pagination, totalRecords }, totalRecords is needed if you are doing pagination
+ * improvement: reduce store usage (it was not necessary and added complexity)
+   - remove from vuex: records, totalRecs, crudOps, defaultRec, pagination, filterData
+   - save pagination and filterData into vuex when getRecordsHelper() is triggered or on initial store creating, retrieve on mounted, 
  * improvement: use doPage field to indicate if not using paging or page size, page size increments
  * improvement: add table-toolbar & form-toolbar scoped slots, add reference to vue-crud-x in the slots (vcx), so that you can access its properties and methods
  * improvement: move VueCrudX.vue source file to location for common components where all example projects can access
  * improvement: now works on NUXT: (SPA, SSR and generated!!!), includes social login using github
  * improvement: move Loading/BusyOverlay to a common components folder (the same folder as VueCrudX.vue)
- * chore: version updates for Vuetify & VueJS
+ * chore: version updates for Vuetify & VueJS, and other npm packages
  * chore: added firestore rules and index files in example-firebase
  * work in progress: add test (deferred, to use dredd.io from apiary?)
 

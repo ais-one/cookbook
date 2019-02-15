@@ -11,15 +11,14 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@firebase/app": "^0.3.8",
-    "@firebase/auth": "^0.9.2",
-    "@firebase/firestore": "^1.0.2",
-    "@firebase/storage": "^0.2.7",
+    "@firebase/app": "^0.3.9",
+    "@firebase/auth": "^0.9.3",
+    "@firebase/firestore": "^1.0.3",
+    "@firebase/storage": "^0.2.8",
     "axios": "^0.18.0",
     "date-fns": "^1.30.0",
-    "vue": "^2.6.3",
-    "vue-crud-x": "latest",
-    "vue-i18n": "^8.8.0",
+    "vue": "^2.6.6",
+    "vue-i18n": "^8.8.1",
     "vue-recaptcha": "^1.1.1",
     "vue-router": "^3.0.2",
     "vuetify": "1.5.1",
@@ -32,7 +31,7 @@
     "@vue/eslint-config-standard": "^4.0.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "vue-template-compiler": "^2.6.3"
+    "vue-template-compiler": "^2.6.6"
   },
   "browserslist": [
     "> 1%",

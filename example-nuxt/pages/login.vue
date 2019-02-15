@@ -3,11 +3,9 @@
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
         <v-card>
-        </v-card>
-        <v-card>
           <v-card-text>
             <!-- <v-container v-if="!(user && !user.verified)"> -->
-            <v-container v-if="otpCount<=0">
+            <v-container v-if="otpCount <= 0">
               <!-- <v-img src="/static/logo-main.png" /> -->
               <form @keydown.enter="login">
                 <v-layout row>
@@ -22,14 +20,17 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12 class="text-xs-center">
-                    <v-btn @click="login" :disabled="loading" :loading="loading">Sign In
+                    <v-btn @click="login" :disabled="loading" :loading="loading">
+                      Sign In
                       <span slot="loader" class="custom-loader"><v-icon light>cached</v-icon></span>
                     </v-btn>
                     <v-btn @click="loginGithub">Login with Github</v-btn>
                   </v-flex>
                 </v-layout>
                 <v-alert v-if="!!error" :value="!!error" type="error">{{ error }}</v-alert>
-                <v-alert show v-if="$auth.$state.redirect">You have to login before accessing to <strong>{{ $auth.$state.redirect }}</strong></v-alert>
+                <v-alert show v-if="$auth.$state.redirect">
+                  You have to login before accessing to <strong>{{ $auth.$state.redirect }}</strong>
+                </v-alert>
               </form>
               <!-- <div v-for="s in strategies" :key="s.key" class="mb-2">
                 <v-btn @click="$auth.loginWith(s.key)" block :style="{background: s.color}" class="login-button">Login with {{ s.name }}</v-btn>
@@ -44,13 +45,16 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12 class="text-xs-center">
-                    <v-btn type="submit" :disabled="loading" :loading="loading">Verify OTP
+                    <v-btn type="submit" :disabled="loading" :loading="loading">
+                      Verify OTP
                       <span slot="loader" class="custom-loader"><v-icon light>cached</v-icon></span>
                     </v-btn>
                   </v-flex>
                 </v-layout>
                 <v-alert v-if="!!error" :value="!!error" type="error">{{ error }}</v-alert>
-                <v-alert show v-if="$auth.$state.redirect">You have to login before accessing to <strong>{{ $auth.$state.redirect }}</strong></v-alert>
+                <v-alert show v-if="$auth.$state.redirect">
+                  You have to login before accessing to <strong>{{ $auth.$state.redirect }}</strong>
+                </v-alert>
               </form>
             </v-container>
           </v-card-text>
@@ -58,7 +62,6 @@
       </v-flex>
     </v-layout>
   </v-container>
-
 </template>
 
 <style scoped>
@@ -92,10 +95,7 @@ export default {
     //   { key: 'github', name: 'GitHub', color: '#202326' }
     // ],
     redirect() {
-      return (
-        this.$route.query.redirect &&
-        decodeURIComponent(this.$route.query.redirect)
-      )
+      return this.$route.query.redirect && decodeURIComponent(this.$route.query.redirect)
     },
     isCallback() {
       return Boolean(this.$route.query.callback)

@@ -1,16 +1,17 @@
 <template>
-<div class="container d-flex align-items-center justify-content-center flex-column">
-  <!-- <img src="~/assets/loading.svg" alt="Loading..." width="80px" /> -->
-  Logging in...
-</div>
+  <div class="container d-flex align-items-center justify-content-center flex-column">
+    <!-- <img src="~/assets/loading.svg" alt="Loading..." width="80px" /> -->
+    Logging in...
+    <v-alert v-if="!!error" :value="!!error" type="error">{{ error }}</v-alert>
+  </div>
 </template>
 
 <script>
-// GET /applications/:client_id/tokens/:access_token
 export default {
+  data: () => ({
+    error: null
+  }),
   async mounted() {
-    // console.log('CB', this.$route.query.state)
-    // console.log('ACB', this.$auth.loggedIn)
     try {
       const { code, state } = this.$route.query
       const { data } = await this.$axios.post('/api/auth/check-github', {

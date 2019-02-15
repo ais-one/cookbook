@@ -5,13 +5,13 @@
     <pre>{{ state }}</pre>
     <h1>Scopes</h1>
     <p>
-    User: {{ $auth.hasScope('user') }}<br/>
-    Test: {{ $auth.hasScope('test') }}<br/>
-    Admin: {{ $auth.hasScope('admin') }}
+      User: {{ $auth.hasScope('user') }}<br />
+      Test: {{ $auth.hasScope('test') }}<br />
+      Admin: {{ $auth.hasScope('admin') }}
     </p>
     <h1>Token</h1>
     <pre>{{ $auth.token || '-' }}</pre>
-    <hr>
+    <hr />
     <v-btn @click="$auth.fetchUser()">Fetch User</v-btn>
     <v-btn @click="$auth.logout()">Logout</v-btn>
   </div>

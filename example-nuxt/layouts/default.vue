@@ -16,7 +16,7 @@
     </v-navigation-drawer>
     <v-toolbar :clipped-left="clipped" fixed app>
       <v-toolbar-side-icon @click="drawer = !drawer" />
-      <v-toolbar-title v-text="title"/>
+      <v-toolbar-title v-text="title" />
       <template v-if="$auth.$state.loggedIn">
         <v-btn @click.stop="$auth.logout()">
           {{ $auth.user.name }}
@@ -32,7 +32,7 @@
       </v-container>
     </v-content>
     <v-footer :fixed="fixed" app>
-      <span>&copy; 2017</span>
+      <span>&copy; None</span>
     </v-footer>
   </v-app>
 </template>

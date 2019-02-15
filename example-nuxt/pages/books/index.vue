@@ -58,14 +58,7 @@
 
 <script>
 import { from } from 'rxjs'
-import {
-  pluck,
-  filter,
-  debounceTime,
-  distinctUntilChanged,
-  switchMap,
-  tap
-} from 'rxjs/operators' // map
+import { pluck, filter, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators' // map
 import VueCrudX from '../../../src/VueCrudX'
 
 export default {
@@ -107,10 +100,7 @@ export default {
           confirmCreate: true,
           confirmUpdate: true,
           confirmDelete: true,
-          headers: [
-            { text: 'Book Name', value: 'name', class: 'pa-1' },
-            { text: 'Category', value: 'categoryName', class: 'pa-1' }
-          ],
+          headers: [{ text: 'Book Name', value: 'name', class: 'pa-1' }, { text: 'Category', value: 'categoryName', class: 'pa-1' }],
           formatters: (value, _type) => value,
           doPage: 2,
           showFilterButton: false
@@ -134,11 +124,7 @@ export default {
                 label: 'Category',
                 multiple: false,
                 'return-object': true,
-                items: [
-                  { text: 'All', value: 0 },
-                  { text: 'cat1', value: 1 },
-                  { text: 'cat2', value: 2 }
-                ],
+                items: [{ text: 'All', value: 0 }, { text: 'cat1', value: 1 }, { text: 'cat2', value: 2 }],
                 rules: [v => !!v || 'Item is required']
               }
             }
@@ -169,8 +155,7 @@ export default {
               const { page, rowsPerPage } = pagination
               let params = { page: page > 0 ? page - 1 : 0, limit: rowsPerPage } // set query params
               if (filterData.name.value) params.name = filterData.name.value
-              if (filterData.categoryName.value.value)
-                params['category-id'] = filterData.categoryName.value.value
+              if (filterData.categoryName.value.value) params['category-id'] = filterData.categoryName.value.value
               try {
                 const {
                   data: { results, total }
@@ -250,8 +235,7 @@ export default {
   watch: {
     authorIds(val) {
       if (val.length > 2) val.pop()
-      if (this.$refs['book-table'])
-        this.$refs['book-table'].record.authorIds = val
+      if (this.$refs['book-table']) this.$refs['book-table'].record.authorIds = val
       // console.log('watch')
     }
   },
@@ -277,12 +261,9 @@ export default {
     },
     fetchTerm(term) {
       return from(
-        this.$axios
-          .get('/api/authors', { params: { page: 0, limit: 20, search: term } })
-          .then(res => {
-            // this.items = res.data
-            return res.data.results
-          })
+        this.$axios.get('/api/authors', { params: { page: 0, limit: 20, search: term } }).then(res => {
+          return res.data.results
+        })
         // fetch('https://api.coinmarketcap.com/v2/listings/')
         //   .then(res => res.json())
         //   .then(res => {

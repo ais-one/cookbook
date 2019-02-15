@@ -1,6 +1,5 @@
 <template>
-  <vue-crud-x ref="authors" storeName="authors" :parentId="null" v-bind="authorDefs">
-  </vue-crud-x>
+  <vue-crud-x ref="authors" storeName="authors" :parentId="null" v-bind="authorDefs"></vue-crud-x>
 </template>
 
 <script>

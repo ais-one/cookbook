@@ -1,6 +1,5 @@
 <template>
-  <vue-crud-x ref="categories" storeName="categories" :parentId="null" v-bind="categoryDefs">
-  </vue-crud-x>
+  <vue-crud-x ref="categories" storeName="categories" :parentId="null" v-bind="categoryDefs"></vue-crud-x>
 </template>
 
 <script>
@@ -96,10 +95,7 @@ export default {
               let {
                 record: { id, ...noIdData }
               } = payload
-              const rv = await this.$axios.patch(
-                `/api/categories/${id}`,
-                noIdData
-              )
+              const rv = await this.$axios.patch(`/api/categories/${id}`, noIdData)
               console.log(rv)
             } catch (e) {
               if (parseInt(e.message) === 409) return 409
