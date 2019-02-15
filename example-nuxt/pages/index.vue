@@ -23,14 +23,7 @@
 </template>
 
 <script>
-// import Logo from '~/components/Logo.vue'
-// import VuetifyLogo from '~/components/VuetifyLogo.vue'
-
 export default {
-  // components: {
-  //   Logo,
-  //   VuetifyLogo
-  // }
   computed: {
     loggedIn() {
       // return this.$store.state.auth.loggedIn
@@ -38,37 +31,22 @@ export default {
     }
   },
   watch: {
-    // loggedIn(newVal, oldVal) {
-    //   if (newVal) console.log('XX LOGGED IN', newVal)
-    //   else console.log('XX LOGGED OUT', newVal)
-    // }
     loggedIn: {
-      handler: function(after, before) {
-        // console.log('XXXXXXXX', after)
-      },
+      handler: function(after, before) {},
       deep: true
     }
   },
   data: () => ({
-    title: 'Index 1'
+    title: 'Title Before Async Data'
   }),
   created() {
-    // console.log('INDEX created', this.$auth.loggedIn)
-    // console.log(
-    //   'INDEX redirect',
-    //   this.$route.query.redirect &&
-    //     decodeURIComponent(this.$route.query.redirect),
-    //   this.$route.query.redirect
-    // )
-    // console.log(
-    //   'INDEX callback',
-    //   Boolean(this.$route.query.callback),
-    //   this.$route.query.callback
-    // )
+    // this.$auth.loggedIn
+    // decodeURIComponent(this.$route.query.redirect)
+    // Boolean(this.$route.query.callback),
   },
   async asyncData({ params, env }) {
     // console.log('iii', params, process.server, env)
-    return { title: 'Index 2' }
+    return { title: 'Title After Async Data' }
   }
   // async fetch ({ store, params }) {
   //   await store.dispatch('GET_STARS');

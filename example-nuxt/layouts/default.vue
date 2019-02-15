@@ -18,9 +18,7 @@
       <v-toolbar-side-icon @click="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <template v-if="$auth.$state.loggedIn">
-        <v-btn @click.stop="$auth.logout()">
-          {{ $auth.user.name }}
-        </v-btn>
+        <v-btn @click.stop="$auth.logout()">Logout [{{ $auth.user }}]</v-btn>
       </template>
       <template v-else>
         <v-btn color="primary" flat nuxt to="/login">Login</v-btn>
@@ -46,17 +44,11 @@ export default {
       fixed: false,
       items: [
         { icon: 'apps', title: 'Home', to: '/' },
-        { icon: 'bubble_chart', title: 'Dyn1', to: '/dyn1/a' },
-        { icon: 'bubble_chart', title: 'Dyn2', to: '/dyn2/aa' },
+        { icon: 'bubble_chart', title: 'Dynamic Routes', to: '/dynamic/a' },
         { icon: 'bubble_chart', title: 'Public', to: '/public' },
         { icon: 'bubble_chart', title: 'Secure', to: '/secure' },
         { icon: 'bubble_chart', title: 'Authors', to: '/authors', auth: true },
-        {
-          icon: 'bubble_chart',
-          title: 'Categories',
-          to: '/categories',
-          auth: true
-        },
+        { icon: 'bubble_chart', title: 'Categories', to: '/categories', auth: true },
         { icon: 'bubble_chart', title: 'Books', to: '/books', auth: true },
         { icon: 'bubble_chart', title: 'Not Found', to: '/notfound' }
       ],

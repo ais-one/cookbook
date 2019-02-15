@@ -23,6 +23,7 @@ export default {
       console.log('cb', data)
       const rv = await this.$axios.get('/api/auth/me')
       this.$auth.setStrategy('social')
+      console.log('ccbb', rv.data.user)
       this.$auth.setUser(rv.data.user)
       this.$router.push('/secure')
     } catch (e) {
