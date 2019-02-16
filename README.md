@@ -6,6 +6,8 @@
 
 The **example-rest** folder is now the preferred project for quickstart. Everything runs locally from a sample REST backend included in this repository, no firebase signup/setup required.
 
+The **example-nuxt** folder contains example using NuxtJS, a VueJS framework. Two demos are possible SSR and Static Generated Pages. This example also includes Github social login (you need to setup Github make this work)
+
 Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
 
 ## 2 Major Improvements (Without Breaking Changes)
@@ -18,6 +20,7 @@ Usage example can be found:
    - example-rest/src/pages/Book.vue
    - example-rest/src/pages/author.js
    - example-rest/src/pages/category.js
+ - in **example-nuxt** project (see example-nuxt/README.md on quickstart)
  - in **example-firebase** project
    - example-firebase/src/pages/MultiCrud/Example.vue (also, demonstrates multiple vue-crud-x used in a single page)
 

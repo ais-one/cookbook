@@ -124,6 +124,7 @@ export default {
         })
         this.$auth.setToken('local', `Bearer ${data.token}`)
         this.$auth.strategy._setToken(`Bearer ${data.token}`) // this.$axios.defaults.headers.common['Authorization']
+        console.log('sss', process.env.USE_OTP)
         if (process.env.USE_OTP) {
           this.otpCount = 3 // 3 tries
         } else {
