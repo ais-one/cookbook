@@ -1,53 +1,11 @@
-import Vuex from 'vuex'
+// we had to do this as we are still mutating states directly, may need to fix this...
+// https://github.com/nuxt/nuxt.js/issues/1917
+// TBD!
+export const strict = false
 
-const createStore = () => {
-  return new Vuex.Store({
-    state: {
-      sidebar: false,
-      locales: ['en', 'fr'],
-      locale: 'en',
-      user: {
-        email: 'test@abc.com',
-        id: '123456',
-        rules: { '*': ['*'] }
-      },
-      counter: 0
-    },
-    mutations: {
-      toggleSidebar (state) {
-        state.sidebar = !state.sidebar
-      },
-      SET_LANG (state, locale) {
-        if (state.locales.indexOf(locale) !== -1) {
-          state.locale = locale
-        }
-      },
+// Problem in VueCrudX is this... (there could be more)
+// store.state[name].defaultRec = this.crudForm.defaultRec
+// store.state[name].filterData = this.crudFilter.filterData
+// store.state[name].crudOps = this.crudOps
 
-      increment (state) {
-        state.counter++
-      }
-    },
-    getters: {
-      user (state) { return state.user },
-    }  
-  })
-}
-
-export default createStore
-
-// export const state = () => ({
-//   sidebar: false,
-//   locales: ['en', 'fr'],
-//   locale: 'en'
-// })
-
-// export const mutations = {
-//   toggleSidebar (state) {
-//     state.sidebar = !state.sidebar
-//   },
-//   SET_LANG (state, locale) {
-//     if (state.locales.indexOf(locale) !== -1) {
-//       state.locale = locale
-//     }
-//   }
-// }
+export const modules = {}

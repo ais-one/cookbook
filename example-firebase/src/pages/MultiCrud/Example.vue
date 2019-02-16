@@ -98,13 +98,11 @@
 import * as partyDefs from './party'
 import * as partyNotesDefs from './party-notes'
 
-import VueCrudX from '@/VueCrudX'
 import ImageUpload from '@/components/ImageUpload'
 
 export default {
   name: 'multi-crud-example',
   components: {
-    VueCrudX,
     ImageUpload
   },
   data () {

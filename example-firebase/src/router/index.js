@@ -1,10 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-// vue-crud-x component
-import VueCrudX from '@/VueCrudX' // use the source vue file
-// import VueCrudX from 'vue-crud-x' // usually we will install and import
-
 // import SignUp from '@/pages/User/SignUp'
 import AuthGuard from './auth-guard'
 
@@ -19,6 +15,8 @@ import * as noteDefs from '@/pages/Crud/notes'
 import * as noteDefs2 from '@/pages/Crud/notes2'
 
 import Test from '@/components/Test'
+
+import VueCrudX from '../../../src/VueCrudX' // Component shared between projects // const VueCrudX = Vue.component('vue-crud-x') this does not work...
 
 Vue.use(Router)
 

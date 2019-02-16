@@ -1,6 +1,5 @@
 ### Upcoming
- * automated testing
- * example-nuxt - Nuxt (SPA first then transition to SSR) connecting to REST backend
+ * automated testing (dredd.io)
  * RESTful++ Backend For Testing
    * Non-essential items
      * Multiple File upload example (to local folder)
@@ -8,7 +7,6 @@
      * Graphql
      * Logging
      * Security Improvements
-     * Social Logins
  * improve i18n
  * https://github.com/ais-one/vue-crud-x/issues/32
  * https://github.com/vuetifyjs/vuetify/pull/5232
@@ -23,8 +21,24 @@
  * No need vuelidate or vee-validate, use validation availble in Vuetify - see if it is possible to make common validation rules
 
 ### DEPRECATED CODE TO BE REMOVED IN v0.2.0
+ * v0.1.7 - remove import of vue components, use scoped-slots
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
+
+### Version 0.1.8
+ * chore: linter and prettier package updates (you MAY need to edit your code to avoid linting errors)
+ * improvement[MINOR BREAKING CHANGE - for paged results]: add totalRecords property to return object of find() function so the following is returned { records, pagination, totalRecords }. totalRecords is the total possible records returned from a search, before paging limits are applied. We do not use "pagination.totalItems" any more as it has no effect, and we do not mutate pagination (there is no need to mutate explicitly).
+ * improvement: reduce store usage (it was not necessary and added complexity)
+   - remove from vuex: records, totalRecs, crudOps, defaultRec, pagination, filterData
+   - save pagination and filterData into vuex when getRecordsHelper() is triggered or on initial store creating, retrieve on mounted, 
+ * improvement: use doPage field to indicate if not using paging or page size, page size increments
+ * improvement: add table-toolbar & form-toolbar scoped slots, add reference to vue-crud-x in the slots (vcx), so that you can access its properties and methods
+ * improvement: move VueCrudX.vue source file to location for common components where all example projects can access
+ * improvement: now works on NUXT: (SPA, SSR and generated!!!), includes social login using github (Need to setup OAuth2, client id & secret, and callback URL)
+ * improvement: move Loading/BusyOverlay to a common components folder (the same folder as VueCrudX.vue)
+ * chore: version updates for Vuetify & VueJS, and other npm packages
+ * chore: added firestore rules and index files in example-firebase
+ * work in progress: add testing (deferred, to use dredd.io from apiary?)
 
 ### Version 0.1.7
  * note: example folder is now renamed as example-firebase

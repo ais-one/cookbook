@@ -6,6 +6,8 @@
 
 The **example-rest** folder is now the preferred project for quickstart. Everything runs locally from a sample REST backend included in this repository, no firebase signup/setup required.
 
+The **example-nuxt** folder contains example using NuxtJS, a VueJS framework. Two demos are possible SSR and Static Generated Pages. This example also includes Github social login (you need to setup Github make this work)
+
 Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
 
 ## 2 Major Improvements (Without Breaking Changes)
@@ -18,6 +20,7 @@ Usage example can be found:
    - example-rest/src/pages/Book.vue
    - example-rest/src/pages/author.js
    - example-rest/src/pages/category.js
+ - in **example-nuxt** project (see example-nuxt/README.md on quickstart)
  - in **example-firebase** project
    - example-firebase/src/pages/MultiCrud/Example.vue (also, demonstrates multiple vue-crud-x used in a single page)
 
@@ -28,6 +31,12 @@ We are monitoring the progress of the following packages and will update when th
  - Vuetify 2
 
 Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>
+
+## 3 Changes
+
+See RELEASE.MD file for change history
+
+---
 
 # What Is vue-crud-x
 
@@ -41,93 +50,42 @@ The following differentiates vue-crud-x from other CRUD repositories:
  - Auto-configure/generate Search filter, CRUD Form from JSON
  - Export to CSV/JSON, File/Image Upload, i18n
 
+## Example Project List
+
+There are currently 4 projects for show-casing vue-crud-x. (Three frontend and one supporting backend example)
+
 Our examples showcase the following (unrelated to the vue-crud-x features above)
  - in **example-rest**
+   - **(Best for quick start - Please use this to try things out)**
+   - everything runs locally, and you build and run both this project and the **backend** project from here
    - rxJs for cleaner code (auto-complete, debounce, fetch latest)
-   - 2FA OTP signin with Google Authenticator
+   - 2FA OTP signin with Google Authenticator (setup with USE_OTP=GA in environement files of both the front and backend. Check DB seeders for the API key to use, or you can find out how to generate your own)
+   - websocket example
+   - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
+ - in **example-nuxt**
+   - includes features in example-rest plus the following:
+     - letting NuxtJS framework handle boilerplate work... e.g. routing, store setup
+     - social login using Github
+     - SSR App
+     - pre-generated Static Web App 
+     - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
  - in **example-firebase**
+   - Serverless backend, using Firebase backend-as-a-service, need to register and setup
+   - real-time updates from Firestore
    - Use multiple vue-crud-x in single page
    - recaptcha, image capture from webcam
+   - https://github.com/ais-one/vue-crud-x/tree/master/example-firebase
+   - image upload to Google Cloud Store, Image capture via webcam
 
-This repository also contains an Express backend server for testing the vue-crud-x component, and has the following features:
+The **backend** project is an Express server used by **example-rest** and **example-nuxt** projects for testing the vue-crud-x component, and has the following features:
  - ObjectionJS + SQLite (Sample SQL DB with 1-1, 1-m, m-n use cases, transactions, migrations, seeders, OpenAPI documentation), Mongo (connect test only)
  - Login, JWT & 2FA OTP (using Google Authenticator)
  - Key-Value Store for user token storage on server (can replace with redis)
  - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
+- https://github.com/ais-one/vue-crud-x/tree/master/backend
 
-
-## Example Project List
-
-There are currently 4 example projects for show-casing vue-crud-x:
-
-1. example-rest **(Best for quick start - Please use this to try things out)**
-  - everything runs locally
-  - you do not need to build and run the backend seperately, the run scripts here will help to build the backend and run it with the frontend
-  - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
- 
-2. example-firebase
-  - Serverless backend, using Firebase, need to register and setup
-  - real-time updates from Firestore
-  - https://github.com/ais-one/vue-crud-x/tree/master/example-firebase
-
-3. example-nuxt
-  - NUXT implementation, show case SSR
-  - **work in progress, do not use yet**
-  - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
-
-4. backend 
-  - Supporting project backend for **example-rest** and **example-nuxt**
-  - https://github.com/ais-one/vue-crud-x/tree/master/backend
 
 Refer to the respective projects README.md files for more information
-
----
-
-## Usage
-
-### Option 1 Use NPM package
-
-Install it as in NPM package and import it
-
-```
-npm i vue-crud-x
-```
-
-### Option 2 Use the source file
-
-Just copy the VueCrudX.vue file into your project and include it as a component
-
-### Option 3 Build and Install
-
-If you ever need to build this library from source...
-
-1. Install dependencies
-
-```
-npm i
-```
-
-2. Build project
-
-```
-npm run build
-```
-
-The build output can be found in the **dist** folder
-
-3. Publishing to npm (only for repo owner)
-
-```
-npm publish
-```
-
-4. Or build as local package vue-crud-x
-
-```
-npm pack
-# A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
-# If you want to install without saving to package.json, npm i --no-save vue-crud-x-?.?.?.tgz
-```
 
 ## What is bad about this CRUD Component
 
@@ -135,23 +93,15 @@ Because of its flexible nature, quite a number of things need to be coded to fit
 
 However, the good part is that these parts need to be coded anyway and once you find your way around the design, you will be able to quickly create custom CRUD in many of your use cases
 
-# Notes
-
-None at the moment
-
-# Changes
-
-See RELEASE.MD file
-
 ---
 
-# vue-crud-x DOCUMENTATION (WIP)
+# vue-crud-x DOCUMENTATION (Work-In-Progress)
 
 ## Properties
 
 Refer to @/pages/Crud/party-inline.js for more description for now...
 
-## Table - crudTable
+### Table - crudTable
 
 ```
 crudTable: {
@@ -297,7 +247,7 @@ crudTable: {
 }
 ```
 
-## Filter - crudFilter
+### Filter - crudFilter
 
 ```
 crudFilter: {
@@ -320,8 +270,7 @@ crudFilter: {
 
 ```
 
-## Form - crudForm
-
+### Form - crudForm
 
 ```
 crudForm: {
@@ -369,7 +318,7 @@ crudForm: {
 }
 ```
 
-## CRUD Operations - crudOps
+### CRUD Operations - crudOps
 
 1. user property in payload can be used for authentication, and logging
 
@@ -417,9 +366,11 @@ crudOps: {
   },
   find: {
     let records = []
-    const { pagination, user } = payload // sort order is in pagination 
+    let totalRecords = 0 // used for pagination, total records searched from query before paging is applied
+    const { pagination, user } = payload // page, sort column and sort order is in pagination, refer to Vuetify docs for list of properties in the pagination object
+    // DO NOT MUTATE pagination
     ...
-    return { records, pagination }
+    return { records, pagination, totalRecords }
   },
   findOne: {
     const { id, user } = payload
@@ -429,6 +380,36 @@ crudOps: {
   }
 }
 ```
+
+## Named Scoped SLots
+
+**table-toolbar**
+  - vcx: access to the component itself
+
+**filter**
+  - filterData: access to filterData
+  - parentId: access to parentId (if any)
+  - storeName: access to vuex store module name
+  - vcx: access to the component itself
+
+**table**
+  - records: the records found
+  - totalRecords: to total unpaged records
+  - pagination: the pagination object
+  - vcx: access to the component itself
+
+**summary**
+  - vcx: access to the component itself
+
+**form-toolbar**
+  - vcx: access to the component itself
+
+**form**
+  - record: the selected record
+  - parentId: access to parentId (if any)
+  - storeName: access to vuex store module name
+  - vcx: access to the component itself
+
 
 ## Events
 
@@ -447,3 +428,51 @@ crudOps: {
 6. **deleted** - emitted in deleteRecord(), returns { res, payload }
 
 Note: **res** is the result for the C, U, D operation, payload is the payload passed in to the C, U, D operation
+
+---
+
+# Building The Library (Read this if you wish to maintain their own fork)
+
+## Option 1 Use NPM package
+
+Install it as in NPM package and import it
+
+```
+npm i vue-crud-x
+```
+
+## Option 2 Use the source file
+
+Just copy the VueCrudX.vue file into your project and include it as a component
+
+## Option 3 Build and Install
+
+If you ever need to build this library from source...
+
+1. Install dependencies
+
+```
+npm i
+```
+
+2. Build project
+
+```
+npm run build
+```
+
+The build output can be found in the **dist** folder
+
+3. Publishing to npm (only for repo owner)
+
+```
+npm publish
+```
+
+4. Or build as local package vue-crud-x
+
+```
+npm pack
+# A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
+# If you want to install without saving to package.json, npm i --no-save vue-crud-x-?.?.?.tgz
+```

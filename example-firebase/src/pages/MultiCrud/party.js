@@ -2,8 +2,6 @@ import { firestore, hasDuplicate } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format } from 'date-fns'
 
-// import ComponentLoading from '@/components/ComponentLoading'
-
 export const crudTable = {
   name: 'party',
   actionColumn: true, // have an action column

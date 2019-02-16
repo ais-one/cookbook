@@ -2,8 +2,6 @@ import { firestore } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format, startOfMonth, endOfMonth } from 'date-fns'
 
-// import ComponentLoading from '@/components/ComponentLoading'
-
 export const crudTable = {
   name: 'party-notes',
   headers: [

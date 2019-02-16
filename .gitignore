@@ -1,8 +1,8 @@
 .DS_Store
 dist
+.nuxt
 node_modules
 **/cfg.json
-**/firebase.json
 **/.firebaserc
 
 package-lock.json

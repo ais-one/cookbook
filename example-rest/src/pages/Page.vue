@@ -35,13 +35,9 @@
 <script>
 // import { makeCsvRow, exportCsv } from '@/assets/util'
 import { http } from '@/axios'
-import VueCrudX from '@/VueCrudX'
 
 export default {
   name: 'book-pages',
-  components: {
-    VueCrudX
-  },
   data () {
     return {
       parentId: null,
@@ -95,8 +91,9 @@ export default {
           export: null,
           find: async (payload) => {
             let records = []
-            const { pagination, parentId } = payload // filterData // pagination: { sortBy, descending }
-            const { page, rowsPerPage } = pagination
+            let totalRecords = 0
+            const { pagination, parentId } = payload // filterData
+            const { page, rowsPerPage } = pagination // sortBy, descending
             try {
               const { data: { results, total } } = await http.get(`/api/books/${parentId}/pages`, {
                 params: {
@@ -104,16 +101,13 @@ export default {
                   limit: rowsPerPage
                 }
               })
-              console.log(results)
-              results.forEach(row => {
-                records.push(row)
-              })
-              pagination.totalItems = total
+              records = results
+              totalRecords = total
             } catch (e) {
               console.log(e)
             }
-            console.log('find pages of a book', records)
-            return { records, pagination }
+            console.log('find pages of a book')
+            return { records, pagination, totalRecords }
           },
           findOne: (payload) => {},
           create: async (payload) => {

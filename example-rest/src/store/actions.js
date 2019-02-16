@@ -10,7 +10,7 @@ export default {
     let rv = null
     const { email, password } = payload
     try {
-      rv = await http.post('/auth/signup', { email, password })
+      rv = await http.post('/api/auth/signup', { email, password })
     } catch (e) { }
     commit('setLoading', false)
     if (rv) {
@@ -26,7 +26,7 @@ export default {
     let rv = null
     const { email, password } = payload
     try {
-      rv = await http.post('/auth/login', { email, password })
+      rv = await http.post('/api/auth/login', { email, password })
       const { data } = rv
       data.verified = !USE_OTP
       dispatch('autoSignIn', data) // token
@@ -42,7 +42,7 @@ export default {
     let rv = null
     const { pin } = payload
     try {
-      rv = await http.post('/auth/otp', { pin })
+      rv = await http.post('/api/auth/otp', { pin })
       const { data } = rv
       data.verified = true
       dispatch('autoVerify', data) // token
@@ -59,7 +59,7 @@ export default {
     if (payload.forced) { // auth failure detected
     } else { // logout button clicked
       try {
-        await http.get('/auth/logout')
+        await http.get('/api/auth/logout')
       } catch (e) {
         if (!e.response || e.response.status === 401) { // server or authorization error
           // ok please continue

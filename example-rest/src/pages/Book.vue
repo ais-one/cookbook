@@ -3,8 +3,9 @@
     <v-layout row wrap>
       <v-flex xs12>
         <vue-crud-x ref="book-table" storeName="book-table" :parentId="null" v-bind="bookDefs" @form-open="openBookForm">
-          <template slot="filter" slot-scope="{ filterData, parentId, storeName }">
+          <template slot="filter" slot-scope="{ filterData, parentId, storeName, vcx }">
             <h1>Custom {{ storeName }} Filter Slot</h1>
+            <p>Records: {{ vcx.records.length }}</p>
             <div v-for="(filter, index) in filterData" :key="index">
               <component :is="filter.type" v-model="filter.value" v-bind="filter.attrs"></component>
             </div>
@@ -63,9 +64,7 @@
 <script>
 import { from } from 'rxjs'
 import { pluck, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators' // map
-
 import { http } from '@/axios'
-import VueCrudX from '@/VueCrudX'
 
 export default {
   subscriptions () {
@@ -82,9 +81,6 @@ export default {
     }
   },
   name: 'book',
-  components: {
-    VueCrudX
-  },
   data () {
     return {
       // auto-complete
@@ -109,7 +105,7 @@ export default {
             { text: 'Category', value: 'categoryName', class: 'pa-1' }
           ],
           formatters: (value, _type) => value,
-          doPage: true,
+          doPage: 2,
           showFilterButton: false
         },
 
@@ -157,22 +153,21 @@ export default {
           },
           find: async (payload) => {
             let records = []
-            const { pagination, filterData } = payload // pagination: { sortBy, descending }
-            const { page, rowsPerPage } = pagination
+            let totalRecords = 0
+            const { pagination, filterData } = payload
+            const { page, rowsPerPage } = pagination // sortBy, descending
             let params = { page: page > 0 ? page - 1 : 0, limit: rowsPerPage } // set query params
             if (filterData.name.value) params.name = filterData.name.value
             if (filterData.categoryName.value.value) params['category-id'] = filterData.categoryName.value.value
             try {
               const { data: { results, total } } = await http.get('/api/books', { params })
               // console.log('find books', results)
-              results.forEach(row => {
-                records.push(row)
-              })
-              pagination.totalItems = total
+              records = results
+              totalRecords = total
             } catch (e) {
               console.log(e)
             }
-            return { records, pagination }
+            return { records, pagination, totalRecords }
           },
           findOne: async (payload) => {
             const { id } = payload

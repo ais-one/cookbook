@@ -54,7 +54,7 @@ const authRoutes = require('./routes/auth')
 const apiRoutes = require('./routes/api')
 
 app.use(cors())
-app.use('/auth', authRoutes)
+app.use('/api/auth', authRoutes)
 app.use('/api', apiRoutes)
 
 app.get("*", async (req, res) => {
@@ -79,36 +79,38 @@ if (USE_HTTPS) {
 const WebSocket = require('ws')
 const wss = require('./services/websocket')
 
-wss.on('connection', function connection(ws) {
-  console.log('connected')
-  ws.isAlive = true
-  ws.on('pong', () => { ws.isAlive = true })
-  ws.on('close', function close() { console.log('disconnected') })
-  ws.on('message', async function incoming(message) {
-    console.log('message', message)
-    // error handling
-    // ws.send('something', function ack(error) { console.log }) // If error !defined, send has been completed, otherwise error object will indicate what failed.
-    try { // try-catch only detect immediate error, cannot detect if write failure
-      // const timestamp = new Date(Date.now())
-      // send to other clients
-      wss.clients.forEach(function each(client) {
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          client.send(JSON.stringify(message))
-        }
-      })
-      ws.send(JSON.stringify(message)) // echo back message...
-    } catch (e) {
-    }
+if (wss) {
+  wss.on('connection', function connection(ws) {
+    console.log('connected')
+    ws.isAlive = true
+    ws.on('pong', () => { ws.isAlive = true })
+    ws.on('close', function close() { console.log('disconnected') })
+    ws.on('message', async function incoming(message) {
+      console.log('message', message)
+      // error handling
+      // ws.send('something', function ack(error) { console.log }) // If error !defined, send has been completed, otherwise error object will indicate what failed.
+      try { // try-catch only detect immediate error, cannot detect if write failure
+        // const timestamp = new Date(Date.now())
+        // send to other clients
+        wss.clients.forEach(function each(client) {
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify(message))
+          }
+        })
+        ws.send(JSON.stringify(message)) // echo back message...
+      } catch (e) {
+      }
+    })
   })
-})
-// keep alive
-setInterval(() => {
-  console.log('WS Clients: ', wss.clients.size)
-  wss.clients.forEach((ws) => {
-    if (!ws.isAlive) return ws.terminate()
-    ws.isAlive = false
-    ws.ping(() => {})
-  })
-}, 30000)
+  // keep alive
+  setInterval(() => {
+    console.log('WS Clients: ', wss.clients.size)
+    wss.clients.forEach((ws) => {
+      if (!ws.isAlive) return ws.terminate()
+      ws.isAlive = false
+      ws.ping(() => {})
+    })
+  }, 30000)  
+}
 
 module.exports = app

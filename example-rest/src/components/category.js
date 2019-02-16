@@ -12,7 +12,8 @@ export const crudTable = {
     { text: 'Category Name', value: 'name', class: 'pa-1' }
   ],
   formatters: (value, _type) => value,
-  doPage: true
+  doPage: 2,
+  showFilterButton: false
 }
 
 export const crudFilter = {
@@ -44,8 +45,9 @@ export const crudOps = { // CRUD
   },
   find: async (payload) => {
     let records = []
-    const { pagination } = payload // filterData // pagination: { sortBy, descending }
-    const { page, rowsPerPage } = pagination
+    let totalRecords = 0
+    const { pagination } = payload // filterData
+    const { page, rowsPerPage } = pagination // sortBy, descending
     try {
       const { data: { results, total } } = await http.get('/api/categories', {
         params: {
@@ -53,14 +55,12 @@ export const crudOps = { // CRUD
           limit: rowsPerPage
         }
       })
-      results.forEach(row => {
-        records.push(row)
-      })
-      pagination.totalItems = total
+      records = results
+      totalRecords = total
     } catch (e) {
       console.log(e)
     }
-    return { records, pagination }
+    return { records, pagination, totalRecords }
   },
   findOne: async (payload) => {
     const { id } = payload

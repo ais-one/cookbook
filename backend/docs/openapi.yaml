@@ -37,13 +37,15 @@ paths:
   "/api/pages/{id}":
     $ref: "http://127.0.0.1:3000/api-docs/page.yaml#/PageWithIdController"
   # Auth
-  /auth/signup:
+  /api/auth/signup:
     $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/signup"
-  /auth/login:
+  /api/auth/login:
     $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/login"
-  /auth/otp:
+  /api/auth/me:
+    $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/me"
+  /api/auth/otp:
     $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/otp"
-  /auth/logout:
+  /api/auth/logout:
     $ref: "http://127.0.0.1:3000/api-docs/auth.yaml#/AuthController/logout"
 servers:
   - url: http://127.0.0.1:3000/

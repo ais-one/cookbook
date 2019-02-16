@@ -26,7 +26,7 @@ apiRoutes
       console.log(e)
     }
     // console.log('mongo connected:', !!mongo)
-    res.status(200).json({ message: 'Test' })
+    res.status(200).json({ message: 'Test22' })
   })
   // test uploads
   .post('/upload', upload.single('avatar'), async (req,res) => { // avatar is form input name
@@ -41,14 +41,14 @@ apiRoutes
   })
 
   // authors
-  .post('/authors', async (req, res) => {
+  .post('/authors', authUser, async (req, res) => {
     try {
       const author = await Author.query().insert(req.body)
       if (author) return res.status(201).json(author)  
     } catch (e) { }
     return res.status(500).json()
   })
-  .patch('/authors/:id', async (req, res) => {
+  .patch('/authors/:id', authUser, async (req, res) => {
     try {
       const author = await Author.query().patchAndFetchById(req.params.id, req.body)
       if (author) return res.status(200).json(author)
@@ -56,7 +56,7 @@ apiRoutes
     } catch (e) { }
     return res.status(500).json()
   })
-  .get('/authors/:id', async (req, res) => {
+  .get('/authors/:id', authUser, async (req, res) => {
     try {
       const author = await Author.query().findById(req.params.id)
       if (author) return res.status(200).json(author)
@@ -64,7 +64,7 @@ apiRoutes
     } catch (e) { }
     return res.status(500).json()
   })
-  .get('/authors', async (req, res) => {
+  .get('/authors', authUser, async (req, res) => {
     try {
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
