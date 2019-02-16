@@ -5,7 +5,7 @@
   "author": "Aaron Gong",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nuxt --spa",
+    "dev": "cross-env NODE_ENV=development nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "cross-env NODE_ENV=development nuxt generate",

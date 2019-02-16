@@ -106,7 +106,12 @@ export default {
   },
   methods: {
     async loginGithub() {
-      // console.log(process.env.GITHUB_CLIENT_ID)
+      if (!process.env.GITHUB_CLIENT_ID) {
+        return alert(
+          'Github Client ID required in environment file...\n' +
+            'Please also set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET in backend environment file'
+        )
+      }
       await this.$auth.logout()
       await this.$auth.loginWith('social')
     },

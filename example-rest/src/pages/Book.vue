@@ -3,8 +3,9 @@
     <v-layout row wrap>
       <v-flex xs12>
         <vue-crud-x ref="book-table" storeName="book-table" :parentId="null" v-bind="bookDefs" @form-open="openBookForm">
-          <template slot="filter" slot-scope="{ filterData, parentId, storeName }">
+          <template slot="filter" slot-scope="{ filterData, parentId, storeName, vcx }">
             <h1>Custom {{ storeName }} Filter Slot</h1>
+            <p>Records: {{ vcx.records.length }}</p>
             <div v-for="(filter, index) in filterData" :key="index">
               <component :is="filter.type" v-model="filter.value" v-bind="filter.attrs"></component>
             </div>
@@ -153,8 +154,8 @@ export default {
           find: async (payload) => {
             let records = []
             let totalRecords = 0
-            const { pagination, filterData } = payload // pagination: { sortBy, descending }
-            const { page, rowsPerPage } = pagination
+            const { pagination, filterData } = payload
+            const { page, rowsPerPage } = pagination // sortBy, descending
             let params = { page: page > 0 ? page - 1 : 0, limit: rowsPerPage } // set query params
             if (filterData.name.value) params.name = filterData.name.value
             if (filterData.categoryName.value.value) params['category-id'] = filterData.categoryName.value.value

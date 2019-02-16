@@ -92,8 +92,8 @@ export default {
           find: async (payload) => {
             let records = []
             let totalRecords = 0
-            const { pagination, parentId } = payload // filterData // pagination: { sortBy, descending }
-            const { page, rowsPerPage } = pagination
+            const { pagination, parentId } = payload // filterData
+            const { page, rowsPerPage } = pagination // sortBy, descending
             try {
               const { data: { results, total } } = await http.get(`/api/books/${parentId}/pages`, {
                 params: {

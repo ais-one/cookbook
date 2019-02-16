@@ -62,8 +62,8 @@ export const crudOps = { // CRUD
   find: async (payload) => {
     let records = []
     let totalRecords = 0
-    const { pagination } = payload // filterData // pagination: { sortBy, descending }
-    const { page, rowsPerPage } = pagination
+    const { pagination } = payload
+    const { page, rowsPerPage } = pagination // sortBy, descending
     try {
       const { data: { results, total } } = await http.get('/api/authors', {
         params: {
