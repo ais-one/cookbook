@@ -2,7 +2,7 @@
 
 # NOTICES & UPDATES
 
-> Latest Version 0.1.9 Released 2019 Feb 17 1645 +8GMT
+> Latest Version 0.1.10 Released 2019 Mar 15 1645 +8GMT
 (https://github.com/ais-one/vue-crud-x/wiki)[https://github.com/ais-one/vue-crud-x/wiki]
 
 ## 1 Better Quickstart

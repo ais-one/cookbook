@@ -25,7 +25,7 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
-### Upcoming Version
+### Version 0.1.10
  * improvement: add test from dredd.io when ready
  * improvement: improve i18n
  * improvement: add GraphQL
