@@ -35,135 +35,101 @@
 
 ---
 
-# A Deeper Dive Into The Example
+# Looking Into example-firebase
 
 ## VueCrudX Important Notes
 
 * primary key field name must be id - for now
 * the example uses firestore, please signup for firebase and create user on firebase to access
 * please see Schema section below for simple schema description, indexing, etc.
- - party collection (e.g. a party to a lawsuit)
- - note collection (case notes on each party)
-* there is a user state which is passed into payload
+* there is a user state which is passed into payload (see bode below)
  - you pass in email or id, to be used in createdBy field, to indicate who created the document/record (optional)
  - you pass in rules object to determine whether to show add, edit, delete button, etc. 
 * events emitted: form-close, selected
-    # see using in VueCrudX.vue, you can populate the user state or leave it undefined
-    async createRecord ({ commit, getters, dispatch }, payload) {
-      payload.user = this.getters.user
-      let res = await getters.crudOps.create(payload)
-      return res
-    }
 
-    # sample user JSON - obtained from backend, decoded from JWT or some other means
-    {
-      id: '1726388390',
-      email: 'abc@mail.com',
-      rules: { // if this is not present, all front end permissions are enabled (but backend can still disallow)
-        '*': ['*'], // evereything thing allowed also in this setting
-        'storename1': ['*'] // all operations available for certain storename (each crud component has a unique storename)
-        '*': ['create,update,delete'] // all operations available for all stores also
-        'storename2': ['create', 'update'] // only create and update allowed for storename2
-
-      }
-    }
-
+```
+# see use in VueCrudX.vue, you can populate the user state or leave it undefined
+async createRecord ({ commit, getters }, payload) {
+  payload.user = this.getters.user
+  let res = await getters.crudOps.create(payload)
+  return res
+}
+# A sample user JSON - obtained from backend, decoded from JWT or some other means, can look like this
+{
+  id: '1726388390',
+  email: 'abc@mail.com',
+  rules: { // if this is not present, all front end permissions are enabled (but backend can still disallow)
+    '*': ['*'], // evereything thing allowed also in this setting
+    'storename1': ['*'] // all operations available for certain storename (each crud component has a unique storename)
+    '*': ['create,update,delete'] // all operations available for all stores also
+    'storename2': ['create', 'update'] // only create and update allowed for storename2
+  }
+}
+```
 
 ## Folders & Files to take note of
 
-Folders & Files providing examples of how the user can customize this vue-crud-x component
+Folders & Files providing examples of how the user can use or customize this vue-crud-x component
 
 ### Mulitple CRUD Component on a page [created in the vue file]
 
-**/src/components/MultiPageCrud**
+**/src/pages/MultiCrud**
 
-Two components are shown on a single page (you can also add other components on the page, e.g. maps, charts, other vue components)
-
-* Clicking on a party in the party table on the left will select all notes related to that party and display the list of notes on the right
+* Two components are shown on a single page (you can also add other components on the page, e.g. maps, charts, other vue components)
+* Clicking on a party in the party table on the left will select all notes related to that party and display the list of notes on the right (you may need to apply the correct filter on the right table to see the data)
 * On the party table, the icons on the left are to open update dialog or to delete the party
 * On the party notes table, just click row to open a dialog which you can use to edit or delete the row
   - there is no "go back" button to return it to parent component (it is set to hidden for this case, as to is not needed)
+* Files:
+  - Example.vue: example page showing multi-crud usage
+  - party.js: the definitions for party collection
+  - party-notes.js: definitions for party-note collection
 
-**Party Component**
-
-* party.js
-* PartyForm.vue - customized crud form
-* PartyFilter.vue - customize search form
-
-**Party Notes Component**
-
-* party-notes.js
-* partyNotesForm.vue - customized crud form
-* PartyNotesFilter.vue - customize search form
-
-### Single CRUD Component on a page [created in router]
+### Single CRUD Component on a page
 
 **/src/pages/Crud**
 
-The files below shows the usual usage for a single crud component which is able to open child crud
+* Example Showing the following inline edit and how to just use the component in the router without create Vue file
+* Files:
+  - party-inline.js: inline edit example
+  - party-common.js: common properties used in other files in this folder
 
-* notes.js
- - crudOps object is where you can customise your crud operations, connection to DB, API, etc. The methods are find, findOne, create, update, delete, leave create, update, or delete null to disable their operation
- - exportOps object is where you can pass the function for exporting data from the table
- - crudTable object is where you specify the columns and how they are formatted
- - crudFilter object is where you specify the data involved in filtering, and the filename of the Vue file you created
- - crudForm object is where you specify what are the data the form operates on, and the filename of the Vue file you created
-* NotesForm.vue
- - you customise how the form looks like here, take note of the button that leads you to next nested level of the crud
-* no filter file, autogenerated from filters specified in notes.js
+* Another example to show nested CRUD
+* Files:
+  - party.vue: example PARENT in nested crud
+  - PartyForm.vue
+    - custom form component, included into a scoped slot
+    - there is a button that leads you to the CHILD table
+    - no filter file, autogenerated from filters specified in party.vue
+  - partyNotes.vue: example CHILD in nested crud
+    - notes based on party selected. records are retrieved based on a parent Key (can be primary key or unique key), further filtered by search conditions
+  - partyNotesForm.vue
+    - custom form component, included into a scoped slot
+    - no filter file, autogenerated from filters specified in partyNotes.vue
 
-The files below are to show that duplicate components can be created with different Form & Filter look and feel
+### Realtime Example
 
-* notes2.js
-* NotesForm2.vue
-* no filter file, autogenerated from filters specified in notes2.js
+**/src/pages/Realtime**
 
-
-The files below are for the Party information (a party to a lawsuit)
-
-* party.js
-* PartyForm.vue
-* Filter.vue (can be removed and use autogenerated filter instead)
-
-The files below are nested crud, with records retrieved based on a parent Key (can be primary key or unique key), further filtered by search conditions
-
-* party-notes.js
-* partyNotesForm.vue
-* no filter file, autogenerated from filters specified in party-notes.js
-
-The files below show inline edit example
-
-* party-inline.js
-
-### Things to take note of in /src/router/index.js
-
-Look at the routes and how the props are passed in
-
-### Things to take note of in /src/App.vue
-
-Look at menuItems and see the how the menu items and link to are done
-
-### payload passed into methods created in crudOps
-
-    -- user & token object get from vuex --
-    export {user, filterData}
-    find {user, pagination, parentId, filterData, doPage}
-    findOne {user, id}
-    update {user, record}
-    create {user, record, parentId}
-    delete {user, record}
+* Demonstrates use of firestore realtime capabilities. Open 2 windows, update one record, the update should be pushed to the other client also
+* Files:
+  - Example.vue: example page showing multi-crud usage
 
 ---
 
 ## Schema
 
-### indexes
-note - approveStatus a, datetime d
-note - approveStatus a, datetime a
-note - datetime d, approveStatus a
-note - party a, datetime a
+### Firestore Rules
+
+> see firestore.rules
+
+### Firestore Indexs
+
+> see firesore.index.json
 
 ### collections
+
+> party collection (e.g. a party to a lawsuit)
 
     party {
       id: String
@@ -173,6 +139,8 @@ note - party a, datetime a
       languages: Array of String
       photo: String
     }
+
+> note collection (case notes on each party)
 
     note {
       id: String
@@ -202,12 +170,11 @@ Save this as a preset? N
 
 ---
 
-# Firebase
+# Supplementary Material
 
 ## Hosting To Firebase
 
 https://firebase.google.com/docs/hosting/quickstart
-
 
 1. Install Firebase
 
@@ -247,59 +214,19 @@ service firebase.storage {
 }
 ```
 
-## Firestore NoSQL Rules & Indexes
+---
 
-```
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      // allow read, write;
-      allow read, write: if request.auth.uid != null;
-    }
-  }
-}
-```
+## Other Notes (For reference only)
 
-- note: party ASC datetime ASC
-- note: approveStatus ASC datetime DESC
-- note approveStatus ASC datetime ASC
-- note datetime DESC approveStatus ASC
-
-
-# Other Notes (Related To VueJS only)
-
-## FILTERS Usage...
-
-    import DateFilter from './filters/date'
-
-    // Global - filter
-    Vue.filter('date', DateFilter)
-
-    export default (value) => {
-      const date = new Date(value)
-      return date.toLocaleDateString(['sq-AL'], {year: 'numeric', month: '2-digit', day: '2-digit'})
-    }
-
-
-    // Global - mixin
-    // https://stackoverflow.com/questions/42613061/vue-js-making-helper-functions-globally-available-to-single-file-components
-    Vue.mixin({
-      methods: {
-        mixinMethodOne: function (arg0, arg1) { // available globally using this.mixinMethodOne
-          // code goes here
-        }
-      }
-    })
-
-
-## Others
+vuejs filters, local or global
 
 v-model.lazy.trim.number (v-model modifiers)
 
 computed: for non-async data
- - get, set (used for non-referenced data)
+ - get, set (used for non-referenced data), [be careful when using set, also note that if computed is undefined, it will cause problems]
 watch: for async data
  - newval, oldval
+ - deep watching
 
 v-if (create / remove the block, can use v-else)
 v-show (still renders block, but hide it)
@@ -314,14 +241,10 @@ ref is non-reactive
 
 vue lifecycle avoid beforeUpdate or update, use computed & watchers first
 
-https://firebase.google.com/docs/auth/web/google-signin
-
----
-
-# Other notes
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
+- https://firebase.google.com/docs/auth/web/google-signin
 - https://stackoverflow.com/questions/44324454/vuejs-accessing-store-data-inside-mounted
 - https://vuex.vuejs.org/en/forms.html
 - https://forum.vuejs.org/t/dont-understand-how-to-use-mapstate-from-the-docs/14454/12

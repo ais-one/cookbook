@@ -2,7 +2,7 @@
 
 # NOTICES & UPDATES
 
-> Latest Version 0.1.9 Released 2019 Feb 17 2225 +8GMT
+> Latest Version 0.1.9 Released 2019 Feb 17 1645 +8GMT
 (https://github.com/ais-one/vue-crud-x/wiki)[https://github.com/ais-one/vue-crud-x/wiki]
 
 ## 1 Better Quickstart
@@ -277,8 +277,7 @@ crudFilter: {
 
 ```
 crudForm: {
-  FormVue: () => ({ component: import('./PartyForm.vue') }),
-  // FormVue: null, // not needed
+  // FormVue: () => {}, // not needed TO BE DEPRECATED
   formAutoData: { // this is for automated form creation - if undefined use FormVue
     id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
     name: {
@@ -327,6 +326,12 @@ crudForm: {
 
 2. crudOps create, update & delete operation - return object properties
 
+> The return object
+
+The return object and properties are optional, if you do not return, then the following can potentially result:
+- no snackbar (you will need to listen to event emitted do your own error display instead)
+- value will not revert to original for failed inline update
+
 ```
 {
   msg: if defined and not blank, snackbar will show the string in msg if enabled (msg can be an vue-i18n keystring)
@@ -335,15 +340,16 @@ crudForm: {
 }
 ```
 
-The return object and properties are optional, if you do not return, then the following can potentially result:
-- no snackbar (you will need to listen to event emitted do your own error display instead)
-- value will not revert to original for failed inline update
+**operations**
 
+Note the payload object for each operation
+
+payload.user show contains user info that you can use, e.g. user group
 
 ```
 crudOps: {
   'export': {
-    const { user } = payload
+    const { user, filterData } = payload
     ...
     // no return
   },
@@ -370,14 +376,14 @@ crudOps: {
   find: {
     let records = []
     let totalRecords = 0 // used for pagination, total records searched from query before paging is applied
-    const { pagination, user } = payload // page, sort column and sort order is in pagination, refer to Vuetify docs for list of properties in the pagination object
+    const { pagination, user, filterData, parentId, doPage } = payload // page, sort column and sort order is in pagination, refer to Vuetify docs for list of properties in the pagination object
     // DO NOT MUTATE pagination
     ...
     return { records, pagination, totalRecords }
   },
   findOne: {
     const { id, user } = payload
-    let record = { }
+    let record = {}
     ...
     return record
   }
