@@ -109,7 +109,6 @@ export default {
       }
     }
     this.canUpdate = this.can('update', this.crudOps.update && (this.hasFormVue || this.formAutoData)) // permissions
-    console.log('canUpdate', this.canUpdate)
     this.canCreate = this.can('create', this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData))
     this.canDelete = this.can('delete', this.crudOps.delete)
     this.ready = true

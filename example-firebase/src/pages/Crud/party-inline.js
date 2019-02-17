@@ -1,7 +1,7 @@
 import { firestore } from '@/firebase' // hasDuplicate
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format } from 'date-fns'
-import { crudOps as partyCrudOps } from './party'
+import { crudOps as partyCrudOps } from './party-common'
 
 export const crudTable = {
   saveRow: '#ffaaaa', // add save row button & specify color when row is changed, used with inline edit only and action column
