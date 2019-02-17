@@ -2,6 +2,9 @@
 
 # NOTICES & UPDATES
 
+> Latest Version 0.1.9 Released 2019 Feb 17 2225 +8GMT
+(https://github.com/ais-one/vue-crud-x/wiki)[https://github.com/ais-one/vue-crud-x/wiki]
+
 ## 1 Better Quickstart
 
 The **example-rest** folder is now the preferred project for quickstart. Everything runs locally from a sample REST backend included in this repository, no firebase signup/setup required.

@@ -25,13 +25,20 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
-### Version 0.1.9
+### Upcoming Version
  * improvement: add test from dredd.io when ready
  * improvement: improve i18n
  * improvement: add GraphQL
  * improvement: Use lit-element Web Component
  * work in progress: clean up and improve code when possible
  * chore: version updates for Vuetify & VueJS
+
+### Version 0.1.9
+ * hotfix: place back user
+ * hotfix: if table slot found (you are using a custom list), load data because v-data-table pagination is not set (an no data will load initially)
+ * improvement: permissions are now in data() instead of computed
+ * chore: update example-firebase, change custom filters and forms to use slots
+ * chore: write documentation on how to change to custom filters and forms
 
 ### Version 0.1.8
  * chore: linter and prettier package updates (you MAY need to edit your code to avoid linting errors)

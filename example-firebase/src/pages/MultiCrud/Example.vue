@@ -73,8 +73,8 @@
         <v-container>
           <v-card>
             <v-img
-              src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
-              height="200px"
+              src="https://via.placeholder.com/350x150"
+              height="150px"
             ></v-img>
             <v-card-title primary-title>
               <div>

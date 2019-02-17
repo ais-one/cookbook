@@ -339,3 +339,40 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 - https://codeburst.io/es6-in-cloud-functions-for-firebase-959b35e31cb0
 - https://github.com/jthegedus/firebase-gcp-examples/tree/master/firebase-functions-es6-babel
 - https://itnext.io/csv-or-json-export-with-firebase-functions-fa4a4b1416aa
+
+
+# migrating from file imports to slots
+
+If you are using the crud component JS files, you need to convert it to Vue first
+create a .vue file
+
+```
+<template>
+  <vue-crud-x
+    :storeName="party"
+    :parentId="null"
+    v-bind="partyDefs"
+  >
+    <template slot="filter" slot-scope="{ filterData, parentId, storeName }">
+      <my-filter :filterData="filterData" :parentId="parentId" :storeName="storeName" />
+    </template>
+    <template slot="form" slot-scope="{ record, parentId, storeName }">
+      <my-form :record="record" :parentId="parentId" :storeName="storeName" />
+    </template>
+  </vue-crud-x>
+</template>
+
+<script>
+import VueCrudX from '../../../../src/VueCrudX' // Component shared between projects // const VueCrudX = Vue.component('vue-crud-x') this does not work...
+import MyFilter from './Filter'
+import MyForm from './PartyForm'
+
+</script>
+
+```
+
+in the scripts, you should put the defs into data()
+
+        FilterVue: null,
+
+        FormVue: () => {},

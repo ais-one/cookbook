@@ -8,7 +8,9 @@ import SignIn from '@/pages/User/SignIn'
 import MultiCrudExample from '@/pages/MultiCrud/Example'
 import RealtimeExample from '@/pages/Realtime/Example'
 
-import * as partyDefs from '@/pages/Crud/party'
+// import * as partyDefs from '@/pages/Crud/party'
+import party from '@/pages/Crud/party.vue'
+
 import * as partyInlineDefs from '@/pages/Crud/party-inline'
 import * as partyNotesDefs from '@/pages/Crud/party-notes'
 import * as noteDefs from '@/pages/Crud/notes'
@@ -50,8 +52,8 @@ export default new Router({
     {
       path: '/party',
       name: 'party',
-      component: VueCrudX,
-      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs } },
+      component: party, // VueCrudX,
+      // props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs } },
       beforeEnter: AuthGuard
     },
     {

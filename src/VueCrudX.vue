@@ -56,7 +56,7 @@ export default {
     } // re-use the already existing module
   },
   async mounted () {
-    this.paginationRefresh = false
+    this.paginationRefresh = !!this.$scopedSlots['table']
     this.pagination = this.pageData
     this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
     if (this.crudTable.inline) this.inline = this.crudTable.inline // set inline edit fields
@@ -108,6 +108,10 @@ export default {
         if (this.formAutoData[key].type) this.formAutoData[key].field = this.formAutoData[key].type
       }
     }
+    this.canUpdate = this.can('update', this.crudOps.update && (this.hasFormVue || this.formAutoData)) // permissions
+    console.log('canUpdate', this.canUpdate)
+    this.canCreate = this.can('create', this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData))
+    this.canDelete = this.can('delete', this.crudOps.delete)
     this.ready = true
   },
   beforeUpdate () {
@@ -136,6 +140,9 @@ export default {
       totalRecords: 0,
       record: {}, // selected record
       defaultRec: {},
+      canUpdate: false, // permissions
+      canCreate: false,
+      canDelete: false,
 
       // form
       crudFormFlag: false,
@@ -271,12 +278,8 @@ export default {
     showTitle () { return this.crudTitle || this.storeName },
     // ...mapGetters(storeModuleName, [ 'records', 'totalRecords', 'filterData', 'record' ]), // cannot use for multiple stores, try below
     filterData () { return this.$store.getters[this.storeName + '/filterData'] },
-    pageData () { return this.$store.getters[this.storeName + '/pageData'] },
+    pageData () { return this.$store.getters[this.storeName + '/pageData'] }
     // pagination: { get: function () { return something }, set: function (value) {} },  // TOREMOVE
-    // computed permissions
-    canCreate () { return this.can('create', this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData)) },
-    canUpdate () { return this.can('update', this.crudOps.update && (this.hasFormVue || this.formAutoData)) },
-    canDelete () { return this.can('delete', this.crudOps.delete) }
   },
   filters: {
     capitalize: function (value) {
@@ -289,7 +292,7 @@ export default {
     loading: function (newValue, oldValue) { },
     pagination: {
       handler (value, oval) {
-        // console.log('watch pagination', value, oval, this.paginationRefresh)
+        // console.log('watch pagination', value, oval, this.paginationRefresh, this.doPage)
         if (this.paginationRefresh === false) {
           this.paginationRefresh = true
         } else {
@@ -299,7 +302,7 @@ export default {
       deep: true
     },
     parentId (value) {
-      console.log('watch parentId', value)
+      // console.log('watch parentId', value)
       this.getRecordsHelper()
     }
   },
@@ -347,6 +350,7 @@ export default {
     },
     async deleteRecord (payload) {
       this.loading = true
+      payload.user = this.$store.getters.user
       let res = await this.crudOps.delete(payload)
       this.loading = false
       this.$emit('deleted', { res, payload })
@@ -354,6 +358,7 @@ export default {
     },
     async updateRecord (payload) {
       this.loading = true
+      payload.user = this.$store.getters.user
       let res = await this.crudOps.update(payload)
       this.loading = false
       this.$emit('updated', { res, payload })
@@ -363,6 +368,7 @@ export default {
     },
     async createRecord (payload) {
       this.loading = true
+      payload.user = this.$store.getters.user
       let res = await this.crudOps.create(payload)
       this.loading = false
       this.$emit('created', { res, payload }) // no ID yet, TBD...
@@ -370,6 +376,7 @@ export default {
     },
     async getRecord (payload) {
       this.loading = true
+      payload.user = this.$store.getters.user
       let record = await this.crudOps.findOne(payload)
       this.setRecord(record)
       this.loading = false
@@ -379,6 +386,7 @@ export default {
       else this.record = _cloneDeep(payload)
     }, // NOTE: mutated here without dispatching action
     async exportRecords (payload) {
+      payload.user = this.$store.getters.user
       await this.crudOps.export(payload)
     },
     closeCrudForm () {
@@ -414,6 +422,7 @@ export default {
       this.loading = true
       this.$store.commit(this.storeName + '/setFilterData', _cloneDeep(this.filterData))
       const payload = {
+        user: this.$store.getters.user,
         doPage: this.doPage,
         pagination: this.pagination,
         filterData: this.filterData,
