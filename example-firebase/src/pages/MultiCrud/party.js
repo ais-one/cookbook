@@ -20,10 +20,7 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  // FilterVue: null,
-  FilterVue: () => ({
-    component: import('./PartyFilter.vue')
-  }),
+  FilterVue: null,
   filterData: { // this is for automated filter creation - if undefined use FilterVue
     languages: {
       type: 'v-select',
@@ -60,8 +57,7 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  // FormVue: null,
-  FormVue: () => ({ component: import('./PartyForm.vue') }),
+  FormVue: () => {},
   formAutoData: { // this is for automated form creation - if undefined use FormVue
     id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
     name: {

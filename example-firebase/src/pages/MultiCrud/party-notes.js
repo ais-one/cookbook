@@ -21,10 +21,7 @@ export const crudTable = {
 }
 
 export const crudFilter = {
-  // FilterVue: null,
-  FilterVue: () => ({
-    component: import('./PartyNotesFilter.vue')
-  }),
+  FilterVue: null,
   filterData: {
     dateStart: {
       type: 'app-date-picker',
@@ -70,8 +67,7 @@ export const crudFilter = {
 }
 
 export const crudForm = {
-  // FormVue: null,
-  FormVue: () => ({ component: import('./PartyNotesForm.vue') }),
+  FormVue: () => {},
   formAutoData: { // this is for automated form creation - if undefined use FormVue
     id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
     approver: {

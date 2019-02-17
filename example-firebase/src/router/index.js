@@ -7,12 +7,9 @@ import AuthGuard from './auth-guard'
 import SignIn from '@/pages/User/SignIn'
 import MultiCrudExample from '@/pages/MultiCrud/Example'
 import RealtimeExample from '@/pages/Realtime/Example'
-
-import * as partyDefs from '@/pages/Crud/party'
+import party from '@/pages/Crud/party.vue'
+import partyNotes from '@/pages/Crud/partyNotes.vue'
 import * as partyInlineDefs from '@/pages/Crud/party-inline'
-import * as partyNotesDefs from '@/pages/Crud/party-notes'
-import * as noteDefs from '@/pages/Crud/notes'
-import * as noteDefs2 from '@/pages/Crud/notes2'
 
 import Test from '@/components/Test'
 
@@ -23,24 +20,6 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/notes',
-      name: 'notes',
-      component: VueCrudX, // () => import('@/components/Note') // lazy loading
-      beforeEnter: AuthGuard,
-      props: (route) => {
-        return { storeName: route.name, parentId: route.params.parentId || null, ...noteDefs }
-      }
-    },
-    {
-      path: '/notes2',
-      name: 'notes2',
-      component: VueCrudX,
-      beforeEnter: AuthGuard,
-      props: (route) => {
-        return { storeName: route.name, parentId: route.params.parentId || null, ...noteDefs2 }
-      }
-    },
-    {
       path: '/party-inline',
       name: 'party-inline',
       component: VueCrudX,
@@ -50,15 +29,15 @@ export default new Router({
     {
       path: '/party',
       name: 'party',
-      component: VueCrudX,
-      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs } },
+      component: party, // VueCrudX,
+      // props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs } },
       beforeEnter: AuthGuard
     },
     {
       path: '/party-notes/:parentId',
       name: 'party-notes',
-      component: VueCrudX,
-      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyNotesDefs } },
+      component: partyNotes, // VueCrudX,
+      // props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyNotesDefs } },
       beforeEnter: AuthGuard
     },
     {

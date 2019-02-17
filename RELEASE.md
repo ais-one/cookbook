@@ -25,6 +25,21 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
+### Upcoming Version
+ * improvement: add test from dredd.io when ready
+ * improvement: improve i18n
+ * improvement: add GraphQL
+ * improvement: Use lit-element Web Component
+ * work in progress: clean up and improve code when possible
+ * chore: version updates for Vuetify & VueJS
+
+### Version 0.1.9
+ * hotfix: place back user
+ * hotfix: if table slot found (you are using a custom list), load data... because you are not using the default "<v-data-table>" component where pagination set when the component is created causing a load to happen
+ * improvement: permissions are now in data() instead of computed
+ * chore: update example-firebase, change custom filters and forms to use slots
+ * chore: write documentation on how to change to custom filters and forms
+
 ### Version 0.1.8
  * chore: linter and prettier package updates (you MAY need to edit your code to avoid linting errors)
  * improvement[MINOR BREAKING CHANGE - for paged results]: add totalRecords property to return object of find() function so the following is returned { records, pagination, totalRecords }. totalRecords is the total possible records returned from a search, before paging limits are applied. We do not use "pagination.totalItems" any more as it has no effect, and we do not mutate pagination (there is no need to mutate explicitly).
