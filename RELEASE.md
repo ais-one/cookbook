@@ -35,7 +35,7 @@
 
 ### Version 0.1.9
  * hotfix: place back user
- * hotfix: if table slot found (you are using a custom list), load data because v-data-table pagination is not set (an no data will load initially)
+ * hotfix: if table slot found (you are using a custom list), load data... because you are not using the default "<v-data-table>" component where pagination set when the component is created causing a load to happen
  * improvement: permissions are now in data() instead of computed
  * chore: update example-firebase, change custom filters and forms to use slots
  * chore: write documentation on how to change to custom filters and forms
