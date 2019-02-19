@@ -26,10 +26,10 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.10
+ * improvement: improve i18n, you have access to i18n when you use .vue file
+ * improvement: Use lit-element Web Component (for the loading blocker)
  * improvement: add test from dredd.io when ready
- * improvement: improve i18n
  * improvement: add GraphQL
- * improvement: Use lit-element Web Component
  * work in progress: clean up and improve code when possible
  * chore: version updates for Vuetify & VueJS
 
