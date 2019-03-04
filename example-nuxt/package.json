@@ -28,7 +28,7 @@
     "nuxt-i18n": "^5.8.1",
     "rxjs": "^6.4.0",
     "vue-rx": "^6.1.0",
-    "vuetify": "^1.5.1"
+    "vuetify": "^1.5.3"
   },
   "devDependencies": {
     "@vue/eslint-config-standard": "^4.0.0",

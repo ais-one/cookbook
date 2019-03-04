@@ -28,7 +28,7 @@
     "vue-native-websocket": "^2.0.12",
     "vue-router": "^3.0.2",
     "vue-rx": "^6.1.0",
-    "vuetify": "^1.5.1",
+    "vuetify": "^1.5.3",
     "vuex": "^3.1.0"
   },
   "devDependencies": {
@@ -43,7 +43,7 @@
   },
   "ignored-browserslist": [
     "last 1 Chrome versions"
-  ],  
+  ],
   "browserslist": [
     "> 1%",
     "last 2 versions",
