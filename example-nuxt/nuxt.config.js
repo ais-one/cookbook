@@ -5,7 +5,7 @@ const fs = require('fs')
 if (process.env.NODE_ENV) {
   try {
     const envConfig = dotenv.parse(fs.readFileSync('.env.' + process.env.NODE_ENV))
-    for (var k in envConfig) process.env[k] = envConfig[k]  
+    for (var k in envConfig) process.env[k] = envConfig[k]
   } catch (e) {
     console.log('missing configuration file, using defaults')
   }
@@ -16,12 +16,9 @@ import axios from 'axios'
 module.exports = {
   server: {
     port: 8080, // default: 3000
-    host: '0.0.0.0', // default: localhost
+    host: '0.0.0.0' // default: localhost
   },
   mode: 'universal',
-  /*
-  ** Headers of the page
-  */
   head: {
     title: pkg.name,
     meta: [
@@ -54,65 +51,41 @@ module.exports = {
     // }
   },
 
-  /*
-  ** Customize the progress-bar color
-  */
+  // Customize the progress-bar color
   loading: { color: '#fff' },
 
-  /*
-  ** Global CSS
-  */
-  css: [
-    '~/assets/style/app.styl'
-  ],
+  // Global CSS
+  css: ['~/assets/style/app.styl'],
 
-  /*
-  ** Plugins to load before mounting the App
-  */
+  // Plugins to load before mounting the App
   plugins: [
     '@/plugins/vue-rx',
     '@/plugins/vuetify',
     '@/plugins/axios'
   ],
 
-  /*
-  ** Nuxt.js modules
-  */
+  // Nuxt.js modules
   modules: [
-    ['@nuxtjs/dotenv', {
-      filename: '.env.' + process.env.NODE_ENV
-    }],
+    ['@nuxtjs/dotenv', { filename: `.env.${process.env.NODE_ENV}` }],
     '@nuxtjs/axios', // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/auth',
-    ['nuxt-i18n', {
-      locales: [
-        { 
-          code: 'en',
-          iso: 'en-US'
-        },
-        { 
-          code: 'fr',
-          iso: 'fr-FR'
-        }
-      ],
-      defaultLocale: 'en',
-      vueI18n: {
-        silentTranslationWarn: true,
-        fallbackLocale: 'en',
-        messages: {
-          en: {
-            welcome: 'Welcome'
-          },
-          fr: {
-            welcome: 'Bienvenue'
+    [
+      'nuxt-i18n',
+      {
+        locales: [{ code: 'en', iso: 'en-US' }, { code: 'fr', iso: 'fr-FR' }],
+        defaultLocale: 'en',
+        vueI18n: {
+          silentTranslationWarn: true,
+          fallbackLocale: 'en',
+          messages: {
+            en: { welcome: 'Welcome' },
+            fr: { welcome: 'Bienvenue' }
           }
         }
       }
-    }]
+    ]
   ],
-  /*
-  ** Axios module configuration
-  */
+  // Axios module configuration
   axios: {
     baseURL: 'http://localhost:3000'
     // See https://github.com/nuxt-community/axios-module#options
@@ -125,7 +98,7 @@ module.exports = {
 
   auth: {
     // watchLoggedIn: false, // CUSTOM WATCH LOGGEDIN - DOES NOT WORK
-    plugins: [ '@/plugins/auth.js' ],
+    plugins: ['@/plugins/auth.js'],
     // Options
     redirect: {
       callback: '/callback',
@@ -142,7 +115,7 @@ module.exports = {
           user: { url: '/api/auth/me', method: 'get', propertyName: 'user' } // or should we get rid of this?
         },
         tokenRequired: true,
-        tokenType: 'Bearer',
+        tokenType: 'Bearer'
       },
       social: {
         _scheme: 'oauth2',
@@ -154,7 +127,7 @@ module.exports = {
         token_type: 'Bearer',
         redirect_uri: undefined,
         client_id: process.env.GITHUB_CLIENT_ID,
-        token_key: 'access_token'    
+        token_key: 'access_token'
       },
       github: {
         client_id: process.env.GITHUB_CLIENT_ID,
@@ -163,13 +136,9 @@ module.exports = {
     }
   },
 
-  /*
-  ** Build configuration
-  */
+  // Build configuration
   build: {
-    /*
-    ** You can extend webpack config here
-    */
+    // You can extend webpack config here
     extend(config, ctx) {
       // Run ESLint on save
       if (ctx.isDev && ctx.isClient) {
