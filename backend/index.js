@@ -103,8 +103,7 @@ if (wss) {
           }
         })
         ws.send(JSON.stringify(message)) // echo back message...
-      } catch (e) {
-      }
+      } catch (e) { }
     })
   })
   // keep alive

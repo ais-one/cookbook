@@ -13,6 +13,9 @@
                   <h2 class="py-2 text-xs-center">Test Your Other Stuff Here</h2>
                   <p class="py-2 text-xs-center">Click on the top left menu icon to navigate</p>
                   <p class="py-2 text-xs-center">If you are on this page, web socket messages are sent to the server every 10 seconds. On the server console.log, you can see the messages</p>
+                  <p class="py-2 text-xs-center">
+                    <v-btn @click="test">Test GraphQL</v-btn>
+                  </p>
                 </v-flex>
               </v-layout>
               <!-- There will be several rows -->
@@ -26,15 +29,36 @@
 
 <script>
 // import { http } from '@/axios'
+import gql from 'graphql-tag'
+
 export default {
   name: 'dashboard',
   components: {
   },
+  apollo: {
+    // Query with parameters
+    hello: {
+      // gql query
+      query: gql`query DoHello($message: String!) {
+        hello(message: $message)
+      }`,
+      // Static parameters
+      variables: {
+        message: 'Meow'
+      }
+      // skip() {
+      //   return this.skipQuery
+      // }
+    }
+  },
   data () {
     return {
+      // skipQuery: true,
+      hello: 'NA'
     }
   },
   created () {
+    this.$apollo.queries.hello.skip = true
     this.priceTimerId = null
   },
   beforeDestroy () {
@@ -60,6 +84,11 @@ export default {
     }
   },
   methods: {
+    async test () {
+      this.$apollo.queries.hello.skip = false
+      await this.$apollo.queries.hello.refetch()
+      alert('Test2 ' + this.hello)
+    },
     updateNetworkError (flag) {
       this.$store.dispatch('setNetworkError', flag)
     }

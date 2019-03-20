@@ -7,43 +7,18 @@ const Category = require('./models/Category')
 const { gql } = require('apollo-server-express')
 // graphql Schema
 
-const typeDefs = gql`
-type Query {
-  hello: String
-  getAuthor(id: Int!): Author
-  getAuthors(page: Int, limit: Int, search: String): [Author!]!
-  getCategory(id: Int!): Category
-  getCategories: Categories
-}
+// const xxx = require('./schema.graphql')
+// console.log(xxx)
 
-type Author {
-  id: ID!
-  name: String!
-}
-type Category {
-  id: ID!
-  name: String!
-}
-type Categories {
-  results: [Category]!
-  total: Int!
-}
-type Book {
-  id: ID!
-  name: String!
-  category: Category!
-}
-type Page {
-  id: ID!
-  content: String!
-  bookId: Book!
-}
-`
+const fs = require('fs')
+const typeDefs = fs.readFileSync('./schema.graphql', 'utf8').toString();
 
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    hello: () => 'Hello world!',
+    hello: (parent, args, context, info) => {
+      return args.message ? 'Hello ' + args.message : 'Hello world!'
+    },
     getAuthor: async (parent, args, context, info) => {
       try {
         const author = await Author.query().findById(args.id)
@@ -68,6 +43,7 @@ const resolvers = {
         return {}
       }
     },
+
     getCategory: async (parent, args, context, info) => {
       try {
         const category = await Category.query().findById(args.id)
@@ -89,11 +65,81 @@ const resolvers = {
       }
     }
   },
+  Mutation: {
+    putAuthor: async (parent, args, context, info) => {
+      try {
+        const author = await Author.query().patchAndFetchById(args.id, args.body)
+        return author
+      } catch (e) {
+        return {}
+      }
+    },
+    postAuthor: async (parent, args, context, info) => {
+      try {
+        const author = await Author.query().insert(args.body)
+        return author
+      } catch (e) {
+        return {}
+      }
+    },
+
+    putCategory: async (parent, args, context, info) => {
+      try {
+        const category = await Category.query().patchAndFetchById(args.id, args.body)
+        return category
+      } catch (e) {
+        return {}
+      }
+    },
+    postCategory: async (parent, args, context, info) => {
+      try {
+        const category = await Category.query().insert(args.body)
+        return category
+      } catch (e) {
+        return {}
+      }
+    }
+  },
+  // Subscription: {
+  //   comment: {
+  //     subscribe(parent, { postId }, {pubsub, db}, info) {
+  //       const post = db.posts.find(post => post.id === postId && post.published)
+  //       if (!post) throw new Error('Post Not Found')
+  //       return pubsub.asyncIterator(`comment:${postId}`)
+  //     }
+  //   },
+  //   post: {
+  //     subscribe(parent, args, {pubsub}, info) {
+  //       return pubsub.asyncIterator(`post`)
+  //     }
+  //   }  
+  // }
+  // Custom
+  // User: {
+  //   posts (parent, args, {db}, info) {
+  //     return db.posts.filter(post => post.author === parent.id) 
+  //    },
+  //    comments (parent, args, {db}, info) {
+  //      return db.comments.filter(comment => comment.author === parent.id) 
+  //    } 
+  // },
+  // Post: {
+  //   author (parent, args, {db}, info) {
+  //     return db.users.find(user => user.id === parent.author)
+  //   },
+  //   comments (parent, args, {db}, info) {
+  //     return db.comments.filter(comment => comment.post === parent.id)
+  //   }  
+  // }
 }
 
 module.exports = {
   typeDefs,
   resolvers
+  // context: {
+  //   db,
+  //   pubsub
+  // }  
 }
 
 /*

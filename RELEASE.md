@@ -1,4 +1,5 @@
 ### Upcoming
+ * GraphQL using Apollo
  * Vuetify 2.0 breaking changes list - check to see which will affect the code base
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.10
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.9
@@ -12,13 +13,11 @@
    * Non-essential items
      * Multiple File upload example (to local folder)
      * Single File upload example (to firebase storage)
-     * Graphql
      * Logging
      * Security Improvements
  * improve i18n
  * https://github.com/ais-one/vue-crud-x/issues/32
  * https://github.com/vuetifyjs/vuetify/pull/5232
- * GraphQL using Prisma or Hasura
  * Take note of the following github issues
    * Fixed Table Header:
      * Fixed Column: https://github.com/lzhoucs/vuetify/pull/4
