@@ -8,7 +8,7 @@ Roadmap and latest updates can be found on the <a href="https://github.com/ais-o
 
 ## 1 New Features
 
-1. Add lit-element with VueJS example - see RELEASE.md file
+1. Add lit-element with VueJS example (https://medium.zenika.com/using-lit-element-with-vue-js-fa873df4f2a4) - see RELEASE.md file
 2. Show code splitting - see RELEASE.md file
 3. GraphQL - Work in progress
 
