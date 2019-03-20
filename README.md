@@ -2,7 +2,7 @@
 
 # NOTICES & UPDATES
 
-> Latest Version 0.1.10 Released 2019 Mar 21 0630 +8GMT
+> Latest Version 0.1.11 Released 2019 Apr 15 0630 +8GMT
 
 Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>
 

@@ -32,6 +32,13 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
+### Version 0.1.11
+ * improvement: (INPROGRESS) add GraphQL
+ * improvement: (KIV) add test from dredd.io when ready
+ * work in progress: clean up and improve code when possible
+ * chore: VuetifyJS 2 & VueJS 3 updates
+ * chore: package updates
+
 ### Version 0.1.10
  * improvement (NO ACTION NEEDED): improve i18n: you have access to i18n when you use .vue file
  * improvement (DONE): Use lit-element Web Component (for the loading blocker) - see Signin.vue of **example-rest** for usage
