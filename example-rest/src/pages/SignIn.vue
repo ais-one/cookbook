@@ -1,9 +1,8 @@
 <template>
   <v-container>
+    <loading-blocker :loading="loading"></loading-blocker>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
-        <v-card>
-        </v-card>
         <v-card>
           <v-card-text>
             <v-container v-if="!(user && !user.verified)">
@@ -26,10 +25,7 @@
                     </v-btn>
                   </v-flex>
                 </v-layout>
-                <v-alert v-if="!!error"
-                  :value="!!error"
-                  type="error"
-                >
+                <v-alert v-if="!!error" :value="!!error" type="error">
                   {{ error.message }}
                 </v-alert>
               </form>
@@ -48,10 +44,7 @@
                     </v-btn>
                   </v-flex>
                 </v-layout>
-                <v-alert v-if="!!error"
-                  :value="!!error"
-                  type="error"
-                >
+                <v-alert v-if="!!error" :value="!!error" type="error">
                   {{ error.message }}
                 </v-alert>
               </form>
@@ -65,6 +58,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import '../../../src/vcx-loading-blocker.js'
+
 export default {
   data () {
     return {

@@ -1,6 +1,6 @@
 {
   "name": "example-firebase",
-  "version": "0.1.9",
+  "version": "0.0.0",
   "description": "A firebase example for vue-crud-x component usage",
   "author": "Aaron Gong <aaronjxz@gmail.com>",
   "private": true,
@@ -11,27 +11,27 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@firebase/app": "^0.3.9",
-    "@firebase/auth": "^0.9.3",
-    "@firebase/firestore": "^1.0.3",
-    "@firebase/storage": "^0.2.8",
+    "@firebase/app": "^0.3.12",
+    "@firebase/auth": "^0.9.5",
+    "@firebase/firestore": "^1.1.0",
+    "@firebase/storage": "^0.2.11",
     "axios": "^0.18.0",
     "date-fns": "^1.30.0",
-    "vue": "^2.6.6",
-    "vue-i18n": "^8.8.1",
+    "vue": "^2.6.10",
+    "vue-i18n": "^8.9.0",
     "vue-recaptcha": "^1.1.1",
     "vue-router": "^3.0.2",
-    "vuetify": "1.5.1",
+    "vuetify": "1.5.7",
     "vuex": "^3.1.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.4.0",
-    "@vue/cli-plugin-eslint": "^3.4.0",
-    "@vue/cli-service": "^3.4.0",
+    "@vue/cli-plugin-babel": "^3.5.1",
+    "@vue/cli-plugin-eslint": "^3.5.1",
+    "@vue/cli-service": "^3.5.1",
     "@vue/eslint-config-standard": "^4.0.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "vue-template-compiler": "^2.6.6"
+    "vue-template-compiler": "^2.6.10"
   },
   "browserslist": [
     "> 1%",

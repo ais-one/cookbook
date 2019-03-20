@@ -1,16 +1,23 @@
 ### Upcoming
+ * GraphQL using Apollo
+ * Vuetify 2.0 breaking changes list - check to see which will affect the code base
+   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.10
+   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.9
+   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.8 (breaking changes in v-datatable)
+   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.7
+   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.5
+   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.4
+ * VueJS 3.0 update
  * automated testing (dredd.io)
  * RESTful++ Backend For Testing
    * Non-essential items
      * Multiple File upload example (to local folder)
      * Single File upload example (to firebase storage)
-     * Graphql
      * Logging
      * Security Improvements
  * improve i18n
  * https://github.com/ais-one/vue-crud-x/issues/32
  * https://github.com/vuetifyjs/vuetify/pull/5232
- * GraphQL using Prisma or Hasura
  * Take note of the following github issues
    * Fixed Table Header:
      * Fixed Column: https://github.com/lzhoucs/vuetify/pull/4
@@ -25,13 +32,14 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
-### Upcoming Version
- * improvement: add test from dredd.io when ready
- * improvement: improve i18n
- * improvement: add GraphQL
- * improvement: Use lit-element Web Component
+### Version 0.1.10
+ * improvement (NO ACTION NEEDED): improve i18n: you have access to i18n when you use .vue file
+ * improvement (DONE): Use lit-element Web Component (for the loading blocker) - see Signin.vue of **example-rest** for usage
+ * improvement (DONE): route level code splitting using import() - see router/index.js of **example-rest** for usage
+ * improvement: (INPROGRESS) add GraphQL
+ * improvement: (KIV) add test from dredd.io when ready
  * work in progress: clean up and improve code when possible
- * chore: version updates for Vuetify & VueJS
+ * chore: package updates
 
 ### Version 0.1.9
  * hotfix: place back user

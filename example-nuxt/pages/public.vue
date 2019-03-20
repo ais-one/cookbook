@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-alert :value="true" type="success">You should see this page without need to authentication!</v-alert>
-    Test: [{{ vv }}]
+    <v-alert :value="true" type="success">You should see this page without need to authenticate!</v-alert>
+    Test: [{{ countVal }}]
     <v-btn @click="test">TEST</v-btn>
   </div>
 </template>
@@ -12,17 +12,17 @@ import _cloneDeep from 'lodash.clonedeep'
 const XrudStore = {
   namespaced: true,
   state: {
-    count: null
-    // count: { counter: 0 }
+    count: { counter: 0 }
   },
   getters: {
-    getCount: state => state.count.counter
+    getCount: state => state.count
   },
   actions: {
     increment: ({ commit }) => commit('increment')
   },
   mutations: {
     increment(state) {
+      console.log('increment')
       state.count.counter++
     },
     setCounter(state, payload) {
@@ -37,40 +37,43 @@ export default {
     auth: false
   },
   data: () => ({
-    vv: 'NA'
+    countVal: 'NA'
   }),
   computed: {
-    xxx() {
+    computedCount() {
       return this.$store.getters['blah/getCount']
     }
   },
   created() {
-    const name = 'blah'
-    const store = this.$store
-    // register a new module only if doesn't exist
-    if (!(store && store.state && store.state[name])) {
-      // console.log('a1', this.$store._actions, this.$store._modulesNamespaceMap)
-      this.$store.registerModule(name, _cloneDeep(XrudStore)) // make sure its a deep clone
-      this.$store.commit(`blah/setCounter`, { counter: 0 })
-      // console.log('a2', this.$store._actions, this.$store._modulesNamespaceMap)
+    if (process.client) {
+      console.log('public.vue created() client')
+      const name = 'blah'
+      // register a new module only if doesn't exist
+      if (!(this.$store && this.$store.state && this.$store.state[name])) {
+        console.log('Dynamic Vuex module created...')
+        this.$store.registerModule(name, _cloneDeep(XrudStore)) // { preserveState: true } has no effect
+        // this.$store.state[name] = {} // required for nuxt
+        // this.$store.commit(`blah/setCounter`, { counter: 0 }) // required for nuxt generated...
+        console.log('Vuex store state', this.$store.state)
+      }
+      // window.addEventListener('click', e => alert('clicked')) // Cannot Generate! Direct Call Will Fail
+    } else {
+      console.log('public.vue created() server')
+      window.addEventListener('click', e => alert('clicked')) // Cannot Generate! Direct Call Will Fail
     }
   },
   mounted() {
-    const name = 'blah'
-    const store = this.$store
-    // register a new module only if doesn't exist
-    // if (!(store && store.state && store.state[name])) {
-    if (!this.$store._modulesNamespaceMap[name + '/'] || !store.state[name]) {
-      store.registerModule(name, _cloneDeep(XrudStore)) // make sure its a deep clone
-      this.$store.commit(`blah/setCounter`, { counter: 0 })
+    if (process.client) {
+      console.log('public.vue mounted() client')
+    } else {
+      console.log('public.vue mounted() server')
     }
   },
   methods: {
     test() {
-      console.log('test', this.$store, this.$store._actions)
-      this.vv = this.xxx ? this.xxx : 'dd' // this.$store[name].getters['blah/getCount']
-      console.log('test2', this.vv)
       this.$store.dispatch('blah/increment')
+      const counter = this.computedCount.counter
+      this.countVal = counter ? counter : 'No Count Yet'
     }
   }
 }

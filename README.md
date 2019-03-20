@@ -2,10 +2,23 @@
 
 # NOTICES & UPDATES
 
-> Latest Version 0.1.9 Released 2019 Feb 17 1645 +8GMT
-(https://github.com/ais-one/vue-crud-x/wiki)[https://github.com/ais-one/vue-crud-x/wiki]
+> Latest Version 0.1.10 Released 2019 Mar 21 0630 +8GMT
 
-## 1 Better Quickstart
+Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>
+
+## 1 New Features
+
+1. Add lit-element with VueJS example (https://medium.zenika.com/using-lit-element-with-vue-js-fa873df4f2a4) - see RELEASE.md file
+2. Show code splitting - see RELEASE.md file
+3. GraphQL - Work in progress
+
+## 2 Dependency Updates
+
+We are monitoring the progress of the following packages and will update when they are released for production:
+ - VueJS 3
+ - Vuetify 2
+
+## 3 Better Quickstart
 
 The **example-rest** folder is now the preferred project for quickstart. Everything runs locally from a sample REST backend included in this repository, no firebase signup/setup required.
 
@@ -13,7 +26,7 @@ The **example-nuxt** folder contains example using NuxtJS, a VueJS framework. Tw
 
 Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
 
-## 2 Major Improvements (Without Breaking Changes)
+## 4 Major Improvements (Without Breaking Changes)
 
 From Version 0.1.7 onwards, **scoped-slots** can and should be used for customized form and filter. Please use this instead of the previous way of **importing component files** as it is much cleaner. **importing component files** will be deprecated in a later version.
 
@@ -27,15 +40,7 @@ Usage example can be found:
  - in **example-firebase** project
    - example-firebase/src/pages/MultiCrud/Example.vue (also, demonstrates multiple vue-crud-x used in a single page)
 
-## 3 Roadmap & Dependencies
-
-We are monitoring the progress of the following packages and will update when they are released for production:
- - VueJS 3
- - Vuetify 2
-
-Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>
-
-## 3 Changes
+## 5 Changes
 
 See RELEASE.MD file for change history
 

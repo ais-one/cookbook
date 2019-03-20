@@ -272,7 +272,7 @@ create a .vue file
 ```
 <template>
   <vue-crud-x
-    :storeName="party"
+    storeName="party"
     :parentId="null"
     v-bind="partyDefs"
   >

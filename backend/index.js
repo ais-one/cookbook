@@ -28,10 +28,15 @@ const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
 const swaggerDocument = YAML.load('./docs/openapi.yaml')
 
+const apollo = require('./middleware/graphql')
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
 const app = express()
+
+apollo.applyMiddleware({ app }); // console.log(`GraphqlPATH ${server.graphqlPath}`)
+
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -98,8 +103,7 @@ if (wss) {
           }
         })
         ws.send(JSON.stringify(message)) // echo back message...
-      } catch (e) {
-      }
+      } catch (e) { }
     })
   })
   // keep alive
