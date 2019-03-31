@@ -1,6 +1,7 @@
 ### Upcoming
  * GraphQL using Apollo
  * Vuetify 2.0 breaking changes list - check to see which will affect the code base
+   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.11
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.10
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.9
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.8 (breaking changes in v-datatable)
