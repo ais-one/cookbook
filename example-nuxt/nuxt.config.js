@@ -1,7 +1,13 @@
-const pkg = require('./package')
-const dotenv = require('dotenv')
+// import axios from 'axios'
+// const pkg = require('./package')
+import pkg from './package'
+
+// const dotenv = require('dotenv')
+import dotenv from 'dotenv'
+// const fs = require('fs')
+import fs from 'fs'
+
 dotenv.config()
-const fs = require('fs')
 if (process.env.NODE_ENV) {
   try {
     const envConfig = dotenv.parse(fs.readFileSync('.env.' + process.env.NODE_ENV))
@@ -11,9 +17,8 @@ if (process.env.NODE_ENV) {
   }
 }
 
-import axios from 'axios'
-
-module.exports = {
+//module.exports = {
+export default {
   server: {
     port: 8080, // default: 3000
     host: '0.0.0.0' // default: localhost
@@ -32,24 +37,24 @@ module.exports = {
     ]
   },
 
-  generate: {
-    // https://github.com/nuxt/nuxt.js/issues/1018
-    // routes: function () {
-    //   let posts = axios.get('https://api.com/posts', {params: {size: 10}}).then((res) => { // get about 10 records from API to populate page
-    //     return res.data.posts.map((post) => {
-    //       return '/feed/' + post.id
-    //     })
-    //   })
-    //   let users = axios.get('https://api.com/users', {params: {size: 10}}).then((res) => { // get about 10 records from API to populate page
-    //     return res.data.content.map((user) => {
-    //       return '/user/' + user.id
-    //     })
-    //   })
-    //   return Promise.all([posts, users]).then(values => {
-    //     return values.join().split(',');
-    //   })
-    // }
-  },
+  // generate: {
+  //   https://github.com/nuxt/nuxt.js/issues/1018
+  //   routes: function () {
+  //     let posts = axios.get('https://api.com/posts', {params: {size: 10}}).then((res) => { // get about 10 records from API to populate page
+  //       return res.data.posts.map((post) => {
+  //         return '/feed/' + post.id
+  //       })
+  //     })
+  //     let users = axios.get('https://api.com/users', {params: {size: 10}}).then((res) => { // get about 10 records from API to populate page
+  //       return res.data.content.map((user) => {
+  //         return '/user/' + user.id
+  //       })
+  //     })
+  //     return Promise.all([posts, users]).then(values => {
+  //       return values.join().split(',');
+  //     })
+  //   }
+  // },
 
   // Customize the progress-bar color
   loading: { color: '#fff' },
@@ -58,11 +63,7 @@ module.exports = {
   css: ['~/assets/style/app.styl'],
 
   // Plugins to load before mounting the App
-  plugins: [
-    '@/plugins/vue-rx',
-    '@/plugins/vuetify',
-    '@/plugins/axios'
-  ],
+  plugins: ['@/plugins/vue-rx', '@/plugins/vuetify', '@/plugins/axios'],
 
   // Nuxt.js modules
   modules: [
