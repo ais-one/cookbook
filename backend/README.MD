@@ -234,3 +234,8 @@ source ~/.bashrc
 ### Nodemon
 
 sudo nodemon index.js
+
+TBD add helmet, compression, morgan
+https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198026?start=0
+https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198028?start=0
+https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198030?start=0
