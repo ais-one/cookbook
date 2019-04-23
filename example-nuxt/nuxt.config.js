@@ -1,10 +1,6 @@
 // import axios from 'axios'
-// const pkg = require('./package')
 import pkg from './package'
-
-// const dotenv = require('dotenv')
 import dotenv from 'dotenv'
-// const fs = require('fs')
 import fs from 'fs'
 
 dotenv.config()
@@ -17,7 +13,6 @@ if (process.env.NODE_ENV) {
   }
 }
 
-//module.exports = {
 export default {
   server: {
     port: 8080, // default: 3000
@@ -35,6 +30,16 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' }
     ]
+  },
+
+  router: {
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'custom404',
+        path: '*',
+        component: resolve(__dirname, 'pages/404.vue')
+      })
+    }
   },
 
   // generate: {

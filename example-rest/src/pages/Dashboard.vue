@@ -12,7 +12,7 @@
                 <v-flex xs12>
                   <h2 class="py-2 text-xs-center">Test Your Other Stuff Here</h2>
                   <p class="py-2 text-xs-center">Click on the top left menu icon to navigate</p>
-                  <p class="py-2 text-xs-center">If you are on this page, web socket messages are sent to the server every 10 seconds. On the server console.log, you can see the messages</p>
+                  <p class="py-2 text-xs-center">If you are on this page, web socket messages are sent to the server every 10 seconds (if websocket is configured in .env file). On the server console.log, you can see the messages</p>
                   <p class="py-2 text-xs-center">
                     <v-btn @click="test">Test GraphQL</v-btn>
                   </p>

@@ -22,6 +22,7 @@ if (USE_HTTPS) credentials = { key: fs.readFileSync(`${USE_HTTPS}/privkey.pem`),
 const bodyParser = require('body-parser')
 const express = require('express')
 const cors = require('cors')
+const http = require('http')
 const https = require('https')
 
 const swaggerUi = require('swagger-ui-express')
@@ -75,35 +76,44 @@ app.get("*", async (req, res) => {
 //   // return res.send("Hello from Firebase!")
 // })
 
+let server
 if (USE_HTTPS) {
-  https.createServer(credentials, app).listen(API_PORT, () => console.log('REST API listening on port ' + API_PORT))
+  server = https.createServer(credentials, app)
 } else {
-  app.listen(API_PORT, () => console.log('REST API listening on port ' + API_PORT))
+  server = http.createServer(app)
 }
+
+server.listen(API_PORT, () => {
+  console.log('REST API listening on port ' + API_PORT)
+  console.log(`🚀 GraphQL Server ready at http://localhost:${API_PORT}${apollo.graphqlPath}`)
+  console.log(`🚀 GraphQL Subscriptions ready at ws://localhost:${API_PORT}${apollo.subscriptionsPath}`)
+})
+
+apollo.installSubscriptionHandlers(server)
 
 const WebSocket = require('ws')
 const wss = require('./services/websocket')
 
 if (wss) {
-  wss.on('connection', function connection(ws) {
+  wss.on('connection', (ws) => {
     console.log('connected')
     ws.isAlive = true
     ws.on('pong', () => { ws.isAlive = true })
-    ws.on('close', function close() { console.log('disconnected') })
-    ws.on('message', async function incoming(message) {
+    ws.on('close', () => { console.log('disconnected') })
+    ws.on('message', async (message) => {
       console.log('message', message)
       // error handling
       // ws.send('something', function ack(error) { console.log }) // If error !defined, send has been completed, otherwise error object will indicate what failed.
       try { // try-catch only detect immediate error, cannot detect if write failure
         // const timestamp = new Date(Date.now())
         // send to other clients
-        wss.clients.forEach(function each(client) {
+        wss.clients.forEach((client) => {
           if (client !== ws && client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify(message))
           }
         })
         ws.send(JSON.stringify(message)) // echo back message...
-      } catch (e) { }
+      } catch (e) {}
     })
   })
   // keep alive
