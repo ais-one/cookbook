@@ -36,7 +36,7 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.11
- * improvement: (INPROGRESS) add GraphQL (TBD add authentication)
+ * improvement: (INPROGRESS) add GraphQL (TBD add authentication, optimistic UI, refetch queries)
  * improvement: (KIV) add test from dredd.io when ready
  * work in progress: clean up and improve code when possible
  * chore: VuetifyJS 2 & VueJS 3 updates

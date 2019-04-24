@@ -87,6 +87,7 @@ export default {
           export: async (payload) => {
           },
           find: async (payload) => {
+            console.log('find')
             let records = []
             let totalRecords = 0
             const { pagination } = payload // filterData
