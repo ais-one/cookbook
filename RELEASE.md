@@ -37,6 +37,8 @@
 
 ### Version 0.1.11
  * improvement: add GraphQL (TBD in next version add optimistic UI, refetch queries)
+   * changes in backend to accomodate GraphQL
+   * changes in example-rest to accomodate GraphQL (categories uses mostly GraphQL now)
  * improvement: (KIV) add test from dredd.io when ready
  * work in progress: clean up and improve code when possible
  * chore: VuetifyJS 2 & VueJS 3 updates
