@@ -14,6 +14,7 @@ import * as partyInlineDefs from '@/pages/Crud/party-inline'
 import Test from '@/components/Test'
 
 import VueCrudX from '../../../src/VueCrudX' // Component shared between projects // const VueCrudX = Vue.component('vue-crud-x') this does not work...
+// import VueCrudX from 'vue-crud-x'
 
 Vue.use(Router)
 

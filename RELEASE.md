@@ -1,5 +1,7 @@
 ### Upcoming
- * GraphQL using Apollo
+ * Additional GraphQL features
+ * Automated testing (dredd.io)
+ * VueJS 3.0 update
  * Vuetify 2.0 breaking changes list - check to see which will affect the code base
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.13
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.12
@@ -10,8 +12,6 @@
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.7
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.5
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.4
- * VueJS 3.0 update
- * automated testing (dredd.io)
  * RESTful++ Backend For Testing
    * Non-essential items
      * Multiple File upload example (to local folder)
@@ -35,14 +35,17 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
+
 ### Version 0.1.11
- * improvement: add GraphQL (TBD in next version add optimistic UI, refetch queries)
+ * improvement: added GraphQL (include subscriptions, auth)
    * changes in backend to accomodate GraphQL
    * changes in example-rest to accomodate GraphQL (categories uses mostly GraphQL now)
- * improvement: (KIV) add test from dredd.io when ready
- * work in progress: clean up and improve code when possible
- * chore: VuetifyJS 2 & VueJS 3 updates
+ * improvement: use vue-cli instead of poi to build as npm package
+ * chore: clean up and improve code when possible
  * chore: package updates
+ * chore: monitor VuetifyJS 2 & VueJS 3 updates, start migration from beta release onwards
+ * in pipeline: add test from dredd.io when ready
+ * in pipeline: more graphql features if possible (optimistic UI, refetch queries)
 
 ### Version 0.1.10
  * improvement (NO ACTION NEEDED): improve i18n: you have access to i18n when you use .vue file

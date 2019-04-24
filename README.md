@@ -61,6 +61,7 @@ Our examples showcase the following (unrelated to the vue-crud-x features above)
    - rxJs for cleaner code (auto-complete, debounce, fetch latest)
    - 2FA OTP signin with Google Authenticator (setup with USE_OTP=GA in environement files of both the front and backend. Check DB seeders for the API key to use, or you can find out how to generate your own)
    - websocket example
+   - graphql example
    - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
  - in **example-nuxt**
    - includes features in example-rest plus the following:
@@ -461,13 +462,15 @@ If you ever need to build this library from source...
 npm i
 ```
 
-2. Build project
+2. Build project (using vue-cli)
 
 ```
 npm run build
 ```
 
 The build output can be found in the **dist** folder
+
+**IMPORTANT NOTE: please rename the file VueCrudX.commmon.js to VueCrudX.js**
 
 3. Publishing to npm (only for repo owner)
 
