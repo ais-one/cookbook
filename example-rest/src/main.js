@@ -10,14 +10,13 @@ import App from './App'
 import VueCrudX from '../../src/VueCrudX' // Component shared between projects
 import { apolloClient } from './graphql'
 import VueApollo from 'vue-apollo'
-import gql from 'graphql-tag'
+
+import { DO_HELLO } from './queries'
 
 Vue.use(VueApollo)
 
 apolloClient.query({
-  query: gql`query DoHello($message: String!) {
-    hello(message: $message)
-  }`,
+  query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
   variables: {
     message: 'Meow'
   }

@@ -109,10 +109,10 @@ if (wss) {
         // send to other clients
         wss.clients.forEach((client) => {
           if (client !== ws && client.readyState === WebSocket.OPEN) {
-            client.send(JSON.stringify(message))
+            client.send(message)
           }
         })
-        ws.send(JSON.stringify(message)) // echo back message...
+        ws.send(message) // echo back message...
       } catch (e) {}
     })
   })

@@ -7,11 +7,11 @@ const Category = require('./models/Category')
 const { gql } = require('apollo-server-express')
 // graphql Schema
 
-// const xxx = require('./schema.graphql')
+// const xxx = require('./schema.gql')
 // console.log(xxx)
 
 const fs = require('fs')
-const typeDefs = fs.readFileSync('./schema.graphql', 'utf8').toString();
+const typeDefs = fs.readFileSync('./schema.gql', 'utf8').toString();
 
 // Provide resolver functions for your schema fields
 const resolvers = {
@@ -38,7 +38,7 @@ const resolvers = {
           // .where('bookId', req.params.id)
           // .orderBy
           .page(page, limit)
-        return authors  
+        return authors
       } catch (e) {
         return {}
       }
@@ -83,54 +83,39 @@ const resolvers = {
       }
     },
 
-    putCategory: async (parent, args, context, info) => {
+    putCategory: async (parent, args, { pubsub }, info) => {
       try {
         const category = await Category.query().patchAndFetchById(args.id, args.body)
+        pubsub.publish('CATEGORY_UPDATED', { categoryUpdated: category }) // subscription
         return category
       } catch (e) {
         return {}
       }
     },
-    postCategory: async (parent, args, context, info) => {
+    postCategory: async (parent, args, { pubsub }, info) => {
       try {
         const category = await Category.query().insert(args.body)
+        pubsub.publish('CATEGORY_ADDED', { categoryAdded: category }) // subscription
         return category
       } catch (e) {
         return {}
       }
     }
   },
-  // Subscription: {
-  //   comment: {
-  //     subscribe(parent, { postId }, {pubsub, db}, info) {
-  //       const post = db.posts.find(post => post.id === postId && post.published)
-  //       if (!post) throw new Error('Post Not Found')
-  //       return pubsub.asyncIterator(`comment:${postId}`)
-  //     }
-  //   },
-  //   post: {
-  //     subscribe(parent, args, {pubsub}, info) {
-  //       return pubsub.asyncIterator(`post`)
-  //     }
-  //   }  
-  // }
-  // Custom
-  // User: {
-  //   posts (parent, args, {db}, info) {
-  //     return db.posts.filter(post => post.author === parent.id) 
-  //    },
-  //    comments (parent, args, {db}, info) {
-  //      return db.comments.filter(comment => comment.author === parent.id) 
-  //    } 
-  // },
-  // Post: {
-  //   author (parent, args, {db}, info) {
-  //     return db.users.find(user => user.id === parent.author)
-  //   },
-  //   comments (parent, args, {db}, info) {
-  //     return db.comments.filter(comment => comment.post === parent.id)
-  //   }  
-  // }
+  Subscription: {
+    categoryAdded: {
+      // Additional event labels can be passed to asyncIterator creation
+      subscribe: (parent, args, { pubsub }, info) => {
+        return pubsub.asyncIterator('CATEGORY_ADDED')
+      }
+    },
+    categoryUpdated: {
+      // Additional event labels can be passed to asyncIterator creation
+      subscribe: (parent, args, { pubsub }, info) => {
+        return pubsub.asyncIterator('CATEGORY_UPDATED')
+      }
+    }
+  }
 }
 
 module.exports = {
