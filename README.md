@@ -8,7 +8,7 @@ The **example-nuxt** folder contains example using NuxtJS, a VueJS framework. Tw
 
 # NOTICES & UPDATES
 
-> Latest Version 0.1.11 Released 2019 Apr 15 0630 +8GMT
+> Latest Version 0.1.11 Released 2019 Apr 25 0815 +8GMT
 
 Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>.
 
@@ -18,9 +18,8 @@ Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-cus
 
 ## 1 New Features
 
-1. Add lit-element with VueJS example (https://medium.zenika.com/using-lit-element-with-vue-js-fa873df4f2a4) - see RELEASE.md file
-2. Show code splitting - see RELEASE.md file
-3. GraphQL - Work in progress
+1. GraphQL
+2. Use vue-cli instead of poi to build vue-crud-x as npm package
 
 ## 2 Major Improvements (Without Breaking Changes)
 
@@ -83,6 +82,7 @@ The **backend** project is an Express server used by **example-rest** and **exam
  - Login, JWT & 2FA OTP (using Google Authenticator)
  - Key-Value Store for user token storage on server (can replace with redis)
  - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
+ - GraphQL
 - https://github.com/ais-one/vue-crud-x/tree/master/backend
 
 

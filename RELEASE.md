@@ -40,7 +40,7 @@
  * improvement: added GraphQL (include subscriptions, auth)
    * changes in backend to accomodate GraphQL
    * changes in example-rest to accomodate GraphQL (categories uses mostly GraphQL now)
- * improvement: use vue-cli instead of poi to build as npm package
+ * improvement: use vue-cli instead of poi to build vue-crud-x as npm package
  * chore: clean up and improve code when possible
  * chore: package updates
  * chore: monitor VuetifyJS 2 & VueJS 3 updates, start migration from beta release onwards
