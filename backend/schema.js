@@ -58,7 +58,7 @@ const resolvers = {
         const limit = args.limit ? args.limit : 2
         const page = args.page ? args.page : 0
         const categories = await Category.query().page(page, limit)
-        console.log(categories)
+        // console.log(categories)
         return categories  
       } catch (e) {
         return {}

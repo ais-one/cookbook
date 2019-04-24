@@ -18,8 +18,11 @@ export const GET_CATEGORY = gql`
 export const GET_CATEGORIES = gql`
   query {
     getCategories {
-      id
-      name
+      total
+      results {
+        id
+        name
+      }
     }
   }
 `

@@ -1,5 +1,7 @@
 // import { makeCsvRow, exportCsv } from '@/assets/util'
 import { http } from '@/axios'
+import { apolloClient } from '@/graphql'
+import { GET_CATEGORIES } from '@/queries'
 
 export const crudTable = {
   actionColumn: false,
@@ -47,19 +49,28 @@ export const crudOps = { // CRUD
     let records = []
     let totalRecords = 0
     const { pagination } = payload // filterData
-    const { page, rowsPerPage } = pagination // sortBy, descending
+    // const { page, rowsPerPage } = pagination // sortBy, descending
     try {
-      const { data: { results, total } } = await http.get('/api/categories', {
-        params: {
-          page: page > 0 ? page - 1 : 0,
-          limit: rowsPerPage
-        }
-      })
-      records = results
-      totalRecords = total
+      const rv = await apolloClient.query({ query: GET_CATEGORIES })
+      records = rv.data.getCategories.results
+      totalRecords = rv.data.getCategories.total
+      // console.log('ABC', rv.data.getCategories)
     } catch (e) {
       console.log(e)
     }
+    // try {
+    //   const { data: { results, total } } = await http.get('/api/categories', {
+    //     params: {
+    //       page: page > 0 ? page - 1 : 0,
+    //       limit: rowsPerPage
+    //     }
+    //   })
+    //   // console.log(results)
+    //   records = results
+    //   totalRecords = total
+    // } catch (e) {
+    //   console.log(e)
+    // }
     return { records, pagination, totalRecords }
   },
   findOne: async (payload) => {
