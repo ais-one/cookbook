@@ -29,8 +29,8 @@ export const GET_CATEGORIES = gql`
 
 // mutations
 export const PATCH_CATEGORY = gql`
-  mutation($id: Int!, $username: String!) {
-    putCategory(id: $id, username: $username) {
+  mutation($id: Int!, $body: InputCategory!) {
+    patchCategory(id: $id, body: $body) {
       id
       name
     }
@@ -39,7 +39,7 @@ export const PATCH_CATEGORY = gql`
 
 export const POST_CATEGORY = gql`
   mutation($name: String!) {
-    putCategory(name: $name) {
+    postCategory(name: $name) {
       id
       name
     }

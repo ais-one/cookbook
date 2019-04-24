@@ -83,7 +83,7 @@ const resolvers = {
       }
     },
 
-    putCategory: async (parent, args, { pubsub }, info) => {
+    patchCategory: async (parent, args, { pubsub }, info) => {
       try {
         const category = await Category.query().patchAndFetchById(args.id, args.body)
         pubsub.publish('CATEGORY_UPDATED', { categoryUpdated: category }) // subscription

@@ -1,7 +1,7 @@
 // import { makeCsvRow, exportCsv } from '@/assets/util'
 import { http } from '@/axios'
 import { apolloClient } from '@/graphql'
-import { GET_CATEGORIES } from '@/queries'
+import { GET_CATEGORIES, GET_CATEGORY, PATCH_CATEGORY } from '@/queries'
 
 export const crudTable = {
   actionColumn: false,
@@ -49,7 +49,9 @@ export const crudOps = { // CRUD
     let records = []
     let totalRecords = 0
     const { pagination } = payload // filterData
-    // const { page, rowsPerPage } = pagination // sortBy, descending
+    const { page, rowsPerPage } = pagination // sortBy, descending
+    console.log('TOREMOVE', page, rowsPerPage)
+    // GrqphQL
     try {
       const rv = await apolloClient.query({ query: GET_CATEGORIES })
       records = rv.data.getCategories.results
@@ -58,6 +60,7 @@ export const crudOps = { // CRUD
     } catch (e) {
       console.log(e)
     }
+    // REST
     // try {
     //   const { data: { results, total } } = await http.get('/api/categories', {
     //     params: {
@@ -75,11 +78,18 @@ export const crudOps = { // CRUD
   },
   findOne: async (payload) => {
     const { id } = payload
+    // GrqphQL
     try {
-      const { data } = await http.get(`/api/categories/${id}`)
-      return data
+      const rv = await apolloClient.query({ query: GET_CATEGORY, variables: { id: parseInt(id) } })
+      // console.log('rv', rv)
+      return rv.data.getCategory
     } catch (e) { }
-    return { }
+    // REST
+    // try {
+    //   const { data } = await http.get(`/api/categories/${id}`)
+    //   return data
+    // } catch (e) { }
+    // return { }
   },
   create: async (payload) => {
     try {
@@ -96,18 +106,38 @@ export const crudOps = { // CRUD
     return 201
   },
   update: async (payload) => {
-    console.log(payload)
+    // GrqphQL
+    // console.log(payload)
     try {
       let { record: { id, ...noIdData } } = payload
-      const rv = await http.patch(`/api/categories/${id}`, noIdData)
-      console.log(rv)
-      // if (!doc.exists) throw new Error(409)
-      // if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
-      // await t.set(docRef, noIdData)
+
+      console.log(noIdData)
+      const rv = await apolloClient.mutate({
+        mutation: PATCH_CATEGORY,
+        variables: {
+          id: parseInt(id),
+          body: {
+            name: noIdData.name
+          }
+        }
+      })
+      console.log('rv', rv)
     } catch (e) {
       if (parseInt(e.message) === 409) return 409
       else return 500
     }
+    // REST
+    // try {
+    //   let { record: { id, ...noIdData } } = payload
+    //   const rv = await http.patch(`/api/categories/${id}`, noIdData)
+    //   console.log(rv)
+    //   // if (!doc.exists) throw new Error(409)
+    //   // if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
+    //   // await t.set(docRef, noIdData)
+    // } catch (e) {
+    //   if (parseInt(e.message) === 409) return 409
+    //   else return 500
+    // }
     return 200
   },
   delete: null // TBD if delete, must also delete all dependancies, move all buttons to right?

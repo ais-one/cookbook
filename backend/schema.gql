@@ -10,7 +10,7 @@ type Query {
 type Mutation {
   putAuthor(id: Int!, body: InputAuthor!): Author
   postAuthor(body: InputAuthor!): Author
-  putCategory(id: Int!, body: InputCategory!): Category
+  patchCategory(id: Int!, body: InputCategory!): Category
   postCategory(body: InputCategory!): Category
 }
 
