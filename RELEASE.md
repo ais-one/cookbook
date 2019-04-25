@@ -36,6 +36,13 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 
+### Version 0.1.12
+ * improvement: add test from dredd.io when ready
+ * improvement: more graphql features if possible (optimistic UI, refetch queries, cache)
+ * chore: clean up and improve code when possible
+ * chore: package updates
+ * chore: monitor VuetifyJS 2 & VueJS 3 updates, start migration from beta release onwards
+
 ### Version 0.1.11
  * improvement: added GraphQL (include subscriptions, auth)
    * changes in backend to accomodate GraphQL
@@ -44,8 +51,6 @@
  * chore: clean up and improve code when possible
  * chore: package updates
  * chore: monitor VuetifyJS 2 & VueJS 3 updates, start migration from beta release onwards
- * in pipeline: add test from dredd.io when ready
- * in pipeline: more graphql features if possible (optimistic UI, refetch queries, cache)
 
 ### Version 0.1.10
  * improvement (NO ACTION NEEDED): improve i18n: you have access to i18n when you use .vue file
