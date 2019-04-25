@@ -33,7 +33,7 @@ apiRoutes
     console.log(req.file, req.body)
     res.status(200).json({ message: 'Uploaded' })
   })
-  .post('/uploads', upload.array('photos', 3), function (req, res, next) {
+  .post('/uploads', upload.array('photos', 3), (req, res, next) => {
     console.log(req.files)
     res.status(200).json({ message: 'Uploaded' })
     // req.files is array of `photos` files

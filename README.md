@@ -1,32 +1,27 @@
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-# NOTICES & UPDATES
+## QUICKSTART
 
-> Latest Version 0.1.10 Released 2019 Mar 21 0630 +8GMT
-
-Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>
-
-## 1 New Features
-
-1. Add lit-element with VueJS example (https://medium.zenika.com/using-lit-element-with-vue-js-fa873df4f2a4) - see RELEASE.md file
-2. Show code splitting - see RELEASE.md file
-3. GraphQL - Work in progress
-
-## 2 Dependency Updates
-
-We are monitoring the progress of the following packages and will update when they are released for production:
- - VueJS 3
- - Vuetify 2
-
-## 3 Better Quickstart
-
-The **example-rest** folder is now the preferred project for quickstart. Everything runs locally from a sample REST backend included in this repository, no firebase signup/setup required.
+The **example-rest** folder is the preferred project for quickstart. Everything (frontend and sample REST backend) runs locally.
 
 The **example-nuxt** folder contains example using NuxtJS, a VueJS framework. Two demos are possible SSR and Static Generated Pages. This example also includes Github social login (you need to setup Github make this work)
 
+# NOTICES & UPDATES
+
+> Latest Version 0.1.11 Released 2019 Apr 25 0815 +8GMT
+
+Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>.
+
+See RELEASE.MD file for change history.
+
 Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
 
-## 4 Major Improvements (Without Breaking Changes)
+## 1 New Features
+
+1. GraphQL, this is a major topic and has many features to handle data especially when using the Apollo library. We covered subscriptions and auth, and will be including optimistic UI, refetch & cache in our next release
+2. Use vue-cli instead of poi to build vue-crud-x as npm package
+
+## 2 Major Improvements (Without Breaking Changes)
 
 From Version 0.1.7 onwards, **scoped-slots** can and should be used for customized form and filter. Please use this instead of the previous way of **importing component files** as it is much cleaner. **importing component files** will be deprecated in a later version.
 
@@ -39,10 +34,6 @@ Usage example can be found:
  - in **example-nuxt** project (see example-nuxt/README.md on quickstart)
  - in **example-firebase** project
    - example-firebase/src/pages/MultiCrud/Example.vue (also, demonstrates multiple vue-crud-x used in a single page)
-
-## 5 Changes
-
-See RELEASE.MD file for change history
 
 ---
 
@@ -69,6 +60,7 @@ Our examples showcase the following (unrelated to the vue-crud-x features above)
    - rxJs for cleaner code (auto-complete, debounce, fetch latest)
    - 2FA OTP signin with Google Authenticator (setup with USE_OTP=GA in environement files of both the front and backend. Check DB seeders for the API key to use, or you can find out how to generate your own)
    - websocket example
+   - graphql example
    - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
  - in **example-nuxt**
    - includes features in example-rest plus the following:
@@ -90,6 +82,7 @@ The **backend** project is an Express server used by **example-rest** and **exam
  - Login, JWT & 2FA OTP (using Google Authenticator)
  - Key-Value Store for user token storage on server (can replace with redis)
  - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
+ - GraphQL
 - https://github.com/ais-one/vue-crud-x/tree/master/backend
 
 
@@ -469,13 +462,15 @@ If you ever need to build this library from source...
 npm i
 ```
 
-2. Build project
+2. Build project (using vue-cli)
 
 ```
 npm run build
 ```
 
 The build output can be found in the **dist** folder
+
+**IMPORTANT NOTE: please rename the file VueCrudX.commmon.js to VueCrudX.js**
 
 3. Publishing to npm (only for repo owner)
 
