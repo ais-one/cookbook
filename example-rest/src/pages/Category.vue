@@ -191,4 +191,42 @@ export default {
   }
 }
 
+/*
+    addPost:  ({ commit }, payload) => {
+      // console.log('xxx', payload)
+      apolloClient.mutate({
+        mutation: ADD_POST,
+        variables: payload,
+        update: (cache, {data: { addPost } }) => { // CACHE
+          // console.log('update addPost', addPost)
+          // / console.log(cache, data)
+          const data = cache.readQuery({ query: GET_POSTS })
+          data.getPosts.unshift(addPost)
+          cache.writeQuery({ query: GET_POSTS, data })
+        },
+        optimisticResponse: { // data is updated immediately - why so troublesome? - WRITE TO UI FIRST BEFORE GETTING SERVER RESPONSE
+          __typename: 'Mutation',
+          addPost: {
+            __typename: 'Post',
+            _id: -1,
+            ...payload // missing field created date... normal in optimitic query
+          }
+        },
+        refetchQueries: [ // rerun queries after mutation and update the store
+          {
+            query: INFINITE_SCROLL_POSTS,
+            variables: {
+              pageNum: 1,
+              pageSize: 2
+            }
+          }
+          // add additional queries here...
+        ]
+      }).then(data => {
+        console.log(data.data.addPost)
+      }).catch(e => {
+        commit('setError', e)
+      })
+    },
+ */
 </script>
