@@ -18,7 +18,7 @@ Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-cus
 
 ## 1 New Features
 
-1. GraphQL
+1. GraphQL, this is a major topic and has many features to handle data especially when using the Apollo library. We covered subscriptions and auth, and will be including optimistic UI, refetch & cache in our next release
 2. Use vue-cli instead of poi to build vue-crud-x as npm package
 
 ## 2 Major Improvements (Without Breaking Changes)

@@ -1,5 +1,5 @@
 ### Upcoming
- * Additional GraphQL features
+ * More GraphQL features (Optimistic UI, refetchqueries, cache) if possible
  * Automated testing (dredd.io)
  * VueJS 3.0 update
  * Vuetify 2.0 breaking changes list - check to see which will affect the code base
@@ -45,7 +45,7 @@
  * chore: package updates
  * chore: monitor VuetifyJS 2 & VueJS 3 updates, start migration from beta release onwards
  * in pipeline: add test from dredd.io when ready
- * in pipeline: more graphql features if possible (optimistic UI, refetch queries)
+ * in pipeline: more graphql features if possible (optimistic UI, refetch queries, cache)
 
 ### Version 0.1.10
  * improvement (NO ACTION NEEDED): improve i18n: you have access to i18n when you use .vue file
