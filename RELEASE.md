@@ -1,4 +1,10 @@
 ### Upcoming
+ * RESTful++ Backend For Testing
+   * Non-essential items
+     * Multiple File upload example (to local folder)
+     * Single File upload example (to firebase storage)
+     * Logging
+     * Security Improvements
  * More GraphQL features (Optimistic UI, refetchqueries, cache) if possible
  * Automated testing (dredd.io)
  * VueJS 3.0 update
@@ -12,12 +18,6 @@
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.7
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.5
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.4
- * RESTful++ Backend For Testing
-   * Non-essential items
-     * Multiple File upload example (to local folder)
-     * Single File upload example (to firebase storage)
-     * Logging
-     * Security Improvements
  * improve i18n
  * https://github.com/ais-one/vue-crud-x/issues/32
  * https://github.com/vuetifyjs/vuetify/pull/5232
@@ -37,6 +37,7 @@
 
 
 ### Version 0.1.12
+ * improvement: add winston logger
  * improvement: add test from dredd.io when ready
  * improvement: more graphql features if possible (optimistic UI, refetch queries, cache)
  * chore: clean up and improve code when possible
