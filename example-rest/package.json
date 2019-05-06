@@ -12,7 +12,9 @@
     "prod": "vue-cli-service build --mode production && scp -r -i ../../test.pem dist/* ubuntu@127.0.0.3:~/app/public",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "start": "concurrently \"npm run rest\" \"npm run serve\""
+    "start": "concurrently \"npm run rest\" \"npm run serve\"",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.5.1",
@@ -41,7 +43,8 @@
     "vue-router": "^3.0.6",
     "vue-rx": "^6.1.0",
     "vuetify": "^1.5.13",
-    "vuex": "^3.1.0"
+    "vuex": "^3.1.0",
+    "snyk": "^1.161.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.6.0",
@@ -60,5 +63,6 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "snyk": true
 }
