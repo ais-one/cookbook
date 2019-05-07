@@ -9,6 +9,7 @@
  * Automated testing (dredd.io)
  * VueJS 3.0 update
  * Vuetify 2.0 breaking changes list - check to see which will affect the code base
+   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.18
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.13
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.12
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.11
