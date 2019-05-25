@@ -5,7 +5,6 @@
      * Single File upload example (to firebase storage)
      * Logging
      * Security Improvements
- * More GraphQL features (Optimistic UI, refetchqueries, cache) if possible
  * Automated testing (dredd.io)
  * VueJS 3.0 update
  * Vuetify 2.0 breaking changes list - check to see which will affect the code base
@@ -36,12 +35,10 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
-
 ### Version 0.1.12
- * improvement: add winston logger
- * improvement: add test from dredd.io when ready
- * improvement: more graphql features if possible (optimistic UI, refetch queries, cache)
- * chore: clean up and improve code when possible
+ * improvement: apollo graphql features (optimistic UI, refetch queries, cache)
+ * chore: add formReload flag to VueCrudX (default true), as original REST API always reloads after CRUD. We set it to false (see Categories.vue page), as graphql has optimistic UI, cache and refetch queries available and we make use of them instead for this case.
+ * chore: clean up and improve code when possible, bug fixes
  * chore: package updates
  * chore: monitor VuetifyJS 2 & VueJS 3 updates, start migration from beta release onwards
 

@@ -8,7 +8,7 @@ The **example-nuxt** folder contains example using NuxtJS, a VueJS framework. Tw
 
 # NOTICES & UPDATES
 
-> Latest Version 0.1.12 Released 2019 May 25 0815 +8GMT
+> Latest Version 0.1.12 Released 2019 May 25 1630 +8GMT
 
 Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>.
 
@@ -18,8 +18,7 @@ Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-cus
 
 ## 1 New Features
 
-1. GraphQL, this is a major topic and has many features to handle data especially when using the Apollo library. We covered subscriptions and auth, and will be including optimistic UI, refetch & cache in our next release
-2. Use vue-cli instead of poi to build vue-crud-x as npm package
+1. More Apollo Client GraphQL features cache, optimistic response, refetch queries
 
 ## 2 Major Improvements (Without Breaking Changes)
 
@@ -29,8 +28,8 @@ Usage example can be found:
  - in **example-rest** project (see example-rest/README.md on quickstart)
    - example-rest/src/pages/Page.vue
    - example-rest/src/pages/Book.vue
-   - example-rest/src/pages/author.js
-   - example-rest/src/pages/category.js
+   - example-rest/src/components/author.js
+   - example-rest/src/pages/Category.vue
  - in **example-nuxt** project (see example-nuxt/README.md on quickstart)
  - in **example-firebase** project
    - example-firebase/src/pages/MultiCrud/Example.vue (also, demonstrates multiple vue-crud-x used in a single page)
