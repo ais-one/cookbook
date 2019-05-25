@@ -5,6 +5,8 @@ type Query {
 
   getCategory(id: Int!): Category
   getCategories: Categories
+
+  uploads: [File] # file upload
 }
 
 type Mutation {
@@ -12,6 +14,15 @@ type Mutation {
   postAuthor(body: InputAuthor!): Author
   patchCategory(id: Int!, body: InputCategory!): Category
   postCategory(body: InputCategory!): Category
+
+  singleUpload(file: Upload!): File! # file upload
+}
+
+ 
+type File { # File Upload - Upload scalar type is from Apollo - better to use rest for this?
+  filename: String!
+  mimetype: String!
+  encoding: String!
 }
 
 input InputAuthor {
@@ -61,17 +72,4 @@ type Pages {
 type Subscription {
   categoryAdded: Category
   categoryUpdated: Category
-}
-
-# File Upload - Upload scalar type is from Apollo 
-type File {
-  filename: String!
-  mimetype: String!
-  encoding: String!
-}
-type Query {
-  uploads: [File]
-}
-type Mutation {
-  singleUpload(file: Upload!): File!
 }

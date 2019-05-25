@@ -16,7 +16,7 @@
 
 <script>
 // import { makeCsvRow, exportCsv } from '@/assets/util'
-import { http } from '@/axios'
+// import { http } from '@/axios'
 import { apolloClient } from '@/graphql'
 import { GET_CATEGORIES, GET_CATEGORY, PATCH_CATEGORY, CATEGORY_UPDATED, POST_CATEGORY } from '@/queries'
 
@@ -57,7 +57,9 @@ export default {
           confirmCreate: true,
           confirmUpdate: true,
           confirmDelete: true,
+          formReload: false, // for Apollo GraphQL with refetch capability
           headers: [
+            { text: 'Category id', value: 'id', class: 'pa-1' },
             { text: 'Category Name', value: 'name', class: 'pa-1' }
           ],
           formatters: (value, _type) => value,
@@ -134,26 +136,63 @@ export default {
             // return { }
           },
           create: async (payload) => {
-            // try {
-            //   let { record: { id, ...noIdData } } = payload
-            //   await apolloClient.mutate({
-            //     mutation: POST_CATEGORY,
-            //     variables: {
-            //       name: noIdData.name
-            //     },
-            //   })
-            // } catch (e) {
-            //   // commit('setError', e)
-            //   return 500
-            // }
             try {
+              // TBD handle errors in refetch
               let { record: { id, ...noIdData } } = payload
-              // const rv =
-              await http.post('/api/categories', noIdData)
-              // console.log(rv)
+              await apolloClient.mutate({
+                mutation: POST_CATEGORY,
+                variables: {
+                  body: {
+                    name: noIdData.name
+                  }
+                },
+                // use in memory cache
+                update: (cache, { data: { postCategory } }) => {
+                  const data = cache.readQuery({ query: GET_CATEGORIES })
+                  data.getCategories.results.push(postCategory)
+                  data.getCategories.total += 1
+                  cache.writeQuery({ query: GET_CATEGORIES, data })
+                  // if (this.$refs && this.$refs.category) {
+                  //   this.$refs.category.records = data.getCategories.results
+                  //   this.$refs.category.totalRecords = data.getCategories.total
+                  // } else {
+                  //   console.log('HUH', this.$refs)
+                  // }
+                },
+                // data is updated immediately - why so troublesome? - WRITE TO UI FIRST BEFORE GETTING SERVER RESPONSE
+                // CAVEAT - Not all fields may be updated on client... e.g. server timestamps
+                optimisticResponse: {
+                  __typename: 'Mutation',
+                  postCategory: {
+                    __typename: 'Category',
+                    _id: -1, // set as invalid number so no clashes with existing
+                    aa: 'accc'
+                    // body: {
+                    //   name: noIdData.name
+                    // }
+                  }
+                },
+                // refetchQueries - rerun queries after mutation and update the store
+                // Not applicable for now as vue-crud-x reloads data after create/update/delete
+                // Can set poll export default graphql(channelsListQuery, { options: { pollInterval: 5000 }, })(ChannelsList);
+                refetchQueries: [
+                  { query: GET_CATEGORIES }
+                  // add additional queries here, e.g.
+                  // { query: GET_SOMETHING_RELATED, variables: { pageNum: 1, pageSize: 2 } }
+                ]
+              })
             } catch (e) {
+              // commit('setError', e)
               return 500
             }
+            // try {
+            //   let { record: { id, ...noIdData } } = payload
+            //   // const rv =
+            //   await http.post('/api/categories', noIdData)
+            //   // console.log(rv)
+            // } catch (e) {
+            //   return 500
+            // }
             return 201
           },
           update: async (payload) => {
@@ -171,33 +210,6 @@ export default {
                     name: noIdData.name
                   }
                 }
-                // use in memory cache
-                // update: (cache, {data: { postCategory } }) => { // CACHE
-                //   // console.log('update addPost', addPost)
-                //   // / console.log(cache, data)
-                //   const data = cache.readQuery({ query: GET_CATEGORIES })
-                //   data.getCategories.results.push(postCategory)
-                //   data.getCategories.total += 1
-                //   cache.writeQuery({ query: GET_CATEGORIES, data })
-                // }
-                // ,
-                // optimisticResponse: { // data is updated immediately - why so troublesome? - WRITE TO UI FIRST BEFORE GETTING SERVER RESPONSE
-                //   __typename: 'Mutation',
-                //   postCategory: {
-                //     __typename: 'Category',
-                //     _id: -1, // set as invalid number so no clashes with existing
-                //     ...payload // missing field created date... normal in optimitic query
-                //   }
-                // },
-
-                // refetchQueries - rerun queries after mutation and update the store
-                // Not applicable for now as vue-crud-x reloads data after create/update/delete
-                // Can set poll export default graphql(channelsListQuery, { options: { pollInterval: 5000 }, })(ChannelsList);
-                // refetchQueries: [
-                //   { query: GET_CATEGORIES, variables: { pageNum: 1, pageSize: 2 } }
-                //   // add additional queries here...
-                // ]
-
               })
               // console.log('rv', rv)
             } catch (e) {

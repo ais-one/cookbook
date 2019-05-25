@@ -19,7 +19,7 @@
                   </p>
                   <p class="py-2 text-xs-center">GraphQL Query Result... ({{ hello }})</p>
                   <!--  SINGLE FILE -->
-                  <!-- <form action="/uploadfile" enctype="multipart/form-data" method="POST"> 
+                  <!-- <form action="/uploadfile" enctype="multipart/form-data" method="POST">
                     <input type="file" name="myFile" />
                     <input type="submit" value="Upload a file"/>
                   </form> -->
@@ -29,7 +29,7 @@
                     <input type="submit" value="Upload your files"/>
                   </form> -->
                   <!--   PHOTO-->
-                  <!-- <form action="/upload/photo" enctype="multipart/form-data" method="POST"> 
+                  <!-- <form action="/upload/photo" enctype="multipart/form-data" method="POST">
                     <input type="file" name="myImage" accept="image/*" />
                     <input type="submit" value="Upload Photo"/>
                   </form> -->
@@ -59,39 +59,31 @@ import gql from 'graphql-tag'
     </div>
   </div>
 </template>
-
 file: ''
-
-      submitFile(){
-              // Initialize the form data
-            let formData = new FormData();
-
-              // Add the form data we need to submit
-            formData.append('file', this.file);
-
-          // Make the request to the POST /single-file URL
-            axios.post( '/single-file',
-                formData,
-                {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-              }
-            ).then(function(){
-          console.log('SUCCESS!!');
-        })
-        .catch(function(){
-          console.log('FAILURE!!');
-        });
-      // Handles a change on the file upload
-
-      handleFileUpload(){
-        this.file = this.$refs.file.files[0];
+submitFile(){
+  // Initialize the form data
+  let formData = new FormData();
+  // Add the form data we need to submit
+  formData.append('file', this.file);
+  // Make the request to the POST /single-file URL
+  axios.post( '/single-file',
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
       }
-*/
-
-
-/*
+    }
+  ).then(function(){
+    console.log('SUCCESS!!');
+  })
+  .catch(function(){
+    console.log('FAILURE!!');
+  });
+}
+// Handles a change on the file upload
+handleFileUpload(){
+  this.file = this.$refs.file.files[0];
+}
 <template>
   <div class="container">
     <div class="large-12 medium-12 small-12 cell">
@@ -103,7 +95,6 @@ file: ''
   </div>
 </template>
 
-<script>
   export default {
       // Defines the data used by the component
     data(){
@@ -147,7 +138,6 @@ file: ''
       }
     }
   }
-</script>
 */
 export default {
   name: 'dashboard',

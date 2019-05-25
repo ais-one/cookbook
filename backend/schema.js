@@ -64,7 +64,7 @@ const resolvers = {
         return {}
       }
     },
-    files: () => {
+    uploads: () => {
       // Return the record of files uploaded from your DB or API or filesystem.
     }
   },
