@@ -63,7 +63,7 @@ export default {
             { text: 'Category Name', value: 'name', class: 'pa-1' }
           ],
           formatters: (value, _type) => value,
-          doPage: 2,
+          doPage: false, // rowsPerPage, no paging for this
           showFilterButton: false
         },
         crudFilter: { FilterVue: null, filterData: { } },
@@ -149,27 +149,26 @@ export default {
                 // use in memory cache
                 update: (cache, { data: { postCategory } }) => {
                   const data = cache.readQuery({ query: GET_CATEGORIES })
+                  // work with the cache data - START
+                  // if you are working with paging, you may want to comment the lines below out if page limit already reached. e.g
+                  // if (this.$refs.category.totalRecords < data.getCategories.total) {
                   data.getCategories.results.push(postCategory)
                   data.getCategories.total += 1
-                  cache.writeQuery({ query: GET_CATEGORIES, data })
-                  // if (this.$refs && this.$refs.category) {
-                  //   this.$refs.category.records = data.getCategories.results
-                  //   this.$refs.category.totalRecords = data.getCategories.total
-                  // } else {
-                  //   console.log('HUH', this.$refs)
                   // }
+                  // work with the cache data - END
+                  cache.writeQuery({ query: GET_CATEGORIES, data })
                 },
                 // data is updated immediately - why so troublesome? - WRITE TO UI FIRST BEFORE GETTING SERVER RESPONSE
                 // CAVEAT - Not all fields may be updated on client... e.g. server timestamps
+                // if mutation fails too bad
                 optimisticResponse: {
                   __typename: 'Mutation',
                   postCategory: {
                     __typename: 'Category',
                     _id: -1, // set as invalid number so no clashes with existing
-                    aa: 'accc'
-                    // body: {
-                    //   name: noIdData.name
-                    // }
+                    body: {
+                      name: noIdData.name
+                    }
                   }
                 },
                 // refetchQueries - rerun queries after mutation and update the store
