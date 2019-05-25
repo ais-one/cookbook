@@ -19,8 +19,9 @@ let credentials
 if (USE_HTTPS) credentials = { key: fs.readFileSync(`${USE_HTTPS}/privkey.pem`), cert: fs.readFileSync(`${USE_HTTPS}/fullchain.pem`) }
 
 // const functions = require('firebase-functions')
-const bodyParser = require('body-parser')
 const express = require('express')
+const history = require('connect-history-api-fallback');
+const bodyParser = require('body-parser')
 const cors = require('cors')
 const http = require('http')
 const https = require('https')
@@ -38,14 +39,12 @@ const app = express()
 
 apollo.applyMiddleware({ app }); // console.log(`GraphqlPATH ${server.graphqlPath}`)
 
-app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
+app.use(history())
 app.use(express.static('public')) // for html content
-
-app.use('/api-docs', express.static('docs')) // for OpenAPI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { // for OpenAPI
+app.use('/api-docs', express.static('docs'), swaggerUi.serve, swaggerUi.setup(swaggerDocument, { // for OpenAPI
   swaggerOptions: {
     docExpansion: 'none'
   },  

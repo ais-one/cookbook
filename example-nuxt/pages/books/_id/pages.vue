@@ -134,7 +134,7 @@ export default {
                 record: { content },
                 parentId
               } = payload
-              const rv = await http.post(`/api/books/${parentId}/pages`, {
+              const rv = await this.$axios.post(`/api/books/${parentId}/pages`, {
                 content
               })
               console.log('add page', rv)

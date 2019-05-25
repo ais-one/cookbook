@@ -18,7 +18,7 @@
 // import { makeCsvRow, exportCsv } from '@/assets/util'
 import { http } from '@/axios'
 import { apolloClient } from '@/graphql'
-import { GET_CATEGORIES, GET_CATEGORY, PATCH_CATEGORY, CATEGORY_UPDATED } from '@/queries'
+import { GET_CATEGORIES, GET_CATEGORY, PATCH_CATEGORY, CATEGORY_UPDATED, POST_CATEGORY } from '@/queries'
 
 export default {
   apollo: {
@@ -134,6 +134,18 @@ export default {
             // return { }
           },
           create: async (payload) => {
+            // try {
+            //   let { record: { id, ...noIdData } } = payload
+            //   await apolloClient.mutate({
+            //     mutation: POST_CATEGORY,
+            //     variables: {
+            //       name: noIdData.name
+            //     },
+            //   })
+            // } catch (e) {
+            //   // commit('setError', e)
+            //   return 500
+            // }
             try {
               let { record: { id, ...noIdData } } = payload
               // const rv =
@@ -142,10 +154,6 @@ export default {
             } catch (e) {
               return 500
             }
-            // return { // EXAMPLE return object with code property omitted
-            //   ok: true,
-            //   msg: 'OK'
-            // }
             return 201
           },
           update: async (payload) => {
@@ -163,6 +171,33 @@ export default {
                     name: noIdData.name
                   }
                 }
+                // use in memory cache
+                // update: (cache, {data: { postCategory } }) => { // CACHE
+                //   // console.log('update addPost', addPost)
+                //   // / console.log(cache, data)
+                //   const data = cache.readQuery({ query: GET_CATEGORIES })
+                //   data.getCategories.results.push(postCategory)
+                //   data.getCategories.total += 1
+                //   cache.writeQuery({ query: GET_CATEGORIES, data })
+                // }
+                // ,
+                // optimisticResponse: { // data is updated immediately - why so troublesome? - WRITE TO UI FIRST BEFORE GETTING SERVER RESPONSE
+                //   __typename: 'Mutation',
+                //   postCategory: {
+                //     __typename: 'Category',
+                //     _id: -1, // set as invalid number so no clashes with existing
+                //     ...payload // missing field created date... normal in optimitic query
+                //   }
+                // },
+
+                // refetchQueries - rerun queries after mutation and update the store
+                // Not applicable for now as vue-crud-x reloads data after create/update/delete
+                // Can set poll export default graphql(channelsListQuery, { options: { pollInterval: 5000 }, })(ChannelsList);
+                // refetchQueries: [
+                //   { query: GET_CATEGORIES, variables: { pageNum: 1, pageSize: 2 } }
+                //   // add additional queries here...
+                // ]
+
               })
               // console.log('rv', rv)
             } catch (e) {
@@ -174,9 +209,6 @@ export default {
             //   let { record: { id, ...noIdData } } = payload
             //   const rv = await http.patch(`/api/categories/${id}`, noIdData)
             //   console.log(rv)
-            //   // if (!doc.exists) throw new Error(409)
-            //   // if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
-            //   // await t.set(docRef, noIdData)
             // } catch (e) {
             //   if (parseInt(e.message) === 409) return 409
             //   else return 500
@@ -190,43 +222,4 @@ export default {
     }
   }
 }
-
-/*
-    addPost:  ({ commit }, payload) => {
-      // console.log('xxx', payload)
-      apolloClient.mutate({
-        mutation: ADD_POST,
-        variables: payload,
-        update: (cache, {data: { addPost } }) => { // CACHE
-          // console.log('update addPost', addPost)
-          // / console.log(cache, data)
-          const data = cache.readQuery({ query: GET_POSTS })
-          data.getPosts.unshift(addPost)
-          cache.writeQuery({ query: GET_POSTS, data })
-        },
-        optimisticResponse: { // data is updated immediately - why so troublesome? - WRITE TO UI FIRST BEFORE GETTING SERVER RESPONSE
-          __typename: 'Mutation',
-          addPost: {
-            __typename: 'Post',
-            _id: -1,
-            ...payload // missing field created date... normal in optimitic query
-          }
-        },
-        refetchQueries: [ // rerun queries after mutation and update the store
-          {
-            query: INFINITE_SCROLL_POSTS,
-            variables: {
-              pageNum: 1,
-              pageSize: 2
-            }
-          }
-          // add additional queries here...
-        ]
-      }).then(data => {
-        console.log(data.data.addPost)
-      }).catch(e => {
-        commit('setError', e)
-      })
-    },
- */
 </script>
