@@ -8,7 +8,7 @@ The **example-nuxt** folder contains example using NuxtJS, a VueJS framework. Tw
 
 # NOTICES & UPDATES
 
-> Latest Version 0.1.12 Released 2019 May 25 1630 +8GMT
+> Latest Version 0.1.13 Released 2019 Jun 25 1630 +8GMT
 
 Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>.
 

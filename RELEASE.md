@@ -35,6 +35,12 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
+### Version 0.1.13
+ * improvement: backend, add testing?
+ * chore: clean up and improve code when possible, bug fixes
+ * chore: package updates
+ * chore: monitor VuetifyJS 2 & VueJS 3 updates, start migration from beta release onwards
+
 ### Version 0.1.12
  * improvement: apollo graphql features (optimistic UI, refetch queries, cache)
  * chore: add formReload flag to VueCrudX (default true), as original REST API always reloads after CRUD. We set it to false (see Categories.vue page), as graphql has optimistic UI, cache and refetch queries available and we make use of them instead for this case.
