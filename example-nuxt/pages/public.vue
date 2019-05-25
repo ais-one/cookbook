@@ -9,7 +9,7 @@
 <script>
 import _cloneDeep from 'lodash.clonedeep'
 
-const XrudStore = {
+const DemoStore = {
   namespaced: true,
   state: {
     count: { counter: 0 }
@@ -51,9 +51,11 @@ export default {
       // register a new module only if doesn't exist
       if (!(this.$store && this.$store.state && this.$store.state[name])) {
         console.log('Dynamic Vuex module created...')
-        this.$store.registerModule(name, _cloneDeep(XrudStore)) // { preserveState: true } has no effect
+        this.$store.registerModule(name, _cloneDeep(DemoStore)) // { preserveState: true } has no effect
+        // TEST START - Uncomment code so that no error occurs
         // this.$store.state[name] = {} // required for nuxt
         // this.$store.commit(`blah/setCounter`, { counter: 0 }) // required for nuxt generated...
+        // TEST EMD
         console.log('Vuex store state', this.$store.state)
       }
       // window.addEventListener('click', e => alert('clicked')) // Cannot Generate! Direct Call Will Fail

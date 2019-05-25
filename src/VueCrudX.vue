@@ -65,6 +65,7 @@ export default {
     this.saveRow = this.crudTable.saveRow ? this.crudTable.saveRow : false // save by row? default false
     this.inlineReload = Object.assign(this.inlineReload, this.crudTable.inlineReload || {}) // default true
 
+    this.formReload = this.crudTable.formReload !== false // default true
     this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null // check if components and datas are present
     this.hasFormVue = typeof this.crudForm.FormVue === 'function' || this.formAutoData // TODEPRECATE
     this.hasFilterData = this.isObject(this.crudFilter.filterData)
@@ -142,6 +143,7 @@ export default {
       canUpdate: false, // permissions
       canCreate: false,
       canDelete: false,
+      formReload: true, // refetch after create, update or delete
 
       // form
       crudFormFlag: false,
@@ -405,7 +407,7 @@ export default {
 
       if (this.record.id) await this.updateRecord({ record: this.record })
       else await this.createRecord({ record: this.record, parentId: this.parentId })
-      await this.getRecordsHelper()
+      if (this.formReload) await this.getRecordsHelper()
       this.closeCrudForm()
     },
     async crudFormDelete (e) {
@@ -413,7 +415,7 @@ export default {
       const { id } = this.record
       if (id) {
         await this.deleteRecord({ id })
-        await this.getRecordsHelper()
+        if (this.formReload) await this.getRecordsHelper()
       }
       this.closeCrudForm()
     },

@@ -16,9 +16,9 @@
 
 <script>
 // import { makeCsvRow, exportCsv } from '@/assets/util'
-import { http } from '@/axios'
+// import { http } from '@/axios'
 import { apolloClient } from '@/graphql'
-import { GET_CATEGORIES, GET_CATEGORY, PATCH_CATEGORY, CATEGORY_UPDATED } from '@/queries'
+import { GET_CATEGORIES, GET_CATEGORY, PATCH_CATEGORY, CATEGORY_UPDATED, POST_CATEGORY } from '@/queries'
 
 export default {
   apollo: {
@@ -57,11 +57,13 @@ export default {
           confirmCreate: true,
           confirmUpdate: true,
           confirmDelete: true,
+          formReload: false, // for Apollo GraphQL with refetch capability
           headers: [
+            { text: 'Category id', value: 'id', class: 'pa-1' },
             { text: 'Category Name', value: 'name', class: 'pa-1' }
           ],
           formatters: (value, _type) => value,
-          doPage: 2,
+          doPage: false, // rowsPerPage, no paging for this
           showFilterButton: false
         },
         crudFilter: { FilterVue: null, filterData: { } },
@@ -135,16 +137,60 @@ export default {
           },
           create: async (payload) => {
             try {
+              // TBD handle errors in refetch
               let { record: { id, ...noIdData } } = payload
-              // const rv =
-              await http.post('/api/categories', noIdData)
-              // console.log(rv)
+              await apolloClient.mutate({
+                mutation: POST_CATEGORY,
+                variables: {
+                  body: {
+                    name: noIdData.name
+                  }
+                },
+                // use in memory cache
+                update: (cache, { data: { postCategory } }) => {
+                  const data = cache.readQuery({ query: GET_CATEGORIES })
+                  // work with the cache data - START
+                  // if you are working with paging, you may want to comment the lines below out if page limit already reached. e.g
+                  // if (this.$refs.category.totalRecords < data.getCategories.total) {
+                  data.getCategories.results.push(postCategory)
+                  data.getCategories.total += 1
+                  // }
+                  // work with the cache data - END
+                  cache.writeQuery({ query: GET_CATEGORIES, data })
+                },
+                // data is updated immediately - why so troublesome? - WRITE TO UI FIRST BEFORE GETTING SERVER RESPONSE
+                // CAVEAT - Not all fields may be updated on client... e.g. server timestamps
+                // if mutation fails too bad
+                optimisticResponse: {
+                  __typename: 'Mutation',
+                  postCategory: {
+                    __typename: 'Category',
+                    _id: -1, // set as invalid number so no clashes with existing
+                    body: {
+                      name: noIdData.name
+                    }
+                  }
+                },
+                // refetchQueries - rerun queries after mutation and update the store
+                // Not applicable for now as vue-crud-x reloads data after create/update/delete
+                // Can set poll export default graphql(channelsListQuery, { options: { pollInterval: 5000 }, })(ChannelsList);
+                refetchQueries: [
+                  { query: GET_CATEGORIES }
+                  // add additional queries here, e.g.
+                  // { query: GET_SOMETHING_RELATED, variables: { pageNum: 1, pageSize: 2 } }
+                ]
+              })
             } catch (e) {
+              // commit('setError', e)
               return 500
             }
-            // return { // EXAMPLE return object with code property omitted
-            //   ok: true,
-            //   msg: 'OK'
+            // try {
+            //   let { record: { id, ...noIdData } } = payload
+            //   // const rv =
+            //   await http.post('/api/categories', noIdData)
+            //   // console.log(rv)
+            // } catch (e) {
+            //   return 500
             // }
             return 201
           },
@@ -174,9 +220,6 @@ export default {
             //   let { record: { id, ...noIdData } } = payload
             //   const rv = await http.patch(`/api/categories/${id}`, noIdData)
             //   console.log(rv)
-            //   // if (!doc.exists) throw new Error(409)
-            //   // if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
-            //   // await t.set(docRef, noIdData)
             // } catch (e) {
             //   if (parseInt(e.message) === 409) return 409
             //   else return 500
@@ -190,5 +233,4 @@ export default {
     }
   }
 }
-
 </script>

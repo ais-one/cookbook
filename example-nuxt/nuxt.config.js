@@ -33,6 +33,7 @@ export default {
   },
 
   router: {
+    // middleware: '',
     extendRoutes(routes, resolve) {
       routes.push({
         name: 'custom404',
@@ -88,6 +89,20 @@ export default {
             fr: { welcome: 'Bienvenue' }
           }
         }
+        // lazy: true,
+        // langDir: 'lang/'
+        // // lang/[lang].js
+        // export default (context) => {
+        //   return new Promise(function (resolve) {
+        //     resolve({
+        //       welcome: 'Welcome'
+        //     })
+        //   });
+        // }
+        // // or
+        // export default {
+        //   welcome: 'Welcome'
+        // }
       }
     ]
   ],
