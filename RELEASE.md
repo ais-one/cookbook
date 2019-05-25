@@ -36,6 +36,7 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.13
+ * vue3: https://github.com/vuejs/rfcs/blob/master/active-rfcs/0001-new-slot-syntax.md
  * improvement: backend, add testing?
  * chore: clean up and improve code when possible, bug fixes
  * chore: package updates

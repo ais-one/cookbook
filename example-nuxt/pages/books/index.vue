@@ -3,14 +3,14 @@
     <v-layout row wrap>
       <v-flex xs12>
         <vue-crud-x ref="book-table" storeName="book-table" :parentId="null" v-bind="bookDefs" @form-open="openBookForm">
-          <template slot="filter" slot-scope="{ filterData, parentId, storeName, vcx }">
+          <template v-slot:filter="{ filterData, parentId, storeName, vcx }">
             <h1>Custom {{ storeName }} Filter Slot</h1>
             <p>Records: {{ vcx.records.length }}</p>
             <div v-for="(filter, index) in filterData" :key="index">
               <component :is="filter.type" v-model="filter.value" v-bind="filter.attrs"></component>
             </div>
           </template>
-          <template slot="form" slot-scope="{ record, parentId, storeName }">
+          <template v-slot:form="{ record, parentId, storeName }">
             <div>
               <h1>Custom {{ storeName }} Form Slot - Has Parent: {{ !!parentId }}</h1>
               <v-card-text>
@@ -36,12 +36,12 @@
                       </v-list-tile-title>
                     </v-list-tile>
                   </template>
-                  <template slot="selection" slot-scope="{ item, selected }">
+                  <template v-slot:selection="{ item, selected }">
                     <v-chip :selected="selected" close @input="remove(item)">
                       <span v-text="item.name"></span>
                     </v-chip>
                   </template>
-                  <template slot="item" slot-scope="{ item }">
+                  <template v-slot:item="{ item }">
                     <v-list-tile-content>
                       <v-list-tile-title v-text="item.name"></v-list-tile-title>
                     </v-list-tile-content>

@@ -631,10 +631,10 @@ export default {
         v-bind="attrs.table"
         class="fixed-header v-table__overflow"
       >
-        <template slot="headerCell" slot-scope="props">
+        <template v-slot:headerCell="props">
           <span v-html="props.header.text"></span>
         </template>
-        <!-- <template slot="headers" slot-scope="props">
+        <!-- <template v-slot:headers="props">
           <tr>
             <th>
               <v-checkbox
@@ -656,7 +656,7 @@ export default {
             </th>
           </tr>
         </template> -->
-        <template slot="items" slot-scope="props">
+        <template v-slot:items="props">
           <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
           <tr :ref="`edit-${props.index}`" @click.stop="rowClicked(props.item, $event, props.index)">
             <td :key="header.value" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">

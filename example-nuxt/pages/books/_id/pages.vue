@@ -3,16 +3,16 @@
     <v-layout row wrap>
       <v-flex xs12>
         <vue-crud-x ref="book-pages-table" storeName="book-pages-table" :parentId="parentId" v-bind="pageDefs">
-          <template slot="filter" slot-scope="{ filterData, parentId, storeName }">
+          <template v-slot:filter="{ filterData, parentId, storeName }">
             <div>{{ filterData }}</div>
             <hr />
             <div>{{ !!parentId }} {{ storeName }}</div>
           </template>
-          <!-- <template slot="table" slot-scope="{ records, totalRecs, pagination }">
+          <!-- <template v-slot:table="{ records, totalRecs, pagination }">
             <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['my-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
             <div>{{ totalRecs }} {{ pagination }}</div>
           </template> -->
-          <template slot="form" slot-scope="{ record, parentId, storeName }">
+          <template v-slot:form="{ record, parentId, storeName }">
             <div>
               <div>{{ record }} {{ !!parentId }} {{ storeName }}</div>
               <h1>Pages Form</h1>

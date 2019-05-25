@@ -4,10 +4,10 @@
     :parentId="null"
     v-bind="partyDefs"
   >
-    <template slot="filter" slot-scope="{ filterData, parentId, storeName }">
+    <template v-slot:filter="{ filterData, parentId, storeName }">
       <my-filter :filterData="filterData" :parentId="parentId" :storeName="storeName" />
     </template>
-    <template slot="form" slot-scope="{ record, parentId, storeName }">
+    <template v-slot:form="{ record, parentId, storeName }">
       <my-form :record="record" :parentId="parentId" :storeName="storeName" />
     </template>
   </vue-crud-x>
