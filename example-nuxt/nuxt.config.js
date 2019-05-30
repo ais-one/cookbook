@@ -32,35 +32,35 @@ export default {
     ]
   },
 
-  router: {
-    // middleware: '',
-    extendRoutes(routes, resolve) {
-      routes.push({
-        name: 'custom404',
-        path: '*',
-        component: resolve(__dirname, 'pages/404.vue')
-      })
-    }
-  },
-
-  // generate: {
-  //   https://github.com/nuxt/nuxt.js/issues/1018
-  //   routes: function () {
-  //     let posts = axios.get('https://api.com/posts', {params: {size: 10}}).then((res) => { // get about 10 records from API to populate page
-  //       return res.data.posts.map((post) => {
-  //         return '/feed/' + post.id
-  //       })
-  //     })
-  //     let users = axios.get('https://api.com/users', {params: {size: 10}}).then((res) => { // get about 10 records from API to populate page
-  //       return res.data.content.map((user) => {
-  //         return '/user/' + user.id
-  //       })
-  //     })
-  //     return Promise.all([posts, users]).then(values => {
-  //       return values.join().split(',');
+  // router: {
+  //   // middleware: '',
+  //   extendRoutes(routes, resolve) {
+  //     routes.push({
+  //       name: 'custom404', path: '*', component: resolve(__dirname, 'pages/404.vue') // better not to use this for 404 handling, use generate.fallback
   //     })
   //   }
   // },
+
+  generate: {
+    fallback: true // if you want to use '404.html' instead of the default '200.html', uses layouts/error.vue
+    // fallback: 'my-fallback/file.html' // if your hosting needs a custom location
+    // https://github.com/nuxt/nuxt.js/issues/1018
+    // routes: function () {
+    //   let posts = axios.get('https://api.com/posts', {params: {size: 10}}).then((res) => { // get about 10 records from API to populate page
+    //     return res.data.posts.map((post) => {
+    //       return '/feed/' + post.id
+    //     })
+    //   })
+    //   let users = axios.get('https://api.com/users', {params: {size: 10}}).then((res) => { // get about 10 records from API to populate page
+    //     return res.data.content.map((user) => {
+    //       return '/user/' + user.id
+    //     })
+    //   })
+    //   return Promise.all([posts, users]).then(values => {
+    //     return values.join().split(',');
+    //   })
+    // }
+  },
 
   // Customize the progress-bar color
   loading: { color: '#fff' },
@@ -123,7 +123,7 @@ export default {
     // Options
     redirect: {
       callback: '/callback',
-      // login: '/login',
+      // login: '/login', // page to redirect to on auth failure, default is /login
       // logout: '/',
       home: false
     },
