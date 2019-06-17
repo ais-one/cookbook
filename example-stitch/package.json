@@ -1,0 +1,37 @@
+{
+  "name": "example-firebase",
+  "version": "0.0.0",
+  "description": "A mongo atlas stitch example for vue-crud-x component usage",
+  "author": "Aaron Gong <aaronjxz@gmail.com>",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "deploy": "firebase deploy --only hosting",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "mongodb-stitch-browser-sdk": "^4.4.0",
+    "date-fns": "^1.30.0",
+    "vue": "^2.6.10",
+    "vue-i18n": "^8.11.2",
+    "vue-recaptcha": "^1.1.1",
+    "vue-router": "^3.0.6",
+    "vuetify": "^1.5.14",
+    "vuex": "^3.1.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.7.0",
+    "@vue/cli-plugin-eslint": "^3.7.0",
+    "@vue/cli-service": "^3.7.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

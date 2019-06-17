@@ -15,7 +15,7 @@
                   <p class="py-2 text-xs-center">On this page, websocket messages are sent to server every 10 seconds (websocket must be enabled .env file). Message will appear server console.log</p>
                   <p class="py-2 text-xs-center">Message to server will be echoed back here... ({{ wsMsg }})</p>
                   <p class="py-2 text-xs-center">
-                    <v-btn @click="test">Test GraphQL</v-btn>
+                    <v-btn @click="testGraphQL">Test GraphQL</v-btn>
                   </p>
                   <p class="py-2 text-xs-center">GraphQL Query Result... ({{ hello }})</p>
                   <!--  SINGLE FILE -->
@@ -196,7 +196,7 @@ export default {
     }
   },
   methods: {
-    async test () {
+    async testGraphQL () {
       this.$apollo.queries.hello.skip = false
       await this.$apollo.queries.hello.refetch()
       // alert('Test2 ' + this.hello)

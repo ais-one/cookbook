@@ -1,0 +1,11 @@
+{
+  "firebaseCfg": {
+    "apiKey": "",
+    "authDomain": "",
+    "databaseURL": "",
+    "projectId": "",
+    "storageBucket": "",
+    "messagingSenderId": ""
+  },
+  "recaptchaSiteKey": ""  
+}

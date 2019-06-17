@@ -8,6 +8,7 @@
  * Automated testing (dredd.io)
  * VueJS 3.0 update
  * Vuetify 2.0 breaking changes list - check to see which will affect the code base
+   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-beta.0
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.18
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.13
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.12
@@ -36,6 +37,8 @@
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
 ### Version 0.1.13
+ * add mongo stitch example, example-atlas
+ * nuxt: add error loayout, handle dynamic route error on static pages
  * vue3: https://github.com/vuejs/rfcs/blob/master/active-rfcs/0001-new-slot-syntax.md
  * improvement: backend, add testing?
  * chore: clean up and improve code when possible, bug fixes
