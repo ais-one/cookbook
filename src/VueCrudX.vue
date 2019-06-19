@@ -634,28 +634,6 @@ export default {
         <template v-slot:headerCell="props">
           <span v-html="props.header.text"></span>
         </template>
-        <!-- <template v-slot:headers="props">
-          <tr>
-            <th>
-              <v-checkbox
-                :input-value="props.all"
-                :indeterminate="props.indeterminate"
-                primary
-                hide-details
-                @click.native="toggleAll"
-              ></v-checkbox>
-            </th>
-            <th
-              v-for="header in props.headers"
-              :key="header.text"
-              :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-              @click="changeSort(header.value)"
-            >
-              <v-icon small>arrow_upward</v-icon>
-              {{ header.text }}
-            </th>
-          </tr>
-        </template> -->
         <template v-slot:items="props">
           <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
           <tr :ref="`edit-${props.index}`" @click.stop="rowClicked(props.item, $event, props.index)">

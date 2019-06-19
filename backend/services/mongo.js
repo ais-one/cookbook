@@ -108,3 +108,41 @@ module.exports = mongo
 //   mongo,
 //   ObjectID: require('mongodb').ObjectID
 // }
+
+
+/*
+const mongo = require("mongodb").MongoClient;
+mongo.connect("mongodb://localhost:27017/?replicaSet=rs0").then(client => {
+ console.log("Connected to MongoDB server");
+ // Select DB and Collection
+ const db = client.db("mydb");
+ const collection = db.collection("Stocks");
+ pipeline = [
+   {
+     $match: { "fullDocument.price": { $gte: 250 } }
+   }
+ ];
+ // Define change stream
+ const changeStream = collection.watch(pipeline);
+ // start listen to changes
+ changeStream.on("change", function(event) {
+   console.log(JSON.stringify(event));
+ });
+});
+
+
+{
+  "_id":{
+  "_data":"825C5D51F70000000129295A1004E83608EE8F1B4FBABDCEE73D5BF31FC946645F696400645C5D51F73ACA83479B48DE6E0004"},
+  "operationType":"insert",
+  "clusterTime":"6655565945622233089",
+  "fullDocument":{
+  "_id":"5c5d51f73aca83479b48de6e",
+  "ticker":"AAPL",
+  "Price":300
+  },
+  "ns":{"db":"mydb","coll":"Stocks"},
+  "documentKey":{"_id":"5c5d51f73aca83479b48de6e"}
+  }
+  */
+ 
