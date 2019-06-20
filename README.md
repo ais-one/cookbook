@@ -1,11 +1,5 @@
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-## QUICKSTART
-
-The **example-rest** folder is the preferred project for quickstart. Everything (frontend and sample REST backend) runs locally.
-
-The **example-nuxt** folder contains example using NuxtJS, a VueJS framework. Two demos are possible SSR and Static Generated Pages. This example also includes Github social login (you need to setup Github make this work)
-
 # NOTICES & UPDATES
 
 > Latest Version 0.1.13 Released 2019 Jun 20 0815 +8GMT
@@ -17,6 +11,13 @@ Roadmap and latest updates can be found on the <a href="https://github.com/ais-o
 See RELEASE.MD file for change history.
 
 Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
+
+
+## 0 QUICKSTART
+
+- **example-rest** folder is preferred project for quickstart. Everything runs locally.
+- **example-nuxt** folder uses NuxtJS (SSR and generate demo), Also includes Github login
+
 
 ## 1 New Features
 
