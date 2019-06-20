@@ -98,7 +98,8 @@
 import * as partyDefs from './party'
 import * as partyNotesDefs from './party-notes'
 
-import ImageUpload from '@/components/ImageUpload'
+import ImageUpload from '../../../../src/ImageUpload'
+// import ImageUpload from '@/components/ImageUpload'
 
 export default {
   name: 'multi-crud-example',

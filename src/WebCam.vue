@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div><video ref="video" id="video" width="640" height="480" autoplay></video></div>
+    <div><video ref="video" id="video" width="320" height="240" autoplay></video></div>
     <div><button id="snap" v-on:click="capture()">Snap Photo</button></div>
-    <canvas ref="canvas" id="canvas" width="640" height="480"></canvas>
+    <canvas ref="canvas" id="canvas" width="320" height="240"></canvas>
     <ul>
       <li v-for="c in captures" :key="c">
         <img v-bind:src="c" height="50" />
@@ -24,8 +24,13 @@ export default {
   mounted () {
     this.video = this.$refs.video
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      // console.log('xxxx', window.URL.createObjectURL)
       navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-        this.video.src = window.URL.createObjectURL(stream)
+        try {
+          this.video.srcObject = stream
+        } catch (e) {
+          this.video.src = window.URL.createObjectURL(stream)
+        }
         this.video.play()
       })
     }

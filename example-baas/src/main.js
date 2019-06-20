@@ -7,9 +7,9 @@ import router from '@/router'
 import { auth } from '@/firebase'
 import { stitch } from '@/mongo'
 import { store } from '@/store'
-import TimePicker from '@/components/TimePicker.vue'
-import DatePicker from '@/components/DatePicker.vue'
-import VueCrudX from '../../src/VueCrudX' // Component shared between projects
+import TimePicker from '../../src/TimePicker.vue' // Components shared between projects
+import DatePicker from '../../src/DatePicker.vue'
+import VueCrudX from '../../src/VueCrudX'
 
 Vue.config.productionTip = false
 
