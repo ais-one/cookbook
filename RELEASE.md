@@ -36,6 +36,9 @@
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
 
+### Version 0.2.0
+ * Update to Vuetify 2.0
+
 ### Version 0.1.13 - Our Last Update Before Vuetify 2.0 update
  * rename example-firebase folder to example-baas
  * add mongo stitch to example-baas

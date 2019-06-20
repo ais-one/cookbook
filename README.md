@@ -2,7 +2,7 @@
 
 # NOTICES & UPDATES
 
-> Latest Version 0.1.13 Released 2019 Jun 20 0815 +8GMT
+> Latest Version 0.2.0 Released 2019 July 20 0815 +8GMT
 
 **Our next release, we will migrate to Vuetify 2.0...** There may be breaking changes as the new **v-data-table** component has more slot handling and features. We will take this chance to improve the framework while minimizing the effect of breaking changes
 
