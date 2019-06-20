@@ -1,8 +1,33 @@
-// import * as firebase from 'firebase'
 import { auth } from '@/firebase'
+import { stitch, getUserPasswordCredential } from '@/mongo'
 import router from '../router'
 
 export default {
+  // mongo
+  async mongoSignin ({ commit }, payload) {
+    commit('setLoading', true)
+    commit('setError', null)
+    let auth = null
+    try {
+      const credential = getUserPasswordCredential(payload.email, payload.password)
+      auth = await stitch.auth.loginWithCredential(credential)
+      // console.log('mongoSignin', auth)
+    } catch (e) { }
+    commit('setLoading', false)
+    if (!auth) {
+      commit('setError', { message: 'Mongo Sign In Error' })
+    } else {
+      commit('setUser', { id: auth.id, email: auth.id, rules: { '*': ['*'] } })
+      commit('setLayout', 'layout-admin')
+      router.push('/mongo-test')
+    }
+  },
+  mongoAutoSignIn ({ commit }, payload) { // not called for now
+    commit('setUser', { id: payload.id, email: payload.id, rules: { '*': ['*'] } })
+    commit('setLayout', 'layout-admin')
+    router.push('/mongo-test')
+  },
+  // firebase
   async signUserUp ({ commit }, payload) {
     commit('setLoading', true)
     commit('setError', null)
@@ -42,19 +67,21 @@ export default {
     }
     commit('setLoading', false)
   },
-  async logout ({ commit }, payload) {
-    const { userLogout } = payload
-    if (userLogout) {
-      await auth.signOut()
-    }
-    commit('setUser', null)
-    commit('setLayout', 'layout-default')
-    router.push('/')
-  },
   autoSignIn ({ commit }, payload) {
     commit('setUser', { id: payload.uid, email: payload.email, rules: { '*': ['*'] } })
     commit('setLayout', 'layout-admin')
     router.push('/multi-crud-example') // console.log party
+  },
+  // common
+  async logout ({ commit }, payload) {
+    const { userLogout } = payload
+    if (userLogout) { // logout both mongo & firebase
+      await auth.signOut()
+      await stitch.auth.logout()
+    }
+    commit('setUser', null)
+    commit('setLayout', 'layout-default')
+    router.push('/')
   },
   clearError ({ commit }) { commit('setError', null) }
 }

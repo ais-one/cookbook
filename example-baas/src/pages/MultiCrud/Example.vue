@@ -16,17 +16,17 @@
           v-bind="partyDefs"
           @selected="onSelected"
         >
-          <template v-if="showCustomTable" slot="filter" slot-scope="{ filterData, parentId, storeName }">
+          <template v-if="showCustomTable" v-slot:filter="{ filterData, parentId, storeName }">
             <h1>Filter Slot: {{ storeName }} {{ !!parentId }}</h1>
             <div v-for="(filter, index) in filterData" :key="index">
               <component :is="filter.type" v-model="filter.value" v-bind="filter.attrs"></component>
             </div>
           </template>
-          <template v-if="showCustomTable" slot="table" slot-scope="{ records, totalRecs, pagination }">
+          <template v-if="showCustomTable" v-slot:table="{ records, totalRecs, pagination }">
             <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['my-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
             <div>{{ totalRecs }} {{ pagination }}</div>
           </template>
-          <template v-if="showCustomTable" slot="form" slot-scope="{ record, parentId, storeName }">
+          <template v-if="showCustomTable" v-slot:form="{ record, parentId, storeName }">
             <div>
               <h1>Form Slot: {{ storeName }} {{ !!parentId }}</h1>
               <v-card-text>
@@ -98,7 +98,8 @@
 import * as partyDefs from './party'
 import * as partyNotesDefs from './party-notes'
 
-import ImageUpload from '@/components/ImageUpload'
+import ImageUpload from '../../../../src/ImageUpload'
+// import ImageUpload from '@/components/ImageUpload'
 
 export default {
   name: 'multi-crud-example',

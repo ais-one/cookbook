@@ -1,5 +1,7 @@
 <script>
-import ImageUpload from '@/components/ImageUpload'
+
+import ImageUpload from '../../../../src/ImageUpload'
+// import ImageUpload from '@/components/ImageUpload'
 
 export default {
   name: 'party-form',

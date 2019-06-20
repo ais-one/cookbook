@@ -13,14 +13,13 @@ const mongo = require('../services/mongo')
 const UPLOAD_PATH = 'uploads/'
 const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
 
-
 const { transaction } = require('objection')
 const knex = Book.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
 
 apiRoutes
-  .get('/test', async (req,res) => {
+  .get('/', async (req,res) => {
     try {
-      results = mongo ? await mongo.db().collection('users').find({}).toArray() : []
+      results = mongo ? await mongo.db().collection('exchangeUsers').find({}).toArray() : []
       console.log(results)
     } catch (e) {
       console.log(e)

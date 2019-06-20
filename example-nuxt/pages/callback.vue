@@ -8,6 +8,7 @@
 
 <script>
 export default {
+  layout: 'minimal',
   data: () => ({
     error: null
   }),

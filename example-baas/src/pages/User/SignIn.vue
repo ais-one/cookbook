@@ -38,6 +38,7 @@
                           <v-icon light>cached</v-icon>
                         </span>
                       </v-btn>
+                      <v-btn type="button" :disabled="loading" :loading="loading" @click="onMongoSignin">Mongo Sign in</v-btn>
                     </v-flex>
                   </v-layout>
                   <v-layout row v-if="sitekey">
@@ -88,6 +89,9 @@ export default {
   methods: {
     onSignin () {
       this.$store.dispatch('signUserIn', { email: this.email, password: this.password })
+    },
+    onMongoSignin () {
+      this.$store.dispatch('mongoSignin', { email: this.email, password: this.password })
     },
     onDismissed () {
       this.$store.dispatch('clearError')

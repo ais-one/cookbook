@@ -1,13 +1,6 @@
 ### Upcoming
- * RESTful++ Backend For Testing
-   * Non-essential items
-     * Multiple File upload example (to local folder)
-     * Single File upload example (to firebase storage)
-     * Logging
-     * Security Improvements
- * Automated testing (dredd.io)
- * VueJS 3.0 update
  * Vuetify 2.0 breaking changes list - check to see which will affect the code base
+   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-beta.0
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.18
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.13
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.12
@@ -18,6 +11,14 @@
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.7
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.5
    * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.4
+ * RESTful++ Backend For Testing
+   * Non-essential items
+     * Multiple File upload example (to local folder)
+     * Single File upload example (to firebase storage)
+     * Logging
+     * Security Improvements
+ * Automated testing (dredd.io)
+ * VueJS 3.0 update
  * improve i18n
  * https://github.com/ais-one/vue-crud-x/issues/32
  * https://github.com/vuetifyjs/vuetify/pull/5232
@@ -34,6 +35,16 @@
  * v0.1.7 - remove import of vue components, use scoped-slots
  * v0.1.4 - CRUD operations to return object instead of number
  * v0.1.3 - use 'field' instead of 'type' for Form and Filter inputs
+
+### Version 0.1.13 - Our Last Update Before Vuetify 2.0 update
+ * rename example-firebase folder to example-baas
+ * add mongo stitch to example-baas
+ * nuxt: add error loayout, handle dynamic route error on static pages
+ * vue3: https://github.com/vuejs/rfcs/blob/master/active-rfcs/0001-new-slot-syntax.md
+ * improvement: backend, add testing?
+ * chore: clean up and improve code when possible, bug fixes
+ * chore: package updates
+ * chore: monitor VuetifyJS 2 & VueJS 3 updates, start migration from beta release onwards
 
 ### Version 0.1.12
  * improvement: apollo graphql features (optimistic UI, refetch queries, cache)

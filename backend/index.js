@@ -42,12 +42,10 @@ apollo.applyMiddleware({ app }); // console.log(`GraphqlPATH ${server.graphqlPat
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use(history())
+app.use(history()) // causes problems when using postman, comment out to checkout API
 app.use(express.static('public')) // for html content
 app.use('/api-docs', express.static('docs'), swaggerUi.serve, swaggerUi.setup(swaggerDocument, { // for OpenAPI
-  swaggerOptions: {
-    docExpansion: 'none'
-  },  
+  swaggerOptions: { docExpansion: 'none' },  
   explorer: true 
 }))
 
@@ -61,10 +59,7 @@ const apiRoutes = require('./routes/api')
 app.use(cors())
 app.use('/api/auth', authRoutes)
 app.use('/api', apiRoutes)
-
-app.get("*", async (req, res) => {
-  return res.status(404).json({ data: 'Not Found...' })
-})
+app.get("*", async (req, res) => res.status(404).json({ data: 'Not Found...' }))
 
 // for Firebase Functions
 // exports.api = functions.https.onRequest(async (req, res) => {

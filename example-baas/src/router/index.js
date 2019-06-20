@@ -11,6 +11,8 @@ import party from '@/pages/Crud/party.vue'
 import partyNotes from '@/pages/Crud/partyNotes.vue'
 import * as partyInlineDefs from '@/pages/Crud/party-inline'
 
+import MongoTest from '@/pages/MongoTest'
+
 import Test from '@/components/Test'
 
 import VueCrudX from '../../../src/VueCrudX' // Component shared between projects // const VueCrudX = Vue.component('vue-crud-x') this does not work...
@@ -20,6 +22,12 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/mongo-test',
+      name: 'mongo-test',
+      component: MongoTest,
+      beforeEnter: AuthGuard
+    },
     {
       path: '/party-inline',
       name: 'party-inline',

@@ -1,14 +1,10 @@
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-## QUICKSTART
-
-The **example-rest** folder is the preferred project for quickstart. Everything (frontend and sample REST backend) runs locally.
-
-The **example-nuxt** folder contains example using NuxtJS, a VueJS framework. Two demos are possible SSR and Static Generated Pages. This example also includes Github social login (you need to setup Github make this work)
-
 # NOTICES & UPDATES
 
-> Latest Version 0.1.12 Released 2019 May 25 1630 +8GMT
+> Latest Version 0.1.13 Released 2019 Jun 20 0815 +8GMT
+
+**Our next release, we will migrate to Vuetify 2.0...** There may be breaking changes as the new **v-data-table** component has more slot handling and features. We will take this chance to improve the framework while minimizing the effect of breaking changes
 
 Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>.
 
@@ -16,9 +12,21 @@ See RELEASE.MD file for change history.
 
 Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
 
+
+## 0 QUICKSTART
+
+- **example-rest** folder is preferred project for quickstart. Everything runs locally.
+- **example-nuxt** folder uses NuxtJS (SSR and generate demo), Also includes Github login
+
+
 ## 1 New Features
 
-1. More Apollo Client GraphQL features cache, optimistic response, refetch queries
+- Rename example-firebase to example-baas and added Mongo Stitch login and query example
+  - Setting up Mongo Stitch https://docs.mongodb.com/stitch/tutorials/guides/todo-backend/
+  - Setup email and password authorization provider instead of anonymous provider
+- Improved Nuxt page error handling using error layout page
+- Vue 3 migration: updated slots to use v-slot
+
 
 ## 2 Major Improvements (Without Breaking Changes)
 
@@ -31,8 +39,8 @@ Usage example can be found:
    - example-rest/src/components/author.js
    - example-rest/src/pages/Category.vue
  - in **example-nuxt** project (see example-nuxt/README.md on quickstart)
- - in **example-firebase** project
-   - example-firebase/src/pages/MultiCrud/Example.vue (also, demonstrates multiple vue-crud-x used in a single page)
+ - in **example-baas** project
+   - example-baas/src/pages/MultiCrud/Example.vue (also, demonstrates multiple vue-crud-x used in a single page)
 
 ---
 
@@ -59,7 +67,7 @@ Our examples showcase the following (unrelated to the vue-crud-x features above)
    - rxJs for cleaner code (auto-complete, debounce, fetch latest)
    - 2FA OTP signin with Google Authenticator (setup with USE_OTP=GA in environement files of both the front and backend. Check DB seeders for the API key to use, or you can find out how to generate your own)
    - websocket example
-   - graphql example
+   - graphql example (use Apollo client: authentication, subscriptions, cache, optimistic response, refetch queries)
    - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
  - in **example-nuxt**
    - includes features in example-rest plus the following:
@@ -68,20 +76,21 @@ Our examples showcase the following (unrelated to the vue-crud-x features above)
      - SSR App
      - pre-generated Static Web App 
      - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
- - in **example-firebase**
+ - in **example-baas**
    - Serverless backend, using Firebase backend-as-a-service, need to register and setup
    - real-time updates from Firestore
    - Use multiple vue-crud-x in single page
    - recaptcha, image capture from webcam
-   - https://github.com/ais-one/vue-crud-x/tree/master/example-firebase
    - image upload to Google Cloud Store, Image capture via webcam
+   - include Mongo Stitch Baas login and simple query example 
+   - https://github.com/ais-one/vue-crud-x/tree/master/example-baas
 
 The **backend** project is an Express server used by **example-rest** and **example-nuxt** projects for testing the vue-crud-x component, and has the following features:
  - ObjectionJS + SQLite (Sample SQL DB with 1-1, 1-m, m-n use cases, transactions, migrations, seeders, OpenAPI documentation), Mongo (connect test only)
  - Login, JWT & 2FA OTP (using Google Authenticator)
  - Key-Value Store for user token storage on server (can replace with redis)
  - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
- - GraphQL
+ - GraphQL (use Apollo server)
 - https://github.com/ais-one/vue-crud-x/tree/master/backend
 
 
