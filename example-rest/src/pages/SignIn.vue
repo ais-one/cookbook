@@ -6,43 +6,26 @@
         <v-card>
           <v-card-text>
             <v-container v-if="!(user && !user.verified)">
-              <!-- <v-img src="/static/logo-main.png" /> -->
               <form @submit.prevent="onSignin">
-                <v-layout row>
+                <v-layout row wrap >
                   <v-flex xs12>
                     <v-text-field label="Username" v-model="email" type="text" required></v-text-field>
-                  </v-flex>
-                </v-layout>
-                <v-layout row>
-                  <v-flex xs12>
                     <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
-                  </v-flex>
-                </v-layout>
-                <v-layout row>
-                  <v-flex xs12 class="text-xs-center">
                     <v-btn type="submit" :disabled="loading" :loading="loading">Sign in</v-btn>
+                    <p v-if="!!error">{{ error.message }}</p>
                   </v-flex>
                 </v-layout>
-                <v-alert v-if="!!error" :value="!!error" type="error">
-                  {{ error.message }}
-                </v-alert>
               </form>
             </v-container>
             <v-container v-else>
               <form @submit.prevent="onVerifyOtp">
-                <v-layout row>
+                <v-layout row wrap>
                   <v-flex xs12>
                     <v-text-field label="Enter Your 6-digit OTP" v-model="pin" type="number" maxlength="6" required clearable></v-text-field>
-                  </v-flex>
-                </v-layout>
-                <v-layout row>
-                  <v-flex xs12 class="text-xs-center">
                     <v-btn type="submit" :disabled="loading" :loading="loading">Verify OTP</v-btn>
+                     <p v-if="!!error">{{ error.message }}</p>
                   </v-flex>
                 </v-layout>
-                <v-alert v-if="!!error" :value="!!error" type="error">
-                  {{ error.message }}
-                </v-alert>
               </form>
             </v-container>
           </v-card-text>
@@ -63,8 +46,6 @@ export default {
       password: '',
       pin: ''
     }
-  },
-  created () {
   },
   computed: {
     ...mapGetters([ 'user', 'error', 'loading' ])

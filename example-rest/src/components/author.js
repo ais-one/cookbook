@@ -63,12 +63,12 @@ export const crudOps = { // CRUD
     let records = []
     let totalRecords = 0
     const { pagination } = payload
-    const { page, rowsPerPage } = pagination // sortBy, descending
+    const { page, itemsPerPage } = pagination // sortBy, descending
     try {
       const { data: { results, total } } = await http.get('/api/authors', {
         params: {
           page: page > 0 ? page - 1 : 0,
-          limit: rowsPerPage
+          limit: itemsPerPage
         }
       })
       records = results

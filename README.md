@@ -222,7 +222,7 @@ crudTable: {
       dark: false,
       light: true,
       'items-per-page-options': [2, 5, 10, 20],
-      'hide-headers': false,
+      'hide-default-header': false,
       'loading-color': '#ff0000'
     },
     button: { // v-btn Component

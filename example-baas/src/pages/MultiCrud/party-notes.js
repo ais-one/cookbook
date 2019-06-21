@@ -143,7 +143,7 @@ export const crudOps = { // CRUD
     let records = []
     const { pagination, parentId, filterData } = payload // parentId
     const { dateStart, dateEnd, selectX } = filterData
-    const { sortBy, descending } = pagination // rowsPerPage, totalItems
+    const { sortBy, descending } = pagination // itemsPerPage, totalItems
     try {
       let dbCol = firestore.collection('note')
         .where('party', '==', parentId)

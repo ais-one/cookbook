@@ -93,12 +93,12 @@ export default {
             let records = []
             let totalRecords = 0
             const { pagination, parentId } = payload // filterData
-            const { page, rowsPerPage } = pagination // sortBy, descending
+            const { page, itemsPerPage } = pagination // sortBy, descending
             try {
               const { data: { results, total } } = await http.get(`/api/books/${parentId}/pages`, {
                 params: {
                   page: page > 0 ? page - 1 : 0,
-                  limit: rowsPerPage
+                  limit: itemsPerPage
                 }
               })
               records = results

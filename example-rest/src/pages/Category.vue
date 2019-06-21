@@ -63,7 +63,7 @@ export default {
             { text: 'Category Name', value: 'name', class: 'pa-1' }
           ],
           formatters: (value, _type) => value,
-          doPage: false, // rowsPerPage, no paging for this
+          doPage: false, // itemsPerPage, no paging for this
           showFilterButton: false
         },
         crudFilter: { FilterVue: null, filterData: { } },
@@ -93,8 +93,8 @@ export default {
             let records = []
             let totalRecords = 0
             const { pagination } = payload // filterData
-            // const { page, rowsPerPage } = pagination // sortBy, descending
-            // console.log('TOREMOVE', page, rowsPerPage)
+            // const { page, itemsPerPage } = pagination // sortBy, descending
+            // console.log('TOREMOVE', page, itemsPerPage)
             // GrqphQL
             try {
               const rv = await apolloClient.query({ query: GET_CATEGORIES })
@@ -109,7 +109,7 @@ export default {
             //   const { data: { results, total } } = await http.get('/api/categories', {
             //     params: {
             //       page: page > 0 ? page - 1 : 0,
-            //       limit: rowsPerPage
+            //       limit: itemsPerPage
             //     }
             //   })
             //   // console.log(results)

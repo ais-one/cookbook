@@ -89,5 +89,18 @@ module.exports = {
   }
 }
 
+npm install @mdi/font -D
 
 TBD remove stylus
+
+
+
+
+Moving to Vuetify 2 has many bloody breaking changes. I have decided to reduce dependancy on as much components as possible...
+And try to may it more generic for other frameworks
+
+Somethings You May Need To Change
+
+persPerPage -> itemsPerPage
+
+hide-headers -> hide-default-headers

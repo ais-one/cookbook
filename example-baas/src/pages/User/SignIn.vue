@@ -1,44 +1,20 @@
 <template>
   <v-app>
     <v-container>
-      <v-layout row v-if="error">
-        <v-flex xs12 sm6 offset-sm3>
-          <v-alert :value="error" color="error">
-            <v-btn icon><v-icon @click="onDismissed">close</v-icon></v-btn> {{error.message}}
-          </v-alert>
-        </v-flex>
-      </v-layout>
-      <!-- <v-layout row justify-center align-center>
-        <v-flex xs12 py-4 class="text-xs-center">
-          <v-img src="/static/final.png" class="h-center" max-width="320px" />
-        </v-flex>
-      </v-layout> -->
       <v-layout row>
         <v-flex xs12 sm6 offset-sm3>
           <v-card>
             <v-card-text>
               <v-container>
                 <form @submit.prevent="onSignin">
-                  <v-layout row>
+                  <v-layout row wrap>
                     <v-flex xs12>
                       <v-text-field name="email" label="Mail" id="email" v-model="email" type="email" required></v-text-field>
-                    </v-flex>
-                  </v-layout>
-                  <v-layout row>
-                    <v-flex xs12>
                       <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
-                    </v-flex>
-                  </v-layout>
-                  <v-layout row>
-                    <img src="/static/email.png" />
-                    <v-flex xs12>
                       <v-btn type="submit" :disabled="loading||unverified" :loading="loading">Sign in</v-btn>
                       <v-btn type="button" :disabled="loading" :loading="loading" @click="onMongoSignin">Mongo Sign in</v-btn>
-                    </v-flex>
-                  </v-layout>
-                  <v-layout row v-if="sitekey">
-                    <v-flex xs12>
-                      <vue-recaptcha class="g-recaptcha" @verify="onVerify" @expired="onExpired" :sitekey="sitekey"></vue-recaptcha>
+                      <vue-recaptcha v-if="sitekey" class="g-recaptcha" @verify="onVerify" @expired="onExpired" :sitekey="sitekey"></vue-recaptcha>
+                      <p v-if="!!error">{{error.message}}</p>
                     </v-flex>
                   </v-layout>
                 </form>
@@ -88,7 +64,7 @@ export default {
     onMongoSignin () {
       this.$store.dispatch('mongoSignin', { email: this.email, password: this.password })
     },
-    onDismissed () {
+    onDismissed () { // unused
       this.$store.dispatch('clearError')
     },
     onVerify (response) { this.unverified = false },

@@ -112,7 +112,7 @@ export const crudTable = {
       dark: false,
       light: true,
       'items-per-page-options': [2, 5, 10, 20],
-      'hide-headers': false,
+      'hide-default-header': false,
       'loading-color': '#ff0000'
     },
     button: { // v-btn Component
@@ -226,7 +226,7 @@ export const crudOps = { // CRUD
   find: async (payload) => {
     let records = []
     const { pagination, filterData } = payload
-    const { rowsPerPage, page } = pagination // , totalItems, sortBy, descending
+    const { itemsPerPage, page } = pagination // , totalItems, sortBy, descending
     try {
       // no need to get meta yet
       // const meta = await firestore.collection('meta').doc('party').get()
@@ -237,7 +237,7 @@ export const crudOps = { // CRUD
       rv.forEach(record => {
         let tmp = record.data()
         if (
-          (index >= (page - 1) * rowsPerPage && index < page * rowsPerPage)
+          (index >= (page - 1) * itemsPerPage && index < page * itemsPerPage)
         ) {
           records.push({ id: record.id, ...tmp })
         }

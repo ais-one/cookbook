@@ -153,8 +153,8 @@ export default {
             let totalRecords = 0
             const { pagination, filterData } = payload
             try {
-              const { page, rowsPerPage } = pagination // sortBy, descending
-              let params = { page: page > 0 ? page - 1 : 0, limit: rowsPerPage } // set query params
+              const { page, itemsPerPage } = pagination // sortBy, descending
+              let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } // set query params
               if (filterData.name.value) params.name = filterData.name.value
               if (filterData.categoryName.value.value) params['category-id'] = filterData.categoryName.value.value
               try {

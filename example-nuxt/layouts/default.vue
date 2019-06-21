@@ -14,7 +14,7 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar :clipped-left="clipped" fixed app>
+    <v-app-bar :clipped-left="clipped" fixed app>
       <v-toolbar-side-icon @click="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <template v-if="$auth.$state.loggedIn">
@@ -23,7 +23,7 @@
       <template v-else>
         <v-btn color="primary" nuxt to="/login">Login</v-btn>
       </template>
-    </v-toolbar>
+    </v-app-bar>
     <v-content>
       <v-container>
         <nuxt />

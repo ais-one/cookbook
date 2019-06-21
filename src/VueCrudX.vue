@@ -39,11 +39,11 @@ export default {
     if (this.crudTable.doPage === false) {
       this.doPage = false // if not set
       this.paginationRefresh = false
-      this.pagination.rowsPerPage = -1
+      this.pagination.itemsPerPage = -1
     } else {
       this.doPage = isNaN(parseInt(this.crudTable.doPage)) ? 20 : parseInt(this.crudTable.doPage)
       this.paginationRefresh = false
-      this.pagination.rowsPerPage = this.doPage
+      this.pagination.itemsPerPage = this.doPage
     }
 
     const store = this.$store
@@ -116,12 +116,6 @@ export default {
     this.ready = true
   },
   beforeUpdate () {
-    // IMPORTANT: Spent 5 days just to get this to work
-    // somehow even if assign on mounted, and with using nextTick, things are still corrupt, until here!
-    // this.$forceUpdate, helped to show what was happening after I assign the value (I used submitFilter to assign and forceUpdate to see)
-    // suspected problem is because of async component
-    //
-    // if (this.storeName === 'multi-crud-party') console.log('vvvv4', this.storeName, this.$options.components['crud-filter'], this.crudFilter.FilterVue)
     if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue // TODEPRECATE
     if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue // TODEPRECATE
   },
@@ -132,8 +126,8 @@ export default {
       pagination: {
         descending: false,
         page: 1,
-        rowsPerPage: 20,
-        sortBy: '',
+        itemsPerPage: 20,
+        sortBy: [],
         totalItems: 0 // completely useless at the moment
       },
       paginationRefresh: true,
@@ -180,7 +174,7 @@ export default {
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
       confirmDelete: true,
-      doPage: true, // pagination, false === no pagination, otherwise initial rowsPerPage
+      doPage: true, // pagination, false === no pagination, otherwise initial itemsPerPage
       crudTitle: '', // title
       showGoBack: false,
 
@@ -228,7 +222,7 @@ export default {
           dark: false,
           light: true,
           'items-per-page-options': [2, 5, 10, 20],
-          'hide-headers': false,
+          'hide-default-header': false,
           'loading-color': 'primary',
           style: { // this may need to be changed once Vuetify version 2.0 is out
             'max-height': 'calc(100vh - 144px)',
@@ -542,10 +536,6 @@ export default {
           }
         }
       }
-      // TOREMOVE Not Needed For Individual Saves
-      // if (!this.saveRow) {
-      //   this.editing pop // if individual field saves
-      // }
     },
     async inlineCancel (row, col) { // UNUSED...
       if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
@@ -575,11 +565,13 @@ export default {
       // find index & delete
       if (this.inlineReload.delete) this.$nextTick(async function () { await this.getRecordsHelper() })
     },
-    rowClicked (item, event, row) {
-      if (!this.actionColumn && this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
-      if (!this.inline) {
-        this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
-      }
+    // rowClicked (item, event, row) {
+    rowClicked (a, b) {
+      console.log('v2', 'rowClicked', a, b)
+      // if (!this.actionColumn && this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
+      // if (!this.inline) {
+      //   this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
+      // }
     },
     async testFunction (_in) { // for testing anything
       console.log(_in)
@@ -630,13 +622,12 @@ export default {
         :loading="loading?attrs.table['loading-color']:false"
         :hide-default-footer="!doPage"
         v-bind="attrs.table"
-        class="fixed-header v-table__overflow"
+        fixed-header
       >
         <template v-slot:headerCell="props">
           <span v-html="props.header.text"></span>
         </template>
         <template v-slot:items="props">
-          <!-- tr @click.stop="(e) => crudFormOpen(e, props.item.id, $event)" AVOID ARROW fuctions -->
           <tr :ref="`edit-${props.index}`" @click.stop="rowClicked(props.item, $event, props.index)">
             <td :key="header.value" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
               <span v-if="header.value===''">
@@ -699,15 +690,8 @@ export default {
             </td>
           </tr>
         </template>
-        <!-- IMPLEMENT IN FUTURE AS IT IS CHANGE THAT NEEDS VERSION 1.2.X
-          <template slot="actions-append">
-            <v-icon v-if="canCreate" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading">add</v-icon>
-          </template>
-        -->
-        <template slot="no-data">
-          <v-flex class="text-xs-center">
-            <v-alert :value="true" v-bind="attrs.alert"><v-icon>warning</v-icon> {{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
-          </v-flex>
+        <template v-slot:no-data>
+          <v-alert :value="true" color="error" icon="warning">{{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
         </template>
       </v-data-table>
     </slot>
@@ -772,89 +756,4 @@ export default {
 /* fixed-header - not working yet
 https://github.com/vuetifyjs/vuetify/issues/1547#issuecomment-418698573
 */
-</style>
-
-<style lang="stylus" scoped>
-.v-toolbar >>> .v-btn__content {
-  flex-direction: column;
-  font-size: 75%;
-}
-
-/*
-@import '~vuetify/src/stylus/bootstrap'
-@import '~vuetify/src/stylus/settings/_theme.styl'
-fixed-header($material)
-    &
-        background-color: $material.cards
-
-    th
-        background-color: $material.cards
-
-        &:after
-            border-bottom: 1px solid rgba($material.fg-color, $material.divider-percent)
-theme($component, $name)
-  light($component, $name)
-  dark($component, $name)
-
-light($component, $name)
-  .theme--light .{$name}
-    $component($material-light)
-
-dark($component, $name)
-  .theme--dark .{$name}
-    $component($material-dark)
-*/
-
->>> .theme--dark.v-table thead th {
-  background-color: #424242;
-}
-
->>> .theme--light.v-table thead th {
-  background-color: #ffffff;
-}
-
-/* Theme */
->>> .fixed-header
-    &
-        display: flex
-        flex-direction: column
-        height: 100%
-
-    table
-        table-layout: fixed
-
-    th
-        position: sticky
-        top: 0
-        z-index: 5
-
-        &:after
-            content: ''
-            position: absolute
-            left: 0
-            bottom: 0
-            width: 100%
-
-    tr.v-datatable__progress
-        th
-            // top: 56px
-            height: 1px;
-
-    .v-table__overflow
-        flex-grow: 1
-        flex-shrink: 1
-        overflow-x: auto
-        overflow-y: auto
-        // overflow: auto
-        // height: 100%
-
-    .v-datatable.v-table
-        flex-grow: 0
-        flex-shrink: 1
-
-        .v-datatable__actions
-            flex-wrap: nowrap
-
-            .v-datatable__actions__pagination
-                white-space: nowrap
 </style>

@@ -5,24 +5,17 @@
         <v-card>
           <v-card-text>
             <v-container>
-              <!-- <v-img src="/static/logo-main.png" /> -->
               <form @submit.prevent="onSignup">
-                <v-layout row>
+                <v-layout row wrap>
                   <v-flex xs12>
                     <v-text-field label="Mail" v-model="email" type="email" required></v-text-field>
                   </v-flex>
-                </v-layout>
-                <v-layout row>
                   <v-flex xs12>
                     <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
                   </v-flex>
-                </v-layout>
-                <v-layout row>
                   <v-flex xs12>
                     <v-text-field label="Confirm Password" v-model="confirmPassword" type="password" required></v-text-field>
                   </v-flex>
-                </v-layout>
-                <v-layout row>
                   <v-flex xs12 class="text-xs-center">
                     <v-btn type="submit" :disabled="loading" :loading="loading">Sign up</v-btn>
                   </v-flex>

@@ -20,9 +20,3 @@ export default {
   }
 }
 </script>
-
-<!-- TOREMOVE
-<style lang="stylus">
-  @require './stylus/main'
-</style>
--->

@@ -13,20 +13,10 @@
           <v-card-text>
             <v-container>
               <form @submit.prevent="onSignup">
-                <v-layout row>
+                <v-layout row wrap>
                   <v-flex xs12>
-                    <v-text-field name="email" label="Mail" id="email" v-model="email" type="email"
-                      required></v-text-field>
-                  </v-flex>
-                </v-layout>
-                <v-layout row>
-                  <v-flex xs12>
-                    <v-text-field name="password" label="Password" id="password" v-model="password" type="password"
-                      required></v-text-field>
-                  </v-flex>
-                </v-layout>
-                <v-layout row>
-                  <v-flex xs12>
+                    <v-text-field name="email" label="Mail" id="email" v-model="email" type="email" required></v-text-field>
+                    <v-text-field name="password" label="Password" id="password" v-model="password" type="password" required></v-text-field>
                     <v-btn type="submit" :disabled="loading" :loading="loading">Sign up</v-btn>
                   </v-flex>
                 </v-layout>

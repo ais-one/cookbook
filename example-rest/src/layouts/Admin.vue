@@ -3,82 +3,21 @@
     <v-navigation-drawer v-if="userIsAuthenticated" app clipped v-model="drawer" fixed>
       <v-list dense>
         <template v-for="(item, i) in menuItems">
-          <v-list-group
-            :key="i"
-            v-if="item.children"
-            v-model="item.model"
-            no-action
-            :prepend-icon="item.model ? item.icon : item['icon-alt']"
-            append-icon=""
-          >
-            <template v-slot:activator="{ on }">
-              <!-- <v-list-item slot="activator"> -->
-              <v-list-item v-on="on">
-                <v-list-item-content>
-                  <v-list-item-title>
-                    {{ item.title }}
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
-            <v-list-item
-              v-for="(child, i) in item.children"
-              :key="i"
-              :to="child.link"
-            >
-              <v-list-item-action v-if="child.icon">
-                <v-icon>{{ child.icon }}</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ child.title }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-group>
-          <v-list-item v-else :to="item.link" :key="item.title">
-            <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-action>
+          <v-list-item :to="item.link" :key="i">
             <v-list-item-content>
-              <v-list-item-title>
-                {{ item.title }}
-              </v-list-item-title>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar dark app fixed clipped-left dense class="primary">
-      <v-toolbar-title>
-        <v-toolbar-side-icon v-if="userIsAuthenticated" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      </v-toolbar-title>
-      <div class="text-xs-center">
-        <v-img src="/static/email.png" contain height="40" width="40" class="ma-2" />
-      </div>
-      {{ currentTime }}
-      <v-spacer>
-      </v-spacer>
-      <v-toolbar-items v-if="userIsAuthenticated">
-        <!-- <v-btn text @click="onLogout"><v-icon left dark>exit_to_app</v-icon> Logout</v-btn> -->
-        <!-- <v-img src="/static/email.png" contain height="40" width="172" class="mt-2" /> -->
-      </v-toolbar-items>
-      <div v-if="userIsAuthenticated">
-        <v-menu bottom left offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn v-on="on"><v-icon>person</v-icon></v-btn>
-          </template>
-          <!-- <v-btn slot="activator" icon><v-icon>person</v-icon></v-btn> -->
-          <v-card>
-            <v-list light>
-              <v-list-item @click="onLogout"><v-list-item-title><v-icon left>exit_to_app</v-icon> Logout</v-list-item-title></v-list-item>
-              <v-list-item @click="tbd"><v-list-item-title><v-icon left>settings</v-icon> User Settings</v-list-item-title></v-list-item>
-            </v-list>
-          </v-card>
-        </v-menu>
-      </div>
-    </v-toolbar>
-
+    <v-app-bar dark app fixed clipped-left dense class="primary">
+      <v-app-bar-nav-icon v-if="userIsAuthenticated" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>VueCrudX {{ currentTime }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon @click="setLocale">{{ selectedLocale }}</v-btn>
+      <v-btn icon @click="onLogout"><v-icon>exit_to_app</v-icon></v-btn>
+    </v-app-bar>
     <main>
       <v-content>
         <v-container fluid>
@@ -115,15 +54,6 @@ export default {
       ],
       drawer: false,
       menuItems: [
-        // {
-        //   icon: 'keyboard_arrow_up',
-        //   'icon-alt': 'keyboard_arrow_down',
-        //   title: 'Menu',
-        //   model: true,
-        //   children: [
-        //     { icon: 'dashboard', title: 'Dashboard', link: '/dashboard' },
-        //   ]
-        // },
         { icon: 'dashboard', title: 'Dashboard', link: '/dashboard' },
         { icon: 'list_alt', title: 'Authors', link: '/authors' },
         { icon: 'list_alt', title: 'Categories', link: '/categories' },
@@ -149,15 +79,12 @@ export default {
     networkError () { return this.$store.getters.networkError }
   },
   methods: {
-    setLocale (locale) {
-      this.selectedLocale = locale
+    setLocale () {
+      this.selectedLocale = this.selectedLocale === 'EN' ? 'ID' : 'EN'
       if (this.$i18n) this.$i18n.locale = this.selectedLocale.toLowerCase()
     },
     onLogout () {
       this.$store.dispatch('logout', { user: this.$store.getters.user })
-    },
-    tbd () {
-      alert('Work In Progress')
     }
   }
 }
