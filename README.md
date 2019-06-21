@@ -221,7 +221,7 @@ crudTable: {
     table: { // v-data-table Component
       dark: false,
       light: true,
-      'rows-per-page-items': [2, 5, 10, 20],
+      'items-per-page-options': [2, 5, 10, 20],
       'hide-headers': false,
       'loading-color': '#ff0000'
     },

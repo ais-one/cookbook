@@ -5,8 +5,8 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn flat to="/signup">Sign Up</v-btn>
-        <v-btn flat to="/signin">Sign In</v-btn>
+        <v-btn text to="/signup">Sign Up</v-btn>
+        <v-btn text to="/signin">Sign In</v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-content>

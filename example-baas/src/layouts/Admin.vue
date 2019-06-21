@@ -26,38 +26,41 @@
             :prepend-icon="item.model ? item.icon : item['icon-alt']"
             append-icon=""
           >
-            <v-list-tile slot="activator">
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  {{ item.title }}
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile
+            <template v-slot:activator="{ on }">
+              <!-- <v-list-item slot="activator"> -->
+              <v-list-item v-on="on">
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ item.title }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+            <v-list-item
               v-for="(child, i) in item.children"
               :key="i"
               :to="child.link"
             >
-              <v-list-tile-action v-if="child.icon">
+              <v-list-item-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>
                   {{ child.title }}
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
           </v-list-group>
-          <v-list-tile v-else :to="item.link" :key="item.title">
-            <v-list-tile-action>
+          <v-list-item v-else :to="item.link" :key="item.title">
+            <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
                 {{ item.title }}
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </template>
       </v-list>
     </v-navigation-drawer>
@@ -68,10 +71,10 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
         <v-toolbar-items v-if="userIsAuthenticated">
-          <v-btn flat>
+          <v-btn text>
             <v-avatar size="36px"><img src="/static/john_leider.jpg" alt="John"></v-avatar>&nbsp;Somebody
           </v-btn>
-          <v-btn flat @click="onLogout"><v-icon left dark>exit_to_app</v-icon></v-btn>
+          <v-btn text @click="onLogout"><v-icon left dark>exit_to_app</v-icon></v-btn>
         </v-toolbar-items>
         <div v-if="userIsAuthenticated && false">
           <v-btn icon>
@@ -87,9 +90,9 @@
             <v-icon dark>arrow_drop_down</v-icon>
           </v-toolbar-title>
           <v-list>
-            <v-list-tile v-for="locale in locales" :key="locale" @click="setLocale(locale)">
-              <v-list-tile-title v-text="locale"></v-list-tile-title>
-            </v-list-tile>
+            <v-list-item v-for="locale in locales" :key="locale" @click="setLocale(locale)">
+              <v-list-item-title v-text="locale"></v-list-item-title>
+            </v-list-item>
           </v-list>
         </v-menu>
     </v-toolbar>

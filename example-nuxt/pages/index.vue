@@ -9,12 +9,12 @@
         </v-card-text>
         <v-card-actions>
           <template v-if="$auth.$state.loggedIn">
-            <v-btn color="primary" flat nuxt to="/secure">Secure</v-btn>
+            <v-btn color="primary" nuxt to="/secure">Secure</v-btn>
             <v-spacer />
-            <v-btn color="default" flat @click="$auth.logout()">Logout</v-btn>
+            <v-btn color="default" @click="$auth.logout()">Logout</v-btn>
           </template>
           <template v-else>
-            <v-btn color="primary" flat nuxt to="/login">Login</v-btn>
+            <v-btn color="primary" nuxt to="/login">Login</v-btn>
           </template>
         </v-card-actions>
       </v-card>

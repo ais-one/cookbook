@@ -1,7 +1,7 @@
 'use strict'
 import Vue from 'vue'
 import VueRx from 'vue-rx'
-import Vuetify from 'vuetify'
+// TOREMOVE import Vuetify from 'vuetify'
 import VueNativeSock from 'vue-native-websocket'
 import i18n from './lang'
 import { store } from './store'
@@ -10,6 +10,8 @@ import App from './App'
 import VueCrudX from '../../src/VueCrudX' // Component shared between projects
 import { apolloClient } from './graphql'
 import VueApollo from 'vue-apollo'
+
+import vuetify from './plugins/vuetify'
 
 import { DO_HELLO } from './queries'
 
@@ -49,6 +51,7 @@ if (WS_URL) {
   console.log('NO WS...')
 }
 
+/* TOREMOVE
 Vue.use(Vuetify, {
   theme: {
     primary: '#1c325f',
@@ -63,6 +66,7 @@ Vue.use(Vuetify, {
     t: (key, ...params) => i18n.t(key, params)
   }
 })
+*/
 
 Vue.component('vue-crud-x', VueCrudX)
 
@@ -70,6 +74,7 @@ Vue.component('vue-crud-x', VueCrudX)
 export const app = new Vue({
   el: '#app',
   i18n,
+  vuetify,
   router,
   store,
   apolloProvider,

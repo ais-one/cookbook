@@ -3,7 +3,7 @@
     <v-toolbar fixed app>
       <v-toolbar-title v-text="title" />
       <template>
-        <v-btn color="primary" flat nuxt to="/">Go Home</v-btn>
+        <v-btn color="primary" nuxt to="/">Go Home</v-btn>
       </template>
     </v-toolbar>
     <v-content>

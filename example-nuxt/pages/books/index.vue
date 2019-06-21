@@ -29,22 +29,22 @@
                   item-value="id"
                   label="Search for a author... (Maximum 2)"
                 >
-                  <template slot="no-data">
-                    <v-list-tile>
-                      <v-list-tile-title>
+                  <template v-slot:no-data>
+                    <v-list-item>
+                      <v-list-item-title>
                         No author yet...
-                      </v-list-tile-title>
-                    </v-list-tile>
+                      </v-list-item-title>
+                    </v-list-item>
                   </template>
                   <template v-slot:selection="{ item, selected }">
-                    <v-chip :selected="selected" close @input="remove(item)">
+                    <v-chip :input-value="selected" click:close @input="remove(item)">
                       <span v-text="item.name"></span>
                     </v-chip>
                   </template>
                   <template v-slot:item="{ item }">
-                    <v-list-tile-content>
-                      <v-list-tile-title v-text="item.name"></v-list-tile-title>
-                    </v-list-tile-content>
+                    <v-list-item-content>
+                      <v-list-item-title v-text="item.name"></v-list-item-title>
+                    </v-list-item-content>
                   </template>
                 </v-autocomplete>
                 <v-btn @click.stop.prevent="gotoPages(record.id)" dark>View Book Pages</v-btn>

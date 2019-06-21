@@ -32,12 +32,7 @@
                   <v-layout row>
                     <img src="/static/email.png" />
                     <v-flex xs12>
-                      <v-btn type="submit" :disabled="loading||unverified" :loading="loading">
-                        Sign in
-                        <span slot="loader" class="custom-loader">
-                          <v-icon light>cached</v-icon>
-                        </span>
-                      </v-btn>
+                      <v-btn type="submit" :disabled="loading||unverified" :loading="loading">Sign in</v-btn>
                       <v-btn type="button" :disabled="loading" :loading="loading" @click="onMongoSignin">Mongo Sign in</v-btn>
                     </v-flex>
                   </v-layout>

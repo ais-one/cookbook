@@ -49,7 +49,7 @@ export const crudTable = {
       field: 'v-textarea',
       buttons: true
     }
-    // base: { field: 'v-btn-toggle', attrs: { }, group: { type: 'v-btn', attrs: { flat: true, block: true }, items: { 'WCP': 'WCP', 'MSP': 'MSP' } } },
+    // base: { field: 'v-btn-toggle', attrs: { }, group: { type: 'v-btn', attrs: { text: true, block: true }, items: { 'WCP': 'WCP', 'MSP': 'MSP' } } },
   },
   confirmCreate: true, // show operation confirmation dialog flags
   confirmUpdate: true,
@@ -111,7 +111,7 @@ export const crudTable = {
     table: { // v-data-table Component
       dark: false,
       light: true,
-      'rows-per-page-items': [2, 5, 10, 20],
+      'items-per-page-options': [2, 5, 10, 20],
       'hide-headers': false,
       'loading-color': '#ff0000'
     },

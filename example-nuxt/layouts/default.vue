@@ -3,14 +3,14 @@
     <v-navigation-drawer :mini-variant="miniVariant" :clipped="clipped" v-model="drawer" fixed app>
       <v-list>
         <template v-for="(item, i) in items">
-          <v-list-tile :to="item.to" :key="i" v-if="!item.auth || $auth.$state.loggedIn" router exact>
-            <v-list-tile-action>
+          <v-list-item :to="item.to" :key="i" v-if="!item.auth || $auth.$state.loggedIn" router exact>
+            <v-list-item-action>
               <v-icon v-html="item.icon" />
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title v-text="item.title" />
-            </v-list-tile-content>
-          </v-list-tile>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
         </template>
       </v-list>
     </v-navigation-drawer>
@@ -21,7 +21,7 @@
         <v-btn @click.stop="$auth.logout()">Logout [{{ $auth.user }}]</v-btn>
       </template>
       <template v-else>
-        <v-btn color="primary" flat nuxt to="/login">Login</v-btn>
+        <v-btn color="primary" nuxt to="/login">Login</v-btn>
       </template>
     </v-toolbar>
     <v-content>

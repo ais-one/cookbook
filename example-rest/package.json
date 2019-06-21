@@ -40,7 +40,7 @@
     "vue-native-websocket": "^2.0.13",
     "vue-router": "^3.0.6",
     "vue-rx": "^6.2.0",
-    "vuetify": "^1.5.14",
+    "vuetify": "^2.0.0-beta.3",
     "vuex": "^3.1.1"
   },
   "devDependencies": {
@@ -49,9 +49,15 @@
     "@vue/cli-service": "^3.8.4",
     "@vue/eslint-config-standard": "^4.0.0",
     "concurrently": "^4.1.0",
+    "deepmerge": "^3.3.0",
+    "fibers": "^4.0.1",
+    "node-sass": "^4.12.0",
+    "sass": "^1.21.0",
+    "sass-loader": "^7.1.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "vuetify-loader": "^1.2.2"
   },
   "browserslist": [
     "last 1 Chrome versions"

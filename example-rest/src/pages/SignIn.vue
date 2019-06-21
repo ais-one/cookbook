@@ -20,9 +20,7 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12 class="text-xs-center">
-                    <v-btn type="submit" :disabled="loading" :loading="loading">Sign in
-                      <span slot="loader" class="custom-loader"><v-icon light>cached</v-icon></span>
-                    </v-btn>
+                    <v-btn type="submit" :disabled="loading" :loading="loading">Sign in</v-btn>
                   </v-flex>
                 </v-layout>
                 <v-alert v-if="!!error" :value="!!error" type="error">
@@ -39,9 +37,7 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12 class="text-xs-center">
-                    <v-btn type="submit" :disabled="loading" :loading="loading">Verify OTP
-                      <span slot="loader" class="custom-loader"><v-icon light>cached</v-icon></span>
-                    </v-btn>
+                    <v-btn type="submit" :disabled="loading" :loading="loading">Verify OTP</v-btn>
                   </v-flex>
                 </v-layout>
                 <v-alert v-if="!!error" :value="!!error" type="error">

@@ -30,7 +30,7 @@
     "nuxt-i18n": "^5.12.4",
     "rxjs": "^6.5.2",
     "vue-rx": "^6.2.0",
-    "vuetify": "^1.5.14"
+    "vuetify": "^2.0.0-beta.3"
   },
   "devDependencies": {
     "@vue/eslint-config-standard": "^4.0.0",

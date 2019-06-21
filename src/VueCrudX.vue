@@ -56,6 +56,7 @@ export default {
     } // re-use the already existing module
   },
   async mounted () {
+    console.log('Translation!!!', this.$t)
     this.paginationRefresh = !!this.$scopedSlots['table']
     this.pagination = this.pageData
     this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
@@ -226,7 +227,7 @@ export default {
         table: { // v-data-table Component
           dark: false,
           light: true,
-          'rows-per-page-items': [2, 5, 10, 20],
+          'items-per-page-options': [2, 5, 10, 20],
           'hide-headers': false,
           'loading-color': 'primary',
           style: { // this may need to be changed once Vuetify version 2.0 is out
@@ -624,10 +625,10 @@ export default {
       <v-data-table
         :headers="headers"
         :items="records"
-        :total-items="totalRecords"
-        :pagination.sync="pagination"
+        :server-items-length="totalRecords"
+        :options.sync="pagination"
         :loading="loading?attrs.table['loading-color']:false"
-        :hide-actions="!doPage"
+        :hide-default-footer="!doPage"
         v-bind="attrs.table"
         class="fixed-header v-table__overflow"
       >

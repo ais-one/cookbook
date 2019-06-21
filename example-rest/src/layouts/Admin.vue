@@ -11,38 +11,41 @@
             :prepend-icon="item.model ? item.icon : item['icon-alt']"
             append-icon=""
           >
-            <v-list-tile slot="activator">
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  {{ item.title }}
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-list-tile
+            <template v-slot:activator="{ on }">
+              <!-- <v-list-item slot="activator"> -->
+              <v-list-item v-on="on">
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ item.title }}
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </template>
+            <v-list-item
               v-for="(child, i) in item.children"
               :key="i"
               :to="child.link"
             >
-              <v-list-tile-action v-if="child.icon">
+              <v-list-item-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>
                   {{ child.title }}
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
           </v-list-group>
-          <v-list-tile v-else :to="item.link" :key="item.title">
-            <v-list-tile-action>
+          <v-list-item v-else :to="item.link" :key="item.title">
+            <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
                 {{ item.title }}
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </template>
       </v-list>
     </v-navigation-drawer>
@@ -57,18 +60,19 @@
       <v-spacer>
       </v-spacer>
       <v-toolbar-items v-if="userIsAuthenticated">
-        <!-- <v-btn flat @click="onLogout"><v-icon left dark>exit_to_app</v-icon> Logout</v-btn> -->
+        <!-- <v-btn text @click="onLogout"><v-icon left dark>exit_to_app</v-icon> Logout</v-btn> -->
         <!-- <v-img src="/static/email.png" contain height="40" width="172" class="mt-2" /> -->
       </v-toolbar-items>
       <div v-if="userIsAuthenticated">
         <v-menu bottom left offset-y>
-          <v-btn slot="activator" icon>
-            <v-icon>person</v-icon>
-          </v-btn>
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on"><v-icon>person</v-icon></v-btn>
+          </template>
+          <!-- <v-btn slot="activator" icon><v-icon>person</v-icon></v-btn> -->
           <v-card>
             <v-list light>
-              <v-list-tile @click="onLogout"><v-list-tile-title><v-icon left>exit_to_app</v-icon> Logout</v-list-tile-title></v-list-tile>
-              <v-list-tile @click="tbd"><v-list-tile-title><v-icon left>settings</v-icon> User Settings</v-list-tile-title></v-list-tile>
+              <v-list-item @click="onLogout"><v-list-item-title><v-icon left>exit_to_app</v-icon> Logout</v-list-item-title></v-list-item>
+              <v-list-item @click="tbd"><v-list-item-title><v-icon left>settings</v-icon> User Settings</v-list-item-title></v-list-item>
             </v-list>
           </v-card>
         </v-menu>

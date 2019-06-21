@@ -20,10 +20,7 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12 class="text-xs-center">
-                    <v-btn @click="login" :disabled="loading" :loading="loading">
-                      Sign In
-                      <span slot="loader" class="custom-loader"><v-icon light>cached</v-icon></span>
-                    </v-btn>
+                    <v-btn @click="login" :disabled="loading" :loading="loading">Sign In</v-btn>
                     <v-btn @click="loginGithub">Login with Github</v-btn>
                   </v-flex>
                 </v-layout>
@@ -45,10 +42,7 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs12 class="text-xs-center">
-                    <v-btn type="submit" :disabled="loading" :loading="loading">
-                      Verify OTP
-                      <span slot="loader" class="custom-loader"><v-icon light>cached</v-icon></span>
-                    </v-btn>
+                    <v-btn type="submit" :disabled="loading" :loading="loading">Verify OTP</v-btn>
                   </v-flex>
                 </v-layout>
                 <v-alert v-if="!!error" :value="!!error" type="error">{{ error }}</v-alert>
