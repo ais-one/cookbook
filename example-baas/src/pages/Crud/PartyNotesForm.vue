@@ -3,7 +3,7 @@ import { firestore } from '@/firebase'
 
 export default {
   name: 'notes-form',
-  props: ['parentId', 'storeName', 'record'], // static
+  props: ['parentId', 'record'], // static
   data () {
     return {
       partyList: [],

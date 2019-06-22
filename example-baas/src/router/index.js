@@ -32,21 +32,19 @@ export default new Router({
       path: '/party-inline',
       name: 'party-inline',
       component: VueCrudX,
-      props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyInlineDefs } },
+      props: (route) => { return { parentId: route.params.parentId || null, ...partyInlineDefs } },
       beforeEnter: AuthGuard
     },
     {
       path: '/party',
       name: 'party',
       component: party, // VueCrudX,
-      // props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyDefs } },
       beforeEnter: AuthGuard
     },
     {
       path: '/party-notes/:parentId',
       name: 'party-notes',
       component: partyNotes, // VueCrudX,
-      // props: (route) => { return { storeName: route.name, parentId: route.params.parentId || null, ...partyNotesDefs } },
       beforeEnter: AuthGuard
     },
     {

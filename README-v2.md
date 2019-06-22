@@ -71,7 +71,10 @@ Can no longer use <v-list-item>'s in the activator slot
 listeners on <v-list-group> are now passed through to the internal v-list-item for activators
 use <v-list-item-content> and <v-list-item-title> instead
 
-12.
+
+
+Begin The Journey
+
 
 npm i -D sass-loader node-sass sass fibers deepmerge
 
@@ -91,9 +94,9 @@ module.exports = {
 
 npm install @mdi/font -D
 
-TBD remove stylus
+Remove stylus
 
-
+---
 
 
 Moving to Vuetify 2 has many bloody breaking changes. I have decided to reduce dependancy on as much components as possible...
@@ -104,3 +107,47 @@ Somethings You May Need To Change
 persPerPage -> itemsPerPage
 
 hide-headers -> hide-default-headers
+
+
+Move vuex store out of the component, but allow user to access and store the info elsewhere...
+ - filter settings
+ - current pagedata
+ - emit an event...
+
+TBD remove snackbar, emit event
+
+
+permissions now on backend
+
+properties removed:
+- hasFormVue
+- hasFilterVue
+- FilterVue
+
+crudFilter.filterData -> filter
+
+- hasFilterData
+
+Form - property type changed to field
+Filter - property type changed to field
+
+store & storename - removed
+
+crud operations payload 'user' - removed (set JWT outside instead) 
+
+
+# V2 Work
+
+refetch
+optimistic
+
+## Events
+updated - can be pass or fail
+created - can be pass or fail
+deleted - can be pass or fail
+pagination - pagination update
+filter - filter update
+form-open
+form-close
+
+

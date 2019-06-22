@@ -145,20 +145,17 @@ export const crudTable = {
   }
 }
 
-export const crudFilter = {
-  FilterVue: null,
-  filterData: {
-    // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
-    // new way of defining, use attrs
-    active: {
-      type: 'v-select',
-      value: 'active',
-      attrs: {
-        label: 'Active Status',
-        multiple: false,
-        items: [ 'active', 'inactive' ], // can be async loaded from db?
-        rules: [v => !!v || 'Item is required']
-      }
+export const filters = {
+  // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
+  // new way of defining, use attrs
+  active: {
+    type: 'v-select',
+    value: 'active',
+    attrs: {
+      label: 'Active Status',
+      multiple: false,
+      items: [ 'active', 'inactive' ], // can be async loaded from db?
+      rules: [v => !!v || 'Item is required']
     }
   }
 }
@@ -209,10 +206,10 @@ export const crudForm = {
 
 export const crudOps = { // CRUD
   export: async (payload) => {
-    const { filterData } = payload // pagination
+    const { filters } = payload // pagination
     try {
       let dbCol = firestore.collection('party') // create index
-        .where('status', '==', filterData.active.value)
+        .where('status', '==', filters.active.value)
       const rv = await dbCol.limit(50).get()
       let csvContent = ''
       rv.forEach(record => {
@@ -225,13 +222,13 @@ export const crudOps = { // CRUD
   },
   find: async (payload) => {
     let records = []
-    const { pagination, filterData } = payload
+    const { pagination, filters } = payload
     const { itemsPerPage, page } = pagination // , totalItems, sortBy, descending
     try {
       // no need to get meta yet
       // const meta = await firestore.collection('meta').doc('party').get()
       // if (meta.exists) pagination.totalItems = meta.data().count
-      let dbCol = firestore.collection('party').where('status', '==', filterData.active.value)
+      let dbCol = firestore.collection('party').where('status', '==', filters.active.value)
       const rv = await dbCol.limit(50).get()
       let index = 0
       rv.forEach(record => {

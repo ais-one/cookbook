@@ -8,7 +8,7 @@ export default {
   components: {
     ImageUpload
   },
-  props: ['parentId', 'storeName', 'record'], // static
+  props: ['parentId', 'record'], // static
   data () {
     return {
       status: ['active', 'inactive'],

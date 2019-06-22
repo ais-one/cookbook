@@ -4,7 +4,6 @@
       <v-flex xs12>
         <vue-crud-x
           ref="category"
-          storeName="category"
           :parentId="parentId"
           v-bind="pageDefs"
         >
@@ -66,13 +65,13 @@ export default {
           doPage: false, // itemsPerPage, no paging for this
           showFilterButton: false
         },
-        crudFilter: { FilterVue: null, filterData: { } },
+        filters: null,
         crudForm: {
           FormVue: null,
           formAutoData: {
             id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
             name: {
-              type: 'v-text-field',
+              field: 'v-text-field',
               attrs: {
                 label: 'Name',
                 rules: [v => !!v || 'Item is required']
@@ -92,7 +91,7 @@ export default {
             console.log('find')
             let records = []
             let totalRecords = 0
-            const { pagination } = payload // filterData
+            const { pagination } = payload // filters
             // const { page, itemsPerPage } = pagination // sortBy, descending
             // console.log('TOREMOVE', page, itemsPerPage)
             // GrqphQL

@@ -58,12 +58,6 @@ async createRecord ({ commit, getters }, payload) {
 {
   id: '1726388390',
   email: 'abc@mail.com',
-  rules: { // if this is not present, all front end permissions are enabled (but backend can still disallow)
-    '*': ['*'], // evereything thing allowed also in this setting
-    'storename1': ['*'] // all operations available for certain storename (each crud component has a unique storename)
-    '*': ['create,update,delete'] // all operations available for all stores also
-    'storename2': ['create', 'update'] // only create and update allowed for storename2
-  }
 }
 ```
 
@@ -271,16 +265,12 @@ create a .vue file
 
 ```
 <template>
-  <vue-crud-x
-    storeName="party"
-    :parentId="null"
-    v-bind="partyDefs"
-  >
-    <template v-slot:filter="{ filterData, parentId, storeName }">
-      <my-filter :filterData="filterData" :parentId="parentId" :storeName="storeName" />
+  <vue-crud-x :parentId="null" v-bind="partyDefs">
+    <template v-slot:filter="{ filters, parentId }">
+      <my-filter :filters="filters" :parentId="parentId" />
     </template>
-    <template v-slot:form="{ record, parentId, storeName }">
-      <my-form :record="record" :parentId="parentId" :storeName="storeName" />
+    <template v-slot:form="{ record, parentId }">
+      <my-form :record="record" :parentId="parentId" />
     </template>
   </vue-crud-x>
 </template>

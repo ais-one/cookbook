@@ -259,20 +259,17 @@ crudTable: {
 ### Filter - crudFilter
 
 ```
-crudFilter: {
-  FilterVue: null,
-  filterData: {
-    // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
-    // new way of defining, use attrs
-    active: {
-      type: 'v-select',
-      value: 'active',
-      attrs: {
-        label: 'Active Status',
-        multiple: false,
-        items: [ 'active', 'inactive' ], // can be async loaded from db?
-        rules: [v => !!v || 'Item is required']
-      }
+filters: {
+  // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
+  // new way of defining, use attrs
+  active: {
+    type: 'v-select',
+    value: 'active',
+    attrs: {
+      label: 'Active Status',
+      multiple: false,
+      items: [ 'active', 'inactive' ], // can be async loaded from db?
+      rules: [v => !!v || 'Item is required']
     }
   }
 }
@@ -350,12 +347,10 @@ The return object and properties are optional, if you do not return, then the fo
 
 Note the payload object for each operation
 
-payload.user show contains user info that you can use, e.g. user group
-
 ```
 crudOps: {
   'export': {
-    const { user, filterData } = payload
+    const { user, filters } = payload
     ...
     // no return
   },
@@ -382,7 +377,7 @@ crudOps: {
   find: {
     let records = []
     let totalRecords = 0 // used for pagination, total records searched from query before paging is applied
-    const { pagination, user, filterData, parentId, doPage } = payload // page, sort column and sort order is in pagination, refer to Vuetify docs for list of properties in the pagination object
+    const { pagination, user, filters, parentId, doPage } = payload // page, sort column and sort order is in pagination, refer to Vuetify docs for list of properties in the pagination object
     // DO NOT MUTATE pagination
     ...
     return { records, pagination, totalRecords }
@@ -402,9 +397,8 @@ crudOps: {
   - vcx: access to the component itself
 
 **filter**
-  - filterData: access to filterData
+  - filters: access to filters
   - parentId: access to parentId (if any)
-  - storeName: access to vuex store module name
   - vcx: access to the component itself
 
 **table**
@@ -422,7 +416,6 @@ crudOps: {
 **form**
   - record: the selected record
   - parentId: access to parentId (if any)
-  - storeName: access to vuex store module name
   - vcx: access to the component itself
 
 

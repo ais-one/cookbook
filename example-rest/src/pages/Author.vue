@@ -1,19 +1,22 @@
 <template>
-  <vue-crud-x ref="categories" :parentId="null" v-bind="categoryDefs"></vue-crud-x>
+  <div>
+    <v-layout row wrap>
+      <v-flex xs12>
+        <vue-crud-x ref="author" :parentId="parentId" v-bind="authorDefs" />
+      </v-flex>
+    </v-layout>
+  </div>
 </template>
 
 <script>
-import VueCrudX from '../../src/VueCrudX'
+import { http } from '@/axios'
 
 export default {
-  middleware: ['auth'],
-  name: 'categories',
-  components: {
-    VueCrudX
-  },
-  data() {
+  name: 'author',
+  data () {
     return {
-      categoryDefs: {
+      parentId: null,
+      authorDefs: {
         crudTable: {
           actionColumn: false,
           addrowCreate: false,
@@ -21,11 +24,26 @@ export default {
           confirmCreate: true,
           confirmUpdate: true,
           confirmDelete: true,
-          headers: [{ text: 'Category Name', value: 'name', class: 'pa-1' }],
+          headers: [
+            { text: 'Author Name', value: 'name', class: 'pa-1' }
+          ],
           formatters: (value, _type) => value,
-          doPage: 2
+          doPage: 2,
+          showFilterButton: true
         },
-        filters: null,
+        filters: [
+          {
+            type: 'v-text-field', // component name
+            name: 'name', // field name
+            value: '',
+            'field-wrapper': {
+              xs12: true, sm6: true
+            },
+            'field-input': {
+              label: 'Author', clearable: true
+            }
+          }
+        ],
         crudForm: {
           FormVue: null,
           formAutoData: {
@@ -44,17 +62,15 @@ export default {
             name: ''
           })
         },
-        crudOps: {
-          export: async payload => {},
-          find: async payload => {
+        crudOps: { // CRUD
+          export: null,
+          find: async (payload) => {
             let records = []
             let totalRecords = 0
-            const { pagination } = payload // filters
+            const { pagination } = payload
             const { page, itemsPerPage } = pagination // sortBy, descending
             try {
-              const {
-                data: { results, total }
-              } = await this.$axios.get('/api/categories', {
+              const { data: { results, total } } = await http.get('/api/authors', {
                 params: {
                   page: page > 0 ? page - 1 : 0,
                   limit: itemsPerPage
@@ -67,33 +83,36 @@ export default {
             }
             return { records, pagination, totalRecords }
           },
-          findOne: async payload => {
+          findOne: async (payload) => {
             const { id } = payload
             try {
-              const { data } = await this.$axios.get(`/api/categories/${id}`)
+              const { data } = await http.get(`/api/authors/${id}`)
               return data
-            } catch (e) {}
-            return {}
+            } catch (e) { }
+            return { }
           },
-          create: async payload => {
+          create: async (payload) => {
             try {
-              let {
-                record: { id, ...noIdData }
-              } = payload
-              const rv = await this.$axios.post('/api/categories', noIdData)
+              let { record: { id, ...noIdData } } = payload
+              const rv = await http.post('/api/authors', noIdData)
               console.log(rv)
             } catch (e) {
               return 500
             }
+            // return { // EXAMPLE return object with code property omitted
+            //   ok: true,
+            //   msg: 'OK'
+            // }
             return 201
           },
-          update: async payload => {
+          update: async (payload) => {
             try {
-              let {
-                record: { id, ...noIdData }
-              } = payload
-              const rv = await this.$axios.patch(`/api/categories/${id}`, noIdData)
+              let { record: { id, ...noIdData } } = payload
+              const rv = await http.patch(`/api/authors/${id}`, noIdData)
               console.log(rv)
+              // if (!doc.exists) throw new Error(409)
+              // if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
+              // await t.set(docRef, noIdData)
             } catch (e) {
               if (parseInt(e.message) === 409) return 409
               else return 500
@@ -104,7 +123,6 @@ export default {
         }
       }
     }
-  },
-  methods: {}
+  }
 }
 </script>

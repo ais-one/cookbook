@@ -6,120 +6,36 @@
 // TODEPRECATE - to deprecate & remove
 
 import _cloneDeep from 'lodash.clonedeep'
-const CrudStore = {
-  namespaced: true,
-  // strict: true,
-  state: {
-    filterData: {},
-    pageData: {}
-  },
-  getters: {
-    filterData (state) { return state.filterData },
-    pageData (state) { return state.pageData }
-  },
-  mutations: {
-    setFilterData (state, payload) { state.filterData = payload },
-    setPageData (state, payload) { state.pageData = payload }
-  },
-  actions: {
-  }
+
+/*
+const v2 = {
+  id: 'id', // the id field name usually  'id', for mongo its '_id',
+  refetch: false, // do refetch after C U D?
+  optimistic: true, // optimistic UI
+
+  // operations
+  find: null,
+  findOne: null,
+  update: null,
+  create: null,
+  remove: null,
+  export: null,
+  ws: null, // websocket operation?
+
+  parentId: null
 }
+*/
 
 export default {
   props: {
     parentId: { type: String, default: null },
-    storeName: { type: String, required: true },
-    crudFilter: { type: Object, required: true },
+
+    // v1
+    crudFilter: { type: Object, required: false },
     crudTable: { type: Object, required: true },
     crudForm: { type: Object, required: true },
     crudOps: { type: Object, required: true }
   },
-  async created () {
-    this.ready = false
-    if (this.crudTable.doPage === false) {
-      this.doPage = false // if not set
-      this.paginationRefresh = false
-      this.pagination.itemsPerPage = -1
-    } else {
-      this.doPage = isNaN(parseInt(this.crudTable.doPage)) ? 20 : parseInt(this.crudTable.doPage)
-      this.paginationRefresh = false
-      this.pagination.itemsPerPage = this.doPage
-    }
-
-    const store = this.$store
-    const name = this.storeName
-    if (!(store && store.state && store.state[name])) { // register a new module only if doesn't exist
-      store.registerModule(name, _cloneDeep(CrudStore)) // make sure its a deep clone
-      store.state[name] = {} // required for nuxt generated...
-      store.commit(`${name}/setFilterData`, _cloneDeep(this.crudFilter.filterData))
-      store.commit(`${name}/setPageData`, _cloneDeep(this.pagination))
-    } // re-use the already existing module
-  },
-  async mounted () {
-    console.log('Translation!!!', this.$t)
-    this.paginationRefresh = !!this.$scopedSlots['table']
-    this.pagination = this.pageData
-    this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
-    if (this.crudTable.inline) this.inline = this.crudTable.inline // set inline edit fields
-    this.headers = this.crudTable.headers
-    this.actionColumn = this.headers.findIndex(header => header.value === '') !== -1
-    this.saveRow = this.crudTable.saveRow ? this.crudTable.saveRow : false // save by row? default false
-    this.inlineReload = Object.assign(this.inlineReload, this.crudTable.inlineReload || {}) // default true
-
-    this.formReload = this.crudTable.formReload !== false // default true
-    this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null // check if components and datas are present
-    this.hasFormVue = typeof this.crudForm.FormVue === 'function' || this.formAutoData // TODEPRECATE
-    this.hasFilterData = this.isObject(this.crudFilter.filterData)
-    this.hasFilterVue = typeof this.crudFilter.FilterVue === 'function' // TODEPRECATE
-
-    this.addrowCreate = this.crudTable.addrowCreate ? this.crudTable.addrowCreate : false // use add row to create record
-    this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // open form on row click? default true
-
-    // set confirmation
-    this.confirmCreate = this.crudTable.confirmCreate === true // default false
-    this.confirmUpdate = this.crudTable.confirmUpdate === true // default false
-    this.confirmDelete = this.crudTable.confirmDelete !== false // default true
-
-    this.crudTitle = this.crudTable.crudTitle || '' // title
-    this.showGoBack = this.crudTable.showGoBack !== false // hide go back button - default true
-    this.onCreatedOpenForm = this.crudTable.onCreatedOpenForm === true // open form on create - default false
-    this.showFilterButton = this.crudTable.showFilterButton !== false // show filter button - default true
-
-    // more attributes
-    this.attrs = Object.assign(this.attrs, this.crudTable.attrs || {})
-    this.buttons = Object.assign(this.buttons, this.crudTable.buttons || {})
-
-    // assign the components
-    if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue // TODEPRECATE
-    if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue // TODEPRECATE
-
-    if (this.onCreatedOpenForm && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
-      this.crudFormFlag = true
-    }
-
-    // not needed in data() because it does not exist in template, an optimization which should be done for others as well
-    if (typeof this.$t !== 'function') { // if no internationalization
-      this.$t = text => text
-    }
-    for (let key in this.filterData) { // type to field
-      if (this.filterData[key].type) this.filterData[key].field = this.filterData[key].type // TODEPRECATE
-      if (this.filterData[key].attrs && this.filterData[key].itemsFn) this.filterData[key].attrs.items = await this.filterData[key].itemsFn()
-    }
-    if (this.formAutoData) { // type to field // TODEPRECATE
-      for (let key in this.formAutoData) {
-        if (this.formAutoData[key].type) this.formAutoData[key].field = this.formAutoData[key].type
-      }
-    }
-    this.canUpdate = this.can('update', this.crudOps.update && (this.hasFormVue || this.formAutoData)) // permissions
-    this.canCreate = this.can('create', this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData))
-    this.canDelete = this.can('delete', this.crudOps.delete)
-    this.ready = true
-  },
-  beforeUpdate () {
-    if (this.hasFilterVue) this.$options.components['crud-filter'] = this.crudFilter.FilterVue // TODEPRECATE
-    if (this.hasFormVue) this.$options.components['crud-form'] = this.crudForm.FormVue // TODEPRECATE
-  },
-  beforeRouteEnter (to, from, next) { next(vm => { }) },
   data () {
     return {
       ready: false,
@@ -150,8 +66,6 @@ export default {
 
       // filter
       validFilter: true,
-      hasFilterVue: false,
-      hasFilterData: false,
 
       // data-table
       loading: false,
@@ -185,10 +99,6 @@ export default {
       // styling
       attrs: {
         // you can add attributes used by the component and customize style and classes
-        snackbar: { // v-snackbar Component - null means no snack bar
-          bottom: true,
-          timeout: 6000
-        },
         container: { // v-container Component
           fluid: true,
           class: 'pa-2', // parentId ? 'make-modal' : ''
@@ -258,31 +168,79 @@ export default {
         delete: { icon: 'delete', label: '' },
         update: { icon: 'save', label: '' }
       },
-
       // show/hide
       showFilterButton: true, // should the filter button be shown?
       expandFilter: false,
 
-      // snackbar
-      snackbar: false,
-      snackbarText: ''
+      // V2
+      filters: null
     }
   },
+  async created () {
+    this.ready = false
+    // TODEPRECATE - remove crudFilter, convert as object to array
+    this.filters = (this.crudFilter && this.crudFilter.filterData) ? this.crudFilter.filterData : this.$attrs.filters || null // Set initial filter data here
+    // this.pagination // TBD set initial pagination data here
+    if (this.crudTable.doPage === false) {
+      this.doPage = false // if not set
+      this.paginationRefresh = false
+      this.pagination.itemsPerPage = -1
+    } else {
+      this.doPage = isNaN(parseInt(this.crudTable.doPage)) ? 20 : parseInt(this.crudTable.doPage)
+      this.paginationRefresh = false
+      this.pagination.itemsPerPage = this.doPage
+    }
+  },
+  async mounted () {
+    console.log('Translation!!!', this.$t)
+    this.paginationRefresh = !!this.$scopedSlots['table']
+    this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
+    if (this.crudTable.inline) this.inline = this.crudTable.inline // set inline edit fields
+    this.headers = this.crudTable.headers
+    this.actionColumn = this.headers.findIndex(header => header.value === '') !== -1
+    this.saveRow = this.crudTable.saveRow ? this.crudTable.saveRow : false // save by row? default false
+    this.inlineReload = Object.assign(this.inlineReload, this.crudTable.inlineReload || {}) // default true
+
+    this.formReload = this.crudTable.formReload !== false // default true
+    this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null // check if components and datas are present
+
+    this.addrowCreate = this.crudTable.addrowCreate ? this.crudTable.addrowCreate : false // use add row to create record
+    this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // open form on row click? default true
+
+    // set confirmation
+    this.confirmCreate = this.crudTable.confirmCreate === true // default false
+    this.confirmUpdate = this.crudTable.confirmUpdate === true // default false
+    this.confirmDelete = this.crudTable.confirmDelete !== false // default true
+
+    this.crudTitle = this.crudTable.crudTitle || '' // title
+    this.showGoBack = this.crudTable.showGoBack !== false // hide go back button - default true
+    this.onCreatedOpenForm = this.crudTable.onCreatedOpenForm === true // open form on create - default false
+    this.showFilterButton = this.crudTable.showFilterButton !== false // show filter button - default true
+
+    // more attributes
+    this.attrs = Object.assign(this.attrs, this.crudTable.attrs || {})
+    this.buttons = Object.assign(this.buttons, this.crudTable.buttons || {})
+
+    if (this.onCreatedOpenForm && this.record.id /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
+      this.crudFormFlag = true
+    }
+
+    // not needed in data() because it does not exist in template, an optimization which should be done for others as well
+    if (typeof this.$t !== 'function') { // if no internationalization
+      this.$t = text => text
+    }
+    // for (let key in this.filters) { // type to field - TOREMOVE, populated in parent
+    //   if (this.filters[key].attrs && this.filters[key].itemsFn) this.filters[key].attrs.items = await this.filters[key].itemsFn()
+    // }
+    this.canUpdate = this.crudOps.update && (this.hasFormVue || this.formAutoData)
+    this.canCreate = this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData)
+    this.canDelete = this.crudOps.delete
+    this.ready = true
+  },
+  beforeUpdate () { },
+  beforeRouteEnter (to, from, next) { next(vm => { }) },
   computed: {
-    hasFormSlot () { return !!this.$scopedSlots['form'] },
-    hasFilterSlot () { return !!this.$scopedSlots['filter'] },
-    showTitle () { return this.crudTitle || this.storeName },
-    // ...mapGetters(storeModuleName, [ 'records', 'totalRecords', 'filterData', 'record' ]), // cannot use for multiple stores, try below
-    filterData () { return this.$store.getters[this.storeName + '/filterData'] },
-    pageData () { return this.$store.getters[this.storeName + '/pageData'] }
-    // pagination: { get: function () { return something }, set: function (value) {} },  // TOREMOVE
-  },
-  filters: {
-    capitalize: function (value) {
-      if (!value) return ''
-      value = value.toString()
-      return value.charAt(0).toUpperCase() + value.slice(1)
-    }
+    showTitle () { return this.crudTitle || 'VueCrudX' }
   },
   watch: {
     loading: function (newValue, oldValue) { },
@@ -303,76 +261,29 @@ export default {
     }
   },
   methods: {
-    can (operation, flag) {
-      if (this.$store.getters.user && this.$store.getters.user.rules) {
-        const { rules } = this.$store.getters.user
-        if (
-          (rules[this.storeName] && (rules[this.storeName].indexOf(operation) !== -1 || rules[this.storeName].indexOf('*') !== -1)) ||
-          (rules['*'] && (rules['*'].indexOf(operation) !== -1 || rules['*'].indexOf('*') !== -1))
-        ) {
-          return true && flag
-        } else {
-          return false
-        }
-      }
-      return true && flag
-    },
     isObject (obj) { return obj !== null && typeof obj === 'object' },
-    setSnackBar (res) {
-      if (!res) return
-      if (this.attrs.snackbar) {
-        let code
-        this.snackbarText = ''
-        this.snackbar = false
-        if (typeof res === 'object') { // TODEPRECATE this check
-          // if message is empty use code... 200 (ok), 201 (ok created), 409 (duplicate), 500 (server error)
-          // not implemented - 401 (client error), 403 (forbidden), 404 (not found)
-          if (res.msg) {
-            this.snackbarText = this.$t(res.msg) // code will be undefined
-          } else {
-            code = res.code
-          }
-        } else {
-          code = res // TODEPRECATE
-        }
-        if (code) {
-          this.snackbarText = this.$t('vueCrudX.unknownOperation')
-          if (code === 200 || code === 201) this.snackbarText = this.$t('vueCrudX.operationOk')
-          else if (code === 500) this.snackbarText = this.$t('vueCrudX.operationError')
-          else if (code === 409) this.snackbarText = this.$t('vueCrudX.duplicateError')
-        }
-        this.snackbar = !!this.snackbarText
-      }
-    },
     async deleteRecord (payload) {
       this.loading = true
-      payload.user = this.$store.getters.user
       let res = await this.crudOps.delete(payload)
       this.loading = false
       this.$emit('deleted', { res, payload })
-      this.setSnackBar(res)
     },
     async updateRecord (payload) {
       this.loading = true
-      payload.user = this.$store.getters.user
       let res = await this.crudOps.update(payload)
       this.loading = false
       this.$emit('updated', { res, payload })
-      this.setSnackBar(res)
       if (typeof res === 'object') return res.ok // TODEPRECATE this check
       else return res === 200 // TODEPRECATE
     },
     async createRecord (payload) {
       this.loading = true
-      payload.user = this.$store.getters.user
       let res = await this.crudOps.create(payload)
       this.loading = false
       this.$emit('created', { res, payload }) // no ID yet, TBD...
-      this.setSnackBar(res)
     },
     async getRecord (payload) {
       this.loading = true
-      payload.user = this.$store.getters.user
       let record = await this.crudOps.findOne(payload)
       this.setRecord(record)
       this.loading = false
@@ -382,24 +293,22 @@ export default {
       else this.record = _cloneDeep(payload)
     }, // NOTE: mutated here without dispatching action
     async exportRecords (payload) {
-      payload.user = this.$store.getters.user
       await this.crudOps.export(payload)
     },
     closeCrudForm () {
       this.setRecord() // clear it
       this.crudFormFlag = false
-      this.$emit('form-close') // emit event if close form
+      this.$emit('form-close')
     },
     async crudFormOpen (id) {
       if (id) await this.getRecord({ id }) // edit
       else this.setRecord() // add
       this.crudFormFlag = true
-      this.$emit('form-open', this.record) // emit event if close form
+      this.$emit('form-open', this.record)
     },
     async crudFormSave (e) {
       if (!this.record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
       if (this.record.id && this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
-
       if (this.record.id) await this.updateRecord({ record: this.record })
       else await this.createRecord({ record: this.record, parentId: this.parentId })
       if (this.formReload) await this.getRecordsHelper()
@@ -416,18 +325,18 @@ export default {
     },
     async getRecordsHelper () {
       this.loading = true
-      this.$store.commit(this.storeName + '/setFilterData', _cloneDeep(this.filterData))
+      // emit filter update event
       const payload = {
         user: this.$store.getters.user,
         doPage: this.doPage,
         pagination: this.pagination,
-        filterData: this.filterData,
+        filters: this.filters,
         parentId: this.parentId
       }
-      let { records, pagination, totalRecords } = await this.crudOps.find(payload)
+      let { records, totalRecords } = await this.crudOps.find(payload) // pagination no need to return
       this.totalRecords = !totalRecords ? records.length : totalRecords
       this.records = records
-      this.$store.commit(this.storeName + '/setPageData', _cloneDeep(pagination))
+      // emit pagination update event
       this.loading = false
     },
     async submitFilter () {
@@ -442,7 +351,7 @@ export default {
       this.loading = true
       await this.exportRecords({
         pagination: this.pagination,
-        filterData: this.filterData,
+        filters: this.filters,
         parentId: this.parentId
       })
       this.loading = false
@@ -451,11 +360,6 @@ export default {
       this.$router.back()
     },
     isEditing (row) { // check if a row is editing
-      // for (let i = 0; i < this.records.length; i++) {
-      //   if (this.$refs[`edit-${i}`].style['background-color']) return true
-      // }
-      // return false
-      // console.log('isEditing', this.editing)
       if (row) {
         if (this.editing && this.editing[row]) return true
         else return false
@@ -584,33 +488,25 @@ export default {
   <v-container v-if="ready" v-bind="attrs.container">
     <slot name="table-toolbar" :vcx="_self">
       <v-toolbar v-bind="attrs.toolbar">
-        <!-- <v-toolbar-side-icon ></v-toolbar-side-icon> -->
-        <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{showTitle | capitalize}} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
+        <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn v-if="showFilterButton||hasFilterSlot" v-bind="attrs.button" @click="expandFilter=!expandFilter" :disabled="!hasFilterData"><v-icon>{{ expandFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
+        <v-btn v-if="showFilterButton" v-bind="attrs.button" @click="expandFilter=!expandFilter" :disabled="!filters"><v-icon>{{ expandFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
         <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
         <v-btn v-if="canCreate" v-bind="attrs.button" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
         <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop.prevent="exportBtnClick" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
       </v-toolbar>
     </slot>
     <div v-if="expandFilter">
-      <slot name="filter" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vcx="_self">
-        <v-form v-if="hasFilterData" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
-          <crud-filter v-if="hasFilterVue" :filterData="filterData" :parentId="parentId" :storeName="storeName" :vcx="_self" />
-          <v-layout row wrap v-else>
-            <v-flex v-for="(filter, index) in filterData" :key="index" :sm6="filter.halfSize" xs12>
-              <component :is="filter.field" v-model="filter.value" v-bind="filter.attrs">
-                <template v-if="filter.field==='v-btn-toggle'">
-                  <component :is="'v-btn'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" v-bind="filter.group.attrs">{{ value }}</component>
-                </template>
-                <template v-else-if="filter.field==='v-radio-group'">
-                  <component :is="'v-radio'" v-for="(value, key, index) in filter.group.items" :key="index" :value="key" :label="value" v-bind="filter.group.attrs"></component>
-                </template>
-              </component>
-            </v-flex>
+      <slot name="filter" :filters="filters" :parentId="parentId" :vcx="_self">
+        <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
+          <v-layout row wrap>
+            <template v-for="(filter, i) in filters">
+              <v-flex :key="i" v-bind="filter['field-wrapper']">
+                <component :is="filter.type" v-model="filter.value" v-bind="filter['field-input']" />
+              </v-flex>
+            </template>
           </v-layout>
         </v-form>
-        <!-- <v-layout row justify-end></v-layout> -->
       </slot>
     </div>
     <slot name="table" :records="records" :totalRecords="totalRecords" :pagination="pagination" :vcx="_self">
@@ -636,7 +532,6 @@ export default {
                 <v-icon v-if="crudOps.update&&saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(props.item, null, props.index, index)" :disabled="loading">save</v-icon>
               </span>
               <span v-else-if="!inline[header.value]" v-html="$options.filters.formatters(props.item[header.value], header.value)"></span>
-              <!-- <span v-if="!inline[header.value]">{{ props.item[header.value] | formatters(header.value) }}</span> -->
               <v-edit-dialog
                 v-else-if="inline[header.value].field==='v-date-picker'||inline[header.value].field==='v-time-picker'||inline[header.value].field==='v-textarea'"
                 :ref="`edit-${props.index}-${index}`"
@@ -703,7 +598,7 @@ export default {
         <v-card>
           <slot name="form-toolbar" :vcx="_self">
             <v-toolbar v-bind="attrs.toolbar">
-              <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle | capitalize}}</v-toolbar-title>
+              <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-toolbar-items>
                 <v-btn v-bind="attrs.button" v-if="canDelete && record.id" @click.native="crudFormDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
@@ -712,10 +607,9 @@ export default {
             </v-toolbar>
           </slot>
           <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading" v-bind="attrs['v-progress-circular']?attrs['v-progress-circular']:attrs['v-progress-linear']"></component>
-          <slot name="form" :record="record" :parentId="parentId" :storeName="storeName" :vcx="_self">
+          <slot name="form" :record="record" :parentId="parentId" :vcx="_self">
             <v-form v-if="hasFormVue" v-model="validForm" v-bind="attrs.form">
-              <crud-form v-if="!formAutoData" :record="record" :parentId="parentId" :storeName="storeName" :vcx="_self" />
-              <v-layout row wrap v-else>
+              <v-layout row wrap>
                 <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12>
                   <component v-if="form.field==='hidden'" :is="'div'"></component>
                   <component v-else-if="record[objKey]!==undefined" :is="form.field" v-model="record[objKey]" v-bind="form.attrs">
@@ -733,10 +627,6 @@ export default {
         </v-card>
       </v-dialog>
     </v-layout>
-    <v-snackbar v-if="attrs.snackbar" v-model="snackbar" v-bind="attrs.snackbar">
-      {{ snackbarText }}
-      <v-btn fab flat @click="snackbar=false"><v-icon >close</v-icon></v-btn>
-    </v-snackbar>
   </v-container>
 </template>
 

@@ -8,10 +8,10 @@ import { makeCsvRow, exportCsv } from '@/assets/util'
 
 export const crudOps = { // CRUD
   export: async (payload) => {
-    const { filterData } = payload // pagination
+    const { filters } = payload // pagination
     try {
       let dbCol = firestore.collection('party') // create index
-        .where('status', '==', filterData.active.value)
+        .where('status', '==', filters.active.value)
       const rv = await dbCol.limit(50).get()
 
       let csvContent = ''
@@ -24,10 +24,10 @@ export const crudOps = { // CRUD
   },
   find: async (payload) => {
     let records = []
-    const { pagination, filterData } = payload
+    const { pagination, filters } = payload
     try {
       let dbCol = firestore.collection('party') // create index
-        .where('status', '==', filterData.active.value)
+        .where('status', '==', filters.active.value)
       const rv = await dbCol.limit(50).get()
       rv.forEach(record => {
         let tmp = record.data()

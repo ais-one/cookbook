@@ -1,5 +1,5 @@
 <template>
-  <vue-crud-x ref="authors" storeName="authors" :parentId="null" v-bind="authorDefs"></vue-crud-x>
+  <vue-crud-x ref="authors" :parentId="null" v-bind="authorDefs"></vue-crud-x>
 </template>
 
 <script>
@@ -25,10 +25,19 @@ export default {
           formatters: (value, _type) => value,
           doPage: 2
         },
-        crudFilter: {
-          FilterVue: null,
-          filterData: {}
-        },
+        filters: [
+          {
+            type: 'v-text-field', // component name
+            name: 'name', // field name
+            value: '',
+            'field-wrapper': {
+              xs12: true, sm6: true
+            },
+            'field-input': {
+              label: 'Author', clearable: true
+            }
+          }
+        ],
         crudForm: {
           FormVue: null,
           formAutoData: {
@@ -52,7 +61,7 @@ export default {
           find: async payload => {
             let records = []
             let totalRecords = 0
-            const { pagination } = payload // filterData
+            const { pagination } = payload // filters
             const { page, itemsPerPage } = pagination // sortBy, descending
             try {
               const {

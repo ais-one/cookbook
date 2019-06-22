@@ -2,19 +2,19 @@
   <div id="not-needed">
     <v-layout row wrap>
       <v-flex xs12>
-        <vue-crud-x ref="book-pages-table" storeName="book-pages-table" :parentId="parentId" v-bind="pageDefs">
-          <template v-slot:filter="{ filterData, parentId, storeName }">
-            <div>{{ filterData }}</div>
+        <vue-crud-x ref="book-pages-table" :parentId="parentId" v-bind="pageDefs">
+          <template v-slot:filter="{ filters, parentId }">
+            <div>{{ filters }}</div>
             <hr />
-            <div>{{ !!parentId }} {{ storeName }}</div>
+            <div>{{ !!parentId }}</div>
           </template>
           <!-- <template v-slot:table="{ records, totalRecs, pagination }">
             <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['my-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
             <div>{{ totalRecs }} {{ pagination }}</div>
           </template> -->
-          <template v-slot:form="{ record, parentId, storeName }">
+          <template v-slot:form="{ record, parentId }">
             <div>
-              <div>{{ record }} {{ !!parentId }} {{ storeName }}</div>
+              <div>{{ record }} {{ !!parentId }}</div>
               <h1>Pages Form</h1>
               <v-card-text>
                 <v-text-field label="Content" v-model="record.content"></v-text-field>
@@ -92,7 +92,7 @@ export default {
           // doPage: false,
           showGoBack: true //  do not show go back
         },
-        crudFilter: { FilterVue: null, filterData: {} },
+        filters: null,
         crudForm: {
           FormVue: () => {},
           formAutoData: null,
@@ -108,7 +108,7 @@ export default {
           find: async payload => {
             let records = []
             let totalRecords = 0
-            const { pagination, parentId } = payload // filterData
+            const { pagination, parentId } = payload // filters
             const { page, itemsPerPage } = pagination // sortBy, descending
             try {
               const {

@@ -4,7 +4,6 @@
       <v-flex xs12>
         <vue-crud-x
           ref="taskRef"
-          :storeName="colName"
           :parentId="null"
           v-bind="taskDefs"
           @selected="onSelected"
@@ -69,16 +68,13 @@ export default {
             delete: false
           }
         },
-        crudFilter: {
-          FilterVue: null,
-          filterData: {
-            area: { type: 'v-autocomplete', halfSize: true, value: '', attrs: { label: 'Area', class: 'pa-2', items: area, clearable: true } },
-            readMode: { type: 'v-select', halfSize: true, value: 'Latest', attrs: { label: 'Latest 50 Or Date Range', class: 'pa-2', multiple: false, items: [ 'Latest', 'Date Range' ], rules: [v => !!v || 'Item is required'] } },
-            dateStart: { type: 'app-date-picker', halfSize: true, value: format(startOfMonth(new Date()), 'YYYY-MM-DD'), attrs: { label: 'Date Start' } },
-            timeStart: { type: 'app-time-picker', halfSize: true, value: '00:00', attrs: { label: 'Time Start' } },
-            dateEnd: { type: 'app-date-picker', halfSize: true, value: format(endOfMonth(new Date()), 'YYYY-MM-DD'), attrs: { label: 'Date End' } },
-            timeEnd: { type: 'app-time-picker', halfSize: true, value: '23:55', attrs: { label: 'Time End' } }
-          }
+        filters: {
+          area: { type: 'v-autocomplete', halfSize: true, value: '', attrs: { label: 'Area', class: 'pa-2', items: area, clearable: true } },
+          readMode: { type: 'v-select', halfSize: true, value: 'Latest', attrs: { label: 'Latest 50 Or Date Range', class: 'pa-2', multiple: false, items: [ 'Latest', 'Date Range' ], rules: [v => !!v || 'Item is required'] } },
+          dateStart: { type: 'app-date-picker', halfSize: true, value: format(startOfMonth(new Date()), 'YYYY-MM-DD'), attrs: { label: 'Date Start' } },
+          timeStart: { type: 'app-time-picker', halfSize: true, value: '00:00', attrs: { label: 'Time Start' } },
+          dateEnd: { type: 'app-date-picker', halfSize: true, value: format(endOfMonth(new Date()), 'YYYY-MM-DD'), attrs: { label: 'Date End' } },
+          timeEnd: { type: 'app-time-picker', halfSize: true, value: '23:55', attrs: { label: 'Time End' } }
         },
         crudForm: {
           FormVue: null,
@@ -98,7 +94,7 @@ export default {
             let records = []
             const { pagination } = payload
             try {
-              const { area, readMode, dateStart, timeStart, dateEnd, timeEnd } = payload.filterData
+              const { area, readMode, dateStart, timeStart, dateEnd, timeEnd } = payload.filters
               let dbCol = firestore.collection(COL_NAME)
               if (area.value) dbCol = dbCol.where('area', '==', area.value)
               if (readMode.value === 'Latest') {

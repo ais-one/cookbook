@@ -1,14 +1,10 @@
 <template>
-  <vue-crud-x
-    storeName="party"
-    :parentId="null"
-    v-bind="partyDefs"
-  >
-    <template v-slot:filter="{ filterData, parentId, storeName }">
-      <my-filter :filterData="filterData" :parentId="parentId" :storeName="storeName" />
+  <vue-crud-x :parentId="null" v-bind="partyDefs">
+    <template v-slot:filter="{ filters, parentId }">
+      <my-filter :filters="filters" :parentId="parentId" />
     </template>
-    <template v-slot:form="{ record, parentId, storeName }">
-      <my-form :record="record" :parentId="parentId" :storeName="storeName" />
+    <template v-slot:form="{ record, parentId }">
+      <my-form :record="record" :parentId="parentId" />
     </template>
   </vue-crud-x>
 </template>
@@ -61,47 +57,37 @@ export default {
           update: { icon: 'save', label: 'Save' }
         }
       },
-      crudFilter: {
-        FilterVue: null,
-        // FilterVue: () => ({ // TODEPRECATE
-        //   component: import('./Filter.vue')
-        //   // loading: LoadingComp,
-        //   // error: ErrorComp,
-        //   // delay: 200,
-        //   // timeout: 3000
-        // }),
-        filterData: {
-          languages: {
-            // this will be deprecated
-            type: 'v-select',
-            value: '',
-            attrs: {
-              label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
-              multiple: false,
-              rules: [],
-              items: []
-            },
-            itemsFn: async () => {
-              let records = []
-              try {
-                const rv = await firestore.collection('languages').limit(10).get() // create index
-                rv.forEach(record => {
-                  let tmp = record.data()
-                  records.push(tmp.name)
-                })
-              } catch (e) { }
-              return records
-            }
+      filters: {
+        languages: {
+          // this will be deprecated
+          type: 'v-select',
+          value: '',
+          attrs: {
+            label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
+            multiple: false,
+            rules: [],
+            items: []
           },
-          active: {
-            type: 'v-select',
-            value: 'active',
-            attrs: {
-              label: 'Active Status',
-              multiple: false,
-              items: [ 'active', 'inactive' ], // can be async loaded from db?
-              rules: [v => !!v || 'Item is required']
-            }
+          itemsFn: async () => {
+            let records = []
+            try {
+              const rv = await firestore.collection('languages').limit(10).get() // create index
+              rv.forEach(record => {
+                let tmp = record.data()
+                records.push(tmp.name)
+              })
+            } catch (e) { }
+            return records
+          }
+        },
+        active: {
+          type: 'v-select',
+          value: 'active',
+          attrs: {
+            label: 'Active Status',
+            multiple: false,
+            items: [ 'active', 'inactive' ], // can be async loaded from db?
+            rules: [v => !!v || 'Item is required']
           }
         }
       },

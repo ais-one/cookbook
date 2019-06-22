@@ -169,7 +169,7 @@ apiRoutes
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
       const name = req.query.name ? req.query.name : ''
-      const categoryId = req.query['category-id'] ? req.query['category-id'] : ''
+      const categoryId = req.query.categoryId ? req.query.categoryId : ''
       const qb = Book.query()
       if (name) qb.where('books.name', 'like', `%${name}%`)
       if (categoryId) qb.where('books.categoryId', '=', categoryId)

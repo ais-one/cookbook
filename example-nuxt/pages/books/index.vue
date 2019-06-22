@@ -2,17 +2,17 @@
   <div id="not-needed">
     <v-layout row wrap>
       <v-flex xs12>
-        <vue-crud-x ref="book-table" storeName="book-table" :parentId="null" v-bind="bookDefs" @form-open="openBookForm">
-          <template v-slot:filter="{ filterData, parentId, storeName, vcx }">
-            <h1>Custom {{ storeName }} Filter Slot</h1>
+        <vue-crud-x ref="book-table" :parentId="null" v-bind="bookDefs" @form-open="openBookForm">
+          <template v-slot:filter="{ filters, parentId, vcx }">
+            <h1>Custom Filter Slot</h1>
             <p>Records: {{ vcx.records.length }}</p>
-            <div v-for="(filter, index) in filterData" :key="index">
+            <div v-for="(filter, index) in filters" :key="index">
               <component :is="filter.type" v-model="filter.value" v-bind="filter.attrs"></component>
             </div>
           </template>
-          <template v-slot:form="{ record, parentId, storeName }">
+          <template v-slot:form="{ record, parentId }">
             <div>
-              <h1>Custom {{ storeName }} Form Slot - Has Parent: {{ !!parentId }}</h1>
+              <h1>Custom Form Slot - Has Parent: {{ !!parentId }}</h1>
               <v-card-text>
                 <v-text-field label="Name" v-model="record.name"></v-text-field>
                 <v-select label="Category" v-model="record.categoryId" :items="categories" required item-text="name" item-value="id"></v-select>
@@ -106,32 +106,36 @@ export default {
           doPage: 2,
           showFilterButton: false
         },
-
-        crudFilter: {
-          FilterVue: null,
-          filterData: {
-            name: {
-              type: 'v-text-field',
-              value: '',
-              attrs: {
-                label: 'Book Name',
-                clearable: true
-              }
+        filters: [
+          {
+            type: 'v-text-field', // component name
+            name: 'name', // field name
+            value: '',
+            'field-wrapper': {
+              xs12: true, sm6: true
             },
-            categoryName: {
-              type: 'v-select',
-              value: { text: 'All', value: 0 },
-              attrs: {
-                label: 'Category',
-                multiple: false,
-                'return-object': true,
-                items: [{ text: 'All', value: 0 }, { text: 'cat1', value: 1 }, { text: 'cat2', value: 2 }],
-                rules: [v => !!v || 'Item is required']
-              }
+            'field-input': {
+              label: 'Book Name', clearable: true
+            }
+          },
+          {
+            type: 'v-select', // component name
+            name: 'categoryId', // field name
+            value: { text: 'All', value: 0 },
+            'field-wrapper': {
+              xs12: true, sm6: true
+            },
+            'field-input': {
+              label: 'Category',
+              multiple: false,
+              'return-object': true,
+              items: [
+                { text: 'All', value: 0 }, { text: 'cat1', value: 1 }, { text: 'cat2', value: 2 }
+              ],
+              rules: [v => !!v || 'Item is required']
             }
           }
-        },
-
+        ],
         crudForm: {
           FormVue: () => {},
           formAutoData: null,
@@ -151,23 +155,21 @@ export default {
           find: async payload => {
             let records = []
             let totalRecords = 0
-            const { pagination, filterData } = payload
+            const { pagination, filters } = payload
+            const { page, itemsPerPage } = pagination // sortBy, descending
+            let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } // set query params
+            for (let filter of filters) {
+              let value = filter.value
+              if (filter.name === 'categoryId') value = filter.value.value
+              if (value) params[filter.name] = value
+            }
             try {
-              const { page, itemsPerPage } = pagination // sortBy, descending
-              let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } // set query params
-              if (filterData.name.value) params.name = filterData.name.value
-              if (filterData.categoryName.value.value) params['category-id'] = filterData.categoryName.value.value
-              try {
-                const {
-                  data: { results, total }
-                } = await this.$axios.get('/api/books', { params })
-                records = results
-                totalRecords = total
-              } catch (e) {
-                console.log(e)
-              }
+              const { data: { results, total } } = await http.get('/api/books', { params })
+              // console.log('find books', results)
+              records = results
+              totalRecords = total
             } catch (e) {
-              console.log('foobar', e, pagination)
+              console.log(e)
             }
             return { records, pagination, totalRecords }
           },

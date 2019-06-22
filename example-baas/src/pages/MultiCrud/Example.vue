@@ -9,16 +9,10 @@
     <v-layout row wrap>
       <v-flex xs12 sm6>
         <v-btn @click="showCustomTable=!showCustomTable" color="error">Toggle Slot: ({{ showCustomTable ?'User Defined':'Default'}})</v-btn>
-        <vue-crud-x
-          ref="my-table"
-          storeName="multi-crud-party"
-          :parentId="null"
-          v-bind="partyDefs"
-          @selected="onSelected"
-        >
-          <template v-if="showCustomTable" v-slot:filter="{ filterData, parentId, storeName }">
-            <h1>Filter Slot: {{ storeName }} {{ !!parentId }}</h1>
-            <div v-for="(filter, index) in filterData" :key="index">
+        <vue-crud-x ref="my-table" :parentId="null" v-bind="partyDefs" @selected="onSelected">
+          <template v-if="showCustomTable" v-slot:filter="{ filters, parentId }">
+            <h1>Filter Slot: {{ !!parentId }}</h1>
+            <div v-for="(filter, index) in filters" :key="index">
               <component :is="filter.type" v-model="filter.value" v-bind="filter.attrs"></component>
             </div>
           </template>
@@ -26,9 +20,9 @@
             <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['my-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
             <div>{{ totalRecs }} {{ pagination }}</div>
           </template>
-          <template v-if="showCustomTable" v-slot:form="{ record, parentId, storeName }">
+          <template v-if="showCustomTable" v-slot:form="{ record, parentId }">
             <div>
-              <h1>Form Slot: {{ storeName }} {{ !!parentId }}</h1>
+              <h1>Form Slot: {{ !!parentId }}</h1>
               <v-card-text>
                 <v-text-field label="Name" v-model="record.name"></v-text-field>
                 <v-select label="Status" v-model="record.status" :items="status" :rules="ruleStatus" required></v-select>
@@ -61,12 +55,7 @@
         </vue-crud-x>
       </v-flex>
       <v-flex xs12 sm6>
-        <vue-crud-x
-          ref="testref"
-          storeName="multi-crud-party-notes"
-          :parentId="selectedId"
-          v-bind="partyNotesDefs"
-        >
+        <vue-crud-x ref="testref" :parentId="selectedId" v-bind="partyNotesDefs">
         </vue-crud-x>
       </v-flex>
       <v-flex xs12 sm6>

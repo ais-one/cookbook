@@ -19,39 +19,36 @@ export const crudTable = {
   onRowClickOpenForm: false // do not open form on row click
 }
 
-export const crudFilter = {
-  FilterVue: null,
-  filterData: { // this is for automated filter creation - if undefined use FilterVue
-    languages: {
-      type: 'v-select',
-      value: '',
-      attrs: {
-        label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
-        multiple: false,
-        rules: [],
-        items: []
-      },
-      itemsFn: async () => {
-        let records = []
-        try {
-          const rv = await firestore.collection('languages').limit(10).get() // create index
-          rv.forEach(record => {
-            let tmp = record.data()
-            records.push(tmp.name)
-          })
-        } catch (e) { }
-        return records
-      }
+export const filters = {
+  languages: {
+    type: 'v-select',
+    value: '',
+    attrs: {
+      label: 'Languages', // i18n.messages[i18n.locale].myApp.languages, // 'Languages', NOT WORKING... DOES NOT CHANGE
+      multiple: false,
+      rules: [],
+      items: []
     },
-    active: {
-      type: 'v-select',
-      value: 'active',
-      attrs: {
-        label: 'Active Status',
-        multiple: false,
-        items: [ 'active', 'inactive' ], // can be async loaded from db?
-        rules: [v => !!v || 'Item is required']
-      }
+    itemsFn: async () => {
+      let records = []
+      try {
+        const rv = await firestore.collection('languages').limit(10).get() // create index
+        rv.forEach(record => {
+          let tmp = record.data()
+          records.push(tmp.name)
+        })
+      } catch (e) { }
+      return records
+    }
+  },
+  active: {
+    type: 'v-select',
+    value: 'active',
+    attrs: {
+      label: 'Active Status',
+      multiple: false,
+      items: [ 'active', 'inactive' ], // can be async loaded from db?
+      rules: [v => !!v || 'Item is required']
     }
   }
 }
@@ -100,10 +97,10 @@ export const crudForm = {
 
 export const crudOps = { // CRUD
   export: async (payload) => {
-    const { filterData } = payload // pagination
+    const { filters } = payload // pagination
     try {
       let dbCol = firestore.collection('party') // create index
-        .where('status', '==', filterData.active.value)
+        .where('status', '==', filters.active.value)
       const rv = await dbCol.limit(50).get()
 
       let csvContent = ''
@@ -116,10 +113,10 @@ export const crudOps = { // CRUD
   },
   find: async (payload) => {
     let records = []
-    const { pagination, filterData } = payload
+    const { pagination, filters } = payload
     try {
       let dbCol = firestore.collection('party') // create index
-        .where('status', '==', filterData.active.value)
+        .where('status', '==', filters.active.value)
       const rv = await dbCol.limit(50).get()
       rv.forEach(record => {
         let tmp = record.data()

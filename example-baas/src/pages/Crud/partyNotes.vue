@@ -1,14 +1,10 @@
 <template>
-  <vue-crud-x
-    storeName="party-notes"
-    :parentId="parentId"
-    v-bind="partyNotesDefs"
-  >
-    <template v-slot:filter="{ filterData, parentId, storeName }">
-      <my-filter :filterData="filterData" :parentId="parentId" :storeName="storeName" />
+  <vue-crud-x :parentId="parentId" v-bind="partyNotesDefs">
+    <template v-slot:filter="{ filters, parentId }">
+      <my-filter :filters="filters" :parentId="parentId" />
     </template>
-    <template v-slot:form="{ record, parentId, storeName }">
-      <my-form :record="record" :parentId="parentId" :storeName="storeName" />
+    <template v-slot:form="{ record, parentId }">
+      <my-form :record="record" :parentId="parentId" />
     </template>
   </vue-crud-x>
 </template>
@@ -50,48 +46,37 @@ export default {
         },
         doPage: false
       },
-      crudFilter: {
-        FilterVue: null,
-        filterData: {
-          dateStart: {
-            type: 'app-date-picker',
-            value: format(startOfMonth(new Date()), 'YYYY-MM-DD'),
-            attrs: {
-              label: 'Date Start'
-              // rules: [
-              //   (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date',
-              //   (v) => (differenceInCalendarDays(crudFilter.filterData.dateEnd.value, v) <= 60) || 'Select only up to 60 days of records at a time'
-              // ],
-            },
-            halfSize: true
+      filters: {
+        dateStart: {
+          type: 'app-date-picker',
+          value: format(startOfMonth(new Date()), 'YYYY-MM-DD'),
+          attrs: {
+            label: 'Date Start'
           },
-          dateEnd: {
-            type: 'app-date-picker',
-            value: format(endOfMonth(new Date()), 'YYYY-MM-DD'),
-            attrs: {
-              label: 'Date End'
-              // rules: [
-              //   (v) => (v <= crudFilter.filterData.dateEnd.value) || 'Start date must be earlier or same as end date',
-              //   (v) => (differenceInCalendarDays(crudFilter.filterData.dateEnd.value, v) <= 60) || 'Select only up to 60 days of records at a time'
-              // ],
-            },
-            halfSize: true
+          halfSize: true
+        },
+        dateEnd: {
+          type: 'app-date-picker',
+          value: format(endOfMonth(new Date()), 'YYYY-MM-DD'),
+          attrs: {
+            label: 'Date End'
           },
-          selectX: {
-            type: 'v-select',
-            value: { text: 'All', value: 'all' },
-            attrs: {
-              label: 'Active Status',
-              multiple: false,
-              items: [
-                { text: 'All', value: 'all' },
-                { text: 'Pending', value: 'pending' },
-                { text: 'Review', value: 'review' },
-                { text: 'Approved', value: 'approved' },
-                { text: 'Rejected', value: 'rejected' }
-              ],
-              rules: [v => !!v || 'Item is required']
-            }
+          halfSize: true
+        },
+        selectX: {
+          type: 'v-select',
+          value: { text: 'All', value: 'all' },
+          attrs: {
+            label: 'Active Status',
+            multiple: false,
+            items: [
+              { text: 'All', value: 'all' },
+              { text: 'Pending', value: 'pending' },
+              { text: 'Review', value: 'review' },
+              { text: 'Approved', value: 'approved' },
+              { text: 'Rejected', value: 'rejected' }
+            ],
+            rules: [v => !!v || 'Item is required']
           }
         }
       },
@@ -109,8 +94,8 @@ export default {
       crudOps: { // CRUD
         export: async (payload) => {
           try {
-            const { filterData, parentId } = payload
-            const { dateStart, dateEnd, selectX } = filterData
+            const { filters, parentId } = payload
+            const { dateStart, dateEnd, selectX } = filters
             let dbCol = firestore.collection('note')
               .where('party', '==', parentId)
               .where('datetime', '>=', new Date(dateStart.value + ' 00:00:00')) // create index
@@ -137,8 +122,8 @@ export default {
         },
         find: async (payload) => {
           let records = []
-          const { pagination, parentId, filterData } = payload // parentId
-          const { dateStart, dateEnd, selectX } = filterData
+          const { pagination, parentId, filters } = payload // parentId
+          const { dateStart, dateEnd, selectX } = filters
           const { sortBy, descending } = pagination // itemsPerPage, totalItems
           try {
             let dbCol = firestore.collection('note')
