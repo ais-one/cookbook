@@ -36,32 +36,36 @@ export default {
             type: 'v-text-field', // component name
             name: 'name', // field name
             value: '',
-            'field-wrapper': {
-              xs12: true, sm6: true
-            },
+            'field-wrapper': { xs12: true, sm6: true },
             'field-input': {
               label: 'Author', clearable: true
             }
           }
         ],
-        crudForm: {
-          FormVue: null,
-          formAutoData: {
-            id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
-            name: {
-              type: 'v-text-field',
-              attrs: {
-                label: 'Name',
-                rules: [v => !!v || 'Item is required']
-              },
-              halfSize: false
+        form: [
+          {
+            name: 'id',
+            type: 'v-text-field',
+            value: '',
+            hidden: 'add', // add, edit, all, null
+            readonly: 'all', // add, edit, all, null
+            validation: null, // validation function no in place yet
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': {
+              label: 'ID'
             }
           },
-          defaultRec: () => ({
-            id: '',
-            name: ''
-          })
-        },
+          {
+            name: 'name',
+            type: 'v-text-field',
+            value: '',
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': {
+              label: 'Name',
+              rules: [v => !!v || 'Item is required']
+            }
+          }
+        ],
         crudOps: { // CRUD
           export: null,
           find: async (payload) => {

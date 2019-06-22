@@ -137,7 +137,6 @@ export default {
           }
         ],
         crudForm: {
-          FormVue: () => {},
           formAutoData: null,
           defaultRec: () => ({
             id: '',

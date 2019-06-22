@@ -92,7 +92,6 @@ export default {
         }
       },
       crudForm: {
-        FormVue: () => {},
         // defaultRec: {
         //   id: '',
         //   name: '',

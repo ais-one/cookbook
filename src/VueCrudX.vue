@@ -7,33 +7,14 @@
 
 import _cloneDeep from 'lodash.clonedeep'
 
-/*
-const v2 = {
-  id: 'id', // the id field name usually  'id', for mongo its '_id',
-  refetch: false, // do refetch after C U D?
-  optimistic: true, // optimistic UI
-
-  // operations
-  find: null,
-  findOne: null,
-  update: null,
-  create: null,
-  remove: null,
-  export: null,
-  ws: null, // websocket operation?
-
-  parentId: null
-}
-*/
-
 export default {
   props: {
     parentId: { type: String, default: null },
 
     // v1
     crudFilter: { type: Object, required: false },
+    crudForm: { type: Object, required: false },
     crudTable: { type: Object, required: true },
-    crudForm: { type: Object, required: true },
     crudOps: { type: Object, required: true }
   },
   data () {
@@ -49,8 +30,8 @@ export default {
       paginationRefresh: true,
       records: [], // get many - filter, page & sort
       totalRecords: 0,
-      record: {}, // selected record
-      defaultRec: {},
+      // TOREMOVE record: {}, // selected record
+      // defaultRec: {},
       canUpdate: false, // permissions
       canCreate: false,
       canDelete: false,
@@ -61,8 +42,6 @@ export default {
       validForm: true,
       onCreatedOpenForm: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
       onRowClickOpenForm: true, // set to false of you do not want row click to open form
-      hasFormVue: false,
-      formAutoData: null, // if present autogenerate form
 
       // filter
       validFilter: true,
@@ -180,6 +159,8 @@ export default {
     this.ready = false
     // TODEPRECATE - remove crudFilter, convert as object to array
     this.filters = (this.crudFilter && this.crudFilter.filterData) ? this.crudFilter.filterData : this.$attrs.filters || null // Set initial filter data here
+    // TODEPRECATE - remove crudForm, convert as object to array // deal with this.crudForm!
+    this.form = this.$attrs.form || null // Set initial form data here
     // this.pagination // TBD set initial pagination data here
     if (this.crudTable.doPage === false) {
       this.doPage = false // if not set
@@ -202,7 +183,6 @@ export default {
     this.inlineReload = Object.assign(this.inlineReload, this.crudTable.inlineReload || {}) // default true
 
     this.formReload = this.crudTable.formReload !== false // default true
-    this.formAutoData = (this.isObject(this.crudForm.formAutoData)) ? this.crudForm.formAutoData : null // check if components and datas are present
 
     this.addrowCreate = this.crudTable.addrowCreate ? this.crudTable.addrowCreate : false // use add row to create record
     this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // open form on row click? default true
@@ -232,8 +212,8 @@ export default {
     // for (let key in this.filters) { // type to field - TOREMOVE, populated in parent
     //   if (this.filters[key].attrs && this.filters[key].itemsFn) this.filters[key].attrs.items = await this.filters[key].itemsFn()
     // }
-    this.canUpdate = this.crudOps.update && (this.hasFormVue || this.formAutoData)
-    this.canCreate = this.crudOps.create && (this.addrowCreate || this.hasFormVue || this.formAutoData)
+    this.canUpdate = this.crudOps.update // this.form
+    this.canCreate = this.crudOps.create && (this.addrowCreate || this.form)
     this.canDelete = this.crudOps.delete
     this.ready = true
   },
@@ -282,31 +262,41 @@ export default {
       this.loading = false
       this.$emit('created', { res, payload }) // no ID yet, TBD...
     },
-    async getRecord (payload) {
+    async getRecord ({ id }) {
       this.loading = true
-      let record = await this.crudOps.findOne(payload)
-      this.setRecord(record)
+      const result = await this.crudOps.findOne({ id })
+      this.form = this.form.map(field => {
+        field.value = result[field.name]
+        return field
+      })
+      // TOREMOVE this.setRecord(record)
       this.loading = false
     },
-    setRecord (payload) {
-      if (!payload) this.record = (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : _cloneDeep(this.defaultRec)
-      else this.record = _cloneDeep(payload)
-    }, // NOTE: mutated here without dispatching action
     async exportRecords (payload) {
       await this.crudOps.export(payload)
     },
     closeCrudForm () {
-      this.setRecord() // clear it
       this.crudFormFlag = false
       this.$emit('form-close')
     },
     async crudFormOpen (id) {
       if (id) await this.getRecord({ id }) // edit
-      else this.setRecord() // add
+      else { // add - set initial data
+        this.form = this.form.map(field => {
+          field.value = this.$attrs.form[field.name]
+          return field
+        })
+      }
       this.crudFormFlag = true
       this.$emit('form-open', this.record)
     },
     async crudFormSave (e) {
+      let record = {}
+      for (let field of this.form) {
+        if (field.name === this.idName) id = value
+        else record[field.name] = value
+      }
+
       if (!this.record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
       if (this.record.id && this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
       if (this.record.id) await this.updateRecord({ record: this.record })
@@ -359,115 +349,110 @@ export default {
     goBack () {
       this.$router.back()
     },
+
+    // INLINE EDIT START
     isEditing (row) { // check if a row is editing
-      if (row) {
-        if (this.editing && this.editing[row]) return true
-        else return false
-      } else { // check if entire table is editing
-        return this.editing
-      }
+      // if (row) {
+      //   if (this.editing && this.editing[row]) return true
+      //   else return false
+      // } else { // check if entire table is editing
+      //   return this.editing
+      // }
     },
     setEditing (row, item) {
-      this.$refs[`edit-${row}`].style['background-color'] = this.saveRow
-      if (this.editing === null) this.editing = {}
-      this.editing[row] = { item, ts: Date.now() }
-      // console.log('set', this.editing)
+      // this.$refs[`edit-${row}`].style['background-color'] = this.saveRow
+      // if (this.editing === null) this.editing = {}
+      // this.editing[row] = { item, ts: Date.now() }
     },
     clearEditing (row) {
-      // console.log('clear', this.editing, row)
-      if (row !== undefined) {
-        if (this.editing && this.editing[row]) {
-          this.$refs[`edit-${row}`].style['background-color'] = ''
-          delete this.editing[row]
-          if (Object.keys(this.editing).length === 0) this.editing = null
-        }
-      } else {
-        for (let i = 0; i < this.records.length; i++) this.$refs[`edit-${i}`].style['background-color'] = ''
-        this.editing = null
-      }
+      // if (row !== undefined) {
+      //   if (this.editing && this.editing[row]) {
+      //     this.$refs[`edit-${row}`].style['background-color'] = ''
+      //     delete this.editing[row]
+      //     if (Object.keys(this.editing).length === 0) this.editing = null
+      //   }
+      // } else {
+      //   for (let i = 0; i < this.records.length; i++) this.$refs[`edit-${i}`].style['background-color'] = ''
+      //   this.editing = null
+      // }
     },
     // inline edit
     inlineOpen (value, row, col) {
-      this.inlineValue = value
-      if (row !== undefined && col !== undefined) {
-        const ref = this.$refs[`edit-${row}-${col}`][0]
-        this.$nextTick(() => {
-          const component = ref.$children[0].$children[0].$children[0]
-          const tag = component.$options._componentTag
-          if (tag === 'v-textarea') {
-            // component.focus()
-            // this.$nextTick(() => component.focus())
-            // this.$forceUpdate()
-            setTimeout(() => component.focus(), 50) // only this works
-          }
-        })
-      }
+      // this.inlineValue = value
+      // if (row !== undefined && col !== undefined) {
+      //   const ref = this.$refs[`edit-${row}-${col}`][0]
+      //   this.$nextTick(() => {
+      //     const component = ref.$children[0].$children[0].$children[0]
+      //     const tag = component.$options._componentTag
+      //     if (tag === 'v-textarea') {
+      //       setTimeout(() => component.focus(), 50) // only this works
+      //     }
+      //   })
+      // }
     },
     async inlineClose (item, field, row, col) {
-      if (!field || item[field] !== this.inlineValue) { // field undefined means saveRow button clicked
-        if (field && this.saveRow) { // cell changed
-          this.setEditing(row, item)
-        }
-      }
+      // if (!field || item[field] !== this.inlineValue) { // field undefined means saveRow button clicked
+      //   if (field && this.saveRow) { // cell changed
+      //     this.setEditing(row, item)
+      //   }
+      // }
     },
     async inlineUpdate (item, field, row, col) {
-      if (!field || item[field] !== this.inlineValue) { // field undefined means saveRow button clicked
-        if (field && this.saveRow) { // cell changed
-          this.setEditing(row, item)
-        } else {
-          if (this.saveRow && !this.isEditing(row)) return
-          // console.log('inlineUpdate Save!', row, item)
-          const rv = await this.updateRecord({ record: item })
-          if (!rv) { // error
-            // console.log('inlineUpdate Save Error!')
-            if (!this.saveRow) item[field] = this.inlineValue // if false undo changes
-          } else { // success
-            if (this.saveRow) this.clearEditing(row)
-            if (this.inlineReload.update) this.$nextTick(async function () { await this.getRecordsHelper() })
-          }
-        }
-      } // else console.log('no changes')
-      if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
-        const ref = this.$refs[`edit-${row}-${col}`] && this.$refs[`edit-${row}-${col}`][0] ? this.$refs[`edit-${row}-${col}`][0] : null
-        if (ref) {
-          let vEditDialogInput = null
-          try {
-            vEditDialogInput = ref.$children[0].$children[0].$children[0]
-          } catch (e) { }
-          if (vEditDialogInput) {
-            const tag = vEditDialogInput.$options._componentTag
-            if (tag === 'v-date-picker' || tag === 'v-time-picker' || tag === 'v-textarea') ref.save(item[field]) // = false
-          }
-        }
-      }
+      // if (!field || item[field] !== this.inlineValue) { // field undefined means saveRow button clicked
+      //   if (field && this.saveRow) { // cell changed
+      //     this.setEditing(row, item)
+      //   } else {
+      //     if (this.saveRow && !this.isEditing(row)) return
+      //     const rv = await this.updateRecord({ record: item })
+      //     if (!rv) { // error
+      //       if (!this.saveRow) item[field] = this.inlineValue // if false undo changes
+      //     } else { // success
+      //       if (this.saveRow) this.clearEditing(row)
+      //       if (this.inlineReload.update) this.$nextTick(async function () { await this.getRecordsHelper() })
+      //     }
+      //   }
+      // } // else console.log('no changes')
+      // if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
+      //   const ref = this.$refs[`edit-${row}-${col}`] && this.$refs[`edit-${row}-${col}`][0] ? this.$refs[`edit-${row}-${col}`][0] : null
+      //   if (ref) {
+      //     let vEditDialogInput = null
+      //     try {
+      //       vEditDialogInput = ref.$children[0].$children[0].$children[0]
+      //     } catch (e) { }
+      //     if (vEditDialogInput) {
+      //       const tag = vEditDialogInput.$options._componentTag
+      //       if (tag === 'v-date-picker' || tag === 'v-time-picker' || tag === 'v-textarea') ref.save(item[field]) // = false
+      //     }
+      //   }
+      // }
     },
     async inlineCancel (row, col) { // UNUSED...
-      if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
-        const ref = this.$refs[`edit-${row}-${col}`][0]
-        ref.cancel()
-      }
+      // if (row !== undefined && col !== undefined) { // datepicker / timepicker for now
+      //   const ref = this.$refs[`edit-${row}-${col}`][0]
+      //   ref.cancel()
+      // }
     },
     async inlineCreate () {
-      let record = (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : _cloneDeep(this.crudForm.defaultRec)
-      if (this.saveRow) {
-        if (this.isEditing()) return alert(this.$t('vueCrudX.pleaseSave'))
-      }
-      for (let i = 0; i < this.addrowCreate.length; i++) {
-        const { field, label } = this.addrowCreate[i]
-        const val = prompt(label, record[field])
-        if (val) record[field] = val
-        else return
-      }
-      if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
-      await this.createRecord({ record, parentId: this.parentId })
-      // add
-      if (this.inlineReload.create) this.$nextTick(async function () { await this.getRecordsHelper() })
+      // let record = (typeof this.crudForm.defaultRec === 'function') ? this.crudForm.defaultRec() : _cloneDeep(this.crudForm.defaultRec)
+      // if (this.saveRow) {
+      //   if (this.isEditing()) return alert(this.$t('vueCrudX.pleaseSave'))
+      // }
+      // for (let i = 0; i < this.addrowCreate.length; i++) {
+      //   const { field, label } = this.addrowCreate[i]
+      //   const val = prompt(label, record[field])
+      //   if (val) record[field] = val
+      //   else return
+      // }
+      // if (this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
+      // await this.createRecord({ record, parentId: this.parentId })
+      // // add
+      // if (this.inlineReload.create) this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     async inlineDelete (id) {
-      if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
-      await this.deleteRecord({ id })
-      // find index & delete
-      if (this.inlineReload.delete) this.$nextTick(async function () { await this.getRecordsHelper() })
+      // if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
+      // await this.deleteRecord({ id })
+      // // find index & delete
+      // if (this.inlineReload.delete) this.$nextTick(async function () { await this.getRecordsHelper() })
     },
     // rowClicked (item, event, row) {
     rowClicked (a, b) {
@@ -479,6 +464,12 @@ export default {
     },
     async testFunction (_in) { // for testing anything
       console.log(_in)
+    },
+    isHidden (item) {
+      return item.hidden === 'add' && !this.selectedId || item.hidden === 'edit' && this.selectedId || item.hidden === 'all'
+    },
+    isReadOnly (item) {
+      return item.readonly === 'add' && !this.selectedId || item.readonly === 'edit' && this.selectedId || item.readonly === 'all'
     }
   }
 }
@@ -608,19 +599,13 @@ export default {
           </slot>
           <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading" v-bind="attrs['v-progress-circular']?attrs['v-progress-circular']:attrs['v-progress-linear']"></component>
           <slot name="form" :record="record" :parentId="parentId" :vcx="_self">
-            <v-form v-if="hasFormVue" v-model="validForm" v-bind="attrs.form">
+            <v-form v-model="validForm" v-bind="attrs.form">
               <v-layout row wrap>
-                <v-flex v-for="(form, objKey, index) in formAutoData" :key="index" :sm6="form.halfSize" xs12>
-                  <component v-if="form.field==='hidden'" :is="'div'"></component>
-                  <component v-else-if="record[objKey]!==undefined" :is="form.field" v-model="record[objKey]" v-bind="form.attrs">
-                    <template v-if="form.field==='v-btn-toggle'">
-                      <component :is="'v-btn'" v-for="(value, key, index) in form.group.items" :key="index" :value="key" v-bind="form.group.attrs">{{ value }}</component>
-                    </template>
-                    <template v-else-if="form.field==='v-radio-group'">
-                      <component :is="'v-radio'" v-for="(value, key, index) in form.group.items" :key="index" :value="key" :label="value" v-bind="form.group.attrs"></component>
-                    </template>
-                  </component>
-                </v-flex>
+                <template v-for="(item, i) in form">
+                  <v-flex :key="i" v-if="!isHidden(item)" v-bind="item['field-wrapper']">
+                    <component :is="item.type" v-model="item.value" v-bind="item['field-input']" />
+                  </v-flex>
+                </template>
               </v-layout>
             </v-form>
           </slot>
@@ -630,20 +615,5 @@ export default {
   </v-container>
 </template>
 
-<style lang="css" scoped>
-/* should no longer need to make nested table a modal */
-.make-modal {
-  margin: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  padding: 0;
-  min-width: 100%;
-  min-height: 100%;
-  background-color: #fff;
-}
-/* fixed-header - not working yet
-https://github.com/vuetifyjs/vuetify/issues/1547#issuecomment-418698573
-*/
+<style scoped>
 </style>

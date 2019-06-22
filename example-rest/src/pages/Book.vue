@@ -140,12 +140,43 @@ export default {
             }
           }
         ],
+        form: [
+          {
+            name: 'id',
+            type: 'v-text-field',
+            value: '',
+            hidden: 'add', // add, edit, all, null
+            readonly: 'all', // add, edit, all, null
+            validation: null, // validation function no in place yet
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': {
+              label: 'ID'
+            }
+          },
+          {
+            name: 'name',
+            type: 'v-text-field',
+            value: '',
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': {
+              label: 'Book Name',
+              rules: [v => !!v || 'Item is required']
+            }
+          },
+          {
+            name: 'name',
+            type: 'v-text-field',
+            value: '',
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': {
+              label: 'Book Name',
+              rules: [v => !!v || 'Item is required']
+            }
+          }
+
+        ],
         crudForm: {
-          FormVue: () => {},
-          formAutoData: null,
           defaultRec: () => ({
-            id: '',
-            name: '',
             categoryId: '',
             categoryName: '',
             authorIds: [],

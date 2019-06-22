@@ -280,8 +280,7 @@ filters: {
 
 ```
 crudForm: {
-  // FormVue: () => {}, // not needed TO BE DEPRECATED
-  formAutoData: { // this is for automated form creation - if undefined use FormVue
+  formAutoData: { // this is for automated form creation
     id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
     name: {
       type: 'v-text-field',

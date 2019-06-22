@@ -94,7 +94,6 @@ export default {
         },
         filters: null,
         crudForm: {
-          FormVue: () => {},
           formAutoData: null,
           defaultRec: {
             id: null,

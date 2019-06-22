@@ -120,13 +120,17 @@ TBD remove snackbar, emit event
 permissions now on backend
 
 properties removed:
-- hasFormVue
 - hasFilterVue
 - FilterVue
+- FormVue
 
 crudFilter.filterData -> filter
 
+- hasFormVue
 - hasFilterData
+- formAutoData
+- record
+- defaultRec
 
 Form - property type changed to field
 Filter - property type changed to field
@@ -135,11 +139,41 @@ store & storename - removed
 
 crud operations payload 'user' - removed (set JWT outside instead) 
 
+merge 'crudForm.defaultRec' & 'crudForm.formAutoData' to 'form'
 
 # V2 Work
 
 refetch
 optimistic
+
+```js
+
+const v2 = {
+  idName: 'id', // the id field name usually  'id', for mongo its '_id',
+  refetch: false, // do refetch after C U D?
+  optimistic: true, // optimistic UI
+
+  filters: {
+
+  }
+
+  form: {
+
+  }
+
+  // operations
+  find: null,
+  findOne: null,
+  update: null,
+  create: null,
+  remove: null,
+  export: null,
+  ws: null, // websocket operation?
+
+  parentId: null
+}
+
+```
 
 ## Events
 updated - can be pass or fail

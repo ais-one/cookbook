@@ -77,7 +77,6 @@ export default {
           timeEnd: { type: 'app-time-picker', halfSize: true, value: '23:55', attrs: { label: 'Time End' } }
         },
         crudForm: {
-          FormVue: null,
           defaultRec: () => ({
             id: '',
             area: 'CENTRAL',

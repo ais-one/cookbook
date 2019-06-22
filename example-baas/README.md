@@ -283,9 +283,3 @@ import MyForm from './PartyForm'
 </script>
 
 ```
-
-in the scripts, you should put the defs into data()
-
-        FilterVue: null,
-
-        FormVue: () => {},

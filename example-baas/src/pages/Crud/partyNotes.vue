@@ -81,7 +81,6 @@ export default {
         }
       },
       crudForm: {
-        FormVue: () => {},
         defaultRec: {
           id: null,
           approver: null,

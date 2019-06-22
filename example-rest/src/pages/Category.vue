@@ -66,24 +66,30 @@ export default {
           showFilterButton: false
         },
         filters: null,
-        crudForm: {
-          FormVue: null,
-          formAutoData: {
-            id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
-            name: {
-              field: 'v-text-field',
-              attrs: {
-                label: 'Name',
-                rules: [v => !!v || 'Item is required']
-              },
-              halfSize: false
+        form: [
+          {
+            name: 'id',
+            type: 'v-text-field',
+            value: '',
+            hidden: 'add', // add, edit, all, null
+            readonly: 'all', // add, edit, all, null
+            validation: null, // validation function no in place yet
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': {
+              label: 'ID'
             }
           },
-          defaultRec: () => ({
-            id: '',
-            name: ''
-          })
-        },
+          {
+            name: 'name',
+            type: 'v-text-field',
+            value: '',
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': {
+              label: 'Name',
+              rules: [v => !!v || 'Item is required']
+            }
+          }
+        ],
         crudOps: { // CRUD
           export: async (payload) => {
           },

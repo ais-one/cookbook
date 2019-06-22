@@ -39,7 +39,6 @@ export default {
           }
         ],
         crudForm: {
-          FormVue: null,
           formAutoData: {
             id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
             name: {
