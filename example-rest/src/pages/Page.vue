@@ -16,12 +16,12 @@
             <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['my-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
             <div>{{ totalRecs }} {{ pagination }}</div>
           </template> -->
-          <template v-slot:form="{ record, parentId }">
+          <template v-slot:form="{ form, parentId }">
             <div>
-              <div>{{ record }} {{ !!parentId }}</div>
+              <div>{{ form }} {{ !!parentId }}</div>
               <h1>Pages Form</h1>
               <v-card-text>
-                <v-text-field label="Content" v-model="record.content"></v-text-field>
+                <v-text-field label="Content" v-model="form[1].value"></v-text-field>
               </v-card-text>
             </div>
           </template>
@@ -42,49 +42,55 @@ export default {
       parentId: null,
       pageDefs: {
         crudTable: {
-          saveRow: '#ffaaaa', // add save row button & specify color when row is changed, used with inline edit only and action column
-          inlineReload: { // default true, set to false and use snapshot for large firestore dataset (or similar mechanisms where reads are chargeable)
-            update: true,
-            create: true,
-            delete: true
-          },
-          addrowCreate: [
-            {
-              field: 'content',
-              label: 'Content'
-            }
-          ], // add button creates new record by adding row, you can specified fields that use needs to pre-enter data,
-          inline: { // editable fields on the table and what type of edit are they
-            // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
-            'content': {
-              field: 'v-text-field', // v-text-field (blur will update contents if it was changed)
-              attrs: {
-                type: 'text', // number, email, password
-                class: ['caption']
-              }
-            }
-          },
-          onCreatedOpenForm: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
-          onRowClickOpenForm: false, // set to false of you do not want row click to open form
+          // saveRow: '#ffaaaa', // add save row button & specify color when row is changed, used with inline edit only and action column
+          // inlineReload: { // default true, set to false and use snapshot for large firestore dataset (or similar mechanisms where reads are chargeable)
+          //   update: true,
+          //   create: true,
+          //   delete: true
+          // },
+          // addrowCreate: [
+          //   {
+          //     field: 'content',
+          //     label: 'Content'
+          //   }
+          // ], // add button creates new record by adding row, you can specified fields that use needs to pre-enter data,
+          // inline: { // editable fields on the table and what type of edit are they
+          //   // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
+          //   'content': {
+          //     field: 'v-text-field', // v-text-field (blur will update contents if it was changed)
+          //     attrs: {
+          //       type: 'text', // number, email, password
+          //       class: ['caption']
+          //     }
+          //   }
+          // },
+          // onCreatedOpenForm: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
+          // onRowClickOpenForm: false, // set to false of you do not want row click to open form
+
+          // onCreatedOpenForm: true, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
+          // onRowClickOpenForm: true, // set to false of you do not want row click to open form
 
           // name: 'book-pages',
           headers: [
-            { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' },
+            // { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' },
             { text: 'Page Content', value: 'content', align: 'left', sortable: false }
           ],
-          formatters: (value, _type) => { return value },
           // doPage: false,
           showGoBack: true //  do not show go back
         },
         filters: null,
-        crudForm: {
-          formAutoData: null,
-          defaultRec: {
-            id: null,
-            content: '',
-            bookId: null
-          }
-        },
+        form: [
+          { name: 'id', value: '' },
+          { name: 'content', value: '' },
+          { name: 'bookId', value: '' }
+        ],
+        // crudForm: {
+        //   defaultRec: {
+        //     id: null,
+        //     content: '',
+        //     bookId: null
+        //   }
+        // },
         crudOps: { // CRUD
           export: null,
           find: async (payload) => {
@@ -105,9 +111,15 @@ export default {
               console.log(e)
             }
             console.log('find pages of a book')
-            return { records, pagination, totalRecords }
+            return { records, totalRecords }
           },
-          findOne: (payload) => {},
+          findOne: async ({ id }) => {
+            try {
+              const { data } = await http.get(`/api/pages/${id}`)
+              return data
+            } catch (e) { }
+            return { }
+          },
           create: async (payload) => {
             try {
               let { record: { content }, parentId } = payload
@@ -124,10 +136,8 @@ export default {
             } catch (e) { return 500 }
             return 200
           },
-          'delete': async (payload) => {
-            console.log('deleting page', payload)
+          'delete': async ({ id }) => {
             try {
-              let { id } = payload
               const rv = await http.delete(`/api/pages/${id}`)
               console.log('delete page', rv)
             } catch (e) {

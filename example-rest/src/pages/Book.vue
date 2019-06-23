@@ -20,9 +20,9 @@
             <div>
               <h1>Custom Form Slot - Has Parent: {{ !!parentId }}</h1>
               <v-card-text>
-                <v-text-field label="Name" v-model="form[0].value"></v-text-field>
-                <v-select label="Category" v-model="form[1].value" :items="categories" required item-text="name" item-value="id"></v-select>
-                <!-- <v-autocomplete
+                <v-text-field label="Book Name" v-model="form[1].value"></v-text-field>
+                <v-select label="Category" v-model="form[2].value" :items="categories" required item-text="name" item-value="id"></v-select>
+                <v-autocomplete
                   multiple
                   v-model="authorIds"
                   :items="items"
@@ -53,7 +53,7 @@
                     </v-list-item-content>
                   </template>
                 </v-autocomplete>
-                <v-btn @click.stop.prevent="gotoPages(record.id)" dark>View Book Pages</v-btn> -->
+                <v-btn @click.stop.prevent="gotoPages(form[0].value)" dark>View Book Pages</v-btn>
               </v-card-text>
             </div>
           </template>
@@ -141,52 +141,23 @@ export default {
           }
         ],
         form: [
-          {
-            name: 'id',
-            type: 'v-text-field',
-            value: '',
-            hidden: 'add', // add, edit, all, null
-            readonly: 'all', // add, edit, all, null
-            validation: null, // validation function no in place yet
-            'field-wrapper': { xs12: true, sm6: true },
-            'field-input': {
-              label: 'ID'
-            }
-          },
-          {
-            name: 'name',
-            type: 'v-text-field',
-            value: '',
-            'field-wrapper': { xs12: true, sm6: true },
-            'field-input': {
-              label: 'Book Name',
-              rules: [v => !!v || 'Item is required']
-            }
-          },
-          {
-            name: 'categoryName',
-            type: 'v-text-field',
-            value: '',
-            'field-wrapper': { xs12: true, sm6: true },
-            'field-input': {
-              label: 'Category Name',
-              rules: [v => !!v || 'Item is required']
-            }
-          }
-
+          { name: 'id', value: '' },
+          { name: 'name', value: '' },
+          { name: 'categoryId', value: '' },
+          { name: 'authorIds', value: [] },
+          { name: 'authors', value: [] }
         ],
-        crudForm: {
-          defaultRec: () => ({
-            categoryId: '',
-            categoryName: '',
-            authorIds: [],
-            authors: []
-          })
-        },
+        // crudForm: {
+        //   defaultRec: () => ({
+        //     categoryId: '',
+        //     categoryName: '',
+        //     authorIds: [],
+        //     authors: []
+        //   })
+        // },
 
         crudOps: { // CRUD
-          export: async (payload) => {
-          },
+          export: null,
           find: async (payload) => {
             let records = []
             let totalRecords = 0
@@ -206,10 +177,9 @@ export default {
             } catch (e) {
               console.log(e)
             }
-            return { records, pagination, totalRecords }
+            return { records, totalRecords }
           },
-          findOne: async (payload) => {
-            const { id } = payload
+          findOne: async ({ id }) => {
             try {
               const { data } = await http.get(`/api/books/${id}`)
               return data
@@ -264,7 +234,7 @@ export default {
     authorIds (val) {
       if (!val) return
       if (val.length > 2) val.pop()
-      if (this.$refs['book-table']) this.$refs['book-table'].record.authorIds = val
+      if (this.$refs['book-table']) this.$refs['book-table'].form[3].value = val
       // console.log('watch')
     }
   },
@@ -281,8 +251,8 @@ export default {
     },
     openBookForm (item) {
       // console.log('openBookForm', item)
-      this.authorIds = item.authorIds
-      this.items = item.authors
+      this.authorIds = item[3].value
+      this.items = item[4].value
     },
     fetchTerm (term) {
       return from(
