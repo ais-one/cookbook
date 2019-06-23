@@ -20,11 +20,12 @@ export default {
   data () {
     return {
       ready: false,
+
       paginationRefresh: true,
       records: [], // get many - filter, page & sort
       totalRecords: 0,
-      // TOREMOVE record: {}, // selected record
-      // defaultRec: {},
+      cursor: '', // infinite scroll cursor
+
       canUpdate: false, // permissions
       canCreate: false,
       canDelete: false,
@@ -60,7 +61,6 @@ export default {
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
       confirmDelete: true,
-      doPage: true, // pagination, false === no pagination, otherwise initial itemsPerPage
       crudTitle: '', // title
       showGoBack: false,
 
@@ -76,22 +76,12 @@ export default {
           class: 'pa-2', // parentId ? 'make-modal' : ''
           style: { }
         },
-        dialog: { // v-dialog Component
-          fullscreen: false,
-          scrollable: true,
-          transition: 'dialog-bottom-transition',
-          overlay: false
-        },
         form: { // v-form Component
           class: 'grey lighten-3 pa-2',
           style: {
             overflow: 'auto'
           },
           'lazy-validation': true
-        },
-        alert: { // v-alert Component
-          color: 'grey',
-          icon: ''
         },
         toolbar: { // v-toolbar Component
           height: 48,
@@ -117,9 +107,6 @@ export default {
           light: true,
           icon: true,
           fab: false
-        },
-        'v-progress-linear': { // v-progress-linear, can also be v-progress-circular
-          class: 'ma-0'
         },
         'edit-indicator-left': '', // ️'🖊️'
         'edit-indicator-right': '',
@@ -159,12 +146,12 @@ export default {
 
       // V2
       idName: 'id',
-      pageOpts: {
+      pageOptions: {
         // page = null, limit = 0 // get all, show count in footer
         // page = null, limit = 20 // infinite scroll, hide pagination UI, add load more button
         // page > 0, limit = 20 // paged, 1-based
         page: 1,
-        limit: 20
+        limit: 2
       },
       filters: null,
       form: null,
@@ -178,17 +165,12 @@ export default {
     // TODEPRECATE - remove crudForm, convert as object to array // deal with this.crudForm!
     this.form = this.$attrs.form || null // Set initial form data here
     this.idName = this.$attrs.idName || 'id'
+    this.pageOptions = this.$attrs.pageOptions || { page: 1, limit: 2 }
 
-    // this.pagination // TBD set initial pagination data here
-    if (this.crudTable.doPage === false) {
-      this.doPage = false // if not set
-      this.paginationRefresh = false
-      this.pagination.itemsPerPage = -1
-    } else {
-      this.doPage = isNaN(parseInt(this.crudTable.doPage)) ? 20 : parseInt(this.crudTable.doPage)
-      this.paginationRefresh = false
-      this.pagination.itemsPerPage = this.doPage
-    }
+    // Set initial pagination data here
+    this.paginationRefresh = false
+    this.pagination.page = this.pageOptions.page
+    this.pagination.itemsPerPage = this.pageOptions.limit
   },
   async mounted () {
     // this.paginationRefresh = !!this.$scopedSlots['table']
@@ -334,18 +316,25 @@ export default {
     },
     async getRecordsHelper () {
       this.loading = true
-      // emit filter update event
+      // TBD emit filter update event
       const payload = {
         user: this.$store.getters.user,
-        doPage: this.doPage,
         pagination: this.pagination,
         filters: this.filters,
         parentId: this.parentId
       }
-      let { records, totalRecords } = await this.crudOps.find(payload) // pagination no need to return
-      this.totalRecords = !totalRecords ? records.length : totalRecords
-      this.records = records
-      // emit pagination update event
+      let { records, totalRecords = 0, cursor } = await this.crudOps.find(payload) // pagination returns cursor for infinite scroll
+      if (cursor !== undefined) { // infinite scroll
+        this.cursor = cursor
+        this.totalRecords += records.length
+        this.records = this.records.concat(records)
+      } else {
+        this.totalRecords = totalRecords
+        this.records = records
+      }
+      // this.totalRecords = !totalRecords ? records.length : totalRecords
+      // TBD emit pagination update event
+      // TBD this.$emit('loaded', Date.now())
       this.loading = false
     },
     async submitFilter () {
@@ -353,7 +342,6 @@ export default {
         this.clearEditing()
       }
       await this.getRecordsHelper()
-      this.$emit('loaded', Date.now())
     },
     // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
     async exportBtnClick () {
@@ -501,161 +489,154 @@ export default {
         <v-progress-circular indeterminate size="64"></v-progress-circular>
       </v-overlay>
     </slot>
+    <!-- filter & table -->
+    <div v-show="!crudFormFlag">
+      <slot name="table-toolbar" :vcx="_self">
+        <v-toolbar v-bind="attrs.toolbar">
+          <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn v-if="showFilterButton" v-bind="attrs.button" @click="expandFilter=!expandFilter" :disabled="!filters"><v-icon>{{ expandFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
+          <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
+          <v-btn v-if="canCreate" v-bind="attrs.button" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
+          <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop.prevent="exportBtnClick" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
+        </v-toolbar>
+      </slot>
+      <div v-if="expandFilter">
+        <slot name="filter" :filters="filters" :parentId="parentId" :vcx="_self">
+          <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
+            <v-layout row wrap>
+              <template v-for="(filter, i) in filters">
+                <v-flex :key="i" v-bind="filter['field-wrapper']">
+                  <component :is="filter.type" v-model="filter.value" v-bind="filter['field-input']" />
+                </v-flex>
+              </template>
+            </v-layout>
+          </v-form>
+        </slot>
+      </div>
+      <slot name="table" :records="records" :totalRecords="totalRecords" :pagination="pagination" :vcx="_self">
+        <v-data-table
+          :headers="headers"
+          :items="records"
+          :server-items-length="totalRecords"
+          :options.sync="pagination"
+          :loading="loading?attrs.table['loading-color']:false"
+          :hide-default-footer="!pageOptions.page"
+          v-bind="attrs.table"
+          :item-key="idName"
+          fixed-header
+        >
+          <template v-slot:headerCell="props">
+            <span v-html="props.header.text"></span>
+          </template>
 
-    <slot name="table-toolbar" :vcx="_self">
-      <v-toolbar v-bind="attrs.toolbar">
-        <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-btn v-if="showFilterButton" v-bind="attrs.button" @click="expandFilter=!expandFilter" :disabled="!filters"><v-icon>{{ expandFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
-        <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
-        <v-btn v-if="canCreate" v-bind="attrs.button" @click.stop="addrowCreate?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
-        <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop.prevent="exportBtnClick" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
-      </v-toolbar>
-    </slot>
-    <div v-if="expandFilter">
-      <slot name="filter" :filters="filters" :parentId="parentId" :vcx="_self">
-        <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
+          <!-- Overide Entire Table -->
+          <!-- <template v-slot:body="{ items }">
+            <tr v-for="item in items" :key="item[idName]">
+              <td>
+            </tr>
+          </template> -->
+
+          <template v-slot:item="{ item }"><!-- was items -->
+            <tr :ref="`edit-${item[idName]}`" @click.stop="rowClicked(item, $event)">
+              <td :key="header.value + index" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
+                <!-- TBD Action Column -->
+                <!-- <span v-if="header.value===''">
+                  <v-icon v-if="canUpdate&&!saveRow" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(item[_idName])" :disabled="loading">edit</v-icon>
+                  <v-icon v-if="canDelete" v-bind="attrs['action-icon']" @click.stop="inlineDelete(item[_idName])" :disabled="loading">delete</v-icon>
+                  <v-icon v-if="crudOps.update&&saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(item, null, props.index, index)" :disabled="loading">save</v-icon>
+                </span> -->
+                <!-- TOREMOVE <span v-html="$options.filters.formatters(item[header.value], header.value, index)"></span> -->
+                <span v-html="header.render?header.render(item[header.value]):item[header.value]"></span>
+
+                <!-- inline edit -->
+                <!-- <v-edit-dialog
+                  v-else-if="inline[header.value].field==='v-date-picker'||inline[header.value].field==='v-time-picker'||inline[header.value].field==='v-textarea'"
+                  :ref="`edit-${props.index}-${index}`"
+                  :return-value.sync="props.item[header.value]"
+                  :large="inline[header.value].buttons"
+                  :persistent="false"
+                  :cancel-text="$t('vueCrudX.cancel')"
+                  :save-text="$t('vueCrudX.save')"
+                  lazy
+                  @save="saveRow?'':inlineUpdate(props.item, header.value, props.index, index)"
+                  @cancel="()=>{}"
+                  @open="inlineOpen(props.item[header.value], props.index, index)"
+                  @close="()=>{}"
+                >
+                  <div>{{attrs['edit-indicator-left']}}{{ props.item[header.value] }}{{attrs['edit-indicator-right']}}</div>
+                  <component
+                    :is="inline[header.value].field"
+                    slot="input"
+                    @input="inline[header.value].field!=='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
+                    @blur="inline[header.value].field==='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):inlineClose(props.item, header.value, props.index, index)"
+                    v-model="props.item[header.value]"
+                    v-bind="inline[header.value].attrs"
+                  ></component>
+                </v-edit-dialog>
+                <component
+                  v-else-if="groupControls.indexOf(inline[header.value].field)!==-1"
+                  :ref="`edit-${props.index}-${index}`"
+                  :is="inline[header.value].field"
+                  v-bind="inline[header.value].attrs"
+                  v-model="props.item[header.value]"
+                  @change="inlineUpdate(props.item, header.value, props.index, index)"
+                >
+                  <template v-if="inline[header.value].field==='v-btn-toggle'">
+                    <component :is="'v-btn'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
+                  </template>
+                  <template v-else-if="inline[header.value].field==='v-radio-group'">
+                    <component :is="'v-radio'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
+                  </template>
+                </component>
+                <component
+                  v-else
+                  :ref="`edit-${props.index}-${index}`"
+                  :is="inline[header.value].field"
+                  v-bind="inline[header.value].attrs"
+                  v-model="props.item[header.value]"
+                  @focus="inlineOpen(props.item[header.value])"
+                  @blur="selectControls.indexOf(inline[header.value].field)===-1?inlineUpdate(props.item, header.value, props.index, index):''"
+                  @change="selectControls.indexOf(inline[header.value].field)!==-1?inlineUpdate(props.item, header.value, props.index, index):''"
+                ></component> -->
+              </td>
+            </tr>
+          </template>
+          <!-- infinite scroll handling -->
+          <template v-if="!pageOptions.page" v-slot:footer="props">
+            <v-btn v-if="cursor" @click="pagination.page=cursor">Load More {{ props.length }}</v-btn>
+          </template>
+
+          <template v-slot:no-data>
+            <v-alert :value="true" color="error" icon="warning">{{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
+          </template>
+        </v-data-table>
+      </slot>
+    </div>
+    <!-- form -->
+    <div v-show="crudFormFlag" row justify-center>
+      <slot name="form-toolbar" :vcx="_self">
+        <v-toolbar v-bind="attrs.toolbar">
+          <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn v-bind="attrs.button" v-if="canDelete && selectedId" @click.native="crudFormDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
+            <v-btn v-bind="attrs.button" v-if="canUpdate && selectedId||canCreate && !selectedId" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
+          </v-toolbar-items>
+        </v-toolbar>
+      </slot>
+      <slot name="form" :form="form" :parentId="parentId" :vcx="_self">
+        <v-form v-model="validForm" v-bind="attrs.form"  :parentId="parentId" :vcx="_self">
           <v-layout row wrap>
-            <template v-for="(filter, i) in filters">
-              <v-flex :key="i" v-bind="filter['field-wrapper']">
-                <component :is="filter.type" v-model="filter.value" v-bind="filter['field-input']" />
+            <template v-for="(item, i) in form">
+              <v-flex :key="i" v-if="!isHidden(item)" v-bind="item['field-wrapper']">
+                <component :is="item.type" v-model="item.value" v-bind="item['field-input']" />
               </v-flex>
             </template>
           </v-layout>
         </v-form>
       </slot>
     </div>
-    <slot name="table" :records="records" :totalRecords="totalRecords" :pagination="pagination" :vcx="_self">
-      <v-data-table
-        :headers="headers"
-        :items="records"
-        :server-items-length="totalRecords"
-        :options.sync="pagination"
-        :loading="loading?attrs.table['loading-color']:false"
-        :hide-default-footer="!doPage"
-        v-bind="attrs.table"
-        :item-key="idName"
-        fixed-header
-      >
-        <template v-slot:headerCell="props">
-          <span v-html="props.header.text"></span>
-        </template>
-
-        <!-- Overide Entire Table -->
-        <!-- <template v-slot:body="{ items }">
-          <tr v-for="item in items" :key="item[idName]">
-            <td>
-          </tr>
-        </template> -->
-        <!-- <template v-slot:item="{ item }">
-            <td>{{ item.name }}</td>
-            <td>CONTENT</td>
-            <td>CONTENT</td>
-            <td>CONTENT</td>
-            <td>CONTENT</td>
-            <td>CONTENT</td>
-        </template> -->
-
-        <template v-slot:item="{ item }"><!-- was items -->
-          <tr :ref="`edit-${item[idName]}`" @click.stop="rowClicked(item, $event)">
-            <td :key="header.value + index" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
-              <!-- <span v-if="header.value===''">
-                <v-icon v-if="canUpdate&&!saveRow" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(item[_idName])" :disabled="loading">edit</v-icon>
-                <v-icon v-if="canDelete" v-bind="attrs['action-icon']" @click.stop="inlineDelete(item[_idName])" :disabled="loading">delete</v-icon>
-                <v-icon v-if="crudOps.update&&saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(item, null, props.index, index)" :disabled="loading">save</v-icon>
-              </span> -->
-              <!-- TOREMOVE <span v-html="$options.filters.formatters(item[header.value], header.value, index)"></span> -->
-              <!-- <span v-html="header.render ? : item[header.value] : item[header.value]"></span> -->
-              <span v-html="header.render?header.render(item[header.value]):item[header.value]"></span>
-
-              <!-- inline edit -->
-              <!-- <v-edit-dialog
-                v-else-if="inline[header.value].field==='v-date-picker'||inline[header.value].field==='v-time-picker'||inline[header.value].field==='v-textarea'"
-                :ref="`edit-${props.index}-${index}`"
-                :return-value.sync="props.item[header.value]"
-                :large="inline[header.value].buttons"
-                :persistent="false"
-                :cancel-text="$t('vueCrudX.cancel')"
-                :save-text="$t('vueCrudX.save')"
-                lazy
-                @save="saveRow?'':inlineUpdate(props.item, header.value, props.index, index)"
-                @cancel="()=>{}"
-                @open="inlineOpen(props.item[header.value], props.index, index)"
-                @close="()=>{}"
-              >
-                <div>{{attrs['edit-indicator-left']}}{{ props.item[header.value] }}{{attrs['edit-indicator-right']}}</div>
-                <component
-                  :is="inline[header.value].field"
-                  slot="input"
-                  @input="inline[header.value].field!=='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
-                  @blur="inline[header.value].field==='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):inlineClose(props.item, header.value, props.index, index)"
-                  v-model="props.item[header.value]"
-                  v-bind="inline[header.value].attrs"
-                ></component>
-              </v-edit-dialog>
-              <component
-                v-else-if="groupControls.indexOf(inline[header.value].field)!==-1"
-                :ref="`edit-${props.index}-${index}`"
-                :is="inline[header.value].field"
-                v-bind="inline[header.value].attrs"
-                v-model="props.item[header.value]"
-                @change="inlineUpdate(props.item, header.value, props.index, index)"
-              >
-                <template v-if="inline[header.value].field==='v-btn-toggle'">
-                  <component :is="'v-btn'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
-                </template>
-                <template v-else-if="inline[header.value].field==='v-radio-group'">
-                  <component :is="'v-radio'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
-                </template>
-              </component>
-              <component
-                v-else
-                :ref="`edit-${props.index}-${index}`"
-                :is="inline[header.value].field"
-                v-bind="inline[header.value].attrs"
-                v-model="props.item[header.value]"
-                @focus="inlineOpen(props.item[header.value])"
-                @blur="selectControls.indexOf(inline[header.value].field)===-1?inlineUpdate(props.item, header.value, props.index, index):''"
-                @change="selectControls.indexOf(inline[header.value].field)!==-1?inlineUpdate(props.item, header.value, props.index, index):''"
-              ></component> -->
-            </td>
-          </tr>
-        </template>
-        <template v-slot:no-data>
-          <v-alert :value="true" color="error" icon="warning">{{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
-        </template>
-      </v-data-table>
-    </slot>
-
-    <slot name="summary" :vcx="_self"></slot>
-
-    <v-layout row justify-center>
-      <v-dialog v-model="crudFormFlag" v-bind="attrs.dialog">
-        <v-card>
-          <slot name="form-toolbar" :vcx="_self">
-            <v-toolbar v-bind="attrs.toolbar">
-              <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-toolbar-items>
-                <v-btn v-bind="attrs.button" v-if="canDelete && selectedId" @click.native="crudFormDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
-                <v-btn v-bind="attrs.button" v-if="canUpdate && selectedId||canCreate && !selectedId" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
-              </v-toolbar-items>
-            </v-toolbar>
-          </slot>
-          <slot name="form" :form="form" :parentId="parentId" :vcx="_self">
-            <v-form v-model="validForm" v-bind="attrs.form"  :parentId="parentId" :vcx="_self">
-              <v-layout row wrap>
-                <template v-for="(item, i) in form">
-                  <v-flex :key="i" v-if="!isHidden(item)" v-bind="item['field-wrapper']">
-                    <component :is="item.type" v-model="item.value" v-bind="item['field-input']" />
-                  </v-flex>
-                </template>
-              </v-layout>
-            </v-form>
-          </slot>
-        </v-card>
-      </v-dialog>
-    </v-layout>
   </v-container>
 </template>
 

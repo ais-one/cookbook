@@ -12,17 +12,17 @@
               </v-flex>
             </template>
           </template>
-          <!-- <template v-slot:table="{ records, totalRecs, pagination }">
+          <!-- <template v-slot:table="{ records, totalRecords, pagination }">
             <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['book-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
             <div>{{ totalRecs }} {{ pagination }}</div>
           </template> -->
-          <template v-slot:form="{ record, parentId }">
+          <template v-slot:form="{ form, parentId }">
             <div>
               <h1>Custom Form Slot - Has Parent: {{ !!parentId }}</h1>
               <v-card-text>
-                <v-text-field label="Name" v-model="record.name"></v-text-field>
-                <v-select label="Category" v-model="record.categoryId" :items="categories" required item-text="name" item-value="id"></v-select>
-                <v-autocomplete
+                <v-text-field label="Name" v-model="form[0].value"></v-text-field>
+                <v-select label="Category" v-model="form[1].value" :items="categories" required item-text="name" item-value="id"></v-select>
+                <!-- <v-autocomplete
                   multiple
                   v-model="authorIds"
                   :items="items"
@@ -53,7 +53,7 @@
                     </v-list-item-content>
                   </template>
                 </v-autocomplete>
-                <v-btn @click.stop.prevent="gotoPages(record.id)" dark>View Book Pages</v-btn>
+                <v-btn @click.stop.prevent="gotoPages(record.id)" dark>View Book Pages</v-btn> -->
               </v-card-text>
             </div>
           </template>
@@ -164,12 +164,12 @@ export default {
             }
           },
           {
-            name: 'name',
+            name: 'categoryName',
             type: 'v-text-field',
             value: '',
             'field-wrapper': { xs12: true, sm6: true },
             'field-input': {
-              label: 'Book Name',
+              label: 'Category Name',
               rules: [v => !!v || 'Item is required']
             }
           }
@@ -262,6 +262,7 @@ export default {
   // },
   watch: {
     authorIds (val) {
+      if (!val) return
       if (val.length > 2) val.pop()
       if (this.$refs['book-table']) this.$refs['book-table'].record.authorIds = val
       // console.log('watch')

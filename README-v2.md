@@ -116,6 +116,8 @@ Move vuex store out of the component, but allow user to access and store the inf
 
 TBD remove snackbar, emit event
 
+crudTable
+- formatters - removed
 
 permissions now on backend
 

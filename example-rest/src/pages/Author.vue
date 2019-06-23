@@ -27,9 +27,14 @@ export default {
           headers: [
             { text: 'Author Name', value: 'name', class: 'pa-1', render: (value) => value }
           ],
-          // formatters: (value, _type) => value,
           doPage: 2,
           showFilterButton: true
+        },
+
+        // v2
+        pageOptions: {
+          page: null,
+          limit: 2
         },
         filters: [
           {
@@ -71,6 +76,7 @@ export default {
           find: async (payload) => {
             let records = []
             let totalRecords = 0
+            let cursor // infinite scroll test
             const { pagination } = payload
             const { page, itemsPerPage } = pagination // sortBy, descending
             try {
@@ -80,12 +86,14 @@ export default {
                   limit: itemsPerPage
                 }
               })
+              if (page === 1) cursor = 2
+              if (page === 2) cursor = null
               records = results
               totalRecords = total
             } catch (e) {
               console.log(e)
             }
-            return { records, pagination, totalRecords }
+            return { records, cursor, totalRecords }
           },
           findOne: async (payload) => {
             const { id } = payload
