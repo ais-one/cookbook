@@ -123,6 +123,7 @@ properties removed:
 - hasFilterVue
 - FilterVue
 - FormVue
+- doPage
 
 crudFilter.filterData -> filter
 
@@ -185,3 +186,13 @@ form-open
 form-close
 
 
+
+
+
+      <template v-if="isEnabled('item.<name>')" v-slot:item.name="{ item }">
+        {{ item.name.toUpperCase() }}
+      </template>
+
+      <template v-slot:item.name="{ item }">
+        {{ item.name.toUpperCase() }}
+      </template>
