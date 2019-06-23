@@ -191,9 +191,8 @@ export default {
     }
   },
   async mounted () {
-    console.log('Translation!!!', this.$t)
-    this.paginationRefresh = !!this.$scopedSlots['table']
-    this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
+    // this.paginationRefresh = !!this.$scopedSlots['table']
+    // TOREMOVE this.$options.filters.formatters = this.crudTable.formatters // create the formatters programatically
     if (this.crudTable.inline) this.inline = this.crudTable.inline // set inline edit fields
     this.headers = this.crudTable.headers
     this.actionColumn = this.headers.findIndex(header => header.value === '') !== -1
@@ -244,7 +243,7 @@ export default {
   watch: {
     loading: function (newValue, oldValue) { },
     pagination: {
-      handler (value, oval) {
+      handler (value, oldvalue) {
         if (this.paginationRefresh === false) {
           this.paginationRefresh = true
         } else {
@@ -476,10 +475,10 @@ export default {
     },
     rowClicked (item, event) {
       console.log('clicked', item)
-      // if (!this.actionColumn && this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
-      // if (!this.inline) {
-      //   this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
-      // }
+      if (!this.actionColumn && this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
+      if (!this.inline) {
+        this.$emit('selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
+      }
     },
     async testFunction (_in) { // for testing anything
       console.log(_in)
@@ -496,6 +495,13 @@ export default {
 
 <template>
   <v-container v-if="ready" v-bind="attrs.container">
+    <!-- progress overlay -->
+    <slot name="progress" :vcx="_self">
+      <v-overlay :value="loading">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+      </v-overlay>
+    </slot>
+
     <slot name="table-toolbar" :vcx="_self">
       <v-toolbar v-bind="attrs.toolbar">
         <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }} {{ doPage ? '' : ` (${records.length})` }}</v-toolbar-title>
@@ -550,15 +556,18 @@ export default {
             <td>CONTENT</td>
         </template> -->
 
-        <template v-slot:items="{ item }"><!-- was items -->
+        <template v-slot:item="{ item }"><!-- was items -->
           <tr :ref="`edit-${item[idName]}`" @click.stop="rowClicked(item, $event)">
-            <td :key="header.value" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
-              <span v-if="header.value===''">
+            <td :key="header.value + index" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
+              <!-- <span v-if="header.value===''">
                 <v-icon v-if="canUpdate&&!saveRow" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(item[_idName])" :disabled="loading">edit</v-icon>
                 <v-icon v-if="canDelete" v-bind="attrs['action-icon']" @click.stop="inlineDelete(item[_idName])" :disabled="loading">delete</v-icon>
                 <v-icon v-if="crudOps.update&&saveRow" v-bind="attrs['action-icon']" @click.stop="inlineUpdate(item, null, props.index, index)" :disabled="loading">save</v-icon>
-              </span>
-              <span v-else-if="!inline[header.value]" v-html="$options.filters.formatters(props.item[header.value], header.value)"></span>
+              </span> -->
+              <!-- TOREMOVE <span v-html="$options.filters.formatters(item[header.value], header.value, index)"></span> -->
+              <!-- <span v-html="header.render ? : item[header.value] : item[header.value]"></span> -->
+              <span v-html="header.render?header.render(item[header.value]):item[header.value]"></span>
+
               <!-- inline edit -->
               <!-- <v-edit-dialog
                 v-else-if="inline[header.value].field==='v-date-picker'||inline[header.value].field==='v-time-picker'||inline[header.value].field==='v-textarea'"
@@ -633,7 +642,6 @@ export default {
               </v-toolbar-items>
             </v-toolbar>
           </slot>
-          <component :is="attrs['v-progress-circular']?'v-progress-circular':'v-progress-linear'" :indeterminate="loading" v-bind="attrs['v-progress-circular']?attrs['v-progress-circular']:attrs['v-progress-linear']"></component>
           <slot name="form" :form="form" :parentId="parentId" :vcx="_self">
             <v-form v-model="validForm" v-bind="attrs.form"  :parentId="parentId" :vcx="_self">
               <v-layout row wrap>

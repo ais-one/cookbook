@@ -186,8 +186,15 @@ form-open
 form-close
 
 
+## slots
+overlay
+filter
+form
+table
 
 
+
+find index... of row clicked...
 
       <template v-if="isEnabled('item.<name>')" v-slot:item.name="{ item }">
         {{ item.name.toUpperCase() }}

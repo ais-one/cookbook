@@ -59,9 +59,9 @@ export default {
           formReload: false, // for Apollo GraphQL with refetch capability
           headers: [
             { text: 'Category id', value: 'id', class: 'pa-1' },
-            { text: 'Category Name', value: 'name', class: 'pa-1' }
+            { text: 'Category Name', value: 'name', class: 'pa-1', render: (value) => value }
           ],
-          formatters: (value, _type) => value,
+          // formatters: (value, _type) => value,
           doPage: false, // itemsPerPage, no paging for this
           showFilterButton: false
         },
