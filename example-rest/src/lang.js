@@ -7,18 +7,36 @@ Vue.use(VueI18n)
 const messages = {
   en: {
     $vuetify: {
+      close: 'Close',
       dataIterator: {
-        rowsPerPageText: 'Items per page:',
-        rowsPerPageAll: 'All',
         pageText: '{0}-{1} of {2}',
         noResultsText: 'No matching records found',
-        nextPage: 'Next page',
-        prevPage: 'Previous page'
+        loadingText: 'Loading items...'
       },
       dataTable: {
-        rowsPerPageText: 'Rows per page:'
+        itemsPerPageText: 'Rows per page:',
+        ariaLabel: {
+          sortDescending: ': Sorted descending. Activate to remove sorting.',
+          sortAscending: ': Sorted ascending. Activate to sort descending.',
+          sortNone: ': Not sorted. Activate to sort ascending.'
+        }
       },
-      noDataText: 'No data available'
+      dataFooter: {
+        itemsPerPageText: 'Items per page:',
+        itemsPerPageAll: 'All',
+        nextPage: 'Next page',
+        prevPage: 'Previous page',
+        firstPage: 'First page',
+        lastPage: 'Last page'
+      },
+      datePicker: {
+        itemsSelected: '{0} selected'
+      },
+      noDataText: 'No data available',
+      carousel: {
+        prev: 'Previous visual',
+        next: 'Next visual'
+      }
     },
     vueCrudX: {
       noData: 'No Data',
@@ -31,18 +49,36 @@ const messages = {
   },
   id: {
     $vuetify: {
+      close: 'Close',
       dataIterator: {
-        rowsPerPageText: 'Item Per Halaman:',
-        rowsPerPageAll: 'Semua',
         pageText: '{0}-{1} dari {2}',
         noResultsText: 'Tidak ada catatan yang cocok',
-        nextPage: 'Halaman selanjutnya',
-        prevPage: 'Halaman sebelumnya'
+        loadingText: 'Loading items...'
       },
       dataTable: {
-        rowsPerPageText: 'Baris per halaman:'
+        itemsPerPageText: 'Baris per halaman:',
+        ariaLabel: {
+          sortDescending: ': Sorted descending. Activate to remove sorting.',
+          sortAscending: ': Sorted ascending. Activate to sort descending.',
+          sortNone: ': Not sorted. Activate to sort ascending.'
+        }
       },
-      noDataText: 'Tidak ada data yang tersedia'
+      dataFooter: {
+        itemsPerPageText: 'Item per Halaman:',
+        itemsPerPageAll: 'Semua',
+        nextPage: 'Halaman selanjutnya',
+        prevPage: 'Halaman sebelumnya',
+        firstPage: 'First page',
+        lastPage: 'Last page'
+      },
+      datePicker: {
+        itemsSelected: '{0} selected'
+      },
+      noDataText: 'Tidak ada data yang tersedia',
+      carousel: {
+        prev: 'Previous visual',
+        next: 'Next visual'
+      }
     },
     vueCrudX: {
       noData: 'Tidak Ada Data',
