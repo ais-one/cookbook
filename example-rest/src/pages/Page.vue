@@ -16,7 +16,7 @@
             <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['my-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
             <div>{{ totalRecs }} {{ pagination }}</div>
           </template> -->
-          <template v-slot:form="{ form, parentId }">
+          <!-- <template v-slot:form="{ form, parentId }">
             <div>
               <div>{{ form }} {{ !!parentId }}</div>
               <h1>Pages Form</h1>
@@ -24,7 +24,7 @@
                 <v-text-field label="Content" v-model="form[1].value"></v-text-field>
               </v-card-text>
             </div>
-          </template>
+          </template> -->
         </vue-crud-x>
       </v-flex>
     </v-layout>
@@ -73,24 +73,33 @@ export default {
           // name: 'book-pages',
           headers: [
             // { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' },
-            { text: 'Page Content', value: 'content', align: 'left', sortable: false }
+            {
+              text: 'ID',
+              value: 'id',
+              align: 'left',
+              sortable: false,
+              action: {
+                edit: true,
+                delete: true
+              }
+            },
+            {
+              text: 'Page Content',
+              value: 'content',
+              align: 'left',
+              sortable: false
+            }
           ],
           // doPage: false,
           showGoBack: true //  do not show go back
         },
         filters: null,
-        form: [
-          { name: 'id', value: '' },
-          { name: 'content', value: '' },
-          { name: 'bookId', value: '' }
-        ],
-        // crudForm: {
-        //   defaultRec: {
-        //     id: null,
-        //     content: '',
-        //     bookId: null
-        //   }
-        // },
+        form: null, // inline edit & add
+        // form: [
+        //   { name: 'id', value: '' },
+        //   { name: 'content', value: '' },
+        //   { name: 'bookId', value: '' }
+        // ],
         crudOps: { // CRUD
           export: null,
           find: async (payload) => {

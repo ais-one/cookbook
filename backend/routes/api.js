@@ -232,6 +232,15 @@ apiRoutes
     } catch (e) { }
     return res.status(500).json()
   })
+  .get('/pages/:id', async (req, res) => { // edit a page
+    try {
+      const page = await Page.query().findById(req.params.id)
+      if (page) return res.status(200).json(page)
+      else return res.status(404).json()
+    } catch (e) { }
+    return res.status(500).json()
+  })
+
   .post('/books/:id/authors/:authorId', async (req, res) => { // relate author to book - set unique index to prevent duplicates...
     // unique index does not seem to work...
     try {
