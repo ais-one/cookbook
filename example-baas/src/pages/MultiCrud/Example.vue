@@ -124,7 +124,7 @@ export default {
     },
     async onSelected (data) {
       this.selectedId = data.item.name
-      await this.$refs.testref.getRecordsHelper()
+      await this.$refs.testref.getRecords()
     }
   }
 }

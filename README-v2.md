@@ -144,6 +144,10 @@ crud operations payload 'user' - removed (set JWT outside instead)
 
 merge 'crudForm.defaultRec' & 'crudForm.formAutoData' to 'form'
 
+
+getRecordsHelper -> getRecords
+
+
 # V2 Work
 
 refetch
@@ -198,10 +202,19 @@ table
 
 # TO FIX
 
-0. inline edit
-1. reload for infinite scroll appends data, should not happen...
-2. post insert, delete - paged
-3. post insert, delete - infinite scroll
-4. should we use pagination event instead of watcher?
-5. check error handling for all ops
-6. check id and idName !!! may be wrong !!!
+2. page
+ - after insert
+ - after update
+ - after delete
+3. infinite scroll
+ - after insert
+ - after update
+ - after delete
+4. check error handling for all ops
+5. real-time updates...
+* 0. inline edit
+* 1. reload for infinite scroll appends data, should not happen...
+* 5. check id and idName !!! may be wrong !!!
+
+# DESIGN CONSIDERATIONS
+1. should we use pagination event instead of pagination watcher?

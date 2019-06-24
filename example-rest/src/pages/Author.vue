@@ -48,7 +48,6 @@ export default {
         },
         form: {
           'id': {
-            name: 'id',
             type: 'v-text-field',
             value: '',
             hidden: 'add', // add, edit, all, null

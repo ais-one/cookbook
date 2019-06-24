@@ -21,51 +21,38 @@ export default {
     return {
       ready: false,
 
+      loading: false,
       records: [], // get many - filter, page & sort
       totalRecords: 0,
       cursor: '', // infinite scroll cursor
-      rowItem: {}, // save original item when inline row edit
 
       paginationRefresh: true,
       formReload: true, // refetch after create, update or delete
 
       // show/hide
       showFilterButton: true, // should the filter button be shown?
-      expandFilter: false,
-      crudFormFlag: false,
+      showFilter: false,
+      showForm: false,
 
-      // form
-      validForm: true,
-      onCreatedOpenForm: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
       onRowClickOpenForm: true, // set to false of you do not want row click to open form
 
-      // filter
-      validFilter: true,
-
-      // data-table
-      loading: false,
-      inlineValue: null, // temporarily storing inline  edit values
+      validForm: true, // form
+      validFilter: true, // filter
 
       // crudTable
       headers: [ ], // pass in
 
-      saveRow: false, // otherwise it is the color string
       inlineReload: { // set to false for services where record read is chargeable, e.g. Google Firestore (use listeners instead)
         create: true,
         update: true,
         delete: true
       },
-      addrowCreate: false, // add row to create instead of using form
 
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
       confirmDelete: true,
       crudTitle: '', // title
       showGoBack: false,
-
-      // supported controls
-      selectControls: ['v-autocomplete', 'v-switch', 'v-select', 'v-combobox', 'v-checkbox'],
-      groupControls: ['v-btn-toggle', 'v-radio-group'], // need to check if iteration is common? if not need to find a way to handle it, v-radio-group is different
 
       // styling
       attrs: {
@@ -129,7 +116,7 @@ export default {
       // page = null, limit = 20 // infinite scroll
       // page > 0, limit = 20 // paged
       infinite: false, // either paged or infinite scroll
-      editing: false, // null, // inline edit in progress, start time Date.now(), 0 means not editing
+      editing: null, // or row object
       pagination: { // depends on UI Framework
         descending: false,
         page: 1,
@@ -174,12 +161,9 @@ export default {
   async mounted () {
     // TOREMOVE this.paginationRefresh = !!this.$scopedSlots['table']
     this.headers = this.crudTable.headers
-    this.saveRow = this.crudTable.saveRow ? this.crudTable.saveRow : false // save by row? default false
     this.inlineReload = Object.assign(this.inlineReload, this.crudTable.inlineReload || {}) // default true
-
     this.formReload = this.crudTable.formReload !== false // default true
 
-    this.addrowCreate = this.crudTable.addrowCreate ? this.crudTable.addrowCreate : false // use add row to create record
     this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // open form on row click? default true
 
     // set confirmation
@@ -189,17 +173,11 @@ export default {
 
     this.crudTitle = this.crudTable.crudTitle || '' // title
     this.showGoBack = this.crudTable.showGoBack !== false // hide go back button - default true
-    this.onCreatedOpenForm = this.crudTable.onCreatedOpenForm === true // open form on create - default false
     this.showFilterButton = this.crudTable.showFilterButton !== false // show filter button - default true
 
     // more attributes
     this.attrs = Object.assign(this.attrs, this.crudTable.attrs || {})
     this.buttons = Object.assign(this.buttons, this.crudTable.buttons || {})
-
-    // TOREMOVE
-    if (this.onCreatedOpenForm && this.selectedId /* Not Needed? && !this.parentId */) { // nested CRUD, when coming back to a parent open a form
-      this.crudFormFlag = true
-    }
 
     // not needed in data() because it does not exist in template, an optimization which should be done for others as well
     if (typeof this.$t !== 'function') { // if no internationalization
@@ -222,14 +200,14 @@ export default {
         if (this.paginationRefresh === false) {
           this.paginationRefresh = true
         } else {
-          this.getRecordsHelper()
+          this.getRecords()
         }
       },
       deep: true
     },
     parentId (value) {
       // console.log('watch parentId', value)
-      this.getRecordsHelper()
+      this.getRecords()
     }
   },
   methods: {
@@ -266,13 +244,11 @@ export default {
       await this.crudOps.export(payload)
     },
     closeCrudForm () {
-      this.crudFormFlag = false
+      this.showForm = false
       this.$emit('form-close')
     },
     async crudFormOpen (id) {
-      console.log('crudFormOpen 1', id)
       this.selectedId = id
-      console.log('crudFormOpen 2', id, typeof id, id === null)
       if (id) {
         await this.getRecord({ id }) // edit
       } else { // add - set initial data
@@ -280,7 +256,7 @@ export default {
           this.form[key].value = this.$attrs.form[key].default || ''
         }
       }
-      this.crudFormFlag = true
+      this.showForm = true
       this.$emit('form-open', this.form)
     },
     async crudFormSave (e) {
@@ -291,11 +267,10 @@ export default {
         else record[key] = this.form[key].value
       }
 
-      if (!record.id && this.confirmCreate) if (!confirm(this.$t('vueCrudX.confirm'))) return
-      if (record.id && this.confirmUpdate) if (!confirm(this.$t('vueCrudX.confirm'))) return
-      if (record.id) await this.updateRecord({ id, record })
+      if ((!record[this.idName] && this.confirmCreate) || (record[this.idName] && this.confirmUpdate)) if (!confirm(this.$t('vueCrudX.confirm'))) return
+      if (record[this.idName]) await this.updateRecord({ id, record })
       else await this.createRecord({ record, parentId: this.parentId })
-      if (this.formReload) await this.getRecordsHelper()
+      if (this.formReload) await this.getRecords({ mode: record[this.idName] ? 'update' : 'create' })
       this.closeCrudForm()
     },
     async crudFormDelete (e) {
@@ -303,11 +278,16 @@ export default {
       const { id } = this.selectedId
       if (id) {
         await this.deleteRecord({ id })
-        if (this.formReload) await this.getRecordsHelper()
+        if (this.formReload) await this.getRecords({ mode: 'delete' })
       }
       this.closeCrudForm()
     },
-    async getRecordsHelper () {
+    // mode - normal paging - null
+    //      - create
+    //      - update
+    //      - delete
+    //      - filter - infinite scroll start from beginning
+    async getRecords () {
       this.loading = true
       // TBD emit filter update event
       const payload = {
@@ -316,6 +296,7 @@ export default {
         filters: this.filters,
         parentId: this.parentId
       }
+      console.log('getRecords', this.pagination.page)
       let { records, totalRecords = 0, cursor } = await this.crudOps.find(payload) // pagination returns cursor for infinite scroll
       if (cursor !== undefined) { // infinite scroll
         this.cursor = cursor
@@ -330,10 +311,16 @@ export default {
       this.loading = false
     },
     async submitFilter () {
-      if (this.saveRow) {
-        this.clearEditing()
+      if (this.editing) this.editing = null
+      this.totalRecords = 0
+      this.records = []
+      this.cursor = ''
+      if (this.pageOptions.page) {
+        // TOREMOVE await this.getRecords()
+        this.pagination.page = 1 // triggers page reload
+      } else {
+        this.pagination.page = 1 // this triggers the page reload by watcher, if using event, then this mechanism will change
       }
-      await this.getRecordsHelper()
     },
     // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
     async exportBtnClick () {
@@ -350,67 +337,60 @@ export default {
     },
 
     // INLINE EDIT START
+    rowEditing (item) {
+      if (!this.editing) return false
+      return item[this.idName] === this.editing[this.idName]
+    },
     async inlineUpdate (item) {
+      console.log('inlineUpdate', item)
       if (!this.editing) { // start editing
-        this.editing = true
-        // backup the values first
-        this.rowItem = { ...item }
+        this.editing = { ...item } // backup the values first
       }
     },
     async inlineSave (item) {
       if (this.editing) {
+        item = { ...this.editing }
+        this.editing = null
         const { id, ...record } = item
-        console.log(id, record)
         try {
           await this.updateRecord({ id, record })
-        } catch (e) {
-
-        }
-        this.editing = false
+          await this.getRecords({ mode: 'update' }) // TBD find better way to update table - reload? if (this.inlineReload.delete) this.$nextTick(async function () { await this.getRecords() })
+        } catch (e) { }
       }
     },
     async inlineCancel (item) {
-      if (this.editing) {
-        // restore the values first
-        let idx = this.records.findIndex(record => record[this.idName] === item[this.idName])
-        if (idx !== -1) {
-          this.records[idx] = { ...this.rowItem }
-          console.log('aaa12', this.records)
-          // if (tmp) tmp = { ...this.rowItem }
-          this.$forceUpdate()
-        }
-        this.editing = false
-        // item = { ...this.rowItem }
-        // console.log('ss', item, this.rowItem)
-        // this.editing = false
-      }
+      if (this.editing) this.editing = null
     },
     async inlineCreate () {
-      // await this.createRecord({ record, parentId: this.parentId })
-      // TBD reload? if (this.inlineReload.create) this.$nextTick(async function () { await this.getRecordsHelper() })
+      try {
+        await this.createRecord({ record: {}, parentId: this.parentId })
+        await this.getRecords({ mode: 'create' }) // TBD find better way to update table - reload? if (this.inlineReload.delete) this.$nextTick(async function () { await this.getRecords() })
+      } catch (e) { }
     },
     async inlineDelete (id) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
-      await this.deleteRecord({ id })
-      // TBD reload? if (this.inlineReload.delete) this.$nextTick(async function () { await this.getRecordsHelper() })
+      try {
+        await this.deleteRecord({ id })
+        await this.getRecords({ mode: 'delete' }) // TBD find better way to update table - reload? if (this.inlineReload.delete) this.$nextTick(async function () { await this.getRecords() })
+      } catch (e) { }
     },
+    // INLINE EDIT END
+
     rowClicked (item, event) {
       console.log('clicked', item)
-      if (this.inline.edit) {
-
-      } else {
-        if (this.onRowClickOpenForm) this.crudFormOpen(item.id) // no action column && row click opens form
+      if (!this.inline.edit) {
+        if (this.onRowClickOpenForm) this.crudFormOpen(item[this.idName]) // no action column && row click opens form
       }
       this.$emit('row-selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     },
-    async testFunction (_in) { // for testing anything
-      console.log(_in)
-    },
     isHidden (item) {
-      return (item.hidden === 'add' && !item.id) || (item.hidden === 'edit' && item.id) || item.hidden === 'all'
+      return (item.hidden === 'add' && !item[this.idName]) || (item.hidden === 'edit' && item[this.idName]) || item.hidden === 'all'
     },
     isReadOnly (item) {
-      return (item.readonly === 'add' && !item.id) || (item.readonly === 'edit' && item.id) || item.readonly === 'all'
+      return (item.readonly === 'add' && !item[this.idName]) || (item.readonly === 'edit' && item[this.idName]) || item.readonly === 'all'
+    },
+    async testFunction (_in) { // for testing anything
+      console.log(_in)
     }
   }
 }
@@ -425,18 +405,18 @@ export default {
       </v-overlay>
     </slot>
     <!-- filter & table -->
-    <component :is="'div'" v-show="!crudFormFlag">
+    <component :is="'div'" v-show="!showForm">
       <slot name="table-toolbar" :vcx="_self">
         <v-toolbar v-bind="attrs.toolbar">
           <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn v-if="showFilterButton" v-bind="attrs.button" @click="expandFilter=!expandFilter" :disabled="!filters"><v-icon>{{ expandFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
+          <v-btn v-if="showFilterButton&&filters" v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
           <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
           <v-btn v-if="crudOps.create" v-bind="attrs.button" @click.stop="inline.add?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
           <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop.prevent="exportBtnClick" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
         </v-toolbar>
       </slot>
-      <div v-if="expandFilter">
+      <div v-if="showFilter">
         <slot name="filter" :filters="filters" :parentId="parentId" :vcx="_self">
           <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
             <v-layout row wrap>
@@ -459,6 +439,7 @@ export default {
           v-bind="attrs.table"
           :item-key="idName"
           fixed-header
+          @pagination="testFunction"
         >
           <template v-slot:headerCell="props">
             <span v-html="props.header.text"></span>
@@ -480,65 +461,14 @@ export default {
               <slot name="td" :headers="headers" :item="item" :vcx="_self">
                 <td :key="header.value + index" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
                   <span v-if="header.action">
-                    <v-icon v-if="crudOps.update&&inline.edit" v-bind="attrs['action-icon']" @click.stop="editing?inlineSave(item):inlineUpdate(item)" :disabled="loading">{{ editing ? 'save' : 'edit' }}</v-icon>
+                    <v-icon v-if="crudOps.update&&inline.edit" v-bind="attrs['action-icon']" @click.stop="rowEditing(item)?inlineSave(item):inlineUpdate(item)" :disabled="loading">{{ rowEditing(item) ? 'save' : 'edit' }}</v-icon>
                     <v-icon v-else-if="crudOps.update&&!inline.edit&&form" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(item[idName])" :disabled="loading">edit</v-icon>
-                    <v-icon v-if="crudOps.delete||editing" v-bind="attrs['action-icon']" @click.stop="editing?inlineCancel(item):inlineDelete(item[idName])" :disabled="loading">{{ editing ? 'cancel' : 'delete' }}</v-icon>
+                    <v-icon v-if="crudOps.delete" v-bind="attrs['action-icon']" @click.stop="rowEditing(item)?inlineCancel(item):inlineDelete(item[idName])" :disabled="loading">{{ rowEditing(item) ? 'cancel' : 'delete' }}</v-icon>
                   </span>
                   <template v-else>
-                    <component v-if="inline.edit&&editing" :is="'v-text-field'" v-model="item[header.value]"></component>
+                    <component v-if="inline.edit&&rowEditing(item)" :is="'v-text-field'" :key="item[idName]+'-'+item[header.value]" v-model="editing[header.value]"></component>
                     <span v-else v-html="header.render?header.render(item[header.value]):item[header.value]"></span>
                   </template>
-
-                  <!-- inline edit -->
-                  <!-- <v-edit-dialog
-                    v-else-if="inline[header.value].field==='v-date-picker'||inline[header.value].field==='v-time-picker'||inline[header.value].field==='v-textarea'"
-                    :ref="`edit-${props.index}-${index}`"
-                    :return-value.sync="props.item[header.value]"
-                    :large="inline[header.value].buttons"
-                    :persistent="false"
-                    :cancel-text="$t('vueCrudX.cancel')"
-                    :save-text="$t('vueCrudX.save')"
-                    lazy
-                    @save="saveRow?'':inlineUpdate(props.item, header.value, props.index, index)"
-                    @cancel="()=>{}"
-                    @open="inlineOpen(props.item[header.value], props.index, index)"
-                    @close="()=>{}"
-                  >
-                    <div>{{attrs['edit-indicator-left']}}{{ props.item[header.value] }}{{attrs['edit-indicator-right']}}</div>
-                    <component
-                      :is="inline[header.value].field"
-                      slot="input"
-                      @input="inline[header.value].field!=='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):''"
-                      @blur="inline[header.value].field==='v-textarea'?inlineUpdate(props.item, header.value, props.index, index):inlineClose(props.item, header.value, props.index, index)"
-                      v-model="props.item[header.value]"
-                      v-bind="inline[header.value].attrs"
-                    ></component>
-                  </v-edit-dialog>
-                  <component
-                    v-else-if="groupControls.indexOf(inline[header.value].field)!==-1"
-                    :ref="`edit-${props.index}-${index}`"
-                    :is="inline[header.value].field"
-                    v-bind="inline[header.value].attrs"
-                    v-model="props.item[header.value]"
-                    @change="inlineUpdate(props.item, header.value, props.index, index)"
-                  >
-                    <template v-if="inline[header.value].field==='v-btn-toggle'">
-                      <component :is="'v-btn'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
-                    </template>
-                    <template v-else-if="inline[header.value].field==='v-radio-group'">
-                      <component :is="'v-radio'" v-for="(value, key, index) in inline[header.value].group.items" :key="index" :value="key" :label="value" v-bind="inline[header.value].group.attrs"></component>
-                    </template>
-                  </component>
-                  <component
-                    v-else
-                    :ref="`edit-${props.index}-${index}`"
-                    :is="inline[header.value].field"
-                    v-bind="inline[header.value].attrs"
-                    v-model="props.item[header.value]"
-                    @focus="inlineOpen(props.item[header.value])"
-                    @blur="selectControls.indexOf(inline[header.value].field)===-1?inlineUpdate(props.item, header.value, props.index, index):''"
-                    @change="selectControls.indexOf(inline[header.value].field)!==-1?inlineUpdate(props.item, header.value, props.index, index):''"
-                  ></component> -->
                 </td>
               </slot>
             </tr>
@@ -555,7 +485,7 @@ export default {
       </slot>
     </component>
     <!-- form -->
-    <component :is="'div'" v-show="crudFormFlag" row justify-center>
+    <component :is="'div'" v-show="showForm" row justify-center>
       <slot name="form-toolbar" :vcx="_self">
         <v-toolbar v-bind="attrs.toolbar">
           <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>

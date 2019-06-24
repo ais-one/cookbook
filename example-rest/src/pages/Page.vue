@@ -95,14 +95,15 @@ export default {
         },
         filters: null,
         inline: {
-          edit: true
+          edit: true,
+          add: true
         },
-        form: null,
-        // form: {
-        //   'id': { value: '' },
-        //   'content': { value: '' },
-        //   'bookId': { value: '' }
-        // },
+        // form: null,
+        form: {
+          'id': { value: '', hidden: 'all' },
+          'content': { value: '', type: 'v-text-field' },
+          'bookId': { value: '', hidden: 'all' }
+        },
         crudOps: { // CRUD
           export: null,
           find: async (payload) => {
@@ -133,15 +134,16 @@ export default {
           },
           create: async (payload) => {
             try {
-              let { record: { content }, parentId } = payload
-              const rv = await http.post(`/api/books/${parentId}/pages`, { content })
+              let { record, parentId } = payload
+              // let { record: { content }, parentId } = payload
+              const rv = await http.post(`/api/books/${parentId}/pages`, record)
               console.log('add page', rv)
             } catch (e) { return 500 }
             return 201
           },
           update: async (payload) => {
             try {
-              let { record: { id, content } } = payload
+              let { id, record: { content } } = payload
               const rv = await http.patch(`/api/pages/${id}`, { content })
               console.log('update page', rv)
             } catch (e) { return 500 }
@@ -162,6 +164,8 @@ export default {
     }
   },
   mounted () {
+    // this.pageDefs.crudTable.form = null // uncomment to test without forms
+    this.pageDefs.inline.add = false // comment to test without forms
     this.parentId = this.$route.params.id
   }
 }
