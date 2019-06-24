@@ -21,7 +21,7 @@
               <div>{{ form }} {{ !!parentId }}</div>
               <h1>Pages Form</h1>
               <v-card-text>
-                <v-text-field label="Content" v-model="form[1].value"></v-text-field>
+                <v-text-field label="Content" v-model="form.content.value"></v-text-field>
               </v-card-text>
             </div>
           </template> -->
@@ -94,12 +94,15 @@ export default {
           showGoBack: true //  do not show go back
         },
         filters: null,
-        form: null, // inline edit & add
-        // form: [
-        //   { name: 'id', value: '' },
-        //   { name: 'content', value: '' },
-        //   { name: 'bookId', value: '' }
-        // ],
+        inline: {
+          edit: true
+        },
+        form: null,
+        // form: {
+        //   'id': { value: '' },
+        //   'content': { value: '' },
+        //   'bookId': { value: '' }
+        // },
         crudOps: { // CRUD
           export: null,
           find: async (payload) => {
@@ -119,7 +122,6 @@ export default {
             } catch (e) {
               console.log(e)
             }
-            console.log('find pages of a book')
             return { records, totalRecords }
           },
           findOne: async ({ id }) => {
@@ -161,7 +163,6 @@ export default {
   },
   mounted () {
     this.parentId = this.$route.params.id
-    console.log(this.parentId)
   }
 }
 

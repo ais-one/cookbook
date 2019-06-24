@@ -36,19 +36,18 @@ export default {
           page: null,
           limit: 2
         },
-        filters: [
-          {
+        filters: {
+          'name': {
             type: 'v-text-field', // component name
-            name: 'name', // field name
             value: '',
             'field-wrapper': { xs12: true, sm6: true },
             'field-input': {
               label: 'Author', clearable: true
             }
           }
-        ],
-        form: [
-          {
+        },
+        form: {
+          'id': {
             name: 'id',
             type: 'v-text-field',
             value: '',
@@ -60,8 +59,7 @@ export default {
               label: 'ID'
             }
           },
-          {
-            name: 'name',
+          'name': {
             type: 'v-text-field',
             value: '',
             'field-wrapper': { xs12: true, sm6: true },
@@ -70,22 +68,22 @@ export default {
               rules: [v => !!v || 'Item is required']
             }
           }
-        ],
+        },
         crudOps: { // CRUD
           export: null,
           find: async (payload) => {
             let records = []
             let totalRecords = 0
             let cursor // infinite scroll test
-            const { pagination } = payload
+            const { pagination, filters } = payload
             const { page, itemsPerPage } = pagination // sortBy, descending
+            let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } // set query params
+            for (let key in filters) {
+              let value = filters[key].value
+              if (value) params[key] = value
+            }
             try {
-              const { data: { results, total } } = await http.get('/api/authors', {
-                params: {
-                  page: page > 0 ? page - 1 : 0,
-                  limit: itemsPerPage
-                }
-              })
+              const { data: { results, total } } = await http.get('/api/authors', { params })
               if (page === 1) cursor = 2
               if (page === 2) cursor = null
               records = results

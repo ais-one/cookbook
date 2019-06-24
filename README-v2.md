@@ -186,6 +186,7 @@ pagination - pagination update
 filter - filter update
 form-open
 form-close
+row-selected
 
 
 ## slots
@@ -195,13 +196,12 @@ form
 table
 
 
+# TO FIX
 
-find index... of row clicked...
-
-      <template v-if="isEnabled('item.<name>')" v-slot:item.name="{ item }">
-        {{ item.name.toUpperCase() }}
-      </template>
-
-      <template v-slot:item.name="{ item }">
-        {{ item.name.toUpperCase() }}
-      </template>
+0. inline edit
+1. reload for infinite scroll appends data, should not happen...
+2. post insert, delete - paged
+3. post insert, delete - infinite scroll
+4. should we use pagination event instead of watcher?
+5. check error handling for all ops
+6. check id and idName !!! may be wrong !!!

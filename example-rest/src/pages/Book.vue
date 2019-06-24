@@ -20,8 +20,8 @@
             <div>
               <h1>Custom Form Slot - Has Parent: {{ !!parentId }}</h1>
               <v-card-text>
-                <v-text-field label="Book Name" v-model="form[1].value"></v-text-field>
-                <v-select label="Category" v-model="form[2].value" :items="categories" required item-text="name" item-value="id"></v-select>
+                <v-text-field label="Book Name" v-model="form.name.value"></v-text-field>
+                <v-select label="Category" v-model="form.categoryId.value" :items="categories" required item-text="name" item-value="id"></v-select>
                 <v-autocomplete
                   multiple
                   v-model="authorIds"
@@ -53,7 +53,7 @@
                     </v-list-item-content>
                   </template>
                 </v-autocomplete>
-                <v-btn @click.stop.prevent="gotoPages(form[0].value)" dark>View Book Pages</v-btn>
+                <v-btn @click.stop.prevent="gotoPages(form.id.value)" dark>View Book Pages</v-btn>
               </v-card-text>
             </div>
           </template>
@@ -110,10 +110,9 @@ export default {
           doPage: 2,
           showFilterButton: true
         },
-        filters: [
-          {
+        filters: {
+          'name': {
             type: 'v-text-field', // component name
-            name: 'name', // field name
             value: '',
             'field-wrapper': {
               xs12: true, sm6: true
@@ -122,9 +121,8 @@ export default {
               label: 'Book Name', clearable: true
             }
           },
-          {
+          'categoryId': {
             type: 'v-select', // component name
-            name: 'categoryId', // field name
             value: { text: 'All', value: 0 },
             'field-wrapper': {
               xs12: true, sm6: true
@@ -139,14 +137,14 @@ export default {
               rules: [v => !!v || 'Item is required']
             }
           }
-        ],
-        form: [
-          { name: 'id', value: '' },
-          { name: 'name', value: '' },
-          { name: 'categoryId', value: '' },
-          { name: 'authorIds', value: [] },
-          { name: 'authors', value: [] }
-        ],
+        },
+        form: {
+          'id': { value: '' },
+          'name': { value: '' },
+          'categoryId': { value: '' },
+          'authorIds': { value: [] },
+          'authors': { value: [] }
+        },
         // crudForm: {
         //   defaultRec: () => ({
         //     categoryId: '',
@@ -164,10 +162,10 @@ export default {
             const { pagination, filters } = payload
             const { page, itemsPerPage } = pagination // sortBy, descending
             let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } // set query params
-            for (let filter of filters) {
-              let value = filter.value
-              if (filter.name === 'categoryId') value = filter.value.value
-              if (value) params[filter.name] = value
+            for (let key in filters) {
+              let value = filters[key].value
+              if (key === 'categoryId') value = filters[key].value.value
+              if (value) params[key] = value
             }
             try {
               const { data: { results, total } } = await http.get('/api/books', { params })
@@ -234,7 +232,7 @@ export default {
     authorIds (val) {
       if (!val) return
       if (val.length > 2) val.pop()
-      if (this.$refs['book-table']) this.$refs['book-table'].form[3].value = val
+      if (this.$refs['book-table']) this.$refs['book-table'].form.authorIds.value = val
       // console.log('watch')
     }
   },
@@ -251,8 +249,8 @@ export default {
     },
     openBookForm (item) {
       // console.log('openBookForm', item)
-      this.authorIds = item[3].value
-      this.items = item[4].value
+      this.authorIds = item.authorIds.value
+      this.items = item.authors.value
     },
     fetchTerm (term) {
       return from(

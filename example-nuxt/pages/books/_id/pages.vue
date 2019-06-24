@@ -123,7 +123,6 @@ export default {
             } catch (e) {
               console.log(e)
             }
-            console.log('find pages of a book', records)
             return { records, pagination, totalRecords }
           },
           findOne: payload => {},

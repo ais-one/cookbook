@@ -66,9 +66,8 @@ export default {
           showFilterButton: false
         },
         filters: null,
-        form: [
-          {
-            name: 'id',
+        form: {
+          'id': {
             type: 'v-text-field',
             value: '',
             hidden: 'add', // add, edit, all, null
@@ -79,8 +78,7 @@ export default {
               label: 'ID'
             }
           },
-          {
-            name: 'name',
+          'name': {
             type: 'v-text-field',
             value: '',
             'field-wrapper': { xs12: true, sm6: true },
@@ -89,12 +87,11 @@ export default {
               rules: [v => !!v || 'Item is required']
             }
           }
-        ],
+        },
         crudOps: { // CRUD
           export: async (payload) => {
           },
           find: async (payload) => {
-            console.log('find')
             let records = []
             let totalRecords = 0
             const { pagination } = payload // filters
