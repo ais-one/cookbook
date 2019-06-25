@@ -17,11 +17,11 @@ exports.seed = async (knex, Promise) => {
     {id: 2, name: 'cat2'}
   ])
   await knex('books').insert([
-    {id: 1, name: 'book1', categoryId: 1 },
-    {id: 2, name: 'book2', categoryId: 2 },
-    {id: 3, name: 'book3', categoryId: 1 },
-    {id: 4, name: 'book4', categoryId: 1 },
-    {id: 5, name: 'book5', categoryId: 2 }
+    {id: 1, name: 'book1', categoryId: 1, rating: 5, yearPublished: '2004' },
+    {id: 2, name: 'book2', categoryId: 2, rating: 4, yearPublished: '2003' },
+    {id: 3, name: 'book3', categoryId: 1, rating: 3, yearPublished: '2010' },
+    {id: 4, name: 'book4', categoryId: 1, rating: 2, yearPublished: '2009' },
+    {id: 5, name: 'book5', categoryId: 2, rating: 1, yearPublished: '2007' }
   ])
   await knex('books_authors').insert([
     {authorId: 1, bookId: 1},

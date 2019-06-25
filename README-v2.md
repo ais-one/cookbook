@@ -202,19 +202,32 @@ table
 
 # TO FIX
 
-2. page
- - after insert
- - after update
- - after delete
-3. infinite scroll
- - after insert
- - after update
- - after delete
-4. check error handling for all ops
-5. real-time updates...
-* 0. inline edit
-* 1. reload for infinite scroll appends data, should not happen...
-* 5. check id and idName !!! may be wrong !!!
+## In Progress
+1. check error handling for all ops
+2. reloads
+ - page
+  - after insert -
+  - after update -
+  - after delete - 
+  - after insert inline -
+  - after update inline - (done)
+  - after delete inline -
+ - infinite scroll
+  - after insert - insert & sort, add totals
+  - after update - update & sort
+  - after delete - delete & sort, reduce totals
+  - after insert inline -
+  - after update inline - (done)
+  - after delete inline -
+ - update
+3. real-time updates...
+
+## Done
+* 1. inline edit
+* 2. reload for infinite scroll appends data, should not happen...
+* 3. check id and idName !!! may be wrong !!!
+* 4. Change watch to event listener
+* 5. Add sorter
 
 # DESIGN CONSIDERATIONS
 1. should we use pagination event instead of pagination watcher?

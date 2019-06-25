@@ -8,6 +8,8 @@ exports.up = async (knex, Promise) => {
     .createTable('books', (table) => {
       table.increments('id').primary()
       table.string('name')
+      table.integer('rating')
+      table.string('yearPublished')
       table.integer('categoryId').references('categories.id')
     })
     .createTable('pages', (table) => { // one book, many pages

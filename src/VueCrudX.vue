@@ -24,9 +24,7 @@ export default {
       loading: false,
       records: [], // get many - filter, page & sort
       totalRecords: 0,
-      cursor: '', // infinite scroll cursor
 
-      paginationRefresh: true,
       formReload: true, // refetch after create, update or delete
 
       // show/hide
@@ -41,12 +39,6 @@ export default {
 
       // crudTable
       headers: [ ], // pass in
-
-      inlineReload: { // set to false for services where record read is chargeable, e.g. Google Firestore (use listeners instead)
-        create: true,
-        update: true,
-        delete: true
-      },
 
       confirmCreate: false, // confirmation required flags
       confirmUpdate: false,
@@ -117,21 +109,28 @@ export default {
       // page > 0, limit = 20 // paged
       infinite: false, // either paged or infinite scroll
       editing: null, // or row object
-      pagination: { // depends on UI Framework
+
+      // depends on UI Framework
+      // Vuetify 2 Start
+      pagination: {
         descending: false,
         page: 1,
         itemsPerPage: 20,
         sortBy: [],
+        sortDesc: [],
         totalItems: 0 // completely useless at the moment
       },
+      sorters: null,
+      // Vuetify 2 End
 
       // V2
       idName: 'id',
       pageOptions: {
+        infinite: false, // infinite scroll
         // page = null, limit = 0 // get all, show count in footer
         // page = null, limit = 20 // infinite scroll, hide pagination UI, add load more button
         // page > 0, limit = 20 // paged, 1-based
-        page: 1,
+        page: 1, // initial page
         limit: 2
       },
       inline: {
@@ -154,16 +153,11 @@ export default {
     this.inline = this.$attrs.inline || { add: false, edit: false }
 
     // Set initial pagination data here
-    this.paginationRefresh = false
     this.pagination.page = this.pageOptions.page
     this.pagination.itemsPerPage = this.pageOptions.limit
-  },
-  async mounted () {
-    // TOREMOVE this.paginationRefresh = !!this.$scopedSlots['table']
-    this.headers = this.crudTable.headers
-    this.inlineReload = Object.assign(this.inlineReload, this.crudTable.inlineReload || {}) // default true
-    this.formReload = this.crudTable.formReload !== false // default true
 
+    this.headers = this.crudTable.headers
+    this.formReload = this.crudTable.formReload !== false // default true
     this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // open form on row click? default true
 
     // set confirmation
@@ -179,6 +173,10 @@ export default {
     this.attrs = Object.assign(this.attrs, this.crudTable.attrs || {})
     this.buttons = Object.assign(this.buttons, this.crudTable.buttons || {})
 
+    this.ready = true
+    this.getRecords({ mode: null })
+  },
+  async mounted () {
     // not needed in data() because it does not exist in template, an optimization which should be done for others as well
     if (typeof this.$t !== 'function') { // if no internationalization
       this.$t = text => text
@@ -186,7 +184,6 @@ export default {
     // for (let key in this.filters) { // type to field - TOREMOVE, populated in parent
     //   if (this.filters[key].attrs && this.filters[key].itemsFn) this.filters[key].attrs.items = await this.filters[key].itemsFn()
     // }
-    this.ready = true
   },
   beforeUpdate () { },
   beforeRouteEnter (to, from, next) { next(vm => { }) },
@@ -194,21 +191,11 @@ export default {
     showTitle () { return this.crudTitle || 'VueCrudX' }
   },
   watch: {
-    loading: function (newValue, oldValue) { },
-    pagination: {
-      handler (value, oldvalue) {
-        if (this.paginationRefresh === false) {
-          this.paginationRefresh = true
-        } else {
-          this.getRecords()
-        }
-      },
-      deep: true
-    },
-    parentId (value) {
-      // console.log('watch parentId', value)
-      this.getRecords()
-    }
+    loading: function (newValue, oldValue) { }
+    // parentId (value) {
+    //   // console.log('watch parentId', value)
+    //   this.getRecords({ mode: null })
+    // }
   },
   methods: {
     isObject (obj) { return obj !== null && typeof obj === 'object' },
@@ -287,22 +274,28 @@ export default {
     //      - update
     //      - delete
     //      - filter - infinite scroll start from beginning
-    async getRecords () {
+    async getRecords ({ mode }) {
       this.loading = true
       // TBD emit filter update event
       const payload = {
-        user: this.$store.getters.user,
-        pagination: this.pagination,
+        parentId: this.parentId,
         filters: this.filters,
-        parentId: this.parentId
+        pagination: this.pagination,
+        sorters: null
       }
-      console.log('getRecords', this.pagination.page)
-      let { records, totalRecords = 0, cursor } = await this.crudOps.find(payload) // pagination returns cursor for infinite scroll
-      if (cursor !== undefined) { // infinite scroll
-        this.cursor = cursor
+      console.log('getRecords', this.pagination)
+      let { records, totalRecords = 0, pagination } = await this.crudOps.find(payload) // pagination returns for infinite scroll
+      if (pagination) {
+        this.pagination.page = pagination.page
+      }
+      if (this.pageOptions.infinite) { // infinite scroll
         this.totalRecords += records.length
         this.records = this.records.concat(records)
       } else {
+        // TBD
+        // if (totalRecords > 0 && records.length === 0) {
+        //  page = Math.ceil(totalRecords / this.pagination.itemsPerPage) need to reload page...
+        // }
         this.totalRecords = totalRecords
         this.records = records
       }
@@ -310,25 +303,30 @@ export default {
       // TBD this.$emit('loaded', Date.now())
       this.loading = false
     },
-    async submitFilter () {
+    async onFilter () {
       if (this.editing) this.editing = null
       this.totalRecords = 0
       this.records = []
-      this.cursor = ''
-      if (this.pageOptions.page) {
-        // TOREMOVE await this.getRecords()
-        this.pagination.page = 1 // triggers page reload
+      if (this.pageOptions.infinite) {
+        this.pagination.page = this.pageOptions.page
+        await this.getRecords({ mode: null })
       } else {
-        this.pagination.page = 1 // this triggers the page reload by watcher, if using event, then this mechanism will change
+        await this.getRecords({ mode: null })
+        // if (this.pagination.page === 1) {
+        //   await this.getRecords({ mode: null })
+        // } else {
+        //   this.pagination.page = 1 // triggers page reload by watcher
+        // }
       }
     },
     // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
-    async exportBtnClick () {
+    async onExport () {
       this.loading = true
       await this.exportRecords({
-        pagination: this.pagination,
+        parentId: this.parentId,
         filters: this.filters,
-        parentId: this.parentId
+        pagination: this.pagination,
+        sorters: null
       })
       this.loading = false
     },
@@ -337,12 +335,11 @@ export default {
     },
 
     // INLINE EDIT START
-    rowEditing (item) {
+    isRowEditing (item) {
       if (!this.editing) return false
       return item[this.idName] === this.editing[this.idName]
     },
     async inlineUpdate (item) {
-      console.log('inlineUpdate', item)
       if (!this.editing) { // start editing
         this.editing = { ...item } // backup the values first
       }
@@ -354,8 +351,10 @@ export default {
         const { id, ...record } = item
         try {
           await this.updateRecord({ id, record })
-          await this.getRecords({ mode: 'update' }) // TBD find better way to update table - reload? if (this.inlineReload.delete) this.$nextTick(async function () { await this.getRecords() })
-        } catch (e) { }
+          await this.getRecords({ mode: 'update-inline' }) // TBD find better way to update table - reload? if (reload?) this.$nextTick(async function () { await this.getRecords() })
+        } catch (e) {
+          // TBD handle failure
+        }
       }
     },
     async inlineCancel (item) {
@@ -364,15 +363,19 @@ export default {
     async inlineCreate () {
       try {
         await this.createRecord({ record: {}, parentId: this.parentId })
-        await this.getRecords({ mode: 'create' }) // TBD find better way to update table - reload? if (this.inlineReload.delete) this.$nextTick(async function () { await this.getRecords() })
-      } catch (e) { }
+        await this.getRecords({ mode: 'create-inline' }) // TBD find better way to update table - reload? if (reload?) this.$nextTick(async function () { await this.getRecords() })
+      } catch (e) {
+        // TBD handle failure
+      }
     },
     async inlineDelete (id) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       try {
         await this.deleteRecord({ id })
-        await this.getRecords({ mode: 'delete' }) // TBD find better way to update table - reload? if (this.inlineReload.delete) this.$nextTick(async function () { await this.getRecords() })
-      } catch (e) { }
+        await this.getRecords({ mode: 'delete-inline' }) // TBD find better way to update table - reload? if (reload?) this.$nextTick(async function () { await this.getRecords() })
+      } catch (e) {
+        // TBD handle failure
+      }
     },
     // INLINE EDIT END
 
@@ -389,8 +392,12 @@ export default {
     isReadOnly (item) {
       return (item.readonly === 'add' && !item[this.idName]) || (item.readonly === 'edit' && item[this.idName]) || item.readonly === 'all'
     },
+    async onTable (_in) {
+      if (this.pageOptions.infinite) return // infinite scroll, ignore
+      await this.getRecords({ mode: null })
+    },
     async testFunction (_in) { // for testing anything
-      console.log(_in)
+      // console.log('testFunction', this.pagination)
     }
   }
 }
@@ -411,9 +418,9 @@ export default {
           <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-btn v-if="showFilterButton&&filters" v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
-          <v-btn v-bind="attrs.button" @click="submitFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
+          <v-btn v-bind="attrs.button" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
           <v-btn v-if="crudOps.create" v-bind="attrs.button" @click.stop="inline.add?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
-          <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop.prevent="exportBtnClick" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
+          <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
         </v-toolbar>
       </slot>
       <div v-if="showFilter">
@@ -430,16 +437,25 @@ export default {
         </slot>
       </div>
       <slot name="table" :records="records" :totalRecords="totalRecords" :pagination="pagination" :vcx="_self">
+        <!--
+          after sorter is clicked, page is changed to -1
+          disable sorting for infinite scroll
+          @sort-by not needed, only need @sort-desc
+          @update:page="testFunction"
+          @pagination="testFunction"
+        -->
         <v-data-table
           :headers="headers"
           :items="records"
           :server-items-length="totalRecords"
           :options.sync="pagination"
-          :hide-default-footer="!pageOptions.page"
+          :hide-default-footer="pageOptions.infinite"
+          :disable-sort="pageOptions.infinite"
           v-bind="attrs.table"
           :item-key="idName"
           fixed-header
-          @pagination="testFunction"
+          @update:page="onTable('page')"
+          @update:sort-desc="onTable('sort')"
         >
           <template v-slot:headerCell="props">
             <span v-html="props.header.text"></span>
@@ -457,16 +473,16 @@ export default {
           </template> -->
 
           <template v-slot:item="{ item }"><!-- was items -->
-            <tr :ref="`edit-${item[idName]}`" @click.stop="rowClicked(item, $event)">
+            <tr :key="item[idName]" :ref="`edit-${item[idName]}`" @click.stop="rowClicked(item, $event)">
               <slot name="td" :headers="headers" :item="item" :vcx="_self">
                 <td :key="header.value + index" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
                   <span v-if="header.action">
-                    <v-icon v-if="crudOps.update&&inline.edit" v-bind="attrs['action-icon']" @click.stop="rowEditing(item)?inlineSave(item):inlineUpdate(item)" :disabled="loading">{{ rowEditing(item) ? 'save' : 'edit' }}</v-icon>
+                    <v-icon v-if="crudOps.update&&inline.edit" v-bind="attrs['action-icon']" @click.stop="isRowEditing(item)?inlineSave(item):inlineUpdate(item)" :disabled="loading">{{ isRowEditing(item) ? 'save' : 'edit' }}</v-icon>
                     <v-icon v-else-if="crudOps.update&&!inline.edit&&form" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(item[idName])" :disabled="loading">edit</v-icon>
-                    <v-icon v-if="crudOps.delete" v-bind="attrs['action-icon']" @click.stop="rowEditing(item)?inlineCancel(item):inlineDelete(item[idName])" :disabled="loading">{{ rowEditing(item) ? 'cancel' : 'delete' }}</v-icon>
+                    <v-icon v-if="crudOps.delete" v-bind="attrs['action-icon']" @click.stop="isRowEditing(item)?inlineCancel(item):inlineDelete(item[idName])" :disabled="loading">{{ isRowEditing(item) ? 'cancel' : 'delete' }}</v-icon>
                   </span>
                   <template v-else>
-                    <component v-if="inline.edit&&rowEditing(item)" :is="'v-text-field'" :key="item[idName]+'-'+item[header.value]" v-model="editing[header.value]"></component>
+                    <component v-if="inline.edit&&isRowEditing(item)" :is="'v-text-field'" :key="item[idName]+'-'+item[header.value]" v-model="editing[header.value]"></component>
                     <span v-else v-html="header.render?header.render(item[header.value]):item[header.value]"></span>
                   </template>
                 </td>
@@ -474,8 +490,8 @@ export default {
             </tr>
           </template>
           <!-- infinite scroll handling -->
-          <template v-if="!pageOptions.page" v-slot:footer="props">
-            <v-btn v-if="cursor" @click="pagination.page=cursor">Load More {{ props.length }}</v-btn>
+          <template v-if="pageOptions.infinite" v-slot:footer="props">
+            <v-btn v-if="pagination.page" @click="getRecords({ mode: null })">Load More {{ props.length }}</v-btn>
           </template>
 
           <template v-slot:no-data>
