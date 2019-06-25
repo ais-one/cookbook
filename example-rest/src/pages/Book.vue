@@ -104,6 +104,8 @@ export default {
           confirmDelete: true,
           headers: [
             { text: 'Book Name', value: 'name', class: 'pa-1' },
+            { text: 'Rating', value: 'rating', class: 'pa-1' },
+            { text: 'Year Published', value: 'yearPublished', class: 'pa-1' },
             { text: 'Category', value: 'categoryName', class: 'pa-1' }
           ],
           formatters: (value, _type) => value,
@@ -114,12 +116,20 @@ export default {
           'name': {
             type: 'v-text-field', // component name
             value: '',
-            'field-wrapper': {
-              xs12: true, sm6: true
-            },
-            'field-input': {
-              label: 'Book Name', clearable: true
-            }
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': { label: 'Book Name', clearable: true }
+          },
+          'rating': {
+            type: 'v-text-field', // component name
+            value: '',
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': { label: 'Rating', type: 'number', clearable: true }
+          },
+          'yearPublished': {
+            type: 'v-text-field', // component name
+            value: '',
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': { label: 'Year Published', clearable: true }
           },
           'categoryId': {
             type: 'v-select', // component name

@@ -33,7 +33,8 @@ export default {
 
         // v2
         pageOptions: {
-          page: null,
+          infinite: true,
+          page: 1,
           limit: 2
         },
         filters: {
@@ -73,7 +74,6 @@ export default {
           find: async (payload) => {
             let records = []
             let totalRecords = 0
-            let cursor // infinite scroll test
             const { pagination, filters } = payload
             const { page, itemsPerPage } = pagination // sortBy, descending
             let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } // set query params
@@ -83,14 +83,14 @@ export default {
             }
             try {
               const { data: { results, total } } = await http.get('/api/authors', { params })
-              if (page === 1) cursor = 2
-              if (page === 2) cursor = null
+              if (page === 1) pagination.page = 2
+              else if (page === 2) pagination.page = 0
               records = results
               totalRecords = total
             } catch (e) {
               console.log(e)
             }
-            return { records, cursor, totalRecords }
+            return { records, totalRecords, pagination }
           },
           findOne: async (payload) => {
             const { id } = payload

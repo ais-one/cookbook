@@ -163,10 +163,11 @@ export default {
       }
     }
   },
-  mounted () {
+  created () {
     // this.pageDefs.crudTable.form = null // uncomment to test without forms
     this.pageDefs.inline.add = false // comment to test without forms
     this.parentId = this.$route.params.id
+    console.log(this.parentId)
   }
 }
 
