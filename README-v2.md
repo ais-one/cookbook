@@ -231,3 +231,12 @@ table
 
 # DESIGN CONSIDERATIONS
 1. should we use pagination event instead of pagination watcher?
+
+
+
+
+ISSUE: https://github.com/vuetifyjs/vuetify/issues/7657
+FIXED: https://github.com/vuetifyjs/vuetify/pull/7665
+
+ISSUE: https://github.com/apollographql/apollo-server/issues/2921
+FIXED: N.A.

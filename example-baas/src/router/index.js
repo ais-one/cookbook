@@ -13,8 +13,6 @@ import * as partyInlineDefs from '@/pages/Crud/party-inline'
 
 import MongoTest from '@/pages/MongoTest'
 
-import Test from '@/components/Test'
-
 import VueCrudX from '../../../src/VueCrudX' // Component shared between projects // const VueCrudX = Vue.component('vue-crud-x') this does not work...
 // import VueCrudX from 'vue-crud-x'
 
@@ -59,8 +57,6 @@ export default new Router({
       component: RealtimeExample,
       beforeEnter: AuthGuard
     },
-    { path: '/test', name: 'Test', component: Test },
-    // { path: '/signup', name: 'SignUp', component: SignUp },
     { path: '/', name: 'SignIn', component: SignIn },
     { path: '*', redirect: '/' }
   ],

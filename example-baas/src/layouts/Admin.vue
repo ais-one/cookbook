@@ -42,7 +42,6 @@ export default {
         { icon: 'schedule', title: 'Realtime', link: '/realtime-example' },
         { icon: 'home', title: 'CRUD Party', link: '/party' },
         { icon: 'create', title: 'CRUD Party Inline', link: '/party-inline' },
-        { icon: 'dashboard', title: 'Test', link: '/test' }
       ]
     }
   },

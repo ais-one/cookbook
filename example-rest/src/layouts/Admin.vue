@@ -57,7 +57,8 @@ export default {
         { icon: 'dashboard', title: 'Dashboard', link: '/dashboard' },
         { icon: 'list_alt', title: 'Authors', link: '/authors' },
         { icon: 'list_alt', title: 'Categories', link: '/categories' },
-        { icon: 'list_alt', title: 'Books', link: '/books' }
+        { icon: 'list_alt', title: 'Books', link: '/books' },
+        { icon: 'list_alt', title: 'Test Components', link: '/test' }
       ]
     }
   },

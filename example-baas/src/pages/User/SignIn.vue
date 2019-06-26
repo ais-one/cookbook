@@ -11,8 +11,8 @@
                     <v-flex xs12>
                       <v-text-field name="email" label="Mail" id="email" v-model="email" type="email" required></v-text-field>
                       <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
-                      <v-btn type="submit" :disabled="loading||unverified" :loading="loading">Sign in</v-btn>
-                      <v-btn type="button" :disabled="loading" :loading="loading" @click="onMongoSignin">Mongo Sign in</v-btn>
+                      <v-btn type="submit" :disabled="loading||unverified" :loading="loading">Firebase Sign in</v-btn>
+                      <v-btn type="button" :disabled="loading||unverified" :loading="loading" @click="onMongoSignin">Mongo Sign in</v-btn>
                       <vue-recaptcha v-if="sitekey" class="g-recaptcha" @verify="onVerify" @expired="onExpired" :sitekey="sitekey"></vue-recaptcha>
                       <p v-if="!!error">{{error.message}}</p>
                     </v-flex>

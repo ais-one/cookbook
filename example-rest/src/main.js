@@ -1,8 +1,8 @@
 'use strict'
 import Vue from 'vue'
 import VueRx from 'vue-rx'
-// TOREMOVE import Vuetify from 'vuetify'
 import VueNativeSock from 'vue-native-websocket'
+import vuetify from './plugins/vuetify'
 import i18n from './lang'
 import { store } from './store'
 import router from './router'
@@ -11,7 +11,10 @@ import VueCrudX from '../../src/VueCrudX' // Component shared between projects
 import { apolloClient } from './graphql'
 import VueApollo from 'vue-apollo'
 
-import vuetify from './plugins/vuetify'
+// import { auth } from '@/firebase'
+// import { stitch } from '@/mongo'
+import TimePicker from '../../src/TimePicker.vue' // Components shared between projects
+import DatePicker from '../../src/DatePicker.vue'
 
 import { DO_HELLO } from './queries'
 
@@ -51,23 +54,8 @@ if (WS_URL) {
   console.log('NO WS...')
 }
 
-/* TOREMOVE
-Vue.use(Vuetify, {
-  theme: {
-    primary: '#1c325f',
-    secondary: '#219ad6',
-    accent: '#0c74bb',
-    info: '#2196f3',
-    success: '#a4d6e3',
-    error: '#f44336',
-    warning: '#ffeb3b'
-  },
-  lang: {
-    t: (key, ...params) => i18n.t(key, params)
-  }
-})
-*/
-
+Vue.component('app-date-picker', DatePicker)
+Vue.component('app-time-picker', TimePicker)
 Vue.component('vue-crud-x', VueCrudX)
 
 /* eslint-disable no-new */
@@ -79,4 +67,24 @@ export const app = new Vue({
   store,
   apolloProvider,
   render: h => h(App)
+  // created () {
+  //   // firebase
+  //   auth.onAuthStateChanged((user) => {
+  //     // console.log('onAuthStateChanged', user)
+  //     if (user) {
+  //       this.$store.dispatch('firebaseAutoSignin', user) // server force keep login
+  //     } else {
+  //       // this.$store.dispatch('baasLogout', {userLogout: false}) // server force logout
+  //     }
+  //   })
+  //   // mongo - SEEMS LIKE NOT WORKING AT THE MOMENT
+  //   stitch.auth.addAuthListener(auth => {
+  //     console.log('onAuthStateChanged', auth)
+  //     if (auth.user) {
+  //       this.$store.dispatch('mongoAutoSignin', auth.user) // server force keep login
+  //     } else {
+  //       // this.$store.dispatch('baasLogout', {userLogout: false}) // server force logout
+  //     }
+  //   })
+  // }
 })

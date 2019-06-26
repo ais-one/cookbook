@@ -17,7 +17,7 @@ export default {
     DrawingCanvas,
     WebCam
   },
-  data: () => ({
+  data: () => ({ // try not to use this way due to scoping issues
     isLoading: false
   })
 }

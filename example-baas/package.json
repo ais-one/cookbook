@@ -15,7 +15,6 @@
     "@firebase/auth": "^0.11.3",
     "@firebase/firestore": "^1.4.0",
     "@firebase/storage": "^0.3.2",
-    "axios": "^0.18.1",
     "date-fns": "^1.30.0",
     "mongodb-stitch-browser-sdk": "^4.4.1",
     "vue": "^2.6.10",

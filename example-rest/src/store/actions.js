@@ -1,3 +1,5 @@
+import { auth } from '@/firebase'
+import { stitch, getUserPasswordCredential } from '@/mongo'
 import { http } from '@/axios'
 import router from '../router'
 
@@ -55,23 +57,28 @@ export default {
 
   async logout ({ commit }, payload) {
     commit('setLoading', true)
-    // console.log('action logout', payload)
-    if (payload.forced) { // auth failure detected
-    } else { // logout button clicked
-      try {
-        await http.get('/api/auth/logout')
-      } catch (e) {
-        if (!e.response || e.response.status === 401) { // server or authorization error
-          // ok please continue
-        } else {
-          return
+    if (payload.loginType === 'mongo') {
+      await stitch.auth.logout()
+    } else if (payload.loginType === 'firebase') {
+      await auth.signOut()
+    } else { // rest
+      if (payload.forced) { // auth failure detected
+      } else { // logout button clicked
+        try {
+          await http.get('/api/auth/logout')
+        } catch (e) {
+          if (!e.response || e.response.status === 401) { // server or authorization error
+            // ok please continue
+          } else {
+            return // may have problems here... loading still true, etc...
+          }
         }
       }
+      router.push('/')
+      if (payload.forced) commit('setError', { message: 'Session Expired' })
     }
     commit('setUser', null)
     commit('setLayout', 'layout-default')
-    router.push('/')
-    if (payload.forced) commit('setError', { message: 'Session Expired' })
     commit('setLoading', false)
   },
 
@@ -90,7 +97,78 @@ export default {
   },
   clearError ({ commit }) { commit('setError', null) },
 
-  setNetworkError ({ commit }, payload) { commit('mutateNetworkError', payload) }
+  setNetworkError ({ commit }, payload) { commit('mutateNetworkError', payload) },
+
+  // mongo
+  async mongoSignin ({ commit }, payload) {
+    commit('setLoading', true)
+    commit('setError', null)
+    let auth = null
+    try {
+      const credential = getUserPasswordCredential(payload.email, payload.password)
+      auth = await stitch.auth.loginWithCredential(credential)
+      // console.log('mongoSignin', auth)
+    } catch (e) { }
+    commit('setLoading', false)
+    if (!auth) {
+      commit('setError', { message: 'Mongo Sign In Error' })
+    } else {
+      commit('setBaasUser', { id: auth.id, email: auth.id, loginType: 'mongo' })
+      commit('setLayout', 'layout-admin')
+      router.push('/mongo-test')
+    }
+  },
+  mongoAutoSignin ({ commit }, payload) { // not called for now
+    commit('setBaasUser', { id: payload.id, email: payload.id, loginType: 'mongo' })
+    commit('setLayout', 'layout-admin')
+    router.push('/mongo-test')
+  },
+
+  // firebase
+  async firebaseSignup ({ commit }, payload) {
+    commit('setLoading', true)
+    commit('setError', null)
+    let user = null
+    try {
+      user = await auth.createUserWithEmailAndPassword(payload.email, payload.password)
+    } catch (e) { }
+    commit('setLoading', false)
+    if (user) {
+      const newUser = { id: user.uid, email: payload.email }
+      commit('setBaasUser', newUser)
+    } else {
+      commit('setError', { message: 'Error Signup' })
+      /* TBD
+        if (error.code === 'auth/email-already-in-use') {
+          var credential = auth.EmailAuthProvider.credential(payload.email, payload.password)
+          user = await auth.currentUser.linkWithCredential(credential)
+          if (user) {
+            const newUser = {id: user.uid}
+            commit('setBaasUser', newUser)
+          }
+        }
+      */
+    }
+  },
+  async firebaseSignin ({ dispatch, commit }, payload) {
+    commit('setLoading', true)
+    commit('setError', null)
+    let user = null
+    try {
+      user = await auth.signInWithEmailAndPassword(payload.email, payload.password)
+      // console.log('signUserIn', user)
+      // dispatch('autoSignIn', user) // no need this for firebase auth due to auth listener
+    } catch (e) { }
+    if (!user) {
+      commit('setError', { message: 'Sign In Error' })
+    }
+    commit('setLoading', false)
+  },
+  firebaseAutoSignin ({ commit }, payload) {
+    commit('setBaasUser', { id: payload.uid, email: payload.email, loginType: 'firebase' })
+    commit('setLayout', 'layout-admin')
+    router.push('/multi-crud-example') // console.log party
+  }
 }
 
 /*
