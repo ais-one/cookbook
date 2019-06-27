@@ -198,18 +198,32 @@ export default {
     // }
   },
   methods: {
-    isObject (obj) { return obj !== null && typeof obj === 'object' },
+    goBack () { this.$router.back() }, // return from child
+    inMemoryUpdate ({ id, record }) { // also handles real-time updates
+      const idx = this.records.findIndex(rec => rec[this.idName] === id)
+      if (idx !== -1) {
+        for (let key in this.records[idx]) {
+          if (key !== this.idName && record[key]) this.records[idx][key] = record[key]
+        }
+      }
+    },
+    inMemoryDelete ({ id }) { // also handles real-time updates
+      const idx = this.records.findIndex(rec => rec[this.idName] === id)
+      if (idx !== -1) this.records.splice(idx, 1)
+    },
+
     async deleteRecord (payload) {
       this.loading = true
       let res = await this.crudOps.delete(payload)
       this.loading = false
       this.$emit('deleted', { res, payload })
     },
-    async updateRecord (payload) {
+    async updateRecord ({ id, record }) {
       this.loading = true
-      let res = await this.crudOps.update(payload)
+      let res = await this.crudOps.update({ id, record })
+      this.updateTableRecord({ id, record })
       this.loading = false
-      this.$emit('updated', { res, payload })
+      this.$emit('updated', { res, id, record })
       if (typeof res === 'object') return res.ok // TODEPRECATE this check
       else return res === 200 // TODEPRECATE
     },
@@ -230,11 +244,11 @@ export default {
     async exportRecords (payload) {
       await this.crudOps.export(payload)
     },
-    closeCrudForm () {
+    closeForm () {
       this.showForm = false
       this.$emit('form-close')
     },
-    async crudFormOpen (id) {
+    async openForm (id) {
       this.selectedId = id
       if (id) {
         await this.getRecord({ id }) // edit
@@ -253,12 +267,11 @@ export default {
         if (key === this.idName) id = this.form[key].value
         else record[key] = this.form[key].value
       }
-
       if ((!record[this.idName] && this.confirmCreate) || (record[this.idName] && this.confirmUpdate)) if (!confirm(this.$t('vueCrudX.confirm'))) return
       if (record[this.idName]) await this.updateRecord({ id, record })
       else await this.createRecord({ record, parentId: this.parentId })
       if (this.formReload) await this.getRecords({ mode: record[this.idName] ? 'update' : 'create' })
-      this.closeCrudForm()
+      this.closeForm()
     },
     async crudFormDelete (e) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
@@ -267,7 +280,7 @@ export default {
         await this.deleteRecord({ id })
         if (this.formReload) await this.getRecords({ mode: 'delete' })
       }
-      this.closeCrudForm()
+      this.closeForm()
     },
     // mode - normal paging - null
     //      - create
@@ -330,9 +343,6 @@ export default {
       })
       this.loading = false
     },
-    goBack () {
-      this.$router.back()
-    },
 
     // INLINE EDIT START
     isRowEditing (item) {
@@ -351,7 +361,7 @@ export default {
         const { id, ...record } = item
         try {
           await this.updateRecord({ id, record })
-          await this.getRecords({ mode: 'update-inline' }) // TBD find better way to update table - reload? if (reload?) this.$nextTick(async function () { await this.getRecords() })
+          // await this.getRecords({ mode: 'update-inline' }) // TBD find better way to update table - reload? if (reload?) this.$nextTick(async function () { await this.getRecords() })
         } catch (e) {
           // TBD handle failure
         }
@@ -382,7 +392,7 @@ export default {
     rowClicked (item, event) {
       console.log('clicked', item)
       if (!this.inline.edit) {
-        if (this.onRowClickOpenForm) this.crudFormOpen(item[this.idName]) // no action column && row click opens form
+        if (this.onRowClickOpenForm) this.openForm(item[this.idName]) // no action column && row click opens form
       }
       this.$emit('row-selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     },
@@ -396,6 +406,7 @@ export default {
       if (this.pageOptions.infinite) return // infinite scroll, ignore
       await this.getRecords({ mode: null })
     },
+    _isObject (obj) { return obj !== null && typeof obj === 'object' },
     async testFunction (_in) { // for testing anything
       // console.log('testFunction', this.pagination)
     }
@@ -419,7 +430,7 @@ export default {
           <v-spacer></v-spacer>
           <v-btn v-if="showFilterButton&&filters" v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
           <v-btn v-bind="attrs.button" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
-          <v-btn v-if="crudOps.create" v-bind="attrs.button" @click.stop="inline.add?inlineCreate():crudFormOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
+          <v-btn v-if="crudOps.create" v-bind="attrs.button" @click.stop="inline.add?inlineCreate():openForm(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
           <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
         </v-toolbar>
       </slot>
@@ -478,11 +489,11 @@ export default {
                 <td :key="header.value + index" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
                   <span v-if="header.action">
                     <v-icon v-if="crudOps.update&&inline.edit" v-bind="attrs['action-icon']" @click.stop="isRowEditing(item)?inlineSave(item):inlineUpdate(item)" :disabled="loading">{{ isRowEditing(item) ? 'save' : 'edit' }}</v-icon>
-                    <v-icon v-else-if="crudOps.update&&!inline.edit&&form" v-bind="attrs['action-icon']" @click.stop="crudFormOpen(item[idName])" :disabled="loading">edit</v-icon>
+                    <v-icon v-else-if="crudOps.update&&!inline.edit&&form" v-bind="attrs['action-icon']" @click.stop="openForm(item[idName])" :disabled="loading">edit</v-icon>
                     <v-icon v-if="crudOps.delete" v-bind="attrs['action-icon']" @click.stop="isRowEditing(item)?inlineCancel(item):inlineDelete(item[idName])" :disabled="loading">{{ isRowEditing(item) ? 'cancel' : 'delete' }}</v-icon>
                   </span>
                   <template v-else>
-                    <component v-if="inline.edit&&isRowEditing(item)" :disabled="!header.inlineEdit" :is="'v-text-field'" :key="item[idName]+'-'+item[header.value]" v-model="editing[header.value]"></component>
+                    <component v-if="inline.edit&&isRowEditing(item)" :disabled="!header.edit" :is="'v-text-field'" :key="item[idName]+'-'+item[header.value]" v-model="editing[header.value]"></component>
                     <span v-else v-html="header.render?header.render(item[header.value]):item[header.value]"></span>
                   </template>
                 </td>
@@ -504,7 +515,7 @@ export default {
     <component :is="'div'" v-show="showForm" row justify-center>
       <slot name="form-toolbar" :vcx="_self">
         <v-toolbar v-bind="attrs.toolbar">
-          <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeCrudForm" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
+          <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeForm" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn v-bind="attrs.button" v-if="crudOps.delete && selectedId" @click.native="crudFormDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>

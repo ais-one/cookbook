@@ -213,25 +213,22 @@ if inline edit, allow for more customization of inputs
 # TO FIX
 
 ## In Progress
-0. reload issue at inline edit
 1. check error handling for all ops
 2. reloads
- - page
-  - after insert -
-  - after update -
-  - after delete - 
-  - after insert inline -
-  - after update inline - (done)
-  - after delete inline -
- - infinite scroll
-  - after insert - insert & sort, add totals
-  - after update - update & sort
-  - after delete - delete & sort, reduce totals
-  - after insert inline -
-  - after update inline - (done)
-  - after delete inline -
- - update
-3. real-time updates...
+ - page after insert -
+ - page after delete - 
+ - page after insert inline -
+ - page after delete inline -
+ - infinite after insert - insert & sort, add totals
+ - infinite after insert inline - add to top? add to bottom? insert?
+
+ * page after update
+ * page after update inline
+ * infinite after delete
+ * infinite after delete inline
+ * infinite after update
+ * infinite after update inline
+ 3. real-time updates...
 
 ## Done
 * 1. inline edit
@@ -239,14 +236,19 @@ if inline edit, allow for more customization of inputs
 * 3. check id and idName !!! may be wrong !!!
 * 4. Change watch to event listener
 * 5. Add sorter
+* 6. reload issue at inline edit
+
 
 # DESIGN CONSIDERATIONS
 1. reload & optimization strategy
 2. real-time updating
+3. inline update improvements
+4. more modular design
+5. interoperability with multiple UI frameworks
 
 
 ISSUE: https://github.com/vuetifyjs/vuetify/issues/7657
 FIXED: https://github.com/vuetifyjs/vuetify/pull/7665
 
 ISSUE: https://github.com/apollographql/apollo-server/issues/2921
-FIXED: N.A.
+FIXED: https://github.com/apollographql/apollo-server/pull/2924
