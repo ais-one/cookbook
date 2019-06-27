@@ -25,8 +25,8 @@ export const store = new Vuex.Store({
         if (decoded) {
           payload.id = decoded.id
         }
+        payload.loginType = 'rest'
       }
-      payload.loginType = 'rest'
       state.user = payload
       if (payload) {
         localStorage.setItem('session', JSON.stringify(payload))

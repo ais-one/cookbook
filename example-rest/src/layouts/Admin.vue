@@ -3,7 +3,7 @@
     <v-navigation-drawer v-if="userIsAuthenticated" app clipped v-model="drawer" fixed>
       <v-list dense>
         <template v-for="(item, i) in menuItems">
-          <v-list-item :to="item.link" :key="i">
+          <v-list-item v-if="!item.loginType||user.loginType===item.loginType" :to="item.link" :key="i">
             <v-list-item-content>
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
@@ -55,10 +55,10 @@ export default {
       drawer: false,
       menuItems: [
         { icon: 'dashboard', title: 'Dashboard', link: '/dashboard' },
-        { icon: 'list_alt', title: 'Authors', link: '/authors' },
-        { icon: 'list_alt', title: 'Categories', link: '/categories' },
-        { icon: 'list_alt', title: 'Books', link: '/books' },
-        { icon: 'list_alt', title: 'Test Components', link: '/test' }
+        { icon: 'list_alt', title: 'Authors', link: '/authors', loginType: 'rest' },
+        { icon: 'list_alt', title: 'Categories', link: '/categories', loginType: 'rest' },
+        { icon: 'list_alt', title: 'Books', link: '/books', loginType: 'rest' },
+        { icon: 'list_alt', title: 'Test Stuff', link: '/test' }
       ]
     }
   },
@@ -75,6 +75,9 @@ export default {
     userIsAuthenticated () {
       // this.$store.getters.user !== null && this.$store.getters.user !== undefined
       return !!this.$store.getters.user
+    },
+    user () {
+      return this.$store.getters.user
     },
     loading () { return this.$store.getters.loading },
     networkError () { return this.$store.getters.networkError }

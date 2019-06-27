@@ -203,6 +203,7 @@ table
 # TO FIX
 
 ## In Progress
+0. reload issue at inline edit
 1. check error handling for all ops
 2. reloads
  - page
@@ -230,9 +231,8 @@ table
 * 5. Add sorter
 
 # DESIGN CONSIDERATIONS
-1. should we use pagination event instead of pagination watcher?
-
-
+1. reload & optimization strategy
+2. real-time updating
 
 
 ISSUE: https://github.com/vuetifyjs/vuetify/issues/7657

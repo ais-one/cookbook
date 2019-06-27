@@ -13,7 +13,7 @@ export default new Router({
     { path: '/books/:id/pages', name: 'pages', component: () => import('@/pages/Page'), beforeEnter: AuthGuard },
     { path: '/categories', name: 'categories', component: () => import('@/pages/Category'), beforeEnter: AuthGuard },
     { path: '/signup', name: 'SignUp', component: () => import('@/pages/SignUp') },
-    { path: '/test', name: 'Test', component: () => import('@/components/Test') },
+    { path: '/test', name: 'Test', component: () => import('@/components/Test'), beforeEnter: AuthGuard },
     { path: '/', name: 'SignIn', component: () => import('@/pages/SignIn') },
     { path: '*', redirect: '/' }
   ],
