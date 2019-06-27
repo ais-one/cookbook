@@ -3,14 +3,14 @@ import { store } from '../store'
 const permissions = {
   'all': ['/test', '/dashboard'],
   'rest': ['/authors', '/categories', '/books', '/pages', '/books/:id/pages'],
-  'mongo': [],
-  'firebase': []
+  'mongo': ['/mongo-test'],
+  'firebase': ['/firebase-rt']
 }
 
 export default (to, from, next) => {
   console.log('route', to.matched[0].path)
 
-  if (store.getters.user && store.getters.user.verified) { // has user && otp is verified
+  if (store.getters.user && store.getters.user.otpVerified) { // has user && otp is verified
     const { loginType } = store.getters.user
     let idx = -1
     if (permissions[loginType]) idx = permissions[loginType].indexOf(to.matched[0].path)
@@ -25,7 +25,7 @@ export default (to, from, next) => {
     const item = localStorage.getItem('session') // survive a refresh
     if (item) {
       const user = JSON.parse(item)
-      if (user.verified) {
+      if (user.otpVerified) {
         store.commit('setUser', user)
         store.commit('setLayout', 'layout-admin')
         return next()

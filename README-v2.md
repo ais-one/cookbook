@@ -200,6 +200,16 @@ form
 table
 
 
+## Addition To Header
+
+1. render: (value) => value,
+
+format the display of the value
+
+2. edit: null
+
+if inline edit, allow for more customization of inputs
+
 # TO FIX
 
 ## In Progress

@@ -284,7 +284,7 @@ export default {
         sorters: null
       }
       console.log('getRecords', this.pagination)
-      let { records, totalRecords = 0, pagination } = await this.crudOps.find(payload) // pagination returns for infinite scroll
+      let { records, totalRecords = 0, pagination = null } = await this.crudOps.find(payload) // pagination returns for infinite scroll
       if (pagination) {
         this.pagination.page = pagination.page
       }
@@ -482,7 +482,7 @@ export default {
                     <v-icon v-if="crudOps.delete" v-bind="attrs['action-icon']" @click.stop="isRowEditing(item)?inlineCancel(item):inlineDelete(item[idName])" :disabled="loading">{{ isRowEditing(item) ? 'cancel' : 'delete' }}</v-icon>
                   </span>
                   <template v-else>
-                    <component v-if="inline.edit&&isRowEditing(item)" :is="'v-text-field'" :key="item[idName]+'-'+item[header.value]" v-model="editing[header.value]"></component>
+                    <component v-if="inline.edit&&isRowEditing(item)" :disabled="!header.inlineEdit" :is="'v-text-field'" :key="item[idName]+'-'+item[header.value]" v-model="editing[header.value]"></component>
                     <span v-else v-html="header.render?header.render(item[header.value]):item[header.value]"></span>
                   </template>
                 </td>

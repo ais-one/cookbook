@@ -18,32 +18,29 @@
 </template>
 
 <script>
-import { orderBy } from 'lodash'
-import { startOfMonth, endOfMonth, format } from 'date-fns'
+import { _orderBy } from 'lodash'
+import { format } from 'date-fns' // startOfMonth, endOfMonth, later
 import { firestore } from '@/firebase'
-import VueCrudX from '../../../../src/VueCrudX' // Component shared between projects // const VueCrudX = Vue.component('vue-crud-x') this does not work...
-
-// import * as taskDefs from './task'
 
 const COL_NAME = 'task'
-const area = ['North', 'South', 'East', 'West', 'Central']
+// Add In later... const area = ['North', 'South', 'East', 'West', 'Central']
 
 export default {
-  name: 'realtime-example',
-  components: {
-    VueCrudX
-  },
+  name: 'firebase-rt',
   data () {
     return {
       taskDefs: {
         crudTable: {
-          saveRow: '#ffaaaa',
           inline: {
-            task: { field: 'v-text-field', attrs: { type: 'text', class: ['caption'] } },
-            area: { field: 'v-autocomplete', attrs: { items: area, class: 'caption' } },
-            orderDate: { field: 'v-date-picker', attrs: { } },
-            orderTime: { field: 'v-time-picker', attrs: { } }
+            edit: true,
+            add: true
           },
+          // inline: {
+          //   task: { field: 'v-text-field', attrs: { type: 'text', class: ['caption'] } },
+          //   area: { field: 'v-autocomplete', attrs: { items: area, class: 'caption' } },
+          //   orderDate: { field: 'v-date-picker', attrs: { } },
+          //   orderTime: { field: 'v-time-picker', attrs: { } }
+          // },
           confirmCreate: false,
           confirmUpdate: false,
           confirmDelete: true,
@@ -54,11 +51,7 @@ export default {
             { text: 'Date', value: 'orderDate', align: 'left', sortable: false, class: 'pa-1' },
             { text: 'Time', value: 'orderTime', align: 'left', sortable: false, class: 'pa-1' }
           ],
-          formatters: (value, _type) => {
-            return value
-          },
           onRowClickOpenForm: false,
-          fullscreenForm: true,
           addrowCreate: [ ],
           doPage: false,
           crudTitle: 'Task',
@@ -68,30 +61,28 @@ export default {
             delete: false
           }
         },
-        filters: {
-          area: { type: 'v-autocomplete', halfSize: true, value: '', attrs: { label: 'Area', class: 'pa-2', items: area, clearable: true } },
-          readMode: { type: 'v-select', halfSize: true, value: 'Latest', attrs: { label: 'Latest 50 Or Date Range', class: 'pa-2', multiple: false, items: [ 'Latest', 'Date Range' ], rules: [v => !!v || 'Item is required'] } },
-          dateStart: { type: 'app-date-picker', halfSize: true, value: format(startOfMonth(new Date()), 'YYYY-MM-DD'), attrs: { label: 'Date Start' } },
-          timeStart: { type: 'app-time-picker', halfSize: true, value: '00:00', attrs: { label: 'Time Start' } },
-          dateEnd: { type: 'app-date-picker', halfSize: true, value: format(endOfMonth(new Date()), 'YYYY-MM-DD'), attrs: { label: 'Date End' } },
-          timeEnd: { type: 'app-time-picker', halfSize: true, value: '23:55', attrs: { label: 'Time End' } }
-        },
-        crudForm: {
-          defaultRec: () => ({
-            id: '',
-            area: 'CENTRAL',
-            task: '',
-            orderDatetime: '',
-            orderDate: format(new Date(), 'YYYY-MM-DD'),
-            orderTime: format(new Date(), 'HH:mm')
-          })
+        filters: null,
+        // filters: {
+        //   area: { type: 'v-autocomplete', halfSize: true, value: '', attrs: { label: 'Area', class: 'pa-2', items: area, clearable: true } },
+        //   readMode: { type: 'v-select', halfSize: true, value: 'Latest', attrs: { label: 'Latest 50 Or Date Range', class: 'pa-2', multiple: false, items: [ 'Latest', 'Date Range' ], rules: [v => !!v || 'Item is required'] } },
+        //   dateStart: { type: 'app-date-picker', halfSize: true, value: format(startOfMonth(new Date()), 'YYYY-MM-DD'), attrs: { label: 'Date Start' } },
+        //   timeStart: { type: 'app-time-picker', halfSize: true, value: '00:00', attrs: { label: 'Time Start' } },
+        //   dateEnd: { type: 'app-date-picker', halfSize: true, value: format(endOfMonth(new Date()), 'YYYY-MM-DD'), attrs: { label: 'Date End' } },
+        //   timeEnd: { type: 'app-time-picker', halfSize: true, value: '23:55', attrs: { label: 'Time End' } }
+        // },
+        form: {
+          'id': { value: '', hidden: 'all' },
+          'area': { value: 'CENTRAL', type: 'v-autocomplete' },
+          'task': { value: '', type: 'v-text-field' },
+          'orderDatetime': { value: '', hidden: 'all' },
+          'orderDate': { value: format(new Date(), 'YYYY-MM-DD'), type: 'v-autocomplete' },
+          'orderTime': { value: format(new Date(), 'HH:mm'), type: 'v-autocomplete' }
         },
         crudOps: { // CRUD
           'export': null,
           'delete': null,
           find: async (payload) => {
             let records = []
-            const { pagination } = payload
             try {
               const { area, readMode, dateStart, timeStart, dateEnd, timeEnd } = payload.filters
               let dbCol = firestore.collection(COL_NAME)
@@ -108,7 +99,7 @@ export default {
                 records.push({ id: record.id, ...record.data() })
               })
             } catch (e) { console.log(e) }
-            return { records, pagination }
+            return { records, totalRecords: records.length }
           },
           findOne: async (payload) => {
             const { id } = payload
@@ -195,7 +186,7 @@ export default {
     },
     setIncomingAlert (doc) {
       console.log('setIncomingAlert', doc.data())
-      const recs = this.$store.getters[this.colName + '/records']
+      const recs = this.$refs.taskRef.records // this.$store.getters[this.colName + '/records']
       let exists = false
       for (let i in recs) { // update
         if (recs[i].id === doc.id) {
@@ -212,11 +203,14 @@ export default {
         recs.push({ id: doc.id, ...doc.data() }) // insert
       }
       // recs.forEach(aa => console.log(aa.orderDatetime))
-      const temp = orderBy(recs, ['orderDatetime'], ['desc']) // Use Lodash to sort array by 'name'
+      const temp = _orderBy(recs, ['orderDatetime'], ['desc']) // Use Lodash to sort array by 'name'
       if (temp.length > 50) { // if > limit page limit remove last record in array
         temp.splice(-1, 1) // or pop
       }
-      this.$store.commit(this.colName + '/setRecords', { records: temp, totalRecs: temp.length })
+      // this.$store.commit(this.colName + '/setRecords', { records: temp, totalRecs: temp.length })
+      this.$refs.taskRef.records = temp
+      this.$refs.taskRef.totalFecords = temp.length
+
       this.newUpdatedCount++
     },
     scrollToTop () {

@@ -5,7 +5,7 @@
       <v-flex xs12 sm6 offset-sm3>
         <v-card>
           <v-card-text>
-            <v-container v-if="!(user && !user.verified)">
+            <v-container v-if="!(user && !user.otpVerified)">
               <form @submit.prevent="onSignin">
                 <v-layout row wrap >
                   <v-flex xs12>

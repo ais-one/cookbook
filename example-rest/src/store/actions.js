@@ -30,7 +30,7 @@ export default {
     try {
       rv = await http.post('/api/auth/login', { email, password })
       const { data } = rv
-      data.verified = !USE_OTP
+      data.otpVerified = !USE_OTP
       dispatch('autoSignIn', data) // token
     } catch (e) { }
     if (!rv) {
@@ -46,39 +46,12 @@ export default {
     try {
       rv = await http.post('/api/auth/otp', { pin })
       const { data } = rv
-      data.verified = true
+      data.otpVerified = true
       dispatch('autoVerify', data) // token
     } catch (e) { }
     if (!rv) {
       commit('setError', { message: 'Verify Error' })
     }
-    commit('setLoading', false)
-  },
-
-  async logout ({ commit }, payload) {
-    commit('setLoading', true)
-    if (payload.loginType === 'mongo') {
-      await stitch.auth.logout()
-    } else if (payload.loginType === 'firebase') {
-      await auth.signOut()
-    } else { // rest
-      if (payload.forced) { // auth failure detected
-      } else { // logout button clicked
-        try {
-          await http.get('/api/auth/logout')
-        } catch (e) {
-          if (!e.response || e.response.status === 401) { // server or authorization error
-            // ok please continue
-          } else {
-            return // may have problems here... loading still true, etc...
-          }
-        }
-      }
-      router.push('/')
-      if (payload.forced) commit('setError', { message: 'Session Expired' })
-    }
-    commit('setUser', null)
-    commit('setLayout', 'layout-default')
     commit('setLoading', false)
   },
 
@@ -113,15 +86,15 @@ export default {
     if (!auth) {
       commit('setError', { message: 'Mongo Sign In Error' })
     } else {
-      commit('setBaasUser', { id: auth.id, email: auth.id, loginType: 'mongo' })
+      commit('setBaasUser', { id: auth.id, email: auth.id, loginType: 'mongo', otpVerified: true })
       commit('setLayout', 'layout-admin')
-      router.push('/mongo-test')
+      router.push('/dashboard')
     }
   },
   mongoAutoSignin ({ commit }, payload) { // not called for now
-    commit('setBaasUser', { id: payload.id, email: payload.id, loginType: 'mongo' })
+    commit('setBaasUser', { id: payload.id, email: payload.id, loginType: 'mongo', otpVerified: true })
     commit('setLayout', 'layout-admin')
-    router.push('/mongo-test')
+    router.push('/dashboard')
   },
 
   // firebase
@@ -165,9 +138,40 @@ export default {
     commit('setLoading', false)
   },
   firebaseAutoSignin ({ commit }, payload) {
-    commit('setBaasUser', { id: payload.uid, email: payload.email, loginType: 'firebase' })
+    commit('setBaasUser', { id: payload.uid, email: payload.email, loginType: 'firebase', otpVerified: true })
     commit('setLayout', 'layout-admin')
-    router.push('/multi-crud-example') // console.log party
+    router.push('/dashboard') // console.log party
+  },
+
+  // Common Logout
+  async logout ({ commit }, payload) {
+    commit('setLoading', true)
+    if (payload.loginType === 'mongo') {
+      console.log('LOGOUT Mongo')
+      await stitch.auth.logout()
+    } else if (payload.loginType === 'firebase') {
+      console.log('LOGOUT Firebase')
+      await auth.signOut()
+    } else { // rest
+      console.log('LOGOUT Rest')
+      if (payload.forced) { // auth failure detected
+      } else { // logout button clicked
+        try {
+          await http.get('/api/auth/logout')
+        } catch (e) {
+          if (!e.response || e.response.status === 401) { // server or authorization error
+            // ok please continue
+          } else {
+            return // may have problems here... loading still true, etc...
+          }
+        }
+      }
+      if (payload.forced) commit('setError', { message: 'Session Expired' })
+    }
+    router.push('/')
+    commit('setUser', null)
+    commit('setLayout', 'layout-default')
+    commit('setLoading', false)
   }
 }
 

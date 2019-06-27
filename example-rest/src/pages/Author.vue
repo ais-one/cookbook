@@ -25,7 +25,7 @@ export default {
           confirmUpdate: true,
           confirmDelete: true,
           headers: [
-            { text: 'Author Name', value: 'name', class: 'pa-1', render: (value) => value }
+            { text: 'Author Name', value: 'name', class: 'pa-1', render: (value) => value, edit: null }
           ],
           doPage: 2,
           showFilterButton: true

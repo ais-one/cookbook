@@ -58,6 +58,7 @@ export default {
         { icon: 'list_alt', title: 'Authors', link: '/authors', loginType: 'rest' },
         { icon: 'list_alt', title: 'Categories', link: '/categories', loginType: 'rest' },
         { icon: 'list_alt', title: 'Books', link: '/books', loginType: 'rest' },
+        { icon: 'list_alt', title: 'Mongo Test', link: '/mongo-test', loginType: 'mongo' },
         { icon: 'list_alt', title: 'Test Stuff', link: '/test' }
       ]
     }
