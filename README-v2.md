@@ -213,6 +213,7 @@ if inline edit, allow for more customization of inputs
 # TO FIX
 
 ## In Progress
+0. pager value change
 1. check error handling for all ops
 2. reloads
  - page after insert -

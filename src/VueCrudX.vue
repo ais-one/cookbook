@@ -174,7 +174,7 @@ export default {
     this.buttons = Object.assign(this.buttons, this.crudTable.buttons || {})
 
     this.ready = true
-    this.getRecords({ mode: null })
+    this.getRecords({ mode: 'init' })
   },
   async mounted () {
     // not needed in data() because it does not exist in template, an optimization which should be done for others as well
@@ -199,8 +199,8 @@ export default {
   },
   methods: {
     goBack () { this.$router.back() }, // return from child
-    updateTableRow ({ id, record }) { // also handles real-time updates
-      const idx = this.records.findIndex(rec => rec[this.idName] === id)
+    updateTableRow ({ record }) { // also handles real-time updates
+      const idx = this.records.findIndex(rec => rec[this.idName] === record[this.idName])
       if (idx !== -1) {
         for (let key in this.records[idx]) {
           if (key !== this.idName && record[key]) this.records[idx][key] = record[key]
@@ -226,23 +226,22 @@ export default {
         // this.totalRecords += 1
       } else {
         // always go to page 1
-        this.pagination.page = 1
-        this.getRecords({ mode: null })
+        this.pagination.page = 1 // will fire off page reload
       }
     },
 
-    async deleteRecord (payload) {
+    async deleteRecord ({ id }) {
       this.loading = true
-      let res = await this.crudOps.delete(payload)
+      let res = await this.crudOps.delete({ id })
       this.loading = false
-      this.$emit('deleted', { res, payload })
+      this.$emit('deleted', { res, id })
     },
-    async updateRecord ({ id, record }) {
+    async updateRecord ({ record }) {
       this.loading = true
-      let res = await this.crudOps.update({ id, record })
+      let res = await this.crudOps.update({ record })
       this.loading = false
-      this.updateTableRow({ id, record })
-      this.$emit('updated', { res, id, record })
+      this.updateTableRow({ record })
+      this.$emit('updated', { res, record })
       if (typeof res === 'object') return res.ok // TODEPRECATE this check
       else return res === 200 // TODEPRECATE
     },
@@ -274,7 +273,7 @@ export default {
         await this.getRecord({ id }) // edit
       } else { // add - set initial data
         for (let key in this.form) {
-          console.log(key, this.$attrs.form[key])
+          // console.log(key, this.$attrs.form[key])
           this.form[key].value = this.$attrs.form[key].default || ''
         }
       }
@@ -283,14 +282,19 @@ export default {
     },
     async crudFormSave (e) {
       let record = {}
-      let id = null
+      let id = this.selectedId
       for (let key in this.form) {
-        if (key === this.idName) id = this.form[key].value
-        else record[key] = this.form[key].value
+        if (key !== this.idName) record[key] = this.form[key].value // ignore id, get from selectedId
       }
-      if ((!record[this.idName] && this.confirmCreate) || (record[this.idName] && this.confirmUpdate)) if (!confirm(this.$t('vueCrudX.confirm'))) return
-      if (record[this.idName]) await this.updateRecord({ id, record })
-      else await this.createRecord({ record, parentId: this.parentId })
+      record[this.idName] = id
+      if ((!id && this.confirmCreate) || (id && this.confirmUpdate)) if (!confirm(this.$t('vueCrudX.confirm'))) return
+      if (id) {
+        // console.log('update', record, this.selectedId, this.idName)
+        await this.updateRecord({ record })
+      } else {
+        // console.log('create', record, this.selectedId, this.idName)
+        await this.createRecord({ record, parentId: this.parentId })
+      }
       if (this.formReload) await this.getRecords({ mode: record[this.idName] ? 'update' : 'create' })
       this.closeForm()
     },
@@ -317,7 +321,7 @@ export default {
         pagination: this.pagination,
         sorters: null
       }
-      console.log('getRecords', this.pagination)
+      console.log('getRecords', mode, this.pagination)
       let { records, totalRecords = 0, pagination = null } = await this.crudOps.find(payload) // pagination returns for infinite scroll
       if (pagination) {
         this.pagination.page = pagination.page
@@ -343,9 +347,9 @@ export default {
       this.records = []
       if (this.pageOptions.infinite) {
         this.pagination.page = this.pageOptions.page
-        await this.getRecords({ mode: null })
+        await this.getRecords({ mode: 'filter' })
       } else {
-        await this.getRecords({ mode: null })
+        await this.getRecords({ mode: 'filter' })
         // if (this.pagination.page === 1) {
         //   await this.getRecords({ mode: null })
         // } else {
@@ -379,9 +383,9 @@ export default {
       if (this.editing) {
         item = { ...this.editing }
         this.editing = null
-        const { id, ...record } = item
+        // const { id, ...record } = item
         try {
-          await this.updateRecord({ id, record })
+          await this.updateRecord({ record: item })
           // await this.getRecords({ mode: 'update-inline' }) // TBD find better way to update table - reload? if (reload?) this.$nextTick(async function () { await this.getRecords() })
         } catch (e) {
           // TBD handle failure
@@ -394,7 +398,7 @@ export default {
     async inlineCreate () {
       try {
         await this.createRecord({ record: {}, parentId: this.parentId })
-        await this.getRecords({ mode: 'create-inline' }) // TBD find better way to update table - reload? if (reload?) this.$nextTick(async function () { await this.getRecords() })
+        // await this.getRecords({ mode: 'create-inline' }) // TBD find better way to update table - reload? if (reload?) this.$nextTick(async function () { await this.getRecords() })
       } catch (e) {
         // TBD handle failure
       }
@@ -403,7 +407,7 @@ export default {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       try {
         await this.deleteRecord({ id })
-        await this.getRecords({ mode: 'delete-inline' }) // TBD find better way to update table - reload? if (reload?) this.$nextTick(async function () { await this.getRecords() })
+        // await this.getRecords({ mode: 'delete-inline' }) // TBD find better way to update table - reload? if (reload?) this.$nextTick(async function () { await this.getRecords() })
       } catch (e) {
         // TBD handle failure
       }
@@ -424,8 +428,9 @@ export default {
       return (item.readonly === 'add' && !item[this.idName]) || (item.readonly === 'edit' && item[this.idName]) || item.readonly === 'all'
     },
     async onTable (_in) {
+      console.log('onTable', _in)
       if (this.pageOptions.infinite) return // infinite scroll, ignore
-      await this.getRecords({ mode: null })
+      await this.getRecords({ mode: _in })
     },
     _isObject (obj) { return obj !== null && typeof obj === 'object' },
     async testFunction (_in) { // for testing anything
@@ -481,6 +486,7 @@ export default {
           :items="records"
           :server-items-length="totalRecords"
           :options.sync="pagination"
+          :page.sync="pagination.page"
           :hide-default-footer="pageOptions.infinite"
           :disable-sort="pageOptions.infinite"
           v-bind="attrs.table"
@@ -523,7 +529,7 @@ export default {
           </template>
           <!-- infinite scroll handling -->
           <template v-if="pageOptions.infinite" v-slot:footer="props">
-            <v-btn v-if="pagination.page" @click="getRecords({ mode: null })">Load More {{ props.length }}</v-btn>
+            <v-btn v-if="pagination.page" @click="getRecords({ mode: 'infinite' })">Load More {{ props.length }}</v-btn>
           </template>
 
           <template v-slot:no-data>

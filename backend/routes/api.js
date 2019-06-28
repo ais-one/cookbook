@@ -115,12 +115,30 @@ apiRoutes
   // books
   .post('/books', async (req,res) => {
     try {
-      const author = await Author.query().findById(req.body.authorId)
-      if (author) {
-        const book = await Book.query().insert(req.body)
-        if (book) return res.status(201).json(book)
-      }
-    } catch (e) { }
+      console.log(req.body.authorIds)
+      // const author = await Author.query().findById(req.body.authorId)
+      // if (author) {
+        const { authorIds, ...data } = req.body
+        console.log(data)
+        // try {
+        //   trx = await transaction.start(knex)
+        //   const book = await Book.query(trx).insert(data)
+        //   await Promise.all(
+        //     authorIds.map(async authorId => {
+        //       await book.$relatedQuery('authors', trx).relate(authorId)
+        //     })
+        //   )      
+        //   await trx.commit()
+        //   if (book) return res.status(201).json(book)
+        // } catch (e) {
+        //   await trx.rollback()    
+        //   console.log(e)
+        // }
+        res.status(201).json()
+      // }
+    } catch (e) {
+      console.log(e.toString())
+    }
     return res.status(500).json()
   })
   .patch('/books/:id', async (req,res) => {
@@ -134,7 +152,7 @@ apiRoutes
         authorIds.map(async authorId => {
           await book.$relatedQuery('authors', trx).relate(authorId)
         })
-      )    
+      )
       // only for Postgresql - await book.$relatedQuery('authors', trx).relate(authorIds)
       await Book.query(trx).patchAndFetchById(req.params.id, { name, categoryId })
       await trx.commit()

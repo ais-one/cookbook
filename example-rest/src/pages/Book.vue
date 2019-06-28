@@ -18,7 +18,7 @@
           </template> -->
           <template v-slot:form="{ form, parentId }">
             <div>
-              <h1>Custom Form Slot - Has Parent: {{ !!parentId }}</h1>
+              <h1>Custom Form Slot - Has Parent: {{ !!parentId }} {{ form }}</h1>
               <v-card-text>
                 <v-text-field label="Book Name" v-model="form.name.value"></v-text-field>
                 <v-select label="Category" v-model="form.categoryId.value" :items="categories" required item-text="name" item-value="id"></v-select>
@@ -194,10 +194,11 @@ export default {
             } catch (e) { }
             return { }
           },
-          create: async (payload) => {
+          create: async ({ record }) => {
+            // console.log(payload)
             try {
-              let { record: { id, ...noIdData } } = payload
-              const rv = await http.post('/api/authors', noIdData)
+              let { record: { id, ...noIdData } } = record // remove authors
+              const rv = await http.post('/api/books', noIdData)
               console.log(rv)
             } catch (e) { return 500 }
             // return { // EXAMPLE return object with code property omitted
@@ -207,12 +208,12 @@ export default {
             return 201
           },
           // TBD Set the linkages also
-          update: async (payload) => {
-            // console.log('update payload', payload)
+          update: async ({ record }) => {
+            console.log('update payload', record)
             try {
-              let { record: { id, name, categoryId, authorIds } } = payload // authorIds
+              let { id, name, categoryId, authorIds } = record // authorIds
               // check that you only save what is needed...
-              // console.log('record', id, noIdData)
+              // console.log('record', id, name, categoryId, authorIds)
               const rv = await http.patch(`/api/books/${id}`, { name, categoryId, authorIds }) // TBD also update the author ids...?
               console.log('patch rv', rv)
               // if (!doc.exists) throw new Error(409)
@@ -258,7 +259,7 @@ export default {
       // console.log(this.authorIds, this.$refs['book-table'].record.authorIds)
     },
     openBookForm (item) {
-      console.log('openBookForm', item)
+      // console.log('openBookForm', item)
       this.authorIds = item.authorIds.value
       this.items = item.authors.value
     },
