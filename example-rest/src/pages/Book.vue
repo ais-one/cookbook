@@ -53,7 +53,7 @@
                     </v-list-item-content>
                   </template>
                 </v-autocomplete>
-                <v-btn @click.stop.prevent="gotoPages(form.id.value)" dark>View Book Pages</v-btn>
+                <v-btn v-if="form.id.value" @click.stop.prevent="gotoPages(form.id.value)" dark>View Book Pages</v-btn>
               </v-card-text>
             </div>
           </template>
@@ -149,11 +149,11 @@ export default {
           }
         },
         form: {
-          'id': { value: '' },
-          'name': { value: '' },
-          'categoryId': { value: '' },
-          'authorIds': { value: [] },
-          'authors': { value: [] }
+          'id': { value: '', default: '' },
+          'name': { value: '', default: '' },
+          'categoryId': { value: '', default: '' },
+          'authorIds': { value: [], default: [] },
+          'authors': { value: [], default: [] }
         },
         // crudForm: {
         //   defaultRec: () => ({
@@ -258,7 +258,7 @@ export default {
       // console.log(this.authorIds, this.$refs['book-table'].record.authorIds)
     },
     openBookForm (item) {
-      // console.log('openBookForm', item)
+      console.log('openBookForm', item)
       this.authorIds = item.authorIds.value
       this.items = item.authors.value
     },

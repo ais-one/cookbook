@@ -70,6 +70,7 @@ export default {
           'id': {
             type: 'v-text-field',
             value: '',
+            default: '',
             hidden: 'add', // add, edit, all, null
             readonly: 'all', // add, edit, all, null
             validation: null, // validation function no in place yet
@@ -81,6 +82,7 @@ export default {
           'name': {
             type: 'v-text-field',
             value: '',
+            default: '',
             'field-wrapper': { xs12: true, sm6: true },
             'field-input': {
               label: 'Name',

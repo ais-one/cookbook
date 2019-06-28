@@ -78,9 +78,9 @@ export default {
         },
         // form: null,
         form: {
-          'id': { value: '', hidden: 'all' },
-          'content': { value: '', type: 'v-text-field' },
-          'bookId': { value: '', hidden: 'all' }
+          'id': { value: '', default: '', hidden: 'all' },
+          'content': { value: '', default: '', type: 'v-text-field' },
+          'bookId': { value: '', default: '', hidden: 'all' }
         },
         crudOps: { // CRUD
           export: null,

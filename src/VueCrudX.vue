@@ -199,7 +199,7 @@ export default {
   },
   methods: {
     goBack () { this.$router.back() }, // return from child
-    inMemoryUpdate ({ id, record }) { // also handles real-time updates
+    updateTableRow ({ id, record }) { // also handles real-time updates
       const idx = this.records.findIndex(rec => rec[this.idName] === id)
       if (idx !== -1) {
         for (let key in this.records[idx]) {
@@ -207,9 +207,28 @@ export default {
         }
       }
     },
-    inMemoryDelete ({ id }) { // also handles real-time updates
-      const idx = this.records.findIndex(rec => rec[this.idName] === id)
-      if (idx !== -1) this.records.splice(idx, 1)
+    deleteTableRow ({ id }) { // infinite scroll - case - also handles real-time updates
+      if (this.pageOptions.infinite) {
+        const idx = this.records.findIndex(rec => rec[this.idName] === id)
+        if (idx !== -1) this.records.splice(idx, 1)
+        this.totalRecords -= 1
+      } else {
+
+      }
+    },
+    createTableRow ({ record }) { // infinite scroll - case - also handles real-time updates
+      if (this.pageOptions.infinite) {
+        // ensure that record has the same fields as what is in this.records
+        // const idx = this.records.findIndex(rec => rec[this.idName] === id)
+        // if (idx !== -1) this.records.splice(idx, 1) this.records.splice(idx, 0, record)
+        // // this.records.push(record)
+        // // this.records.unshift(record)
+        // this.totalRecords += 1
+      } else {
+        // always go to page 1
+        this.pagination.page = 1
+        this.getRecords({ mode: null })
+      }
     },
 
     async deleteRecord (payload) {
@@ -221,8 +240,8 @@ export default {
     async updateRecord ({ id, record }) {
       this.loading = true
       let res = await this.crudOps.update({ id, record })
-      this.updateTableRecord({ id, record })
       this.loading = false
+      this.updateTableRow({ id, record })
       this.$emit('updated', { res, id, record })
       if (typeof res === 'object') return res.ok // TODEPRECATE this check
       else return res === 200 // TODEPRECATE
@@ -231,6 +250,7 @@ export default {
       this.loading = true
       let res = await this.crudOps.create(payload)
       this.loading = false
+      this.createTableRow({ record: null })
       this.$emit('created', { res, payload }) // no ID yet, TBD...
     },
     async getRecord ({ id }) {
@@ -254,6 +274,7 @@ export default {
         await this.getRecord({ id }) // edit
       } else { // add - set initial data
         for (let key in this.form) {
+          console.log(key, this.$attrs.form[key])
           this.form[key].value = this.$attrs.form[key].default || ''
         }
       }
