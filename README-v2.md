@@ -169,15 +169,27 @@ const v2 = {
   }
 
   // operations
-  find: null,
-  findOne: null,
-  update: null,
-  create: null,
-  remove: null,
-  export: null,
-  ws: null, // websocket operation?
-
+  find: async ({parentId, filters, pagination, sorters}) => {
+    return { records, totalRecords, pagination }
+  },
+  findOne: async ({ id }) => {
+    return { record }
+  },
+  update: async ({ record }) => {
+    return { record } // updated record, table fields (NOT form fields) must match
+  },
+  create: async ({ record }) => {
+    return { record } // new record, table fields (NOT form fields) must match
+  },
+  delete: async ({ id }) => {
+    return null
+  },
+  export: async ({parentId, filters, pagination, sorters}) => {
+    return null
+  }),
   parentId: null
+
+  ws: null, // websocket operation?
 }
 
 ```

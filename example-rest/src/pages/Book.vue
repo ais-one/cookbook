@@ -166,10 +166,9 @@ export default {
 
         crudOps: { // CRUD
           export: null,
-          find: async (payload) => {
+          find: async ({ pagination, filters }) => {
             let records = []
             let totalRecords = 0
-            const { pagination, filters } = payload
             const { page, itemsPerPage } = pagination // sortBy, descending
             let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } // set query params
             for (let key in filters) {
@@ -197,7 +196,9 @@ export default {
           create: async ({ record }) => {
             // console.log(payload)
             try {
-              let { record: { id, ...noIdData } } = record // remove authors
+              // check that you only insert what is needed...
+              let { id, ...noIdData } = record
+              delete noIdData.authors // remove authors
               const rv = await http.post('/api/books', noIdData)
               console.log(rv)
             } catch (e) { return 500 }
@@ -211,10 +212,12 @@ export default {
           update: async ({ record }) => {
             console.log('update payload', record)
             try {
-              let { id, name, categoryId, authorIds } = record // authorIds
               // check that you only save what is needed...
+              // let { id, name, categoryId, authorIds } = record // authorIds
+              let { id, ...noIdData } = record
+              delete noIdData.authors // remove authors
               // console.log('record', id, name, categoryId, authorIds)
-              const rv = await http.patch(`/api/books/${id}`, { name, categoryId, authorIds }) // TBD also update the author ids...?
+              const rv = await http.patch(`/api/books/${id}`, noIdData) // TBD also update the author ids...?
               console.log('patch rv', rv)
               // if (!doc.exists) throw new Error(409)
             } catch (e) {
@@ -241,6 +244,7 @@ export default {
   // },
   watch: {
     authorIds (val) {
+      console.log('watch')
       if (!val) return
       if (val.length > 2) val.pop()
       if (this.$refs['book-table']) this.$refs['book-table'].form.authorIds.value = val
@@ -259,7 +263,7 @@ export default {
       // console.log(this.authorIds, this.$refs['book-table'].record.authorIds)
     },
     openBookForm (item) {
-      // console.log('openBookForm', item)
+      // populate local data after opening form
       this.authorIds = item.authorIds.value
       this.items = item.authors.value
     },

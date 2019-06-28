@@ -263,11 +263,11 @@ export default {
     async exportRecords (payload) {
       await this.crudOps.export(payload)
     },
-    closeForm () {
+    formClose () {
       this.showForm = false
       this.$emit('form-close')
     },
-    async openForm (id) {
+    async formOpen (id) {
       this.selectedId = id
       if (id) {
         await this.getRecord({ id }) // edit
@@ -296,7 +296,7 @@ export default {
         await this.createRecord({ record, parentId: this.parentId })
       }
       if (this.formReload) await this.getRecords({ mode: record[this.idName] ? 'update' : 'create' })
-      this.closeForm()
+      this.formClose()
     },
     async crudFormDelete (e) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
@@ -305,7 +305,7 @@ export default {
         await this.deleteRecord({ id })
         if (this.formReload) await this.getRecords({ mode: 'delete' })
       }
-      this.closeForm()
+      this.formClose()
     },
     // mode - normal paging - null
     //      - create
@@ -417,7 +417,7 @@ export default {
     rowClicked (item, event) {
       console.log('clicked', item)
       if (!this.inline.edit) {
-        if (this.onRowClickOpenForm) this.openForm(item[this.idName]) // no action column && row click opens form
+        if (this.onRowClickOpenForm) this.formOpen(item[this.idName]) // no action column && row click opens form
       }
       this.$emit('row-selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     },
@@ -456,7 +456,7 @@ export default {
           <v-spacer></v-spacer>
           <v-btn v-if="showFilterButton&&filters" v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
           <v-btn v-bind="attrs.button" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
-          <v-btn v-if="crudOps.create" v-bind="attrs.button" @click.stop="inline.add?inlineCreate():openForm(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
+          <v-btn v-if="crudOps.create" v-bind="attrs.button" @click.stop="inline.add?inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
           <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
         </v-toolbar>
       </slot>
@@ -516,7 +516,7 @@ export default {
                 <td :key="header.value + index" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
                   <span v-if="header.action">
                     <v-icon v-if="crudOps.update&&inline.edit" v-bind="attrs['action-icon']" @click.stop="isRowEditing(item)?inlineSave(item):inlineUpdate(item)" :disabled="loading">{{ isRowEditing(item) ? 'save' : 'edit' }}</v-icon>
-                    <v-icon v-else-if="crudOps.update&&!inline.edit&&form" v-bind="attrs['action-icon']" @click.stop="openForm(item[idName])" :disabled="loading">edit</v-icon>
+                    <v-icon v-else-if="crudOps.update&&!inline.edit&&form" v-bind="attrs['action-icon']" @click.stop="formOpen(item[idName])" :disabled="loading">edit</v-icon>
                     <v-icon v-if="crudOps.delete" v-bind="attrs['action-icon']" @click.stop="isRowEditing(item)?inlineCancel(item):inlineDelete(item[idName])" :disabled="loading">{{ isRowEditing(item) ? 'cancel' : 'delete' }}</v-icon>
                   </span>
                   <template v-else>
@@ -542,7 +542,7 @@ export default {
     <component :is="'div'" v-show="showForm" row justify-center>
       <slot name="form-toolbar" :vcx="_self">
         <v-toolbar v-bind="attrs.toolbar">
-          <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="closeForm" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
+          <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="formClose" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn v-bind="attrs.button" v-if="crudOps.delete && selectedId" @click.native="crudFormDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
