@@ -71,7 +71,7 @@ apiRoutes
       const authors = await Author.query()
         .where('name', 'like', `%${search}%`)
         // .where('bookId', req.params.id)
-        // .orderBy
+        // .orderBy('updated_at', 'desc')
         .page(page, limit)
       return res.status(200).json(authors)  
     } catch (e) { }
@@ -106,7 +106,9 @@ apiRoutes
     try {
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
-      const categories = await Category.query().page(page, limit)
+      const categories = await Category.query()
+        // .orderBy('updated_at', 'desc')
+        .page(page, limit)
       return res.status(200).json(categories)  
     } catch (e) { }
     return res.status(500).json()
@@ -205,6 +207,7 @@ apiRoutes
           Book.relatedQuery('pages').count().as('pageCount'),
           Book.relatedQuery('authors').count().as('authorCount')
           )
+        // .orderBy('updated_at', 'desc')
         .joinRelation('category')
         .page(page, limit)
       // console.log(books[0])
@@ -218,6 +221,7 @@ apiRoutes
       const page = req.query.page ? req.query.page : 0
       const pages = await Page.query()
         .where('bookId', req.params.id)
+        // .orderBy('updated_at', 'desc')
         .page(page, limit)
       return res.status(200).json(pages)
     } catch (e) { console.log(e) }

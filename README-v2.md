@@ -160,34 +160,64 @@ const v2 = {
   refetch: false, // do refetch after C U D?
   optimistic: true, // optimistic UI
 
+  inline: {
+    add: false,
+    edit: false
+  }
   filters: {
-
+    'name': { // field
+      type: 'v-text-field', // component name
+      value: '',
+      'field-wrapper': { xs12: true, sm6: true },
+      'field-input': {
+        label: 'Author', clearable: true
+      }
+    }
+    ...
   }
 
   form: {
+    'id': { // field
+      type: 'v-text-field',
+      value: '',
+      default: '',
+      hidden: 'add', // add, edit, all, null
+      readonly: 'all', // add, edit, all, null
+      validation: null, // validation function no in place yet
+      'field-wrapper': { xs12: true, sm6: true },
+      'field-input': {
+        label: 'ID'
+      }
+    },
+  }
 
+  headers: {
+    ...
+    // additional properties
+    render: value => value // how to display the data
+    edit: null // inline editable TBD the cell editor
   }
 
   // operations
   find: async ({parentId, filters, pagination, sorters}) => {
-    return { records, totalRecords, pagination }
+    return { status, error, data: { records, totalRecords, pagination } }
   },
   findOne: async ({ id }) => {
-    return { record }
+    return { status, error, data: record }
   },
   update: async ({ record }) => {
-    return { record } // updated record, table fields (NOT form fields) must match
+    return { status, error, data: record } // updated record, table or form record?
   },
   create: async ({ record }) => {
-    return { record } // new record, table fields (NOT form fields) must match
+    return { status, error, data: record } // new record, table fields (NOT form fields) must match
   },
   delete: async ({ id }) => {
-    return null
+    return { status, error, data }
   },
   export: async ({parentId, filters, pagination, sorters}) => {
-    return null
+    return { status, error, data }
   }),
-  parentId: null
+  parentId: null,
 
   ws: null, // websocket operation?
 }

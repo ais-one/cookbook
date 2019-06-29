@@ -4,6 +4,7 @@ exports.up = async (knex, Promise) => {
     .createTable('categories', (table) => {
       table.increments('id').primary()
       table.string('name')
+      table.timestamps(true, true)
     })
     .createTable('books', (table) => {
       table.increments('id').primary()
@@ -11,16 +12,19 @@ exports.up = async (knex, Promise) => {
       table.integer('rating')
       table.string('yearPublished')
       table.integer('categoryId').references('categories.id')
+      table.timestamps(true, true)
     })
     .createTable('pages', (table) => { // one book, many pages
       table.increments('id').primary()
       table.string('content')
       table.integer('bookId').references('books.id')
       // table.integer('ownerId').unsigned().references('id').inTable('persons').onDelete('SET NULL');
+      table.timestamps(true, true)
     })
     .createTable('authors', (table) => {
       table.increments('id').primary()
       table.string('name')
+      table.timestamps(true, true)
     })
     .createTable('books_authors', (table) => { // many books, many authors
       // table.increments('id').primary()
