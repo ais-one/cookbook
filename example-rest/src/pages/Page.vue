@@ -74,7 +74,8 @@ export default {
         filters: null,
         inline: {
           edit: true,
-          add: true
+          create: true,
+          delete: true
         },
         // form: null,
         form: {

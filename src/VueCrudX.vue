@@ -135,15 +135,13 @@ export default {
       idName: 'id',
       pageOptions: {
         infinite: false, // infinite scroll
-        // page = null, limit = 0 // get all, show count in footer
-        // page = null, limit = 20 // infinite scroll, hide pagination UI, add load more button
-        // page > 0, limit = 20 // paged, 1-based
         page: 1, // initial page
         limit: 2
       },
       inline: {
-        add: false,
-        edit: false
+        create: false, // the post create function
+        update: false, // the post update function
+        delete: false //  the post delete function
       },
       filters: null,
       form: null,
@@ -159,7 +157,7 @@ export default {
     this.form = this.$attrs.form || null // Set initial form data here
     this.idName = this.$attrs.idName || 'id'
     this.pageOptions = this.$attrs.pageOptions || { page: 1, limit: 2 }
-    this.inline = this.$attrs.inline || { add: false, edit: false }
+    this.inline = this.$attrs.inline || { create: false, update: false }
 
     // Set initial pagination data here
     this.pagination.page = this.pageOptions.page
@@ -319,8 +317,8 @@ export default {
     async formOpen (id) {
       this.selectedId = id
       if (id) {
-        await this.getRecord({ id }) // edit
-      } else { // add - set initial data
+        await this.getRecord({ id }) // update
+      } else { // create - set initial data
         for (let key in this.form) {
           // console.log(key, this.$attrs.form[key])
           this.form[key].value = this.$attrs.form[key].default || ''
@@ -410,7 +408,7 @@ export default {
 
     _rowClicked (item, event) {
       // TBD this.editingRow
-      if (!this.inline.edit && this.onRowClickOpenForm) this.formOpen(item[this.idName]) // no action column && row click opens form
+      if (!this.inline.update && this.onRowClickOpenForm) this.formOpen(item[this.idName]) // no action column && row click opens form
       this.$emit('row-selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     },
     _isHidden (hidden) {
@@ -443,7 +441,7 @@ export default {
           <v-spacer></v-spacer>
           <v-btn v-if="showFilterButton&&filters" v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
           <v-btn v-bind="attrs.button" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
-          <v-btn v-if="crudOps.create" v-bind="attrs.button" @click.stop="inline.add?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
+          <v-btn v-if="crudOps.create" v-bind="attrs.button" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
           <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
         </v-toolbar>
       </slot>
@@ -498,16 +496,21 @@ export default {
           </template> -->
 
           <template v-slot:item="{ item }"><!-- was items -->
-            <tr :key="item[idName]" :ref="`edit-${item[idName]}`" @click.stop="_rowClicked(item, $event)">
+            <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="_rowClicked(item, $event)">
               <slot name="td" :headers="headers" :item="item" :vcx="_self">
                 <td :key="header.value + index" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
                   <span v-if="header.action">
-                    <v-icon v-if="crudOps.update && inline.edit" v-bind="attrs['action-icon']" @click.stop="_isRowEditing(item)?_inlineSave(item):this.editingRow = { ...item }" :disabled="loading">{{ _isRowEditing(item) ? 'save' : 'edit' }}</v-icon>
-                    <v-icon v-else-if="crudOps.update&&!inline.edit&&form" v-bind="attrs['action-icon']" @click.stop="formOpen(item[idName])" :disabled="loading">edit</v-icon>
-                    <v-icon v-if="crudOps.delete" v-bind="attrs['action-icon']" @click.stop="_isRowEditing(item)?editingRow=null:this.deleteRecord(item[idName])" :disabled="loading">{{ _isRowEditing(item) ? 'cancel' : 'delete' }}</v-icon>
+                    <template v-if="_isRowEditing(item)">
+                      <v-icon v-if="crudOps.update && inline.update" v-bind="attrs['action-icon']" @click.stop="_inlineSave(item)" :disabled="loading">save</v-icon>
+                      <v-icon v-if="crudOps.delete" v-bind="attrs['action-icon']" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
+                    </template>
+                    <template v-else>
+                    </template>
+                    <v-icon v-if="crudOps.update && (inline.update || (!inline.update && form))" v-bind="attrs['action-icon']" @click.stop="inline.update?this.editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>
+                    <v-icon v-if="crudOps.delete && inline.delete" v-bind="attrs['action-icon']" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">delete</v-icon>
                   </span>
                   <template v-else>
-                    <component v-if="inline.edit && _isRowEditing(item)" :disabled="!header.edit" :is="'v-text-field'" :key="item[idName]+'-'+item[header.value]" v-model="editingRow[header.value]"></component>
+                    <component v-if="inline.update && _isRowEditing(item)" :disabled="!header.edit" :is="'v-text-field'" :key="item[idName]+'-'+item[header.value]" v-model="editingRow[header.value]"></component>
                     <span v-else v-html="header.render?header.render(item[header.value]):item[header.value]"></span>
                   </template>
                 </td>

@@ -213,7 +213,7 @@ export default {
               return { status: e.response.status, error: e.toString() }
             }
           },
-          delete: null // TBD if delete, must also delete all dependancies, move all buttons to right?
+          delete: null
         }
       }
     }

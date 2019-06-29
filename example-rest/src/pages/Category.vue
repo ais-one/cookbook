@@ -95,7 +95,7 @@ export default {
           find: async (payload) => {
             let records = []
             let totalRecords = 0
-            const { pagination } = payload // filters
+            // const { pagination } = payload // filters
             // const { page, itemsPerPage } = pagination // sortBy, descending
             // console.log('TOREMOVE', page, itemsPerPage)
             // GrqphQL
@@ -138,7 +138,7 @@ export default {
             // try {
             //   const { data } = await http.get(`/api/categories/${id}`)
             //   return { status: 200, data }
-            // } catch (e) { 
+            // } catch (e) {
             //   return { status: e.response.status, error: e.toString() }
             // }
           },
@@ -230,7 +230,7 @@ export default {
             //   return { status: e.response.status, error: e.toString() }
             // }
           },
-          delete: null // TBD if delete, must also delete all dependancies, move all buttons to right?
+          delete: null
         }
       }
     }

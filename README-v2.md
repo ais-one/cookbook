@@ -160,6 +160,11 @@ const v2 = {
   refetch: false, // do refetch after C U D?
   optimistic: true, // optimistic UI
 
+  pageOptions: {
+    infinite: false, // infinite scroll
+    page: 1, // initial page
+    limit: 2
+  },
   inline: {
     add: false,
     edit: false
@@ -195,7 +200,7 @@ const v2 = {
     ...
     // additional properties
     render: value => value // how to display the data
-    edit: null // inline editable TBD the cell editor
+    edit: null // inline editable TBD more input types for the cell editor
   }
 
   // operations
@@ -225,9 +230,11 @@ const v2 = {
 ```
 
 ## Events
-updated - can be pass or fail
-created - can be pass or fail
-deleted - can be pass or fail
+ops-find
+ops-findone
+ops-update
+ops-create
+ops-delete
 pagination - pagination update
 filter - filter update
 form-open
@@ -242,36 +249,35 @@ form
 table
 
 
-## Addition To Header
-
-1. render: (value) => value,
-
-format the display of the value
-
-2. edit: null
-
-if inline edit, allow for more customization of inputs
-
 # TO FIX
 
 ## In Progress
-0. pager value change
-1. check error handling for all ops
-2. reloads
- - page after insert -
- - page after delete - 
- - page after insert inline -
- - page after delete inline -
- - infinite after insert - insert & sort, add totals
- - infinite after insert inline - add to top? add to bottom? insert?
+1. reloads
+ TODO NOW ALSO - Default methods after each mutating operation
 
- * page after update
- * page after update inline
- * infinite after delete
- * infinite after delete inline
- * infinite after update
- * infinite after update inline
- 3. real-time updates...
+- delete
+ * paginate form
+   * paginate inline
+ * infinite form
+   * infinite inline
+reset filter and sort, goto page 1 ?
+
+- insert
+ * paginate form
+   * paginate inline
+ * infinite form
+   * infinite inline
+reset filter and sort, goto page 1 ?
+
+- update (no reload needed...)
+ * paginate form
+   * paginate inline (updateTableRow)
+ * infinite form
+   * infinite inline (updateTableRow)
+
+
+2. firm up events
+3. real-time updates...
 
 ## Done
 * 1. inline edit
@@ -280,6 +286,8 @@ if inline edit, allow for more customization of inputs
 * 4. Change watch to event listener
 * 5. Add sorter
 * 6. reload issue at inline edit
+* 7. pager value change
+* 8. check return handling for all ops
 
 
 # DESIGN CONSIDERATIONS
@@ -288,7 +296,9 @@ if inline edit, allow for more customization of inputs
 3. inline update improvements
 4. more modular design
 5. interoperability with multiple UI frameworks
-
+6. improvement on protocol
+7. events
+8. overridable defaults methods
 
 ISSUE: https://github.com/vuetifyjs/vuetify/issues/7657
 FIXED: https://github.com/vuetifyjs/vuetify/pull/7665
