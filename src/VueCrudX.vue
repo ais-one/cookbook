@@ -237,11 +237,31 @@ export default {
     //      - filter - infinite scroll start from beginning
     async getRecords ({ mode }) {
       this.loading = true
+
+      // VARIATION
+      // Vuetify 2 Start
+      let filters = {}
+      for (let key in this.filters) {
+        let value = this.filters[key].value
+        if (value) filters[key] = value
+      }
+      // Vuetify 2 End
+
+      // VARIATION
+      // Vuetify 2 Start
+      let sorters = {}
+      if (this.sorters) {
+        for (let index in this.sorters.sortBy) {
+          sorters[this.sorters.sortBy[index]] = this.sorters.sortDesc[index]
+        }
+      }
+      // Vuetify 2 End
+
       const payload = {
         parentId: this.parentId,
-        filters: this.filters,
         pagination: this.pagination,
-        sorters: this.filters
+        filters,
+        sorters
       }
       console.log('getRecords', mode, this.pagination)
       const { status = 500, data = null, error = null } = await this.crudOps.find(payload) // pagination returns for infinite scroll

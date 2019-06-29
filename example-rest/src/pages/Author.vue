@@ -76,14 +76,12 @@ export default {
           find: async (payload) => {
             let records = []
             let totalRecords = 0
-            const { pagination, filters = {} } = payload // sorters = {} not used as it is in pagination for vuetify
-            console.log(pagination)
+            const { pagination, filters = {}, sorters = {} } = payload // sorters = {} not used as it is in pagination for vuetify
+
+            console.log(pagination, filters, sorters)
             const { page, itemsPerPage } = pagination
-            let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } // set query params
-            for (let key in filters) {
-              let value = filters[key].value
-              if (value) params[key] = value
-            }
+            let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage, ...filters } // set query params
+
             try {
               const { data: { results, total } } = await http.get('/api/authors', { params })
               records = results

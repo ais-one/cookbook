@@ -25,6 +25,7 @@ export default (to, from, next) => {
     if (item) {
       const user = JSON.parse(item)
       if (user.otpVerified) {
+        console.log('auth guard set user')
         store.commit('setUser', user)
         store.commit('setLayout', 'layout-admin')
         return next()

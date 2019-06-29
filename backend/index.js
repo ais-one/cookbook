@@ -27,6 +27,7 @@ const http = require('http')
 const https = require('https')
 
 const swaggerUi = require('swagger-ui-express')
+
 const YAML = require('yamljs')
 const swaggerDocument = YAML.load('./docs/openapi.yaml')
 
@@ -55,10 +56,14 @@ app.use('/api-docs', express.static('docs'), swaggerUi.serve, swaggerUi.setup(sw
 
 const authRoutes = require('./routes/auth')
 const apiRoutes = require('./routes/api')
+const authorRoutes = require('./routes/author')
+const bookRoutes = require('./routes/book')
+const categoryRoutes = require('./routes/category')
+const pageRoutes = require('./routes/page')
 
 app.use(cors())
 app.use('/api/auth', authRoutes)
-app.use('/api', apiRoutes)
+app.use('/api', apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
 app.get("*", async (req, res) => res.status(404).json({ data: 'Not Found...' }))
 
 // for Firebase Functions
@@ -90,10 +95,10 @@ const wss = require('./services/websocket')
 
 if (wss) {
   wss.on('connection', (ws) => {
-    console.log('connected')
+    console.log('ws client connected')
     ws.isAlive = true
     ws.on('pong', () => { ws.isAlive = true })
-    ws.on('close', () => { console.log('disconnected') })
+    ws.on('close', () => { console.log('ws client disconnected') })
     ws.on('message', async (message) => {
       console.log('message', message)
       // error handling

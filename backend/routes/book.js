@@ -1,0 +1,162 @@
+const express = require('express')
+const bookRoutes = express.Router()
+
+const { authUser } = require('../middleware/auth')
+
+const Book = require('../models/Book')
+// const Author = require('../models/Author')
+// const Page = require('../models/Page')
+
+const { transaction } = require('objection')
+const knex = Book.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
+
+bookRoutes
+  .post('/books', authUser, async (req,res) => {
+    try {
+      console.log(req.body.authorIds)
+      // const author = await Author.query().findById(req.body.authorId)
+      // TOREMOVE if (author) {
+        const { authorIds, ...data } = req.body
+        console.log(data)
+        try {
+          trx = await transaction.start(knex)
+          const book = await Book.query(trx).insert(data)
+          await Promise.all(
+            authorIds.map(async authorId => {
+              await book.$relatedQuery('authors', trx).relate(authorId) // rename 'authors' to Authors
+            })
+          )      
+          await trx.commit()
+          if (book) return res.status(201).json(book)
+        } catch (e) {
+          await trx.rollback()    
+          console.log(e)
+        }
+        res.status(201).json()
+      // TOREMOVE  }
+    } catch (e) {
+      console.log(e.toString())
+    }
+    return res.status(500).json()
+  })
+  .patch('/books/:id', authUser, async (req,res) => {
+    let trx
+    const { name, categoryId, authorIds } = req.body
+    try {
+      trx = await transaction.start(knex)
+      const book = await Book.query(trx).findById(req.params.id)
+      await book.$relatedQuery('authors', trx).unrelate().where('bookId', req.params.id) // rename 'authors' to Authors
+      await Promise.all(
+        authorIds.map(async authorId => {
+          await book.$relatedQuery('authors', trx).relate(authorId)
+        })
+      )
+      // only for Postgresql - await book.$relatedQuery('authors', trx).relate(authorIds) // rename 'authors' to Authors
+      await Book.query(trx).patchAndFetchById(req.params.id, { name, categoryId })
+      await trx.commit()
+      return res.status(200).json(book)
+    } catch (e) {
+      await trx.rollback()    
+      console.log(e)
+    }
+    return res.status(500).json()
+  })
+  .get('/books/:id', authUser, async (req, res) => {
+    try {
+      const book = await Book.query().findById(req.params.id)
+        .select('books.*', 'category.name as categoryName')
+        .joinRelation('category')
+        .eager('[pages, authors]') // show pages
+        .modifyEager('pages', builder => {
+          // builder.where('age', '>', 10).select('name')
+          builder.limit(2)
+        })
+      // console.log(book.pages.length)
+      if (book.authors) book.authorIds = book.authors.map(item => item.id)
+      if (book) return res.status(200).json(book)
+      else return res.status(404).json()
+    } catch (e) { 
+      console.log(e)
+    }
+    return res.status(500).json()
+  })
+  .get('/books', authUser, async (req,res) => {
+    try {
+      const limit = req.query.limit ? req.query.limit : 2
+      const page = req.query.page ? req.query.page : 0
+      const name = req.query.name ? req.query.name : ''
+      const categoryId = req.query.categoryId ? req.query.categoryId : ''
+      const qb = Book.query()
+      if (name) qb.where('books.name', 'like', `%${name}%`)
+      if (categoryId) qb.where('books.categoryId', '=', categoryId)
+        // .orderBy
+        // .page(page, limit)
+        // .joinRelation('category') // NEED TO GET THIS TO WORK
+        // select("books.name, category.name")
+        // .joinRelation("[category]")
+        // .eager('category') // OK
+        // .select('books.*', 'category.name as categoryName')
+        // .join('categories', 'books.categoryId', 'categories.id')
+      const books = await qb.select(
+          'books.*',
+          'category.name as categoryName',
+          Book.relatedQuery('pages').count().as('pageCount'),
+          Book.relatedQuery('authors').count().as('authorCount')
+          )
+        // .orderBy('updated_at', 'desc')
+        .joinRelation('category')
+        .page(page, limit)
+      // console.log(books[0])
+      return res.status(200).json(books)  
+    } catch (e) { console.log(e) }
+    return res.status(500).json()
+  })
+  .get('/books/:id/pages', authUser, async (req, res) => { // get pages of a book
+    try {
+      const limit = req.query.limit ? req.query.limit : 2
+      const page = req.query.page ? req.query.page : 0
+      const pages = await Page.query()
+        .where('bookId', req.params.id)
+        // .orderBy('updated_at', 'desc')
+        .page(page, limit)
+      return res.status(200).json(pages)
+    } catch (e) { console.log(e) }
+    return res.status(500).json()
+  })
+  .post('/books/:id/pages', authUser, async (req, res) => { // add page to book
+    try {
+      const book = await Book.query().findById(req.params.id)
+      if (!book) return res.status(404).json()
+      const page = await book.$relatedQuery('pages').insert(req.body) // replace 'pages' with Page
+      return res.status(201).json(page)
+    } catch (e) { console.log(e) }
+    return res.status(500).json()
+  })
+  .post('/books/:id/authors/:authorId', authUser, async (req, res) => { // relate author to book - set unique index to prevent duplicates...
+    // unique index does not seem to work...
+    try {
+      const book = await Book.query().findById(req.params.id)
+      if (!book) return res.status(404).json()
+      const relatedRows = await book.$relatedQuery('authors').relate(req.params.authorId)
+      if (relatedRows) return res.status(201).json()
+      else return res.status(404).json()
+    } catch (e) { console.log(e) }
+    return res.status(500).json()
+  })
+  .delete('/books/:id/authors/:authorId', authUser, async (req, res) => { // unrelate author from book
+    try {
+      const book = await Book.query().findById(req.params.id)
+      if (!book) return res.status(404).json()
+      const deletedRows = await book.$relatedQuery('authors').unrelate().where('authorId', req.params.authorId)
+      if (deletedRows) return res.status(200).json()
+      else return res.status(404).json()
+    } catch (e) { console.log(e) }
+    return res.status(500).json()
+  })
+
+  // deletions
+  .delete('/books/:id', authUser, async (req, res) => {
+    await Book.query().deleteById(req.params.id)
+  })
+
+module.exports = bookRoutes
