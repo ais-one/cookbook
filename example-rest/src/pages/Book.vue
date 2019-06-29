@@ -155,14 +155,6 @@ export default {
           'authorIds': { value: [], default: [] },
           'authors': { value: [], default: [] }
         },
-        // crudForm: {
-        //   defaultRec: () => ({
-        //     categoryId: '',
-        //     categoryName: '',
-        //     authorIds: [],
-        //     authors: []
-        //   })
-        // },
 
         crudOps: { // CRUD
           export: null,
@@ -181,17 +173,18 @@ export default {
               // console.log('find books', results)
               records = results
               totalRecords = total
+              return { status: 200, data: { records, totalRecords } }
             } catch (e) {
-              console.log(e)
+              return { status: e.response.status, error: e.toString() }
             }
-            return { records, totalRecords }
           },
           findOne: async ({ id }) => {
             try {
               const { data } = await http.get(`/api/books/${id}`)
-              return data
-            } catch (e) { }
-            return { }
+              return { status: 200, data }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
           },
           create: async ({ record }) => {
             // console.log(payload)
@@ -199,14 +192,11 @@ export default {
               // check that you only insert what is needed...
               let { id, ...noIdData } = record
               delete noIdData.authors // remove authors
-              const rv = await http.post('/api/books', noIdData)
-              console.log(rv)
-            } catch (e) { return 500 }
-            // return { // EXAMPLE return object with code property omitted
-            //   ok: true,
-            //   msg: 'OK'
-            // }
-            return 201
+              const { data } = await http.post('/api/books', noIdData)
+              return { status: 201, data }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
           },
           // TBD Set the linkages also
           update: async ({ record }) => {
@@ -217,14 +207,11 @@ export default {
               let { id, ...noIdData } = record
               delete noIdData.authors // remove authors
               // console.log('record', id, name, categoryId, authorIds)
-              const rv = await http.patch(`/api/books/${id}`, noIdData) // TBD also update the author ids...?
-              console.log('patch rv', rv)
-              // if (!doc.exists) throw new Error(409)
+              const { data } = await http.patch(`/api/books/${id}`, noIdData) // TBD also update the author ids...?
+              return { status: 200, data }
             } catch (e) {
-              if (parseInt(e.message) === 409) return 409
-              else return 500
+              return { status: e.response.status, error: e.toString() }
             }
-            return 200
           },
           delete: null // TBD if delete, must also delete all dependancies, move all buttons to right?
         }

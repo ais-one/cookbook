@@ -91,8 +91,7 @@ export default {
           }
         },
         crudOps: { // CRUD
-          export: async (payload) => {
-          },
+          export: null,
           find: async (payload) => {
             let records = []
             let totalRecords = 0
@@ -102,11 +101,13 @@ export default {
             // GrqphQL
             try {
               const rv = await apolloClient.query({ query: GET_CATEGORIES })
+              // console.log('ABC', rv.data.getCategories)
               records = rv.data.getCategories.results
               totalRecords = rv.data.getCategories.total
-              // console.log('ABC', rv.data.getCategories)
+              return { status: 200, data: { records, totalRecords } }
             } catch (e) {
               console.log(e)
+              return { status: 500, error: e.toString() }
             }
             // REST
             // try {
@@ -119,25 +120,27 @@ export default {
             //   // console.log(results)
             //   records = results
             //   totalRecords = total
+            //   return { status: 200, data: { records, pagination, totalRecords } }
             // } catch (e) {
-            //   console.log(e)
+            //   return { status: e.response.status, error: e.toString() }
             // }
-            return { records, pagination, totalRecords }
           },
           findOne: async (payload) => {
             const { id } = payload
             // GrqphQL
             try {
               const rv = await apolloClient.query({ query: GET_CATEGORY, variables: { id: parseInt(id) } })
-              // console.log('rv', rv)
-              return rv.data.getCategory
-            } catch (e) { }
+              return { status: 200, data: rv.data.getCategory }
+            } catch (e) {
+              return { status: 500, error: e.toString() }
+            }
             // REST
             // try {
             //   const { data } = await http.get(`/api/categories/${id}`)
-            //   return data
-            // } catch (e) { }
-            // return { }
+            //   return { status: 200, data }
+            // } catch (e) { 
+            //   return { status: e.response.status, error: e.toString() }
+            // }
           },
           create: async (payload) => {
             try {
@@ -184,19 +187,18 @@ export default {
                   // { query: GET_SOMETHING_RELATED, variables: { pageNum: 1, pageSize: 2 } }
                 ]
               })
+              return { status: 201, data: null }
             } catch (e) {
-              // commit('setError', e)
-              return 500
+              return { status: 500, error: e.toString() }
             }
             // try {
             //   let { record: { id, ...noIdData } } = payload
             //   // const rv =
-            //   await http.post('/api/categories', noIdData)
-            //   // console.log(rv)
+            //   const { data } = await http.post('/api/categories', noIdData)
+            //   return { status: 201, data }
             // } catch (e) {
-            //   return 500
+            //   return { status: e.response.status, error: e.toString() }
             // }
-            return 201
           },
           update: async (payload) => {
             // GrqphQL
@@ -215,23 +217,20 @@ export default {
                 }
               })
               // console.log('rv', rv)
+              return { status: 200, data: null }
             } catch (e) {
-              if (parseInt(e.message) === 409) return 409
-              else return 500
+              return { status: 500, error: e.toString() }
             }
             // REST
             // try {
             //   let { record: { id, ...noIdData } } = payload
-            //   const rv = await http.patch(`/api/categories/${id}`, noIdData)
-            //   console.log(rv)
+            //   const { data } = await http.patch(`/api/categories/${id}`, noIdData)
+            //   return { status: 200, data }
             // } catch (e) {
-            //   if (parseInt(e.message) === 409) return 409
-            //   else return 500
+            //   return { status: e.response.status, error: e.toString() }
             // }
-            return 200
           },
           delete: null // TBD if delete, must also delete all dependancies, move all buttons to right?
-
         }
       }
     }

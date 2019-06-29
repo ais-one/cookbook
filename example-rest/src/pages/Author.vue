@@ -63,7 +63,7 @@ export default {
           'name': {
             type: 'v-text-field',
             value: '',
-            default: 'aa',
+            default: '',
             'field-wrapper': { xs12: true, sm6: true },
             'field-input': {
               label: 'Name',
@@ -85,50 +85,48 @@ export default {
             }
             try {
               const { data: { results, total } } = await http.get('/api/authors', { params })
-              if (page === 1) pagination.page = 2
-              else if (page === 2) pagination.page = 0
               records = results
               totalRecords = total
+              // simulate infinite scroll
+              const totalPages = Math.ceil(total / params.limit)
+              if (page < totalPages) pagination.page += 1
+              else pagination.page = 0
+              // TOREMOVE if (page === 1) pagination.page = 2
+              // TOREMOVE else if (page === 2) pagination.page = 0
+              return { status: 200, data: { records, totalRecords, pagination } }
             } catch (e) {
-              console.log(e)
+              return { status: e.response.status, error: e.toString() }
             }
-            return { records, totalRecords, pagination }
           },
           findOne: async (payload) => {
             const { id } = payload
             try {
               const { data } = await http.get(`/api/authors/${id}`)
-              return data
-            } catch (e) { }
-            return { }
+              return { status: 200, data }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
           },
           create: async (payload) => {
             try {
               let { record: { id, ...noIdData } } = payload
-              const rv = await http.post('/api/authors', noIdData)
-              console.log(rv)
+              const { data } = await http.post('/api/authors', noIdData)
+              return { status: 201, data }
             } catch (e) {
-              return 500
+              return { status: e.response.status, error: e.toString() }
             }
-            // return { // EXAMPLE return object with code property omitted
-            //   ok: true,
-            //   msg: 'OK'
-            // }
-            return 201
           },
           update: async (payload) => {
             try {
               let { record: { id, ...noIdData } } = payload
-              const rv = await http.patch(`/api/authors/${id}`, noIdData)
-              console.log(rv)
+              const { data } = await http.patch(`/api/authors/${id}`, noIdData)
               // if (!doc.exists) throw new Error(409)
               // if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
               // await t.set(docRef, noIdData)
+              return { status: 200, data }
             } catch (e) {
-              if (parseInt(e.message) === 409) return 409
-              else return 500
+              return { status: e.response.status, error: e.toString() }
             }
-            return 200
           },
           delete: null // TBD if delete, must also delete all dependancies, move all buttons to right?
         }

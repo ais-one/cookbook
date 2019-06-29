@@ -8,8 +8,7 @@ const permissions = {
 }
 
 export default (to, from, next) => {
-  console.log('route', to.matched[0].path)
-
+  // console.log('route', to.matched[0].path)
   if (store.getters.user && store.getters.user.otpVerified) { // has user && otp is verified
     const { loginType } = store.getters.user
     let idx = -1

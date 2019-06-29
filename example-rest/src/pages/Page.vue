@@ -98,44 +98,45 @@ export default {
               })
               records = results
               totalRecords = total
+              return { status: 200, data: { records, totalRecords } }
             } catch (e) {
-              console.log(e)
+              return { status: e.response.status, error: e.toString() }
             }
-            return { records, totalRecords }
           },
           findOne: async ({ id }) => {
             try {
               const { data } = await http.get(`/api/pages/${id}`)
-              return data
-            } catch (e) { }
-            return { }
+              return { status: 200, data }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
           },
           create: async (payload) => {
             try {
               let { record, parentId } = payload
               // let { record: { content }, parentId } = payload
-              const rv = await http.post(`/api/books/${parentId}/pages`, record)
-              console.log('add page', rv)
-            } catch (e) { return 500 }
-            return 201
+              const { data } = await http.post(`/api/books/${parentId}/pages`, record)
+              return { status: 201, data }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
           },
           update: async (payload) => {
             try {
               let { id, record: { content } } = payload
-              const rv = await http.patch(`/api/pages/${id}`, { content })
-              console.log('update page', rv)
-            } catch (e) { return 500 }
-            return 200
+              const { data } = await http.patch(`/api/pages/${id}`, { content })
+              return { status: 200, data }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
           },
           'delete': async ({ id }) => {
             try {
-              const rv = await http.delete(`/api/pages/${id}`)
-              console.log('delete page', rv)
+              const { data } = await http.delete(`/api/pages/${id}`)
+              return { status: 200, data }
             } catch (e) {
-              console.log(e)
-              return 500
+              return { status: e.response.status, error: e.toString() }
             }
-            return 200
           }
         }
       }

@@ -14,7 +14,7 @@ export const getUserPasswordCredential = (user, password) => {
   return new UserPasswordCredential(user, password)
 }
 
-export const stitch = Stitch.initializeDefaultAppClient('stitchapppoc-winbt')
+export const stitch = Stitch.initializeDefaultAppClient(process.env.VUE_APP_MONGO_STITCH)
 
 export const mongo = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas')
 
