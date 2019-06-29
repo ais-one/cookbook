@@ -28,7 +28,7 @@ export default {
 
       // show/hide
       showFilterButton: true, // should the filter button be shown?
-      onRowClickOpenForm: true, // set to false of you do not want row click to open form
+      onRowClick: null, // set to false of you do not want row click to open form
 
       showFilter: false,
       showForm: false,
@@ -152,7 +152,8 @@ export default {
     this.ready = false
     // TODEPRECATE - remove crudFilter, convert as object to array
     // this.filters = (this.crudFilter && this.crudFilter.filterData) ? this.crudFilter.filterData : this.$attrs.filters || null // Set initial filter data here
-    this.filters = this.$attrs.filters || null // Set initial filter data here
+    this.filters = this.$attrs.filters || null // Set initial filter here
+    this.sorters = this.$attrs.sorters || null // Set initial sorter here
     // TODEPRECATE - remove crudForm, convert as object to array // deal with this.crudForm!
     this.form = this.$attrs.form || null // Set initial form data here
     this.idName = this.$attrs.idName || 'id'
@@ -166,7 +167,7 @@ export default {
     // TBD
     this.headers = this.crudTable.headers
     this.formReload = this.crudTable.formReload !== false // default true
-    this.onRowClickOpenForm = this.crudTable.onRowClickOpenForm !== false // open form on row click? default true
+    this.onRowClick = this.crudTable.onRowClick || this._rowClicked // open form on row click? default true
     this.crudTitle = this.crudTable.crudTitle || '' // title
     this.showGoBack = this.crudTable.showGoBack !== false // hide go back button - default true
     this.showFilterButton = this.crudTable.showFilterButton !== false // show filter button - default true
@@ -240,7 +241,7 @@ export default {
         parentId: this.parentId,
         filters: this.filters,
         pagination: this.pagination,
-        sorters: null
+        sorters: this.filters
       }
       console.log('getRecords', mode, this.pagination)
       const { status = 500, data = null, error = null } = await this.crudOps.find(payload) // pagination returns for infinite scroll
@@ -408,7 +409,7 @@ export default {
 
     _rowClicked (item, event) {
       // TBD this.editingRow
-      if (!this.inline.update && this.onRowClickOpenForm) this.formOpen(item[this.idName]) // no action column && row click opens form
+      if (!this.inline.update) this.formOpen(item[this.idName]) // no action column && row click opens form
       this.$emit('row-selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     },
     _isHidden (hidden) {
@@ -496,7 +497,7 @@ export default {
           </template> -->
 
           <template v-slot:item="{ item }"><!-- was items -->
-            <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="_rowClicked(item, $event)">
+            <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="onRowClick(item, $event)">
               <slot name="td" :headers="headers" :item="item" :vcx="_self">
                 <td :key="header.value + index" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
                   <span v-if="header.action">

@@ -158,10 +158,11 @@ export default {
 
         crudOps: { // CRUD
           export: null,
-          find: async ({ pagination, filters }) => {
+          find: async ({ pagination, filters = {}, sorters = {} }) => {
             let records = []
             let totalRecords = 0
             const { page, itemsPerPage } = pagination // sortBy, descending
+            console.log(pagination)
             let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } // set query params
             for (let key in filters) {
               let value = filters[key].value

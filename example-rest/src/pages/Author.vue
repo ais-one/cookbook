@@ -76,8 +76,9 @@ export default {
           find: async (payload) => {
             let records = []
             let totalRecords = 0
-            const { pagination, filters } = payload
-            const { page, itemsPerPage } = pagination // sortBy, descending
+            const { pagination, filters = {} } = payload // sorters = {} not used as it is in pagination for vuetify
+            console.log(pagination)
+            const { page, itemsPerPage } = pagination
             let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } // set query params
             for (let key in filters) {
               let value = filters[key].value

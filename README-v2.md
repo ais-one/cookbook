@@ -252,8 +252,11 @@ table
 # TO FIX
 
 ## In Progress
+
+0. Default methods
+ - after each mutating operation
+ - onRowClick
 1. reloads
- TODO NOW ALSO - Default methods after each mutating operation
 
 - delete
  * paginate form
