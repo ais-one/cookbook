@@ -178,7 +178,7 @@ export default {
               return { status: e.response.status, error: e.toString() }
             }
           },
-          findOne: async ({ id }) => {
+          findOne: async (id) => {
             try {
               const { data } = await http.get(`/api/books/${id}`)
               return { status: 200, data }

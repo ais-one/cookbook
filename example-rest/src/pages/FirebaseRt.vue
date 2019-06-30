@@ -99,8 +99,7 @@ export default {
             } catch (e) { console.log(e) }
             return { records, totalRecords: records.length }
           },
-          findOne: async (payload) => {
-            const { id } = payload
+          findOne: async (id) => {
             let record = { }
             try {
               const doc = await firestore.collection(COL_NAME).doc(id).get()

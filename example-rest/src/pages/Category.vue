@@ -121,7 +121,7 @@ export default {
             //   return { status: e.response.status, error: e.toString() }
             // }
           },
-          findOne: async ({ id }) => {
+          findOne: async (id) => {
             // GrqphQL
             try {
               const rv = await apolloClient.query({ query: GET_CATEGORY, variables: { id: parseInt(id) } })

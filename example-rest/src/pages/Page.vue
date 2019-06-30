@@ -98,7 +98,7 @@ export default {
               return { status: e.response.status, error: e.toString() }
             }
           },
-          findOne: async ({ id }) => {
+          findOne: async (id) => {
             try {
               const { data } = await http.get(`/api/pages/${id}`)
               return { status: 200, data }
@@ -125,7 +125,7 @@ export default {
               return { status: e.response.status, error: e.toString() }
             }
           },
-          'delete': async ({ id }) => {
+          'delete': async (id) => {
             try {
               const { data } = await http.delete(`/api/pages/${id}`)
               return { status: 200, data }

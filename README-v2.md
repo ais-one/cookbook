@@ -211,7 +211,7 @@ const v2 = {
   find: async ({parentId, filters, pagination, sorters}) => {
     return { status, error, data: { records, totalRecords, pagination } }
   },
-  findOne: async ({ id }) => {
+  findOne: async (id) => {
     return { status, error, data: record }
   },
   update: async ({ record }) => {
@@ -220,7 +220,7 @@ const v2 = {
   create: async ({ record }) => {
     return { status, error, data: record } // new record, table fields (NOT form fields) must match
   },
-  delete: async ({ id }) => {
+  delete: async (id) => {
     return { status, error, data }
   },
   export: async ({parentId, filters, pagination, sorters}) => {
@@ -263,9 +263,8 @@ table
 
 ## In Progress
 
-0. Default methods
- - after each mutating operation
-1. reloads
+
+1. page, sort events, reloads, post crud & default methods - TOTEST
 
 ### Fired by pager & sorter - **done**
 change page
@@ -279,7 +278,7 @@ change sortBy / sortDesc
  - infinite: page start
 filters & sort follow
 
-### fired by user
+### fired by user **done**
 reload
  - paged: page start
  - infinite: page start
@@ -295,28 +294,6 @@ create record
 delete record
  - paged: page change (if remainder 1, reduce page by 1), filters same, sort same
  - infinite: just delete in memory
-
-###
-page
- - start = null
- - same = undefined
- - change = page
-
-limit
- - start = null
- - same = undefined
- - change = limit
-
-filters
- - start = null
- - same = undefined
- - change = { ... }
-
-sort
- - start = null
- - same = undefined
- - change = { sortBy, sortDesc }
-
 
 
 - delete
@@ -341,6 +318,8 @@ reset filter and sort, goto page 1 ?
 
 2. firm up events
 3. real-time updates...
+4. if delete need to unrelate from Book Author
+5. make better attributes...
 
 ## Done
 * 1. row inline edit

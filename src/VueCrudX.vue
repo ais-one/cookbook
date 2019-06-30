@@ -82,8 +82,8 @@ export default {
         page: 1,
         itemsPerPage: 2,
         sortBy: [],
-        sortDesc: [],
-        totalItems: 0 // completely useless at the moment
+        sortDesc: []
+        // totalItems: 0 // completely useless at the moment
         // VARIATION - End Vuetify2
       },
       pageOpts: { // infinite scroll
@@ -158,6 +158,27 @@ export default {
       if (!this.inline.update) this.formOpen(item[this.idName]) // no action column && row click opens form
       this.$emit('row-selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     })
+    this.created = this.$attrs.created || (async ({ record }) => { // infinite scroll - case - also handles real-time updates
+      if (this.pageOpts.infinite) {
+        // add in memory
+      } else {
+        this.filters = this.$attrs.filters || null
+
+        // TODELETE
+        // this.pagination = {
+        //   ...this.pagination,
+        //   page: this.pageOpts.start,
+        //   // itemsPerPage: this.pageOpts.itemsPerPage - remain
+        //   sortBy: this.pageOpts.sortBy,
+        //   sortDesc: this.pageOpts.sortDesc
+        // }
+        this.pagination.page = this.pageOpts.start
+        // this.pagination.itemsPerPage: this.pageOpts.itemsPerPage - remain
+        this.pagination.sortBy = this.pageOpts.sortBy
+        this.pagination.sortDesc = this.pageOpts.sortDesc
+        await this.getRecords({ mode: 'created' })
+      }
+    })
     this.updated = this.$attrs.updated || (({ record }) => { // also handles real-time updates
       const idx = this.records.findIndex(rec => rec[this.idName] === record[this.idName])
       if (idx !== -1) {
@@ -166,30 +187,29 @@ export default {
         }
       }
     })
-    this.created = this.$attrs.created || (async ({ record }) => { // infinite scroll - case - also handles real-time updates
-      if (this.pageOpts.infinite) {
-        // ensure that record has the same fields as what is in this.records
-        // const idx = this.records.findIndex(rec => rec[this.idName] === id)
-        // if (idx !== -1) this.records.splice(idx, 1) this.records.splice(idx, 0, record)
-        // // this.records.push(record)
-        // // this.records.unshift(record)
-        // this.totalRecords += 1
-        this._reset()
-      } else {
-        // always go to page 1
-        this._reset()
-      }
-    })
     this.deleted = this.$attrs.deleted || (async ({ id }) => { // infinite scroll - case - also handles real-time updates
       if (this.pageOpts.infinite) {
         const idx = this.records.findIndex(rec => rec[this.idName] === id)
         if (idx !== -1) this.records.splice(idx, 1)
         this.totalRecords -= 1
       } else {
-        const lastPage = Math.ceil(this.totalRecords / this.pagination.itemsPerPage)
-        if (this.pagination.page > lastPage) {
-          this._reset({ setPage: lastPage })
-        }
+        this.filters = this.$attrs.filters || null
+        let lastPage = Math.ceil(this.totalRecords / this.pagination.itemsPerPage)
+        if (this.totalRecords % this.pagination.itemsPerPage === 1) lastPage -= 1
+
+        // TODELETE
+        // if (this.pagination.page > lastPage) {
+        //   this.pagination = {
+        //     ...this.pagination,
+        //     page: lastPage
+        //     // itemsPerPage: this.pageOpts.itemsPerPage - remain
+        //   }
+        // } else { // same page
+        //   await getRecords({ mode: 'deleted' })
+        // }
+
+        if (this.pagination.page > lastPage) this.pagination.page = lastPage
+
         await this.getRecords({ mode: 'deleted' })
       }
     })
@@ -221,38 +241,21 @@ export default {
   },
   // watch: { loading: function (newValue, oldValue) { } }, // UNUSED
   methods: {
-    _reset ({ filter = true, sort = true, setPage = false }) { // TBD will trigger a page refresh
-      // itemsPerPage
-      // page
-      // sortBy
-      // sortDesc
-      // filters
-      if (filter) this.filters = this.$attrs.filters || null
-      // if no change, fire off getReacords... else
-      // this.pagination = {
-      //   ...this.pagination,
-      //   page: setPage === false ? this.pagination.page : setPage > 0 ? setPage : this.pageOpts.start, // also starting cursor for infinite scroll
-      //   itemsPerPage: setPage ? this.pageOpts.limit : this.pagination.itemsPerPage,
-      //   sortBy: sort ? this.pageOpts.sortBy : this.pagination.sortBy,
-      //   sortDesc: sort ? this.pageOpts.sortDesc : this.pagination.sortDesc
-      // }
-    },
     goBack () { this.$router.back() }, // return from child
-
     // mode - (system) - init
-    //      - (user action) create, update,  delete, filter-paged, filter-infinite-scroll, null
-    //      - (paginator): page, sort-desc, items-per-page
+    //      - (user action) create, update,  delete, filter-paged, filter-infinite-scroll
+    //      - (paginator): pagination (also used in initial load)
     async getRecords ({ mode }) {
       this.loading = true
 
       // VARIATION Start - Vuetify2
       if (mode === 'load-more') { // changed via paging
         if (this.pageOpts.infinite) {
-          this.pagination.page = this.cursor // load more
+          this.pagination.page = this.cursor // load more, this does not fire pagination event
         }
       } else if (mode === 'pagination') {
         if (this.pageOpts.infinite) {
-          this.pagination.page = this.pageOpts.start // start from beginning
+          this.pagination.page = this.pageOpts.start // start from beginning, this does not fire pagination event
         }
       }
       // VARIATION End - Vuetify2
@@ -303,9 +306,9 @@ export default {
       this.$emit('ops-find', { status, error, mode }) // firm up on event
       this.loading = false
     },
-    async getRecord ({ id }) {
+    async getRecord (id) {
       this.loading = true
-      const { status = 500, data = null, error = null } = await this.crudOps.findOne({ id })
+      const { status = 500, data = null, error = null } = await this.crudOps.findOne(id)
       console.log(status, data, error)
       if (status === 200) {
         for (let key in this.form) {
@@ -336,7 +339,7 @@ export default {
     async deleteRecord (id) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       this.loading = true
-      const { status = 500, data = null, error = null } = await this.crudOps.delete({ id })
+      const { status = 500, data = null, error = null } = await this.crudOps.delete(id)
       if (status === 200) {
         await this.deleted({ id })
       }
@@ -354,7 +357,7 @@ export default {
     async formOpen (id) {
       this.selectedId = id
       if (id) {
-        await this.getRecord({ id }) // update
+        await this.getRecord(id) // update
       } else { // create - set initial data
         for (let key in this.form) {
           // console.log(key, this.$attrs.form[key])
@@ -393,16 +396,19 @@ export default {
       this.records = []
       if (this.pageOpts.infinite) {
         // VARIATION Start Vuetify2
-        this.pagination.page = this.pagination.start // this does not fire page reload, because paging footer is hidden not active
+        this.pagination.page = this.pageOpts.start // this does not fire off pagination event
         await this.getRecords({ mode: 'filter-infinite-scroll' }) // so need to call this after
         // VARIATION End Vuetify2
       } else {
-        console.log('onFilter', this.pagination.page)
         // VARIATION Start Vuetify2
-        if (this.pagination.page === 1) {
-          await this.getRecords({ mode: 'filter-paged' })
+        // console.log('onFilter', this.pagination, this.pageOpts, this.pagination.page !== this.pageOpts.start)
+        if (this.pagination.page !== this.pageOpts.start) {
+          this.pagination = { // this fire off pagination event
+            ...this.pagination,
+            page: this.pageOpts.start
+          }
         } else {
-          this.pagination.page = this.pageOpts.start // triggers page reload
+          await this.getRecords({ mode: 'filter-paged' })
         }
         // VARIATION End Vuetify2
       }
@@ -526,7 +532,7 @@ export default {
                   <span v-if="header.action">
                     <template v-if="_isRowEditing(item)">
                       <v-icon v-if="crudOps.update && inline.update" v-bind="attrs['action-icon']" @click.stop="_inlineSave(item)" :disabled="loading">save</v-icon>
-                      <v-icon v-if="crudOps.delete" v-bind="attrs['action-icon']" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
+                      <v-icon v-if="crudOps.update && inline.update" v-bind="attrs['action-icon']" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
                     </template>
                     <template v-else>
                       <v-icon v-if="crudOps.update && (inline.update || (!inline.update && form))" v-bind="attrs['action-icon']" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>

@@ -93,8 +93,7 @@ export default {
               return { status: e.response.status, error: e.toString() }
             }
           },
-          findOne: async (payload) => {
-            const { id } = payload
+          findOne: async (id) => {
             try {
               const { data } = await http.get(`/api/authors/${id}`)
               return { status: 200, data }
@@ -123,7 +122,7 @@ export default {
               return { status: e.response.status, error: e.toString() }
             }
           },
-          delete: null
+          delete: null // if delete need to unrelate from Book Author
         }
       }
     }

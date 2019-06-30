@@ -123,8 +123,7 @@ export const crudOps = { // CRUD
     }
     return { records, pagination }
   },
-  findOne: async (payload) => {
-    const { id } = payload
+  findOne: async (id) => {
     let record = { }
     try {
       const doc = await firestore.collection('party').doc(id).get()
@@ -180,8 +179,7 @@ export const crudOps = { // CRUD
     return 200
   },
   // delete: null, // TBD if delete, must also delete all dependancies, move all buttons to right?
-  delete: async (payload) => {
-    const { id } = payload
+  delete: async (id) => {
     const metaRef = firestore.collection('meta').doc('party')
     const docRef = firestore.collection('party').doc(id)
     try {

@@ -121,8 +121,7 @@ export const crudOps = { // CRUD
       exportCsv(csvContent, 'party-notes.csv')
     } catch (e) { }
   },
-  delete: async (payload) => {
-    const { id } = payload
+  delete: async (id) => {
     try { await firestore.doc('note/' + id).delete() } catch (e) { return 500 }
     return 200
   },
@@ -154,8 +153,7 @@ export const crudOps = { // CRUD
     }
     return { records, pagination }
   },
-  findOne: async (payload) => {
-    const { id } = payload
+  findOne: async (id) => {
     let record = { }
     try {
       const doc = await firestore.collection('note').doc(id).get()
