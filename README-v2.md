@@ -208,27 +208,29 @@ const v2 = {
   }
 
   // operations
-  find: async ({parentId, filters, pagination, sorters}) => {
-    return { status, error, data: { records, totalRecords, pagination } }
-  },
-  findOne: async (id) => {
-    return { status, error, data: record }
-  },
-  update: async ({ record }) => {
-    return { status, error, data: record } // updated record, table or form record?
-  },
-  create: async ({ record }) => {
-    return { status, error, data: record } // new record, table fields (NOT form fields) must match
-  },
-  delete: async (id) => {
-    return { status, error, data }
-  },
-  export: async ({parentId, filters, pagination, sorters}) => {
-    return { status, error, data }
-  }),
-  parentId: null,
+  ops: {
+    find: async ({parentId, filters, pagination, sorters}) => {
+      return { status, error, data: { records, totalRecords, pagination } }
+    },
+    findOne: async (id) => {
+      return { status, error, data: record }
+    },
+    update: async ({ record }) => {
+      return { status, error, data: record } // updated record, table or form record?
+    },
+    create: async ({ record }) => {
+      return { status, error, data: record } // new record, table fields (NOT form fields) must match
+    },
+    delete: async (id) => {
+      return { status, error, data }
+    },
+    export: async ({parentId, filters, pagination, sorters}) => {
+      return { status, error, data }
+    }),
+    parentId: null,
 
-  ws: null, // websocket operation?
+    ws: null, // websocket operation, not implemented currently
+  }
 
   // overridable functions 
   onRowClick(item, $event) { }, // clicking a row
@@ -245,19 +247,28 @@ ops-findone
 ops-update
 ops-create
 ops-delete
-pagination - pagination update
-filter - filter update
+ops-export
 form-open
 form-close
 row-selected
 
+## getRecords modes
+created (after create)
+deleted (after delete)
+filter-infinite (onFilter, infinite scroll)
+filter-paged (onFilter, paged)
+pagination (pagination events, & initial infinite scroll page)
+load-more (infinite scroll next page)
 
-## slots
-overlay
-filter
-form
-table
 
+## slots: props
+progress: vcx
+table-toolbar: vcx
+filter: filters, parentId, vcx
+table: records, totalRecords, pagination, vcx
+td: headers, item, vcx
+form-toolbar: vcx
+form: form, parentId, vcx
 
 # TO FIX
 
@@ -290,7 +301,7 @@ update record
  - infinite: just update in memory
 create record
  - paged: page start, filters start, sort start
- - infinite: just create in momery: push or unshift or splice?
+ - infinite: just create in memory: push or unshift or splice?
 delete record
  - paged: page change (if remainder 1, reduce page by 1), filters same, sort same
  - infinite: just delete in memory

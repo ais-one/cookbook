@@ -67,6 +67,7 @@
 import { from } from 'rxjs'
 import { pluck, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators' // map
 import { http } from '@/axios'
+import { makeCsvRow, exportCsv } from '@/assets/util'
 
 export default {
   subscriptions () {
@@ -156,7 +157,20 @@ export default {
         },
 
         crudOps: { // CRUD
-          export: null,
+          export: async ({ filters = {}, sorters = {} }) => {
+            try {
+              const { data: { results } } = http.get('/api/books', { })
+              let output = ''
+              results.forEach(record => {
+                output = makeCsvRow(output, record, `\r\n`, ';')
+              })
+              exportCsv(output, 'book.csv')
+              return { status: 200, data: null }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
+          },
+
           find: async ({ pagination, filters = {}, sorters = {} }) => {
             let records = []
             let totalRecords = 0

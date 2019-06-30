@@ -32,7 +32,6 @@
 </template>
 
 <script>
-// import { makeCsvRow, exportCsv } from '@/assets/util'
 import { http } from '@/axios'
 
 export default {
@@ -42,11 +41,6 @@ export default {
       parentId: null,
       pageDefs: {
         crudTable: {
-          // inlineReload: { // default true, set to false and use snapshot for large firestore dataset (or similar mechanisms where reads are chargeable)
-          //   update: true,
-          //   create: true,
-          //   delete: true
-          // },
           // name: 'book-pages',
           headers: [
             // { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' },

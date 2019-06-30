@@ -11,11 +11,7 @@
 export default {
   props: {
     parentId: { type: String, default: null },
-
-    // v1
-    crudFilter: { type: Object, required: false },
-    crudForm: { type: Object, required: false },
-    crudTable: { type: Object, required: true },
+    crudTable: { type: Object, required: true }, // v1
     crudOps: { type: Object, required: true }
   },
   data () {
@@ -243,7 +239,7 @@ export default {
   methods: {
     goBack () { this.$router.back() }, // return from child
     // mode - (system) - init
-    //      - (user action) create, update,  delete, filter-paged, filter-infinite-scroll
+    //      - (user action) create, update,  delete, filter-paged, filter-infinite
     //      - (paginator): pagination (also used in initial load)
     async getRecords ({ mode }) {
       this.loading = true
@@ -367,7 +363,7 @@ export default {
       this.showForm = true
       this.$emit('form-open', this.form)
     },
-    async crudFormSave (e) {
+    async formSave (e) {
       let record = {}
       let id = this.selectedId
       for (let key in this.form) {
@@ -397,7 +393,7 @@ export default {
       if (this.pageOpts.infinite) {
         // VARIATION Start Vuetify2
         this.pagination.page = this.pageOpts.start // this does not fire off pagination event
-        await this.getRecords({ mode: 'filter-infinite-scroll' }) // so need to call this after
+        await this.getRecords({ mode: 'filter-infinite' }) // so need to call this after
         // VARIATION End Vuetify2
       } else {
         // VARIATION Start Vuetify2
@@ -566,7 +562,7 @@ export default {
           <v-spacer></v-spacer>
           <v-toolbar-items>
             <v-btn v-bind="attrs.button" v-if="crudOps.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
-            <v-btn v-bind="attrs.button" v-if="crudOps.update && selectedId||crudOps.create && !selectedId" :disabled="!validForm||loading" @click.native="crudFormSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
+            <v-btn v-bind="attrs.button" v-if="crudOps.update && selectedId||crudOps.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
           </v-toolbar-items>
         </v-toolbar>
       </slot>
