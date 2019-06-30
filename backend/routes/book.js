@@ -165,7 +165,18 @@ bookRoutes
 
   // deletions
   .delete('/books/:id', authUser, async (req, res) => {
-    await Book.query().deleteById(req.params.id)
+    try {
+      trx = await transaction.start(knex)
+      const book = await Book.query(trx).findById(req.params.id)
+      await book.$relatedQuery('authors', trx).unrelate()
+      await Book.query(trx).deleteById(req.params.id)
+      await trx.commit()
+      res.status(200).json()
+    } catch (e) {
+      await trx.rollback()
+      res.status(500).json()
+      console.log('delete book', e.toString())
+    }
   })
 
 module.exports = bookRoutes

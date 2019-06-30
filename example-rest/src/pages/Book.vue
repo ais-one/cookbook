@@ -226,6 +226,14 @@ export default {
             } catch (e) {
               return { status: e.response.status, error: e.toString() }
             }
+          },
+          'delete': async (id) => {
+            try {
+              const { data } = await http.delete(`/api/books/${id}`)
+              return { status: 200, data }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
           }
         }
       }
