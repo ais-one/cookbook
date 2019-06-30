@@ -64,6 +64,7 @@ export default {
           ],
           showGoBack: true //  do not show go back
         },
+        onRowClick: () => { console.log('override row click') },
         filters: null,
         inline: {
           update: true,
@@ -76,8 +77,7 @@ export default {
           'content': { value: '', default: '', type: 'v-text-field' },
           'bookId': { value: '', default: '', hidden: 'all' }
         },
-        crudOps: { // CRUD
-          export: null,
+        ops: { // CRUD
           find: async ({ parentId, pagination, filters = {}, sorters = {} }) => {
             let records = []
             let totalRecords = 0

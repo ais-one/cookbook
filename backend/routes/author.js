@@ -4,6 +4,9 @@ const authorRoutes = express.Router()
 const { authUser } = require('../middleware/auth')
 const Author = require('../models/Author')
 
+const { transaction } = require('objection')
+const knex = Author.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
+
 authorRoutes
   .post('/authors', authUser, async (req, res) => {
     try {
@@ -50,12 +53,22 @@ authorRoutes
 
       return res.status(200).json(authors)  
     } catch (e) {
-      console.log(e.toString())
       return res.status(500).json()
     }
   })
   .delete('/authors/:id', authUser, async (req, res) => {
-    await Author.query().deleteById(req.params.id)
+    try {
+      trx = await transaction.start(knex)
+      const author = await Author.query(trx).findById(req.params.id)
+      await author.$relatedQuery('books', trx).unrelate()
+      await Author.query(trx).deleteById(req.params.id)
+      await trx.commit()
+      res.status(200).json()
+    } catch (e) {
+      await trx.rollback()
+      res.status(500).json()
+      console.log('delete author', e.toString())
+    }
   })
 
 module.exports = authorRoutes

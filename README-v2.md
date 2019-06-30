@@ -301,7 +301,7 @@ update record
  - infinite: just update in memory
 create record
  - paged: page start, filters start, sort start
- - infinite: just create in memory: push or unshift or splice?
+ - infinite: as above because cursor may not be valid
 delete record
  - paged: page change (if remainder 1, reduce page by 1), filters same, sort same
  - infinite: just delete in memory

@@ -156,7 +156,7 @@ export default {
           'authors': { value: [], default: [] }
         },
 
-        crudOps: { // CRUD
+        ops: { // CRUD
           export: async ({ filters = {}, sorters = {} }) => {
             try {
               const { data: { results } } = http.get('/api/books', { })
@@ -226,8 +226,7 @@ export default {
             } catch (e) {
               return { status: e.response.status, error: e.toString() }
             }
-          },
-          delete: null
+          }
         }
       }
     }

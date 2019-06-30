@@ -28,7 +28,6 @@ export default {
         },
 
         // v2
-        onRowClick: () => { console.log('override row click') },
         pageOpts: {
           infinite: true,
           start: 1
@@ -68,8 +67,7 @@ export default {
             }
           }
         },
-        crudOps: { // CRUD
-          export: null,
+        ops: { // CRUD
           find: async (payload) => {
             let records = []
             let totalRecords = 0
@@ -122,7 +120,15 @@ export default {
               return { status: e.response.status, error: e.toString() }
             }
           },
-          delete: null // if delete need to unrelate from Book Author
+          'delete': async (id) => {
+            try {
+              const { data } = await http.delete(`/api/authors/${id}`)
+              return { status: 200, data }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
+          }
+          // done
         }
       }
     }

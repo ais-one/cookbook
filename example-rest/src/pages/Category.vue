@@ -86,8 +86,7 @@ export default {
             }
           }
         },
-        crudOps: { // CRUD
-          export: null,
+        ops: { // CRUD
           find: async ({ pagination = {}, filters = {}, sorters = {} }) => {
             let records = []
             let totalRecords = 0
@@ -224,8 +223,7 @@ export default {
             // } catch (e) {
             //   return { status: e.response.status, error: e.toString() }
             // }
-          },
-          delete: null
+          }
         }
       }
     }

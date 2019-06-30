@@ -97,7 +97,7 @@ export const crudForm = {
   }
 }
 
-export const crudOps = { // CRUD
+export const ops = { // CRUD
   export: async (payload) => {
     try {
       const { filters, parentId } = payload

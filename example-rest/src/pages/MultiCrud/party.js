@@ -91,7 +91,7 @@ export const crudForm = {
   })
 }
 
-export const crudOps = { // CRUD
+export const ops = { // CRUD
   export: async (payload) => {
     const { filters } = payload // pagination
     try {

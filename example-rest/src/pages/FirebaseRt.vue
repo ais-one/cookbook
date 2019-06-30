@@ -76,9 +76,7 @@ export default {
           'orderDate': { value: format(new Date(), 'YYYY-MM-DD'), type: 'v-autocomplete' },
           'orderTime': { value: format(new Date(), 'HH:mm'), type: 'v-autocomplete' }
         },
-        crudOps: { // CRUD
-          'export': null,
-          'delete': null,
+        ops: { // CRUD
           find: async (payload) => {
             let records = []
             try {

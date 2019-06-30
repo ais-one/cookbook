@@ -11,8 +11,7 @@
 export default {
   props: {
     parentId: { type: String, default: null },
-    crudTable: { type: Object, required: true }, // v1
-    crudOps: { type: Object, required: true }
+    crudTable: { type: Object, required: true } // v1
   },
   data () {
     return {
@@ -122,6 +121,14 @@ export default {
       inline: { // inline functionality
         create: false, update: false, delete: false
       },
+      ops: {
+        create: null,
+        update: null,
+        'delete': null,
+        find: () => ({ status: 500, error: '' }),
+        findOne: () => ({ status: 500, error: '' }),
+        export: null
+      },
       filters: null,
       form: null,
       selectedId: null
@@ -146,6 +153,7 @@ export default {
     this.filters = this.$attrs.filters || null
     this.inline = Object.assign(this.inline, this.$attrs.inline || {})
     this.form = this.$attrs.form || null
+    this.ops = Object.assign(this.ops, this.$attrs.ops || {})
 
     this.idName = this.$attrs.idName || 'id'
 
@@ -155,25 +163,25 @@ export default {
       this.$emit('row-selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     })
     this.created = this.$attrs.created || (async ({ record }) => { // infinite scroll - case - also handles real-time updates
-      if (this.pageOpts.infinite) {
-        // add in memory
-      } else {
-        this.filters = this.$attrs.filters || null
+      // if (this.pageOpts.infinite) {
+      //   // add in memory
+      // } else {
+      this.filters = this.$attrs.filters || null
 
-        // TODELETE
-        // this.pagination = {
-        //   ...this.pagination,
-        //   page: this.pageOpts.start,
-        //   // itemsPerPage: this.pageOpts.itemsPerPage - remain
-        //   sortBy: this.pageOpts.sortBy,
-        //   sortDesc: this.pageOpts.sortDesc
-        // }
-        this.pagination.page = this.pageOpts.start
-        // this.pagination.itemsPerPage: this.pageOpts.itemsPerPage - remain
-        this.pagination.sortBy = this.pageOpts.sortBy
-        this.pagination.sortDesc = this.pageOpts.sortDesc
-        await this.getRecords({ mode: 'created' })
-      }
+      // TODELETE
+      // this.pagination = {
+      //   ...this.pagination,
+      //   page: this.pageOpts.start,
+      //   // itemsPerPage: this.pageOpts.itemsPerPage - remain
+      //   sortBy: this.pageOpts.sortBy,
+      //   sortDesc: this.pageOpts.sortDesc
+      // }
+      this.pagination.page = this.pageOpts.start
+      // this.pagination.itemsPerPage: this.pageOpts.itemsPerPage - remain
+      this.pagination.sortBy = this.pageOpts.sortBy
+      this.pagination.sortDesc = this.pageOpts.sortDesc
+      await this.getRecords({ mode: 'created' })
+      // }
     })
     this.updated = this.$attrs.updated || (({ record }) => { // also handles real-time updates
       const idx = this.records.findIndex(rec => rec[this.idName] === record[this.idName])
@@ -184,30 +192,36 @@ export default {
       }
     })
     this.deleted = this.$attrs.deleted || (async ({ id }) => { // infinite scroll - case - also handles real-time updates
-      if (this.pageOpts.infinite) {
-        const idx = this.records.findIndex(rec => rec[this.idName] === id)
-        if (idx !== -1) this.records.splice(idx, 1)
-        this.totalRecords -= 1
-      } else {
-        this.filters = this.$attrs.filters || null
-        let lastPage = Math.ceil(this.totalRecords / this.pagination.itemsPerPage)
-        if (this.totalRecords % this.pagination.itemsPerPage === 1) lastPage -= 1
+      // if (this.pageOpts.infinite) {
+      //   const idx = this.records.findIndex(rec => rec[this.idName] === id)
+      //   if (idx !== -1) this.records.splice(idx, 1)
+      //   this.totalRecords -= 1
+      // } else {
+      //   this.filters = this.$attrs.filters || null
+      //   let lastPage = Math.ceil(this.totalRecords / this.pagination.itemsPerPage)
+      //   if (this.totalRecords % this.pagination.itemsPerPage === 1) lastPage -= 1
 
-        // TODELETE
-        // if (this.pagination.page > lastPage) {
-        //   this.pagination = {
-        //     ...this.pagination,
-        //     page: lastPage
-        //     // itemsPerPage: this.pageOpts.itemsPerPage - remain
-        //   }
-        // } else { // same page
-        //   await getRecords({ mode: 'deleted' })
-        // }
+      //   // TODELETE
+      //   // if (this.pagination.page > lastPage) {
+      //   //   this.pagination = {
+      //   //     ...this.pagination,
+      //   //     page: lastPage
+      //   //     // itemsPerPage: this.pageOpts.itemsPerPage - remain
+      //   //   }
+      //   // } else { // same page
+      //   //   await getRecords({ mode: 'deleted' })
+      //   // }
 
-        if (this.pagination.page > lastPage) this.pagination.page = lastPage
+      //   if (this.pagination.page > lastPage) this.pagination.page = lastPage
 
-        await this.getRecords({ mode: 'deleted' })
-      }
+      //   await this.getRecords({ mode: 'deleted' })
+      // }
+
+      this.pagination.page = this.pageOpts.start
+      // this.pagination.itemsPerPage: this.pageOpts.itemsPerPage - remain
+      this.pagination.sortBy = this.pageOpts.sortBy
+      this.pagination.sortDesc = this.pageOpts.sortDesc
+      await this.getRecords({ mode: 'deleted' })
     })
     // non-ui reactive data - END
 
@@ -282,7 +296,7 @@ export default {
         sorters
       }
       console.log('getRecords', mode, this.pagination, filters, sorters)
-      const { status = 500, data = null, error = null } = await this.crudOps.find(payload) // pagination returns for infinite scroll
+      const { status = 500, data = null, error = null } = await this.ops.find(payload) // pagination returns for infinite scroll
       if (status === 200) {
         let { records, totalRecords = 0, cursor = '' } = data
         this.cursor = cursor
@@ -304,7 +318,7 @@ export default {
     },
     async getRecord (id) {
       this.loading = true
-      const { status = 500, data = null, error = null } = await this.crudOps.findOne(id)
+      const { status = 500, data = null, error = null } = await this.ops.findOne(id)
       console.log(status, data, error)
       if (status === 200) {
         for (let key in this.form) {
@@ -316,7 +330,7 @@ export default {
     },
     async updateRecord ({ record }) {
       this.loading = true
-      const { status = 500, data = null, error = null } = await this.crudOps.update({ record })
+      const { status = 500, data = null, error = null } = await this.ops.update({ record })
       this.loading = false
       if (status === 200) {
         await this.updated({ record })
@@ -325,7 +339,7 @@ export default {
     },
     async createRecord ({ record, parentId }) {
       this.loading = true
-      const { status = 500, data = null, error = null } = await this.crudOps.create({ record, parentId })
+      const { status = 500, data = null, error = null } = await this.ops.create({ record, parentId })
       this.loading = false
       if (status === 201) {
         await this.created({ record: null })
@@ -335,7 +349,7 @@ export default {
     async deleteRecord (id) {
       if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
       this.loading = true
-      const { status = 500, data = null, error = null } = await this.crudOps.delete(id)
+      const { status = 500, data = null, error = null } = await this.ops.delete(id)
       if (status === 200) {
         await this.deleted({ id })
       }
@@ -343,7 +357,7 @@ export default {
       this.$emit('ops-delete', { status, error, data })
     },
     async exportRecords (payload) {
-      const { status = 500, data = null, error = null } = await this.crudOps.export(payload)
+      const { status = 500, data = null, error = null } = await this.ops.export(payload)
       this.$emit('ops-export', { status, error, data })
     },
     formClose () {
@@ -379,7 +393,7 @@ export default {
       this.formClose()
     },
     async formDelete (e) {
-      const { id } = this.selectedId
+      const id = this.selectedId
       if (id) {
         await this.deleteRecord(id)
       }
@@ -470,8 +484,8 @@ export default {
           <v-spacer></v-spacer>
           <v-btn v-if="showFilterButton&&filters" v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
           <v-btn v-bind="attrs.button" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
-          <v-btn v-if="crudOps.create" v-bind="attrs.button" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
-          <v-btn v-if="crudOps.export" v-bind="attrs.button" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
+          <v-btn v-if="ops.create" v-bind="attrs.button" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
+          <v-btn v-if="ops.export" v-bind="attrs.button" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
         </v-toolbar>
       </slot>
       <div v-if="showFilter">
@@ -527,12 +541,12 @@ export default {
                 <td :key="header.value + index" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
                   <span v-if="header.action">
                     <template v-if="_isRowEditing(item)">
-                      <v-icon v-if="crudOps.update && inline.update" v-bind="attrs['action-icon']" @click.stop="_inlineSave(item)" :disabled="loading">save</v-icon>
-                      <v-icon v-if="crudOps.update && inline.update" v-bind="attrs['action-icon']" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
+                      <v-icon v-if="ops.update && inline.update" v-bind="attrs['action-icon']" @click.stop="_inlineSave(item)" :disabled="loading">save</v-icon>
+                      <v-icon v-if="ops.update && inline.update" v-bind="attrs['action-icon']" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
                     </template>
                     <template v-else>
-                      <v-icon v-if="crudOps.update && (inline.update || (!inline.update && form))" v-bind="attrs['action-icon']" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>
-                      <v-icon v-if="crudOps.delete && inline.delete" v-bind="attrs['action-icon']" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">delete</v-icon>
+                      <v-icon v-if="ops.update && (inline.update || (!inline.update && form))" v-bind="attrs['action-icon']" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>
+                      <v-icon v-if="ops.delete && inline.delete" v-bind="attrs['action-icon']" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">delete</v-icon>
                     </template>
                   </span>
                   <template v-else>
@@ -561,8 +575,8 @@ export default {
           <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="formClose" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn v-bind="attrs.button" v-if="crudOps.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
-            <v-btn v-bind="attrs.button" v-if="crudOps.update && selectedId||crudOps.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
+            <v-btn v-bind="attrs.button" v-if="ops.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
+            <v-btn v-bind="attrs.button" v-if="ops.update && selectedId||ops.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
           </v-toolbar-items>
         </v-toolbar>
       </slot>
