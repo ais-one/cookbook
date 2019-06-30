@@ -229,6 +229,12 @@ const v2 = {
   parentId: null,
 
   ws: null, // websocket operation?
+
+  // overridable functions 
+  onRowClick(item, $event) { }, // clicking a row
+  updated({ record }) { }, // override after successful update method
+  created({ record }) { }, // override after successful creation method
+  deleted({ record }) { } // override after successful deletion method
 }
 
 ```
@@ -259,7 +265,6 @@ table
 
 0. Default methods
  - after each mutating operation
- - onRowClick
 1. reloads
 
 - delete
@@ -270,17 +275,17 @@ table
 reset filter and sort, goto page 1 ?
 
 - insert
- * paginate form
-   * paginate inline
- * infinite form
-   * infinite inline
+ * paginate form (createTableRow)
+   * paginate inline (createTableRow)
+ * infinite form (createTableRow)
+   * infinite inline (createTableRow)
 reset filter and sort, goto page 1 ?
 
 - update (no reload needed...)
- * paginate form
-   * paginate inline (updateTableRow)
- * infinite form
-   * infinite inline (updateTableRow)
+ * paginate form (updated)
+   * paginate inline (updated)
+ * infinite form (updated)
+   * infinite inline (updated)
 
 
 2. firm up events

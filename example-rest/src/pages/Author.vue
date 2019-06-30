@@ -18,7 +18,6 @@ export default {
       parentId: null,
       authorDefs: {
         crudTable: {
-          // inline: false,
           confirmCreate: true,
           confirmUpdate: true,
           confirmDelete: true,
@@ -29,6 +28,7 @@ export default {
         },
 
         // v2
+        onRowClick: () => { console.log('override row click') },
         pageOptions: {
           infinite: true,
           page: 1,
