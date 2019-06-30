@@ -91,7 +91,7 @@ bookRoutes
       if (name) qb.where('books.name', 'like', `%${name}%`)
       if (categoryId) qb.where('books.categoryId', '=', categoryId)
       if (!sort) qb.orderBy('created_at', 'desc')
-      else {
+      else { // TBD need to improve on this...
         sort_a = sort.split(';')
         for (let kv of sort_a) {
           kv_a = kv.split(',')

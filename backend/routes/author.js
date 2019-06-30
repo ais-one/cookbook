@@ -39,6 +39,14 @@ authorRoutes
       qb.page(page, limit)
       if (search) qb.where('name', 'like', `%${search}%`)
       if (!sort) qb.orderBy('created_at', 'desc')
+      else { // TBD need to improve on this...
+        sort_a = sort.split(';')
+        for (let kv of sort_a) {
+          kv_a = kv.split(',')
+          qb.orderBy(kv_a[0], kv_a[1])
+        }
+      }
+
       const authors = await qb
 
       return res.status(200).json(authors)  

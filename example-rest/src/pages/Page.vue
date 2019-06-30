@@ -72,7 +72,7 @@ export default {
         },
         filters: null,
         inline: {
-          edit: true,
+          update: true,
           create: true,
           delete: true
         },
@@ -84,18 +84,13 @@ export default {
         },
         crudOps: { // CRUD
           export: null,
-          find: async (payload) => {
+          find: async ({ parentId, pagination, filters = {}, sorters = {} }) => {
             let records = []
             let totalRecords = 0
-            const { pagination, parentId } = payload // filters
             const { page, itemsPerPage } = pagination // sortBy, descending
+            let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage, ...filters, sort: sorters } // set query params
             try {
-              const { data: { results, total } } = await http.get(`/api/books/${parentId}/pages`, {
-                params: {
-                  page: page > 0 ? page - 1 : 0,
-                  limit: itemsPerPage
-                }
-              })
+              const { data: { results, total } } = await http.get(`/api/books/${parentId}/pages`, params)
               records = results
               totalRecords = total
               return { status: 200, data: { records, totalRecords } }

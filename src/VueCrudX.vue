@@ -200,10 +200,7 @@ export default {
   computed: {
     showTitle () { return this.crudTitle || 'VueCrudX' }
   },
-  watch: {
-    loading: function (newValue, oldValue) { }
-    // parentId (value) { this.getRecords({ mode: null }) }
-  },
+  // watch: { loading: function (newValue, oldValue) { } },
   methods: {
     goBack () { this.$router.back() }, // return from child
     updateTableRow ({ record }) { // also handles real-time updates
@@ -237,11 +234,9 @@ export default {
       }
     },
 
-    // mode - normal paging - null
-    //      - create
-    //      - update
-    //      - delete
-    //      - filter - infinite scroll start from beginning
+    // mode - (system) - init
+    //      - (user action) create, update,  delete, filter-paged, filter-infinite-scroll, null
+    //      - (paginator): page, sort-desc, items-per-page
     async getRecords ({ mode }) {
       this.loading = true
 
@@ -387,20 +382,18 @@ export default {
       this.totalRecords = 0
       this.records = []
       if (this.pageOptions.infinite) {
-        // VARIATION
-        // Vuetify 2 Start
+        // VARIATION Start Vuetify2
         this.pagination.page = this.pageOptions.page // this does not fire page reload, because paginng footer is hidden not active
-        await this.getRecords({ mode: 'filter' }) // so need to call this after
-        // Vuetify 2 End
+        await this.getRecords({ mode: 'filter-infinite-scroll' }) // so need to call this after
+        // VARIATION End Vuetify2
       } else {
-        // VARIATION
-        // Vuetify 2 Start
+        // VARIATION Start Vuetify2
         if (this.pagination.page === 1) {
-          await this.getRecords({ mode: null })
+          await this.getRecords({ mode: 'filter-paged' })
         } else {
           this.pagination.page = 1 // triggers page reload
         }
-        // Vuetify 2 End
+        // VARIATION End Vuetify2
       }
     },
     // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
@@ -422,6 +415,7 @@ export default {
 
     // INLINE EDIT START
     _isRowEditing (item) {
+      // console.log('_isRowEditing', this.editingRow, item)
       if (!this.editingRow) return false
       return item[this.idName] === this.editingRow[this.idName]
     },
@@ -535,9 +529,9 @@ export default {
                       <v-icon v-if="crudOps.delete" v-bind="attrs['action-icon']" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
                     </template>
                     <template v-else>
+                      <v-icon v-if="crudOps.update && (inline.update || (!inline.update && form))" v-bind="attrs['action-icon']" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>
+                      <v-icon v-if="crudOps.delete && inline.delete" v-bind="attrs['action-icon']" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">delete</v-icon>
                     </template>
-                    <v-icon v-if="crudOps.update && (inline.update || (!inline.update && form))" v-bind="attrs['action-icon']" @click.stop="inline.update?this.editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>
-                    <v-icon v-if="crudOps.delete && inline.delete" v-bind="attrs['action-icon']" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">delete</v-icon>
                   </span>
                   <template v-else>
                     <component v-if="inline.update && _isRowEditing(item)" :disabled="!header.edit" :is="'v-text-field'" :key="item[idName]+'-'+item[header.value]" v-model="editingRow[header.value]"></component>

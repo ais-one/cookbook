@@ -89,7 +89,7 @@ export default {
         },
         crudOps: { // CRUD
           export: null,
-          find: async (payload) => {
+          find: async ({ pagination = {}, filters = {}, sorters = {} }) => {
             let records = []
             let totalRecords = 0
             // const { pagination } = payload // filters
@@ -122,8 +122,7 @@ export default {
             //   return { status: e.response.status, error: e.toString() }
             // }
           },
-          findOne: async (payload) => {
-            const { id } = payload
+          findOne: async ({ id }) => {
             // GrqphQL
             try {
               const rv = await apolloClient.query({ query: GET_CATEGORY, variables: { id: parseInt(id) } })
