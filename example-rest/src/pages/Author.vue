@@ -18,8 +18,6 @@ export default {
       parentId: null,
       authorDefs: {
         crudTable: {
-          actionColumn: false,
-          addrowCreate: false,
           // inline: false,
           confirmCreate: true,
           confirmUpdate: true,
@@ -27,7 +25,6 @@ export default {
           headers: [
             { text: 'Author Name', value: 'name', class: 'pa-1', render: (value) => value, edit: null }
           ],
-          doPage: 2,
           showFilterButton: true
         },
 
@@ -80,7 +77,7 @@ export default {
 
             console.log(pagination, filters, sorters)
             const { page, itemsPerPage } = pagination
-            let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage, ...filters } // set query params
+            let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage, ...filters, sort: sorters } // set query params
 
             try {
               const { data: { results, total } } = await http.get('/api/authors', { params })

@@ -16,7 +16,6 @@ export const crudTable = {
     if (_type === 'datetime') return format(value.toDate(), 'YYYY MMM DD HH:mm')
     return value
   },
-  doPage: false,
   showGoBack: false //  do not show go back
 }
 

@@ -67,17 +67,6 @@ export default {
           color: 'grey',
           fixed: false
         },
-        table: { // v-data-table Component
-          dark: false,
-          light: true,
-          'items-per-page-options': [2, 5, 10, 20],
-          'hide-default-header': false,
-          style: { // this may need to be changed once Vuetify version 2.0 is out
-            'max-height': 'calc(100vh - 144px)',
-            // 'overflow-y': 'scroll',
-            'backface-visibility': 'hidden'
-          }
-        },
         button: { // v-btn Component
           dark: false,
           light: true,
@@ -113,22 +102,41 @@ export default {
 
       // depends on UI Framework
       pagination: {
-        // VARIATION
-        // Vuetify 2 Start
+        // VARIATION - Start Vuetify2
         descending: false,
         page: 1,
         itemsPerPage: 20,
         sortBy: [],
         sortDesc: [],
         totalItems: 0 // completely useless at the moment
-        // Vuetify 2 End
+        // VARIATION - End Vuetify2
       },
+
+      table: {
+        // VARIATION - Start Vuetify2
+        dense: true,
+        'multi-sort': false,
+        'fixed-header': true,
+        dark: false,
+        light: true,
+        'footer-props': {
+          'items-per-page-options': [2, 5, 10, 25]
+        },
+        // 'rows-per-page-items': [],
+        'hide-default-header': false,
+        style: { // this may need to be changed once Vuetify version 2.0 is out
+          'max-height': 'calc(100vh - 144px)',
+          // 'overflow-y': 'scroll',
+          'backface-visibility': 'hidden'
+        }
+        // VARIATION - End Vuetify2
+      },
+
       sorters: {
-        // VARIATION
-        // Vuetify 2 Start
+        // VARIATION - Start Vuetify 2
         sortBy: [],
         sortDesc: []
-        // Vuetify 2 End
+        // VARIATION - End Vuetify 2
       },
 
       // V2
@@ -150,11 +158,11 @@ export default {
   },
   async created () {
     this.ready = false
-    // TODEPRECATE - remove crudFilter, convert as object to array
-    // this.filters = (this.crudFilter && this.crudFilter.filterData) ? this.crudFilter.filterData : this.$attrs.filters || null // Set initial filter data here
+
+    this.table = Object.assign(this.table, this.$attrs.table || {})
+
     this.filters = this.$attrs.filters || null // Set initial filter here
     this.sorters = this.$attrs.sorters || null // Set initial sorter here
-    // TODEPRECATE - remove crudForm, convert as object to array // deal with this.crudForm!
     this.form = this.$attrs.form || null // Set initial form data here
     this.idName = this.$attrs.idName || 'id'
     this.pageOptions = this.$attrs.pageOptions || { page: 1, limit: 2 }
@@ -178,7 +186,6 @@ export default {
     this.confirmDelete = this.crudTable.confirmDelete !== false // default true
 
     // more attributes
-    this.attrs = Object.assign(this.attrs, this.crudTable.attrs || {})
     this.buttons = Object.assign(this.buttons, this.crudTable.buttons || {})
 
     this.ready = true
@@ -249,10 +256,12 @@ export default {
 
       // VARIATION
       // Vuetify 2 Start
-      let sorters = {}
-      if (this.sorters) {
-        for (let index in this.sorters.sortBy) {
-          sorters[this.sorters.sortBy[index]] = this.sorters.sortDesc[index]
+      let sorters = ''
+      const { sortBy = [], sortDesc = [] } = this.pagination
+      for (let index in sortBy) {
+        if (sortDesc[index] !== undefined) {
+          if (sorters) sorters += ';'
+          sorters += `${sortBy[index]},${sortDesc[index] ? 'desc' : 'asc'}`
         }
       }
       // Vuetify 2 End
@@ -263,7 +272,7 @@ export default {
         filters,
         sorters
       }
-      console.log('getRecords', mode, this.pagination)
+      console.log('getRecords', mode, this.pagination, filters, sorters)
       const { status = 500, data = null, error = null } = await this.crudOps.find(payload) // pagination returns for infinite scroll
       if (status === 200) {
         let { records, totalRecords = 0, pagination = null } = data
@@ -495,11 +504,11 @@ export default {
           :page.sync="pagination.page"
           :hide-default-footer="pageOptions.infinite"
           :disable-sort="pageOptions.infinite"
-          v-bind="attrs.table"
+          v-bind="table"
           :item-key="idName"
-          fixed-header
           @update:page="onTable('page')"
-          @update:sort-desc="onTable('sort')"
+          @update:sort-desc="onTable('sort-desc')"
+          @update:items-per-page="onTable('items-per-page')"
         >
           <template v-slot:headerCell="props">
             <span v-html="props.header.text"></span>

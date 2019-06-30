@@ -68,7 +68,6 @@ export default {
               edit: { type: 'v-text-field' }
             }
           ],
-          // doPage: false,
           showGoBack: true //  do not show go back
         },
         filters: null,

@@ -5,7 +5,7 @@ const { authUser } = require('../middleware/auth')
 
 const Book = require('../models/Book')
 // const Author = require('../models/Author')
-// const Page = require('../models/Page')
+const Page = require('../models/Page')
 
 const { transaction } = require('objection')
 const knex = Book.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
@@ -86,9 +86,18 @@ bookRoutes
       const page = req.query.page ? req.query.page : 0
       const name = req.query.name ? req.query.name : ''
       const categoryId = req.query.categoryId ? req.query.categoryId : ''
+      const sort = req.query.sort ? req.query.sort : ''
       const qb = Book.query()
       if (name) qb.where('books.name', 'like', `%${name}%`)
       if (categoryId) qb.where('books.categoryId', '=', categoryId)
+      if (!sort) qb.orderBy('created_at', 'desc')
+      else {
+        sort_a = sort.split(';')
+        for (let kv of sort_a) {
+          kv_a = kv.split(',')
+          qb.orderBy(kv_a[0], kv_a[1])
+        }
+      }
         // .orderBy
         // .page(page, limit)
         // .joinRelation('category') // NEED TO GET THIS TO WORK

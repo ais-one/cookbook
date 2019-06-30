@@ -52,8 +52,6 @@ export default {
             { text: 'Time', value: 'orderTime', align: 'left', sortable: false, class: 'pa-1' }
           ],
           onRowClickOpenForm: false,
-          addrowCreate: [ ],
-          doPage: false,
           crudTitle: 'Task',
           inlineReload: { // default true, set to false and use snapshot for large firestore dataset (or similar mechanisms where reads are chargeable)
             update: false,

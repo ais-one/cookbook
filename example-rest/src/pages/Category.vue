@@ -50,8 +50,6 @@ export default {
       parentId: null,
       pageDefs: {
         crudTable: {
-          actionColumn: false,
-          addrowCreate: false,
           // inline: false,
           confirmCreate: true,
           confirmUpdate: true,
@@ -62,7 +60,6 @@ export default {
             { text: 'Category Name', value: 'name', class: 'pa-1', render: (value) => value }
           ],
           // formatters: (value, _type) => value,
-          doPage: false, // itemsPerPage, no paging for this
           showFilterButton: false
         },
         filters: null,

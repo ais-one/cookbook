@@ -4,8 +4,6 @@ import { format } from 'date-fns'
 
 export const crudTable = {
   name: 'party',
-  actionColumn: true, // have an action column
-  addrowCreate: false,
   // inline: false,
   confirmCreate: true,
   confirmUpdate: true,
@@ -15,7 +13,6 @@ export const crudTable = {
     { text: 'Status', value: 'status' }
   ],
   formatters: (value, _type) => value,
-  doPage: false,
   onRowClickOpenForm: false // do not open form on row click
 }
 

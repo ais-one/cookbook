@@ -96,8 +96,6 @@ export default {
       ],
       bookDefs: {
         crudTable: {
-          actionColumn: false,
-          addrowCreate: false,
           // inline: false,
           confirmCreate: true,
           confirmUpdate: true,
@@ -108,9 +106,10 @@ export default {
             { text: 'Year Published', value: 'yearPublished', class: 'pa-1' },
             { text: 'Category', value: 'categoryName', class: 'pa-1' }
           ],
-          formatters: (value, _type) => value,
-          doPage: 2,
           showFilterButton: true
+        },
+        table: {
+          'multi-sort': true
         },
         filters: {
           'name': {
@@ -162,13 +161,13 @@ export default {
             let records = []
             let totalRecords = 0
             const { page, itemsPerPage } = pagination // sortBy, descending
-            console.log(pagination)
-            let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } // set query params
-            for (let key in filters) {
-              let value = filters[key].value
-              if (key === 'categoryId') value = filters[key].value.value
-              if (value) params[key] = value
+            // console.log(pagination, filters)
+            if (filters['categoryId']) {
+              if (filters['categoryId'].value) filters['categoryId'] = filters['categoryId'].value
+              else delete filters['categoryId']
             }
+            let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage, ...filters, sort: sorters } // set query params
+            // console.log(params)
             try {
               const { data: { results, total } } = await http.get('/api/books', { params })
               // console.log('find books', results)
