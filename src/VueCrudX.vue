@@ -2,7 +2,6 @@
 // Notes:
 // VARIATION - Note this code block when implementing on other UI Framework
 // IMPORTANT - important point to take not of
-// TBD - to be done
 // TOREMOVE - to be removed
 // TODEPRECATE - to deprecate & remove
 // UNUSED - not used
@@ -48,11 +47,7 @@ export default {
       // styling
       attrs: {
         // you can add attributes used by the component and customize style and classes
-        container: { // v-container Component
-          fluid: true,
-          class: 'pa-2', // parentId ? 'make-modal' : ''
-          style: { }
-        },
+        container: { fluid: true, class: 'pa-2', style: { } }, // v-container Component
         form: { // v-form Component
           class: 'grey lighten-3 pa-2',
           style: {
@@ -60,23 +55,9 @@ export default {
           },
           'lazy-validation': true
         },
-        toolbar: { // v-toolbar Component
-          height: 48,
-          dark: false,
-          light: true,
-          color: 'grey',
-          fixed: false
-        },
-        button: { // v-btn Component
-          dark: false,
-          light: true,
-          icon: true,
-          fab: false
-        },
-        'action-icon': { // for the action column
-          small: true,
-          class: 'mr-1'
-        }
+        toolbar: { height: 48, dark: false, light: true, color: 'grey', fixed: false }, // v-toolbar Component
+        button: { dark: false, light: true, icon: true, fab: false }, // v-btn Component
+        'action-icon': { small: true, class: 'mr-1' } // for the action column
       },
       buttons: {
         // table
@@ -95,19 +76,24 @@ export default {
       infinite: false, // either paged or infinite scroll
       editingRow: null, // or row object
 
-      formReload: true, // TODELETE refetch after create, update or delete
-
       // depends on UI Framework
       pagination: {
         // VARIATION - Start Vuetify2
-        descending: false,
         page: 1,
-        itemsPerPage: 20,
+        itemsPerPage: 2,
         sortBy: [],
         sortDesc: [],
         totalItems: 0 // completely useless at the moment
         // VARIATION - End Vuetify2
       },
+      pageOpts: { // infinite scroll
+        infinite: false,
+        start: 1,
+        itemsPerPage: 2,
+        sortBy: [],
+        sortDesc: []
+      },
+      cursor: '', // infinite scroll cursor
 
       table: {
         // VARIATION - Start Vuetify2
@@ -128,20 +114,15 @@ export default {
         }
         // VARIATION - End Vuetify2
       },
+
       sorters: {
         // VARIATION - Start Vuetify 2
-        sortBy: [],
-        sortDesc: []
+        // Not Used In Vuetify
         // VARIATION - End Vuetify 2
       },
 
       // V2
       idName: 'id',
-      pageOptions: {
-        infinite: false, // infinite scroll
-        page: 1, // initial page
-        limit: 2
-      },
       inline: { // inline functionality
         create: false, update: false, delete: false
       },
@@ -153,21 +134,27 @@ export default {
   async created () {
     this.ready = false
 
+    // VARIATION Start Vuetify2
     this.table = Object.assign(this.table, this.$attrs.table || {})
     this.sorters = Object.assign(this.sorters, this.$attrs.sorters || {})
-    this.inline = Object.assign(this.inline, this.$attrs.inline || {})
+    this.pageOpts = Object.assign(this.pageOpts, this.$attrs.pageOpts || {})
+    this.pagination = {
+      ...this.pagination,
+      page: this.pageOpts.start,
+      itemsPerPage: this.pageOpts.itemsPerPage,
+      sortBy: this.pageOpts.sortBy,
+      sortDesc: this.pageOpts.sortDesc
+    }
+    if (this.pageOpts.infinite) this.cursor = this.pageOpts.start
+    // VARIATION End Vuetify2
     this.filters = this.$attrs.filters || null
+    this.inline = Object.assign(this.inline, this.$attrs.inline || {})
     this.form = this.$attrs.form || null
 
     this.idName = this.$attrs.idName || 'id'
-    this.pageOptions = this.$attrs.pageOptions || { page: 1, limit: 2 }
-    // Set initial pagination data here
-    this.pagination.page = this.pageOptions.page
-    this.pagination.itemsPerPage = this.pageOptions.limit
 
     // non-ui reactive data - START
     this.onRowClick = this.$attrs.onRowClick || ((item, event) => { // open form on row click? default true
-      // TBD this.editingRow
       if (!this.inline.update) this.formOpen(item[this.idName]) // no action column && row click opens form
       this.$emit('row-selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     })
@@ -180,33 +167,35 @@ export default {
       }
     })
     this.created = this.$attrs.created || (async ({ record }) => { // infinite scroll - case - also handles real-time updates
-      this._resetFiltersAndSorters()
-      if (this.pageOptions.infinite) {
+      if (this.pageOpts.infinite) {
         // ensure that record has the same fields as what is in this.records
         // const idx = this.records.findIndex(rec => rec[this.idName] === id)
         // if (idx !== -1) this.records.splice(idx, 1) this.records.splice(idx, 0, record)
         // // this.records.push(record)
         // // this.records.unshift(record)
         // this.totalRecords += 1
+        this._reset()
       } else {
         // always go to page 1
-        this.pagination.page = 1 // will fire off page reload
+        this._reset()
       }
     })
     this.deleted = this.$attrs.deleted || (async ({ id }) => { // infinite scroll - case - also handles real-time updates
-      if (this.pageOptions.infinite) {
+      if (this.pageOpts.infinite) {
         const idx = this.records.findIndex(rec => rec[this.idName] === id)
         if (idx !== -1) this.records.splice(idx, 1)
         this.totalRecords -= 1
       } else {
+        const lastPage = Math.ceil(this.totalRecords / this.pagination.itemsPerPage)
+        if (this.pagination.page > lastPage) {
+          this._reset({ setPage: lastPage })
+        }
         await this.getRecords({ mode: 'deleted' })
       }
     })
     // non-ui reactive data - END
 
-    // TBD
     this.headers = this.crudTable.headers
-    this.formReload = this.crudTable.formReload !== false // default true
     this.crudTitle = this.crudTable.crudTitle || '' // title
     this.showGoBack = this.crudTable.showGoBack !== false // hide go back button - default true
     this.showFilterButton = this.crudTable.showFilterButton !== false // show filter button - default true
@@ -224,7 +213,6 @@ export default {
   async mounted () {
     // not needed in data() because it does not exist in template, an optimization which should be done for others as well
     if (typeof this.$t !== 'function') this.$t = text => text // if no internationalization
-    this.getRecords({ mode: 'init' })
   },
   beforeUpdate () { },
   beforeRouteEnter (to, from, next) { next(vm => { }) },
@@ -233,9 +221,21 @@ export default {
   },
   // watch: { loading: function (newValue, oldValue) { } }, // UNUSED
   methods: {
-    _resetFiltersAndSorters () {
-      this.filters = this.$attrs.filters || null
-      this.sorters = Object.assign(this.sorters, this.$attrs.sorters || {})
+    _reset ({ filter = true, sort = true, setPage = false }) { // TBD will trigger a page refresh
+      // itemsPerPage
+      // page
+      // sortBy
+      // sortDesc
+      // filters
+      if (filter) this.filters = this.$attrs.filters || null
+      // if no change, fire off getReacords... else
+      // this.pagination = {
+      //   ...this.pagination,
+      //   page: setPage === false ? this.pagination.page : setPage > 0 ? setPage : this.pageOpts.start, // also starting cursor for infinite scroll
+      //   itemsPerPage: setPage ? this.pageOpts.limit : this.pagination.itemsPerPage,
+      //   sortBy: sort ? this.pageOpts.sortBy : this.pagination.sortBy,
+      //   sortDesc: sort ? this.pageOpts.sortDesc : this.pagination.sortDesc
+      // }
     },
     goBack () { this.$router.back() }, // return from child
 
@@ -243,9 +243,19 @@ export default {
     //      - (user action) create, update,  delete, filter-paged, filter-infinite-scroll, null
     //      - (paginator): page, sort-desc, items-per-page
     async getRecords ({ mode }) {
-      if (this.pageOptions.infinite && ['page', 'sort-desc', 'items-per-page'].indexOf(mode) !== -1) return // infinite scroll, ignore
-
       this.loading = true
+
+      // VARIATION Start - Vuetify2
+      if (mode === 'load-more') { // changed via paging
+        if (this.pageOpts.infinite) {
+          this.pagination.page = this.cursor // load more
+        }
+      } else if (mode === 'pagination') {
+        if (this.pageOpts.infinite) {
+          this.pagination.page = this.pageOpts.start // start from beginning
+        }
+      }
+      // VARIATION End - Vuetify2
 
       // VARIATION Start - Vuetify2
       let filters = {}
@@ -275,23 +285,22 @@ export default {
       console.log('getRecords', mode, this.pagination, filters, sorters)
       const { status = 500, data = null, error = null } = await this.crudOps.find(payload) // pagination returns for infinite scroll
       if (status === 200) {
-        let { records, totalRecords = 0, pagination = null } = data
-        if (pagination) {
-          this.pagination.page = pagination.page
-        }
-        if (this.pageOptions.infinite) { // infinite scroll
+        let { records, totalRecords = 0, cursor = '' } = data
+        this.cursor = cursor
+
+        if (this.pageOpts.infinite && mode === 'load-more') { // infinite scroll
           this.totalRecords += records.length
           this.records = this.records.concat(records)
         } else {
-          // TBD
-          // if (totalRecords > 0 && records.length === 0) {
-          //  page = Math.ceil(totalRecords / this.pagination.itemsPerPage) need to reload page...
-          // }
           this.totalRecords = totalRecords
           this.records = records
         }
+        // TBD - reset and find?
+        // if (totalRecords > 0 && records.length === 0) {
+        //   page = Math.ceil(totalRecords / pagination.itemsPerPage) need to reload page...
+        // }
       }
-      this.$emit('ops-find', { status, error, mode }) // TBD firm up on event
+      this.$emit('ops-find', { status, error, mode }) // firm up on event
       this.loading = false
     },
     async getRecord ({ id }) {
@@ -303,7 +312,7 @@ export default {
           this.form[key].value = data[key]
         }
       }
-      this.$emit('ops-findone', { status, error }) // TBD firm up on event
+      this.$emit('ops-findone', { status, error }) // firm up on event
       this.loading = false
     },
     async updateRecord ({ record }) {
@@ -368,14 +377,12 @@ export default {
       } else {
         await this.createRecord({ record, parentId: this.parentId })
       }
-      // TODELETE - DONE ELSE WHERE- if (this.formReload) await this.getRecords({ mode: record[this.idName] ? 'update' : 'create' })
       this.formClose()
     },
     async formDelete (e) {
       const { id } = this.selectedId
       if (id) {
         await this.deleteRecord(id)
-        // TODELETE if (this.formReload) await this.getRecords({ mode: 'delete' })
       }
       this.formClose()
     },
@@ -384,17 +391,18 @@ export default {
       if (this.editingRow) this.editingRow = null
       this.totalRecords = 0
       this.records = []
-      if (this.pageOptions.infinite) {
+      if (this.pageOpts.infinite) {
         // VARIATION Start Vuetify2
-        this.pagination.page = this.pageOptions.page // this does not fire page reload, because paginng footer is hidden not active
+        this.pagination.page = this.pagination.start // this does not fire page reload, because paging footer is hidden not active
         await this.getRecords({ mode: 'filter-infinite-scroll' }) // so need to call this after
         // VARIATION End Vuetify2
       } else {
+        console.log('onFilter', this.pagination.page)
         // VARIATION Start Vuetify2
         if (this.pagination.page === 1) {
           await this.getRecords({ mode: 'filter-paged' })
         } else {
-          this.pagination.page = 1 // triggers page reload
+          this.pagination.page = this.pageOpts.start // triggers page reload
         }
         // VARIATION End Vuetify2
       }
@@ -410,9 +418,8 @@ export default {
       })
       this.loading = false
     },
-    async onTable (_in) {
-      console.log('onTable', _in)
-      await this.getRecords({ mode: _in })
+    async onTable () {
+      await this.getRecords({ mode: 'pagination' })
     },
 
     // INLINE EDIT START
@@ -428,7 +435,6 @@ export default {
     },
     async _inlineCreate () {
       await this.createRecord({ record: {}, parentId: this.parentId })
-      // await this.getRecords({ mode: 'create-inline' }) // TBD find better way to update table - reload? if (reload?) this.$nextTick(async function () { await this.getRecords() })
     },
     // INLINE EDIT END
 
@@ -486,20 +492,17 @@ export default {
           @sort-by not needed, only need @sort-desc
           @update:page="testFunction"
           @pagination="testFunction"
+          :disable-sort="pageOpts.infinite"
         -->
         <v-data-table
           :headers="headers"
           :items="records"
           :server-items-length="totalRecords"
           :options.sync="pagination"
-          :page.sync="pagination.page"
-          :hide-default-footer="pageOptions.infinite"
-          :disable-sort="pageOptions.infinite"
+          :hide-default-footer="pageOpts.infinite"
           v-bind="table"
           :item-key="idName"
-          @update:page="onTable('page')"
-          @update:sort-desc="onTable('sort-desc')"
-          @update:items-per-page="onTable('items-per-page')"
+          @pagination="onTable"
         >
           <template v-slot:headerCell="props">
             <span v-html="props.header.text"></span>
@@ -539,8 +542,8 @@ export default {
             </tr>
           </template>
           <!-- infinite scroll handling -->
-          <template v-if="pageOptions.infinite" v-slot:footer="props">
-            <v-btn v-if="pagination.page" @click="getRecords({ mode: 'infinite' })">Load More {{ props.length }}</v-btn>
+          <template v-if="pageOpts.infinite" v-slot:footer="props">
+            <v-btn v-if="cursor" @click="getRecords({ mode: 'load-more' })">Load More {{ props.length }}</v-btn>
           </template>
 
           <template v-slot:no-data>

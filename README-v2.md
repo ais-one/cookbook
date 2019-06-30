@@ -160,7 +160,7 @@ const v2 = {
   refetch: false, // do refetch after C U D?
   optimistic: true, // optimistic UI
 
-  pageOptions: {
+  pageOpts: {
     infinite: false, // infinite scroll
     page: 1, // initial page
     limit: 2
@@ -267,6 +267,58 @@ table
  - after each mutating operation
 1. reloads
 
+### Fired by pager & sorter - **done**
+change page
+ - paged: page change
+ - infinite: page change (is load more operation, increment record count)
+change limit
+ - paged: page start, filters same, sort same
+ - infinite: page start
+change sortBy / sortDesc
+ - paged: page same, filters same, sort change
+ - infinite: page start
+filters & sort follow
+
+### fired by user
+reload
+ - paged: page start
+ - infinite: page start
+filters & sort follow
+
+### Fired by crud
+update record
+ - paged: just update in memory
+ - infinite: just update in memory
+create record
+ - paged: page start, filters start, sort start
+ - infinite: just create in momery: push or unshift or splice?
+delete record
+ - paged: page change (if remainder 1, reduce page by 1), filters same, sort same
+ - infinite: just delete in memory
+
+###
+page
+ - start = null
+ - same = undefined
+ - change = page
+
+limit
+ - start = null
+ - same = undefined
+ - change = limit
+
+filters
+ - start = null
+ - same = undefined
+ - change = { ... }
+
+sort
+ - start = null
+ - same = undefined
+ - change = { sortBy, sortDesc }
+
+
+
 - delete
  * paginate form
    * paginate inline
@@ -275,10 +327,10 @@ table
 reset filter and sort, goto page 1 ?
 
 - insert
- * paginate form (createTableRow)
-   * paginate inline (createTableRow)
+ * paginate form
+   * paginate inline
  * infinite form (createTableRow)
-   * infinite inline (createTableRow)
+   * infinite inline
 reset filter and sort, goto page 1 ?
 
 - update (no reload needed...)
@@ -287,12 +339,11 @@ reset filter and sort, goto page 1 ?
  * infinite form (updated)
    * infinite inline (updated)
 
-
 2. firm up events
 3. real-time updates...
 
 ## Done
-* 1. inline edit
+* 1. row inline edit
 * 2. reload for infinite scroll appends data, should not happen...
 * 3. check id and idName !!! may be wrong !!!
 * 4. Change watch to event listener
@@ -310,7 +361,7 @@ reset filter and sort, goto page 1 ?
 5. interoperability with multiple UI frameworks
 6. improvement on protocol
 7. events
-8. overridable defaults methods
+8. overridable methods with defaults
 
 ISSUE: https://github.com/vuetifyjs/vuetify/issues/7657
 FIXED: https://github.com/vuetifyjs/vuetify/pull/7665

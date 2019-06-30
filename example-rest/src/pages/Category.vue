@@ -54,7 +54,6 @@ export default {
           confirmCreate: true,
           confirmUpdate: true,
           confirmDelete: true,
-          formReload: false, // for Apollo GraphQL with refetch capability
           headers: [
             { text: 'Category id', value: 'id', class: 'pa-1' },
             { text: 'Category Name', value: 'name', class: 'pa-1', render: (value) => value }

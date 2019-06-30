@@ -29,11 +29,11 @@ export default {
 
         // v2
         onRowClick: () => { console.log('override row click') },
-        pageOptions: {
+        pageOpts: {
           infinite: true,
-          page: 1,
-          limit: 2
+          start: 1
         },
+
         filters: {
           'name': {
             type: 'v-text-field', // component name
@@ -85,11 +85,10 @@ export default {
               totalRecords = total
               // simulate infinite scroll
               const totalPages = Math.ceil(total / params.limit)
-              if (page < totalPages) pagination.page += 1
-              else pagination.page = 0
-              // TOREMOVE if (page === 1) pagination.page = 2
-              // TOREMOVE else if (page === 2) pagination.page = 0
-              return { status: 200, data: { records, totalRecords, pagination } }
+              let cursor = 0
+              if (page < totalPages) cursor = page + 1
+              else cursor = 0
+              return { status: 200, data: { records, totalRecords, cursor } }
             } catch (e) {
               return { status: e.response.status, error: e.toString() }
             }

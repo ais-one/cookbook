@@ -34,7 +34,6 @@ authorRoutes
       const page = req.query.page ? req.query.page : 0
       const search = req.query.search ? req.query.search : ''
       const sort = req.query.sort ? req.query.sort : ''
-      console.log('search', search, 'sort', sort, 'end')
       const qb = Author.query()
       qb.page(page, limit)
       if (search) qb.where('name', 'like', `%${search}%`)
