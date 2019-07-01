@@ -61,6 +61,15 @@ export default {
               label: 'Name',
               rules: [v => !!v || 'Item is required']
             }
+          },
+          'avatar': {
+            type: 'v-text-field',
+            value: '',
+            default: '',
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': {
+              label: 'Avatar'
+            }
           }
         },
         crud: {

@@ -17,9 +17,9 @@ exports.seed = async (knex, Promise) => {
   var dt = new Date()
 
   await knex('authors').insert([
-    {id: 1, name: 'author1', created_at: mkDt(dt, 2) },
-    {id: 2, name: 'author2', created_at: mkDt(dt, 1) },
-    {id: 3, name: 'author3', created_at: mkDt(dt, 0) }
+    {id: 1, name: 'author1', avatar: '', created_at: mkDt(dt, 2) },
+    {id: 2, name: 'author2', avatar: '', created_at: mkDt(dt, 1) },
+    {id: 3, name: 'author3', avatar: '', created_at: mkDt(dt, 0) }
   ])
   await knex('categories').insert([
     {id: 1, name: 'cat1', created_at: mkDt(dt, 0) },

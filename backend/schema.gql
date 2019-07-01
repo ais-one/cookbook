@@ -27,10 +27,12 @@ type File { # File Upload - Upload scalar type is from Apollo - better to use re
 
 input InputAuthor {
   name: String!
+  avatar: String!
 }
 type Author {
   id: ID!
   name: String!
+  avatar: String!
 }
 
 input InputCategory {

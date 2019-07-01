@@ -28,6 +28,7 @@ export default {
       cursor: '', // infinite scroll cursor
       // Internals - End
 
+      // VARIATION - Start Vuetify 2
       // styling
       attrs: {
         // you can add attributes used by the component and customize style and classes
@@ -53,6 +54,7 @@ export default {
         delete: { icon: 'delete', label: '' },
         update: { icon: 'save', label: '' }
       },
+      // VARIATION - End Vuetify2
 
       // depends on UI Framework
       pagination: {
@@ -227,6 +229,7 @@ export default {
 
     // UI customizations
     this.buttons = Object.assign(this.buttons, this.$attrs.buttons || {}) // customize button icons and labels
+    this.attrs = Object.assign(this.attrs, this.$attrs.attrs || {}) // customize button icons and labels
 
     this.ready = true
   },
@@ -483,8 +486,8 @@ export default {
           <v-spacer></v-spacer>
           <v-btn v-if="options.showFilterButton&&filters" v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
           <v-btn v-bind="attrs.button" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
-          <v-btn v-if="options.create" v-bind="attrs.button" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
-          <v-btn v-if="options.export" v-bind="attrs.button" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
+          <v-btn v-if="crud.create" v-bind="attrs.button" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
+          <v-btn v-if="crud.export" v-bind="attrs.button" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
         </v-toolbar>
       </slot>
       <div v-if="showFilter">
@@ -540,12 +543,12 @@ export default {
                 <td :key="header.value + index" v-for="(header, index) in table.headers" :class="header['cell-class']?header['cell-class']:header.class">
                   <span v-if="header.action">
                     <template v-if="_isRowEditing(item)">
-                      <v-icon v-if="options.update && inline.update" v-bind="attrs['action-icon']" @click.stop="_inlineSave(item)" :disabled="loading">save</v-icon>
-                      <v-icon v-if="options.update && inline.update" v-bind="attrs['action-icon']" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
+                      <v-icon v-if="crud.update && inline.update" v-bind="attrs['action-icon']" @click.stop="_inlineSave(item)" :disabled="loading">save</v-icon>
+                      <v-icon v-if="crud.update && inline.update" v-bind="attrs['action-icon']" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
                     </template>
                     <template v-else>
-                      <v-icon v-if="options.update && (inline.update || (!inline.update && form))" v-bind="attrs['action-icon']" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>
-                      <v-icon v-if="options.delete && inline.delete" v-bind="attrs['action-icon']" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">delete</v-icon>
+                      <v-icon v-if="crud.update && (inline.update || (!inline.update && form))" v-bind="attrs['action-icon']" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>
+                      <v-icon v-if="crud.delete && inline.delete" v-bind="attrs['action-icon']" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">delete</v-icon>
                     </template>
                   </span>
                   <template v-else>
@@ -574,8 +577,8 @@ export default {
           <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="formClose" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn v-bind="attrs.button" v-if="options.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
-            <v-btn v-bind="attrs.button" v-if="options.update && selectedId||options.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
+            <v-btn v-bind="attrs.button" v-if="crud.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
+            <v-btn v-bind="attrs.button" v-if="crud.update && selectedId||crud.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
           </v-toolbar-items>
         </v-toolbar>
       </slot>

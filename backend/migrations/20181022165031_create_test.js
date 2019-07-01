@@ -24,6 +24,7 @@ exports.up = async (knex, Promise) => {
     .createTable('authors', (table) => {
       table.increments('id').primary()
       table.string('name')
+      table.string('avatar').defaultsTo('')
       table.timestamps(true, true)
     })
     .createTable('books_authors', (table) => { // many books, many authors
