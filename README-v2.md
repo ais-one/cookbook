@@ -210,33 +210,48 @@ const v2 = {
   // operations
   ops: {
     find: async ({parentId, filters, pagination, sorters}) => {
-      return { status, error, data: { records, totalRecords, pagination } }
+      emit { status, error }
+      notify
     },
     findOne: async (id) => {
-      return { status, error, data: record }
+      emit { status, error }
+      notify
     },
     update: async ({ record }) => {
-      return { status, error, data: record } // updated record, table or form record?
+      emit { status, error, data: record } // updated record, table or form record?
+      notify
     },
     create: async ({ record }) => {
-      return { status, error, data: record } // new record, table fields (NOT form fields) must match
+      emit { status, error, data: record } // new record, table fields (NOT form fields) must match
+      notify
     },
     delete: async (id) => {
-      return { status, error, data }
+      emit { status, error, data: id }
+      notify
     },
     export: async ({parentId, filters, pagination, sorters}) => {
-      return { status, error, data }
+      emit { status, error }
+      notify
     }),
     parentId: null,
 
     ws: null, // websocket operation, not implemented currently
   }
 
-  // overridable functions 
-  onRowClick(item, $event) { }, // clicking a row
-  updated({ record }) { }, // override after successful update method
-  created({ record }) { }, // override after successful creation method
-  deleted({ record }) { } // override after successful deletion method
+  // overridable functions - see source for defaults 
+  onRowClick(item, $event) { } // clicking a row
+  updated({ record }) { } // override after successful update method
+  created({ record }) { } // override after successful creation method
+  deleted(id) { } // override after successful deletion method
+  confirmCreate() { } // override confirmation
+  confirmUpdate() { } // override confirmation
+  confirmDelete() { } // override confirmation
+  notifyCreate({ status, error }) { } // override notifications
+  notifyUpdate({ status, error }) { }
+  notifyDelete({ status, error }) { }
+  notifyExport({ status, error }) { }
+  notifyFindOne({ status, error }) { }
+  notifyFind({ status, error }) { }
 }
 
 ```
@@ -301,10 +316,10 @@ update record
  - infinite: just update in memory
 create record
  - paged: page start, filters start, sort start
- - infinite: as above because cursor may not be valid
+ - infinite: as above - because cursor may not be valid
 delete record
  - paged: page change (if remainder 1, reduce page by 1), filters same, sort same
- - infinite: just delete in memory
+ - infinite: page start, filters start, sort start - because cursor may not be valid
 
 
 - delete

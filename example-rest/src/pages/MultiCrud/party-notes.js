@@ -2,8 +2,7 @@ import { firestore } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format, startOfMonth, endOfMonth } from 'date-fns'
 
-export const crudTable = {
-  name: 'party-notes',
+export const table = {
   headers: [
     { text: 'Party', value: 'party', align: 'left', sortable: false },
     { text: 'Type', value: 'type' },
@@ -11,7 +10,11 @@ export const crudTable = {
     { text: 'Date Time', value: 'datetime' },
     { text: 'Status', value: 'approveStatus' },
     { text: 'Approver', value: 'approver' }
-  ],
+  ]
+}
+
+export const options = {
+  name: 'party-notes',
   formatters: (value, _type) => {
     if (_type === 'datetime') return format(value.toDate(), 'YYYY MMM DD HH:mm')
     return value
@@ -97,7 +100,7 @@ export const crudForm = {
   }
 }
 
-export const ops = { // CRUD
+export const crud = { // CRUD
   export: async (payload) => {
     try {
       const { filters, parentId } = payload

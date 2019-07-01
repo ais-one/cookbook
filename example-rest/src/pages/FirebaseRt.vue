@@ -30,7 +30,7 @@ export default {
   data () {
     return {
       taskDefs: {
-        crudTable: {
+        options: {
           inline: {
             edit: true,
             add: true
@@ -41,23 +41,21 @@ export default {
           //   orderDate: { field: 'v-date-picker', attrs: { } },
           //   orderTime: { field: 'v-time-picker', attrs: { } }
           // },
-          confirmCreate: false,
-          confirmUpdate: false,
-          confirmDelete: true,
-          headers: [
-            { text: 'Action', value: '', align: 'center', sortable: false, class: 'py-1 px-2' },
-            { text: 'Task', value: 'task', align: 'left', sortable: false, class: 'pa-1' },
-            { text: 'Area', value: 'area', align: 'left', sortable: false, class: 'pa-1' },
-            { text: 'Date', value: 'orderDate', align: 'left', sortable: false, class: 'pa-1' },
-            { text: 'Time', value: 'orderTime', align: 'left', sortable: false, class: 'pa-1' }
-          ],
-          onRowClickOpenForm: false,
           crudTitle: 'Task',
           inlineReload: { // default true, set to false and use snapshot for large firestore dataset (or similar mechanisms where reads are chargeable)
             update: false,
             create: false,
             delete: false
           }
+        },
+        table: {
+          headers: [
+            { text: 'Action', value: '', align: 'center', sortable: false, class: 'py-1 px-2' },
+            { text: 'Task', value: 'task', align: 'left', sortable: false, class: 'pa-1' },
+            { text: 'Area', value: 'area', align: 'left', sortable: false, class: 'pa-1' },
+            { text: 'Date', value: 'orderDate', align: 'left', sortable: false, class: 'pa-1' },
+            { text: 'Time', value: 'orderTime', align: 'left', sortable: false, class: 'pa-1' }
+          ]
         },
         filters: null,
         // filters: {
@@ -76,7 +74,7 @@ export default {
           'orderDate': { value: format(new Date(), 'YYYY-MM-DD'), type: 'v-autocomplete' },
           'orderTime': { value: format(new Date(), 'HH:mm'), type: 'v-autocomplete' }
         },
-        ops: { // CRUD
+        crud: {
           find: async (payload) => {
             let records = []
             try {
@@ -129,7 +127,7 @@ export default {
             try { await firestore.doc(COL_NAME + '/' + id).update(noIdData) } catch (e) { return 500 }
             return 200
           }
-        }
+        } // done
       },
       selectedId: null,
       offsetTop: 0,

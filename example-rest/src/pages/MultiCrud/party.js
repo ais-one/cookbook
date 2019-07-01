@@ -2,17 +2,16 @@ import { firestore, hasDuplicate } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format } from 'date-fns'
 
-export const crudTable = {
-  name: 'party',
-  // inline: false,
-  confirmCreate: true,
-  confirmUpdate: true,
-  confirmDelete: true,
+export const table = {
   headers: [
     { text: 'Party Name', value: 'name' },
     { text: 'Status', value: 'status' }
-  ],
-  formatters: (value, _type) => value,
+  ]
+}
+
+export const options = {
+  name: 'party',
+  // inline: false,
   onRowClickOpenForm: false // do not open form on row click
 }
 
@@ -91,7 +90,7 @@ export const crudForm = {
   })
 }
 
-export const ops = { // CRUD
+export const crud = {
   export: async (payload) => {
     const { filters } = payload // pagination
     try {

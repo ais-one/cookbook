@@ -17,17 +17,16 @@ export default {
     return {
       parentId: null,
       authorDefs: {
-        crudTable: {
-          confirmCreate: true,
-          confirmUpdate: true,
-          confirmDelete: true,
-          headers: [
-            { text: 'Author Name', value: 'name', class: 'pa-1', render: (value) => value, edit: null }
-          ],
+        options: {
           showFilterButton: true
         },
 
         // v2
+        table: {
+          headers: [
+            { text: 'Author Name', value: 'name', class: 'pa-1', render: (value) => value, edit: null }
+          ]
+        },
         pageOpts: {
           infinite: true,
           start: 1
@@ -67,7 +66,7 @@ export default {
             }
           }
         },
-        ops: { // CRUD
+        crud: {
           find: async (payload) => {
             let records = []
             let totalRecords = 0
@@ -99,18 +98,18 @@ export default {
               return { status: e.response.status, error: e.toString() }
             }
           },
-          create: async (payload) => {
+          create: async ({ record }) => {
             try {
-              let { record: { id, ...noIdData } } = payload
+              let { id, ...noIdData } = record
               const { data } = await http.post('/api/authors', noIdData)
               return { status: 201, data }
             } catch (e) {
               return { status: e.response.status, error: e.toString() }
             }
           },
-          update: async (payload) => {
+          update: async ({ record }) => {
             try {
-              let { record: { id, ...noIdData } } = payload
+              let { id, ...noIdData } = record
               const { data } = await http.patch(`/api/authors/${id}`, noIdData)
               // if (!doc.exists) throw new Error(409)
               // if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
@@ -127,8 +126,7 @@ export default {
             } catch (e) {
               return { status: e.response.status, error: e.toString() }
             }
-          }
-          // done
+          } // done
         }
       }
     }

@@ -96,20 +96,17 @@ export default {
         { id: 2, name: 'cat2' }
       ],
       bookDefs: {
-        crudTable: {
+        options: {
           // inline: false,
-          confirmCreate: true,
-          confirmUpdate: true,
-          confirmDelete: true,
+          showFilterButton: true
+        },
+        table: {
           headers: [
             { text: 'Book Name', value: 'name', class: 'pa-1' },
             { text: 'Rating', value: 'rating', class: 'pa-1' },
             { text: 'Year Published', value: 'yearPublished', class: 'pa-1' },
             { text: 'Category', value: 'categoryName', class: 'pa-1' }
           ],
-          showFilterButton: true
-        },
-        table: {
           'multi-sort': true
         },
         filters: {
@@ -155,8 +152,7 @@ export default {
           'authorIds': { value: [], default: [] },
           'authors': { value: [], default: [] }
         },
-
-        ops: { // CRUD
+        crud: {
           export: async ({ filters = {}, sorters = {} }) => {
             try {
               const { data: { results } } = http.get('/api/books', { })
@@ -235,7 +231,7 @@ export default {
               return { status: e.response.status, error: e.toString() }
             }
           }
-        }
+        } // done
       }
     }
   },

@@ -40,8 +40,11 @@ export default {
     return {
       parentId: null,
       pageDefs: {
-        crudTable: {
+        options: {
           // name: 'book-pages',
+          showGoBack: true //  show go back
+        },
+        table: {
           headers: [
             // { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' },
             {
@@ -61,8 +64,7 @@ export default {
               sortable: false,
               edit: { type: 'v-text-field' }
             }
-          ],
-          showGoBack: true //  do not show go back
+          ]
         },
         onRowClick: () => { console.log('override row click') },
         filters: null,
@@ -77,7 +79,8 @@ export default {
           'content': { value: '', default: '', type: 'v-text-field' },
           'bookId': { value: '', default: '', hidden: 'all' }
         },
-        ops: { // CRUD
+        crud: {
+          // CRUD
           find: async ({ parentId, pagination, filters = {}, sorters = {} }) => {
             let records = []
             let totalRecords = 0
@@ -126,7 +129,7 @@ export default {
             } catch (e) {
               return { status: e.response.status, error: e.toString() }
             }
-          }
+          } // done
         }
       }
     }

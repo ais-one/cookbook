@@ -10,34 +10,22 @@
 
 export default {
   props: {
-    parentId: { type: String, default: null },
-    crudTable: { type: Object, required: true } // v1
+    parentId: { type: String, default: null }
   },
   data () {
     return {
-      ready: false,
-
+      // Internals - Start
+      ready: false, // TODELETE May Not Be Needed Anymore...
       loading: false,
       records: [], // get many - filter, page & sort
       totalRecords: 0,
 
       // show/hide
-      showFilterButton: true, // should the filter button be shown?
-
       showFilter: false,
       showForm: false,
-
       validForm: true, // form
       validFilter: true, // filter
-
-      // crudTable
-      headers: [ ], // pass in
-
-      confirmCreate: false, // confirmation required flags
-      confirmUpdate: false,
-      confirmDelete: true,
-      crudTitle: '', // title
-      showGoBack: false,
+      // Internals - End
 
       // styling
       attrs: {
@@ -68,8 +56,8 @@ export default {
       },
 
       // v1 v2
-      infinite: false, // either paged or infinite scroll
-      editingRow: null, // or row object
+      editingRow: null, // for row editing... null or row object
+      cursor: '', // infinite scroll cursor
 
       // depends on UI Framework
       pagination: {
@@ -81,17 +69,32 @@ export default {
         // totalItems: 0 // completely useless at the moment
         // VARIATION - End Vuetify2
       },
-      pageOpts: { // infinite scroll
-        infinite: false,
+      pageOpts: { // page options
+        infinite: false, // either paged or infinite scroll
         start: 1,
         itemsPerPage: 2,
         sortBy: [],
         sortDesc: []
       },
-      cursor: '', // infinite scroll cursor
+
+      options: {
+        crudTitle: '', // title
+        showGoBack: true, // hide go back button - default true
+        showFilterButton: true // show filter button - default true
+      },
+
+      crud: {
+        create: null, // operations
+        update: null,
+        'delete': null,
+        find: () => ({ status: 500, error: '' }),
+        findOne: () => ({ status: 500, error: '' }),
+        export: null
+      },
 
       table: {
         // VARIATION - Start Vuetify2
+        headers: [],
         dense: true,
         'multi-sort': false,
         'fixed-header': true,
@@ -121,21 +124,24 @@ export default {
       inline: { // inline functionality
         create: false, update: false, delete: false
       },
-      ops: {
-        create: null,
-        update: null,
-        'delete': null,
-        find: () => ({ status: 500, error: '' }),
-        findOne: () => ({ status: 500, error: '' }),
-        export: null
-      },
       filters: null,
       form: null,
       selectedId: null
+
+      // methods with override
+      // onRowClick
+      // created, updated, deleted
+      // confirmCreate, confirmUpdate, confirmDelete
+      // notifyCreate, notifyUpdate, notifyDelete, notifyExport, notifyFind, notifyFindOne
     }
   },
   async created () {
     this.ready = false
+
+    this.idName = this.$attrs.idName || 'id'
+    this.options = Object.assign(this.options, this.$attrs.options || {})
+    // more attributes
+    // not correct... this.buttons = Object.assign(this.buttons, this.$attrs.table.buttons || {})
 
     // VARIATION Start Vuetify2
     this.table = Object.assign(this.table, this.$attrs.table || {})
@@ -150,32 +156,19 @@ export default {
     }
     if (this.pageOpts.infinite) this.cursor = this.pageOpts.start
     // VARIATION End Vuetify2
+
+    this.crud = Object.assign(this.crud, this.$attrs.crud || {})
     this.filters = this.$attrs.filters || null
     this.inline = Object.assign(this.inline, this.$attrs.inline || {})
     this.form = this.$attrs.form || null
-    this.ops = Object.assign(this.ops, this.$attrs.ops || {})
-
-    this.idName = this.$attrs.idName || 'id'
 
     // non-ui reactive data - START
     this.onRowClick = this.$attrs.onRowClick || ((item, event) => { // open form on row click? default true
       if (!this.inline.update) this.formOpen(item[this.idName]) // no action column && row click opens form
       this.$emit('row-selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     })
-    this.created = this.$attrs.created || (async ({ record }) => { // infinite scroll - case - also handles real-time updates
-      // if (this.pageOpts.infinite) {
-      //   // add in memory
-      // } else {
+    this.created = this.$attrs.created || (async ({ record }) => { // TBD realtime updates
       this.filters = this.$attrs.filters || null
-
-      // TODELETE
-      // this.pagination = {
-      //   ...this.pagination,
-      //   page: this.pageOpts.start,
-      //   // itemsPerPage: this.pageOpts.itemsPerPage - remain
-      //   sortBy: this.pageOpts.sortBy,
-      //   sortDesc: this.pageOpts.sortDesc
-      // }
       this.pagination.page = this.pageOpts.start
       // this.pagination.itemsPerPage: this.pageOpts.itemsPerPage - remain
       this.pagination.sortBy = this.pageOpts.sortBy
@@ -191,52 +184,46 @@ export default {
         }
       }
     })
-    this.deleted = this.$attrs.deleted || (async ({ id }) => { // infinite scroll - case - also handles real-time updates
-      // if (this.pageOpts.infinite) {
-      //   const idx = this.records.findIndex(rec => rec[this.idName] === id)
-      //   if (idx !== -1) this.records.splice(idx, 1)
-      //   this.totalRecords -= 1
-      // } else {
-      //   this.filters = this.$attrs.filters || null
+    this.deleted = this.$attrs.deleted || (async (id) => { // TBD realtime updates
+      this.filters = this.$attrs.filters || null
       //   let lastPage = Math.ceil(this.totalRecords / this.pagination.itemsPerPage)
       //   if (this.totalRecords % this.pagination.itemsPerPage === 1) lastPage -= 1
-
-      //   // TODELETE
-      //   // if (this.pagination.page > lastPage) {
-      //   //   this.pagination = {
-      //   //     ...this.pagination,
-      //   //     page: lastPage
-      //   //     // itemsPerPage: this.pageOpts.itemsPerPage - remain
-      //   //   }
-      //   // } else { // same page
-      //   //   await getRecords({ mode: 'deleted' })
-      //   // }
-
       //   if (this.pagination.page > lastPage) this.pagination.page = lastPage
-
-      //   await this.getRecords({ mode: 'deleted' })
-      // }
-
       this.pagination.page = this.pageOpts.start
       // this.pagination.itemsPerPage: this.pageOpts.itemsPerPage - remain
       this.pagination.sortBy = this.pageOpts.sortBy
       this.pagination.sortDesc = this.pageOpts.sortDesc
       await this.getRecords({ mode: 'deleted' })
     })
+
+    // notifications
+    this.notifyCreate = this.$attrs.notifyCreate || (({ status, error }) => {
+      if (status === 200 || status === 201) alert('Create OK')
+      else alert('Create Error ' + error.toString())
+    })
+    this.notifyUpdate = this.$attrs.notifyUpdate || (({ status, error }) => {
+      if (status === 200 || status === 201) alert('Update OK')
+      else alert('Update Error ' + error.toString())
+    })
+    this.notifyDelete = this.$attrs.notifyDelete || (({ status, error }) => {
+      if (status === 200 || status === 201) alert('Delete OK')
+      else alert('Delete Error ' + error.toString())
+    })
+    this.notifyExport = this.$attrs.notifyExport || (({ status, error }) => {
+      if (!(status === 200 || status === 201)) alert('Export Error ' + error.toString())
+    })
+    this.notifyFind = this.$attrs.notifyFind || (({ status, error }) => {
+      if (!(status === 200 || status === 201)) alert('Find Error ' + error.toString())
+    })
+    this.notifyFindOne = this.$attrs.notifyFindOne || (({ status, error }) => {
+      if (!(status === 200 || status === 201)) alert('FindOne Error ' + error.toString())
+    })
+
+    // confirmations - do this part after getting inline status
+    this.confirmCreate = this.$attrs.confirmCreate || (() => this.inline.create ? confirm(this.$t('vueCrudX.confirm')) : true) // default only confirm if inline create
+    this.confirmUpdate = this.$attrs.confirmUpdate || (() => false) // default always no need confirmation
+    this.confirmDelete = this.$attrs.confirmDelete || (() => confirm(this.$t('vueCrudX.confirm'))) // default always need confirmation
     // non-ui reactive data - END
-
-    this.headers = this.crudTable.headers
-    this.crudTitle = this.crudTable.crudTitle || '' // title
-    this.showGoBack = this.crudTable.showGoBack !== false // hide go back button - default true
-    this.showFilterButton = this.crudTable.showFilterButton !== false // show filter button - default true
-
-    // set confirmation
-    this.confirmCreate = this.crudTable.confirmCreate === true // default false
-    this.confirmUpdate = this.crudTable.confirmUpdate === true // default false
-    this.confirmDelete = this.crudTable.confirmDelete !== false // default true
-
-    // more attributes
-    this.buttons = Object.assign(this.buttons, this.crudTable.buttons || {})
 
     this.ready = true
   },
@@ -247,7 +234,7 @@ export default {
   beforeUpdate () { },
   beforeRouteEnter (to, from, next) { next(vm => { }) },
   computed: {
-    showTitle () { return this.crudTitle || 'VueCrudX' }
+    showTitle () { return this.options.crudTitle || 'VueCrudX' }
   },
   // watch: { loading: function (newValue, oldValue) { } }, // UNUSED
   methods: {
@@ -296,7 +283,7 @@ export default {
         sorters
       }
       console.log('getRecords', mode, this.pagination, filters, sorters)
-      const { status = 500, data = null, error = null } = await this.ops.find(payload) // pagination returns for infinite scroll
+      const { status = 500, data = null, error = null } = await this.crud.find(payload) // pagination returns for infinite scroll
       if (status === 200) {
         let { records, totalRecords = 0, cursor = '' } = data
         this.cursor = cursor
@@ -313,12 +300,13 @@ export default {
         //   page = Math.ceil(totalRecords / pagination.itemsPerPage) need to reload page...
         // }
       }
-      this.$emit('ops-find', { status, error, mode }) // firm up on event
+      this.$emit('ops-find', { status, error }) // firm up on event
+      this.notifyFind({ status, error })
       this.loading = false
     },
     async getRecord (id) {
       this.loading = true
-      const { status = 500, data = null, error = null } = await this.ops.findOne(id)
+      const { status = 500, data = null, error = null } = await this.crud.findOne(id)
       console.log(status, data, error)
       if (status === 200) {
         for (let key in this.form) {
@@ -326,39 +314,55 @@ export default {
         }
       }
       this.$emit('ops-findone', { status, error }) // firm up on event
+      this.notifyFindOne({ status, error })
       this.loading = false
     },
     async updateRecord ({ record }) {
+      if (!this.confirmUpdate()) return
       this.loading = true
-      const { status = 500, data = null, error = null } = await this.ops.update({ record })
+      const { status = 500, data = null, error = null } = await this.crud.update({ record })
       this.loading = false
       if (status === 200) {
         await this.updated({ record })
       }
       this.$emit('ops-update', { status, error, data })
+      this.notifyUpdate({ status, error })
     },
     async createRecord ({ record, parentId }) {
+      if (!this.confirmCreate()) return
       this.loading = true
-      const { status = 500, data = null, error = null } = await this.ops.create({ record, parentId })
+      const { status = 500, data = null, error = null } = await this.crud.create({ record, parentId })
       this.loading = false
       if (status === 201) {
         await this.created({ record: null })
       }
       this.$emit('ops-create', { status, error, data })
+      this.notifyCreate({ status, error })
     },
     async deleteRecord (id) {
-      if (this.confirmDelete) if (!confirm(this.$t('vueCrudX.confirm'))) return
+      if (!this.confirmDelete()) return
       this.loading = true
-      const { status = 500, data = null, error = null } = await this.ops.delete(id)
+      const { status = 500, data = null, error = null } = await this.crud.delete(id)
       if (status === 200) {
-        await this.deleted({ id })
+        await this.deleted(id)
       }
       this.loading = false
       this.$emit('ops-delete', { status, error, data })
+      this.notifyDelete({ status, error })
     },
-    async exportRecords (payload) {
-      const { status = 500, data = null, error = null } = await this.ops.export(payload)
-      this.$emit('ops-export', { status, error, data })
+    async exportRecords () {
+      // TBD
+      const payload = {
+        parentId: this.parentId,
+        pagination: this.pagination,
+        filters: {},
+        sorters: {}
+      }
+      this.loading = true
+      const { status = 500, error = null } = await this.crud.export(payload)
+      this.loading = false
+      this.$emit('ops-export', { status, error })
+      this.notifyExport({ status, error })
     },
     formClose () {
       this.showForm = false
@@ -384,7 +388,6 @@ export default {
         if (key !== this.idName) record[key] = this.form[key].value // ignore id, get from selectedId
       }
       record[this.idName] = id
-      if ((!id && this.confirmCreate) || (id && this.confirmUpdate)) if (!confirm(this.$t('vueCrudX.confirm'))) return
       if (id) {
         await this.updateRecord({ record })
       } else {
@@ -425,14 +428,7 @@ export default {
     },
     // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
     async onExport () {
-      this.loading = true
-      await this.exportRecords({
-        parentId: this.parentId,
-        filters: this.filters,
-        pagination: this.pagination,
-        sorters: null
-      })
-      this.loading = false
+      await this.exportRecords()
     },
     async onTable () {
       await this.getRecords({ mode: 'pagination' })
@@ -480,12 +476,12 @@ export default {
     <component :is="'div'" v-show="!showForm">
       <slot name="table-toolbar" :vcx="_self">
         <v-toolbar v-bind="attrs.toolbar">
-          <v-toolbar-title><v-btn v-if="parentId && showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
+          <v-toolbar-title><v-btn v-if="parentId&&options.showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn v-if="showFilterButton&&filters" v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
+          <v-btn v-if="options.showFilterButton&&filters" v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
           <v-btn v-bind="attrs.button" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
-          <v-btn v-if="ops.create" v-bind="attrs.button" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
-          <v-btn v-if="ops.export" v-bind="attrs.button" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
+          <v-btn v-if="options.create" v-bind="attrs.button" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
+          <v-btn v-if="options.export" v-bind="attrs.button" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
         </v-toolbar>
       </slot>
       <div v-if="showFilter">
@@ -511,7 +507,7 @@ export default {
           :disable-sort="pageOpts.infinite"
         -->
         <v-data-table
-          :headers="headers"
+          :headers="table.headers"
           :items="records"
           :server-items-length="totalRecords"
           :options.sync="pagination"
@@ -537,16 +533,16 @@ export default {
 
           <template v-slot:item="{ item }"><!-- was items -->
             <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="onRowClick(item, $event)">
-              <slot name="td" :headers="headers" :item="item" :vcx="_self">
-                <td :key="header.value + index" v-for="(header, index) in headers" :class="header['cell-class']?header['cell-class']:header.class">
+              <slot name="td" :headers="table.headers" :item="item" :vcx="_self">
+                <td :key="header.value + index" v-for="(header, index) in table.headers" :class="header['cell-class']?header['cell-class']:header.class">
                   <span v-if="header.action">
                     <template v-if="_isRowEditing(item)">
-                      <v-icon v-if="ops.update && inline.update" v-bind="attrs['action-icon']" @click.stop="_inlineSave(item)" :disabled="loading">save</v-icon>
-                      <v-icon v-if="ops.update && inline.update" v-bind="attrs['action-icon']" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
+                      <v-icon v-if="options.update && inline.update" v-bind="attrs['action-icon']" @click.stop="_inlineSave(item)" :disabled="loading">save</v-icon>
+                      <v-icon v-if="options.update && inline.update" v-bind="attrs['action-icon']" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
                     </template>
                     <template v-else>
-                      <v-icon v-if="ops.update && (inline.update || (!inline.update && form))" v-bind="attrs['action-icon']" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>
-                      <v-icon v-if="ops.delete && inline.delete" v-bind="attrs['action-icon']" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">delete</v-icon>
+                      <v-icon v-if="options.update && (inline.update || (!inline.update && form))" v-bind="attrs['action-icon']" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>
+                      <v-icon v-if="options.delete && inline.delete" v-bind="attrs['action-icon']" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">delete</v-icon>
                     </template>
                   </span>
                   <template v-else>
@@ -575,8 +571,8 @@ export default {
           <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="formClose" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn v-bind="attrs.button" v-if="ops.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
-            <v-btn v-bind="attrs.button" v-if="ops.update && selectedId||ops.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
+            <v-btn v-bind="attrs.button" v-if="options.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
+            <v-btn v-bind="attrs.button" v-if="options.update && selectedId||options.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
           </v-toolbar-items>
         </v-toolbar>
       </slot>

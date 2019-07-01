@@ -49,17 +49,14 @@ export default {
     return {
       parentId: null,
       pageDefs: {
-        crudTable: {
-          // inline: false,
-          confirmCreate: true,
-          confirmUpdate: true,
-          confirmDelete: true,
+        options: {
+          showFilterButton: false
+        },
+        table: {
           headers: [
             { text: 'Category id', value: 'id', class: 'pa-1' },
             { text: 'Category Name', value: 'name', class: 'pa-1', render: (value) => value }
-          ],
-          // formatters: (value, _type) => value,
-          showFilterButton: false
+          ]
         },
         filters: null,
         form: {
@@ -86,7 +83,7 @@ export default {
             }
           }
         },
-        ops: { // CRUD
+        crud: {
           find: async ({ pagination = {}, filters = {}, sorters = {} }) => {
             let records = []
             let totalRecords = 0
@@ -223,7 +220,7 @@ export default {
             // } catch (e) {
             //   return { status: e.response.status, error: e.toString() }
             // }
-          }
+          } // done
         }
       }
     }
