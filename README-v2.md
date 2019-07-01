@@ -210,28 +210,28 @@ const v2 = {
   // operations
   ops: {
     find: async ({parentId, filters, pagination, sorters}) => {
-      emit { status, error }
-      notify
+      this.$emit { status, error }
+      notifyFind { status, error }
     },
     findOne: async (id) => {
-      emit { status, error }
-      notify
+      this.$emit { status, error }
+      notifyFindOne { status, error }
     },
     update: async ({ record }) => {
-      emit { status, error, data: record } // updated record, table or form record?
-      notify
+      this.$emit { status, error, data: record } // updated record, table or form record?
+      notifyUpdate { status, error }
     },
     create: async ({ record }) => {
-      emit { status, error, data: record } // new record, table fields (NOT form fields) must match
-      notify
+      this.$emit { status, error, data: record } // new record, table fields (NOT form fields) must match
+      notifyCreate { status, error }
     },
     delete: async (id) => {
-      emit { status, error, data: id }
-      notify
+      this.$emit { status, error, data: id }
+      notifyDelete { status, error }
     },
     export: async ({parentId, filters, pagination, sorters}) => {
-      emit { status, error }
-      notify
+      this.$emit { status, error }
+      notifyExport { status, error }
     }),
     parentId: null,
 

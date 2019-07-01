@@ -16,15 +16,16 @@ export default {
     return {
       // Internals - Start
       ready: false, // TODELETE May Not Be Needed Anymore...
-      loading: false,
-      records: [], // get many - filter, page & sort
-      totalRecords: 0,
-
-      // show/hide
-      showFilter: false,
+      loading: false, // loading state
+      records: [], // table records
+      totalRecords: 0, // table records count
+      showFilter: false, // show/hide
       showForm: false,
-      validForm: true, // form
-      validFilter: true, // filter
+      validFilter: true, // form ivalidation
+      validForm: true,
+      editingRow: null, // for row editing... null or row object
+      infinite: false, // either paged or infinite scroll
+      cursor: '', // infinite scroll cursor
       // Internals - End
 
       // styling
@@ -43,21 +44,15 @@ export default {
         'action-icon': { small: true, class: 'mr-1' } // for the action column
       },
       buttons: {
-        // table
         back: { icon: 'reply', label: '' },
         filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up' },
         reload: { icon: 'replay', label: '' },
         create: { icon: 'add', label: '' },
         export: { icon: 'print', label: '' },
-        // form
         close: { icon: 'close', label: '' },
         delete: { icon: 'delete', label: '' },
         update: { icon: 'save', label: '' }
       },
-
-      // v1 v2
-      editingRow: null, // for row editing... null or row object
-      cursor: '', // infinite scroll cursor
 
       // depends on UI Framework
       pagination: {
@@ -69,12 +64,23 @@ export default {
         // totalItems: 0 // completely useless at the moment
         // VARIATION - End Vuetify2
       },
+      sorters: {
+        // VARIATION - Start Vuetify 2
+        // Not Used In Vuetify
+        // VARIATION - End Vuetify 2
+      },
       pageOpts: { // page options
-        infinite: false, // either paged or infinite scroll
+        // VARIATION - Start Vuetify2
         start: 1,
         itemsPerPage: 2,
         sortBy: [],
         sortDesc: []
+        // VARIATION - End Vuetify2
+      },
+      sortOpts: {
+        // VARIATION - Start Vuetify 2
+        // Not Used In Vuetify
+        // VARIATION - End Vuetify 2
       },
 
       options: {
@@ -113,12 +119,6 @@ export default {
         // VARIATION - End Vuetify2
       },
 
-      sorters: {
-        // VARIATION - Start Vuetify 2
-        // Not Used In Vuetify
-        // VARIATION - End Vuetify 2
-      },
-
       // V2
       idName: 'id',
       inline: { // inline functionality
@@ -139,13 +139,13 @@ export default {
     this.ready = false
 
     this.idName = this.$attrs.idName || 'id'
+    this.infinite = this.$attrs.infinite || true // default true
     this.options = Object.assign(this.options, this.$attrs.options || {})
-    // more attributes
-    // not correct... this.buttons = Object.assign(this.buttons, this.$attrs.table.buttons || {})
 
     // VARIATION Start Vuetify2
     this.table = Object.assign(this.table, this.$attrs.table || {})
     this.sorters = Object.assign(this.sorters, this.$attrs.sorters || {})
+    this.sortOpts = Object.assign(this.sortOpts, this.$attrs.sortOpts || {})
     this.pageOpts = Object.assign(this.pageOpts, this.$attrs.pageOpts || {})
     this.pagination = {
       ...this.pagination,
@@ -154,7 +154,7 @@ export default {
       sortBy: this.pageOpts.sortBy,
       sortDesc: this.pageOpts.sortDesc
     }
-    if (this.pageOpts.infinite) this.cursor = this.pageOpts.start
+    if (this.infinite) this.cursor = this.pageOpts.start
     // VARIATION End Vuetify2
 
     this.crud = Object.assign(this.crud, this.$attrs.crud || {})
@@ -225,6 +225,9 @@ export default {
     this.confirmDelete = this.$attrs.confirmDelete || (() => confirm(this.$t('vueCrudX.confirm'))) // default always need confirmation
     // non-ui reactive data - END
 
+    // UI customizations
+    this.buttons = Object.assign(this.buttons, this.$attrs.buttons || {}) // customize button icons and labels
+
     this.ready = true
   },
   async mounted () {
@@ -247,11 +250,11 @@ export default {
 
       // VARIATION Start - Vuetify2
       if (mode === 'load-more') { // changed via paging
-        if (this.pageOpts.infinite) {
+        if (this.infinite) {
           this.pagination.page = this.cursor // load more, this does not fire pagination event
         }
       } else if (mode === 'pagination') {
-        if (this.pageOpts.infinite) {
+        if (this.infinite) {
           this.pagination.page = this.pageOpts.start // start from beginning, this does not fire pagination event
         }
       }
@@ -288,7 +291,7 @@ export default {
         let { records, totalRecords = 0, cursor = '' } = data
         this.cursor = cursor
 
-        if (this.pageOpts.infinite && mode === 'load-more') { // infinite scroll
+        if (this.infinite && mode === 'load-more') { // infinite scroll
           this.totalRecords += records.length
           this.records = this.records.concat(records)
         } else {
@@ -407,7 +410,7 @@ export default {
       if (this.editingRow) this.editingRow = null
       this.totalRecords = 0
       this.records = []
-      if (this.pageOpts.infinite) {
+      if (this.infinite) {
         // VARIATION Start Vuetify2
         this.pagination.page = this.pageOpts.start // this does not fire off pagination event
         await this.getRecords({ mode: 'filter-infinite' }) // so need to call this after
@@ -504,14 +507,14 @@ export default {
           @sort-by not needed, only need @sort-desc
           @update:page="testFunction"
           @pagination="testFunction"
-          :disable-sort="pageOpts.infinite"
+          :disable-sort="infinite"
         -->
         <v-data-table
           :headers="table.headers"
           :items="records"
           :server-items-length="totalRecords"
           :options.sync="pagination"
-          :hide-default-footer="pageOpts.infinite"
+          :hide-default-footer="infinite"
           v-bind="table"
           :item-key="idName"
           @pagination="onTable"
@@ -554,7 +557,7 @@ export default {
             </tr>
           </template>
           <!-- infinite scroll handling -->
-          <template v-if="pageOpts.infinite" v-slot:footer="props">
+          <template v-if="infinite" v-slot:footer="props">
             <v-btn v-if="cursor" @click="getRecords({ mode: 'load-more' })">Load More {{ props.length }}</v-btn>
           </template>
 

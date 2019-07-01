@@ -17,21 +17,18 @@ export default {
     return {
       parentId: null,
       authorDefs: {
+        infinite: true,
         options: {
           showFilterButton: true
         },
-
-        // v2
         table: {
           headers: [
             { text: 'Author Name', value: 'name', class: 'pa-1', render: (value) => value, edit: null }
           ]
         },
         pageOpts: {
-          infinite: true,
           start: 1
         },
-
         filters: {
           'name': {
             type: 'v-text-field', // component name
