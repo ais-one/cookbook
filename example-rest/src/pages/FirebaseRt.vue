@@ -48,7 +48,7 @@ export default {
             delete: false
           }
         },
-        table: {
+        vtable: {
           headers: [
             { text: 'Action', value: '', align: 'center', sortable: false, class: 'py-1 px-2' },
             { text: 'Task', value: 'task', align: 'left', sortable: false, class: 'pa-1' },

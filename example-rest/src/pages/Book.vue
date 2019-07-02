@@ -100,7 +100,7 @@ export default {
           // inline: false,
           showFilterButton: true
         },
-        table: {
+        vtable: {
           headers: [
             { text: 'Book Name', value: 'name', class: 'pa-1' },
             { text: 'Rating', value: 'rating', class: 'pa-1' },

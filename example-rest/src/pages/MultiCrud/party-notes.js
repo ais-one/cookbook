@@ -2,7 +2,7 @@ import { firestore } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format, startOfMonth, endOfMonth } from 'date-fns'
 
-export const table = {
+export const vtable = {
   headers: [
     { text: 'Party', value: 'party', align: 'left', sortable: false },
     { text: 'Type', value: 'type' },

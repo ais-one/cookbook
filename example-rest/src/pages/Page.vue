@@ -44,7 +44,7 @@ export default {
           // name: 'book-pages',
           showGoBack: true //  show go back
         },
-        table: {
+        vtable: {
           headers: [
             // { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' },
             {

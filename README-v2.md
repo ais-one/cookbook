@@ -196,16 +196,28 @@ const v2 = {
     },
   }
 
-  headers: {
-    ...
-    // additional properties
-    render: value => value // how to display the data
-    edit: null // inline editable TBD more input types for the cell editor
-    action: { // column is an action column
-      edit: true,
-      delete: true
+  // Vuetify properties
+  vtable: {
+    headers: { // this is important
+      ...
+      // additional properties
+      render: value => value // how to display the data
+      edit: null // inline editable TBD more input types for the cell editor
+      action: { // column is an action column
+        edit: true,
+        delete: true
+      }
     }
   }
+  vform: {
+  }
+  vbtn: {
+  }
+  vtoolbar: {
+  }
+  vcontainer: {
+  }
+  // Vuetify properties
 
   // operations
   ops: {

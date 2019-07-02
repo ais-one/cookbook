@@ -21,13 +21,15 @@ export default {
         options: {
           showFilterButton: true
         },
-        table: {
+        vtable: {
           headers: [
             { text: 'Author Name', value: 'name', class: 'pa-1', render: (value) => value, edit: null }
           ]
         },
-        pageOpts: {
+        pageDefaults: {
           start: 1
+        },
+        sortDefaults: {
         },
         filters: {
           'name': {

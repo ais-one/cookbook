@@ -16,12 +16,12 @@ export default {
     return {
       // Internals - Start
       ready: false, // TODELETE May Not Be Needed Anymore...
-      loading: false, // loading state
-      records: [], // table records
-      totalRecords: 0, // table records count
+      loading: false,
+      records: [],
+      totalRecords: 0,
       showFilter: false, // show/hide
       showForm: false,
-      validFilter: true, // form ivalidation
+      validFilter: true, // form validation
       validForm: true,
       editingRow: null, // for row editing... null or row object
       infinite: false, // either paged or infinite scroll
@@ -29,21 +29,6 @@ export default {
       // Internals - End
 
       // VARIATION - Start Vuetify 2
-      // styling
-      attrs: {
-        // you can add attributes used by the component and customize style and classes
-        container: { fluid: true, class: 'pa-2', style: { } }, // v-container Component
-        form: { // v-form Component
-          class: 'grey lighten-3 pa-2',
-          style: {
-            overflow: 'auto'
-          },
-          'lazy-validation': true
-        },
-        toolbar: { height: 48, dark: false, light: true, color: 'grey', fixed: false }, // v-toolbar Component
-        button: { dark: false, light: true, icon: true, fab: false }, // v-btn Component
-        'action-icon': { small: true, class: 'mr-1' } // for the action column
-      },
       buttons: {
         back: { icon: 'reply', label: '' },
         filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up' },
@@ -56,51 +41,23 @@ export default {
       },
       // VARIATION - End Vuetify2
 
-      // depends on UI Framework
-      pagination: {
-        // VARIATION - Start Vuetify2
-        page: 1,
-        itemsPerPage: 2,
-        sortBy: [],
-        sortDesc: []
-        // totalItems: 0 // completely useless at the moment
-        // VARIATION - End Vuetify2
+      // VARIATION - Start Vuetify 2
+      attrs: { // props
+        // you can add attributes used by the component and customize style and classes
+        'action-icon': { small: true, class: 'mr-1' } // for the action column
       },
-      sorters: {
-        // VARIATION - Start Vuetify 2
-        // Not Used In Vuetify
-        // VARIATION - End Vuetify 2
+      // VARIATION - End Vuetify2
+      vbtn: { dark: false, light: true, icon: true, fab: false }, // v-btn Component
+      vtoolbar: { height: 48, dark: false, light: true, color: 'grey', fixed: false }, // v-toolbar Component
+      vcontainer: { fluid: true, class: 'pa-2', style: { } }, // v-container Component
+      vform: { // v-form Component
+        class: 'grey lighten-3 pa-2',
+        style: {
+          overflow: 'auto'
+        },
+        'lazy-validation': true
       },
-      pageOpts: { // page options
-        // VARIATION - Start Vuetify2
-        start: 1,
-        itemsPerPage: 2,
-        sortBy: [],
-        sortDesc: []
-        // VARIATION - End Vuetify2
-      },
-      sortOpts: {
-        // VARIATION - Start Vuetify 2
-        // Not Used In Vuetify
-        // VARIATION - End Vuetify 2
-      },
-
-      options: {
-        crudTitle: '', // title
-        showGoBack: true, // hide go back button - default true
-        showFilterButton: true // show filter button - default true
-      },
-
-      crud: {
-        create: null, // operations
-        update: null,
-        'delete': null,
-        find: () => ({ status: 500, error: '' }),
-        findOne: () => ({ status: 500, error: '' }),
-        export: null
-      },
-
-      table: {
+      vtable: { // props
         // VARIATION - Start Vuetify2
         headers: [],
         dense: true,
@@ -121,14 +78,59 @@ export default {
         // VARIATION - End Vuetify2
       },
 
+      // depends on UI Framework
+      pagination: {
+        // VARIATION - Start Vuetify2
+        page: 1,
+        itemsPerPage: 2,
+        sortBy: [],
+        sortDesc: []
+        // totalItems: 0 // completely useless at the moment
+        // VARIATION - End Vuetify2
+      },
+      sorters: {
+        // VARIATION - Start Vuetify 2
+        // Not Used In Vuetify
+        // VARIATION - End Vuetify 2
+      },
+      pageDefaults: { // page options
+        // VARIATION - Start Vuetify2
+        start: 1,
+        itemsPerPage: 2,
+        sortBy: [],
+        sortDesc: []
+        // VARIATION - End Vuetify2
+      },
+      sortDefaults: {
+        // VARIATION - Start Vuetify 2
+        // Not Used In Vuetify
+        // VARIATION - End Vuetify 2
+      },
+
+      options: {
+        crudTitle: '', // title
+        showGoBack: true, // hide go back button - default true
+        showFilterButton: true // show filter button - default true
+      },
+
+      crud: {
+        create: null, // operations
+        update: null,
+        'delete': null,
+        find: () => ({ status: 500, error: '' }),
+        findOne: () => ({ status: 500, error: '' }),
+        export: null
+      },
+
       // V2
       idName: 'id',
       inline: { // inline functionality
         create: false, update: false, delete: false
       },
+
+      selectedId: null,
       filters: null,
-      form: null,
-      selectedId: null
+      form: null
 
       // methods with override
       // onRowClick
@@ -145,18 +147,23 @@ export default {
     this.options = Object.assign(this.options, this.$attrs.options || {})
 
     // VARIATION Start Vuetify2
-    this.table = Object.assign(this.table, this.$attrs.table || {})
+    this.vbtn = Object.assign(this.vbtn, this.$attrs.vbtn || {})
+    this.vform = Object.assign(this.vform, this.$attrs.vform || {})
+    this.vtoolbar = Object.assign(this.vtoolbar, this.$attrs.vtoolbar || {})
+    this.vcontainer = Object.assign(this.vcontainer, this.$attrs.vcontainer || {})
+    this.vtable = Object.assign(this.vtable, this.$attrs.vtable || {})
+
     this.sorters = Object.assign(this.sorters, this.$attrs.sorters || {})
-    this.sortOpts = Object.assign(this.sortOpts, this.$attrs.sortOpts || {})
-    this.pageOpts = Object.assign(this.pageOpts, this.$attrs.pageOpts || {})
+    this.sortDefaults = Object.assign(this.sortDefaults, this.$attrs.sortDefaults || {})
+    this.pageDefaults = Object.assign(this.pageDefaults, this.$attrs.pageDefaults || {})
     this.pagination = {
       ...this.pagination,
-      page: this.pageOpts.start,
-      itemsPerPage: this.pageOpts.itemsPerPage,
-      sortBy: this.pageOpts.sortBy,
-      sortDesc: this.pageOpts.sortDesc
+      page: this.pageDefaults.start,
+      itemsPerPage: this.pageDefaults.itemsPerPage,
+      sortBy: this.pageDefaults.sortBy,
+      sortDesc: this.pageDefaults.sortDesc
     }
-    if (this.infinite) this.cursor = this.pageOpts.start
+    if (this.infinite) this.cursor = this.pageDefaults.start
     // VARIATION End Vuetify2
 
     this.crud = Object.assign(this.crud, this.$attrs.crud || {})
@@ -171,10 +178,10 @@ export default {
     })
     this.created = this.$attrs.created || (async ({ record }) => { // TBD realtime updates
       this.filters = this.$attrs.filters || null
-      this.pagination.page = this.pageOpts.start
-      // this.pagination.itemsPerPage: this.pageOpts.itemsPerPage - remain
-      this.pagination.sortBy = this.pageOpts.sortBy
-      this.pagination.sortDesc = this.pageOpts.sortDesc
+      this.pagination.page = this.pageDefaults.start
+      // this.pagination.itemsPerPage: this.pageDefaults.itemsPerPage - remain
+      this.pagination.sortBy = this.pageDefaults.sortBy
+      this.pagination.sortDesc = this.pageDefaults.sortDesc
       await this.getRecords({ mode: 'created' })
       // }
     })
@@ -191,10 +198,10 @@ export default {
       //   let lastPage = Math.ceil(this.totalRecords / this.pagination.itemsPerPage)
       //   if (this.totalRecords % this.pagination.itemsPerPage === 1) lastPage -= 1
       //   if (this.pagination.page > lastPage) this.pagination.page = lastPage
-      this.pagination.page = this.pageOpts.start
-      // this.pagination.itemsPerPage: this.pageOpts.itemsPerPage - remain
-      this.pagination.sortBy = this.pageOpts.sortBy
-      this.pagination.sortDesc = this.pageOpts.sortDesc
+      this.pagination.page = this.pageDefaults.start
+      // this.pagination.itemsPerPage: this.pageDefaults.itemsPerPage - remain
+      this.pagination.sortBy = this.pageDefaults.sortBy
+      this.pagination.sortDesc = this.pageDefaults.sortDesc
       await this.getRecords({ mode: 'deleted' })
     })
 
@@ -258,7 +265,7 @@ export default {
         }
       } else if (mode === 'pagination') {
         if (this.infinite) {
-          this.pagination.page = this.pageOpts.start // start from beginning, this does not fire pagination event
+          this.pagination.page = this.pageDefaults.start // start from beginning, this does not fire pagination event
         }
       }
       // VARIATION End - Vuetify2
@@ -415,16 +422,16 @@ export default {
       this.records = []
       if (this.infinite) {
         // VARIATION Start Vuetify2
-        this.pagination.page = this.pageOpts.start // this does not fire off pagination event
+        this.pagination.page = this.pageDefaults.start // this does not fire off pagination event
         await this.getRecords({ mode: 'filter-infinite' }) // so need to call this after
         // VARIATION End Vuetify2
       } else {
         // VARIATION Start Vuetify2
-        // console.log('onFilter', this.pagination, this.pageOpts, this.pagination.page !== this.pageOpts.start)
-        if (this.pagination.page !== this.pageOpts.start) {
+        // console.log('onFilter', this.pagination, this.pageDefaults, this.pagination.page !== this.pageDefaults.start)
+        if (this.pagination.page !== this.pageDefaults.start) {
           this.pagination = { // this fire off pagination event
             ...this.pagination,
-            page: this.pageOpts.start
+            page: this.pageDefaults.start
           }
         } else {
           await this.getRecords({ mode: 'filter-paged' })
@@ -471,7 +478,7 @@ export default {
 </script>
 
 <template>
-  <v-container v-if="ready" v-bind="attrs.container">
+  <v-container v-if="ready" v-bind="vcontainer">
     <!-- progress overlay -->
     <slot name="progress" :vcx="_self">
       <v-overlay :value="loading">
@@ -481,18 +488,18 @@ export default {
     <!-- filter & table -->
     <component :is="'div'" v-show="!showForm">
       <slot name="table-toolbar" :vcx="_self">
-        <v-toolbar v-bind="attrs.toolbar">
-          <v-toolbar-title><v-btn v-if="parentId&&options.showGoBack" v-bind="attrs.button" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
+        <v-toolbar v-bind="vtoolbar">
+          <v-toolbar-title><v-btn v-if="parentId&&options.showGoBack" v-bind="vbtn" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn v-if="options.showFilterButton&&filters" v-bind="attrs.button" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
-          <v-btn v-bind="attrs.button" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
-          <v-btn v-if="crud.create" v-bind="attrs.button" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
-          <v-btn v-if="crud.export" v-bind="attrs.button" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
+          <v-btn v-if="options.showFilterButton&&filters" v-bind="vbtn" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
+          <v-btn v-bind="vbtn" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
+          <v-btn v-if="crud.create" v-bind="vbtn" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
+          <v-btn v-if="crud.export" v-bind="vbtn" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
         </v-toolbar>
       </slot>
       <div v-if="showFilter">
         <slot name="filter" :filters="filters" :parentId="parentId" :vcx="_self">
-          <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="attrs.form">
+          <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="vform">
             <v-layout row wrap>
               <template v-for="(filter, i) in filters">
                 <v-flex :key="i" v-bind="filter['field-wrapper']">
@@ -513,12 +520,12 @@ export default {
           :disable-sort="infinite"
         -->
         <v-data-table
-          :headers="table.headers"
+          :headers="vtable.headers"
           :items="records"
           :server-items-length="totalRecords"
           :options.sync="pagination"
           :hide-default-footer="infinite"
-          v-bind="table"
+          v-bind="vtable"
           :item-key="idName"
           @pagination="onTable"
         >
@@ -539,8 +546,8 @@ export default {
 
           <template v-slot:item="{ item }"><!-- was items -->
             <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="onRowClick(item, $event)">
-              <slot name="td" :headers="table.headers" :item="item" :vcx="_self">
-                <td :key="header.value + index" v-for="(header, index) in table.headers" :class="header['cell-class']?header['cell-class']:header.class">
+              <slot name="td" :headers="vtable.headers" :item="item" :vcx="_self">
+                <td :key="header.value + index" v-for="(header, index) in vtable.headers" :class="header['cell-class']?header['cell-class']:header.class">
                   <span v-if="header.action">
                     <template v-if="_isRowEditing(item)">
                       <v-icon v-if="crud.update && inline.update" v-bind="attrs['action-icon']" @click.stop="_inlineSave(item)" :disabled="loading">save</v-icon>
@@ -573,17 +580,17 @@ export default {
     <!-- form -->
     <component :is="'div'" v-show="showForm" row justify-center>
       <slot name="form-toolbar" :vcx="_self">
-        <v-toolbar v-bind="attrs.toolbar">
-          <v-toolbar-title><v-btn v-bind="attrs.button" @click.native="formClose" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
+        <v-toolbar v-bind="vtoolbar">
+          <v-toolbar-title><v-btn v-bind="vbtn" @click.native="formClose" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn v-bind="attrs.button" v-if="crud.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
-            <v-btn v-bind="attrs.button" v-if="crud.update && selectedId||crud.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
+            <v-btn v-bind="vbtn" v-if="crud.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
+            <v-btn v-bind="vbtn" v-if="crud.update && selectedId||crud.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
           </v-toolbar-items>
         </v-toolbar>
       </slot>
       <slot name="form" :form="form" :parentId="parentId" :vcx="_self">
-        <v-form v-model="validForm" v-bind="attrs.form"  :parentId="parentId" :vcx="_self">
+        <v-form v-model="validForm" v-bind="vform"  :parentId="parentId" :vcx="_self">
           <v-layout row wrap>
             <template v-for="(item, i) in form">
               <v-flex :key="i" v-if="!_isHidden(item.hidden)" v-bind="item['field-wrapper']">

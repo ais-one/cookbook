@@ -2,7 +2,7 @@ import { firestore, hasDuplicate } from '@/firebase'
 import { makeCsvRow, exportCsv } from '@/assets/util'
 import { format } from 'date-fns'
 
-export const table = {
+export const vtable = {
   headers: [
     { text: 'Party Name', value: 'name' },
     { text: 'Status', value: 'status' }

@@ -52,7 +52,7 @@ export default {
         options: {
           showFilterButton: false
         },
-        table: {
+        vtable: {
           headers: [
             { text: 'Category id', value: 'id', class: 'pa-1' },
             { text: 'Category Name', value: 'name', class: 'pa-1', render: (value) => value }
