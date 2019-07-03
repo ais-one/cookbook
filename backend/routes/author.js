@@ -9,8 +9,12 @@ const knex = Author.knex() // You can access `knex` instance anywhere you want. 
 
 const multer = require('multer')
 const UPLOAD_PATH = 'uploads/'
-const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
-
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) { cb(null, UPLOAD_PATH) },
+  filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now()) }
+})
+const upload = multer({ storage: storage })
+// const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
 
 authorRoutes
   .post('/authors', authUser, async (req, res) => {
