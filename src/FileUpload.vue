@@ -1,12 +1,12 @@
 <template>
   <div class="file-upload">
     <v-text-field
-      :label="'Select Image' + value.savedUrl ?  `current file ${value.savedUrl}`:' N.A.'"
+      :label="value.savedUrl ?  `Current file ${value.savedUrl}`:' N.A.'"
       @click="pickFile"
       v-model="imageName"
       prepend-icon="attach_file"
     ></v-text-field>
-    <input type="file" style="display: none" ref="image" accept="image/*" @change="onFilePicked" />
+    <input type="file" style="display: none" ref="image" accept="*/*" @change="onFilePicked" />
   </div>
 </template>
 
@@ -25,21 +25,12 @@ export default {
   mounted () {
     console.log('file upload mounted', this.value)
   },
-  watch: {
-    value: {
-      handler: function (val, oldVal) {
-        console.log('watch', val, oldVal)
-      },
-      deep: true
-    }
-  },
 
   methods: {
     pickFile () {
       this.$refs.image.click()
     },
     onFilePicked (e) {
-      console.log('oicked')
       const files = e.target.files
       if (files[0] !== undefined) {
         this.imageName = files[0].name
@@ -51,6 +42,7 @@ export default {
         fr.addEventListener('load', () => {
           this.imageUrl = fr.result
           this.imageFile = files[0] // this is an image file that can be sent to server...
+          console.log('uploading', this.imageUrl, this.imageFile)
           this.$emit('input', {
             savedUrl: this.value.savedUrl,
             imageName: this.imageName,

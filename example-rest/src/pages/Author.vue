@@ -66,7 +66,7 @@ export default {
           },
           'avatar': {
             type: 'app-file-upload',
-            value: { savedUrl: '', imageName: '', imageUrl: '', imageFile: '' },
+            value: { savedUrl: 'aa', imageName: '', imageUrl: '', imageFile: '' },
             default: '',
             'field-wrapper': { xs12: true, sm6: true },
             'field-input': {
@@ -119,8 +119,23 @@ export default {
           },
           update: async ({ record }) => {
             try {
-              let { id, ...noIdData } = record
-              const { data } = await http.patch(`/api/authors/${id}`, noIdData)
+              const { id, name, avatar } = record
+              console.log('vvv', record)
+
+              const json = JSON.stringify({ name })
+              // const blob = new Blob([json], { type: 'application/json' })
+              // console.log('json', blob)
+              const formData = new FormData()
+              formData.append('filex', avatar.imageFile) // const { name, size, type } = avatar.imageFile
+              formData.append('docx', json)
+              const { data } = await http.patch(`/api/authors/${id}`, formData,
+                {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+                }
+              )
+              // const { data } = await http.patch(`/api/authors/${id}`, noIdData)
               // if (!doc.exists) throw new Error(409)
               // if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
               // await t.set(docRef, noIdData)
@@ -128,6 +143,33 @@ export default {
             } catch (e) {
               return { status: e.response.status, error: e.toString() }
             }
+
+            // axios({
+            //   method: 'post',
+            //   url: '/sample',
+            //   data: data,
+            // })
+            // let formData = new FormData();
+            // formData.append('file', this.file);
+            // http.post( '/single-file',
+            //   formData,
+            //   {
+            //     headers: {
+            //       'Content-Type': 'multipart/form-data'
+            //     }
+            //   }
+            // )
+
+            // try {
+            //   let { id, ...noIdData } = record
+            //   const { data } = await http.patch(`/api/authors/${id}`, noIdData)
+            //   // if (!doc.exists) throw new Error(409)
+            //   // if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
+            //   // await t.set(docRef, noIdData)
+            //   return { status: 200, data }
+            // } catch (e) {
+            //   return { status: e.response.status, error: e.toString() }
+            // }
           },
           'delete': async (id) => {
             try {

@@ -230,7 +230,7 @@ export default {
 
     // confirmations - do this part after getting inline status
     this.confirmCreate = this.$attrs.confirmCreate || (() => this.inline.create ? confirm(this.$t('vueCrudX.confirm')) : true) // default only confirm if inline create
-    this.confirmUpdate = this.$attrs.confirmUpdate || (() => false) // default always no need confirmation
+    this.confirmUpdate = this.$attrs.confirmUpdate || (() => true) // default always no need confirmation
     this.confirmDelete = this.$attrs.confirmDelete || (() => confirm(this.$t('vueCrudX.confirm'))) // default always need confirmation
     // non-ui reactive data - END
 

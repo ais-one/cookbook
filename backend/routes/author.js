@@ -7,6 +7,11 @@ const Author = require('../models/Author')
 const { transaction } = require('objection')
 const knex = Author.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
 
+const multer = require('multer')
+const UPLOAD_PATH = 'uploads/'
+const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
+
+
 authorRoutes
   .post('/authors', authUser, async (req, res) => {
     try {
@@ -15,12 +20,16 @@ authorRoutes
     } catch (e) { }
     return res.status(500).json()
   })
-  .patch('/authors/:id', authUser, async (req, res) => {
+  .patch('/authors/:id', authUser, upload.single('filex'), async (req, res) => {
     try {
-      const author = await Author.query().patchAndFetchById(req.params.id, req.body)
+      // console.log('express file', req.file)
+      const json = JSON.parse(req.body.docx)
+      const author = await Author.query().patchAndFetchById(req.params.id, json)
       if (author) return res.status(200).json(author)
       else return res.status(404).json()
-    } catch (e) { }
+    } catch (e) {
+      console.log('express error', e.toString())
+    }
     return res.status(500).json()
   })
   .get('/authors/:id', authUser, async (req, res) => {

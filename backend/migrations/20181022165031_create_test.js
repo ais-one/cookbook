@@ -1,5 +1,5 @@
 
-exports.up = async (knex, Promise) => {
+exports.up = async (knex) => {
   await knex.schema
     .createTable('categories', (table) => {
       table.increments('id').primary()
@@ -35,15 +35,13 @@ exports.up = async (knex, Promise) => {
       // table.integer('authorId').unsigned().references('id').inTable('authors').onDelete('CASCADE')
       table.unique(['bookId', 'authorId']) // remove this and you will have duplicates
     })
-  return Promise.resolve()
 }
 
-exports.down = async (knex, Promise) => {
+exports.down = async (knex) => {
   await knex.schema.dropTableIfExists('authors_books')
     .dropTableIfExists('pages')
     .dropTableIfExists('authors')
     .dropTableIfExists('books')
-  return Promise.resolve()
 }
 
 

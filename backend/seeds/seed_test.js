@@ -6,7 +6,7 @@ new Intl.DateTimeFormat('default', {
   year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'UTC', hour12: false, formatMatcher: 'basic'
 }).format(new Date())
 
-exports.seed = async (knex, Promise) => {
+exports.seed = async (knex) => {
   // Deletes ALL existing entries
   await knex('books_authors').del()
   await knex('pages').del()
@@ -52,6 +52,4 @@ exports.seed = async (knex, Promise) => {
     {id: 7, content: 'page7', bookId: 4, created_at: mkDt(dt, 0)},
     {id: 8, content: 'page8', bookId: 5, created_at: mkDt(dt, 0)}
   ])
-
-  return Promise.resolve()
-};
+}
