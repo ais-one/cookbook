@@ -60,7 +60,7 @@
     "deepmerge": "^3.3.0",
     "fibers": "^4.0.1",
     "node-sass": "^4.12.0",
-    "sass": "^1.22.1",
+    "sass": "^1.22.2",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.10",
     "vuetify-loader": "^1.2.2"

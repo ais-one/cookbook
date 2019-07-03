@@ -1,121 +1,144 @@
 <template>
-  <vue-crud-x ref="authors" :parentId="null" v-bind="authorDefs"></vue-crud-x>
+  <div>
+    <v-layout row wrap>
+      <v-flex xs12>
+        <vue-crud-x ref="author" :parentId="parentId" v-bind="authorDefs" />
+      </v-flex>
+    </v-layout>
+  </div>
 </template>
 
 <script>
-import VueCrudX from '../../src/VueCrudX'
+import { http } from '@/axios'
 
 export default {
   middleware: ['auth'],
-  name: 'authors',
-  components: {
-    VueCrudX
-  },
-  data() {
+  name: 'author',
+  data () {
     return {
+      parentId: null,
       authorDefs: {
-        crudTable: {
-          actionColumn: false,
-          addrowCreate: false,
-          // inline: false,
-          confirmCreate: true,
-          confirmUpdate: true,
-          confirmDelete: true,
-          headers: [{ text: 'Author Name', value: 'name', class: 'pa-1' }],
-          formatters: (value, _type) => value,
-          doPage: 2
+        infinite: true,
+        options: {
+          showFilterButton: true
         },
-        filters: [
-          {
+        vtable: {
+          headers: [
+            { text: 'Author Name', value: 'name', class: 'pa-1', render: (value) => value, edit: null }
+          ]
+        },
+        pageDefaults: {
+          start: 1
+        },
+        sortDefaults: {
+        },
+        filters: {
+          'name': {
             type: 'v-text-field', // component name
-            name: 'name', // field name
             value: '',
-            'field-wrapper': {
-              xs12: true, sm6: true
-            },
+            'field-wrapper': { xs12: true, sm6: true },
             'field-input': {
               label: 'Author', clearable: true
             }
           }
-        ],
-        crudForm: {
-          formAutoData: {
-            id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
-            name: {
-              type: 'v-text-field',
-              attrs: {
-                label: 'Name',
-                rules: [v => !!v || 'Item is required']
-              },
-              halfSize: false
+        },
+        form: {
+          'id': {
+            type: 'v-text-field',
+            value: '',
+            default: '',
+            hidden: 'add', // add, edit, all, null
+            readonly: 'all', // add, edit, all, null
+            validation: null, // validation function no in place yet
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': {
+              label: 'ID'
             }
           },
-          defaultRec: () => ({
-            id: '',
-            name: ''
-          })
+          'name': {
+            type: 'v-text-field',
+            value: '',
+            default: '',
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': {
+              label: 'Name',
+              rules: [v => !!v || 'Item is required']
+            }
+          },
+          'avatar': {
+            type: 'v-text-field',
+            value: '',
+            default: '',
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': {
+              label: 'Avatar'
+            }
+          }
         },
-        crudOps: {
-          export: async payload => {},
-          find: async payload => {
+        crud: {
+          find: async (payload) => {
             let records = []
             let totalRecords = 0
-            const { pagination } = payload // filters
-            const { page, itemsPerPage } = pagination // sortBy, descending
+            const { pagination, filters = {}, sorters = {} } = payload // sorters = {} not used as it is in pagination for vuetify
+
+            console.log(pagination, filters, sorters)
+            const { page, itemsPerPage } = pagination
+            let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage, ...filters, sort: sorters } // set query params
+
             try {
-              const {
-                data: { results, total }
-              } = await this.$axios.get('/api/authors', {
-                params: {
-                  page: page > 0 ? page - 1 : 0,
-                  limit: itemsPerPage
-                }
-              })
+              const { data: { results, total } } = await http.get('/api/authors', { params })
               records = results
               totalRecords = total
+              // simulate infinite scroll
+              const totalPages = Math.ceil(total / params.limit)
+              let cursor = 0
+              if (page < totalPages) cursor = page + 1
+              else cursor = 0
+              return { status: 200, data: { records, totalRecords, cursor } }
             } catch (e) {
-              console.log(e)
+              return { status: e.response.status, error: e.toString() }
             }
-            return { records, pagination, totalRecords }
           },
-          findOne: async payload => {
-            const { id } = payload
+          findOne: async (id) => {
             try {
-              const { data } = await this.$axios.get(`/api/authors/${id}`)
-              return data
-            } catch (e) {}
-            return {}
-          },
-          create: async payload => {
-            try {
-              let {
-                record: { id, ...noIdData }
-              } = payload
-              const rv = await this.$axios.post('/api/authors', noIdData)
-              console.log(rv)
+              const { data } = await http.get(`/api/authors/${id}`)
+              return { status: 200, data }
             } catch (e) {
-              return 500
+              return { status: e.response.status, error: e.toString() }
             }
-            return 201
           },
-          update: async payload => {
+          create: async ({ record }) => {
             try {
-              let {
-                record: { id, ...noIdData }
-              } = payload
-              const rv = await this.$axios.patch(`/api/authors/${id}`, noIdData)
-              console.log(rv)
+              let { id, ...noIdData } = record
+              const { data } = await http.post('/api/authors', noIdData)
+              return { status: 201, data }
             } catch (e) {
-              if (parseInt(e.message) === 409) return 409
-              else return 500
+              return { status: e.response.status, error: e.toString() }
             }
-            return 200
           },
-          delete: null // TBD if delete, must also delete all dependancies, move all buttons to right?
+          update: async ({ record }) => {
+            try {
+              let { id, ...noIdData } = record
+              const { data } = await http.patch(`/api/authors/${id}`, noIdData)
+              // if (!doc.exists) throw new Error(409)
+              // if (await hasDuplicate('party', 'name', noIdData['name'], id)) throw new Error(409)
+              // await t.set(docRef, noIdData)
+              return { status: 200, data }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
+          },
+          'delete': async (id) => {
+            try {
+              const { data } = await http.delete(`/api/authors/${id}`)
+              return { status: 200, data }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
+          } // done
         }
       }
     }
-  },
-  methods: {}
+  }
 }
 </script>

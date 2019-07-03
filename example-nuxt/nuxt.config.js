@@ -69,7 +69,7 @@ export default {
   css: ['~/assets/style/app.styl'],
 
   // Plugins to load before mounting the App
-  plugins: ['@/plugins/vue-rx', '@/plugins/vuetify', '@/plugins/axios'],
+  plugins: ['@/plugins/vue-rx', '@/plugins/vuetify', '@/plugins/global', '@/plugins/axios'],
 
   // Nuxt.js modules
   modules: [

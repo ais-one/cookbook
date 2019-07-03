@@ -6,16 +6,22 @@
           <template v-slot:filter="{ filters, parentId, vcx }">
             <h1>Custom Filter Slot</h1>
             <p>Records: {{ vcx.records.length }}</p>
-            <div v-for="(filter, index) in filters" :key="index">
-              <component :is="filter.type" v-model="filter.value" v-bind="filter.attrs"></component>
-            </div>
+            <template v-for="(filter, i) in filters">
+              <v-flex :key="i" v-bind="filter['field-wrapper']">
+                <component :is="filter.type" v-model="filter.value" v-bind="filter['field-input']" />
+              </v-flex>
+            </template>
           </template>
-          <template v-slot:form="{ record, parentId }">
+          <!-- <template v-slot:table="{ records, totalRecords, pagination }">
+            <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['book-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
+            <div>{{ totalRecs }} {{ pagination }}</div>
+          </template> -->
+          <template v-slot:form="{ form, parentId }">
             <div>
-              <h1>Custom Form Slot - Has Parent: {{ !!parentId }}</h1>
+              <h1>Custom Form Slot - Has Parent: {{ !!parentId }} {{ form }}</h1>
               <v-card-text>
-                <v-text-field label="Name" v-model="record.name"></v-text-field>
-                <v-select label="Category" v-model="record.categoryId" :items="categories" required item-text="name" item-value="id"></v-select>
+                <v-text-field label="Book Name" v-model="form.name.value"></v-text-field>
+                <v-select label="Category" v-model="form.categoryId.value" :items="categories" required item-text="name" item-value="id"></v-select>
                 <v-autocomplete
                   multiple
                   v-model="authorIds"
@@ -47,7 +53,7 @@
                     </v-list-item-content>
                   </template>
                 </v-autocomplete>
-                <v-btn @click.stop.prevent="gotoPages(record.id)" dark>View Book Pages</v-btn>
+                <v-btn v-if="form.id.value" @click.stop.prevent="gotoPages(form.id.value)" dark>View Book Pages</v-btn>
               </v-card-text>
             </div>
           </template>
@@ -59,20 +65,18 @@
 
 <script>
 import { from } from 'rxjs'
-import { pluck, filter, debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators' // map
-import VueCrudX from '../../../src/VueCrudX'
+import { pluck, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators' // map
+import { http } from '@/axios'
+import { makeCsvRow, exportCsv } from '@/assets/util'
 
 export default {
-  subscriptions() {
-    console.log('browser', process.browser)
+  middleware: ['auth'],
+  subscriptions () {
     return {
       items: this.$watchAsObservable('search').pipe(
         // startWith - not needed in VueJS
-        tap(() => {
-          console.log('foobar')
-        }),
         pluck('newValue'),
-        filter(text => (text ? text.length > 2 : false)),
+        filter(text => text ? text.length > 2 : false),
         debounceTime(500),
         distinctUntilChanged(),
         switchMap(this.fetchTerm)
@@ -80,47 +84,53 @@ export default {
       )
     }
   },
-  name: 'books',
-  middleware: ['auth'],
-  components: {
-    VueCrudX
-  },
-  data() {
+  name: 'book',
+  data () {
     return {
-      ready: false,
       // auto-complete
       isLoading: false,
       authorIds: [], // use record
       search: '',
-      categories: [{ id: 1, name: 'cat1' }, { id: 2, name: 'cat2' }],
+
+      categories: [
+        { id: 1, name: 'cat1' },
+        { id: 2, name: 'cat2' }
+      ],
       bookDefs: {
-        crudTable: {
-          actionColumn: false,
-          addrowCreate: false,
+        options: {
           // inline: false,
-          confirmCreate: true,
-          confirmUpdate: true,
-          confirmDelete: true,
-          headers: [{ text: 'Book Name', value: 'name', class: 'pa-1' }, { text: 'Category', value: 'categoryName', class: 'pa-1' }],
-          formatters: (value, _type) => value,
-          doPage: 2,
-          showFilterButton: false
+          showFilterButton: true
         },
-        filters: [
-          {
+        vtable: {
+          headers: [
+            { text: 'Book Name', value: 'name', class: 'pa-1' },
+            { text: 'Rating', value: 'rating', class: 'pa-1' },
+            { text: 'Year Published', value: 'yearPublished', class: 'pa-1' },
+            { text: 'Category', value: 'categoryName', class: 'pa-1' }
+          ],
+          'multi-sort': true
+        },
+        filters: {
+          'name': {
             type: 'v-text-field', // component name
-            name: 'name', // field name
             value: '',
-            'field-wrapper': {
-              xs12: true, sm6: true
-            },
-            'field-input': {
-              label: 'Book Name', clearable: true
-            }
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': { label: 'Book Name', clearable: true }
           },
-          {
+          'rating': {
+            type: 'v-text-field', // component name
+            value: '',
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': { label: 'Rating', type: 'number', clearable: true }
+          },
+          'yearPublished': {
+            type: 'v-text-field', // component name
+            value: '',
+            'field-wrapper': { xs12: true, sm6: true },
+            'field-input': { label: 'Year Published', clearable: true }
+          },
+          'categoryId': {
             type: 'v-select', // component name
-            name: 'categoryId', // field name
             value: { text: 'All', value: 0 },
             'field-wrapper': {
               xs12: true, sm6: true
@@ -135,91 +145,94 @@ export default {
               rules: [v => !!v || 'Item is required']
             }
           }
-        ],
-        crudForm: {
-          formAutoData: null,
-          defaultRec: () => ({
-            id: '',
-            name: '',
-            categoryId: '',
-            categoryName: '',
-            authorIds: [],
-            authors: []
-          })
         },
+        form: {
+          'id': { value: '', default: '' },
+          'name': { value: '', default: '' },
+          'categoryId': { value: '', default: '' },
+          'authorIds': { value: [], default: [] },
+          'authors': { value: [], default: [] }
+        },
+        crud: {
+          export: async ({ filters = {}, sorters = {} }) => {
+            try {
+              const { data: { results } } = http.get('/api/books', { })
+              let output = ''
+              results.forEach(record => {
+                output = makeCsvRow(output, record, `\r\n`, ';')
+              })
+              exportCsv(output, 'book.csv')
+              return { status: 200, data: null }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
+          },
 
-        // CRUD
-        crudOps: {
-          export: async payload => {},
-          find: async payload => {
+          find: async ({ pagination, filters = {}, sorters = {} }) => {
             let records = []
             let totalRecords = 0
-            const { pagination, filters } = payload
             const { page, itemsPerPage } = pagination // sortBy, descending
-            let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } // set query params
-            for (let filter of filters) {
-              let value = filter.value
-              if (filter.name === 'categoryId') value = filter.value.value
-              if (value) params[filter.name] = value
+            // console.log(pagination, filters)
+            if (filters['categoryId']) {
+              if (filters['categoryId'].value) filters['categoryId'] = filters['categoryId'].value
+              else delete filters['categoryId']
             }
+            let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage, ...filters, sort: sorters } // set query params
+            // console.log(params)
             try {
               const { data: { results, total } } = await http.get('/api/books', { params })
               // console.log('find books', results)
               records = results
               totalRecords = total
+              return { status: 200, data: { records, totalRecords } }
             } catch (e) {
-              console.log(e)
+              return { status: e.response.status, error: e.toString() }
             }
-            return { records, pagination, totalRecords }
           },
-          findOne: async payload => {
-            const { id } = payload
+          findOne: async (id) => {
             try {
-              const { data } = await this.$axios.get(`/api/books/${id}`)
-              return data
-            } catch (e) {}
-            return {}
-          },
-          create: async payload => {
-            try {
-              let {
-                record: { id, ...noIdData }
-              } = payload
-              const rv = await this.$axios.post('/api/authors', noIdData)
-              console.log(rv)
+              const { data } = await http.get(`/api/books/${id}`)
+              return { status: 200, data }
             } catch (e) {
-              return 500
+              return { status: e.response.status, error: e.toString() }
             }
-            // return { // EXAMPLE return object with code property omitted
-            //   ok: true,
-            //   msg: 'OK'
-            // }
-            return 201
+          },
+          create: async ({ record }) => {
+            // console.log(payload)
+            try {
+              // check that you only insert what is needed...
+              let { id, ...noIdData } = record
+              delete noIdData.authors // remove authors
+              const { data } = await http.post('/api/books', noIdData)
+              return { status: 201, data }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
           },
           // TBD Set the linkages also
-          update: async payload => {
-            // console.log('update payload', payload)
+          update: async ({ record }) => {
+            console.log('update payload', record)
             try {
-              let {
-                record: { id, name, categoryId, authorIds }
-              } = payload // authorIds
               // check that you only save what is needed...
-              // console.log('record', id, noIdData)
-              const rv = await this.$axios.patch(`/api/books/${id}`, {
-                name,
-                categoryId,
-                authorIds
-              }) // TBD also update the author ids...?
-              console.log('patch rv', rv)
-              // if (!doc.exists) throw new Error(409)
+              // let { id, name, categoryId, authorIds } = record // authorIds
+              let { id, ...noIdData } = record
+              delete noIdData.authors // remove authors
+              // console.log('record', id, name, categoryId, authorIds)
+              const { data } = await http.patch(`/api/books/${id}`, noIdData) // TBD also update the author ids...?
+              return { status: 200, data }
             } catch (e) {
-              if (parseInt(e.message) === 409) return 409
-              else return 500
+              return { status: e.response.status, error: e.toString() }
             }
-            return 200
           },
-          delete: null // TBD if delete, must also delete all dependancies, move all buttons to right?
-        }
+          'delete': async (id) => {
+            try {
+              const { data } = await http.delete(`/api/books/${id}`)
+              return { status: 200, data }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
+          }
+        } // done
       }
     }
   },
@@ -235,35 +248,34 @@ export default {
   //   }
   // },
   watch: {
-    authorIds(val) {
+    authorIds (val) {
+      console.log('watch')
+      if (!val) return
       if (val.length > 2) val.pop()
-      if (this.$refs['book-table']) this.$refs['book-table'].record.authorIds = val
+      if (this.$refs['book-table']) this.$refs['book-table'].form.authorIds.value = val
       // console.log('watch')
     }
   },
-  mounted() {
-    this.ready = true
-  },
   methods: {
-    gotoPages(id) {
-      // go to pages table for selected book
+    gotoPages (id) { // go to pages table for selected book
       // console.log('gotoPages - BookId: ', id)
       this.$router.push({ path: `/books/${id}/pages` })
     },
-    remove(item) {
+    remove (item) {
       // console.log('remove', item)
       const index = this.authorIds.indexOf(item.id)
       if (index >= 0) this.authorIds.splice(index, 1)
       // console.log(this.authorIds, this.$refs['book-table'].record.authorIds)
     },
-    openBookForm(item) {
-      // console.log('openBookForm', item)
-      this.authorIds = item.authorIds
-      this.items = item.authors
+    openBookForm (item) {
+      // populate local data after opening form
+      this.authorIds = item.authorIds.value
+      this.items = item.authors.value
     },
-    fetchTerm(term) {
+    fetchTerm (term) {
       return from(
-        this.$axios.get('/api/authors', { params: { page: 0, limit: 20, search: term } }).then(res => {
+        http.get('/api/authors', { params: { page: 0, limit: 20, search: term } }).then(res => {
+          // this.items = res.data
           return res.data.results
         })
         // fetch('https://api.coinmarketcap.com/v2/listings/')

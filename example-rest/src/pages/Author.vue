@@ -65,8 +65,8 @@ export default {
             }
           },
           'avatar': {
-            type: 'v-text-field',
-            value: '',
+            type: 'app-file-upload',
+            value: { savedUrl: '', imageName: '', imageUrl: '', imageFile: '' },
             default: '',
             'field-wrapper': { xs12: true, sm6: true },
             'field-input': {
@@ -101,6 +101,8 @@ export default {
           findOne: async (id) => {
             try {
               const { data } = await http.get(`/api/authors/${id}`)
+              data.avatar = { savedUrl: data.avatar, imageName: '', imageUrl: '', imageFile: '' }
+              console.log('data', data)
               return { status: 200, data }
             } catch (e) {
               return { status: e.response.status, error: e.toString() }

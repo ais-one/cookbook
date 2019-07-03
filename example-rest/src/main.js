@@ -15,6 +15,7 @@ import VueApollo from 'vue-apollo'
 // import { stitch } from '@/mongo'
 import TimePicker from '../../src/TimePicker.vue' // Components shared between projects
 import DatePicker from '../../src/DatePicker.vue'
+import FileUpload from '../../src/FileUpload.vue'
 
 import { DO_HELLO } from './queries'
 
@@ -56,6 +57,7 @@ if (WS_URL) {
 
 Vue.component('app-date-picker', DatePicker)
 Vue.component('app-time-picker', TimePicker)
+Vue.component('app-file-upload', FileUpload)
 Vue.component('vue-crud-x', VueCrudX)
 
 /* eslint-disable no-new */
