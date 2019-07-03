@@ -1,3 +1,11 @@
+# VUE IS BROKEN TEMPORARILY
+
+https://forum.vuejs.org/t/npm-run-serve-not-working-with-new-vue-cli-project/67939/9
+
+NEW DOWNLOADS AND INSTALLS WILL NOT WORK! THEY ARE WORKING ON A FIX NOW...
+
+---
+
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
 # NOTICES & UPDATES
