@@ -11,6 +11,9 @@
 </template>
 
 <script>
+// https://jsfiddle.net/meyubaraj/fLbe7r72/
+// https://codepen.io/Atinux/pen/qOvawK/
+
 export default {
   props: ['value'],
   data () {

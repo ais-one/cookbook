@@ -18,7 +18,7 @@
           </template> -->
           <template v-slot:form="{ form, parentId }">
             <div>
-              <h1>Custom Form Slot - Has Parent: {{ !!parentId }} {{ form }}</h1>
+              <p>Custom Form Slot - Has Parent: {{ !!parentId }} {{ form }}</p>
               <v-card-text>
                 <v-text-field label="Book Name" v-model="form.name.value"></v-text-field>
                 <v-select label="Category" v-model="form.categoryId.value" :items="categories" required item-text="name" item-value="id"></v-select>
@@ -43,7 +43,12 @@
                     </v-list-item>
                   </template>
                   <template v-slot:selection="{ item, selected }">
-                    <v-chip :input-value="selected" click:close @input="remove(item)">
+                    <v-chip
+                      :input-value="selected"
+                      close
+                      @click:close="remove(item)"
+                    >
+                    <!-- <v-chip :input-value="selected" click:close @input="remove(item)"> -->
                       <span v-text="item.name"></span>
                     </v-chip>
                   </template>
@@ -247,11 +252,14 @@ export default {
   //   }
   // },
   watch: {
-    authorIds (val) {
-      console.log('watch')
+    authorIds (val, oldVal) {
+      // console.log('watch')
       if (!val) return
-      if (val.length > 2) val.pop()
-      if (this.$refs['book-table']) this.$refs['book-table'].form.authorIds.value = val
+      if (val.length > 2) val.pop() // limit to 2 only
+      if (this.$refs['book-table']) {
+        this.$refs['book-table'].form.authorIds.value = val
+      }
+      if (val.length > oldVal.length) this.search = ''
       // console.log('watch')
     }
   },
