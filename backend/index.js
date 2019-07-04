@@ -33,6 +33,11 @@ const swaggerDocument = YAML.load('./docs/openapi.yaml')
 
 const apollo = require('./middleware/graphql')
 
+// Set CORS headers so that the React SPA is able to communicate with this server
+// Access-Control-Allow-Origin=*
+// Access-Control-Allow-Methods=GET,POST,PUT,PATCH,DELETE,OPTIONS
+// Access-Control-Allow-Headers=Content-Type
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
@@ -45,6 +50,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(history()) // causes problems when using postman, comment out to checkout API
 app.use(express.static('public')) // for html content
+// app.use('/public-uploads', express.static(path.join('public-uploads'))) // need to create the folder public-uploads
 app.use('/api-docs', express.static('docs'), swaggerUi.serve, swaggerUi.setup(swaggerDocument, { // for OpenAPI
   swaggerOptions: { docExpansion: 'none' },  
   explorer: true 

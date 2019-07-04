@@ -1,5 +1,7 @@
 import { Stitch, UserPasswordCredential, RemoteMongoClient } from 'mongodb-stitch-browser-sdk' // AnonymousCredential
 // import { UserPasswordAuthProviderClient } from 'mongodb-stitch-browser-sdk' // AnonymousCredential
+// import BSON from 'bson'
+// const { ObjectId, Decimal128 } = BSON // Decimal128.fromString()
 
 // stitch.auth.loginWithCredential(new AnonymousCredential())
 // stitch.callFunction('Greet', ['Max'])
