@@ -16,7 +16,8 @@ export default {
     } catch (e) { }
     commit('setLoading', false)
     if (rv) {
-      // TBD const newUser = {id: user.uid, email: payload.email} commit('setUser', newUser)
+      const newUser = { id: payload.uid, email: payload.email } // Firebase Use-Case
+      commit('setUser', newUser)
       commit('setError', { message: 'User Registered' })
     } else {
       commit('setError', { message: 'Error Signup' })
@@ -111,16 +112,14 @@ export default {
       commit('setBaasUser', newUser)
     } else {
       commit('setError', { message: 'Error Signup' })
-      /* TBD
-        if (error.code === 'auth/email-already-in-use') {
-          var credential = auth.EmailAuthProvider.credential(payload.email, payload.password)
-          user = await auth.currentUser.linkWithCredential(credential)
-          if (user) {
-            const newUser = {id: user.uid}
-            commit('setBaasUser', newUser)
-          }
-        }
-      */
+      // if (error.code === 'auth/email-already-in-use') {
+      //   var credential = auth.EmailAuthProvider.credential(payload.email, payload.password)
+      //   user = await auth.currentUser.linkWithCredential(credential)
+      //   if (user) {
+      //     const newUser = { id: user.uid }
+      //     commit('setBaasUser', newUser)
+      //   }
+      // }
     }
   },
   async firebaseSignin ({ dispatch, commit }, payload) {
@@ -151,7 +150,7 @@ export default {
       await stitch.auth.logout()
     } else if (payload.loginType === 'firebase') {
       console.log('LOGOUT Firebase')
-      await auth.signOut()
+      // TBD await auth.signOut()
     } else { // rest
       console.log('LOGOUT Rest')
       if (payload.forced) { // auth failure detected

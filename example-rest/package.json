@@ -16,6 +16,7 @@
     "start": "concurrently \"npm run rest\" \"npm run serve\""
   },
   "dependencies": {
+    "core-js": "^2.6.5",
     "@firebase/app": "^0.4.9",
     "@firebase/auth": "^0.11.3",
     "@firebase/firestore": "^1.4.3",
@@ -52,17 +53,20 @@
   },
   "devDependencies": {
     "@mdi/font": "^3.7.95",
-    "@vue/cli-plugin-babel": "^3.8.0",
-    "@vue/cli-plugin-eslint": "^3.8.0",
-    "@vue/cli-service": "^3.8.4",
+    "@vue/cli-plugin-babel": "^3.9.0",
+    "@vue/cli-plugin-eslint": "^3.9.0",
+    "@vue/cli-service": "^3.9.0",
     "@vue/eslint-config-standard": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "vue-template-compiler": "^2.6.10",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
     "concurrently": "^4.1.1",
     "deepmerge": "^3.3.0",
     "fibers": "^4.0.1",
-    "node-sass": "^4.12.0",
     "sass": "^1.22.2",
-    "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.6.10",
     "vuetify-loader": "^1.2.2"
   },
   "browserslist": [
