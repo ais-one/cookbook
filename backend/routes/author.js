@@ -17,6 +17,35 @@ const upload = multer({ storage: storage })
 // const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
 
 authorRoutes
+  /**
+   * @swagger
+   * definition:
+   *    authorObject:
+   *      properties:
+   *        name:
+   *          type: string
+   *          description: Author Name
+   *        avatar:
+   *          type: string
+   *          description: URL path to author avatar
+   */
+
+  /**
+   * @swagger
+   * /api/authors
+   *    post:
+   *      tags:
+   *        - "Base"
+   *      security:
+   *        - Bearer: []
+   *      description: add an author
+   *      parameters:
+   *        - name author
+   *          in: body
+   *          required: true
+   *          schema:
+   *            $ref: '#/definitions/AuthorObject'
+   */
   .post('/authors', authUser, async (req, res) => {
     try {
       const author = await Author.query().insert(req.body)
@@ -24,6 +53,24 @@ authorRoutes
     } catch (e) { }
     return res.status(500).json()
   })
+  /**
+   * @swagger
+   * /api/authors/{id}:
+   *    patch:
+   *      tags:
+   *        - "Base"
+   *      security:
+   *        - Bearer: []
+   *      description: add an author
+   *      parameters:
+   *        - name id
+   *          in: path
+   *        - name author
+   *          in: body
+   *          required: true
+   *          schema:
+   *            $ref: '#/definitions/AuthorObject'
+   */
   .patch('/authors/:id', authUser, upload.single('filex'), async (req, res) => {
     try {
       // console.log('express file', req.file)
@@ -36,6 +83,19 @@ authorRoutes
     }
     return res.status(500).json()
   })
+  /**
+   * @swagger
+   * /api/authors/{id}:
+   *    get:
+   *      tags:
+   *        - "Base"
+   *      security:
+   *        - Bearer: []
+   *      description: add an author
+   *      parameters:
+   *        - name id
+   *          in: path
+   */
   .get('/authors/:id', authUser, async (req, res) => {
     try {
       const author = await Author.query().findById(req.params.id)
@@ -44,6 +104,25 @@ authorRoutes
     } catch (e) { }
     return res.status(500).json()
   })
+  /**
+   * @swagger
+   * /api/authors:
+   *    get:
+   *      tags:
+   *        - "Base"
+   *      security:
+   *        - Bearer: []
+   *      description: add an author
+   *      parameters:
+   *        - name page
+   *          in: query
+   *        - name limit
+   *          in: query
+   *        - name search
+   *          in: query
+   *        - name sort
+   *          in: query
+   */
   .get('/authors', authUser, async (req, res) => {
     try {
       const limit = req.query.limit ? req.query.limit : 2
@@ -61,14 +140,25 @@ authorRoutes
           qb.orderBy(kv_a[0], kv_a[1])
         }
       }
-
       const authors = await qb
-
       return res.status(200).json(authors)  
     } catch (e) {
       return res.status(500).json()
     }
   })
+  /**
+   * @swagger
+   * /api/authors/{id}:
+   *    delete:
+   *      tags:
+   *        - "Base"
+   *      security:
+   *        - Bearer: []
+   *      description: add an author
+   *      parameters:
+   *        - name id
+   *          in: path
+   */
   .delete('/authors/:id', authUser, async (req, res) => {
     try {
       trx = await transaction.start(knex)

@@ -27,6 +27,7 @@ const http = require('http')
 const https = require('https')
 
 const swaggerUi = require('swagger-ui-express')
+const swaggerJSDoc = require('swagger-jsdoc')
 
 const YAML = require('yamljs')
 const swaggerDocument = YAML.load('./docs/openapi.yaml')
@@ -51,7 +52,40 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(history()) // causes problems when using postman, comment out to checkout API
 app.use(express.static('public')) // for html content
 // app.use('/public-uploads', express.static(path.join('public-uploads'))) // need to create the folder public-uploads
+
+const specs = swaggerJSDoc({
+  swaggerDefinition: {
+    info: {
+      title: 'Vue Crud X',
+      version: '1.0.0',
+      description: 'A sample API',
+    },
+    host: '127.0.0.1:'+process.env.API_PORT,
+    basePath: '/',
+    tags: [
+      { name: 'Auth', description: 'Authentication' },
+      { name: 'Base', description: 'The Base API' },
+    ],
+    schemes: [ 'http', 'https' ],
+    securityDefinitions: {
+      Bearer: {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'header'
+      }
+    },
+    consumes: ['application/json'],
+    produces: ['application/json']
+  },
+  apis: ['./routes/*.js']
+})
+
 app.use('/api-docs', express.static('docs'), swaggerUi.serve, swaggerUi.setup(swaggerDocument, { // for OpenAPI
+  swaggerOptions: { docExpansion: 'none' },  
+  explorer: true 
+}))
+
+app.use('/api-docs2', swaggerUi.serve, swaggerUi.setup(specs, { // for OpenAPI
   swaggerOptions: { docExpansion: 'none' },  
   explorer: true 
 }))
