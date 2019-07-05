@@ -5,19 +5,20 @@
     v-model="menu"
     :nudge-right="40"
     :return-value.sync="time"
-    lazy
     transition="scale-transition"
     offset-y
     full-width
     min-width="290px"
   >
+    <template v-slot:activator="{ on }">
     <v-text-field
-      slot="activator"
+      v-on="on"
       v-model="time"
       :label="label"
       :prepend-icon="iconName"
       readonly
     ></v-text-field>
+    </template>
     <v-time-picker v-if="menu" v-model="time" format="24hr" no-title scrollable @change="changeTime"></v-time-picker>
   </v-menu>
 </template>

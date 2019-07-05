@@ -32,7 +32,7 @@ authorRoutes
 
   /**
    * @swagger
-   * /api/authors
+   * /api/authors:
    *    post:
    *      tags:
    *        - "Base"
@@ -40,7 +40,7 @@ authorRoutes
    *        - Bearer: []
    *      description: add an author
    *      parameters:
-   *        - name author
+   *        - name: author
    *          in: body
    *          required: true
    *          schema:
@@ -63,13 +63,14 @@ authorRoutes
    *        - Bearer: []
    *      description: add an author
    *      parameters:
-   *        - name id
+   *        - name: id
    *          in: path
-   *        - name author
+   *        - name: author
    *          in: body
    *          required: true
    *          schema:
    *            $ref: '#/definitions/AuthorObject'
+
    */
   .patch('/authors/:id', authUser, upload.single('filex'), async (req, res) => {
     try {
@@ -93,7 +94,7 @@ authorRoutes
    *        - Bearer: []
    *      description: add an author
    *      parameters:
-   *        - name id
+   *        - name: id
    *          in: path
    */
   .get('/authors/:id', authUser, async (req, res) => {
@@ -114,13 +115,13 @@ authorRoutes
    *        - Bearer: []
    *      description: add an author
    *      parameters:
-   *        - name page
+   *        - name: page
    *          in: query
-   *        - name limit
+   *        - name: limit
    *          in: query
-   *        - name search
+   *        - name: search
    *          in: query
-   *        - name sort
+   *        - name: sort
    *          in: query
    */
   .get('/authors', authUser, async (req, res) => {
@@ -156,7 +157,7 @@ authorRoutes
    *        - Bearer: []
    *      description: add an author
    *      parameters:
-   *        - name id
+   *        - name: id
    *          in: path
    */
   .delete('/authors/:id', authUser, async (req, res) => {

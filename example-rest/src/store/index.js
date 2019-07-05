@@ -27,6 +27,7 @@ export const store = new Vuex.Store({
         }
         payload.loginType = 'rest'
       }
+      console.log('setUser', payload)
       state.user = payload
       if (payload) {
         localStorage.setItem('session', JSON.stringify(payload))
@@ -36,7 +37,10 @@ export const store = new Vuex.Store({
         delete http.defaults.headers.common['Authorization']
       }
     },
-    setBaasUser (state, payload) { state.user = payload }, // for BAAS like firebase, mongo stitch
+    setBaasUser (state, payload) {
+      console.log('setBaasUser', payload)
+      state.user = payload
+    }, // for BAAS like firebase, mongo stitch
     setLoading (state, payload) { state.loading = payload },
     setError (state, payload) { state.error = payload },
     mutateNetworkError (state, payload) { state.networkError = payload }

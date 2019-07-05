@@ -150,7 +150,7 @@ export default {
       await stitch.auth.logout()
     } else if (payload.loginType === 'firebase') {
       console.log('LOGOUT Firebase')
-      // TBD await auth.signOut()
+      await auth.signOut()
     } else { // rest
       console.log('LOGOUT Rest')
       if (payload.forced) { // auth failure detected

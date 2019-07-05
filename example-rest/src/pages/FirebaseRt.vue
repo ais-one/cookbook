@@ -2,14 +2,7 @@
   <div id="abc">
     <v-layout row wrap>
       <v-flex xs12>
-        <vue-crud-x
-          ref="taskRef"
-          :parentId="null"
-          v-bind="taskDefs"
-          @selected="onSelected"
-          @loaded="onLoaded"
-        >
-        </vue-crud-x>
+        <vue-crud-x ref="taskRef" :parentId="null" v-bind="taskDefs" @selected="onSelected" @loaded="onLoaded" />
       </v-flex>
     </v-layout>
     <v-btn v-if="newUpdatedCount" color="red" fab absolute  bottom right dark @click="resetIncomingAlert">{{newUpdatedCount}}</v-btn>
@@ -29,11 +22,11 @@ export default {
   name: 'firebase-rt',
   data () {
     return {
+      parentId: null,
       taskDefs: {
         options: {
           inline: {
-            edit: true,
-            add: true
+            create: true, update: true, delete: false
           },
           // inline: {
           //   task: { field: 'v-text-field', attrs: { type: 'text', class: ['caption'] } },
@@ -41,16 +34,21 @@ export default {
           //   orderDate: { field: 'v-date-picker', attrs: { } },
           //   orderTime: { field: 'v-time-picker', attrs: { } }
           // },
-          crudTitle: 'Task',
-          inlineReload: { // default true, set to false and use snapshot for large firestore dataset (or similar mechanisms where reads are chargeable)
-            update: false,
-            create: false,
-            delete: false
-          }
+          crudTitle: 'Task'
         },
         vtable: {
           headers: [
-            { text: 'Action', value: '', align: 'center', sortable: false, class: 'py-1 px-2' },
+            {
+              text: 'ID',
+              value: 'id',
+              align: 'left',
+              sortable: false,
+              class: 'py-1 px-2',
+              action: {
+                edit: true,
+                delete: true
+              }
+            },
             { text: 'Task', value: 'task', align: 'left', sortable: false, class: 'pa-1' },
             { text: 'Area', value: 'area', align: 'left', sortable: false, class: 'pa-1' },
             { text: 'Date', value: 'orderDate', align: 'left', sortable: false, class: 'pa-1' },
@@ -67,33 +65,46 @@ export default {
         //   timeEnd: { type: 'app-time-picker', halfSize: true, value: '23:55', attrs: { label: 'Time End' } }
         // },
         form: {
-          'id': { value: '', hidden: 'all' },
-          'area': { value: 'CENTRAL', type: 'v-autocomplete' },
-          'task': { value: '', type: 'v-text-field' },
-          'orderDatetime': { value: '', hidden: 'all' },
-          'orderDate': { value: format(new Date(), 'YYYY-MM-DD'), type: 'v-autocomplete' },
-          'orderTime': { value: format(new Date(), 'HH:mm'), type: 'v-autocomplete' }
+          'id': { value: '', default: '', hidden: 'all' },
+          // 'area': { value: 'CENTRAL', default: 'CENTRAL', type: 'v-autocomplete' },
+          'area': {
+            type: 'v-select', // component name
+            value: 'CENTRAL',
+            'field-input': {
+              multiple: false,
+              items: [
+                'CENTRAL', 'NORTH', 'SOUTH', 'EAST', 'WEST'
+              ]
+            }
+          },
+          'task': { value: '', default: '', type: 'v-text-field' },
+          'orderDatetime': { value: '', default: '', hidden: 'all' },
+          'orderDate': { default: '', value: format(new Date(), 'YYYY-MM-DD'), type: 'app-date-picker' },
+          'orderTime': { default: '', value: format(new Date(), 'HH:mm'), type: 'app-time-picker' }
         },
         crud: {
           find: async (payload) => {
             let records = []
             try {
-              const { area, readMode, dateStart, timeStart, dateEnd, timeEnd } = payload.filters
+              // const { area, readMode, dateStart, timeStart, dateEnd, timeEnd } = payload.filters
               let dbCol = firestore.collection(COL_NAME)
-              if (area.value) dbCol = dbCol.where('area', '==', area.value)
-              if (readMode.value === 'Latest') {
-                dbCol = dbCol.orderBy('orderDatetime', 'desc').limit(50) // temporary limit for now
-              } else { // date range
-                dbCol = dbCol.where('orderDatetime', '>=', dateStart.value + ' ' + timeStart.value)
-                  .where('orderDatetime', '<=', dateEnd.value + ' ' + timeEnd.value)
-                  .orderBy('orderDatetime', 'desc').limit(50)
-              }
-              const rv = await dbCol.get()
+              // if (area.value) dbCol = dbCol.where('area', '==', area.value)
+              // if (readMode.value === 'Latest') {
+              //   dbCol = dbCol.orderBy('orderDatetime', 'desc').limit(50) // temporary limit for now
+              // } else { // date range
+              //   dbCol = dbCol.where('orderDatetime', '>=', dateStart.value + ' ' + timeStart.value)
+              //     .where('orderDatetime', '<=', dateEnd.value + ' ' + timeEnd.value)
+              //     .orderBy('orderDatetime', 'desc').limit(50)
+              // }
+              // const rv = await dbCol.get()
+              const rv = await dbCol.limit(10).get()
               rv.forEach(record => {
                 records.push({ id: record.id, ...record.data() })
               })
-            } catch (e) { console.log(e) }
-            return { records, totalRecords: records.length }
+              return { status: 200, data: { records, totalRecords: records.length } }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
           },
           findOne: async (id) => {
             let record = { }
@@ -102,39 +113,40 @@ export default {
               if (doc.exists) {
                 record = { id, ...doc.data() }
               }
-            } catch (e) { }
-            return record
+              return { status: 200, data: record }
+            } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
           },
           create: async (payload) => {
-            const { record: { id, ...noIdData }, user } = payload
+            const { record: { id, ...noIdData } } = payload
             try {
-              noIdData.updatedBy = user.email
+              noIdData.updatedBy = '' // TBD user.email
               noIdData.updatedAt = format(new Date(), 'YYYY-MM-DD HH:mm:ss')
               noIdData.orderDatetime = noIdData.orderDate + ' ' + noIdData.orderTime
               await firestore.collection(COL_NAME).add(noIdData)
             } catch (e) {
-              console.log(e)
-              return 500
+              return { status: e.response.status, error: e.toString() }
             }
-            return 201
+            return { status: 201, data: null }
           },
           update: async (payload) => {
-            const { record: { id, ...noIdData }, user } = payload
+            const { record: { id, ...noIdData } } = payload
             noIdData.area = noIdData.area ? noIdData.area : ''
             noIdData.orderDatetime = noIdData.orderDate + ' ' + noIdData.orderTime
-            noIdData.updatedBy = user.email
+            noIdData.updatedBy = '' // TBD user.email
             noIdData.updatedAt = format(new Date(), 'YYYY-MM-DD HH:mm:ss')
-            try { await firestore.doc(COL_NAME + '/' + id).update(noIdData) } catch (e) { return 500 }
-            return 200
+            try { await firestore.doc(COL_NAME + '/' + id).update(noIdData) } catch (e) {
+              return { status: e.response.status, error: e.toString() }
+            }
+            return { status: 200, data: { id, ...noIdData } }
           }
         } // done
       },
       selectedId: null,
       offsetTop: 0,
       colName: COL_NAME,
-
       newUpdatedCount: 0,
-
       unsub: null,
       subTime: null
     }
@@ -192,6 +204,7 @@ export default {
           break
         }
       }
+      console.log('exists', exists)
       if (!exists) {
         recs.push({ id: doc.id, ...doc.data() }) // insert
       }

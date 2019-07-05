@@ -2,6 +2,7 @@
   "name": "functions",
   "description": "Cloud Functions for Firebase",
   "scripts": {
+    "ssh": "ssh -i ../xxx.pem -L 27017:127.0.0.1:27017 ubuntu@11.22.33.44",
     "lint": "eslint .",
     "test": "mocha --timeout 15000 --recursive",
     "db": "rm -f dev.sqlite3&&npx knex migrate:latest --env development&&npx knex seed:run --env development",

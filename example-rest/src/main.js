@@ -11,7 +11,7 @@ import VueCrudX from '../../src/VueCrudX' // Component shared between projects
 import { apolloClient } from './graphql'
 import VueApollo from 'vue-apollo'
 
-// import { auth } from '@/firebase'
+import { auth } from '@/firebase'
 // import { stitch } from '@/mongo'
 import TimePicker from '../../src/TimePicker.vue' // Components shared between projects
 import DatePicker from '../../src/DatePicker.vue'
@@ -68,25 +68,25 @@ export const app = new Vue({
   router,
   store,
   apolloProvider,
-  render: h => h(App)
-  // created () {
-  //   // firebase
-  //   auth.onAuthStateChanged((user) => {
-  //     // console.log('onAuthStateChanged', user)
-  //     if (user) {
-  //       this.$store.dispatch('firebaseAutoSignin', user) // server force keep login
-  //     } else {
-  //       // this.$store.dispatch('baasLogout', {userLogout: false}) // server force logout
-  //     }
-  //   })
-  //   // mongo - SEEMS LIKE NOT WORKING AT THE MOMENT
-  //   stitch.auth.addAuthListener(auth => {
-  //     console.log('onAuthStateChanged', auth)
-  //     if (auth.user) {
-  //       this.$store.dispatch('mongoAutoSignin', auth.user) // server force keep login
-  //     } else {
-  //       // this.$store.dispatch('baasLogout', {userLogout: false}) // server force logout
-  //     }
-  //   })
-  // }
+  render: h => h(App),
+  created () {
+    // firebase
+    auth.onAuthStateChanged((user) => {
+      // console.log('onAuthStateChanged', user)
+      if (user) {
+        this.$store.dispatch('firebaseAutoSignin', user) // server force keep login
+      } else {
+        // this.$store.dispatch('baasLogout', {userLogout: false}) // server force logout
+      }
+    })
+    // // mongo - SEEMS LIKE NOT WORKING AT THE MOMENT
+    // stitch.auth.addAuthListener(auth => {
+    //   console.log('onAuthStateChanged', auth)
+    //   if (auth.user) {
+    //     this.$store.dispatch('mongoAutoSignin', auth.user) // server force keep login
+    //   } else {
+    //     // this.$store.dispatch('baasLogout', {userLogout: false}) // server force logout
+    //   }
+    // })
+  }
 })

@@ -59,6 +59,7 @@ export default {
         { icon: 'list_alt', title: 'Categories', link: '/categories', loginType: 'rest' },
         { icon: 'list_alt', title: 'Books', link: '/books', loginType: 'rest' },
         { icon: 'list_alt', title: 'Mongo Test', link: '/mongo-test', loginType: 'mongo' },
+        { icon: 'list_alt', title: 'Firebase RT', link: '/firebase-rt', loginType: 'firebase' },
         { icon: 'list_alt', title: 'Test Stuff', link: '/test' }
       ]
     }
