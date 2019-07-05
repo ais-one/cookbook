@@ -13,7 +13,7 @@
     </v-navigation-drawer>
     <v-app-bar dark app fixed clipped-left dense class="primary">
       <v-app-bar-nav-icon v-if="userIsAuthenticated" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>VueCrudX {{ currentTime }}</v-toolbar-title>
+      <v-toolbar-title>[{{ user.loginType }}] {{ currentTime }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click="setLocale">{{ selectedLocale }}</v-btn>
       <v-btn icon @click="onLogout"><v-icon>exit_to_app</v-icon></v-btn>

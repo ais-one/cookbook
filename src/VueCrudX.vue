@@ -42,11 +42,7 @@ export default {
       // VARIATION - End Vuetify2
 
       // VARIATION - Start Vuetify 2
-      attrs: { // props
-        // you can add attributes used by the component and customize style and classes
-        'action-icon': { small: true, class: 'mr-1' } // for the action column
-      },
-      // VARIATION - End Vuetify2
+      actionicon: { small: true, class: 'mr-1' }, // for the action column
       vbtn: { dark: false, light: true, icon: true, fab: false }, // v-btn Component
       vtoolbar: { height: 48, dark: false, light: true, color: 'grey', fixed: false }, // v-toolbar Component
       vcontainer: { fluid: true, class: 'pa-2', style: { } }, // v-container Component
@@ -58,7 +54,6 @@ export default {
         'lazy-validation': true
       },
       vtable: { // props
-        // VARIATION - Start Vuetify2
         headers: [],
         dense: true,
         'multi-sort': false,
@@ -72,11 +67,10 @@ export default {
         'hide-default-header': false,
         style: { // this may need to be changed once Vuetify version 2.0 is out
           'max-height': 'calc(100vh - 144px)',
-          // 'overflow-y': 'scroll',
           'backface-visibility': 'hidden'
         }
-        // VARIATION - End Vuetify2
       },
+      // VARIATION - End Vuetify2
 
       // depends on UI Framework
       pagination: {
@@ -143,10 +137,11 @@ export default {
     this.ready = false
 
     this.idName = this.$attrs.idName || 'id'
-    this.infinite = this.$attrs.infinite || true // default true
+    this.infinite = !!this.$attrs.infinite // default false
     this.options = Object.assign(this.options, this.$attrs.options || {})
 
     // VARIATION Start Vuetify2
+    this.actionicon = Object.assign(this.actionicon, this.$attrs.actionicon || {})
     this.vbtn = Object.assign(this.vbtn, this.$attrs.vbtn || {})
     this.vform = Object.assign(this.vform, this.$attrs.vform || {})
     this.vtoolbar = Object.assign(this.vtoolbar, this.$attrs.vtoolbar || {})
@@ -189,7 +184,9 @@ export default {
       const idx = this.records.findIndex(rec => rec[this.idName] === record[this.idName])
       if (idx !== -1) {
         for (let key in this.records[idx]) {
-          if (key !== this.idName && record[key]) this.records[idx][key] = record[key]
+          if (key !== this.idName && record[key]) {
+            this.records[idx][key] = record[key]
+          }
         }
       }
     })
@@ -236,7 +233,6 @@ export default {
 
     // UI customizations
     this.buttons = Object.assign(this.buttons, this.$attrs.buttons || {}) // customize button icons and labels
-    this.attrs = Object.assign(this.attrs, this.$attrs.attrs || {}) // customize button icons and labels
 
     this.ready = true
   },
@@ -547,19 +543,19 @@ export default {
           <template v-slot:item="{ item }"><!-- was items -->
             <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="onRowClick(item, $event)">
               <slot name="td" :headers="vtable.headers" :item="item" :vcx="_self">
-                <td :key="header.value + index" v-for="(header, index) in vtable.headers" :class="header['cell-class']?header['cell-class']:header.class">
+                <td :key="header.value + index" v-for="(header, index) in vtable.headers" :class="header.class">
                   <span v-if="header.action">
                     <template v-if="_isRowEditing(item)">
-                      <v-icon v-if="crud.update && inline.update" v-bind="attrs['action-icon']" @click.stop="_inlineSave(item)" :disabled="loading">save</v-icon>
-                      <v-icon v-if="crud.update && inline.update" v-bind="attrs['action-icon']" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
+                      <v-icon v-if="crud.update && inline.update" v-bind="actionicon" @click.stop="_inlineSave(item)" :disabled="loading">save</v-icon>
+                      <v-icon v-if="crud.update && inline.update" v-bind="actionicon" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
                     </template>
                     <template v-else>
-                      <v-icon v-if="crud.update && (inline.update || (!inline.update && form))" v-bind="attrs['action-icon']" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>
-                      <v-icon v-if="crud.delete && inline.delete" v-bind="attrs['action-icon']" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">delete</v-icon>
+                      <v-icon v-if="crud.update && (inline.update || (!inline.update && form))" v-bind="actionicon" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>
+                      <v-icon v-if="crud.delete && inline.delete" v-bind="actionicon" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">delete</v-icon>
                     </template>
                   </span>
                   <template v-else>
-                    <component v-if="inline.update && _isRowEditing(item)" :disabled="!header.edit" :is="'v-text-field'" :key="item[idName]+'-'+item[header.value]" v-model="editingRow[header.value]"></component>
+                    <component v-if="inline.update && _isRowEditing(item) && header.edit" :is="header.edit.type" v-bind="header.edit.props" :key="item[idName]+'-'+item[header.value]" v-model="editingRow[header.value]"></component>
                     <span v-else v-html="header.render?header.render(item[header.value]):item[header.value]"></span>
                   </template>
                 </td>

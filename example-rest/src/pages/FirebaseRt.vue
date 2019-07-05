@@ -11,11 +11,20 @@
 </template>
 
 <script>
-import { _orderBy } from 'lodash'
+/*
+1. Firebase CRUD
+2. Real-time updates
+  - override default behaviour for post create, update and delete operations
+  - apply sorting
+  - get notification
+3. Inline edit - text, select, date input
+*/
+import _orderBy from 'lodash.orderby'
 import { format } from 'date-fns' // startOfMonth, endOfMonth, later
 import { firestore } from '@/firebase'
 
 const COL_NAME = 'task'
+const TASK_LIMIT = 10
 // Add In later... const area = ['North', 'South', 'East', 'West', 'Central']
 
 export default {
@@ -24,16 +33,15 @@ export default {
     return {
       parentId: null,
       taskDefs: {
+        // overide set all to do nothing, as firebase will take care of post crud actions
+        updated: ({ record }) => { },
+        created: ({ record }) => { },
+        deleted: (id) => { },
+
+        inline: { // comment this if you want to use form instead of inline updates...
+          create: true, update: true, delete: false
+        },
         options: {
-          inline: {
-            create: true, update: true, delete: false
-          },
-          // inline: {
-          //   task: { field: 'v-text-field', attrs: { type: 'text', class: ['caption'] } },
-          //   area: { field: 'v-autocomplete', attrs: { items: area, class: 'caption' } },
-          //   orderDate: { field: 'v-date-picker', attrs: { } },
-          //   orderTime: { field: 'v-time-picker', attrs: { } }
-          // },
           crudTitle: 'Task'
         },
         vtable: {
@@ -49,16 +57,30 @@ export default {
                 delete: true
               }
             },
-            { text: 'Task', value: 'task', align: 'left', sortable: false, class: 'pa-1' },
-            { text: 'Area', value: 'area', align: 'left', sortable: false, class: 'pa-1' },
-            { text: 'Date', value: 'orderDate', align: 'left', sortable: false, class: 'pa-1' },
+            { text: 'Task', value: 'task', align: 'left', sortable: false, class: 'pa-1', edit: { type: 'v-text-field' } },
+            {
+              text: 'Area',
+              value: 'area',
+              align: 'left',
+              sortable: false,
+              class: 'pa-1',
+              edit: { type: 'v-select', props: { multiple: false, items: [ 'CENTRAL', 'NORTH', 'SOUTH', 'EAST', 'WEST' ] } }
+            },
+            {
+              text: 'Date',
+              value: 'orderDate',
+              align: 'left',
+              sortable: false,
+              class: 'pa-1',
+              edit: { type: 'app-date-picker' }
+            },
             { text: 'Time', value: 'orderTime', align: 'left', sortable: false, class: 'pa-1' }
           ]
         },
         filters: null,
         // filters: {
         //   area: { type: 'v-autocomplete', halfSize: true, value: '', attrs: { label: 'Area', class: 'pa-2', items: area, clearable: true } },
-        //   readMode: { type: 'v-select', halfSize: true, value: 'Latest', attrs: { label: 'Latest 50 Or Date Range', class: 'pa-2', multiple: false, items: [ 'Latest', 'Date Range' ], rules: [v => !!v || 'Item is required'] } },
+        //   readMode: { type: 'v-select', halfSize: true, value: 'Latest', attrs: { label: 'Latest 10 Or Date Range', class: 'pa-2', multiple: false, items: [ 'Latest', 'Date Range' ], rules: [v => !!v || 'Item is required'] } },
         //   dateStart: { type: 'app-date-picker', halfSize: true, value: format(startOfMonth(new Date()), 'YYYY-MM-DD'), attrs: { label: 'Date Start' } },
         //   timeStart: { type: 'app-time-picker', halfSize: true, value: '00:00', attrs: { label: 'Time Start' } },
         //   dateEnd: { type: 'app-date-picker', halfSize: true, value: format(endOfMonth(new Date()), 'YYYY-MM-DD'), attrs: { label: 'Date End' } },
@@ -77,7 +99,9 @@ export default {
               ]
             }
           },
-          'task': { value: '', default: '', type: 'v-text-field' },
+          'task': {
+            value: '', default: '', type: 'v-text-field', 'field-input': { placeholder: 'Task' }
+          },
           'orderDatetime': { value: '', default: '', hidden: 'all' },
           'orderDate': { default: '', value: format(new Date(), 'YYYY-MM-DD'), type: 'app-date-picker' },
           'orderTime': { default: '', value: format(new Date(), 'HH:mm'), type: 'app-time-picker' }
@@ -90,14 +114,14 @@ export default {
               let dbCol = firestore.collection(COL_NAME)
               // if (area.value) dbCol = dbCol.where('area', '==', area.value)
               // if (readMode.value === 'Latest') {
-              //   dbCol = dbCol.orderBy('orderDatetime', 'desc').limit(50) // temporary limit for now
+              dbCol = dbCol.orderBy('orderDatetime', 'desc').limit(TASK_LIMIT) // temporary limit for now
               // } else { // date range
               //   dbCol = dbCol.where('orderDatetime', '>=', dateStart.value + ' ' + timeStart.value)
               //     .where('orderDatetime', '<=', dateEnd.value + ' ' + timeEnd.value)
-              //     .orderBy('orderDatetime', 'desc').limit(50)
+              //     .orderBy('orderDatetime', 'desc').limit(TASK_LIMIT)
               // }
               // const rv = await dbCol.get()
-              const rv = await dbCol.limit(10).get()
+              const rv = await dbCol.get()
               rv.forEach(record => {
                 records.push({ id: record.id, ...record.data() })
               })
@@ -204,19 +228,18 @@ export default {
           break
         }
       }
-      console.log('exists', exists)
       if (!exists) {
         recs.push({ id: doc.id, ...doc.data() }) // insert
       }
+      // console.log('exists', exists, recs)
       // recs.forEach(aa => console.log(aa.orderDatetime))
       const temp = _orderBy(recs, ['orderDatetime'], ['desc']) // Use Lodash to sort array by 'name'
-      if (temp.length > 50) { // if > limit page limit remove last record in array
+      if (temp.length > TASK_LIMIT) { // if > limit page limit remove last record in array
         temp.splice(-1, 1) // or pop
       }
       // this.$store.commit(this.colName + '/setRecords', { records: temp, totalRecs: temp.length })
       this.$refs.taskRef.records = temp
       this.$refs.taskRef.totalFecords = temp.length
-
       this.newUpdatedCount++
     },
     scrollToTop () {

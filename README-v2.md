@@ -202,7 +202,10 @@ const v2 = {
       ...
       // additional properties
       render: value => value // how to display the data
-      edit: null // inline editable TBD more input types for the cell editor
+      edit: { // null // inline editable TBD more input types for the cell editor
+        type: null //  type of edit control
+        props: null // properties for the edit control
+      }
       action: { // column is an action column
         edit: true,
         delete: true
