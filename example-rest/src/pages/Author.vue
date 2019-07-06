@@ -127,6 +127,9 @@ export default {
               formData.append('docx', json)
               const { data } = await http.patch(`/api/authors/${id}`, formData,
                 {
+                  // onUploadProgress: progressEvent => {
+                  //   console.log(Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
+                  // },
                   headers: {
                     'Content-Type': 'multipart/form-data'
                   }

@@ -5,12 +5,14 @@
       @click="pickFile"
       v-model="imageName"
       prepend-icon="attach_file"
+      readonly
     ></v-text-field>
     <input type="file" style="display: none" ref="image" accept="*/*" @change="onFilePicked" />
   </div>
 </template>
 
 <script>
+// TBD make accept props ... accept="image/*"
 // https://jsfiddle.net/meyubaraj/fLbe7r72/
 // https://codepen.io/Atinux/pen/qOvawK/
 
@@ -26,7 +28,7 @@ export default {
   },
 
   mounted () {
-    console.log('file upload mounted', this.value)
+    // console.log('file upload mounted', this.value)
   },
 
   methods: {
@@ -45,7 +47,7 @@ export default {
         fr.addEventListener('load', () => {
           this.imageUrl = fr.result
           this.imageFile = files[0] // this is an image file that can be sent to server...
-          console.log('uploading', this.imageUrl, this.imageFile)
+          // console.log('uploading', this.imageUrl, this.imageFile)
           this.$emit('input', {
             savedUrl: this.value.savedUrl,
             imageName: this.imageName,

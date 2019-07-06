@@ -54,4 +54,3 @@ ESLint + Standard config
 Lint on save
 dedicated config file (for babel, postcss, eslint, etc)
 Save this as a preset? N
-

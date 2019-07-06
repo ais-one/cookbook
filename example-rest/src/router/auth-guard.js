@@ -4,7 +4,7 @@ const permissions = {
   'all': ['/test', '/dashboard'],
   'rest': ['/authors', '/categories', '/books', '/pages', '/books/:id/pages'],
   'mongo': ['/mongo-test'],
-  'firebase': ['/firebase-rt']
+  'firebase': ['/firebase-rt', '/firebase-storage']
 }
 
 export default (to, from, next) => {
@@ -15,6 +15,7 @@ export default (to, from, next) => {
     if (permissions[loginType]) idx = permissions[loginType].indexOf(to.matched[0].path)
     if (idx === -1) idx = permissions['all'].indexOf(to.matched[0].path) // try again
     if (idx === -1) { // Forbidden
+      alert('Forbidden... Check Page Permissions')
       next('/')
     } else {
       next()
