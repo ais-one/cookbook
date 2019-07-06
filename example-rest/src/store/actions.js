@@ -145,10 +145,11 @@ export default {
   // Common Logout
   async logout ({ commit }, payload) {
     commit('setLoading', true)
-    if (payload.loginType === 'mongo') {
+    console.log('logging out', payload)
+    if (payload.user.loginType === 'mongo') {
       console.log('LOGOUT Mongo')
       await stitch.auth.logout()
-    } else if (payload.loginType === 'firebase') {
+    } else if (payload.user.loginType === 'firebase') {
       console.log('LOGOUT Firebase')
       await auth.signOut()
     } else { // rest
