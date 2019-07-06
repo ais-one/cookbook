@@ -18,7 +18,9 @@
     "init-db": "cd ../backend&&npm run-script init-db",
     "rest": "cd ../backend&&npm run-script dev",
     "ssr": "concurrently \"npm run rest\" \"npm run dev\"",
-    "static": "concurrently \"npm run rest\" \"npx http-server dist -p 8080\""
+    "static": "concurrently \"npm run rest\" \"npx http-server dist -p 8080\"",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "@nuxtjs/auth": "^4.7.0",
@@ -30,7 +32,8 @@
     "nuxt-i18n": "^5.12.4",
     "rxjs": "^6.5.2",
     "vue-rx": "^6.2.0",
-    "vuetify": "^1.5.14"
+    "vuetify": "^1.5.14",
+    "snyk": "^1.192.3"
   },
   "devDependencies": {
     "@vue/eslint-config-standard": "^4.0.0",
@@ -45,5 +48,6 @@
     "prettier": "1.18.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2"
-  }
+  },
+  "snyk": true
 }
