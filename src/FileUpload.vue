@@ -6,18 +6,22 @@
       v-model="imageName"
       prepend-icon="attach_file"
       readonly
+      clearable
+      @click:clear="resetData"
     ></v-text-field>
     <input type="file" style="display: none" ref="image" accept="*/*" @change="onFilePicked" />
   </div>
 </template>
 
 <script>
-// TBD make accept props ... accept="image/*"
 // https://jsfiddle.net/meyubaraj/fLbe7r72/
 // https://codepen.io/Atinux/pen/qOvawK/
 
 export default {
-  props: ['value'],
+  props: {
+    accept: { type: String, default: '*/*' },
+    value: { type: Object, required: true }
+  },
   data () {
     return {
       savedUrl: '',
@@ -34,6 +38,17 @@ export default {
   methods: {
     pickFile () {
       this.$refs.image.click()
+    },
+    resetData () {
+      this.imageName = ''
+      this.imageFile = ''
+      this.imageUrl = ''
+      this.$emit('input', {
+        savedUrl: this.value.savedUrl,
+        imageName: this.imageName,
+        imageUrl: this.imageUrl,
+        imageFile: this.imageFile
+      })
     },
     onFilePicked (e) {
       const files = e.target.files
@@ -56,15 +71,7 @@ export default {
           })
         })
       } else {
-        this.imageName = ''
-        this.imageFile = ''
-        this.imageUrl = ''
-        this.$emit('input', {
-          savedUrl: this.value.savedUrl,
-          imageName: this.imageName,
-          imageUrl: this.imageUrl,
-          imageFile: this.imageFile
-        })
+        this.resetData()
       }
     }
   }

@@ -1,17 +1,22 @@
 <template>
-  <div id="scroll-target">
-    <v-layout row ref="pageTop" v-scroll:#scroll-target="onScroll"><!--  v-scroll="onScroll" -->
+  <div>
+    <v-layout row ref="pageTop" v-scroll="onScroll"><!--  v-scroll:#scroll-target="onScroll"  v-scroll="onScroll" -->
       <v-flex xs12>
         <h2>You can add various components, cruds, a chart, map, etc.</h2>
         <p>The clicking an item in left table will do a find() records in right table where Party Name matches Party. The right table also has the goBack() button to return to parent turned off</p>
       </v-flex>
     </v-layout>
-    <v-layout row wrap>
+    <v-layout row wrap style="max-height: 200px">
       <v-flex xs12 sm6>
         <h3>Files List...</h3>
-        <ul v-for="(file, i) in files" :key="i">
-          <li @click="selectedImageFileName=file.name">{{ file.name }}</li>
-        </ul>
+        <div v-if="!loading">
+          <ul v-for="(file, i) in files" :key="i">
+            <li @click="selectedImageFileName=file.name">{{ file.name }}</li>
+          </ul>
+        </div>
+        <div v-else>
+          <v-progress-circular :size="50" color="primary" indeterminate></v-progress-circular>
+        </div>
         <app-file-upload v-model="imageObj" />
         <v-btn @click="onUpload" :disabled="loading">Upload!</v-btn>
       </v-flex>
@@ -21,10 +26,8 @@
       </v-flex>
       <v-flex xs12 sm6>
         <v-container>
-          <v-card>
-            <v-img
-              src="https://via.placeholder.com/350x150"
-              height="150px"
+          <v-card v-for="n in 3" :key="n">
+            <v-img src="https://via.placeholder.com/350x150" height="150px"
             ></v-img>
             <v-card-title primary-title>
               <div>
@@ -45,19 +48,20 @@
 </template>
 
 <script>
-/*
-## Firebase Storage Rules
+// ## Firebase Storage Rules
+// rules_version = "2"
+// service firebase.storage {
+//   match /b/{bucket}/o {
+//     match /{allPaths=**} {
+//       allow read;
+//       allow write: if request.auth != null;
+//     }
+//   }
+// }
+// https://academind.com/learn/vue-js/snippets/image-upload/
+// store file on firebase - https://www.youtube.com/watch?v=qZ1EFnFOGvE
 
-rules_version = "2"
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read;
-      allow write: if request.auth != null;
-    }
-  }
-}
-*/
+// scroll ok for now, wait for V2 to stabilize to see if can be improved further
 
 import { storage } from '@/firebase'
 
@@ -76,6 +80,7 @@ export default {
   },
   async created () {
     try {
+      this.loading = true
       // list firebase storage
       const storageRef = storage.ref().child('mystore')
 
@@ -88,6 +93,7 @@ export default {
         // console.log(itemRef)
         this.files.push(itemRef)
       })
+      this.loading = false
     } catch (e) {
       console.log(e)
     }
@@ -95,12 +101,13 @@ export default {
   methods: {
     scrollToTop () {
       this.$nextTick(function () {
-        this.$refs.pageTop.scrollIntoView()
+        // this.$refs.pageTop.scrollIntoView()
+        window.scrollTo(0, 0)
       })
     },
     onScroll (e) {
-      // this.offsetTop = window.pageYOffset || document.documentElement.scrollTop
-      this.offsetTop = e.target.scrollTop
+      this.offsetTop = window.pageYOffset || document.documentElement.scrollTop
+      // this.offsetTop = e.target.scrollTop
     },
     async onUpload () {
       this.loading = true
@@ -126,77 +133,23 @@ export default {
       }
       this.loading = false
     }
+    // onFileChanged (event) {
+    //   // this.selectedFile = event.target.files[0]
+    //   const files = event.target.files
+    //   if (!files.length) return
+    //   let tmpFilename = files[0].name
+    //   if (tmpFilename.lastIndexOf('.') <= 0) {
+    //     return this.setSnackBar('Please add a valid file')
+    //   }
+    //   const fileReader = new FileReader()
+    //   fileReader.addEventListener('load', () => {
+    //     this.imageSrc = fileReader.result
+    //     // console.log('addEventListener', this.imageSrc)
+    //   })
+    //   fileReader.readAsDataURL(files[0])
+    //   this.image = files[0] // base64
+    //   // console.log('fileReader', this.image)
+    // }
   }
 }
-/*
-<template>
-  <div class="pa-2">
-    <input type="file" @change="onFileChanged" style="display:none;" ref="fileInput" >
-    <v-btn raised @click="$refs.fileInput.click()">Pick File</v-btn>
-    <v-avatar v-if="imageSrc||imageUrl">
-      <img :src="imageSrc || imageUrl" alt="No Image Loaded">
-    </v-avatar>
-    <v-btn v-if="imageUrl" :href="`${imageUrl}`" target="_blank">{{ storageRef }}</v-btn>
-  </div>
-</template>
-
-<script>
-// https://academind.com/learn/vue-js/snippets/image-upload/
-// store file on firebase - https://www.youtube.com/watch?v=qZ1EFnFOGvE
-// import axios from 'axios'
-import * as firebase from '@/firebase'
-export default {
-  props: {
-    storageRef: { type: String, default: '' }, // sync
-    bucket: { type: String, required: true }, // viewing URL
-    path: { type: String, default: '' }, // e.g. "mystore/"
-    filename: { type: String, default: '' }, // if empty, use uploaded filename
-    collection: { type: String, required: true }, // for firestore update
-    id: { type: String, required: true },
-    field: { type: String, required: true },
-    removeOld: { type: Boolean, default: true } // remove existing record
-  },
-  data () {
-    return {
-      loading: false,
-      selectedFile: null,
-
-      imageUrl: '',
-
-      imageSrc: '',
-      image: null,
-
-      snackbar: false,
-      snackbarText: ''
-    }
-  },
-  mounted () {
-    if (this.storageRef) this.imageUrl = this.bucket + this.storageRef
-  },
-  methods: {
-    setSnackBar (text) {
-      this.snackbar = true
-      this.snackbarText = text
-    },
-    onFileChanged (event) {
-      // this.selectedFile = event.target.files[0]
-      const files = event.target.files
-      if (!files.length) return
-
-      let tmpFilename = files[0].name
-      if (tmpFilename.lastIndexOf('.') <= 0) {
-        return this.setSnackBar('Please add a valid file')
-      }
-      const fileReader = new FileReader()
-      fileReader.addEventListener('load', () => {
-        this.imageSrc = fileReader.result
-        // console.log('addEventListener', this.imageSrc)
-      })
-      fileReader.readAsDataURL(files[0])
-      this.image = files[0] // base64
-      // console.log('fileReader', this.image)
-    }
-  }
-}
-*/
 </script>
