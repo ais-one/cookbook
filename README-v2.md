@@ -267,9 +267,9 @@ const v2 = {
   updated({ record }) { } // override after successful update method
   created({ record }) { } // override after successful creation method
   deleted(id) { } // override after successful deletion method
-  confirmCreate() { } // override confirmation
-  confirmUpdate() { } // override confirmation
-  confirmDelete() { } // override confirmation
+  confirmCreate() { } // override confirmation, return true to confirm, false to abort
+  confirmUpdate() { } // override confirmation, return true to confirm, false to abort
+  confirmDelete() { } // override confirmation, return true to confirm, false to abort
   notifyCreate({ status, error }) { } // override notifications
   notifyUpdate({ status, error }) { }
   notifyDelete({ status, error }) { }
@@ -281,15 +281,16 @@ const v2 = {
 ```
 
 ## Events
-ops-find
-ops-findone
-ops-update
-ops-create
-ops-delete
-ops-export
-form-open
-form-close
-row-selected
+
+this.$emit('row-selected', { item, event })
+this.$emit('form-open', this.form)
+this.$emit('form-close')
+this.$emit('ops-find', { status, error })
+this.$emit('ops-findone', { status, error })
+this.$emit('ops-update', { status, error, data })
+this.$emit('ops-create', { status, error, data })
+this.$emit('ops-delete', { status, error, data })
+this.$emit('ops-export', { status, error })
 
 ## getRecords modes
 created (after create)
