@@ -48,16 +48,7 @@
 </template>
 
 <script>
-// ## Firebase Storage Rules
-// rules_version = "2"
-// service firebase.storage {
-//   match /b/{bucket}/o {
-//     match /{allPaths=**} {
-//       allow read;
-//       allow write: if request.auth != null;
-//     }
-//   }
-// }
+// Refer to docs/Firebase.md for Firebase setup
 // https://academind.com/learn/vue-js/snippets/image-upload/
 // store file on firebase - https://www.youtube.com/watch?v=qZ1EFnFOGvE
 
