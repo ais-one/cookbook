@@ -24,7 +24,6 @@ export default {
       validFilter: true, // form validation
       validForm: true,
       editingRow: null, // for row editing... null or row object
-      infinite: false, // either paged or infinite scroll
       cursor: '', // infinite scroll cursor
       // Internals - End
 
@@ -101,11 +100,19 @@ export default {
         // VARIATION - End Vuetify 2
       },
 
+      idName: 'id',
+      infinite: false, // either paged or infinite scroll
+      inline: { create: false, update: false, delete: false }, // inline functionality
+      selectedId: null,
+
       options: {
         crudTitle: '', // title
         showGoBack: true, // hide go back button - default true
         showFilterButton: true // show filter button - default true
       },
+
+      filters: null,
+      form: null,
 
       crud: {
         create: null, // operations
@@ -114,19 +121,9 @@ export default {
         find: () => ({ status: 500, error: '' }),
         findOne: () => ({ status: 500, error: '' }),
         export: null
-      },
+      }
 
-      // V2
-      idName: 'id',
-      inline: { // inline functionality
-        create: false, update: false, delete: false
-      },
-
-      selectedId: null,
-      filters: null,
-      form: null
-
-      // methods with override
+      // Overrideable Methods
       // onRowClick
       // created, updated, deleted
       // confirmCreate, confirmUpdate, confirmDelete

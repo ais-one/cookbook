@@ -53,6 +53,11 @@ app.use(history()) // causes problems when using postman, comment out to checkou
 app.use(express.static('public')) // for html content
 // app.use('/public-uploads', express.static(path.join('public-uploads'))) // need to create the folder public-uploads
 
+// PASSPORT
+// app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true })) // required for OAuth 1 (e.g. twitter), OAuth2 with state (e.g. linkedin)
+// app.use(passport.initialize())
+// app.use(passport.session()) // SESSION - call this AFTER calling express session
+
 const specs = swaggerJSDoc({
   swaggerDefinition: {
     info: {
@@ -89,10 +94,6 @@ app.use('/api-docs2', swaggerUi.serve, swaggerUi.setup(specs, { // for OpenAPI
   swaggerOptions: { docExpansion: 'none' },  
   explorer: true 
 }))
-
-// const {db, auth} = require('./firebase') // no longer need to do this
-// app.db = db
-// app.auth = auth
 
 const authRoutes = require('./routes/auth')
 const apiRoutes = require('./routes/api')

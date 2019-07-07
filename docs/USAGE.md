@@ -1,84 +1,9 @@
-1.
-
-https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-beta.0
-
-2.
-a-la-carte vuetify loader...
-
-3.
-slot & activator
-
-4.
-VBtn:
-The flat prop is now text
-The round prop is now rounded
-No longer has explicit margin
-
-search in v-btn... ' flat' to ' text'
-
-
-5.
-VChip:
-value no longer controls visibility. input event emitted when clicking
-the selected prop is now input-value or v-model
-close is now click:close
-
-6.
-VDataIterator/VDataTable:
-disable-initial-sort has been removed. Neither component initially sorts data anymore. Use sort-by or options props to sort.
-
-filter prop has been removed. Instead use custom-filter. This was done in an effort to make custom filtering less confusing.
-
-pagination prop has been removed. Instead use options prop.
-
-total-items prop has been renamed to server-items-length
-
-hide-actions prop has been renamed to hide-default-footer. Also it no longer changes the visible items per page
-
-Props related to the default footer have been move to the footer-props prop. These are:
-
-prev-icon
-
-next-icon
-
-rows-per-page-items now renamed to items-per-page-options
-
-rows-per-page-text now renamed to items-per-page-text
-
-7.
-VDataTable:
-hide-header has been renamed to hide-default-header
-select-all has been renamed to show-select. This will also render a checkbox on each item row as long as you are not defining your own scoped item row.
-Props related to the default header have been moved to the header-props prop. These are:
-sort-icon
-
-9.
-VFooter:
-Now has explicit padding to match other similar MD components. Can be removed with the padless prop or a helper class, class="pa-0"
-
----
-
-10.
-VList:
-many components have been renamed
-<v-list-tile> -> <v-list-item> et al (anything -tile is now -item)
-<v-list-tile-sub-title> -> <v-list-item-subtitle>
-The avatar prop has been removed
-
-11.
-VListGroup:
-Can no longer use <v-list-item>'s in the activator slot
-listeners on <v-list-group> are now passed through to the internal v-list-item for activators
-use <v-list-item-content> and <v-list-item-title> instead
-
-
 
 Begin The Journey
 
-
 npm i -D sass-loader node-sass sass fibers deepmerge
-
 npm i -D vuetify-loader
+npm install @mdi/font -D
 
 vue.config.js
 
@@ -92,63 +17,11 @@ module.exports = {
   }
 }
 
-npm install @mdi/font -D
-
-Remove stylus
-
 ---
-
-
-Moving to Vuetify 2 has many bloody breaking changes. I have decided to reduce dependancy on as much components as possible...
-And try to may it more generic for other frameworks
-
-Somethings You May Need To Change
-
-persPerPage -> itemsPerPage
-
-hide-headers -> hide-default-headers
-
-
-Move vuex store out of the component, but allow user to access and store the info elsewhere...
- - filter settings
- - current pagedata
- - emit an event...
-
-TBD remove snackbar, emit event
-
-crudTable
-- formatters - removed
-
-permissions now on backend
-
-properties removed:
-- hasFilterVue
-- FilterVue
-- FormVue
-- doPage
-
-crudFilter.filterData -> filter
-
-- hasFormVue
-- hasFilterData
-- formAutoData
-- record
-- defaultRec
-
-Form - property type changed to field
-Filter - property type changed to field
-
-store & storename - removed
-
 crud operations payload 'user' - removed (set JWT outside instead) 
-
 merge 'crudForm.defaultRec' & 'crudForm.formAutoData' to 'form'
 
-
-getRecordsHelper -> getRecords
-
-
-# V2 Work
+# Version 0.2.0  API
 
 refetch
 optimistic
@@ -156,19 +29,98 @@ optimistic
 ```js
 
 const v2 = {
-  idName: 'id', // the id field name usually  'id', for mongo its '_id',
-  refetch: false, // do refetch after C U D?
-  optimistic: true, // optimistic UI
+  parentId: null,
 
-  pageOpts: {
-    infinite: false, // infinite scroll
-    page: 1, // initial page
-    limit: 2
-  },
-  inline: {
-    add: false,
-    edit: false
+  // Vuetify properties
+  vtable: {
+    // Describe the table header here
+    headers: { // this is important
+      ...
+      // additional properties
+      render: value => value // how to display the data
+      edit: { // null // inline editable TBD more input types for the cell editor
+        type: null //  type of edit control
+        props: null // properties for the edit control
+      }
+      action: { // column is an action column
+        edit: true,
+        delete: true
+      }
+    }
   }
+
+  // configure button icons and labels
+  buttons: {
+    back: { icon: 'reply', label: '' },
+    filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up' },
+    reload: { icon: 'replay', label: '' },
+    create: { icon: 'add', label: '' },
+    export: { icon: 'print', label: '' },
+    close: { icon: 'close', label: '' },
+    delete: { icon: 'delete', label: '' },
+    update: { icon: 'save', label: '' }
+  }
+
+  // inject properties for action column buttons
+  actionicon: { small: true, class: 'mr-1' },
+
+  // inject properties for v-form (used by filter and by CRUD form)
+  vform: {
+  }
+  // inject properties for v-btn (the button style)
+  vbtn: {
+  }
+  // inject properties for v-toolbar
+  vtoolbar: {
+  }
+  // inject properties for container
+  vcontainer: { // TBD remove this???
+  }
+  // Vuetify properties
+
+
+
+  pagination: {
+    // VARIATION - Start Vuetify2
+    page: 1,
+    itemsPerPage: 2,
+    sortBy: [],
+    sortDesc: []
+    // totalItems: 0 // completely useless at the moment
+    // VARIATION - End Vuetify2
+  },
+  sorters: {
+    // VARIATION - Start Vuetify 2
+    // Not Used In Vuetify
+    // VARIATION - End Vuetify 2
+  },
+  pageDefaults: { // page options
+    // VARIATION - Start Vuetify2
+    start: 1,
+    itemsPerPage: 2,
+    sortBy: [],
+    sortDesc: []
+    // VARIATION - End Vuetify2
+  },
+  sortDefaults: {
+    // VARIATION - Start Vuetify 2
+    // Not Used In Vuetify
+    // VARIATION - End Vuetify 2
+  },
+
+  idName: 'id', // the id field name usually  'id', for mongo its '_id',
+  infinite: false, // infinite scroll
+  inline: { create: false, update: false, delete: false },
+  selectedId: null,
+  // refetch: false, // do refetch after C U D?
+  // optimistic: true, // optimistic UI
+
+  options: {
+    crudTitle: '', // title
+    showGoBack: true, // hide go back button - default true
+    showFilterButton: true // show filter button - default true
+  },
+
   filters: {
     'name': { // field
       // supported types: v-text-field, v-select
@@ -200,77 +152,54 @@ const v2 = {
     },
   }
 
-  // Vuetify properties
-  vtable: {
-    // Describe the table header here
-    headers: { // this is important
-      ...
-      // additional properties
-      render: value => value // how to display the data
-      edit: { // null // inline editable TBD more input types for the cell editor
-        type: null //  type of edit control
-        props: null // properties for the edit control
-      }
-      action: { // column is an action column
-        edit: true,
-        delete: true
-      }
-    }
-  }
-  // inject properties for v-form (used by filter and by CRUD form)
-  vform: {
-  }
-  // inject properties for v-btn (the button style)
-  vbtn: {
-  }
-  // inject properties for v-toolbar
-  vtoolbar: {
-  }
-  // inject properties for container
-  vcontainer: { // TBD remove this???
-  }
-  // Vuetify properties
-
   // overridable CRUD operations
   crud: {
     find: async ({parentId, filters, pagination, sorters}) => {
+      return { status: 500, data: { records = [], totalRecords = 0, cursor = '' }, error: null }
       this.$emit { status, error }
-      notifyFind { status, error }
     },
     findOne: async (id) => {
+      return { status = 500, data = null, error = null }
       this.$emit { status, error }
-      notifyFindOne { status, error }
     },
     update: async ({ record }) => {
+      return { status = 500, data = null, error = null }
       this.$emit { status, error, data: record } // updated record, table or form record?
-      notifyUpdate { status, error }
     },
     create: async ({ record }) => {
+      return { status = 500, data = null, error = null }
       this.$emit { status, error, data: record } // new record, table fields (NOT form fields) must match
-      notifyCreate { status, error }
     },
     delete: async (id) => {
+      return { status = 500, data = null, error = null }
       this.$emit { status, error, data: id }
       notifyDelete { status, error }
     },
     export: async ({parentId, filters, pagination, sorters}) => {
+      return { status = 500, data = null, error = null }
       this.$emit { status, error }
-      notifyExport { status, error }
     }),
-    parentId: null,
 
     ws: null, // websocket operation, not implemented currently
   }
 
-  // overridable functions - see source for defaults 
+  // overrideable methods - see source for defaults 
+
+  // override row click event
   onRowClick(item, $event) { } // clicking a row
+
+  // override confirmation, return true to confirm, false to abort
+  confirmCreate() { }
+  confirmUpdate() { }
+  confirmDelete() { }
+
+  // override post create, update, delete action
   updated({ record }) { } // override after successful update method
   created({ record }) { } // override after successful creation method
   deleted(id) { } // override after successful deletion method
-  confirmCreate() { } // override confirmation, return true to confirm, false to abort
-  confirmUpdate() { } // override confirmation, return true to confirm, false to abort
-  confirmDelete() { } // override confirmation, return true to confirm, false to abort
-  notifyCreate({ status, error }) { } // override notifications
+
+  // override notification called after each crud operation
+  notifyCreate({ status, error }) { }
   notifyUpdate({ status, error }) { }
   notifyDelete({ status, error }) { }
   notifyExport({ status, error }) { }
@@ -380,16 +309,6 @@ filters & sort follow
 
 
 
-
-# DESIGN CONSIDERATIONS
-1. reload & optimization strategy
-2. real-time updating
-3. inline update improvements
-4. more modular design
-5. interoperability with multiple UI frameworks
-6. improvement on protocol
-7. events
-8. overridable methods with defaults
 
 ISSUE: https://github.com/vuetifyjs/vuetify/issues/7657
 FIXED: https://github.com/vuetifyjs/vuetify/pull/7665

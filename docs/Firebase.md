@@ -1,6 +1,12 @@
+
+
 ## Hosting To Firebase
 
 https://firebase.google.com/docs/hosting/quickstart
+
+0. Setup Google Cloud Storage
+
+Set the correct permissions for the bucket to allow users to view and upload
 
 1. Install Firebase
 
@@ -29,7 +35,8 @@ firebase logout
 
 ## Storage Rules
 
-```
+```js
+rules_version = "2"
 service firebase.storage {
   match /b/{bucket}/o {
     match /{allPaths=**} {
