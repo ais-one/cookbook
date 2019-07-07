@@ -1,20 +1,6 @@
 ### Upcoming
- * Vuetify 2.0 breaking changes list - check to see which will affect the code base
-   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-beta.0
-   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.18
-   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.13
-   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.12
-   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.11
-   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.10
-   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.9
-   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.8 (breaking changes in v-datatable)
-   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.7
-   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.5
-   * https://github.com/vuetifyjs/vuetify/releases/tag/v2.0.0-alpha.4
  * RESTful++ Backend For Testing
    * Non-essential items
-     * Multiple File upload example (to local folder)
-     * Single File upload example (to firebase storage)
      * Logging
      * Security Improvements
  * Automated testing (dredd.io)

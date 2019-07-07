@@ -282,33 +282,81 @@ const v2 = {
 
 ## Events
 
-this.$emit('row-selected', { item, event })
-this.$emit('form-open', this.form)
-this.$emit('form-close')
-this.$emit('ops-find', { status, error })
-this.$emit('ops-findone', { status, error })
-this.$emit('ops-update', { status, error, data })
-this.$emit('ops-create', { status, error, data })
-this.$emit('ops-delete', { status, error, data })
-this.$emit('ops-export', { status, error })
+@row-selected
 
-## getRecords modes
-created (after create)
-deleted (after delete)
-filter-infinite (onFilter, infinite scroll)
-filter-paged (onFilter, paged)
-pagination (pagination events, & initial infinite scroll page)
-load-more (infinite scroll next page)
+emitted when row clicked
+
+properties emitted: { item, event }
+
+@form-open
+
+emitted when CRUD form is open this.form
+
+@form-close
+
+emitted when CRUD form closes
+
+@ops-find
+
+emitted after a find CRUD operation
+
+{ status, error }
+
+@ops-findone
+
+{ status, error }
+
+@ops-update
+
+{ status, error, data }
+
+@ops-create
+
+{ status, error, data }
+
+@ops-delete
+
+{ status, error, data }
+
+@ops-export
+
+{ status, error }
 
 
-## slots: props
-progress: vcx
-table-toolbar: vcx
-filter: filters, parentId, vcx
-table: records, totalRecords, pagination, vcx
-td: headers, item, vcx
-form-toolbar: vcx
-form: form, parentId, vcx
+## Named Scoped SLots
+
+**progress**
+  - vcx: access to the component itself
+
+**table-toolbar**
+  - vcx: access to the component itself
+
+**filter**
+  - filters: access to filters
+  - parentId: access to parentId (if any)
+  - vcx: access to the component itself
+
+**table**
+  - records: the records found
+  - totalRecords: to total unpaged records
+  - pagination: the pagination object
+  - vcx: access to the component itself
+
+**td**
+  - headers: table headers
+  - item: the record item
+  - vcx: access to the component itself
+
+**form-toolbar**
+  - vcx: access to the component itself
+
+**form**
+  - record: the selected record
+  - parentId: access to parentId (if any)
+  - vcx: access to the component itself
+
+
+
 
 # TO FIX
 
@@ -328,6 +376,33 @@ change sortBy / sortDesc
  - paged: page same, filters same, sort change
  - infinite: page start
 filters & sort follow
+
+
+
+
+
+# DESIGN CONSIDERATIONS
+1. reload & optimization strategy
+2. real-time updating
+3. inline update improvements
+4. more modular design
+5. interoperability with multiple UI frameworks
+6. improvement on protocol
+7. events
+8. overridable methods with defaults
+
+ISSUE: https://github.com/vuetifyjs/vuetify/issues/7657
+FIXED: https://github.com/vuetifyjs/vuetify/pull/7665
+
+ISSUE: https://github.com/apollographql/apollo-server/issues/2921
+FIXED: https://github.com/apollographql/apollo-server/pull/2924
+
+
+
+
+
+
+---
 
 ### fired by user **done**
 reload
@@ -371,30 +446,3 @@ reset filter and sort, goto page 1 ?
 3. real-time updates...
 4. if delete need to unrelate from Book Author
 5. make better attributes...
-
-## Done
-* 1. row inline edit
-* 2. reload for infinite scroll appends data, should not happen...
-* 3. check id and idName !!! may be wrong !!!
-* 4. Change watch to event listener
-* 5. Add sorter
-* 6. reload issue at inline edit
-* 7. pager value change
-* 8. check return handling for all ops
-
-
-# DESIGN CONSIDERATIONS
-1. reload & optimization strategy
-2. real-time updating
-3. inline update improvements
-4. more modular design
-5. interoperability with multiple UI frameworks
-6. improvement on protocol
-7. events
-8. overridable methods with defaults
-
-ISSUE: https://github.com/vuetifyjs/vuetify/issues/7657
-FIXED: https://github.com/vuetifyjs/vuetify/pull/7665
-
-ISSUE: https://github.com/apollographql/apollo-server/issues/2921
-FIXED: https://github.com/apollographql/apollo-server/pull/2924

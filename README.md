@@ -30,8 +30,6 @@ Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-cus
 
 ## 2 Major Improvements (Without Breaking Changes)
 
-From Version 0.1.7 onwards, **scoped-slots** can and should be used for customized form and filter. Please use this instead of the previous way of **importing component files** as it is much cleaner. **importing component files** will be deprecated in a later version.
-
 Usage example can be found:
  - in **example-rest** project (see example-rest/README.md on quickstart)
    - example-rest/src/pages/Page.vue
@@ -69,28 +67,39 @@ Our examples showcase the following (unrelated to the vue-crud-x features above)
    - websocket example
    - graphql example (use Apollo client: authentication, subscriptions, cache, optimistic response, refetch queries)
    - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
- - in **example-nuxt**
-   - includes features in example-rest plus the following:
-     - letting NuxtJS framework handle boilerplate work... e.g. routing, store setup
-     - social login using Github
-     - SSR App
-     - pre-generated Static Web App 
-     - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
- - in **example-baas**
    - Serverless backend, using Firebase backend-as-a-service, need to register and setup
    - real-time updates from Firestore
    - Use multiple vue-crud-x in single page
-   - recaptcha, image capture from webcam
-   - image upload to Google Cloud Store, Image capture via webcam
-   - include Mongo Stitch Baas login and simple query example 
-   - https://github.com/ais-one/vue-crud-x/tree/master/example-baas
+   - recaptcha
+   - Additional
+     - Image capture via webcam
+     - Signature capture on canvas
+   - Mongo stitch
+     - login & auth
+     - simple query example 
+   - Firebase
+     - login & auth
+     - interaction with firebase datastore
+     - upload to firebase storage & view
+ - in **example-nuxt**
+   - includes features in example-rest plus the following:
+     - letting NuxtJS framework handle boilerplate work... e.g. routing, store setup
+     - nuxt-auth
+       - Social login using Github
+       - 2FA login
+     - SSR & pre-generated Static Web App 
+     - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
 
 The **backend** project is an Express server used by **example-rest** and **example-nuxt** projects for testing the vue-crud-x component, and has the following features:
- - ObjectionJS + SQLite (Sample SQL DB with 1-1, 1-m, m-n use cases, transactions, migrations, seeders, OpenAPI documentation), Mongo (connect test only)
+ - ObjectionJS + SQLite (Sample SQL DB with 1-1, 1-m, m-n use cases, transactions, migrations, seeders),
  - Login, JWT & 2FA OTP (using Google Authenticator)
- - Key-Value Store for user token storage on server (can replace with redis)
+ - OpenAPI documentation with JSDoc
+ - Key-Value Store for user token storage on server (can replace with redis in local development environment)
  - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
  - GraphQL (use Apollo server)
+ - file uploads
+ - MongoDB
+ - SQLite
 - https://github.com/ais-one/vue-crud-x/tree/master/backend
 
 
@@ -105,59 +114,6 @@ However, the good part is that these parts need to be coded anyway and once you 
 ---
 
 # vue-crud-x DOCUMENTATION (Work-In-Progress)
-
-
-### Filter - crudFilter
-
-
-### Form - crudForm
-
-
-## Named Scoped SLots
-
-**table-toolbar**
-  - vcx: access to the component itself
-
-**filter**
-  - filters: access to filters
-  - parentId: access to parentId (if any)
-  - vcx: access to the component itself
-
-**table**
-  - records: the records found
-  - totalRecords: to total unpaged records
-  - pagination: the pagination object
-  - vcx: access to the component itself
-
-**summary**
-  - vcx: access to the component itself
-
-**form-toolbar**
-  - vcx: access to the component itself
-
-**form**
-  - record: the selected record
-  - parentId: access to parentId (if any)
-  - vcx: access to the component itself
-
-
-## Events
-
-1. **form-open** - emit event if open form, returns selected record
-
-1. **form-close** - emit event if close form
-
-2. **selected** - row selected, returns object with row item and event, does not fire if inline is truthy...
-
-3. **loaded** - table data is loaded, returns Date.now()
-
-4. **created** - emitted in createRecord(), returns { res, payload } (no create ID yet, will be improved)
-
-5. **updated** - emitted in updateRecord(), returns { res, payload }
-
-6. **deleted** - emitted in deleteRecord(), returns { res, payload }
-
-Note: **res** is the result for the C, U, D operation, payload is the payload passed in to the C, U, D operation
 
 ---
 

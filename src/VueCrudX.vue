@@ -248,9 +248,8 @@ export default {
   // watch: { loading: function (newValue, oldValue) { } }, // UNUSED
   methods: {
     goBack () { this.$router.back() }, // return from child
-    // mode - (system) - init
-    //      - (user action) create, update,  delete, filter-paged, filter-infinite
-    //      - (paginator): pagination (also used in initial load)
+    // mode - (user action): created, deleted, filter-paged, filter-infinite
+    //      - (page, sort events & initial load): pagination, load-more (for subsequent infinite scroll loads)
     async getRecords ({ mode }) {
       this.loading = true
 
