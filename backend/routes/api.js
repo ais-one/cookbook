@@ -9,15 +9,8 @@ const UPLOAD_PATH = 'uploads/'
 const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
 
 apiRoutes
-  .get('/', async (req,res) => {
-    try {
-      const results = mongo ? await mongo.db().collection('exchangeUsers').find({}).toArray() : []
-      console.log(results)
-    } catch (e) {
-      console.log(e)
-    }
-    // console.log('mongo connected:', !!mongo)
-    res.status(200).json({ message: 'Test22' })
+  .get('/rest-test', async (req,res) => {
+    res.status(200).json({ message: 'REST Test Ok' })
   })
   // test uploads
   .post('/upload', upload.single('avatar'), async (req,res) => { // avatar is form input name

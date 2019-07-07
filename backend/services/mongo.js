@@ -92,7 +92,6 @@ if (!mongo && process.env.MONGO_URL) {
       if (err) console.log('mongo error', err)
       else if (db) {
         mongoStream = db.db('mm').collection('exchangeUsers').watch()
-        // db.db.collection('exchangeUsers').watch()
         mongoStream.on('change', (change) => {
           console.log(change); // You could parse out the needed info and send only that data.
           // use websocket to listen to changes

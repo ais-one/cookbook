@@ -171,6 +171,8 @@ const v2 = {
   }
   filters: {
     'name': { // field
+      // supported types: v-text-field, v-select
+      // types to test: v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
       type: 'v-text-field', // component name
       value: '',
       'field-wrapper': { xs12: true, sm6: true },
@@ -183,6 +185,8 @@ const v2 = {
 
   form: {
     'id': { // field
+      // supported types: v-text-field, v-select
+      // types to test: v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
       type: 'v-text-field',
       value: '',
       default: '',
@@ -198,6 +202,7 @@ const v2 = {
 
   // Vuetify properties
   vtable: {
+    // Describe the table header here
     headers: { // this is important
       ...
       // additional properties
@@ -212,18 +217,22 @@ const v2 = {
       }
     }
   }
+  // inject properties for v-form (used by filter and by CRUD form)
   vform: {
   }
+  // inject properties for v-btn (the button style)
   vbtn: {
   }
+  // inject properties for v-toolbar
   vtoolbar: {
   }
-  vcontainer: {
+  // inject properties for container
+  vcontainer: { // TBD remove this???
   }
   // Vuetify properties
 
-  // operations
-  ops: {
+  // overridable CRUD operations
+  crud: {
     find: async ({parentId, filters, pagination, sorters}) => {
       this.$emit { status, error }
       notifyFind { status, error }

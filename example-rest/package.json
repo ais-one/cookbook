@@ -9,7 +9,7 @@
     "build-rest": "cd ../backend&&npm i",
     "init-db": "cd ../backend&&npm run-script init-db",
     "rest": "cd ../backend&&npm run-script dev",
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 8080",
     "prod": "vue-cli-service build --mode production && scp -r -i ../../test.pem dist/* ubuntu@127.0.0.3:~/app/public",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
