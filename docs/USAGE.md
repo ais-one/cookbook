@@ -1,17 +1,47 @@
 # Version 0.2.0 API Documentation
 
-refetch
-optimistic
+This document describes the details on the properties used in vue-crud-x.
+
+To see example of usage. Please refer to source code in **example-rest project folder**.
+
+- example-rest/src/pages/Author
+  - infinite scroll
+- example-rest/src/pages/Category
+  - Apollo GraphQL, subscriptions, optimistic UI, caching, refetch queries
+- example-rest/src/pages/Book
+  - parent crud, various editors
+  - lazy autocomplete (book-author join table)
+- example-rest/src/pages/Page
+  - inline edit and child crud
+- example-rest/src/pages/FirebaseRT
+  -  example using Firestore with real-time updates
+
+You can also refer to the vue-crud-x source code in the main source folder
+
+- src/VueCrudX.vue
+
+Some useful components used in the **example-rest project** can also be found in the main source folder, such as
+
+- src/DatePicker
+- src/TimePicker
+- src/FileUpload
+- src/WebCam
+- src/DrawingCanvas
+etc.
+
+
 
 ##  Props
 
 ### parentId
 
+The parentId is present in a child table and is used to reference the parent table.
+
+**Example:** For a car record that belongs to a driver record. The driver id, will be the parentId passed into vue-crud-x
+
 type: String
 
 default: null
-
-
 
 
 ## Injected Properties - Vuetify Components
@@ -31,14 +61,46 @@ inject properties for v-datatable except the following properties
 - options.sync
 - hide-default-footer
 - item-key
-- headers
 
 
-#### vtable headers field
+#### vtable.headers
 
 Take note of the headers object. It is important for describing the columns and its behaviour.
 
+```js
+vtable: {
+  // Describe the table header here
+  headers: {
+    // this is important
+  }
+}
+```
+
 It is specific to Vuetify 2, for other frameworks. This may be different.
+
+The header properties described below can be found in the Vuetify 2 documentation https://next.vuetifyjs.com/en/components/data-tables
+
+
+```js
+{
+  text: string,
+  value: string,
+  align?: start | center | end,
+  sortable?: boolean,
+  divider?: boolean,
+  class?: string | string[],
+  width?: string | number,
+  filter?: (value: any, search: string, item: any): boolean,
+  sort?: (a: any, b: any): number
+}
+```
+
+filter and sort properties are usually not used as the operations should be performed at the server side for vue-crud-x.
+
+Additional **vtable.header** properties described are used by vue-crud-x for
+- cell content formatting
+- cell edit control configuration
+- indicating if column is a action column with delete and/or update buttons
 
 ```js
 vtable: {
@@ -290,7 +352,7 @@ override row click event
 default is do nothing
 
 ```js
-onRowClick(item, $event) { }
+onRowClick: (item, $event) => { }
 ```
 
 ### Action Confirmation
@@ -303,9 +365,9 @@ return true to confirm, false to abort
 
 
 ```js
-confirmCreate() { }
-confirmUpdate() { }
-confirmDelete() { }
+confirmCreate: () => { }
+confirmUpdate: () => { }
+confirmDelete: () => { }
 ```
 
 ### Post Create, Update Delete Action
@@ -313,9 +375,9 @@ confirmDelete() { }
 override post create, update, delete action
 
 ```js
-updated({ record }) { }
-created({ record }) { }
-deleted(id) { }
+updated: ({ record }) => { }
+created:({ record }) => { }
+deleted: (id) => { }
 ```
 
 ## Notifications
@@ -325,12 +387,12 @@ override notification called after each crud operation
 default is to popup alert message
 
 ```js
-notifyCreate({ status, error }) { }
-notifyUpdate({ status, error }) { }
-notifyDelete({ status, error }) { }
-notifyExport({ status, error }) { }
-notifyFindOne({ status, error }) { }
-notifyFind({ status, error }) { }
+notifyCreate: ({ status, error }) => { }
+notifyUpdate: ({ status, error }) => { }
+notifyDelete: ({ status, error }) => { }
+notifyExport: ({ status, error }) => { }
+notifyFindOne: ({ status, error }) => { }
+notifyFind: ({ status, error }) => { }
 ```
 
 ## Events
@@ -340,11 +402,11 @@ notifyFind({ status, error }) { }
 Emitted when CRUD form is open
 
 Properties emitted:
-- this.form
+- the form property object as described in **Form Fields Configuration**
 
 ### @form-close
 
-#mitted when CRUD form closes
+Emitted when CRUD form closes
 
 Properties emitted:
 - none
@@ -412,6 +474,10 @@ Scope Properties:
 
 
 ---
+
+refetch
+optimistic
+
 
 Begin The Journey
 
