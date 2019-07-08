@@ -40,10 +40,7 @@ export default {
     return {
       parentId: null,
       pageDefs: {
-        options: {
-          // name: 'book-pages',
-          showGoBack: true //  show go back
-        },
+        title: 'Book-pages',
         vtable: {
           headers: [
             // { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' },
@@ -52,10 +49,7 @@ export default {
               value: 'id',
               align: 'left',
               sortable: false,
-              action: {
-                edit: true,
-                delete: true
-              }
+              action: true
             },
             {
               text: 'Page Content',
@@ -87,7 +81,7 @@ export default {
             const { page, itemsPerPage } = pagination // sortBy, descending
             let params = { page: page > 0 ? page - 1 : 0, limit: itemsPerPage, ...filters, sort: sorters } // set query params
             try {
-              const { data: { results, total } } = await http.get(`/api/books/${parentId}/pages`, params)
+              const { data: { results, total } } = await http.get(`/api/books/${parentId}/pages`, { params })
               records = results
               totalRecords = total
               return { status: 200, data: { records, totalRecords } }
@@ -115,7 +109,7 @@ export default {
           },
           update: async (payload) => {
             try {
-              let { id, record: { content } } = payload
+              let { record: { id, content } } = payload
               const { data } = await http.patch(`/api/pages/${id}`, { content })
               return { status: 200, data }
             } catch (e) {

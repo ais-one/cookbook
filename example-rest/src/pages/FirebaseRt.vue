@@ -41,9 +41,7 @@ export default {
         inline: { // comment this if you want to use form instead of inline updates...
           create: true, update: true, delete: false
         },
-        options: {
-          crudTitle: 'Task'
-        },
+        title: 'Task',
         vtable: {
           headers: [
             {
@@ -52,10 +50,7 @@ export default {
               align: 'left',
               sortable: false,
               class: 'py-1 px-2',
-              action: {
-                edit: true,
-                delete: true
-              }
+              action: true
             },
             { text: 'Task', value: 'task', align: 'left', sortable: false, class: 'pa-1', edit: { type: 'v-text-field' } },
             {

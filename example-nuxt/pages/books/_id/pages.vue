@@ -41,10 +41,7 @@ export default {
     return {
       parentId: null,
       pageDefs: {
-        options: {
-          // name: 'book-pages',
-          showGoBack: true //  show go back
-        },
+        title: 'Book-pages',
         vtable: {
           headers: [
             // { text: 'Action', value: '', fixed: true, sortable: false, class: 'pa-1' },
@@ -53,10 +50,7 @@ export default {
               value: 'id',
               align: 'left',
               sortable: false,
-              action: {
-                edit: true,
-                delete: true
-              }
+              action: true
             },
             {
               text: 'Page Content',

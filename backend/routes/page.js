@@ -13,15 +13,17 @@ pageRoutes
       if (deletedRows) return res.status(200).json()
       else return res.status(404).json()
       // return res.status(200).json(page)
-    } catch (e) { console.log(e) }
-    return res.status(500).json()
+    } catch (e) {
+      return res.status(500).json() // e.toString()
+    }
   })
   .patch('/pages/:id', authUser, async (req, res) => { // edit a page
     try {
       const page = await Page.query().patchAndFetchById(req.params.id, req.body)
       return res.status(200).json(page)
-    } catch (e) { }
-    return res.status(500).json()
+    } catch (e) {
+      return res.status(500).json() // e.toString()
+    }
   })
   .get('/pages/:id', async (req, res) => { // edit a page
     try {

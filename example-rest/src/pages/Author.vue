@@ -117,8 +117,6 @@ export default {
           update: async ({ record }) => {
             try {
               const { id, name, avatar } = record
-              console.log('vvv', record)
-
               const json = JSON.stringify({ name })
               // const blob = new Blob([json], { type: 'application/json' })
               // console.log('json', blob)

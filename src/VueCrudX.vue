@@ -25,6 +25,7 @@ export default {
       validForm: true,
       editingRow: null, // for row editing... null or row object
       cursor: '', // infinite scroll cursor
+      selectedId: null, //  selected record Id
       // Internals - End
 
       // VARIATION - Start Vuetify 2
@@ -81,10 +82,7 @@ export default {
         // totalItems: 0 // completely useless at the moment
         // VARIATION - End Vuetify2
       },
-      sorters: {
-        // VARIATION - Start Vuetify 2
-        // Not Used In Vuetify
-        // VARIATION - End Vuetify 2
+      sorters: { // Not Used In Vuetify
       },
       pageDefaults: { // page options
         // VARIATION - Start Vuetify2
@@ -94,22 +92,13 @@ export default {
         sortDesc: []
         // VARIATION - End Vuetify2
       },
-      sortDefaults: {
-        // VARIATION - Start Vuetify 2
-        // Not Used In Vuetify
-        // VARIATION - End Vuetify 2
+      sortDefaults: { // Not Used In Vuetify
       },
 
       idName: 'id',
       infinite: false, // either paged or infinite scroll
       inline: { create: false, update: false, delete: false }, // inline functionality
-      selectedId: null,
-
-      options: {
-        crudTitle: '', // title
-        showGoBack: true, // hide go back button - default true
-        showFilterButton: true // show filter button - default true
-      },
+      title: '',
 
       filters: null,
       form: null,
@@ -135,7 +124,7 @@ export default {
 
     this.idName = this.$attrs.idName || 'id'
     this.infinite = !!this.$attrs.infinite // default false
-    this.options = Object.assign(this.options, this.$attrs.options || {})
+    this.title = this.$attrs.title || 'Title'
 
     // VARIATION Start Vuetify2
     this.actionicon = Object.assign(this.actionicon, this.$attrs.actionicon || {})
@@ -239,7 +228,7 @@ export default {
   beforeUpdate () { },
   beforeRouteEnter (to, from, next) { next(vm => { }) },
   computed: {
-    showTitle () { return this.options.crudTitle || 'VueCrudX' }
+    showTitle () { return this.title || '' }
   },
   // watch: { loading: function (newValue, oldValue) { } }, // UNUSED
   methods: {
@@ -322,6 +311,7 @@ export default {
     async updateRecord ({ record }) {
       if (!this.confirmUpdate()) return
       this.loading = true
+      // eslint-disable-next-line
       const { status = 500, data = null, error = null } = await this.crud.update({ record })
       this.loading = false
       if (status === 200) {
@@ -332,16 +322,18 @@ export default {
     async createRecord ({ record, parentId }) {
       if (!this.confirmCreate()) return
       this.loading = true
+      // eslint-disable-next-line
       const { status = 500, data = null, error = null } = await this.crud.create({ record, parentId })
       this.loading = false
       if (status === 201) {
-        await this.created({ record: null })
+        await this.created({ record })
       }
       this.notifyCreate({ status, error })
     },
     async deleteRecord (id) {
       if (!this.confirmDelete()) return
       this.loading = true
+      // eslint-disable-next-line
       const { status = 500, data = null, error = null } = await this.crud.delete(id)
       if (status === 200) {
         await this.deleted(id)
@@ -474,9 +466,9 @@ export default {
     <component :is="'div'" v-show="!showForm">
       <slot name="table-toolbar" :vcx="_self">
         <v-toolbar v-bind="vtoolbar">
-          <v-toolbar-title><v-btn v-if="parentId&&options.showGoBack" v-bind="vbtn" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
+          <v-toolbar-title><v-btn v-if="parentId" v-bind="vbtn" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn v-if="options.showFilterButton&&filters" v-bind="vbtn" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
+          <v-btn v-if="filters" v-bind="vbtn" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
           <v-btn v-bind="vbtn" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
           <v-btn v-if="crud.create" v-bind="vbtn" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
           <v-btn v-if="crud.export" v-bind="vbtn" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>

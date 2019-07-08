@@ -101,10 +101,7 @@ export default {
         { id: 2, name: 'cat2' }
       ],
       bookDefs: {
-        options: {
-          // inline: false,
-          showFilterButton: true
-        },
+        title: 'Book',
         vtable: {
           headers: [
             { text: 'Book Name', value: 'name', class: 'pa-1' },

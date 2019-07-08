@@ -19,9 +19,7 @@ export default {
       parentId: null,
       authorDefs: {
         infinite: true,
-        options: {
-          showFilterButton: true
-        },
+        title: 'Author',
         vtable: {
           headers: [
             { text: 'Author Name', value: 'name', class: 'pa-1', render: (value) => value, edit: null }

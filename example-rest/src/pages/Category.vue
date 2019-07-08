@@ -49,9 +49,7 @@ export default {
     return {
       parentId: null,
       pageDefs: {
-        options: {
-          showFilterButton: false
-        },
+        title: 'Category',
         vtable: {
           headers: [
             { text: 'Category id', value: 'id', class: 'pa-1' },
