@@ -180,7 +180,11 @@ However, the good part is that these parts need to be coded anyway and once you 
 
 Install it as an NPM package and import it
 
-```
+```bash
+# Version 0.1.X
+npm i ais-one/vue-crud-x#v1 --save
+
+# Version 0.2.X
 npm i vue-crud-x
 ```
 
@@ -194,13 +198,13 @@ If you ever need to build this library from source...
 
 1. Install dependencies
 
-```
+```bash
 npm i
 ```
 
 2. Build project (using vue-cli)
 
-```
+```bash
 npm run build
 ```
 
@@ -209,13 +213,13 @@ The build output can be found in the **dist** folder
 
 3. Publishing to npm (only for repo owner)
 
-```
+```bash
 npm publish
 ```
 
 4. Or build as local package vue-crud-x
 
-```
+```bash
 npm pack
 # A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
 # If you want to install without saving to package.json, npm i --no-save vue-crud-x-?.?.?.tgz

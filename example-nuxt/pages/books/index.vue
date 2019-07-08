@@ -71,7 +71,7 @@ import { makeCsvRow, exportCsv } from '@/assets/util'
 
 export default {
   middleware: ['auth'],
-  subscriptions () {
+  subscriptions () { // rxJS
     return {
       items: this.$watchAsObservable('search').pipe(
         // startWith - not needed in VueJS

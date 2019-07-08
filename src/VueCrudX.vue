@@ -166,7 +166,6 @@ export default {
     // non-ui reactive data - START
     this.onRowClick = this.$attrs.onRowClick || ((item, event) => { // open form on row click? default true
       if (!this.inline.update) this.formOpen(item[this.idName]) // no action column && row click opens form
-      this.$emit('row-selected', { item, event }) // emit 'selected' event with following data {item, event}, if inline
     })
     this.created = this.$attrs.created || (async ({ record }) => { // TBD realtime updates
       this.filters = this.$attrs.filters || null
@@ -305,7 +304,6 @@ export default {
         //   page = Math.ceil(totalRecords / pagination.itemsPerPage) need to reload page...
         // }
       }
-      this.$emit('ops-find', { status, error }) // firm up on event
       this.notifyFind({ status, error })
       this.loading = false
     },
@@ -318,7 +316,6 @@ export default {
           this.form[key].value = data[key]
         }
       }
-      this.$emit('ops-findone', { status, error }) // firm up on event
       this.notifyFindOne({ status, error })
       this.loading = false
     },
@@ -330,7 +327,6 @@ export default {
       if (status === 200) {
         await this.updated({ record })
       }
-      this.$emit('ops-update', { status, error, data })
       this.notifyUpdate({ status, error })
     },
     async createRecord ({ record, parentId }) {
@@ -341,7 +337,6 @@ export default {
       if (status === 201) {
         await this.created({ record: null })
       }
-      this.$emit('ops-create', { status, error, data })
       this.notifyCreate({ status, error })
     },
     async deleteRecord (id) {
@@ -352,7 +347,6 @@ export default {
         await this.deleted(id)
       }
       this.loading = false
-      this.$emit('ops-delete', { status, error, data })
       this.notifyDelete({ status, error })
     },
     async exportRecords () {
@@ -366,7 +360,6 @@ export default {
       this.loading = true
       const { status = 500, error = null } = await this.crud.export(payload)
       this.loading = false
-      this.$emit('ops-export', { status, error })
       this.notifyExport({ status, error })
     },
     formClose () {

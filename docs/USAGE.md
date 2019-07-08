@@ -156,28 +156,21 @@ const v2 = {
   crud: {
     find: async ({parentId, filters, pagination, sorters}) => {
       return { status: 500, data: { records = [], totalRecords = 0, cursor = '' }, error: null }
-      this.$emit { status, error }
     },
     findOne: async (id) => {
       return { status = 500, data = null, error = null }
-      this.$emit { status, error }
     },
     update: async ({ record }) => {
       return { status = 500, data = null, error = null }
-      this.$emit { status, error, data: record } // updated record, table or form record?
     },
     create: async ({ record }) => {
       return { status = 500, data = null, error = null }
-      this.$emit { status, error, data: record } // new record, table fields (NOT form fields) must match
     },
     delete: async (id) => {
       return { status = 500, data = null, error = null }
-      this.$emit { status, error, data: id }
-      notifyDelete { status, error }
     },
     export: async ({parentId, filters, pagination, sorters}) => {
       return { status = 500, data = null, error = null }
-      this.$emit { status, error }
     }),
 
     ws: null, // websocket operation, not implemented currently
@@ -211,81 +204,70 @@ const v2 = {
 
 ## Events
 
-@row-selected
+### @form-open
 
-emitted when row clicked
+Emitted when CRUD form is open
 
-properties emitted: { item, event }
+Properties emitted:
+- this.form
 
-@form-open
+### @form-close
 
-emitted when CRUD form is open this.form
+#mitted when CRUD form closes
 
-@form-close
-
-emitted when CRUD form closes
-
-@ops-find
-
-emitted after a find CRUD operation
-
-{ status, error }
-
-@ops-findone
-
-{ status, error }
-
-@ops-update
-
-{ status, error, data }
-
-@ops-create
-
-{ status, error, data }
-
-@ops-delete
-
-{ status, error, data }
-
-@ops-export
-
-{ status, error }
+Properties emitted:
+- none
 
 
 ## Named Scoped SLots
 
-**progress**
-  - vcx: access to the component itself
+### progress
 
-**table-toolbar**
-  - vcx: access to the component itself
+Scope Properties:
+- vcx: access to the component itself
 
-**filter**
-  - filters: access to filters
-  - parentId: access to parentId (if any)
-  - vcx: access to the component itself
+### table-toolbar
 
-**table**
+Scope Properties:
+- vcx: access to the component itself
+
+### filter
+
+Scope Properties:
+- filters: access to filters
+- parentId: access to parentId (if any)
+- vcx: access to the component itself
+
+### table
+
+Scope Properties:
   - records: the records found
   - totalRecords: to total unpaged records
   - pagination: the pagination object
   - vcx: access to the component itself
 
-**td**
+### td
+
+Scope Properties:
   - headers: table headers
   - item: the record item
   - vcx: access to the component itself
 
-**form-toolbar**
+### form-toolbar
+
+Scope Properties:
   - vcx: access to the component itself
 
-**form**
+### form
+
+Scope Properties:
   - record: the selected record
   - parentId: access to parentId (if any)
   - vcx: access to the component itself
 
 
 
+---
 
 # TO FIX
 
