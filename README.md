@@ -5,39 +5,48 @@
 > Latest Version 0.2.0 Released 2019 July 20 0815 +8GMT
 > Version 0.1.x will be supported under the V0.1 branch 
 
-**Our next release, we will migrate to Vuetify 2.0...** There may be breaking changes as the new **v-data-table** component has more slot handling and features. We will take this chance to improve the framework while minimizing the effect of breaking changes
+Version 0.2.0 uses Vuetify 2. There are many breaking changes from Vuetify Version 1 to Version 2.
 
-Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>.
+We will continue to support Vuetify version 1 under vue-crud-x version 0.1 branch
 
-See RELEASE.MD file for change history.
+Due to the inevitable changes in Vuetify version 2. We took the opportunity to redesign and improve vue-crud-x 0.2 based on lessons learnt:
+- we now seriously design the component to be able to be replaced by other UI frameworks such as ant-design-vue
+- reduce the number of framework dependent parts as much as possible
+- remove hacks such as cell edit (row edit improved greatly)
+- more organized API and documentation
+
+## QUICKSTART
+
+Clone the repository, setup and run using the following commands
+
+```bash
+git clone https://github.com/ais-one/vue-crud-x.git
+cd vue-crud-x
+cd example-rest
+npm i
+npm run build-rest
+npm run init-db
+npm run start
+```
+
+Navigate to http://127.0.0.1:8080
+
+Login using the following
+
+- User: test
+- Password: test
+
+(do not log in using Firebase or Mongo Stitch until you have setup to use them)
+
+View API Documentation at http://127.0.0.1:3000/api-docs
+
+
+## Version 1 Article
 
 Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
 
+Version 1 updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>.
 
-## 0 QUICKSTART
-
-- **example-rest** folder is preferred project for quickstart. Everything runs locally.
-- **example-nuxt** folder uses NuxtJS (SSR and generate demo), Also includes Github login
-
-
-## 1 New Features
-
-- Rename example-firebase to example-baas and added Mongo Stitch login and query example
-  - Setting up Mongo Stitch https://docs.mongodb.com/stitch/tutorials/guides/todo-backend/
-  - Setup email and password authorization provider instead of anonymous provider
-- Improved Nuxt page error handling using error layout page
-- Vue 3 migration: updated slots to use v-slot
-
-
-## 2 Major Improvements (Without Breaking Changes)
-
-Usage example can be found:
- - in **example-rest** project (see example-rest/README.md on quickstart)
-   - @/pages/Page.vue
-   - @/pages/Book.vue
-   - @/pages/Author.vue
-   - @/pages/Category.vue
- - in **example-nuxt** project (see example-nuxt/README.md on quickstart)
 
 ---
 
@@ -69,50 +78,57 @@ Other design considerations
  - Improvement on protocol
  - SSR and static generated sites for performance and SEO
 
-The example projects include many useful paradigms and examples for you to use when building your full-stack application
+API Documentation for **vue-crud-x**, can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
+
+The example projects show the use of **vue-crud-x** in various use-cases and include many other examples for you to use in your own full-stack application
 
 
-## Example Project List
+# Example Project List
 
 There are currently 3 projects for show-casing vue-crud-x and many other useful examples you may need in your software development journey
 
-Our examples showcase the following (unrelated to the vue-crud-x features above)
+Refer to the respective projects README.md files for information on setup, install and running
 
- - **example-rest** (https://github.com/ais-one/vue-crud-x/tree/master/example-rest)
-   - **(Best for quick start - Please use this to try things out)**
-   - everything runs locally, and you build and run both this project and the **backend** project from here
-   - websocket example
-   - Graphql
-     - use Apollo client
-     - authentication
-     - subscriptions
-     - cache
-     - optimistic response
-     - refetch queries
-   - real-time updates from Firestore
-   - Use multiple vue-crud-x in single page
-   - Additional
-     - Image capture via webcam
-     - Signature capture on canvas
-   - Login
-     - recaptcha
-     - Local Email-password login & JWT
-       - optional 2FA OTP signin with Google Authenticator
-         - setup with USE_OTP=GA in environement files of both the front and backend
-         - Check DB seeders for the API key to use, or you can find out how to generate your own
-     - Mongo Stitch or Firebase Auth
-   - Mongo stitch
-     - refer to [docs/MongoStitch.md](docs/MongoStitch.md) for setup
-     - login & auth
-     - simple query example 
-   - Firebase
-     - refer to [docs/Firebase.md](docs/Firebase.md) for setup
-     - login & auth
-     - interaction with firebase datastore
-     - upload to firebase storage & view
-   - rxJs for cleaner code (auto-complete, debounce, fetch latest)
-   - Serverless backend, using Firebase hosting backend-as-a-service, need to register and setup
- - **example-nuxt** (https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt)
+## example-rest
+
+(https://github.com/ais-one/vue-crud-x/tree/master/example-rest)
+
+Best for quick start - Please use this to try things out
+
+- everything runs locally, and you build and run both this project and the **backend** project from here
+- websocket example
+- Graphql
+  - use Apollo client
+  - authentication
+  - subscriptions
+  - cache
+  - optimistic response
+  - refetch queries
+- real-time updates from Firestore
+- Use multiple vue-crud-x in single page
+- Login
+  - recaptcha
+  - Local Email-password login & JWT
+    - optional 2FA OTP signin with Google Authenticator
+      - setup with USE_OTP=GA in environement files of both the front and backend
+      - Check DB seeders for the API key to use, or you can find out how to generate your own
+- rxJs for cleaner code (auto-complete, debounce, fetch latest)
+- Serverless / (BaaS)
+  - Mongo stitch
+    - refer to [docs/MongoStitch.md](docs/MongoStitch.md) for setup
+    - login & auth
+    - simple query example 
+  - Firebase
+    - refer to [docs/Firebase.md](docs/Firebase.md) for setup
+    - login & auth
+    - interaction with firebase datastore
+    - upload to firebase storage & view
+- Other Features
+  - Image capture via webcam
+  - Signature capture on canvas
+## example-nuxt
+
+(https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt)
    - includes features in example-rest plus the following:
      - letting NuxtJS framework handle boilerplate work... e.g. routing, store setup
      - nuxt-auth
@@ -122,29 +138,31 @@ Our examples showcase the following (unrelated to the vue-crud-x features above)
      - SSR & pre-generated Static Web App 
 
 
-The **backend** project is an Express server used by **example-rest** and **example-nuxt** projects for testing the vue-crud-x component, and has the following features:
- - https://github.com/ais-one/vue-crud-x/tree/master/backend
- - ObjectionJS
-   - Sample SQL DB with 1-1, 1-m, m-n use cases, transactions, migrations, seeders,
-   - Supports SQLite, MySQL, MariaDB, Postgres, MSSQL
- - MongoDB
-   - seeders (migration not needed)
-   - watch for real-time collection & document changes
- - Authentication & Authorization
-   - Local Login
-   - JWT & 2FA OTP (using Google Authenticator)
-   - OAuth2 Github Login
-   - SAML ADFS login using Passport
- - OpenAPI documentation with JSDoc
- - Key-Value Store for user token storage on server (can replace with redis in local development environment)
- - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
- - GraphQL (use Apollo server)
- - File uploads
- - Logging (in progress)
- - Testing (in progress)
+## backend
 
+https://github.com/ais-one/vue-crud-x/tree/master/backend
 
-Refer to the respective projects README.md files for more information
+**backend** project is an Express server used by **example-rest** and **example-nuxt** projects for testing the vue-crud-x component, and has the following features:
+- ObjectionJS
+  - Sample SQL DB with 1-1, 1-m, m-n use cases, transactions, migrations, seeders,
+  - Supports SQLite, MySQL, MariaDB, Postgres, MSSQL
+- MongoDB
+  - seeders (migration not needed)
+  - watch for real-time collection & document changes
+- Authentication & Authorization
+  - Local Login
+  - JWT & 2FA OTP (using Google Authenticator)
+  - OAuth2 Github Login
+  - SAML ADFS login using Passport
+- OpenAPI documentation with JSDoc
+- Key-Value Store for user token storage on server (can replace with redis in local development environment)
+- Websocket (use https://www.websocket.org/echo.html & ngrok to test)
+- GraphQL (use Apollo server)
+- File uploads
+- Logging (in progress)
+- Testing (in progress)
+
+---
 
 ## Roadmap
  * Backend
@@ -160,12 +178,6 @@ Refer to the respective projects README.md files for more information
    * CI / CD
 
 
-## vue-crud-x API DOCUMENTATION
-
-For more details on the attributes and events of vue-crud-x, please refer to [docs/VueCrudX.md](docs/VueCrudX.md)
-
----
-
 ## What is bad about this CRUD Component
 
 Because of its flexible nature, quite a number of things need to be coded to fit your needs.
@@ -174,7 +186,7 @@ However, the good part is that these parts need to be coded anyway and once you 
 
 ---
 
-# Building The Library (Read this if you wish to maintain own fork)
+# Building The Library (OPTIONAL: Read this if you wish to maintain own fork)
 
 ## Option 1 Use NPM package
 
