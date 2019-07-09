@@ -37,7 +37,7 @@
   "deprecated": false,
   "description": "A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, using GraphQL or REST to access various datastores. Uses Vuetify for layout components but can be changed to alternatives such as ElementUI (by changing components in the VueCrudX source code from Vuetify to ElementUI)",
   "devDependencies": {
-    "@vue/cli-service": "^3.7.0",
+    "@vue/cli-service": "^3.9.2",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue-template-compiler": "^2.6.10"

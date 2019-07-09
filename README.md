@@ -3,13 +3,13 @@
 # NOTICES & UPDATES
 
 > Latest Version 0.2.0 Released 2019 July 20 0815 +8GMT
-> Version 0.1.x will be supported under the V0.1 branch 
+> vue-crud-x Version 0.1.x and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1)
 
-Version 0.2.0 uses Vuetify 2. There are many breaking changes from Vuetify Version 1 to Version 2.
+Version 0.2.0 uses Vuetify 2. There are many breaking changes from Vuetify 1 to 2.
 
-We will continue to support Vuetify version 1 under vue-crud-x version 0.1 branch
+We will continue to support Vuetify 1 under vue-crud-x version 0.1 branch
 
-Due to the inevitable changes in Vuetify version 2. We took the opportunity to redesign and improve vue-crud-x 0.2 based on lessons learnt:
+Due to the inevitable changes in Vuetify 2. We took the opportunity to redesign and improve vue-crud-x 0.2 based on lessons learnt:
 - we now seriously design the component to be able to be replaced by other UI frameworks such as ant-design-vue
 - reduce the number of framework dependent parts as much as possible
 - remove hacks such as cell edit (row edit improved greatly)
@@ -17,7 +17,7 @@ Due to the inevitable changes in Vuetify version 2. We took the opportunity to r
 
 ## QUICKSTART
 
-Clone the repository, setup and run using the following commands
+Clone the repository, setup and run, using the following commands
 
 ```bash
 git clone https://github.com/ais-one/vue-crud-x.git
