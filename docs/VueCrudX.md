@@ -123,46 +123,71 @@ vtable: {
 
 inject properties for v-form (used by filter and by CRUD form)
 
+default:
+
+```js
+{
+  class: 'grey lighten-3 pa-2',
+  style: { overflow: 'auto' },
+  'lazy-validation': true
+}
+```
+
 ### vbtn
 
-inject properties for v-btn (the button style)
+inject properties for v-btn (the button style), also configure button icons and labels
+
+default:
+
+```js
+{
+  back: { icon: 'reply', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+  filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up', props: { dark: false, light: true, icon: true, fab: false } },
+  reload: { icon: 'replay', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+  create: { icon: 'add', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+  export: { icon: 'print', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+  close: { icon: 'close', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+  delete: { icon: 'delete', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+  update: { icon: 'save', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+  more: { // used in infinite scroll use-case
+    icon: '',
+    label: 'Load More',
+    props: null,
+    wrapper: {
+      style: {
+        display: 'flex',
+        'justify-content': 'center'
+      }
+    }
+  }
+}
+```
 
 ### vtoolbar
 
 inject properties for v-toolbar
 
-### vcontainer (may be removed as it may not be necessary)
-
-inject properties for container
-
-### actionicon
-
-inject properties for action column buttons
-
 default
 
 ```js
-{ small: true, class: 'mr-1' }
+{ height: 48, dark: false, light: true, color: 'grey', fixed: false }
 ```
 
-### buttons
+### vicon
 
-configure button icons and labels
+inject properties for v-icon
 
 default
 
 ```js
 {
-  back: { icon: 'reply', label: '' },
-  filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up' },
-  reload: { icon: 'replay', label: '' },
-  create: { icon: 'add', label: '' },
-  export: { icon: 'print', label: '' },
-  close: { icon: 'close', label: '' },
-  delete: { icon: 'delete', label: '' },
-  update: { icon: 'save', label: '' }
+  edit: { name: 'edit', props: { small: true, class: 'mr-1' } },
+  save: { name: 'save', props: { small: true, class: 'mr-1' } },
+  cancel: { name: 'cancel', props: { small: true, class: 'mr-1' } },
+  delete: { name: 'delete', props: { small: true, class: 'mr-1' } }
 }
 ```
+
 
 ## Paging And Sorting Properties
 

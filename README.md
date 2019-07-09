@@ -162,7 +162,7 @@ Refer to the respective projects README.md files for more information
 
 ## vue-crud-x API DOCUMENTATION
 
-For more details on the attributes and events of vue-crud-x, please refer to [docs/USAGE.md](docs/USAGE.md)
+For more details on the attributes and events of vue-crud-x, please refer to [docs/VueCrudX.md](docs/VueCrudX.md)
 
 ---
 

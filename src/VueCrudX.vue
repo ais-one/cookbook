@@ -1,5 +1,6 @@
 <script>
 // Notes:
+// TBD / TODO - todos
 // VARIATION - Note this code block when implementing on other UI Framework
 // IMPORTANT - important point to take not of
 // TOREMOVE - to be removed
@@ -14,7 +15,7 @@ export default {
   },
   data () {
     return {
-      // Internals - Start
+      // Private Properties Do Not Override - Start
       ready: false, // TODELETE May Not Be Needed Anymore...
       loading: false,
       records: [],
@@ -26,31 +27,40 @@ export default {
       editingRow: null, // for row editing... null or row object
       cursor: '', // infinite scroll cursor
       selectedId: null, //  selected record Id
-      // Internals - End
+      // Private Properties Do Not Override - End
 
       // VARIATION - Start Vuetify 2
-      buttons: {
-        back: { icon: 'reply', label: '' },
-        filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up' },
-        reload: { icon: 'replay', label: '' },
-        create: { icon: 'add', label: '' },
-        export: { icon: 'print', label: '' },
-        close: { icon: 'close', label: '' },
-        delete: { icon: 'delete', label: '' },
-        update: { icon: 'save', label: '' }
+      vbtn: { // v-btn Component
+        back: { icon: 'reply', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+        filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up', props: { dark: false, light: true, icon: true, fab: false } },
+        reload: { icon: 'replay', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+        create: { icon: 'add', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+        export: { icon: 'print', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+        close: { icon: 'close', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+        delete: { icon: 'delete', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+        update: { icon: 'save', label: '', props: { dark: false, light: true, icon: true, fab: false } },
+        more: {
+          icon: '',
+          label: 'Load More',
+          props: null,
+          wrapper: {
+            style: {
+              display: 'flex',
+              'justify-content': 'center'
+            }
+          }
+        }
       },
-      // VARIATION - End Vuetify2
-
-      // VARIATION - Start Vuetify 2
-      actionicon: { small: true, class: 'mr-1' }, // for the action column
-      vbtn: { dark: false, light: true, icon: true, fab: false }, // v-btn Component
+      vicon: { // v-icon Component
+        edit: { name: 'edit', props: { small: true, class: 'mr-1' } },
+        save: { name: 'save', props: { small: true, class: 'mr-1' } },
+        cancel: { name: 'cancel', props: { small: true, class: 'mr-1' } },
+        delete: { name: 'delete', props: { small: true, class: 'mr-1' } }
+      },
       vtoolbar: { height: 48, dark: false, light: true, color: 'grey', fixed: false }, // v-toolbar Component
-      vcontainer: { fluid: true, class: 'pa-2', style: { } }, // v-container Component
       vform: { // v-form Component
         class: 'grey lighten-3 pa-2',
-        style: {
-          overflow: 'auto'
-        },
+        style: { overflow: 'auto' },
         'lazy-validation': true
       },
       vtable: { // props
@@ -120,18 +130,17 @@ export default {
     }
   },
   async created () {
-    this.ready = false
+    this.ready = true
 
     this.idName = this.$attrs.idName || 'id'
     this.infinite = !!this.$attrs.infinite // default false
     this.title = this.$attrs.title || 'Title'
 
     // VARIATION Start Vuetify2
-    this.actionicon = Object.assign(this.actionicon, this.$attrs.actionicon || {})
+    this.vicon = Object.assign(this.vicon, this.$attrs.vicon || {})
     this.vbtn = Object.assign(this.vbtn, this.$attrs.vbtn || {})
     this.vform = Object.assign(this.vform, this.$attrs.vform || {})
     this.vtoolbar = Object.assign(this.vtoolbar, this.$attrs.vtoolbar || {})
-    this.vcontainer = Object.assign(this.vcontainer, this.$attrs.vcontainer || {})
     this.vtable = Object.assign(this.vtable, this.$attrs.vtable || {})
 
     this.sorters = Object.assign(this.sorters, this.$attrs.sorters || {})
@@ -216,10 +225,7 @@ export default {
     this.confirmDelete = this.$attrs.confirmDelete || (() => confirm(this.$t('vueCrudX.confirm'))) // default always need confirmation
     // non-ui reactive data - END
 
-    // UI customizations
-    this.buttons = Object.assign(this.buttons, this.$attrs.buttons || {}) // customize button icons and labels
-
-    this.ready = true
+    this.ready = true // TOREMOVE
   },
   async mounted () {
     // not needed in data() because it does not exist in template, an optimization which should be done for others as well
@@ -455,7 +461,7 @@ export default {
 </script>
 
 <template>
-  <v-container v-if="ready" v-bind="vcontainer">
+  <div v-if="ready">
     <!-- progress overlay -->
     <slot name="progress" :vcx="_self">
       <v-overlay :value="loading">
@@ -466,12 +472,12 @@ export default {
     <component :is="'div'" v-show="!showForm">
       <slot name="table-toolbar" :vcx="_self">
         <v-toolbar v-bind="vtoolbar">
-          <v-toolbar-title><v-btn v-if="parentId" v-bind="vbtn" @click.stop="goBack" :disabled="loading"><v-icon>{{buttons.back.icon}}</v-icon><span>{{buttons.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
+          <v-toolbar-title><v-btn v-if="parentId" v-bind="vbtn.back.props" @click.stop="goBack" :disabled="loading"><v-icon>{{vbtn.back.icon}}</v-icon><span>{{vbtn.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-btn v-if="filters" v-bind="vbtn" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? buttons.filter.icon2 : buttons.filter.icon }}</v-icon><span>{{buttons.filter.label}}</span></v-btn>
-          <v-btn v-bind="vbtn" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{buttons.reload.icon}}</v-icon><span>{{buttons.reload.label}}</span></v-btn>
-          <v-btn v-if="crud.create" v-bind="vbtn" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{buttons.create.icon}}</v-icon><span>{{buttons.create.label}}</span></v-btn>
-          <v-btn v-if="crud.export" v-bind="vbtn" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{buttons.export.icon}}</v-icon><span>{{buttons.export.label}}</span></v-btn>
+          <v-btn v-if="filters" v-bind="vbtn.filter.props" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? vbtn.filter.icon2 : vbtn.filter.icon }}</v-icon><span>{{vbtn.filter.label}}</span></v-btn>
+          <v-btn v-bind="vbtn.reload.props" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{vbtn.reload.icon}}</v-icon><span>{{vbtn.reload.label}}</span></v-btn>
+          <v-btn v-if="crud.create" v-bind="vbtn.create.props" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{vbtn.create.icon}}</v-icon><span>{{vbtn.create.label}}</span></v-btn>
+          <v-btn v-if="crud.export" v-bind="vbtn.export.props" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{vbtn.export.icon}}</v-icon><span>{{vbtn.export.label}}</span></v-btn>
         </v-toolbar>
       </slot>
       <div v-if="showFilter">
@@ -527,12 +533,12 @@ export default {
                 <td :key="header.value + index" v-for="(header, index) in vtable.headers" :class="header.class">
                   <span v-if="header.action">
                     <template v-if="_isRowEditing(item)">
-                      <v-icon v-if="crud.update && inline.update" v-bind="actionicon" @click.stop="_inlineSave(item)" :disabled="loading">save</v-icon>
-                      <v-icon v-if="crud.update && inline.update" v-bind="actionicon" @click.stop="editingRow=null" :disabled="loading">cancel</v-icon>
+                      <v-icon v-if="crud.update && inline.update" v-bind="vicon.save.props" @click.stop="_inlineSave(item)" :disabled="loading">{{vicon.save.name}}</v-icon>
+                      <v-icon v-if="crud.update && inline.update" v-bind="vicon.cancel.props" @click.stop="editingRow=null" :disabled="loading">{{vicon.cancel.name}}</v-icon>
                     </template>
                     <template v-else>
-                      <v-icon v-if="crud.update && (inline.update || (!inline.update && form))" v-bind="actionicon" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">edit</v-icon>
-                      <v-icon v-if="crud.delete && inline.delete" v-bind="actionicon" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">delete</v-icon>
+                      <v-icon v-if="crud.update && (inline.update || (!inline.update && form))" v-bind="vicon.edit.props" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">{{vicon.edit.name}}</v-icon>
+                      <v-icon v-if="crud.delete && inline.delete" v-bind="vicon.delete.props" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">{{vicon.delete.name}}</v-icon>
                     </template>
                   </span>
                   <template v-else>
@@ -545,9 +551,11 @@ export default {
           </template>
           <!-- infinite scroll handling -->
           <template v-if="infinite" v-slot:footer="props">
-            <v-btn v-if="cursor" @click="getRecords({ mode: 'load-more' })">Load More {{ props.length }}</v-btn>
+            <div v-bind="vbtn.more.wrapper">
+              <v-btn v-if="cursor" @click="getRecords({ mode: 'load-more' })" :disabled="loading" v-bind="vbtn.more.props">{{$t?$t('vueCrudX.more'):vbtn.more.label}}</v-btn>
+            </div>
           </template>
-
+          <!-- no data display -->
           <template v-slot:no-data>
             <v-alert :value="!loading&&!records.length" color="error" icon="warning">{{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
           </template>
@@ -558,11 +566,11 @@ export default {
     <component :is="'div'" v-show="showForm" row justify-center>
       <slot name="form-toolbar" :vcx="_self">
         <v-toolbar v-bind="vtoolbar">
-          <v-toolbar-title><v-btn v-bind="vbtn" @click.native="formClose" :disabled="loading"><v-icon>{{buttons.close.icon}}</v-icon><span>{{buttons.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
+          <v-toolbar-title><v-btn v-bind="vbtn.close.props" @click.native="formClose" :disabled="loading"><v-icon>{{vbtn.close.icon}}</v-icon><span>{{vbtn.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items>
-            <v-btn v-bind="vbtn" v-if="crud.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{buttons.delete.icon}}</v-icon><span>{{buttons.delete.label}}</span></v-btn>
-            <v-btn v-bind="vbtn" v-if="crud.update && selectedId||crud.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{buttons.update.icon}}</v-icon><span>{{buttons.update.label}}</span></v-btn>
+            <v-btn v-bind="vbtn.delete.props" v-if="crud.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{vbtn.delete.icon}}</v-icon><span>{{vbtn.delete.label}}</span></v-btn>
+            <v-btn v-bind="vbtn.update.props" v-if="crud.update && selectedId||crud.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{vbtn.update.icon}}</v-icon><span>{{vbtn.update.label}}</span></v-btn>
           </v-toolbar-items>
         </v-toolbar>
       </slot>
@@ -578,7 +586,7 @@ export default {
         </v-form>
       </slot>
     </component>
-  </v-container>
+  </div>
 </template>
 
 <style scoped>

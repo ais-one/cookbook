@@ -41,7 +41,8 @@ const messages = {
     vueCrudX: {
       noData: 'No Data',
       confirm: 'Confirm',
-      itemRequired: 'Item is required'
+      itemRequired: 'Item is required',
+      more: 'Load More'
     },
     myApp: {
       languages: 'Languages'
@@ -83,7 +84,8 @@ const messages = {
     vueCrudX: {
       noData: 'Tidak Ada Data',
       confirm: 'Memastikan',
-      itemRequired: 'Item wajib diisi'
+      itemRequired: 'Item wajib diisi',
+      more: 'Load More'
     },
     myApp: {
       languages: 'Bahasa'
