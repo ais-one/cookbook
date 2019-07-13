@@ -27,7 +27,7 @@
 
 <script>
 export default {
-    validate ({ params }) {
+  validate({ params }) {
     // Must be a number
     return /^\d+$/.test(params.slug)
   }

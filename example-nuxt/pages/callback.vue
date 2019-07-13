@@ -2,7 +2,7 @@
   <div class="container d-flex align-items-center justify-content-center flex-column">
     <!-- <img src="~/assets/loading.svg" alt="Loading..." width="80px" /> -->
     Logging in...
-    <v-alert v-if="!!error" :value="!!error" type="error">{{ error }}</v-alert>
+    <p v-if="!!error" :value="!!error" type="error">{{ error }}</p>
   </div>
 </template>
 

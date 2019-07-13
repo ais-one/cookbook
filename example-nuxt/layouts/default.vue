@@ -1,46 +1,22 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer :mini-variant="miniVariant" :clipped="clipped" v-model="drawer" fixed app>
-      <v-list>
+  <div class="container">
+    <div>
+      <div>
         <template v-for="(item, i) in items">
-          <v-list-item :to="item.to" :key="i" v-if="!item.auth || $auth.$state.loggedIn" router exact>
-            <v-list-item-action>
-              <v-icon v-html="item.icon" />
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
+          <nuxt-link class="h-space" :to="item.to" :key="i" v-if="!item.auth || $auth.$state.loggedIn" router exact>{{ item.title }}</nuxt-link>
         </template>
-      </v-list>
-    </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-toolbar-side-icon @click="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
-      <template v-if="$auth.$state.loggedIn">
-        <v-btn @click.stop="$auth.logout()">Logout [{{ $auth.user }}]</v-btn>
-      </template>
-      <template v-else>
-        <v-btn color="primary" nuxt to="/login">Login</v-btn>
-      </template>
-    </v-app-bar>
-    <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
-    </v-content>
-    <v-footer :fixed="fixed" app>
-      <span>&copy; None</span>
-    </v-footer>
-  </v-app>
+        <button v-if="$auth.$state.loggedIn" @click.stop="$auth.logout()">Logout [{{ $auth.user }}]</button>
+        <nuxt-link v-else to="/login">Login</nuxt-link>
+      </div>
+      <nuxt />
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      clipped: false,
-      drawer: false,
       fixed: false,
       items: [
         { icon: 'apps', title: 'Home', to: '/' },
@@ -51,11 +27,20 @@ export default {
         { icon: 'bubble_chart', title: 'Categories', to: '/categories', auth: true },
         { icon: 'bubble_chart', title: 'Books', to: '/books', auth: true },
         { icon: 'bubble_chart', title: 'Not Found', to: '/notfound' }
-      ],
-      miniVariant: false,
-      title: 'Vuetify.js'
+      ]
     }
   }
 }
 // this.$auth.user
 </script>
+
+<style scoped>
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.h-space {
+  padding-right: 8px;
+}
+</style>

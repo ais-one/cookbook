@@ -1,7 +1,6 @@
 <template>
   <div>
-    <v-alert show variant="warning">This is a secure page!</v-alert>
-    <h1>State</h1>
+    <h1>This is a secure page! - State</h1>
     <pre>{{ state }}</pre>
     <h1>Scopes</h1>
     <p>
@@ -12,8 +11,8 @@
     <h1>Token</h1>
     <pre>{{ $auth.token || '-' }}</pre>
     <hr />
-    <v-btn @click="$auth.fetchUser()">Fetch User</v-btn>
-    <v-btn @click="$auth.logout()">Logout</v-btn>
+    <button @click="$auth.fetchUser()">Fetch User</button>
+    <button @click="$auth.logout()">Logout</button>
   </div>
 </template>
 

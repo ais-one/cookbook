@@ -32,15 +32,6 @@ export default {
     ]
   },
 
-  // router: {
-  //   // middleware: '',
-  //   extendRoutes(routes, resolve) {
-  //     routes.push({
-  //       name: 'custom404', path: '*', component: resolve(__dirname, 'pages/404.vue') // better not to use this for 404 handling, use generate.fallback
-  //     })
-  //   }
-  // },
-
   generate: {
     fallback: true // if you want to use '404.html' instead of the default '200.html', uses layouts/error.vue
     // fallback: 'my-fallback/file.html' // if your hosting needs a custom location
@@ -66,10 +57,10 @@ export default {
   loading: { color: '#fff' },
 
   // Global CSS
-  css: ['~/assets/style/app.styl'],
+  // css: ['~/assets/style/app.styl'],
 
   // Plugins to load before mounting the App
-  plugins: ['@/plugins/vue-rx', '@/plugins/vuetify', '@/plugins/global', '@/plugins/axios'],
+  plugins: ['@/plugins/global', '@/plugins/axios'],
 
   // Nuxt.js modules
   modules: [

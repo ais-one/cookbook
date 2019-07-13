@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-alert :value="true" type="success">You should see this page without need to authenticate!</v-alert>
+    <h1>You should see this page without need to authenticate!</h1>
     Test: [{{ countVal }}]
-    <v-btn @click="test">TEST</v-btn>
+    <button @click="test">TEST</button>
   </div>
 </template>
 

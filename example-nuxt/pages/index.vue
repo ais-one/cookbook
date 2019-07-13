@@ -1,25 +1,17 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 sm8 md6>
-      <div class="text-xs-center">{{ title }}</div>
-      <v-card>
-        <v-card-title class="headline">Welcome to the Vuetify + Nuxt.js template</v-card-title>
-        <v-card-text>
-          <p>User status: {{ $auth.$state.loggedIn ? 'Logged In' : 'Guest' }}</p>
-        </v-card-text>
-        <v-card-actions>
-          <template v-if="$auth.$state.loggedIn">
-            <v-btn color="primary" nuxt to="/secure">Secure</v-btn>
-            <v-spacer />
-            <v-btn color="default" @click="$auth.logout()">Logout</v-btn>
-          </template>
-          <template v-else>
-            <v-btn color="primary" nuxt to="/login">Login</v-btn>
-          </template>
-        </v-card-actions>
-      </v-card>
-    </v-flex>
-  </v-layout>
+  <div class="container">
+    <div>
+      <h2>{{ title }}</h2>
+      <p>User status: {{ $auth.$state.loggedIn ? 'Logged In' : 'Guest' }}</p>
+      <template v-if="$auth.$state.loggedIn">
+        <nuxt-link color="primary" to="/secure">Secure</nuxt-link>
+        <button color="default" @click="$auth.logout()">Logout</button>
+      </template>
+      <template v-else>
+        <nuxt-link color="primary" to="/login">Login</nuxt-link>
+      </template>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -53,3 +45,11 @@ export default {
   // }
 }
 </script>
+
+<style scoped>
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

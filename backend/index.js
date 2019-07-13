@@ -102,7 +102,9 @@ const bookRoutes = require('./routes/book')
 const categoryRoutes = require('./routes/category')
 const pageRoutes = require('./routes/page')
 
-app.use(cors())
+app.use(cors({
+  exposedHeaders: ['refresh-token'] // allow this to be sent back in response
+}))
 app.use('/api/auth', authRoutes)
 app.use('/api', apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
 app.get("*", async (req, res) => res.status(404).json({ data: 'Not Found...' }))

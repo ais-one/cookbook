@@ -18,6 +18,16 @@ module.exports = {
         const key = (USE_OTP && req.path !== '/otp') ? OTP_SECRET_KEY : SECRET_KEY // select the key to use
         // console.log(key, OTP_SECRET_KEY, SECRET_KEY)
         const result = verifyToken(matchingToken, key)
+        /* refresh token
+        const nowSeconds = parseInt(Date.now() / 1000)
+        const tokenPeriodSeconds = result.exp - result.iat
+        const elapsedSeconds = nowS - result.iat
+        if (elapsedSeconds > 0.5 * tokenPeriodSeconds && elapsedSeconds <= tokenPeriodSeconds) {
+          delete result.iat
+          delete result.exp
+          res.set('refresh-token', createToken(result))
+        }
+        */
         if (result) { // id, iat, remove exp
           if (result.exp) delete result.exp
           req.decoded = result

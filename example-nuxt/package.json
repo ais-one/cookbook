@@ -25,12 +25,8 @@
     "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/dotenv": "^1.3.0",
     "cross-env": "^5.2.0",
-    "http-server": "^0.11.1",
     "nuxt": "^2.8.1",
-    "nuxt-i18n": "^5.12.7",
-    "rxjs": "^6.5.2",
-    "vue-rx": "^6.2.0",
-    "vuetify": "^2.0.0-beta.4"
+    "nuxt-i18n": "^5.12.7"
   },
   "devDependencies": {
     "@vue/eslint-config-standard": "^4.0.0",
@@ -41,9 +37,8 @@
     "eslint-loader": "^2.2.1",
     "eslint-plugin-prettier": "3.1.0",
     "eslint-plugin-vue": "^5.2.3",
+    "http-server": "^0.11.1",
     "nodemon": "^1.19.1",
-    "prettier": "1.18.2",
-    "stylus": "^0.54.5",
-    "stylus-loader": "^3.0.2"
+    "prettier": "1.18.2"
   }
 }

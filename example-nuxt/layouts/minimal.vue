@@ -1,17 +1,8 @@
 <template>
-  <v-app dark>
-    <v-toolbar fixed app>
-      <v-toolbar-title v-text="title" />
-      <template>
-        <v-btn color="primary" nuxt to="/">Go Home</v-btn>
-      </template>
-    </v-toolbar>
-    <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
-    </v-content>
-  </v-app>
+  <div class="container">
+    <h1>{{ title }} <nuxt-link to="/">Go Home</nuxt-link></h1>
+    <nuxt />
+  </div>
 </template>
 
 <script>
@@ -23,3 +14,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

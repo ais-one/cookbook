@@ -1,6 +1,8 @@
 import axios from 'axios'
 import { store } from './store'
 
+// import jwtDecode from 'jwt-decode'
+
 const API_URL = process.env.VUE_APP_API_URL || 'http://127.0.0.1:3000'
 
 export const http = axios.create({
@@ -23,6 +25,14 @@ http.interceptors.request.use((config) => {
 // Add a response interceptor
 http.interceptors.response.use((response) => {
   // Do something with response data
+  /* handle refresh token example
+  if (response.headers['refresh-token]) {
+    const token = response.headers['refresh-token]
+    const payload = jwtDecode(token)
+    axios.defaults.headers.common['Authorizerion'] = 'Bearer ' + token
+    localStorage.setItem('session-token', token)
+  }
+  */
   return response
 }, (error) => {
   // Do something with response error
