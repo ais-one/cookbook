@@ -1,8 +1,7 @@
 <template>
-  <div class="container d-flex align-items-center justify-content-center flex-column">
-    <!-- <img src="~/assets/loading.svg" alt="Loading..." width="80px" /> -->
-    Logging in...
-    <p v-if="!!error" :value="!!error" type="error">{{ error }}</p>
+  <div class="container">
+    <div v-if="!!error" :value="!!error">{{ error }}</div>
+    <div v-else>Logging in... Please Wait...</div>
   </div>
 </template>
 

@@ -2,20 +2,24 @@
   <div class="container">
     <!-- <div v-if="!(user && !user.verified)"> -->
     <div v-if="otpCount <= 0">
-      <form @keydown.enter="login">
+      <form>
         <div>
-          <input label="Email" v-model="email" type="text" required />
+          <div>
+            <input label="Email" v-model="email" type="text" required />
+          </div>
+          <div>
+            <input label="Password" v-model="password" type="password" required />
+          </div>
+          <div>
+            <button @click="login" :disabled="loading" :loading="loading">Sign In</button>
+          </div>
         </div>
-        <div>
-          <input label="Password" v-model="password" type="password" required />
-        </div>
-        <button @click="login" :disabled="loading" :loading="loading">Sign In</button>
-        <button @click="loginGithub">Login with Github</button>
-        <p v-if="!!error" :value="!!error">{{ error }}</p>
-        <p show v-if="$auth.$state.redirect">
-          You have to login before accessing to <strong>{{ $auth.$state.redirect }}</strong>
-        </p>
       </form>
+      <button @click="loginGithub">Login with Github</button>
+      <p v-if="!!error" :value="!!error">{{ error }}</p>
+      <p show v-if="$auth.$state.redirect">
+        You have to login before accessing to <strong>{{ $auth.$state.redirect }}</strong>
+      </p>
       <!-- <div v-for="s in strategies" :key="s.key" class="mb-2">
         <button @click="$auth.loginWith(s.key)" block :style="{background: s.color}" class="login-button">Login with {{ s.name }}</button>
       </div> -->
@@ -24,7 +28,7 @@
       <form @submit.prevent="otp">
         <input label="Enter Your 6-digit OTP" v-model="pin" type="number" maxlength="6" required clearable />
         <button type="submit" :disabled="loading" :loading="loading">Verify OTP</button>
-        <p v-if="!!error" :value="!!error" type="error">{{ error }}</p>
+        <p v-if="!!error" :value="!!error">{{ error }}</p>
         <p show v-if="$auth.$state.redirect">
           You have to login before accessing to <strong>{{ $auth.$state.redirect }}</strong>
         </p>
