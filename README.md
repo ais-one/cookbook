@@ -5,11 +5,7 @@
 > Latest Version 0.2.0 Released 2019 July 20 0815 +8GMT
 > vue-crud-x 0.1 and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1)
 
-vue-crud-x 0.2 uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to redesign and improve:
-- we now seriously design the component to be able to be replaced by other UI frameworks such as ant-design-vue
-- reduce the number of framework dependent parts as much as possible
-- remove hacks such as cell edit (row edit improved greatly)
-- more organized API and documentation
+vue-crud-x 0.2 uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to improve by designing component to be more UI framework agnostic (reduce dependencies as much as possible), easier to use, and improving code quality and documentation.
 
 
 # WHAT IS VUE-CRUD-X
