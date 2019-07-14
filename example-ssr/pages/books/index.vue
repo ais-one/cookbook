@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Put example-rest/src/pages/Book.vue Page Here</h1>
+    <h1>Put example-spa/src/pages/Book.vue Page Here</h1>
     <div @click="gotoPages(1)">Click Here To Go To Page</div>
   </div>
 </template>

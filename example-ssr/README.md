@@ -1,4 +1,4 @@
-# example-nuxt
+# example-ssr
 
 > A NuxtJS example project using vue-crud-x component
 

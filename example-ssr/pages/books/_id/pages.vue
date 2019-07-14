@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Put example-rest/src/pages/Page.vue Page Here</h1>
+    <h1>Put example-spa/src/pages/Page.vue Page Here</h1>
     <div>Page {{ $route.params.id }}</div>
   </div>
 </template>

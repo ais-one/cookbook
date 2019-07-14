@@ -15,14 +15,14 @@ Due to the inevitable changes in Vuetify 2. We took the opportunity to redesign 
 - remove hacks such as cell edit (row edit improved greatly)
 - more organized API and documentation
 
-## QUICKSTART
+# QUICKSTART
 
 Clone the repository, setup and run, using the following commands
 
 ```bash
 git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
-cd example-rest
+cd example-spa
 npm i
 npm run build-rest
 npm run init-db
@@ -38,8 +38,13 @@ Login using the following
 
 (do not log in using Firebase or Mongo Stitch until you have setup to use them)
 
+# DOCUMENTATION
+
 View API Documentation at http://127.0.0.1:3000/api-docs
 
+## Version 2 Article
+
+Work In Progress
 
 ## Version 1 Article
 
@@ -55,48 +60,48 @@ Version 1 updates can be found on the <a href="https://github.com/ais-one/vue-cr
 > A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, forms, use of GraphQL or REST to access various datastores. Vuetify is used for frontend UI components but can be changed to alternatives such as ElementUI (with some effort)
 
 The following differentiates vue-crud-x from other CRUD repositories:
- - Able to do nested CRUD operations (parent table call child table),
- - Inline edit (row level)
- - Server side pagination, sorting & filtering
- - Handle infinite scroll use-case
- - Handle authentication tokens, user permissions
- - Customise table, search filter, CRUD form, validation, CRUD operations (e.g. disallow delete, call REST, GraphQL, Firestore, etc.)
- - Auto-configure/generate Search filter and CRUD Forms using JSON
- - Export to CSV/JSON, File/Image Upload
- - Reload & optimization strategy
- - Real-time updates & subscription
- - Overridable methods with default behaviour
- - Emitted events for use by parent component
+- Able to do nested CRUD operations (parent table call child table),
+- Inline edit (row level)
+- Server side pagination, sorting & filtering
+- Handle infinite scroll use-case
+- Handle authentication tokens, user permissions
+- Customise table, search filter, CRUD form, validation, CRUD operations (e.g. disallow delete, call REST, GraphQL, Firestore, etc.)
+- Auto-configure/generate Search filter and CRUD Forms using JSON
+- Export to CSV/JSON, File/Image Upload
+- Reload & optimization strategy
+- Real-time updates & subscription
+- Overridable methods with default behaviour
+- Emitted events for use by parent component
 
 Other design considerations 
- - i18n
- - Tree shaking
- - Implementation with multiple UI frameworks
-   - remove as many UI framework dependent parts as possible
-   - indacate parts which should change if other UI frameworks are used 
- - More modular design
- - Improvement on protocol
- - SSR and static generated sites for performance and SEO
+- i18n
+- Tree shaking
+- Implementation with multiple UI frameworks
+  - remove as many UI framework dependent parts as possible
+  - indacate parts which should change if other UI frameworks are used 
+- More modular design
+- Improvement on protocol
+- SSR and static generated sites for performance and SEO
 
 API Documentation for **vue-crud-x**, can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
 
-The example projects show the use of **vue-crud-x** in various use-cases and include many other examples for you to use in your own full-stack application
 
+# Project List
 
-# Example Project List
-
-There are currently 3 projects for show-casing vue-crud-x and many other useful examples you may need in your software development journey
+There are currently 3 projects for show-casing vue-crud-x and many other useful recipes you may need in your software development journey
 
 Refer to the respective projects README.md files for information on setup, install and running
 
-## example-rest
+## example-spa
 
-(https://github.com/ais-one/vue-crud-x/tree/master/example-rest)
+https://github.com/ais-one/vue-crud-x/tree/master/example-spa
 
 Best for quick start - Please use this to try things out
 
+Recipes for a production-ready SPA and example usage of **vue-crud-x**:
+
 - everything runs locally, and you build and run both this project and the **backend** project from here
-- websocket example
+- websocket
 - Graphql
   - use Apollo client
   - authentication
@@ -117,7 +122,7 @@ Best for quick start - Please use this to try things out
   - Mongo stitch
     - refer to [docs/MongoStitch.md](docs/MongoStitch.md) for setup
     - login & auth
-    - simple query example 
+    - simple query 
   - Firebase
     - refer to [docs/Firebase.md](docs/Firebase.md) for setup
     - login & auth
@@ -126,23 +131,13 @@ Best for quick start - Please use this to try things out
 - Other Features
   - Image capture via webcam
   - Signature capture on canvas
-## example-nuxt
-
-(https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt)
-   - includes features in example-rest plus the following:
-     - letting NuxtJS framework handle boilerplate work... e.g. routing, store setup
-     - nuxt-auth
-       - Social login using Github
-       - Local Email-password login & JWT
-         - optional 2FA using Google Authenticator
-     - SSR & pre-generated Static Web App 
-
 
 ## backend
 
 https://github.com/ais-one/vue-crud-x/tree/master/backend
 
-**backend** project is an Express server used by **example-rest** and **example-nuxt** projects for testing the vue-crud-x component, and has the following features:
+Recipes for a production-ready Express server used by **example-spa** and **example-ssr**:
+
 - ObjectionJS
   - Sample SQL DB with 1-1, 1-m, m-n use cases, transactions, migrations, seeders,
   - Supports SQLite, MySQL, MariaDB, Postgres, MSSQL
@@ -152,9 +147,11 @@ https://github.com/ais-one/vue-crud-x/tree/master/backend
 - Authentication & Authorization
   - Local Login
   - JWT & 2FA OTP (using Google Authenticator)
+  - Refresh token
   - OAuth2 Github Login
   - SAML ADFS login using Passport
-- OpenAPI documentation with JSDoc
+- Documentation
+  - OpenAPI with JSDoc (enable for local only)
 - Key-Value Store for user token storage on server (can replace with redis in local development environment)
 - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
 - GraphQL (use Apollo server)
@@ -162,27 +159,36 @@ https://github.com/ais-one/vue-crud-x/tree/master/backend
 - Logging (in progress)
 - Testing (in progress)
 
+## example-ssr
+
+https://github.com/ais-one/vue-crud-x/tree/master/example-ssr
+
+Recipes for a production-ready Nuxt static sites:
+
+- nuxt-auth
+  - Social login using Github
+  - Local Email-password login & JWT
+  - optional 2FA using Google Authenticator
+- SSR & pre-generated Static Web App 
+  - Handling of 500 and 404 errors
+- Showing gotchas of SSR
+
 ---
 
-## Roadmap
- * Backend
-   * Logging
-   * Security Improvements
-   * Automated testing (dredd.io)
-   * improve on scalability of websockets
-   * JsonSchema
- * Frontend
-   * Validation? vuelidate, vee-validate, common validation
-   * Testing (cypress)
- * Overall
-   * CI / CD
+# Roadmap
 
-
-## What is bad about this CRUD Component
-
-Because of its flexible nature, quite a number of things need to be coded to fit your needs.
-
-However, the good part is that these parts need to be coded anyway and once you find your way around the design, you will be able to quickly create custom CRUD in many of your use cases
+- Backend
+  - Logging
+    - prefer to use external APM service (performance issues)
+  - Security Improvements
+  - Automated testing (dredd.io)
+  - improve on scalability of websockets
+  - JsonSchema
+- Frontend
+  - Validation? vuelidate, vee-validate, common validation
+  - Testing (cypress)
+- Overall
+  - CI / CD
 
 ---
 

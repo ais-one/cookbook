@@ -2,25 +2,25 @@
 
 This document describes the details on the properties used in vue-crud-x.
 
-To see example of usage. Please refer to source code in **example-rest project folder**.
+To see example of usage. Please refer to source code in **example-spa project folder**.
 
-- example-rest/src/pages/Author
+- example-spa/src/pages/Author
   - infinite scroll
-- example-rest/src/pages/Category
+- example-spa/src/pages/Category
   - Apollo GraphQL, subscriptions, optimistic UI, caching, refetch queries
-- example-rest/src/pages/Book
+- example-spa/src/pages/Book
   - parent crud, various editors
   - lazy autocomplete (book-author join table)
-- example-rest/src/pages/Page
+- example-spa/src/pages/Page
   - inline edit and child crud
-- example-rest/src/pages/FirebaseRT
+- example-spa/src/pages/FirebaseRT
   -  example using Firestore with real-time updates
 
 You can also refer to the vue-crud-x source code in the main source folder
 
 - src/VueCrudX.vue
 
-Some useful components used in the **example-rest project** can also be found in the main source folder, such as
+Some useful components used in the **example-spa project** can also be found in the main source folder, such as
 
 - src/DatePicker
 - src/TimePicker

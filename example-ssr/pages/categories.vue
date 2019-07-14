@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1>Put example-rest/src/pages/Author.vue Page Here</h1>
+    <h1>Put example-spa/src/pages/Category.vue Page Here</h1>
   </div>
 </template>
 
 <script>
 export default {
   middleware: ['auth'],
-  name: 'author'
+  name: 'category'
 }
 </script>
