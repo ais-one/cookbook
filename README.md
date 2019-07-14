@@ -138,17 +138,11 @@ Recipes for a production-ready Nuxt static sites. Static sites have the same adv
 
 Release notes for the library and examples can be found in [docs/Release.md](docs/Release.md)
 
-Refer to the respective projects README.md files for information on getting started
+Refer to the respective projects README.md files for information on getting started with each project
 
-## Version 2 Article
+**vue-crud-x 0.2 Article** WORK IN PROGRESS (to be published on **dev.to**, less fluff, more stuff)
 
-Work In Progress
-
-## Version 1 Article (For Historical Reference)
-
-Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
-
-Version 1 updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>.
+**vue-crud-x 0.1 Article** <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Legacy Article (For Historical Reference)</a>
 
 
 # SAMPLE SCREENSHOTS
