@@ -76,7 +76,7 @@ View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
 
 Refer to the respective projects README.md files for information on getting started
 
-## example-spa (https://github.com/ais-one/vue-crud-x/tree/master/example-spa)
+## [example-spa](https://github.com/ais-one/vue-crud-x/tree/master/example-spa)
 
 Best for quick start - Please use this to try things out. Everything runs locally
 
@@ -92,20 +92,16 @@ Recipes for a production-ready SPA:
       - Check DB seeders for the API key to use, or you can find out how to generate your own
 - rxJs for cleaner code (auto-complete, debounce, fetch latest)
 - Serverless / (BaaS)
-  - Mongo stitch
-    - refer to [docs/MongoStitch.md](docs/MongoStitch.md) for setup
-    - login & auth
-    - simple query 
-  - Firebase
-    - refer to [docs/Firebase.md](docs/Firebase.md) for setup
-    - login & auth
-    - interaction with firebase datastore & real-time update
+  - Mongo stitch ([setup](docs/MongoStitch.md))
+    - login & auth, simple query 
+  - Firebase ([setup](docs/Firebase.md))
+    - login & auth, interaction with firebase datastore & real-time update
     - upload to firebase storage & view
 - Other Features
   - Image capture via webcam
   - Signature capture on canvas
 
-## backend (https://github.com/ais-one/vue-crud-x/tree/master/backend)
+## [backend](https://github.com/ais-one/vue-crud-x/tree/master/backend)
 
 Recipes for a production-ready Express server used by **example-spa** and **example-ssr**:
 - ObjectionJS
@@ -115,9 +111,7 @@ Recipes for a production-ready Express server used by **example-spa** and **exam
   - seeders (migration not needed)
   - watch for real-time collection & document changes
 - Authentication & Authorization
-  - Local Login
-  - JWT & 2FA OTP (using Google Authenticator)
-  - Refresh token
+  - Local Login, JWT & 2FA OTP (using Google Authenticator), Refresh token
   - OAuth2 Github Login
   - SAML ADFS login using Passport
 - Documentation
@@ -129,7 +123,7 @@ Recipes for a production-ready Express server used by **example-spa** and **exam
 - Testing (in progress)
 - Logging (in progress)
 
-## example-ssr (https://github.com/ais-one/vue-crud-x/tree/master/example-ssr)
+## [example-ssr](https://github.com/ais-one/vue-crud-x/tree/master/example-ssr)
 
 Recipes for a production-ready Nuxt static sites. Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes:
 - nuxt-auth
