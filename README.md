@@ -14,15 +14,15 @@ vue-crud-x 0.2 uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2,
 
 > A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, forms, use of GraphQL or REST to access various datastores. Vuetify is used for frontend UI components but can be changed to alternatives such as ElementUI (with some effort)
 
-> Over time, the example projects to show the use of **vue-crud-x** has grown to become a cookbook that includes useful recipes for use in production ExpressJS and VueJS applications.
+> Over time, the example projects to show the use of **vue-crud-x** have grown to become a **cookbook** that includes many other useful **recipes** for use in production ExpressJS and VueJS applications.
 
 The following differentiates vue-crud-x from other CRUD repositories:
 - Able to do nested CRUD operations (parent table call child table),
-- Inline edit (row level)
 - Server side pagination, sorting & filtering
 - Handle infinite scroll use-case
 - Handle authentication tokens, user permissions
-- Customise table, search filter, CRUD form, validation, CRUD operations (e.g. disallow delete, call REST, GraphQL, Firestore, etc.)
+- Customise table, search filter, CRUD form, validation, CRUD operations (call REST, GraphQL, Firestore, etc.)
+- Inline edit (row level)
 - Auto-configure/generate Search filter and CRUD Forms using JSON
 - Export to CSV/JSON, File/Image Upload
 - Reload & optimization strategy
@@ -31,17 +31,16 @@ The following differentiates vue-crud-x from other CRUD repositories:
 - Emitted events for use by parent component
 
 Other design considerations :
-- i18n
-- Tree shaking
+- i18n, l10n a11y
+- Tree shaking, Lazy loading, Performance
 - Implementation with multiple UI frameworks
   - remove as many UI framework dependent parts as possible
   - indacate parts which should change if other UI frameworks are used 
-- More modular design
-- Improvement on protocol
-- SSR and static generated sites for performance and SEO
+- Cleaner code with correct use of RxJS, async/await/Promises
+- Prefer static generated sites, over SSR and SPA
 
 
-# QUICKSTART
+# QUICK START
 
 Clone the repository, setup and run, using the following commands
 
@@ -70,11 +69,9 @@ View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
 
 # Project List
 
-Refer to the respective projects README.md files for information on getting started
-
 ## [example-spa](https://github.com/ais-one/vue-crud-x/tree/master/example-spa)
 
-Best for quick start - Please use this to try things out. Everything runs locally
+**Best for quick start** - Please use this to try things out. Everything runs locally
 
 Recipes for a production-ready SPA:
 - Example **vue-crud-x** usage
@@ -137,9 +134,11 @@ Recipes for a production-ready Nuxt static sites. Static sites have the same adv
 
 # DOCUMENTATION
 
-**vue-crud-x**, CRUD library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
+**vue-crud-x** library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
 
 Release notes for the library and examples can be found in [docs/Release.md](docs/Release.md)
+
+Refer to the respective projects README.md files for information on getting started
 
 ## Version 2 Article
 
@@ -151,19 +150,37 @@ Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-cus
 
 Version 1 updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>.
 
+
+# SAMPLE SCREENSHOTS
+
 ## Login Screen
+
+- recaptcha
+- Firebase (requires account setup)
+- Mongo Stitch (requires account setup)
 
 [![Screenshot](./docs/login.png)](./docs/login.png)
 
 ## Table & Filter
 
+- filter
+- pagination
+
 [![Screenshot](./docs/table.png)](./docs/table.png)
 
-## Form & Button To Child CRUD
+## Form
+
+- custom form slot
+- tags and lazy-load autocomplete
+- click button to child table
 
 [![Screenshot](./docs/form.png)](./docs/form.png)
 
-## Inline Edit & Firebase
+## Inline Edit
+
+- inline edit
+- date-picker, select and other controls
+- backend is Firebase Firestore
 
 [![Screenshot](./docs/inline.png)](./docs/inline.png)
 

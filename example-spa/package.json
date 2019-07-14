@@ -36,7 +36,7 @@
     "jwt-decode": "^2.2.0",
     "lit-element": "^2.2.0",
     "lodash.orderby": "^4.6.0",
-    "mongodb-stitch-browser-sdk": "^4.4.1",
+    "mongodb-stitch-browser-sdk": "^4.5.0",
     "rxjs": "^6.5.2",
     "subscriptions-transport-ws": "^0.9.16",
     "vue": "^2.6.10",
