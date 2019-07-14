@@ -3,17 +3,47 @@
 # NOTICES & UPDATES
 
 > Latest Version 0.2.0 Released 2019 July 20 0815 +8GMT
-> vue-crud-x Version 0.1.x and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1)
+> vue-crud-x 0.1 and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1)
 
-Version 0.2.0 uses Vuetify 2. There are many breaking changes from Vuetify 1 to 2.
-
-We will continue to support Vuetify 1 under vue-crud-x version 0.1 branch
-
-Due to the inevitable changes in Vuetify 2. We took the opportunity to redesign and improve vue-crud-x 0.2 based on lessons learnt:
+vue-crud-x 0.2 uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to redesign and improve:
 - we now seriously design the component to be able to be replaced by other UI frameworks such as ant-design-vue
 - reduce the number of framework dependent parts as much as possible
 - remove hacks such as cell edit (row edit improved greatly)
 - more organized API and documentation
+
+
+# WHAT IS VUE-CRUD-X
+
+**TL;DR** A Customisable CRUD Library And Cookbook For ExpressJS & VueJS Apps
+
+> A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, forms, use of GraphQL or REST to access various datastores. Vuetify is used for frontend UI components but can be changed to alternatives such as ElementUI (with some effort)
+
+> Over time, the example projects to show the use of **vue-crud-x** has grown to become a cookbook that includes useful recipes for use in production ExpressJS and VueJS applications.
+
+The following differentiates vue-crud-x from other CRUD repositories:
+- Able to do nested CRUD operations (parent table call child table),
+- Inline edit (row level)
+- Server side pagination, sorting & filtering
+- Handle infinite scroll use-case
+- Handle authentication tokens, user permissions
+- Customise table, search filter, CRUD form, validation, CRUD operations (e.g. disallow delete, call REST, GraphQL, Firestore, etc.)
+- Auto-configure/generate Search filter and CRUD Forms using JSON
+- Export to CSV/JSON, File/Image Upload
+- Reload & optimization strategy
+- Real-time updates & subscription
+- Overridable methods with default behaviour
+- Emitted events for use by parent component
+
+Other design considerations :
+- i18n
+- Tree shaking
+- Implementation with multiple UI frameworks
+  - remove as many UI framework dependent parts as possible
+  - indacate parts which should change if other UI frameworks are used 
+- More modular design
+- Improvement on protocol
+- SSR and static generated sites for performance and SEO
+
 
 # QUICKSTART
 
@@ -38,59 +68,13 @@ Login using the following
 
 (do not log in using Firebase or Mongo Stitch until you have setup to use them)
 
-# DOCUMENTATION
-
-View API Documentation at http://127.0.0.1:3000/api-docs
-
-## Version 2 Article
-
-Work In Progress
-
-## Version 1 Article
-
-Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
-
-Version 1 updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>.
-
+View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
 
 ---
 
-# What Is vue-crud-x
-
-> A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, forms, use of GraphQL or REST to access various datastores. Vuetify is used for frontend UI components but can be changed to alternatives such as ElementUI (with some effort)
-
-The following differentiates vue-crud-x from other CRUD repositories:
-- Able to do nested CRUD operations (parent table call child table),
-- Inline edit (row level)
-- Server side pagination, sorting & filtering
-- Handle infinite scroll use-case
-- Handle authentication tokens, user permissions
-- Customise table, search filter, CRUD form, validation, CRUD operations (e.g. disallow delete, call REST, GraphQL, Firestore, etc.)
-- Auto-configure/generate Search filter and CRUD Forms using JSON
-- Export to CSV/JSON, File/Image Upload
-- Reload & optimization strategy
-- Real-time updates & subscription
-- Overridable methods with default behaviour
-- Emitted events for use by parent component
-
-Other design considerations 
-- i18n
-- Tree shaking
-- Implementation with multiple UI frameworks
-  - remove as many UI framework dependent parts as possible
-  - indacate parts which should change if other UI frameworks are used 
-- More modular design
-- Improvement on protocol
-- SSR and static generated sites for performance and SEO
-
-API Documentation for **vue-crud-x**, can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
-
-
 # Project List
 
-There are currently 3 projects for show-casing vue-crud-x and many other useful recipes you may need in your software development journey
-
-Refer to the respective projects README.md files for information on setup, install and running
+Refer to the respective projects README.md files for information on getting started
 
 ## example-spa
 
@@ -173,7 +157,43 @@ Recipes for a production-ready Nuxt static sites:
   - Handling of 500 and 404 errors
 - Showing gotchas of SSR
 
+
 ---
+
+# DOCUMENTATION
+
+**vue-crud-x**, CRUD library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
+
+Release notes for the library and examples can be found in [docs/Release.md](docs/Release.md)
+
+## Version 2 Article
+
+Work In Progress
+
+## Version 1 Article (For Historical Reference)
+
+Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
+
+Version 1 updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>.
+
+## Login Screen
+
+(docs/login.png)
+
+## Table & Filter
+
+(docs/table.png)
+
+## Form
+
+(docs/form.png)
+
+## Inline Edit
+
+(docs/inline.png)
+
+---
+
 
 # Roadmap
 
