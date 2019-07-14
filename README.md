@@ -76,25 +76,14 @@ View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
 
 Refer to the respective projects README.md files for information on getting started
 
-## example-spa
+## example-spa (https://github.com/ais-one/vue-crud-x/tree/master/example-spa)
 
-https://github.com/ais-one/vue-crud-x/tree/master/example-spa
+Best for quick start - Please use this to try things out. Everything runs locally
 
-Best for quick start - Please use this to try things out
-
-Recipes for a production-ready SPA and example usage of **vue-crud-x**:
-
-- everything runs locally, and you build and run both this project and the **backend** project from here
-- websocket
-- Graphql
-  - use Apollo client
-  - authentication
-  - subscriptions
-  - cache
-  - optimistic response
-  - refetch queries
-- real-time updates from Firestore
-- Use multiple vue-crud-x in single page
+Recipes for a production-ready SPA:
+- Example **vue-crud-x** usage
+- REST and websockets
+- Graphql (Apollo client, includes authentication, subscriptions, cache, optimistic UI, refetch queries)
 - Login
   - recaptcha
   - Local Email-password login & JWT
@@ -110,18 +99,15 @@ Recipes for a production-ready SPA and example usage of **vue-crud-x**:
   - Firebase
     - refer to [docs/Firebase.md](docs/Firebase.md) for setup
     - login & auth
-    - interaction with firebase datastore
+    - interaction with firebase datastore & real-time update
     - upload to firebase storage & view
 - Other Features
   - Image capture via webcam
   - Signature capture on canvas
 
-## backend
-
-https://github.com/ais-one/vue-crud-x/tree/master/backend
+## backend (https://github.com/ais-one/vue-crud-x/tree/master/backend)
 
 Recipes for a production-ready Express server used by **example-spa** and **example-ssr**:
-
 - ObjectionJS
   - Sample SQL DB with 1-1, 1-m, m-n use cases, transactions, migrations, seeders,
   - Supports SQLite, MySQL, MariaDB, Postgres, MSSQL
@@ -140,23 +126,22 @@ Recipes for a production-ready Express server used by **example-spa** and **exam
 - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
 - GraphQL (use Apollo server)
 - File uploads
-- Logging (in progress)
 - Testing (in progress)
+- Logging (in progress)
 
-## example-ssr
+## example-ssr (https://github.com/ais-one/vue-crud-x/tree/master/example-ssr)
 
-https://github.com/ais-one/vue-crud-x/tree/master/example-ssr
-
-Recipes for a production-ready Nuxt static sites:
-
+Recipes for a production-ready Nuxt static sites. Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes:
 - nuxt-auth
   - Social login using Github
   - Local Email-password login & JWT
   - optional 2FA using Google Authenticator
+- nuxt-i18n
 - SSR & pre-generated Static Web App 
   - Handling of 500 and 404 errors
-- Showing gotchas of SSR
+- Show gotchas of SSR
 
+**IMPORTANT NOTE:** we use SSR mode, WITHOUT implementing the server side features for efficient debugging of static generated sites.
 
 ---
 
@@ -180,16 +165,15 @@ Version 1 updates can be found on the <a href="https://github.com/ais-one/vue-cr
 
 [![Screenshot](./docs/login.png)](./docs/login.png)
 
-
 ## Table & Filter
 
 [![Screenshot](./docs/table.png)](./docs/table.png)
 
-## Form
+## Form & Button To Child CRUD
 
 [![Screenshot](./docs/form.png)](./docs/form.png)
 
-## Inline Edit
+## Inline Edit & Firebase
 
 [![Screenshot](./docs/inline.png)](./docs/inline.png)
 
