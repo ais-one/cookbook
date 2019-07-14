@@ -178,19 +178,20 @@ Version 1 updates can be found on the <a href="https://github.com/ais-one/vue-cr
 
 ## Login Screen
 
-(docs/login.png)
+[![Screenshot](./docs/login.png)](./docs/login.png)
+
 
 ## Table & Filter
 
-(docs/table.png)
+[![Screenshot](./docs/table.png)](./docs/table.png)
 
 ## Form
 
-(docs/form.png)
+[![Screenshot](./docs/form.png)](./docs/form.png)
 
 ## Inline Edit
 
-(docs/inline.png)
+[![Screenshot](./docs/inline.png)](./docs/inline.png)
 
 ---
 
