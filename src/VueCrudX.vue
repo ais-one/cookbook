@@ -369,6 +369,7 @@ export default {
       if (id) {
         await this.getRecord(id) // update
       } else { // create - set initial data
+        this.editingRow = null
         for (let key in this.form) {
           // console.log(key, this.$attrs.form[key])
           this.form[key].value = this.$attrs.form[key].default || ''
@@ -442,6 +443,7 @@ export default {
       await this.updateRecord({ record: item })
     },
     async _inlineCreate () {
+      this.editingRow = null
       await this.createRecord({ record: {}, parentId: this.parentId })
     },
     // INLINE EDIT END

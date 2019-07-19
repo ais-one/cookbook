@@ -58,7 +58,7 @@ export default {
           headers: [
             { text: 'ID', value: 'id', align: 'left', sortable: false, class: 'py-1 px-2', action: true },
             {
-              text: 'Assigned', value: 'assign', align: 'left', sortable: false, class: 'pa-1', edit: { type: 'v-select', props: { multiple: false, items: [ '3991', 'EXPLORER' ] } }
+              text: 'Assigned', value: 'assign', align: 'left', sortable: false, class: 'pa-1', edit: { type: 'v-select', props: { multiple: false, items: [ 'APEX 1', 'APEX 2' ] } }
             },
             { text: 'Vessel Name', value: 'vessel', align: 'left', sortable: false, class: 'pa-1', edit: { type: 'v-text-field', required: true } },
             {
@@ -75,6 +75,9 @@ export default {
             },
             {
               text: 'Time', value: 'orderTime', align: 'left', sortable: false, class: 'pa-1', edit: { type: 'app-time-picker' }
+            },
+            {
+              text: 'Standby (Hr)', value: 'standByHr', align: 'left', sortable: false, class: 'pa-1', edit: { type: 'v-select', props: { multiple: false, items: [ '0', '1', '2' ] } }
             },
             { text: 'Contact', value: 'contact', align: 'left', sortable: false, class: 'pa-1', edit: { type: 'v-text-field', required: true } },
             { text: 'Pax', value: 'pax', align: 'left', sortable: false, class: 'pa-1', edit: { type: 'v-text-field' } },
@@ -95,13 +98,14 @@ export default {
         form: {
           'id': { value: '', default: '', hidden: 'all' },
           // 'area': { value: 'CENTRAL', default: 'CENTRAL', type: 'v-autocomplete' },
-          'assign': { type: 'v-select', value: '---', default: '---', 'field-input': { placeholder: 'Assign Boat', multiple: false, items: [ '---', '3991', 'EXPLORER' ] }, 'field-wrapper': { xs12: true } },
+          'assign': { type: 'v-select', value: '---', default: '---', 'field-input': { placeholder: 'Assign Boat', multiple: false, items: [ '---', 'APEX 1', 'APEX 2' ] }, 'field-wrapper': { xs12: true } },
           'location': { type: 'v-combobox', value: '', default: '', 'field-input': { label: 'Location', multiple: false, items: locations }, 'field-wrapper': { xs12: true } },
           'jobType': { type: 'v-select', value: 'TO SHIP', default: 'TO SHIP', 'field-input': { placeholder: 'Job', multiple: false, items: [ 'TO SHIP', 'FROM SHIP', 'RETURN' ] }, 'field-wrapper': { xs12: true } },
           'base': { type: 'v-select', value: 'MSP', default: 'MSP', 'field-input': { placeholder: 'Base', multiple: false, items: [ 'WCP', 'MSP' ] }, 'field-wrapper': { xs12: true } },
           'vessel': { value: '', default: '', type: 'v-text-field', 'field-input': { placeholder: 'Vessel', required: true }, 'field-wrapper': { xs12: true } },
           'orderDate': { default: format(new Date(), 'YYYY-MM-DD'), value: format(new Date(), 'YYYY-MM-DD'), type: 'app-date-picker', 'field-wrapper': { xs12: true } },
           'orderTime': { default: format(new Date(), 'HH:mm'), value: format(new Date(), 'HH:mm'), type: 'app-time-picker', 'field-wrapper': { xs12: true } },
+          'standByHr': { type: 'v-select', value: '0', default: '0', 'field-input': { placeholder: 'Standby (Hr)', multiple: false, items: [ '0', '1', '2' ] }, 'field-wrapper': { xs12: true } },
           'contact': { value: '', default: '', type: 'v-text-field', 'field-input': { placeholder: 'Contact', required: true }, 'field-wrapper': { xs12: true } },
           'pax': { value: '', default: '', type: 'v-text-field', 'field-input': { placeholder: 'Pax' }, 'field-wrapper': { xs12: true } },
           'remarks': { value: '', default: '', type: 'v-text-field', 'field-input': { placeholder: 'Remarks' }, 'field-wrapper': { xs12: true } }
