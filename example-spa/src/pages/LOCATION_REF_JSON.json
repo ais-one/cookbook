@@ -1,0 +1,3549 @@
+[ {
+  "timeStamp" : "2002-05-02 17:13:39.447",
+  "locationCode" : "ACBTH",
+  "locationDescription" : "CHANGI TEMP HOLDG ANCH"
+}, {
+  "timeStamp" : "2002-05-02 17:12:18.827",
+  "locationCode" : "ACGP",
+  "locationDescription" : "CHANGI GENPURPOSE ANCH"
+}, {
+  "timeStamp" : "2006-02-01 08:07:32.147",
+  "locationCode" : "AEBA",
+  "locationDescription" : "EASTERN BUNKERG ANCH A"
+}, {
+  "timeStamp" : "2006-02-01 08:09:12.430",
+  "locationCode" : "AEBB",
+  "locationDescription" : "EASTERN BUNKERG ANCH B"
+}, {
+  "timeStamp" : "2006-02-01 08:09:12.753",
+  "locationCode" : "AEBC",
+  "locationDescription" : "EASTERN BUNKERG ANCH C"
+}, {
+  "timeStamp" : "1995-07-01 11:35:12.590",
+  "locationCode" : "AEHA",
+  "locationDescription" : "EASTERN HOLDING ANCH A"
+}, {
+  "timeStamp" : "1995-07-01 11:34:57.300",
+  "locationCode" : "AEHB",
+  "locationDescription" : "EASTERN HOLDING ANCH B"
+}, {
+  "timeStamp" : "2002-01-22 13:39:20.170",
+  "locationCode" : "AEHC",
+  "locationDescription" : "EASTERN HOLDING ANCH C"
+}, {
+  "timeStamp" : "2002-05-03 18:11:08.260",
+  "locationCode" : "AEPA",
+  "locationDescription" : "EASTERN PETROL ANCH A"
+}, {
+  "timeStamp" : "2012-05-22 18:42:58.243",
+  "locationCode" : "AEPBB",
+  "locationDescription" : "EASTERN PETROL ANCH B"
+}, {
+  "timeStamp" : "2012-05-22 18:17:35.573",
+  "locationCode" : "AEPBC",
+  "locationDescription" : "EASTERN PETROL ANCH C"
+}, {
+  "timeStamp" : "2002-01-22 13:40:41.073",
+  "locationCode" : "AESPA",
+  "locationDescription" : "EASTERN SP PURP ANCH A"
+}, {
+  "timeStamp" : "2002-07-28 02:29:38.253",
+  "locationCode" : "AEW",
+  "locationDescription" : "EASTERN ANCHORAGE"
+}, {
+  "timeStamp" : "2002-05-16 14:18:43.037",
+  "locationCode" : "AMOW",
+  "locationDescription" : "MAN-OF-WAR ANCHORAGE"
+}, {
+  "timeStamp" : "2012-02-20 14:23:45.707",
+  "locationCode" : "APBBM",
+  "locationDescription" : "BANYAN BASIN BUOY"
+}, {
+  "timeStamp" : "2012-04-23 14:18:26.073",
+  "locationCode" : "APBM1",
+  "locationDescription" : "BANYAN BASIN BUOY 1"
+}, {
+  "timeStamp" : "2012-04-23 14:20:06.597",
+  "locationCode" : "APBM2",
+  "locationDescription" : "BANYAN BASIN BUOY 2"
+}, {
+  "timeStamp" : "2013-09-11 18:20:03.943",
+  "locationCode" : "APBM3",
+  "locationDescription" : "BANYAN BASIN BUOY 3"
+}, {
+  "timeStamp" : "2015-12-01 12:05:06.627",
+  "locationCode" : "APCEL",
+  "locationDescription" : "CHANGI EAST AGGR LDNG"
+}, {
+  "timeStamp" : "2016-01-12 00:00:00.000",
+  "locationCode" : "APCFY",
+  "locationDescription" : "CAISSON FAB YARD"
+}, {
+  "timeStamp" : "2016-04-30 00:00:00.000",
+  "locationCode" : "APF13",
+  "locationDescription" : "TUAS FINGER 1 SLOT 3"
+}, {
+  "timeStamp" : "2018-02-20 09:52:42.833",
+  "locationCode" : "APF1A",
+  "locationDescription" : "TUAS FINGER 1A(3715B)"
+}, {
+  "timeStamp" : "2013-11-04 18:13:10.333",
+  "locationCode" : "APF21",
+  "locationDescription" : "TUAS FINGER 2 SLOT 1"
+}, {
+  "timeStamp" : "2013-11-04 18:13:10.347",
+  "locationCode" : "APF22",
+  "locationDescription" : "TUAS FINGER 2 SLOT 2"
+}, {
+  "timeStamp" : "2013-11-04 18:13:10.357",
+  "locationCode" : "APF23",
+  "locationDescription" : "TUAS FINGER 2 SLOT 3"
+}, {
+  "timeStamp" : "2013-11-04 18:13:10.617",
+  "locationCode" : "APF24",
+  "locationDescription" : "TUAS FINGER 2 SLOT 4"
+}, {
+  "timeStamp" : "2013-11-04 18:13:10.630",
+  "locationCode" : "APF25",
+  "locationDescription" : "TUAS FINGER 2 SLOT 5"
+}, {
+  "timeStamp" : "2013-11-04 18:13:30.667",
+  "locationCode" : "APF26",
+  "locationDescription" : "TUAS FINGER 2 SLOT 6"
+}, {
+  "timeStamp" : "2018-02-20 09:52:39.333",
+  "locationCode" : "APF2A",
+  "locationDescription" : "TUAS FINGER 2A(3714A)"
+}, {
+  "timeStamp" : "2018-03-29 09:52:02.110",
+  "locationCode" : "APF2X",
+  "locationDescription" : "Tuas Finger 2X (3614D)"
+}, {
+  "timeStamp" : "2018-03-29 09:52:09.507",
+  "locationCode" : "APF2Y",
+  "locationDescription" : "Tuas Finger 2Y (3715C)"
+}, {
+  "timeStamp" : "2018-06-25 12:55:49.190",
+  "locationCode" : "APF3A",
+  "locationDescription" : "TUAS FINGER 3A(3713A)"
+}, {
+  "timeStamp" : "2017-04-07 14:31:41.577",
+  "locationCode" : "APF4B",
+  "locationDescription" : "TUAS FGR 4 BUND(3713C)"
+}, {
+  "timeStamp" : "2009-11-03 11:02:48.330",
+  "locationCode" : "APICT",
+  "locationDescription" : "PROJ AT MARINA SOUTH"
+}, {
+  "timeStamp" : "2014-05-08 10:57:39.417",
+  "locationCode" : "APJI1",
+  "locationDescription" : "JURONG ISLAND PROJ 1"
+}, {
+  "timeStamp" : "2014-05-08 10:57:38.297",
+  "locationCode" : "APJI2",
+  "locationDescription" : "JURONG ISLAND PROJ 2"
+}, {
+  "timeStamp" : "2014-05-08 10:57:38.017",
+  "locationCode" : "APJI3",
+  "locationDescription" : "JURONG ISLAND PROJ 3"
+}, {
+  "timeStamp" : "2014-05-08 10:56:17.170",
+  "locationCode" : "APJI4",
+  "locationDescription" : "JURONG ISLAND PROJ 4"
+}, {
+  "timeStamp" : "2008-04-10 08:39:15.643",
+  "locationCode" : "APLNG",
+  "locationDescription" : "LNG TERM PROJECT AREA"
+}, {
+  "timeStamp" : "2002-05-16 14:20:03.420",
+  "locationCode" : "APPH",
+  "locationDescription" : "P PANJANG HOLDING ANCH"
+}, {
+  "timeStamp" : "2012-04-03 17:12:28.267",
+  "locationCode" : "APPT1",
+  "locationDescription" : "PPT 3 AND 4 PROJ AREA"
+}, {
+  "timeStamp" : "2011-07-19 08:32:49.897",
+  "locationCode" : "APRAM",
+  "locationDescription" : "AYER MERBAU PROJ AREA"
+}, {
+  "timeStamp" : "2002-05-16 14:01:41.067",
+  "locationCode" : "APRAT",
+  "locationDescription" : "SERANGOON PASIR RIS"
+}, {
+  "timeStamp" : "2011-06-06 16:13:43.223",
+  "locationCode" : "APRJ1",
+  "locationDescription" : "RECLAMATION JI WEST 1"
+}, {
+  "timeStamp" : "2011-06-06 16:13:42.567",
+  "locationCode" : "APRJ2",
+  "locationDescription" : "RECLAMATION JI WEST 2"
+}, {
+  "timeStamp" : "2011-06-06 16:13:42.560",
+  "locationCode" : "APRJ3",
+  "locationDescription" : "RECLAMATION JI WEST 3"
+}, {
+  "timeStamp" : "2002-05-16 14:20:03.530",
+  "locationCode" : "APROH",
+  "locationDescription" : "JURONG PROJ AREA"
+}, {
+  "timeStamp" : "2002-05-02 17:13:39.727",
+  "locationCode" : "APROS",
+  "locationDescription" : "PROHIBITED ANCH IN EJS"
+}, {
+  "timeStamp" : "2007-12-14 18:22:08.843",
+  "locationCode" : "APRPT",
+  "locationDescription" : "PPT PROJECT AREA"
+}, {
+  "timeStamp" : "2002-10-11 11:30:42.117",
+  "locationCode" : "APRSI",
+  "locationDescription" : "SINKI PROJ AREA"
+}, {
+  "timeStamp" : "2002-10-11 11:30:41.957",
+  "locationCode" : "APRSS",
+  "locationDescription" : "SULTAN SHOAL PROJ AREA"
+}, {
+  "timeStamp" : "2007-03-06 14:24:42.450",
+  "locationCode" : "APRT1",
+  "locationDescription" : "TUAS PROJECT AREA 1"
+}, {
+  "timeStamp" : "2007-03-06 14:24:42.777",
+  "locationCode" : "APRT2",
+  "locationDescription" : "TUAS PROJECT AREA 2"
+}, {
+  "timeStamp" : "2009-01-08 12:33:11.100",
+  "locationCode" : "APRT5",
+  "locationDescription" : "TUAS PROJECT AREA 5"
+}, {
+  "timeStamp" : "2007-02-01 12:21:15.370",
+  "locationCode" : "APRTS",
+  "locationDescription" : "TUAS PROJECT AREA"
+}, {
+  "timeStamp" : "2002-10-11 11:30:40.700",
+  "locationCode" : "APRTU",
+  "locationDescription" : "TUAS PROJ AREA"
+}, {
+  "timeStamp" : "2002-05-16 13:54:13.133",
+  "locationCode" : "APSCP",
+  "locationDescription" : "CHANGI PROJECT AREA"
+}, {
+  "timeStamp" : "2002-09-02 09:42:56.313",
+  "locationCode" : "APSPG",
+  "locationDescription" : "PUNGGOL PROJECT"
+}, {
+  "timeStamp" : "2002-09-02 09:44:17.607",
+  "locationCode" : "APSPR",
+  "locationDescription" : "PASIR RIS PROJECT"
+}, {
+  "timeStamp" : "2002-09-02 09:42:55.690",
+  "locationCode" : "APSPT",
+  "locationDescription" : "PULAU TEKONG PROJECT"
+}, {
+  "timeStamp" : "2002-09-02 09:42:56.000",
+  "locationCode" : "APSPU",
+  "locationDescription" : "PULAU UBIN PROJECT"
+}, {
+  "timeStamp" : "2002-03-14 12:14:05.997",
+  "locationCode" : "APSSG",
+  "locationDescription" : "PROHIBITED ANCHORAGE"
+}, {
+  "timeStamp" : "2002-09-02 09:44:17.860",
+  "locationCode" : "APSSS",
+  "locationDescription" : "SERANGOON PROJECT"
+}, {
+  "timeStamp" : "2017-08-07 16:52:47.613",
+  "locationCode" : "APTDG",
+  "locationDescription" : "P TEKONG DUMPG GROUND"
+}, {
+  "timeStamp" : "2017-04-07 14:31:30.120",
+  "locationCode" : "APTE1",
+  "locationDescription" : "TUAS EXT AREA 1(3613B)"
+}, {
+  "timeStamp" : "2017-04-07 14:31:36.063",
+  "locationCode" : "APTE2",
+  "locationDescription" : "TUAS EXT AREA 2(3812A)"
+}, {
+  "timeStamp" : "2018-06-11 17:45:26.463",
+  "locationCode" : "APTE3",
+  "locationDescription" : "TUAS EXT AREA 3(3713C)"
+}, {
+  "timeStamp" : "2017-08-07 16:52:51.733",
+  "locationCode" : "APTHA",
+  "locationDescription" : "P TEKONG HOLDING AREA"
+}, {
+  "timeStamp" : "2013-01-07 11:44:37.653",
+  "locationCode" : "APTM1",
+  "locationDescription" : "PULAU TEKONG MOORING 1"
+}, {
+  "timeStamp" : "2013-01-07 11:44:38.783",
+  "locationCode" : "APTM2",
+  "locationDescription" : "PULAU TEKONG MOORING 2"
+}, {
+  "timeStamp" : "2013-09-11 18:15:23.633",
+  "locationCode" : "APTM3",
+  "locationDescription" : "PULAU TEKONG MOORING 3"
+}, {
+  "timeStamp" : "2015-09-16 14:57:10.993",
+  "locationCode" : "APTM4",
+  "locationDescription" : "PULAU TEKONG MOORING 4"
+}, {
+  "timeStamp" : "2015-09-16 14:57:11.077",
+  "locationCode" : "APTM5",
+  "locationDescription" : "PULAU TEKONG MOORING 5"
+}, {
+  "timeStamp" : "2015-09-16 14:57:11.317",
+  "locationCode" : "APTM6",
+  "locationDescription" : "PULAU TEKONG MOORING 6"
+}, {
+  "timeStamp" : "2015-09-16 14:57:11.410",
+  "locationCode" : "APTM7",
+  "locationDescription" : "PULAU TEKONG MOORING 7"
+}, {
+  "timeStamp" : "2016-12-09 14:32:39.703",
+  "locationCode" : "APTM9",
+  "locationDescription" : "PULAU TEKONG MOORING 9"
+}, {
+  "timeStamp" : "2013-09-11 18:21:24.103",
+  "locationCode" : "APTP1",
+  "locationDescription" : "TUAS PORT SLOT 1"
+}, {
+  "timeStamp" : "2013-11-04 18:13:06.753",
+  "locationCode" : "APTP2",
+  "locationDescription" : "TUAS PORT SLOT 2"
+}, {
+  "timeStamp" : "2018-02-15 08:52:51.423",
+  "locationCode" : "APTW1",
+  "locationDescription" : "TUAS WC AREA 1(3613B)"
+}, {
+  "timeStamp" : "2018-02-15 08:52:51.533",
+  "locationCode" : "APTW2",
+  "locationDescription" : "TUAS WC AREA 2(3812A)"
+}, {
+  "timeStamp" : "1995-07-01 11:35:19.920",
+  "locationCode" : "ARAFR",
+  "locationDescription" : "RAFFLES RESERVED ANCH"
+}, {
+  "timeStamp" : "2012-05-22 18:19:15.643",
+  "locationCode" : "ARP",
+  "locationDescription" : "RAFFLES PETRO ANCH"
+}, {
+  "timeStamp" : "2012-05-22 18:16:14.803",
+  "locationCode" : "ASCA",
+  "locationDescription" : "SMALL CRAFT A ANCH"
+}, {
+  "timeStamp" : "2012-05-22 18:17:34.937",
+  "locationCode" : "ASCB",
+  "locationDescription" : "SMALL CRAFT B ANCH"
+}, {
+  "timeStamp" : "2002-05-16 14:21:45.617",
+  "locationCode" : "ASH",
+  "locationDescription" : "SUDONG HOLDING ANCH"
+}, {
+  "timeStamp" : "2012-05-22 18:23:15.680",
+  "locationCode" : "ASPH",
+  "locationDescription" : "SUDONG PETRO HLDG ANCH"
+}, {
+  "timeStamp" : "2012-05-22 18:37:37.610",
+  "locationCode" : "ASPLU",
+  "locationDescription" : "SELAT PAUH ANCH"
+}, {
+  "timeStamp" : "2012-05-22 18:19:15.637",
+  "locationCode" : "ASPP",
+  "locationDescription" : "SELAT PAUH PETRO ANCH"
+}, {
+  "timeStamp" : "2002-05-16 14:23:06.640",
+  "locationCode" : "ASSPU",
+  "locationDescription" : "SUDONG SP PURP ANCH"
+}, {
+  "timeStamp" : "2002-03-13 17:17:41.290",
+  "locationCode" : "ASUEX",
+  "locationDescription" : "SUDONG EXPLOSIVE ANCH"
+}, {
+  "timeStamp" : "2002-05-16 14:26:09.940",
+  "locationCode" : "ATRAF",
+  "locationDescription" : "TEMP RAFFLES ANCH"
+}, {
+  "timeStamp" : "2008-12-12 16:33:07.863",
+  "locationCode" : "ATTV1",
+  "locationDescription" : "TEMP TUAS VIEW SLOT 1"
+}, {
+  "timeStamp" : "2008-12-12 16:33:07.923",
+  "locationCode" : "ATTV2",
+  "locationDescription" : "TEMP TUAS VIEW SLOT 2"
+}, {
+  "timeStamp" : "2008-12-12 16:34:48.240",
+  "locationCode" : "ATTV3",
+  "locationDescription" : "TEMP TUAS VIEW SLOT 3"
+}, {
+  "timeStamp" : "2008-12-12 16:34:48.280",
+  "locationCode" : "ATTV4",
+  "locationDescription" : "TEMP TUAS VIEW SLOT 4"
+}, {
+  "timeStamp" : "2009-02-18 09:50:37.697",
+  "locationCode" : "ATTV5",
+  "locationDescription" : "TEMP TUAS VIEW SLOT 5"
+}, {
+  "timeStamp" : "2009-02-18 09:52:19.647",
+  "locationCode" : "ATTV6",
+  "locationDescription" : "TEMP TUAS VIEW SLOT 6"
+}, {
+  "timeStamp" : "2009-02-18 09:52:19.657",
+  "locationCode" : "ATTV7",
+  "locationDescription" : "TEMP TUAS VIEW SLOT 7"
+}, {
+  "timeStamp" : "2009-04-22 18:16:42.693",
+  "locationCode" : "ATV2A",
+  "locationDescription" : "TEMP TUAS VIEW SLOT 2A"
+}, {
+  "timeStamp" : "2009-04-30 18:54:30.873",
+  "locationCode" : "ATWJ3",
+  "locationDescription" : "TUAS WEST JURONG ANCH3"
+}, {
+  "timeStamp" : "2002-05-16 14:26:10.250",
+  "locationCode" : "AVLCC",
+  "locationDescription" : "VLCC TUAS ANCHORAGE"
+}, {
+  "timeStamp" : "2008-01-22 16:51:25.497",
+  "locationCode" : "AWH",
+  "locationDescription" : "WESTERN HOLDING ANCH"
+}, {
+  "timeStamp" : "2002-05-16 14:27:53.107",
+  "locationCode" : "AWPA",
+  "locationDescription" : "WESTERN PETRO ANCH A"
+}, {
+  "timeStamp" : "2002-05-16 14:27:53.410",
+  "locationCode" : "AWPB",
+  "locationDescription" : "WESTERN PETRO ANCH B"
+}, {
+  "timeStamp" : "2002-05-16 14:29:13.613",
+  "locationCode" : "AWQI",
+  "locationDescription" : "WESTERN QUAR IMM ANCH"
+}, {
+  "timeStamp" : "2002-05-16 14:29:14.293",
+  "locationCode" : "AWW",
+  "locationDescription" : "WESTERN ANCHORAGE"
+}, {
+  "timeStamp" : "1994-11-13 03:10:47.730",
+  "locationCode" : "B01",
+  "locationDescription" : "BRANI TERMINAL BERTH 1"
+}, {
+  "timeStamp" : "1994-11-13 03:10:47.750",
+  "locationCode" : "B02",
+  "locationDescription" : "BRANI TERMINAL BERTH 2"
+}, {
+  "timeStamp" : "1994-11-13 03:10:47.760",
+  "locationCode" : "B03",
+  "locationDescription" : "BRANI TERMINAL BERTH 3"
+}, {
+  "timeStamp" : "1994-11-13 03:10:47.780",
+  "locationCode" : "B04",
+  "locationDescription" : "BRANI TERMINAL BERTH 4"
+}, {
+  "timeStamp" : "1994-11-13 03:10:47.810",
+  "locationCode" : "B05",
+  "locationDescription" : "BRANI TERMINAL BERTH 5"
+}, {
+  "timeStamp" : "1994-11-13 03:10:47.830",
+  "locationCode" : "B06",
+  "locationDescription" : "BRANI TERMINAL BERTH 6"
+}, {
+  "timeStamp" : "1995-08-25 17:06:16.200",
+  "locationCode" : "B07",
+  "locationDescription" : "BRANI TERMINAL BERTH 7"
+}, {
+  "timeStamp" : "1995-08-25 17:06:18.410",
+  "locationCode" : "B08",
+  "locationDescription" : "BRANI TERMINAL BERTH 8"
+}, {
+  "timeStamp" : "1995-08-25 17:06:19.670",
+  "locationCode" : "B09",
+  "locationDescription" : "BRANI TERMINAL BERTH 9"
+}, {
+  "timeStamp" : "2004-01-26 14:42:54.393",
+  "locationCode" : "BBN1",
+  "locationDescription" : "SPORE TECH MAR L"
+}, {
+  "timeStamp" : "2004-01-26 14:53:31.273",
+  "locationCode" : "BBN10",
+  "locationDescription" : "EZRA(EMAS TRIYARDS)"
+}, {
+  "timeStamp" : "2004-01-26 14:45:59.847",
+  "locationCode" : "BBN11",
+  "locationDescription" : "EZRA(EMAS TRIYARDS)"
+}, {
+  "timeStamp" : "2014-01-01 10:22:23.173",
+  "locationCode" : "BBN12",
+  "locationDescription" : "EZRA(EMAS TRIYARDS)"
+}, {
+  "timeStamp" : "2012-09-04 08:48:53.690",
+  "locationCode" : "BBN13",
+  "locationDescription" : "KENSTEEL E P L"
+}, {
+  "timeStamp" : "2014-01-01 10:23:15.100",
+  "locationCode" : "BBN14",
+  "locationDescription" : "KEPPEL FELS L"
+}, {
+  "timeStamp" : "2014-01-01 10:23:17.900",
+  "locationCode" : "BBN15",
+  "locationDescription" : "AICA SPORE P L"
+}, {
+  "timeStamp" : "2004-01-26 14:47:23.637",
+  "locationCode" : "BBN2",
+  "locationDescription" : "KEPPEL SINGMARINE P L"
+}, {
+  "timeStamp" : "2004-01-26 14:49:04.547",
+  "locationCode" : "BBN3",
+  "locationDescription" : "COSL OIL-TECH (S) L"
+}, {
+  "timeStamp" : "2004-01-26 14:50:27.993",
+  "locationCode" : "BBN4",
+  "locationDescription" : "ASIA-PACIFIC SY P L"
+}, {
+  "timeStamp" : "2004-01-26 14:52:10.337",
+  "locationCode" : "BBN5",
+  "locationDescription" : "ANTARA KOH P L"
+}, {
+  "timeStamp" : "2014-01-01 10:23:21.663",
+  "locationCode" : "BBN6",
+  "locationDescription" : "VACANT"
+}, {
+  "timeStamp" : "2004-01-26 14:52:10.497",
+  "locationCode" : "BBN7",
+  "locationDescription" : "SML SHIPYARD P L"
+}, {
+  "timeStamp" : "2014-01-01 10:23:25.677",
+  "locationCode" : "BBN8",
+  "locationDescription" : "SML SHIPYARD P L"
+}, {
+  "timeStamp" : "2004-01-26 14:53:31.167",
+  "locationCode" : "BBN9",
+  "locationDescription" : "ASIAN SEALAND E P L"
+}, {
+  "timeStamp" : "2005-12-09 08:35:17.903",
+  "locationCode" : "BGU2",
+  "locationDescription" : "BT ENGINEERING P L"
+}, {
+  "timeStamp" : "2004-01-26 14:55:11.990",
+  "locationCode" : "BGU3",
+  "locationDescription" : "DYNA-MAC E S P L"
+}, {
+  "timeStamp" : "2004-01-26 14:55:12.157",
+  "locationCode" : "BGU4",
+  "locationDescription" : "DYNA-MAC E S P L"
+}, {
+  "timeStamp" : "2004-01-26 14:56:33.953",
+  "locationCode" : "BGU5",
+  "locationDescription" : "SMIT SINGAPORE P L"
+}, {
+  "timeStamp" : "2004-01-26 14:58:14.483",
+  "locationCode" : "BGU6A",
+  "locationDescription" : "PIONEER OS E P L"
+}, {
+  "timeStamp" : "2014-01-01 10:23:59.367",
+  "locationCode" : "BGU6B",
+  "locationDescription" : "HONG HANG HW P L"
+}, {
+  "timeStamp" : "2014-01-01 10:23:59.837",
+  "locationCode" : "BGU7",
+  "locationDescription" : "HONG HANG HW P L"
+}, {
+  "timeStamp" : "2004-02-13 09:17:30.943",
+  "locationCode" : "BGU8",
+  "locationDescription" : "VACANT"
+}, {
+  "timeStamp" : "2014-01-01 10:24:00.020",
+  "locationCode" : "BGU9A",
+  "locationDescription" : "UTRACO P L"
+}, {
+  "timeStamp" : "2014-04-01 09:58:20.417",
+  "locationCode" : "BGU9B",
+  "locationDescription" : "PEC L"
+}, {
+  "timeStamp" : "2014-01-02 14:05:36.270",
+  "locationCode" : "BGU9C",
+  "locationDescription" : "OFFSHORE CNSTN S P L"
+}, {
+  "timeStamp" : "2014-01-01 10:23:39.830",
+  "locationCode" : "BGUZ",
+  "locationDescription" : "GLAXO WELLCOME M P L"
+}, {
+  "timeStamp" : "2004-01-26 15:01:18.427",
+  "locationCode" : "BNT10",
+  "locationDescription" : "JEBBEN & JESSEN OS P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:43.957",
+  "locationCode" : "BNT11",
+  "locationDescription" : "PENGUIN INT L"
+}, {
+  "timeStamp" : "2014-02-26 12:00:22.913",
+  "locationCode" : "BNT12",
+  "locationDescription" : "PENGUIN INTL"
+}, {
+  "timeStamp" : "1994-11-13 03:11:10.720",
+  "locationCode" : "BNT13",
+  "locationDescription" : "CHUAN HUAT HIN SBLD"
+}, {
+  "timeStamp" : "1994-11-13 03:11:10.740",
+  "locationCode" : "BNT14",
+  "locationDescription" : "HO AH LAM F P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:51.977",
+  "locationCode" : "BNT15",
+  "locationDescription" : "LITA OCEAN P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:51.987",
+  "locationCode" : "BNT16",
+  "locationDescription" : "KIM HOCK OS & MAR P L"
+}, {
+  "timeStamp" : "2004-03-18 09:20:16.823",
+  "locationCode" : "BNT17",
+  "locationDescription" : "KIM SEAH BOAT B P L"
+}, {
+  "timeStamp" : "2004-02-25 08:07:11.160",
+  "locationCode" : "BNT18",
+  "locationDescription" : "KIM SEAH BOAT B P L"
+}, {
+  "timeStamp" : "2009-06-10 12:55:54.100",
+  "locationCode" : "BNT19",
+  "locationDescription" : "CATERMAS ENGRG P L"
+}, {
+  "timeStamp" : "2004-02-13 09:50:33.747",
+  "locationCode" : "BNT1B",
+  "locationDescription" : "DAMEN SY SPORE P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:58.173",
+  "locationCode" : "BNT1C",
+  "locationDescription" : "INVISTA SPORE P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:58.170",
+  "locationCode" : "BNT1D",
+  "locationDescription" : "MCPEC M & OS E P L"
+}, {
+  "timeStamp" : "2005-12-09 08:33:57.800",
+  "locationCode" : "BNT20",
+  "locationDescription" : "AUSGROUP SPORE P L"
+}, {
+  "timeStamp" : "2002-05-16 16:50:07.860",
+  "locationCode" : "BNT21",
+  "locationDescription" : "APPLIED ENGRG P L"
+}, {
+  "timeStamp" : "2004-01-26 15:02:38.963",
+  "locationCode" : "BNT22",
+  "locationDescription" : "GLOBAL OS & M P L"
+}, {
+  "timeStamp" : "2007-07-30 16:13:27.617",
+  "locationCode" : "BNT2A",
+  "locationDescription" : "SEMBCORP MARINE YD P L"
+}, {
+  "timeStamp" : "2017-12-21 10:23:00.000",
+  "locationCode" : "BNT2B",
+  "locationDescription" : "CRYSTAL OFFSHORE P L"
+}, {
+  "timeStamp" : "2004-01-26 15:02:39.073",
+  "locationCode" : "BNT3",
+  "locationDescription" : "NEWCRUZ SB & E P L"
+}, {
+  "timeStamp" : "2004-01-26 15:04:22.603",
+  "locationCode" : "BNT4",
+  "locationDescription" : "HIAP SENG E LTD"
+}, {
+  "timeStamp" : "2004-01-26 15:04:22.723",
+  "locationCode" : "BNT5",
+  "locationDescription" : "HIAP SENG E LTD"
+}, {
+  "timeStamp" : "2004-01-26 15:07:06.090",
+  "locationCode" : "BNT8",
+  "locationDescription" : "KWONG SOON E CO P L"
+}, {
+  "timeStamp" : "2004-01-26 15:07:27.290",
+  "locationCode" : "BNT9",
+  "locationDescription" : "MMA OF YD EGNR SVC P L"
+}, {
+  "timeStamp" : "2014-01-01 10:22:06.213",
+  "locationCode" : "BNTS",
+  "locationDescription" : "SINGATAC ENGRG P L"
+}, {
+  "timeStamp" : "2014-01-01 10:22:06.203",
+  "locationCode" : "BNTT",
+  "locationDescription" : "BANYAN M (S) P L"
+}, {
+  "timeStamp" : "2014-01-01 10:22:06.153",
+  "locationCode" : "BNTU",
+  "locationDescription" : "SPEB SHIPYARD"
+}, {
+  "timeStamp" : "2014-01-01 10:21:58.183",
+  "locationCode" : "BNTV",
+  "locationDescription" : "GLOBAL OS & M P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:52.000",
+  "locationCode" : "BNTW",
+  "locationDescription" : "S & W P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:51.993",
+  "locationCode" : "BNTX",
+  "locationDescription" : "LANCO ENGRG CTR"
+}, {
+  "timeStamp" : "2014-01-01 10:21:43.953",
+  "locationCode" : "BNTY",
+  "locationDescription" : "PIONEER C ENGRG P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:43.950",
+  "locationCode" : "BNTZ",
+  "locationDescription" : "AIR PRODUCTS S P L"
+}, {
+  "timeStamp" : "1994-11-13 03:11:12.240",
+  "locationCode" : "BSS1",
+  "locationDescription" : "KEPPEL FELS L"
+}, {
+  "timeStamp" : "2014-01-01 10:24:26.820",
+  "locationCode" : "BSS10",
+  "locationDescription" : "SCAT TECHNOLOGIES P L"
+}, {
+  "timeStamp" : "2004-01-26 15:08:48.037",
+  "locationCode" : "BSS11",
+  "locationDescription" : "TIAN SAN COMPANY P L"
+}, {
+  "timeStamp" : "2014-04-01 09:58:21.263",
+  "locationCode" : "BSS12",
+  "locationDescription" : "BAKER ENGRG P L"
+}, {
+  "timeStamp" : "2004-02-20 13:34:08.000",
+  "locationCode" : "BSS14",
+  "locationDescription" : "TANOTO SHIPYARD P L"
+}, {
+  "timeStamp" : "2014-01-01 10:24:26.840",
+  "locationCode" : "BSS15",
+  "locationDescription" : "CHEMICAL INDST (F E) L"
+}, {
+  "timeStamp" : "2014-01-01 10:24:35.927",
+  "locationCode" : "BSS17",
+  "locationDescription" : "EXXONMOBIL A P P L"
+}, {
+  "timeStamp" : "2011-01-03 14:20:40.303",
+  "locationCode" : "BSS2",
+  "locationDescription" : "SPORE S ENGRG P L"
+}, {
+  "timeStamp" : "2014-01-01 10:24:39.670",
+  "locationCode" : "BSS3",
+  "locationDescription" : "PEC L"
+}, {
+  "timeStamp" : "2014-01-01 10:24:39.677",
+  "locationCode" : "BSS4",
+  "locationDescription" : "PEC L"
+}, {
+  "timeStamp" : "2014-01-01 10:24:39.680",
+  "locationCode" : "BSS5",
+  "locationDescription" : "LEEDEN INVST P L"
+}, {
+  "timeStamp" : "2014-01-01 10:24:39.683",
+  "locationCode" : "BSS6",
+  "locationDescription" : "NATIONAL OXY P L"
+}, {
+  "timeStamp" : "2004-01-26 15:10:13.087",
+  "locationCode" : "BSS7",
+  "locationDescription" : "NSL OILCHEM S P L"
+}, {
+  "timeStamp" : "2004-01-26 15:10:13.890",
+  "locationCode" : "BSS8",
+  "locationDescription" : "JURONG ENGRG LTD"
+}, {
+  "timeStamp" : "2004-01-26 15:10:34.197",
+  "locationCode" : "BSS9",
+  "locationDescription" : "VACANT"
+}, {
+  "timeStamp" : "2004-01-26 15:10:34.427",
+  "locationCode" : "BST1",
+  "locationDescription" : "JURONG SML P L"
+}, {
+  "timeStamp" : "2014-01-01 10:22:14.323",
+  "locationCode" : "BST10",
+  "locationDescription" : "DBS TRUSTEE LMTD"
+}, {
+  "timeStamp" : "1994-11-22 15:34:04.740",
+  "locationCode" : "BST11",
+  "locationDescription" : "AMERICAN EQUIP S P L"
+}, {
+  "timeStamp" : "2004-01-26 15:13:37.530",
+  "locationCode" : "BST13",
+  "locationDescription" : "BAKR EG//SEA DEEP SY P"
+}, {
+  "timeStamp" : "2004-01-26 15:13:38.100",
+  "locationCode" : "BST14",
+  "locationDescription" : "YEW CHOON P L"
+}, {
+  "timeStamp" : "2004-01-26 15:14:58.753",
+  "locationCode" : "BST15",
+  "locationDescription" : "FRANKLIN OS INTL P L"
+}, {
+  "timeStamp" : "2005-10-17 17:26:42.607",
+  "locationCode" : "BST16",
+  "locationDescription" : "BOK SENG LGST P L"
+}, {
+  "timeStamp" : "2004-02-13 09:50:31.930",
+  "locationCode" : "BST17",
+  "locationDescription" : "DUNDEE M & IND S P L"
+}, {
+  "timeStamp" : "2006-08-25 17:06:16.810",
+  "locationCode" : "BST18",
+  "locationDescription" : "REGIONAL M & E S P L"
+}, {
+  "timeStamp" : "2004-01-26 15:16:41.150",
+  "locationCode" : "BST19",
+  "locationDescription" : "REGIONAL M & E S P L"
+}, {
+  "timeStamp" : "2002-05-16 16:54:55.600",
+  "locationCode" : "BST2",
+  "locationDescription" : "OCEAN TANKERS P L"
+}, {
+  "timeStamp" : "2014-01-01 10:22:14.433",
+  "locationCode" : "BST20",
+  "locationDescription" : "ALPHA PAC P (S) P L"
+}, {
+  "timeStamp" : "2014-01-01 10:22:14.697",
+  "locationCode" : "BST3",
+  "locationDescription" : "MUN SIONG E L"
+}, {
+  "timeStamp" : "2005-12-09 08:32:17.510",
+  "locationCode" : "BST4",
+  "locationDescription" : "MEGAWAY E & T L"
+}, {
+  "timeStamp" : "2014-01-01 10:22:22.993",
+  "locationCode" : "BST5",
+  "locationDescription" : "MARINTEKNIK S (S) P L"
+}, {
+  "timeStamp" : "2002-05-16 16:54:58.227",
+  "locationCode" : "BST6",
+  "locationDescription" : "MARINTEKNIK S (S) P L"
+}, {
+  "timeStamp" : "2002-05-16 16:57:55.487",
+  "locationCode" : "BST7",
+  "locationDescription" : "VACANT"
+}, {
+  "timeStamp" : "2018-03-02 14:38:28.347",
+  "locationCode" : "BST7A",
+  "locationDescription" : "PH HYDRA & ENG (3918B)"
+}, {
+  "timeStamp" : "2008-06-03 09:18:34.377",
+  "locationCode" : "BST8",
+  "locationDescription" : "SWISSCO OS//SPORE"
+}, {
+  "timeStamp" : "2014-01-01 10:22:22.997",
+  "locationCode" : "BST9A",
+  "locationDescription" : "PROGRESS G P L"
+}, {
+  "timeStamp" : "2014-01-01 10:22:23.003",
+  "locationCode" : "BST9B",
+  "locationDescription" : "TTJ D & E P L"
+}, {
+  "timeStamp" : "2014-01-01 10:22:23.107",
+  "locationCode" : "BSTY",
+  "locationDescription" : "TRANS-EURO P L"
+}, {
+  "timeStamp" : "2014-04-01 09:58:21.317",
+  "locationCode" : "BTSF1",
+  "locationDescription" : "S TECH FLOATING DOCK 1"
+}, {
+  "timeStamp" : "2014-04-01 09:58:21.343",
+  "locationCode" : "BTSF2",
+  "locationDescription" : "S TECH FLOATING DOCK 2"
+}, {
+  "timeStamp" : "2005-08-10 11:09:42.793",
+  "locationCode" : "BTSNE",
+  "locationDescription" : "S TECH NORTH PIER EAST"
+}, {
+  "timeStamp" : "2005-08-10 11:09:42.600",
+  "locationCode" : "BTSNW",
+  "locationDescription" : "S TECH NORTH PIER WEST"
+}, {
+  "timeStamp" : "2002-05-16 14:31:17.140",
+  "locationCode" : "CC01",
+  "locationDescription" : "CRUISE CENTRE BERTH 1"
+}, {
+  "timeStamp" : "2002-05-16 14:31:17.580",
+  "locationCode" : "CC01E",
+  "locationDescription" : "CRUISE CENTRE BERTH 1E"
+}, {
+  "timeStamp" : "2002-05-16 14:31:17.250",
+  "locationCode" : "CC01W",
+  "locationDescription" : "CRUISE CENTRE BERTH 1W"
+}, {
+  "timeStamp" : "2002-05-16 14:31:17.810",
+  "locationCode" : "CC02",
+  "locationDescription" : "CRUISE CENTRE BERTH 2"
+}, {
+  "timeStamp" : "1996-08-23 14:33:48.230",
+  "locationCode" : "CFT",
+  "locationDescription" : "CHANGI FERRY TERMINAL"
+}, {
+  "timeStamp" : "2012-04-23 14:15:25.410",
+  "locationCode" : "CM01",
+  "locationDescription" : "MARINA BAY CC BTH 1"
+}, {
+  "timeStamp" : "2012-04-23 14:17:05.617",
+  "locationCode" : "CM02",
+  "locationDescription" : "MARINA BAY CC BTH 2"
+}, {
+  "timeStamp" : "2005-01-27 16:25:54.933",
+  "locationCode" : "CN1",
+  "locationDescription" : "CHANGI NAVAL BASE B1"
+}, {
+  "timeStamp" : "2005-01-27 16:30:50.750",
+  "locationCode" : "CN10",
+  "locationDescription" : "CHANGI NAVAL BASE B10"
+}, {
+  "timeStamp" : "2005-01-27 16:30:52.777",
+  "locationCode" : "CN11",
+  "locationDescription" : "CHANGI NAVAL BASE B11"
+}, {
+  "timeStamp" : "2005-01-27 16:30:53.543",
+  "locationCode" : "CN12",
+  "locationDescription" : "CHANGI NAVAL BASE B12"
+}, {
+  "timeStamp" : "2005-01-27 16:32:34.060",
+  "locationCode" : "CN13",
+  "locationDescription" : "CHANGI NAVAL BASE B13"
+}, {
+  "timeStamp" : "2005-01-27 16:32:34.170",
+  "locationCode" : "CN14",
+  "locationDescription" : "CHANGI NAVAL BASE B14"
+}, {
+  "timeStamp" : "2005-01-27 16:32:34.590",
+  "locationCode" : "CN15",
+  "locationDescription" : "CHANGI NAVAL BASE B15"
+}, {
+  "timeStamp" : "2009-07-17 19:09:23.597",
+  "locationCode" : "CN16",
+  "locationDescription" : "CHANGI NAVAL BASE B16"
+}, {
+  "timeStamp" : "2009-07-17 19:09:23.637",
+  "locationCode" : "CN17",
+  "locationDescription" : "CHANGI NAVAL BASE B17"
+}, {
+  "timeStamp" : "2006-05-26 17:34:39.123",
+  "locationCode" : "CN18",
+  "locationDescription" : "CHANGI NAVAL BASE B18"
+}, {
+  "timeStamp" : "2006-05-26 17:34:39.313",
+  "locationCode" : "CN19",
+  "locationDescription" : "CHANGI NAVAL BASE B19"
+}, {
+  "timeStamp" : "2005-01-27 16:27:36.983",
+  "locationCode" : "CN2",
+  "locationDescription" : "CHANGI NAVAL BASE B2"
+}, {
+  "timeStamp" : "2006-05-26 17:34:39.713",
+  "locationCode" : "CN20",
+  "locationDescription" : "CHANGI NAVAL BASE B20"
+}, {
+  "timeStamp" : "2006-05-26 17:35:59.797",
+  "locationCode" : "CN21",
+  "locationDescription" : "CHANGI NAVAL BASE B21"
+}, {
+  "timeStamp" : "2005-01-27 16:27:37.657",
+  "locationCode" : "CN3",
+  "locationDescription" : "CHANGI NAVAL BASE B3"
+}, {
+  "timeStamp" : "2005-01-27 16:27:38.197",
+  "locationCode" : "CN4",
+  "locationDescription" : "CHANGI NAVAL BASE B4"
+}, {
+  "timeStamp" : "2005-01-27 16:27:38.737",
+  "locationCode" : "CN5",
+  "locationDescription" : "CHANGI NAVAL BASE B5"
+}, {
+  "timeStamp" : "2005-01-27 16:29:00.713",
+  "locationCode" : "CN6",
+  "locationDescription" : "CHANGI NAVAL BASE B6"
+}, {
+  "timeStamp" : "2005-01-27 16:29:01.030",
+  "locationCode" : "CN7",
+  "locationDescription" : "CHANGI NAVAL BASE B7"
+}, {
+  "timeStamp" : "2005-01-27 16:29:06.157",
+  "locationCode" : "CN8",
+  "locationDescription" : "CHANGI NAVAL BASE B8"
+}, {
+  "timeStamp" : "2005-01-27 16:30:50.570",
+  "locationCode" : "CN9",
+  "locationDescription" : "CHANGI NAVAL BASE B9"
+}, {
+  "timeStamp" : "2005-01-27 16:34:17.217",
+  "locationCode" : "CN99",
+  "locationDescription" : "CHANGI NAVAL BASE"
+}, {
+  "timeStamp" : "2005-01-05 18:03:22.387",
+  "locationCode" : "CPFT1",
+  "locationDescription" : "CHANGI PT INTL PIER"
+}, {
+  "timeStamp" : "2005-01-05 18:09:35.927",
+  "locationCode" : "CPFT2",
+  "locationDescription" : "CHANGI PT PIER"
+}, {
+  "timeStamp" : "2002-05-16 14:03:22.533",
+  "locationCode" : "CSAF",
+  "locationDescription" : "CHANGI SAF FERRY TERM"
+}, {
+  "timeStamp" : "2002-05-16 14:32:39.417",
+  "locationCode" : "DFT5",
+  "locationDescription" : "DOMESTIC FERRY PLAT 5"
+}, {
+  "timeStamp" : "2002-05-16 14:34:19.867",
+  "locationCode" : "DFT6",
+  "locationDescription" : "DOMESTIC FERRY PLAT 6"
+}, {
+  "timeStamp" : "2002-05-16 14:34:20.027",
+  "locationCode" : "DFT7",
+  "locationDescription" : "DOMESTIC FERRY PLAT 7"
+}, {
+  "timeStamp" : "2002-05-16 14:34:20.567",
+  "locationCode" : "DFT8",
+  "locationDescription" : "DOMESTIC FERRY PLAT 8"
+}, {
+  "timeStamp" : "2002-05-16 15:47:00.327",
+  "locationCode" : "DG1",
+  "locationDescription" : "DISEMB GRD 1 JSB"
+}, {
+  "timeStamp" : "2002-05-16 15:59:17.660",
+  "locationCode" : "DG10",
+  "locationDescription" : "DISEMB GRD 10 AWJP"
+}, {
+  "timeStamp" : "2002-05-16 16:00:57.767",
+  "locationCode" : "DG11",
+  "locationDescription" : "DISEMB GRD 11 BSB"
+}, {
+  "timeStamp" : "2002-05-16 15:47:00.970",
+  "locationCode" : "DG2",
+  "locationDescription" : "DISEMB GRD 2 AESP"
+}, {
+  "timeStamp" : "2002-05-16 15:50:04.717",
+  "locationCode" : "DG3",
+  "locationDescription" : "DISEMB GRD ETN FAIRWAY"
+}, {
+  "timeStamp" : "2002-05-16 15:50:05.087",
+  "locationCode" : "DG4",
+  "locationDescription" : "DISEMB GRD 4 CORRIDOR"
+}, {
+  "timeStamp" : "2002-05-16 15:50:05.407",
+  "locationCode" : "DG5",
+  "locationDescription" : "DISEMB GRD PEAK ISLAND"
+}, {
+  "timeStamp" : "2002-05-16 15:53:09.447",
+  "locationCode" : "DG6",
+  "locationDescription" : "DG6 OUTER SHOAL BEACON"
+}, {
+  "timeStamp" : "2002-05-16 15:56:14.623",
+  "locationCode" : "DG7",
+  "locationDescription" : "DG7 SEBAROK BEACON"
+}, {
+  "timeStamp" : "2002-05-16 15:57:55.710",
+  "locationCode" : "DG8",
+  "locationDescription" : "DG8 OSSBM (SHELL SBM)"
+}, {
+  "timeStamp" : "2002-05-16 15:59:16.970",
+  "locationCode" : "DG9",
+  "locationDescription" : "DG9 TEMASEK FAIRWAY"
+}, {
+  "timeStamp" : "2002-05-16 16:00:58.307",
+  "locationCode" : "DGA",
+  "locationDescription" : "DISEMB GRD A OTHERS"
+}, {
+  "timeStamp" : "2002-05-16 15:40:49.610",
+  "locationCode" : "FSOL",
+  "locationDescription" : "SEMAKAU OFFSHORE LAND"
+}, {
+  "timeStamp" : "2002-09-06 17:01:03.327",
+  "locationCode" : "FTMTS",
+  "locationDescription" : "ENV DUMPING STATION"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.110",
+  "locationCode" : "J01",
+  "locationDescription" : "JURONG PORT BERTH 1"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.130",
+  "locationCode" : "J02",
+  "locationDescription" : "JURONG PORT BERTH 2"
+}, {
+  "timeStamp" : "2008-10-06 10:11:31.997",
+  "locationCode" : "J02A",
+  "locationDescription" : "JURONG PORT BERTH 2A"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.140",
+  "locationCode" : "J03",
+  "locationDescription" : "JURONG PORT BERTH 3"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.180",
+  "locationCode" : "J04",
+  "locationDescription" : "JURONG PORT BERTH 4"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.190",
+  "locationCode" : "J05",
+  "locationDescription" : "JURONG PORT BERTH 5"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.210",
+  "locationCode" : "J06",
+  "locationDescription" : "JURONG PORT BERTH 6"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.230",
+  "locationCode" : "J07",
+  "locationDescription" : "JURONG PORT BERTH 7"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.240",
+  "locationCode" : "J08",
+  "locationDescription" : "JURONG PORT BERTH 8"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.280",
+  "locationCode" : "J09",
+  "locationDescription" : "JURONG PORT BERTH 9"
+}, {
+  "timeStamp" : "2002-09-06 16:56:37.480",
+  "locationCode" : "J10",
+  "locationDescription" : "JURONG PORT BERTH 10"
+}, {
+  "timeStamp" : "2002-05-16 14:35:42.527",
+  "locationCode" : "J11",
+  "locationDescription" : "JURONG PORT BERTH 11"
+}, {
+  "timeStamp" : "2002-05-16 14:35:43.030",
+  "locationCode" : "J12",
+  "locationDescription" : "JURONG PORT BERTH 12"
+}, {
+  "timeStamp" : "2013-01-09 08:39:22.120",
+  "locationCode" : "J12A",
+  "locationDescription" : "JURONG PORT BERTH 12A"
+}, {
+  "timeStamp" : "2013-01-09 08:39:22.523",
+  "locationCode" : "J12B",
+  "locationDescription" : "JURONG PORT BERTH 12B"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.380",
+  "locationCode" : "J13",
+  "locationDescription" : "JURONG PORT BERTH 13"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.410",
+  "locationCode" : "J14",
+  "locationDescription" : "JURONG PORT BERTH 14"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.450",
+  "locationCode" : "J15",
+  "locationDescription" : "JURONG PORT BERTH 15"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.470",
+  "locationCode" : "J16",
+  "locationDescription" : "JURONG PORT BERTH 16"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.480",
+  "locationCode" : "J17",
+  "locationDescription" : "JURONG PORT BERTH 17"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.500",
+  "locationCode" : "J18",
+  "locationDescription" : "JURONG PORT BERTH 18"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.520",
+  "locationCode" : "J19",
+  "locationDescription" : "JURONG PORT BERTH 19"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.550",
+  "locationCode" : "J20",
+  "locationDescription" : "JURONG PORT BERTH 20"
+}, {
+  "timeStamp" : "1994-11-13 03:11:17.570",
+  "locationCode" : "J21",
+  "locationDescription" : "JURONG PORT BERTH 21"
+}, {
+  "timeStamp" : "1997-07-01 13:51:57.510",
+  "locationCode" : "J22",
+  "locationDescription" : "JURONG PORT BERTH 22"
+}, {
+  "timeStamp" : "1996-11-02 09:25:09.300",
+  "locationCode" : "J23",
+  "locationDescription" : "JURONG PORT BERTH 23"
+}, {
+  "timeStamp" : "2001-02-08 09:09:58.840",
+  "locationCode" : "J24",
+  "locationDescription" : "JURONG PORT BERTH 24"
+}, {
+  "timeStamp" : "2001-08-27 17:26:56.487",
+  "locationCode" : "J25",
+  "locationDescription" : "JURONG PORT BERTH 25"
+}, {
+  "timeStamp" : "2007-09-25 09:08:01.763",
+  "locationCode" : "J26R1",
+  "locationDescription" : "JP BERTH 26 RAMP 1"
+}, {
+  "timeStamp" : "2007-09-25 09:09:22.083",
+  "locationCode" : "J26R2",
+  "locationDescription" : "JP BERTH 26 RAMP 2"
+}, {
+  "timeStamp" : "2008-10-21 15:41:40.113",
+  "locationCode" : "JJ01",
+  "locationDescription" : "JURONG ISLAND JETTY 1"
+}, {
+  "timeStamp" : "2008-07-14 18:33:37.580",
+  "locationCode" : "JL1A",
+  "locationDescription" : "JR PORT LIGHTER WHF 1A"
+}, {
+  "timeStamp" : "2008-07-14 18:33:37.597",
+  "locationCode" : "JL1B",
+  "locationDescription" : "JR PORT LIGHTER WHF 1B"
+}, {
+  "timeStamp" : "2008-07-14 18:33:37.950",
+  "locationCode" : "JL1C",
+  "locationDescription" : "JR PORT LIGHTER WHF 1C"
+}, {
+  "timeStamp" : "2008-07-14 18:33:37.967",
+  "locationCode" : "JR21",
+  "locationDescription" : "JR PENJURU LIGHTER WHF"
+}, {
+  "timeStamp" : "1994-11-13 03:10:51.880",
+  "locationCode" : "K09",
+  "locationDescription" : "KEPPEL BERTH 09"
+}, {
+  "timeStamp" : "1994-11-13 03:10:51.920",
+  "locationCode" : "K10",
+  "locationDescription" : "KEPPEL BERTH 10"
+}, {
+  "timeStamp" : "1994-11-13 03:10:51.930",
+  "locationCode" : "K11",
+  "locationDescription" : "KEPPEL BERTH 11"
+}, {
+  "timeStamp" : "1994-11-13 03:10:51.950",
+  "locationCode" : "K12",
+  "locationDescription" : "KEPPEL BERTH 12"
+}, {
+  "timeStamp" : "1994-11-13 03:10:51.970",
+  "locationCode" : "K13",
+  "locationDescription" : "KEPPEL BERTH 13"
+}, {
+  "timeStamp" : "1994-11-13 03:10:51.980",
+  "locationCode" : "K14",
+  "locationDescription" : "KEPPEL BERTH 14"
+}, {
+  "timeStamp" : "1994-11-13 03:10:52.020",
+  "locationCode" : "K15",
+  "locationDescription" : "KEPPEL BERTH 15"
+}, {
+  "timeStamp" : "1994-11-13 03:10:52.050",
+  "locationCode" : "K16",
+  "locationDescription" : "KEPPEL BERTH 16"
+}, {
+  "timeStamp" : "1994-11-13 03:10:52.070",
+  "locationCode" : "K17",
+  "locationDescription" : "KEPPEL BERTH 17"
+}, {
+  "timeStamp" : "1994-11-13 03:10:52.080",
+  "locationCode" : "K18",
+  "locationDescription" : "KEPPEL BERTH 18"
+}, {
+  "timeStamp" : "1994-11-13 03:10:52.100",
+  "locationCode" : "K19",
+  "locationDescription" : "KEPPEL BERTH 19"
+}, {
+  "timeStamp" : "1994-11-13 03:10:52.120",
+  "locationCode" : "K20",
+  "locationDescription" : "KEPPEL BERTH 20"
+}, {
+  "timeStamp" : "1994-11-13 03:10:52.150",
+  "locationCode" : "K21",
+  "locationDescription" : "KEPPEL BERTH 21"
+}, {
+  "timeStamp" : "1994-11-13 03:10:52.170",
+  "locationCode" : "K22",
+  "locationDescription" : "KEPPEL BERTH 22"
+}, {
+  "timeStamp" : "1994-11-13 03:10:52.180",
+  "locationCode" : "K23",
+  "locationDescription" : "KEPPEL BERTH 23"
+}, {
+  "timeStamp" : "1994-11-13 03:10:52.200",
+  "locationCode" : "K24",
+  "locationDescription" : "KEPPEL BERTH 24"
+}, {
+  "timeStamp" : "2002-05-16 15:42:11.500",
+  "locationCode" : "KPBMT",
+  "locationDescription" : "PU BRANI MOORING TROTS"
+}, {
+  "timeStamp" : "2002-05-16 14:37:23.667",
+  "locationCode" : "KPBW",
+  "locationDescription" : "PULAU BRANI WHARF"
+}, {
+  "timeStamp" : "1994-11-13 03:10:48.470",
+  "locationCode" : "M01",
+  "locationDescription" : "MARINA BERTH 1"
+}, {
+  "timeStamp" : "1994-11-13 03:10:48.500",
+  "locationCode" : "M02",
+  "locationDescription" : "MARINA BERTH 2"
+}, {
+  "timeStamp" : "1994-11-13 03:10:48.530",
+  "locationCode" : "M03",
+  "locationDescription" : "MARINA BERTH 3"
+}, {
+  "timeStamp" : "1994-11-13 03:10:48.550",
+  "locationCode" : "M04",
+  "locationDescription" : "MARINA BERTH 4"
+}, {
+  "timeStamp" : "1994-11-13 03:10:48.560",
+  "locationCode" : "M05",
+  "locationDescription" : "MARINA BERTH 5"
+}, {
+  "timeStamp" : "2005-10-06 12:02:05.640",
+  "locationCode" : "MCC",
+  "locationDescription" : "MARINA COUNTRY CLUB"
+}, {
+  "timeStamp" : "2003-08-26 17:56:51.883",
+  "locationCode" : "MCS",
+  "locationDescription" : "CHANGI SAILING CLUB"
+}, {
+  "timeStamp" : "2007-04-24 11:42:15.353",
+  "locationCode" : "MFSO",
+  "locationDescription" : "TVE WEST STORAGE"
+}, {
+  "timeStamp" : "2003-02-28 16:01:47.073",
+  "locationCode" : "MKP",
+  "locationDescription" : "KEPPEL MARINA"
+}, {
+  "timeStamp" : "2012-09-04 08:47:12.897",
+  "locationCode" : "MKPM",
+  "locationDescription" : "KEPPEL MARINA BERTH"
+}, {
+  "timeStamp" : "2003-02-28 16:03:31.967",
+  "locationCode" : "MRM",
+  "locationDescription" : "RAFFLES MARINA"
+}, {
+  "timeStamp" : "2003-02-28 16:01:47.293",
+  "locationCode" : "MRS",
+  "locationDescription" : "RSYC"
+}, {
+  "timeStamp" : "2003-02-28 16:00:22.133",
+  "locationCode" : "MSC",
+  "locationDescription" : "SENTOSA COVE"
+}, {
+  "timeStamp" : "2003-02-28 16:00:21.340",
+  "locationCode" : "MSF",
+  "locationDescription" : "SAF YACHT CLUB"
+}, {
+  "timeStamp" : "2006-07-10 14:56:24.650",
+  "locationCode" : "MSFT",
+  "locationDescription" : "MARINA SOUTH FERRY TML"
+}, {
+  "timeStamp" : "2002-05-16 15:42:14.253",
+  "locationCode" : "MTBE",
+  "locationDescription" : "TUG BARGE MOOR BEDOK"
+}, {
+  "timeStamp" : "2002-05-16 15:43:54.977",
+  "locationCode" : "MTBN",
+  "locationDescription" : "TUG BARGE MOOR CHANGI"
+}, {
+  "timeStamp" : "2002-05-16 15:43:55.073",
+  "locationCode" : "MTBW",
+  "locationDescription" : "TUG BARGE MOOR WJSI"
+}, {
+  "timeStamp" : "2002-06-12 08:46:46.480",
+  "locationCode" : "MYAJ",
+  "locationDescription" : "JOHOR ANCHORAGE"
+}, {
+  "timeStamp" : "2002-06-12 08:42:04.460",
+  "locationCode" : "MYOI",
+  "locationDescription" : "IDEMITSU JETTY"
+}, {
+  "timeStamp" : "2002-06-12 08:46:46.153",
+  "locationCode" : "MYOL",
+  "locationDescription" : "TANJUNG LANGSTADT JT"
+}, {
+  "timeStamp" : "2002-06-12 08:39:22.077",
+  "locationCode" : "MYPG",
+  "locationDescription" : "PASIR GUDANG PORT"
+}, {
+  "timeStamp" : "2002-06-12 08:42:04.227",
+  "locationCode" : "MYPSI",
+  "locationDescription" : "PASIR GUDANG POWER STN"
+}, {
+  "timeStamp" : "2002-06-12 08:48:07.963",
+  "locationCode" : "MYRAJ",
+  "locationDescription" : "JOHOR RIVER ANCHORAGE"
+}, {
+  "timeStamp" : "2005-07-19 16:13:25.170",
+  "locationCode" : "MYSLJ",
+  "locationDescription" : "STULANG LAUT JETTY"
+}, {
+  "timeStamp" : "2013-11-04 18:13:05.930",
+  "locationCode" : "MYSTE",
+  "locationDescription" : "SUNGAI TEBRAU"
+}, {
+  "timeStamp" : "2002-06-24 09:54:05.530",
+  "locationCode" : "MYTBR",
+  "locationDescription" : "TG BELUNGKOR FERRY TER"
+}, {
+  "timeStamp" : "2012-01-16 15:37:02.463",
+  "locationCode" : "MYTNB",
+  "locationDescription" : "TENAGA NASIONAL BERHAD"
+}, {
+  "timeStamp" : "2013-11-26 09:16:06.893",
+  "locationCode" : "MYTPJ",
+  "locationDescription" : "TG PENGELIH JETT"
+}, {
+  "timeStamp" : "2002-06-12 08:42:04.130",
+  "locationCode" : "MYYMS",
+  "locationDescription" : "MALAYSIAN SHIPYD ENGRG"
+}, {
+  "timeStamp" : "2016-06-03 12:33:16.163",
+  "locationCode" : "NPCCJ",
+  "locationDescription" : "NPCCJ"
+}, {
+  "timeStamp" : "2004-02-13 09:34:29.617",
+  "locationCode" : "OBE1",
+  "locationDescription" : "EXXON CHEMICAL JETTY"
+}, {
+  "timeStamp" : "2006-09-04 18:03:36.040",
+  "locationCode" : "OBH1",
+  "locationDescription" : "OIL BANYAN HORIZON JT1"
+}, {
+  "timeStamp" : "2006-09-04 18:03:35.943",
+  "locationCode" : "OBH2",
+  "locationDescription" : "OIL BANYAN HORIZON JT2"
+}, {
+  "timeStamp" : "2006-09-04 18:05:16.160",
+  "locationCode" : "OBH3",
+  "locationDescription" : "OIL BANYAN HORIZON JT3"
+}, {
+  "timeStamp" : "2006-09-04 18:05:16.270",
+  "locationCode" : "OBH4",
+  "locationDescription" : "OIL BANYAN HORIZON JT4"
+}, {
+  "timeStamp" : "2009-03-16 12:08:09.430",
+  "locationCode" : "OBR1",
+  "locationDescription" : "SPT PROJECT TEMP JETTY"
+}, {
+  "timeStamp" : "2006-03-20 07:53:08.363",
+  "locationCode" : "OBV1",
+  "locationDescription" : "VOPAK BANYAN BERTH 1"
+}, {
+  "timeStamp" : "2006-03-20 07:53:08.690",
+  "locationCode" : "OBV2",
+  "locationDescription" : "VOPAK BANYAN BERTH 2"
+}, {
+  "timeStamp" : "2008-10-06 10:11:52.697",
+  "locationCode" : "OBV3",
+  "locationDescription" : "VOPAK BANYAN BERTH 3"
+}, {
+  "timeStamp" : "2008-10-06 10:11:53.253",
+  "locationCode" : "OBV4",
+  "locationDescription" : "VOPAK BANYAN BERTH 4"
+}, {
+  "timeStamp" : "2008-10-06 10:11:30.993",
+  "locationCode" : "OBV5",
+  "locationDescription" : "VOPAK BANYAN BERTH 5"
+}, {
+  "timeStamp" : "2013-02-22 17:55:12.803",
+  "locationCode" : "OBV6",
+  "locationDescription" : "VOPAK BANYAN BERTH 6"
+}, {
+  "timeStamp" : "2013-02-22 17:55:12.810",
+  "locationCode" : "OBV7",
+  "locationDescription" : "VOPAK BANYAN BERTH 7"
+}, {
+  "timeStamp" : "2010-06-01 15:08:56.100",
+  "locationCode" : "OCAF1",
+  "locationDescription" : "CAFHI JETTY 1"
+}, {
+  "timeStamp" : "2010-06-01 15:08:56.107",
+  "locationCode" : "OCAF2",
+  "locationDescription" : "CAFHI JETTY 2"
+}, {
+  "timeStamp" : "2007-10-29 16:28:05.583",
+  "locationCode" : "OCHV1",
+  "locationDescription" : "CHEVRON PENJURU TERM 1"
+}, {
+  "timeStamp" : "2007-10-29 16:39:27.357",
+  "locationCode" : "OCHV2",
+  "locationDescription" : "CHEVRON PENJURU TERM 2"
+}, {
+  "timeStamp" : "2007-10-29 16:39:28.597",
+  "locationCode" : "OCHV3",
+  "locationDescription" : "CHEVRON PENJURU TERM 3"
+}, {
+  "timeStamp" : "2007-10-29 16:39:30.237",
+  "locationCode" : "OCHV4",
+  "locationDescription" : "CHEVRON PENJURU TERM 4"
+}, {
+  "timeStamp" : "2007-10-29 16:39:31.447",
+  "locationCode" : "OCHV5",
+  "locationDescription" : "CHEVRON PENJURU TERM 5"
+}, {
+  "timeStamp" : "2007-10-29 16:39:31.547",
+  "locationCode" : "OCHV6",
+  "locationDescription" : "CHEVRON PENJURU TERM 6"
+}, {
+  "timeStamp" : "2007-10-29 16:39:32.397",
+  "locationCode" : "OCHV7",
+  "locationDescription" : "CHEVRON PENJURU TERM 7"
+}, {
+  "timeStamp" : "2002-05-16 14:43:29.403",
+  "locationCode" : "OE1",
+  "locationDescription" : "ESSO BERTH 1"
+}, {
+  "timeStamp" : "2002-05-16 14:43:29.513",
+  "locationCode" : "OE2",
+  "locationDescription" : "ESSO BERTH 2"
+}, {
+  "timeStamp" : "2002-05-16 14:43:29.963",
+  "locationCode" : "OE3",
+  "locationDescription" : "ESSO BERTH 3"
+}, {
+  "timeStamp" : "2002-05-16 14:43:30.073",
+  "locationCode" : "OE4",
+  "locationDescription" : "ESSO BERTH 4"
+}, {
+  "timeStamp" : "2002-05-16 14:43:30.183",
+  "locationCode" : "OE5",
+  "locationDescription" : "ESSO BERTH 5"
+}, {
+  "timeStamp" : "1996-06-12 13:30:57.970",
+  "locationCode" : "OE6",
+  "locationDescription" : "ESSO BERTH 6"
+}, {
+  "timeStamp" : "2008-07-14 18:33:37.993",
+  "locationCode" : "OEBP",
+  "locationDescription" : "ESSO BULK PIER"
+}, {
+  "timeStamp" : "2002-05-16 14:45:11.407",
+  "locationCode" : "OEJT",
+  "locationDescription" : "ESSO JURONG TERMINAL"
+}, {
+  "timeStamp" : "2002-05-16 14:46:32.493",
+  "locationCode" : "OESHP",
+  "locationDescription" : "ESSO SOLID HDLG PIER"
+}, {
+  "timeStamp" : "2007-12-26 12:03:16.883",
+  "locationCode" : "OHT1",
+  "locationDescription" : "HELIOS BERTH 1"
+}, {
+  "timeStamp" : "2007-12-26 12:06:18.323",
+  "locationCode" : "OHT2",
+  "locationDescription" : "HELIOS BERTH 2"
+}, {
+  "timeStamp" : "2007-12-26 12:06:19.220",
+  "locationCode" : "OHT3",
+  "locationDescription" : "HELIOS BERTH 3"
+}, {
+  "timeStamp" : "2007-12-26 12:06:20.010",
+  "locationCode" : "OHT4",
+  "locationDescription" : "HELIOS BERTH 4"
+}, {
+  "timeStamp" : "2007-12-26 12:06:20.120",
+  "locationCode" : "OHT5",
+  "locationDescription" : "HELIOS BERTH 5"
+}, {
+  "timeStamp" : "2007-12-26 12:06:20.230",
+  "locationCode" : "OHT6",
+  "locationDescription" : "HELIOS BERTH 6"
+}, {
+  "timeStamp" : "2014-03-26 12:12:42.087",
+  "locationCode" : "OJAC1",
+  "locationDescription" : "JURG ARO CORP J1"
+}, {
+  "timeStamp" : "2014-03-26 12:12:42.870",
+  "locationCode" : "OJAC2",
+  "locationDescription" : "JURG ARO CORP J2"
+}, {
+  "timeStamp" : "2014-03-26 12:12:43.813",
+  "locationCode" : "OJAC3",
+  "locationDescription" : "JURG ARO CORP J3"
+}, {
+  "timeStamp" : "2019-01-25 00:00:00.000",
+  "locationCode" : "OJPT1",
+  "locationDescription" : "JP TANK TERM 1 (4217B)"
+}, {
+  "timeStamp" : "2019-01-25 00:00:00.000",
+  "locationCode" : "OJPT2",
+  "locationDescription" : "JP TANK TERM 2 (4217B)"
+}, {
+  "timeStamp" : "2019-01-25 00:00:00.000",
+  "locationCode" : "OJPT3",
+  "locationDescription" : "JP TANK TERM 3 (4217B)"
+}, {
+  "timeStamp" : "2019-01-25 00:00:00.000",
+  "locationCode" : "OJPT4",
+  "locationDescription" : "JP TANK TERM 4 (4217B)"
+}, {
+  "timeStamp" : "2002-05-16 14:48:17.657",
+  "locationCode" : "OM1",
+  "locationDescription" : "MOBIL BERTH 1"
+}, {
+  "timeStamp" : "2002-05-16 14:48:17.757",
+  "locationCode" : "OM2",
+  "locationDescription" : "MOBIL BERTH 2"
+}, {
+  "timeStamp" : "2002-05-16 14:48:17.997",
+  "locationCode" : "OM3",
+  "locationDescription" : "MOBIL BERTH 3"
+}, {
+  "timeStamp" : "2002-05-16 14:48:18.287",
+  "locationCode" : "OM4",
+  "locationDescription" : "MOBIL BERTH 4"
+}, {
+  "timeStamp" : "2002-05-16 14:48:18.467",
+  "locationCode" : "OM5",
+  "locationDescription" : "MOBIL BERTH 5"
+}, {
+  "timeStamp" : "2002-05-16 14:49:41.273",
+  "locationCode" : "OM6",
+  "locationDescription" : "MOBIL BERTH 6"
+}, {
+  "timeStamp" : "2002-09-06 17:25:04.843",
+  "locationCode" : "OM7",
+  "locationDescription" : "MOBIL BERTH 7"
+}, {
+  "timeStamp" : "2002-09-06 17:25:04.950",
+  "locationCode" : "OM8",
+  "locationDescription" : "MOBIL BERTH 8"
+}, {
+  "timeStamp" : "2002-09-06 17:25:05.063",
+  "locationCode" : "OM9",
+  "locationDescription" : "MOBIL BERTH 9"
+}, {
+  "timeStamp" : "2002-09-06 17:22:06.503",
+  "locationCode" : "OMLUB",
+  "locationDescription" : "MOBIL LUB OIL JETTY"
+}, {
+  "timeStamp" : "2007-10-18 18:21:13.787",
+  "locationCode" : "OMU1",
+  "locationDescription" : "MERANTI UNIVERSAL B1"
+}, {
+  "timeStamp" : "2007-10-18 18:21:15.797",
+  "locationCode" : "OMU10",
+  "locationDescription" : "MERANTI UNIVERSAL B10"
+}, {
+  "timeStamp" : "2007-10-18 18:21:15.917",
+  "locationCode" : "OMU11",
+  "locationDescription" : "MERANTI UNIVERSAL B11"
+}, {
+  "timeStamp" : "2007-10-18 18:21:16.177",
+  "locationCode" : "OMU12",
+  "locationDescription" : "MERANTI UNIVERSAL B12"
+}, {
+  "timeStamp" : "2007-10-18 18:22:56.537",
+  "locationCode" : "OMU13",
+  "locationDescription" : "MERANTI UNIVERSAL B13"
+}, {
+  "timeStamp" : "2012-09-04 08:55:55.960",
+  "locationCode" : "OMU15",
+  "locationDescription" : "MERANTI UNIVERSAL B15"
+}, {
+  "timeStamp" : "2012-09-04 08:55:56.097",
+  "locationCode" : "OMU16",
+  "locationDescription" : "MERANTI UNIVERSAL B16"
+}, {
+  "timeStamp" : "2012-09-04 08:55:56.100",
+  "locationCode" : "OMU17",
+  "locationDescription" : "MERANTI UNIVERSAL B17"
+}, {
+  "timeStamp" : "2007-10-18 18:21:13.977",
+  "locationCode" : "OMU2",
+  "locationDescription" : "MERANTI UNIVERSAL B2"
+}, {
+  "timeStamp" : "2007-10-18 18:21:14.127",
+  "locationCode" : "OMU3",
+  "locationDescription" : "MERANTI UNIVERSAL B3"
+}, {
+  "timeStamp" : "2007-10-18 18:21:14.257",
+  "locationCode" : "OMU5",
+  "locationDescription" : "MERANTI UNIVERSAL B5"
+}, {
+  "timeStamp" : "2007-10-18 18:21:15.127",
+  "locationCode" : "OMU6",
+  "locationDescription" : "MERANTI UNIVERSAL B6"
+}, {
+  "timeStamp" : "2007-10-18 18:21:15.247",
+  "locationCode" : "OMU7",
+  "locationDescription" : "MERANTI UNIVERSAL B7"
+}, {
+  "timeStamp" : "2007-10-18 18:21:15.407",
+  "locationCode" : "OMU8",
+  "locationDescription" : "MERANTI UNIVERSAL B8"
+}, {
+  "timeStamp" : "2007-10-18 18:21:15.680",
+  "locationCode" : "OMU9",
+  "locationDescription" : "MERANTI UNIVERSAL B9"
+}, {
+  "timeStamp" : "2006-08-29 16:17:27.707",
+  "locationCode" : "OPCBA",
+  "locationDescription" : "P. C. S. BARGE PIER"
+}, {
+  "timeStamp" : "1994-11-22 15:34:18.040",
+  "locationCode" : "OPCS1",
+  "locationDescription" : "P. C. S. BERTH 1"
+}, {
+  "timeStamp" : "2002-05-16 14:52:48.837",
+  "locationCode" : "OPCS2",
+  "locationDescription" : "P. C. S. BERTH 2"
+}, {
+  "timeStamp" : "1994-11-22 15:34:18.120",
+  "locationCode" : "OPCS3",
+  "locationDescription" : "P. C. S. BERTH 3"
+}, {
+  "timeStamp" : "1994-11-22 15:34:18.170",
+  "locationCode" : "OPCS4",
+  "locationDescription" : "P. C. S. BERTH 4"
+}, {
+  "timeStamp" : "1994-11-22 15:34:18.220",
+  "locationCode" : "OPCS5",
+  "locationDescription" : "P. C. S. BERTH 5"
+}, {
+  "timeStamp" : "2017-10-03 12:30:49.670",
+  "locationCode" : "OPCS6",
+  "locationDescription" : "P. C. S. BERTH 6"
+}, {
+  "timeStamp" : "2014-04-11 14:23:02.550",
+  "locationCode" : "ORC1A",
+  "locationDescription" : "JURG ROCK CAVERNS 1A"
+}, {
+  "timeStamp" : "2014-04-11 14:23:02.990",
+  "locationCode" : "ORC1B",
+  "locationDescription" : "JURG ROCK CAVERNS 1B"
+}, {
+  "timeStamp" : "2014-04-11 14:23:03.410",
+  "locationCode" : "ORC1C",
+  "locationDescription" : "JURG ROCK CAVERNS 1C"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS1",
+  "locationDescription" : "SHELL PULAU BUKOM 1"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS10",
+  "locationDescription" : "SHELL PULAU BUKOM 10"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS10A",
+  "locationDescription" : "SHELL PULAU BUKOM 10A"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS10B",
+  "locationDescription" : "SHELL PULAU BUKOM 10B"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS10C",
+  "locationDescription" : "SHELL PULAU BUKOM 10C"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS11",
+  "locationDescription" : "SHELL PULAU BUKOM 11"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS12",
+  "locationDescription" : "SHELL PULAU BUKOM 12"
+}, {
+  "timeStamp" : "2009-10-13 10:22:11.567",
+  "locationCode" : "OS13",
+  "locationDescription" : "SHELL PULAU BUKOM 13"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS1E",
+  "locationDescription" : "SHELL PULAU BUKOM 1E"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS1W",
+  "locationDescription" : "SHELL PULAU BUKOM 1W"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS2",
+  "locationDescription" : "SHELL PULAU BUKOM 2"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS3",
+  "locationDescription" : "SHELL PULAU BUKOM 3"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS4",
+  "locationDescription" : "SHELL PULAU BUKOM 4"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS5",
+  "locationDescription" : "SHELL PULAU BUKOM 5"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS6",
+  "locationDescription" : "SHELL PULAU BUKOM 6"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS7",
+  "locationDescription" : "SHELL PULAU BUKOM 7"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS8",
+  "locationDescription" : "SHELL PULAU BUKOM 8"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OS9",
+  "locationDescription" : "SHELL PULAU BUKOM 9"
+}, {
+  "timeStamp" : "2015-11-09 12:08:44.667",
+  "locationCode" : "OSAKJ",
+  "locationDescription" : "CHEVRON ORONITE JETTY"
+}, {
+  "timeStamp" : "1996-12-21 12:14:09.480",
+  "locationCode" : "OSCJ1",
+  "locationDescription" : "SERAYA CHEMICAL JETTY1"
+}, {
+  "timeStamp" : "1997-03-24 17:13:50.750",
+  "locationCode" : "OSCJ2",
+  "locationDescription" : "SERAYA CHEMICAL JETTY2"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OSE1A",
+  "locationDescription" : "PULAU SEBAROK JETTY 1A"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OSE1B",
+  "locationDescription" : "PULAU SEBAROK JETTY 1B"
+}, {
+  "timeStamp" : "1995-08-04 15:22:41.950",
+  "locationCode" : "OSE1C",
+  "locationDescription" : "PULAU SEBAROK JETTY 1C"
+}, {
+  "timeStamp" : "2009-06-10 12:55:54.103",
+  "locationCode" : "OSEBP",
+  "locationDescription" : "CLEANSEAS SEBAROK PIER"
+}, {
+  "timeStamp" : "2007-12-26 12:06:20.930",
+  "locationCode" : "OSECC",
+  "locationDescription" : "SHELL PULAU ULAR JETTY"
+}, {
+  "timeStamp" : "2003-06-13 09:39:55.183",
+  "locationCode" : "OSEL",
+  "locationDescription" : "P.SEBAROK LANDING JTY"
+}, {
+  "timeStamp" : "2010-07-06 13:58:41.157",
+  "locationCode" : "OSENO",
+  "locationDescription" : "SENOKO POWER STATION"
+}, {
+  "timeStamp" : "2015-09-16 14:57:10.827",
+  "locationCode" : "OSEP1",
+  "locationDescription" : "PULAU SEBAROK PIER 1"
+}, {
+  "timeStamp" : "1999-10-29 09:19:43.490",
+  "locationCode" : "OSK1",
+  "locationDescription" : "PULAU SAKRA BERTH 1"
+}, {
+  "timeStamp" : "1999-10-29 09:20:46.940",
+  "locationCode" : "OSK1A",
+  "locationDescription" : "PULAU SAKRA BERTH 1A"
+}, {
+  "timeStamp" : "1999-10-29 09:20:46.823",
+  "locationCode" : "OSK2",
+  "locationDescription" : "PULAU SAKRA BERTH 2"
+}, {
+  "timeStamp" : "2002-05-16 15:02:00.003",
+  "locationCode" : "OSK3",
+  "locationDescription" : "PULAU SAKRA BERTH 3"
+}, {
+  "timeStamp" : "2002-05-16 15:02:00.197",
+  "locationCode" : "OSK4",
+  "locationDescription" : "PULAU SAKRA BERTH 4"
+}, {
+  "timeStamp" : "2013-03-07 12:06:43.910",
+  "locationCode" : "OSLN1",
+  "locationDescription" : "SINGAPORE LNG TERM 1"
+}, {
+  "timeStamp" : "2013-03-07 12:08:04.183",
+  "locationCode" : "OSLN2",
+  "locationDescription" : "SINGAPORE LNG TERM 2"
+}, {
+  "timeStamp" : "2013-03-07 12:08:04.183",
+  "locationCode" : "OSLN3",
+  "locationDescription" : "SINGAPORE LNG TERM 3"
+}, {
+  "timeStamp" : "2015-11-09 12:08:44.610",
+  "locationCode" : "OSLP1",
+  "locationDescription" : "SPORE LUBE PARK JTY 1"
+}, {
+  "timeStamp" : "2015-11-09 12:08:44.630",
+  "locationCode" : "OSLP2",
+  "locationDescription" : "SPORE LUBE PARK JTY 2"
+}, {
+  "timeStamp" : "2015-11-09 12:08:44.643",
+  "locationCode" : "OSLP3",
+  "locationDescription" : "SPORE LUBE PARK JTY 3"
+}, {
+  "timeStamp" : "2015-11-09 12:08:44.653",
+  "locationCode" : "OSLP4",
+  "locationDescription" : "SPORE LUBE PARK JTY 4"
+}, {
+  "timeStamp" : "2008-03-14 18:13:21.640",
+  "locationCode" : "OSMOF",
+  "locationDescription" : "TEMP OFF LOADING FCLTY"
+}, {
+  "timeStamp" : "2014-12-04 08:55:49.500",
+  "locationCode" : "OSP1A",
+  "locationDescription" : "SERAYA POWER STN 1A"
+}, {
+  "timeStamp" : "2014-12-04 08:55:35.723",
+  "locationCode" : "OSP1B",
+  "locationDescription" : "SERAYA POWER STN 1B"
+}, {
+  "timeStamp" : "2014-08-25 17:32:46.050",
+  "locationCode" : "OSP2A",
+  "locationDescription" : "SERAYA POWER STN 2A"
+}, {
+  "timeStamp" : "2014-08-25 17:33:43.110",
+  "locationCode" : "OSP2B",
+  "locationDescription" : "SERAYA POWER STN 2B"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OSPJ",
+  "locationDescription" : "SHELL PANDAN JETTY"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OSPS1",
+  "locationDescription" : "SERAYA POWER STATION 1"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OSPS2",
+  "locationDescription" : "SERAYA POWER STATION 2"
+}, {
+  "timeStamp" : "2005-12-09 08:17:09.780",
+  "locationCode" : "OSPS3",
+  "locationDescription" : "SERAYA POWER STATION 3"
+}, {
+  "timeStamp" : "2014-04-02 15:43:33.340",
+  "locationCode" : "OSPS4",
+  "locationDescription" : "SERAYA POWER STATION 4"
+}, {
+  "timeStamp" : "2008-02-20 17:42:46.810",
+  "locationCode" : "OSPSW",
+  "locationDescription" : "SERAYA STN WATER JETTY"
+}, {
+  "timeStamp" : "2004-03-17 14:04:27.287",
+  "locationCode" : "OSPUM",
+  "locationDescription" : "MOORG OFF BUKOM KECHIL"
+}, {
+  "timeStamp" : "2002-09-02 08:54:44.007",
+  "locationCode" : "OSR1P",
+  "locationDescription" : "S. R. C. BERTH 1"
+}, {
+  "timeStamp" : "2002-09-02 08:54:44.317",
+  "locationCode" : "OSR2P",
+  "locationDescription" : "S. R. C. BERTH 2"
+}, {
+  "timeStamp" : "2002-09-02 08:57:48.817",
+  "locationCode" : "OSR3T",
+  "locationDescription" : "S. R. C. BERTH 3"
+}, {
+  "timeStamp" : "2002-09-02 08:57:49.227",
+  "locationCode" : "OSR4T",
+  "locationDescription" : "S. R. C. BERTH 4"
+}, {
+  "timeStamp" : "2002-09-02 08:56:06.983",
+  "locationCode" : "OSR5P",
+  "locationDescription" : "S. R. C. BERTH 5"
+}, {
+  "timeStamp" : "2002-09-02 08:56:07.183",
+  "locationCode" : "OSR6T",
+  "locationDescription" : "S. R. C. BERTH 6"
+}, {
+  "timeStamp" : "2002-09-02 08:56:07.283",
+  "locationCode" : "OSR7T",
+  "locationDescription" : "S. R. C. BERTH 7"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "OSSBM",
+  "locationDescription" : "SHELL SBM"
+}, {
+  "timeStamp" : "2010-06-01 15:07:15.707",
+  "locationCode" : "OSSGJ",
+  "locationDescription" : "SENOKO GAS JETTY"
+}, {
+  "timeStamp" : "2011-10-10 14:52:44.283",
+  "locationCode" : "OST1",
+  "locationDescription" : "STOLTHAVEN BERTH 1"
+}, {
+  "timeStamp" : "2014-10-08 16:21:49.547",
+  "locationCode" : "OST2",
+  "locationDescription" : "STOLTHAVEN BERTH 2"
+}, {
+  "timeStamp" : "2015-08-21 12:20:13.003",
+  "locationCode" : "OST3",
+  "locationDescription" : "STOLTHAVEN JETTY  3"
+}, {
+  "timeStamp" : "2006-03-20 07:51:48.270",
+  "locationCode" : "OSV10",
+  "locationDescription" : "VOPAK SEBAROK BERTH 10"
+}, {
+  "timeStamp" : "2006-03-20 07:48:45.707",
+  "locationCode" : "OSV2",
+  "locationDescription" : "VOPAK SEBAROK BERTH 2"
+}, {
+  "timeStamp" : "2006-03-20 07:48:46.100",
+  "locationCode" : "OSV3",
+  "locationDescription" : "VOPAK SEBAROK BERTH 3"
+}, {
+  "timeStamp" : "2006-03-20 08:00:50.553",
+  "locationCode" : "OSV4",
+  "locationDescription" : "VOPAK SEBAROK BERTH 4"
+}, {
+  "timeStamp" : "2006-03-20 07:50:06.333",
+  "locationCode" : "OSV5",
+  "locationDescription" : "VOPAK SEBAROK BERTH 5"
+}, {
+  "timeStamp" : "2006-03-20 07:50:06.433",
+  "locationCode" : "OSV6",
+  "locationDescription" : "VOPAK SEBAROK BERTH 6"
+}, {
+  "timeStamp" : "2006-03-20 07:50:07.390",
+  "locationCode" : "OSV7",
+  "locationDescription" : "VOPAK SEBAROK BERTH 7"
+}, {
+  "timeStamp" : "2006-03-20 07:51:47.640",
+  "locationCode" : "OSV8",
+  "locationDescription" : "VOPAK SEBAROK BERTH 8"
+}, {
+  "timeStamp" : "2006-03-20 07:51:47.740",
+  "locationCode" : "OSV9",
+  "locationDescription" : "VOPAK SEBAROK BERTH 9"
+}, {
+  "timeStamp" : "2017-10-03 12:30:31.120",
+  "locationCode" : "OT1",
+  "locationDescription" : "SCP TEMBUSU 1(3915C)"
+}, {
+  "timeStamp" : "2017-10-03 12:30:31.157",
+  "locationCode" : "OT2",
+  "locationDescription" : "SCP TEMBUSU 2(3915A)"
+}, {
+  "timeStamp" : "2017-10-03 12:30:31.187",
+  "locationCode" : "OT3",
+  "locationDescription" : "SCP TEMBUSU 3(3915A)"
+}, {
+  "timeStamp" : "2002-09-02 08:59:11.933",
+  "locationCode" : "OTK1",
+  "locationDescription" : "OIL TERM PU SERAYA 1"
+}, {
+  "timeStamp" : "2009-07-24 10:41:02.633",
+  "locationCode" : "OTK10",
+  "locationDescription" : "OIL TERM PU SERAYA 10"
+}, {
+  "timeStamp" : "2002-03-04 09:18:52.880",
+  "locationCode" : "OTK11",
+  "locationDescription" : "OIL TANKING BERTH 11"
+}, {
+  "timeStamp" : "2002-09-02 08:59:11.527",
+  "locationCode" : "OTK12",
+  "locationDescription" : "OIL TANKING BERTH 12"
+}, {
+  "timeStamp" : "2006-07-28 16:06:23.060",
+  "locationCode" : "OTK18",
+  "locationDescription" : "OIL TANKING BERTH 18"
+}, {
+  "timeStamp" : "2006-07-28 16:06:23.753",
+  "locationCode" : "OTK19",
+  "locationDescription" : "OIL TANKING BERTH 19"
+}, {
+  "timeStamp" : "2002-09-02 08:59:12.183",
+  "locationCode" : "OTK2",
+  "locationDescription" : "OIL TERM PU SERAYA 2"
+}, {
+  "timeStamp" : "2007-02-01 12:14:58.500",
+  "locationCode" : "OTK20",
+  "locationDescription" : "OIL TANKING BERTH 20"
+}, {
+  "timeStamp" : "2007-09-25 09:09:22.873",
+  "locationCode" : "OTK21",
+  "locationDescription" : "OIL TANKING BERTH 21"
+}, {
+  "timeStamp" : "2017-06-05 00:00:00.000",
+  "locationCode" : "OTK22",
+  "locationDescription" : "OIL TANKING BERTH 22"
+}, {
+  "timeStamp" : "2002-09-02 08:59:12.727",
+  "locationCode" : "OTK3",
+  "locationDescription" : "OIL TERM PU SERAYA 3"
+}, {
+  "timeStamp" : "2002-09-02 08:59:13.237",
+  "locationCode" : "OTK4",
+  "locationDescription" : "OIL TERM PU SERAYA 4"
+}, {
+  "timeStamp" : "2002-09-02 09:00:55.087",
+  "locationCode" : "OTK5",
+  "locationDescription" : "OIL TERM PU SERAYA 5"
+}, {
+  "timeStamp" : "2002-09-02 09:00:55.207",
+  "locationCode" : "OTK6",
+  "locationDescription" : "OIL TERM PU SERAYA 6"
+}, {
+  "timeStamp" : "2005-09-15 15:39:20.557",
+  "locationCode" : "OTK9",
+  "locationDescription" : "OIL TERM PU SERAYA 9"
+}, {
+  "timeStamp" : "2010-07-06 14:10:05.893",
+  "locationCode" : "OTPFS",
+  "locationDescription" : "TUAS PW STN FDSTK JTY"
+}, {
+  "timeStamp" : "1998-08-03 09:42:47.160",
+  "locationCode" : "OTPSJ",
+  "locationDescription" : "TUAS POWER STATN JETTY"
+}, {
+  "timeStamp" : "2002-05-16 15:18:57.077",
+  "locationCode" : "OTS1",
+  "locationDescription" : "TANK STORE BERTH 1"
+}, {
+  "timeStamp" : "2008-01-11 12:23:32.787",
+  "locationCode" : "OTS10",
+  "locationDescription" : "OIL TANKSTORE BERTH 10"
+}, {
+  "timeStamp" : "2002-05-16 15:20:38.753",
+  "locationCode" : "OTS2",
+  "locationDescription" : "TANK STORE BERTH 2"
+}, {
+  "timeStamp" : "2002-05-16 15:20:38.853",
+  "locationCode" : "OTS3",
+  "locationDescription" : "TANK STORE BERTH 3"
+}, {
+  "timeStamp" : "2002-05-16 15:20:38.953",
+  "locationCode" : "OTS4",
+  "locationDescription" : "TANK STORE BERTH 4"
+}, {
+  "timeStamp" : "2002-05-16 15:20:39.793",
+  "locationCode" : "OTS5",
+  "locationDescription" : "TANK STORE BERTH 5"
+}, {
+  "timeStamp" : "2002-05-16 15:22:02.977",
+  "locationCode" : "OTS5E",
+  "locationDescription" : "TANK STORE BERTH 5E"
+}, {
+  "timeStamp" : "2002-05-16 15:20:40.223",
+  "locationCode" : "OTS5W",
+  "locationDescription" : "TANK STORE BERTH 5W"
+}, {
+  "timeStamp" : "2003-01-14 17:45:38.410",
+  "locationCode" : "OTS6",
+  "locationDescription" : "TANKSTORE JETTY NO. 6"
+}, {
+  "timeStamp" : "2014-11-10 18:26:24.900",
+  "locationCode" : "OTS6E",
+  "locationDescription" : "OIL TANKSTORE 6 EAST"
+}, {
+  "timeStamp" : "2014-11-10 18:26:29.937",
+  "locationCode" : "OTS6W",
+  "locationDescription" : "OIL TANKSTORE 6 WEST"
+}, {
+  "timeStamp" : "2007-03-09 18:31:06.863",
+  "locationCode" : "OTS7",
+  "locationDescription" : "OIL TANKSTORE BERTH 7"
+}, {
+  "timeStamp" : "2007-03-09 18:31:06.957",
+  "locationCode" : "OTS8",
+  "locationDescription" : "OIL TANKSTORE BERTH 8"
+}, {
+  "timeStamp" : "2008-01-11 12:23:32.257",
+  "locationCode" : "OTS9",
+  "locationDescription" : "OIL TANKSTORE BERTH 9"
+}, {
+  "timeStamp" : "2003-06-13 08:51:56.500",
+  "locationCode" : "OTSL",
+  "locationDescription" : "TANKSTORE LANDING JTY"
+}, {
+  "timeStamp" : "2002-05-16 18:33:18.993",
+  "locationCode" : "OVL1",
+  "locationDescription" : "VLCC JETTY 1"
+}, {
+  "timeStamp" : "2002-05-16 18:28:30.583",
+  "locationCode" : "OVL2",
+  "locationDescription" : "VLCC JETTY 2"
+}, {
+  "timeStamp" : "2008-02-06 11:25:08.387",
+  "locationCode" : "OVPJ1",
+  "locationDescription" : "VOPAK TERMINAL BERTH 1"
+}, {
+  "timeStamp" : "2008-02-06 11:25:08.727",
+  "locationCode" : "OVPJ2",
+  "locationDescription" : "VOPAK TERMINAL BERTH 2"
+}, {
+  "timeStamp" : "2008-02-06 11:25:08.857",
+  "locationCode" : "OVPJ3",
+  "locationDescription" : "VOPAK TERMINAL BERTH 3"
+}, {
+  "timeStamp" : "2002-05-16 15:23:46.133",
+  "locationCode" : "P01",
+  "locationDescription" : "PASIR PANJANG BERTH 01"
+}, {
+  "timeStamp" : "2002-05-16 15:23:46.297",
+  "locationCode" : "P02",
+  "locationDescription" : "PASIR PANJANG BERTH 02"
+}, {
+  "timeStamp" : "2002-05-16 15:25:06.887",
+  "locationCode" : "P03",
+  "locationDescription" : "PASIR PANJANG BERTH 03"
+}, {
+  "timeStamp" : "2002-05-16 15:25:06.987",
+  "locationCode" : "P04",
+  "locationDescription" : "PASIR PANJANG BERTH 04"
+}, {
+  "timeStamp" : "2002-05-16 15:25:07.187",
+  "locationCode" : "P05",
+  "locationDescription" : "PASIR PANJANG BERTH 05"
+}, {
+  "timeStamp" : "2002-05-16 15:25:07.387",
+  "locationCode" : "P06",
+  "locationDescription" : "PASIR PANJANG BERTH 06"
+}, {
+  "timeStamp" : "2006-02-24 12:13:25.367",
+  "locationCode" : "P07",
+  "locationDescription" : "PASIR PANJANG BERTH 07"
+}, {
+  "timeStamp" : "2006-08-21 14:10:33.987",
+  "locationCode" : "P08",
+  "locationDescription" : "PASIR PANJANG BERTH 08"
+}, {
+  "timeStamp" : "2006-11-09 15:55:46.620",
+  "locationCode" : "P09",
+  "locationDescription" : "PASIR PANJANG BERTH 09"
+}, {
+  "timeStamp" : "2007-07-30 16:16:52.107",
+  "locationCode" : "P10",
+  "locationDescription" : "PASIR PANJANG BERTH 10"
+}, {
+  "timeStamp" : "2007-11-22 11:44:19.773",
+  "locationCode" : "P11",
+  "locationDescription" : "PASIR PANJANG BERTH 11"
+}, {
+  "timeStamp" : "2008-04-18 16:39:18.667",
+  "locationCode" : "P12",
+  "locationDescription" : "PASIR PANJANG BERTH 12"
+}, {
+  "timeStamp" : "2008-10-21 15:29:36.940",
+  "locationCode" : "P13",
+  "locationDescription" : "PASIR PANJANG BERTH 13"
+}, {
+  "timeStamp" : "2008-10-21 15:29:37.070",
+  "locationCode" : "P14",
+  "locationDescription" : "PASIR PANJANG BERTH 14"
+}, {
+  "timeStamp" : "2008-10-21 15:29:37.077",
+  "locationCode" : "P15",
+  "locationDescription" : "PASIR PANJANG BERTH 15"
+}, {
+  "timeStamp" : "2008-10-21 15:31:17.077",
+  "locationCode" : "P16",
+  "locationDescription" : "PASIR PANJANG BERTH 16"
+}, {
+  "timeStamp" : "2008-10-21 15:31:17.083",
+  "locationCode" : "P17",
+  "locationDescription" : "PASIR PANJANG BERTH 17"
+}, {
+  "timeStamp" : "2008-10-21 15:40:19.493",
+  "locationCode" : "P18",
+  "locationDescription" : "PASIR PANJANG BERTH 18"
+}, {
+  "timeStamp" : "2008-06-03 09:19:54.583",
+  "locationCode" : "P19",
+  "locationDescription" : "PASIR PANJANG BERTH 19"
+}, {
+  "timeStamp" : "2008-06-03 09:19:54.577",
+  "locationCode" : "P20",
+  "locationDescription" : "PASIR PANJANG BERTH 20"
+}, {
+  "timeStamp" : "2005-09-29 14:09:57.003",
+  "locationCode" : "P21",
+  "locationDescription" : "PASIR PANJANG BERTH 21"
+}, {
+  "timeStamp" : "2004-03-19 15:42:23.277",
+  "locationCode" : "P22",
+  "locationDescription" : "PASIR PANJANG BERTH 22"
+}, {
+  "timeStamp" : "2002-05-16 15:25:07.497",
+  "locationCode" : "P23",
+  "locationDescription" : "PASIR PANJANG BERTH 23"
+}, {
+  "timeStamp" : "2002-05-16 15:25:08.157",
+  "locationCode" : "P24",
+  "locationDescription" : "PASIR PANJANG BERTH 24"
+}, {
+  "timeStamp" : "2002-05-16 15:26:48.737",
+  "locationCode" : "P25",
+  "locationDescription" : "PASIR PANJANG BERTH 25"
+}, {
+  "timeStamp" : "2002-05-16 15:26:48.837",
+  "locationCode" : "P26",
+  "locationDescription" : "PASIR PANJANG BERTH 26"
+}, {
+  "timeStamp" : "2016-03-03 13:36:33.467",
+  "locationCode" : "P27",
+  "locationDescription" : "PASIR PANJANG BERTH 27"
+}, {
+  "timeStamp" : "2016-03-03 13:36:33.483",
+  "locationCode" : "P28",
+  "locationDescription" : "PASIR PANJANG BERTH 28"
+}, {
+  "timeStamp" : "2016-03-03 13:36:33.497",
+  "locationCode" : "P29",
+  "locationDescription" : "PASIR PANJANG BERTH 29"
+}, {
+  "timeStamp" : "2015-08-21 12:20:13.017",
+  "locationCode" : "P30",
+  "locationDescription" : "PASIR PANJANG BERTH 30"
+}, {
+  "timeStamp" : "2013-09-11 18:14:03.503",
+  "locationCode" : "P31",
+  "locationDescription" : "PASIR PANJANG BERTH 31"
+}, {
+  "timeStamp" : "2013-09-11 18:14:03.543",
+  "locationCode" : "P32",
+  "locationDescription" : "PASIR PANJANG BERTH 32"
+}, {
+  "timeStamp" : "2014-08-04 10:46:44.213",
+  "locationCode" : "P33",
+  "locationDescription" : "PASIR PANJANG BERTH 33"
+}, {
+  "timeStamp" : "2014-10-13 00:00:00.000",
+  "locationCode" : "P34",
+  "locationDescription" : "PASIR PANJANG BERTH 34"
+}, {
+  "timeStamp" : "2015-04-24 10:17:46.690",
+  "locationCode" : "P35",
+  "locationDescription" : "PASIR PANJANG BERTH 35"
+}, {
+  "timeStamp" : "2015-08-21 12:20:13.030",
+  "locationCode" : "P36",
+  "locationDescription" : "PASIR PANJANG BERTH 36"
+}, {
+  "timeStamp" : "2016-01-18 15:24:29.933",
+  "locationCode" : "P37",
+  "locationDescription" : "PASIR PANJANG BERTH 37"
+}, {
+  "timeStamp" : "2016-03-03 13:36:33.513",
+  "locationCode" : "P38",
+  "locationDescription" : "PASIR PANJANG BERTH 38"
+}, {
+  "timeStamp" : "2016-03-03 13:36:33.530",
+  "locationCode" : "P39",
+  "locationDescription" : "PASIR PANJANG BERTH 39"
+}, {
+  "timeStamp" : "2016-03-03 13:36:33.543",
+  "locationCode" : "P40",
+  "locationDescription" : "PASIR PANJANG BERTH 40"
+}, {
+  "timeStamp" : "2016-03-03 13:36:33.557",
+  "locationCode" : "P41",
+  "locationDescription" : "PASIR PANJANG BERTH 41"
+}, {
+  "timeStamp" : "1994-11-22 15:34:19.070",
+  "locationCode" : "PBSB",
+  "locationDescription" : "BEAULIEU SHOAL BUOY"
+}, {
+  "timeStamp" : "2002-05-16 16:14:33.673",
+  "locationCode" : "PEBGA",
+  "locationDescription" : "PILOT EAST BOARD GRD A"
+}, {
+  "timeStamp" : "1994-11-13 03:10:36.790",
+  "locationCode" : "PEBGB",
+  "locationDescription" : "PILOT EAST BOARD GRD B"
+}, {
+  "timeStamp" : "2014-11-02 22:00:00.000",
+  "locationCode" : "PEBGC",
+  "locationDescription" : "PILOT EAST BOARD GRD C"
+}, {
+  "timeStamp" : "2004-02-11 11:36:23.590",
+  "locationCode" : "PGBG",
+  "locationDescription" : "GUSONG BOARDING GROUND"
+}, {
+  "timeStamp" : "1994-11-13 03:10:33.480",
+  "locationCode" : "PJSB",
+  "locationDescription" : "JOHORE SHOAL BUOY"
+}, {
+  "timeStamp" : "1994-11-22 15:34:22.450",
+  "locationCode" : "PONR",
+  "locationDescription" : "PILOT NOT REQUIRE"
+}, {
+  "timeStamp" : "2007-03-21 07:42:11.970",
+  "locationCode" : "PPAT",
+  "locationDescription" : "P.PUNGGOL AGGREGATE TM"
+}, {
+  "timeStamp" : "2007-04-24 11:39:10.820",
+  "locationCode" : "PPAT1",
+  "locationDescription" : "P.PUNGGOL AGGREGATE T1"
+}, {
+  "timeStamp" : "2007-04-24 11:39:11.017",
+  "locationCode" : "PPAT2",
+  "locationDescription" : "P.PUNGGOL AGGREGATE T2"
+}, {
+  "timeStamp" : "2007-04-24 11:39:11.887",
+  "locationCode" : "PPAT3",
+  "locationDescription" : "P.PUNGGOL AGGREGATE T3"
+}, {
+  "timeStamp" : "2007-04-24 11:40:32.857",
+  "locationCode" : "PPAT4",
+  "locationDescription" : "P.PUNGGOL AGGREGATE T4"
+}, {
+  "timeStamp" : "2016-07-22 15:40:34.090",
+  "locationCode" : "PPAT5",
+  "locationDescription" : "P.PUNGGOL AGGREGATE T5"
+}, {
+  "timeStamp" : "2007-08-07 18:23:52.487",
+  "locationCode" : "PPFT",
+  "locationDescription" : "PASIR PANJANG FERRY TM"
+}, {
+  "timeStamp" : "2002-05-16 16:17:57.277",
+  "locationCode" : "PPL",
+  "locationDescription" : "P PANJANG LIGHTER WHF"
+}, {
+  "timeStamp" : "2002-05-16 16:19:18.800",
+  "locationCode" : "PRAF",
+  "locationDescription" : "PILOT OFF RAFFLES"
+}, {
+  "timeStamp" : "2002-05-16 16:19:18.903",
+  "locationCode" : "PSBG",
+  "locationDescription" : "PILOT SOUTH BOARD GRD"
+}, {
+  "timeStamp" : "2002-05-16 14:01:41.277",
+  "locationCode" : "PTAJ",
+  "locationDescription" : "TEKONG ARMY JETTY"
+}, {
+  "timeStamp" : "2008-03-14 18:10:20.880",
+  "locationCode" : "PUFT",
+  "locationDescription" : "PULAU ULAR FERRY TERM"
+}, {
+  "timeStamp" : "2002-05-16 15:31:12.900",
+  "locationCode" : "PW1",
+  "locationDescription" : "P PANJANG WHARF 1"
+}, {
+  "timeStamp" : "2002-05-16 15:31:13.003",
+  "locationCode" : "PW1A",
+  "locationDescription" : "P PANJANG WHARF 1A"
+}, {
+  "timeStamp" : "2002-05-16 15:31:13.113",
+  "locationCode" : "PW2",
+  "locationDescription" : "P PANJANG WHARF 2"
+}, {
+  "timeStamp" : "2002-05-16 15:31:13.213",
+  "locationCode" : "PW3",
+  "locationDescription" : "P PANJANG WHARF 3"
+}, {
+  "timeStamp" : "2004-11-19 08:37:19.363",
+  "locationCode" : "PW3LC",
+  "locationDescription" : "P PANJANG LANDG CRAFT"
+}, {
+  "timeStamp" : "2002-05-16 15:31:13.427",
+  "locationCode" : "PW4",
+  "locationDescription" : "P PANJANG WHARF 4"
+}, {
+  "timeStamp" : "2002-05-16 15:31:34.933",
+  "locationCode" : "PW5",
+  "locationDescription" : "P PANJANG WHARF 5"
+}, {
+  "timeStamp" : "2002-05-16 15:31:35.267",
+  "locationCode" : "PW6",
+  "locationDescription" : "P PANJANG WHARF 6"
+}, {
+  "timeStamp" : "2002-05-16 15:31:35.693",
+  "locationCode" : "PW7",
+  "locationDescription" : "P PANJANG WHARF 7"
+}, {
+  "timeStamp" : "2002-05-16 15:32:56.580",
+  "locationCode" : "PW8",
+  "locationDescription" : "P PANJANG WHARF 8"
+}, {
+  "timeStamp" : "1997-10-06 15:03:17.230",
+  "locationCode" : "PWBGA",
+  "locationDescription" : "PILOT WEST BOARD GRD A"
+}, {
+  "timeStamp" : "1997-10-06 15:04:21.950",
+  "locationCode" : "PWBGB",
+  "locationDescription" : "PILOT WEST BOARD GRD B"
+}, {
+  "timeStamp" : "2002-05-16 15:32:57.367",
+  "locationCode" : "RFT1",
+  "locationDescription" : "REGIONAL FERRY PLAT 1"
+}, {
+  "timeStamp" : "2002-05-16 15:33:00.893",
+  "locationCode" : "RFT2",
+  "locationDescription" : "REGIONAL FERRY PLAT 2"
+}, {
+  "timeStamp" : "2002-05-16 15:33:01.753",
+  "locationCode" : "RFT3",
+  "locationDescription" : "REGIONAL FERRY PLAT 3"
+}, {
+  "timeStamp" : "2002-05-16 15:33:02.890",
+  "locationCode" : "RFT4",
+  "locationDescription" : "REGIONAL FERRY PLAT 4"
+}, {
+  "timeStamp" : "2004-07-23 14:52:11.373",
+  "locationCode" : "RFT5",
+  "locationDescription" : "REGIONAL FERRY PLAT 5"
+}, {
+  "timeStamp" : "2004-07-23 14:53:54.473",
+  "locationCode" : "RFT6",
+  "locationDescription" : "REGIONAL FERRY PLAT 6"
+}, {
+  "timeStamp" : "2017-07-07 00:00:00.000",
+  "locationCode" : "RFT7",
+  "locationDescription" : "REG FERRY TEMP PLAT 7"
+}, {
+  "timeStamp" : "2017-07-07 00:00:00.000",
+  "locationCode" : "RFT8",
+  "locationDescription" : "REG FERRY TEMP PLAT 8"
+}, {
+  "timeStamp" : "2004-02-13 08:23:42.167",
+  "locationCode" : "RJ1",
+  "locationDescription" : "SIN HENG CHAN LTD"
+}, {
+  "timeStamp" : "2014-02-26 12:23:49.897",
+  "locationCode" : "RJ10",
+  "locationDescription" : "SWISSCO OS//SPORE MAR"
+}, {
+  "timeStamp" : "2014-02-26 12:23:50.743",
+  "locationCode" : "RJ11",
+  "locationDescription" : "SWISSCO OS//SPORE MAR"
+}, {
+  "timeStamp" : "2014-01-01 10:20:41.817",
+  "locationCode" : "RJ12A",
+  "locationDescription" : "BEE SIN SHIPYARD P L"
+}, {
+  "timeStamp" : "2014-01-01 10:20:41.820",
+  "locationCode" : "RJ12B",
+  "locationDescription" : "MENTRADE MR ENGRG P L"
+}, {
+  "timeStamp" : "2005-10-17 17:22:20.703",
+  "locationCode" : "RJ13",
+  "locationDescription" : "YTC SHIPYARD P L"
+}, {
+  "timeStamp" : "2014-01-01 10:20:41.827",
+  "locationCode" : "RJ14",
+  "locationDescription" : "VERDERLAND P L"
+}, {
+  "timeStamp" : "2014-04-01 09:58:21.390",
+  "locationCode" : "RJ15",
+  "locationDescription" : "MENCAST OFFSHORE MR PL"
+}, {
+  "timeStamp" : "2014-04-01 09:58:21.467",
+  "locationCode" : "RJ16",
+  "locationDescription" : "MENCAST OFFSHORE MR PL"
+}, {
+  "timeStamp" : "2014-04-01 09:58:21.697",
+  "locationCode" : "RJ17",
+  "locationDescription" : "CWT INTEGRATED P L"
+}, {
+  "timeStamp" : "2014-04-01 09:58:21.893",
+  "locationCode" : "RJ18",
+  "locationDescription" : "CWT INTEGRATED P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:11.913",
+  "locationCode" : "RJ19",
+  "locationDescription" : "JURONG PORT P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:11.963",
+  "locationCode" : "RJ20",
+  "locationDescription" : "OIL STATES IND (ASIA)"
+}, {
+  "timeStamp" : "2014-01-01 10:21:11.980",
+  "locationCode" : "RJ21",
+  "locationDescription" : "VACANT"
+}, {
+  "timeStamp" : "2010-02-02 12:08:11.960",
+  "locationCode" : "RJ22",
+  "locationDescription" : "KIM HENG MR & OF P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:11.983",
+  "locationCode" : "RJ23",
+  "locationDescription" : "VACANT"
+}, {
+  "timeStamp" : "2014-01-01 10:21:24.257",
+  "locationCode" : "RJ24",
+  "locationDescription" : "SPORE PETROLEUM CO L"
+}, {
+  "timeStamp" : "2004-02-13 08:26:43.270",
+  "locationCode" : "RJ28",
+  "locationDescription" : "FISHERMEN LANDING SITE"
+}, {
+  "timeStamp" : "2004-02-13 08:32:50.680",
+  "locationCode" : "RJ29",
+  "locationDescription" : "LIVESTOCK LANDING AREA"
+}, {
+  "timeStamp" : "2004-02-13 08:25:02.493",
+  "locationCode" : "RJ2A",
+  "locationDescription" : "TRIMAR INTL P L"
+}, {
+  "timeStamp" : "2004-02-13 08:31:09.440",
+  "locationCode" : "RJ2B",
+  "locationDescription" : "FAR OCEAN SEA PRO P L"
+}, {
+  "timeStamp" : "2004-02-13 08:28:03.883",
+  "locationCode" : "RJ3",
+  "locationDescription" : "JURONG MR COLD STORAGE"
+}, {
+  "timeStamp" : "2004-02-13 08:28:04.487",
+  "locationCode" : "RJ4",
+  "locationDescription" : "NCS COLD STORAGE P L"
+}, {
+  "timeStamp" : "2014-04-01 09:58:22.427",
+  "locationCode" : "RJ5A",
+  "locationDescription" : "HSBC INST TRUST SER L"
+}, {
+  "timeStamp" : "2014-04-01 09:58:22.677",
+  "locationCode" : "RJ5B",
+  "locationDescription" : "HSBC INST TRUST SER L"
+}, {
+  "timeStamp" : "2008-01-22 16:48:22.493",
+  "locationCode" : "RJ6",
+  "locationDescription" : "C&P HOLDINGS P L"
+}, {
+  "timeStamp" : "2004-02-13 08:34:12.710",
+  "locationCode" : "RJ7",
+  "locationDescription" : "C&P HOLDINGS P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:24.280",
+  "locationCode" : "RJ8",
+  "locationDescription" : "COSCO MR ENGRG (S) P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:24.290",
+  "locationCode" : "RJ9",
+  "locationDescription" : "COSCO MR ENGRG (S) P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:24.293",
+  "locationCode" : "RP1",
+  "locationDescription" : "SHELL EASTERN P P L"
+}, {
+  "timeStamp" : "2004-02-13 08:54:18.567",
+  "locationCode" : "RP10",
+  "locationDescription" : "CRESTSA MAR OS"
+}, {
+  "timeStamp" : "2012-10-25 15:52:56.143",
+  "locationCode" : "RP11",
+  "locationDescription" : "CRESTSA MAR OS"
+}, {
+  "timeStamp" : "2004-02-13 08:55:40.097",
+  "locationCode" : "RP12",
+  "locationDescription" : "FRANKLIN OS INT P L"
+}, {
+  "timeStamp" : "2004-02-13 08:55:40.207",
+  "locationCode" : "RP13",
+  "locationDescription" : "FRANKLIN OS INT P L"
+}, {
+  "timeStamp" : "2012-04-03 17:13:50.003",
+  "locationCode" : "RP14",
+  "locationDescription" : "FAST O S SUPPLY P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:34.930",
+  "locationCode" : "RP15B",
+  "locationDescription" : "WASCO ENGRG SER S P L"
+}, {
+  "timeStamp" : "2004-02-13 08:57:02.723",
+  "locationCode" : "RP16",
+  "locationDescription" : "PANDAN SHIPYARD P L"
+}, {
+  "timeStamp" : "2004-02-13 08:57:03.240",
+  "locationCode" : "RP17",
+  "locationDescription" : "NEW WEST COAST M P L"
+}, {
+  "timeStamp" : "2004-02-13 09:05:06.633",
+  "locationCode" : "RP18",
+  "locationDescription" : "WILHELMSEN S S (S) P L"
+}, {
+  "timeStamp" : "2004-02-13 08:58:43.890",
+  "locationCode" : "RP19A",
+  "locationDescription" : "VIKING ENGRG P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:34.937",
+  "locationCode" : "RP19B",
+  "locationDescription" : "MTQ CORP LTD"
+}, {
+  "timeStamp" : "2014-01-01 10:21:34.940",
+  "locationCode" : "RP2",
+  "locationDescription" : "SHELL EASTERN P P L"
+}, {
+  "timeStamp" : "2004-02-13 08:58:44.327",
+  "locationCode" : "RP20",
+  "locationDescription" : "MTQ CORP LTD"
+}, {
+  "timeStamp" : "2014-04-01 09:58:22.933",
+  "locationCode" : "RP21",
+  "locationDescription" : "VACANT"
+}, {
+  "timeStamp" : "2004-02-13 08:58:45.423",
+  "locationCode" : "RP22",
+  "locationDescription" : "TOA COPORATION"
+}, {
+  "timeStamp" : "2004-02-13 09:00:36.857",
+  "locationCode" : "RP23",
+  "locationDescription" : "ALJABER HVYLIFT TPT PL"
+}, {
+  "timeStamp" : "2014-01-01 10:21:34.947",
+  "locationCode" : "RP23A",
+  "locationDescription" : "ALJABER HVYLIFT TPT PL"
+}, {
+  "timeStamp" : "2010-11-09 09:33:15.447",
+  "locationCode" : "RP24",
+  "locationDescription" : "TIONG WOON C & T P L"
+}, {
+  "timeStamp" : "2004-02-13 09:00:41.350",
+  "locationCode" : "RP25A",
+  "locationDescription" : "JPN INDUSTRIAL T P L"
+}, {
+  "timeStamp" : "2004-02-13 09:05:07.643",
+  "locationCode" : "RP25B",
+  "locationDescription" : "DYNA-MAC ENGRG S P L"
+}, {
+  "timeStamp" : "2005-10-17 17:23:41.100",
+  "locationCode" : "RP26",
+  "locationDescription" : "WARTSILA SPORE P L"
+}, {
+  "timeStamp" : "2004-02-13 09:02:02.853",
+  "locationCode" : "RP27",
+  "locationDescription" : "KIM HENG MAR & OF P L"
+}, {
+  "timeStamp" : "2014-01-01 10:21:34.950",
+  "locationCode" : "RP28",
+  "locationDescription" : "VACANT"
+}, {
+  "timeStamp" : "2014-01-01 10:21:43.890",
+  "locationCode" : "RP3",
+  "locationDescription" : "SHELL EASTERN P P L"
+}, {
+  "timeStamp" : "2004-02-13 09:02:03.937",
+  "locationCode" : "RP4",
+  "locationDescription" : "SEMBCORP MARINE YD P L"
+}, {
+  "timeStamp" : "2004-02-13 09:03:25.097",
+  "locationCode" : "RP5",
+  "locationDescription" : "ASL SHIPYARD P L"
+}, {
+  "timeStamp" : "2004-02-13 09:03:25.527",
+  "locationCode" : "RP6",
+  "locationDescription" : "ASL SHIPYARD P L"
+}, {
+  "timeStamp" : "2017-12-21 10:23:00.000",
+  "locationCode" : "RP7",
+  "locationDescription" : "CRYSTAL OFFSHORE P L"
+}, {
+  "timeStamp" : "2005-10-17 17:23:40.797",
+  "locationCode" : "RP8",
+  "locationDescription" : "AZ MAR OS SER P L"
+}, {
+  "timeStamp" : "2004-02-13 09:03:26.017",
+  "locationCode" : "RP9A",
+  "locationDescription" : "SYNTHESIS//SAM AL EG P"
+}, {
+  "timeStamp" : "2014-01-01 10:21:43.900",
+  "locationCode" : "RP9B",
+  "locationDescription" : "SWEE BEE CO P L"
+}, {
+  "timeStamp" : "2012-11-06 11:02:23.060",
+  "locationCode" : "RWS1",
+  "locationDescription" : "R W S BERTH 1"
+}, {
+  "timeStamp" : "2012-11-06 11:02:23.233",
+  "locationCode" : "RWS2",
+  "locationDescription" : "R W S BERTH 2"
+}, {
+  "timeStamp" : "2012-11-06 11:04:03.657",
+  "locationCode" : "RWS3",
+  "locationDescription" : "R W S BERTH 3"
+}, {
+  "timeStamp" : "2002-05-02 17:36:38.160",
+  "locationCode" : "S01",
+  "locationDescription" : "SEMB TERMINAL BERTH 1"
+}, {
+  "timeStamp" : "2002-05-02 17:36:38.460",
+  "locationCode" : "S02",
+  "locationDescription" : "SEMB TERMINAL BERTH 2"
+}, {
+  "timeStamp" : "2002-05-02 17:36:38.567",
+  "locationCode" : "S03",
+  "locationDescription" : "SEMB TERMINAL BERTH 3"
+}, {
+  "timeStamp" : "2002-05-02 17:37:59.417",
+  "locationCode" : "S04",
+  "locationDescription" : "SEMB TERMINAL BERTH 4"
+}, {
+  "timeStamp" : "2002-05-02 17:37:59.527",
+  "locationCode" : "S05",
+  "locationDescription" : "SEMB ANZUK BERTH 5"
+}, {
+  "timeStamp" : "2002-05-02 17:37:59.653",
+  "locationCode" : "S06",
+  "locationDescription" : "SEMB ANZUK BERTH 6"
+}, {
+  "timeStamp" : "2002-05-02 17:37:59.757",
+  "locationCode" : "S07",
+  "locationDescription" : "SEMB ANZUK BERTH 7"
+}, {
+  "timeStamp" : "1994-11-13 03:10:33.580",
+  "locationCode" : "SEA11",
+  "locationDescription" : "DIS'EMB GRD BSB"
+}, {
+  "timeStamp" : "2008-10-06 14:07:47.577",
+  "locationCode" : "SEABA",
+  "locationDescription" : "BATAM"
+}, {
+  "timeStamp" : "2008-10-06 14:09:28.150",
+  "locationCode" : "SEABI",
+  "locationDescription" : "BINTAN"
+}, {
+  "timeStamp" : "2002-05-16 16:10:08.007",
+  "locationCode" : "SEAE",
+  "locationDescription" : "DISEMB GRD EAST BOUND"
+}, {
+  "timeStamp" : "2008-04-10 08:39:11.403",
+  "locationCode" : "SEAE1",
+  "locationDescription" : "DISEMB GRD FOR APLNG"
+}, {
+  "timeStamp" : "2013-02-22 17:55:12.497",
+  "locationCode" : "SEAHB",
+  "locationDescription" : "SEA HORSBURG AREA"
+}, {
+  "timeStamp" : "2008-10-06 14:09:28.167",
+  "locationCode" : "SEAKM",
+  "locationDescription" : "KARIMUN"
+}, {
+  "timeStamp" : "2013-01-07 11:46:25.897",
+  "locationCode" : "SEANP",
+  "locationDescription" : "SEA NIPA ANCHORAGE"
+}, {
+  "timeStamp" : "2001-11-23 08:57:37.700",
+  "locationCode" : "SEAOE",
+  "locationDescription" : "OPL EAST BOUND"
+}, {
+  "timeStamp" : "2001-11-23 08:55:56.267",
+  "locationCode" : "SEAOW",
+  "locationDescription" : "OPL WEST BOUND"
+}, {
+  "timeStamp" : "2008-10-06 14:07:47.543",
+  "locationCode" : "SEAPG",
+  "locationDescription" : "PASIR GUDANG"
+}, {
+  "timeStamp" : "1999-02-02 08:46:27.410",
+  "locationCode" : "SEAS",
+  "locationDescription" : "DISEMB GRD SOUTH BOUND"
+}, {
+  "timeStamp" : "2000-10-27 17:06:27.657",
+  "locationCode" : "SEATP",
+  "locationDescription" : "TANJONG PELEPAS"
+}, {
+  "timeStamp" : "2002-05-16 16:11:29.290",
+  "locationCode" : "SEAW",
+  "locationDescription" : "DISEMB GRD WEST BOUND"
+}, {
+  "timeStamp" : "2006-02-09 08:55:01.397",
+  "locationCode" : "SENOP",
+  "locationDescription" : "OFF SENOKO PROJECT"
+}, {
+  "timeStamp" : "2005-07-19 16:12:05.043",
+  "locationCode" : "SFT",
+  "locationDescription" : "SENTOSA FERRY TERMINAL"
+}, {
+  "timeStamp" : "1994-11-13 03:10:33.800",
+  "locationCode" : "SLOY1",
+  "locationDescription" : "LOYANG BERTH 1"
+}, {
+  "timeStamp" : "1994-11-13 03:10:33.890",
+  "locationCode" : "SLOY2",
+  "locationDescription" : "LOYANG BERTH 2"
+}, {
+  "timeStamp" : "1994-11-13 03:10:33.910",
+  "locationCode" : "SLOY3",
+  "locationDescription" : "LOYANG BERTH 3"
+}, {
+  "timeStamp" : "1994-11-13 03:10:33.930",
+  "locationCode" : "SLOY4",
+  "locationDescription" : "LOYANG BERTH 4"
+}, {
+  "timeStamp" : "1994-11-13 03:10:33.950",
+  "locationCode" : "SLOY5",
+  "locationDescription" : "LOYANG BERTH 5"
+}, {
+  "timeStamp" : "1994-11-13 03:10:33.980",
+  "locationCode" : "SLOY6",
+  "locationDescription" : "LOYANG BERTH 6"
+}, {
+  "timeStamp" : "1994-11-13 03:10:34.000",
+  "locationCode" : "SLOY7",
+  "locationDescription" : "LOYANG BERTH 7"
+}, {
+  "timeStamp" : "1994-11-13 03:10:34.020",
+  "locationCode" : "SLOY8",
+  "locationDescription" : "LOYANG BERTH 8"
+}, {
+  "timeStamp" : "2011-07-19 09:22:58.273",
+  "locationCode" : "SLOY9",
+  "locationDescription" : "LOYANG BERTH 9"
+}, {
+  "timeStamp" : "2011-07-19 09:22:58.277",
+  "locationCode" : "SLOYA",
+  "locationDescription" : "LOYANG BERTH A"
+}, {
+  "timeStamp" : "2011-07-19 09:22:58.597",
+  "locationCode" : "SLOYB",
+  "locationDescription" : "LOYANG BERTH B"
+}, {
+  "timeStamp" : "2011-07-19 09:22:58.783",
+  "locationCode" : "SLOYC",
+  "locationDescription" : "LOYANG BERTH C"
+}, {
+  "timeStamp" : "2001-09-26 16:24:07.723",
+  "locationCode" : "SNATM",
+  "locationDescription" : "NATSTEEL MARINE LOYANG"
+}, {
+  "timeStamp" : "2019-01-25 00:00:00.000",
+  "locationCode" : "SPLTU",
+  "locationDescription" : "SG PT LIMITS TUAS(3613"
+}, {
+  "timeStamp" : "2002-05-02 17:29:01.920",
+  "locationCode" : "SSFD1",
+  "locationDescription" : "SEMB FLOATING DK 1"
+}, {
+  "timeStamp" : "2012-02-17 11:05:14.397",
+  "locationCode" : "SSFDK",
+  "locationDescription" : "SEMB FLOAT DK KARIMUN"
+}, {
+  "timeStamp" : "2002-05-02 17:27:20.117",
+  "locationCode" : "SSFDP",
+  "locationDescription" : "SEMB PRESIDENT FLOATDK"
+}, {
+  "timeStamp" : "2002-05-02 17:25:59.227",
+  "locationCode" : "SSFDR",
+  "locationDescription" : "SEMB FLOAT DK REPUBLIC"
+}, {
+  "timeStamp" : "1994-11-13 03:10:34.180",
+  "locationCode" : "SSFP",
+  "locationDescription" : "SEMBAWANG FINGER PIER"
+}, {
+  "timeStamp" : "2002-05-02 17:32:08.597",
+  "locationCode" : "SSKG6",
+  "locationDescription" : "SEMB KING GEORGE VI DK"
+}, {
+  "timeStamp" : "2002-05-02 17:18:11.703",
+  "locationCode" : "SSL10",
+  "locationDescription" : "SEMBAWANG YD BERTH 10"
+}, {
+  "timeStamp" : "2002-05-02 17:18:12.063",
+  "locationCode" : "SSL11",
+  "locationDescription" : "SEMBAWANG YD BERTH 11"
+}, {
+  "timeStamp" : "2002-05-02 17:18:12.163",
+  "locationCode" : "SSL12",
+  "locationDescription" : "SEMBAWANG YD BERTH 12"
+}, {
+  "timeStamp" : "2002-05-02 17:19:52.890",
+  "locationCode" : "SSL13",
+  "locationDescription" : "SEMBAWANG YD BERTH 13"
+}, {
+  "timeStamp" : "2002-05-02 17:19:53.000",
+  "locationCode" : "SSL14",
+  "locationDescription" : "SEMBAWANG YD BERTH 14"
+}, {
+  "timeStamp" : "2002-05-02 17:19:53.103",
+  "locationCode" : "SSL15",
+  "locationDescription" : "SEMBAWANG YD BERTH 15"
+}, {
+  "timeStamp" : "2002-05-02 17:21:15.117",
+  "locationCode" : "SSL16",
+  "locationDescription" : "SEMBAWANG YD BERTH 16"
+}, {
+  "timeStamp" : "2002-05-02 17:21:15.227",
+  "locationCode" : "SSL17",
+  "locationDescription" : "SEMBAWANG YD BERTH 17"
+}, {
+  "timeStamp" : "2002-05-02 17:22:57.437",
+  "locationCode" : "SSL18",
+  "locationDescription" : "SEMBAWANG YD BERTH 18"
+}, {
+  "timeStamp" : "2002-05-02 17:22:57.537",
+  "locationCode" : "SSL19",
+  "locationDescription" : "SEMBAWANG YD BERTH 19"
+}, {
+  "timeStamp" : "2002-05-02 17:22:57.640",
+  "locationCode" : "SSL20",
+  "locationDescription" : "SEMBAWANG YD BERTH 20"
+}, {
+  "timeStamp" : "2012-02-17 11:05:14.603",
+  "locationCode" : "SSL22",
+  "locationDescription" : "SEMBAWANG YD BERTH 22"
+}, {
+  "timeStamp" : "2012-02-17 11:06:55.003",
+  "locationCode" : "SSL23",
+  "locationDescription" : "SEMBAWANG YD BERTH 23"
+}, {
+  "timeStamp" : "2002-05-02 17:16:49.057",
+  "locationCode" : "SSL8",
+  "locationDescription" : "SEMBAWANG YD BERTH 8"
+}, {
+  "timeStamp" : "2002-05-02 17:18:11.603",
+  "locationCode" : "SSL9",
+  "locationDescription" : "SEMBAWANG YD BERTH 9"
+}, {
+  "timeStamp" : "1994-11-13 03:10:34.460",
+  "locationCode" : "SSPD",
+  "locationDescription" : "SEMBAWANG PREMIER DOCK"
+}, {
+  "timeStamp" : "2011-09-06 15:43:30.143",
+  "locationCode" : "STG01",
+  "locationDescription" : "JURONG ISLAND BERTH 01"
+}, {
+  "timeStamp" : "2011-09-06 15:43:30.690",
+  "locationCode" : "STG02",
+  "locationDescription" : "JURONG ISLAND BERTH 02"
+}, {
+  "timeStamp" : "2013-12-18 14:23:08.820",
+  "locationCode" : "SW07",
+  "locationDescription" : "POLLISUM ENGRG (S) P L"
+}, {
+  "timeStamp" : "1994-11-13 03:10:53.490",
+  "locationCode" : "T01",
+  "locationDescription" : "TPT BERTH 1"
+}, {
+  "timeStamp" : "1994-11-13 03:10:53.500",
+  "locationCode" : "T02",
+  "locationDescription" : "TPT BERTH 2"
+}, {
+  "timeStamp" : "1994-11-13 03:10:53.550",
+  "locationCode" : "T03",
+  "locationDescription" : "TPT BERTH 3"
+}, {
+  "timeStamp" : "1994-11-13 03:10:53.570",
+  "locationCode" : "T04",
+  "locationDescription" : "TPT BERTH 4"
+}, {
+  "timeStamp" : "1994-11-13 03:10:53.600",
+  "locationCode" : "T05",
+  "locationDescription" : "TPT BERTH 5"
+}, {
+  "timeStamp" : "1994-11-13 03:10:53.620",
+  "locationCode" : "T06",
+  "locationDescription" : "TPT BERTH 6"
+}, {
+  "timeStamp" : "1994-11-13 03:10:53.640",
+  "locationCode" : "T07",
+  "locationDescription" : "TPT BERTH 7"
+}, {
+  "timeStamp" : "1994-11-22 15:34:23.710",
+  "locationCode" : "T08",
+  "locationDescription" : "TPT BERTH 8"
+}, {
+  "timeStamp" : "2002-05-16 17:38:23.080",
+  "locationCode" : "TANAK",
+  "locationDescription" : "ANAK PULAU BUOY"
+}, {
+  "timeStamp" : "2007-03-21 07:42:10.977",
+  "locationCode" : "TAT",
+  "locationDescription" : "TUAS AGGREGATE TERM"
+}, {
+  "timeStamp" : "1994-11-22 15:34:23.880",
+  "locationCode" : "TBK",
+  "locationDescription" : "KALLANG"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "TBN1",
+  "locationDescription" : "SINKI BEACON"
+}, {
+  "timeStamp" : "2008-07-14 18:33:37.380",
+  "locationCode" : "TBN33",
+  "locationDescription" : "OUTER SHOAL BEACON"
+}, {
+  "timeStamp" : "2002-05-16 17:39:45.573",
+  "locationCode" : "TBN6",
+  "locationDescription" : "CYRENE BEACON"
+}, {
+  "timeStamp" : "2002-05-16 17:41:27.590",
+  "locationCode" : "TBUAN",
+  "locationDescription" : "TEMBUAN BEACON"
+}, {
+  "timeStamp" : "1994-11-22 15:34:24.140",
+  "locationCode" : "TDMAR",
+  "locationDescription" : "DAMAR LAUT"
+}, {
+  "timeStamp" : "1994-11-13 03:11:18.390",
+  "locationCode" : "TEXJ",
+  "locationDescription" : "TUAS EXPLOSIVE JETTY"
+}, {
+  "timeStamp" : "2013-03-25 17:40:31.667",
+  "locationCode" : "TEXR",
+  "locationDescription" : "TUAS EXPLOSIVE RAMP"
+}, {
+  "timeStamp" : "2012-09-11 11:29:11.073",
+  "locationCode" : "TJAC",
+  "locationDescription" : "JR AROMATICS COP JETTY"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "TKHDS",
+  "locationDescription" : "KEPPEL HEAD"
+}, {
+  "timeStamp" : "1994-11-22 15:34:27.930",
+  "locationCode" : "TKUSU",
+  "locationDescription" : "KUSU ISLAND"
+}, {
+  "timeStamp" : "1995-07-04 15:05:18.080",
+  "locationCode" : "TMFT",
+  "locationDescription" : "TANAH MERAH FERRY TERM"
+}, {
+  "timeStamp" : "2012-09-18 11:23:00.753",
+  "locationCode" : "TMUC",
+  "locationDescription" : "TEMBUSU UTILITY COMPLX"
+}, {
+  "timeStamp" : "1994-11-13 03:11:18.420",
+  "locationCode" : "TNB",
+  "locationDescription" : "TUAS NAVAL BASE"
+}, {
+  "timeStamp" : "2012-05-25 17:08:27.287",
+  "locationCode" : "TOMC1",
+  "locationDescription" : "TUAS OFFSHORE MC BTH 1"
+}, {
+  "timeStamp" : "2012-05-25 17:08:27.413",
+  "locationCode" : "TOMC2",
+  "locationDescription" : "TUAS OFFSHORE MC BTH 2"
+}, {
+  "timeStamp" : "2012-05-25 17:08:27.600",
+  "locationCode" : "TOMC3",
+  "locationDescription" : "TUAS OFFSHORE MC BTH 3"
+}, {
+  "timeStamp" : "2002-05-16 17:47:32.540",
+  "locationCode" : "TPUS",
+  "locationDescription" : "PUSING BUOY"
+}, {
+  "timeStamp" : "2002-05-16 17:48:54.217",
+  "locationCode" : "TRITN",
+  "locationDescription" : "TRITON BUOY"
+}, {
+  "timeStamp" : "2002-05-16 17:48:54.437",
+  "locationCode" : "TSAWA",
+  "locationDescription" : "SAWAL BUOY"
+}, {
+  "timeStamp" : "2008-03-14 18:10:20.877",
+  "locationCode" : "TSEL",
+  "locationDescription" : "TEMP STORAGE FOR SHELL"
+}, {
+  "timeStamp" : "2002-09-02 09:27:25.967",
+  "locationCode" : "TSER",
+  "locationDescription" : "SERAYA BUOY"
+}, {
+  "timeStamp" : "1994-11-22 15:49:21.280",
+  "locationCode" : "TSIST",
+  "locationDescription" : "SISTERS BUOY"
+}, {
+  "timeStamp" : "1994-11-22 15:34:28.630",
+  "locationCode" : "TSNT",
+  "locationDescription" : "SCH OF NAVAL TRAINING"
+}, {
+  "timeStamp" : "1994-11-22 15:34:28.810",
+  "locationCode" : "TWBC",
+  "locationDescription" : "WATERBOAT CHANNEL"
+}, {
+  "timeStamp" : "2006-11-08 09:35:15.800",
+  "locationCode" : "VC01",
+  "locationDescription" : "VIVO CITY BERTH NO 1"
+}, {
+  "timeStamp" : "2002-09-02 09:00:55.887",
+  "locationCode" : "WCB",
+  "locationDescription" : "WEST COAST BASE"
+}, {
+  "timeStamp" : "2008-03-14 18:05:39.767",
+  "locationCode" : "WCECC",
+  "locationDescription" : "WEST COST PSGR LANDING"
+}, {
+  "timeStamp" : "2002-09-02 09:02:19.120",
+  "locationCode" : "WCF",
+  "locationDescription" : "WEST COAST FERRY"
+}, {
+  "timeStamp" : "2002-09-02 09:02:19.323",
+  "locationCode" : "WCS",
+  "locationDescription" : "WEST COAST STATION"
+}, {
+  "timeStamp" : "1994-11-13 03:10:54.270",
+  "locationCode" : "WFP1",
+  "locationDescription" : "FINGER PIER 1"
+}, {
+  "timeStamp" : "1994-11-13 03:10:54.300",
+  "locationCode" : "WFP2",
+  "locationDescription" : "FINGER PIER 2"
+}, {
+  "timeStamp" : "1994-11-13 03:10:54.320",
+  "locationCode" : "WFP3",
+  "locationDescription" : "FINGER PIER 3"
+}, {
+  "timeStamp" : "2002-05-16 15:37:26.953",
+  "locationCode" : "WJFP",
+  "locationDescription" : "JURONG FISHING PORT"
+}, {
+  "timeStamp" : "2009-07-17 19:09:23.523",
+  "locationCode" : "WSFP",
+  "locationDescription" : "SENOKO FISHING PORT"
+}, {
+  "timeStamp" : "2002-05-16 17:19:50.163",
+  "locationCode" : "YAD1E",
+  "locationDescription" : "ATLANTIS DOCK 1E"
+}, {
+  "timeStamp" : "2002-05-16 17:19:50.273",
+  "locationCode" : "YAD1W",
+  "locationDescription" : "ATLANTIS DOCK 1W"
+}, {
+  "timeStamp" : "2002-05-16 17:21:13.000",
+  "locationCode" : "YAD2E",
+  "locationDescription" : "ATLANTIS DOCK 2E"
+}, {
+  "timeStamp" : "2002-05-16 17:21:14.673",
+  "locationCode" : "YAD2W",
+  "locationDescription" : "ATLANTIS DOCK 2W"
+}, {
+  "timeStamp" : "2002-05-16 17:19:38.857",
+  "locationCode" : "YAFD1",
+  "locationDescription" : "ATLANTIS DOCK 1"
+}, {
+  "timeStamp" : "2002-05-16 17:19:49.633",
+  "locationCode" : "YAFD2",
+  "locationDescription" : "ATLANTIS DOCK 2"
+}, {
+  "timeStamp" : "1999-11-01 10:39:27.617",
+  "locationCode" : "YAQA",
+  "locationDescription" : "ATLANTIS QUAY A"
+}, {
+  "timeStamp" : "1999-11-01 10:39:31.683",
+  "locationCode" : "YAQB",
+  "locationDescription" : "ATLANTIS QUAY B"
+}, {
+  "timeStamp" : "1999-11-01 10:40:28.497",
+  "locationCode" : "YAQC",
+  "locationDescription" : "ATLANTIS QUAY C"
+}, {
+  "timeStamp" : "2014-05-08 11:20:42.407",
+  "locationCode" : "YFADK",
+  "locationDescription" : "KEPPEL FELS ADMIRAL DK"
+}, {
+  "timeStamp" : "2014-05-08 11:21:02.687",
+  "locationCode" : "YFFP1",
+  "locationDescription" : "KEPPEL FELS FGR PIER 1"
+}, {
+  "timeStamp" : "2014-05-08 11:21:02.743",
+  "locationCode" : "YFFP2",
+  "locationDescription" : "KEPPEL FELS FGR PIER 2"
+}, {
+  "timeStamp" : "2014-05-08 11:22:22.967",
+  "locationCode" : "YFFP3",
+  "locationDescription" : "KEPPEL FELS FGR PIER 3"
+}, {
+  "timeStamp" : "2014-05-08 11:22:24.957",
+  "locationCode" : "YFFP4",
+  "locationDescription" : "KEPPEL FELS FGR PIER 4"
+}, {
+  "timeStamp" : "2014-05-08 11:22:30.637",
+  "locationCode" : "YFQ1",
+  "locationDescription" : "KEPPEL FELS QUAY NO 1"
+}, {
+  "timeStamp" : "2014-05-08 11:22:32.713",
+  "locationCode" : "YFQ2",
+  "locationDescription" : "KEPPEL FELS QUAY NO 2"
+}, {
+  "timeStamp" : "2014-05-08 11:22:32.927",
+  "locationCode" : "YFQ3",
+  "locationDescription" : "KEPPEL FELS QUAY NO 3"
+}, {
+  "timeStamp" : "2014-05-08 11:23:53.847",
+  "locationCode" : "YFQ4",
+  "locationDescription" : "KEPPEL FELS QUAY NO 4"
+}, {
+  "timeStamp" : "2014-05-08 11:23:53.883",
+  "locationCode" : "YFQ5",
+  "locationDescription" : "KEPPEL FELS QUAY NO 5"
+}, {
+  "timeStamp" : "2014-05-08 11:26:57.803",
+  "locationCode" : "YFQ6",
+  "locationDescription" : "KEPPEL FELS QUAY NO 6"
+}, {
+  "timeStamp" : "2014-05-08 11:26:57.840",
+  "locationCode" : "YFQ7",
+  "locationDescription" : "KEPPEL FELS QUAY NO 7"
+}, {
+  "timeStamp" : "2014-05-08 11:26:57.870",
+  "locationCode" : "YFQ8",
+  "locationDescription" : "KEPPEL FELS QUAY NO 8"
+}, {
+  "timeStamp" : "2014-05-08 13:28:03.033",
+  "locationCode" : "YHDK1",
+  "locationDescription" : "KEPPEL BENOI D1"
+}, {
+  "timeStamp" : "2014-05-08 13:29:44.773",
+  "locationCode" : "YHDK2",
+  "locationDescription" : "KEPPEL BENOI D2"
+}, {
+  "timeStamp" : "2014-05-08 13:29:45.250",
+  "locationCode" : "YHL",
+  "locationDescription" : "KEPPEL BENOI LQ"
+}, {
+  "timeStamp" : "2014-05-08 13:29:45.577",
+  "locationCode" : "YHQ1",
+  "locationDescription" : "KEPPEL BENOI Q1"
+}, {
+  "timeStamp" : "2014-05-08 13:29:45.627",
+  "locationCode" : "YHQ2",
+  "locationDescription" : "KEPPEL BENOI Q2"
+}, {
+  "timeStamp" : "2014-05-08 13:31:26.367",
+  "locationCode" : "YHQ3",
+  "locationDescription" : "KEPPEL BENOI Q3"
+}, {
+  "timeStamp" : "2014-05-08 13:31:26.687",
+  "locationCode" : "YHQ4",
+  "locationDescription" : "KEPPEL BENOI Q4"
+}, {
+  "timeStamp" : "2002-05-16 17:27:26.090",
+  "locationCode" : "YJDK1",
+  "locationDescription" : "JSL DRYDOCK 1"
+}, {
+  "timeStamp" : "2002-05-16 17:27:26.647",
+  "locationCode" : "YJDK2",
+  "locationDescription" : "JSL DRYDOCK 2"
+}, {
+  "timeStamp" : "2002-05-16 17:27:26.757",
+  "locationCode" : "YJDK3",
+  "locationDescription" : "JSL DRYDOCK 3"
+}, {
+  "timeStamp" : "2002-05-16 17:27:26.870",
+  "locationCode" : "YJEQ",
+  "locationDescription" : "JSL EAST QUAY(SAMULUN)"
+}, {
+  "timeStamp" : "2002-05-16 17:28:51.227",
+  "locationCode" : "YJNSD",
+  "locationDescription" : "JSL NSD DRY DOCK"
+}, {
+  "timeStamp" : "2002-05-16 17:28:51.427",
+  "locationCode" : "YJSQ",
+  "locationDescription" : "JSL SOUTH QUAY"
+}, {
+  "timeStamp" : "2002-05-16 17:28:51.727",
+  "locationCode" : "YJTKE",
+  "locationDescription" : "JSL TG KLING EAST QUAY"
+}, {
+  "timeStamp" : "2002-05-16 17:30:33.273",
+  "locationCode" : "YJTKN",
+  "locationDescription" : "JSL TG KLING NORTH"
+}, {
+  "timeStamp" : "2002-05-16 17:30:33.593",
+  "locationCode" : "YJTKS",
+  "locationDescription" : "JSL TG KLING SOUTH QY"
+}, {
+  "timeStamp" : "2002-05-16 17:30:33.703",
+  "locationCode" : "YJTKW",
+  "locationDescription" : "JSL TG KLING WEST QUAY"
+}, {
+  "timeStamp" : "2002-05-16 17:31:56.080",
+  "locationCode" : "YJWQ",
+  "locationDescription" : "JSL WEST QUAY(SAMULUN)"
+}, {
+  "timeStamp" : "2002-05-16 17:32:16.907",
+  "locationCode" : "YPD1E",
+  "locationDescription" : "PAN UNITED DOCK 1E"
+}, {
+  "timeStamp" : "2002-05-16 17:32:17.227",
+  "locationCode" : "YPD1W",
+  "locationDescription" : "PAN UNITED DOCK 1W"
+}, {
+  "timeStamp" : "2002-05-16 17:33:38.343",
+  "locationCode" : "YPD2E",
+  "locationDescription" : "PAN UNITED DOCK 2E"
+}, {
+  "timeStamp" : "2002-05-16 17:33:38.507",
+  "locationCode" : "YPD3W",
+  "locationDescription" : "PAN UNITED DOCK 3W"
+}, {
+  "timeStamp" : "1999-11-01 10:21:01.560",
+  "locationCode" : "YPFD1",
+  "locationDescription" : "PAN UNITED DCK. 1"
+}, {
+  "timeStamp" : "1999-11-01 10:22:05.143",
+  "locationCode" : "YPFD2",
+  "locationDescription" : "PAN UNITED DCK. 2"
+}, {
+  "timeStamp" : "1999-11-01 10:23:06.087",
+  "locationCode" : "YPFD3",
+  "locationDescription" : "PAN UNITED DCK. 3"
+}, {
+  "timeStamp" : "2002-05-16 17:33:39.003",
+  "locationCode" : "YPFPE",
+  "locationDescription" : "PAN UNITED FGR PIER E"
+}, {
+  "timeStamp" : "2002-05-16 17:33:39.103",
+  "locationCode" : "YPFPW",
+  "locationDescription" : "PAN UNITED FGR PIER W"
+}, {
+  "timeStamp" : "2014-05-08 13:32:47.187",
+  "locationCode" : "YSFD1",
+  "locationDescription" : "KEPPEL SINGMARINE FD1"
+}, {
+  "timeStamp" : "2014-05-08 13:32:49.320",
+  "locationCode" : "YSFD2",
+  "locationDescription" : "KEPPEL SINGMARINE FD2"
+}, {
+  "timeStamp" : "2014-05-20 12:13:36.197",
+  "locationCode" : "YSFD3",
+  "locationDescription" : "KEPPEL SINGMARINE FD3"
+}, {
+  "timeStamp" : "2014-05-08 13:34:29.743",
+  "locationCode" : "YSNQ1",
+  "locationDescription" : "KEPPEL SINGMARINE NQ1"
+}, {
+  "timeStamp" : "2014-05-08 13:34:30.370",
+  "locationCode" : "YSNQ2",
+  "locationDescription" : "KEPPEL SINGMARINE NQ2"
+}, {
+  "timeStamp" : "2014-05-08 11:19:19.000",
+  "locationCode" : "YSNQ3",
+  "locationDescription" : "KEPPEL SINGMARINE NQ3"
+}, {
+  "timeStamp" : "2014-05-08 13:39:14.943",
+  "locationCode" : "YST01",
+  "locationDescription" : "SEMBCORP MAR TUAS 1"
+}, {
+  "timeStamp" : "2014-05-08 13:39:14.970",
+  "locationCode" : "YST02",
+  "locationDescription" : "SEMBCORP MAR TUAS 2"
+}, {
+  "timeStamp" : "2014-05-08 13:39:15.027",
+  "locationCode" : "YST03",
+  "locationDescription" : "SEMBCORP MAR TUAS 3"
+}, {
+  "timeStamp" : "2014-05-08 13:39:15.190",
+  "locationCode" : "YST04",
+  "locationDescription" : "SEMBCORP MAR TUAS 4"
+}, {
+  "timeStamp" : "2014-05-08 13:39:15.313",
+  "locationCode" : "YST05",
+  "locationDescription" : "SEMBCORP MAR TUAS 5"
+}, {
+  "timeStamp" : "2014-05-08 13:39:16.697",
+  "locationCode" : "YST06",
+  "locationDescription" : "SEMBCORP MAR TUAS 6"
+}, {
+  "timeStamp" : "2014-05-08 13:39:16.943",
+  "locationCode" : "YST07",
+  "locationDescription" : "SEMBCORP MAR TUAS 7"
+}, {
+  "timeStamp" : "2014-05-08 13:39:17.973",
+  "locationCode" : "YST08",
+  "locationDescription" : "SEMBCORP MAR TUAS 8"
+}, {
+  "timeStamp" : "2014-05-08 13:42:58.890",
+  "locationCode" : "YST09",
+  "locationDescription" : "SEMBCORP MAR TUAS 9"
+}, {
+  "timeStamp" : "2014-05-08 13:38:54.893",
+  "locationCode" : "YST10",
+  "locationDescription" : "SEMBCORP MAR TUAS 10"
+}, {
+  "timeStamp" : "2014-05-08 13:42:59.333",
+  "locationCode" : "YST11",
+  "locationDescription" : "SEMBCORP MAR TUAS 11"
+}, {
+  "timeStamp" : "2014-05-08 13:42:59.693",
+  "locationCode" : "YST12",
+  "locationDescription" : "SEMBCORP MAR TUAS 12"
+}, {
+  "timeStamp" : "2017-06-02 00:00:00.000",
+  "locationCode" : "YST13",
+  "locationDescription" : "SEMBCORP MAR TUAS 13"
+}, {
+  "timeStamp" : "2017-06-02 00:00:00.000",
+  "locationCode" : "YST14",
+  "locationDescription" : "SEMBCORP MAR TUAS 14"
+}, {
+  "timeStamp" : "2017-06-02 00:00:00.000",
+  "locationCode" : "YST15",
+  "locationDescription" : "SEMBCORP MAR TUAS 15"
+}, {
+  "timeStamp" : "2017-06-02 00:00:00.000",
+  "locationCode" : "YST16",
+  "locationDescription" : "SEMBCORP MAR TUAS 16"
+}, {
+  "timeStamp" : "2017-06-02 00:00:00.000",
+  "locationCode" : "YST17",
+  "locationDescription" : "SEMBCORP MAR TUAS 17"
+}, {
+  "timeStamp" : "2014-05-08 13:42:59.823",
+  "locationCode" : "YSTD1",
+  "locationDescription" : "SEMBCORP MAR TUAS DK1"
+}, {
+  "timeStamp" : "2014-05-08 13:42:59.890",
+  "locationCode" : "YSTD2",
+  "locationDescription" : "SEMBCORP MAR TUAS DK2"
+}, {
+  "timeStamp" : "2014-05-08 13:43:00.417",
+  "locationCode" : "YSTD3",
+  "locationDescription" : "SEMBCORP MAR TUAS DK3"
+}, {
+  "timeStamp" : "2014-05-08 13:43:01.127",
+  "locationCode" : "YSTD4",
+  "locationDescription" : "SEMBCORP MAR TUAS DK4"
+}, {
+  "timeStamp" : "2017-06-02 00:00:00.000",
+  "locationCode" : "YSTD5",
+  "locationDescription" : "SEMBCORP MAR TUAS DK5"
+}, {
+  "timeStamp" : "2017-06-02 00:00:00.000",
+  "locationCode" : "YSTD6",
+  "locationDescription" : "SEMBCORP MAR TUAS DK6"
+}, {
+  "timeStamp" : "2017-06-02 00:00:00.000",
+  "locationCode" : "YSTD7",
+  "locationDescription" : "SEMBCORP MAR TUAS DK7"
+}, {
+  "timeStamp" : "2014-05-08 13:34:30.540",
+  "locationCode" : "YSWQ",
+  "locationDescription" : "KEPPEL SINGMARINE WQ"
+}, {
+  "timeStamp" : "2014-05-08 13:43:01.560",
+  "locationCode" : "YTDK3",
+  "locationDescription" : "KEPPEL TUAS DK3"
+}, {
+  "timeStamp" : "2014-05-08 13:43:01.803",
+  "locationCode" : "YTFPE",
+  "locationDescription" : "KEPPEL TUAS FNGR PIERE"
+}, {
+  "timeStamp" : "2014-05-08 13:43:02.117",
+  "locationCode" : "YTFPW",
+  "locationDescription" : "KEPPEL TUAS FNGR PIERW"
+}, {
+  "timeStamp" : "2014-05-08 13:44:43.510",
+  "locationCode" : "YTRDK",
+  "locationDescription" : "KEPPEL TUAS RAFFLES DK"
+}, {
+  "timeStamp" : "2014-05-08 13:44:43.540",
+  "locationCode" : "YTRPE",
+  "locationDescription" : "KEPPEL TUAS RFLS PIERE"
+}, {
+  "timeStamp" : "2014-05-08 13:46:04.003",
+  "locationCode" : "YTRPW",
+  "locationDescription" : "KEPPEL TUAS RFLS PIERW"
+}, {
+  "timeStamp" : "2014-05-08 13:46:04.097",
+  "locationCode" : "YTSQ",
+  "locationDescription" : "KEPPEL TUAS SQ"
+}, {
+  "timeStamp" : "2014-05-08 13:47:45.577",
+  "locationCode" : "YTTDK",
+  "locationDescription" : "KEPPEL TUAS TEMASEK DK"
+}, {
+  "timeStamp" : "2014-05-08 13:47:45.613",
+  "locationCode" : "YTTPE",
+  "locationDescription" : "KEPPEL TUAS TMSK PIERE"
+}, {
+  "timeStamp" : "2012-10-25 15:54:16.553",
+  "locationCode" : "YTVE3",
+  "locationDescription" : "HIAP SHING"
+}, {
+  "timeStamp" : "2016-03-28 00:00:00.000",
+  "locationCode" : "YTVE4",
+  "locationDescription" : "ATWIN OFFSHORE MR PL"
+}, {
+  "timeStamp" : "2014-05-08 13:47:45.660",
+  "locationCode" : "YTWQ",
+  "locationDescription" : "KEPPEL TUAS WQ"
+}, {
+  "timeStamp" : "1994-11-22 15:34:34.370",
+  "locationCode" : "ZMISC",
+  "locationDescription" : "MISC MOVEMENTS"
+}, {
+  "timeStamp" : "2002-05-02 17:45:46.153",
+  "locationCode" : "ZMISS",
+  "locationDescription" : "MISC BERTHS IN EJS"
+}, {
+  "timeStamp" : "1998-12-01 15:36:27.390",
+  "locationCode" : "ZTL",
+  "locationDescription" : "TUAS LANDING"
+} ]
