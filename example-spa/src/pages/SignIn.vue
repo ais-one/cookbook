@@ -3,6 +3,7 @@
     <loading-blocker :loading="loading"></loading-blocker>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
+        <h2 class="text-center">Sign In</h2>
         <v-card>
           <v-card-text>
             <v-container v-if="!(user && !user.otpVerified)">

@@ -16,7 +16,7 @@
                   <v-flex xs12>
                     <v-text-field label="Confirm Password" v-model="confirmPassword" type="password" required></v-text-field>
                   </v-flex>
-                  <v-flex xs12 class="text-xs-center">
+                  <v-flex xs12 class="text-center">
                     <v-btn type="submit" :disabled="loading" :loading="loading">Sign up</v-btn>
                   </v-flex>
                 </v-layout>
