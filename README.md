@@ -5,8 +5,7 @@
 > Latest Version 0.2.0 Released 2019 July 20 0815 +8GMT
 > vue-crud-x 0.1 and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1)
 
-vue-crud-x 0.2 uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, and improving code quality and documentation.
-
+**vue-crud-x 0.2** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
 # WHAT IS VUE-CRUD-X
 
@@ -140,7 +139,7 @@ Release notes for the library and examples can be found in [docs/Release.md](doc
 
 Refer to the respective projects README.md files for information on getting started with each project
 
-**vue-crud-x 0.2 Article** WORK IN PROGRESS (to be published on **dev.to**, less fluff, more stuff)
+**vue-crud-x 0.2 Article** <a href="https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0" target="_blank">VueJS+ExpressJS CRUD & Cookbook</a>
 
 **vue-crud-x 0.1 Article** <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Legacy Article (For Historical Reference)</a>
 
