@@ -2,462 +2,212 @@
 
 # NOTICES & UPDATES
 
-2019 Jul 4 0900 +8GMT **Please note this issue with vue-cli 3**
+> Latest Version 0.2.0 Released 2019 July 20 0815 +8GMT
+> vue-crud-x 0.1 and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1)
 
-https://github.com/vuejs/vue-cli/issues/4231
+**vue-crud-x 0.2** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
+# WHAT IS VUE-CRUD-X
 
-> Latest Version 0.1.13 Released 2019 Jun 20 0815 +8GMT
-
-**Our next release, we will migrate to Vuetify 2.0...** There may be breaking changes as the new **v-data-table** component has more slot handling and features. We will take this chance to improve the framework while minimizing the effect of breaking changes
-
-Roadmap and latest updates can be found on the <a href="https://github.com/ais-one/vue-crud-x/wiki" target="_blank">Wiki</a>.
-
-See RELEASE.MD file for change history.
-
-Read the following <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">supporting article</a> (with usage and explanations updated as and when required)
-
-
-## 0 QUICKSTART
-
-- **example-rest** folder is preferred project for quickstart. Everything runs locally.
-- **example-nuxt** folder uses NuxtJS (SSR and generate demo), Also includes Github login
-
-
-## 1 New Features
-
-- Rename example-firebase to example-baas and added Mongo Stitch login and query example
-  - Setting up Mongo Stitch https://docs.mongodb.com/stitch/tutorials/guides/todo-backend/
-  - Setup email and password authorization provider instead of anonymous provider
-- Improved Nuxt page error handling using error layout page
-- Vue 3 migration: updated slots to use v-slot
-
-
-## 2 Major Improvements (Without Breaking Changes)
-
-From Version 0.1.7 onwards, **scoped-slots** can and should be used for customized form and filter. Please use this instead of the previous way of **importing component files** as it is much cleaner. **importing component files** will be deprecated in a later version.
-
-Usage example can be found:
- - in **example-rest** project (see example-rest/README.md on quickstart)
-   - example-rest/src/pages/Page.vue
-   - example-rest/src/pages/Book.vue
-   - example-rest/src/components/author.js
-   - example-rest/src/pages/Category.vue
- - in **example-nuxt** project (see example-nuxt/README.md on quickstart)
- - in **example-baas** project
-   - example-baas/src/pages/MultiCrud/Example.vue (also, demonstrates multiple vue-crud-x used in a single page)
-
----
-
-# What Is vue-crud-x
+**TL;DR** A Customisable CRUD Library And Cookbook For ExpressJS & VueJS Apps
 
 > A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, forms, use of GraphQL or REST to access various datastores. Vuetify is used for frontend UI components but can be changed to alternatives such as ElementUI (with some effort)
 
+> Over time, the example projects to show the use of **vue-crud-x** have grown to become a **cookbook** that includes many other useful **recipes** for use in production ExpressJS and VueJS applications.
+
 The following differentiates vue-crud-x from other CRUD repositories:
- - Able to do nested CRUD operations (parent table call child table),
- - Inline edit, pagination, sorting & filtering
- - Handle authentication tokens, user permissions
- - Customise table, search filter, CRUD form, validation, CRUD operations (e.g. disallow delete, call REST, GraphQL, Firestore, etc.)
- - Auto-configure/generate Search filter, CRUD Form from JSON
- - Export to CSV/JSON, File/Image Upload, i18n
+- Able to do nested CRUD operations (parent table call child table),
+- Server side pagination, sorting & filtering
+- Handle infinite scroll use-case
+- Handle authentication tokens, user permissions
+- Customise table, search filter, CRUD form, validation, CRUD operations (call REST, GraphQL, Firestore, etc.)
+- Inline edit (row level)
+- Auto-configure/generate Search filter and CRUD Forms using JSON
+- Export to CSV/JSON, File/Image Upload
+- Reload & optimization strategy
+- Real-time updates & subscription
+- Overridable methods with default behaviour
+- Emitted events for use by parent component
 
-## Example Project List
-
-There are currently 4 projects for show-casing vue-crud-x. (Three frontend and one supporting backend example)
-
-Our examples showcase the following (unrelated to the vue-crud-x features above)
- - in **example-rest**
-   - **(Best for quick start - Please use this to try things out)**
-   - everything runs locally, and you build and run both this project and the **backend** project from here
-   - rxJs for cleaner code (auto-complete, debounce, fetch latest)
-   - 2FA OTP signin with Google Authenticator (setup with USE_OTP=GA in environement files of both the front and backend. Check DB seeders for the API key to use, or you can find out how to generate your own)
-   - websocket example
-   - graphql example (use Apollo client: authentication, subscriptions, cache, optimistic response, refetch queries)
-   - https://github.com/ais-one/vue-crud-x/tree/master/example-rest
- - in **example-nuxt**
-   - includes features in example-rest plus the following:
-     - letting NuxtJS framework handle boilerplate work... e.g. routing, store setup
-     - social login using Github
-     - SSR App
-     - pre-generated Static Web App 
-     - https://github.com/ais-one/vue-crud-x/tree/master/example-nuxt
- - in **example-baas**
-   - Serverless backend, using Firebase backend-as-a-service, need to register and setup
-   - real-time updates from Firestore
-   - Use multiple vue-crud-x in single page
-   - recaptcha, image capture from webcam
-   - image upload to Google Cloud Store, Image capture via webcam
-   - include Mongo Stitch Baas login and simple query example 
-   - https://github.com/ais-one/vue-crud-x/tree/master/example-baas
-
-The **backend** project is an Express server used by **example-rest** and **example-nuxt** projects for testing the vue-crud-x component, and has the following features:
- - ObjectionJS + SQLite (Sample SQL DB with 1-1, 1-m, m-n use cases, transactions, migrations, seeders, OpenAPI documentation), Mongo (connect test only)
- - Login, JWT & 2FA OTP (using Google Authenticator)
- - Key-Value Store for user token storage on server (can replace with redis)
- - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
- - GraphQL (use Apollo server)
-- https://github.com/ais-one/vue-crud-x/tree/master/backend
+Other design considerations :
+- i18n, l10n a11y
+- Tree shaking, Lazy loading, Performance
+- Implementation with multiple UI frameworks
+  - remove as many UI framework dependent parts as possible
+  - indacate parts which should change if other UI frameworks are used 
+- Cleaner code with correct use of RxJS, async/await/Promises
+- Prefer static generated sites, over SSR and SPA
 
 
-Refer to the respective projects README.md files for more information
+# QUICK START
 
-## What is bad about this CRUD Component
+Clone the repository, setup and run, using the following commands
 
-Because of its flexible nature, quite a number of things need to be coded to fit your needs.
+```bash
+git clone https://github.com/ais-one/vue-crud-x.git
+cd vue-crud-x
+cd example-spa
+npm i
+npm run build-rest
+npm run init-db
+npm run start
+```
 
-However, the good part is that these parts need to be coded anyway and once you find your way around the design, you will be able to quickly create custom CRUD in many of your use cases
+Navigate to http://127.0.0.1:8080
+
+Login using the following
+
+- User: test
+- Password: test
+
+(do not log in using Firebase or Mongo Stitch until you have setup to use them)
+
+View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
 
 ---
 
-# vue-crud-x DOCUMENTATION (Work-In-Progress)
+# Project List
 
-## Properties
+## [example-spa](https://github.com/ais-one/vue-crud-x/tree/master/example-spa)
 
-Refer to @/pages/Crud/party-inline.js for more description for now...
+**Best for quick start** - Please use this to try things out. Everything runs locally
 
-### Table - crudTable
+Recipes for a production-ready SPA:
+- Example **vue-crud-x** usage
+- REST and websockets
+- Graphql (Apollo client, includes authentication, subscriptions, cache, optimistic UI, refetch queries)
+- Login
+  - recaptcha
+  - Local Email-password login & JWT
+    - optional 2FA OTP signin with Google Authenticator
+      - setup with USE_OTP=GA in environement files of both the front and backend
+      - Check DB seeders for the API key to use, or you can find out how to generate your own
+- rxJs for cleaner code (auto-complete, debounce, fetch latest)
+- Serverless / (BaaS)
+  - Mongo stitch ([setup](docs/MongoStitch.md))
+    - login & auth, simple query 
+  - Firebase ([setup](docs/Firebase.md))
+    - login & auth, interaction with firebase datastore & real-time update
+    - upload to firebase storage & view
+- Other Features
+  - Image capture via webcam
+  - Signature capture on canvas
 
-```
-crudTable: {
-  saveRow: '#ffaaaa', // add save row button & specify color when row is changed, used with inline edit only and action column
-  inlineReload: { // default true, set to false and use snapshot for large firestore dataset (or similar mechanisms where reads are chargeable)
-    update: false,
-    create: true,
-    delete: true
-  },
-  addrowCreate: [
-    {
-      field: 'name',
-      label: 'Name'
-    }
-  ], // add button creates new record by adding row, you can specified fields that use needs to pre-enter data,
-  // empty array if no need to,
-  // false if no need addrowCreate button
-  inline: { // editable fields on the table and what type of edit are they
-    // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
-    'name': {
-      field: 'v-text-field', // v-text-field (blur will update contents if it was changed)
-      attrs: {
-        type: 'text', // number, email, password
-        class: ['caption']
-      }
-    },
-    'remarks': {
-      field: 'v-textarea', // edit dialog with v-textarea
-      buttons: false
-    },
-    'languages': {
-      field: 'v-select', // select, combobox
-      attrs: {
-        items: ['French', 'Thai', 'Chinese', 'Bahasa'],
-        multiple: true,
-        dense: true,
-        class: ['caption']
-      }
-    },
-    'created': {
-      buttons: true,
-      field: 'v-date-picker', // edit dialog with v-date-picker or v-time-picker
-      attrs: { }
-    },
-    'photo': {
-      field: 'v-textarea',
-      buttons: true
-    }
-    // base: { field: 'v-btn-toggle', attrs: { }, group: { type: 'v-btn', attrs: { flat: true, block: true }, items: { 'WCP': 'WCP', 'MSP': 'MSP' } } },
-  },
-  confirmCreate: true, // show operation confirmation dialog flags
-  confirmUpdate: true,
-  confirmDelete: true,
-  // REMOVE THIS, NO LONGER NEEDED: actionColumn: true, // action buttons (edit/delete)on the left most table column
-  headers: [
-    { text: 'Action', value: '', align: 'center', sortable: false, class: 'pa-1 text-xs-center' }, // IMPORTANT: blank value means it is action column
-    { text: 'Party Name', value: 'name' },
-    { text: 'Remarks', value: 'remarks', align: 'right', class: 'pa-1', 'cell-class': 'text-xs-right pa-1' }, // align header and cell
-    { text: 'Languages', value: 'languages' },
-    { text: 'Status', value: 'status' },
-    { text: 'Created', value: 'created' },
-    { text: 'Photo URL', value: 'photo' }
-  ],
-  formatters: (value, _type) => {
-    if (_type === 'languages') return value.join(',')
-    return value
-  },
-  crudTitle: 'Custom Title',
+## [backend](https://github.com/ais-one/vue-crud-x/tree/master/backend)
 
-  onCreatedOpenForm: false, // open form on created - need to have record.id to show info, this is true in cases when you want to go back to the parent form and not parent table
-  onRowClickOpenForm: true, // set to false of you do not want row click to open form
+Recipes for a production-ready Express server used by **example-spa** and **example-ssr**:
+- ObjectionJS
+  - Sample SQL DB with 1-1, 1-m, m-n use cases, transactions, migrations, seeders,
+  - Supports SQLite, MySQL, MariaDB, Postgres, MSSQL
+- MongoDB
+  - seeders (migration not needed)
+  - watch for real-time collection & document changes
+- Authentication & Authorization
+  - Local Login, JWT & 2FA OTP (using Google Authenticator), Refresh token
+  - OAuth2 Github Login
+  - SAML ADFS login using Passport
+- Documentation
+  - OpenAPI with JSDoc (enable for local only)
+- Key-Value Store for user token storage on server (can replace with redis in local development environment)
+- Websocket (use https://www.websocket.org/echo.html & ngrok to test)
+- GraphQL (use Apollo server)
+- File uploads
+- Testing (in progress)
+- Logging (in progress)
 
-  doPage: true, // pagination enabled
-  showGoBack: false, // do net show go back button on table
-  showFilterButton: true, // show expand filter button on toolbar? if hide means you do not want user to play with the filters
+## [example-ssr](https://github.com/ais-one/vue-crud-x/tree/master/example-ssr)
 
-  attrs: {
-    // you can add attributes used by the component and customize style and classes
-    snackbar: { // v-snackbar Component - null means no snack bar
-      bottom: true,
-      timeout: 6000
-    },
-    container: { // v-container Component
-      fluid: true,
-      class: 'pa-0',
-      style: { } // you can add more styles here
-    },
-    dialog: { // v-dialog Component
-      fullscreen: false, // dialog form is not fullscreen
-      scrollable: true,
-      transition: 'dialog-bottom-transition',
-      overlay: false
-    },
-    form: { // v-form Component
-      class: 'grey lighten-3 pa-2',
-      'lazy-validation': true
-    },
-    alert: { // v-alert Component
-      color: 'grey',
-      icon: ''
-    },
-    toolbar: { // v-toolbar Component
-      height: 48,
-      dark: false,
-      light: true,
-      color: 'grey'
-    },
-    table: { // v-data-table Component
-      dark: false,
-      light: true,
-      'rows-per-page-items': [2, 5, 10, 20],
-      'hide-headers': false,
-      'loading-color': '#ff0000'
-    },
-    button: { // v-btn Component
-      dark: false,
-      light: true,
-      icon: true,
-      fab: false
-    },
-    'v-progress-linear': { // v-progress-linear, can also be v-progress-circular
-      class: 'ma-0'
-    },
-    'edit-indicator-left': '🖊️',
-    'edit-indicator-right': '',
-    'action-icon': { // for the action column
-      small: true,
-      class: 'mr-1'
-    },
-    buttons: {
-      // table
-      back: { icon: 'reply', label: '' },
-      filter: { icon: 'search', label: '', icon2: 'keyboard_arrow_up' },
-      reload: { icon: 'replay', label: '' },
-      create: { icon: 'add', label: '' },
-      export: { icon: 'print', label: '' },
-      // form
-      close: { icon: 'close', label: '' },
-      delete: { icon: 'delete', label: '' },
-      update: { icon: 'save', label: '' }
-    }
-  }
-}
-```
+Recipes for a production-ready Nuxt static sites. Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes:
+- nuxt-auth
+  - Social login using Github
+  - Local Email-password login & JWT
+  - optional 2FA using Google Authenticator
+- nuxt-i18n
+- SSR & pre-generated Static Web App 
+  - Handling of 500 and 404 errors
+- Show gotchas of SSR
 
-### Filter - crudFilter
-
-```
-crudFilter: {
-  FilterVue: null,
-  filterData: {
-    // fields supported v-text-field, v-select, v-combobox, v-autocomplete, v-textarea, v-date-picker, v-time-picker
-    // new way of defining, use attrs
-    active: {
-      type: 'v-select',
-      value: 'active',
-      attrs: {
-        label: 'Active Status',
-        multiple: false,
-        items: [ 'active', 'inactive' ], // can be async loaded from db?
-        rules: [v => !!v || 'Item is required']
-      }
-    }
-  }
-}
-
-```
-
-### Form - crudForm
-
-```
-crudForm: {
-  // FormVue: () => {}, // not needed TO BE DEPRECATED
-  formAutoData: { // this is for automated form creation - if undefined use FormVue
-    id: { type: 'input', attrs: { hidden: true } }, // need id if there is delete
-    name: {
-      type: 'v-text-field',
-      halfSize: true,
-      attrs: {
-        label: 'Name',
-        rules: [v => !!v || 'Item is required']
-      }
-    },
-    status: {
-      type: 'v-select',
-      halfSize: true,
-      attrs: {
-        label: 'Active Status',
-        multiple: false,
-        items: [ 'active', 'inactive' ], // can be async loaded from db?
-        rules: [v => !!v || 'Item is required']
-      }
-    },
-    remarks: {
-      type: 'v-textarea',
-      attrs: {
-        label: 'Remarks'
-      }
-    },
-    photo: { type: 'hidden' },
-    languages: { type: 'hidden' }
-  },
-
-  defaultRec: () => ({ // you can use function to initialize record as well
-    id: '',
-    name: '',
-    status: 'active',
-    remarks: '',
-    languages: [],
-    created: format(new Date(), 'YYYY-MM-DD HH:mm:ss'), // set value during setRecord() function
-    photo: ''
-  })
-}
-```
-
-### CRUD Operations - crudOps
-
-1. user property in payload can be used for authentication, and logging
-
-2. crudOps create, update & delete operation - return object properties
-
-> The return object
-
-The return object and properties are optional, if you do not return, then the following can potentially result:
-- no snackbar (you will need to listen to event emitted do your own error display instead)
-- value will not revert to original for failed inline update
-
-```
-{
-  msg: if defined and not blank, snackbar will show the string in msg if enabled (msg can be an vue-i18n keystring)
-  code: if defined, snackbar will show message based on code number. 200, 201, 509, 500 is handled, other values will show 'unknown operation'
-  ok:  is operation success or not, used by inline update to revert data to original value on the table
-}
-```
-
-**operations**
-
-Note the payload object for each operation
-
-payload.user show contains user info that you can use, e.g. user group
-
-```
-crudOps: {
-  'export': {
-    const { user, filterData } = payload
-    ...
-    // no return
-  },
-  create: {
-    const { record: { id, ...noIdData }, user } = payload
-    ...
-    return { // EXAMPLE return object with code property omitted
-      ok: true,
-      msg: 'OK'
-    }
-  },
-  update: {
-    const { record: { id, ...noIdData }, user } = payload
-    ...
-    return { // EXAMPLE return object with ok property only
-      ok: true
-    }
-  },
-  delete: {
-    const { id, user } = payload
-    ...
-    // EXAMPLE no return at all
-  },
-  find: {
-    let records = []
-    let totalRecords = 0 // used for pagination, total records searched from query before paging is applied
-    const { pagination, user, filterData, parentId, doPage } = payload // page, sort column and sort order is in pagination, refer to Vuetify docs for list of properties in the pagination object
-    // DO NOT MUTATE pagination
-    ...
-    return { records, pagination, totalRecords }
-  },
-  findOne: {
-    const { id, user } = payload
-    let record = {}
-    ...
-    return record
-  }
-}
-```
-
-## Named Scoped SLots
-
-**table-toolbar**
-  - vcx: access to the component itself
-
-**filter**
-  - filterData: access to filterData
-  - parentId: access to parentId (if any)
-  - storeName: access to vuex store module name
-  - vcx: access to the component itself
-
-**table**
-  - records: the records found
-  - totalRecords: to total unpaged records
-  - pagination: the pagination object
-  - vcx: access to the component itself
-
-**summary**
-  - vcx: access to the component itself
-
-**form-toolbar**
-  - vcx: access to the component itself
-
-**form**
-  - record: the selected record
-  - parentId: access to parentId (if any)
-  - storeName: access to vuex store module name
-  - vcx: access to the component itself
-
-
-## Events
-
-1. **form-open** - emit event if open form, returns selected record
-
-1. **form-close** - emit event if close form
-
-2. **selected** - row selected, returns object with row item and event, does not fire if inline is truthy...
-
-3. **loaded** - table data is loaded, returns Date.now()
-
-4. **created** - emitted in createRecord(), returns { res, payload } (no create ID yet, will be improved)
-
-5. **updated** - emitted in updateRecord(), returns { res, payload }
-
-6. **deleted** - emitted in deleteRecord(), returns { res, payload }
-
-Note: **res** is the result for the C, U, D operation, payload is the payload passed in to the C, U, D operation
+**IMPORTANT NOTE:** we use SSR mode, WITHOUT implementing the server side features for efficient debugging of static generated sites.
 
 ---
 
-# Building The Library (Read this if you wish to maintain their own fork)
+# DOCUMENTATION
+
+**vue-crud-x** library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
+
+Release notes for the library and examples can be found in [docs/Release.md](docs/Release.md)
+
+Refer to the respective projects README.md files for information on getting started with each project
+
+**vue-crud-x 0.2 Article** <a href="https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0" target="_blank">VueJS+ExpressJS CRUD & Cookbook</a>
+
+**vue-crud-x 0.1 Article** <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Legacy Article (For Historical Reference)</a>
+
+
+# SAMPLE SCREENSHOTS
+
+## Login Screen
+
+- recaptcha
+- Firebase (requires account setup)
+- Mongo Stitch (requires account setup)
+
+[![Screenshot](./docs/login.png)](./docs/login.png)
+
+## Table & Filter
+
+- filter
+- pagination
+
+[![Screenshot](./docs/table.png)](./docs/table.png)
+
+## Form
+
+- custom form slot
+- tags and lazy-load autocomplete
+- click button to child table
+
+[![Screenshot](./docs/form.png)](./docs/form.png)
+
+## Inline Edit
+
+- inline edit
+- date-picker, select and other controls
+- backend is Firebase Firestore
+
+[![Screenshot](./docs/inline.png)](./docs/inline.png)
+
+---
+
+
+# Roadmap
+
+- Backend
+  - Logging
+    - prefer to use external APM service (performance issues)
+  - Security Improvements
+  - Automated testing (dredd.io)
+  - improve on scalability of websockets
+  - JsonSchema
+- Frontend
+  - Validation? vuelidate, vee-validate, common validation
+  - Testing (cypress)
+- Overall
+  - CI / CD
+
+---
+
+# Building The Library (OPTIONAL: Read this if you wish to maintain own fork)
 
 ## Option 1 Use NPM package
 
-Install it as in NPM package and import it
+Install it as an NPM package and import it
 
-```
+```bash
+# Version 0.1.X
+npm i ais-one/vue-crud-x#v1 --save
+
+# Version 0.2.X
 npm i vue-crud-x
 ```
 
@@ -471,29 +221,28 @@ If you ever need to build this library from source...
 
 1. Install dependencies
 
-```
+```bash
 npm i
 ```
 
 2. Build project (using vue-cli)
 
-```
+```bash
 npm run build
 ```
 
 The build output can be found in the **dist** folder
 
-**IMPORTANT NOTE: please rename the file VueCrudX.commmon.js to VueCrudX.js**
 
 3. Publishing to npm (only for repo owner)
 
-```
+```bash
 npm publish
 ```
 
 4. Or build as local package vue-crud-x
 
-```
+```bash
 npm pack
 # A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
 # If you want to install without saving to package.json, npm i --no-save vue-crud-x-?.?.?.tgz

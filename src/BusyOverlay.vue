@@ -5,7 +5,6 @@
 </template>
 
 <script>
-// $auth.$state.busy
 export default {
   props: {
     loading: {

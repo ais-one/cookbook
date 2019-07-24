@@ -5,25 +5,26 @@
     v-model="menu"
     :nudge-right="40"
     :return-value.sync="time"
-    lazy
     transition="scale-transition"
     offset-y
     full-width
     min-width="290px"
   >
-    <v-text-field
-      slot="activator"
-      v-model="time"
-      :label="label"
-      :prepend-icon="iconName"
-      readonly
-    ></v-text-field>
+    <template v-slot:activator="{ on }">
+      <v-text-field
+        v-on="on"
+        v-model="computedTimeFormatted"
+        :label="label"
+        :prepend-icon="iconName"
+        readonly
+      ></v-text-field>
+    </template>
     <v-time-picker v-if="menu" v-model="time" format="24hr" no-title scrollable @change="changeTime"></v-time-picker>
   </v-menu>
 </template>
 
 <script>
-// import {format} from 'date-fns'
+import { format } from 'date-fns'
 
 export default {
   data: () => ({
@@ -43,16 +44,33 @@ export default {
     iconName: {
       type: String,
       default: 'access_time'
+    },
+    format: {
+      type: String,
+      default: 'HH:mm'
+    }
+  },
+  computed: {
+    computedTimeFormatted () {
+      return this.formatTime(this.time)
     }
   },
   created () {
-    this.time = this.value // format(this.value, 'YYYY-MM-DD')
+    if (this.value) {
+      this.time = this.value // format(this.value, 'YYYY-MM-DD')
+    } else {
+      this.time = format(new Date(), 'HH:mm')
+    }
   },
   methods: {
     changeTime () {
-      // console.log(this.time)
       this.$refs.menu.save(this.time)
-      // this.$emit('input', this.time)
+      this.$emit('input', this.time)
+    },
+    formatTime (time) {
+      if (!time) return null
+      const [hour, min] = time.split(':')
+      return format(new Date(2000, 1, 1, hour, min), this.format) // `${day}-${month}-${year}`
     }
   }
 }

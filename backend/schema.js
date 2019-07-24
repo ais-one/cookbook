@@ -47,7 +47,7 @@ const resolvers = {
     getCategory: async (parent, args, context, info) => {
       try {
         const category = await Category.query().findById(args.id)
-        console.log(category)
+        console.log('graphql', category)
         return category
       } catch (e) {
         return {}
