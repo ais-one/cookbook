@@ -1,4 +1,6 @@
 ### Version 0.2.1
+- update to Vuetify 2.0.1, & other packages
+- fix form layouts
 
 ### Version 0.2.0
 - update to Vuetify 2.0 (many breaking changes)

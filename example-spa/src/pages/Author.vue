@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-layout row wrap>
+    <v-layout row wrap class="px-2">
       <v-flex xs12>
         <vue-crud-x ref="author" :parentId="parentId" v-bind="authorDefs" />
       </v-flex>
@@ -46,7 +46,7 @@ export default {
             hidden: 'add', // add, edit, all, null
             readonly: 'all', // add, edit, all, null
             validation: null, // validation function no in place yet
-            'field-wrapper': { xs12: true, sm6: true },
+            'field-wrapper': { xs12: true },
             'field-input': {
               label: 'ID'
             }
@@ -55,7 +55,7 @@ export default {
             type: 'v-text-field',
             value: '',
             default: '',
-            'field-wrapper': { xs12: true, sm6: true },
+            'field-wrapper': { xs12: true },
             'field-input': {
               label: 'Name',
               rules: [v => !!v || 'Item is required']
@@ -65,7 +65,7 @@ export default {
             type: 'app-file-upload',
             value: { savedUrl: 'aa', imageName: '', imageUrl: '', imageFile: '' },
             default: '',
-            'field-wrapper': { xs12: true, sm6: true },
+            'field-wrapper': { xs12: true },
             'field-input': {
               label: 'Avatar'
             }

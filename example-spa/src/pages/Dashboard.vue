@@ -1,23 +1,20 @@
 <template>
   <div>
-    <v-layout row wrap class="py-2">
+    <v-layout row wrap class="pa-2">
       <v-flex xs12>
         <v-card class="elevation-12">
-          <v-toolbar dense dark class="secondary">
-            <v-toolbar-title>Vue Crud X</v-toolbar-title>
-          </v-toolbar>
           <v-card-text>
             <v-container fluid>
               <v-layout row wrap>
                 <v-flex xs12>
-                  <h2 class="py-2 text-center">Test Your Other Stuff Here</h2>
-                  <p class="py-2 text-center">Click on the top left menu icon to navigate</p>
-                  <p class="py-2 text-center">On this page, websocket messages are sent to server every 10 seconds (websocket must be enabled .env file). Message will appear server console.log</p>
-                  <p class="py-2 text-center">Message to server will be echoed back here... ({{ wsMsg }})</p>
-                  <p class="py-2 text-center">
+                  <h2 class="py-1 text-center">Test Your Other Stuff Here</h2>
+                  <p class="py-1 text-center">Click on the top left menu icon to navigate</p>
+                  <p class="py-1 text-center">On this page, websocket messages are sent to server every 10 seconds (websocket must be enabled .env file). Message will appear server console.log</p>
+                  <p class="py-1 text-center">Message to server will be echoed back here... ({{ wsMsg }})</p>
+                  <p class="py-1 text-center">
                     <v-btn @click="testGraphQL">Test GraphQL</v-btn>
                   </p>
-                  <p class="py-2 text-center">GraphQL Query Result... ({{ hello }})</p>
+                  <p class="py-1 text-center">GraphQL Query Result... ({{ hello }})</p>
                 </v-flex>
               </v-layout>
             </v-container>
