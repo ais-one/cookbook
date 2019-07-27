@@ -485,13 +485,11 @@ export default {
       <div v-if="showFilter">
         <slot name="filter" :filters="filters" :parentId="parentId" :vcx="_self">
           <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="vform">
-            <v-layout row wrap>
-              <template v-for="(filter, i) in filters">
-                <v-flex :key="i" v-bind="filter['field-wrapper']">
-                  <component :is="filter.type" v-model="filter.value" v-bind="filter['field-input']" />
-                </v-flex>
-              </template>
-            </v-layout>
+            <template v-for="(filter, i) in filters">
+              <v-flex :key="i" v-bind="filter['field-wrapper']">
+                <component :is="filter.type" v-model="filter.value" v-bind="filter['field-input']" />
+              </v-flex>
+            </template>
           </v-form>
         </slot>
       </div>
@@ -578,13 +576,11 @@ export default {
       </slot>
       <slot name="form" :form="form" :parentId="parentId" :vcx="_self">
         <v-form v-model="validForm" v-bind="vform"  :parentId="parentId" :vcx="_self">
-          <v-layout row wrap>
-            <template v-for="(item, i) in form">
-              <v-flex :key="i" v-if="!_isHidden(item.hidden)" v-bind="item['field-wrapper']">
-                <component :is="item.type" v-model="item.value" v-bind="item['field-input']" :disabled="_isReadOnly(item.readonly)"/>
-              </v-flex>
-            </template>
-          </v-layout>
+          <template v-for="(item, i) in form">
+            <v-flex :key="i" v-if="!_isHidden(item.hidden)" v-bind="item['field-wrapper']">
+              <component :is="item.type" v-model="item.value" v-bind="item['field-input']" :disabled="_isReadOnly(item.readonly)"/>
+            </v-flex>
+          </template>
         </v-form>
       </slot>
     </component>

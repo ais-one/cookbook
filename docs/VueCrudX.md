@@ -1,4 +1,4 @@
-# Version 0.2.0 API Documentation
+# Version 0.2.1 API Documentation
 
 This document describes the details on the properties used in vue-crud-x.
 

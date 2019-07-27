@@ -16,17 +16,17 @@
     "start": "concurrently \"npm run rest\" \"npm run serve\""
   },
   "dependencies": {
-    "@firebase/app": "^0.4.11",
-    "@firebase/auth": "^0.11.5",
-    "@firebase/firestore": "^1.4.5",
-    "@firebase/storage": "^0.3.6",
+    "@firebase/app": "^0.4.12",
+    "@firebase/auth": "^0.11.6",
+    "@firebase/firestore": "^1.4.7",
+    "@firebase/storage": "^0.3.7",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
     "apollo-link": "^1.2.12",
     "apollo-link-context": "^1.0.18",
     "apollo-link-http": "^1.5.15",
     "apollo-link-ws": "^1.0.18",
-    "apollo-server": "^2.7.0",
+    "apollo-server": "^2.7.2",
     "apollo-utilities": "^1.3.2",
     "axios": "^0.18.1",
     "core-js": "^2.6.5",
@@ -34,7 +34,7 @@
     "graphql": "^14.4.1",
     "graphql-tag": "^2.10.1",
     "jwt-decode": "^2.2.0",
-    "lit-element": "^2.2.0",
+    "lit-element": "^2.2.1",
     "lodash.orderby": "^4.6.0",
     "mongodb-stitch-browser-sdk": "^4.5.0",
     "rxjs": "^6.5.2",
@@ -46,7 +46,7 @@
     "vue-recaptcha": "^1.2.0",
     "vue-router": "^3.0.6",
     "vue-rx": "^6.2.0",
-    "vuetify": "^2.0.0-beta.9",
+    "vuetify": "^2.0.1",
     "vuex": "^3.1.1"
   },
   "devDependencies": {
@@ -65,7 +65,7 @@
     "sass": "^1.22.7",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.10",
-    "vuetify-loader": "^1.2.2"
+    "vuetify-loader": "^1.3.0"
   },
   "browserslist": [
     "last 1 Chrome versions"
