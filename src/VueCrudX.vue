@@ -449,10 +449,10 @@ export default {
     // INLINE EDIT END
 
     _isHidden (hidden) {
-      return (hidden === 'add' && !this.selectedId) || (hidden === 'edit' && this.selectedId) || hidden === 'all'
+      return (hidden === 'add' && !this.selectedId) || (hidden === 'edit' && !!this.selectedId) || hidden === 'all'
     },
     _isReadOnly (readonly) {
-      return (readonly === 'add' && !this.selectedId) || (readonly === 'edit' && this.selectedId) || readonly === 'all'
+      return (readonly === 'add' && !this.selectedId) || (readonly === 'edit' && !!this.selectedId) || readonly === 'all'
     },
     _isObject (obj) { return obj !== null && typeof obj === 'object' },
     async testFunction (_in) { // for testing anything

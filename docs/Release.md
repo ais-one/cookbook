@@ -1,10 +1,12 @@
 ### Version 0.2.2
-- tbd
+- update packages
+- add pm2 logging folders
+- VueCrudX.vue minor bug fix _isHidden & _isReadOnly, use... ```&& !!this.selectedId``` instead of ```&& this.selectedId```
 
 ### Version 0.2.1
 - update to Vuetify 2.0.1, & other packages
 - fix form layouts
-- make db init os agnistic
+- make db init os agnostic
 
 ### Version 0.2.0
 - update to Vuetify 2.0 (many breaking changes)

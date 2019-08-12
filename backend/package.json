@@ -5,7 +5,7 @@
     "ssh": "ssh -i ../xxx.pem -L 27017:127.0.0.1:27017 ubuntu@11.22.33.44",
     "lint": "eslint .",
     "test": "mocha --timeout 15000 --recursive",
-    "db": "npx knex migrate:latest --env development&&npx knex seed:run --env development",
+    "init-db": "npx knex migrate:latest --env development&&npx knex seed:run --env development",
     "del-db": "rm -f dev.sqlite3",
     "dev": "set NODE_ENV=development&&nodemon index.js",
     "multiple-sample": "pm2 delete APP1 APP2 && pm2 start --only APP1,APP2 --env production",
@@ -49,11 +49,11 @@
     "passport-saml": "^1.1.0",
     "qrcode": "^1.4.1",
     "sqlite3": "^4.0.9",
-    "swagger-jsdoc": "^3.3.0",
+    "swagger-jsdoc": "^3.4.0",
     "swagger-ui-express": "^4.0.7",
     "uuid": "^3.3.2",
     "winston": "^3.2.1",
-    "ws": "^7.1.1",
+    "ws": "^7.1.2",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
