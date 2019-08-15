@@ -348,17 +348,26 @@ export default {
       this.notifyDelete({ status, error })
     },
     async exportRecords () {
-      // TBD
+      this.loading = true
+
+      // VARIATION Start - Vuetify2
+      let filters = {}
+      for (let key in this.filters) {
+        let value = this.filters[key].value
+        if (value) filters[key] = value
+      }
+      // VARIATION End - Vuetify2
+
       const payload = {
         parentId: this.parentId,
-        pagination: this.pagination,
-        filters: {},
-        sorters: {}
+        pagination: this.pagination, // not used
+        filters,
+        sorters: ''
       }
       this.loading = true
       const { status = 500, error = null } = await this.crud.export(payload)
-      this.loading = false
       this.notifyExport({ status, error })
+      this.loading = false
     },
     formClose () {
       this.showForm = false
@@ -485,11 +494,15 @@ export default {
       <div v-if="showFilter">
         <slot name="filter" :filters="filters" :parentId="parentId" :vcx="_self">
           <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="vform">
-            <template v-for="(filter, i) in filters">
-              <v-flex :key="i" v-bind="filter['field-wrapper']">
-                <component :is="filter.type" v-model="filter.value" v-bind="filter['field-input']" />
-              </v-flex>
-            </template>
+            <v-container fluid>
+              <v-layout row wrap>
+                <template v-for="(filter, i) in filters">
+                  <v-flex :key="i" v-bind="filter['field-wrapper']">
+                    <component :is="filter.type" v-model="filter.value" v-bind="filter['field-input']" />
+                  </v-flex>
+                </template>
+              </v-layout>
+            </v-container>
           </v-form>
         </slot>
       </div>
@@ -576,11 +589,15 @@ export default {
       </slot>
       <slot name="form" :form="form" :parentId="parentId" :vcx="_self">
         <v-form v-model="validForm" v-bind="vform"  :parentId="parentId" :vcx="_self">
-          <template v-for="(item, i) in form">
-            <v-flex :key="i" v-if="!_isHidden(item.hidden)" v-bind="item['field-wrapper']">
-              <component :is="item.type" v-model="item.value" v-bind="item['field-input']" :disabled="_isReadOnly(item.readonly)"/>
-            </v-flex>
-          </template>
+          <v-container fluid>
+            <v-layout row wrap>
+              <template v-for="(item, i) in form">
+                <v-flex :key="i" v-if="!_isHidden(item.hidden)" v-bind="item['field-wrapper']">
+                  <component :is="item.type" v-model="item.value" v-bind="item['field-input']" :disabled="_isReadOnly(item.readonly)"/>
+                </v-flex>
+              </template>
+            </v-layout>
+          </v-container>
         </v-form>
       </slot>
     </component>

@@ -35,11 +35,11 @@ function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';
   return csvContent
 }
 
-function exportCsv (csvContent) {
+function exportCsv (csvContent, filename) {
   let encodedUri = encodeURI('data:text/csv;charset=utf-8,' + csvContent)
   let link = document.createElement('a')
   link.setAttribute('href', encodedUri)
-  link.setAttribute('download', 'vessel.csv')
+  link.setAttribute('download', filename)
   document.body.appendChild(link) // Required for FF
   link.click()
 }

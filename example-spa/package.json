@@ -46,7 +46,7 @@
     "vue-recaptcha": "^1.2.0",
     "vue-router": "^3.1.2",
     "vue-rx": "^6.2.0",
-    "vuetify": "^2.0.5",
+    "vuetify": "^2.0.7",
     "vuex": "^3.1.1"
   },
   "devDependencies": {

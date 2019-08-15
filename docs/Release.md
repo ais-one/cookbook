@@ -2,6 +2,10 @@
 - update packages
 - add pm2 logging folders
 - VueCrudX.vue minor bug fix _isHidden & _isReadOnly, use... ```&& !!this.selectedId``` instead of ```&& this.selectedId```
+- VueCrudX.vue make export workable
+- VueCrudX.vue minor fixes on UI, remove unnecessary horizontal scroll in form and filters when displaying more than 1 field in a row, padding adjustments
+- improve date & time picker components
+- exportCsv function change from hardcoded output filename to user definable
 
 ### Version 0.2.1
 - update to Vuetify 2.0.1, & other packages
