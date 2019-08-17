@@ -551,7 +551,7 @@ export default {
                     </template>
                     <template v-else>
                       <v-icon v-if="crud.update && (inline.update || (!inline.update && form))" v-bind="vicon.edit.props" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">{{vicon.edit.name}}</v-icon>
-                      <v-icon v-if="crud.delete && inline.delete" v-bind="vicon.delete.props" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">{{vicon.delete.name}}</v-icon>
+                      <v-icon v-if="crud.delete && inline.delete" v-bind="vicon.delete.props" @click.stop="deleteRecord(item[idName])" :disabled="loading">{{vicon.delete.name}}</v-icon>
                     </template>
                   </span>
                   <template v-else>
