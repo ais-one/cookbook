@@ -14,7 +14,6 @@
 </template>
 
 <script>
-// import { makeCsvRow, exportCsv } from '@/assets/util'
 // import { http } from '@/axios'
 import { apolloClient } from '@/graphql'
 import { GET_CATEGORIES, GET_CATEGORY, PATCH_CATEGORY, CATEGORY_UPDATED, POST_CATEGORY } from '@/queries'

@@ -1,12 +1,17 @@
 ### Version 0.2.2
 - update packages
 - add pm2 logging folders
-- VueCrudX.vue minor bug fix _isHidden & _isReadOnly, use... ```&& !!this.selectedId``` instead of ```&& this.selectedId```
-- VueCrudX.vue make export workable
-- VueCrudX.vue minor fixes on UI, remove unnecessary horizontal scroll in form and filters when displaying more than 1 field in a row, padding adjustments
-- VueCruX.vue fix input parameters of crud updated() & created() overridable functions. change from **record** object (parameters passed into crud create() or update()) to **data** object (parameters returned from crud create() or update()). NOTE **created** AND **create**, **updated** and **update**...
+- VueCrudX.vue
+  - bug fix _isHidden & _isReadOnly, use... ```&& !!this.selectedId``` instead of ```&& this.selectedId```
+  - make export workable
+  - minor fixes on UI, remove unnecessary horizontal scroll in form and filters when displaying more than 1 field in a row, padding adjustments
+  - fix input parameters of crud updated() & created() overridable functions. change from **record** object (parameters passed into crud create() or update()) to **data** object (parameters returned from crud create() or update()). NOTE **created** AND **create**, **updated** and **update**...
+  - minor fix change this.deleteRecord(...) to deleteRecord(...) in template
 - improve date & time picker components
-- exportCsv function change from hardcoded output filename to user definable
+- example-spa/src/assets/util.js
+  - exportCsv function change from hardcoded output filename to user definable (also to deprecate for improved function)
+  - replace exportCsv, exportJson with downloadData (new function, works with IE and can handle larger filesize downloads in chrome)
+  - replace makeCsvRow with more robust function from json2csv library
 
 ### Version 0.2.1
 - update to Vuetify 2.0.1, & other packages

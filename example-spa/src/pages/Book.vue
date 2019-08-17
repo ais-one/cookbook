@@ -72,7 +72,8 @@
 import { from } from 'rxjs'
 import { pluck, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators' // map
 import { http } from '@/axios'
-import { makeCsvRow, exportCsv } from '@/assets/util'
+import { downloadData } from '@/assets/util'
+import { parse } from 'json2csv'
 
 export default {
   subscriptions () {
@@ -157,18 +158,18 @@ export default {
         crud: {
           export: async ({ filters = {}, sorters = {} }) => {
             try {
-              const { data: { results } } = http.get('/api/books', { })
-              let output = ''
-              results.forEach(record => {
-                output = makeCsvRow(output, record, `\r\n`, ';')
-              })
-              exportCsv(output, 'book.csv')
-              return { status: 200, data: null }
+              let params = { page: 0, limit: 50 } // improvement, do not paginate, get all based on filters
+              const { data } = await http.get('/api/books', { params })
+              if (data.results.length > 0) {
+                const csv = parse(data.results) // const opts = { fields: ['field1', 'field2', 'field3'] }
+                downloadData(csv, 'text/csv;charset=utf-8;', 'job.csv')
+              }
+              return { status: 200, error: '' }
             } catch (e) {
+              console.log(e.toString())
               return { status: e.response.status, error: e.toString() }
             }
           },
-
           find: async ({ pagination, filters = {}, sorters = {} }) => {
             let records = []
             let totalRecords = 0
@@ -220,7 +221,8 @@ export default {
               delete noIdData.authors // remove authors
               // console.log('record', id, name, categoryId, authorIds)
               const { data } = await http.patch(`/api/books/${id}`, noIdData) // TBD also update the author ids...?
-              return { status: 200, data }
+              console.log(data) // data has data before update, record has updated data, so use { data: record } instead of { data: data }
+              return { status: 200, data: record }
             } catch (e) {
               return { status: e.response.status, error: e.toString() }
             }
