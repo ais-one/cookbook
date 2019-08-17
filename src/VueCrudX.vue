@@ -165,7 +165,7 @@ export default {
     this.onRowClick = this.$attrs.onRowClick || ((item, event) => { // open form on row click? default true
       if (!this.inline.update) this.formOpen(item[this.idName]) // no action column && row click opens form
     })
-    this.created = this.$attrs.created || (async ({ record }) => { // TBD realtime updates
+    this.created = this.$attrs.created || (async ({ data }) => { // TBD realtime updates
       this.filters = this.$attrs.filters || null
       this.pagination.page = this.pageDefaults.start
       // this.pagination.itemsPerPage: this.pageDefaults.itemsPerPage - remain
@@ -174,12 +174,12 @@ export default {
       await this.getRecords({ mode: 'created' })
       // }
     })
-    this.updated = this.$attrs.updated || (({ record }) => { // also handles real-time updates
-      const idx = this.records.findIndex(rec => rec[this.idName] === record[this.idName])
+    this.updated = this.$attrs.updated || (({ data }) => { // also handles real-time updates
+      const idx = this.records.findIndex(rec => rec[this.idName] === data[this.idName])
       if (idx !== -1) {
         for (let key in this.records[idx]) {
-          if (key !== this.idName && record[key]) {
-            this.records[idx][key] = record[key]
+          if (key !== this.idName && data[key]) {
+            this.records[idx][key] = data[key]
           }
         }
       }
@@ -321,7 +321,7 @@ export default {
       const { status = 500, data = null, error = null } = await this.crud.update({ record })
       this.loading = false
       if (status === 200) {
-        await this.updated({ record })
+        await this.updated({ data })
       }
       this.notifyUpdate({ status, error })
     },
@@ -332,7 +332,7 @@ export default {
       const { status = 500, data = null, error = null } = await this.crud.create({ record, parentId })
       this.loading = false
       if (status === 201) {
-        await this.created({ record })
+        await this.created({ data })
       }
       this.notifyCreate({ status, error })
     },

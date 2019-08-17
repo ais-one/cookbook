@@ -37,8 +37,8 @@ export default {
       parentId: null,
       taskDefs: {
         // overide set all to do nothing, as firebase will take care of post crud actions
-        updated: ({ record }) => { },
-        created: ({ record }) => { },
+        updated: ({ data }) => { },
+        created: ({ data }) => { },
         deleted: (id) => { },
 
         infinite: true,

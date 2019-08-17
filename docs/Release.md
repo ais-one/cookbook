@@ -4,6 +4,7 @@
 - VueCrudX.vue minor bug fix _isHidden & _isReadOnly, use... ```&& !!this.selectedId``` instead of ```&& this.selectedId```
 - VueCrudX.vue make export workable
 - VueCrudX.vue minor fixes on UI, remove unnecessary horizontal scroll in form and filters when displaying more than 1 field in a row, padding adjustments
+- VueCruX.vue fix input parameters of crud updated() & created() overridable functions. change from **record** object (parameters passed into crud create() or update()) to **data** object (parameters returned from crud create() or update()). NOTE **created** AND **create**, **updated** and **update**...
 - improve date & time picker components
 - exportCsv function change from hardcoded output filename to user definable
 
