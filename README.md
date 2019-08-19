@@ -2,10 +2,11 @@
 
 # NOTICES & UPDATES
 
-> Latest Version 0.2.2 Released 2019 August 28 0115 +8GMT
-> vue-crud-x 0.1 and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1)
+> Latest Version 0.2.2 Released 2019 August 19 1545 +8GMT
 
 **vue-crud-x 0.2** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
+
+**vue-crud-x 0.1** and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1)
 
 # WHAT IS VUE-CRUD-X
 
