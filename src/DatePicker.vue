@@ -17,9 +17,13 @@
         :label="label"
         :prepend-icon="iconName"
         readonly
+        :hint="hint"
+        :persistent-hint="persistentHint"
       ></v-text-field>
     </template>
-    <v-date-picker v-model="date" no-title scrollable @input="changeDate"></v-date-picker>
+    <v-date-picker v-if="menu" v-model="date" no-title scrollable @input="changeDate">
+      <v-btn style="margin: auto" text color="primary" @click="menu=false">Cancel</v-btn>
+    </v-date-picker>
   </v-menu>
 </template>
 
@@ -37,9 +41,17 @@ export default {
       type: String,
       required: true
     },
-    label: {
+    hint: {
       type: String,
       default: 'Date'
+    },
+    'persistent-hint': {
+      type: Boolean,
+      default: true
+    },
+    label: {
+      type: String,
+      default: ''
     },
     iconName: {
       type: String,

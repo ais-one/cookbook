@@ -35,15 +35,17 @@ function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';
   return csvContent
 }
 
-function exportCsv (csvContent) {
+// to be removed
+function exportCsv (csvContent, filename) {
   let encodedUri = encodeURI('data:text/csv;charset=utf-8,' + csvContent)
   let link = document.createElement('a')
   link.setAttribute('href', encodedUri)
-  link.setAttribute('download', 'vessel.csv')
+  link.setAttribute('download', filename)
   document.body.appendChild(link) // Required for FF
   link.click()
 }
 
+// to be removed
 function exportJson (jsonContent, filename) {
   if (typeof jsonContent !== 'string') jsonContent = JSON.stringify(jsonContent)
   let encodedUri = encodeURI('data:text/json;charset=utf-8,' + jsonContent)
@@ -54,4 +56,21 @@ function exportJson (jsonContent, filename) {
   link.click()
 }
 
-export { makeCsvRow, exportCsv, exportJson }
+// improved download function
+function downloadData (content, type = 'text/csv;charset=utf-8;', filename) {
+  const blob = new Blob([content], { type })
+  // IE11 & Edge
+  if (navigator.msSaveBlob) { // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+    navigator.msSaveBlob(blob, filename)
+  } else {
+    // In FF link must be added to DOM to be clicked
+    const link = document.createElement('a')
+    link.href = window.URL.createObjectURL(blob)
+    link.setAttribute('download', filename)
+    document.body.appendChild(link)
+    link.click() // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
+    document.body.removeChild(link)
+  }
+}
+
+export { makeCsvRow, exportCsv, exportJson, downloadData }

@@ -17,9 +17,13 @@
         :label="label"
         :prepend-icon="iconName"
         readonly
+        :hint="hint"
+        :persistent-hint="persistentHint"
       ></v-text-field>
     </template>
-    <v-time-picker v-if="menu" v-model="time" format="24hr" no-title scrollable @change="changeTime"></v-time-picker>
+    <v-time-picker v-if="menu" v-model="time" format="24hr" no-title scrollable @change="changeTime">
+      <v-btn style="margin: auto" text color="primary" @click="menu=false">Cancel</v-btn>
+    </v-time-picker>
   </v-menu>
 </template>
 
@@ -37,9 +41,17 @@ export default {
       type: String,
       required: true
     },
-    label: {
+    hint: {
       type: String,
       default: 'Time'
+    },
+    'persistent-hint': {
+      type: Boolean,
+      default: true
+    },
+    label: {
+      type: String,
+      default: ''
     },
     iconName: {
       type: String,

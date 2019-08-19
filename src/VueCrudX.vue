@@ -57,7 +57,7 @@ export default {
         cancel: { name: 'cancel', props: { small: true, class: 'mr-1' } },
         delete: { name: 'delete', props: { small: true, class: 'mr-1' } }
       },
-      vtoolbar: { height: 48, dark: false, light: true, color: 'grey', fixed: false }, // v-toolbar Component
+      vtoolbar: { height: 48, dark: false, light: true, color: 'grey' }, // v-toolbar Component
       vform: { // v-form Component
         class: 'grey lighten-3 pa-2',
         style: { overflow: 'auto' },
@@ -165,7 +165,7 @@ export default {
     this.onRowClick = this.$attrs.onRowClick || ((item, event) => { // open form on row click? default true
       if (!this.inline.update) this.formOpen(item[this.idName]) // no action column && row click opens form
     })
-    this.created = this.$attrs.created || (async ({ record }) => { // TBD realtime updates
+    this.created = this.$attrs.created || (async ({ data }) => { // TBD realtime updates
       this.filters = this.$attrs.filters || null
       this.pagination.page = this.pageDefaults.start
       // this.pagination.itemsPerPage: this.pageDefaults.itemsPerPage - remain
@@ -174,12 +174,12 @@ export default {
       await this.getRecords({ mode: 'created' })
       // }
     })
-    this.updated = this.$attrs.updated || (({ record }) => { // also handles real-time updates
-      const idx = this.records.findIndex(rec => rec[this.idName] === record[this.idName])
+    this.updated = this.$attrs.updated || (({ data }) => { // also handles real-time updates
+      const idx = this.records.findIndex(rec => rec[this.idName] === data[this.idName])
       if (idx !== -1) {
         for (let key in this.records[idx]) {
-          if (key !== this.idName && record[key]) {
-            this.records[idx][key] = record[key]
+          if (key !== this.idName && data[key]) {
+            this.records[idx][key] = data[key]
           }
         }
       }
@@ -321,7 +321,7 @@ export default {
       const { status = 500, data = null, error = null } = await this.crud.update({ record })
       this.loading = false
       if (status === 200) {
-        await this.updated({ record })
+        await this.updated({ data })
       }
       this.notifyUpdate({ status, error })
     },
@@ -332,7 +332,7 @@ export default {
       const { status = 500, data = null, error = null } = await this.crud.create({ record, parentId })
       this.loading = false
       if (status === 201) {
-        await this.created({ record })
+        await this.created({ data })
       }
       this.notifyCreate({ status, error })
     },
@@ -348,17 +348,26 @@ export default {
       this.notifyDelete({ status, error })
     },
     async exportRecords () {
-      // TBD
+      this.loading = true
+
+      // VARIATION Start - Vuetify2
+      let filters = {}
+      for (let key in this.filters) {
+        let value = this.filters[key].value
+        if (value) filters[key] = value
+      }
+      // VARIATION End - Vuetify2
+
       const payload = {
         parentId: this.parentId,
-        pagination: this.pagination,
-        filters: {},
-        sorters: {}
+        pagination: this.pagination, // not used
+        filters,
+        sorters: ''
       }
       this.loading = true
       const { status = 500, error = null } = await this.crud.export(payload)
-      this.loading = false
       this.notifyExport({ status, error })
+      this.loading = false
     },
     formClose () {
       this.showForm = false
@@ -449,10 +458,10 @@ export default {
     // INLINE EDIT END
 
     _isHidden (hidden) {
-      return (hidden === 'add' && !this.selectedId) || (hidden === 'edit' && this.selectedId) || hidden === 'all'
+      return (hidden === 'add' && !this.selectedId) || (hidden === 'edit' && !!this.selectedId) || hidden === 'all'
     },
     _isReadOnly (readonly) {
-      return (readonly === 'add' && !this.selectedId) || (readonly === 'edit' && this.selectedId) || readonly === 'all'
+      return (readonly === 'add' && !this.selectedId) || (readonly === 'edit' && !!this.selectedId) || readonly === 'all'
     },
     _isObject (obj) { return obj !== null && typeof obj === 'object' },
     async testFunction (_in) { // for testing anything
@@ -485,11 +494,15 @@ export default {
       <div v-if="showFilter">
         <slot name="filter" :filters="filters" :parentId="parentId" :vcx="_self">
           <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="vform">
-            <template v-for="(filter, i) in filters">
-              <v-flex :key="i" v-bind="filter['field-wrapper']">
-                <component :is="filter.type" v-model="filter.value" v-bind="filter['field-input']" />
-              </v-flex>
-            </template>
+            <v-container fluid>
+              <v-layout row wrap>
+                <template v-for="(filter, i) in filters">
+                  <v-flex :key="i" v-bind="filter['field-wrapper']">
+                    <component :is="filter.type" v-model="filter.value" v-bind="filter['field-input']" />
+                  </v-flex>
+                </template>
+              </v-layout>
+            </v-container>
           </v-form>
         </slot>
       </div>
@@ -538,7 +551,7 @@ export default {
                     </template>
                     <template v-else>
                       <v-icon v-if="crud.update && (inline.update || (!inline.update && form))" v-bind="vicon.edit.props" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">{{vicon.edit.name}}</v-icon>
-                      <v-icon v-if="crud.delete && inline.delete" v-bind="vicon.delete.props" @click.stop="this.deleteRecord(item[idName])" :disabled="loading">{{vicon.delete.name}}</v-icon>
+                      <v-icon v-if="crud.delete && inline.delete" v-bind="vicon.delete.props" @click.stop="deleteRecord(item[idName])" :disabled="loading">{{vicon.delete.name}}</v-icon>
                     </template>
                   </span>
                   <template v-else>
@@ -568,19 +581,21 @@ export default {
         <v-toolbar v-bind="vtoolbar">
           <v-toolbar-title><v-btn v-bind="vbtn.close.props" @click.native="formClose" :disabled="loading"><v-icon>{{vbtn.close.icon}}</v-icon><span>{{vbtn.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn v-bind="vbtn.delete.props" v-if="crud.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{vbtn.delete.icon}}</v-icon><span>{{vbtn.delete.label}}</span></v-btn>
-            <v-btn v-bind="vbtn.update.props" v-if="crud.update && selectedId||crud.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{vbtn.update.icon}}</v-icon><span>{{vbtn.update.label}}</span></v-btn>
-          </v-toolbar-items>
+          <v-btn v-bind="vbtn.delete.props" v-if="crud.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{vbtn.delete.icon}}</v-icon><span>{{vbtn.delete.label}}</span></v-btn>
+          <v-btn v-bind="vbtn.update.props" v-if="crud.update && selectedId||crud.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{vbtn.update.icon}}</v-icon><span>{{vbtn.update.label}}</span></v-btn>
         </v-toolbar>
       </slot>
       <slot name="form" :form="form" :parentId="parentId" :vcx="_self">
         <v-form v-model="validForm" v-bind="vform"  :parentId="parentId" :vcx="_self">
-          <template v-for="(item, i) in form">
-            <v-flex :key="i" v-if="!_isHidden(item.hidden)" v-bind="item['field-wrapper']">
-              <component :is="item.type" v-model="item.value" v-bind="item['field-input']" :disabled="_isReadOnly(item.readonly)"/>
-            </v-flex>
-          </template>
+          <v-container fluid>
+            <v-layout row wrap>
+              <template v-for="(item, i) in form">
+                <v-flex :key="i" v-if="!_isHidden(item.hidden)" v-bind="item['field-wrapper']">
+                  <component :is="item.type" v-model="item.value" v-bind="item['field-input']" :disabled="_isReadOnly(item.readonly)"/>
+                </v-flex>
+              </template>
+            </v-layout>
+          </v-container>
         </v-form>
       </slot>
     </component>

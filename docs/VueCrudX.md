@@ -1,4 +1,4 @@
-# Version 0.2.1 API Documentation
+# Version 0.2.1 API Documentation (compatible with latest release 0.2.2)
 
 This document describes the details on the properties used in vue-crud-x.
 
@@ -399,9 +399,16 @@ confirmDelete: () => { }
 
 override post create, update, delete action
 
+**data** object passed in is result from the update or create operation
+
 ```js
-updated: ({ record }) => { }
-created:({ record }) => { }
+// data: you determine the properties - usually it is same as what was passed in
+updated: ({ data }) => { }
+
+// data: you determine the properties - usually it is same as what was passed in
+created:({ data }) => { }
+
+// id: the record ID
 deleted: (id) => { }
 ```
 
