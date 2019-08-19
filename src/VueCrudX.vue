@@ -57,7 +57,7 @@ export default {
         cancel: { name: 'cancel', props: { small: true, class: 'mr-1' } },
         delete: { name: 'delete', props: { small: true, class: 'mr-1' } }
       },
-      vtoolbar: { height: 48, dark: false, light: true, color: 'grey', fixed: false }, // v-toolbar Component
+      vtoolbar: { height: 48, dark: false, light: true, color: 'grey' }, // v-toolbar Component
       vform: { // v-form Component
         class: 'grey lighten-3 pa-2',
         style: { overflow: 'auto' },
@@ -581,10 +581,8 @@ export default {
         <v-toolbar v-bind="vtoolbar">
           <v-toolbar-title><v-btn v-bind="vbtn.close.props" @click.native="formClose" :disabled="loading"><v-icon>{{vbtn.close.icon}}</v-icon><span>{{vbtn.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-toolbar-items>
-            <v-btn v-bind="vbtn.delete.props" v-if="crud.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{vbtn.delete.icon}}</v-icon><span>{{vbtn.delete.label}}</span></v-btn>
-            <v-btn v-bind="vbtn.update.props" v-if="crud.update && selectedId||crud.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{vbtn.update.icon}}</v-icon><span>{{vbtn.update.label}}</span></v-btn>
-          </v-toolbar-items>
+          <v-btn v-bind="vbtn.delete.props" v-if="crud.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{vbtn.delete.icon}}</v-icon><span>{{vbtn.delete.label}}</span></v-btn>
+          <v-btn v-bind="vbtn.update.props" v-if="crud.update && selectedId||crud.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{vbtn.update.icon}}</v-icon><span>{{vbtn.update.label}}</span></v-btn>
         </v-toolbar>
       </slot>
       <slot name="form" :form="form" :parentId="parentId" :vcx="_self">
