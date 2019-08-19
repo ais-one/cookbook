@@ -1,3 +1,6 @@
+### Version 0.2.3
+- update packages
+
 ### Version 0.2.2
 - update packages
 - add pm2 logging folders
