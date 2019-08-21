@@ -1,5 +1,7 @@
 ### Version 0.2.3
 - update packages
+- VueCrudX
+  - add vcx to onRowClick (so you can reference things in VueCrudX)
 
 ### Version 0.2.2
 - update packages

@@ -162,7 +162,7 @@ export default {
     this.form = this.$attrs.form || null
 
     // non-ui reactive data - START
-    this.onRowClick = this.$attrs.onRowClick || ((item, event) => { // open form on row click? default true
+    this.onRowClick = this.$attrs.onRowClick || ((item, event, vcx) => { // open form on row click? default true
       if (!this.inline.update) this.formOpen(item[this.idName]) // no action column && row click opens form
     })
     this.created = this.$attrs.created || (async ({ data }) => { // TBD realtime updates
@@ -541,7 +541,7 @@ export default {
           </template> -->
 
           <template v-slot:item="{ item }"><!-- was items -->
-            <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="onRowClick(item, $event)">
+            <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="onRowClick(item, $event, _self)">
               <slot name="td" :headers="vtable.headers" :item="item" :vcx="_self">
                 <td :key="header.value + index" v-for="(header, index) in vtable.headers" :class="header.class">
                   <span v-if="header.action">
