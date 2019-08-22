@@ -21,7 +21,7 @@
         :persistent-hint="persistentHint"
       ></v-text-field>
     </template>
-    <v-time-picker v-if="menu" v-model="time" format="24hr" no-title scrollable @change="changeTime">
+    <v-time-picker v-if="menu" v-model="time" format="24hr" no-title scrollable @change="changeTime" :allowed-minutes="allowedMinutes" >
       <v-btn style="margin: auto" text color="primary" @click="menu=false">Cancel</v-btn>
     </v-time-picker>
   </v-menu>
@@ -37,13 +37,17 @@ export default {
     modal: false
   }),
   props: {
+    allowedMinutes: {
+      type: Array,
+      default: null
+    },
     value: {
       type: String,
       required: true
     },
     hint: {
       type: String,
-      default: 'Time'
+      default: ''
     },
     'persistent-hint': {
       type: Boolean,
@@ -55,7 +59,7 @@ export default {
     },
     iconName: {
       type: String,
-      default: 'access_time'
+      default: '' // access_time
     },
     format: {
       type: String,
