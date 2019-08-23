@@ -2,6 +2,7 @@
 - update packages
 - VueCrudX
   - add vcx to onRowClick (so you can reference things in VueCrudX)
+  - additional error check ```if (status === 200 && data)``` after this.crud.fineOne call
 
 ### Version 0.2.2
 - update packages

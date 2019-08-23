@@ -1,7 +1,7 @@
 
 import Vue from 'vue'
 import Vuetify, {
-  VTextField, VSelect, VAutocomplete, VCombobox
+  VTextField, VSelect, VAutocomplete, VCombobox, VTextarea
 } from 'vuetify/lib'
 import { Scroll } from 'vuetify/lib/directives'
 import i18n from '../lang'
@@ -10,7 +10,7 @@ import '@mdi/font/css/materialdesignicons.css'
 
 Vue.use(Vuetify, {
   components: {
-    VTextField, VSelect, VAutocomplete, VCombobox
+    VTextField, VSelect, VAutocomplete, VCombobox, VTextarea
   },
   directives: {
     Scroll

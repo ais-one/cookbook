@@ -306,7 +306,7 @@ export default {
       this.loading = true
       const { status = 500, data = null, error = null } = await this.crud.findOne(id)
       console.log(status, data, error)
-      if (status === 200) {
+      if (status === 200 && data) {
         for (let key in this.form) {
           this.form[key].value = data[key]
         }
