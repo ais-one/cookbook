@@ -575,8 +575,8 @@ export default {
         </v-data-table>
       </slot>
     </component>
-    <!-- form -->
-    <component :is="'div'" v-show="showForm" row justify-center>
+    <!-- form use v-if to refresh -->
+    <component :is="'div'" v-if="showForm" row justify-center>
       <slot name="form-toolbar" :vcx="_self">
         <v-toolbar v-bind="vtoolbar">
           <v-toolbar-title><v-btn v-bind="vbtn.close.props" @click.native="formClose" :disabled="loading"><v-icon>{{vbtn.close.icon}}</v-icon><span>{{vbtn.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
