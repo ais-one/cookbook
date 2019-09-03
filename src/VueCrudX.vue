@@ -308,7 +308,7 @@ export default {
       console.log(status, data, error)
       if (status === 200 && data) {
         for (let key in this.form) {
-          this.form[key].value = data[key]
+          this.form[key].value = this.form[key].render ? this.form[key].render(data[key]) : data[key]
         }
       }
       this.notifyFindOne({ status, error })

@@ -12,9 +12,9 @@
                   <v-flex xs12>
                     <v-text-field label="Username" v-model="email" type="text" required></v-text-field>
                     <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
-                    <v-btn type="submit" :disabled="loading||recaptchaUnverified" :loading="loading">Sign in</v-btn>
-                    <v-btn type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onFirebaseSignin">Firebase Sign in</v-btn>
-                    <v-btn type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onMongoSignin">Mongo Sign in</v-btn>
+                    <v-btn class="ma-1" type="submit" :disabled="loading||recaptchaUnverified" :loading="loading">Sign in</v-btn>
+                    <v-btn class="ma-1" type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onFirebaseSignin">Firebase Sign in</v-btn>
+                    <v-btn class="ma-1" type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onMongoSignin">Mongo Sign in</v-btn>
                     <vue-recaptcha v-if="sitekey" class="g-recaptcha" @verify="onVerify" @expired="onExpired" :sitekey="sitekey"></vue-recaptcha>
                     <p v-if="!!error">{{ error.message }}</p>
                   </v-flex>
@@ -41,8 +41,6 @@
 
 <script>
 import VueRecaptcha from 'vue-recaptcha'
-import { recaptchaSiteKey } from '../../cfg.json'
-
 import { mapGetters } from 'vuex'
 import '../../../src/vcx-loading-blocker.js'
 
@@ -51,7 +49,7 @@ export default {
   data () {
     return {
       recaptchaUnverified: true, // recaptcha
-      sitekey: recaptchaSiteKey, // recaptcha
+      sitekey: process.env.VUE_APP_RECAPTCHA_KEY || '', // recaptcha
       email: '',
       password: '',
       pin: '' // OTP

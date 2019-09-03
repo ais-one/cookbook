@@ -321,6 +321,7 @@ form: {
   'id': { // field name
     type: 'v-text-field',
     value: '',
+    render: (v) => v, // your custom function to transform a value for use with the form input item
     default: '',
     hidden: 'add', // add, edit, all, null
     readonly: 'all', // add, edit, all, null

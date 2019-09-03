@@ -54,6 +54,7 @@ export default {
           'name': {
             type: 'v-text-field',
             value: '',
+            render: (v) => v.toUpperCase(),
             default: '',
             'field-wrapper': { xs12: true },
             'field-input': {

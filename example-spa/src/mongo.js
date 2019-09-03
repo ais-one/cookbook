@@ -11,26 +11,31 @@ import { Stitch, UserPasswordCredential, RemoteMongoClient } from 'mongodb-stitc
 // })
 
 // await mongodb.db('shop').collection('products').deleteOne({ _id: new BSON.ObjectId(productId) })
+let stitch, getUserPasswordCredential, mongo, atlasLogin
 
-export const getUserPasswordCredential = (user, password) => {
-  return new UserPasswordCredential(user, password)
-}
+if (process.env.VUE_APP_MONGO_STITCH && !stitch) {
+  stitch = Stitch.initializeDefaultAppClient(process.env.VUE_APP_MONGO_STITCH)
 
-export const stitch = Stitch.initializeDefaultAppClient(process.env.VUE_APP_MONGO_STITCH)
+  getUserPasswordCredential = (user, password) => {
+    return new UserPasswordCredential(user, password)
+  }
 
-export const mongo = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas')
+  mongo = Stitch.defaultAppClient.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas')
 
-export const atlasLogin = async (user, password) => {
-  try {
-    const credential = new UserPasswordCredential(user, password)
-    let rv = await stitch.auth.loginWithCredential(credential)
-    console.log(rv)
-    // const emailPassClient = stitch.auth.getProviderClient(UserPasswordAuthProviderClient.factory)
-    // await emailPassClient.registerWithEmail(authData.email, authData.password)
-  } catch (e) {
-    console.log(e.toString())
+  atlasLogin = async (user, password) => {
+    try {
+      const credential = new UserPasswordCredential(user, password)
+      let rv = await stitch.auth.loginWithCredential(credential)
+      console.log(rv)
+      // const emailPassClient = stitch.auth.getProviderClient(UserPasswordAuthProviderClient.factory)
+      // await emailPassClient.registerWithEmail(authData.email, authData.password)
+    } catch (e) {
+      console.log(e.toString())
+    }
   }
 }
+
+export { stitch, getUserPasswordCredential, mongo, atlasLogin }
 
 /*
 async testStitch () {
