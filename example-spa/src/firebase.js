@@ -1,20 +1,21 @@
-import Firebase from '@firebase/app'
-import '@firebase/auth'
-import '@firebase/firestore'
-import '@firebase/storage'
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
+import 'firebase/storage'
+
 import { firebaseCfg } from '../cfg.json'
 // let { firebaseCfg = '' } = import('../cfg.json')
 
 let firebaseApp, storage, firestore, auth, secondaryApp, auth2
 
 if (firebaseCfg && firebaseCfg.apiKey) {
-  firebaseApp = Firebase.initializeApp(firebaseCfg)
+  firebaseApp = firebase.initializeApp(firebaseCfg)
   storage = firebaseApp.storage()
   firestore = firebaseApp.firestore()
   auth = firebaseApp.auth()
 
   // for auth user creation
-  secondaryApp = Firebase.initializeApp(firebaseCfg, 'Secondary')
+  secondaryApp = firebase.initializeApp(firebaseCfg, 'Secondary')
   auth2 = secondaryApp.auth()
 }
 
