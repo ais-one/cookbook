@@ -162,7 +162,7 @@ export default {
     this.form = this.$attrs.form || null
 
     // non-ui reactive data - START
-    this.onRowClick = this.$attrs.onRowClick || ((item, event) => { // open form on row click? default true
+    this.onRowClick = this.$attrs.onRowClick || ((item, event, vcx) => { // open form on row click? default true
       if (!this.inline.update) this.formOpen(item[this.idName]) // no action column && row click opens form
     })
     this.created = this.$attrs.created || (async ({ data }) => { // TBD realtime updates
@@ -306,9 +306,9 @@ export default {
       this.loading = true
       const { status = 500, data = null, error = null } = await this.crud.findOne(id)
       console.log(status, data, error)
-      if (status === 200) {
+      if (status === 200 && data) {
         for (let key in this.form) {
-          this.form[key].value = data[key]
+          this.form[key].value = this.form[key].render ? this.form[key].render(data[key]) : data[key]
         }
       }
       this.notifyFindOne({ status, error })
@@ -541,7 +541,7 @@ export default {
           </template> -->
 
           <template v-slot:item="{ item }"><!-- was items -->
-            <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="onRowClick(item, $event)">
+            <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="onRowClick(item, $event, _self)">
               <slot name="td" :headers="vtable.headers" :item="item" :vcx="_self">
                 <td :key="header.value + index" v-for="(header, index) in vtable.headers" :class="header.class">
                   <span v-if="header.action">
@@ -575,8 +575,8 @@ export default {
         </v-data-table>
       </slot>
     </component>
-    <!-- form -->
-    <component :is="'div'" v-show="showForm" row justify-center>
+    <!-- form use v-if to refresh -->
+    <component :is="'div'" v-if="showForm" row justify-center>
       <slot name="form-toolbar" :vcx="_self">
         <v-toolbar v-bind="vtoolbar">
           <v-toolbar-title><v-btn v-bind="vbtn.close.props" @click.native="formClose" :disabled="loading"><v-icon>{{vbtn.close.icon}}</v-icon><span>{{vbtn.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>

@@ -71,14 +71,16 @@ export const app = new Vue({
   render: h => h(App),
   created () {
     // firebase
-    auth.onAuthStateChanged((user) => {
-      // console.log('onAuthStateChanged', user)
-      if (user) {
-        this.$store.dispatch('firebaseAutoSignin', user) // server force keep login
-      } else {
-        // this.$store.dispatch('baasLogout', {userLogout: false}) // server force logout
-      }
-    })
+    if (auth) {
+      auth.onAuthStateChanged((user) => {
+        // console.log('onAuthStateChanged', user)
+        if (user) {
+          this.$store.dispatch('firebaseAutoSignin', user) // server force keep login
+        } else {
+          // this.$store.dispatch('baasLogout', {userLogout: false}) // server force logout
+        }
+      })
+    }
     // // mongo - SEEMS LIKE NOT WORKING AT THE MOMENT
     // stitch.auth.addAuthListener(auth => {
     //   console.log('onAuthStateChanged', auth)

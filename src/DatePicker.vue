@@ -43,7 +43,7 @@ export default {
     },
     hint: {
       type: String,
-      default: 'Date'
+      default: ''
     },
     'persistent-hint': {
       type: Boolean,
@@ -55,7 +55,7 @@ export default {
     },
     iconName: {
       type: String,
-      default: 'event'
+      default: '' // event
     },
     format: {
       type: String,

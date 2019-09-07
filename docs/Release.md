@@ -1,3 +1,14 @@
+### Version 0.2.3
+- update packages
+- VueCrudX
+  - add vcx to onRowClick (so you can reference things in VueCrudX)
+  - additional error check ```if (status === 200 && data)``` after this.crud.fineOne call
+  - add render function in Form Fields configuration to allow record field to be transformed to format used the input
+- example-spa
+  - fix major error when using firebase or mongo stitch
+  - improve on configs, recaptcha moved to env file
+  - fix firebase implemention, should use firebase/app, not @firebase/app
+
 ### Version 0.2.2
 - update packages
 - add pm2 logging folders

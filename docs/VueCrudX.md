@@ -1,4 +1,4 @@
-# Version 0.2.1 API Documentation (compatible with latest release 0.2.2)
+# Version 0.2.3 API Documentation (compatible with release 0.2.2 and above)
 
 This document describes the details on the properties used in vue-crud-x.
 
@@ -321,6 +321,7 @@ form: {
   'id': { // field name
     type: 'v-text-field',
     value: '',
+    render: (v) => v, // your custom function to transform a value for use with the form input item
     default: '',
     hidden: 'add', // add, edit, all, null
     readonly: 'all', // add, edit, all, null
@@ -377,7 +378,8 @@ override row click event
 default is do nothing
 
 ```js
-onRowClick: (item, $event) => { }
+// _self is reference to the VueCrudX component, so you can access properties in the component
+onRowClick: (item, $event, _self) => { }
 ```
 
 ### Action Confirmation

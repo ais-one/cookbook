@@ -1,15 +1,25 @@
-import Firebase from '@firebase/app'
-import '@firebase/auth'
-import '@firebase/firestore'
-import '@firebase/storage'
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
+import 'firebase/storage'
+
 import { firebaseCfg } from '../cfg.json'
+// let { firebaseCfg = '' } = import('../cfg.json')
 
-const firebaseApp = Firebase.initializeApp(firebaseCfg)
-const storage = firebaseApp.storage()
-const firestore = firebaseApp.firestore()
-// No Need Anymore: firestore.settings({ timestampsInSnapshots: true })
-const auth = firebaseApp.auth()
+let firebaseApp, storage, firestore, auth, secondaryApp, auth2
 
+if (firebaseCfg && firebaseCfg.apiKey) {
+  firebaseApp = firebase.initializeApp(firebaseCfg)
+  storage = firebaseApp.storage()
+  firestore = firebaseApp.firestore()
+  auth = firebaseApp.auth()
+
+  // for auth user creation
+  secondaryApp = firebase.initializeApp(firebaseCfg, 'Secondary')
+  auth2 = secondaryApp.auth()
+}
+
+// for duplicate detection - to remove
 const hasDuplicate = async (collection, key, value, id = null) => {
   try {
     if (id) { // update
@@ -27,9 +37,5 @@ const hasDuplicate = async (collection, key, value, id = null) => {
   } catch (e) { }
   return true
 }
-
-// for auth user creation
-const secondaryApp = Firebase.initializeApp(firebaseCfg, 'Secondary')
-const auth2 = secondaryApp.auth()
 
 export { auth, auth2, firestore, storage, hasDuplicate }
