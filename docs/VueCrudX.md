@@ -1,4 +1,4 @@
-# Version 0.2.3 API Documentation (compatible with release 0.2.2 and above)
+# Version 0.2.4 API Documentation (compatible with release 0.2.2 and above)
 
 This document describes the details on the properties used in vue-crud-x.
 
