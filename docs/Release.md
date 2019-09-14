@@ -1,5 +1,7 @@
 ### Version 0.2.4
 - update packages
+- VueCrudX
+  - improve layout of table and forms, add to VueCrudX.md documentation
 
 ### Version 0.2.3
 - update packages

@@ -98,9 +98,14 @@ The header properties described below can be found in the Vuetify 2 documentatio
 filter and sort properties are usually not used as the operations should be performed at the server side for vue-crud-x.
 
 Additional **vtable.header** properties described are used by vue-crud-x for
-- cell content formatting
-- cell edit control configuration
-- indicating if column is a action column with delete and/or update buttons
+- render: cell content formatting of the column
+- edit: cell edit control configuration of the column
+- action: indicating if column is a action column with delete and/or update buttons
+
+**NOTE** you may want to set the height to the table, you may want to adjust the offset in **calc()** to take into account
+- app fixed header and/or footer
+- table default footer (pagination)
+- table header (may be hidden, so may have to adjust for this)
 
 ```js
 vtable: {
@@ -114,14 +119,15 @@ vtable: {
       props: null // properties related to the type of edit control - 
     }
     action: true // column is an action column
-  }
+  },
+  height: 'calc(100vh - 200px)'
 }
 ```
 
 
 ### vform
 
-inject properties for v-form (used by filter and by CRUD form)
+inject properties for v-form (used by filter)
 
 default:
 
@@ -132,6 +138,31 @@ default:
   'lazy-validation': true
 }
 ```
+
+### vformCrud
+
+inject properties for v-form (used by CRUD form)
+
+**NOTE**
+
+You may want to set the form height so that the vue-crud-x toolbar does not disappear when you scroll down, adjust the offset in **calc()** below to take into account any fixed header or footer of the app.
+
+```js
+vformCrud: {
+  style: { overflow: 'auto', height: 'calc(100vh - 144px)' }
+},
+```
+
+default:
+
+```js
+{
+  class: 'grey lighten-3 pa-2',
+  style: { overflow: 'auto' },
+  'lazy-validation': true
+}
+```
+
 
 ### vbtn
 

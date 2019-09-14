@@ -58,7 +58,12 @@ export default {
         delete: { name: 'delete', props: { small: true, class: 'mr-1' } }
       },
       vtoolbar: { height: 48, dark: false, light: true, color: 'grey' }, // v-toolbar Component
-      vform: { // v-form Component
+      vform: { // v-form Component for filter
+        class: 'grey lighten-3 pa-2',
+        style: { overflow: 'auto' },
+        'lazy-validation': true
+      },
+      vformCrud: { // v-form Component for CRUD
         class: 'grey lighten-3 pa-2',
         style: { overflow: 'auto' },
         'lazy-validation': true
@@ -140,6 +145,7 @@ export default {
     this.vicon = Object.assign(this.vicon, this.$attrs.vicon || {})
     this.vbtn = Object.assign(this.vbtn, this.$attrs.vbtn || {})
     this.vform = Object.assign(this.vform, this.$attrs.vform || {})
+    this.vformCrud = Object.assign(this.vformCrud, this.$attrs.vformCrud || {})
     this.vtoolbar = Object.assign(this.vtoolbar, this.$attrs.vtoolbar || {})
     this.vtable = Object.assign(this.vtable, this.$attrs.vtable || {})
 
@@ -281,7 +287,7 @@ export default {
         filters,
         sorters
       }
-      console.log('getRecords', mode, this.pagination, filters, sorters)
+      // console.log('getRecords', mode, this.pagination, filters, sorters)
       const { status = 500, data = null, error = null } = await this.crud.find(payload) // pagination returns for infinite scroll
       if (status === 200) {
         let { records, totalRecords = 0, cursor = '' } = data
@@ -305,7 +311,7 @@ export default {
     async getRecord (id) {
       this.loading = true
       const { status = 500, data = null, error = null } = await this.crud.findOne(id)
-      console.log(status, data, error)
+      // console.log(status, data, error)
       if (status === 200 && data) {
         for (let key in this.form) {
           this.form[key].value = this.form[key].render ? this.form[key].render(data[key]) : data[key]
@@ -575,7 +581,7 @@ export default {
         </v-data-table>
       </slot>
     </component>
-    <!-- form use v-if to refresh -->
+    <!-- form use v-if instead of v-show to refresh -->
     <component :is="'div'" v-if="showForm" row justify-center>
       <slot name="form-toolbar" :vcx="_self">
         <v-toolbar v-bind="vtoolbar">
@@ -586,7 +592,7 @@ export default {
         </v-toolbar>
       </slot>
       <slot name="form" :form="form" :parentId="parentId" :vcx="_self">
-        <v-form v-model="validForm" v-bind="vform"  :parentId="parentId" :vcx="_self">
+        <v-form v-model="validForm" v-bind="vformCrud"  :parentId="parentId" :vcx="_self">
           <v-container fluid>
             <v-layout row wrap>
               <template v-for="(item, i) in form">
