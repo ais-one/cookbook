@@ -88,6 +88,7 @@ export default {
               totalRecords = total
               // simulate infinite scroll
               const totalPages = Math.ceil(total / params.limit)
+              console.log('totalPages', totalPages, page)
               let cursor = 0
               if (page < totalPages) cursor = page + 1
               else cursor = 0

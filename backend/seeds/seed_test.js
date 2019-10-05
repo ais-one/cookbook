@@ -19,7 +19,9 @@ exports.seed = async (knex) => {
   await knex('authors').insert([
     {id: 1, name: 'author1', avatar: '', created_at: mkDt(dt, 2) },
     {id: 2, name: 'author2', avatar: '', created_at: mkDt(dt, 1) },
-    {id: 3, name: 'author3', avatar: '', created_at: mkDt(dt, 0) }
+    {id: 3, name: 'author3', avatar: '', created_at: mkDt(dt, 0) },
+    {id: 4, name: 'author4', avatar: '', created_at: mkDt(dt, 3) },
+    {id: 5, name: 'author5', avatar: '', created_at: mkDt(dt, 4) }
   ])
   await knex('categories').insert([
     {id: 1, name: 'cat1', created_at: mkDt(dt, 0) },

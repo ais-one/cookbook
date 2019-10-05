@@ -24,21 +24,21 @@
     "@nuxtjs/auth": "^4.8.4",
     "@nuxtjs/axios": "^5.5.4",
     "@nuxtjs/dotenv": "^1.4.1",
-    "cross-env": "^5.2.1",
-    "nuxt": "^2.8.1",
+    "cross-env": "^6.0.3",
+    "nuxt": "^2.10.0",
     "nuxt-i18n": "^6.3.0"
   },
   "devDependencies": {
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.2",
     "concurrently": "^4.1.1",
-    "eslint": "^6.4.0",
+    "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.3.0",
     "eslint-loader": "^2.2.1",
     "eslint-plugin-prettier": "3.1.0",
     "eslint-plugin-vue": "^5.2.3",
     "http-server": "^0.11.1",
-    "nodemon": "^1.19.2",
+    "nodemon": "^1.19.3",
     "prettier": "1.18.2"
   }
 }

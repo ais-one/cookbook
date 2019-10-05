@@ -2,12 +2,13 @@
 - update packages
 - VueCrudX
   - improve layout of table and forms, add to VueCrudX.md documentation
+  - fixed issue with load more for infinite scroll (simplified process also)
 
 ### Version 0.2.3
 - update packages
 - VueCrudX
   - add vcx to onRowClick (so you can reference things in VueCrudX)
-  - additional error check ```if (status === 200 && data)``` after this.crud.fineOne call
+  - additional error check ```if (status === 200 && data)``` after this.crud.findOne call
   - add render function in Form Fields configuration to allow record field to be transformed to format used the input
 - example-spa
   - fix major error when using firebase or mongo stitch

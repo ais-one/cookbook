@@ -248,29 +248,21 @@ export default {
     // mode - (user action): created, deleted, filter-paged, filter-infinite
     //      - (page, sort events & initial load): pagination, load-more (for subsequent infinite scroll loads)
     async getRecords ({ mode }) {
-      this.loading = true
+      console.log('getRecords', mode)
 
       // VARIATION Start - Vuetify2
-      if (mode === 'load-more') { // changed via paging
-        if (this.infinite) {
-          this.pagination.page = this.cursor // load more, this does not fire pagination event
-        }
-      } else if (mode === 'pagination') {
-        if (this.infinite) {
-          this.pagination.page = this.pageDefaults.start // start from beginning, this does not fire pagination event
-        }
+      if (this.infinite) {
+        if (mode === 'load-more') this.pagination.page = this.cursor // load more, this does not fire pagination event
+        else if (mode === 'filter-infinite' || mode === 'created' || mode === 'deleted') this.pagination.page = this.pageDefaults.start
+        else if (mode === 'pagination' && this.pagination.page === this.pageDefaults.start) {
+          console.log('ok')
+        } else return
       }
-      // VARIATION End - Vuetify2
-
-      // VARIATION Start - Vuetify2
       let filters = {}
       for (let key in this.filters) {
         let value = this.filters[key].value
         if (value) filters[key] = value
       }
-      // VARIATION End - Vuetify2
-
-      // VARIATION Start - Vuetify2
       let sorters = ''
       const { sortBy = [], sortDesc = [] } = this.pagination
       for (let index in sortBy) {
@@ -287,13 +279,16 @@ export default {
         filters,
         sorters
       }
+      this.loading = true
       // console.log('getRecords', mode, this.pagination, filters, sorters)
       const { status = 500, data = null, error = null } = await this.crud.find(payload) // pagination returns for infinite scroll
       if (status === 200) {
         let { records, totalRecords = 0, cursor = '' } = data
         this.cursor = cursor
 
-        if (this.infinite && mode === 'load-more') { // infinite scroll
+        console.log('cursor', cursor)
+        // if (this.infinite && mode === 'load-more') { // infinite scroll
+        if (this.infinite && this.pagination.page !== this.pageDefaults.start) {
           this.totalRecords += records.length
           this.records = this.records.concat(records)
         } else {
