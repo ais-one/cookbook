@@ -70,14 +70,14 @@ export default {
       },
       vtable: { // props
         headers: [],
+        'footer-props': {
+          'items-per-page-options': [2, 5, 10, 25]
+        },
         dense: true,
         'multi-sort': false,
         'fixed-header': true,
         dark: false,
         light: true,
-        'footer-props': {
-          'items-per-page-options': [2, 5, 10, 25]
-        },
         // 'rows-per-page-items': [],
         'hide-default-header': false,
         style: { // this may need to be changed once Vuetify version 2.0 is out
@@ -286,8 +286,6 @@ export default {
         let { records, totalRecords = 0, cursor = '' } = data
         this.cursor = cursor
 
-        console.log('cursor', cursor)
-        // if (this.infinite && mode === 'load-more') { // infinite scroll
         if (this.infinite && this.pagination.page !== this.pageDefaults.start) {
           this.totalRecords += records.length
           this.records = this.records.concat(records)

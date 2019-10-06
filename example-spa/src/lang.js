@@ -19,9 +19,11 @@ const messages = {
           sortDescending: ': Sorted descending. Activate to remove sorting.',
           sortAscending: ': Sorted ascending. Activate to sort descending.',
           sortNone: ': Not sorted. Activate to sort ascending.'
-        }
+        },
+        sortBy: 'Sort By'
       },
       dataFooter: {
+        pageText: '{0}-{1} of {2}',
         itemsPerPageText: 'Items per page:',
         itemsPerPageAll: 'All',
         nextPage: 'Next page',
@@ -62,9 +64,11 @@ const messages = {
           sortDescending: ': Sorted descending. Activate to remove sorting.',
           sortAscending: ': Sorted ascending. Activate to sort descending.',
           sortNone: ': Not sorted. Activate to sort ascending.'
-        }
+        },
+        sortBy: 'Sort By'
       },
       dataFooter: {
+        pageText: '{0}-{1} of {2}',
         itemsPerPageText: 'Item per Halaman:',
         itemsPerPageAll: 'Semua',
         nextPage: 'Halaman selanjutnya',
