@@ -1,7 +1,7 @@
 'use strict'
 const Model = require('../services/database')
 
-class User extends Model {
+class User extends Model { //
   static get tableName () {
     return 'users'
   }
