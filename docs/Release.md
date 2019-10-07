@@ -1,3 +1,7 @@
+### Version 0.2.5
+- update packages
+- TBD ant design version
+
 ### Version 0.2.4
 - update packages
 - VueCrudX
