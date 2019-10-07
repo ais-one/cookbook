@@ -54,7 +54,7 @@ context: ({ req }) => {
    }
  };
 },
-// src/models/user.js
+// src/models/User.js
 export const generateUserModel = ({ req }) => ({
  getAll: () => {
    return fetch('http://myurl.com/users', { headers: req.headers });

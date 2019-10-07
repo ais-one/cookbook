@@ -58,21 +58,26 @@ export default {
         delete: { name: 'delete', props: { small: true, class: 'mr-1' } }
       },
       vtoolbar: { height: 48, dark: false, light: true, color: 'grey' }, // v-toolbar Component
-      vform: { // v-form Component
+      vform: { // v-form Component for filter
+        class: 'grey lighten-3 pa-2',
+        style: { overflow: 'auto' },
+        'lazy-validation': true
+      },
+      vformCrud: { // v-form Component for CRUD
         class: 'grey lighten-3 pa-2',
         style: { overflow: 'auto' },
         'lazy-validation': true
       },
       vtable: { // props
         headers: [],
+        'footer-props': {
+          'items-per-page-options': [2, 5, 10, 25]
+        },
         dense: true,
         'multi-sort': false,
         'fixed-header': true,
         dark: false,
         light: true,
-        'footer-props': {
-          'items-per-page-options': [2, 5, 10, 25]
-        },
         // 'rows-per-page-items': [],
         'hide-default-header': false,
         style: { // this may need to be changed once Vuetify version 2.0 is out
@@ -140,6 +145,7 @@ export default {
     this.vicon = Object.assign(this.vicon, this.$attrs.vicon || {})
     this.vbtn = Object.assign(this.vbtn, this.$attrs.vbtn || {})
     this.vform = Object.assign(this.vform, this.$attrs.vform || {})
+    this.vformCrud = Object.assign(this.vformCrud, this.$attrs.vformCrud || {})
     this.vtoolbar = Object.assign(this.vtoolbar, this.$attrs.vtoolbar || {})
     this.vtable = Object.assign(this.vtable, this.$attrs.vtable || {})
 
@@ -242,29 +248,21 @@ export default {
     // mode - (user action): created, deleted, filter-paged, filter-infinite
     //      - (page, sort events & initial load): pagination, load-more (for subsequent infinite scroll loads)
     async getRecords ({ mode }) {
-      this.loading = true
+      console.log('getRecords', mode)
 
       // VARIATION Start - Vuetify2
-      if (mode === 'load-more') { // changed via paging
-        if (this.infinite) {
-          this.pagination.page = this.cursor // load more, this does not fire pagination event
-        }
-      } else if (mode === 'pagination') {
-        if (this.infinite) {
-          this.pagination.page = this.pageDefaults.start // start from beginning, this does not fire pagination event
-        }
+      if (this.infinite) {
+        if (mode === 'load-more') this.pagination.page = this.cursor // load more, this does not fire pagination event
+        else if (mode === 'filter-infinite' || mode === 'created' || mode === 'deleted') this.pagination.page = this.pageDefaults.start
+        else if (mode === 'pagination' && this.pagination.page === this.pageDefaults.start) {
+          console.log('ok')
+        } else return
       }
-      // VARIATION End - Vuetify2
-
-      // VARIATION Start - Vuetify2
       let filters = {}
       for (let key in this.filters) {
         let value = this.filters[key].value
         if (value) filters[key] = value
       }
-      // VARIATION End - Vuetify2
-
-      // VARIATION Start - Vuetify2
       let sorters = ''
       const { sortBy = [], sortDesc = [] } = this.pagination
       for (let index in sortBy) {
@@ -281,13 +279,14 @@ export default {
         filters,
         sorters
       }
-      console.log('getRecords', mode, this.pagination, filters, sorters)
+      this.loading = true
+      // console.log('getRecords', mode, this.pagination, filters, sorters)
       const { status = 500, data = null, error = null } = await this.crud.find(payload) // pagination returns for infinite scroll
       if (status === 200) {
         let { records, totalRecords = 0, cursor = '' } = data
         this.cursor = cursor
 
-        if (this.infinite && mode === 'load-more') { // infinite scroll
+        if (this.infinite && this.pagination.page !== this.pageDefaults.start) {
           this.totalRecords += records.length
           this.records = this.records.concat(records)
         } else {
@@ -305,7 +304,7 @@ export default {
     async getRecord (id) {
       this.loading = true
       const { status = 500, data = null, error = null } = await this.crud.findOne(id)
-      console.log(status, data, error)
+      // console.log(status, data, error)
       if (status === 200 && data) {
         for (let key in this.form) {
           this.form[key].value = this.form[key].render ? this.form[key].render(data[key]) : data[key]
@@ -575,7 +574,7 @@ export default {
         </v-data-table>
       </slot>
     </component>
-    <!-- form use v-if to refresh -->
+    <!-- form use v-if instead of v-show to refresh -->
     <component :is="'div'" v-if="showForm" row justify-center>
       <slot name="form-toolbar" :vcx="_self">
         <v-toolbar v-bind="vtoolbar">
@@ -586,7 +585,7 @@ export default {
         </v-toolbar>
       </slot>
       <slot name="form" :form="form" :parentId="parentId" :vcx="_self">
-        <v-form v-model="validForm" v-bind="vform"  :parentId="parentId" :vcx="_self">
+        <v-form v-model="validForm" v-bind="vformCrud"  :parentId="parentId" :vcx="_self">
           <v-container fluid>
             <v-layout row wrap>
               <template v-for="(item, i) in form">
