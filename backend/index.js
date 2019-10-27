@@ -1,4 +1,4 @@
-const apollo = require('./middleware/graphql')
+const apollo = require('./services/graphql')
 const server = require('./app')
 const { API_PORT } = require('./config')
 

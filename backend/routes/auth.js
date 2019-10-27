@@ -5,8 +5,7 @@ const otplib = require('otplib')
 
 const { USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
 
-const { authUser } = require('../middleware/auth')
-const { createToken, isAuthenticated, isGithubAuthenticated } = require('../services')
+const { createToken, isAuthenticated, isGithubAuthenticated, authUser } = require('../services/auth')
 
 const User = require('../models/User')
 const keyv = require('../services/keyv')

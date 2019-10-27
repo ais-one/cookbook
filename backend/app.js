@@ -13,7 +13,7 @@ const swaggerJSDoc = require('swagger-jsdoc')
 const YAML = require('yamljs')
 const swaggerDocument = YAML.load('./docs/openapi.yaml')
 
-const apollo = require('./middleware/graphql')
+const apollo = require('./services/graphql')
 
 const { httpsCerts } = require('./services/certs')
 const { API_PORT, USE_HTTPS } = require('./config')
@@ -28,12 +28,14 @@ const { API_PORT, USE_HTTPS } = require('./config')
 //
 const app = express()
 
-apollo.applyMiddleware({ app }); // console.log(`GraphqlPATH ${server.graphqlPath}`)
+// app.set('trust proxy', true)
+
+apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use(history()) // causes problems when using postman, comment out to checkout API
+app.use(history()) // causes problems when using postman - set header accept application/json in postman
 app.use(express.static('public')) // for html content
 // app.use('/public-uploads', express.static(path.join('public-uploads'))) // need to create the folder public-uploads
 

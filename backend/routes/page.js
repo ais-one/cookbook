@@ -1,7 +1,7 @@
 const express = require('express')
 const pageRoutes = express.Router()
 
-const { authUser } = require('../middleware/auth')
+const { authUser } = require('../services/auth')
 const Page = require('../models/Page')
 
 pageRoutes

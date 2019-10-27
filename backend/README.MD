@@ -48,13 +48,12 @@ Rename file to .env.production for production
 Folders
  +-certs (SSL certs, for lets encrypt, use the folder that they generate)
  +-docs (OpenAPI documentation)
- +-middleware (auth, logging, etc...)
  +-migrations (create database)
  +-models (database models)
  +-public (location for frontend app)
  +-routes (REST API routes)
  +-seeds (populate database)
- +-services (e.g. ORM, mongo, websockets, redis, etc)
+ +-services (e.g. ORM, mongo, websockets, redis, auth, graphql, logging, etc)
  +-tests (TBD)
  +-uploads (local storage for file uploads)
 
