@@ -1,11 +1,10 @@
 const Keyv = require('keyv')
+const  { KEYV_CACHE } = '../config'
 let keyv
 
-console.log('KEYV_CACHE', process.env.KEYV_CACHE)
-
 if (!keyv) {
-  if (process.env.KEYV_CACHE) {
-    keyv = new Keyv(process.env.KEYV_CACHE)
+  if (KEYV_CACHE) {
+    keyv = new Keyv(KEYV_CACHE)
   } else {
     console.log('use map')
     keyv = new Keyv({ store: new Map() })

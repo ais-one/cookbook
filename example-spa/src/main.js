@@ -2,22 +2,32 @@
 import Vue from 'vue'
 import VueRx from 'vue-rx'
 import VueNativeSock from 'vue-native-websocket'
-import vuetify from './plugins/vuetify'
 import i18n from './lang'
 import { store } from './store'
 import router from './router'
 import App from './App'
-import VueCrudX from '../../src/VueCrudX' // Component shared between projects
-import { apolloClient } from './graphql'
-import VueApollo from 'vue-apollo'
 
-import { auth } from '@/firebase'
-// import { stitch } from '@/mongo'
-import TimePicker from '../../src/TimePicker.vue' // Components shared between projects
+import vuetify from './plugins/vuetify'
+import VueCrudX from '../../src/VueCrudX' // Vuetify
+import TimePicker from '../../src/TimePicker.vue'
 import DatePicker from '../../src/DatePicker.vue'
 import FileUpload from '../../src/FileUpload.vue'
 
+import { apolloClient } from './graphql'
+import VueApollo from 'vue-apollo'
 import { DO_HELLO } from './queries'
+
+import { auth } from '@/firebase'
+// import { stitch } from '@/mongo'
+
+
+import VueCrudA from '../../src/VueCrudA' // Ant design
+import { Button, Table, Form, Input } from 'ant-design-vue'
+
+Vue.use(Button) // ant design stuff
+Vue.use(Table)
+Vue.use(Form)
+Vue.use(Input)
 
 Vue.use(VueApollo)
 
@@ -59,6 +69,7 @@ Vue.component('app-date-picker', DatePicker)
 Vue.component('app-time-picker', TimePicker)
 Vue.component('app-file-upload', FileUpload)
 Vue.component('vue-crud-x', VueCrudX)
+Vue.component('vue-crud-a', VueCrudA)
 
 /* eslint-disable no-new */
 export const app = new Vue({

@@ -3,13 +3,13 @@ const express = require('express')
 const authRoutes = express.Router()
 const otplib = require('otplib')
 
+const { USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
+
 const { authUser } = require('../middleware/auth')
 const { createToken, isAuthenticated, isGithubAuthenticated } = require('../services')
 
 const User = require('../models/User')
 const keyv = require('../services/keyv')
-
-const { USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require('../config')
 
 authRoutes
 .post('/signup', async (req,res) => {
@@ -39,7 +39,7 @@ authRoutes
     })
     const rv = await axios.get('https://api.github.com/user?access_token=' + data.access_token)
     const githubId = rv.data.id // github id, email
-    const user = await isGithubAuthenticated(githubId)
+    const user = await isGithubAuthenticated(githubId) // match github id with our user in our application
     if (!user) {
       const message = 'Unauthorized'
       return res.status(401).json({ message })
@@ -74,13 +74,13 @@ authRoutes
       const { id } = user
       const token = createToken({ id }, SECRET_KEY,  {expiresIn: USE_OTP ? '5m' : KEY_EXPIRY}) // 5 minute expire for login
       await keyv.set(token, token)
-      if (process.env.USE_OTP === 'SMS') {
+      if (USE_OTP === 'SMS') {
         // Generate PIN
         const pin = (Math.floor(Math.random() * (999999 - 0 + 1)) + 0).toString().padStart(6, "0")
         const ts = new Date() // utc?
         // update pin where ts > ?
         // set user SMS
-        if (process.env.NODE_ENV === 'development') {
+        if (NODE_ENV === 'development') {
   
         }
         // TBD send SMS
@@ -115,8 +115,8 @@ authRoutes
         if (user) {
           const { pin } = req.body
           const { gaKey, id } = user[0]
-          // process.env.USE_OTP === 'GA' // 'SMS'
-          const isValid = process.env.NODE_ENV !== 'development' ? otplib.authenticator.check(pin, gaKey) : pin === '111111'
+          // USE_OTP === 'GA' // 'SMS'
+          const isValid = NODE_ENV !== 'development' ? otplib.authenticator.check(pin, gaKey) : pin === '111111'
           if (isValid) {
             const incomingToken = req.headers.authorization.split(' ')[1]
             const token = createToken({ id }, OTP_SECRET_KEY, {expiresIn: KEY_EXPIRY})

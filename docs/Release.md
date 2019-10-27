@@ -1,5 +1,10 @@
 ### Version 0.2.5
 - update packages
+- backend
+  - add jest test
+  - improve on JWT - expiry extension and revocation, instead of using refresh token
+  - use RS256 for secret key
+  - rename api route /api/rest-test to /api/health, serves as health check
 - TBD ant design version
 
 ### Version 0.2.4

@@ -18,7 +18,7 @@ module.exports = {
         const key = (USE_OTP && req.path !== '/otp') ? OTP_SECRET_KEY : SECRET_KEY // select the key to use
         // console.log(key, OTP_SECRET_KEY, SECRET_KEY)
         const result = verifyToken(matchingToken, key)
-        /* refresh token
+        /* refresh token - also stateful, may not be useful
         const nowSeconds = parseInt(Date.now() / 1000)
         const tokenPeriodSeconds = result.exp - result.iat
         const elapsedSeconds = nowS - result.iat
@@ -28,24 +28,17 @@ module.exports = {
           res.set('refresh-token', createToken(result))
         }
         */
-        if (result) { // id, iat, remove exp
-          if (result.exp) delete result.exp
+        if (result) {
           req.decoded = result
-          // console.log(result)
-          // try to throttle createToken by check exp
-          // const now = Date.now() / 1000
-          // if (decoded.exp - now < 120) { // 2 minutes to expiry - this may cause problems...
-          // please be careful here, if first time, token may not be set and you get error logging in
-          // console.log('update token')
-          await keyv.set(incomingToken, createToken(result, key, {expiresIn: KEY_EXPIRY})) // do refresh token here...
-          // }
-          return next()
-        }
-      } else { // try Github TOREMOVE
-        const rvx = await axios.get(`https://api.github.com/user?access_token=${incomingToken}`)
-        if (rvx.status === 200) {
-          // await keyv.set(incomingToken, createToken(result, key, {expiresIn: KEY_EXPIRY})) // do refresh token here...
-          // console.log('GH', rvx.status) // 200 is OK
+          // Throttle createToken by checking exp & iat (claims must include iat and exp)
+          const now = parseInt(Date.now() / 1000) // seconds
+          const triggerTime = result.iat + parseInt((result.exp - result.iat) / 2)
+          if (now > triggerTime) { // 2 minutes to expiry - this may cause problems...
+            // please be careful here, if first time, token may not be set and you get error logging in ?
+            // console.log('update token')
+            delete result.exp // id, iat, remove exp
+            await keyv.set(incomingToken, createToken(result, key, {expiresIn: KEY_EXPIRY}))
+          }
           return next()
         }
       }

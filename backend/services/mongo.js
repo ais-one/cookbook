@@ -69,13 +69,14 @@
   ns: { db: 'mm', coll: 'exchangeUsers' },
   documentKey: { _id: 5d07bbbccaabd31dcdb64895 } }
 */
+const { MONGO_URL } = require('../config')
+
 let mongo
 let mongoStream
-console.log('MONGO_URL', process.env.MONGO_URL) // TBD: if undefined?
 
-if (!mongo && process.env.MONGO_URL) {
+if (!mongo && MONGO_URL) {
   try {
-    const url = process.env.MONGO_URL
+    const url = MONGO_URL
     const MongoClient = require('mongodb').MongoClient
     // (async function() {
     mongo = new MongoClient(url, {
