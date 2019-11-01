@@ -1,5 +1,6 @@
 ### Version 0.2.5
 - update packages
+  - vue-cli v4
 - backend
   - add jest test
   - improve on JWT, two ways to do expiry extension and revocation
