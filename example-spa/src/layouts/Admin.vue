@@ -47,7 +47,7 @@ import { format } from 'date-fns'
 export default {
   data () {
     return {
-      currentTime: format(Date(), 'HH:mm:ss'),
+      currentTime: '',
       selectedLocale: 'EN',
       locales: [
         'EN', 'ID'
@@ -68,7 +68,7 @@ export default {
   created () {
     if (this.$i18n) this.$i18n.locale = this.selectedLocale.toLowerCase()
     this.timerId = setInterval(() => {
-      this.currentTime = format(Date(), 'HH:mm:ss')
+      this.currentTime = format(new Date(), 'HH:mm:ss')
     }, 1000)
   },
   destroy () {

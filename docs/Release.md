@@ -2,9 +2,13 @@
 - update packages
 - backend
   - add jest test
-  - improve on JWT - expiry extension and revocation, instead of using refresh token
+  - improve on JWT, two ways to do expiry extension and revocation
+    - use cache to store
+    - TBD correctly implement refresh token
+    - TBD add IP address checking
   - use RS256 for secret key
-  - rename api route /api/rest-test to /api/health, serves as health check
+  - rename api route /api/rest-test to /api/health, serves as health check, add /api/health-auth to test auth routes
+  - improve on configuration (use common config.js file)
 - TBD ant design version
 
 ### Version 0.2.4

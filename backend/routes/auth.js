@@ -84,6 +84,8 @@ authRoutes
         }
         // TBD send SMS
       }
+      // TBD res.setHeader('Set-Cookie', [`access_token=${token}; HttpOnly`]);
+
       return res.status(200).json({ token })  
     } catch (e) { }
     return res.status(500).json()  

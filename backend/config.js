@@ -29,8 +29,8 @@ module.exports = {
   OTP_SECRET_KEY: process.env.OTP_SECRET_KEY || '987654321',
 
   // JWT
-  JWT_ALG: process.env.JWT_ALG || '',
-  JWT_CERTS_PATH: './certs/jwt' || '',
+  JWT_ALG: process.env.JWT_ALG || 'RS256',
+  JWT_CERTS_PATH: process.env.JWT_CERTS_PATH || './certs/jwt',
 
   // PORTS
   API_PORT: process.env.API_PORT || 3000,
