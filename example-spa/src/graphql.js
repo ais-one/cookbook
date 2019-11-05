@@ -17,7 +17,7 @@ const wsLink = new WebSocketLink({
 // HTTP connexion to the API
 const httpLink = new HttpLink({
   // You should use an absolute URL here
-  uri: 'http://localhost:3000/graphql'
+  uri: 'http://127.0.0.1:3000/graphql'
 })
 
 const link = split(

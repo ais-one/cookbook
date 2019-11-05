@@ -111,8 +111,7 @@ if (USE_HTTPS) {
   server = http.createServer(app)
 }
 
-apollo.installSubscriptionHandlers(server)
-
+// apollo.installSubscriptionHandlers(server)
 // server.listen(API_PORT, () => {
 //   console.log('REST API listening on port ' + API_PORT)
 //   console.log(`🚀 GraphQL Server ready at http://localhost:${API_PORT}${apollo.graphqlPath}`)
@@ -155,4 +154,4 @@ if (wss) {
   }, 30000)  
 }
 
-module.exports = app
+module.exports = server
