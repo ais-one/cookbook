@@ -22,6 +22,7 @@ console.log('Environment: ', process.env.NODE_ENV)
 module.exports = {
   NODE_ENV: process.env.NODE_ENV,
 
+  SALT_ROUNDS: process.env.SALT_ROUNDS || 12,
   KEY_EXPIRY: process.env.KEY_EXPIRY || '15m',
   SECRET_KEY: process.env.SECRET_KEY || '123456789',
 

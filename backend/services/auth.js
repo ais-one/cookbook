@@ -11,10 +11,15 @@ const User = require('../models/User')
 
 const { USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY } = require('../config')
 
-// TOREMOVE
-// const SALT_ROUNDS = 12
 
-// Create a token from a payload 
+// algorithm
+// expiresIn
+// issuer  = 'Mysoft corp' 
+// subject  = 'some@user.com'
+// audience  = 'http://mysoftcorp.in'
+// ip
+
+// Create a token from a payload
 function createToken(payload, secretKey, options) {
   return jwt.sign(payload, secretKey, options)
 }
@@ -24,6 +29,7 @@ function verifyToken(token, secretKey) {
   try {
     return jwt.verify(token, secretKey)
   } catch (e) {
+    // if (e.name === 'TokenExpiredError')
     return null
   }
 }

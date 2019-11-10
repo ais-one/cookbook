@@ -1,16 +1,16 @@
 ### Version 0.2.5
 - update packages
-  - vue-cli v4
+  - vue-cli v4, eslint v6
 - backend
-  - add jest test
+  - [Work-in-progress] add jest test
   - improve on JWT, two ways to do expiry extension and revocation
     - use cache to store
-    - TBD correctly implement refresh token
-    - TBD add IP address checking
-  - use RS256 for secret key
+    - [Work-in-progress] correctly implement refresh token
+    - [Work-in-progress] add IP address checking
+  - example of using RS256 for secret key (sample cert and key are in the certs folder)
   - rename api route /api/rest-test to /api/health, serves as health check, add /api/health-auth to test auth routes
-  - improve on configuration (use common config.js file)
-- TBD ant design version
+  - improved on configuration (use common config.js file)
+- [Work-in-progress] ant design version
 
 ### Version 0.2.4
 - update packages

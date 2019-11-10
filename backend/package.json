@@ -44,7 +44,7 @@
     "otplib": "^11.0.1",
     "passport": "^0.4.0",
     "passport-saml": "^1.2.0",
-    "qrcode": "^1.4.2",
+    "qrcode": "^1.4.4",
     "sqlite3": "^4.1.0",
     "swagger-jsdoc": "^3.4.0",
     "swagger-ui-express": "^4.1.2",

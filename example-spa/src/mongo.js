@@ -1,4 +1,5 @@
 import { Stitch, UserPasswordCredential, RemoteMongoClient } from 'mongodb-stitch-browser-sdk' // AnonymousCredential
+import { MONGO_STITCH } from '@/config'
 // import { UserPasswordAuthProviderClient } from 'mongodb-stitch-browser-sdk' // AnonymousCredential
 // import BSON from 'bson'
 // const { ObjectId, Decimal128 } = BSON // Decimal128.fromString()
@@ -13,8 +14,8 @@ import { Stitch, UserPasswordCredential, RemoteMongoClient } from 'mongodb-stitc
 // await mongodb.db('shop').collection('products').deleteOne({ _id: new BSON.ObjectId(productId) })
 let stitch, getUserPasswordCredential, mongo, atlasLogin
 
-if (process.env.VUE_APP_MONGO_STITCH && !stitch) {
-  stitch = Stitch.initializeDefaultAppClient(process.env.VUE_APP_MONGO_STITCH)
+if (MONGO_STITCH && !stitch) {
+  stitch = Stitch.initializeDefaultAppClient(MONGO_STITCH)
 
   getUserPasswordCredential = (user, password) => {
     return new UserPasswordCredential(user, password)

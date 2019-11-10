@@ -6,7 +6,7 @@
         <h2 class="text-center">Sign In</h2>
         <v-card>
           <v-card-text>
-            <v-container v-if="!(user && !user.otpVerified)">
+            <v-container v-if="!(user && !user.verified)">
               <form @submit.prevent="onSignin">
                 <v-layout row wrap >
                   <v-flex xs12>
@@ -43,13 +43,14 @@
 import VueRecaptcha from 'vue-recaptcha'
 import { mapGetters } from 'vuex'
 import '../../../src/vcx-loading-blocker.js'
+import { RECAPTCHA_KEY } from '@/config'
 
 export default {
   components: { VueRecaptcha }, // recaptcha
   data () {
     return {
       recaptchaUnverified: true, // recaptcha
-      sitekey: process.env.VUE_APP_RECAPTCHA_KEY || '', // recaptcha
+      sitekey: RECAPTCHA_KEY,
       email: '',
       password: '',
       pin: '' // OTP

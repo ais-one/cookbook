@@ -31,7 +31,6 @@ export default {
     try {
       rv = await http.post('/api/auth/login', { email, password })
       const { data } = rv
-      data.otpVerified = !USE_OTP
       dispatch('autoSignIn', data) // token
     } catch (e) { }
     if (!rv) {
@@ -47,7 +46,6 @@ export default {
     try {
       rv = await http.post('/api/auth/otp', { pin })
       const { data } = rv
-      data.otpVerified = true
       dispatch('autoVerify', data) // token
     } catch (e) { }
     if (!rv) {
@@ -87,13 +85,13 @@ export default {
     if (!auth) {
       commit('setError', { message: 'Mongo Sign In Error' })
     } else {
-      commit('setBaasUser', { id: auth.id, email: auth.id, loginType: 'mongo', otpVerified: true })
+      commit('setBaasUser', { id: auth.id, email: auth.id, loginType: 'mongo', verified: true })
       commit('setLayout', 'layout-admin')
       router.push('/dashboard')
     }
   },
   mongoAutoSignin ({ commit }, payload) { // not called for now
-    commit('setBaasUser', { id: payload.id, email: payload.id, loginType: 'mongo', otpVerified: true })
+    commit('setBaasUser', { id: payload.id, email: payload.id, loginType: 'mongo', verified: true })
     commit('setLayout', 'layout-admin')
     router.push('/dashboard')
   },
@@ -137,7 +135,7 @@ export default {
     commit('setLoading', false)
   },
   firebaseAutoSignin ({ commit }, payload) {
-    commit('setBaasUser', { id: payload.uid, email: payload.email, loginType: 'firebase', otpVerified: true })
+    commit('setBaasUser', { id: payload.uid, email: payload.email, loginType: 'firebase', verified: true })
     commit('setLayout', 'layout-admin')
     router.push('/dashboard') // console.log party
   },

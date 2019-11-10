@@ -9,7 +9,7 @@ const permissions = {
 
 export default (to, from, next) => {
   // console.log('route', to.matched[0].path)
-  if (store.getters.user && store.getters.user.otpVerified) { // has user && otp is verified
+  if (store.getters.user && store.getters.user.verified) { // has user && otp is verified
     const { loginType } = store.getters.user
     let idx = -1
     if (permissions[loginType]) idx = permissions[loginType].indexOf(to.matched[0].path)
@@ -22,10 +22,10 @@ export default (to, from, next) => {
     }
   } else {
     // TBD save / restore last path
-    const item = localStorage.getItem('session') // survive a refresh
+    const item = localStorage.getItem('session') // survive a refresh - POTENTIAL SECURITY RISK - TO REVIEW AND CHANGE USE HTTPONLY COOKIES
     if (item) {
       const user = JSON.parse(item)
-      if (user.otpVerified) {
+      if (user.verified) {
         console.log('auth guard set user')
         store.commit('setUser', user)
         store.commit('setLayout', 'layout-admin')

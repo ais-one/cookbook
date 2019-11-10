@@ -24,10 +24,10 @@ export const store = new Vuex.Store({
         const decoded = jwtDecode(payload.token)
         if (decoded) {
           payload.id = decoded.id
+          payload.verified = decoded.verified
         }
         payload.loginType = 'rest'
       }
-      console.log('setUser', payload)
       state.user = payload
       if (payload) {
         localStorage.setItem('session', JSON.stringify(payload))

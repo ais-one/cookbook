@@ -28,7 +28,7 @@ const { API_PORT, USE_HTTPS } = require('./config')
 //
 const app = express()
 
-// app.set('trust proxy', true)
+app.set('trust proxy', true) // true if behind proxy, false if direct connect
 
 apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
 
@@ -37,7 +37,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(history()) // causes problems when using postman - set header accept application/json in postman
 app.use(express.static('public')) // for html content
-// app.use('/public-uploads', express.static(path.join('public-uploads'))) // need to create the folder public-uploads
+// app.use('/uploads', express.static(path.join('uploads'))) // need to create the folder uploads
 
 // PASSPORT
 // app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true })) // required for OAuth 1 (e.g. twitter), OAuth2 with state (e.g. linkedin)

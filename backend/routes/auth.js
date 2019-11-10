@@ -3,7 +3,7 @@ const express = require('express')
 const authRoutes = express.Router()
 const otplib = require('otplib')
 
-const { USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
+const { SALT_ROUNDS, USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
 
 const { createToken, isAuthenticated, isGithubAuthenticated, authUser } = require('../services/auth')
 
@@ -18,12 +18,6 @@ authRoutes
   res.status(201).end()
 })
 .post('/check-github', async (req,res) => {
-  // if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
-  //   return res.status(401).json({ message: 'Error in authorization format' })
-  // }
-  // const incomingToken = req.headers.authorization.split(' ')[1]
-  // const rv = await axios.get('https://github.com/login/oauth/user?access_token=' + incomingToken)
-  // console.log(rv)
   try {
     const { code, state } = req.body
     const { data } = await axios.post('https://github.com/login/oauth/access_token', {
@@ -70,23 +64,22 @@ authRoutes
         const message = 'Incorrect email or password'
         return res.status(401).json({ message })
       }
+      let verified = true
       const { id } = user
-      const token = createToken({ id }, SECRET_KEY,  {expiresIn: USE_OTP ? '5m' : KEY_EXPIRY}) // 5 minute expire for login
-      await keyv.set(token, token)
-      if (USE_OTP === 'SMS') {
-        // Generate PIN
-        const pin = (Math.floor(Math.random() * (999999 - 0 + 1)) + 0).toString().padStart(6, "0")
-        const ts = new Date() // utc?
-        // update pin where ts > ?
-        // set user SMS
-        if (NODE_ENV === 'development') {
-  
+      if (USE_OTP) {
+        verified = false
+        if (USE_OTP === 'SMS') {
+          // Generate PIN
+          const pin = (Math.floor(Math.random() * (999999 - 0 + 1)) + 0).toString().padStart(6, "0")
+          const ts = new Date() // utc?
+          // update pin where ts > ?
+          // set user SMS & send it
         }
-        // TBD send SMS
       }
+      const token = createToken({ id, verified }, SECRET_KEY,  { expiresIn: USE_OTP ? '5m' : KEY_EXPIRY }) // 5 minute expire for login
+      await keyv.set(token, token)
       // TBD res.setHeader('Set-Cookie', [`access_token=${token}; HttpOnly`]);
-
-      return res.status(200).json({ token })  
+      return res.status(200).json({ token })
     } catch (e) { }
     return res.status(500).json()  
   })
@@ -100,15 +93,6 @@ authRoutes
   })
   .post('/otp', authUser, async (req,res) => {
     try {
-      // if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
-      //   return res.status(401).json({ message: 'Error in authorization format' })
-      // }
-      // const incomingToken = req.headers.authorization.split(' ')[1]
-      // const matchingToken = await keyv.get(incomingToken)
-      // if (!matchingToken) {
-      //   return res.status(401).json({ message: 'Error token mismatch' })
-      // }
-      // let result = verifyToken(incomingToken, SECRET_KEY) // has iat & exp also
       let result = req.decoded
       if (result) {
         const { id } = result
@@ -120,7 +104,7 @@ authRoutes
           const isValid = NODE_ENV !== 'development' ? otplib.authenticator.check(pin, gaKey) : pin === '111111'
           if (isValid) {
             const incomingToken = req.headers.authorization.split(' ')[1]
-            const token = createToken({ id }, OTP_SECRET_KEY, {expiresIn: KEY_EXPIRY})
+            const token = createToken({ id, verified: true }, OTP_SECRET_KEY, {expiresIn: KEY_EXPIRY})
             await keyv.set(token, token)
             await keyv.delete(incomingToken)
             return res.status(200).json({ token })
