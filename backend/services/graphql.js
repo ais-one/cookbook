@@ -29,6 +29,7 @@ if (!apollo) {
         connection.context.pubsub = pubsub
         return connection.context;
       } else {
+        // TBD: Check Auth Token Here
         const token = req.headers['authorization'] || ''
         return {
           // User,

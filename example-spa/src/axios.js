@@ -11,6 +11,38 @@ export const http = axios.create({
   }
 })
 
+/*
+axios.interceptors.request.use((config) => {
+  let originalRequest = config
+  if (helper.isTokenExpired(this.$store.getters.tokenInfo)) {
+    return this.refreshToken(this.$store.getters.jwt).then((response) => {
+      localStorage.setItem('token', response.data.token)
+      originalRequest.headers.Authorization = response.data.token
+      return Promise.resolve(originalRequest)
+    })
+  }
+  return config
+}, (err) => {
+  return Promise.reject(err)
+})
+
+  refreshToken (token) {
+      const payload = {
+        token: token
+      }
+      const headers = {
+        'Content-Type': 'application/json'
+      }
+      return new Promise((resolve, reject) => {
+        return AXIOS.post('/api/auth/token/refresh/', payload, { headers: headers }).then((response) => {
+          resolve(response)
+        }).catch((error) => {
+          reject(error)
+        })
+      })
+    }
+  }
+*/
 http.interceptors.request.use((config) => {
   // Do something before request is sent
   config.store = store
@@ -36,6 +68,10 @@ http.interceptors.response.use((response) => {
   // Do something with response error
   // console.log('intercept', JSON.stringify(error))
   if (error.response && error.response.status === 401) { // auth failed
+    if (error.response.data.message === 'TokenExpiredError') {
+      // refresh token...
+      // http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
+    }
     const myURL = new URL(error.config.url)
     if (myURL.pathname !== '/api/auth/logout' && myURL.pathname !== '/api/auth/otp') {
       error.config.store.dispatch('logout', { forced: true })

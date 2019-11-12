@@ -24,16 +24,6 @@ function createToken(payload, secretKey, options) {
   return jwt.sign(payload, secretKey, options)
 }
 
-// Verify the token 
-function verifyToken(token, secretKey) {
-  try {
-    return jwt.verify(token, secretKey)
-  } catch (e) {
-    // if (e.name === 'TokenExpiredError')
-    return null
-  }
-}
-
 // Check if the user exists in database
 async function isAuthenticated({ email, password }) {
   let user = null
@@ -59,12 +49,21 @@ const authUser = async (req, res, next) => {
     if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
       return res.status(401).json({ message: 'Error in authorization format' })
     }
-    const incomingToken = req.headers.authorization.split(' ')[1]
-    const matchingToken = await keyv.get(incomingToken)
-    if (matchingToken) {
+    const token = req.headers.authorization.split(' ')[1]
+    // const matchingToken = await keyv.get(token)
+    if (token) { // matchingToken
       const key = (USE_OTP && req.path !== '/otp') ? OTP_SECRET_KEY : SECRET_KEY // select the key to use
-      // console.log(key, OTP_SECRET_KEY, SECRET_KEY)
-      const result = verifyToken(matchingToken, key)
+
+      let result = null
+      try {
+        result = jwt.verify(token, key) // and options
+      } catch (e) {
+        if (e.name === 'TokenExpiredError') {
+          return res.status(401).json({ message: 'TokenExpiredError' })
+        }
+      }
+    
+      // if expired... reply 403?
       /* refresh token - also stateful, may not be useful
       const nowSeconds = parseInt(Date.now() / 1000)
       const tokenPeriodSeconds = result.exp - result.iat
@@ -98,7 +97,6 @@ const authUser = async (req, res, next) => {
 module.exports = {
   authUser,
   createToken,
-  verifyToken,
   isAuthenticated,
   isGithubAuthenticated
   /*

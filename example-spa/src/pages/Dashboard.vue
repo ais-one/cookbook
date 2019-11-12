@@ -13,6 +13,7 @@
                   <p class="py-1 text-center">Message to server will be echoed back here... ({{ wsMsg }})</p>
                   <p class="py-1 text-center">
                     <v-btn @click="testGraphQL">Test GraphQL</v-btn>
+                    <v-btn @click="testAuth">Test Auth</v-btn>
                   </p>
                   <p class="py-1 text-center">GraphQL Query Result... ({{ hello }})</p>
                 </v-flex>
@@ -27,6 +28,7 @@
 
 <script>
 import gql from 'graphql-tag'
+import { http } from '@/axios'
 
 export default {
   name: 'dashboard',
@@ -85,6 +87,14 @@ export default {
     }
   },
   methods: {
+    async testAuth () {
+      try {
+        const { data } = await http.get('/api/auth/me')
+        console.log(data)
+      } catch (e) {
+        console.log(e.toString())
+      }
+    },
     async testGraphQL () {
       this.$apollo.queries.hello.skip = false
       await this.$apollo.queries.hello.refetch()
