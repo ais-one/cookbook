@@ -59,6 +59,11 @@ const authUser = async (req, res, next) => {
         result = jwt.verify(token, key) // and options
       } catch (e) {
         if (e.name === 'TokenExpiredError') {
+          console.log('req.path', req.path)
+          if (req.path === '/refresh-token') {
+            // check refresh token & user...
+            // if ok generate new token & refresh token?
+          }      
           return res.status(401).json({ message: 'TokenExpiredError' })
         }
       }

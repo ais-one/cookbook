@@ -26,12 +26,12 @@
     "@nuxtjs/dotenv": "^1.4.1",
     "cross-env": "^6.0.3",
     "nuxt": "^2.10.2",
-    "nuxt-i18n": "^6.3.0"
+    "nuxt-i18n": "^6.3.1"
   },
   "devDependencies": {
     "@vue/eslint-config-standard": "^4.0.0",
     "babel-eslint": "^10.0.2",
-    "concurrently": "^4.1.1",
+    "concurrently": "^5.0.0",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-loader": "^2.2.1",

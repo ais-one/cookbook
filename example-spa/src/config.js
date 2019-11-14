@@ -5,3 +5,12 @@ export const API_URL = process.env.VUE_APP_API_URL || 'http://127.0.0.1:3000'
 export const WS_URL = process.env.VUE_APP_WS_URL || 'ws://127.0.0.1:3001'
 export const MONGO_STITCH = process.env.VUE_APP_MONGO_STITCH || ''
 export const RECAPTCHA_KEY = process.env.VUE_APP_RECAPTCHA_KEY || ''
+
+export const firebaseCfg = {
+  apiKey: '',
+  authDomain: '',
+  databaseURL: '',
+  projectId: '',
+  storageBucket: '',
+  messagingSenderId: ''
+}
