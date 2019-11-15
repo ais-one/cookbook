@@ -29,22 +29,26 @@ http.interceptors.response.use((response) => {
   // console.log('intercept', JSON.stringify(error))
   const myURL = new URL(error.config.url)
   if (error.response && error.response.status === 401) { // auth failed
-    if (error.response.data.message === 'TokenExpiredError' && myURL.pathname !== '/api/auth/logout' && myURL.pathname !== '/api/auth/otp') {
-      // console.log('token expired')
-      http.post('/api/auth/refresh').then(res => {
-        console.log('aassd', res.data.token)
-        const { token } = res.data
-        store.commit('setUser', res.data) // http.defaults.headers.common['Authorization'] = 'Bearer ' + token
-        error.config.headers['Authorization'] = 'Bearer ' + token
-        return http.request(error.config)
-      }).catch(function (error) {
-        return Promise.reject(error)
-      })
-    } else {
-      if (myURL.pathname !== '/api/auth/logout' && myURL.pathname !== '/api/auth/otp') {
+    if (myURL.pathname !== '/api/auth/logout' && myURL.pathname !== '/api/auth/otp') {
+      if (error.response.data.message === 'Token Expired Error') {
+        // console.log('token expired')
+        return http.post('/api/auth/refresh').then(res => {
+          console.log('new token', res.data.token)
+          const { token } = res.data
+          store.commit('setUser', res.data) // http.defaults.headers.common['Authorization'] = 'Bearer ' + token
+          error.config.headers['Authorization'] = 'Bearer ' + token
+          return http(error.config) // http.request(error.config)
+        }).catch(function (error) {
+          return Promise.reject(error)
+        })
+      } else {
         error.config.store.dispatch('logout', { forced: true })
-      }  
+        return Promise.reject(error)
+      }
+    } else {
+      return Promise.reject(error)
     }
+  } else {
+    return Promise.reject(error)
   }
-  return Promise.reject(error)
 })

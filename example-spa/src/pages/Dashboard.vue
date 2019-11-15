@@ -89,8 +89,8 @@ export default {
   methods: {
     async testAuth () {
       try {
-        const { data } = await http.get('/api/auth/me')
-        console.log(data)
+        const rv = await http.get('/api/auth/me')
+        console.log(rv.data)
       } catch (e) {
         console.log(e.toString())
       }
