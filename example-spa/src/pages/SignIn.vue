@@ -83,11 +83,12 @@ export default {
       this.$store.dispatch('verifyOtp', { pin: this.pin })
     },
     // BAAS
-    onFirebaseSignin () {
-      this.$store.dispatch('firebaseSignin', { email: this.email, password: this.password })
+    async onFirebaseSignin () {
+      await this.$store.dispatch('firebaseSignin', { email: this.email, password: this.password })
     },
-    onMongoSignin () {
-      this.$store.dispatch('mongoSignin', { email: this.email, password: this.password })
+    async onMongoSignin () {
+      await this.$store.dispatch('mongoSignin', { email: this.email, password: this.password })
+      this.$router.push('/dashboard')
     },
     onVerify (response) { this.recaptchaUnverified = false },
     onExpired () { this.recaptchaUnverified = true }

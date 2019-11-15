@@ -12,7 +12,7 @@ if (process.env.NODE_ENV) {
     const envConfig = dotenv.parse(fs.readFileSync('.env.' + process.env.NODE_ENV))
     for (var k in envConfig) process.env[k] = envConfig[k]  
   } catch (e) {
-    console.log('missing configuration file, using defaults')
+    // console.log('missing configuration file, using defaults')
   }
 }
 console.log('Environment: ', process.env.NODE_ENV)
@@ -30,12 +30,13 @@ module.exports = {
 
   // JWT - secret key
   JWT_ALG: process.env.JWT_ALG || 'HS256', // 'RS256' (use SSL certs), 'HS256' (use secret string)
-  JWT_CERTS_PATH: process.env.JWT_CERTS_PATH || './certs/jwt',
-  JWT_SECRET: process.env.JWT_SECRET || '123456789',
+  JWT_CERTS_PATH: process.env.JWT_CERTS_PATH || './certs/jwt', // RS256
+  JWT_SECRET: process.env.JWT_SECRET || '123456789', // HS256
   JWT_EXPIRY: process.env.JWT_EXPIRY || '15s', // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism
+  JWT_REFRESH_EXPIRY: 3600, // do not allow refresh handling after X seconds
 
   // OTP
-  USE_OTP: process.env.USE_OTP || 'GA', // GA, SMS, ''
+  USE_OTP: process.env.USE_OTP || '', // GA, SMS, ''
   OTP_EXPIRY: process.env.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP
 
   // CREATE FOR LOCALHOST: openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt

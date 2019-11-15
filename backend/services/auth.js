@@ -9,7 +9,7 @@ const keyv = require('./keyv')
 
 const User = require('../models/User')
 
-const { USE_OTP, JWT_ALG, JWT_EXPIRY, JWT_SECRET } = require('../config')
+const { USE_OTP, JWT_ALG, JWT_EXPIRY, JWT_SECRET, JWT_REFRESH_EXPIRY } = require('../config')
 
 const { jwtCerts } = require('./certs')
 
@@ -23,7 +23,7 @@ const { jwtCerts } = require('./certs')
 // Create a token from a payload
 async function createToken(payload, options) {
   options.algorithm = JWT_ALG
-  const secretKey = JWT_ALG === 'HS256' ? JWT_SECRET : jwtCerts.key
+  const secretKey = JWT_ALG.substring(0,2) === 'RS' ? jwtCerts.key : JWT_SECRET
   const token = jwt.sign(payload, secretKey, options)
   const refreshToken = USE_OTP ? '' : Date.now()
   if (refreshToken) await keyv.set(payload.id, refreshToken) 
@@ -60,26 +60,28 @@ const authUser = async (req, res, next) => {
       return res.status(401).json({ message: 'Error in authorization format' })
     }
     const token = req.headers.authorization.split(' ')[1]
-    // const matchingToken = await keyv.get(token)
     if (token) { // matchingToken
       // USE_OTP && req.path !== '/otp'
       let result = null
       try {
-        const secretKey = JWT_ALG === 'HS256' ? JWT_SECRET : jwtCerts.cert
+        const secretKey = JWT_ALG.substring(0,2) === 'RS' ? jwtCerts.cert : JWT_SECRET
         result = jwt.verify(token, secretKey, { algorithm: [JWT_ALG] }) // and options
       } catch (e) {
         if (e.name === 'TokenExpiredError') {
           console.log('req.path', req.path)
           if (req.path === '/refresh') {
-            // TBD check refresh token & user... && refresh token not expired...
-            // const user = await User.query().where('id', '=', id)
-            // refresh token - always stateful, exp is in seconds, iat is not user
-            // if (user && !user[0].revoked && user[0].refreshToken === req.body.refresh_token && parseInt(Date.now() / 1000) - result.exp > 3600) { // ok...
-            // if ok generate new access token & refresh token?
-              const decoded = jwt.decode(token)
-              const tokens = await createToken({ id: decoded.id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
-              return res.status(200).json(tokens)
-            // }
+            // TBD check refresh token & user - always stateful
+            const { id } = jwt.decode(token)
+            const user = await User.query().where('id', '=', id)
+            if (user && !user[0].revoked && req.body) {
+              const refreshToken = await keyv.get(id) // use Cache
+              // const refreshToken = user[0].refreshToken // use DB
+              // exp is in seconds, iat is not user
+              // if (refreshToken === req.body.refresh_token && parseInt(Date.now() / 1000) - result.exp > JWT_REFRESH_EXPIRY) { // ok... generate new access token & refresh token?
+                const tokens = await createToken({ id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
+                return res.status(200).json(tokens)
+              // }  
+            }
           }      
           return res.status(401).json({ message: 'TokenExpiredError' })
         }

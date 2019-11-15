@@ -31,7 +31,10 @@ export default {
     try {
       rv = await http.post('/api/auth/login', { email, password })
       const { data } = rv
-      dispatch('autoSignIn', data) // token
+      await dispatch('autoSignIn', data) // token
+      if (!USE_OTP) {
+        router.push('/dashboard')
+      }
     } catch (e) { }
     if (!rv) {
       commit('setError', { message: 'Sign In Error' })
@@ -46,7 +49,8 @@ export default {
     try {
       rv = await http.post('/api/auth/otp', { pin })
       const { data } = rv
-      dispatch('autoVerify', data) // token
+      await dispatch('autoVerify', data) // token
+      router.push('/dashboard')
     } catch (e) { }
     if (!rv) {
       commit('setError', { message: 'Verify Error' })
@@ -54,20 +58,18 @@ export default {
     commit('setLoading', false)
   },
 
-  // TBD fix broken promises here...
+  // TBD fix broken promises here... actions return a promise...
   // layout-secure, layout-public, setSecure payload is route instead of layout name..., setPublic
   autoSignIn ({ commit }, payload) { // payload.token only
     commit('setUser', payload)
     if (!USE_OTP) {
       commit('setLayout', 'layout-admin')
-      router.push('/dashboard')
     }
   },
 
-  autoVerify ({ commit }, payload) { // payload.token only
+  async autoVerify ({ commit }, payload) { // payload.token only
     commit('setUser', payload)
     commit('setLayout', 'layout-admin')
-    router.push('/dashboard')
   },
   clearError ({ commit }) { commit('setError', null) },
 
@@ -89,13 +91,11 @@ export default {
     } else {
       commit('setBaasUser', { id: auth.id, email: auth.id, loginType: 'mongo', verified: true })
       commit('setLayout', 'layout-admin')
-      router.push('/dashboard')
     }
   },
-  mongoAutoSignin ({ commit }, payload) { // not called for now
+  async mongoAutoSignin ({ commit }, payload) { // not called for now
     commit('setBaasUser', { id: payload.id, email: payload.id, loginType: 'mongo', verified: true })
     commit('setLayout', 'layout-admin')
-    router.push('/dashboard')
   },
 
   // firebase
@@ -136,10 +136,9 @@ export default {
     }
     commit('setLoading', false)
   },
-  firebaseAutoSignin ({ commit }, payload) {
+  async firebaseAutoSignin ({ commit }, payload) {
     commit('setBaasUser', { id: payload.uid, email: payload.email, loginType: 'firebase', verified: true })
     commit('setLayout', 'layout-admin')
-    router.push('/dashboard')
   },
 
   // Common Logout
