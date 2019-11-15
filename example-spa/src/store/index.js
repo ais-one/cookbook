@@ -19,6 +19,8 @@ export const store = new Vuex.Store({
   mutations: {
     signUserUp (state, payload) { }, // DISABLED
     setLayout (state, payload) { state.layout = payload },
+    // setPublic (state, payload) { state.layout = 'layout-public' }, // also do router push
+    // setSecure (state, payload) { state.layout = 'layout-secure' }, // also do router push
     setUser (state, payload) {
       if (payload && payload.token) {
         const decoded = jwtDecode(payload.token)

@@ -54,6 +54,8 @@ export default {
     commit('setLoading', false)
   },
 
+  // TBD fix broken promises here...
+  // layout-secure, layout-public, setSecure payload is route instead of layout name..., setPublic
   autoSignIn ({ commit }, payload) { // payload.token only
     commit('setUser', payload)
     if (!USE_OTP) {
@@ -137,7 +139,7 @@ export default {
   firebaseAutoSignin ({ commit }, payload) {
     commit('setBaasUser', { id: payload.uid, email: payload.email, loginType: 'firebase', verified: true })
     commit('setLayout', 'layout-admin')
-    router.push('/dashboard') // console.log party
+    router.push('/dashboard')
   },
 
   // Common Logout

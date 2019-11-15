@@ -35,7 +35,7 @@ module.exports = {
   JWT_EXPIRY: process.env.JWT_EXPIRY || '15s', // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism
 
   // OTP
-  USE_OTP: process.env.USE_OTP || '', // GA, SMS, ''
+  USE_OTP: process.env.USE_OTP || 'GA', // GA, SMS, ''
   OTP_EXPIRY: process.env.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP
 
   // CREATE FOR LOCALHOST: openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt
