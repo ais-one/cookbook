@@ -9,7 +9,7 @@ const keyv = require('./keyv')
 
 const User = require('../models/User')
 
-const { JWT_ALG, JWT_EXPIRY, JWT_SECRET } = require('../config')
+const { USE_OTP, JWT_ALG, JWT_EXPIRY, JWT_SECRET } = require('../config')
 
 const { jwtCerts } = require('./certs')
 
@@ -21,10 +21,17 @@ const { jwtCerts } = require('./certs')
 // ip
 
 // Create a token from a payload
-function createToken(payload, options) {
+async function createToken(payload, options) {
   options.algorithm = JWT_ALG
   const secretKey = JWT_ALG === 'HS256' ? JWT_SECRET : jwtCerts.key
-  return jwt.sign(payload, secretKey, options)
+  const token = jwt.sign(payload, secretKey, options)
+  const refreshToken = USE_OTP ? '' : Date.now()
+  if (refreshToken) await keyv.set(payload.id, refreshToken) 
+  return { token, refreshToken }
+}
+
+async function revokeToken(id) {
+  await keyv.delete(id) // clear
 }
 
 // Check if the user exists in database
@@ -65,13 +72,14 @@ const authUser = async (req, res, next) => {
           console.log('req.path', req.path)
           if (req.path === '/refresh') {
             // TBD check refresh token & user... && refresh token not expired...
-            // refresh token - always stateful
-            // const nowSeconds = parseInt(Date.now() / 1000)
-            // const tokenPeriodSeconds = result.exp - result.iat
-            // if ok generate new token & refresh token?
-            const decoded = jwt.decode(token)
-            const newToken = createToken({ id: decoded.id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
-            return res.status(200).json({ token: newToken })
+            // const user = await User.query().where('id', '=', id)
+            // refresh token - always stateful, exp is in seconds, iat is not user
+            // if (user && !user[0].revoked && user[0].refreshToken === req.body.refresh_token && parseInt(Date.now() / 1000) - result.exp > 3600) { // ok...
+            // if ok generate new access token & refresh token?
+              const decoded = jwt.decode(token)
+              const tokens = await createToken({ id: decoded.id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
+              return res.status(200).json(tokens)
+            // }
           }      
           return res.status(401).json({ message: 'TokenExpiredError' })
         }
@@ -90,6 +98,7 @@ const authUser = async (req, res, next) => {
 module.exports = {
   authUser,
   createToken,
+  revokeToken,
   isAuthenticated,
   isGithubAuthenticated
   /*

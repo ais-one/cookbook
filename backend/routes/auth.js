@@ -5,7 +5,7 @@ const otplib = require('otplib')
 
 const { SALT_ROUNDS, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
 
-const { createToken, isAuthenticated, isGithubAuthenticated, authUser } = require('../services/auth')
+const { createToken, revokeToken, isAuthenticated, isGithubAuthenticated, authUser } = require('../services/auth')
 
 const User = require('../models/User')
 const keyv = require('../services/keyv')
@@ -38,9 +38,8 @@ authRoutes
         return res.status(401).json({ message })
       }
       const { id } = user
-      const token = createToken({ id }, {expiresIn: JWT_EXPIRY}) // 5 minute expire for login
-      await keyv.set(token, token)
-      return res.status(200).json({ token })
+      const tokens = await createToken({ id, verified: true }, {expiresIn: JWT_EXPIRY}) // 5 minute expire for login
+      return res.status(200).json(tokens)
     } catch (e) {
       console.log(e)
     }
@@ -49,9 +48,7 @@ authRoutes
   .get('/logout', authUser, async (req,res) => {
     // console.log('logging out')
     try {
-      const incomingToken = req.headers.authorization.split(' ')[1]
-      await keyv.delete(incomingToken)
-      // clear the token
+      await revokeToken(req.decoded.id) // clear
       return res.status(200).json({ message: 'Logged Out' })  
     } catch (e) { }
     return res.status(500).json()  
@@ -63,6 +60,9 @@ authRoutes
       if (!user) {
         const message = 'Incorrect email or password'
         return res.status(401).json({ message })
+      }
+      if (user.revoked) {
+        return res.status(401).json({ message: 'Authorization Revoked' })
       }
       let verified = true
       const { id } = user
@@ -76,10 +76,9 @@ authRoutes
           // set user SMS & send it
         }
       }
-      const token = createToken({ id, verified }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
-      await keyv.set(token, true) 
-      // TBD res.setHeader('Set-Cookie', [`access_token=${token}; HttpOnly`]);
-      return res.status(200).json({ token })
+      const tokens = await createToken({ id, verified }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
+      // TBD res.setHeader('Set-Cookie', [`access_token=${tokens.token}; HttpOnly`]);
+      return res.status(200).json(tokens)
     } catch (e) { }
     return res.status(500).json()  
   })
@@ -89,22 +88,16 @@ authRoutes
   })
   .post('/otp', authUser, async (req,res) => {
     try {
-      let result = req.decoded
-      if (result) {
-        const { id } = result
-        const user = await User.query().where('id', '=', id)
-        if (user) {
-          const { pin } = req.body
-          const { gaKey, id } = user[0]
-          // USE_OTP === 'GA' // 'SMS'
-          const isValid = NODE_ENV !== 'development' ? otplib.authenticator.check(pin, gaKey) : pin === '111111'
-          if (isValid) {
-            const incomingToken = req.headers.authorization.split(' ')[1]
-            await keyv.delete(incomingToken)
-            const token = createToken({ id, verified: true }, {expiresIn: JWT_EXPIRY})
-            await keyv.set(token, true) // maybe set true to refresh token instead
-            return res.status(200).json({ token })
-          }
+      const { id } = req.decoded
+      const user = await User.query().where('id', '=', id)
+      if (user) {
+        const { pin } = req.body
+        const { gaKey, id } = user[0]
+        const isValid = NODE_ENV !== 'development' ? otplib.authenticator.check(pin, gaKey) : pin === '111111'
+        if (isValid) {
+          await revokeToken(id)
+          const tokens = await createToken({ id, verified: true }, {expiresIn: JWT_EXPIRY})
+          return res.status(200).json(tokens)
         }
       }
     } catch (e) { console.log(e) }

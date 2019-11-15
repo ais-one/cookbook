@@ -4,12 +4,12 @@
 - backend
   - [Work-in-progress] add jest test
   - improve on JWT, two ways to do expiry extension and revocation
-    - use cache to store
-    - [Work-in-progress] correctly implement refresh token
-    - [Work-in-progress] add IP address checking
+    - still keyv use cache for revocation checking
+    - [Work-in-progress] correctly implement expiry refresh token
+    - add IP address checking
   - example of using RS256 for secret key (sample cert and key are in the certs folder)
   - rename api route /api/rest-test to /api/health, serves as health check, add /api/health-auth to test auth routes
-  - improved on configuration (use common config.js file)
+  - improved on configuration (use common config.js file), renamed some configs
 - [Work-in-progress] ant design version
 
 ### Version 0.2.4
