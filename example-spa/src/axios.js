@@ -67,14 +67,23 @@ http.interceptors.response.use((response) => {
 }, (error) => {
   // Do something with response error
   // console.log('intercept', JSON.stringify(error))
+  const myURL = new URL(error.config.url)
   if (error.response && error.response.status === 401) { // auth failed
-    if (error.response.data.message === 'TokenExpiredError') {
-      // refresh token...
-      // http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
-    }
-    const myURL = new URL(error.config.url)
-    if (myURL.pathname !== '/api/auth/logout' && myURL.pathname !== '/api/auth/otp') {
-      error.config.store.dispatch('logout', { forced: true })
+    if (error.response.data.message === 'TokenExpiredError' && myURL.pathname !== '/api/auth/logout') {
+      // console.log('token expired')
+      http.post('/api/auth/refresh').then(res => {
+        console.log('aassd', res.data.token)
+        const token = res.data.token
+        http.defaults.headers.common['Authorization'] = 'Bearer ' + token
+        error.config.headers['Authorization'] = 'Bearer ' + token
+        return http.request(error.config)
+      }).catch(function (error) {
+        return Promise.reject(error)
+      })
+    } else {
+      if (myURL.pathname !== '/api/auth/logout' && myURL.pathname !== '/api/auth/otp') {
+        error.config.store.dispatch('logout', { forced: true })
+      }  
     }
   }
   return Promise.reject(error)

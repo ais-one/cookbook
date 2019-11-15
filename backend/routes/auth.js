@@ -114,12 +114,12 @@ authRoutes
     } catch (e) { console.log(e) }
     return res.status(401).json({ message: 'Error token revoked' })
   })
-  .post('/refresh', async (req,res) => {
+  .post('/refresh', authUser, async (req,res) => {
     try {
       // validate refresh_token
       // return new access_token and refresh_token
     } catch (e) { }
-    return res.status(500).json()  
+    return res.status(200).json({message: 'tbd'})  
   })
 
 module.exports = authRoutes

@@ -60,36 +60,21 @@ const authUser = async (req, res, next) => {
       } catch (e) {
         if (e.name === 'TokenExpiredError') {
           console.log('req.path', req.path)
-          if (req.path === '/refresh-token') {
-            // check refresh token & user...
+          if (req.path === '/refresh') {
+            // TBD check refresh token & user... && refresh token not expired...
+            // refresh token - always stateful
+            // const nowSeconds = parseInt(Date.now() / 1000)
+            // const tokenPeriodSeconds = result.exp - result.iat
             // if ok generate new token & refresh token?
+            const decoded = jwt.decode(token)
+            const newToken = createToken({ id: decoded.id, verified: true }, SECRET_KEY,  { expiresIn: USE_OTP ? '5m' : KEY_EXPIRY }) // 5 minute expire for login
+            return res.status(200).json({ token: newToken })
           }      
           return res.status(401).json({ message: 'TokenExpiredError' })
         }
       }
-    
-      // if expired... reply 403?
-      /* refresh token - also stateful, may not be useful
-      const nowSeconds = parseInt(Date.now() / 1000)
-      const tokenPeriodSeconds = result.exp - result.iat
-      const elapsedSeconds = nowS - result.iat
-      if (elapsedSeconds > 0.5 * tokenPeriodSeconds && elapsedSeconds <= tokenPeriodSeconds) {
-        delete result.iat
-        delete result.exp
-        res.set('refresh-token', createToken(result))
-      }
-      */
       if (result) {
         req.decoded = result
-        // Throttle createToken by checking exp & iat (claims must include iat and exp)
-        const now = parseInt(Date.now() / 1000) // seconds
-        const triggerTime = result.iat + parseInt((result.exp - result.iat) / 2)
-        if (now > triggerTime) { // 2 minutes to expiry - this may cause problems...
-          // please be careful here, if first time, token may not be set and you get error logging in ?
-          // console.log('update token')
-          delete result.exp // id, iat, remove exp
-          await keyv.set(incomingToken, createToken(result, key, {expiresIn: KEY_EXPIRY}))
-        }
         return next()
       }
     }
