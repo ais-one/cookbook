@@ -27,7 +27,7 @@ export default (to, from, next) => {
       const user = JSON.parse(item)
       if (user.verified) {
         console.log('auth guard set user')
-        store.commit('setUser', user)
+        store.commit('setUser', user) // need user.token only
         store.commit('setLayout', 'layout-admin')
         return next()
       }

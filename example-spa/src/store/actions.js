@@ -54,7 +54,7 @@ export default {
     commit('setLoading', false)
   },
 
-  autoSignIn ({ commit }, payload) { // payload.token
+  autoSignIn ({ commit }, payload) { // payload.token only
     commit('setUser', payload)
     if (!USE_OTP) {
       commit('setLayout', 'layout-admin')
@@ -62,7 +62,7 @@ export default {
     }
   },
 
-  autoVerify ({ commit }, payload) { // payload.token
+  autoVerify ({ commit }, payload) { // payload.token only
     commit('setUser', payload)
     commit('setLayout', 'layout-admin')
     router.push('/dashboard')
@@ -120,7 +120,7 @@ export default {
       // }
     }
   },
-  async firebaseSignin ({ dispatch, commit }, payload) {
+  async firebaseSignin ({ commit }, payload) { // { dispatch, commit }
     commit('setLoading', true)
     commit('setError', null)
     let user = null

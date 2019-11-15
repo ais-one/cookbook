@@ -23,7 +23,7 @@ module.exports = {
   NODE_ENV: process.env.NODE_ENV,
 
   SALT_ROUNDS: process.env.SALT_ROUNDS || 12,
-  KEY_EXPIRY: process.env.KEY_EXPIRY || '15s', // '15m',
+  KEY_EXPIRY: process.env.KEY_EXPIRY || '15s', // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism
   SECRET_KEY: process.env.SECRET_KEY || '123456789',
 
   USE_OTP: process.env.USE_OTP || '', // GA, SMS, ''
