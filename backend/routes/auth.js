@@ -3,7 +3,7 @@ const express = require('express')
 const authRoutes = express.Router()
 const otplib = require('otplib')
 
-const { SALT_ROUNDS, USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
+const { SALT_ROUNDS, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
 
 const { createToken, isAuthenticated, isGithubAuthenticated, authUser } = require('../services/auth')
 
@@ -38,7 +38,7 @@ authRoutes
         return res.status(401).json({ message })
       }
       const { id } = user
-      const token = createToken({ id }, USE_OTP ? OTP_SECRET_KEY : SECRET_KEY, {expiresIn: KEY_EXPIRY}) // 5 minute expire for login
+      const token = createToken({ id }, {expiresIn: JWT_EXPIRY}) // 5 minute expire for login
       await keyv.set(token, token)
       return res.status(200).json({ token })
     } catch (e) {
@@ -76,19 +76,15 @@ authRoutes
           // set user SMS & send it
         }
       }
-      const token = createToken({ id, verified }, SECRET_KEY,  { expiresIn: USE_OTP ? '5m' : KEY_EXPIRY }) // 5 minute expire for login
+      const token = createToken({ id, verified }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
       await keyv.set(token, true) 
       // TBD res.setHeader('Set-Cookie', [`access_token=${token}; HttpOnly`]);
       return res.status(200).json({ token })
     } catch (e) { }
     return res.status(500).json()  
   })
-  .get('/me', authUser, async (req,res) => {
-    try {
-      const { id } = req.decoded
-      // you can also get more user information from here from a datastore
-      return res.status(200).json({ user: id })
-    } catch (e) { }
+  .post('/refresh', authUser, async (req,res) => {
+    // refresh logic all done in authUser
     return res.status(401).json({ message: 'Error token revoked' })
   })
   .post('/otp', authUser, async (req,res) => {
@@ -105,7 +101,7 @@ authRoutes
           if (isValid) {
             const incomingToken = req.headers.authorization.split(' ')[1]
             await keyv.delete(incomingToken)
-            const token = createToken({ id, verified: true }, OTP_SECRET_KEY, {expiresIn: KEY_EXPIRY})
+            const token = createToken({ id, verified: true }, {expiresIn: JWT_EXPIRY})
             await keyv.set(token, true) // maybe set true to refresh token instead
             return res.status(200).json({ token })
           }
@@ -114,12 +110,13 @@ authRoutes
     } catch (e) { console.log(e) }
     return res.status(401).json({ message: 'Error token revoked' })
   })
-  .post('/refresh', authUser, async (req,res) => {
+  .get('/me', authUser, async (req,res) => {
     try {
-      // validate refresh_token
-      // return new access_token and refresh_token
+      const { id } = req.decoded
+      // you can also get more user information from here from a datastore
+      return res.status(200).json({ user: id })
     } catch (e) { }
-    return res.status(200).json({message: 'tbd'})  
+    return res.status(401).json({ message: 'Error token revoked' })
   })
 
 module.exports = authRoutes

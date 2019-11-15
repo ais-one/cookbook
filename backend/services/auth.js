@@ -1,7 +1,7 @@
-const uuid = require('uuid/v4')
-const qrcode = require('qrcode')
-const otplib = require('otplib')
-const axios = require('axios')
+// const uuid = require('uuid/v4')
+// const qrcode = require('qrcode')
+// const otplib = require('otplib')
+// const axios = require('axios')
 
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
@@ -9,8 +9,9 @@ const keyv = require('./keyv')
 
 const User = require('../models/User')
 
-const { USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY } = require('../config')
+const { JWT_ALG, JWT_EXPIRY, JWT_SECRET } = require('../config')
 
+const { jwtCerts } = require('./certs')
 
 // algorithm
 // expiresIn
@@ -20,7 +21,9 @@ const { USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY } = require('../config')
 // ip
 
 // Create a token from a payload
-function createToken(payload, secretKey, options) {
+function createToken(payload, options) {
+  options.algorithm = JWT_ALG
+  const secretKey = JWT_ALG === 'HS256' ? JWT_SECRET : jwtCerts.key
   return jwt.sign(payload, secretKey, options)
 }
 
@@ -52,11 +55,11 @@ const authUser = async (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1]
     // const matchingToken = await keyv.get(token)
     if (token) { // matchingToken
-      const key = (USE_OTP && req.path !== '/otp') ? OTP_SECRET_KEY : SECRET_KEY // select the key to use
-
+      // USE_OTP && req.path !== '/otp'
       let result = null
       try {
-        result = jwt.verify(token, key) // and options
+        const secretKey = JWT_ALG === 'HS256' ? JWT_SECRET : jwtCerts.cert
+        result = jwt.verify(token, secretKey, { algorithm: [JWT_ALG] }) // and options
       } catch (e) {
         if (e.name === 'TokenExpiredError') {
           console.log('req.path', req.path)
@@ -67,7 +70,7 @@ const authUser = async (req, res, next) => {
             // const tokenPeriodSeconds = result.exp - result.iat
             // if ok generate new token & refresh token?
             const decoded = jwt.decode(token)
-            const newToken = createToken({ id: decoded.id, verified: true }, SECRET_KEY,  { expiresIn: USE_OTP ? '5m' : KEY_EXPIRY }) // 5 minute expire for login
+            const newToken = createToken({ id: decoded.id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
             return res.status(200).json({ token: newToken })
           }      
           return res.status(401).json({ message: 'TokenExpiredError' })

@@ -22,25 +22,26 @@ console.log('Environment: ', process.env.NODE_ENV)
 module.exports = {
   NODE_ENV: process.env.NODE_ENV,
 
-  SALT_ROUNDS: process.env.SALT_ROUNDS || 12,
-  KEY_EXPIRY: process.env.KEY_EXPIRY || '15s', // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism
-  SECRET_KEY: process.env.SECRET_KEY || '123456789',
-
-  USE_OTP: process.env.USE_OTP || '', // GA, SMS, ''
-  OTP_SECRET_KEY: process.env.OTP_SECRET_KEY || '987654321',
-
-  // JWT
-  JWT_ALG: process.env.JWT_ALG || 'RS256',
-  JWT_CERTS_PATH: process.env.JWT_CERTS_PATH || './certs/jwt',
-
   // PORTS
   API_PORT: process.env.API_PORT || 3000,
   WS_PORT: process.env.WS_PORT || 3001,
 
+  SALT_ROUNDS: process.env.SALT_ROUNDS || 12,
+
+  // JWT - secret key
+  JWT_ALG: process.env.JWT_ALG || 'HS256', // 'RS256' (use SSL certs), 'HS256' (use secret string)
+  JWT_CERTS_PATH: process.env.JWT_CERTS_PATH || './certs/jwt',
+  JWT_SECRET: process.env.JWT_SECRET || '123456789',
+  JWT_EXPIRY: process.env.JWT_EXPIRY || '15s', // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism
+
+  // OTP
+  USE_OTP: process.env.USE_OTP || '', // GA, SMS, ''
+  OTP_EXPIRY: process.env.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP
+
   // CREATE FOR LOCALHOST: openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt
   // HTTPS_CERTS_PATH: './certs/localhost',
   USE_HTTPS: process.env.USE_HTTPS || false, // USE_HTTPS should be path to letsencrypt location OR false 
-  HTTPS_CERTS_PATH: '',
+  HTTPS_CERTS_PATH: process.env.HTTPS_CERTS_PATH || '',
 
   // ## CACHING CAN USE REDIS INSTEAD
   // KEYV_CACHE=redis://localhost:6379

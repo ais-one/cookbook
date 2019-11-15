@@ -29,7 +29,7 @@ http.interceptors.response.use((response) => {
   // console.log('intercept', JSON.stringify(error))
   const myURL = new URL(error.config.url)
   if (error.response && error.response.status === 401) { // auth failed
-    if (error.response.data.message === 'TokenExpiredError' && myURL.pathname !== '/api/auth/logout') {
+    if (error.response.data.message === 'TokenExpiredError' && myURL.pathname !== '/api/auth/logout' && myURL.pathname !== '/api/auth/otp') {
       // console.log('token expired')
       http.post('/api/auth/refresh').then(res => {
         console.log('aassd', res.data.token)
