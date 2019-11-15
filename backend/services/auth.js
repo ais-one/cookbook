@@ -70,20 +70,26 @@ const authUser = async (req, res, next) => {
         if (e.name === 'TokenExpiredError') {
           console.log('req.path', req.path)
           if (req.path === '/refresh') {
-            // TBD check refresh token & user - always stateful
-            const { id } = jwt.decode(token)
-            const user = await User.query().where('id', '=', id)
-            if (user && !user[0].revoked && req.body) {
-              const refreshToken = await keyv.get(id) // use Cache
-              // const refreshToken = user[0].refreshToken // use DB
-              // exp is in seconds, iat is not user
-              // if (refreshToken === req.body.refresh_token && parseInt(Date.now() / 1000) - result.exp > JWT_REFRESH_EXPIRY) { // ok... generate new access token & refresh token?
-                const tokens = await createToken({ id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
-                return res.status(200).json(tokens)
-              // }  
+            try {
+              // TBD check refresh token & user - always stateful
+              const { id, exp } = jwt.decode(token)
+              console.log('exp', exp, parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY)
+              const user = await User.query().where('id', '=', id)
+              if (user && !user[0].revoked && req.body) {
+                // const refreshToken = await keyv.get(id) // use Cache
+                // const refreshToken = user[0].refreshToken // use DB
+                // if (parseInt(Date.now() / 1000) > exp + JWT_REFRESH_EXPIRY) { // exp is in seconds, iat is not used
+                  // if (refreshToken === req.body.refresh_token && ) { // ok... generate new access token & refresh token?
+                  const tokens = await createToken({ id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
+                  return res.status(200).json(tokens)
+                  // }
+                // }
+              }
+            } catch (e) {
             }
-          }      
-          return res.status(401).json({ message: 'TokenExpiredError' })
+            return res.status(401).json({ message: 'Refresh Error' })
+          }
+          return res.status(401).json({ message: 'Token Expired Error' })
         }
       }
       if (result) {

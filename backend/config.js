@@ -32,7 +32,7 @@ module.exports = {
   JWT_ALG: process.env.JWT_ALG || 'HS256', // 'RS256' (use SSL certs), 'HS256' (use secret string)
   JWT_CERTS_PATH: process.env.JWT_CERTS_PATH || './certs/jwt', // RS256
   JWT_SECRET: process.env.JWT_SECRET || '123456789', // HS256
-  JWT_EXPIRY: process.env.JWT_EXPIRY || '15s', // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism
+  JWT_EXPIRY: process.env.JWT_EXPIRY || '5s', // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism
   JWT_REFRESH_EXPIRY: 3600, // do not allow refresh handling after X seconds
 
   // OTP
