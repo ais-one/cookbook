@@ -31,8 +31,10 @@ http.interceptors.response.use((response) => {
   if (error.response && error.response.status === 401) { // auth failed
     if (myURL.pathname !== '/api/auth/logout' && myURL.pathname !== '/api/auth/otp') {
       if (error.response.data.message === 'Token Expired Error') {
-        // console.log('token expired')
-        return http.post('/api/auth/refresh').then(res => {
+        // console.log('zzz token expired')
+        // console.log('store', store)
+        // , { refresh_token: store.getters.user.refresh_token }
+        return http.post('/api/auth/refresh', { refresh_token: store.getters.user.refresh_token }).then(res => {
           console.log('new token', res.data.token)
           const { token } = res.data
           store.commit('setUser', res.data) // http.defaults.headers.common['Authorization'] = 'Bearer ' + token

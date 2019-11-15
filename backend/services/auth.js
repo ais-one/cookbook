@@ -27,7 +27,7 @@ async function createToken(payload, options) {
   const token = jwt.sign(payload, secretKey, options)
   const refreshToken = USE_OTP ? '' : Date.now()
   if (refreshToken) await keyv.set(payload.id, refreshToken) 
-  return { token, refreshToken }
+  return { token, refresh_token: refreshToken }
 }
 
 async function revokeToken(id) {
@@ -71,19 +71,19 @@ const authUser = async (req, res, next) => {
           console.log('req.path', req.path)
           if (req.path === '/refresh') {
             try {
-              // TBD check refresh token & user - always stateful
+              // check refresh token & user - always stateful
               const { id, exp } = jwt.decode(token)
-              console.log('exp', exp, parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY)
               const user = await User.query().where('id', '=', id)
               if (user && !user[0].revoked && req.body) {
-                // const refreshToken = await keyv.get(id) // use Cache
+                const refreshToken = await keyv.get(id) // use Cache
+                // console.log('refreshToken', refreshToken === req.body.refresh_token)
                 // const refreshToken = user[0].refreshToken // use DB
-                // if (parseInt(Date.now() / 1000) > exp + JWT_REFRESH_EXPIRY) { // exp is in seconds, iat is not used
-                  // if (refreshToken === req.body.refresh_token && ) { // ok... generate new access token & refresh token?
-                  const tokens = await createToken({ id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
-                  return res.status(200).json(tokens)
-                  // }
-                // }
+                if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
+                  if (refreshToken === req.body.refresh_token) { // ok... generate new access token & refresh token?
+                    const tokens = await createToken({ id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
+                    return res.status(200).json(tokens)
+                  }
+                }
               }
             } catch (e) {
             }
