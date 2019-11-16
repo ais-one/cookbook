@@ -3,9 +3,11 @@
 const express = require('express')
 const history = require('connect-history-api-fallback')
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const http = require('http')
 const https = require('https')
+const proxy = require('http-proxy-middleware')
 
 const swaggerUi = require('swagger-ui-express')
 const swaggerJSDoc = require('swagger-jsdoc')
@@ -16,7 +18,7 @@ const swaggerDocument = YAML.load('./docs/openapi.yaml')
 const apollo = require('./services/graphql')
 
 const { httpsCerts } = require('./services/certs')
-const { API_PORT, USE_HTTPS } = require('./config')
+const { API_PORT, USE_HTTPS, WWW_PROXY_URL } = require('./config')
 
 console.log('httpsCerts', httpsCerts)
 
@@ -36,10 +38,11 @@ apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cookieParser())
 
-app.use(history()) // causes problems when using postman - set header accept application/json in postman
-app.use(express.static('public')) // for html content
-// app.use('/uploads', express.static(path.join('uploads'))) // need to create the folder uploads
+// app.use(history()) // causes problems when using postman - set header accept application/json in postman
+// app.use(express.static('public')) // for serving static content
+// app.use('/uploads', express.static('uploads')) // need to create the folder uploads
 
 // PASSPORT
 // app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true })) // required for OAuth 1 (e.g. twitter), OAuth2 with state (e.g. linkedin)
@@ -95,7 +98,9 @@ app.use(cors({
 }))
 app.use('/api/auth', authRoutes)
 app.use('/api', apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
-app.get("*", async (req, res) => res.status(404).json({ data: 'Not Found...' }))
+if (WWW_PROXY_URL) app.use('*', proxy({ target: WWW_PROXY_URL, changeOrigin: true }))
+
+//app.get("*", async (req, res) => res.status(404).json({ data: 'Not Found...' }))
 
 // for Firebase Functions
 // exports.api = functions.https.onRequest(async (req, res) => {

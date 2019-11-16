@@ -39,6 +39,12 @@ module.exports = {
   USE_OTP: process.env.USE_OTP || '', // GA, SMS, ''
   OTP_EXPIRY: process.env.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP
 
+  // HTTPONLY
+  // HTTPONLY_TOKEN: true,
+  // WWW_PROXY_URL: 'http://127.0.0.1:8080',
+  HTTPONLY_TOKEN: false,
+  WWW_PROXY_URL: '',
+
   // CREATE FOR LOCALHOST: openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt
   // HTTPS_CERTS_PATH: './certs/localhost',
   USE_HTTPS: process.env.USE_HTTPS || false, // USE_HTTPS should be path to letsencrypt location OR false 

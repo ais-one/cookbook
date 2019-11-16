@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import jwtDecode from 'jwt-decode'
 import actions from './actions'
 import { http } from '@/axios'
+import { HTTPONLY_TOKEN } from '@/config'
 
 Vue.use(Vuex)
 
@@ -32,11 +33,12 @@ export const store = new Vuex.Store({
       }
       state.user = payload
       if (payload) {
-        localStorage.setItem('session', JSON.stringify(payload))
-        http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
+        if (!HTTPONLY_TOKEN) http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
+        const { token, refresh_token, ...noTokens } = payload
+        localStorage.setItem('session', JSON.stringify(HTTPONLY_TOKEN ? noTokens : payload))
       } else {
         localStorage.removeItem('session')
-        delete http.defaults.headers.common['Authorization']
+        if (!HTTPONLY_TOKEN) delete http.defaults.headers.common['Authorization']
       }
     },
     setBaasUser (state, payload) {

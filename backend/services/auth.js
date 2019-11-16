@@ -9,7 +9,7 @@ const keyv = require('./keyv')
 
 const User = require('../models/User')
 
-const { USE_OTP, JWT_ALG, JWT_EXPIRY, JWT_SECRET, JWT_REFRESH_EXPIRY } = require('../config')
+const { HTTPONLY_TOKEN, USE_OTP, JWT_ALG, JWT_EXPIRY, JWT_SECRET, JWT_REFRESH_EXPIRY } = require('../config')
 
 const { jwtCerts } = require('./certs')
 
@@ -55,11 +55,17 @@ async function isGithubAuthenticated(githubId) {
 
 const authUser = async (req, res, next) => {
   // console.log('auth express', req.path)
+  let token
   try {
-    if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
-      return res.status(401).json({ message: 'Error in authorization format' })
+    if (HTTPONLY_TOKEN) {
+      token = req.cookies.token
+    } else {
+      if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
+        return res.status(401).json({ message: 'Error in authorization format' })
+      }
+      token = req.headers.authorization.split(' ')[1]
     }
-    const token = req.headers.authorization.split(' ')[1]
+    // console.log(req.cookies)
     if (token) { // matchingToken
       // USE_OTP && req.path !== '/otp'
       let result = null
@@ -81,6 +87,7 @@ const authUser = async (req, res, next) => {
                 if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
                   if (refreshToken === req.body.refresh_token) { // ok... generate new access token & refresh token?
                     const tokens = await createToken({ id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
+                    if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly`]); // MORE SECURE: httpOnly 
                     return res.status(200).json(tokens)
                   }
                 }
