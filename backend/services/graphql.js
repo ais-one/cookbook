@@ -29,8 +29,9 @@ if (!apollo) {
         connection.context.pubsub = pubsub
         return connection.context;
       } else {
+        // TBD - GraphQL not taking into account refresh token and revocation
         // TBD: Check Auth Token Here
-        // const token = req.headers['authorization'] || ''
+        // TBD const token = req.headers['authorization'] || ''
         return {
           // User,
           // Post,
