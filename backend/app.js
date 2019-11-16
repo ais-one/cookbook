@@ -38,7 +38,7 @@ apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cookieParser())
+app.use(cookieParser('some_secret'))
 
 // app.use(history()) // causes problems when using postman - set header accept application/json in postman
 // app.use(express.static('public')) // for serving static content
@@ -98,7 +98,19 @@ app.use(cors({
 }))
 app.use('/api/auth', authRoutes)
 app.use('/api', apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
-if (WWW_PROXY_URL) app.use('*', proxy({ target: WWW_PROXY_URL, changeOrigin: true }))
+if (WWW_PROXY_URL) app.use('*', proxy({
+  target: WWW_PROXY_URL,
+  changeOrigin: true,
+  // ws: true,
+  // onProxyRes: function(proxyRes, req, res) {
+  //   if (proxyRes.headers["set-cookie"] !== undefined) {
+  //     proxyRes.headers["set-cookie"] = proxyRes.headers[
+  //       "set-cookie"
+  //     ][0].replace("Secure; ", ""); // JSESSIONID cookie cannot be set thru proxy with Secure
+  //     return proxyRes;
+  //   }
+  // }
+}))
 
 //app.get("*", async (req, res) => res.status(404).json({ data: 'Not Found...' }))
 

@@ -9,7 +9,7 @@ const keyv = require('./keyv')
 
 const User = require('../models/User')
 
-const { HTTPONLY_TOKEN, USE_OTP, JWT_ALG, JWT_EXPIRY, JWT_SECRET, JWT_REFRESH_EXPIRY } = require('../config')
+const { USE_HTTPS, HTTPONLY_TOKEN, USE_OTP, JWT_ALG, JWT_EXPIRY, JWT_SECRET, JWT_REFRESH_EXPIRY } = require('../config')
 
 const { jwtCerts } = require('./certs')
 
@@ -59,13 +59,14 @@ const authUser = async (req, res, next) => {
   try {
     if (HTTPONLY_TOKEN) {
       token = req.cookies.token
+      // console.log('tok', req.cookies.token)
     } else {
       if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
         return res.status(401).json({ message: 'Error in authorization format' })
       }
       token = req.headers.authorization.split(' ')[1]
     }
-    // console.log(req.cookies)
+    // console.log(req.path, req.cookies)
     if (token) { // matchingToken
       // USE_OTP && req.path !== '/otp'
       let result = null
@@ -87,16 +88,23 @@ const authUser = async (req, res, next) => {
                 if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
                   if (refreshToken === req.body.refresh_token) { // ok... generate new access token & refresh token?
                     const tokens = await createToken({ id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
-                    if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly`]); // MORE SECURE: httpOnly 
+                    // if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly;`]); // MORE SECURE: httpOnly
+                    // if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, signed: true, secure: !!USE_HTTPS })
+                    if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, path: undefined })
                     return res.status(200).json(tokens)
                   }
                 }
               }
             } catch (e) {
+              console.log(e.toString())
+              return res.status(401).json({ message: 'Refresh Error 2' })
             }
             return res.status(401).json({ message: 'Refresh Error' })
+          } else {
+            return res.status(401).json({ message: 'Token Expired Error' })
           }
-          return res.status(401).json({ message: 'Token Expired Error' })
+        } else {
+          console.log('ename', e.name)
         }
       }
       if (result) {

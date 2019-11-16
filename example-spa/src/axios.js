@@ -4,6 +4,9 @@ import { store } from './store'
 import { API_URL, HTTPONLY_TOKEN } from '@/config'
 
 export const http = axios.create({
+  // withCredentials: true,
+  // xsrfCookieName: 'csrftoken_testtest',
+  // xsrfHeaderName: 'X-CSRFToken', 
   baseURL: API_URL,
   headers: {
     'Accept': 'application/json',
@@ -34,7 +37,7 @@ http.interceptors.response.use((response) => {
         // console.log('token expired, store', store)
         return http.post('/api/auth/refresh', { refresh_token: store.getters.user.refresh_token }).then(res => {
           // console.log('new token', res.data.token)
-          const { token, refresh_token, ...noTokens } = res.data
+          const { token } = res.data
           store.commit('setUser', res.data)
           if (!HTTPONLY_TOKEN) error.config.headers['Authorization'] = 'Bearer ' + token // need to set this also...
           return http(error.config) // http.request(error.config)

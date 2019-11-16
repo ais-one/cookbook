@@ -3,7 +3,7 @@ const express = require('express')
 const authRoutes = express.Router()
 const otplib = require('otplib')
 
-const { SALT_ROUNDS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
+const { SALT_ROUNDS, USE_HTTPS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
 
 const { createToken, revokeToken, isAuthenticated, isGithubAuthenticated, authUser } = require('../services/auth')
 
@@ -77,7 +77,9 @@ authRoutes
         }
       }
       const tokens = await createToken({ id, verified }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
-      if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly`]);
+      // if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly;`]); // Secure, SameSite=true, Max-Age=? Path=/ causes problems
+      // if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, signed: true, secure: !!USE_HTTPS })
+      if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, path: undefined })
       return res.status(200).json(tokens)
     } catch (e) { }
     return res.status(500).json()  
