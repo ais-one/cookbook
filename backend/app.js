@@ -63,35 +63,13 @@ app.use(cookieParser('some_secret'))
 // app.use(express.static('public')) // for serving static content
 // app.use('/uploads', express.static('uploads')) // need to create the folder uploads
 
-// PASSPORT
+// PASSPORT - move to a service
 // app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true })) // required for OAuth 1 (e.g. twitter), OAuth2 with state (e.g. linkedin)
 // app.use(passport.initialize())
 // app.use(passport.session()) // SESSION - call this AFTER calling express session
 
 const specs = swaggerJSDoc({
-  swaggerDefinition: {
-    info: {
-      title: 'Vue Crud X',
-      version: '1.0.0',
-      description: 'A sample API',
-    },
-    host: '127.0.0.1:' + API_PORT,
-    basePath: '/',
-    tags: [
-      { name: 'Auth', description: 'Authentication' },
-      { name: 'Base', description: 'The Base API' },
-    ],
-    schemes: [ 'http', 'https' ],
-    securityDefinitions: {
-      Bearer: {
-        type: 'apiKey',
-        name: 'Authorization',
-        in: 'header'
-      }
-    },
-    consumes: ['application/json'],
-    produces: ['application/json']
-  },
+  swaggerDefinition: require('./config').SWAGGER_DEFS,
   apis: ['./routes/*.js']
 })
 
@@ -118,19 +96,15 @@ const pageRoutes = require('./routes/page')
 app.use(cors())
 // app.use('/api/auth', authRoutes)
 app.use('/api', authRoutes, apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
-if (WWW_PROXY_URL) app.use('*', proxy({
-  target: WWW_PROXY_URL,
-  changeOrigin: true,
-  // ws: true,
-  // onProxyRes: function(proxyRes, req, res) {
-  //   if (proxyRes.headers["set-cookie"] !== undefined) {
-  //     proxyRes.headers["set-cookie"] = proxyRes.headers[
-  //       "set-cookie"
-  //     ][0].replace("Secure; ", ""); // JSESSIONID cookie cannot be set thru proxy with Secure
-  //     return proxyRes;
-  //   }
-  // }
-}))
+
+if (WWW_PROXY_URL) {
+  app.use('*', proxy({
+    target: WWW_PROXY_URL,
+    changeOrigin: true,
+    ws: true // relies on a initial http request in order to listen to the upgrade event.
+    // if you need to upgrade quicker... https://github.com/chimurai/http-proxy-middleware#external-websocket-upgrade
+  }))
+}
 
 //app.get("*", async (req, res) => res.status(404).json({ data: 'Not Found...' }))
 
@@ -149,13 +123,6 @@ if (USE_HTTPS) {
 } else {
   server = http.createServer(app)
 }
-
-// apollo.installSubscriptionHandlers(server)
-// server.listen(API_PORT, () => {
-//   console.log('REST API listening on port ' + API_PORT)
-//   console.log(`🚀 GraphQL Server ready at http://localhost:${API_PORT}${apollo.graphqlPath}`)
-//   console.log(`🚀 GraphQL Subscriptions ready at ws://localhost:${API_PORT}${apollo.subscriptionsPath}`)
-// })
 
 const WebSocket = require('ws')
 const wss = require('./services/websocket')

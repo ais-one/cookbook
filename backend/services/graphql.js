@@ -30,7 +30,7 @@ if (!apollo) {
         return connection.context;
       } else {
         // TBD: Check Auth Token Here
-        const token = req.headers['authorization'] || ''
+        // const token = req.headers['authorization'] || ''
         return {
           // User,
           // Post,

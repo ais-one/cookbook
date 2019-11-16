@@ -45,6 +45,9 @@ module.exports = {
   // HTTPONLY_TOKEN: false,
   // WWW_PROXY_URL: '',
 
+  // serve static content
+  STATIC_CONTENT: [{'':'public'}],
+
   // CREATE FOR LOCALHOST: openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt
   // HTTPS_CERTS_PATH: './certs/localhost',
   USE_HTTPS: process.env.USE_HTTPS || false, // USE_HTTPS should be path to letsencrypt location OR false 
@@ -65,5 +68,29 @@ module.exports = {
 
   // Telegram
   TELEGRAM_BOT_ID: process.env.TELEGRAM_BOT_ID || '',
-  TELEGRAM_API_KEY: process.env.TELEGRAM_API_KEY || ''
+  TELEGRAM_API_KEY: process.env.TELEGRAM_API_KEY || '',
+
+  SWAGGER_DEFS: {
+    info: {
+      title: 'Vue Crud X',
+      version: '1.0.0',
+      description: 'A sample API',
+    },
+    host: '127.0.0.1:3000',
+    basePath: '/',
+    tags: [
+      { name: 'Auth', description: 'Authentication' },
+      { name: 'Base', description: 'The Base API' },
+    ],
+    schemes: [ 'http', 'https' ],
+    securityDefinitions: {
+      Bearer: {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'header'
+      }
+    },
+    consumes: ['application/json'],
+    produces: ['application/json']
+  }
 }
