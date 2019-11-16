@@ -40,7 +40,7 @@ module.exports = {
   OTP_EXPIRY: process.env.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP
 
   // HTTPONLY
-  HTTPONLY_TOKEN: true,
+  HTTPONLY_TOKEN: true, // true, false
   WWW_PROXY_URL: 'http://127.0.0.1:8080',
   // HTTPONLY_TOKEN: false,
   // WWW_PROXY_URL: '',

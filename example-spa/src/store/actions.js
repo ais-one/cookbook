@@ -33,7 +33,7 @@ export default {
       const { data } = rv
       await dispatch('autoSignIn', data) // token
       if (!USE_OTP) {
-        router.push('/dashboard')
+        await router.push('/dashboard')
       }
     } catch (e) { }
     if (!rv) {
@@ -50,7 +50,7 @@ export default {
       rv = await http.post('/api/auth/otp', { pin })
       const { data } = rv
       await dispatch('autoVerify', data) // token
-      router.push('/dashboard')
+      await router.push('/dashboard')
     } catch (e) { }
     if (!rv) {
       commit('setError', { message: 'Verify Error' })

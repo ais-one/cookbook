@@ -4,19 +4,18 @@ const authRoutes = express.Router()
 const otplib = require('otplib')
 
 const { SALT_ROUNDS, USE_HTTPS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
-
 const { createToken, revokeToken, isAuthenticated, isGithubAuthenticated, authUser } = require('../services/auth')
 
 const User = require('../models/User')
 
 authRoutes
-  .post('/signup', async (req,res) => {
+  .post('/auth/signup', async (req,res) => {
     // const {email, password} = req.body
     // password = bcrypt.hashSync(password, SALT_ROUNDS)
     // const rv = await createUser(email, password)
     res.status(201).end()
   })
-  .post('/check-github', async (req,res) => {
+  .post('/auth/check-github', async (req,res) => {
     try {
       const { code, state } = req.body
       const { data } = await axios.post('https://github.com/login/oauth/access_token', {
@@ -39,20 +38,17 @@ authRoutes
       const { id } = user
       const tokens = await createToken({ id, verified: true }, {expiresIn: JWT_EXPIRY}) // 5 minute expire for login
       return res.status(200).json(tokens)
-    } catch (e) {
-      console.log(e)
-    }
+    } catch (e) { console.log('github auth err', e.toString()) }
     return res.status(401).end()
   })
-  .get('/logout', authUser, async (req,res) => {
-    // console.log('logging out')
+  .get('/auth/logout', authUser, async (req,res) => {
     try {
       await revokeToken(req.decoded.id) // clear
       return res.status(200).json({ message: 'Logged Out' })  
     } catch (e) { }
     return res.status(500).json()  
   })
-  .post('/login', async (req,res) => {
+  .post('/auth/login', async (req,res) => {
     try {
       const { email, password } = req.body
       const user = await isAuthenticated({ email, password })
@@ -76,19 +72,18 @@ authRoutes
         }
       }
       const tokens = await createToken({ id, verified }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
-      if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token};`]);
-      // if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly;`]); // Secure, SameSite=true, Max-Age=? Path=/ causes problems
-      // if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, signed: true, secure: !!USE_HTTPS })
-      // if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, path: undefined })
+      if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
       return res.status(200).json(tokens)
-    } catch (e) { }
+    } catch (e) {
+      console.log('login err', e.toString())
+    }
     return res.status(500).json()  
   })
-  .post('/refresh', authUser, async (req,res) => {
+  .post('/auth/refresh', authUser, async (req,res) => {
     // refresh logic all done in authUser
     return res.status(401).json({ message: 'Error token revoked' })
   })
-  .post('/otp', authUser, async (req,res) => {
+  .post('/auth/otp', authUser, async (req,res) => {
     try {
       const { id } = req.decoded
       const user = await User.query().where('id', '=', id)
@@ -99,13 +94,14 @@ authRoutes
         if (isValid) {
           await revokeToken(id)
           const tokens = await createToken({ id, verified: true }, {expiresIn: JWT_EXPIRY})
+          if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
           return res.status(200).json(tokens)
         }
       }
-    } catch (e) { console.log(e) }
+    } catch (e) { console.log('otp err', e.toString()) }
     return res.status(401).json({ message: 'Error token revoked' })
   })
-  .get('/me', authUser, async (req,res) => {
+  .get('/auth/me', authUser, async (req,res) => {
     try {
       const { id } = req.decoded
       // you can also get more user information from here from a datastore

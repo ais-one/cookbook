@@ -116,8 +116,8 @@ const pageRoutes = require('./routes/page')
 //   exposedHeaders: ['refresh-token'] // allow this to be sent back in response
 // }
 app.use(cors())
-app.use('/api/auth', authRoutes)
-app.use('/api', apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
+// app.use('/api/auth', authRoutes)
+app.use('/api', authRoutes, apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
 if (WWW_PROXY_URL) app.use('*', proxy({
   target: WWW_PROXY_URL,
   changeOrigin: true,

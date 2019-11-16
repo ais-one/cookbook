@@ -28,8 +28,8 @@ async function createToken(payload, options) {
     options.algorithm = JWT_ALG
     const secretKey = JWT_ALG.substring(0,2) === 'RS' ? jwtCerts.key : JWT_SECRET
     token = jwt.sign(payload, secretKey, options)
-    refreshToken = USE_OTP ? '' : Date.now()
-    if (refreshToken) await keyv.set(payload.id, refreshToken) 
+    refreshToken = Date.now()
+    if (refreshToken) await keyv.set(payload.id, refreshToken) // TBD set in DB instead...
   } catch (e) {
     console.log('createToken', e.toString())
   }
@@ -60,7 +60,7 @@ async function isGithubAuthenticated(githubId) {
 }
 
 const authUser = async (req, res, next) => {
-  console.log('auth express', req.path, req.cookies, req.signedCookies)
+  // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
   let token
   try {
     if (HTTPONLY_TOKEN) {
@@ -81,29 +81,26 @@ const authUser = async (req, res, next) => {
         result = jwt.verify(token, secretKey, { algorithm: [JWT_ALG] }) // and options
       } catch (e) {
         if (e.name === 'TokenExpiredError') {
-          console.log('req.path', req.path)
-          if (req.path === '/refresh') {
+          // console.log('req.path', req.path)
+          if (req.baseUrl + req.path === '/api/auth/refresh') {
             try {
               // check refresh token & user - always stateful
               const { id, exp } = jwt.decode(token)
               const user = await User.query().where('id', '=', id)
               if (user && !user[0].revoked && req.body) {
-                const refreshToken = await keyv.get(id) // use Cache
-                // console.log('refreshToken', refreshToken === req.body.refresh_token)
-                // const refreshToken = user[0].refreshToken // use DB
+                const refreshToken = true ? await keyv.get(id) // use Cache
+                  : user[0].refreshToken // TBD use DB - maybe better to use DB since it is already being read
+                // console.log('ggg', req.baseUrl, req.path, parseInt(Date.now() / 1000) - exp, JWT_REFRESH_EXPIRY, e.toString(), parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY, token)
                 if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
                   if (refreshToken === req.body.refresh_token) { // ok... generate new access token & refresh token?
                     const tokens = await createToken({ id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
-                    if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token};`]);
-                    // if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly;`]); // MORE SECURE: httpOnly
-                    // if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, signed: true, secure: !!USE_HTTPS })
-                    // if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, path: undefined })
+                    if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
                     return res.status(200).json(tokens)
                   }
                 }
               }
             } catch (e) {
-              console.log(e.toString())
+              console.log('refreshing auth err', e.toString())
               return res.status(401).json({ message: 'Refresh Error 2' })
             }
             return res.status(401).json({ message: 'Refresh Error' })
@@ -111,7 +108,7 @@ const authUser = async (req, res, next) => {
             return res.status(401).json({ message: 'Token Expired Error' })
           }
         } else {
-          console.log('ename', e.name)
+          console.log('auth err', e.name)
         }
       }
       if (result) {
@@ -119,8 +116,8 @@ const authUser = async (req, res, next) => {
         return next()
       }
     }
-  } catch (err) {
-    console.log('authUser', err.toString())
+  } catch (e) {
+    console.log('authUser', e.toString())
   }
   return res.status(401).json({ message: 'Error in token' })
 }
