@@ -40,7 +40,10 @@ http.interceptors.response.use((response) => {
           const { token } = res.data
           store.commit('setUser', res.data)
           if (!HTTPONLY_TOKEN) error.config.headers['Authorization'] = 'Bearer ' + token // need to set this also...
-          return http(error.config) // http.request(error.config)
+          if (myURL.pathname === '/api/authors' || myURL.pathname === '/api/auth/me') {
+            console.log('retyring...', error.config)
+          }
+          return http.request(error.config) // http.request(error.config)
         }).catch(function (error) {
           return Promise.reject(error)
         })

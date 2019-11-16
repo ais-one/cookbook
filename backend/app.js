@@ -5,6 +5,25 @@ const history = require('connect-history-api-fallback')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+// const helmet = require('helmet')
+// const csrf = require('csurf')
+// app.use(csrf());
+// app.use(function(req, res, next){ 
+//  // Expose variable to templates via locals
+//  res.locals.csrftoken = req.csrfToken(); 
+//  next()
+// })
+// <input type="hidden" name="<i>csrf" value={{csrftoken}} />
+
+// RATE-LIMIT
+// const redisClient = require('redis').createClient();
+// const app = express();
+// const limiter = require('express-limiter')(app, redisClient);
+// // Limit requests to 100 per hour per ip address.
+// limiter({
+//   lookup: ['connection.remoteAddress'], total: 100, expire: 1000 * 60 * 60
+// })
+
 const http = require('http')
 const https = require('https')
 const proxy = require('http-proxy-middleware')
@@ -93,9 +112,10 @@ const bookRoutes = require('./routes/book')
 const categoryRoutes = require('./routes/category')
 const pageRoutes = require('./routes/page')
 
-app.use(cors({
-  exposedHeaders: ['refresh-token'] // allow this to be sent back in response
-}))
+// const corsOptions = {
+//   exposedHeaders: ['refresh-token'] // allow this to be sent back in response
+// }
+app.use(cors())
 app.use('/api/auth', authRoutes)
 app.use('/api', apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
 if (WWW_PROXY_URL) app.use('*', proxy({

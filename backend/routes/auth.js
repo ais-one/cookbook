@@ -8,7 +8,6 @@ const { SALT_ROUNDS, USE_HTTPS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY,
 const { createToken, revokeToken, isAuthenticated, isGithubAuthenticated, authUser } = require('../services/auth')
 
 const User = require('../models/User')
-const keyv = require('../services/keyv')
 
 authRoutes
   .post('/signup', async (req,res) => {
@@ -77,9 +76,10 @@ authRoutes
         }
       }
       const tokens = await createToken({ id, verified }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
+      if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token};`]);
       // if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly;`]); // Secure, SameSite=true, Max-Age=? Path=/ causes problems
       // if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, signed: true, secure: !!USE_HTTPS })
-      if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, path: undefined })
+      // if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, path: undefined })
       return res.status(200).json(tokens)
     } catch (e) { }
     return res.status(500).json()  
@@ -109,7 +109,7 @@ authRoutes
     try {
       const { id } = req.decoded
       // you can also get more user information from here from a datastore
-      return res.status(200).json({ user: id })
+      return res.status(200).json({ user: id, ts: Date.now() })
     } catch (e) { }
     return res.status(401).json({ message: 'Error token revoked' })
   })

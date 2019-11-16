@@ -22,12 +22,18 @@ const { jwtCerts } = require('./certs')
 
 // Create a token from a payload
 async function createToken(payload, options) {
-  options.algorithm = JWT_ALG
-  const secretKey = JWT_ALG.substring(0,2) === 'RS' ? jwtCerts.key : JWT_SECRET
-  const token = jwt.sign(payload, secretKey, options)
-  const refreshToken = USE_OTP ? '' : Date.now()
-  if (refreshToken) await keyv.set(payload.id, refreshToken) 
-  return { token, refresh_token: refreshToken }
+  let token
+  let refreshToken
+  try {
+    options.algorithm = JWT_ALG
+    const secretKey = JWT_ALG.substring(0,2) === 'RS' ? jwtCerts.key : JWT_SECRET
+    token = jwt.sign(payload, secretKey, options)
+    refreshToken = USE_OTP ? '' : Date.now()
+    if (refreshToken) await keyv.set(payload.id, refreshToken) 
+  } catch (e) {
+    console.log('createToken', e.toString())
+  }
+  return { token, refresh_token: refreshToken }          
 }
 
 async function revokeToken(id) {
@@ -54,7 +60,7 @@ async function isGithubAuthenticated(githubId) {
 }
 
 const authUser = async (req, res, next) => {
-  // console.log('auth express', req.path)
+  console.log('auth express', req.path, req.cookies, req.signedCookies)
   let token
   try {
     if (HTTPONLY_TOKEN) {
@@ -88,9 +94,10 @@ const authUser = async (req, res, next) => {
                 if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
                   if (refreshToken === req.body.refresh_token) { // ok... generate new access token & refresh token?
                     const tokens = await createToken({ id, verified: true },  { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
+                    if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token};`]);
                     // if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly;`]); // MORE SECURE: httpOnly
                     // if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, signed: true, secure: !!USE_HTTPS })
-                    if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, path: undefined })
+                    // if (HTTPONLY_TOKEN) res.cookie('token', tokens.token, { httpOnly: true, path: undefined })
                     return res.status(200).json(tokens)
                   }
                 }

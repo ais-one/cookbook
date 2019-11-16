@@ -14,6 +14,7 @@
                   <p class="py-1 text-center">
                     <v-btn @click="testGraphQL">Test GraphQL</v-btn>
                     <v-btn @click="testAuth">Test Auth</v-btn>
+                    <v-btn @click="testApi">Test API</v-btn>
                   </p>
                   <p class="py-1 text-center">GraphQL Query Result... ({{ hello }})</p>
                 </v-flex>
@@ -91,6 +92,14 @@ export default {
       try {
         const rv = await http.get('/api/auth/me')
         console.log(rv.data)
+      } catch (e) {
+        console.log(e.toString())
+      }
+    },
+    async testApi () {
+      try {
+        const { data } = await http.get(`/api/authors/1`)
+        console.log(data)
       } catch (e) {
         console.log(e.toString())
       }
