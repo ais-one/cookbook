@@ -37,7 +37,7 @@ const swaggerDocument = YAML.load('./docs/openapi.yaml')
 const apollo = require('./services/graphql')
 
 const { httpsCerts } = require('./services/certs')
-const { API_PORT, USE_HTTPS, HTTPONLY_TOKEN, WWW_ORIGIN } = require('./config')
+const { API_PORT, USE_HTTPS, HTTPONLY_TOKEN, WWW_ORIGIN, WWW_SERVE } = require('./config')
 
 console.log('httpsCerts', httpsCerts)
 
@@ -59,10 +59,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser('some_secret'))
 
-// WWW_SERVE
-// app.use(history()) // causes problems when using postman - set header accept application/json in postman
-// app.use(express.static('public')) // for serving static content
-// app.use('/uploads', express.static('uploads')) // need to create the folder uploads
+app.use('/uploads', express.static('uploads')) // need to create the folder uploads
 
 // PASSPORT - move to a service
 // app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true })) // required for OAuth 1 (e.g. twitter), OAuth2 with state (e.g. linkedin)
@@ -70,16 +67,16 @@ app.use(cookieParser('some_secret'))
 // app.use(passport.session()) // SESSION - call this AFTER calling express session
 
 const specs = swaggerJSDoc({ swaggerDefinition: require('./config').SWAGGER_DEFS, apis: ['./routes/*.js'] })
+app.use('/api-docs2', swaggerUi.serve, swaggerUi.setup(specs, { // for OpenAPI
+  swaggerOptions: { docExpansion: 'none' },  
+  explorer: true 
+}))
 
 app.use('/api-docs', express.static('docs'), swaggerUi.serve, swaggerUi.setup(swaggerDocument, { // for OpenAPI
   swaggerOptions: { docExpansion: 'none' },  
   explorer: true 
 }))
 
-app.use('/api-docs2', swaggerUi.serve, swaggerUi.setup(specs, { // for OpenAPI
-  swaggerOptions: { docExpansion: 'none' },  
-  explorer: true 
-}))
 
 const authRoutes = require('./routes/auth')
 const apiRoutes = require('./routes/api')
@@ -100,16 +97,16 @@ const corsOptions = {
   preflightContinue: false,
   optionsSuccessStatus: 204
 }
-if (HTTPONLY_TOKEN && !WWW_ORIGIN) { // Do Not Set SameSite on Cookies...
+if (!SAME_ORIGIN) { // HTTPONLY_TOKEN Do Not Set SameSite on Cookies...
   corsOptions.credentials = true // Access-Control-Allow-Credentials value to true.
-  corsOptions.origin = 'http://127.0.0.1:8080'
+  corsOptions.origin = WWW_ORIGIN
 }
 
 app.use(cors(corsOptions))
 
 app.use('/api', authRoutes, apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
 
-if (WWW_ORIGIN) {
+if (WWW_ORIGIN && !WWW_SERVE) {
   app.use('*', proxy({
     target: WWW_ORIGIN,
     changeOrigin: true,
@@ -117,6 +114,10 @@ if (WWW_ORIGIN) {
     // if you need to upgrade quicker... https://github.com/chimurai/http-proxy-middleware#external-websocket-upgrade
   }))
 } else {
+  if (WWW_SERVE) {
+    app.use(history()) // causes problems when using postman - set header accept application/json in postman
+    app.use(express.static('public')) // for serving static content
+  }
   app.use("*", async (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
 }
 

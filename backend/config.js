@@ -23,8 +23,8 @@ module.exports = {
   NODE_ENV: process.env.NODE_ENV,
 
   // PORTS
-  API_PORT: process.env.API_PORT || 3000,
-  WS_PORT: process.env.WS_PORT || 3001,
+  API_PORT: process.env.API_PORT || 3000, // (also on FE)
+  WS_PORT: process.env.WS_PORT || 3001, // (also on FE)
 
   SALT_ROUNDS: process.env.SALT_ROUNDS || 12,
 
@@ -36,17 +36,18 @@ module.exports = {
   JWT_REFRESH_EXPIRY: 3600, // do not allow refresh handling after X seconds
 
   // OTP
-  USE_OTP: process.env.USE_OTP || '', // GA, SMS, ''
+  USE_OTP: process.env.USE_OTP || '', // GA, SMS, '' (also on FE)
   OTP_EXPIRY: process.env.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP
 
   // HTTPONLY
-  HTTPONLY_TOKEN: true, // true, false
-  WWW_ORIGIN: 'http://127.0.0.1:8080',
+  HTTPONLY_TOKEN: true, // true, false (also on FE)
+  WWW_ORIGIN: 'http://127.0.0.1:8080', // used by proxy middleware
   // HTTPONLY_TOKEN: false,
   // WWW_ORIGIN: '',
+  SAME_ORIGIN: true, // true = same origin, false = cors (also on FE)
 
   // serve static content
-  WWW_SERVE: 'public', // serve website from folder
+  WWW_SERVE: '', // serve website from folder, blank if do not serve from express
 
   // CREATE FOR LOCALHOST: openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt
   // HTTPS_CERTS_PATH: './certs/localhost',

@@ -11,9 +11,12 @@
   - improve on JWT, two ways to do expiry extension and revocation
     - correctly implement expiry refresh token
     - httponly session cookies, add proxy middleware to test (app and www must be seen to be from same IP/Domain and Port)
-  - take care of cors or same-origin
+  - take care of cors / same-origin
 - frontend
   - [Work-in-progress] ant design version
+- [Work-in-progress]
+  - ISO config definition naming (identify configs common to both FE and BE)
+  - check on Vuex actions setPublic / setSecure?
 
 ### Version 0.2.4
 - update packages
