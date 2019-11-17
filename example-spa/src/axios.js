@@ -1,9 +1,14 @@
 import axios from 'axios'
 import { store } from './store'
 // import jwtDecode from 'jwt-decode'
-import { API_URL, HTTPONLY_TOKEN } from '@/config'
+import { API_URL, HTTPONLY_TOKEN, SAME_ORIGIN } from '@/config'
+
+// jQuery 1.5.1 xhrFields: {withCredentials: true}
+// ES6 fetch() credentials: 'include'
+// axios: withCredentials: true
 
 export const http = axios.create({
+  withCredentials: SAME_ORIGIN ? false : true,
   // withCredentials: true,
   // xsrfCookieName: 'csrftoken_testtest',
   // xsrfHeaderName: 'X-CSRFToken', 

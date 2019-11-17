@@ -3,15 +3,17 @@
   - vue-cli v4, eslint v6
 - backend
   - [Work-in-progress] add jest test
-  - improve on JWT, two ways to do expiry extension and revocation
-    - still keyv use cache for revocation checking
-    - [Work-in-progress] correctly implement expiry refresh token
-    - add IP address checking
-    - httponly session cookies, add proxy middleware to test (app and www must be seen to be from same IP/Domain and Port)
+  - add IP address checking
   - example of using RS256 for secret key (sample cert and key are in the certs folder)
   - rename api route /api/rest-test to /api/health, serves as health check, add /api/health-auth to test auth routes
   - improved on configuration (use common config.js file), renamed some configs
-- [Work-in-progress] ant design version
+- frontend and backend
+  - improve on JWT, two ways to do expiry extension and revocation
+    - correctly implement expiry refresh token
+    - httponly session cookies, add proxy middleware to test (app and www must be seen to be from same IP/Domain and Port)
+  - take care of cors or same-origin
+- frontend
+  - [Work-in-progress] ant design version
 
 ### Version 0.2.4
 - update packages

@@ -41,12 +41,12 @@ module.exports = {
 
   // HTTPONLY
   HTTPONLY_TOKEN: true, // true, false
-  WWW_PROXY_URL: 'http://127.0.0.1:8080',
+  WWW_ORIGIN: 'http://127.0.0.1:8080',
   // HTTPONLY_TOKEN: false,
-  // WWW_PROXY_URL: '',
+  // WWW_ORIGIN: '',
 
   // serve static content
-  STATIC_CONTENT: [{'':'public'}],
+  WWW_SERVE: 'public', // serve website from folder
 
   // CREATE FOR LOCALHOST: openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt
   // HTTPS_CERTS_PATH: './certs/localhost',

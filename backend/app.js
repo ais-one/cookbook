@@ -37,7 +37,7 @@ const swaggerDocument = YAML.load('./docs/openapi.yaml')
 const apollo = require('./services/graphql')
 
 const { httpsCerts } = require('./services/certs')
-const { API_PORT, USE_HTTPS, WWW_PROXY_URL } = require('./config')
+const { API_PORT, USE_HTTPS, HTTPONLY_TOKEN, WWW_ORIGIN } = require('./config')
 
 console.log('httpsCerts', httpsCerts)
 
@@ -59,6 +59,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser('some_secret'))
 
+// WWW_SERVE
 // app.use(history()) // causes problems when using postman - set header accept application/json in postman
 // app.use(express.static('public')) // for serving static content
 // app.use('/uploads', express.static('uploads')) // need to create the folder uploads
@@ -68,10 +69,7 @@ app.use(cookieParser('some_secret'))
 // app.use(passport.initialize())
 // app.use(passport.session()) // SESSION - call this AFTER calling express session
 
-const specs = swaggerJSDoc({
-  swaggerDefinition: require('./config').SWAGGER_DEFS,
-  apis: ['./routes/*.js']
-})
+const specs = swaggerJSDoc({ swaggerDefinition: require('./config').SWAGGER_DEFS, apis: ['./routes/*.js'] })
 
 app.use('/api-docs', express.static('docs'), swaggerUi.serve, swaggerUi.setup(swaggerDocument, { // for OpenAPI
   swaggerOptions: { docExpansion: 'none' },  
@@ -90,23 +88,37 @@ const bookRoutes = require('./routes/book')
 const categoryRoutes = require('./routes/category')
 const pageRoutes = require('./routes/page')
 
-// const corsOptions = {
-//   exposedHeaders: ['refresh-token'] // allow this to be sent back in response
-// }
-app.use(cors())
-// app.use('/api/auth', authRoutes)
+const corsOptions = {
+  // exposedHeaders: ['refresh-token'], // allow this to be sent back in response
+  // maxAge
+  // allowedHeaders
+  // credentials
+
+  // default cors settings
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+}
+if (HTTPONLY_TOKEN && !WWW_ORIGIN) { // Do Not Set SameSite on Cookies...
+  corsOptions.credentials = true // Access-Control-Allow-Credentials value to true.
+  corsOptions.origin = 'http://127.0.0.1:8080'
+}
+
+app.use(cors(corsOptions))
+
 app.use('/api', authRoutes, apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
 
-if (WWW_PROXY_URL) {
+if (WWW_ORIGIN) {
   app.use('*', proxy({
-    target: WWW_PROXY_URL,
+    target: WWW_ORIGIN,
     changeOrigin: true,
     ws: true // relies on a initial http request in order to listen to the upgrade event.
     // if you need to upgrade quicker... https://github.com/chimurai/http-proxy-middleware#external-websocket-upgrade
   }))
+} else {
+  app.use("*", async (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
 }
-
-//app.get("*", async (req, res) => res.status(404).json({ data: 'Not Found...' }))
 
 // for Firebase Functions
 // exports.api = functions.https.onRequest(async (req, res) => {
