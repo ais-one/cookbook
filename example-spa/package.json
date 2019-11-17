@@ -8,12 +8,8 @@
     "serve": "vue-cli-service serve --port 8080",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "firebase deploy --only hosting",
-    "build-rest": "cd ../backend&&npm i",
-    "init-db": "cd ../backend&&npm run-script init-db",
-    "prod": "vue-cli-service build --mode production && scp -r -i ../../test.pem dist/* ubuntu@127.0.0.3:~/app/public",
-    "rest": "cd ../backend&&npm run-script dev",
-    "start": "concurrently \"npm run rest\" \"npm run serve\""
+    "deploy:firebase": "firebase deploy --only hosting",
+    "deploy:prod": "vue-cli-service build --mode production && scp -r -i ../../test.pem dist/* ubuntu@127.0.0.3:~/app/public"
   },
   "dependencies": {
     "ant-design-vue": "^1.4.5",
@@ -54,7 +50,6 @@
     "@vue/cli-plugin-eslint": "^4.0.5",
     "@vue/cli-service": "^4.0.5",
     "babel-eslint": "^10.0.3",
-    "concurrently": "^5.0.0",
     "deepmerge": "^4.2.2",
     "eslint": "^6.6.0",
     "eslint-plugin-vue": "^6.0.1",

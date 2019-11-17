@@ -16,6 +16,8 @@
   - [Work-in-progress] ant design version
 - [Work-in-progress]
   - ISO config definition naming (identify configs common to both FE and BE)
+  - nuxt auth changes
+  - graphql security
   - check on Vuex actions setPublic / setSecure?
 
 ### Version 0.2.4

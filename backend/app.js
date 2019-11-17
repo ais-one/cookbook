@@ -37,7 +37,7 @@ const swaggerDocument = YAML.load('./docs/openapi.yaml')
 const apollo = require('./services/graphql')
 
 const { httpsCerts } = require('./services/certs')
-const { API_PORT, USE_HTTPS, HTTPONLY_TOKEN, WWW_ORIGIN, WWW_SERVE } = require('./config')
+const { API_PORT, USE_HTTPS, SAME_ORIGIN, WWW_ORIGIN, WWW_SERVE } = require('./config')
 
 console.log('httpsCerts', httpsCerts)
 

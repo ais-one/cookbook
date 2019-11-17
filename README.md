@@ -47,11 +47,12 @@ Clone the repository, setup and run, using the following commands
 ```bash
 git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
-cd example-spa
+cd backend
 npm i
-npm run build-rest
+npm run i-spa
+npm run i-ssr
 npm run init-db
-npm run start
+npm run dev:spa
 ```
 
 Navigate to http://127.0.0.1:8080
