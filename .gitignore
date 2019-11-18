@@ -8,6 +8,7 @@ package-lock.json
 *.tgz
 dist
 dev.sqlite3
+.env.*
 .rnd
 
 # Log files
@@ -27,8 +28,6 @@ yarn-error.log*
 *.sw*
 
 # REMOVE BELOW THIS LATER
-example-ssr-new
 # **/cfg.json
 # local env files - allow this in our opensource project
 # .env
-# .env.*

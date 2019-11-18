@@ -1,9 +1,3 @@
-/*
-# localhost development
-# OTP / 2FA
-OTP_SERVICE_NAME=Test Service
-*/
-
 const fs = require('fs')
 const dotenv = require('dotenv')
 dotenv.config()
@@ -38,6 +32,8 @@ module.exports = {
   // OTP
   USE_OTP: process.env.USE_OTP || '', // GA, SMS, '' (also on FE)
   OTP_EXPIRY: process.env.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP
+
+  // OTP_SERVICE_NAME=Test Service // OTP / 2FA
 
   // HTTPONLY
   HTTPONLY_TOKEN: true, // true, false (also on FE)

@@ -76,7 +76,7 @@ export default {
             'Please also set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET in backend environment file'
         )
       }
-      window.location.replace('https://github.com/login/oauth/authorize?scope=user:email&client_id=' + 'a355948a635c2a2066e2')
+      window.location.replace('https://github.com/login/oauth/authorize?scope=user:email&client_id=' + GITHUB_CLIENT_ID)
     },
     async login() {
       this.error = null

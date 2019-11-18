@@ -13,8 +13,9 @@
                     <v-text-field label="Username" v-model="email" type="text" required></v-text-field>
                     <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
                     <v-btn class="ma-1" type="submit" :disabled="loading||recaptchaUnverified" :loading="loading">Sign in</v-btn>
-                    <v-btn class="ma-1" type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onFirebaseSignin">Firebase Sign in</v-btn>
-                    <v-btn class="ma-1" type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onMongoSignin">Mongo Sign in</v-btn>
+                    <v-btn class="ma-1" type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onFirebaseSignin">Firebase</v-btn>
+                    <v-btn class="ma-1" type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onMongoSignin">Mongo Switch</v-btn>
+                    <v-btn class="ma-1" type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onGithubSignin">Github</v-btn>
                     <vue-recaptcha v-if="sitekey" class="g-recaptcha" @verify="onVerify" @expired="onExpired" :sitekey="sitekey"></vue-recaptcha>
                     <p v-if="!!error">{{ error.message }}</p>
                   </v-flex>
@@ -43,7 +44,7 @@
 import VueRecaptcha from 'vue-recaptcha'
 import { mapGetters } from 'vuex'
 import '../../../src/vcx-loading-blocker.js'
-import { RECAPTCHA_KEY } from '@/config'
+import { RECAPTCHA_KEY, GITHUB_CLIENT_ID } from '@/config'
 
 export default {
   components: { VueRecaptcha }, // recaptcha
@@ -89,6 +90,9 @@ export default {
     async onMongoSignin () {
       await this.$store.dispatch('mongoSignin', { email: this.email, password: this.password })
       this.$router.push('/dashboard')
+    },
+    onGithubSignin () {
+      window.location.replace('https://github.com/login/oauth/authorize?scope=user:email&client_id=' + GITHUB_CLIENT_ID)
     },
     onVerify (response) { this.recaptchaUnverified = false },
     onExpired () { this.recaptchaUnverified = true }
