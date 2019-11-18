@@ -20,9 +20,6 @@
       <p show v-if="$auth.$state.redirect">
         You have to login before accessing to <strong>{{ $auth.$state.redirect }}</strong>
       </p>
-      <!-- <div v-for="s in strategies" :key="s.key" class="mb-2">
-        <button @click="$auth.loginWith(s.key)" block :style="{background: s.color}" class="login-button">Login with {{ s.name }}</button>
-      </div> -->
     </div>
     <div v-else>
       <form @submit.prevent="otp">
@@ -38,6 +35,7 @@
 </template>
 
 <script>
+import { GITHUB_CLIENT_ID } from '@/config'
 export default {
   middleware: ['auth'],
   data() {
@@ -68,17 +66,17 @@ export default {
   },
   created() {
     // console.log(process.env.USE_OTP)
+    console.log('GITHUB_CLIENT_ID', GITHUB_CLIENT_ID)
   },
   methods: {
     async loginGithub() {
-      if (!process.env.GITHUB_CLIENT_ID) {
+      if (!GITHUB_CLIENT_ID) {
         return alert(
           'Github Client ID required in environment file...\n' +
             'Please also set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET in backend environment file'
         )
       }
-      await this.$auth.logout()
-      await this.$auth.loginWith('social')
+      window.location.replace('https://github.com/login/oauth/authorize?scope=user:email&client_id=' + 'a355948a635c2a2066e2')
     },
     async login() {
       this.error = null

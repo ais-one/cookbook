@@ -45,3 +45,15 @@ Rename file to .env.production for production
 
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+
+## Notes
+
+We build either only Static sites or SPA. SSR increases code and deployment complexity
+
+Conecpts follow
+- we debug as universal app (faster than generating all pages statically to debug)
+- we do not use any server side features of nuxt
+- we do not use any server side libraries, middleware, etc.
+- code as close to VueJs as possible
+- be aware of modules that you use (they take of SSR, if you only need client side, just use the libraries itself instead of nuxt modules)
+- nuxt-auth is not ready

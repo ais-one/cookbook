@@ -64,8 +64,8 @@ module.exports = {
   MONGO_URL: process.env.MONGO_URL || '',
 
   // Github
-  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || '', // verify a github token
-  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '',
+  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || 'a355948a635c2a2066e2', // verify a github token
+  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '6444773803bfb82bb43b1a8cddaa4e0e2ebcdff7',
 
   // Telegram
   TELEGRAM_BOT_ID: process.env.TELEGRAM_BOT_ID || '',

@@ -238,3 +238,23 @@ TBD add helmet, compression, morgan
 https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198026?start=0
 https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198028?start=0
 https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198030?start=0
+
+
+# BACKEND NOTES
+
+Always Learning. Always Work In Progress
+
+## Logging
+
+Winston? Morgan? Pino? Bunyan?
+APM - Appdynamics (How much work do you want to offload)
+
+## JWT, HTTPONLY REFRESH TOKEN
+- auto refresh
+- revokable (requires state)
+- support HttpOnly cookies
+
+## CORS
+
+## PROXYING
+

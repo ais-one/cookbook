@@ -18,6 +18,8 @@ export default {
         code,
         state
       })
+      this.$store.commit('setUser', data)
+      /*
       this.$auth.setToken('social', `Bearer ${data.token}`)
       this.$auth.strategy._setToken(`Bearer ${data.token}`) // this.$axios.defaults.headers.common['Authorization']
       console.log('cb', data)
@@ -26,6 +28,7 @@ export default {
       console.log('ccbb', rv.data.user)
       this.$auth.setUser(rv.data.user)
       this.$router.push('/secure')
+      */
     } catch (e) {
       this.error = e + ''
     }

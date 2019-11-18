@@ -70,6 +70,7 @@ export default {
       home: false
     },
     strategies: {
+      // https://github.com/login/oauth/authorize?scope=user:email&client_id=XXXX
       local: {
         endpoints: {
           login: { url: '/api/auth/login', method: 'post', propertyName: 'token' }, // not used...

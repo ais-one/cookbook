@@ -9,3 +9,30 @@ export const strict = false
 // store.state[name].crudOps = this.crudOps
 
 export const modules = {}
+
+
+export const state = () => ({
+  user: null
+})
+
+export const mutations = {
+  setUser (state, payload) {
+    if (payload && payload.token) {
+      const decoded = jwtDecode(payload.token)
+      if (decoded) {
+        payload.id = decoded.id
+        payload.verified = decoded.verified
+      }
+      // payload.loginType = 'rest'
+    }
+    state.user = payload
+    // if (payload) {
+    //   if (!HTTPONLY_TOKEN) http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
+    //   const { token, refresh_token, ...noTokens } = payload
+    //   localStorage.setItem('session', JSON.stringify(HTTPONLY_TOKEN ? noTokens : payload))
+    // } else {
+    //   localStorage.removeItem('session')
+    //   if (!HTTPONLY_TOKEN) delete http.defaults.headers.common['Authorization']
+    // }
+  }
+}

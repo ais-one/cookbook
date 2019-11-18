@@ -22,6 +22,23 @@ export default function({ $axios, app, redirect }) {
 
 
 /*
+import axios from 'axios'
+import { store } from '@/store'
+// import jwtDecode from 'jwt-decode'
+import { API_URL, HTTPONLY_TOKEN, SAME_ORIGIN } from '@/config'
+
+export const http = axios.create({
+  withCredentials: SAME_ORIGIN ? false : true,
+  // withCredentials: true,
+  // xsrfCookieName: 'csrftoken_testtest',
+  // xsrfHeaderName: 'X-CSRFToken', 
+  baseURL: API_URL,
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+})
+
 http.interceptors.request.use((config) => {
   // Do something before request is sent if needed
   // config.store = store
