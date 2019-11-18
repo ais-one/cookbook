@@ -8,7 +8,7 @@ const permissions = {
 }
 
 export default (to, from, next) => {
-  // console.log('route', to.matched[0].path)
+  // console.log('route', to.matched[0].path, store.getters.user)
   if (store.getters.user && store.getters.user.verified) { // has user && otp is verified
     const { loginType } = store.getters.user
     let idx = -1
@@ -26,7 +26,6 @@ export default (to, from, next) => {
     if (item) {
       const user = JSON.parse(item)
       if (user.verified) {
-        console.log('auth guard set user')
         store.commit('setUser', user) // need user.token only
         store.commit('setLayout', 'layout-admin')
         return next()

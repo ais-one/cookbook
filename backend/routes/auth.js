@@ -38,7 +38,9 @@ authRoutes
       const { id } = user
       const tokens = await createToken({ id, verified: true }, {expiresIn: JWT_EXPIRY}) // 5 minute expire for login
       return res.status(200).json(tokens)
-    } catch (e) { console.log('github auth err', e.toString()) }
+    } catch (e) {
+      console.log('github auth err', e.toString())
+    }
     return res.status(401).end()
   })
   .get('/auth/logout', authUser, async (req,res) => {

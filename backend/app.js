@@ -37,7 +37,7 @@ const swaggerDocument = YAML.load('./docs/openapi.yaml')
 const apollo = require('./services/graphql')
 
 const { httpsCerts } = require('./services/certs')
-const { API_PORT, USE_HTTPS, SAME_ORIGIN, WWW_ORIGIN, WWW_SERVE } = require('./config')
+const { CORS_OPTIONS, USE_HTTPS, WWW_ORIGIN, WWW_SERVE } = require('./config')
 
 console.log('httpsCerts', httpsCerts)
 
@@ -85,24 +85,7 @@ const bookRoutes = require('./routes/book')
 const categoryRoutes = require('./routes/category')
 const pageRoutes = require('./routes/page')
 
-const corsOptions = {
-  // exposedHeaders: ['refresh-token'], // allow this to be sent back in response
-  // maxAge
-  // allowedHeaders
-  // credentials
-
-  // default cors settings
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: false,
-  optionsSuccessStatus: 204
-}
-if (!SAME_ORIGIN) { // HTTPONLY_TOKEN Do Not Set SameSite on Cookies...
-  corsOptions.credentials = true // Access-Control-Allow-Credentials value to true.
-  corsOptions.origin = WWW_ORIGIN
-}
-
-app.use(cors(corsOptions))
+app.use(CORS_OPTIONS ? cors(CORS_OPTIONS) : cors())
 
 app.use('/api', authRoutes, apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
 

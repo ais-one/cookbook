@@ -36,11 +36,25 @@ module.exports = {
   // OTP_SERVICE_NAME=Test Service // OTP / 2FA
 
   // HTTPONLY
-  HTTPONLY_TOKEN: true, // true, false (also on FE)
-  WWW_ORIGIN: 'http://127.0.0.1:8080', // used by proxy middleware
-  // HTTPONLY_TOKEN: false,
-  // WWW_ORIGIN: '',
-  SAME_ORIGIN: true, // true = same origin, false = cors (also on FE)
+  // HTTPONLY_TOKEN: true, // true, false (also on FE)
+  // WWW_ORIGIN: 'http://127.0.0.1:8080', // used by proxy middleware
+  HTTPONLY_TOKEN: false,
+  WWW_ORIGIN: '',
+
+  CORS_OPTIONS: null,
+  // CORS_OPTIONS: {
+  //   // exposedHeaders: ['refresh-token'], // allow this to be sent back in response
+  //   // maxAge
+  //   // allowedHeaders
+  //   // credentials
+  
+  //   // default cors settings
+  //   origin: '*',
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  //   preflightContinue: false,
+  //   optionsSuccessStatus: 204,
+  //   credentials: true, // Access-Control-Allow-Credentials value to true
+  // },
 
   // serve static content
   WWW_SERVE: '', // serve website from folder, blank if do not serve from express
@@ -60,8 +74,8 @@ module.exports = {
   MONGO_URL: process.env.MONGO_URL || '',
 
   // Github
-  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || 'a355948a635c2a2066e2', // verify a github token
-  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '6444773803bfb82bb43b1a8cddaa4e0e2ebcdff7',
+  GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || '', // verify a github token
+  GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '',
 
   // Telegram
   TELEGRAM_BOT_ID: process.env.TELEGRAM_BOT_ID || '',
