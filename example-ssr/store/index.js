@@ -4,6 +4,8 @@
 export const strict = false
 
 import { HTTPONLY_TOKEN } from '@/config'
+import http from '@/plugins/axios'
+import jwtDecode from 'jwt-decode'
 
 // Problem in VueCrudX is this... (there could be more)
 // store.state[name].defaultRec = this.crudForm.defaultRec
@@ -11,7 +13,6 @@ import { HTTPONLY_TOKEN } from '@/config'
 // store.state[name].crudOps = this.crudOps
 
 export const modules = {}
-
 
 export const state = () => ({
   user: null
@@ -25,16 +26,41 @@ export const mutations = {
         payload.id = decoded.id
         payload.verified = decoded.verified
       }
-      // payload.loginType = 'rest'
+      payload.loginType = 'rest'
     }
     state.user = payload
-    // if (payload) {
-    //   if (!HTTPONLY_TOKEN) http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
-    //   const { token, refresh_token, ...noTokens } = payload
-    //   localStorage.setItem('session', JSON.stringify(HTTPONLY_TOKEN ? noTokens : payload))
-    // } else {
-    //   localStorage.removeItem('session')
-    //   if (!HTTPONLY_TOKEN) delete http.defaults.headers.common['Authorization']
-    // }
+    if (payload) {
+      if (!HTTPONLY_TOKEN) http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
+      const { token, refresh_token, ...noTokens } = payload
+      localStorage.setItem('session', JSON.stringify(HTTPONLY_TOKEN ? noTokens : payload))
+    } else {
+      localStorage.removeItem('session')
+      if (!HTTPONLY_TOKEN) delete http.defaults.headers.common['Authorization']
+    }
+  }
+}
+
+export const actions = {
+  async logout ({ commit }, payload) {
+    // commit('setLoading', true)
+    console.log('logging out', payload)
+    console.log('LOGOUT Rest')
+    if (payload.forced) { // auth failure detected
+    } else { // logout button clicked
+      try {
+        await http.get('/api/auth/logout')
+      } catch (e) {
+        if (!e.response || e.response.status === 401) { // server or authorization error
+          // ok please continue
+        } else {
+          return // may have problems here... loading still true, etc...
+        }
+      }
+      // if (payload.forced) commit('setError', { message: 'Session Expired' })
+    }
+    $nuxt.$router.push('/')
+    commit('setUser', null)
+    // commit('setLayout', 'layout-default')
+    // commit('setLoading', false)
   }
 }

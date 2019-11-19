@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import { http } from '@/axios'
 import DrawingCanvas from '../../../src/DrawingCanvas'
 import WebCam from '../../../src/WebCam'
 
@@ -24,14 +23,9 @@ export default {
   }),
   methods: {
     async testAuth () {
+      // const url = '/api/auth/me' // `/api/authors/1`
       // try {
-      //   const rv = await http.get('/api/auth/me')
-      //   console.log(rv.data)
-      // } catch (e) {
-      //   console.log(e.toString())
-      // }
-      // try {
-      //   const { data } = await http.get(`/api/authors/1`)
+      //   const { data } = await this.$http.get(url)
       //   console.log(data)
       // } catch (e) {
       //   console.log(e.toString())

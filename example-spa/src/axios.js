@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { store } from './store'
+import { store } from '@/store'
 // import jwtDecode from 'jwt-decode'
 import { API_URL, HTTPONLY_TOKEN, WITH_CREDENTIALS } from '@/config'
 
@@ -64,3 +64,5 @@ http.interceptors.response.use((response) => {
     return Promise.reject(error)
   }
 })
+
+Vue.prototype.$http = http

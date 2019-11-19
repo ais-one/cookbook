@@ -1,6 +1,6 @@
 // import axios from 'axios'
 import pkg from './package'
-import { GITHUB_CLIENT_SECRET, GITHUB_CLIENT_ID } from './config'
+// import { GITHUB_CLIENT_SECRET, GITHUB_CLIENT_ID } from './config'
 
 export default {
   server: {

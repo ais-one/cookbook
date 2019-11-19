@@ -14,13 +14,13 @@ export default {
   async mounted() {
     try {
       const { code, state } = this.$route.query
-      const { data } = await this.$axios.post('/api/auth/check-github', {
+      const { data } = await this.$http.post('/api/auth/check-github', {
         code,
         state
       })
       this.$store.commit('setUser', data)
     } catch (e) {
-      this.error = e + ''
+      this.error = e.toString() + ''
     }
     // this.$router.push('/secure')
   }

@@ -14,7 +14,7 @@
 <script>
 import { GITHUB_CLIENT_ID } from '@/config'
 export default {
-  middleware: ['auth'],
+  // middleware: ['auth'],
   data() {
     return {
       loading: false,
