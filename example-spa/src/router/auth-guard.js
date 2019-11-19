@@ -1,4 +1,4 @@
-import { store } from '../store'
+import { store } from '@/store'
 
 const permissions = {
   'all': ['/test', '/dashboard'],
@@ -8,9 +8,9 @@ const permissions = {
 }
 
 export default (to, from, next) => {
-  // console.log('route', to.matched[0].path, store.getters.user)
-  if (store.getters.user && store.getters.user.verified) { // has user && otp is verified
-    const { loginType } = store.getters.user
+  // console.log('route', to.matched[0].path, store.state.user)
+  if (store.state.user && store.state.user.verified) { // has user && otp is verified
+    const { loginType } = store.state.user
     let idx = -1
     if (permissions[loginType]) idx = permissions[loginType].indexOf(to.matched[0].path)
     if (idx === -1) idx = permissions['all'].indexOf(to.matched[0].path) // try again

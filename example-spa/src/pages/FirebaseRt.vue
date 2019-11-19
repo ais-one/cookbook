@@ -220,7 +220,7 @@ export default {
     },
     setIncomingAlert (doc) {
       console.log('setIncomingAlert', doc.data())
-      const recs = this.$refs.taskRef.records // this.$store.getters[this.colName + '/records']
+      const recs = this.$refs.taskRef.records // this.$store.state[this.colName + '/records']
       let exists = false
       for (let i in recs) { // update
         if (recs[i].id === doc.id) {

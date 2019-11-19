@@ -49,11 +49,13 @@ module.exports = {
   //   // credentials
   
   //   // default cors settings
-  //   origin: '*',
+  //   // origin: '*',
   //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   //   preflightContinue: false,
   //   optionsSuccessStatus: 204,
+  //   // ALLOW CORS
   //   credentials: true, // Access-Control-Allow-Credentials value to true
+  //   origin: 'http://127.0.0.1:8080' // '*'
   // },
 
   // serve static content

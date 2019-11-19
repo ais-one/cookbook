@@ -42,7 +42,7 @@
 
 <script>
 import VueRecaptcha from 'vue-recaptcha'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import '../../../src/vcx-loading-blocker.js'
 import { RECAPTCHA_KEY, GITHUB_CLIENT_ID } from '@/config'
 
@@ -62,7 +62,7 @@ export default {
     if (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' || this.sitekey === '') this.recaptchaUnverified = false
   },
   computed: {
-    ...mapGetters([ 'user', 'error', 'loading' ])
+    ...mapState([ 'user', 'error', 'loading' ])
   },
   // watch: {
   //   user (value) {

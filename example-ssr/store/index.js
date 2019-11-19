@@ -3,6 +3,8 @@
 // TBD!
 export const strict = false
 
+import { HTTPONLY_TOKEN } from '@/config'
+
 // Problem in VueCrudX is this... (there could be more)
 // store.state[name].defaultRec = this.crudForm.defaultRec
 // store.state[name].filters = this.crudFilter.filters

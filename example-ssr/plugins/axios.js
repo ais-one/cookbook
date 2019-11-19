@@ -1,3 +1,4 @@
+/*
 export default function({ $axios, app, redirect }) {
   $axios.onRequest(config => {
     // const token = app.$auth.getToken('local')
@@ -19,12 +20,10 @@ export default function({ $axios, app, redirect }) {
     }
   })
 }
+*/
 
-
-/*
 import axios from 'axios'
 import { store } from '@/store'
-// import jwtDecode from 'jwt-decode'
 import { API_URL, HTTPONLY_TOKEN, SAME_ORIGIN } from '@/config'
 
 export const http = axios.create({
@@ -84,5 +83,3 @@ http.interceptors.response.use((response) => {
     return Promise.reject(error)
   }
 })
-
-*/

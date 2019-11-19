@@ -78,7 +78,7 @@ export default {
         // console.log('onmessage', typeof JSON.parse(rv.data))
         this.wsMsg = data.args
       }
-      // this.$store.getters.user.token
+      // this.$store.state.user.token
       this.priceTimerId = setInterval(async () => {
         this.$socket.sendObj({
           call: 'msg-from-client',

@@ -49,12 +49,14 @@ export const store = new Vuex.Store({
     setError (state, payload) { state.error = payload },
     mutateNetworkError (state, payload) { state.networkError = payload }
   },
+  // https://www.drewtown.dev/post/when-to-use-vuex-getters-in-a-vue-js-project/
+  // below is not really a good way of using getters, see document above
   getters: {
-    layout (state) { return state.layout },
-    user (state) { return state.user },
-    loading (state) { return state.loading },
-    error (state) { return state.error },
-    networkError (state) { return state.networkError }
+    // better way to use getters...
+    // getTodoById: state => id => {
+    //   return state.todos.find(todo => todo.id === id);
+    // }
+    loading (state) { return state.loading }
   },
   actions: { ...actions }
 })
