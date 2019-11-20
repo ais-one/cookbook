@@ -6,8 +6,8 @@
     "lint": "eslint .",
     "test": "cross-env NODE_ENV=local jest --coverage --detectOpenHandles --forceExit --reporter=html --exclude __tests__",
     "init-db": "npx knex migrate:latest --env development&&npx knex seed:run --env development",
-    "i-spa": "cd ../example-spa&&npm i",
-    "i-ssr": "cd ../example-ssr&&npm i",
+    "i:spa": "cd ../example-spa&&npm i",
+    "i:ssr": "cd ../example-ssr&&npm i",
     "del-db": "rm -f dev.sqlite3",
     "dev": "set NODE_ENV=development&&nodemon index.js",
     "dev:spa": "concurrently \"npm run dev\" \"cd ../example-spa&&npm run-script serve\"",
@@ -25,7 +25,7 @@
     "node": "8"
   },
   "dependencies": {
-    "@keyv/redis": "^2.0.0",
+    "@keyv/redis": "^2.1.0",
     "apollo-server-express": "^2.9.9",
     "axios": "^0.19.0",
     "bcryptjs": "^2.4.3",
@@ -36,7 +36,7 @@
     "cron": "^1.7.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "firebase-admin": "^8.7.0",
+    "firebase-admin": "^8.8.0",
     "graphql": "^14.5.8",
     "helmet": "^3.21.2",
     "http-proxy-middleware": "^0.20.0",

@@ -32,34 +32,7 @@ module.exports = {
   // OTP
   USE_OTP: process.env.USE_OTP || '', // GA, SMS, '' (also on FE)
   OTP_EXPIRY: process.env.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP
-
   // OTP_SERVICE_NAME=Test Service // OTP / 2FA
-
-  // HTTPONLY
-  HTTPONLY_TOKEN: false, // true, false (also on FE)
-  // WWW_ORIGIN: 'http://127.0.0.1:8080', // used by proxy middleware
-  // HTTPONLY_TOKEN: false,
-  WWW_ORIGIN: '',
-
-  CORS_OPTIONS: null,
-  // CORS_OPTIONS: {
-  //   // exposedHeaders: ['refresh-token'], // allow this to be sent back in response
-  //   // maxAge
-  //   // allowedHeaders
-  //   // credentials
-  
-  //   // default cors settings
-  //   // origin: '*',
-  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  //   preflightContinue: false,
-  //   optionsSuccessStatus: 204,
-  //   // ALLOW CORS
-  //   credentials: true, // Access-Control-Allow-Credentials value to true
-  //   origin: 'http://127.0.0.1:8080' // '*'
-  // },
-
-  // serve static content
-  WWW_SERVE: '', // serve website from folder, blank if do not serve from express
 
   // CREATE FOR LOCALHOST: openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt
   // HTTPS_CERTS_PATH: './certs/localhost',
@@ -83,13 +56,57 @@ module.exports = {
   TELEGRAM_BOT_ID: process.env.TELEGRAM_BOT_ID || '',
   TELEGRAM_API_KEY: process.env.TELEGRAM_API_KEY || '',
 
-  SWAGGER_DEFS: {
+  // COMMON OPTIONS - APPLICABLE TO ALL ENVIRONMENTS
+
+  // HTTPONLY COOKIES
+  HTTPONLY_TOKEN: true, // true, false (also set the same on FE..., true means place token in HttpOnly cookie) - DO TAKE NOTE OF CORS
+
+  // CORS - SAME ORIGIN - PROXIED
+  //   CORS_OPTIONS: null
+  //   PROXY_WWW_ORIGIN: 'example.com:8080'
+  //   WWW_SERVE: ''
+
+  // CORS - SAME ORIGIN - SERVED BY EXPRESS STATIC
+  //   CORS_OPTIONS: null
+  //   PROXY_WWW_ORIGIN: ''
+  //   WWW_SERVE: 'public'
+
+  // CORS - CROSS ORIGIN
+  //   CORS_OPTIONS {
+  //     ...
+  //     withCredentials: true,
+  //     origin: '127.0.0.1:8080'
+  //   }
+  //   PROXY_WWW_ORIGIN: ''
+  //   WWW_SERVE: ''
+
+  PROXY_WWW_ORIGIN: '', // 'http://127.0.0.1:8080', // used by proxy middleware
+  // CORS_OPTIONS: null, // if withCredentials === false at Frontend
+  CORS_OPTIONS: { // set withCredentials === true at Frontend
+    // exposedHeaders: ['refresh-token'], // allow this to be sent back in response
+    // maxAge
+    // allowedHeaders
+    // credentials
+  
+    // default cors settings
+    // origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    // ALLOW CORS
+    credentials: true, // Access-Control-Allow-Credentials value to true
+    origin: 'http://127.0.0.1:8080' // '*'
+  },
+  // serve static content
+  WWW_SERVE: '', // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
+
+  SWAGGER_DEFS: { // Swagger / OpenAPI definitions
     info: {
       title: 'Vue Crud X',
       version: '1.0.0',
       description: 'A sample API',
     },
-    host: '127.0.0.1:3000',
+    host: '127.0.0.1:3000', // API host
     basePath: '/',
     tags: [
       { name: 'Auth', description: 'Authentication' },

@@ -11,12 +11,12 @@
   - improve on JWT, two ways to do expiry extension and revocation
     - correctly implement expiry refresh token
     - httponly session cookies, add proxy middleware to test (app and www must be seen to be from same IP/Domain and Port)
+    - Removed nuxt/auth as refresh token support and httponly cookies is not there
   - take care of cors / same-origin
 - frontend
   - [Work-in-progress] ant design version
 - [Work-in-progress]
   - ISO config definition naming (identify configs common to both FE and BE)
-  - nuxt auth changes
   - graphql security
   - check on Vuex actions setPublic / setSecure?
 

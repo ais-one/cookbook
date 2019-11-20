@@ -20,11 +20,17 @@ export default function({ $axios, app, redirect }) {
   })
 }
 */
+
 import Vue from 'vue'
 import axios from 'axios'
 import { API_URL, HTTPONLY_TOKEN, WITH_CREDENTIALS } from '@/config'
 
 export const http = axios.create({
+  // See https://github.com/nuxt-community/axios-module#options
+  // cannot use proxy for nuxt generated
+  // proxy: true
+  // xsrfCookieName: 'csrftoken_testtest',
+  // xsrfHeaderName: 'X-CSRFToken', 
   withCredentials: WITH_CREDENTIALS,
   baseURL: API_URL,
   headers: {

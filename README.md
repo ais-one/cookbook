@@ -2,7 +2,7 @@
 
 # NOTICES & UPDATES
 
-> Latest Version 0.2.5 Released 2019 November 09 0900 +8GMT
+> Latest Version 0.2.5 Released 2019 November 20 2330 +8GMT
 
 **vue-crud-x 0.2** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
@@ -49,8 +49,8 @@ git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
 cd backend
 npm i
-npm run i-spa
-npm run i-ssr
+npm run i:spa
+npm run i:ssr
 npm run init-db
 npm run dev:spa
 ```

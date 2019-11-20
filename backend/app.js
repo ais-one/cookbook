@@ -37,7 +37,7 @@ const swaggerDocument = YAML.load('./docs/openapi.yaml')
 const apollo = require('./services/graphql')
 
 const { httpsCerts } = require('./services/certs')
-const { CORS_OPTIONS, USE_HTTPS, WWW_ORIGIN, WWW_SERVE } = require('./config')
+const { CORS_OPTIONS, USE_HTTPS, PROXY_WWW_ORIGIN, WWW_SERVE } = require('./config')
 
 console.log('httpsCerts', httpsCerts)
 
@@ -89,9 +89,9 @@ app.use(CORS_OPTIONS ? cors(CORS_OPTIONS) : cors())
 
 app.use('/api', authRoutes, apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
 
-if (WWW_ORIGIN && !WWW_SERVE) {
+if (PROXY_WWW_ORIGIN && !WWW_SERVE) {
   app.use('*', proxy({
-    target: WWW_ORIGIN,
+    target: PROXY_WWW_ORIGIN,
     changeOrigin: true,
     ws: true // relies on a initial http request in order to listen to the upgrade event.
     // if you need to upgrade quicker... https://github.com/chimurai/http-proxy-middleware#external-websocket-upgrade

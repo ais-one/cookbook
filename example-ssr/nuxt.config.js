@@ -35,90 +35,24 @@ export default {
   // Plugins to load before mounting the App
   plugins: [
     { src: '@/plugins/axios', mode: 'client' }
-    // { src: '@/plugins/cookie', mode: 'server' }
-    // '@/plugins/axios'
   ],
 
   // Nuxt.js modules
   modules: [
+    // removed, not needed
     // '@nuxtjs/axios', // Doc: https://github.com/nuxt-community/axios-module#usage
     // '@nuxtjs/auth'
   ],
-  // Axios module configuration
-  // axios: {
-  //   baseURL: 'http://localhost:3000'
-  //   // See https://github.com/nuxt-community/axios-module#options
-  //   // cannot use proxy for nuxt generated
-  //   // proxy: true
-
-  //   // withCredentials: SAME_ORIGIN ? false : true,
-  //   // withCredentials: true,
-  //   // xsrfCookieName: 'csrftoken_testtest',
-  //   // xsrfHeaderName: 'X-CSRFToken', 
-  //   // headers: {
-  //   //   'Accept': 'application/json',
-  //   //   'Content-Type': 'application/json'
-  //   // }
-  // },
 
   // proxy: {
   //   '/api/': 'http://localhost:3000'
-  // },
-
-  // auth: {
-  //   // watchLoggedIn: false, // CUSTOM WATCH LOGGEDIN - DOES NOT WORK
-  //   // TOREMOVE plugins: ['@/plugins/auth.js'],
-  //   // Options
-  //   redirect: {
-  //     callback: '/callback',
-  //     // login: '/login', // page to redirect to on auth failure, default is /login
-  //     // logout: '/',
-  //     home: false
-  //   },
-  //   strategies: {
-  //     // https://github.com/login/oauth/authorize?scope=user:email&client_id=XXXX
-  //     local: {
-  //       endpoints: {
-  //         login: { url: '/api/auth/login', method: 'post', propertyName: 'token' }, // not used...
-  //         logout: { url: '/api/auth/logout', method: 'get' },
-  //         // user: false // { url: 'http://127.0.0.1:3000/api/auth/user', method: 'get', propertyName: false }
-  //         user: { url: '/api/auth/me', method: 'get', propertyName: 'user' } // or should we get rid of this?
-  //       },
-  //       tokenRequired: true,
-  //       tokenType: 'Bearer'
-  //     },
-  //     social: {
-  //       _scheme: 'oauth2',
-  //       authorization_endpoint: 'https://github.com/login/oauth/authorize',
-  //       access_token_endpoint: 'https://github.com/login/oauth/access_token',
-  //       userinfo_endpoint: false, // we get info in callback
-  //       scope: ['user', 'email'],
-  //       response_type: 'token',
-  //       token_type: 'Bearer',
-  //       redirect_uri: undefined,
-  //       client_id: GITHUB_CLIENT_ID,
-  //       token_key: 'access_token'
-  //     },
-  //     github: {
-  //       client_id: GITHUB_CLIENT_ID,
-  //       client_secret: GITHUB_CLIENT_SECRET
-  //     }
-  //   }
   // },
 
   // Build configuration
   build: {
     // You can extend webpack config here
     extend(config, ctx) {
-      // Run ESLint on save
-      // if (ctx.isDev && ctx.isClient) {
-      //   config.module.rules.push({
-      //     enforce: 'pre',
-      //     test: /\.(js|vue)$/,
-      //     loader: 'eslint-loader',
-      //     exclude: /(node_modules)/
-      //   })
-      // }
+      // no need eslint
     }
   }
 }

@@ -10,7 +10,6 @@ import { API_URL, HTTPONLY_TOKEN, WITH_CREDENTIALS } from '@/config'
 
 export const http = axios.create({
   withCredentials: WITH_CREDENTIALS,
-  // withCredentials: true,
   // xsrfCookieName: 'csrftoken_testtest',
   // xsrfHeaderName: 'X-CSRFToken', 
   baseURL: API_URL,
