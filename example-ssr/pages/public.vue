@@ -61,7 +61,7 @@ export default {
       // window.addEventListener('click', e => alert('clicked')) // Cannot Generate! Direct Call Will Fail
     } else {
       console.log('public.vue created() server')
-      const generateError = true
+      const generateError = false
       if (generateError) {
         window.addEventListener('click', e => alert('clicked')) // Cannot Generate! Direct Call Will Fail
       }

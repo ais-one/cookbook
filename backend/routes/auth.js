@@ -37,6 +37,7 @@ authRoutes
       }
       const { id } = user
       const tokens = await createToken({ id, verified: true }, {expiresIn: JWT_EXPIRY}) // 5 minute expire for login
+      if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
       return res.status(200).json(tokens)
     } catch (e) {
       console.log('github auth err', e.toString())

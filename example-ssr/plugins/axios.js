@@ -21,12 +21,11 @@ export default function({ $axios, app, redirect }) {
   })
 }
 */
-
 import Vue from 'vue'
 import axios from 'axios'
 import { API_URL, HTTPONLY_TOKEN, SAME_ORIGIN } from '@/config'
 
-const http = axios.create({
+export const http = axios.create({
   withCredentials: SAME_ORIGIN ? false : true,
   // withCredentials: true,
   // xsrfCookieName: 'csrftoken_testtest',
@@ -38,11 +37,10 @@ const http = axios.create({
   }
 })
 
-Vue.prototype.$http = http
-
 export default ({ app, store }) => {
   http.interceptors.request.use((config) => {
     // Do something before request is sent if needed
+    console.log('$nuxt', $nuxt)
     return config
   }, (error) => {
     // Do something with request error if needed
@@ -62,7 +60,7 @@ export default ({ app, store }) => {
         if (error.response.data.message === 'Token Expired Error') {
           // console.log('token expired, store', store)
           return http.post('/api/auth/refresh', { refresh_token: store.state.user.refresh_token }).then(res => {
-            // console.log('new token', res.data.token)
+            console.log('refresh', res.data.token, error.config.headers)
             const { token } = res.data
             store.commit('setUser', res.data)
             if (!HTTPONLY_TOKEN) error.config.headers['Authorization'] = 'Bearer ' + token // need to set this also...
@@ -85,4 +83,55 @@ export default ({ app, store }) => {
       return Promise.reject(error)
     }
   })
+
+  Vue.prototype.$http = http
 }
+
+/*
+http.interceptors.request.use((config) => {
+  // Do something before request is sent if needed
+  return config
+}, (error) => {
+  // Do something with request error if needed
+  return Promise.reject(error)
+})
+
+// Add a response interceptor
+http.interceptors.response.use(
+  (response) => {
+    // Do something with response data if needed
+    return response
+  }, (error) => { // Do something with response error
+    console.log('intercept', JSON.stringify(error))
+    const myURL = new URL(error.config.url)
+    if (error.response && error.response.status === 401) { // auth failed
+      if (myURL.pathname !== '/api/auth/logout' && myURL.pathname !== '/api/auth/otp') {
+        if (error.response.data.message === 'Token Expired Error') {
+          // console.log('token expired, store', store)
+          return http.post('/api/auth/refresh', { refresh_token: $nuxt.$store.state.user.refresh_token }).then(res => {
+            // console.log('new token', res.data.token)
+            const { token } = res.data
+            $nuxt.$store.commit('setUser', res.data)
+            if (!HTTPONLY_TOKEN) error.config.headers['Authorization'] = 'Bearer ' + token // need to set this also...
+            if (myURL.pathname === '/api/authors' || myURL.pathname === '/api/auth/me') {
+              console.log('retyring...', error.config)
+            }
+            return http.request(error.config) // http.request(error.config)
+          }).catch(function (error) {
+            return Promise.reject(error)
+          })
+        } else {
+          $nuxt.$store.dispatch('logout', { forced: true })
+          return Promise.reject(error)
+        }
+      } else {
+        return Promise.reject(error)
+      }
+    } else {
+      return Promise.reject(error)
+    }
+  }
+)
+
+export default http
+*/

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import jwtDecode from 'jwt-decode'
-import actions from '@/actions'
+import actions from '@/store/actions'
 import { http } from '@/axios'
 import { HTTPONLY_TOKEN } from '@/config'
 

@@ -4,7 +4,7 @@
 export const strict = false
 
 import { HTTPONLY_TOKEN } from '@/config'
-import http from '@/plugins/axios'
+import { http } from '@/plugins/axios'
 import jwtDecode from 'jwt-decode'
 
 // Problem in VueCrudX is this... (there could be more)
@@ -20,6 +20,7 @@ export const state = () => ({
 
 export const mutations = {
   setUser (state, payload) {
+    console.log('setUser', http, $nuxt)
     if (payload && payload.token) {
       const decoded = jwtDecode(payload.token)
       if (decoded) {

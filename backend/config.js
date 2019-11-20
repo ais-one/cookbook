@@ -36,9 +36,9 @@ module.exports = {
   // OTP_SERVICE_NAME=Test Service // OTP / 2FA
 
   // HTTPONLY
-  // HTTPONLY_TOKEN: true, // true, false (also on FE)
+  HTTPONLY_TOKEN: false, // true, false (also on FE)
   // WWW_ORIGIN: 'http://127.0.0.1:8080', // used by proxy middleware
-  HTTPONLY_TOKEN: false,
+  // HTTPONLY_TOKEN: false,
   WWW_ORIGIN: '',
 
   CORS_OPTIONS: null,
