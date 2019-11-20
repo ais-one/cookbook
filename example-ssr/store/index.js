@@ -44,8 +44,8 @@ export const mutations = {
 export const actions = {
   async logout ({ commit }, payload) {
     // commit('setLoading', true)
-    console.log('logging out', payload)
-    console.log('LOGOUT Rest')
+    // console.log('logging out', payload)
+    // console.log('LOGOUT Rest')
     if (payload.forced) { // auth failure detected
     } else { // logout button clicked
       try {

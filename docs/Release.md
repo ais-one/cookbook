@@ -1,6 +1,7 @@
 ### Version 0.2.5
 - update packages
   - vue-cli v4, eslint v6
+  - replaced buggy http-server package with serve package (https://github.com/http-party/http-server/issues/525)
 - backend
   - [Work-in-progress] add jest test
   - add IP address checking

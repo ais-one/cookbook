@@ -32,7 +32,7 @@ export default {
   },
   created() {
     // console.log(process.env.USE_OTP)
-    console.log('GITHUB_CLIENT_ID', GITHUB_CLIENT_ID)
+    // console.log('GITHUB_CLIENT_ID', GITHUB_CLIENT_ID)
   },
   methods: {
     async loginGithub() {

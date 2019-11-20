@@ -18,10 +18,6 @@ export default {
   middleware: ['auth-guard'],
   computed: {
     user() {
-      // try {
-      // } catch (e) {
-      //   console.log('xxxx' + e.toString())
-      // }
       if (!this.$store.state.user) return {
         id: 'id-na',
         token: 'token-na',
@@ -46,7 +42,7 @@ export default {
       }
     },
     doLogout () {
-      // this.$store.dispatch('logout', { user: this.$store.state.user })
+      this.$store.dispatch('logout', { user: this.$store.state.user })
     }
   }
 }
