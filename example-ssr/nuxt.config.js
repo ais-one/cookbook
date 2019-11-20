@@ -21,8 +21,9 @@ export default {
   },
 
   generate: {
-    fallback: true // if you want to use '404.html' instead of the default '200.html', uses layouts/error.vue
+    // fallback: true // if you want to use '404.html' instead of the default '200.html', uses layouts/error.vue
     // fallback: 'my-fallback/file.html' // if your hosting needs a custom location
+    fallback: '404.html'
   },
 
   // Customize the progress-bar color
@@ -34,6 +35,7 @@ export default {
   // Plugins to load before mounting the App
   plugins: [
     { src: '@/plugins/axios', mode: 'client' }
+    // { src: '@/plugins/cookie', mode: 'server' }
     // '@/plugins/axios'
   ],
 

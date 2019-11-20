@@ -20,7 +20,7 @@ export const state = () => ({
 
 export const mutations = {
   setUser (state, payload) {
-    console.log('setUser', http, $nuxt)
+    // console.log('setUser', http, $nuxt)
     if (payload && payload.token) {
       const decoded = jwtDecode(payload.token)
       if (decoded) {

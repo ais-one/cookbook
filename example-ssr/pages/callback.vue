@@ -19,7 +19,7 @@ export default {
         state
       })
       this.$store.commit('setUser', data)
-      this.$router.push('/secure')
+      await this.$router.push('/secure')
     } catch (e) {
       this.error = e.toString() + ''
     }

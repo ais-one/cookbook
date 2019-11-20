@@ -9,6 +9,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "serve": "npx http-server dist -p 8080",
+    "serve2": "npx serve dist -p 8080",
     "generate": "cross-env NODE_ENV=development nuxt generate --devtools",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
@@ -25,7 +26,7 @@
     "nuxt": "^2.10.2"
   },
   "devDependencies": {
-    "http-server": "^0.11.1",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "serve": "^11.2.0"
   }
 }
