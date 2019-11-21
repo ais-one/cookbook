@@ -12,7 +12,7 @@
 // }
 console.log('Environment: ', process.env.NODE_ENV)
 
-export const GITHUB_CLIENT_ID = process.env.VUE_APP_GITHUB_CLIENT_ID || ''
+export const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID || ''
 export const API_URL = 'http://127.0.0.1:3000' // https://127.0.0.1:3000
 export const HTTPONLY_TOKEN = true // true, false use HTTPONLY_TOKEN for more security, but needs same domain
 export const WITH_CREDENTIALS = true // true = same origin, false = cors

@@ -16,6 +16,7 @@ apiRoutes
    *      description: Health check
    */
   .get('/health', async (req,res) => { // health check
+    console.log('req.ip', req.ip)
     res.status(200).json({ message: 'OK' })
   })
   /**

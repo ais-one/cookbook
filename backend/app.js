@@ -51,8 +51,7 @@ console.log('httpsCerts', httpsCerts)
 //
 const app = express()
 
-app.set('trust proxy', true) // true if behind proxy, false if direct connect
-
+app.set('trust proxy', true) // true if behind proxy, false if direct connect... You now can get IP from req.ip, req.ips
 apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
 
 app.use(bodyParser.json())

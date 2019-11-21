@@ -4,45 +4,25 @@
 
 ## Quick Start (default configuration used)
 
-1. Install packages
+See vue-crud-x main project README.md
 
-```
-npm i
-```
-
-2. Build REST Server (in backend folder) & Init DB (dev.dqlite3 in backend folder)
-
-```
-npm run build-rest
-npm run init-db
-```
-
-3. SSR Application & Backend Server
-
-```
-npm run ssr
-```
-
-View the web application:
-  - Host 127.0.0.1:8080
-  - User: test
-  - Password: test
-
-4. Static Web Application & Backend Server
+### Static Web Application Generation
 
 ```
 npm run generate
-npm run static
+```
+
+### Serving Static Web Application
+
+```
+npm run serve
 ```
 
 ## Configuration
 
-Refer to .env-sample file for configuration keys to edit
+Refer to config.js, nuxt.config.js
 
-Rename file to .env.development for development
-
-Rename file to .env.production for production
-
+You can override the configuraions using .env.[NODE_ENV] files, e.g. .env.development or .env.production
 
 For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
 
@@ -56,4 +36,4 @@ Conecpts follow
 - we do not use any server side libraries, middleware, etc.
 - code as close to VueJs as possible
 - be aware of modules that you use (they take of SSR, if you only need client side, just use the libraries itself instead of nuxt modules)
-- nuxt-auth is not ready
+- nuxt-auth is not ready for refresh token and httponly cookie tokens (as at 21/11/2019)

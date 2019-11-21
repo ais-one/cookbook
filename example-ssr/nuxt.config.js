@@ -1,6 +1,10 @@
 import pkg from './package'
+require('dotenv').config()
 
 export default {
+  env: {
+    GITHUB_CLIENT_ID: process.env.VUE_APP_GITHUB_CLIENT_ID || ''
+  },
   server: {
     port: 8080, // default: 3000
     host: '0.0.0.0' // default: localhost
@@ -52,5 +56,8 @@ export default {
     extend(config, ctx) {
       // no need eslint
     }
-  }
+  },
+  buildModules: [
+    '@nuxtjs/dotenv'
+  ]
 }

@@ -2,7 +2,11 @@
 
 # NOTICES & UPDATES
 
-> Latest Version 0.2.5 Released 2019 November 21 1230 +8GMT
+> Always Remember Rule #1 - Do Not Let Technical Debt Build Up
+
+> Latest Version 0.2.5 Released 2019 November 21 1100 +8GMT
+
+Refactored and upgraded authentication mechanism (correct way to do refresh token and httponly cookie, possible to revoke session immediately), JWT_EXPIRY (5 seconds) is set very low in config to test refresh token. Refactored nuxt, upgraded packages including Vue CLI to version 4 and es-lint to version 6. Many enhancements on backend, and configuration. No breaking change to the vue-crud-x library
 
 **vue-crud-x 0.2** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
@@ -53,6 +57,8 @@ npm run i:spa
 npm run i:ssr
 npm run init-db
 npm run dev:spa
+# for SSR - npm run dev:ssr
+# for static content (1) npm run dev (2) see example-ssr/README.md on generating and serving static content
 ```
 
 Navigate to http://127.0.0.1:8080

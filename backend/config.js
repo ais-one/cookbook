@@ -122,5 +122,21 @@ module.exports = {
     },
     consumes: ['application/json'],
     produces: ['application/json']
+  },
+
+  // Role-based access control - currently not used, for future implementation
+  // get role from token
+  // only handle GET, POST, PUT, PATCH, DELETE verbs
+  accessControl: {
+       '/api/authors/:id': {
+      'GET': ['userRole', 'adminRole'], // or 'userRole,adminRole'
+      'PUT,POST,DELETE': ['adminRole'] // or 'adminRole'
+    },
+    '/api/authors': {
+      '*': ['*']
+    },
+    '*': { // all others allow only GET, if this entry is not here, then more restrictive, all other routes will result in 401 error (unauthorized access)
+      'GET': ['*']
+    }
   }
 }
