@@ -2,6 +2,7 @@
   <v-container fluid>
     <drawing-canvas />
     <web-cam />
+     <v-btn @click="testAuth">Test Auth</v-btn>
   </v-container>
 </template>
 
@@ -19,6 +20,17 @@ export default {
   },
   data: () => ({ // try not to use this way due to scoping issues
     isLoading: false
-  })
+  }),
+  methods: {
+    async testAuth () {
+      // const url = '/api/auth/me' // `/api/authors/1`
+      // try {
+      //   const { data } = await this.$http.get(url)
+      //   console.log(data)
+      // } catch (e) {
+      //   console.log(e.toString())
+      // }
+    }
+  }
 }
 </script>

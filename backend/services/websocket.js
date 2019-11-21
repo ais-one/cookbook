@@ -1,13 +1,14 @@
 let wss
-const WS_PORT = process.env.WS_PORT || process.env.WS_PORT === undefined ? 3001 : ''
+
+const { httpsCerts } = require('./certs')
+const { WS_PORT } = require('../config')
 
 if (!wss && WS_PORT) {
-  const USE_HTTPS = process.env.USE_HTTPS || false
   const WebSocket = require('ws')
   const https = require('https')
-  if (USE_HTTPS) {
-    credentials = { key: fs.readFileSync(`${USE_HTTPS}/privkey.pem`), cert: fs.readFileSync(`${USE_HTTPS}/fullchain.pem`) }
-    wss = new WebSocket.Server({ server: https.createServer(credentials).listen(WS_PORT) })
+
+  if (httpsCerts) {
+    wss = new WebSocket.Server({ server: https.createServer(httpsCerts).listen(WS_PORT) })
   } else {
     wss = new WebSocket.Server({ port: WS_PORT })
   }

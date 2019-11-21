@@ -42,9 +42,9 @@ export default {
     comparePasswords () {
       return this.password !== this.confirmPassword ? 'Passwords do not match' : ''
     },
-    // can use vuex mapGetters
-    user () { return this.$store.getters.user },
-    error () { return this.$store.getters.error },
+    // can use vuex mapState / mapGetters
+    user () { return this.$store.state.user },
+    error () { return this.$store.state.error },
     loading () { return this.$store.getters.loading }
   },
   methods: {

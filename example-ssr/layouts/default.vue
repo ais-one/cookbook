@@ -3,9 +3,9 @@
     <div>
       <div>
         <template v-for="(item, i) in items">
-          <nuxt-link class="h-space" :to="item.to" :key="i" v-if="!item.auth || $auth.$state.loggedIn" router exact>{{ item.title }}</nuxt-link>
+          <nuxt-link class="h-space" :to="item.to" :key="i" v-if="!item.auth || $store.state.user" router exact>{{ item.title }}</nuxt-link>
         </template>
-        <button v-if="$auth.$state.loggedIn" @click.stop="$auth.logout()">Logout [{{ $auth.user }}]</button>
+        <button v-if="$store.state.user" @click.stop="doLogout">Logout [{{ $store.state.user.id }}]</button>
         <nuxt-link v-else to="/login">Login</nuxt-link>
       </div>
       <nuxt />
@@ -29,9 +29,13 @@ export default {
         { icon: 'bubble_chart', title: 'Not Found', to: '/notfound' }
       ]
     }
+  },
+  methods: {
+    doLogout () {
+      this.$store.dispatch('logout', { user: this.$store.state.user })
+    }
   }
 }
-// this.$auth.user
 </script>
 
 <style scoped>

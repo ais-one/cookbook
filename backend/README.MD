@@ -4,41 +4,15 @@
 
 ## Quick Start (default configuration used)
 
-1. Install packages
-
-```
-npm i
-```
-
-2. Create and seed the database
-
-```
-npx knex migrate:latest --env development
-npx knex seed:run --env development
-```
-
-3. Run the server
-
-```
-# Windows
-npm run dev
-
-# Linux
-NODE_ENV=development nodemon index.js
-```
-
-4. Test Out The REST APIs
-
-http://127.0.0.1:3000/api-docs
+See vue-crud-x main project README.md
 
 
 ## Configuration
 
-Refer to .env-sample file for configuration keys to edit
+Refer to config.js, nuxt.config.js
 
-Rename file to .env.development for development
+You can override the configuraions using .env.[NODE_ENV] files, e.g. .env.development or .env.production
 
-Rename file to .env.production for production
 
 ## Backend Notes
 
@@ -48,27 +22,29 @@ Rename file to .env.production for production
 Folders
  +-certs (SSL certs, for lets encrypt, use the folder that they generate)
  +-docs (OpenAPI documentation)
- +-middleware (auth, logging, etc...)
+ +-logs (local logs)
  +-migrations (create database)
  +-models (database models)
  +-public (location for frontend app)
  +-routes (REST API routes)
  +-seeds (populate database)
- +-services (e.g. ORM, mongo, websockets, redis, etc)
+ +-services (e.g. ORM, mongo, websockets, redis, auth, graphql, logging, etc)
  +-tests (TBD)
  +-uploads (local storage for file uploads)
 
 Files
- - .env.[env] (environment file)
+ - .env.[env] (config overide file)
+ - config.js (the backend application config file)
  - ecosystem.config.js (PM2 configuration)
  - ga.js (utility program: generation of user passwords, GA Key, QR Codes)
  - index.js
  - config.js (single source for environment variables)
  - knexfile.js (database configuration)
  - package.json
+ - schema.js, schema.json (for graphql)
 ```
 
-### Database Schema
+### Relational Database Schema
 
 ### Simple Relation
  * books <- 1 --- 1 -> categories - one book belongs to one category
@@ -144,9 +120,8 @@ Commands:
     see package.json
 
 Config Files
-    .env-sample
-    .env.development
-    .env.production
+    .env.development / .env.production
+    config.js
     knexfile.js
     ecosystem.config.js (pm2 start & stop)
 
@@ -231,11 +206,42 @@ source ~/.bashrc
 "production-stop": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"cd ~/api; pm2 delete api;\"",
 
 
-### Nodemon
 
-sudo nodemon index.js
 
-TBD add helmet, compression, morgan
-https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198026?start=0
-https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198028?start=0
-https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198030?start=0
+# BACKEND NOTES
+
+Always Learning. Always Work In Progress
+
+> https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198026?start=0
+> https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198028?start=0
+> https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198030?start=0
+
+## Do in application or hand-off to 3rd party
+
+### Logging
+- Winston? Morgan? Pino? Bunyan?
+- APM - Appdynamics (How much work do you want to offload)
+
+## Proxying, Compression, Rate-Limiting
+- use http-proxy-middleware, express-rate-limit, express-slow-down
+- or use Nginx / Apache, or API gateway
+
+## Security
+
+### Express Libraries For Security
+- helmet (to configure)
+- url-regex, path-to-regexp (to filter paths)
+
+### JWT, HTTPONLY REFRESH TOKEN
+- auto refresh
+- revokable (requires state)
+- support HttpOnly cookies
+
+### CORS
+- support cross origin requests
+
+
+## SCALING & DEPLOYMENT
+
+TBD
+

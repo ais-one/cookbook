@@ -18,9 +18,11 @@ exports.seed = async function(knex) {
       sms: '6596935500',
       // smsLastSent
       // smsOtpPin
-      smsVerified: 0,    
+      smsVerified: 0,
       telegramId: '183535134',
-      telegramUsername: 'aaronjxz'
+      telegramUsername: 'aaronjxz',
+      revoked: '', // if not empty means user has been revoked
+      refreshToken: '' // to match user with refreshToken to extend access token
     },
     {
       id: 2,
@@ -33,9 +35,11 @@ exports.seed = async function(knex) {
       sms: '6596935500',
       // smsLastSent
       // smsOtpPin
-      smsVerified: 0,    
+      smsVerified: 0,
       telegramId: '183535134',
-      telegramUsername: 'aaronjxz'
+      telegramUsername: 'aaronjxz',
+      revoked: '',
+      refreshToken: ''
     },
     {
       id: 3,
@@ -48,9 +52,11 @@ exports.seed = async function(knex) {
       sms: '6596935500',
       // smsLastSent
       // smsOtpPin
-      smsVerified: 0,    
+      smsVerified: 0,
       telegramId: '183535134',
-      telegramUsername: 'aaronjxz'
+      telegramUsername: 'aaronjxz',
+      revoked: '',
+      refreshToken: ''
     }
   ])
 }

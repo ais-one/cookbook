@@ -26,18 +26,18 @@ updatedTime
 jobRoutes
   .get('/mongo-test', async (req,res) => {
     try {
-      const results = mongo ? await mongo.db().collection('jobs').find({}).toArray() : []
+      const results = mongo ? await mongo.db.collection('jobs').find({}).toArray() : []
       console.log(results)
     } catch (e) {
       console.log(e)
     }
     // console.log('mongo connected:', !!mongo)
-    res.status(200).json({ message: 'Test22' })
+    res.status(200).json({ message: 'mongo test' })
   })
 
   .post('/jobs', authUser, async (req, res) => {
     try {
-      const { insertedId } = await db.mongo.collection('jobs').insertOne({
+      const { insertedId } = await mongo.db.collection('jobs').insertOne({
         ...req.body
       })
       return res.status(201).json({ _id: insertedId, ...req.body })
@@ -46,7 +46,7 @@ jobRoutes
   })
   .patch('/jobs/:id', authUser, async (req, res) => {
     try {
-      await db.mongo.collection('jobs').updateOne( // findOneAndUpdate
+      await mongo.db.collection('jobs').updateOne( // findOneAndUpdate
         {
           _id: new ObjectID(req.params.id)
         },{
@@ -60,7 +60,7 @@ jobRoutes
   })
   .delete('/jobs/:id', authUser, async (req, res) => {
     try {
-      const { deletedCount } = await db.mongo.collection('jobs').deleteOne({ _id: new ObjectID(req.params.id) })
+      const { deletedCount } = await mongo.db.collection('jobs').deleteOne({ _id: new ObjectID(req.params.id) })
       return res.status(200).json({ _id: req.params.id })
     } catch (e) { }
     return res.status(500).json()
@@ -68,7 +68,7 @@ jobRoutes
   .get('/jobs/:id', authUser, async (req, res) => {
     try {
       let result = {}
-      result = await db.mongo.collection('coins').findOne({c_id: new ObjectID(req.params.id) })
+      result = await mongo.db.collection('coins').findOne({c_id: new ObjectID(req.params.id) })
       return res.status(200).json(result)
     } catch (e) { }
     return res.status(500).json()

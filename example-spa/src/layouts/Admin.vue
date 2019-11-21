@@ -47,7 +47,7 @@ import { format } from 'date-fns'
 export default {
   data () {
     return {
-      currentTime: format(Date(), 'HH:mm:ss'),
+      currentTime: '',
       selectedLocale: 'EN',
       locales: [
         'EN', 'ID'
@@ -68,7 +68,7 @@ export default {
   created () {
     if (this.$i18n) this.$i18n.locale = this.selectedLocale.toLowerCase()
     this.timerId = setInterval(() => {
-      this.currentTime = format(Date(), 'HH:mm:ss')
+      this.currentTime = format(new Date(), 'HH:mm:ss')
     }, 1000)
   },
   destroy () {
@@ -76,14 +76,14 @@ export default {
   },
   computed: {
     userIsAuthenticated () {
-      // this.$store.getters.user !== null && this.$store.getters.user !== undefined
-      return !!this.$store.getters.user
+      // this.$store.state.user !== null && this.$store.state.user !== undefined
+      return !!this.$store.state.user
     },
     user () {
-      return this.$store.getters.user
+      return this.$store.state.user
     },
     loading () { return this.$store.getters.loading },
-    networkError () { return this.$store.getters.networkError }
+    networkError () { return this.$store.state.networkError }
   },
   methods: {
     setLocale () {
@@ -91,7 +91,7 @@ export default {
       if (this.$i18n) this.$i18n.locale = this.selectedLocale.toLowerCase()
     },
     onLogout () {
-      this.$store.dispatch('logout', { user: this.$store.getters.user })
+      this.$store.dispatch('logout', { user: this.$store.state.user })
     }
   }
 }

@@ -26,6 +26,9 @@ exports.up = async (knex) => {
     table.string('telegramId')
     table.string('telegramUsername')
     // table.timestamps() // createdAt, updatedAt
+
+    table.string('revoked').defaultTo('')
+    table.string('refreshToken').defaultTo('')
   })
 }
 

@@ -1,16 +1,36 @@
 const express = require('express')
 const apiRoutes = express.Router()
 
-// const { authUser } = require('../middleware/auth')
-
+const { authUser } = require('../services/auth')
 const multer = require('multer')
-const mongo = require('../services/mongo')
 const UPLOAD_PATH = 'uploads/'
 const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
 
 apiRoutes
-  .get('/rest-test', async (req,res) => {
-    res.status(200).json({ message: 'REST Test Ok' })
+  /**
+   * @swagger
+   * /api/authors:
+   *    post:
+   *      tags:
+   *        - "Base"
+   *      description: Health check
+   */
+  .get('/health', async (req,res) => { // health check
+    console.log('req.ip', req.ip)
+    res.status(200).json({ message: 'OK' })
+  })
+  /**
+   * @swagger
+   * /api/authors:
+   *    post:
+   *      tags:
+   *        - "Base"
+   *      security:
+   *        - Bearer: []
+   *      description: Health check with authorization
+   */
+  .get('/health-auth', authUser, async (req,res) => { // health check auth
+    res.status(200).json({ message: 'OK' })
   })
   // test uploads
   .post('/upload', upload.single('avatar'), async (req,res) => { // avatar is form input name

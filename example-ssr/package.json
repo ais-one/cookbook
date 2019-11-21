@@ -6,39 +6,25 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nuxt",
-    "serve": "npx http-server dist -p 8080",
     "build": "nuxt build",
     "start": "nuxt start",
+    "serve": "npx serve dist -p 8080",
     "generate": "cross-env NODE_ENV=development nuxt generate --devtools",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
-    "clean": "rm -rf dist&&rm -rf .nuxt",
-    "build-rest": "cd ../backend&&npm i",
-    "init-db": "cd ../backend&&npm run-script init-db",
-    "rest": "cd ../backend&&npm run-script dev",
-    "ssr": "concurrently \"npm run rest\" \"npm run dev\"",
-    "static": "concurrently \"npm run rest\" \"npx http-server dist -p 8080\""
+    "clean": "rm -rf dist&&rm -rf .nuxt"
   },
   "dependencies": {
-    "@nuxtjs/auth": "^4.8.4",
-    "@nuxtjs/axios": "^5.5.4",
-    "@nuxtjs/dotenv": "^1.4.1",
+    "axios": "^0.19.0",
     "cross-env": "^6.0.3",
-    "nuxt": "^2.10.0",
-    "nuxt-i18n": "^6.3.0"
+    "jwt-decode": "^2.2.0",
+    "lodash.clonedeep": "^4.5.0",
+    "nuxt": "^2.10.2"
   },
   "devDependencies": {
-    "@vue/eslint-config-standard": "^4.0.0",
-    "babel-eslint": "^10.0.2",
-    "concurrently": "^4.1.1",
-    "eslint": "^6.5.1",
-    "eslint-config-prettier": "^6.3.0",
-    "eslint-loader": "^2.2.1",
-    "eslint-plugin-prettier": "3.1.0",
-    "eslint-plugin-vue": "^5.2.3",
-    "http-server": "^0.11.1",
-    "nodemon": "^1.19.3",
-    "prettier": "1.18.2"
+    "@nuxtjs/dotenv": "^1.4.1",
+    "nodemon": "^1.19.4",
+    "serve": "^11.2.0"
   }
 }

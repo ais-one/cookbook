@@ -2,13 +2,13 @@
 dist
 .nuxt
 node_modules
-# **/cfg.json
 **/.firebaserc
 
 package-lock.json
 *.tgz
 dist
 dev.sqlite3
+.env.*
 .rnd
 
 # Log files
@@ -17,9 +17,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
  
-# local env files - allow this in our opensource project
-# .env
-# .env.*
 
 # Editor directories and files
 .idea
@@ -29,3 +26,8 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
+# REMOVE BELOW THIS LATER
+# **/cfg.json
+# local env files - allow this in our opensource project
+# .env

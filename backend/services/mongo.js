@@ -67,68 +67,8 @@
   clusterTime:
    Timestamp { _bsontype: 'Timestamp', low_: 1, high_: 1560787951 },
   ns: { db: 'mm', coll: 'exchangeUsers' },
-  documentKey: { _id: 5d07bbbccaabd31dcdb64895 } }
-*/
-let mongo
-let mongoStream
-console.log('MONGO_URL', process.env.MONGO_URL) // TBD: if undefined?
-
-if (!mongo && process.env.MONGO_URL) {
-  try {
-    const url = process.env.MONGO_URL
-    const MongoClient = require('mongodb').MongoClient
-    // (async function() {
-    mongo = new MongoClient(url, {
-      // auth: { user: 'test', password: 'test123' },
-      // authMechanism: authMechanism,
-      useNewUrlParser: true
-      // uri_decode_auth: true
-      // reconnectTries: Infinity,
-      // poolSize: 10
-      // reconnectInterval
-    })
-    // try { await mongo.connect() } catch (e) { }
-    mongo.connect((err, db) => {
-      if (err) console.log('mongo error', err)
-      else if (db) {
-        mongoStream = db.db('mm').collection('exchangeUsers').watch()
-        mongoStream.on('change', (change) => {
-          console.log(change); // You could parse out the needed info and send only that data.
-          // use websocket to listen to changes
-        })
-      }
-    })
-    // })()
-  } catch (e) { console.log('mongo', e) }
+  documentKey: { _id: 5d07bbbccaabd31dcdb64895 }
 }
-
-module.exports = mongo
-// {
-//   mongo,
-//   ObjectID: require('mongodb').ObjectID
-// }
-
-
-/*
-const mongo = require("mongodb").MongoClient;
-mongo.connect("mongodb://localhost:27017/?replicaSet=rs0").then(client => {
- console.log("Connected to MongoDB server");
- // Select DB and Collection
- const db = client.db("mydb");
- const collection = db.collection("Stocks");
- pipeline = [
-   {
-     $match: { "fullDocument.price": { $gte: 250 } }
-   }
- ];
- // Define change stream
- const changeStream = collection.watch(pipeline);
- // start listen to changes
- changeStream.on("change", function(event) {
-   console.log(JSON.stringify(event));
- });
-});
-
 
 {
   "_id":{
@@ -142,6 +82,37 @@ mongo.connect("mongodb://localhost:27017/?replicaSet=rs0").then(client => {
   },
   "ns":{"db":"mydb","coll":"Stocks"},
   "documentKey":{"_id":"5c5d51f73aca83479b48de6e"}
-  }
-  */
- 
+}
+*/
+const { MONGO_URL } = require('../config')
+const { MongoClient } = require('mongodb')
+
+const mongo = { db: null, stream: null }
+if (!mongo.db && MONGO_URL) {
+  try {
+    const client = new MongoClient(MONGO_URL, { // mongodb://localhost:27017/?replicaSet=rs0
+      useUnifiedTopology: true,
+      useNewUrlParser: true // reconnectTries: Infinity, poolSize: 10, reconnectInterval
+      // auth: { user: 'test', password: 'test123' },
+      // authMechanism: authMechanism,
+      // uri_decode_auth: true
+      // reconnectTries: Infinity,
+      // poolSize: 10
+      // reconnectInterval
+    })
+    client.connect(err => {
+      if (!err) {
+        console.log('MONGO CONNECTED')
+        mongo.db = client.db()
+        // mongo.stream = db.db('mm').collection('exchangeUsers').watch()
+        // mongo.stream.on('change', (change) => {
+        //   console.log(change); // You could parse out the needed info and send only that data.
+        //   // use websocket to listen to changes
+        // })
+      }
+      else console.log('MONGO', err)
+    })
+  } catch (e) { console.log('mongo', e) }
+}
+
+module.exports = mongo

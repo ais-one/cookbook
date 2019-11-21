@@ -1,27 +1,48 @@
 <template>
   <div>
     <h1>This is a secure page! - State</h1>
-    <pre>{{ state }}</pre>
+    <pre>{{ user.id }}</pre>
     <h1>Scopes</h1>
-    <p>
-      User: {{ $auth.hasScope('user') }}<br />
-      Test: {{ $auth.hasScope('test') }}<br />
-      Admin: {{ $auth.hasScope('admin') }}
-    </p>
-    <h1>Token</h1>
-    <pre>{{ $auth.token || '-' }}</pre>
+    <h1>Tokens</h1>
+    <pre>{{ user.token || '-' }}</pre>
+    <pre>{{ user.refresh_token || '-' }}</pre>
+    <pre>{{ me }}</pre>
     <hr />
-    <button @click="$auth.fetchUser()">Fetch User</button>
-    <button @click="$auth.logout()">Logout</button>
+    <button @click="fetchUser">Fetch User</button>
+    <button @click="doLogout">Logout</button>
   </div>
 </template>
 
 <script>
 export default {
-  middleware: ['auth'],
+  middleware: ['auth-guard'],
   computed: {
-    state() {
-      return JSON.stringify(this.$auth.$state, undefined, 2)
+    user() {
+      if (!this.$store.state.user) return {
+        id: 'id-na',
+        token: 'token-na',
+        refresh_token: 'refresh_token-na'
+      }
+      return this.$store.state.user
+    }
+  },
+  data () {
+    return {
+      me: 'none'
+    }
+  },
+  methods: {
+    async fetchUser () {
+      try {
+        const rv = await this.$http.get('/api/auth/me')
+        console.log(rv.data)
+        this.me = rv.data
+      } catch (e) {
+        console.log(e.toString())
+      }
+    },
+    doLogout () {
+      this.$store.dispatch('logout', { user: this.$store.state.user })
     }
   }
 }

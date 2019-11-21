@@ -3,8 +3,7 @@ import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
 
-import { firebaseCfg } from '../cfg.json'
-// let { firebaseCfg = '' } = import('../cfg.json')
+import { firebaseCfg } from '@/config'
 
 let firebaseApp, storage, firestore, auth, secondaryApp, auth2
 

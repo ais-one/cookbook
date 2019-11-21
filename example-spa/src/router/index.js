@@ -7,6 +7,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     // route level code splitting, components are lazy loaded using import
+    { path: '/callback', name: 'callback', component: () => import('@/pages/Callback') },
     { path: '/dashboard', name: 'dashboard', component: () => import('@/pages/Dashboard'), beforeEnter: AuthGuard },
     { path: '/authors', name: 'authors', component: () => import('@/pages/Author'), beforeEnter: AuthGuard },
     { path: '/books', name: 'books', component: () => import('@/pages/Book'), beforeEnter: AuthGuard },

@@ -25,7 +25,7 @@
 export default {
   layout: 'minimal',
   created() {
-    console.log(this.$router, this.$route)
+    // console.log(this.$router, this.$route)
   }
 }
 </script>

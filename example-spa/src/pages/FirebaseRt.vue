@@ -90,9 +90,9 @@ export default {
         // filters: {
         //   // area: { type: 'v-autocomplete', halfSize: true, value: '', attrs: { label: 'Area', class: 'pa-2', items: area, clearable: true } },
         //   // readMode: { type: 'v-select', halfSize: true, value: 'Latest', attrs: { label: 'Latest 10 Or Date Range', class: 'pa-2', multiple: false, items: [ 'Latest', 'Date Range' ], rules: [v => !!v || 'Item is required'] } },
-        //   dateStart: { type: 'app-date-picker', halfSize: true, value: format(startOfMonth(new Date()), 'YYYY-MM-DD'), attrs: { label: 'Date Start' } },
+        //   dateStart: { type: 'app-date-picker', halfSize: true, value: format(startOfMonth(new Date()), 'yyyy-MM-dd'), attrs: { label: 'Date Start' } },
         //   // timeStart: { type: 'app-time-picker', halfSize: true, value: '00:00', attrs: { label: 'Time Start' } },
-        //   dateEnd: { type: 'app-date-picker', halfSize: true, value: format(endOfMonth(new Date()), 'YYYY-MM-DD'), attrs: { label: 'Date End' } }
+        //   dateEnd: { type: 'app-date-picker', halfSize: true, value: format(endOfMonth(new Date()), 'yyyy-MM-dd'), attrs: { label: 'Date End' } }
         //   // timeEnd: { type: 'app-time-picker', halfSize: true, value: '23:55', attrs: { label: 'Time End' } }
         // },
         form: {
@@ -103,7 +103,7 @@ export default {
           'jobType': { type: 'v-select', value: 'TO SHIP', default: 'TO SHIP', 'field-input': { placeholder: 'Job', multiple: false, items: [ 'TO SHIP', 'FROM SHIP', 'RETURN' ] }, 'field-wrapper': { xs12: true } },
           'base': { type: 'v-select', value: 'MSP', default: 'MSP', 'field-input': { placeholder: 'Base', multiple: false, items: [ 'WCP', 'MSP' ] }, 'field-wrapper': { xs12: true } },
           'vessel': { value: '', default: '', type: 'v-text-field', 'field-input': { placeholder: 'Vessel', required: true }, 'field-wrapper': { xs12: true } },
-          'orderDate': { default: format(new Date(), 'YYYY-MM-DD'), value: format(new Date(), 'YYYY-MM-DD'), type: 'app-date-picker', 'field-wrapper': { xs12: true } },
+          'orderDate': { default: format(new Date(), 'yyyy-MM-dd'), value: format(new Date(), 'yyyy-MM-dd'), type: 'app-date-picker', 'field-wrapper': { xs12: true } },
           'orderTime': { default: format(new Date(), 'HH:mm'), value: format(new Date(), 'HH:mm'), type: 'app-time-picker', 'field-wrapper': { xs12: true } },
           'standByHr': { type: 'v-select', value: '0', default: '0', 'field-input': { placeholder: 'Standby (Hr)', multiple: false, items: [ '0', '1', '2' ] }, 'field-wrapper': { xs12: true } },
           'contact': { value: '', default: '', type: 'v-text-field', 'field-input': { placeholder: 'Contact', required: true }, 'field-wrapper': { xs12: true } },
@@ -150,7 +150,7 @@ export default {
             const { record: { id, ...noIdData } } = payload
             try {
               noIdData.updatedBy = '' // TBD user.email
-              noIdData.updatedAt = format(new Date(), 'YYYY-MM-DD HH:mm:ss')
+              noIdData.updatedAt = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
               noIdData.orderDatetime = noIdData.orderDate + ' ' + noIdData.orderTime
               await firestore.collection(COL_NAME).add(noIdData)
             } catch (e) {
@@ -164,7 +164,7 @@ export default {
             // noIdData.area = noIdData.area ? noIdData.area : ''
             noIdData.orderDatetime = noIdData.orderDate + ' ' + noIdData.orderTime
             noIdData.updatedBy = '' // TBD user.email
-            noIdData.updatedAt = format(new Date(), 'YYYY-MM-DD HH:mm:ss')
+            noIdData.updatedAt = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
             try { await firestore.doc(COL_NAME + '/' + id).update(noIdData) } catch (e) {
               return { status: e.response.status, error: e.toString() }
             }
@@ -192,7 +192,7 @@ export default {
     load () {
       // this.$refs.taskRef
       if (!this.subTime) {
-        this.subTime = format(new Date(), 'YYYY-MM-DD HH:mm:ss')
+        this.subTime = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
         // console.log(this.subTime)
         this.unsub = firestore.collection(this.colName)
           .where('updatedAt', '>', this.subTime)
@@ -220,7 +220,7 @@ export default {
     },
     setIncomingAlert (doc) {
       console.log('setIncomingAlert', doc.data())
-      const recs = this.$refs.taskRef.records // this.$store.getters[this.colName + '/records']
+      const recs = this.$refs.taskRef.records // this.$store.state[this.colName + '/records']
       let exists = false
       for (let i in recs) { // update
         if (recs[i].id === doc.id) {

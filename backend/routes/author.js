@@ -1,7 +1,7 @@
 const express = require('express')
 const authorRoutes = express.Router()
 
-const { authUser } = require('../middleware/auth')
+const { authUser } = require('../services/auth')
 const Author = require('../models/Author')
 
 const { transaction } = require('objection')

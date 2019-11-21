@@ -2,7 +2,11 @@
 
 # NOTICES & UPDATES
 
-> Latest Version 0.2.4 Released 2019 October Oct 07 1000 +8GMT
+> Always Remember Rule #1 - Do Not Let Technical Debt Build Up
+
+> Latest Version 0.2.5 Released 2019 November 21 1100 +8GMT
+
+Refactored and upgraded authentication mechanism (correct way to do refresh token and httponly cookie, possible to revoke session immediately), JWT_EXPIRY (5 seconds) is set very low in config to test refresh token. Refactored nuxt, upgraded packages including Vue CLI to version 4 and es-lint to version 6. Many enhancements on backend, and configuration. No breaking change to the vue-crud-x library
 
 **vue-crud-x 0.2** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
@@ -47,11 +51,14 @@ Clone the repository, setup and run, using the following commands
 ```bash
 git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
-cd example-spa
+cd backend
 npm i
-npm run build-rest
+npm run i:spa
+npm run i:ssr
 npm run init-db
-npm run start
+npm run dev:spa
+# for SSR - npm run dev:ssr
+# for static content (1) npm run dev (2) see example-ssr/README.md on generating and serving static content
 ```
 
 Navigate to http://127.0.0.1:8080
@@ -104,26 +111,27 @@ Recipes for a production-ready Express server used by **example-spa** and **exam
   - seeders (migration not needed)
   - watch for real-time collection & document changes
 - Authentication & Authorization
-  - Local Login, JWT & 2FA OTP (using Google Authenticator), Refresh token
-  - OAuth2 Github Login
-  - SAML ADFS login using Passport
+  - JWT (with RSA signatures) & 2FA OTP (using Google Authenticator), Refresh token, token in HttpOnly cookies
+  - Local Login, OAuth2 Github Login, SAML ADFS login using Passport
+- CORS, proxy middleware, helmet (securing express)
 - Documentation
   - OpenAPI with JSDoc (enable for local only)
-- Key-Value Store for user token storage on server (can replace with redis in local development environment)
+- Key-Value Store for user token storage on server (can replace with redis in production environment)
 - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
 - GraphQL (use Apollo server)
 - File uploads
 - Testing (in progress)
 - Logging (in progress)
 
+
 ## [example-ssr](https://github.com/ais-one/vue-crud-x/tree/master/example-ssr)
 
 Recipes for a production-ready Nuxt static sites. Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes:
-- nuxt-auth
+- nuxt-auth (removed - need to roll own due to... lack of refresh token, and possibly lack of httponly token capability - as at time of writing 21-11-2019)
   - Social login using Github
   - Local Email-password login & JWT
   - optional 2FA using Google Authenticator
-- nuxt-i18n
+- nuxt-i18n (removed, the documents are more than sufficient for now)
 - SSR & pre-generated Static Web App 
   - Handling of 500 and 404 errors
 - Show gotchas of SSR

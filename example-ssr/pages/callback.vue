@@ -14,22 +14,15 @@ export default {
   async mounted() {
     try {
       const { code, state } = this.$route.query
-      const { data } = await this.$axios.post('/api/auth/check-github', {
+      const { data } = await this.$http.post('/api/auth/check-github', {
         code,
         state
       })
-      this.$auth.setToken('social', `Bearer ${data.token}`)
-      this.$auth.strategy._setToken(`Bearer ${data.token}`) // this.$axios.defaults.headers.common['Authorization']
-      console.log('cb', data)
-      const rv = await this.$axios.get('/api/auth/me')
-      this.$auth.setStrategy('social')
-      console.log('ccbb', rv.data.user)
-      this.$auth.setUser(rv.data.user)
-      this.$router.push('/secure')
+      this.$store.commit('setUser', data)
+      await this.$router.push('/secure')
     } catch (e) {
-      this.error = e + ''
+      this.error = e.toString() + ''
     }
-    // this.$router.push('/secure')
   }
 }
 </script>

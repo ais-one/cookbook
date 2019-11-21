@@ -17,7 +17,8 @@ const wsLink = new WebSocketLink({
 // HTTP connexion to the API
 const httpLink = new HttpLink({
   // You should use an absolute URL here
-  uri: 'http://localhost:3000/graphql'
+  // credentials: 'include', // UNCOMMENT FOR HTTPONLY_TOKEN
+  uri: 'http://127.0.0.1:3000/graphql'
 })
 
 const link = split(
@@ -30,6 +31,7 @@ const link = split(
   httpLink
 )
 
+// REMOVE authLink FOR HTTPONLY_TOKEN
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
   // return the headers to the context so httpLink can read them
@@ -42,7 +44,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : ''
+      authorization: token ? `Bearer ${token}` : '' // TBD - GraphQL not taking into account refresh token and revocation
     }
   }
 })
@@ -52,7 +54,7 @@ const cache = new InMemoryCache()
 
 // Create the apollo client
 export const apolloClient = new ApolloClient({
-  link: authLink.concat(link),
+  link: authLink.concat(link), // REMOVE authLink FOR HTTPONLY_TOKEN
   cache,
   connectToDevTools: true,
   // fetchOptions: { credentials: 'include' }, // Does Not Work

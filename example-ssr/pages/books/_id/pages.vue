@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  middleware: ['auth'],
+  middleware: ['auth-guard'],
   name: 'book-pages'
 }
 </script>

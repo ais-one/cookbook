@@ -3,67 +3,55 @@ const express = require('express')
 const authRoutes = express.Router()
 const otplib = require('otplib')
 
-const { authUser } = require('../middleware/auth')
-const { createToken, isAuthenticated, isGithubAuthenticated } = require('../services')
+const { SALT_ROUNDS, USE_HTTPS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
+const { createToken, revokeToken, isAuthenticated, isGithubAuthenticated, authUser } = require('../services/auth')
 
 const User = require('../models/User')
-const keyv = require('../services/keyv')
-
-const { USE_OTP, KEY_EXPIRY, SECRET_KEY, OTP_SECRET_KEY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require('../config')
 
 authRoutes
-.post('/signup', async (req,res) => {
-  // const {email, password} = req.body
-  // password = bcrypt.hashSync(password, SALT_ROUNDS)
-  // const rv = await createUser(email, password)
-  res.status(201).end()
-})
-.post('/check-github', async (req,res) => {
-  // if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
-  //   return res.status(401).json({ message: 'Error in authorization format' })
-  // }
-  // const incomingToken = req.headers.authorization.split(' ')[1]
-  // const rv = await axios.get('https://github.com/login/oauth/user?access_token=' + incomingToken)
-  // console.log(rv)
-  try {
-    const { code, state } = req.body
-    const { data } = await axios.post('https://github.com/login/oauth/access_token', {
-      client_id: GITHUB_CLIENT_ID,
-      client_secret: GITHUB_CLIENT_SECRET,
-      code,
-      state
-    }, {
-      headers: {
-        Accept: 'application/json'
+  .post('/auth/signup', async (req,res) => {
+    // const {email, password} = req.body
+    // password = bcrypt.hashSync(password, SALT_ROUNDS)
+    // const rv = await createUser(email, password)
+    res.status(201).end()
+  })
+  .post('/auth/check-github', async (req,res) => {
+    try {
+      const { code, state } = req.body
+      const { data } = await axios.post('https://github.com/login/oauth/access_token', {
+        client_id: GITHUB_CLIENT_ID,
+        client_secret: GITHUB_CLIENT_SECRET,
+        code,
+        state
+      }, {
+        headers: {
+          Accept: 'application/json'
+        }
+      })
+      const rv = await axios.get('https://api.github.com/user?access_token=' + data.access_token)
+      const githubId = rv.data.id // github id, email
+      const user = await isGithubAuthenticated(githubId) // match github id with our user in our application
+      if (!user) {
+        const message = 'Unauthorized'
+        return res.status(401).json({ message })
       }
-    })
-    const rv = await axios.get('https://api.github.com/user?access_token=' + data.access_token)
-    const githubId = rv.data.id // github id, email
-    const user = await isGithubAuthenticated(githubId)
-    if (!user) {
-      const message = 'Unauthorized'
-      return res.status(401).json({ message })
+      const { id } = user
+      const tokens = await createToken({ id, verified: true }, {expiresIn: JWT_EXPIRY}) // 5 minute expire for login
+      if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
+      return res.status(200).json(tokens)
+    } catch (e) {
+      console.log('github auth err', e.toString())
     }
-    const { id } = user
-    const token = createToken({ id }, USE_OTP ? OTP_SECRET_KEY : SECRET_KEY, {expiresIn: KEY_EXPIRY}) // 5 minute expire for login
-    await keyv.set(token, token)
-    return res.status(200).json({ token })
-  } catch (e) {
-    console.log(e)
-  }
-  return res.status(401).end()
-})
-.get('/logout', authUser, async (req,res) => {
-  // console.log('logging out')
-  try {
-    const incomingToken = req.headers.authorization.split(' ')[1]
-    await keyv.delete(incomingToken)
-    // clear the token
-    return res.status(200).json({ message: 'Logged Out' })  
-  } catch (e) { }
-  return res.status(500).json()  
-})
-.post('/login', async (req,res) => {
+    return res.status(401).end()
+  })
+  .get('/auth/logout', authUser, async (req,res) => {
+    try {
+      await revokeToken(req.decoded.id) // clear
+      return res.status(200).json({ message: 'Logged Out' })  
+    } catch (e) { }
+    return res.status(500).json()  
+  })
+  .post('/auth/login', async (req,res) => {
     try {
       const { email, password } = req.body
       const user = await isAuthenticated({ email, password })
@@ -71,62 +59,57 @@ authRoutes
         const message = 'Incorrect email or password'
         return res.status(401).json({ message })
       }
-      const { id } = user
-      const token = createToken({ id }, SECRET_KEY,  {expiresIn: USE_OTP ? '5m' : KEY_EXPIRY}) // 5 minute expire for login
-      await keyv.set(token, token)
-      if (process.env.USE_OTP === 'SMS') {
-        // Generate PIN
-        const pin = (Math.floor(Math.random() * (999999 - 0 + 1)) + 0).toString().padStart(6, "0")
-        const ts = new Date() // utc?
-        // update pin where ts > ?
-        // set user SMS
-        if (process.env.NODE_ENV === 'development') {
-  
-        }
-        // TBD send SMS
+      if (user.revoked) {
+        return res.status(401).json({ message: 'Authorization Revoked' })
       }
-      return res.status(200).json({ token })  
-    } catch (e) { }
+      let verified = true
+      const { id } = user
+      if (USE_OTP) {
+        verified = false
+        if (USE_OTP === 'SMS') {
+          // Generate PIN
+          const pin = (Math.floor(Math.random() * (999999 - 0 + 1)) + 0).toString().padStart(6, "0")
+          const ts = new Date() // utc?
+          // update pin where ts > ?
+          // set user SMS & send it
+        }
+      }
+      const tokens = await createToken({ id, verified }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
+      if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
+      return res.status(200).json(tokens)
+    } catch (e) {
+      console.log('login err', e.toString())
+    }
     return res.status(500).json()  
   })
-  .get('/me', authUser, async (req,res) => {
+  .post('/auth/refresh', authUser, async (req,res) => {
+    // refresh logic all done in authUser
+    return res.status(401).json({ message: 'Error token revoked' })
+  })
+  .post('/auth/otp', authUser, async (req,res) => {
+    try {
+      const { id } = req.decoded
+      const user = await User.query().where('id', '=', id)
+      if (user) {
+        const { pin } = req.body
+        const { gaKey, id } = user[0]
+        const isValid = NODE_ENV !== 'development' ? otplib.authenticator.check(pin, gaKey) : pin === '111111'
+        if (isValid) {
+          await revokeToken(id)
+          const tokens = await createToken({ id, verified: true }, {expiresIn: JWT_EXPIRY})
+          if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
+          return res.status(200).json(tokens)
+        }
+      }
+    } catch (e) { console.log('otp err', e.toString()) }
+    return res.status(401).json({ message: 'Error token revoked' })
+  })
+  .get('/auth/me', authUser, async (req,res) => {
     try {
       const { id } = req.decoded
       // you can also get more user information from here from a datastore
-      return res.status(200).json({ user: id })
+      return res.status(200).json({ user: id, ts: Date.now() })
     } catch (e) { }
-    return res.status(401).json({ message: 'Error token revoked' })
-  })
-  .post('/otp', authUser, async (req,res) => {
-    try {
-      // if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
-      //   return res.status(401).json({ message: 'Error in authorization format' })
-      // }
-      // const incomingToken = req.headers.authorization.split(' ')[1]
-      // const matchingToken = await keyv.get(incomingToken)
-      // if (!matchingToken) {
-      //   return res.status(401).json({ message: 'Error token mismatch' })
-      // }
-      // let result = verifyToken(incomingToken, SECRET_KEY) // has iat & exp also
-      let result = req.decoded
-      if (result) {
-        const { id } = result
-        const user = await User.query().where('id', '=', id)
-        if (user) {
-          const { pin } = req.body
-          const { gaKey, id } = user[0]
-          // process.env.USE_OTP === 'GA' // 'SMS'
-          const isValid = process.env.NODE_ENV !== 'development' ? otplib.authenticator.check(pin, gaKey) : pin === '111111'
-          if (isValid) {
-            const incomingToken = req.headers.authorization.split(' ')[1]
-            const token = createToken({ id }, OTP_SECRET_KEY, {expiresIn: KEY_EXPIRY})
-            await keyv.set(token, token)
-            await keyv.delete(incomingToken)
-            return res.status(200).json({ token })
-          }
-        }
-      }
-    } catch (e) { console.log(e) }
     return res.status(401).json({ message: 'Error token revoked' })
   })
 

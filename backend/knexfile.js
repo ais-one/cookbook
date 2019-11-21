@@ -9,8 +9,6 @@
 //   connection: process.env.DATABASE_URL
 // }
 
-// console.log('KXENV', process.env.NODE_ENV)
-
 // Mysql 8 issue for now
 // ALTER USER 'user'@'%' IDENTIFIED WITH mysql_native_password BY 'user123!@#PK';
 // FLUSH PRIVILEGES;
