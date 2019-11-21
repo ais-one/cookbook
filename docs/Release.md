@@ -1,3 +1,14 @@
+### Version 0.2.6
+- update packages
+- backend
+  - [Work-in-progress] add jest test
+- frontend
+  - [Work-in-progress] ant design version
+- [Work-in-progress]
+  - ISO config definition naming (identify configs common to both FE and BE)
+  - Should we change Vuex action setLayout to setPublic and setSecure?
+  - graphql security & performance review
+
 ### Version 0.2.5
 - update packages
   - vue-cli v4, eslint v6, and many other packages

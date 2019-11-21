@@ -4,7 +4,7 @@
 
 > Always Remember Rule #1 - Do Not Let Technical Debt Build Up
 
-> Latest Version 0.2.5 Released 2019 November 21 1100 +8GMT
+> Latest Version 0.2.6 Released 2019 December 21 1100 +8GMT
 
 Refactored and upgraded authentication mechanism (correct way to do refresh token and httponly cookie, possible to revoke session immediately), JWT_EXPIRY (5 seconds) is set very low in config to test refresh token. Refactored nuxt, upgraded packages including Vue CLI to version 4 and es-lint to version 6. Many enhancements on backend, and configuration. No breaking change to the vue-crud-x library
 
