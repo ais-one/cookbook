@@ -9,6 +9,7 @@ module.exports = {
     // '@vue/standard'
   ],
   rules: {
+    'no-prototype-builtins': 'off',
     'no-empty': 'off',
     'no-unused-vars': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
