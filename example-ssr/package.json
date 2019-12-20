@@ -20,11 +20,11 @@
     "cross-env": "^6.0.3",
     "jwt-decode": "^2.2.0",
     "lodash.clonedeep": "^4.5.0",
-    "nuxt": "^2.10.2"
+    "nuxt": "^2.11.0"
   },
   "devDependencies": {
     "@nuxtjs/dotenv": "^1.4.1",
-    "nodemon": "^2.0.1",
+    "nodemon": "^2.0.2",
     "serve": "^11.2.0"
   }
 }
