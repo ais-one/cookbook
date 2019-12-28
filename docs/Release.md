@@ -1,4 +1,4 @@
-### Version 0.2.7
+### Version 0.2.8
 - update packages
 - [Work-in-progress]
   - backend
@@ -10,6 +10,9 @@
     - ISO config definition naming (identify configs common to both FE and BE)
     - Should we change Vuex action setLayout to setPublic and setSecure?
     - graphql security & performance review
+
+### Version 0.2.7
+- skipped pushed 0.2.6 to npm as 0.2.7
 
 ### Version 0.2.6
 - update packages

@@ -4,7 +4,7 @@
 
 > Always Remember Rule #1 - Do Not Let Technical Debt Build Up
 
-Latest Version [0.2.7](https://github.com/ais-one/vue-crud-x/releases/tag/0.2.7) - Released 2020 January 28 1900 +8GMT
+Latest Version [0.2.8](https://github.com/ais-one/vue-crud-x/releases/tag/0.2.8) - Released 2020 January 28 1900 +8GMT
 
 **vue-crud-x 0.2** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
