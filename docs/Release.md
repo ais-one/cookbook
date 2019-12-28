@@ -1,20 +1,26 @@
 ### Version 0.2.6
 - update packages
-- backend
-  - [Work-in-progress] add jest test
-- frontend
-  - [Work-in-progress] ant design version
+  - objection upgraded to version 2 - breaking changes...
+    - eager -> withGraphFetched
+    - modifyEager -> modifyGraph
+    - joinRelated -> joinRelation
+- fixed issue https://stackoverflow.com/questions/59006130/error-typeerror-cannot-read-property-match-of-undefined
 - [Work-in-progress]
-  - ISO config definition naming (identify configs common to both FE and BE)
-  - Should we change Vuex action setLayout to setPublic and setSecure?
-  - graphql security & performance review
+  - backend
+    - consider to add jest test
+  - frontend
+    - ant design version
+    - research for framework agnostic test util for frontend
+  - others
+    - ISO config definition naming (identify configs common to both FE and BE)
+    - Should we change Vuex action setLayout to setPublic and setSecure?
+    - graphql security & performance review
 
 ### Version 0.2.5
 - update packages
   - vue-cli v4, eslint v6, and many other packages
   - replaced buggy http-server package with serve package (https://github.com/http-party/http-server/issues/525)
 - backend
-  - [Work-in-progress] add jest test
   - example of using RS256 for secret key (sample cert and key are in the certs folder)
   - rename api route /api/rest-test to /api/health, serves as health check, add /api/health-auth to test auth routes
   - add IP address checking (you can IP from req.ip)
@@ -28,12 +34,6 @@
     - Removed nuxt/auth as refresh token support and httponly cookies is not there
   - take care of cors / same-origin
   - refactored **example-ssr** focus on reducing technical debt, removed nuxt-auth and axios modules, due to limitations, reuse frontend auth code from example-spa
-- frontend
-  - [Work-in-progress] ant design version
-- [Work-in-progress]
-  - ISO config definition naming (identify configs common to both FE and BE)
-  - Should we change Vuex action setLayout to setPublic and setSecure?
-  - graphql security & performance review
 
 ### Version 0.2.4
 - update packages

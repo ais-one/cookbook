@@ -4,7 +4,7 @@
 
 > Always Remember Rule #1 - Do Not Let Technical Debt Build Up
 
-> Latest Version 0.2.6- Released 2019 December 21 1100 +8GMT
+> Latest Version 0.2.6- Released 2019 December 28 1900 +8GMT
 
 **IMPORTANT!!! 2019-11-23 2000 +8GMT**
 

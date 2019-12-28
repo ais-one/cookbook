@@ -14,26 +14,23 @@ bookRoutes
   .post('/books', authUser, async (req,res) => {
     try {
       console.log(req.body.authorIds)
-      // const author = await Author.query().findById(req.body.authorId)
-      // TOREMOVE if (author) {
-        const { authorIds, ...data } = req.body
-        console.log(data)
-        try {
-          trx = await transaction.start(knex)
-          const book = await Book.query(trx).insert(data)
-          await Promise.all(
-            authorIds.map(async authorId => {
-              await book.$relatedQuery('authors', trx).relate(authorId) // rename 'authors' to Authors
-            })
-          )      
-          await trx.commit()
-          if (book) return res.status(201).json(book)
-        } catch (e) {
-          await trx.rollback()    
-          console.log(e)
-        }
-        res.status(201).json()
-      // TOREMOVE  }
+      const { authorIds, ...data } = req.body
+      console.log(data)
+      try {
+        trx = await transaction.start(knex)
+        const book = await Book.query(trx).insert(data)
+        await Promise.all(
+          authorIds.map(async authorId => {
+            await book.$relatedQuery('authors', trx).relate(authorId) // rename 'authors' to Authors
+          })
+        )      
+        await trx.commit()
+        if (book) return res.status(201).json(book)
+      } catch (e) {
+        await trx.rollback()    
+        console.log(e)
+      }
+      res.status(201).json()
     } catch (e) {
       console.log(e.toString())
     }
@@ -65,9 +62,9 @@ bookRoutes
     try {
       const book = await Book.query().findById(req.params.id)
         .select('books.*', 'category.name as categoryName')
-        .joinRelation('category')
-        .eager('[pages, authors]') // show pages
-        .modifyEager('pages', builder => {
+        .joinRelated('category')
+        .withGraphFetched('[pages, authors]') // show pages
+        .modifyGraph('pages', builder => {
           // builder.where('age', '>', 10).select('name')
           builder.limit(2)
         })
@@ -100,9 +97,9 @@ bookRoutes
       }
         // .orderBy
         // .page(page, limit)
-        // .joinRelation('category') // NEED TO GET THIS TO WORK
+        // .joinRelated('category') // NEED TO GET THIS TO WORK
         // select("books.name, category.name")
-        // .joinRelation("[category]")
+        // .joinRelated("[category]")
         // .eager('category') // OK
         // .select('books.*', 'category.name as categoryName')
         // .join('categories', 'books.categoryId', 'categories.id')
@@ -113,7 +110,7 @@ bookRoutes
           Book.relatedQuery('authors').count().as('authorCount')
           )
         // .orderBy('updated_at', 'desc')
-        .joinRelation('category')
+        .joinRelated('category')
         .page(page, limit)
       // console.log(books[0])
       return res.status(200).json(books)  
@@ -141,7 +138,7 @@ bookRoutes
     } catch (e) { console.log(e) }
     return res.status(500).json()
   })
-  .post('/books/:id/authors/:authorId', authUser, async (req, res) => { // relate author to book - set unique index to prevent duplicates...
+  .post('/books/:id/authors/:authorId', authUser, async (req, res) => { // relate author to book - set unique index to prevent duplicates... - IS THIS USED?
     // unique index does not seem to work...
     try {
       const book = await Book.query().findById(req.params.id)
@@ -152,7 +149,7 @@ bookRoutes
     } catch (e) { console.log(e) }
     return res.status(500).json()
   })
-  .delete('/books/:id/authors/:authorId', authUser, async (req, res) => { // unrelate author from book
+  .delete('/books/:id/authors/:authorId', authUser, async (req, res) => { // unrelate author from book - IS THIS USED?
     try {
       const book = await Book.query().findById(req.params.id)
       if (!book) return res.status(404).json()
