@@ -6,16 +6,7 @@
 
 > Latest Version 0.2.6- Released 2019 December 28 1900 +8GMT
 
-**IMPORTANT!!! 2019-11-23 2000 +8GMT**
-
-1. There is a recent issue with Vueify. Please refer below for fix
-
-https://stackoverflow.com/questions/59006130/error-typeerror-cannot-read-property-match-of-undefined
-
-2. example-spa/.eslintrc added rule to prevent lint error (turn off no-prototype-builtins)
-
-
-Refactored and upgraded authentication mechanism (correct way to do refresh token and httponly cookie, possible to revoke session immediately), JWT_EXPIRY (5 seconds) is set very low in config to test refresh token. Refactored nuxt, upgraded packages including Vue CLI to version 4 and es-lint to version 6. Many enhancements on backend, and configuration. No breaking change to the vue-crud-x library
+Updated packages
 
 **vue-crud-x 0.2** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
