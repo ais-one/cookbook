@@ -1,10 +1,5 @@
-### Version 0.2.6
+### Version 0.2.7
 - update packages
-  - objection upgraded to version 2 - breaking changes...
-    - eager -> withGraphFetched
-    - modifyEager -> modifyGraph
-    - joinRelated -> joinRelation
-- fixed issue https://stackoverflow.com/questions/59006130/error-typeerror-cannot-read-property-match-of-undefined
 - [Work-in-progress]
   - backend
     - consider to add jest test
@@ -15,6 +10,14 @@
     - ISO config definition naming (identify configs common to both FE and BE)
     - Should we change Vuex action setLayout to setPublic and setSecure?
     - graphql security & performance review
+
+### Version 0.2.6
+- update packages
+  - objection upgraded to version 2 - breaking changes...
+    - eager -> withGraphFetched
+    - modifyEager -> modifyGraph
+    - joinRelated -> joinRelation
+- fixed issue https://stackoverflow.com/questions/59006130/error-typeerror-cannot-read-property-match-of-undefined
 
 ### Version 0.2.5
 - update packages
