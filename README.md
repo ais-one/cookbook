@@ -4,9 +4,7 @@
 
 > Always Remember Rule #1 - Do Not Let Technical Debt Build Up
 
-> Latest Version 0.2.6 Released 2019 December 21 1100 +8GMT
-
-Refactored and upgraded authentication mechanism (correct way to do refresh token and httponly cookie, possible to revoke session immediately), JWT_EXPIRY (5 seconds) is set very low in config to test refresh token. Refactored nuxt, upgraded packages including Vue CLI to version 4 and es-lint to version 6. Many enhancements on backend, and configuration. No breaking change to the vue-crud-x library
+Latest Version [0.2.8](https://github.com/ais-one/vue-crud-x/releases/tag/0.2.8) - Released 2020 January 28 1900 +8GMT
 
 **vue-crud-x 0.2** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
@@ -127,10 +125,8 @@ Recipes for a production-ready Express server used by **example-spa** and **exam
 ## [example-ssr](https://github.com/ais-one/vue-crud-x/tree/master/example-ssr)
 
 Recipes for a production-ready Nuxt static sites. Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes:
-- nuxt-auth (removed - need to roll own due to... lack of refresh token, and possibly lack of httponly token capability - as at time of writing 21-11-2019)
+- nuxt-auth (removed, use from example-spa instead due to... lack of refresh token, and possibly lack of httponly token capability - as at time of writing 21-11-2019)
   - Social login using Github
-  - Local Email-password login & JWT
-  - optional 2FA using Google Authenticator
 - nuxt-i18n (removed, the documents are more than sufficient for now)
 - SSR & pre-generated Static Web App 
   - Handling of 500 and 404 errors

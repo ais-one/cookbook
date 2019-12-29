@@ -6,7 +6,6 @@ module.exports = {
   'extends': [
     'plugin:vue/essential',
     'eslint:recommended'
-    // '@vue/standard'
   ],
   rules: {
     'no-empty': 'off',

@@ -52,9 +52,16 @@ module.exports = {
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || '', // verify a github token
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '',
 
-  // Telegram
+  // Communications - Telegram
   TELEGRAM_BOT_ID: process.env.TELEGRAM_BOT_ID || '',
   TELEGRAM_API_KEY: process.env.TELEGRAM_API_KEY || '',
+
+  // Communications - Sendgrid
+  SENDGRID_KEY: process.env.SENDGRID_KEY || '',
+
+  // Communications - Nexmo
+  NEXMO_KEY: process.env.NEXMO_KEY || '',
+  NEXMO_SECRET: process.env.NEXMO_SECRET || '',
 
   // COMMON OPTIONS - APPLICABLE TO ALL ENVIRONMENTS
 
