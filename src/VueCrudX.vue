@@ -80,10 +80,7 @@ export default {
         light: true,
         // 'rows-per-page-items': [],
         'hide-default-header': false,
-        style: { // this may need to be changed once Vuetify version 2.0 is out
-          'max-height': 'calc(100vh - 144px)',
-          'backface-visibility': 'hidden'
-        }
+        height: 'calc(100vh - 200px)'
       },
       // VARIATION - End Vuetify2
 
@@ -148,6 +145,8 @@ export default {
     this.vformCrud = Object.assign(this.vformCrud, this.$attrs.vformCrud || {})
     this.vtoolbar = Object.assign(this.vtoolbar, this.$attrs.vtoolbar || {})
     this.vtable = Object.assign(this.vtable, this.$attrs.vtable || {})
+
+    // console.log('this.vtable', this.vtable)
 
     this.sorters = Object.assign(this.sorters, this.$attrs.sorters || {})
     this.sortDefaults = Object.assign(this.sortDefaults, this.$attrs.sortDefaults || {})

@@ -1,5 +1,7 @@
 ### Version 0.2.8
 - update packages
+- VueCrudX
+  - fix table height (footer with pagination was hidden)
 - [Work-in-progress]
   - backend
     - consider to add jest test
