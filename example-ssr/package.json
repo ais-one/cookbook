@@ -25,6 +25,6 @@
   "devDependencies": {
     "@nuxtjs/dotenv": "^1.4.1",
     "nodemon": "^2.0.2",
-    "serve": "^11.2.0"
+    "serve": "^11.3.0"
   }
 }
