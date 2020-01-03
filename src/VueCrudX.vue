@@ -247,14 +247,14 @@ export default {
     // mode - (user action): created, deleted, filter-paged, filter-infinite
     //      - (page, sort events & initial load): pagination, load-more (for subsequent infinite scroll loads)
     async getRecords ({ mode }) {
-      console.log('getRecords', mode)
+      // console.log('getRecords', mode)
 
       // VARIATION Start - Vuetify2
       if (this.infinite) {
         if (mode === 'load-more') this.pagination.page = this.cursor // load more, this does not fire pagination event
         else if (mode === 'filter-infinite' || mode === 'created' || mode === 'deleted') this.pagination.page = this.pageDefaults.start
         else if (mode === 'pagination' && this.pagination.page === this.pageDefaults.start) {
-          console.log('ok')
+          // console.log('ok')
         } else return
       }
       let filters = {}
@@ -554,7 +554,7 @@ export default {
                   </span>
                   <template v-else>
                     <component v-if="inline.update && _isRowEditing(item) && header.edit" :is="header.edit.type" v-bind="header.edit.props" :key="item[idName]+'-'+item[header.value]" v-model="editingRow[header.value]"></component>
-                    <span v-else v-html="header.render?header.render(item[header.value]):item[header.value]"></span>
+                    <span v-else v-html="header.render?header.render(item[header.value] || item):item[header.value]"></span>
                   </template>
                 </td>
               </slot>

@@ -2,6 +2,7 @@
 - update packages
 - VueCrudX
   - fix table height (footer with pagination was hidden)
+  - enhance render: cell content formatting of the column (if column name is found, value passed in is cell value, else value passed in is row values object)
 - [Work-in-progress]
   - backend
     - consider to add jest test
