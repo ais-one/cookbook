@@ -5,9 +5,11 @@
 // console.log(password)
 
 // Generate GA OTP Password
-// const otplib = require('otplib')
+const otplib = require('otplib')
 const secret = otplib.authenticator.generateSecret() // base 32 encoded hex secret key
 console.log('secret', secret) // save for the user
+// const xx = otplib.authenticator.check('111', '12123123123')
+// console.log('xx', xx)
 
 // // Generate OTP Path
 // const user = 'test'
