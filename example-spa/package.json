@@ -31,7 +31,7 @@
     "jwt-decode": "^2.2.0",
     "lit-element": "^2.2.1",
     "lodash.orderby": "^4.6.0",
-    "mongodb-stitch-browser-sdk": "^4.7.1",
+    "mongodb-stitch-browser-sdk": "^4.8.0",
     "rxjs": "^6.5.4",
     "subscriptions-transport-ws": "^0.9.16",
     "vue": "^2.6.11",
@@ -55,7 +55,7 @@
     "eslint-plugin-vue": "^6.1.2",
     "fibers": "^4.0.2",
     "node-sass": "^4.13.0",
-    "sass": "^1.24.1",
+    "sass": "^1.24.2",
     "sass-loader": "^8.0.0",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.4.3"
