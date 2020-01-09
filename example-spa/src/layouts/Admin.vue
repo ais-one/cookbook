@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import { format } from 'date-fns'
 export default {
   data () {
     return {
@@ -68,7 +67,7 @@ export default {
   created () {
     if (this.$i18n) this.$i18n.locale = this.selectedLocale.toLowerCase()
     this.timerId = setInterval(() => {
-      this.currentTime = format(new Date(), 'HH:mm:ss')
+      this.currentTime = (new Date()).toISOString().substring(11, 19)
     }, 1000)
   },
   destroy () {

@@ -20,7 +20,6 @@
 3. Inline edit - text, select, date input
 */
 import _orderBy from 'lodash.orderby'
-import { format } from 'date-fns' // startOfMonth, endOfMonth, later
 import { firestore } from '@/firebase'
 
 import * as locationJson from './LOCATION_REF_JSON.json'
@@ -29,6 +28,10 @@ const locations = locationJson.default.map(item => item.locationCode)
 const COL_NAME = 'task'
 const TASK_LIMIT = 10
 // Add In later... const area = ['North', 'South', 'East', 'West', 'Central']
+
+const initYmd = () => (new Date()).toISOString().substring(0, 10)
+const initHm = () => (new Date()).toISOString().substring(11, 16)
+const initYmdHms = () => (new Date()).toISOString().substring(0, 19).replace('T', ' ')
 
 export default {
   name: 'firebase-rt',
@@ -87,14 +90,6 @@ export default {
           ]
         },
         filters: null,
-        // filters: {
-        //   // area: { type: 'v-autocomplete', halfSize: true, value: '', attrs: { label: 'Area', class: 'pa-2', items: area, clearable: true } },
-        //   // readMode: { type: 'v-select', halfSize: true, value: 'Latest', attrs: { label: 'Latest 10 Or Date Range', class: 'pa-2', multiple: false, items: [ 'Latest', 'Date Range' ], rules: [v => !!v || 'Item is required'] } },
-        //   dateStart: { type: 'app-date-picker', halfSize: true, value: format(startOfMonth(new Date()), 'yyyy-MM-dd'), attrs: { label: 'Date Start' } },
-        //   // timeStart: { type: 'app-time-picker', halfSize: true, value: '00:00', attrs: { label: 'Time Start' } },
-        //   dateEnd: { type: 'app-date-picker', halfSize: true, value: format(endOfMonth(new Date()), 'yyyy-MM-dd'), attrs: { label: 'Date End' } }
-        //   // timeEnd: { type: 'app-time-picker', halfSize: true, value: '23:55', attrs: { label: 'Time End' } }
-        // },
         form: {
           'id': { value: '', default: '', hidden: 'all' },
           // 'area': { value: 'CENTRAL', default: 'CENTRAL', type: 'v-autocomplete' },
@@ -103,8 +98,8 @@ export default {
           'jobType': { type: 'v-select', value: 'TO SHIP', default: 'TO SHIP', 'field-input': { placeholder: 'Job', multiple: false, items: [ 'TO SHIP', 'FROM SHIP', 'RETURN' ] }, 'field-wrapper': { xs12: true } },
           'base': { type: 'v-select', value: 'MSP', default: 'MSP', 'field-input': { placeholder: 'Base', multiple: false, items: [ 'WCP', 'MSP' ] }, 'field-wrapper': { xs12: true } },
           'vessel': { value: '', default: '', type: 'v-text-field', 'field-input': { placeholder: 'Vessel', required: true }, 'field-wrapper': { xs12: true } },
-          'orderDate': { default: format(new Date(), 'yyyy-MM-dd'), value: format(new Date(), 'yyyy-MM-dd'), type: 'app-date-picker', 'field-wrapper': { xs12: true } },
-          'orderTime': { default: format(new Date(), 'HH:mm'), value: format(new Date(), 'HH:mm'), type: 'app-time-picker', 'field-wrapper': { xs12: true } },
+          'orderDate': { default: initYmd(), value: initYmd(), type: 'app-date-picker', 'field-wrapper': { xs12: true } },
+          'orderTime': { default: initHm(), value: initHm(), type: 'app-time-picker', 'field-wrapper': { xs12: true } },
           'standByHr': { type: 'v-select', value: '0', default: '0', 'field-input': { placeholder: 'Standby (Hr)', multiple: false, items: [ '0', '1', '2' ] }, 'field-wrapper': { xs12: true } },
           'contact': { value: '', default: '', type: 'v-text-field', 'field-input': { placeholder: 'Contact', required: true }, 'field-wrapper': { xs12: true } },
           'pax': { value: '', default: '', type: 'v-text-field', 'field-input': { placeholder: 'Pax' }, 'field-wrapper': { xs12: true } },
@@ -150,7 +145,7 @@ export default {
             const { record: { id, ...noIdData } } = payload
             try {
               noIdData.updatedBy = '' // TBD user.email
-              noIdData.updatedAt = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
+              noIdData.updatedAt = initYmdHms()
               noIdData.orderDatetime = noIdData.orderDate + ' ' + noIdData.orderTime
               await firestore.collection(COL_NAME).add(noIdData)
             } catch (e) {
@@ -164,7 +159,7 @@ export default {
             // noIdData.area = noIdData.area ? noIdData.area : ''
             noIdData.orderDatetime = noIdData.orderDate + ' ' + noIdData.orderTime
             noIdData.updatedBy = '' // TBD user.email
-            noIdData.updatedAt = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
+            noIdData.updatedAt = initYmdHms()
             try { await firestore.doc(COL_NAME + '/' + id).update(noIdData) } catch (e) {
               return { status: e.response.status, error: e.toString() }
             }
@@ -192,7 +187,7 @@ export default {
     load () {
       // this.$refs.taskRef
       if (!this.subTime) {
-        this.subTime = format(new Date(), 'yyyy-MM-dd HH:mm:ss')
+        this.subTime = initYmdHms()
         // console.log(this.subTime)
         this.unsub = firestore.collection(this.colName)
           .where('updatedAt', '>', this.subTime)
