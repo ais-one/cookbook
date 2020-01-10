@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@keyv/redis": "^2.1.0",
-    "apollo-server-express": "^2.9.15",
+    "apollo-server-express": "^2.9.16",
     "axios": "^0.19.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
