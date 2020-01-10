@@ -1,5 +1,6 @@
 ### Version 0.2.8
 - update packages
+  - remove date-fns (use Native JS Intl.DateTimeFormat and Date objects)
 - VueCrudX
   - fix table height (footer with pagination was hidden)
   - enhance render: cell content formatting of the column (if column name is found, value passed in is cell value, else value passed in is row values object)
