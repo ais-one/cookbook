@@ -55,7 +55,7 @@
     "fibers": "^4.0.2",
     "node-sass": "^4.13.0",
     "sass": "^1.24.4",
-    "sass-loader": "^8.0.0",
+    "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11",
     "vuetify-loader": "^1.4.3"
   },
