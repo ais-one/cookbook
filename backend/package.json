@@ -4,7 +4,8 @@
   "scripts": {
     "ssh": "ssh -i ../xxx.pem -L 27017:127.0.0.1:27017 ubuntu@11.22.33.44",
     "lint": "eslint .",
-    "test": "cross-env NODE_ENV=local jest --coverage --detectOpenHandles --forceExit --reporter=html --exclude __tests__",
+    "test2": "cross-env NODE_ENV=local jest --coverage --detectOpenHandles --forceExit --reporter=html --exclude __tests__ --watchAll",
+    "test": "cross-env NODE_ENV=local jest --coverage --detectOpenHandles --forceExit --reporter=html --watchAll",
     "init-db": "npx knex migrate:latest --env development&&npx knex seed:run --env development",
     "i:spa": "cd ../example-spa&&npm i",
     "i:ssr": "cd ../example-ssr&&npm i",
@@ -37,7 +38,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "firebase-admin": "^8.9.2",
-    "graphql": "^14.5.8",
+    "graphql": "^14.6.0",
     "helmet": "^3.21.2",
     "http-proxy-middleware": "^0.20.0",
     "ioredis": "^4.14.1",
@@ -61,12 +62,14 @@
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
-    "concurrently": "^5.0.2",
+    "concurrently": "^5.1.0",
+    "cross-env": "^7.0.0",
     "eslint": "^6.8.0",
     "eslint-plugin-promise": "^4.2.1",
-    "frisby": "^2.1.2",
     "jest": "^25.1.0",
-    "nodemon": "^2.0.2"
+    "node-mocks-http": "^1.8.1",
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2"
   },
   "private": true
 }
