@@ -47,10 +47,10 @@ Client credentials should like like something below:
 Get your firebase backend credentials from Project -> Settings -> Service Accounts
 
 
-
 ## Firestore
 
-TBD
+https://firebase.google.com/docs/firestore
+
 
 ## Hosting To Firebase
 
@@ -98,4 +98,3 @@ service firebase.storage {
   }
 }
 ```
-

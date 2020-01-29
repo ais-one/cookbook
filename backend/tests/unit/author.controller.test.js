@@ -130,3 +130,21 @@ describe.only('Author Unit Test', () => {
     expect(true).toBe(true)
   })
 })
+
+/*
+describe('app ws testing', () => {
+    it('connect websockets response', (done) => {
+        expect.assertions(1);
+
+        const ws = new WebSocket(`ws://localhost:${port}`)
+            .on('message', (msg) => {
+                expect(JSON.parse(msg).id).toEqual(0);
+                ws.close(); // NEED TO CLOSE!!!
+            })
+            .on('close', () => done());
+    });
+});
+*/
+// https://www.npmjs.com/package/jest-websocket-mock
+// https://stackoverflow.com/questions/57804844/jest-with-websockets-ignores-messages-after-the-first-one
+// https://stackoverflow.com/questions/55963562/test-websockets-with-jest

@@ -69,6 +69,8 @@ describe(endpointUrl, () => {
       .set(authObj)
       .field('filex','')
       .field('docx',JSON.stringify({ name: 'author1' }))
+      // .attach('image1', 'path/to/felix.jpeg')
+      // .attach('image2', imageBuffer, 'luna.jpeg')
     expect(response.statusCode).toBe(200)
     expect(response.body.name).toBe('author1')
   })

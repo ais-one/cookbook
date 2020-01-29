@@ -7,12 +7,16 @@
 - backend
   - add jest test, create unit and integration test
   - structure backend to be testable, create controllers
+  - allow to authorize from cookie or header
 - example-spa
-  - fixed axios.js error.config.url returns only path in updated version of axios
+  - fixed axios.js, error.config.url returns only path instead of full url in updated version of axios (affected refresh token)
 - [Work-in-progress]
-  - frontend
+  - example-spa
+    - use only 1 material design icon library...
     - ant design version
     - research for framework agnostic test util for frontend
+  - backend
+    - research websocket testing, improve coverage
   - others
     - ISO config definition naming (identify configs common to both FE and BE)
     - Should we change Vuex action setLayout to setPublic and setSecure?
