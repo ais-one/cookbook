@@ -60,10 +60,14 @@ exports.remove = async (req, res) => {
   try {
     trx = await transaction.start(knex)
     const author = await Author.query(trx).findById(req.params.id)
-    await author.$relatedQuery('books', trx).unrelate()
-    await Author.query(trx).deleteById(req.params.id)
+    if (author) {
+      await author.$relatedQuery('books', trx).unrelate()
+      await Author.query(trx).deleteById(req.params.id)  
+      res.status(200).json()
+    } else {
+      res.status(404).json()
+    }
     await trx.commit()
-    res.status(200).json()
   } catch (e) {
     await trx.rollback()
     res.status(500).json()

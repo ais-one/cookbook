@@ -39,7 +39,7 @@ const apollo = require('./services/graphql')
 const { httpsCerts } = require('./services/certs')
 const { CORS_OPTIONS, USE_HTTPS, PROXY_WWW_ORIGIN, WWW_SERVE } = require('./config')
 
-console.log('httpsCerts', httpsCerts)
+// console.log('httpsCerts', httpsCerts)
 
 // Set CORS headers so that the React SPA is able to communicate with this server
 // Access-Control-Allow-Origin=*

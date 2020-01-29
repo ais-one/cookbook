@@ -9,7 +9,7 @@ if (process.env.NODE_ENV) {
     // console.log('missing configuration file, using defaults')
   }
 }
-console.log('Environment: ', process.env.NODE_ENV)
+// console.log('Environment: ', process.env.NODE_ENV)
 
 // config.js
 // empty string, false or null means not available or used

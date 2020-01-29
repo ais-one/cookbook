@@ -12,7 +12,7 @@ if (!wss && WS_PORT) {
   } else {
     wss = new WebSocket.Server({ port: WS_PORT })
   }
-  console.log('WS API listening on port ' + WS_PORT)
+  // console.log('WS API listening on port ' + WS_PORT)
 }
 
 module.exports = wss
