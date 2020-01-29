@@ -1,3 +1,19 @@
+### Version 0.2.9
+- update packages
+- [Work-in-progress]
+  - cleanup
+  - example-spa
+    - use only 1 material design icon library...
+    - ant design version
+    - research for framework agnostic test util for frontend
+  - backend
+    - research websocket testing, improve coverage
+    - research auto generated REST API and Testing
+  - others
+    - ISO config definition naming (identify configs common to both FE and BE)
+    - Should we change Vuex action setLayout to setPublic and setSecure?
+    - graphql security & performance review
+
 ### Version 0.2.8
 - update packages
   - remove date-fns (use Native JS Intl.DateTimeFormat and Date objects)
