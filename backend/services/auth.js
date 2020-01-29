@@ -81,7 +81,7 @@ const authUser = async (req, res, next) => {
         result = jwt.verify(token, secretKey, { algorithm: [JWT_ALG] }) // and options
       } catch (e) {
         if (e.name === 'TokenExpiredError') {
-          // console.log('req.path', req.path)
+          // console.log('req.path', req.baseUrl + req.path)
           if (req.baseUrl + req.path === '/api/auth/refresh') {
             try {
               // check refresh token & user - always stateful

@@ -4,9 +4,12 @@
 - VueCrudX
   - fix table height (footer with pagination was hidden)
   - enhance render: cell content formatting of the column (if column name is found, value passed in is cell value, else value passed in is row values object)
+- backend
+  - add jest test, create unit and integration test
+  - structure backend to be testable, create controllers
+- example-spa
+  - fixed axios.js error.config.url returns only path in updated version of axios
 - [Work-in-progress]
-  - backend
-    - consider to add jest test
   - frontend
     - ant design version
     - research for framework agnostic test util for frontend

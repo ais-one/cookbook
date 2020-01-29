@@ -2,6 +2,7 @@
 dist
 .nuxt
 node_modules
+coverage
 **/.firebaserc
 
 package-lock.json
