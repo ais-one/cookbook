@@ -98,7 +98,7 @@ The header properties described below can be found in the Vuetify 2 documentatio
 filter and sort properties are usually not used as the operations should be performed at the server side for vue-crud-x.
 
 Additional **vtable.header** properties described are used by vue-crud-x for
-- render: cell content formatting of the column
+- render: cell content formatting of the column (if column name is found, value passed in is cell value, else value passed in is row values object)
 - edit: cell edit control configuration of the column
 - action: indicating if column is a action column with delete and/or update buttons
 
@@ -106,6 +106,11 @@ Additional **vtable.header** properties described are used by vue-crud-x for
 - app fixed header and/or footer
 - table default footer (pagination)
 - table header (may be hidden, so may have to adjust for this)
+
+```js
+  { text: 'Longitude', value: 'lon', align: 'left', sortable: false, class: 'py-1 px-2', render: v => Number(v).toFixed(3)},
+  { text: 'Ref', value: '_1', align: 'left', sortable: false, class: 'py-1 px-2', render: item => item.a + '-' + item.b } // _1 virtual field and will not be found, so entire row will be passed into render
+```
 
 ```js
 vtable: {
@@ -353,6 +358,7 @@ form: {
     type: 'v-text-field',
     value: '',
     render: (v) => v, // your custom function to transform a value for use with the form input item
+    renderItem: (item) => item['<field name>'] // use more than 1 column in the table to display
     default: '',
     hidden: 'add', // add, edit, all, null
     readonly: 'all', // add, edit, all, null

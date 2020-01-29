@@ -28,8 +28,6 @@
 </template>
 
 <script>
-import { format } from 'date-fns'
-
 export default {
   data: () => ({
     date: null,
@@ -69,9 +67,9 @@ export default {
   },
   created () {
     if (this.value) {
-      this.date = this.value // format(this.value, 'YYYY-MM-DD')
+      this.date = this.value // format(this.value, 'yyyy-MM-dd')
     } else {
-      this.date = format(new Date(), 'YYYY-MM-DD')
+      this.date = (new Date()).toISOString().substring(0, 10) // 'yyyy-MM-dd'
     }
   },
   methods: {
@@ -82,7 +80,7 @@ export default {
     formatDate (date) {
       if (!date) return null
       const [year, month, day] = date.split('-')
-      return format(new Date(year, month - 1, day), this.format) // `${day}-${month}-${year}`
+      return (new Date(year, month - 1, day)).toISOString().substring(0, 10) // format(new Date(year, month - 1, day), this.format) // `${day}-${month}-${year}`
     }
   }
 }

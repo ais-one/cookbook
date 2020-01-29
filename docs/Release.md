@@ -1,3 +1,31 @@
+### Version 0.2.8
+- update packages
+  - remove date-fns (use Native JS Intl.DateTimeFormat and Date objects)
+- VueCrudX
+  - fix table height (footer with pagination was hidden)
+  - enhance render: cell content formatting of the column (if column name is found, value passed in is cell value, else value passed in is row values object)
+- backend
+  - add jest test, create unit and integration test
+  - structure backend to be testable, create controllers
+  - allow to authorize from cookie or header
+- example-spa
+  - fixed axios.js, error.config.url returns only path instead of full url in updated version of axios (affected refresh token)
+- [Work-in-progress]
+  - cleanup
+  - example-spa
+    - use only 1 material design icon library...
+    - ant design version
+    - research for framework agnostic test util for frontend
+  - backend
+    - research websocket testing, improve coverage
+  - others
+    - ISO config definition naming (identify configs common to both FE and BE)
+    - Should we change Vuex action setLayout to setPublic and setSecure?
+    - graphql security & performance review
+
+### Version 0.2.7
+- skipped pushed 0.2.6 to npm as 0.2.7
+
 ### Version 0.2.6
 - update packages
   - objection upgraded to version 2 - breaking changes...
@@ -5,16 +33,6 @@
     - modifyEager -> modifyGraph
     - joinRelated -> joinRelation
 - fixed issue https://stackoverflow.com/questions/59006130/error-typeerror-cannot-read-property-match-of-undefined
-- [Work-in-progress]
-  - backend
-    - consider to add jest test
-  - frontend
-    - ant design version
-    - research for framework agnostic test util for frontend
-  - others
-    - ISO config definition naming (identify configs common to both FE and BE)
-    - Should we change Vuex action setLayout to setPublic and setSecure?
-    - graphql security & performance review
 
 ### Version 0.2.5
 - update packages

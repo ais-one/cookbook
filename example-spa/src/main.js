@@ -35,9 +35,7 @@ apolloClient.query({
   variables: {
     message: 'Meow'
   }
-})
-  .then(data => console.log(data))
-  .catch(error => console.error(error))
+}).then(data => console.log(data)).catch(error => console.error(error))
 
 const apolloProvider = new VueApollo({
   defaultClient: apolloClient

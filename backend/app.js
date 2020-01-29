@@ -39,7 +39,7 @@ const apollo = require('./services/graphql')
 const { httpsCerts } = require('./services/certs')
 const { CORS_OPTIONS, USE_HTTPS, PROXY_WWW_ORIGIN, WWW_SERVE } = require('./config')
 
-console.log('httpsCerts', httpsCerts)
+// console.log('httpsCerts', httpsCerts)
 
 // Set CORS headers so that the React SPA is able to communicate with this server
 // Access-Control-Allow-Origin=*
@@ -119,6 +119,10 @@ if (USE_HTTPS) {
   server = http.createServer(app)
 }
 
+
+// NOTE: if --forcedExit --detectOpenHandles in JEST test, will cause error
+// TBD: testing for websockets
+// Need to move this out?
 const WebSocket = require('ws')
 const wss = require('./services/websocket')
 
@@ -146,7 +150,7 @@ if (wss) {
   })
   // keep alive
   setInterval(() => {
-    console.log('WS Clients: ', wss.clients.size)
+    // console.log('WS Clients: ', wss.clients.size)
     wss.clients.forEach((ws) => {
       if (!ws.isAlive) return ws.terminate()
       ws.isAlive = false

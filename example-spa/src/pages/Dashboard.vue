@@ -19,6 +19,7 @@
                     <v-btn @click="testHealthAuth">Test Health Auth</v-btn>
                   </p>
                   <p class="py-1 text-center">GraphQL Query Result... ({{ hello }})</p>
+                  <p class="py-1 text-center">Other Test Results (also see console logs)... ({{ testResult }})</p>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -57,7 +58,8 @@ export default {
     return {
       // skipQuery: true,
       hello: 'NA',
-      wsMsg: 'No WS Message Yet'
+      wsMsg: 'No WS Message Yet',
+      testResult: 'NA'
     }
   },
   created () {
@@ -94,32 +96,40 @@ export default {
       try {
         const rv = await http.get('/api/health')
         console.log(rv.data)
+        this.testResult = JSON.stringify(rv.data)
       } catch (e) {
         console.log(e.toString())
+        this.testResult = e.toString()
       }
     },
     async testHealthAuth () {
       try {
         const rv = await http.get('/api/health-auth')
         console.log(rv.data)
+        this.testResult = JSON.stringify(rv.data)
       } catch (e) {
         console.log(e.toString())
+        this.testResult = e.toString()
       }
     },
     async testAuth () {
       try {
         const rv = await http.get('/api/auth/me')
         console.log(rv.data)
+        this.testResult = JSON.stringify(rv.data)
       } catch (e) {
         console.log(e.toString())
+        this.testResult = e.toString()
       }
     },
     async testApi () {
       try {
         const { data } = await http.get(`/api/authors/1`)
         console.log(data)
+        this.testResult = JSON.stringify(data)
       } catch (e) {
         console.log(e.toString())
+        this.testResult = e.toString()
       }
     },
     async testGraphQL () {

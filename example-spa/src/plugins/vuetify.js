@@ -6,7 +6,7 @@ import Vuetify, {
 import { Scroll } from 'vuetify/lib/directives'
 import i18n from '../lang'
 
-import '@mdi/font/css/materialdesignicons.css'
+// import '@mdi/font/css/materialdesignicons.css'
 
 Vue.use(Vuetify, {
   components: {

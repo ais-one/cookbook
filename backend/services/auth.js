@@ -63,15 +63,22 @@ const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
   let token
   try {
-    if (HTTPONLY_TOKEN) {
+    // if (HTTPONLY_TOKEN) {
+    //   token = req.cookies.token
+    // } else {
+    //   if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
+    //     return res.status(401).json({ message: 'Error in authorization format' })
+    //   }
+    //   token = req.headers.authorization.split(' ')[1]
+    // }
+    if (req.cookies.token) {
       token = req.cookies.token
-      // console.log('tok', req.cookies.token)
-    } else {
-      if (req.headers.authorization === undefined || req.headers.authorization.split(' ')[0] !== 'Bearer') {
-        return res.status(401).json({ message: 'Error in authorization format' })
+    } else if (req.headers.authorization) {
+      if (req.headers.authorization.split(' ')[0] === 'Bearer') {
+        token = req.headers.authorization.split(' ')[1]
       }
-      token = req.headers.authorization.split(' ')[1]
     }
+
     // console.log(req.path, req.cookies)
     if (token) { // matchingToken
       // USE_OTP && req.path !== '/otp'
@@ -81,7 +88,7 @@ const authUser = async (req, res, next) => {
         result = jwt.verify(token, secretKey, { algorithm: [JWT_ALG] }) // and options
       } catch (e) {
         if (e.name === 'TokenExpiredError') {
-          // console.log('req.path', req.path)
+          // console.log('req.path', req.baseUrl + req.path)
           if (req.baseUrl + req.path === '/api/auth/refresh') {
             try {
               // check refresh token & user - always stateful
