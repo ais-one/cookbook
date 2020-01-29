@@ -11,6 +11,7 @@
 - example-spa
   - fixed axios.js, error.config.url returns only path instead of full url in updated version of axios (affected refresh token)
 - [Work-in-progress]
+  - cleanup
   - example-spa
     - use only 1 material design icon library...
     - ant design version
