@@ -5,7 +5,7 @@
     "ssh": "ssh -i ../xxx.pem -L 27017:127.0.0.1:27017 ubuntu@11.22.33.44",
     "lint": "eslint .",
     "test-tbd": "cross-env NODE_ENV=development jest --coverage --detectOpenHandles --forceExit --reporter=html --exclude __tests__ --watchAll",
-    "test": "cross-env NODE_ENV=development jest --forceExit --detectOpenHandles --watchAll",
+    "test": "cross-env NODE_ENV=development jest --watchAll",
     "init-db": "npx knex migrate:latest --env development&&npx knex seed:run --env development",
     "i:spa": "cd ../example-spa&&npm i",
     "i:ssr": "cd ../example-ssr&&npm i",

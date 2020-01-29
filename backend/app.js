@@ -119,6 +119,10 @@ if (USE_HTTPS) {
   server = http.createServer(app)
 }
 
+
+// NOTE: if --forcedExit --detectOpenHandles in JEST test, will cause error
+// TBD: testing for websockets
+// Need to move this out?
 const WebSocket = require('ws')
 const wss = require('./services/websocket')
 
@@ -146,7 +150,7 @@ if (wss) {
   })
   // keep alive
   setInterval(() => {
-    console.log('WS Clients: ', wss.clients.size)
+    // console.log('WS Clients: ', wss.clients.size)
     wss.clients.forEach((ws) => {
       if (!ws.isAlive) return ws.terminate()
       ws.isAlive = false
