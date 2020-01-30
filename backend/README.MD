@@ -24,6 +24,9 @@ Folders
  +-docs (OpenAPI documentation)
  +-logs (local logs)
  +-migrations (create database)
+ +-graphql
+ +-controllers
+ +-middlewares
  +-models (database models)
  +-public (location for frontend app)
  +-routes (REST API routes)

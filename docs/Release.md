@@ -3,10 +3,15 @@
 - [Work-in-progress]
   - cleanup
   - example-spa
+    - re-architect for scalability
     - use only 1 material design icon library...
     - ant design version
     - research for framework agnostic test util for frontend
   - backend
+    - re-architect for scalability (no api changes, just moving files around and creating new files and folders)
+      - clean up Auth and others
+      - long running process support such as tcp servers, MQ consumer
+      - add bull or bullmq support
     - research websocket testing, improve coverage
     - research auto generated REST API and Testing
   - others

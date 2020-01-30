@@ -2,11 +2,11 @@ const express = require('express')
 const authorRoutes = express.Router()
 
 // const Category = require('../models/Category')
-const { authUser } = require('../services/auth')
-const Author = require('../models/Author')
+const { authUser } = require('../middlewares/auth')
 
-const { transaction } = require('objection')
-const knex = Author.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
+// const Author = require('../models/Author')
+// const { transaction } = require('objection')
+// const knex = Author.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
 
 const multer = require('multer')
 const UPLOAD_PATH = 'uploads/'
@@ -18,7 +18,6 @@ const upload = multer({ storage: storage })
 // const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
 
 const authorController = require('../controllers/author') // use controller
-
 
 authorRoutes
   /**

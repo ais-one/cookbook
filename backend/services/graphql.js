@@ -7,7 +7,7 @@ let pubsub
 let apollo
 
 if (!apollo) {
-  const { typeDefs, resolvers } = require('../schema')
+  const { typeDefs, resolvers } = require('../graphql/schema')
   pubsub = new PubSub()
   apollo = new ApolloServer({
     typeDefs,

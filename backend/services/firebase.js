@@ -14,8 +14,8 @@ if (admin.apps.length === 0) {
   admin.firestore().settings({ timestampsInSnapshots: true })
 }
 
-const firestore = admin.firestore()
-const auth = admin.auth()
-const bucket = admin.storage().bucket()
+const firestore = admin ? admin.firestore() : null
+const auth = admin ? admin.auth() : null
+const bucket = admin ? admin.storage().bucket() : null
 
 module.exports = { firestore, auth, bucket }

@@ -1,8 +1,6 @@
 // for the resolvers
-const Book = require('./models/Book')
-const Author = require('./models/Author')
-const Page = require('./models/Page')
-const Category = require('./models/Category')
+const Author = require('../models/Author')
+const Category = require('../models/Category')
 
 const { gql } = require('apollo-server-express')
 // graphql Schema
@@ -11,7 +9,7 @@ const { gql } = require('apollo-server-express')
 // console.log(xxx)
 
 const fs = require('fs')
-const typeDefs = fs.readFileSync('./schema.gql', 'utf8').toString();
+const typeDefs = fs.readFileSync('./graphql/schema.gql', 'utf8').toString();
 
 // Provide resolver functions for your schema fields
 const resolvers = {

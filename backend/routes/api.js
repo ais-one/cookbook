@@ -1,7 +1,7 @@
 const express = require('express')
 const apiRoutes = express.Router()
 
-const { authUser } = require('../services/auth')
+const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
 const UPLOAD_PATH = 'uploads/'
 const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
