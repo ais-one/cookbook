@@ -119,44 +119,7 @@ if (USE_HTTPS) {
   server = http.createServer(app)
 }
 
+apollo.installSubscriptionHandlers(server) // if put before server.listen, will mess with WS API
+const wss = require('./services/websocket').open((err) => console.log(err || 'WS API OPEN OK'))
 
-// NOTE: if --forcedExit --detectOpenHandles in JEST test, will cause error
-// TBD: testing for websockets
-// Need to move this out?
-const WebSocket = require('ws')
-const wss = require('./services/websocket')
-
-if (wss) {
-  wss.on('connection', (ws) => {
-    console.log('ws client connected')
-    ws.isAlive = true
-    ws.on('pong', () => { ws.isAlive = true })
-    ws.on('close', () => { console.log('ws client disconnected') })
-    ws.on('message', async (message) => {
-      console.log('message', message)
-      // error handling
-      // ws.send('something', function ack(error) { console.log }) // If error !defined, send has been completed, otherwise error object will indicate what failed.
-      try { // try-catch only detect immediate error, cannot detect if write failure
-        // const timestamp = new Date(Date.now())
-        // send to other clients
-        wss.clients.forEach((client) => {
-          if (client !== ws && client.readyState === WebSocket.OPEN) {
-            client.send(message)
-          }
-        })
-        ws.send(message) // echo back message...
-      } catch (e) {}
-    })
-  })
-  // keep alive
-  setInterval(() => {
-    // console.log('WS Clients: ', wss.clients.size)
-    wss.clients.forEach((ws) => {
-      if (!ws.isAlive) return ws.terminate()
-      ws.isAlive = false
-      ws.ping(() => {})
-    })
-  }, 30000)  
-}
-
-module.exports = server
+module.exports = { server, apollo, wss }

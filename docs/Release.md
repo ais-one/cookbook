@@ -12,6 +12,7 @@
       - clean up Auth and others
       - long running process support such as tcp servers, MQ consumer
       - add bull or bullmq support
+    - replace multer with busboy or formidable?
     - research websocket testing, improve coverage
     - research auto generated REST API and Testing
   - others

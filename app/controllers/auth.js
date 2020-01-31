@@ -5,7 +5,8 @@ const { SALT_ROUNDS, USE_HTTPS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY,
 const { createToken, revokeToken } = require('../services/auth')
 const User = require('../models/User')
 
-async function isGithubAuthenticated(githubId) {
+// Check if the user github exists in database
+async function isGithubAuthenticated(mode, { githubId }) {
   let user = null
   try {
     user = await User.query().where('githubId', '=', githubId)
@@ -15,7 +16,7 @@ async function isGithubAuthenticated(githubId) {
 }
 
 // Check if the user exists in database
-async function isAuthenticated({ email, password }) {
+async function isAuthenticated(mode, { email, password }) {
   let user = null
   try {
     user = await User.query().where('email', '=', email)
@@ -43,7 +44,7 @@ exports.checkGithub = async (req, res) => {
     })
     const rv = await axios.get('https://api.github.com/user?access_token=' + data.access_token)
     const githubId = rv.data.id // github id, email
-    const user = await isGithubAuthenticated(githubId) // match github id with our user in our application
+    const user = await isGithubAuthenticated('github', { githubId }) // match github id with our user in our application
     if (!user) {
       const message = 'Unauthorized'
       return res.status(401).json({ message })
@@ -69,7 +70,7 @@ exports.logout = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body
-    const user = await isAuthenticated({ email, password })
+    const user = await isAuthenticated('email', { email, password })
     if (!user) {
       const message = 'Incorrect email or password'
       return res.status(401).json({ message })

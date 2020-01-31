@@ -12,11 +12,21 @@ Latest Version [0.2.9](https://github.com/ais-one/vue-crud-x/releases/tag/0.2.9)
 
 # WHAT IS VUE-CRUD-X
 
-**TL;DR** A Customisable CRUD Library And Cookbook For ExpressJS & VueJS Apps
+**TL;DR** ExpressJS & VueJS Web App Cookbook And A Customisable CRUD Library
 
 > A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, forms, use of GraphQL or REST to access various datastores. Vuetify is used for frontend UI components but can be changed to alternatives such as ElementUI (with some effort)
 
-> Over time, the example projects to show the use of **vue-crud-x** have grown to become a **cookbook** that includes many other useful **recipes** for use in production ExpressJS and VueJS applications.
+> Over time, the example projects to show the use of **vue-crud-x** have grown to become a **cookbook** that includes many other useful **recipes** for use in production ExpressJS and VueJS web applications.
+
+## Web App Cookbook Aims
+
+1. As little technical debt as possible
+2. Ease of maintenance and updates
+3. Scalable in terms of application use cases
+4. Scalable in terms of traffic and load
+5. Ease of build, test, deployment, CI/CD, etc.
+
+## CRUD Unique Selling Points
 
 The following differentiates vue-crud-x from other CRUD repositories:
 - Able to do nested CRUD operations (parent table call child table),
@@ -49,8 +59,7 @@ Clone the repository, setup and run, using the following commands
 
 ```bash
 git clone https://github.com/ais-one/vue-crud-x.git
-cd vue-crud-x
-cd backend
+cd vue-crud-x/app
 npm i
 npm run i:spa
 npm run i:ssr
@@ -75,9 +84,25 @@ View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
 
 ---
 
-# Project List
+# Project Strcuture
 
-## [example-spa](https://github.com/ais-one/vue-crud-x/tree/master/example-spa)
+The project structure is shown below
+
+```
+vue-crud-x
++- app/ : backend base application
+|  +- example-app/ : use-case extensions
++- deploy/ : deployment scripts
++- doc/ : documentation
++- web/ : frontend application
+|  +- example-spa/ : spa application
+|  +- example-ssr/ : ssr or static application
+|  +- common/ : common components for sharing
+|  +- dist/ : distribution folder for CRUD component
+```
+
+
+## [example-spa](https://github.com/ais-one/vue-crud-x/tree/master/web/example-spa)
 
 **Best for quick start** - Please use this to try things out. Everything runs locally
 
@@ -102,7 +127,7 @@ Recipes for a production-ready SPA:
   - Image capture via webcam
   - Signature capture on canvas
 
-## [backend](https://github.com/ais-one/vue-crud-x/tree/master/backend)
+## [backend](https://github.com/ais-one/vue-crud-x/tree/master/app)
 
 Recipes for a production-ready Express server used by **example-spa** and **example-ssr**:
 - ObjectionJS
@@ -121,11 +146,12 @@ Recipes for a production-ready Express server used by **example-spa** and **exam
 - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
 - GraphQL (use Apollo server)
 - File uploads
-- Testing (in progress)
+- Unit Test & Integration Test
 - Logging (in progress)
+- Message queues (in progress)
 
 
-## [example-ssr](https://github.com/ais-one/vue-crud-x/tree/master/example-ssr)
+## [example-ssr](https://github.com/ais-one/vue-crud-x/tree/master/web/example-ssr)
 
 Recipes for a production-ready Nuxt static sites. Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes:
 - nuxt-auth (removed, use from example-spa instead due to... lack of refresh token, and possibly lack of httponly token capability - as at time of writing 21-11-2019)

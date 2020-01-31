@@ -8,10 +8,10 @@ import router from './router'
 import App from './App'
 
 import vuetify from './plugins/vuetify'
-import VueCrudX from '../../src/VueCrudX' // Vuetify
-import TimePicker from '../../src/TimePicker.vue'
-import DatePicker from '../../src/DatePicker.vue'
-import FileUpload from '../../src/FileUpload.vue'
+import VueCrudX from '../../common/VueCrudX' // Vuetify
+import TimePicker from '../../common/TimePicker.vue'
+import DatePicker from '../../common/DatePicker.vue'
+import FileUpload from '../../common/FileUpload.vue'
 
 import { apolloClient } from './graphql'
 import VueApollo from 'vue-apollo'
@@ -20,7 +20,7 @@ import { DO_HELLO } from './queries'
 import { auth } from '@/firebase'
 // import { stitch } from '@/mongo'
 
-import VueCrudA from '../../src/VueCrudA' // Ant design
+import VueCrudA from '../../common/VueCrudA' // Ant design
 import { Button, Table, Form, Input } from 'ant-design-vue'
 
 Vue.use(Button) // ant design stuff

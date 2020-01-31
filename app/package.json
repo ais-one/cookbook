@@ -7,13 +7,13 @@
     "test-tbd": "cross-env NODE_ENV=development jest --coverage --detectOpenHandles --forceExit --reporter=html --exclude __tests__ --watchAll",
     "test": "cross-env NODE_ENV=development jest --watchAll",
     "init-db": "npx knex migrate:latest --env development&&npx knex seed:run --env development",
-    "i:spa": "cd ../example-spa&&npm i",
-    "i:ssr": "cd ../example-ssr&&npm i",
+    "i:spa": "cd ../web/example-spa&&npm i",
+    "i:ssr": "cd ../web/example-ssr&&npm i",
     "del-db": "rm -f dev.sqlite3",
     "dev": "set NODE_ENV=development&&nodemon index.js",
-    "dev:spa": "concurrently \"npm run dev\" \"cd ../example-spa&&npm run-script serve\"",
-    "dev:ssr": "concurrently \"npm run dev\" \"cd ../example-ssr&&npm run-script dev\"",
-    "dev:static": "concurrently \"npm run dev\" \"cd ../example-ssr&&npm run-script serve\"",
+    "dev:spa": "concurrently \"npm run dev\" \"cd ../web/example-spa&&npm run-script serve\"",
+    "dev:ssr": "concurrently \"npm run dev\" \"cd ../web/example-ssr&&npm run-script dev\"",
+    "dev:static": "concurrently \"npm run dev\" \"cd ../web/example-ssr&&npm run-script serve\"",
     "multiple-sample": "pm2 delete APP1 APP2 && pm2 start --only APP1,APP2 --env production",
     "prod:deploy": "mv node_modules ../node_modules_tmp&&scp -r -i ../../test.pem . ubuntu@127.0.0.1:~/api&&mv ../node_modules_tmp ./node_modules",
     "prod:list": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"pm2 list\"",
@@ -23,7 +23,7 @@
     "prod": "npm run prod:stop&&npm run prod:deploy&&npm run prod:start"
   },
   "engines": {
-    "node": "8"
+    "node": "12"
   },
   "dependencies": {
     "@keyv/redis": "^2.1.0",

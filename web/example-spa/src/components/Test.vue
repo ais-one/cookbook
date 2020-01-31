@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import DrawingCanvas from '../../../src/DrawingCanvas'
-import WebCam from '../../../src/WebCam'
+import DrawingCanvas from '../../../common/DrawingCanvas'
+import WebCam from '../../../common/WebCam'
 
 // import DrawingCanvas from '@/components/DrawingCanvas'
 // import WebCam from '@/components/WebCam'

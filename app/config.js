@@ -20,6 +20,8 @@ module.exports = {
   API_PORT: process.env.API_PORT || 3000, // (also on FE)
   WS_PORT: process.env.WS_PORT || 3001, // (also on FE)
 
+  WS_KEEEPALIVE_MS: process.env.WS_KEEEPALIVE_MS || 30000,
+
   SALT_ROUNDS: process.env.SALT_ROUNDS || 12,
 
   // JWT - secret key

@@ -43,25 +43,4 @@ if (!apollo) {
   })
 }
 
-
-/*
-// src/server.js
-context: ({ req }) => {
- // pass the request information through to the model
- return {
-   user,
-   models: {
-     User: generateUserModel({ req }),
-     ...
-   }
- };
-},
-// src/models/User.js
-export const generateUserModel = ({ req }) => ({
- getAll: () => {
-   return fetch('http://myurl.com/users', { headers: req.headers });
- },
-});
-*/
-
 module.exports = apollo
