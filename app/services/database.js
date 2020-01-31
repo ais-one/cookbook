@@ -1,14 +1,55 @@
-const { NODE_ENV } = require('../config')
+const { NODE_ENV, KNEX_CFG } = require('../config')
 let Model
 
 if (!Model) {
   const Knex = require('knex')
-  const connection = require('./knexfile')
+  const connection = KNEX_CFG
+
   Model = require('objection').Model
   const knexConnection = Knex(connection[NODE_ENV])
   Model.knex(knexConnection)
 }
 
 // Model.knex().destroy(() => {}) // returns a promise
+
+// Update with your config settings.
+// Mysql 8 issue for now
+// ALTER USER 'user'@'%' IDENTIFIED WITH mysql_native_password BY 'user123!@#PK';
+// FLUSH PRIVILEGES;
+
+// npx knex migrate:make create_users --env development
+// npx knex migrate:latest --env development
+// npx knex seed:make seed_name --env development
+// npx knex seed:run --env development
+
+// migrations
+//
+// exports.up = function (knex, Promise) {
+//   return Promise.all([
+//     knex.schema.createTable('ideas', table => {
+//       table.increments('id').primary()
+//       table.string('idea')
+//       table.string('creator')
+//     })
+//   ])
+// }
+// exports.down = function (knex, Promise) {
+//   return Promise.all([
+//     knex.schema.dropTable('ideas')
+//   ])
+// }
+
+// seeds
+// exports.seed = function (knex, Promise) {
+//   return knex('ideas').del().then(() => {
+//     return knex('ideas').insert([
+//         {creator: 'Ali', idea: 'A To Do List app!'},
+//         {creator: 'Ali', idea: 'A Blog!'},
+//         {creator: 'Ali', idea: 'A calculator'}
+//     ])
+//   })
+// }
+
+// https://dev.to/aspittel/objection--knex--painless-postgresql-in-your-node-app--6n6
 
 module.exports = Model

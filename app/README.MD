@@ -1,51 +1,49 @@
-# REST++ Backend Example
+# Backend Example (REST, WS, GraphQL, whatever...)
 
-> An example REST backend that can be used by frontend for testing & proof of concept
+> A backend template that can be used to build applications
 
 ## Quick Start (default configuration used)
 
 See vue-crud-x main project README.md
 
+## Structure
+
+```
+app
++- certs/
++- config/
++- controllers/
++- coverage/
++- graphql/
++- logs/
++- middleware/
++- migration/
++- mq/
++- public/
++- routes/
++- seeds/
++- services/
++- tests/
++- uploads/
++- .enc.<node_env>
++- .eslintrc.json
++- app.js
++- ecosystem.config.js
++- index.js
++- jest.config.js
++- package.json
++- README.md
++- tcpServer.js
+```
 
 ## Configuration
 
-Refer to config.js, nuxt.config.js
+Refer to config/index.js
 
 You can override the configuraions using .env.[NODE_ENV] files, e.g. .env.development or .env.production
 
 
 ## Backend Notes
-
-### Project Structure
-
-```
-Folders
- +-certs (SSL certs, for lets encrypt, use the folder that they generate)
- +-docs (OpenAPI documentation)
- +-logs (local logs)
- +-migrations (create database)
- +-graphql
- +-controllers
- +-middlewares
- +-models (database models)
- +-public (location for frontend app)
- +-routes (REST API routes)
- +-seeds (populate database)
- +-services (e.g. ORM, mongo, websockets, redis, auth, graphql, logging, etc)
- +-tests (TBD)
- +-uploads (local storage for file uploads)
-
-Files
- - .env.[env] (config overide file)
- - config.js (the backend application config file)
- - ecosystem.config.js (PM2 configuration)
- - ga.js (utility program: generation of user passwords, GA Key, QR Codes)
- - index.js
- - config.js (single source for environment variables)
- - knexfile.js (database configuration)
- - package.json
- - schema.js, schema.json (for graphql)
-```
 
 ### Relational Database Schema
 
@@ -125,7 +123,6 @@ Commands:
 Config Files
     .env.development / .env.production
     config.js
-    knexfile.js
     ecosystem.config.js (pm2 start & stop)
 
 Do not rely on req object, e.g. putting mongo, redis, etc. objects in req as you may also need them in websockets

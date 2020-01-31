@@ -31,9 +31,6 @@ const proxy = require('http-proxy-middleware')
 const swaggerUi = require('swagger-ui-express')
 const swaggerJSDoc = require('swagger-jsdoc')
 
-const YAML = require('yamljs')
-const swaggerDocument = YAML.load('./docs/openapi.yaml')
-
 const apollo = require('./services/graphql')
 
 const { httpsCerts } = require('./services/certs')
@@ -46,9 +43,6 @@ const { CORS_OPTIONS, USE_HTTPS, PROXY_WWW_ORIGIN, WWW_SERVE } = require('./conf
 // Access-Control-Allow-Methods=GET,POST,PUT,PATCH,DELETE,OPTIONS
 // Access-Control-Allow-Headers=Content-Type
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
 const app = express()
 
 app.set('trust proxy', true) // true if behind proxy, false if direct connect... You now can get IP from req.ip, req.ips
@@ -60,21 +54,14 @@ app.use(cookieParser('some_secret'))
 
 app.use('/uploads', express.static('uploads')) // need to create the folder uploads
 
-// PASSPORT - move to a service
-// app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveUninitialized: true })) // required for OAuth 1 (e.g. twitter), OAuth2 with state (e.g. linkedin)
-// app.use(passport.initialize())
-// app.use(passport.session()) // SESSION - call this AFTER calling express session
+// PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token
 
-const specs = swaggerJSDoc({ swaggerDefinition: require('./config').SWAGGER_DEFS, apis: ['./routes/*.js'] })
-app.use('/api-docs2', swaggerUi.serve, swaggerUi.setup(specs, { // for OpenAPI
+// LOWER METHOD IS BETTER - app.use('/api-docs', express.static('docs'), swaggerUi.serve, swaggerUi.setup(require('yamljs').load('./docs/openapi.yaml'), { // for OpenAPI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc({ swaggerDefinition: require('./config').SWAGGER_DEFS, apis: ['./routes/*.js'] }), { // for OpenAPI
   swaggerOptions: { docExpansion: 'none' },  
   explorer: true 
 }))
 
-app.use('/api-docs', express.static('docs'), swaggerUi.serve, swaggerUi.setup(swaggerDocument, { // for OpenAPI
-  swaggerOptions: { docExpansion: 'none' },  
-  explorer: true 
-}))
 
 
 const authRoutes = require('./routes/auth')
@@ -103,6 +90,8 @@ if (PROXY_WWW_ORIGIN && !WWW_SERVE) {
   app.use("*", async (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
 }
 
+// // Create and Deploy Your First Cloud Functions
+// // https://firebase.google.com/docs/functions/write-firebase-functions
 // for Firebase Functions
 // exports.api = functions.https.onRequest(async (req, res) => {
 //   // if (!req.path) {
