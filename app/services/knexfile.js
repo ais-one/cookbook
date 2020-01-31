@@ -17,7 +17,7 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './dev.sqlite3'
+      filename: './dev.sqlite3' // relative to directory that package.json was run
     },
     useNullAsDefault: true
     // migrations: { stub: 'migration.stub' }

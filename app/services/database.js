@@ -3,7 +3,7 @@ let Model
 
 if (!Model) {
   const Knex = require('knex')
-  const connection = require('../knexfile')
+  const connection = require('./knexfile')
   Model = require('objection').Model
   const knexConnection = Knex(connection[NODE_ENV])
   Model.knex(knexConnection)
