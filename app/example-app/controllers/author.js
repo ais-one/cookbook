@@ -1,4 +1,3 @@
-
 const Author = require('../models/Author')
 const { transaction } = require('objection')
 const knex = Author.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.

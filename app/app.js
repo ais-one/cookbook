@@ -54,22 +54,20 @@ app.use(cookieParser('some_secret'))
 
 app.use('/uploads', express.static('uploads')) // need to create the folder uploads
 
-// PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token
+// PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see services folder for saml)
 
 // LOWER METHOD IS BETTER - app.use('/api-docs', express.static('docs'), swaggerUi.serve, swaggerUi.setup(require('yamljs').load('./docs/openapi.yaml'), { // for OpenAPI
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc({ swaggerDefinition: require('./config').SWAGGER_DEFS, apis: ['./routes/*.js'] }), { // for OpenAPI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc({ swaggerDefinition: require('./config').SWAGGER_DEFS, apis: ['./common/routes/*.js', './example-app/routes/*.js'] }), { // for OpenAPI
   swaggerOptions: { docExpansion: 'none' },  
   explorer: true 
 }))
 
-
-
-const authRoutes = require('./routes/auth')
-const apiRoutes = require('./routes/api')
-const authorRoutes = require('./routes/author')
-const bookRoutes = require('./routes/book')
-const categoryRoutes = require('./routes/category')
-const pageRoutes = require('./routes/page')
+const authRoutes = require('./common/routes/auth')
+const apiRoutes = require('./common/routes/api')
+const authorRoutes = require('./example-app/routes/author')
+const bookRoutes = require('./example-app/routes/book')
+const categoryRoutes = require('./example-app/routes/category')
+const pageRoutes = require('./example-app/routes/page')
 
 app.use(CORS_OPTIONS ? cors(CORS_OPTIONS) : cors())
 

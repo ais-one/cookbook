@@ -1,7 +1,7 @@
 const express = require('express')
 const bookRoutes = express.Router()
 
-const { authUser } = require('../middlewares/auth')
+const { authUser } = require('../../middlewares/auth')
 
 const Book = require('../models/Book')
 // const Author = require('../models/Author')

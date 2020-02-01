@@ -1,5 +1,5 @@
 const request = require('supertest')
-const app = require('../../app')
+const app = require('../../../app')
 
 const endpointUrl = '/api/authors'
 
@@ -7,7 +7,7 @@ const newAuthor = require('../mock-data/new-author.json')
 
 let createdAuthorId
 let authObj = {}
-const { createToken } = require('../../services/auth')
+const { createToken } = require('../../../services/auth')
 
 /*
 let firstTodo

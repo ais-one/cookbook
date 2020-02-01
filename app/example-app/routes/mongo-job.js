@@ -2,8 +2,8 @@
 const express = require('express')
 const jobRoutes = express.Router()
 
-const mongo = require('../services/mongo')
-const { authUser } = require('../middlewares/auth')
+const mongo = require('../../services/mongo')
+const { authUser } = require('../../middlewares/auth')
 
 const { ObjectID } = require('mongodb')
 

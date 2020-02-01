@@ -3,6 +3,20 @@
   "version": "0.0.0",
   "description": "NodeJS and VueJS Web Application Cookbook & a VueJS CRUD component",
   "scripts": {
+    "ssh": "ssh -i %npm_package_config_pem% -L 27000:127.0.0.1:27017 %npm_package_config_url%",
+    "tar": "tar --exclude=\"node_modules\" -zcvf deploy-app.tgz . && scp -i %npm_package_config_pem% deploy-app.tgz %npm_package_config_url%:~ && rm deploy-app.tgz",
+    "untar": "ssh -i %npm_package_config_pem% %npm_package_config_url% \"tar -zxvf deploy-app.tgz -C ~/app;rm deploy-app.tgz\"",
+
+    "build-deploy": "npm run build && npm run tar && npm run untar",
+    "tar:fe": "tar -zcvf deploy-www.tgz dist && scp -i %npm_package_config_pem% deploy-www.tgz %npm_package_config_url%:~ && rm deploy-www.tgz",
+    "untar:fe": "ssh -i %npm_package_config_pem% %npm_package_config_url% \"tar -zxvf deploy-www.tgz -C ~/app;rm deploy-www.tgz\"",
+
+    "prod:deploy": "mv node_modules ../node_modules_tmp&&scp -r -i ../../test.pem . ubuntu@127.0.0.1:~/api&&mv ../node_modules_tmp ./node_modules",
+    "prod:list": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"pm2 list\"",
+    "prod:start": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"cd ~/api; authbind --deep pm2 start --only api --env production;\"",
+    "prod:stop": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"cd ~/api; pm2 delete api;\"",
+    "prod:nodemon": "sudo NODE_ENV=production nodemon server.js",
+    "prod": "npm run prod:stop&&npm run prod:deploy&&npm run prod:start"
   },
   "repository": {
     "type": "git",

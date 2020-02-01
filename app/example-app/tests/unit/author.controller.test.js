@@ -6,9 +6,8 @@ const httpMocks = require('node-mocks-http')
 // AuthorModel.query().insert = jest.fn()
 // AuthorModel.query().findOne.mockReturnValue({...})
 
-const mockFn = jest.fn()
 const newAuthor = require('../mock-data/new-author.json')
-const allAuthors = require('../mock-data/all-authors.json')
+// const allAuthors = require('../mock-data/all-authors.json')
 
 let req, res
 beforeEach(() => {

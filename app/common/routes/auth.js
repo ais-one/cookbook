@@ -2,7 +2,7 @@ const express = require('express')
 const authRoutes = express.Router()
 const otplib = require('otplib')
 
-const { authUser } = require('../middlewares/auth')
+const { authUser } = require('../../middlewares/auth')
 const authController = require('../controllers/auth')
 
 authRoutes

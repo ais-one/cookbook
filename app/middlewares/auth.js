@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const keyv = require('../services/keyv')
-const User = require('../models/User') // TBD to change this...
+const User = require('../common/models/User') // TBD to change this...
 
 const { USE_HTTPS, HTTPONLY_TOKEN, JWT_ALG, JWT_EXPIRY, JWT_SECRET, JWT_REFRESH_EXPIRY } = require('../config')
 const { jwtCerts } = require('../services/certs')
