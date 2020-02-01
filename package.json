@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "description": "NodeJS and VueJS Web Application Cookbook & a VueJS CRUD component",
   "config": {
-    "pem": "../deploy/id_rsa"
+    "app": "example-app"
   },
   "scripts": {
-    "deploy": "cd deploy/example-app && default.sh %npm_package_config_pem%"
+    "deploy": "cd deploy/%npm_package_config_app% && default.sh %npm_package_config_app%"
   },
   "repository": {
     "type": "git",
