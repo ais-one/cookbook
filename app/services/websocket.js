@@ -84,32 +84,25 @@ exports.setOnClientCLose = function (onClientCloseFn) {
   onClientClose = onClientCloseFn
 }
 
-/*
-exports.init = function(init) {
-  console.log(init);
-  return this;
-};
 
-exports.myMethod = function() {
-  console.log('Has access to this');
-}
-var mod = require('./module.js').init('test'); //Prints 'test'
+// Singleton
+// modules.js
+// exports.init = (init) => {
+//   console.log(init)
+//   return this
+// }
+// exports.myMethod = () => console.log('Has access to this')
+// index.js
+// var mod = require('./module.js').init('test'); //Prints 'test'
+// mod.myMethod(); // Will print 'Has access to this.'
 
-mod.myMethod(); //Will print 'Has access to this.'
-*/
-
-/*
-Or you could use a constructor:
-
-module.exports = function(config) {
-  this.config = config;
-
-  this.myMethod = function() {
-      console.log('Has access to this');
-  };
-  return this;
-};
-var myModule = require('./module.js')(config);
-
-myModule.myMethod(); //Prints 'Has access to this'
-*/
+// Or you could use a constructor:
+// modules.js
+// module.exports = function(config) {
+//   this.config = config
+//   this.myMethod = () => console.log('Has access to this')
+//   return this
+// }
+// index.js
+// var myModule = require('./module.js')(config)
+// myModule.myMethod() // Prints 'Has access to this'

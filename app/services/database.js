@@ -1,12 +1,11 @@
-const { NODE_ENV, KNEX_CFG } = require('../config')
+const { NODE_ENV, KNEXFILE } = require('../config')
 let Model
 
 if (!Model) {
   const Knex = require('knex')
-  const connection = KNEX_CFG
 
   Model = require('objection').Model
-  const knexConnection = Knex(connection[NODE_ENV])
+  const knexConnection = Knex(KNEXFILE[NODE_ENV])
   Model.knex(knexConnection)
 }
 

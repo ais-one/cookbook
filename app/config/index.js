@@ -11,6 +11,8 @@ if (process.env.NODE_ENV) {
 }
 // console.log('Environment: ', process.env.NODE_ENV)
 
+const KNEXFILE = require('../example-app/knexfile')
+
 // config.js
 // empty string, false or null means not available or used
 module.exports = {
@@ -51,30 +53,7 @@ module.exports = {
   MONGO_URL: process.env.MONGO_URL || '',
 
   // KNEX DB 
-  KNEX_CFG: { // JSON.parse(KNEX_CFG) ||
-    development: {
-      client: 'sqlite3',
-      connection: {
-        filename: './dev.sqlite3' // relative to directory that package.json was run
-      },
-      useNullAsDefault: true
-      // migrations: { stub: 'migration.stub' }
-      // seeds: { directory: './seeds/dev' }
-    },
-    production: {
-      client: 'mysql',
-      connection: {
-        host: 'localhost',
-        database: 'db',
-        user:     'name',
-        password: 'user123!@#PK'
-      },
-      pool: {
-        min: 1,
-        max: 5
-      }
-    }
-  },
+  KNEXFILE,
 
   // Github
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || '', // verify a github token
