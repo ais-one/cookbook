@@ -5,10 +5,10 @@ module.exports = {
       filename: './dev.sqlite3' // relative to directory that package.json was run
     },
     migrations: {
-      directory: './migrations'
+      directory: './example-app/migrations'
     },
     seeds: {
-      directory: './seeds'
+      directory: './example-app/seeds'
     },
     useNullAsDefault: true
   },

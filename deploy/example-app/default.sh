@@ -7,8 +7,9 @@ URL=root@128.199.139.34
 # echo $PEM $URL
 # echo --- $PEM $URL --- $1 $2
 
-packagePath="../../web/${1}"
+packagePath=`cd ../.. && pwd`
 echo $packagePath
+# exit
 
 PS3="Please enter your choice: "
 options=(
@@ -29,18 +30,24 @@ do
       ;;
     "fe")
       echo "Deploy Front End"
-      cd ~/web/example-spa
+      cd "${packagePath}/web/example-spa"
       npm run build
       tar -zcvf deploy-www.tgz dist
       scp -i $PEM deploy-www.tgz $URL:~ && rm deploy-www.tgz
       ssh -i $PEM $URL "tar -zxvf deploy-www.tgz -C ~/app;rm deploy-www.tgz"
+      cd $packagePath
       ;;
     "be")
       echo "Deploy Back End"
-      cd ~/app
-      tar --exclude="node_modules,coverage,example-app/tests" -zcvf deploy-app.tgz .
+      cd "${packagePath}/app"
+      tar \
+        --exclude="node_modules" \
+        --exclude="coverage" \
+        --exclude="example-app/tests" \
+        -zcvf deploy-app.tgz .
       scp -i $PEM deploy-app.tgz $URL:~ && rm deploy-app.tgz
       ssh -i $PEM $URL "tar -zxvf deploy-app.tgz -C ~/app;rm deploy-app.tgz"
+      cd $packagePath
       ;;
     "list")
       ssh -i $PEM $URL "pm2 list"
@@ -58,22 +65,6 @@ do
     *) echo "Invalid option $opt";;
   esac
 done
-
-# if [ "$ACTION" == "ssh" ]; then
-#   echo "$ACTION"
-# elif [ "$ACTION" == "fe" ]; then
-#   echo "$ACTION"
-# elif [ "$ACTION" == "be" ]; then
-#   echo "$ACTION"
-# elif [ "$ACTION" == "list" ]; then
-#   echo "$ACTION"
-# elif [ "$ACTION" == "start" ]; then
-#   echo "$ACTION"
-# elif [ "$ACTION" == "stop" ]; then
-#   echo "$ACTION"
-# else
-#     echo "Action not found"
-# fi
 
 echo "Done... press enter to exit"
 read # pause exit in windows

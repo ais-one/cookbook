@@ -11,7 +11,7 @@ if (process.env.NODE_ENV) {
 }
 // console.log('Environment: ', process.env.NODE_ENV)
 
-const KNEXFILE = require('../example-app/knexfile')
+const KNEXFILE = require('../knexfile')
 
 // config.js
 // empty string, false or null means not available or used

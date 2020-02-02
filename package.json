@@ -3,14 +3,9 @@
   "version": "0.0.0",
   "description": "NodeJS and VueJS Web Application Cookbook & a VueJS CRUD component",
   "config": {
-    "app": "example-spa"
+    "app": "example-app"
   },
   "scripts": {
-    "install-libs": "cd app & npm i && cd ..\\web\\example-spa && npm i && cd ..\\example-ssr && npm i",
-    "install-db": "cd app\\example-app && npx knex migrate:latest --env development&&npx knex seed:run --env development",
-    "dev:spa": "concurrently \"cd app && npm run-script dev\" \"cd ../web/example-spa && npm run-script serve\"",
-    "dev:ssr": "concurrently \"cd app && npm run-script dev\" \"cd ../web/example-ssr && npm run-script dev\"",
-    "dev:static": "concurrently \"cd app && npm run-script dev\" \"cd ../web/example-ssr && npm run-script serve\"",
     "deploy": "cd deploy/%npm_package_config_app% && default.sh %npm_package_config_app%"
   },
   "repository": {

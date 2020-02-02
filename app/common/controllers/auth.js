@@ -21,7 +21,9 @@ async function isAuthenticated(mode, { email, password }) {
   try {
     user = await User.query().where('email', '=', email)
     if (user && bcrypt.compareSync(password, user[0].password)) return user[0]
-  } catch (e) { }
+  } catch (e) {
+    // console.log(e.toString())
+  }
   return null
 }
 

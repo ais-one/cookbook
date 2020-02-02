@@ -4,7 +4,12 @@
   "scripts": {
     "lint": "eslint .",
     "test": "cross-env NODE_ENV=development jest --watchAll",
-    "dev": "set NODE_ENV=development&&nodemon index.js"
+    "dev": "set NODE_ENV=development&&nodemon index.js",
+    "install-libs": "npm i && cd ../web/example-spa && npm i && cd ../example-ssr && npm i",
+    "install-db": "npx knex migrate:latest --env development&&npx knex seed:run --env development",
+    "dev:spa": "concurrently \"npm run dev\" \"cd ../web/example-spa && npm run-script serve\"",
+    "dev:ssr": "concurrently \"npm run dev\" \"cd ../web/example-ssr && npm run-script dev\"",
+    "dev:static": "concurrently \"npm run dev\" \"cd ../web/example-ssr && npm run-script serve\""
   },
   "engines": {
     "node": "12"
