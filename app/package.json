@@ -1,19 +1,10 @@
 {
-  "name": "functions",
-  "description": "Cloud Functions for Firebase",
+  "name": "app",
+  "description": "Backend application",
   "scripts": {
-    "ssh": "ssh -i ../xxx.pem -L 27017:127.0.0.1:27017 ubuntu@11.22.33.44",
     "lint": "eslint .",
     "test": "cross-env NODE_ENV=development jest --watchAll",
-    "init-db": "npx knex migrate:latest --env development&&npx knex seed:run --env development",
-    "i:spa": "cd ../web/example-spa&&npm i",
-    "i:ssr": "cd ../web/example-ssr&&npm i",
-    "del-db": "rm -f dev.sqlite3",
-    "dev": "set NODE_ENV=development&&nodemon index.js",
-    "dev:spa": "concurrently \"npm run dev\" \"cd ../web/example-spa&&npm run-script serve\"",
-    "dev:ssr": "concurrently \"npm run dev\" \"cd ../web/example-ssr&&npm run-script dev\"",
-    "dev:static": "concurrently \"npm run dev\" \"cd ../web/example-ssr&&npm run-script serve\"",
-    "multiple-sample": "pm2 delete APP1 APP2 && pm2 start --only APP1,APP2 --env production"
+    "dev": "set NODE_ENV=development&&nodemon index.js"
   },
   "engines": {
     "node": "12"

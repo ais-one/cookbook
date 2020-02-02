@@ -7,9 +7,7 @@
   "scripts": {
     "serve": "vue-cli-service serve --port 8080",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "deploy:firebase": "firebase deploy --only hosting",
-    "deploy:prod": "vue-cli-service build --mode production && scp -r -i ../../test.pem dist/* ubuntu@127.0.0.3:~/app/public"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "ant-design-vue": "^1.4.10",
