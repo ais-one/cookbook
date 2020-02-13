@@ -13,7 +13,7 @@ if (process.env.NODE_ENV) {
 
 const KNEXFILE = require('../../knexfile')
 
-const JWT_CERTS_PATH = process.env.JWT_CERTS_PATH || './certs/jwt' // RS256
+const JWT_CERTS_PATH = process.env.JWT_CERTS_PATH || './example-app/certs/jwt' // RS256
 const HTTPS_CERTS_PATH = process.env.HTTPS_CERTS_PATH || ''
 
 let jwtCerts
@@ -54,7 +54,6 @@ module.exports = {
   // OTP_SERVICE_NAME=Test Service // OTP / 2FA
 
   // CREATE FOR LOCALHOST: openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt
-  // HTTPS_CERTS_PATH: './certs/localhost',
   USE_HTTPS: process.env.USE_HTTPS || false, // USE_HTTPS should be path to letsencrypt location OR false 
 
   // ## CACHING CAN USE REDIS INSTEAD
