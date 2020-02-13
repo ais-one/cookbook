@@ -1,9 +1,15 @@
 const bcrypt = require('bcryptjs')
 const axios = require('axios')
-const { SALT_ROUNDS, USE_HTTPS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../../config')
+const { SALT_ROUNDS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
 const { createToken, revokeToken } = require('../../services/auth')
 
 const User = require('../models/User')
+
+// const uuid = require('uuid/v4')
+// const qrcode = require('qrcode')
+// const otplib = require('otplib')
+// const axios = require('axios')
+// const bcrypt = require('bcryptjs')
 
 // Check if the user github exists in database
 async function isGithubAuthenticated(mode, { githubId }) {
@@ -19,15 +25,21 @@ async function isGithubAuthenticated(mode, { githubId }) {
 async function isAuthenticated(mode, { email, password }) {
   let user = null
   try {
-    user = await User.query().where('email', '=', email)
-    if (user && bcrypt.compareSync(password, user[0].password)) return user[0]
+    if (mode === 'github') {
+      user = await User.query().where('githubId', '=', githubId).first()
+    } else if (mode === 'local') {
+      const tempUser = await User.query().where('email', '=', email).first()
+      // if (user && bcrypt.compareSync(password, user[0].password)) return user[0]  
+      if (tempUser && bcrypt.compareSync(password, tempUser.password)) user = tempUser
+    }
   } catch (e) {
     // console.log(e.toString())
   }
-  return null
+  return user
 }
 
 exports.signup = async (req, res) => {
+  // let encryptedPassword = bcrypt.hashSync(clearPassword, SALT_ROUNDS)
   res.status(201).end()
 }
 
@@ -72,7 +84,7 @@ exports.logout = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body
-    const user = await isAuthenticated('email', { email, password })
+    const user = await isAuthenticated('local', { email, password })
     if (!user) {
       const message = 'Incorrect email or password'
       return res.status(401).json({ message })

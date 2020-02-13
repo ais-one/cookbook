@@ -1,7 +1,7 @@
 const express = require('express')
 const apiRoutes = express.Router()
 
-const { authUser } = require('../../middlewares/auth')
+const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
 const UPLOAD_PATH = 'uploads/' // TBD should be relative to packsage json script folder...
 const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration

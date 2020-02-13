@@ -1,7 +1,7 @@
 const express = require('express')
 const categoryRoutes = express.Router()
 
-const { authUser } = require('../../middlewares/auth')
+const { authUser } = require('../middlewares/auth')
 const categoryController = require('../controllers/category')
 
 // const Category = require('../models/Category')

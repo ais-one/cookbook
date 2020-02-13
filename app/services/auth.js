@@ -1,14 +1,7 @@
-// const uuid = require('uuid/v4')
-// const qrcode = require('qrcode')
-// const otplib = require('otplib')
-// const axios = require('axios')
-// const bcrypt = require('bcryptjs')
-
 const jwt = require('jsonwebtoken')
 const keyv = require('./keyv')
 
-const { JWT_ALG, JWT_SECRET } = require('../config')
-const { jwtCerts } = require('./certs')
+const { JWT_ALG, JWT_SECRET, jwtCerts } = require('../config')
 
 // algorithm
 // expiresIn

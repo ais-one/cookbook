@@ -1,5 +1,5 @@
 const { API_PORT } = require('./config')
-const { apollo, server, wss } = require('./app')
+const { apollo, server, wss } = require('./example-app/app')
 
 // for shutdown
 // const mongo = require('./services/mongo')
@@ -7,8 +7,10 @@ const { apollo, server, wss } = require('./app')
 
 server.listen(API_PORT, () => {
   console.log('REST API listening on port ' + API_PORT)
-  console.log(`🚀 GraphQL Server ready at http://localhost:${API_PORT}${apollo.graphqlPath}`)
-  console.log(`🚀 GraphQL Subscriptions ready at ws://localhost:${API_PORT}${apollo.subscriptionsPath}`)
+  if (apollo) {
+    console.log(`🚀 GraphQL Server ready at http://localhost:${API_PORT}${apollo.graphqlPath}`)
+    console.log(`🚀 GraphQL Subscriptions ready at ws://localhost:${API_PORT}${apollo.subscriptionsPath}`)  
+  }
 })
 
 process.on('SIGINT', handleExit)
@@ -27,7 +29,6 @@ function handleExit(signal) {
     //   console.log('MongoDb connection closed.')
     //   process.exit(0)
     // })
-
     process.exit(0)
   })
 }

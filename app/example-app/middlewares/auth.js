@@ -1,11 +1,10 @@
 const jwt = require('jsonwebtoken')
-const keyv = require('../services/keyv')
-const User = require('../common/models/User') // TBD to change this...
+const keyv = require('../../services/keyv')
+const User = require('../models/User') // TBD to change this...
 
-const { USE_HTTPS, HTTPONLY_TOKEN, JWT_ALG, JWT_EXPIRY, JWT_SECRET, JWT_REFRESH_EXPIRY } = require('../config')
-const { jwtCerts } = require('../services/certs')
-const { createToken } = require('../services/auth')
-
+const { HTTPONLY_TOKEN, JWT_ALG, JWT_EXPIRY, JWT_SECRET, JWT_REFRESH_EXPIRY } = require('../config')
+const { jwtCerts } = require('../config')
+const { createToken } = require('../../services/auth')
 
 const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
@@ -19,6 +18,7 @@ const authUser = async (req, res, next) => {
     //   }
     //   token = req.headers.authorization.split(' ')[1]
     // }
+    // console.log(req.path, req.cookies)
     if (req.cookies.token) {
       token = req.cookies.token
     } else if (req.headers.authorization) {
@@ -26,8 +26,6 @@ const authUser = async (req, res, next) => {
         token = req.headers.authorization.split(' ')[1]
       }
     }
-
-    // console.log(req.path, req.cookies)
     if (token) { // matchingToken
       // USE_OTP && req.path !== '/otp'
       let result = null

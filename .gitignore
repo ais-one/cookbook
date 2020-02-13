@@ -33,14 +33,14 @@ yarn-error.log*
 # local env files - allow this in our opensource project
 # .env
 
+app/viow
+
 deploy/vtms
 deploy/ahop2
 deploy/ms
-
 app/vtms
 web/ahop2
 web/ms
-
 app/vtms
 app/ahop2
 app/ms

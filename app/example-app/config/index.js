@@ -11,12 +11,28 @@ if (process.env.NODE_ENV) {
 }
 // console.log('Environment: ', process.env.NODE_ENV)
 
-const KNEXFILE = require('../knexfile')
+const KNEXFILE = require('../../knexfile')
+
+const JWT_CERTS_PATH = process.env.JWT_CERTS_PATH || './certs/jwt' // RS256
+const HTTPS_CERTS_PATH = process.env.HTTPS_CERTS_PATH || ''
+
+let jwtCerts
+let httpsCerts
+
+// console.log('HTTPS_CERTS_PATH: ', HTTPS_CERTS_PATH)
+// console.log('JWT_CERTS_PATH: ', JWT_CERTS_PATH)
+
+if (!httpsCerts && HTTPS_CERTS_PATH) httpsCerts = (HTTPS_CERTS_PATH) ? { key: fs.readFileSync(`${HTTPS_CERTS_PATH}.key`), cert: fs.readFileSync(`${HTTPS_CERTS_PATH}.crt`) } : null
+if (!jwtCerts && JWT_CERTS_PATH) jwtCerts = (JWT_CERTS_PATH) ? { key: fs.readFileSync(`${JWT_CERTS_PATH}.key`), cert: fs.readFileSync(`${JWT_CERTS_PATH}.crt`) } : ''
 
 // config.js
 // empty string, false or null means not available or used
 module.exports = {
   NODE_ENV: process.env.NODE_ENV,
+
+  // CERTS
+  httpsCerts,
+  jwtCerts,
 
   // PORTS
   API_PORT: process.env.API_PORT || 3000, // (also on FE)
@@ -28,7 +44,6 @@ module.exports = {
 
   // JWT - secret key
   JWT_ALG: process.env.JWT_ALG || 'HS256', // 'RS256' (use SSL certs), 'HS256' (use secret string)
-  JWT_CERTS_PATH: process.env.JWT_CERTS_PATH || './certs/jwt', // RS256
   JWT_SECRET: process.env.JWT_SECRET || '123456789', // HS256
   JWT_EXPIRY: process.env.JWT_EXPIRY || '5s', // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism
   JWT_REFRESH_EXPIRY: 3600, // do not allow refresh handling after X seconds
@@ -41,7 +56,6 @@ module.exports = {
   // CREATE FOR LOCALHOST: openssl req -x509 -sha256 -nodes -newkey rsa:2048 -days 365 -keyout localhost.key -out localhost.crt
   // HTTPS_CERTS_PATH: './certs/localhost',
   USE_HTTPS: process.env.USE_HTTPS || false, // USE_HTTPS should be path to letsencrypt location OR false 
-  HTTPS_CERTS_PATH: process.env.HTTPS_CERTS_PATH || '',
 
   // ## CACHING CAN USE REDIS INSTEAD
   // KEYV_CACHE=redis://localhost:6379
@@ -154,3 +168,4 @@ module.exports = {
     }
   }
 }
+
