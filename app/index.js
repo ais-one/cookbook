@@ -1,5 +1,5 @@
+const { apollo, server, wss } = require('./app')
 const { API_PORT } = require('./config')
-const { apollo, server, wss } = require('./example-app/app')
 
 // for shutdown
 // const mongo = require('./services/mongo')
@@ -8,8 +8,8 @@ const { apollo, server, wss } = require('./example-app/app')
 server.listen(API_PORT, () => {
   console.log('REST API listening on port ' + API_PORT)
   if (apollo) {
-    console.log(`🚀 GraphQL Server ready at http://localhost:${API_PORT}${apollo.graphqlPath}`)
-    console.log(`🚀 GraphQL Subscriptions ready at ws://localhost:${API_PORT}${apollo.subscriptionsPath}`)  
+    console.log(`🚀 GraphQL Server ready at ${apollo.graphqlPath}`)
+    console.log(`🚀 GraphQL Subscriptions ready at ${apollo.subscriptionsPath}`)  
   }
 })
 

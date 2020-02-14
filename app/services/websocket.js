@@ -28,7 +28,7 @@ exports.open = function (cb) {
     if (!wss && WS_PORT) {
       const WebSocket = require('ws')
       const https = require('https')
-      const { httpsCerts } = require('../config')
+      const { httpsCerts } = require('../app')
     
       if (httpsCerts) {
         wss = new WebSocket.Server({ server: https.createServer(httpsCerts).listen(WS_PORT) })

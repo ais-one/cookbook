@@ -1,5 +1,5 @@
 const Keyv = require('keyv')
-const  { KEYV_CACHE } = '../config'
+const  { KEYV_CACHE } = require('../config')
 let keyv
 
 if (!keyv) {
