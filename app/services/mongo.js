@@ -116,3 +116,7 @@ if (!mongo.db && MONGO_URL) {
 }
 
 module.exports = mongo
+
+// USAGE:
+// const mongo = require('<RELATIVE PATH TO>/mongo')
+// await mongo.db.collection('users').findOne({ email: email })
