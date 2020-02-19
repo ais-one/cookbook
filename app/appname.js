@@ -1,2 +1,2 @@
-// example-app
-module.exports = 'viow'
+// example-app, viow
+module.exports = 'example-app'

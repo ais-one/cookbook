@@ -4,8 +4,13 @@ let Model
 if (!Model) {
   const Knex = require('knex')
 
+  const config = { ...KNEXFILE[NODE_ENV] }
+  // kludge for sqlite file connection
+  if (config.client === 'sqlite3') {
+    config.connection.filename = './' + require('../appname') + config.connection.filename.substring(1)
+  }
   Model = require('objection').Model
-  const knexConnection = Knex(KNEXFILE[NODE_ENV])
+  const knexConnection = Knex(config)
   Model.knex(knexConnection)
 }
 

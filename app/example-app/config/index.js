@@ -11,7 +11,7 @@ if (process.env.NODE_ENV) {
 }
 // console.log('Environment: ', process.env.NODE_ENV)
 
-const KNEXFILE = require('../../knexfile')
+const KNEXFILE = require('../knexfile')
 
 const JWT_CERTS_PATH = process.env.JWT_CERTS_PATH || './example-app/certs/jwt' // RS256
 const HTTPS_CERTS_PATH = process.env.HTTPS_CERTS_PATH || ''
