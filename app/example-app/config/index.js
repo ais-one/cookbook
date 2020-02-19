@@ -49,7 +49,7 @@ module.exports = {
   JWT_REFRESH_EXPIRY: 3600, // do not allow refresh handling after X seconds
 
   // OTP
-  USE_OTP: process.env.USE_OTP || '', // GA, SMS, '' (also on FE) set to 111111 for testing using 111111 as PIN
+  USE_OTP: process.env.USE_OTP || '', // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
   OTP_EXPIRY: process.env.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP
   // OTP_SERVICE_NAME=Test Service // OTP / 2FA
 

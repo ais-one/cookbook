@@ -1,2 +1,1 @@
-// example-app, viow
-module.exports = 'example-app'
+module.exports = 'example-app' // set your project name here

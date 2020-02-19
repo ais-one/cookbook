@@ -55,30 +55,33 @@ Other design considerations :
 
 # QUICK START
 
-Clone the repository, setup and run, using the following commands
+1. Clone the repository, setup and run, using the following commands
 
 ```bash
 git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x/app
 npm run install-libs
+cd example-app
 npm run install-db
+cd ..
 npm run dev:spa
-# NOTES:
-# to run unit & integration test on the backend /api/authors route - npm run test, TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts
-# for SSR - npm run dev:ssr
-# for static content (1) npm run dev (2) see example-ssr/README.md on generating and serving static content
 ```
+
+## NOTES:
+- to run unit & integration test on the backend /api/authors route - npm run test, TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts
+- for SSR - npm run dev:ssr
+- for static content (1) npm run dev (2) see example-ssr/README.md on generating and serving static content
 
 Navigate to http://127.0.0.1:8080
 
-Login using the following
+2. Login using the following
 
 - User: test
 - Password: test
-
+- OTP (if enabled): if USE_OTP set to TEST, use 111111 as otp pin
 (do not log in using Firebase or Mongo Stitch until you have setup to use them)
 
-View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
+3. View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
 
 ---
 

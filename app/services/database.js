@@ -1,7 +1,7 @@
-const { NODE_ENV, KNEXFILE } = require('../'+ require('../appname') + '/config')
 let Model
 
 if (!Model) {
+  const { NODE_ENV, KNEXFILE } = require('../'+ require('../appname') + '/config')
   const Knex = require('knex')
 
   const config = { ...KNEXFILE[NODE_ENV] }

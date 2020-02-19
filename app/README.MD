@@ -36,7 +36,6 @@ app
 +- ecosystem.config.js
 +- index.js
 +- jest.config.js
-+- knexfile.js
 +- package.json
 +- README.md
 ```
