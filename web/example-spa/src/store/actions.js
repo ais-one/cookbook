@@ -3,7 +3,7 @@ import { stitch, getUserPasswordCredential } from '@/mongo'
 import { http } from '@/axios'
 import router from '../router'
 
-const USE_OTP = process.env.VUE_APP_USE_OTP || '' // set to true in production
+const { USE_OTP } = '../config'
 
 export default {
   async signUserUp ({ commit }, payload) {
