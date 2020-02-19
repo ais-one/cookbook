@@ -4,9 +4,9 @@
 
 > Always Remember Rule #1 - Do Not Let Technical Debt Build Up
 
-Latest Version [0.2.9](https://github.com/ais-one/vue-crud-x/releases/tag/0.2.9) - Released 2020 February 28 2245 +8GMT
+Latest Version [0.3.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.0) - Released 2020 February 28 2245 +8GMT
 
-**vue-crud-x 0.2** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
+**vue-crud-x 0.2+** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
 **vue-crud-x 0.1** and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1). You can refer to the v1 [article](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054).
 
@@ -60,10 +60,8 @@ Clone the repository, setup and run, using the following commands
 ```bash
 git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x/app
-npm i
-npm run i:spa
-npm run i:ssr
-npm run init-db
+npm run install-libs
+npm run install-db
 npm run dev:spa
 # NOTES:
 # to run unit & integration test on the backend /api/authors route - npm run test, TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts
@@ -92,6 +90,7 @@ The project structure is shown below
 vue-crud-x
 +- app/ : backend base application
 |  +- example-app/ : use-case extensions
+|  +- <your other projects here>: (you can use .gitignore in parent directory to hide this project)
 +- deploy/ : deployment scripts
 +- doc/ : documentation
 +- web/ : frontend application
@@ -173,7 +172,7 @@ Release notes for the library and examples can be found in [docs/Release.md](doc
 
 Refer to the respective projects README.md files for information on getting started with each project
 
-**vue-crud-x 0.2 Article** <a href="https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0" target="_blank">VueJS+ExpressJS CRUD & Cookbook</a>
+**vue-crud-x 0.2+ Article** <a href="https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0" target="_blank">VueJS+ExpressJS CRUD & Cookbook</a>
 
 **vue-crud-x 0.1 Article** <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Legacy Article (For Historical Reference)</a>
 
@@ -216,18 +215,7 @@ Refer to the respective projects README.md files for information on getting star
 
 # Roadmap
 
-- Backend
-  - Logging
-    - prefer to use external APM service (performance issues)
-  - Security Improvements
-  - Automated testing (dredd.io)
-  - improve on scalability of websockets
-  - JsonSchema
-- Frontend
-  - Validation? vuelidate, vee-validate, common validation
-  - Testing (cypress)
-- Overall
-  - CI / CD
+Refer to [docs/Release.md](docs/Release.md)
 
 ---
 
@@ -241,19 +229,25 @@ Install it as an NPM package and import it
 # Version 0.1.X
 npm i ais-one/vue-crud-x#v1 --save
 
-# Version 0.2.X
+# Version 0.2+
 npm i vue-crud-x
 ```
 
 ## Option 2 Use the source file
 
-Just copy the VueCrudX.vue file into your project and include it as a component
+Just copy the **web/common/VueCrudX.vue** file into your project and include it as a component
 
 ## Option 3 Build and Install
 
 If you ever need to build this library from source...
 
-1. Install dependencies
+1. Go to the Vue-Crud-X project folder
+
+```bash
+cd web/common/
+```
+
+2. Install dependencies
 
 ```bash
 npm i
@@ -268,7 +262,7 @@ npm run build
 The build output can be found in the **dist** folder
 
 
-3. Publishing to npm (only for repo owner)
+3. Publish to npm (only for repo owner)
 
 ```bash
 npm publish
@@ -279,5 +273,5 @@ npm publish
 ```bash
 npm pack
 # A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
-# If you want to install without saving to package.json, npm i --no-save vue-crud-x-?.?.?.tgz
+# If you want to install without saving to package.json, npm i --no-save <path-to>/vue-crud-x-?.?.?.tgz
 ```

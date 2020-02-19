@@ -1,20 +1,31 @@
-### Version 0.2.9
+### Version 0.3.0
 - update packages
+- re-architect for better scalability - able to use as base for multiple applications
+- backend
+  - /backend renamed as /app
+- /app internal folders are reorganized... common (services, logs, etc), custom based on user requirements (example-app)
+  - switch app builds based on settings in /app/app.js & /app/config.js
+  - clean up auth and others
+- /web folder hosts frontend apps example-spa, example-ssr, common (vue-crud-x project and other common components)
 - [Work-in-progress]
   - cleanup
-  - example-spa
-    - re-architect for scalability
-    - use only 1 material design icon library...
+  - /web/example-spa
     - ant design version
-    - research for framework agnostic test util for frontend
-  - backend
-    - re-architect for scalability (no api changes, just moving files around and creating new files and folders)
-      - clean up Auth and others
-      - long running process support such as tcp servers, MQ consumer
-      - add bull or bullmq support
+    - use only 1 material design icon library...
+    - research for e2e framework agnostic test util for frontend
+  - /app
+    - long running process support such as tcp servers, MQ consumer
+    - add bull or bullmq support
+  - others
+    - CI / CD (work on SSH, Docker deployments, etc...)
+- [low-priority]
+  - /app
     - replace multer with busboy or formidable?
     - research websocket testing, improve coverage
-    - research auto generated REST API and Testing
+    - research auto generated REST API and Testing (keep in view dredd.io)
+    - Logging
+      - prefer to use external APM service (performance issues)
+    - JsonSchema
   - others
     - ISO config definition naming (identify configs common to both FE and BE)
     - Should we change Vuex action setLayout to setPublic and setSecure?
