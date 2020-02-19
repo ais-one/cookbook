@@ -1,5 +1,5 @@
-const { apollo, server, wss } = require('./app')
-const { API_PORT } = require('./config')
+const { apollo, server, wss } = require('./'+ require('./appname') + '/app')
+const { API_PORT } = require('./'+ require('./appname') + '/config')
 
 // for shutdown
 // const mongo = require('./services/mongo')

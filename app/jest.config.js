@@ -20,7 +20,7 @@ module.exports = {
   //     statements: 40
   //   },
   // },
-  roots: ["<rootDir>/example-app/tests"], // directories to match
+  roots: ['<rootDir>/' + require('./appname') + '/tests'], // directories to match
   testEnvironment: 'node',
   // testPathIgnorePatterns: ["/node_modules/"],
   // testMatch: [ "**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)" ], // files to match

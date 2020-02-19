@@ -1,4 +1,4 @@
-const { NODE_ENV, KNEXFILE } = require('../config')
+const { NODE_ENV, KNEXFILE } = require('../'+ require('../appname') + '/config')
 let Model
 
 if (!Model) {

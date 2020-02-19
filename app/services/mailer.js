@@ -2,7 +2,7 @@
 // https://github.com/sendgrid/sendgrid-nodejs
 let sgMail
 
-const { SENDGRID_KEY } = require('../app').config
+const { SENDGRID_KEY } = require('../'+ require('../appname') + '/config')
 if (!sgMail && SENDGRID_KEY) {
   sgMail = require('@sendgrid/mail')
   sgMail.setApiKey(SENDGRID_KEY)

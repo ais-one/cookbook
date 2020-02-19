@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const { NEXMO_KEY, NEXMO_SECRET } = require('../config')
+const { NEXMO_KEY, NEXMO_SECRET } = require('../'+ require('../appname') + '/config')
 
 const nexmo = {
     send: async function (sms, message) {

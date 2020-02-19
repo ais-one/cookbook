@@ -84,7 +84,7 @@
   "documentKey":{"_id":"5c5d51f73aca83479b48de6e"}
 }
 */
-const { MONGO_URL } = require('../config')
+const { MONGO_URL } = require('../'+ require('../appname') + '/config')
 const { MongoClient } = require('mongodb')
 
 const mongo = { db: null, stream: null }

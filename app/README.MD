@@ -23,7 +23,7 @@ app
 | +- routes/
 | +- seeds/
 | +- tests/
-| +- someothers project.../
++- another-example-app-project/
 +- logs/
 +- public/
 +- services/
@@ -31,8 +31,7 @@ app
 +- .dockerignore
 +- .enc.<node_env>
 +- .eslintrc.json
-+- app.js
-+- config.js
++- appname.js
 +- Dockerfile
 +- ecosystem.config.js
 +- index.js
@@ -44,9 +43,23 @@ app
 
 ## Configuration
 
-Refer to config/index.js
+Refer to **app/example-app/config/index.js**
 
-You can override the configuraions using .env.[NODE_ENV] files, e.g. .env.development or .env.production
+If there are many config variables, you can split it up into other folders and files in the **app/example-app/config** folder
+
+You can override the configuraions using .env.[NODE_ENV] files, e.g. .env.development or .env.production in **app/example-app**
+
+### Making your own custom app
+
+You can create your own folder with your custom app, **app/another-example-app-project**
+
+Use the **example-app** as a template
+
+### Choosing which app to run
+
+Set the application you want to run in **app/appname.js**
+
+For example select either **example-app** or **another-example-app-project**
 
 
 ## Running on server

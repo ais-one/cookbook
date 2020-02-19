@@ -1,3 +1,4 @@
+// try to move knexfile into the example-app
 module.exports = {
   development: {
     client: 'sqlite3',
