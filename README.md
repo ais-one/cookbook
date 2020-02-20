@@ -1,8 +1,18 @@
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-# NOTICES & UPDATES
+# WHY
 
 > Always Remember Rule #1 - Do Not Let Technical Debt Build Up
+
+1. Ever wondered why you keep rewriting almost the same code when you work on full-stack applications?
+
+2. Do you have trouble keeping the libraries in your different applications?
+
+3. How often and how long do you spend fixing things when there is a version change in a dependency?
+
+Well... what started as a CRUD component for VueJS has grown to a full-stack app development cookbook, and further expanded into a way of building and maintaining multiple full-stack applications of different use cases with as little waste as possible, aiming to address those 3 issues above as much as possible!
+
+# NOTICES & UPDATES
 
 Latest Version [0.3.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.0) - Released 2020 February 28 2245 +8GMT
 

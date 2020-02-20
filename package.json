@@ -1,6 +1,6 @@
 {
   "name": "vue-crud-x",
-  "version": "0.0.0",
+  "version": "0.3.0",
   "description": "NodeJS and VueJS Web Application Cookbook & a VueJS CRUD component",
   "config": {
     "app": "example-app"

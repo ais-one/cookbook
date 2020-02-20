@@ -1,1 +1,2 @@
-module.exports = 'example-app' // set your project name here
+// example-app
+module.exports = 'viow' // set your project name here
