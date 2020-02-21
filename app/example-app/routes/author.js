@@ -9,7 +9,6 @@ const { authUser } = require('../middlewares/auth')
 // const knex = Author.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
 
 const multer = require('multer')
-const UPLOAD_PATH = 'uploads/'
 const storage = multer.diskStorage({
   destination: function (req, file, cb) { cb(null, UPLOAD_PATH) },
   filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now()) }

@@ -1,3 +1,4 @@
+const fs = require('fs')
 const Author = require('../models/Author')
 const { transaction } = require('objection')
 const knex = Author.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
@@ -11,18 +12,25 @@ exports.create = async (req, res) => {
 }
 
 exports.update = async (req, res) => {
+  let errMsg = 'not found or updated'
+  let errCode = 404
   try {
-    // TBD delete file if fail
     // console.log('express file', req.file)
     const json = JSON.parse(req.body.docx)
     const author = await Author.query().patchAndFetchById(req.params.id, json)
     if (author) return res.status(200).json(author)
-    else return res.status(404).json()
   } catch (e) {
-    console.log('express error', e.toString())
+    errMsg = e.toString()
+    errCode = 500
   }
-  return res.status(500).json()
+  // something went wrong with file upload
+  fs.unlink(req.file.path, function (e) {
+    if (e) console.log(e)
+    else console.log(req.file.path +' deleted!')
+  })
+  return res.status(errCode).json({ errMsg })
 }
+
 exports.findOne = async (req, res) => {
   try {
     const author = await Author.query().findById(req.params.id)
