@@ -12,6 +12,7 @@ exports.create = async (req, res) => {
 
 exports.update = async (req, res) => {
   try {
+    // TBD delete file if fail
     // console.log('express file', req.file)
     const json = JSON.parse(req.body.docx)
     const author = await Author.query().patchAndFetchById(req.params.id, json)

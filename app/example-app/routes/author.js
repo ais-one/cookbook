@@ -1,5 +1,6 @@
 const express = require('express')
 const authorRoutes = express.Router()
+const { UPLOAD_PATH } = require('../config')
 const { authUser } = require('../middlewares/auth')
 
 // const Category = require('../models/Category')
@@ -13,8 +14,21 @@ const storage = multer.diskStorage({
   destination: function (req, file, cb) { cb(null, UPLOAD_PATH) },
   filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now()) }
 })
-const upload = multer({ storage: storage })
-// const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
+const upload = multer({
+  // limits: {
+  //   files : 1,
+  //   fileSize: 1000000 // size in bytes
+  // },
+  // fileFilter: (req, file, cb) => {
+  //   if (
+  //     !file.mimetype.includes("jpeg") && !file.mimetype.includes("jpg") && !file.mimetype.includes("png")
+  //   ) {
+  //     return cb(null, false, new Error("Only jpeg, png or pdf are allowed"));
+  //   }
+  //   cb(null, true);
+  // },
+  storage: storage
+})
 
 const authorController = require('../controllers/author') // use controller
 

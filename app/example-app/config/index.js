@@ -151,6 +151,9 @@ module.exports = {
     produces: ['application/json']
   },
 
+  // File Uploads
+  UPLOAD_PATH: 'uploads/', // for server uploads - // Should be relative to packsage json script folder
+
   // Role-based access control - currently not used, for future implementation
   // get role from token
   // only handle GET, POST, PUT, PATCH, DELETE verbs

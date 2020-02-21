@@ -1,10 +1,21 @@
 const express = require('express')
 const apiRoutes = express.Router()
 
+const { UPLOAD_PATH } = require('../config')
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
-const UPLOAD_PATH = 'uploads/' // TBD should be relative to packsage json script folder...
 const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
+    // console.log(req.file)
+    // {
+    //   fieldname: 'kycfile',
+    //   originalname: 'tbd.txt',
+    //   encoding: '7bit',
+    //   mimetype: 'text/plain',
+    //   destination: 'uploads/',
+    //   filename: 'kycfile-1582238409067',
+    //   path: 'uploads\\kycfile-1582238409067',
+    //   size: 110
+    // }
 
 apiRoutes
   /**

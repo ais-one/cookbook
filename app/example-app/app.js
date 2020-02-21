@@ -107,6 +107,24 @@ if (USE_HTTPS) {
 }
 
 apollo.installSubscriptionHandlers(server) // if put before server.listen, will mess with WS API
+console.log(`🚀 GraphQL Server ready at ${apollo.graphqlPath}`)
+console.log(`🚀 GraphQL Subscriptions ready at ${apollo.subscriptionsPath}`)  
 const wss = require('../services/websocket').open((err) => console.log(err || 'WS API OPEN OK'))
 
-module.exports = { server, apollo, wss }
+function handleExit(signal) {
+  console.log(`Received ${signal}. Close my server properly.`)
+  server.close(() => {
+    console.log('Server closed.')
+    // close your other stuff...
+    wss.close((err) => console.log(err || 'WS API CLOSE OK')) // websockets
+    // TBD apollo - does apollo have a shutdown?
+    // database / mongo
+    // mongo.db.close(false, (err, res) => {
+    //   console.log('MongoDb connection closed.')
+    //   process.exit(0)
+    // })
+    process.exit(0)
+  })
+}
+
+module.exports = { server, handleExit }
