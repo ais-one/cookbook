@@ -24,13 +24,16 @@ app
 | +- routes/
 | +- seeds/
 | +- tests/
+| +- web/
+|    +- spa/
+|    +- ssr/
 +- another-example-app-project/
 +- logs/
 +- public/
 +- services/
 +- uploads/
 +- .dockerignore
-+- .enc.<node_env>
++- .env.<node_env>
 +- .eslintrc.json
 +- appname.js
 +- Dockerfile

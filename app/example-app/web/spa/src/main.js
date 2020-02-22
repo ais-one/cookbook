@@ -8,10 +8,10 @@ import router from './router'
 import App from './App'
 
 import vuetify from './plugins/vuetify'
-import VueCrudX from '../../common/VueCrudX' // Vuetify
-import TimePicker from '../../common/TimePicker.vue'
-import DatePicker from '../../common/DatePicker.vue'
-import FileUpload from '../../common/FileUpload.vue'
+import VueCrudX from '../../../../../common-ui/VueCrudX' // Vuetify
+import TimePicker from '../../../../../common-ui/TimePicker.vue'
+import DatePicker from '../../../../../common-ui/DatePicker.vue'
+import FileUpload from '../../../../../common-ui/FileUpload.vue'
 
 import { apolloClient } from './graphql'
 import VueApollo from 'vue-apollo'
@@ -20,7 +20,7 @@ import { DO_HELLO } from './queries'
 import { auth } from '@/firebase'
 // import { stitch } from '@/mongo'
 
-import VueCrudA from '../../common/VueCrudA' // Ant design
+import VueCrudA from '../../../../../common-ui/VueCrudA' // Ant design
 import { Button, Table, Form, Input } from 'ant-design-vue'
 
 Vue.use(Button) // ant design stuff
@@ -89,15 +89,5 @@ export const app = new Vue({
         }
       })
     }
-    // // mongo - SEEMS LIKE NOT WORKING AT THE MOMENT
-    // stitch.auth.addAuthListener(async (auth) => {
-    //   console.log('onAuthStateChanged', auth)
-    //   if (auth.user) {
-    //     await this.$store.dispatch('mongoAutoSignin', auth.user) // server force keep login
-    //     this.$router.push('/dashboard')
-    //   } else {
-    //     // this.$store.dispatch('baasLogout', {userLogout: false}) // server force logout
-    //   }
-    // })
   }
 })

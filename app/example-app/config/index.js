@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 const KNEXFILE = require('../knexfile')
 
 const JWT_CERTS_PATH = process.env.JWT_CERTS_PATH || './example-app/certs/jwt' // RS256

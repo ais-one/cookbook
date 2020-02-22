@@ -101,14 +101,15 @@ The project structure is shown below
 
 ```
 vue-crud-x
-+- app/ : backend base application
-|  +- example-app/ : use-case extensions
++- app/ : backend base code
+|  +- example-app/ : use-case specific code
+|  |  +- web/ : frontend
+|  |     +- spa/ : spa application
+|  |     +- ssr/ : ssr or static application
+|  |     +- <your other front end here>
 |  +- <your other projects here>: (you can use .gitignore in parent directory to hide this project)
 +- doc/ : documentation
-+- web/ : frontend application
-|  +- example-spa/ : spa application
-|  +- example-ssr/ : ssr or static application
-|  +- common/ : common components for sharing
++- common-ui/ : common ui components for frontend (including vue-crud-x)
 |  +- dist/ : distribution folder for CRUD component
 ```
 

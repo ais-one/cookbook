@@ -7,13 +7,12 @@
   "scripts": {
     "deploy": "cd %npm_package_config_app%/deploy && deploy.sh",
     "lint": "eslint .",
-    "test": "cross-env NODE_ENV=development jest --watchAll",
-    "aa": "cross-env echo process.env.port",
-    "dev": "cross-env NODE_ENV=development&&nodemon index.js",
+    "aa": "echo process.env.port",
     "install-libs": "npm i && cd ../web/example-spa && npm i && cd ../example-ssr && npm i",
-    "dev:spa": "concurrently \"npm run dev\" \"cd ../web/example-spa && npm run-script serve\"",
-    "dev:ssr": "concurrently \"npm run dev\" \"cd ../web/example-ssr && npm run-script dev\"",
-    "dev:static": "concurrently \"npm run dev\" \"cd ../web/example-ssr && npm run-script serve\""
+    "test": "cross-env NODE_ENV=development jest --watchAll",
+    "dev": "cross-env NODE_ENV=development nodemon index.js %npm_package_config_app%",
+    "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=development npm run serve",
+    "ssr": "cd %npm_package_config_app%/web/ssr && cross-env NODE_ENV=development npm run dev"
   },
   "engines": {
     "node": "12"
