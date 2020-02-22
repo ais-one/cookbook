@@ -104,7 +104,6 @@ vue-crud-x
 +- app/ : backend base application
 |  +- example-app/ : use-case extensions
 |  +- <your other projects here>: (you can use .gitignore in parent directory to hide this project)
-+- deploy/ : deployment scripts
 +- doc/ : documentation
 +- web/ : frontend application
 |  +- example-spa/ : spa application

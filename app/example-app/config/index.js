@@ -1,16 +1,3 @@
-const fs = require('fs')
-const dotenv = require('dotenv')
-dotenv.config()
-if (process.env.NODE_ENV) {
-  try {
-    const envConfig = dotenv.parse(fs.readFileSync('.env.' + process.env.NODE_ENV))
-    for (var k in envConfig) process.env[k] = envConfig[k]  
-  } catch (e) {
-    // console.log('missing configuration file, using defaults')
-  }
-}
-// console.log('Environment: ', process.env.NODE_ENV)
-
 const KNEXFILE = require('../knexfile')
 
 const JWT_CERTS_PATH = process.env.JWT_CERTS_PATH || './example-app/certs/jwt' // RS256

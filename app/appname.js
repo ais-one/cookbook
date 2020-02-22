@@ -1,1 +1,1 @@
-module.exports = process.env.APPNAME || 'viow' // set your project name here
+module.exports = process.argv[2] || 'example-app' // set your project name here
