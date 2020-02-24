@@ -5,15 +5,14 @@
     "app": "example-app"
   },
   "scripts": {
-    "deploy": "cd %npm_package_config_app%/deploy && deploy.sh",
-    "lint": "eslint .",
-    "aa": "echo process.env.port",
     "install-libs": "npm i && cd %npm_package_config_app%/web/spa && npm i && cd ../ssr && npm i",
     "test": "cross-env NODE_ENV=development jest --watchAll",
-    "dev": "cross-env NODE_ENV=development nodemon index.js %npm_package_config_app%",
+    "dev": "cross-env NODE_ENV=development nodemon index.js -- %npm_package_config_app%",
     "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=development npm run serve",
     "ssr": "cd %npm_package_config_app%/web/ssr && cross-env NODE_ENV=development npm run dev",
-    "dev:spa": "concurrently \"npm run dev\" \"npm run spa\""
+    "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
+    "deploy": "cd %npm_package_config_app%/deploy && run.sh",
+    "lint": "eslint ."
   },
   "engines": {
     "node": "12"

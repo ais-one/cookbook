@@ -2,6 +2,10 @@ const fs = require('fs')
 const express = require('express')
 const apiRoutes = express.Router()
 
+// var path = require('path')
+// path.extname('index.html')
+// returns '.html'
+
 const { UPLOAD_PATH } = require('../config')
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')

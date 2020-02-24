@@ -12,6 +12,8 @@ dev.sqlite3
 .env.*
 .rnd
 
+id_rsa
+
 # Log files
 npm-debug.log*
 npm-debug.log*
