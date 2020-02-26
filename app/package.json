@@ -6,6 +6,7 @@
   },
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app%/web/spa && npm i && cd ../ssr && npm i",
+    "install-db": "cd %npm_package_config_app% && npm run install-db",
     "test": "cross-env NODE_ENV=development jest --watchAll",
     "dev": "cross-env NODE_ENV=development nodemon index.js -- %npm_package_config_app%",
     "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=development npm run serve",
@@ -34,7 +35,7 @@
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.0.0",
     "knex": "^0.20.10",
-    "mongodb": "^3.5.3",
+    "mongodb": "^3.5.4",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "objection": "^2.1.3",
