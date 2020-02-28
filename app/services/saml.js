@@ -10,13 +10,11 @@ passport.deserializeUser(function(user, done) { done(null, user) })
 
 passport.use(new SamlStrategy(
   {
+    // cert: fs.readFileSync('/path/to/adfs.acme_tools.com.crt', 'utf-8'), // PEM in single string to ensure ADFS Server is not a fake one
     issuer: 'acme_tools_com',
     callbackUrl: 'https://acme_tools.com/adfs/postResponse',
     entryPoint: 'https://adfs.acme_tools.com/adfs/ls/',
-    // not needed
-    // privateCert: fs.readFileSync('/path/to/acme_tools_com.key', 'utf-8'),
-    // cert: fs.readFileSync('/path/to/adfs.acme_tools.com.crt', 'utf-8'),
-    // auth context
+    // privateCert: fs.readFileSync('/path/to/acme_tools_com.key', 'utf-8'), // not needed yet
     // authnContext: 'http://schemas.microsoft.com/ws/2008/06/identity/authenticationmethod/password',
     authnContext: 'http://schemas.microsoft.com/ws/2008/06/identity/authenticationmethod/windows',
     // not sure if this is necessary?
@@ -24,7 +22,8 @@ passport.use(new SamlStrategy(
     identifierFormat: null,
     // this is configured under the Advanced tab in AD FS relying party
     signatureAlgorithm: 'sha256',
-    RACComparison: 'exact', // default to exact RequestedAuthnContext Comparison Type
+    RACComparison: 'minimum', // default to exact RequestedAuthnContext Comparison Type: minimum, exact (sometimes cause problems)
+    disableRequestedAuthnContext: true,
   },
   function(profile, done) {
     return done(null, { // map whatever claims/profile info you want here
@@ -37,21 +36,72 @@ passport.use(new SamlStrategy(
 
 /*
 app.get('/saml',
-  passport.authenticate('saml', { failureRedirect: '/', failureFlash: true }),
-  function(req, res) {
-    res.redirect('/');
-  }
+  function(req, res, next) {
+
+    // return res.redirect('/' + token...) // for faking, bypass real callback
+
+    req.query.RelayState = req.query.redirect_to + ';' + req.query.groups + ';' + req.query.expiry
+    next()
+  },
+  passport.authenticate('saml') // , { failureRedirect: '/', failureFlash: true }),
 )
 
 app.post('/saml/callback',
-  bodyParser.urlencoded({ extended: false }),
+  // bodyParser.urlencoded({ extended: false }),
   passport.authenticate('saml', { failureRedirect: '/', failureFlash: true }),
   function(req, res) {
-    // For SPA
-    const token = CreateJWT()
-    res.redirect('/token=' + token);
+    try {
+      const relayState = req.body.RelayState.split(';')
+      const TO = relayState[0]
+      if (req.isAuthenticated()) {
+        // For SPA
+        // also settle/check the groups and expiry
+        const token = CreateJWT()
+        res.redirect(TO + '/#' + token);
+      } else {
+        res.redirect('/forbidden')
+      }
+    } catch (e) {
+      res.status(500).json({ e: 'error' })
+    }
   }
 );
+
+// '/logout'
+// res.redirect( LOGOUT_URL )
+
 */
 
+/*
+Client Side
+
+export default class Abc {
+  constructor(config) {
+    this._token = ''
+    this._payload = null
+  }
+  val() { // try catch
+    let token = window.location.hash.substring(1) // (new URL(window.location.href)).searchParams.get('token')
+    if (!token) this.getFromLocalStorage()
+    if (!token) this.login()
+    else thi.setToken(token)
+  }
+  login () {
+    const redirect = (window.location.protocol + // + window.location.hostname) + (window.location.port === 443 || window.location.port === 80) ? '' : window.location.port + '/callback-url'
+    const goto = 'http://authserver' + `/auth?redirect_to=${goto}&groups=&expiry=`
+    window.location.assign(goto)
+  }
+
+  logout - cleartoken - window.location.replace('https://adfc.test.com/adfs/ls/?wa=wsignout1.0&wreply='+ encodeURIComponent(LOGOUT_URL))
+}
+
+mounted
+  import Abc from './asdasd.js'
+  let abc = new Abc(conf)
+  abc.val()
+  if (abc._token) {
+    this.payload = abc._payload
+    this.token = abc._token  }
+
+*/
 module.exports = passport
