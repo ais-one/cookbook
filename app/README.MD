@@ -44,6 +44,15 @@ app
 +- README.md
 ```
 
+
+## App Design Considerations
+
+https://12factor.net/
+
+https://googleapis.dev/nodejs/logging-winston/latest/index.html
+
+https://blog.heroku.com/best-practices-nodejs-errors
+
 ## Configuration
 
 Refer to **app/example-app/config/index.js**

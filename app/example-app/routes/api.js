@@ -2,6 +2,8 @@ const fs = require('fs')
 const express = require('express')
 const apiRoutes = express.Router()
 
+const logger = require('../../services/logger')
+
 // var path = require('path')
 // path.extname('index.html')
 // returns '.html'
@@ -23,6 +25,16 @@ const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
     // }
 
 apiRoutes
+  .get('/error', async (req,res) => { // for an error - test logging of errors
+    try {
+      req.something.missing = 10
+      res.status(200).json({ message: 'OK' })
+    } catch (e) {
+      console.log(e.stack)
+      const { message, stack } = e
+      res.status(500).json({ message, stack })
+    }
+  })
   /**
    * @swagger
    * /api/authors:
@@ -32,7 +44,6 @@ apiRoutes
    *      description: Health check
    */
   .get('/health', async (req,res) => { // health check
-    console.log('req.ip', req.ip)
     res.status(200).json({ message: 'OK' })
   })
   /**

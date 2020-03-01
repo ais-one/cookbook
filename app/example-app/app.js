@@ -28,6 +28,8 @@ const http = require('http')
 const https = require('https')
 const proxy = require('http-proxy-middleware')
 
+const morgan = require('morgan')
+
 const swaggerUi = require('swagger-ui-express')
 const swaggerJSDoc = require('swagger-jsdoc')
 
@@ -43,6 +45,9 @@ const { CORS_OPTIONS, USE_HTTPS, PROXY_WWW_ORIGIN, WWW_SERVE, httpsCerts } = req
 // Access-Control-Allow-Headers=Content-Type
 
 const app = express()
+
+Error.stackTraceLimit = 1 // limit to 1 level
+app.use(morgan('combined')) // use as early as possible
 
 app.set('trust proxy', true) // true if behind proxy, false if direct connect... You now can get IP from req.ip, req.ips
 apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
