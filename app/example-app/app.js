@@ -46,8 +46,16 @@ const { CORS_OPTIONS, USE_HTTPS, PROXY_WWW_ORIGIN, WWW_SERVE, httpsCerts } = req
 
 const app = express()
 
-Error.stackTraceLimit = 1 // limit to 1 level
-app.use(morgan('combined')) // use as early as possible
+// Not Needed const logger = require('../../services/logger')
+// use as early as possible
+// app.use(morgan('combined', { // errors
+//   stream: process.stderr,
+//   skip: (req, res) => res.statusCode < 400
+// }))
+// app.use(morgan('combined', { // ok
+//   stream: process.stdout,
+//   skip: (req, res) => res.statusCode >= 400
+// }))
 
 app.set('trust proxy', true) // true if behind proxy, false if direct connect... You now can get IP from req.ip, req.ips
 apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
@@ -63,7 +71,7 @@ app.use('/uploads', express.static('uploads')) // need to create the folder uplo
 // LOWER METHOD IS BETTER - app.use('/api-docs', express.static('docs'), swaggerUi.serve, swaggerUi.setup(require('yamljs').load('./docs/openapi.yaml'), { // for OpenAPI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc({ swaggerDefinition: require('./config').SWAGGER_DEFS, apis: ['./routes/*.js'] }), { // for OpenAPI
   swaggerOptions: { docExpansion: 'none' },  
-  explorer: true 
+  explorer: true
 }))
 
 const authRoutes = require('./routes/auth')

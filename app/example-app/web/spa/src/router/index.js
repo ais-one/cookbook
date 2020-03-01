@@ -15,9 +15,7 @@ export default new Router({
     { path: '/categories', name: 'categories', component: () => import('@/pages/Category'), beforeEnter: AuthGuard },
     { path: '/signup', name: 'SignUp', component: () => import('@/pages/SignUp') },
     { path: '/test', name: 'test', component: () => import('@/components/Test'), beforeEnter: AuthGuard },
-    { path: '/mongo-test', name: 'mongo-test', component: () => import('@/pages/MongoTest'), beforeEnter: AuthGuard },
     { path: '/firebase-rt', name: 'firebase-rt', component: () => import('@/pages/FirebaseRt'), beforeEnter: AuthGuard },
-    { path: '/firebase-storage', name: 'firebase-storage', component: () => import('@/pages/FirebaseStorage'), beforeEnter: AuthGuard },
     { path: '/', name: 'SignIn', component: () => import('@/pages/SignIn') },
     { path: '*', redirect: '/' }
   ],

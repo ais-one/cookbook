@@ -1,8 +1,6 @@
 let logger
 
 if (!logger) {
-  // Error.stackTraceLimit = 1 // limit to 1 level
-
   // const winston = require('winston')
   // logger = winston.createLogger({
   //   level: 'info',

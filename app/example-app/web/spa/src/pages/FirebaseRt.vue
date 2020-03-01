@@ -22,8 +22,7 @@
 import _orderBy from 'lodash.orderby'
 import { firestore } from '@/firebase'
 
-import * as locationJson from './LOCATION_REF_JSON.json'
-const locations = locationJson.default.map(item => item.locationCode)
+const locations = [ 'Location A', 'Location B', 'Location C' ]
 
 const COL_NAME = 'task'
 const TASK_LIMIT = 10

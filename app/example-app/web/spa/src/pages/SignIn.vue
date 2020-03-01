@@ -14,7 +14,6 @@
                     <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
                     <v-btn class="ma-1" type="submit" :disabled="loading||recaptchaUnverified" :loading="loading">Sign in</v-btn>
                     <v-btn class="ma-1" type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onFirebaseSignin">Firebase</v-btn>
-                    <v-btn class="ma-1" type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onMongoSignin">Mongo Switch</v-btn>
                     <v-btn class="ma-1" type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onGithubSignin">Github</v-btn>
                     <vue-recaptcha v-if="sitekey" class="g-recaptcha" @verify="onVerify" @expired="onExpired" :sitekey="sitekey"></vue-recaptcha>
                     <p v-if="!!error">{{ error.message }}</p>
@@ -86,10 +85,6 @@ export default {
     // BAAS
     async onFirebaseSignin () {
       await this.$store.dispatch('firebaseSignin', { email: this.email, password: this.password })
-    },
-    async onMongoSignin () {
-      await this.$store.dispatch('mongoSignin', { email: this.email, password: this.password })
-      this.$router.push('/dashboard')
     },
     onGithubSignin () {
       window.location.replace('https://github.com/login/oauth/authorize?scope=user:email&client_id=' + GITHUB_CLIENT_ID)

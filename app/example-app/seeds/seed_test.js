@@ -23,7 +23,8 @@ exports.seed = async (knex) => {
   ])
   await knex('categories').insert([
     {id: 1, name: 'cat1', created_at: mkDt() },
-    {id: 2, name: 'cat2', created_at: mkDt() }
+    {id: 2, name: 'cat2', created_at: mkDt() },
+    {id: 3, name: 'cat3', created_at: mkDt() }
   ])
 
   dt = new Date()

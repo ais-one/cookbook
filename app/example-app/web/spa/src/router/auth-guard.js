@@ -3,7 +3,6 @@ import { store } from '@/store'
 const permissions = {
   'all': ['/test', '/dashboard'],
   'rest': ['/authors', '/categories', '/books', '/pages', '/books/:id/pages'],
-  'mongo': ['/mongo-test'],
   'firebase': ['/firebase-rt', '/firebase-storage']
 }
 

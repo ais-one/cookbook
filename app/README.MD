@@ -49,9 +49,11 @@ app
 
 https://12factor.net/
 
+https://blog.heroku.com/best-practices-nodejs-errors
+
 https://googleapis.dev/nodejs/logging-winston/latest/index.html
 
-https://blog.heroku.com/best-practices-nodejs-errors
+https://www.coreycleary.me/should-you-use-a-logging-framework-or-console-log-in-node/
 
 ## Configuration
 

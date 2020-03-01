@@ -1,5 +1,4 @@
 import { auth } from '@/firebase'
-import { stitch, getUserPasswordCredential } from '@/mongo'
 import { http } from '@/axios'
 import router from '../router'
 
@@ -75,29 +74,6 @@ export default {
 
   setNetworkError ({ commit }, payload) { commit('mutateNetworkError', payload) },
 
-  // mongo
-  async mongoSignin ({ commit }, payload) {
-    commit('setLoading', true)
-    commit('setError', null)
-    let auth = null
-    try {
-      const credential = getUserPasswordCredential(payload.email, payload.password)
-      auth = await stitch.auth.loginWithCredential(credential)
-      // console.log('mongoSignin', auth)
-    } catch (e) { }
-    commit('setLoading', false)
-    if (!auth) {
-      commit('setError', { message: 'Mongo Sign In Error' })
-    } else {
-      commit('setBaasUser', { id: auth.id, email: auth.id, loginType: 'mongo', verified: true })
-      commit('setLayout', 'layout-admin')
-    }
-  },
-  async mongoAutoSignin ({ commit }, payload) { // not called for now
-    commit('setBaasUser', { id: payload.id, email: payload.id, loginType: 'mongo', verified: true })
-    commit('setLayout', 'layout-admin')
-  },
-
   // firebase
   async firebaseSignup ({ commit }, payload) {
     commit('setLoading', true)
@@ -145,10 +121,7 @@ export default {
   async logout ({ commit }, payload) {
     commit('setLoading', true)
     console.log('logging out', payload)
-    if (payload.user && payload.user.loginType === 'mongo') {
-      console.log('LOGOUT Mongo')
-      await stitch.auth.logout()
-    } else if (payload.user && payload.user.loginType === 'firebase') {
+    if (payload.user && payload.user.loginType === 'firebase') {
       console.log('LOGOUT Firebase')
       await auth.signOut()
     } else { // rest

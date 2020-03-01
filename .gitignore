@@ -12,6 +12,7 @@ dev.sqlite3
 .env.*
 .rnd
 
+key.json
 id_rsa
 
 # Log files

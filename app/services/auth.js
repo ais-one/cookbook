@@ -13,17 +13,17 @@ const { JWT_ALG, JWT_SECRET, jwtCerts } = require('../'+ require('../appname') +
 // Create a token from a payload
 async function createToken(payload, options) {
   let token
-  let refreshToken
+  let refresh_token
   try {
     options.algorithm = JWT_ALG
     const secretKey = JWT_ALG.substring(0,2) === 'RS' ? jwtCerts.key : JWT_SECRET
     token = jwt.sign(payload, secretKey, options)
-    refreshToken = Date.now()
-    if (refreshToken) await keyv.set(payload.id, refreshToken) // TBD set in DB instead...
+    refresh_token = Date.now()
+    await keyv.set(payload.id, refresh_token) // TBD set in DB instead...
   } catch (e) {
     console.log('createToken', e.toString())
   }
-  return { token, refresh_token: refreshToken }          
+  return { token, refresh_token }          
 }
 
 async function revokeToken(id) {

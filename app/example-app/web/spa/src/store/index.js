@@ -44,7 +44,7 @@ export const store = new Vuex.Store({
     setBaasUser (state, payload) {
       console.log('setBaasUser', payload)
       state.user = payload
-    }, // for BAAS like firebase, mongo stitch
+    }, // for BAAS like firebase
     setLoading (state, payload) { state.loading = payload },
     setError (state, payload) { state.error = payload },
     mutateNetworkError (state, payload) { state.networkError = payload }

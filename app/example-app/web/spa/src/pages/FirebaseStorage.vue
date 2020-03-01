@@ -53,6 +53,7 @@
 // store file on firebase - https://www.youtube.com/watch?v=qZ1EFnFOGvE
 
 // scroll ok for now, wait for V2 to stabilize to see if can be improved further
+// TBD make this example using Signed URLs
 
 import { storage } from '@/firebase'
 

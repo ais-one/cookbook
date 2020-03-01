@@ -15,6 +15,8 @@ console.log(APPNAME, process.env.NODE_ENV)
 const { server, handleExit } = require('./'+ APPNAME + '/app')
 const { API_PORT } = require('./'+ APPNAME + '/config')
 
+Error.stackTraceLimit = 1 // limit error stack trace to 1 level
+
 server.listen(API_PORT, () => {
   console.log('REST API listening on port ' + API_PORT)
 })

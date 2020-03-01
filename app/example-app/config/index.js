@@ -75,7 +75,8 @@ module.exports = {
   // COMMON OPTIONS - APPLICABLE TO ALL ENVIRONMENTS
 
   // HTTPONLY COOKIES
-  HTTPONLY_TOKEN: true, // true, false (also set the same on FE..., true means place token in HttpOnly cookie) - DO TAKE NOTE OF CORS
+  HTTPONLY_TOKEN: false, // true, false (also set the same on FE..., true means place token in HttpOnly cookie) - DO TAKE NOTE OF CORS
+  // HTTPONLY_TOKEN: true // Use localStorage / sessionStorage
 
   // CORS - SAME ORIGIN - PROXIED
   //   CORS_OPTIONS: null

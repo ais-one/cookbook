@@ -561,7 +561,7 @@ export default {
             </tr>
           </template>
           <!-- infinite scroll handling -->
-          <template v-if="infinite" v-slot:footer="props">
+          <template v-if="infinite" v-slot:footer="">
             <div v-bind="vbtn.more.wrapper">
               <v-btn v-if="cursor" @click="getRecords({ mode: 'load-more' })" :disabled="loading" v-bind="vbtn.more.props">{{$t?$t('vueCrudX.more'):vbtn.more.label}}</v-btn>
             </div>

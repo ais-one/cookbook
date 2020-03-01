@@ -18,7 +18,6 @@ import VueApollo from 'vue-apollo'
 import { DO_HELLO } from './queries'
 
 import { auth } from '@/firebase'
-// import { stitch } from '@/mongo'
 
 import VueCrudA from '../../../../../common-ui/VueCrudA' // Ant design
 import { Button, Table, Form, Input } from 'ant-design-vue'

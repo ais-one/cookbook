@@ -1,21 +1,25 @@
 ### Version 0.3.0
 - update packages
-- re-architect for better scalability - able to use as base for multiple applications
+- re-architect for better scalability - able to use as base for multiple full-stack applications
+- remove mongo switch
+- file upload to GCP storage using signed Urls
 - backend
   - /backend renamed as /app
 - /app internal folders are reorganized... common (services, logs, etc), custom based on user requirements (example-app)
-  - switch app builds based on settings in /app/app.js & /app/config.js
+  - switch app builds based on settings in /app/package.json config.app property
   - clean up auth and others
-- /web folder hosts frontend apps example-spa, example-ssr, common (vue-crud-x project and other common components)
+  - logging (also see https://12factor.net/)
+- /app/example-app/web folder hosts frontend examples spa, ssr
+- /common-ui (components for user interface, including the vue-crud-x library)
 - [Work-in-progress]
   - cleanup
-  - /web/example-spa
-    - ant design version
-    - use only 1 material design icon library...
-    - research for e2e framework agnostic test util for frontend
   - /app
     - long running process support such as tcp servers, MQ consumer
     - add bull or bullmq support
+  - /app/example-app/web/spa
+    - ant design version
+    - use only 1 material design icon library...
+    - research for e2e framework agnostic test util for frontend
   - others
     - CI / CD (work on SSH, Docker deployments, etc...)
 - [low-priority]
@@ -23,8 +27,6 @@
     - replace multer with busboy or formidable?
     - research websocket testing, improve coverage
     - research auto generated REST API and Testing (keep in view dredd.io)
-    - Logging
-      - prefer to use external APM service (performance issues)
     - JsonSchema
   - others
     - ISO config definition naming (identify configs common to both FE and BE)

@@ -27,6 +27,9 @@ async function generateV4USignedUrl(bucketName, fileName, action = 'write') { //
   // console.log(`curl '${url}'`);
   // console.log("curl -X PUT -H 'Content-Type: application/octet-stream' " + `--upload-file my-file '${url}'`)
   // curl -X PUT -H 'Content-Type: application/octet-stream' --upload-file my-file http://www.test.com
+
+  // axios.put(url, file, { headers: { 'Content-Type': application/octet-stream } })
+
   return(url)
 }
 

@@ -71,9 +71,7 @@ Other design considerations :
 git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x/app
 npm run install-libs
-cd example-app
 npm run install-db
-cd ..
 npm run dev:spa
 ```
 
