@@ -26,8 +26,8 @@ export const mutations = {
       if (decoded) {
         payload.id = decoded.id
         payload.verified = decoded.verified
+        payload.groups = decoded.groups || ''
       }
-      payload.loginType = 'rest'
     }
     state.user = payload
     if (payload) {

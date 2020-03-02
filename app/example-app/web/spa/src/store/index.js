@@ -12,7 +12,7 @@ export const store = new Vuex.Store({
   },
   state: {
     layout: 'layout-default',
-    user: null,
+    user: null, // { id: user ID, verified: user has been verified (2FA), groups: for AD groups / roles }
     loading: false,
     error: null,
     networkError: false
@@ -28,8 +28,8 @@ export const store = new Vuex.Store({
         if (decoded) {
           payload.id = decoded.id
           payload.verified = decoded.verified
+          payload.groups = decoded.groups || ''
         }
-        payload.loginType = 'rest'
       }
       state.user = payload
       if (payload) {
@@ -41,16 +41,13 @@ export const store = new Vuex.Store({
         if (!HTTPONLY_TOKEN) delete http.defaults.headers.common['Authorization']
       }
     },
-    setBaasUser (state, payload) {
-      console.log('setBaasUser', payload)
-      state.user = payload
-    }, // for BAAS like firebase
     setLoading (state, payload) { state.loading = payload },
     setError (state, payload) { state.error = payload },
     mutateNetworkError (state, payload) { state.networkError = payload }
   },
   // https://www.drewtown.dev/post/when-to-use-vuex-getters-in-a-vue-js-project/
   // below is not really a good way of using getters, see document above
+  // Getters are a great tool but not every problem is a nail. Use them often when needing to extract parts of the state in the store or manipulate data before retrieving it.
   getters: {
     // better way to use getters...
     // getTodoById: state => id => {

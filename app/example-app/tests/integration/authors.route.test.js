@@ -19,7 +19,7 @@ const testData = {
 
 describe(endpointUrl, () => {
   beforeAll(async () => {
-    const { token } = await createToken({ id: 100, verified: true }, { expiresIn: '1d' })
+    const { token } = await createToken({ id: 100, verified: true, groups: 'TestGroup' }, { expiresIn: '1d' })
     authObj = {
       Authorization: 'Bearer ' + token
     }

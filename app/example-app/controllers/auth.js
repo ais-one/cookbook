@@ -63,8 +63,8 @@ exports.checkGithub = async (req, res) => {
       const message = 'Unauthorized'
       return res.status(401).json({ message })
     }
-    const { id } = user
-    const tokens = await createToken({ id, verified: true }, {expiresIn: JWT_EXPIRY}) // 5 minute expire for login
+    const { id, groups } = user
+    const tokens = await createToken({ id, verified: true, groups }, {expiresIn: JWT_EXPIRY}) // 5 minute expire for login
     if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
     return res.status(200).json(tokens)
   } catch (e) {
@@ -93,7 +93,7 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: 'Authorization Revoked' })
     }
     let verified = true
-    const { id } = user
+    const { id, groups } = user
     if (USE_OTP) {
       verified = false
       if (USE_OTP === 'SMS') {
@@ -104,7 +104,7 @@ exports.login = async (req, res) => {
         // set user SMS & send it
       }
     }
-    const tokens = await createToken({ id, verified }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
+    const tokens = await createToken({ id, verified, groups }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
     if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
     return res.status(200).json(tokens)
   } catch (e) {
@@ -120,7 +120,7 @@ exports.refresh = async (req, res) => {
 
 exports.otp = async (req, res) => {
   try {
-    const { id } = req.decoded
+    const { id, groups } = req.decoded
     const user = await User.query().where('id', '=', id)
     if (user) {
       const { pin } = req.body
@@ -128,7 +128,7 @@ exports.otp = async (req, res) => {
       const isValid = USE_OTP !== 'TEST' ? otplib.authenticator.check(pin, gaKey) : pin === '111111'
       if (isValid) {
         await revokeToken(id)
-        const tokens = await createToken({ id, verified: true }, {expiresIn: JWT_EXPIRY})
+        const tokens = await createToken({ id, verified: true, groups }, {expiresIn: JWT_EXPIRY})
         if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
         return res.status(200).json(tokens)
       }

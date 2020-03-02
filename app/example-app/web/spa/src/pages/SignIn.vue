@@ -13,7 +13,6 @@
                     <v-text-field label="Username" v-model="email" type="text" required></v-text-field>
                     <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
                     <v-btn class="ma-1" type="submit" :disabled="loading||recaptchaUnverified" :loading="loading">Sign in</v-btn>
-                    <v-btn class="ma-1" type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onFirebaseSignin">Firebase</v-btn>
                     <v-btn class="ma-1" type="button" :disabled="loading||recaptchaUnverified" :loading="loading" @click="onGithubSignin">Github</v-btn>
                     <vue-recaptcha v-if="sitekey" class="g-recaptcha" @verify="onVerify" @expired="onExpired" :sitekey="sitekey"></vue-recaptcha>
                     <p v-if="!!error">{{ error.message }}</p>
@@ -81,10 +80,6 @@ export default {
     onVerifyOtp () {
       this.$store.dispatch('clearError')
       this.$store.dispatch('verifyOtp', { pin: this.pin })
-    },
-    // BAAS
-    async onFirebaseSignin () {
-      await this.$store.dispatch('firebaseSignin', { email: this.email, password: this.password })
     },
     onGithubSignin () {
       window.location.replace('https://github.com/login/oauth/authorize?scope=user:email&client_id=' + GITHUB_CLIENT_ID)

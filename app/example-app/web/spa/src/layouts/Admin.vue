@@ -3,7 +3,7 @@
     <v-navigation-drawer v-if="userIsAuthenticated" app clipped v-model="drawer" fixed>
       <v-list dense>
         <template v-for="(item, i) in menuItems">
-          <v-list-item v-if="!item.loginType||user.loginType===item.loginType" :to="item.link" :key="i">
+          <v-list-item v-if="showMenuItem(item.groups)" :to="item.link" :key="i">
             <v-list-item-content>
               <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item-content>
@@ -13,7 +13,7 @@
     </v-navigation-drawer>
     <v-app-bar dark app fixed clipped-left dense class="primary">
       <v-app-bar-nav-icon v-if="userIsAuthenticated" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>[{{ user.loginType }}] {{ currentTime }}</v-toolbar-title>
+      <v-toolbar-title>{{ currentTime }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon @click="setLocale">{{ selectedLocale }}</v-btn>
       <v-btn icon @click="onLogout"><v-icon>exit_to_app</v-icon></v-btn>
@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import permissions from '@/permissions'
+
 export default {
   data () {
     return {
@@ -54,12 +56,10 @@ export default {
       drawer: false,
       menuItems: [
         { icon: 'dashboard', title: 'Dashboard', link: '/dashboard' },
-        { icon: 'list_alt', title: 'Authors', link: '/authors', loginType: 'rest' },
-        { icon: 'list_alt', title: 'Categories', link: '/categories', loginType: 'rest' },
-        { icon: 'list_alt', title: 'Books', link: '/books', loginType: 'rest' },
-        { icon: 'list_alt', title: 'Firebase RT', link: '/firebase-rt', loginType: 'firebase' },
-        { icon: 'list_alt', title: 'Firebase Store', link: '/firebase-storage', loginType: 'firebase' },
-        { icon: 'list_alt', title: 'Test Stuff', link: '/test' }
+        { icon: 'list_alt', title: 'Authors', link: '/authors' },
+        { icon: 'list_alt', title: 'Categories', link: '/categories' },
+        { icon: 'list_alt', title: 'Books', link: '/books' },
+        { icon: 'list_alt', title: 'Test Stuff', link: '/test', groups: ['TestGroup'] }
       ]
     }
   },
@@ -81,9 +81,13 @@ export default {
       return this.$store.state.user
     },
     loading () { return this.$store.getters.loading },
-    networkError () { return this.$store.state.networkError }
+    networkError () { return this.$store.state.networkError },
   },
   methods: {
+    showMenuItem (groups) {
+      if (!groups) return true
+      return permissions.allowed(groups, this.user.groups.split(','))
+    },
     setLocale () {
       this.selectedLocale = this.selectedLocale === 'EN' ? 'ID' : 'EN'
       if (this.$i18n) this.$i18n.locale = this.selectedLocale.toLowerCase()

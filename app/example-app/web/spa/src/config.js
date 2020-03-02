@@ -14,13 +14,3 @@ export const WITH_CREDENTIALS = false // true = use same origin, false = cors
 // export const WITH_CREDENTIALS = true
 
 export const GITHUB_CLIENT_ID = process.env.VUE_APP_GITHUB_CLIENT_ID || ''
-
-export const MONGO_STITCH = process.env.VUE_APP_MONGO_STITCH || ''
-export const firebaseCfg = {
-  apiKey: '',
-  authDomain: '',
-  databaseURL: '',
-  projectId: '',
-  storageBucket: '',
-  messagingSenderId: ''
-}

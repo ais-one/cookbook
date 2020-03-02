@@ -1,6 +1,7 @@
 exports.up = async (knex) => {
   await knex.schema.createTable('users', table => {
     table.increments('id').primary()
+    table.string('groups')
     table.integer('orgId')
     table.string('username')
     table.string('email').unique('email')

@@ -1,4 +1,3 @@
-import { auth } from '@/firebase'
 import { http } from '@/axios'
 import router from '../router'
 
@@ -15,7 +14,7 @@ export default {
     } catch (e) { }
     commit('setLoading', false)
     if (rv) {
-      const newUser = { id: payload.uid, email: payload.email } // Firebase Use-Case
+      const newUser = { id: payload.id, email: payload.email }
       commit('setUser', newUser)
       commit('setError', { message: 'User Registered' })
     } else {
@@ -74,72 +73,23 @@ export default {
 
   setNetworkError ({ commit }, payload) { commit('mutateNetworkError', payload) },
 
-  // firebase
-  async firebaseSignup ({ commit }, payload) {
-    commit('setLoading', true)
-    commit('setError', null)
-    let user = null
-    try {
-      user = await auth.createUserWithEmailAndPassword(payload.email, payload.password)
-    } catch (e) { }
-    commit('setLoading', false)
-    if (user) {
-      const newUser = { id: user.uid, email: payload.email }
-      commit('setBaasUser', newUser)
-    } else {
-      commit('setError', { message: 'Error Signup' })
-      // if (error.code === 'auth/email-already-in-use') {
-      //   var credential = auth.EmailAuthProvider.credential(payload.email, payload.password)
-      //   user = await auth.currentUser.linkWithCredential(credential)
-      //   if (user) {
-      //     const newUser = { id: user.uid }
-      //     commit('setBaasUser', newUser)
-      //   }
-      // }
-    }
-  },
-  async firebaseSignin ({ commit }, payload) { // { dispatch, commit }
-    commit('setLoading', true)
-    commit('setError', null)
-    let user = null
-    try {
-      user = await auth.signInWithEmailAndPassword(payload.email, payload.password)
-      // console.log('signUserIn', user)
-      // dispatch('autoSignIn', user) // no need this for firebase auth due to auth listener
-    } catch (e) { }
-    if (!user) {
-      commit('setError', { message: 'Sign In Error' })
-    }
-    commit('setLoading', false)
-  },
-  async firebaseAutoSignin ({ commit }, payload) {
-    commit('setBaasUser', { id: payload.uid, email: payload.email, loginType: 'firebase', verified: true })
-    commit('setLayout', 'layout-admin')
-  },
-
   // Common Logout
   async logout ({ commit }, payload) {
     commit('setLoading', true)
     console.log('logging out', payload)
-    if (payload.user && payload.user.loginType === 'firebase') {
-      console.log('LOGOUT Firebase')
-      await auth.signOut()
-    } else { // rest
-      console.log('LOGOUT Rest')
-      if (payload.forced) { // auth failure detected
-      } else { // logout button clicked
-        try {
-          await http.get('/api/auth/logout')
-        } catch (e) {
-          if (!e.response || e.response.status === 401) { // server or authorization error
-            // ok please continue
-          } else {
-            return // may have problems here... loading still true, etc...
-          }
+    if (payload.forced) { // auth failure detected
+    } else { // logout button clicked
+      try {
+        await http.get('/api/auth/logout')
+      } catch (e) {
+        if (!e.response || e.response.status === 401) { // server or authorization error
+          // ok please continue
+        } else {
+          return // may have problems here... loading still true, etc...
         }
       }
-      if (payload.forced) commit('setError', { message: 'Session Expired' })
     }
+    if (payload.forced) commit('setError', { message: 'Session Expired' })
     router.push('/')
     commit('setUser', null)
     commit('setLayout', 'layout-default')

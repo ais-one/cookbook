@@ -15,7 +15,6 @@ export default new Router({
     { path: '/categories', name: 'categories', component: () => import('@/pages/Category'), beforeEnter: AuthGuard },
     { path: '/signup', name: 'SignUp', component: () => import('@/pages/SignUp') },
     { path: '/test', name: 'test', component: () => import('@/components/Test'), beforeEnter: AuthGuard },
-    { path: '/firebase-rt', name: 'firebase-rt', component: () => import('@/pages/FirebaseRt'), beforeEnter: AuthGuard },
     { path: '/', name: 'SignIn', component: () => import('@/pages/SignIn') },
     { path: '*', redirect: '/' }
   ],

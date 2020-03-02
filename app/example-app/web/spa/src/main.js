@@ -17,8 +17,6 @@ import { apolloClient } from './graphql'
 import VueApollo from 'vue-apollo'
 import { DO_HELLO } from './queries'
 
-import { auth } from '@/firebase'
-
 import VueCrudA from '../../../../../common-ui/VueCrudA' // Ant design
 import { Button, Table, Form, Input } from 'ant-design-vue'
 
@@ -75,18 +73,5 @@ export const app = new Vue({
   store,
   apolloProvider,
   render: h => h(App),
-  created () {
-    // firebase
-    if (auth) {
-      auth.onAuthStateChanged(async (user) => {
-        // console.log('onAuthStateChanged', user)
-        if (user) {
-          await this.$store.dispatch('firebaseAutoSignin', user) // server force keep login
-          this.$router.push('/dashboard')
-        } else {
-          // this.$store.dispatch('baasLogout', {userLogout: false}) // server force logout
-        }
-      })
-    }
-  }
+  // created () { }
 })

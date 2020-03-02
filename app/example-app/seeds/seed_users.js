@@ -9,6 +9,7 @@ exports.seed = async function(knex) {
   await knex('users').insert([
     {
       id: 1,
+      groups: 'TestGroup',
       orgId: 1,
       username: 'test',
       email: 'test',
@@ -26,6 +27,7 @@ exports.seed = async function(knex) {
     },
     {
       id: 2,
+      groups: 'TestGithub',
       orgId: 1,
       username: 'ais-one',
       email: 'ais-one',
@@ -43,6 +45,7 @@ exports.seed = async function(knex) {
     },
     {
       id: 3,
+      groups: 'TestGmail,TestGroup',
       orgId: 1,
       username: 'aaronjxz',
       email: 'aaronjxz',

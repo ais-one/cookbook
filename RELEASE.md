@@ -1,15 +1,19 @@
 ### Version 0.3.0
 - update packages
 - re-architect for better scalability - able to use as base for multiple full-stack applications
-- remove mongo switch
-- file upload to GCP storage using signed Urls
-- backend
+- /backend
   - /backend renamed as /app
-- /app internal folders are reorganized... common (services, logs, etc), custom based on user requirements (example-app)
+- /app
+  - internal folders are reorganized...
+    - common (services, logs, etc)
+    - custom based on user requirements (example-app)
   - switch app builds based on settings in /app/package.json config.app property
-  - clean up auth and others
-  - logging (also see https://12factor.net/)
+  - clean up auth, add groups to JWT and others, also affects frontend
+  - logging using morgan only, no winston, console.log is sufficient (also see https://12factor.net/)
+  - add file upload to GCP storage using signed Urls (can also use AWS S3 or Azure Storage)
 - /app/example-app/web folder hosts frontend examples spa, ssr
+  - update user replace loginType with groups (ADFS SAML claims, etc)
+  - avoid vendor lockin - remove mongo switch and firebase
 - /common-ui (components for user interface, including the vue-crud-x library)
 - [Work-in-progress]
   - cleanup

@@ -38,7 +38,7 @@ const authUser = async (req, res, next) => {
           if (req.baseUrl + req.path === '/api/auth/refresh') {
             try {
               // check refresh token & user - always stateful
-              const { id, exp } = jwt.decode(token)
+              const { id, groups, exp } = jwt.decode(token)
               const user = await User.query().where('id', '=', id)
               if (user && !user[0].revoked && req.body) {
                 const refreshToken = true ? await keyv.get(id) // use Cache
@@ -46,7 +46,7 @@ const authUser = async (req, res, next) => {
                 // console.log('ggg', req.baseUrl, req.path, parseInt(Date.now() / 1000) - exp, JWT_REFRESH_EXPIRY, e.toString(), parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY, token)
                 if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
                   if (refreshToken === req.body.refresh_token) { // ok... generate new access token & refresh token?
-                    const tokens = await createToken({ id, verified: true }, { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
+                    const tokens = await createToken({ id, verified: true, groups }, { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
                     if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
                     return res.status(200).json(tokens)
                   }
