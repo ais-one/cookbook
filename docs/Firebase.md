@@ -85,7 +85,9 @@ firebase deploy --only hosting
 firebase logout
 ```
 
-## Storage Rules
+# Cloud Storage
+
+## Storage Rules (To Review)
 
 ```js
 rules_version = "2"
@@ -98,3 +100,25 @@ service firebase.storage {
   }
 }
 ```
+
+<!-- https://firebase.google.com/docs/hosting/quickstart
+npm install -g firebase-tools -->
+
+## Storage
+
+### Upload & Download Files
+
+1. If public read access enable permissions
+
+2. Upload use signed URL
+
+3. Private download/read access use signed URL
+
+
+### Hosting Static Sites
+
+https://cloud.google.com/storage/docs/hosting-static-website
+
+## 
+
+## www.example.com       CNAME    c.storage.googleapis.com

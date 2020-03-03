@@ -9,3 +9,18 @@
   - momentjs is too big, date-fns from version 1 to 2 broke things, use native JS Date Object, Intl.DateTimeFormat, etc. instead
   - nuxt-auth could not handle 2FA or refresh token so cannot be used
 
+
+## Local (without docker)
+
+WSL Ubuntu
+- SQLite
+- MongoDB
+- Redis
+- bullmq
+
+## Google Cloud
+
+https://cloud.google.com/appengine/docs/standard/nodejs/quickstart
+https://cloud.google.com/memorystore/docs/redis
+https://www.mongodb.com/cloud/atlas
+https://cloud.google.com/pubsub/docs

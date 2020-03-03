@@ -10,10 +10,10 @@
   - switch app builds based on settings in /app/package.json config.app property
   - clean up auth, add groups to JWT and others, also affects frontend
   - logging using morgan only, no winston, console.log is sufficient (also see https://12factor.net/)
-  - add file upload to GCP storage using signed Urls (can also use AWS S3 or Azure Storage)
+  - add file upload to GCP storage using signed Urls (alternative vendors include AWS S3 or Azure Storage)
 - /app/example-app/web folder hosts frontend examples spa, ssr
-  - update user replace loginType with groups (ADFS SAML claims, etc)
-  - avoid vendor lockin - remove mongo switch and firebase
+  - update user replace loginType with groups (ADFS SAML claims, etc), improve on permissions handling
+  - avoid single vendor lockin - remove mongo switch and firebase
 - /common-ui (components for user interface, including the vue-crud-x library)
 - [Work-in-progress]
   - cleanup
