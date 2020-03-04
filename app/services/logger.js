@@ -1,6 +1,18 @@
-let logger
+const morgan = require('morgan')
 
-if (!logger) {
+module.exports = function(app) {
+  if (!this.logger) {
+    this.logger = morgan
+    app.use(morgan('combined', { // errors
+      stream: process.stderr,
+      skip: (req, res) => res.statusCode < 400
+    }))
+    app.use(morgan('combined', { // ok
+      stream: process.stdout,
+      skip: (req, res) => res.statusCode >= 400
+    }))  
+  }
+
   // const winston = require('winston')
   // logger = winston.createLogger({
   //   level: 'info',
@@ -13,6 +25,6 @@ if (!logger) {
   //     })
   //   ]
   // })
-}
 
-module.exports = logger
+  return this
+}

@@ -8,6 +8,7 @@
     - common (services, logs, etc)
     - custom based on user requirements (example-app)
   - switch app builds based on settings in /app/package.json config.app property
+  - improve error handling using error handler middleware (see /api/error endpoint)
   - clean up auth, add groups to JWT and others, also affects frontend
   - logging using morgan only, no winston, console.log is sufficient (also see https://12factor.net/)
   - add file upload to GCP storage using signed Urls (alternative vendors include AWS S3 or Azure Storage)

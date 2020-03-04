@@ -2,6 +2,8 @@ const fs = require('fs')
 
 const KNEXFILE = require('../knexfile')
 
+const FIREBASE_KEY = '' // require('./firebase.key.json') || ''
+
 const JWT_CERTS_PATH = process.env.JWT_CERTS_PATH || './example-app/certs/jwt' // RS256
 const HTTPS_CERTS_PATH = process.env.HTTPS_CERTS_PATH || ''
 
@@ -56,6 +58,9 @@ module.exports = {
 
   // KNEX DB 
   KNEXFILE,
+
+  // FIREBASE SERVICE ACCOUNT
+  FIREBASE_KEY,
 
   // Github
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || '', // verify a github token

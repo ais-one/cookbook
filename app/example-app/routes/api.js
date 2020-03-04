@@ -2,13 +2,14 @@ const fs = require('fs')
 const express = require('express')
 const apiRoutes = express.Router()
 
+
 // var path = require('path')
 // path.extname('index.html')
 // returns '.html'
 
-const { bucket } = require('../../services/firebase')
+const { UPLOAD_PATH, FIREBASE_KEY } = require('../config')
 
-const { UPLOAD_PATH } = require('../config')
+const firebase = FIREBASE_KEY ? require('../../services/firebase') : null
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
 const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
@@ -27,6 +28,9 @@ const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration
 apiRoutes
   .get('/upload-firebase/:filename', async (req,res) => { // for an error - test logging of errors
     try {
+      if (!firebase) return res.status(500).json({ e: 'No Firebase Service' })
+      const { bucket } = firebase
+
       // need to allow CORS...
       // try {
       //   const xx = await bucket.setCorsConfiguration([{
@@ -60,30 +64,30 @@ apiRoutes
       res.status(500).json({ e: e.toString() })
     }
   })
-  .get('/error', async (req,res) => { // for an error - test logging of errors
+
+  .get('/error', async (req,res,next) => { // for an error - test logging of errors
     try {
       req.something.missing = 10
-      res.status(200).json({ message: 'OK' })
+      res.json({ message: 'OK' })
     } catch (e) {
-      const { message, stack } = e
-      console.error(stack)
-      res.status(500).json({ message })
+      next([520, e]) // test using a cloudflare error code for fun
     }
   })
+
   /**
    * @swagger
-   * /api/authors:
+   * /api/health:
    *    post:
    *      tags:
    *        - "Base"
    *      description: Health check
    */
   .get('/health', async (req,res) => { // health check
-    res.status(200).json({ message: 'OK' })
+    res.json({ message: 'OK' })
   })
   /**
    * @swagger
-   * /api/authors:
+   * /api/health-auth:
    *    post:
    *      tags:
    *        - "Base"
@@ -92,16 +96,16 @@ apiRoutes
    *      description: Health check with authorization
    */
   .get('/health-auth', authUser, async (req,res) => { // health check auth
-    res.status(200).json({ message: 'OK' })
+    res.json({ message: 'OK' })
   })
   // test uploads
   .post('/upload', upload.single('avatar'), async (req,res) => { // avatar is form input name
     console.log(req.file, req.body)
-    res.status(200).json({ message: 'Uploaded' })
+    res.json({ message: 'Uploaded' })
   })
   .post('/uploads', upload.array('photos', 3), (req, res, next) => {
     console.log(req.files)
-    res.status(200).json({ message: 'Uploaded' })
+    res.json({ message: 'Uploaded' })
     // req.files is array of `photos` files
     // req.body will contain the text fields, if there were any
   })
