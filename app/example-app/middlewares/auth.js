@@ -72,9 +72,15 @@ const authUser = async (req, res, next) => {
   } catch (e) {
     console.log('authUser', e.toString())
   }
-  return res.status(401).json({ message: 'Error in token' })
+  return res.status(401).json({ e: 'Error in token' })
+}
+
+const authIsAdmin = async (req, res, next) => {
+  if (req.decoded.groups === 'admin') next()
+  else res.status(401).json({ e: 'Not Allowed' })
 }
 
 module.exports = {
-  authUser
+  authUser,
+  authIsAdmin
 }

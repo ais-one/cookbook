@@ -2,7 +2,7 @@
   "name": "app",
   "description": "Backend application",
   "config": {
-    "app": "example-app"
+    "app": "viow"
   },
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app%/web/spa && npm i && cd ../ssr && npm i",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@keyv/redis": "^2.1.0",
-    "apollo-server-express": "^2.10.1",
+    "apollo-server-express": "^2.11.0",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -49,7 +49,7 @@
   },
   "devDependencies": {
     "concurrently": "^5.1.0",
-    "cross-env": "^7.0.0",
+    "cross-env": "^7.0.1",
     "eslint": "^6.8.0",
     "eslint-plugin-promise": "^4.2.1",
     "jest": "^25.1.0",
