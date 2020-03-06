@@ -14,7 +14,6 @@ require('../services/swagger')(app)
 
 apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
 
-app.set('trust proxy', true) // true if behind proxy, false if direct connect... You now can get IP from req.ip, req.ips
 require('../services/parser')(app)
 app.use('/uploads', express.static('uploads')) // need to create the folder uploads
 
