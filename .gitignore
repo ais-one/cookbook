@@ -34,7 +34,7 @@ yarn-error.log*
 # local env files - allow this in our opensource project
 # .env
 
-app/viow
-app/vtms
-app/ahop2
-app/ms
+viow/
+vtms/
+ahop2/
+ms/

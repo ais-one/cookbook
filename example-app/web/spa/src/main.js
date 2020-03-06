@@ -8,16 +8,16 @@ import router from './router'
 import App from './App'
 
 import vuetify from './plugins/vuetify'
-import VueCrudX from '../../../../../common-ui/VueCrudX' // Vuetify
-import TimePicker from '../../../../../common-ui/TimePicker.vue'
-import DatePicker from '../../../../../common-ui/DatePicker.vue'
-import FileUpload from '../../../../../common-ui/FileUpload.vue'
+import VueCrudX from '../../../../common-ui/VueCrudX' // Vuetify
+import TimePicker from '../../../../common-ui/TimePicker.vue'
+import DatePicker from '../../../../common-ui/DatePicker.vue'
+import FileUpload from '../../../../common-ui/FileUpload.vue'
 
 import { apolloClient } from './graphql'
 import VueApollo from 'vue-apollo'
 import { DO_HELLO } from './queries'
 
-import VueCrudA from '../../../../../common-ui/VueCrudA' // Ant design
+import VueCrudA from '../../../../common-ui/VueCrudA' // Ant design
 import { Button, Table, Form, Input } from 'ant-design-vue'
 
 Vue.use(Button) // ant design stuff

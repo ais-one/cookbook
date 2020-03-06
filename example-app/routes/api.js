@@ -70,6 +70,7 @@ apiRoutes
       req.something.missing = 10
       res.json({ message: 'OK' })
     } catch (e) {
+      console.log('/error', e)
       next([520, e]) // test using a cloudflare error code for fun
     }
   })

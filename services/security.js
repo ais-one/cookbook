@@ -1,5 +1,6 @@
 module.exports = function(app) {
   // const helmet = require('helmet')
+  // app.use(helmet.noCache())
 
   // RATE-LIMIT
   // const redisClient = require('redis').createClient();

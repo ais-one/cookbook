@@ -15,7 +15,7 @@
 - /app/example-app/web folder hosts frontend examples spa, ssr
   - update user replace loginType with groups (ADFS SAML claims, etc), improve on permissions handling
   - avoid single vendor lockin - remove mongo switch and firebase
-- /common-ui (components for user interface, including the vue-crud-x library)
+- /app/common-ui (components for user interface, including the vue-crud-x library)
 - [Work-in-progress]
   - cleanup
   - /app

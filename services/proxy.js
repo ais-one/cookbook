@@ -14,7 +14,14 @@ module.exports = function (app, express) {
   } else {
     if (WWW_SERVE) {
       app.use(history()) // causes problems when using postman - set header accept application/json in postman
+      
+      // TBD WEBROOT_FOLDER=public
+      // TBD WEBROOT_PATH=public
       app.use(express.static('public')) // for serving static content
+      // TBD  WEBSCRIPTS_FOLDER=../js
+      // TBD  WEBSCRIPTS_PATH=/js - <protocol>://<ip><:port>/js
+      // app.use('/js', express.static('../bbb'))
+
     }
     app.use("*", async (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
   }

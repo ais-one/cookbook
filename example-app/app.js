@@ -11,7 +11,6 @@ require('../services/logger')(app) // use as early as possible
 require('../services/cors')(app)
 require('../services/security')(app)
 require('../services/swagger')(app)
-
 apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
 
 require('../services/parser')(app)
@@ -29,6 +28,7 @@ const pageRoutes = require('./routes/page')
 
 app.use('/api', authRoutes, apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
 require('../services/proxy')(app, express) //require after routes setup
+require('../services/error')(app)
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -54,4 +54,6 @@ console.log(`🚀 GraphQL Server ready at ${apollo.graphqlPath}`)
 console.log(`🚀 GraphQL Subscriptions ready at ${apollo.subscriptionsPath}`)  
 const wss = require('../services/websocket').open((err) => console.log(err || 'WS API OPEN OK')) // or set to null
 
-module.exports = { server, wss, app }
+// TBD add db, and anything need tear-down etc
+require('../services/exit')(server, wss)
+module.exports = { server }

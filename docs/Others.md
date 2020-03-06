@@ -67,3 +67,64 @@ module.exports = function(config) {
 var myModule = require('./module.js')(config)
 myModule.myMethod() // Prints 'Has access to this'
 ```
+
+
+
+
+
+# NodeJS
+
+## App Design Considerations
+
+https://12factor.net/
+
+https://blog.heroku.com/best-practices-nodejs-errors
+
+https://googleapis.dev/nodejs/logging-winston/latest/index.html
+
+https://www.coreycleary.me/should-you-use-a-logging-framework-or-console-log-in-node/
+
+
+Always Learning. Always Work In Progress
+
+> https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198026?start=0
+> https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198028?start=0
+> https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198030?start=0
+
+## Do in application or hand-off to 3rd party
+
+### Logging
+- Winston? Morgan? Pino? Bunyan?
+- APM - Appdynamics (How much work do you want to offload)
+
+## Proxying, Compression, Rate-Limiting
+- use http-proxy-middleware, express-rate-limit, express-slow-down
+- or use Nginx / Apache, or API gateway
+
+## Security
+
+### Express Libraries For Security
+- helmet (to configure)
+- url-regex, path-to-regexp (to filter paths)
+
+### JWT, HTTPONLY REFRESH TOKEN
+- auto refresh
+- revokable (requires state)
+- support HttpOnly cookies
+
+### CORS
+- support cross origin requests
+
+
+## SCALING & DEPLOYMENT
+
+TBD
+
+## Libraries Of Note
+
+qrcode
+cron
+ioredis
+uuid
+csurf
+helmet

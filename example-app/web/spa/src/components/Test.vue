@@ -19,8 +19,8 @@
 
 <script>
 import { http } from '@/axios'
-import DrawingCanvas from '../../../../../../common-ui/DrawingCanvas'
-import WebCam from '../../../../../../common-ui/WebCam'
+import WebCam from '../../../../../common-ui/WebCam'
+import DrawingCanvas from '../../../../../common-ui/DrawingCanvas'
 
 export default {
   components: {

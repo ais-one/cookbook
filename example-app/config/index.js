@@ -1,5 +1,6 @@
 const fs = require('fs')
 
+console.log('TEST_ENV=',process.env.TEST_ENV)
 const KNEXFILE = require('../knexfile')
 
 const FIREBASE_KEY = '' // require('./firebase.key.json') || ''
