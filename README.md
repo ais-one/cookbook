@@ -69,7 +69,7 @@ Other design considerations :
 
 ```bash
 git clone https://github.com/ais-one/vue-crud-x.git
-cd vue-crud-x/app
+cd vue-crud-x
 npm run install-libs
 npm run install-db
 npm run dev:spa
@@ -143,7 +143,7 @@ vue-crud-x
 ```
 
 
-## [example-spa](https://github.com/ais-one/vue-crud-x/tree/master/web/example-spa)
+## [spa](https://github.com/ais-one/vue-crud-x/tree/master/example-app/web/spa)
 
 **Best for quick start** - Please use this to try things out. Everything runs locally
 
@@ -158,7 +158,7 @@ Recipes for a production-ready SPA:
       - setup with USE_OTP=GA in environement files of both the front and backend
       - Check DB seeders for the API key to use, or you can find out how to generate your own
 - rxJs for cleaner code (auto-complete, debounce, fetch latest)
-- Serverless / (BaaS)
+- **[REMOVED]** Serverless / (BaaS)
   - Mongo stitch ([setup](docs/MongoStitch.md))
     - login & auth, simple query 
   - Firebase ([setup](docs/Firebase.md))
@@ -168,9 +168,9 @@ Recipes for a production-ready SPA:
   - Image capture via webcam
   - Signature capture on canvas
 
-## [backend](https://github.com/ais-one/vue-crud-x/tree/master/app)
+## [backend](https://github.com/ais-one/vue-crud-x/tree/master)
 
-Recipes for a production-ready Express server used by **example-spa** and **example-ssr**:
+Recipes for a production-ready Express server used by **example-app/web/spa** and **example-app/web/ssr**:
 - ObjectionJS
   - Sample SQL DB with 1-1, 1-m, m-n use cases, transactions, migrations, seeders,
   - Supports SQLite, MySQL, MariaDB, Postgres, MSSQL
@@ -192,7 +192,7 @@ Recipes for a production-ready Express server used by **example-spa** and **exam
 - Message queues (in progress)
 
 
-## [example-ssr](https://github.com/ais-one/vue-crud-x/tree/master/web/example-ssr)
+## [ssr](https://github.com/ais-one/vue-crud-x/tree/master/example-app/web/ssr)
 
 Recipes for a production-ready Nuxt static sites. Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes:
 - nuxt-auth (removed, use from example-spa instead due to... lack of refresh token, and possibly lack of httponly token capability - as at time of writing 21-11-2019)
@@ -278,7 +278,7 @@ npm i vue-crud-x
 
 ## Option 2 Use the source file
 
-Just copy the **web/common/VueCrudX.vue** file into your project and include it as a component
+Just copy the **common-ui/VueCrudX.vue** file into your project and include it as a component
 
 ## Option 3 Build and Install
 
@@ -287,7 +287,7 @@ If you ever need to build this library from source...
 1. Go to the Vue-Crud-X project folder
 
 ```bash
-cd web/common/
+cd common-ui
 ```
 
 2. Install dependencies
@@ -350,19 +350,19 @@ Do not add to app object because app is not global and needs to be exported for 
 
 Refer to **example-app/config/index.js**
 
-If there are many config variables, you can split it up into other folders and files in the **app/example-app/config** folder
+If there are many config variables, you can split it up into other folders and files in the **example-app/config** folder
 
-You can override the configuraions using .env.[NODE_ENV] files, e.g. .env.development or .env.production in **app/example-app**
+You can override the configuraions using .env.[NODE_ENV] files, e.g. .env.development or .env.production in **example-app**
 
 ### Making your own backend custom app
 
-You can create your own folder with your custom app, **app/another-example-app-project**
+You can create your own folder with your custom app, **another-example-app-project**
 
 Use the **example-app** as a template
 
 ### Choosing which backend custom app to run
 
-Set the application you want to run in **app/appname.js**
+Set the application you want to run in **appname.js**
 
 For example select either **example-app** or **another-example-app-project**
 

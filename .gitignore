@@ -12,7 +12,7 @@ dev.sqlite3
 .env.*
 .rnd
 
-key.json
+firebase.key.json
 id_rsa
 
 # Log files
