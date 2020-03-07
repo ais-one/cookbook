@@ -7,7 +7,7 @@ const newAuthor = require('../mock-data/new-author.json')
 
 let createdAuthorId
 let authObj = {}
-const { createToken } = require('../../../services/auth')
+const { createToken } = require('../../../common-app/auth')
 
 /*
 let firstTodo

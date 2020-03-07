@@ -41,7 +41,7 @@
 <script>
 import VueRecaptcha from 'vue-recaptcha'
 import { mapState } from 'vuex'
-import '../../../../../common-ui/vcx-loading-blocker.js'
+import '../../../../../common-web/vcx-loading-blocker.js'
 import { RECAPTCHA_KEY, GITHUB_CLIENT_ID } from '@/config'
 
 export default {

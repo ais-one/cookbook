@@ -9,7 +9,7 @@ const apiRoutes = express.Router()
 
 const { UPLOAD_PATH, FIREBASE_KEY } = require('../config')
 
-const firebase = FIREBASE_KEY ? require('../../services/firebase') : null
+const firebase = FIREBASE_KEY ? require('../../common-app/firebase') : null
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
 const upload = multer({ dest: `${UPLOAD_PATH}` }) // multer configuration

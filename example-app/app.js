@@ -7,16 +7,16 @@ const express = require('express')
 const apollo = require('./graphql')
 
 const app = express()
-require('../services/logger')(app) // use as early as possible
-require('../services/cors')(app)
-require('../services/security')(app)
-require('../services/swagger')(app)
+require('../common-app/logger')(app) // use as early as possible
+require('../common-app/cors')(app)
+require('../common-app/security')(app)
+require('../common-app/swagger')(app)
 apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
 
-require('../services/parser')(app)
+require('../common-app/parser')(app)
 app.use('/uploads', express.static('uploads')) // need to create the folder uploads
 
-// PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see services folder for saml)
+// PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see common-app folder for saml)
 
 const authRoutes = require('./routes/auth')
 const apiRoutes = require('./routes/api')
@@ -27,8 +27,8 @@ const categoryRoutes = require('./routes/category')
 const pageRoutes = require('./routes/page')
 
 app.use('/api', authRoutes, apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
-require('../services/proxy')(app, express) //require after routes setup
-require('../services/error')(app)
+require('../common-app/proxy')(app, express) //require after routes setup
+require('../common-app/error')(app)
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -52,8 +52,8 @@ if (USE_HTTPS) {
 apollo.installSubscriptionHandlers(server) // if put before server.listen, will mess with WS API
 console.log(`🚀 GraphQL Server ready at ${apollo.graphqlPath}`)
 console.log(`🚀 GraphQL Subscriptions ready at ${apollo.subscriptionsPath}`)  
-const wss = require('../services/websocket').open((err) => console.log(err || 'WS API OPEN OK')) // or set to null
+const wss = require('../common-app/websocket').open((err) => console.log(err || 'WS API OPEN OK')) // or set to null
 
 // TBD add db, and anything need tear-down etc
-require('../services/exit')(server, wss)
+require('../common-app/exit')(server, wss)
 module.exports = { server }

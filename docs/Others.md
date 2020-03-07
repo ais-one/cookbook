@@ -17,6 +17,7 @@ WSL Ubuntu
 - MongoDB
 - Redis
 - bullmq
+- agenda.js
 
 ## Google Cloud
 
@@ -78,12 +79,6 @@ myModule.myMethod() // Prints 'Has access to this'
 
 https://12factor.net/
 
-https://blog.heroku.com/best-practices-nodejs-errors
-
-https://googleapis.dev/nodejs/logging-winston/latest/index.html
-
-https://www.coreycleary.me/should-you-use-a-logging-framework-or-console-log-in-node/
-
 
 Always Learning. Always Work In Progress
 
@@ -94,11 +89,21 @@ Always Learning. Always Work In Progress
 ## Do in application or hand-off to 3rd party
 
 ### Logging
-- Winston? Morgan? Pino? Bunyan?
-- APM - Appdynamics (How much work do you want to offload)
+https://github.com/expressjs/morgan
+https://github.com/winstonjs/winston - use console.log / console.error and send to streams instead
+https://blog.heroku.com/best-practices-nodejs-errors
+https://itnext.io/nodejs-logging-made-right-117a19e8b4ce
+https://www.coreycleary.me/should-you-use-a-logging-framework-or-console-log-in-node/
+
+https://googleapis.dev/nodejs/logging-winston/latest/index.html
+
 
 ## Proxying, Compression, Rate-Limiting
-- use http-proxy-middleware, express-rate-limit, express-slow-down
+
+https://github.com/chimurai/http-proxy-middleware
+https://github.com/nfriedly/express-rate-limit
+https://github.com/nfriedly/express-slow-down
+
 - or use Nginx / Apache, or API gateway
 
 ## Security
@@ -128,3 +133,8 @@ ioredis
 uuid
 csurf
 helmet
+
+## Message Queues
+https://github.com/agenda/agenda - mongodb
+https://github.com/OptimalBits/bull - redis
+https://github.com/taskforcesh/bullmq - redis

@@ -1,5 +1,5 @@
 'use strict'
-const Model = require('../../services/database')
+const Model = require('../../common-app/database')
 
 class Author extends Model {
   // Table name is the only required property.

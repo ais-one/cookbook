@@ -99,7 +99,9 @@ The project structure is shown below
 
 ```
 vue-crud-x
-+- common-ui/ : common ui components for frontend (including vue-crud-x)
++- common/ : common components for frontend and backend
++- common-web/ : common components for frontend (including vue-crud-x)
++- common-app/ : common components for backend
 |  +- dist/ : distribution folder for CRUD component
 +- docs/ : documentation
 +- example-app
@@ -126,7 +128,6 @@ vue-crud-x
 +- <your other project folder here>: (you can use .gitignore in parent directory to hide this project)
 +- logs/
 +- public/
-+- services/
 +- uploads/
 +- .dockerignore
 +- .env.<node_env>
@@ -278,7 +279,7 @@ npm i vue-crud-x
 
 ## Option 2 Use the source file
 
-Just copy the **common-ui/VueCrudX.vue** file into your project and include it as a component
+Just copy the **common-web/VueCrudX.vue** file into your project and include it as a component
 
 ## Option 3 Build and Install
 
@@ -287,7 +288,7 @@ If you ever need to build this library from source...
 1. Go to the Vue-Crud-X project folder
 
 ```bash
-cd common-ui
+cd common-web
 ```
 
 2. Install dependencies

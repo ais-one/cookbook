@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const axios = require('axios')
 const { SALT_ROUNDS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
-const { createToken, revokeToken } = require('../../services/auth')
+const { createToken, revokeToken } = require('../../common-app/auth')
 
 const User = require('../models/User')
 

@@ -21,6 +21,7 @@
   - /app
     - long running process support such as tcp servers, MQ consumer
     - add bull or bullmq support
+    - add agenda support
   - /app/example-app/web/spa
     - ant design version
     - use only 1 material design icon library...

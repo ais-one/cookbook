@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken')
-const keyv = require('../../services/keyv')
+const keyv = require('../../common-app/keyv')
 const User = require('../models/User') // TBD to change this...
 
 const { HTTPONLY_TOKEN, JWT_ALG, JWT_EXPIRY, JWT_SECRET, JWT_REFRESH_EXPIRY } = require('../config')
 const { jwtCerts } = require('../config')
-const { createToken } = require('../../services/auth')
+const { createToken } = require('../../common-app/auth')
 
 const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
