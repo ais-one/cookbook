@@ -14,6 +14,7 @@ if (!config) {
     }
   }
   config = require('../' + APPNAME + '/config')
+  config.APPNAME = APPNAME
 }
 
 module.exports = config

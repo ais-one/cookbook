@@ -13,6 +13,7 @@ require('../common-app/swagger')(app)
 apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
 
 require('../common-app/parser')(app)
+// app.use('/uploads', express.static(config.APPNAME + '/uploads')) // need to create the folder uploads
 app.use('/uploads', express.static('uploads')) // need to create the folder uploads
 
 // PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see common-app folder for saml)

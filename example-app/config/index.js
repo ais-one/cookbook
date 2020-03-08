@@ -121,7 +121,12 @@ module.exports = {
     origin: 'http://127.0.0.1:8080' // '*'
   },
   // serve static content
-  WWW_SERVE: '', // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
+  WWW_FOLDER: 'public', // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
+  // WWW_PATH: ''
+  JS_FOLDER_1: '../common-web',
+  JS_PATH_1: '/js', // - <protocol>://<ip><:port>/js
+  JS_FOLDER_2: '../common',
+  JS_PATH_2: '/js2', // - <protocol>://<ip><:port>/js2
 
   SWAGGER_DEFS: { // Swagger / OpenAPI definitions
     info: {
