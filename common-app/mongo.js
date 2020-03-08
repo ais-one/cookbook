@@ -1,5 +1,5 @@
 // const ObjectID = require('mongodb').ObjectID
-const { MONGO_URL } = require('../'+ require('../appname') + '/config')
+const { MONGO_URL } = require('./config')
 const { MongoClient } = require('mongodb')
 
 const mongo = { client: null, db: null, session: null, stream: null }

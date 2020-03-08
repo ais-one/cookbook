@@ -159,12 +159,7 @@ Recipes for a production-ready SPA:
       - setup with USE_OTP=GA in environement files of both the front and backend
       - Check DB seeders for the API key to use, or you can find out how to generate your own
 - rxJs for cleaner code (auto-complete, debounce, fetch latest)
-- **[REMOVED]** Serverless / (BaaS)
-  - Mongo stitch ([setup](docs/MongoStitch.md))
-    - login & auth, simple query 
-  - Firebase ([setup](docs/Firebase.md))
-    - login & auth, interaction with firebase datastore & real-time update
-    - upload to firebase storage & view
+- upload to cloud provider using signed URLs
 - Other Features
   - Image capture via webcam
   - Signature capture on canvas
@@ -189,8 +184,8 @@ Recipes for a production-ready Express server used by **example-app/web/spa** an
 - GraphQL (use Apollo server)
 - File uploads
 - Unit Test & Integration Test
-- Logging (in progress)
-- Message queues (in progress)
+- Logging
+- Message queues
 
 
 ## [ssr](https://github.com/ais-one/vue-crud-x/tree/master/example-app/web/ssr)
@@ -319,9 +314,6 @@ npm pack
 # A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
 # If you want to install without saving to package.json, npm i --no-save <path-to>/vue-crud-x-?.?.?.tgz
 ```
-
-
-
 
 
 

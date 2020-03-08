@@ -1,6 +1,6 @@
 // NOTE: if --forcedExit --detectOpenHandles in JEST test, will cause error
 // TBD: testing for websockets
-const { WS_PORT, WS_KEEEPALIVE_MS, httpsCerts } = require('../'+ require('../appname') + '/config')
+const { WS_PORT, WS_KEEEPALIVE_MS, httpsCerts } = require('./config')
 let wss
 
 let onClientClose = (ws) => {

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const keyv = require('./keyv')
 
-const { JWT_ALG, JWT_SECRET, jwtCerts } = require('../'+ require('../appname') + '/config')
+const { JWT_ALG, JWT_SECRET, jwtCerts } = require('./config')
 
 // algorithm
 // expiresIn

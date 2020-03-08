@@ -1,7 +1,7 @@
 'use strict'
 const admin = require('firebase-admin')
 
-const  { FIREBASE_KEY } = require('../'+ require('../appname') + '/config')
+const  { FIREBASE_KEY } = require('./config')
 
 if (admin.apps.length === 0 && FIREBASE_KEY) {
   console.log('Init Firebase')

@@ -6,7 +6,7 @@
 
 module.exports = function (app) {
   const cors = require('cors')
-  const  { CORS_OPTIONS } = require('../'+ require('../appname') + '/config')
+  const  { CORS_OPTIONS } = require('./config')
   app.use(CORS_OPTIONS ? cors(CORS_OPTIONS) : cors())
   return this
 }

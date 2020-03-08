@@ -2,7 +2,7 @@ const history = require('connect-history-api-fallback')
 const proxy = require('http-proxy-middleware')
 
 module.exports = function (app, express) {
-  const  { PROXY_WWW_ORIGIN, WWW_SERVE } = require('../'+ require('../appname') + '/config')
+  const  { PROXY_WWW_ORIGIN, WWW_SERVE } = require('./config')
   if (PROXY_WWW_ORIGIN && !WWW_SERVE) {
     app.set('trust proxy', true) // true if behind proxy, false if direct connect... You now can get IP from req.ip, req.ips
     app.use('*', proxy({

@@ -1,15 +1,9 @@
-/**
- * TODO(developer): Uncomment the following lines before running the sample.
- */
-// const bucketName = 'Name of a bucket, e.g. my-bucket';
-// const fileName = 'File to access, e.g. file.txt';
-
 // Imports the Google Cloud client library
 const {Storage} = require('@google-cloud/storage');
 
 // Creates a client
 const storage = new Storage(
-    require('./serviceAccountKey.json')
+    require('./serviceAccountKey.json') // use correct account key
 )
 
 async function generateV4USignedUrl(bucketName, fileName, action = 'write') { // read action

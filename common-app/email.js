@@ -1,4 +1,4 @@
-const  { SENDGRID_KEY } = require('../'+ require('../appname') + '/config')
+const  { SENDGRID_KEY } = require('./config')
 
 // Sendgrid, Mailgun
 

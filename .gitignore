@@ -14,6 +14,7 @@ dev.sqlite3
 
 firebase.key.json
 id_rsa
+sandbox
 
 # Log files
 npm-debug.log*

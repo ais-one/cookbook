@@ -1,35 +1,28 @@
 ### Version 0.3.0
 - update packages
 - re-architect for better scalability - able to use as base for multiple full-stack applications
-- /backend
-  - /backend renamed as /app
-- /app
-  - internal folders are reorganized...
-    - common (services, logs, etc)
-    - custom based on user requirements (example-app)
-  - switch app builds based on settings in /app/package.json config.app property
+- /backend moved to /, folders are reorganized... refer to README.md Project Structure for more details
+- backend
+  - switch app builds based on settings in /package.json config.app property
   - improve error handling using error handler middleware (see /api/error endpoint)
   - clean up auth, add groups to JWT and others, also affects frontend
   - logging using morgan only, no winston, console.log is sufficient (also see https://12factor.net/)
   - add file upload to GCP storage using signed Urls (alternative vendors include AWS S3 or Azure Storage)
-- /app/example-app/web folder hosts frontend examples spa, ssr
+- frontend /example-app/web folder hosts examples for SPA, SSR
   - update user replace loginType with groups (ADFS SAML claims, etc), improve on permissions handling
-  - avoid single vendor lockin - remove mongo switch and firebase
-- /app/common-ui (components for user interface, including the vue-crud-x library)
+  - avoid single vendor lock in - remove mongo switch and firebase
 - [Work-in-progress]
   - cleanup
-  - /app
+  - backend
     - long running process support such as tcp servers, MQ consumer
-    - add bull or bullmq support
-    - add agenda support
-  - /app/example-app/web/spa
+    - add bull, bullmq or agenda support
+  - frontend
     - ant design version
-    - use only 1 material design icon library...
     - research for e2e framework agnostic test util for frontend
   - others
     - CI / CD (work on SSH, Docker deployments, etc...)
 - [low-priority]
-  - /app
+  - backend
     - replace multer with busboy or formidable?
     - research websocket testing, improve coverage
     - research auto generated REST API and Testing (keep in view dredd.io)

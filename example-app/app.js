@@ -1,12 +1,11 @@
 'use strict'
+const config = require('../common-app/config') //  first thing to include
 const http = require('http')
 const https = require('https')
-const { USE_HTTPS, httpsCerts } = require('./config')
-
 const express = require('express')
 const apollo = require('./graphql')
-
 const app = express()
+
 require('../common-app/logger')(app) // use as early as possible
 require('../common-app/cors')(app)
 require('../common-app/security')(app)
@@ -42,6 +41,7 @@ require('../common-app/error')(app)
 //   // return res.send("Hello from Firebase!")
 // })
 
+const { USE_HTTPS, httpsCerts } = config 
 let server
 if (USE_HTTPS) {
   server = https.createServer(httpsCerts, app)
