@@ -1,8 +1,9 @@
 const history = require('connect-history-api-fallback')
 const proxy = require('http-proxy-middleware')
+const path = require('path')
 
 module.exports = function (app, express) {
-  const  { PROXY_WWW_ORIGIN, WWW_FOLDER, JS_PATH_1, JS_FOLDER_1, JS_PATH_2, JS_FOLDER_2 } = require('./config')
+  const  { PROXY_WWW_ORIGIN, WWW_FOLDER, JS_URL_1, JS_FOLDER_1, JS_URL_2, JS_FOLDER_2, APPNAME } = require('./config')
   if (PROXY_WWW_ORIGIN && !WWW_FOLDER) {
     app.set('trust proxy', true) // true if behind proxy, false if direct connect... You now can get IP from req.ip, req.ips
     app.use('*', proxy({
@@ -14,12 +15,12 @@ module.exports = function (app, express) {
   } else {
     if (WWW_FOLDER) {
       app.use(history()) // causes problems when using postman - set header accept application/json in postman
-      
-      app.use(express.static(WWW_FOLDER)) // for serving static content
-      app.use(JS_PATH_1, express.static(JS_FOLDER_1))
-      app.use(JS_PATH_2, express.static(JS_FOLDER_2))
-      // app.use('/static', express.static(path.join(__dirname, 'public')))
-
+      // const appPath = path.join(__dirname, '..', APPNAME)
+      // console.log(appPath)
+      const appParent = path.join(__dirname, '..')
+      app.use(express.static(appParent + '/' + APPNAME + '/' + WWW_FOLDER))
+      app.use(JS_URL_1, express.static(appParent + '/' + JS_FOLDER_1))
+      app.use(JS_URL_2, express.static(appParent + '/' + JS_FOLDER_2))
     }
     app.use("*", async (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
   }

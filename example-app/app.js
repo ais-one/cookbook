@@ -1,5 +1,6 @@
 'use strict'
 const config = require('../common-app/config') //  first thing to include
+const path = require('path')
 const http = require('http')
 const https = require('https')
 const express = require('express')
@@ -13,8 +14,10 @@ require('../common-app/swagger')(app)
 apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
 
 require('../common-app/parser')(app)
-// app.use('/uploads', express.static(config.APPNAME + '/uploads')) // need to create the folder uploads
-app.use('/uploads', express.static('uploads')) // need to create the folder uploads
+
+// Upload URL, Should use Signed URL and get from cloud storage instead
+const { UPLOAD_URL, UPLOAD_FOLDER } = config 
+app.use(UPLOAD_URL, express.static(path.join(__dirname, UPLOAD_FOLDER)))
 
 // PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see common-app folder for saml)
 

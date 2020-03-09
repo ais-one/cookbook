@@ -1,17 +1,13 @@
 let Model
 
 if (!Model) {
-  // const { NODE_ENV, KNEXFILE } = require('../'+ require('../appname') + '/config')
-
   const { NODE_ENV, KNEXFILE } = require('./config')
-
   const Knex = require('knex')
-
   const config = { ...KNEXFILE[NODE_ENV] }
-  // kludge for sqlite file connection
-  if (config.client === 'sqlite3') {
-    config.connection.filename = './' + require('../appname') + config.connection.filename.substring(1)
-  }
+  // kludge for sqlite file connection - TOREMOVE
+  // if (config.client === 'sqlite3') {
+  //   config.connection.filename = './' + require('../appname') + config.connection.filename.substring(1)
+  // }
   Model = require('objection').Model
   const knexConnection = Knex(config)
   Model.knex(knexConnection)

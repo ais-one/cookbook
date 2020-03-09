@@ -1,21 +1,19 @@
 const fs = require('fs')
+const path = require('path')
 
 console.log('TEST_ENV=',process.env.TEST_ENV)
 const KNEXFILE = require('../knexfile')
 
 const FIREBASE_KEY = '' // require('./firebase.key.json') || ''
 
-const JWT_CERTS_PATH = process.env.JWT_CERTS_PATH || './example-app/certs/jwt' // RS256
-const HTTPS_CERTS_PATH = process.env.HTTPS_CERTS_PATH || ''
+const JWT_CERT = process.env.JWT_CERT || path.join(__dirname, 'certs/jwt') // RS256
+const HTTPS_CERT = process.env.HTTPS_CERT || ''
 
 let jwtCerts
 let httpsCerts
 
-// console.log('HTTPS_CERTS_PATH: ', HTTPS_CERTS_PATH)
-// console.log('JWT_CERTS_PATH: ', JWT_CERTS_PATH)
-
-if (!httpsCerts && HTTPS_CERTS_PATH) httpsCerts = (HTTPS_CERTS_PATH) ? { key: fs.readFileSync(`${HTTPS_CERTS_PATH}.key`), cert: fs.readFileSync(`${HTTPS_CERTS_PATH}.crt`) } : null
-if (!jwtCerts && JWT_CERTS_PATH) jwtCerts = (JWT_CERTS_PATH) ? { key: fs.readFileSync(`${JWT_CERTS_PATH}.key`), cert: fs.readFileSync(`${JWT_CERTS_PATH}.crt`) } : ''
+if (!jwtCerts && JWT_CERT) jwtCerts = { key: fs.readFileSync(`${JWT_CERT}.key`), cert: fs.readFileSync(`${JWT_CERT}.crt`) }
+if (!httpsCerts && HTTPS_CERT) httpsCerts = { key: fs.readFileSync(`${HTTPS_CERT}.key`), cert: fs.readFileSync(`${HTTPS_CERT}.crt`) }
 
 // config.js
 // empty string, false or null means not available or used
@@ -122,11 +120,16 @@ module.exports = {
   },
   // serve static content
   WWW_FOLDER: 'public', // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
-  // WWW_PATH: ''
-  JS_FOLDER_1: '../common-web',
-  JS_PATH_1: '/js', // - <protocol>://<ip><:port>/js
-  JS_FOLDER_2: '../common',
-  JS_PATH_2: '/js2', // - <protocol>://<ip><:port>/js2
+  // WWW_PATH: '' // NOT USED
+  JS_FOLDER_1: 'common-web',
+  JS_URL_1: '/js', // - <protocol>://<ip><:port>/js
+  JS_FOLDER_2: 'common',
+  JS_URL_2: '/js2', // - <protocol>://<ip><:port>/js2
+
+  UPLOAD_URL: '/uploads',
+  UPLOAD_FOLDER: 'uploads/',
+  // File Uploads
+  UPLOAD_PATH: 'uploads/', // for server uploads - // Should be relative to packsage json script folder
 
   SWAGGER_DEFS: { // Swagger / OpenAPI definitions
     info: {
@@ -151,9 +154,6 @@ module.exports = {
     consumes: ['application/json'],
     produces: ['application/json']
   },
-
-  // File Uploads
-  UPLOAD_PATH: 'uploads/', // for server uploads - // Should be relative to packsage json script folder
 
   // Role-based access control - currently not used, for future implementation
   // get role from token
