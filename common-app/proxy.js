@@ -19,8 +19,8 @@ module.exports = function (app, express) {
       // console.log(appPath)
       const appParent = path.join(__dirname, '..')
       app.use(express.static(appParent + '/' + APPNAME + '/' + WWW_FOLDER))
-      app.use(JS_URL_1, express.static(appParent + '/' + JS_FOLDER_1))
-      app.use(JS_URL_2, express.static(appParent + '/' + JS_FOLDER_2))
+      if (JS_URL_1) app.use(JS_URL_1, express.static(appParent + '/' + JS_FOLDER_1))
+      if (JS_URL_2) app.use(JS_URL_2, express.static(appParent + '/' + JS_FOLDER_2))
     }
     app.use("*", async (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
   }
