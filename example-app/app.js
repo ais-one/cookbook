@@ -14,10 +14,9 @@ require('../common-app/swagger')(app)
 apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
 
 require('../common-app/parser')(app)
-
 // Upload URL, Should use Signed URL and get from cloud storage instead
-const { UPLOAD_URL, UPLOAD_FOLDER } = config 
-app.use(UPLOAD_URL, express.static(path.join(__dirname, UPLOAD_FOLDER)))
+const { UPLOAD_URL, UPLOAD_FOLDER, APPNAME } = config
+if (UPLOAD_URL) app.use(UPLOAD_URL, express.static( path.join(__dirname, '..', APPNAME, UPLOAD_FOLDER) ))
 
 // PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see common-app folder for saml)
 

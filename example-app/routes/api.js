@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const express = require('express')
 const apiRoutes = express.Router()
 
@@ -8,11 +9,29 @@ const apiRoutes = express.Router()
 // returns '.html'
 
 const { UPLOAD_FOLDER, FIREBASE_KEY } = require('../config')
-
 const firebase = FIREBASE_KEY ? require('../../common-app/firebase') : null
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
-const upload = multer({ dest: `${UPLOAD_FOLDER}` }) // multer configuration
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) { cb(null, path.join(__dirname, '..', UPLOAD_FOLDER)) },
+  filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname) }
+})
+const upload = multer({
+  // limits: {
+  //   files : 1,
+  //   fileSize: 1000000 // size in bytes
+  // },
+  // fileFilter: (req, file, cb) => {
+  //   if (
+  //     !file.mimetype.includes("jpeg") && !file.mimetype.includes("jpg") && !file.mimetype.includes("png")
+  //   ) {
+  //     return cb(null, false, new Error("Only jpeg, png or pdf are allowed"));
+  //   }
+  //   cb(null, true);
+  // },
+  storage: storage
+})
     // console.log(req.file)
     // {
     //   fieldname: 'kycfile',
