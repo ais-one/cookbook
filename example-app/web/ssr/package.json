@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "cross-env": "^7.0.1",
+    "cross-env": "^7.0.2",
     "jwt-decode": "^2.2.0",
     "lodash.clonedeep": "^4.5.0",
     "nuxt": "^2.11.0"
