@@ -5,6 +5,8 @@ const passport = require('passport')
 const SamlStrategy = require('passport-saml').Strategy
 // const fs = require('fs')
 
+// TBD app.use(passport.initialize())
+
 passport.serializeUser(function(user, done) { done(null, user) })
 passport.deserializeUser(function(user, done) { done(null, user) })
 

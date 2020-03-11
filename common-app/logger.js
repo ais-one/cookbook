@@ -1,7 +1,8 @@
 const morgan = require('morgan')
+const { ENABLE_LOGGER=false } = require('./config')
 
 module.exports = function(app) {
-  if (!this.logger) {
+  if (!this.logger && ENABLE_LOGGER) {
     this.logger = morgan
     app.use(morgan('combined', { // errors
       stream: process.stderr,

@@ -169,6 +169,8 @@ module.exports = {
     '*': { // all others allow only GET, if this entry is not here, then more restrictive, all other routes will result in 401 error (unauthorized access)
       'GET': ['*']
     }
-  }
+  },
+
+  ENABLE_LOGGER: false
 }
 
