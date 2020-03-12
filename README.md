@@ -366,7 +366,11 @@ For example select either **example-app** or **another-example-app-project**
 1. use nodemon
 
 ```bash
-NODE_ENV=development nohup nodemon index.js > /dev/null 2>&1 &
+NODE_ENV=development nohup nodemon index.js >> /dev/null 2>&1 &
+```
+
+```kill
+ps ax | grep node | grep -v grep | awk '{print $1}' | xargs kill
 ```
 
 2. use pm2
