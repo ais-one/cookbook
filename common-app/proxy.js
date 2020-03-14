@@ -3,6 +3,8 @@ const proxy = require('http-proxy-middleware')
 const path = require('path')
 
 module.exports = function (app, express) {
+  // app.set('case sensitive routing', true)
+
   const  { PROXY_WWW_ORIGIN, WWW_FOLDER, JS_URL_1, JS_FOLDER_1, JS_URL_2, JS_FOLDER_2, APPNAME } = require('./config')
   if (PROXY_WWW_ORIGIN && !WWW_FOLDER) {
     app.set('trust proxy', true) // true if behind proxy, false if direct connect... You now can get IP from req.ip, req.ips
