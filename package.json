@@ -18,6 +18,8 @@
   "engines": {
     "node": "12"
   },
+  "type": "module",
+  "main": "index.js",
   "dependencies": {
     "@keyv/redis": "^2.1.0",
     "axios": "^0.19.2",

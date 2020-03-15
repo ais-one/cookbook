@@ -1,6 +1,7 @@
 # Create image based on the official Node 6 image from the dockerhub
-FROM node
+FROM node:12
 # node:12-alpine
+
 
 # Expose the port the app runs in
 EXPOSE 3000
@@ -15,18 +16,30 @@ EXPOSE 3001
 WORKDIR /app
 
 # Copy dependency definitions
-COPY package.json package-lock*.json ./
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+# COPY package.json package-lock*.json ./
+COPY package*.json ./
+
 
 # Install dependecies
+# If you are building your code for production
+# RUN npm ci --only=production
 RUN npm install && npm cache clean --force
 
 # Get all the code needed to run the app
-COPY . .
+# COPY . .
+COPY index.js appname.js ./
+COPY common-app common-app/
+COPY example-app example-app/
+
+# Install dependencies
+RUN cd example-app && npm install && npm cache clean --force
+
+ENV NODE_ENV development
 
 # Serve the app
 CMD ["node", "index.js"]
-
-
 
 # ENV foo /bar
 # WORKDIR ${foo}   # WORKDIR /bar
