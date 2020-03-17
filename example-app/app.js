@@ -1,6 +1,5 @@
 'use strict'
-// import { foo } from '../common/datetime'
-// console.log('foo', foo)
+
 const config = require('../common-app/config') //  first thing to include
 const path = require('path')
 const http = require('http')
@@ -21,6 +20,12 @@ const { UPLOAD_URL, UPLOAD_FOLDER, APPNAME } = config
 if (UPLOAD_URL) app.use(UPLOAD_URL, express.static( path.join(__dirname, '..', APPNAME, UPLOAD_FOLDER) ))
 
 // PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see common-app folder for saml)
+
+// mixing ES Modules into a CommonJS project
+// https://codewithhugo.com/use-es-modules-in-node-without-babel/webpack-using-esm/
+const esmImport = require('esm')(module);
+const { foo } = esmImport('../common/datetime')
+console.log(foo)
 
 const authRoutes = require('./routes/auth')
 const apiRoutes = require('./routes/api')

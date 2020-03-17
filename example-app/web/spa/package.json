@@ -23,7 +23,7 @@
     "core-js": "^3.6.4",
     "graphql": "^14.6.0",
     "graphql-tag": "^2.10.3",
-    "json2csv": "^4.5.4",
+    "json2csv": "^5.0.0",
     "jwt-decode": "^2.2.0",
     "lit-element": "^2.2.1",
     "lodash.orderby": "^4.6.0",
