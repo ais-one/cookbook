@@ -33,6 +33,7 @@ COPY index.js appname.js ./
 COPY common common/
 COPY common-app common-app/
 COPY example-app example-app/
+# COPY ["example-app", "[^example-app/web]", "example-app/"]
 
 # Install dependencies
 RUN cd example-app && npm install && npm cache clean --force

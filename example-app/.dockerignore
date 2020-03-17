@@ -1,8 +1,0 @@
-.git
-npm-debug.log
-docker-compose*.yml
-**/node_modules
-node_modules
-example-app/node_modules
-example-app/web/spa/node_modules
-example-app/web/ssr/node_modules
