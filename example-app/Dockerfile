@@ -13,7 +13,7 @@ EXPOSE 3001
 # RUN mkdir -p /usr/src/app
 
 # Change directory so that our commands run inside this new directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
 # Copy dependency definitions
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -30,6 +30,7 @@ RUN npm install && npm cache clean --force
 # Get all the code needed to run the app
 # COPY . .
 COPY index.js appname.js ./
+COPY common common/
 COPY common-app common-app/
 COPY example-app example-app/
 

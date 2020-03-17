@@ -123,7 +123,28 @@ https://github.com/nfriedly/express-slow-down
 
 ## SCALING & DEPLOYMENT
 
-TBD
+What should we consider when scaling applications
+
+1. Express Application
+- GKE, AKE
+- GCE, EC2
+- Lambda, Functions (Stateless)
+
+2. Object Storage
+- AWS S3, Google Cloud Storage, Alibaba Object Store
+
+3. Postgres
+- RDS
+
+4. MongoDB
+- Atlas
+
+5. Redis
+- Redislab
+
+6. MQ
+- Pubsub?
+
 
 ## Libraries Of Note
 
@@ -138,3 +159,14 @@ helmet
 https://github.com/agenda/agenda - mongodb
 https://github.com/OptimalBits/bull - redis
 https://github.com/taskforcesh/bullmq - redis
+
+
+
+
+## SQL
+- https://dev.to/helenanders26/sql-series-from-a-to-z-2pk9
+- https://dev.to/helenanders26/sql-series-speed-up-your-queries-with-indexes-3c83
+- https://dev.to/helenanders26/sql-series-all-about-sql-joins-15ol
+- https://dev.to/helenanders26/sql-301-why-you-need-sql-window-functions-part-1-6e1
+- https://dev.to/helenanders26/sql-301-why-you-need-sql-window-functions-part-2-2nmj
+
