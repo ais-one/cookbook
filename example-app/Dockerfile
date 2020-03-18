@@ -78,23 +78,3 @@ CMD ["node", "index.js"]
 # # Executed as powershell -command Write-Host hello
 # SHELL ["powershell", "-command"]
 # RUN Write-Host hello
-
-
-#
-# docker build -t <your username>/node-web-app .
-# OR
-# docker build -t node-web-app .
-# docker run -p 49160:8080 -d <your username>/node-web-app
-# # Print the output of your app:
-
-# # Get container ID
-# $ docker ps
-
-# # Print app output
-# $ docker logs <container id>
-
-# # Example
-# Running on http://localhost:8080
-
-# # Enter the container
-# $ docker exec -it <container id> /bin/bash

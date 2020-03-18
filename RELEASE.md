@@ -8,7 +8,7 @@
   - clean up auth, add groups to JWT and others, also affects frontend
   - logging using morgan only, no winston, console.log is sufficient (also see https://12factor.net/)
   - add file upload to GCP storage using signed Urls (alternative vendors include AWS S3 or Azure Storage)
-  - add Dockerfile see docs/Containers.md
+  - add Dockerfile see docs/Containers.md & example-app/Dockerfile & example-app/.dockerignore
 - frontend /example-app/web folder hosts examples for SPA, SSR
   - update user replace loginType with groups (ADFS SAML claims, etc), improve on permissions handling
   - avoid single vendor lock in - remove mongo switch and firebase
@@ -20,8 +20,10 @@
   - frontend
     - ant design version
     - research for e2e framework agnostic test util for frontend
+    - deployment to GCP cloud storage / Firebase Host / AWS S3
+    - deploment in container... see docs/Containers.md & example-app/Dockerfile & example-app/.dockerignore
   - others
-    - CI / CD (work on SSH, Docker deployments, etc...)
+    - CI / CD (work on SSH, etc...)
 - [low-priority]
   - backend
     - replace multer with busboy or formidable?

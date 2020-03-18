@@ -14,7 +14,7 @@ docker build -t ais-one/node-web-app:latest -f example-app/Dockerfile .
 # run the container
 docker run -p 3000:3000 -p 3001:3001 -d ais-one/node-web-app
 
-# check running process
+# check running container id
 docker ps
 
 # to check logs
@@ -27,10 +27,13 @@ To access container command line
 docker exec -it <container id> /bin/bash
 ```
 
+# docker build -t <your username>/node-web-app .
+# OR
+# docker build -t node-web-app .
+# docker run -p 49160:8080 -d <your username>/node-web-app
 
 # Example
 Running on http://localhost:3000
-
 
 docker container ls -a
 docker container rm <contianer>
@@ -43,3 +46,6 @@ docker image ls
 docker image rm <image>
 
 
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker rmi $(docker images -q)
