@@ -25,7 +25,7 @@
     "graphql-tag": "^2.10.3",
     "json2csv": "^5.0.0",
     "jwt-decode": "^2.2.0",
-    "lit-element": "^2.2.1",
+    "lit-element": "^2.3.0",
     "lodash.orderby": "^4.6.0",
     "rxjs": "^6.5.4",
     "subscriptions-transport-ws": "^0.9.16",
