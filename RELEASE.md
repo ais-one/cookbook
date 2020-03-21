@@ -9,6 +9,7 @@
   - logging using morgan only, no winston, console.log is sufficient (also see https://12factor.net/)
   - add file upload to GCP storage using signed Urls (alternative vendors include AWS S3 or Azure Storage)
   - add Dockerfile see docs/Containers.md & example-app/Dockerfile & example-app/.dockerignore
+  - add message queue example using agenda /api/mq
 - frontend /example-app/web folder hosts examples for SPA, SSR
   - update user replace loginType with groups (ADFS SAML claims, etc), improve on permissions handling
   - avoid single vendor lock in - remove mongo switch and firebase
@@ -16,7 +17,7 @@
   - cleanup
   - backend
     - long running process support such as tcp servers, MQ consumer
-    - add bull, bullmq or agenda support
+    - add bull, bullmq & kafka working example
   - frontend
     - ant design version
     - research for e2e framework agnostic test util for frontend

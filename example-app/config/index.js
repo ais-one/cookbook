@@ -161,7 +161,7 @@ module.exports = {
   // get role from token
   // only handle GET, POST, PUT, PATCH, DELETE verbs
   accessControl: {
-       '/api/authors/:id': {
+      '/api/authors/:id': {
       'GET': ['userRole', 'adminRole'], // or 'userRole,adminRole'
       'PUT,POST,DELETE': ['adminRole'] // or 'adminRole'
     },

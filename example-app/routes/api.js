@@ -4,7 +4,7 @@ const express = require('express')
 const apiRoutes = express.Router()
 
 const agenda = require('../../common-app/mq/agenda') // message queue
-
+const bull = require('../../common-app/mq/bull')
 
 // var path = require('path')
 // path.extname('index.html')
@@ -92,6 +92,18 @@ apiRoutes
     try {
       const job = await agenda.now('registration email', { email: 'abc@test.com' })
       res.json({ job, note: 'Check Server Console Log For Processed Message...' })
+    } catch (e) {
+      next([500, e]) // test using a cloudflare error code for fun
+    }
+  })
+  .get('/mq-bull', async (req,res,next) => { // test message queue
+    try {
+      if (bull) {
+        const jobOpts = { removeOnComplete: true, removeOnFail: true }
+        bull.add({ message: new Date() }, jobOpts)
+        console.log('xxx')
+      }
+      res.json({ note: 'Check Server Console Log For Processed Message...' })
     } catch (e) {
       next([500, e]) // test using a cloudflare error code for fun
     }

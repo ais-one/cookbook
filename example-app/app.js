@@ -65,6 +65,7 @@ console.log(`🚀 GraphQL Subscriptions ready at ${apollo.subscriptionsPath}`)
 const wss = require('../common-app/websocket').open((err) => console.log(err || 'WS API OPEN OK')) // or set to null
 
 const agenda = require('../common-app/mq/agenda') // add message queue
+require('../common-app/mq/bull') // add message queue
 
 // TBD add db, and anything need tear-down etc
 require('../common-app/exit')({ server, wss, agenda })
