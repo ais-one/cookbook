@@ -3,6 +3,8 @@ const path = require('path')
 const express = require('express')
 const apiRoutes = express.Router()
 
+const agenda = require('../../common-app/mq/agenda') // message queue
+
 
 // var path = require('path')
 // path.extname('index.html')
@@ -45,6 +47,8 @@ const upload = multer({
     // }
 
 apiRoutes
+
+
   .get('/upload-firebase/:filename', async (req,res) => { // for an error - test logging of errors
     try {
       if (!firebase) return res.status(500).json({ e: 'No Firebase Service' })
@@ -84,6 +88,14 @@ apiRoutes
     }
   })
 
+  .get('/mq', async (req,res,next) => { // test message queue
+    try {
+      const job = await agenda.now('registration email', { email: 'abc@test.com' })
+      res.json({ job, note: 'Check Server Console Log For Processed Message...' })
+    } catch (e) {
+      next([500, e]) // test using a cloudflare error code for fun
+    }
+  })
   .get('/error', async (req,res,next) => { // for an error - test logging of errors
     try {
       req.something.missing = 10

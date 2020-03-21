@@ -1,4 +1,3 @@
-
 let config
 if (!config) {
   const APPNAME = require('../appname')

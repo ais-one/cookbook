@@ -1,6 +1,7 @@
 const Queue = require('bull')
 const queueMarketUpdates = new Queue('market-updates', 'redis://127.0.0.1:6379')
 
+// consumer
 async function processQueueMarketUpdates(job) { // returns a promise
   const { call, data } = job.data
   if (call === 'ticker') {
@@ -15,3 +16,16 @@ async function processQueueMarketUpdates(job) { // returns a promise
 }
 
 queueMarketUpdates.process(processQueueMarketUpdates)
+
+
+// producer
+
+const Queue = require('bull')
+const queueMarketUpdates = new Queue('market-updates', 'redis://127.0.0.1:6379')
+const jobOpts = { removeOnComplete: true, removeOnFail: true }
+try {
+  queueMarketUpdates.add({ call: 'ticker', data: { now: new Date() } }, jobOpts)
+} catch (e) {
+  console.log('error', e.toString())
+}
+

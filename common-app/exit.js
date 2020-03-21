@@ -1,6 +1,9 @@
-module.exports = function (server, wss) {
-  function handleExit(signal) {
+module.exports = function ({server, wss, agenda}) {
+  async function handleExit(signal) {
     console.log(`Received ${signal}. Close my server properly.`)
+
+    if (agenda) await agenda.stop() // graceful exit for message queue - actually this should be a seperate process
+
     server.close(() => {
       console.log('Server closed.')
       // close your other stuff...

@@ -155,6 +155,8 @@ module.exports = {
     produces: ['application/json']
   },
 
+  JOB_TYPES: 'email', //  message queue job types
+
   // Role-based access control - currently not used, for future implementation
   // get role from token
   // only handle GET, POST, PUT, PATCH, DELETE verbs
