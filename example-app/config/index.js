@@ -155,7 +155,9 @@ module.exports = {
     produces: ['application/json']
   },
 
-  JOB_TYPES: 'email', //  message queue job types
+  JOB_DB: '127.0.0.1:27017/agenda-test', //  agenda message queue job types, comma seperated
+  JOB_COLLECTION: 'agendaJobs',
+  JOB_TYPES: 'email',
 
   // Role-based access control - currently not used, for future implementation
   // get role from token

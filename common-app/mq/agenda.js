@@ -2,7 +2,7 @@ let agenda
 if (!agenda) {
   const APPNAME = require('../../appname')
 
-  const  { JOB_TYPES } = require('../config')
+  const  { JOB_TYPES, JOB_DB, JOB_COLLECTION } = require('../config')
 
   const jobTypes = JOB_TYPES ? JOB_TYPES.split(',') : []
 
@@ -10,8 +10,8 @@ if (!agenda) {
  
   const connectionOpts = {
     db: {
-      address: 'localhost:27017/agenda-test',
-      collection: 'agendaJobs'
+      address: JOB_DB,
+      collection: JOB_COLLECTION
       //, options: {ssl: true}
     }
   }
