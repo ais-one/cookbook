@@ -11,4 +11,4 @@ module.exports = function (agenda) {
   })
 
   // More email related jobs
-};
+}

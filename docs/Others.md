@@ -10,29 +10,6 @@
   - nuxt-auth could not handle 2FA or refresh token so cannot be used
 
 
-## Local (without docker)
-
-WSL Ubuntu
-- SQLite
-- MongoDB
-- Redis
-- bullmq
-- agenda.js
-
-## Google Cloud
-
-0. Download and install Google Cloud SDK
-1. create project
-2. add users
-3. create service keys
-4. setup cloud storage
-5. setup Mongo Atlas on Google Cloud
-https://cloud.google.com/appengine/docs/standard/nodejs/quickstart
-https://cloud.google.com/memorystore/docs/redis
-https://www.mongodb.com/cloud/atlas
-https://cloud.google.com/pubsub/docs
-
-
 ## Node Modules Singleton
 
 ### Method 1
@@ -86,6 +63,14 @@ Always Learning. Always Work In Progress
 > https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198028?start=0
 > https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198030?start=0
 
+
+## ExpressJS Notes
+
+Do not rely on req object, e.g. putting mongo, redis, etc. objects in req as you may also need them in websockets
+
+Do not add to app object because app is not global and needs to be exported for other modules to use
+
+
 ## Do in application or hand-off to 3rd party
 
 ### Logging
@@ -121,30 +106,6 @@ https://github.com/nfriedly/express-slow-down
 - support cross origin requests
 
 
-## SCALING & DEPLOYMENT
-
-What should we consider when scaling applications
-
-1. Express Application
-- GKE, AKE
-- GCE, EC2
-- Lambda, Functions (Stateless)
-
-2. Object Storage
-- AWS S3, Google Cloud Storage, Alibaba Object Store
-
-3. Postgres
-- RDS
-
-4. MongoDB
-- Atlas
-
-5. Redis
-- Redislab
-
-6. MQ
-- Pubsub?
-
 
 ## Libraries Of Note
 
@@ -156,11 +117,9 @@ csurf
 helmet
 
 ## Message Queues
-https://github.com/agenda/agenda - mongodb
-https://github.com/OptimalBits/bull - redis
-https://github.com/taskforcesh/bullmq - redis
-
-
+- https://github.com/agenda/agenda - mongodb
+- https://github.com/OptimalBits/bull - redis
+- https://github.com/taskforcesh/bullmq - redis
 
 
 ## SQL

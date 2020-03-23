@@ -217,7 +217,6 @@ Refer to the respective projects README.md files for information on getting star
 **vue-crud-x 0.1 Article** <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Legacy Article (For Historical Reference)</a>
 
 
-
 # SAMPLE SCREENSHOTS
 
 ## Login Screen
@@ -226,14 +225,14 @@ Refer to the respective projects README.md files for information on getting star
 - Firebase (requires account setup)
 - Mongo Stitch (requires account setup)
 
-[![Screenshot](./docs/login.png)](./docs/login.png)
+[![Screenshot](./docs/images/login.png)](./docs/images/login.png)
 
 ## Table & Filter
 
 - filter
 - pagination
 
-[![Screenshot](./docs/table.png)](./docs/table.png)
+[![Screenshot](./docs/images/table.png)](./docs/images/table.png)
 
 ## Form
 
@@ -241,7 +240,7 @@ Refer to the respective projects README.md files for information on getting star
 - tags and lazy-load autocomplete
 - click button to child table
 
-[![Screenshot](./docs/form.png)](./docs/form.png)
+[![Screenshot](./docs/images/form.png)](./docs/images/form.png)
 
 ## Inline Edit
 
@@ -249,7 +248,7 @@ Refer to the respective projects README.md files for information on getting star
 - date-picker, select and other controls
 - backend is Firebase Firestore
 
-[![Screenshot](./docs/inline.png)](./docs/inline.png)
+[![Screenshot](./docs/images/inline.png)](./docs/images/inline.png)
 
 ---
 
@@ -259,82 +258,6 @@ Refer to the respective projects README.md files for information on getting star
 Refer to [docs/Release.md](docs/Release.md)
 
 ---
-
-# Building The Library (OPTIONAL: Read this if you wish to maintain own fork)
-
-## Option 1 Use NPM package
-
-Install it as an NPM package and import it
-
-```bash
-# Version 0.1.X
-npm i ais-one/vue-crud-x#v1 --save
-
-# Version 0.2+
-npm i vue-crud-x
-```
-
-## Option 2 Use the source file
-
-Just copy the **common-web/VueCrudX.vue** file into your project and include it as a component
-
-## Option 3 Build and Install
-
-If you ever need to build this library from source...
-
-1. Go to the Vue-Crud-X project folder
-
-```bash
-cd common-web
-```
-
-2. Install dependencies
-
-```bash
-npm i
-```
-
-2. Build project (using vue-cli)
-
-```bash
-npm run build
-```
-
-The build output can be found in the **dist** folder
-
-
-3. Publish to npm (only for repo owner)
-
-```bash
-npm publish
-```
-
-4. Or build as local package vue-crud-x
-
-```bash
-npm pack
-# A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
-# If you want to install without saving to package.json, npm i --no-save <path-to>/vue-crud-x-?.?.?.tgz
-```
-
----
-
-## DEPLOYMENT NOTES
-
-ExpressJS Server
-
-Commands:
-    see package.json
-
-Config Files
-    example-app/config/.env.development
-    example-app/config/.env.production
-    example-app/config/index.js
-
-Do not rely on req object, e.g. putting mongo, redis, etc. objects in req as you may also need them in websockets
-
-Do not add to app object because app is not global and needs to be exported for other modules to use
-
 
 ## Configuration
 
@@ -358,26 +281,17 @@ The configuration value is passed into **appname.js**
 
 The default is set to **example-app** you can change it to your own project name
 
+# Deployment And Scaling
 
-# Deployment
+See [docs/deployment.md](docs/deployment.md)
 
-## Running on VM (eg. Droplet / EC2 / GCE)
+## Deployment on VM
 
-### nodemon
+See [docs/vm.md](docs/vm.md)
 
-```bash
-NODE_ENV=development nohup node index.js >> /dev/null 2>&1 &
-```
+## Deployment on Container
 
-```kill
-ps ax | grep 'node index.js' | grep -v grep | awk '{print $1}' | xargs kill
-```
+See [docs/container.md](docs/container.md)
 
-### use pm2
+And [example-app/Dockerfile](example-app/Dockerfile)
 
-See example-app/ecosystem.config.js
-
-
-## Running on container
-
-See example-app/Dockerfile
