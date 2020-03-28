@@ -18,6 +18,13 @@ module.exports = function ({server, wss, agenda}) {
     })
   }
 
+  process.on('unhandledRejection', (reason, promise) => {
+    console.log('Unhandled Rejection at:', reason.stack || reason)
+    // Recommended: send the information to sentry.io
+    // or whatever crash reporting service you use
+  })
+  process.on('error', (err) => { console.log('xxxxxxxxxxxxxxxxx', err) })
+
   process.on('SIGINT', handleExit)
   process.on('SIGQUIT', handleExit)
   process.on('SIGTERM', handleExit)
