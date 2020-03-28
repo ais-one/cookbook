@@ -14,7 +14,9 @@ Well... what started as a CRUD component for VueJS has grown to a full-stack app
 
 # NOTICES & UPDATES
 
-Latest Version [0.3.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.0) - Released 2020 February 28 2245 +8GMT
+Latest Version [0.3.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.0) - Released 2020 March 28 1630 +8GMT
+
+**vue-crud-x 0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
 
 **vue-crud-x 0.2+** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
@@ -32,9 +34,9 @@ Latest Version [0.3.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.0)
 
 1. As little technical debt as possible
 2. Ease of maintenance and updates
-3. Scalable in terms of application use cases
-4. Scalable in terms of traffic and load
-5. Ease of build, test, deployment, CI/CD, etc.
+3. Scalable in terms of application use cases (from v0.3 onwards)
+4. Scalable in terms of traffic and load (in progress)
+5. Ease of build, test, deployment, CI/CD, etc. (in progress)
 
 ## CRUD Unique Selling Points
 
