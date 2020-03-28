@@ -6,9 +6,21 @@ const apiRoutes = express.Router()
 const agenda = require('../../common-app/mq/agenda') // message queue
 const bull = require('../../common-app/mq/bull')
 
-// var path = require('path')
+// const path = require('path')
 // path.extname('index.html')
 // returns '.html'
+
+// req.file / req.files[index]
+// {
+//   fieldname: 'kycfile',
+//   originalname: 'tbd.txt',
+//   encoding: '7bit',
+//   mimetype: 'text/plain',
+//   destination: 'uploads/',
+//   filename: 'kycfile-1582238409067',
+//   path: 'uploads\\kycfile-1582238409067',
+//   size: 110
+// }
 
 const { UPLOAD_FOLDER, FIREBASE_KEY } = require('../config')
 const firebase = FIREBASE_KEY ? require('../../common-app/firebase') : null
@@ -20,6 +32,7 @@ const memoryUpload = multer({
     files : 1,
     fileSize: 5000 // size in bytes
   },
+  // fileFilter,
   storage: multer.memoryStorage()
 })
 
@@ -41,22 +54,9 @@ const upload = multer({
     filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname) }
   })
 })
-    // console.log(req.file)
-    // {
-    //   fieldname: 'kycfile',
-    //   originalname: 'tbd.txt',
-    //   encoding: '7bit',
-    //   mimetype: 'text/plain',
-    //   destination: 'uploads/',
-    //   filename: 'kycfile-1582238409067',
-    //   path: 'uploads\\kycfile-1582238409067',
-    //   size: 110
-    // }
 
 apiRoutes
-
-
-  .get('/upload-firebase/:filename', async (req,res) => { // for an error - test logging of errors
+  .get('/upload-firebase/:filename', async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
     try {
       if (!firebase) return res.status(500).json({ e: 'No Firebase Service' })
       const { bucket } = firebase
@@ -98,8 +98,10 @@ apiRoutes
   .get('/mq', async (req,res,next) => { // test message queue
     try {
       const job = await agenda.now('registration email', { email: 'abc@test.com' })
+      console.log('Agenda Pub')
       res.json({ job, note: 'Check Server Console Log For Processed Message...' })
     } catch (e) {
+      console.log('Agenda Pub Exception')
       next([500, e]) // test using a cloudflare error code for fun
     }
   })
@@ -108,7 +110,9 @@ apiRoutes
       if (bull) {
         const jobOpts = { removeOnComplete: true, removeOnFail: true }
         bull.add({ message: new Date() }, jobOpts)
-        console.log('xxx')
+        console.log('Bull Pub')
+      } else {
+        console.log('No Bull MQ configured')
       }
       res.json({ note: 'Check Server Console Log For Processed Message...' })
     } catch (e) {

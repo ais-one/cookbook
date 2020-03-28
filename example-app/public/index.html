@@ -15,6 +15,11 @@
     <li><a href="#" onclick="makeError()">Test Express Server Error Handler</a></li>
     <li><a href="#" onclick="makeCrash()">Crash Express Server</a></li>  
   </ul>
+  <li>Demo Message Queues</li>
+  <ul>
+    <li><a href="#" onclick="mq()">Test Agenda Message Queue (requires MongoDB, and need to be enabled - see config.js)</a></li>
+    <li><a href="#" onclick="mqBull()">Test Bull v3 Message Queue (requires Redis, and need to be enabled - see config.js)</a></li>
+  </ul>
   <li>Express Samples</li>
   <ul>
     <li><a href="/upload.html">FILE UPLOAD</a></li>
@@ -44,6 +49,25 @@
   async function makeCrash() {
     try {
       const res = await fetch('/api/crash', { method: 'GET' })
+      const rv = await res.json()
+      console.log(rv)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  async function mq() {
+    try {
+      const res = await fetch('/api/mq', { method: 'GET' })
+      const rv = await res.json()
+      console.log(rv)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  async function mqBull() {
+    try {
+      const res = await fetch('/api/mq-bull', { method: 'GET' })
       const rv = await res.json()
       console.log(rv)
     } catch (e) {

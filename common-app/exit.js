@@ -23,7 +23,14 @@ module.exports = function ({server, wss, agenda}) {
     // Recommended: send the information to sentry.io
     // or whatever crash reporting service you use
   })
-  process.on('error', (err) => { console.log('xxxxxxxxxxxxxxxxx', err) })
+
+  // comment below and application will crash
+  process.on('uncaughtException', err => {
+    console.log('If you do not process uncaughtException, application will crash')
+    console.log(`Uncaught Exception: ${err.message}`)
+    // process.exit(1) // force it to crash anyway
+  })
+  // .on('error', (err) => { console.log(err) }) // remember to have error event handlers on streams and any other parts that require it
 
   process.on('SIGINT', handleExit)
   process.on('SIGQUIT', handleExit)

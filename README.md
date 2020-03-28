@@ -80,10 +80,14 @@ npm run dev:spa
 - for SSR - npm run dev:ssr
 - for static content (1) npm run dev (2) see example-ssr/README.md on generating and serving static content
 
-Navigate to http://127.0.0.1:8080
+Navigate to http://127.0.0.1:3000 to index page served by express, the page contains functional samples and demos you can use to interact with the server
 
-2. Login using the following
 
+2. VueJS example SPA Application
+
+Navigate to http://127.0.0.1:8080 to view the VueCrudX demo and sample SPA application
+
+Login using the following:
 - User: test
 - Password: test
 - OTP (if enabled): if USE_OTP set to TEST, use 111111 as otp pin
