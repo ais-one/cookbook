@@ -15,10 +15,14 @@ const firebase = FIREBASE_KEY ? require('../../common-app/firebase') : null
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) { cb(null, path.join(__dirname, '..', UPLOAD_FOLDER)) },
-  filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname) }
+const memoryUpload = multer({ 
+  limits: {
+    files : 1,
+    fileSize: 5000 // size in bytes
+  },
+  storage: multer.memoryStorage()
 })
+
 const upload = multer({
   // limits: {
   //   files : 1,
@@ -32,7 +36,10 @@ const upload = multer({
   //   }
   //   cb(null, true);
   // },
-  storage: storage
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) { cb(null, path.join(__dirname, '..', UPLOAD_FOLDER)) },
+    filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname) }
+  })
 })
     // console.log(req.file)
     // {
@@ -108,6 +115,7 @@ apiRoutes
       next([500, e]) // test using a cloudflare error code for fun
     }
   })
+
   .get('/error', async (req,res,next) => { // for an error - test logging of errors
     try {
       req.something.missing = 10
@@ -116,6 +124,13 @@ apiRoutes
       console.log('/error', e)
       next([520, e]) // test using a cloudflare error code for fun
     }
+  })
+  .get('/crash', async (req,res,next) => { // for crashing the application
+    fs.readFile('somefile.txt', function (err, data) {
+      if (err) throw err
+      console.log(data)
+    })
+    res.json({ message: 'Crash initiated check express server logs' })
   })
 
   /**
@@ -143,13 +158,20 @@ apiRoutes
     res.json({ message: 'OK' })
   })
   // test uploads
-  .post('/upload', upload.single('avatar'), async (req,res) => { // avatar is form input name
-    console.log(req.file, req.body)
+  .post('/upload', upload.single('filedata'), async (req,res) => { // avatar is form input name
+    console.log('file original name', req.file.originalname)
+    console.log('text data', req.body.textdata)
     res.json({ message: 'Uploaded' })
   })
-  .post('/uploads', upload.array('photos', 3), (req, res, next) => {
-    console.log(req.files)
+  .post('/uploads', upload.array('photos', 3), (req, res) => { // multiple
+    console.log(req.files.length)
     res.json({ message: 'Uploaded' })
+    // req.files is array of `photos` files
+    // req.body will contain the text fields, if there were any
+  })
+  .post('/upload-memory', memoryUpload.single('memory'), (req, res) => {
+    console.log(req.file.originalname, req.body)
+    res.json({ message: req.file.buffer.toString() })
     // req.files is array of `photos` files
     // req.body will contain the text fields, if there were any
   })
