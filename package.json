@@ -7,9 +7,8 @@
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app%/web/spa && npm i && cd ../ssr && npm i",
     "install-db": "cd %npm_package_config_app% && npm run install-db",
-    "test1": "cross-env NODE_ENV=development jest --watchAll",
-    "test": "cross-env NODE_ENV=development jest",
-    "dev": "cross-env NODE_ENV=development nodemon index.js -- %npm_package_config_app%",
+    "test": "cross-env NODE_ENV=development jest %npm_package_config_app% --watchAll",
+    "dev": "cross-env NODE_ENV=development nodemon index.js %npm_package_config_app%",
     "dev-noreload": "cross-env NODE_ENV=development node index.js %npm_package_config_app%",
     "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=development npm run serve",
     "ssr": "cd %npm_package_config_app%/web/ssr && cross-env NODE_ENV=development npm run dev",
