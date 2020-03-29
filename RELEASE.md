@@ -27,7 +27,6 @@
     - CI / CD (work on SSH, etc...)
 - [low-priority]
   - backend
-    - replace multer with busboy or formidable?
     - research websocket testing, improve coverage
     - research auto generated REST API and Testing (keep in view dredd.io)
     - JsonSchema

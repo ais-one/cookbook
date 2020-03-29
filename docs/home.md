@@ -1,7 +1,3 @@
-## JWT
-- http://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#ExAccTokResp
-- https://stackoverflow.com/questions/42917170/setting-the-httponly-attribute-for-the-nodejs-cookie-header
-
 ## Technical Debt
 - try to use as little libraries/dependencies as possible
 - use native NodeJS or Javascript
@@ -93,8 +89,13 @@ https://github.com/nfriedly/express-slow-down
 
 ## Security
 
+### JWT
+- http://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#ExAccTokResp
+- https://stackoverflow.com/questions/42917170/setting-the-httponly-attribute-for-the-nodejs-cookie-header
+
+
 ### Express Libraries For Security
-- helmet (to configure)
+- helmet (to configure), csurf
 - url-regex, path-to-regexp (to filter paths)
 
 ### JWT, HTTPONLY REFRESH TOKEN
@@ -106,15 +107,13 @@ https://github.com/nfriedly/express-slow-down
 - support cross origin requests
 
 
-
 ## Libraries Of Note
 
 qrcode
 cron
 ioredis
 uuid
-csurf
-helmet
+multer, busboy, formidable
 
 ## Message Queues
 - https://github.com/agenda/agenda - mongodb

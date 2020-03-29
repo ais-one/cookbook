@@ -1,55 +1,3 @@
-# Mongo Atlas
-
-## Setup
-
-1. User & Password
-
-2. IP Whitelist
-
-## NodeJS Connection
-
-const MongoClient = require('mongodb').MongoClient;
-const uri = "mongodb+srv://<user>:<password>@<cluster-name>-<random-5-letters>.gcp.mongodb.net/test?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useNewUrlParser: true });
-client.connect(err => {
-  const collection = client.db("test").collection("devices");
-  // perform actions on the collection object
-  client.close();
-});
-
-## Robomongo / Robo3T Connection
-
-1. Goto a cluster and find primary shard
-
-<cluster-name>-shard-00-01-<random-5-letters>.gcp.mongodb.net:27017
-
-2. Connection Tab
-
-- Type: Direct Connection
-
-- Name: <something-meaningful>
-
-- Address: <cluster-name>-shard-00-01-<random-5-letters>.gcp.mongodb.net
-
-- Port: 27017
-
-3. Authentication Tab
-
-- Perform Authentication: ticked
-
-- Database: admin
-
-- User Name:
-
-- Password:
-
-- Auth Mechanism: SCRAM-SHA-1 / 256 (usually 1)
-
-4. SSL Tab
-
-- Use SSL protocol: ticked
-
-- Authentication Method: Self-signed Certificate
 
 
 
@@ -192,52 +140,11 @@ https://docs.mongodb.com/manual/core/transactions/
 ```
 
 
-## Some Useful Queries
+## Relations And Using Aggregate
 
-db.getCollection('dd_book').aggregate([ { $lookup: {from: "dd_author", localField:"author", foreignField:"_id", as: "in_common" }}])
+### Create the collections
 
-db.getCollection('dd_book').aggregate([
-  { $lookup: {from: "dd_author", localField:"authorCode", foreignField:"code", as: "author_info" }},
-  { $lookup: {from: "dd_cat", localField:"catCode", foreignField:"code", as: "cat_info" }}
-])
-
-// in pipeline{ $replaceRoot: { newRoot: "$date" } },
-
-db.getCollection('dd_book').aggregate([
-  {
-    $lookup: {
-      from: "dd_author",
-      let: { author_code: "$authorCode" },
-      pipeline: [
-        {
-          $match: { 
-            $expr: { $eq: [ "$code",  "$$author_code" ] },
-          }
-        },
-        { $project: { _id: 0, code: 0 } }
-      ],
-      as: "author_details"
-    }
-  },
-  {
-    $lookup: {
-      from: "dd_cat",
-      let: { cat_code: "$catCode" },
-      pipeline: [
-        {
-          $match: { 
-            $expr: { $eq: [ "$code",  "$$cat_code" ] },
-          }
-        },
-        { $project: { _id: 0, code: 0 } }
-      ],
-      as: "cat_details"
-    }
-  }
-]) 
-
-
-
+```js
 db.getCollection('dd_author').insertMany([
   {
     "_id" : ObjectId("5cdb5249525a06edd9634e1f"),
@@ -285,3 +192,76 @@ db.getCollection('dd_book').insertMany([
       "catCode:": "c1"
   }
 ])
+```
+
+### The Queries
+
+```js
+db.getCollection('dd_book').aggregate([ { $lookup: {from: "dd_author", localField:"author", foreignField:"_id", as: "in_common" }}])
+
+db.getCollection('dd_book').aggregate([
+  { $lookup: {from: "dd_author", localField:"authorCode", foreignField:"code", as: "author_info" }},
+  { $lookup: {from: "dd_cat", localField:"catCode", foreignField:"code", as: "cat_info" }}
+])
+
+// in pipeline{ $replaceRoot: { newRoot: "$date" } },
+
+db.getCollection('dd_book').aggregate([
+  {
+    $lookup: {
+      from: "dd_author",
+      let: { author_code: "$authorCode" },
+      pipeline: [
+        {
+          $match: { 
+            $expr: { $eq: [ "$code",  "$$author_code" ] },
+          }
+        },
+        { $project: { _id: 0, code: 0 } }
+      ],
+      as: "author_details"
+    }
+  },
+  {
+    $lookup: {
+      from: "dd_cat",
+      let: { cat_code: "$catCode" },
+      pipeline: [
+        {
+          $match: { 
+            $expr: { $eq: [ "$code",  "$$cat_code" ] },
+          }
+        },
+        { $project: { _id: 0, code: 0 } }
+      ],
+      as: "cat_details"
+    }
+  }
+]) 
+```
+
+
+## Search
+
+```js
+    const { start, end, page = 1, limit = 50 } = req.query
+    const filter = {
+      userId: req.decoded.id,
+      txTs: {
+        // $gte: new Date(start + 'T00:00:00.000Z'),
+        // $lte: new Date(end + 'T23:59:59.999Z')
+        $gte: parseInt(start),
+        $lte: parseInt(end)
+      }
+    }
+    if (filename) filter.filename = { $regex: filename, $options: 'i' }
+    try {
+      const total = await mongo.db.collection('aaa').find(filter).count()
+      const results = await mongo.db.collection('aaa').find(filter, { userId: 1, txTs: 1 })
+        // .project({ item: 1, status: 1 });
+        .sort({ txTs: -1 }).skip( (page - 1) * limit ).limit(limit).toArray()
+      res.status(200).json({ results, total })
+    } catch (e) {
+      res.status(500).json({ e: e.toString() })
+    }
+```
