@@ -21,7 +21,6 @@ WSL Ubuntu
 2. add users
 3. create service keys
 
-
 4. setup cloud object storage
   - Google Cloud Storage, AWS S3, Alibaba Object Store
 

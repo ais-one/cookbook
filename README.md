@@ -95,7 +95,6 @@ Login using the following:
 - User: test
 - Password: test
 - OTP (if enabled): if USE_OTP set to TEST, use 111111 as otp pin
-(do not log in using Firebase or Mongo Stitch until you have setup to use them)
 
 3. View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
 
@@ -108,8 +107,8 @@ The project structure is shown below
 ```
 vue-crud-x
 +- common/ : common components for frontend and backend
-+- common-web/ : common components for frontend (including vue-crud-x)
 +- common-app/ : common components for backend
++- common-web/ : common components for frontend (including vue-crud-x)
 |  +- dist/ : distribution folder for CRUD component
 +- docs/ : documentation
 +- example-app : an example backend application
@@ -143,6 +142,7 @@ vue-crud-x
 | +- README.md
 +- <your other project folder here>: (you can use .gitignore in parent directory to hide this project)
 +- logs/
++- .dockerignore
 +- .eslintrc.json
 +- ecosystem.config.js
 +- index.js
@@ -230,8 +230,6 @@ Refer to the respective projects README.md files for information on getting star
 ## Login Screen
 
 - recaptcha
-- Firebase (requires account setup)
-- Mongo Stitch (requires account setup)
 
 [![Screenshot](./docs/images/login.png)](./docs/images/login.png)
 
@@ -254,16 +252,8 @@ Refer to the respective projects README.md files for information on getting star
 
 - inline edit
 - date-picker, select and other controls
-- backend is Firebase Firestore
 
 [![Screenshot](./docs/images/inline.png)](./docs/images/inline.png)
-
----
-
-
-# Roadmap
-
-Refer to [docs/Release.md](docs/Release.md)
 
 ---
 
@@ -295,11 +285,18 @@ See [docs/deployment.md](docs/deployment.md)
 
 ## Deployment on VM
 
-See [docs/vm.md](docs/vm.md)
+See [docs/deployment-vm.md](docs/deployment-vm.md)
 
 ## Deployment on Container
 
-See [docs/container.md](docs/container.md)
+See [docs/deployment-container.md](docs/deployment-container.md)
 
 And [example-app/Dockerfile](example-app/Dockerfile)
 
+---
+
+# Roadmap & Other Documentation
+
+Refer to the following:
+- [Release.md](Release.md)
+- [docs/home.md](docs/home.md)

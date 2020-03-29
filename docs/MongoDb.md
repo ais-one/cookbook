@@ -244,24 +244,24 @@ db.getCollection('dd_book').aggregate([
 ## Search
 
 ```js
-    const { start, end, page = 1, limit = 50 } = req.query
-    const filter = {
-      userId: req.decoded.id,
-      txTs: {
-        // $gte: new Date(start + 'T00:00:00.000Z'),
-        // $lte: new Date(end + 'T23:59:59.999Z')
-        $gte: parseInt(start),
-        $lte: parseInt(end)
-      }
-    }
-    if (filename) filter.filename = { $regex: filename, $options: 'i' }
-    try {
-      const total = await mongo.db.collection('aaa').find(filter).count()
-      const results = await mongo.db.collection('aaa').find(filter, { userId: 1, txTs: 1 })
-        // .project({ item: 1, status: 1 });
-        .sort({ txTs: -1 }).skip( (page - 1) * limit ).limit(limit).toArray()
-      res.status(200).json({ results, total })
-    } catch (e) {
-      res.status(500).json({ e: e.toString() })
-    }
+const { start, end, page = 1, limit = 50 } = req.query
+const filter = {
+  userId: req.decoded.id,
+  txTs: {
+    // $gte: new Date(start + 'T00:00:00.000Z'),
+    // $lte: new Date(end + 'T23:59:59.999Z')
+    $gte: parseInt(start),
+    $lte: parseInt(end)
+  }
+}
+if (filename) filter.filename = { $regex: filename, $options: 'i' }
+try {
+  const total = await mongo.db.collection('aaa').find(filter).count()
+  const results = await mongo.db.collection('aaa').find(filter, { userId: 1, txTs: 1 })
+    // .project({ item: 1, status: 1 });
+    .sort({ txTs: -1 }).skip( (page - 1) * limit ).limit(limit).toArray()
+  res.status(200).json({ results, total })
+} catch (e) {
+  res.status(500).json({ e: e.toString() })
+}
 ```
