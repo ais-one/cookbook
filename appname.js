@@ -1,1 +1,3 @@
+// get filename... 
+// console.log(process.argv[1])
 module.exports = process.argv[2] || 'example-app'

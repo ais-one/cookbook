@@ -2,12 +2,13 @@
   "name": "app",
   "description": "Backend application",
   "config": {
-    "app": "viow"
+    "app": "example-app"
   },
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app%/web/spa && npm i && cd ../ssr && npm i",
     "install-db": "cd %npm_package_config_app% && npm run install-db",
-    "test": "cross-env NODE_ENV=development jest --watchAll",
+    "test1": "cross-env NODE_ENV=development jest --watchAll",
+    "test": "cross-env NODE_ENV=development jest",
     "dev": "cross-env NODE_ENV=development nodemon index.js -- %npm_package_config_app%",
     "dev-noreload": "cross-env NODE_ENV=development node index.js %npm_package_config_app%",
     "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=development npm run serve",
@@ -19,6 +20,7 @@
   "engines": {
     "node": "12"
   },
+  "main": "common-web/dist/VueCrudX.js",
   "dependencies": {
     "@keyv/redis": "^2.1.1",
     "agenda": "^3.0.0",
