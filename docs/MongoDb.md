@@ -1,15 +1,17 @@
+# Mongo DB - WORK IN PROGRESS
 
+## Outstanding Issues
 
+1. Cannot reconnect if there is no initial connection
+- If there is no connection initially, connection failure will not result in reconnection
+- does happen, to test out. shutdown mongo server, wait awhile then start up. CRUD will take effect and updates will take effect also...
 
+2. See if InMemory storage to replace redis
+- how to handle memory limit? remove oldest?
 
-# reconnection
+3. Design and code for high availability and scalability
 
-1. If there is no connection initially, connection failure will not result in reconnection
-
-2. does happen, to test out. shutdown mongo server, wait awhile then start up. CRUD will take effect and updates will take effect also...
-
-
-# Change Streams
+## Change Streams
 
 https://docs.mongodb.com/manual/changeStreams/
 

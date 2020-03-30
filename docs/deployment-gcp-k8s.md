@@ -1,9 +1,11 @@
-# K8S https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app
-# cloud shell or local gcloud CLI
+# Google CLoud Kubernetes (WORK IN PROGRESS)
+
+K8S https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app
+
+Use cloud shell or local gcloud CLI
 
 git clone https://github.com/GoogleCloudPlatform/kubernetes-engine-samples
 cd kubernetes-engine-samples/hello-app
-
 
 # create docker image
 

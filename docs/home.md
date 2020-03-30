@@ -10,7 +10,7 @@
 
 # Deployment And Scaling
 
-See [deployment.md](deployment.md)
+See [deployment.md](deployment.md) - WORK IN PROGRESS
 
 ## Deployment on VM
 
@@ -24,7 +24,7 @@ And [../example-app/Dockerfile](../example-app/Dockerfile)
 
 ## Deployment on Google Cloud Kubernetes
 
-See [deployment-gke-k8s.md](deployment-gke-k8s.md)
+See [deployment-gke-k8s.md](deployment-gke-k8s.md) - WORK IN PROGRESS
 
 
 # BaaS Services
@@ -39,7 +39,7 @@ See [deployment-gke-k8s.md](deployment-gke-k8s.md)
 
 # Mongo DB
 
-[mongodb.md](mongodb.md)
+[mongodb.md](mongodb.md) - WORK IN PROGRESS
 
 
 ---

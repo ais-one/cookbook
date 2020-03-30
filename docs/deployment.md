@@ -1,4 +1,4 @@
-# SCALING & DEPLOYMENT
+# SCALING & DEPLOYMENT (WORK IN PROGRESS)
 
 ## Local (without docker)
 
