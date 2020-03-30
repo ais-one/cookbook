@@ -192,7 +192,7 @@ Recipes for a production-ready Express server used by **example-app/web/spa** an
 - Key-Value Store for user token storage on server (can replace with redis in production environment)
 - Websocket (use https://www.websocket.org/echo.html & ngrok to test)
 - GraphQL (use Apollo server)
-- File uploads
+- File uploads (to VM or to cloud storage via Signed URLs)
 - Unit Test & Integration Test
 - Logging
 - Message queues
@@ -216,9 +216,9 @@ Recipes for a production-ready Nuxt static sites. Static sites have the same adv
 
 **vue-crud-x** library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
 
-Release notes for the library and examples can be found in [docs/Release.md](docs/Release.md)
+Roadmap and Release notes for the library and examples can be found in [Release.md](Release.md)
 
-Refer to the respective projects README.md files for information on getting started with each project
+Documentation can be found starting at [docs/home.md](docs/home.md)
 
 **vue-crud-x 0.2+ Article** <a href="https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0" target="_blank">VueJS+ExpressJS CRUD & Cookbook</a>
 
@@ -278,25 +278,3 @@ in package.json, **config.app** property indicates the name of the app folder
 The configuration value is passed into **appname.js**
 
 The default is set to **example-app** you can change it to your own project name
-
-# Deployment And Scaling
-
-See [docs/deployment.md](docs/deployment.md)
-
-## Deployment on VM
-
-See [docs/deployment-vm.md](docs/deployment-vm.md)
-
-## Deployment on Container
-
-See [docs/deployment-container.md](docs/deployment-container.md)
-
-And [example-app/Dockerfile](example-app/Dockerfile)
-
----
-
-# Roadmap & Other Documentation
-
-Refer to the following:
-- [Release.md](Release.md)
-- [docs/home.md](docs/home.md)

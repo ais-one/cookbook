@@ -16,15 +16,15 @@
 - [Work-in-progress]
   - cleanup
   - backend
-    - long running process support such as tcp servers, MQ consumer
+    - long running process support such as tcp servers
     - add kafka working example
   - frontend
     - ant design version
     - research for e2e framework agnostic test util for frontend
-    - deployment to GCP cloud storage / Firebase Host / AWS S3
-    - deploment in container... see docs/Containers.md & example-app/Dockerfile & example-app/.dockerignore
   - others
     - CI / CD (work on SSH, etc...)
+    - deployment to GCP cloud storage / Firebase Host / AWS S3
+    - deploment in container... see docs/Containers.md & example-app/Dockerfile & example-app/.dockerignore
 - [low-priority]
   - backend
     - research websocket testing, improve coverage

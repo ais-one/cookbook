@@ -1,14 +1,50 @@
 
-# Technical Debt
+# Technical Debt Reduction
+
 - try to use as little libraries/dependencies as possible
 - use native NodeJS or Javascript
   - vee-validate from version 2 to 3 broke many things, might as well stick with HTML5 validation
   - momentjs is too big, date-fns from version 1 to 2 broke things, use native JS Date Object, Intl.DateTimeFormat, etc. instead
   - nuxt-auth could not handle 2FA or refresh token so cannot be used
 
-# Deployment
 
-## - [](./)
+# Deployment And Scaling
+
+See [deployment.md](deployment.md)
+
+## Deployment on VM
+
+See [deployment-vm.md](deployment-vm.md)
+
+## Deployment on Container
+
+See [deployment-container.md](deployment-container.md)
+
+And [../example-app/Dockerfile](../example-app/Dockerfile)
+
+## Deployment on Google Cloud Kubernetes
+
+See [deployment-gke-k8s.md](deployment-gke-k8s.md)
+
+
+# BaaS Services
+
+## Firebase
+
+[baas-firebase.md](baas-firebase.md)
+
+## Mongo Atlas
+
+[baas-mongo-atlas.md](baas-mongo-atlas.md)
+
+# Mongo DB
+
+[mongodb.md](mongodb.md)
+
+
+---
+
+# NodeJS Notes
 
 ## Node Modules Singleton
 
@@ -46,12 +82,6 @@ var myModule = require('./module.js')(config)
 myModule.myMethod() // Prints 'Has access to this'
 ```
 
-
-
-
-
-# NodeJS
-
 ## App Design Considerations
 
 https://12factor.net/
@@ -64,16 +94,17 @@ Always Learning. Always Work In Progress
 > https://www.udemy.com/nodejs-the-complete-guide/learn/v4/t/lecture/12198030?start=0
 
 
-## ExpressJS Notes
+# ExpressJS Notes
 
 Do not rely on req object, e.g. putting mongo, redis, etc. objects in req as you may also need them in websockets
 
 Do not add to app object because app is not global and needs to be exported for other modules to use
 
 
-## Do in application or hand-off to 3rd party
+## Logging & Application Performance Monitoring
 
-### Logging
+Choose to do in application or hand-off to 3rd party
+
 https://github.com/expressjs/morgan
 https://github.com/winstonjs/winston - use console.log / console.error and send to streams instead
 https://blog.heroku.com/best-practices-nodejs-errors
@@ -85,11 +116,11 @@ https://googleapis.dev/nodejs/logging-winston/latest/index.html
 
 ## Proxying, Compression, Rate-Limiting
 
+Choose to do in application or use Nginx / Apache, or API gateway
+
 https://github.com/chimurai/http-proxy-middleware
 https://github.com/nfriedly/express-rate-limit
 https://github.com/nfriedly/express-slow-down
-
-- or use Nginx / Apache, or API gateway
 
 ## Security
 
@@ -111,13 +142,13 @@ https://github.com/nfriedly/express-slow-down
 - support cross origin requests
 
 
-## Libraries Of Note
+## Libraries Of Note (not used currently)
 
 qrcode
 cron
 ioredis
 uuid
-multer, busboy, formidable
+busboy, formidable
 
 ## Message Queues
 - https://github.com/agenda/agenda - mongodb
