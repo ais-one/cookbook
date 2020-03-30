@@ -1,64 +1,64 @@
 {
-  "_from": "vue-crud-x",
-  "_id": "vue-crud-x@0.2.8",
-  "_inBundle": false,
-  "_integrity": "sha512-q9g7ER3wWEoOmM8GnPtJdOiaa6vX1pS/Pywh1B1Eqj0KKTRoc6RDqe5b1ulXcBk80Tnt4oGjoJc5BA/cw3WijA==",
-  "_location": "/vue-crud-x",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "vue-crud-x",
-    "name": "vue-crud-x",
-    "escapedName": "vue-crud-x",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
-  },
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/vue-crud-x/-/vue-crud-x-0.2.8.tgz",
-  "_shasum": "fda705ef0188e0118d00ab53d16f300e7c3f523e",
-  "_spec": "vue-crud-x",
-  "_where": "/Users/aaron/test/xxx",
-  "author": {
-    "name": "Aaron Gong",
-    "email": "aaronjxz@gmail.com"
-  },
-  "bugs": {
-    "url": "https://github.com/ais-one/vue-crud-x/issues"
-  },
-  "bundleDependencies": [],
-  "dependencies": {},
-  "deprecated": false,
-  "description": "A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, using GraphQL or REST to access various datastores. Uses Vuetify for layout components but can be changed to alternatives such as ElementUI (by changing components in the VueCrudX source code from Vuetify to ElementUI)",
-  "devDependencies": {
-    "@vue/cli-service": "^4.1.2",
-    "vue-template-compiler": "^2.6.11"
-  },
-  "homepage": "https://github.com/ais-one/vue-crud-x#readme",
-  "keywords": [
-    "vue",
-    "vuejs",
-    "vuetify",
-    "crud",
-    "pagination",
-    "sort",
-    "filter",
-    "graphql"
-  ],
-  "license": "MIT",
-  "main": "dist/VueCrudX.js",
-  "name": "vue-crud-x",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ais-one/vue-crud-x.git"
+  "name": "app",
+  "description": "Backend application",
+  "config": {
+    "app": "example-app"
   },
   "scripts": {
-    "build": "vue-cli-service build --prod --target lib --name VueCrudX --formats commonjs ./src/VueCrudX.vue&&mv ./dist/VueCrudX.common.js ./dist/VueCrudX.js",
-    "clean": "rm package-lock.json && rm node_modules"
+    "install-libs": "npm i && cd %npm_package_config_app%/web/spa && npm i && cd ../ssr && npm i",
+    "install-db": "cd %npm_package_config_app% && npm run install-db",
+    "test": "cross-env NODE_ENV=development jest %npm_package_config_app% --watchAll",
+    "dev": "cross-env NODE_ENV=development nodemon index.js %npm_package_config_app%",
+    "dev-noreload": "cross-env NODE_ENV=development node index.js %npm_package_config_app%",
+    "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=development npm run serve",
+    "ssr": "cd %npm_package_config_app%/web/ssr && cross-env NODE_ENV=development npm run dev",
+    "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
+    "deploy": "cd %npm_package_config_app%/deploy && run.sh",
+    "lint": "eslint ."
   },
-  "version": "0.2.8"
+  "engines": {
+    "node": "12"
+  },
+  "main": "common-web/dist/VueCrudX.js",
+  "dependencies": {
+    "@keyv/redis": "^2.1.1",
+    "agenda": "^3.0.0",
+    "axios": "^0.19.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "bull": "^3.13.0",
+    "connect-history-api-fallback": "^1.6.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.4",
+    "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "firebase-admin": "^8.10.0",
+    "http-proxy-middleware": "^1.0.3",
+    "jsonwebtoken": "^8.5.1",
+    "keyv": "^4.0.0",
+    "knex": "^0.20.13",
+    "mongodb": "^3.5.5",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "objection": "^2.1.3",
+    "otplib": "^12.0.1",
+    "passport": "^0.4.1",
+    "passport-saml": "^1.3.3",
+    "sqlite3": "^4.1.1",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4",
+    "ws": "^7.2.3"
+  },
+  "devDependencies": {
+    "concurrently": "^5.1.0",
+    "cross-env": "^7.0.2",
+    "eslint": "^6.8.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "jest": "^25.2.4",
+    "node-mocks-http": "^1.8.1",
+    "nodemon": "^2.0.2",
+    "supertest": "^4.0.2"
+  },
+  "private": true
 }

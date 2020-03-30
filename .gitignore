@@ -12,6 +12,10 @@ dev.sqlite3
 .env.*
 .rnd
 
+firebase.key.json
+id_rsa
+sandbox
+
 # Log files
 npm-debug.log*
 npm-debug.log*
@@ -28,7 +32,10 @@ yarn-error.log*
 *.sln
 *.sw*
 
-# REMOVE BELOW THIS LATER
-# **/cfg.json
 # local env files - allow this in our opensource project
 # .env
+
+viow/
+vtms/
+ahop2/
+ms/

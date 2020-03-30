@@ -1,34 +1,81 @@
+# Installing The Library 
+
+## Option 1 Use NPM package
+
+Install it as an NPM package and import it
+
+```bash
+# Version 0.1.X
+npm i ais-one/vue-crud-x#v1 --save
+
+# Version 0.2+
+npm i vue-crud-x
+```
+
+## Option 2 Use the source file directly
+
+Just copy the **common-web/VueCrudX.vue** file into your project and include it as a local or global Vue component
+
+## Option 3 Build and Install (OPTIONAL: Read this if you wish to maintain own fork)
+
+If you ever need to build this library from source...
+
+1. Go to the Vue-Crud-X project folder
+
+```bash
+cd common-web
+```
+
+2. Install dependencies
+
+```bash
+npm i
+```
+
+2. Build project (using vue-cli)
+
+```bash
+npm run build
+```
+
+The build output can be found in the **dist** folder
+
+
+3. Publish to npm (only for repo owner)
+
+```bash
+npm publish
+```
+
+4. Or build as local package vue-crud-x
+
+```bash
+npm pack
+# A local npm package will be created (e.g. vue-crud-x-?.?.?.tgz file)
+# If you want to install without saving to package.json, npm i --no-save <path-to>/vue-crud-x-?.?.?.tgz
+```
+
+---
+
 # Version 0.2.4 API Documentation (compatible with release 0.2.2 and above)
 
 This document describes the details on the properties used in vue-crud-x.
 
-To see example of usage. Please refer to source code in **example-spa project folder**.
+To see example of usage. Please refer to source code in **example-app/web/spa project folder**.
 
-- example-spa/src/pages/Author
+- example-app/web/spa/src/pages/Author
   - infinite scroll
-- example-spa/src/pages/Category
+- example-app/web/spa/src/pages/Category
   - Apollo GraphQL, subscriptions, optimistic UI, caching, refetch queries
-- example-spa/src/pages/Book
+- example-app/web/spa/src/pages/Book
   - parent crud, various editors
   - lazy autocomplete (book-author join table)
-- example-spa/src/pages/Page
+- example-app/web/spa/src/pages/Page
   - inline edit and child crud
-- example-spa/src/pages/FirebaseRT
+- example-app/web/spa/src/pages/FirebaseRT
   -  example using Firestore with real-time updates
 
-You can also refer to the vue-crud-x source code in the main source folder
-
-- src/VueCrudX.vue
-
-Some useful components used in the **example-spa project** can also be found in the main source folder, such as
-
-- src/DatePicker
-- src/TimePicker
-- src/FileUpload
-- src/WebCam
-- src/DrawingCanvas
-etc.
-
+You can also refer to the vue-crud-x source code in **common-web/VueCrudX.vue**
 
 
 ##  Props
