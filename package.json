@@ -2,7 +2,7 @@
   "name": "app",
   "description": "Backend application",
   "config": {
-    "app": "example-app"
+    "app": "viow"
   },
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app%/web/spa && npm i && cd ../ssr && npm i",

@@ -3,6 +3,7 @@ Error.stackTraceLimit = 1 // limit error stack trace to 1 level
 
 module.exports = function (app) {
   app.use(function (error, req, res, next) {
+    // if (error instanceof AssertionError { }
     if (typeof error === 'object') {
       if (error.length) {
         let [code = 500, e = null] = error

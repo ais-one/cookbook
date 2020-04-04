@@ -37,7 +37,7 @@ const pageRoutes = require('./routes/page')
 
 app.use('/api', authRoutes, apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
 require('../common-app/proxy')(app, express) //require after routes setup
-require('../common-app/error')(app)
+require('../common-app/errorHandler')(app)
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
