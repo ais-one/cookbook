@@ -56,88 +56,73 @@ const upload = multer({
 })
 
 apiRoutes
-  .get('/upload-firebase/:filename', async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
-    try {
-      if (!firebase) return res.status(500).json({ e: 'No Firebase Service' })
-      const { bucket } = firebase
-
-      // need to allow CORS...
-      // try {
-      //   const xx = await bucket.setCorsConfiguration([{
-      //     maxAgeSeconds: 3600,
-      //     method: [ 'GET', 'HEAD', 'PUT' ],
-      //     responseHeader: ['*'],
-      //     origin: [ '*' ] 
-      //   }])
-      //   // console.log('xx', xx)  
-      // } catch (e) {
-      //   // console.log('eee', e.toString())
-      // }
-
-      const action = 'write'
-      const fileName = req.params.filename || 'my-file.txt'
-      const options = {
-        version: 'v4',
-        action,
-        expires: Date.now() + (120 * 60 * 1000) // 120 minutes
-      }
-      // The option below will allow temporary uploading of the file with outgoing Content-Type: application/octet-stream header.
-      if (action === 'write') options.contentType = 'application/octet-stream'
-    
-      // Get a v4 signed URL for uploading file
-      const [url] = await bucket.file(fileName).getSignedUrl(options)
-      // console.log(url)
-      // console.log("curl -X PUT -H 'Content-Type: application/octet-stream' " + `--upload-file my-file '${url}'`)
-      // curl -X PUT -H 'Content-Type: application/octet-stream' --upload-file my-file 'http://www.test.com'
-      res.status(200).json({ url })
-    } catch (e) {
-      res.status(500).json({ e: e.toString() })
+  .get('/firebase-upload-enable', asyncWrapper(async (req,res) => {
+    // need to allow CORS...
+    const rv = await bucket.setCorsConfiguration([{
+      maxAgeSeconds: 3600,
+      method: [ 'GET', 'HEAD', 'PUT' ],
+      responseHeader: ['*'],
+      origin: [ '*' ] 
+    }])
+    // console.log('rv', rv)
+  }))
+  .get('/firebase-upload/:filename', asyncWrapper(async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
+    if (!firebase) return res.status(500).json({ e: 'No Firebase Service' })
+    const { bucket } = firebase
+    const action = 'write'
+    const fileName = req.params.filename || 'my-file.txt'
+    const options = {
+      version: 'v4',
+      action,
+      expires: Date.now() + (120 * 60 * 1000) // 120 minutes
     }
-  })
+    // The option below will allow temporary uploading of the file with outgoing Content-Type: application/octet-stream header.
+    if (action === 'write') options.contentType = 'application/octet-stream'
+  
+    // Get a v4 signed URL for uploading file
+    const [url] = await bucket.file(fileName).getSignedUrl(options)
+    // console.log(url)
+    // // curl command for uploading using signed URL
+    // console.log("curl -X PUT -H 'Content-Type: application/octet-stream' " + `--upload-file my-file '${url}'`)
+    // curl -X PUT -H 'Content-Type: application/octet-stream' --upload-file my-file 'http://www.test.com'
+    res.status(200).json({ url })
+  }))
 
-  .get('/mq', async (req,res,next) => { // test message queue
-    try {
-      const job = await agenda.now('registration email', { email: 'abc@test.com' })
-      console.log('Agenda Pub')
-      res.json({ job, note: 'Check Server Console Log For Processed Message...' })
-    } catch (e) {
-      console.log('Agenda Pub Exception')
-      next([500, e]) // test using a cloudflare error code for fun
+  .get('/mq-agenda', asyncWrapper(async (req, res) => { // test message queue - agenda
+    const job = await agenda.now('registration email', { email: 'abc@test.com' })
+    console.log('Agenda Pub')
+    res.json({ job, note: 'Check Server Console Log For Processed Message...' })
+  }))
+
+  .get('/mq-bull', asyncWrapper(async (req, res) => { // test message queue - bullmq
+    if (bull) {
+      const jobOpts = { removeOnComplete: true, removeOnFail: true }
+      bull.add({ message: new Date() }, jobOpts)
+      console.log('Bull Pub')
+    } else {
+      console.log('No Bull MQ configured')
     }
-  })
-  .get('/mq-bull', async (req,res,next) => { // test message queue
-    try {
-      if (bull) {
-        const jobOpts = { removeOnComplete: true, removeOnFail: true }
-        bull.add({ message: new Date() }, jobOpts)
-        console.log('Bull Pub')
-      } else {
-        console.log('No Bull MQ configured')
-      }
-      res.json({ note: 'Check Server Console Log For Processed Message...' })
-    } catch (e) {
-      next([500, e]) // test using a cloudflare error code for fun
-    }
-  })
+    res.json({ note: 'Check Server Console Log For Processed Message...' })
+  }))
 
   .get('/wrap-test', asyncWrapper(async (req, res) => {
     // return res.status(201).json({ aa: 'bb' }) // should not return...
-    // next(new Error('Generted Wrapper Error - next')) // use throw instead
-    throw new Error('Generted Wrapper Error - throw')
+    // next(new Error('Generated Wrapper Error - next')) // use throw instead
+    throw new Error('Generated Wrapper Error - throw')
   }))
 
-  .get('/error', asyncWrapper(async (req,res) => { // for an error - test catching of errors
+  .get('/error', asyncWrapper(async (req, res) => { // for an error - test catching of errors
     req.something.missing = 10
     res.json({ message: 'OK' })
   }))
 
-  .get('/crash', async (req, res) => { // for crashing the application - catching error in process exception
+  .get('/crash', asyncWrapper(async (req, res) => { // for crashing the application - catching error in process exception
     fs.readFile('somefile.txt', function (err, data) {
       if (err) throw err
       console.log(data)
     })
     res.json({ message: 'Crash initiated check express server logs' })
-  })
+  }))
 
   /**
    * @swagger
@@ -147,9 +132,7 @@ apiRoutes
    *        - "Base"
    *      description: Health check
    */
-  .get('/health', async (req,res) => { // health check
-    res.json({ message: 'OK' })
-  })
+  .get('/health', (req, res) => { res.json({ message: 'OK' }) }) // health check
   /**
    * @swagger
    * /api/health-auth:
@@ -160,11 +143,10 @@ apiRoutes
    *        - Bearer: []
    *      description: Health check with authorization
    */
-  .get('/health-auth', authUser, async (req,res) => { // health check auth
-    res.json({ message: 'OK' })
-  })
+  .get('/health-auth', authUser, (req, res) => { res.json({ message: 'OK' }) }) // health check auth
+
   // test uploads
-  .post('/upload', upload.single('filedata'), async (req,res) => { // avatar is form input name
+  .post('/upload', upload.single('filedata'), (req,res) => { // avatar is form input name
     console.log('file original name', req.file.originalname)
     console.log('text data', req.body.textdata)
     res.json({ message: 'Uploaded' })

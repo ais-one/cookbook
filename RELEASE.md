@@ -1,6 +1,7 @@
 ### Version 0.3.1
 - update packages & cleanup
 - add telegram - send to group or channel via bot
+- improved on error handling (less boilerplate)
 - work on improving documentation
 - [Work-in-progress]
   - backend
