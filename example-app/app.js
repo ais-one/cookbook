@@ -1,5 +1,6 @@
 'use strict'
 
+require('../common-app/asyncWrapper')
 const config = require('../common-app/config') //  first thing to include
 const path = require('path')
 const http = require('http')

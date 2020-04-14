@@ -1,3 +1,5 @@
+"use strict"
+
 // https://strongloop.com/strongblog/async-error-handling-expressjs-es7-promises-generators/#usinges7asyncawait
 // https://gist.github.com/Hiswe/fe83c97d1c7c8eee9557939d1b9bc086
 
@@ -27,10 +29,13 @@
 
 // thanks to arrow functions and params destructuring
 // we can write it that way:
-const asyncWrapper = fn => (...args) => fn(...args).catch(args[2])
+// const asyncWrapper = fn => (...args) => fn(...args).catch(args[2])
+// module.exports = asyncWrapper
+
+global.asyncWrapper = fn => (...args) => fn(...args)
+  .then(data => (!args[1].headersSent) ? args[1].status(200).json(data || {}) : '')
+  .catch(args[2]) //  proceed to error handler
 
 // USAGE:
 // const wrap = require('./<path-to>/asyncWrapper')
 // app.get('/', wrap(async (req, res) => { ... }))
-
-module.exports = asyncWrapper

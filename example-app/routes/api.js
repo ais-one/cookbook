@@ -120,16 +120,18 @@ apiRoutes
     }
   })
 
-  .get('/error', async (req,res,next) => { // for an error - test logging of errors
-    try {
-      req.something.missing = 10
-      res.json({ message: 'OK' })
-    } catch (e) {
-      console.log('/error', e)
-      next([520, e]) // test using a cloudflare error code for fun
-    }
-  })
-  .get('/crash', async (req,res,next) => { // for crashing the application
+  .get('/wrap-test', asyncWrapper(async (req, res) => {
+    // return res.status(201).json({ aa: 'bb' }) // should not return...
+    // next(new Error('Generted Wrapper Error - next')) // use throw instead
+    throw new Error('Generted Wrapper Error - throw')
+  }))
+
+  .get('/error', asyncWrapper(async (req,res) => { // for an error - test catching of errors
+    req.something.missing = 10
+    res.json({ message: 'OK' })
+  }))
+
+  .get('/crash', async (req, res) => { // for crashing the application - catching error in process exception
     fs.readFile('somefile.txt', function (err, data) {
       if (err) throw err
       console.log(data)

@@ -1,29 +1,32 @@
 // global error handler
+const  { NODE_ENV } = require('./config')
+
 Error.stackTraceLimit = 1 // limit error stack trace to 1 level
+
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+// 200s should not reach here
+const errorMap = {
+  'Bad Request': 400,
+  'Unauthorized': 401,
+  'Forbidden': 403,
+  'Not Found': 404
+  // 409 Conflict
+  // 422 Unprocessable Entity
+}
 
 module.exports = function (app) {
   app.use(function (error, req, res, next) {
-    // if (error instanceof AssertionError { }
-    if (typeof error === 'object') {
-      if (error.length) {
-        let [code = 500, e = null] = error
-        // const { message, stack } = e
-        if (!e) { // set based on error code
-          if (code === 500) e = 'Server Error'
-          else if (code === 401) e = 'Unauthorized'
-          else if (code === 403) e = 'Forbidden'
-          else if (code === 404) e = 'Not Found'
-          else if (code === 409) e = 'Conflict'
-          else if (code === 422) e = 'Input Error'
-          else e = 'Unknown Error'
-        }
-        res.status(code || 500).json({ e: e.message || e })  
-      } else {
-        res.status(500).json({ e: error.toString() })
-      }
-    } else {
-      res.status(500).json({ e: error })
+    // if (error instanceof AssertionError) { }
+    // console.log('message', error.message)
+    // console.log('name', error.name)
+    // console.log('stack', error.stack)
+    const statusCode = errorMap[error.message] || 500
+
+    const body = {
+      error: error.message
     }
+    if (NODE_ENV === 'development') body.trace = error.stack
+    res.status(statusCode).json(body)
   })
 }
 

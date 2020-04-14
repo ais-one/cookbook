@@ -8,11 +8,14 @@ if (!agenda) {
 
   const Agenda = require('agenda')
  
-  const connectionOpts = {
+  const connectionOpts = { // mongodb options
     db: {
       address: JOB_DB,
-      collection: JOB_COLLECTION
-      //, options: {ssl: true}
+      collection: JOB_COLLECTION,
+      options: {
+        useUnifiedTopology: true
+        // ssl: true
+      }
     }
   }
   
