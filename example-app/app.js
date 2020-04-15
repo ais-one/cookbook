@@ -1,12 +1,12 @@
 'use strict'
 
-const config = require('../common-app/config') //  first thing to include
 const path = require('path')
 const http = require('http')
 const https = require('https')
 const express = require('express')
 const app = express()
 
+const config = require('../common-app/config') //  first thing to include
 require('../common-app/globals') // set globals
 require('../common-app/logger')(app) // use as early as possible
 require('../common-app/cors')(app)
