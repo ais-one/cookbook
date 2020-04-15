@@ -24,8 +24,8 @@ module.exports = function (app) {
       trace: null
     }
     let statusCode = 500
-    if (error instanceof Error) {
-      statusCode = errorMap[error.message] || 500
+    if (error instanceof Error || error.code) { // error.code is custom error class, which has property code
+      statusCode = error.code || errorMap[error.message] || 500
       body.error =  error.message
       if (NODE_ENV === 'development') body.trace = error.stack
     }

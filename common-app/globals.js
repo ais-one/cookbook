@@ -1,5 +1,9 @@
-"use strict"
+'use strict'
+// set globals here
+// caution - avoid name clashes with native JS libraries, other libraries, other globals
 
+
+// 1. asyncWrapper
 // https://strongloop.com/strongblog/async-error-handling-expressjs-es7-promises-generators/#usinges7asyncawait
 // https://gist.github.com/Hiswe/fe83c97d1c7c8eee9557939d1b9bc086
 
@@ -32,10 +36,22 @@
 // const asyncWrapper = fn => (...args) => fn(...args).catch(args[2])
 // module.exports = asyncWrapper
 
+// USAGE:
+// const wrap = require('./<path-to>/asyncWrapper')
+// app.get('/', wrap(async (req, res) => { ... }))
+
 global.asyncWrapper = fn => (...args) => fn(...args)
   .then(data => (!args[1].headersSent) ? args[1].status(200).json(data || {}) : '')
   .catch(args[2]) //  proceed to error handler
 
-// USAGE:
-// const wrap = require('./<path-to>/asyncWrapper')
-// app.get('/', wrap(async (req, res) => { ... }))
+// 2. Custom Errors - HTTP
+// TBD
+//
+// class NotFoundError extends Error {
+//   constructor(message) {
+//     super(message)
+//     this.name = "NotFoundError"
+//     this.code = 404
+//   }
+// }
+// global.NotFoundError = NotFoundError

@@ -1,21 +1,23 @@
 'use strict'
 
-require('../common-app/asyncWrapper')
 const config = require('../common-app/config') //  first thing to include
 const path = require('path')
 const http = require('http')
 const https = require('https')
 const express = require('express')
-const apollo = require('./graphql')
 const app = express()
 
+require('../common-app/globals') // set globals
 require('../common-app/logger')(app) // use as early as possible
 require('../common-app/cors')(app)
 require('../common-app/security')(app)
 require('../common-app/swagger')(app)
+
+const apollo = require('./graphql')
 apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
 
 require('../common-app/parser')(app)
+
 // Upload URL, Should use Signed URL and get from cloud storage instead
 const { UPLOAD_URL, UPLOAD_FOLDER, APPNAME } = config
 if (UPLOAD_URL) app.use(UPLOAD_URL, express.static( path.join(__dirname, '..', APPNAME, UPLOAD_FOLDER) ))
