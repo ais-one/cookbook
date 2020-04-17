@@ -121,24 +121,56 @@ mongo.stream = db.db('mm').collection('exchangeUsers').watch()
 # TRANSACTIONS
 
 https://docs.mongodb.com/manual/core/transactions/
+https://www.mongodb.com/blog/post/quick-start-nodejs--mongodb--how-to-implement-transactions
+
 
 ```js
-  const session = client.startSession();
   const transactionOptions = {
     readPreference: 'primary',
     readConcern: { level: 'local' },
     writeConcern: { w: 'majority' }
-  };
-  try {
-    await session.withTransaction(async () => {
-      // Important:: You must pass the session to the operations
-      await client.db('mydb1').collection('foo').insertOne({ abc: 1 }, { session });
-      await client.db('mydb2').collection('bar').insertOne({ xyz: 999 }, { session });
-    }, transactionOptions);
-  } finally {
-    await session.endSession();
-    await client.close();
   }
+  const session = client.startSession({ defaultTransactionOptions: transactionOptions});
+
+  // Using withTransaction()
+  try {
+    const transactionResults = await session.withTransaction(async () => {
+      // Important:: You must pass the session to the operations
+      await client.db('mydb1').collection('foo').insertOne({ abc: 1 }, { session })
+
+      const error = true //  force an error to test
+      if (error) {
+        await session.abortTransaction()
+        return
+      }
+      await client.db('mydb2').collection('bar').insertOne({ xyz: 999 }, { session })
+    }, transactionOptions) // you can set your own transaction options here also
+    if (transactionResults) {
+      console.log("transaction successful");
+    } else {
+      console.log("transaction intentionally aborted");
+    }
+  } catch(e){
+    console.log("transaction aborted due unexpected error: " + e);
+  } finally {
+    await session.endSession()
+    await client.close()
+  }
+
+  // Using withTransaction()
+  session.startTransaction()
+  try {
+    await client.db('mydb1').collection('foo').insertOne({ abc: 1 }, { session })
+    const error = true //  force an error to test
+    if (error) throw new Error('Force an error')
+    await client.db('mydb2').collection('bar').insertOne({ xyz: 999 }, { session })
+    await session.commitTransaction()
+  } catch(e) {
+    await session.abortTransaction()
+  } finally {
+    await session.endSession()
+  }
+
 ```
 
 
@@ -267,3 +299,7 @@ try {
   res.status(500).json({ e: e.toString() })
 }
 ```
+
+## field update operators
+
+https://docs.mongodb.com/manual/reference/operator/update-field/
