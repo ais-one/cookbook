@@ -2,7 +2,7 @@
   "name": "app",
   "description": "Backend application",
   "config": {
-    "app": "example-app"
+    "app": "viow"
   },
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app%/web/spa && npm i && cd ../ssr && npm i",
@@ -37,7 +37,7 @@
     "http-proxy-middleware": "^1.0.3",
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.0.0",
-    "knex": "^0.20.14",
+    "knex": "^0.20.15",
     "mongodb": "^3.5.6",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",

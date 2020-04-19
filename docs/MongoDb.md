@@ -132,7 +132,9 @@ https://www.mongodb.com/blog/post/quick-start-nodejs--mongodb--how-to-implement-
   }
   const session = client.startSession({ defaultTransactionOptions: transactionOptions});
 
-  // Using withTransaction()
+  // Using Callback API - withTransaction()
+  // Starts a transaction, executes the specified operations, and commits (or aborts on error).
+  // Automatically incorporates error handling logic for "TransientTransactionError" and "UnknownTransactionCommitResult".
   try {
     const transactionResults = await session.withTransaction(async () => {
       // Important:: You must pass the session to the operations
@@ -157,7 +159,9 @@ https://www.mongodb.com/blog/post/quick-start-nodejs--mongodb--how-to-implement-
     await client.close()
   }
 
-  // Using withTransaction()
+  // Using Core API - startTransaction()
+  // Requires explicit call to start the transaction and commit the transacdtion.
+  // Does not incorporate error handling logic for "TransientTransactionError" and "UnknownTransactionCommitResult", and instead provides the flexibility to incorporate custom error handling for these errors.
   session.startTransaction()
   try {
     await client.db('mydb1').collection('foo').insertOne({ abc: 1 }, { session })
