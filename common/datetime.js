@@ -1,9 +1,9 @@
 
-export function localDateISO (date) {
+export function dateISO (date) {
     (new Date(date.getTime() - (date.getTimezoneOffset() * 60000))).toISOString().substring(0, 10)
 }
 
-export function localTimeISO (date) {
+export function timeISO (date) {
     (new Date(date.getTime() - (date.getTimezoneOffset() * 60000))).toISOString().substring(11, 22)
 }
 
