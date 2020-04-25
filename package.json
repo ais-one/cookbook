@@ -2,7 +2,7 @@
   "name": "app",
   "description": "Backend application",
   "config": {
-    "app": "viow"
+    "app": "example-app"
   },
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app%/web/spa && npm i && cd ../ssr && npm i",
@@ -33,7 +33,7 @@
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
-    "firebase-admin": "^8.10.0",
+    "firebase-admin": "^8.11.0",
     "http-proxy-middleware": "^1.0.3",
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.0.0",
@@ -48,10 +48,10 @@
     "sqlite3": "^4.1.1",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4",
-    "ws": "^7.2.3"
+    "ws": "^7.2.5"
   },
   "devDependencies": {
-    "concurrently": "^5.1.0",
+    "concurrently": "^5.2.0",
     "cross-env": "^7.0.2",
     "eslint": "^6.8.0",
     "eslint-plugin-promise": "^4.2.1",
