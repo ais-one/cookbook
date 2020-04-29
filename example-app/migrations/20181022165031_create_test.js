@@ -8,7 +8,7 @@ exports.up = async (knex) => {
     })
     .createTable('books', (table) => {
       table.increments('id').primary()
-      table.string('name')
+      table.string('name').unique()
       table.integer('rating')
       table.string('yearPublished')
       table.integer('categoryId').references('categories.id')
