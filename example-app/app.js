@@ -38,7 +38,9 @@ const bookRoutes = require('./routes/book')
 const categoryRoutes = require('./routes/category')
 const pageRoutes = require('./routes/page')
 
-app.use('/api', authRoutes, apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes)
+const t4tRoutes = require('./routes/t4t')
+
+app.use('/api', authRoutes, apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes, t4tRoutes)
 require('../common-app/proxy')(app, express) //require after routes setup
 require('../common-app/errorHandler')(app)
 

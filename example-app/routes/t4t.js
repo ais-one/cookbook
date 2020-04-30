@@ -10,51 +10,75 @@ const csvParse = require('csv-parse')
 
 // const { authUser } = require('../middlewares/auth')
 
+const multer = require('multer')
+const upload = multer({
+  storage: multer.memoryStorage() 
+})
+
 const t4tCfg = {
   db: 'knex', // knex / mongodb
   tables: {
     'books': { // table alias
       name: 'books', // table name
-      id: 'id', // primary key name (if any)
       cols: {
-        id: {
-          auto: 'id'
+        id: { // primary key column, _id for mongodb
+          label: 'ID',
+          auto: 'pk'
         },
         name: {
-          key: true,
+          label: 'Name',
+          multiKey: true,
           type: 'string'
         },
         categoryId: {
+          label: 'Category', // key value...
+          type: 'single' // single select
           // related
         },
         rating: {
+          label: 'Rating',
           type: 'integer'
         },
         yearPublished: {
+          label: 'Year Published',
           type: 'string'
         },
         created_at: {
+          label: 'Created At',
           auto: 'ts'
         }
-      }
+      },
+      // generated values
+      pk: '', // eight pk or multikey
+      multiKey: [],
+      auto: [],
+      nonAuto: []
       // {id: 1, name: 'book1', categoryId: 1, rating: 5, yearPublished: '2004', created_at: mkDt() },
     }
   },
-  allColName: function (name) { this.countCols(name, true) },
-  nonAutoColNames: function (name) { this.countCols(name, false) },
-  // autoCols
-  countCols: function (name, includeAuto = false) {
-    const cols = this.tables[name].cols
-    // Object.keys(cols)
-    let count = []
-    for (let key in cols) {
-      if (!cols[key].auto || includeAuto) count.push(key)
-    }
-    return count
-  }
 }
 
-const table = t4tCfg.tables['books']
+async function generateTable (req, res, next) {
+  const tableKey = 'books' // its the table name also
+  // const tableKey = req.params.table
+  const table = t4tCfg.tables[tableKey]
+  const cols = table.cols
+  for (let key in cols) {
+    if (cols[key].auto) {
+      if (cols[key].auto === 'pk') {
+        table.pk = key
+      } else {
+        table.auto.push(key)
+      }
+    } else {
+      table.nonAuto.push(key)
+    }
+    if (cols[key].multiKey) table.multiKey.push(key)
+  }
+  // console.log(table)
+  req.table = table
+  next()
+}
 
 function formUniqueKey(table, args) {
   const where = {}
@@ -68,10 +92,11 @@ function formUniqueKey(table, args) {
 }
 
 module.exports = express.Router()
-  .get('/t4t/:table', asyncWrapper(async (req, res) => {
-    res.json(t4tCfg) // return the table info...
+  .get('/t4t/:table', generateTable, asyncWrapper(async (req, res) => {
+    res.json(req.table) // return the table info...
   }))
-  .get('/t4t/:table/find', asyncWrapper(async (req, res) => {
+  .get('/t4t/:table/find', generateTable, asyncWrapper(async (req, res) => {
+    const { table } = req
     const { page = 1, limit = 2, ...filters } = req.query
     const rv = { results: [], total: 0 }
 
@@ -89,7 +114,8 @@ module.exports = express.Router()
 
     res.json(rv)
   }))
-  .get('/t4t/:table/find-one/:id?', asyncWrapper(async (req, res) => {
+  .get('/t4t/:table/find-one/:id?', generateTable, asyncWrapper(async (req, res) => {
+    const { table } = req
     const where = req.params.id ? { id: req.params.id } : formUniqueKey(table, req.query)
     if (!where) return res.status(400).json() // bad request
     // knex
@@ -98,7 +124,8 @@ module.exports = express.Router()
     // const rv = await mongo.db.collection(table.name).findOne(where) // { _id: new ObjectID(id) }
     return res.json(rv)
   }))
-  .patch('/t4t/:table/update/:id?', asyncWrapper(async (req, res) => {
+  .patch('/t4t/:table/update/:id?', generateTable, asyncWrapper(async (req, res) => {
+    const { table } = req
     const where = req.params.id ? { id: req.params.id } : formUniqueKey(table, req.query)
     if (!where) return res.status(400).json() // bad request
     // knex
@@ -107,7 +134,8 @@ module.exports = express.Router()
     // await mongo.db.collection(table.name).updateOne(where, { $set: req.body })
     res.json(rv)
   }))
-  .post('/t4t/:table/create', asyncWrapper(async (req, res) => {
+  .post('/t4t/:table/create', generateTable, asyncWrapper(async (req, res) => {
+    const { table } = req
     // knex
     const rv = await knex(table.name)
       // .returning('id')
@@ -116,7 +144,8 @@ module.exports = express.Router()
     // const rv = await mongo.db.collection(table.name).insertOne(req.body) // rv.insertedId, rv.result.ok
     res.json(rv)
   }))
-  .delete('/t4t/:table/delete/:id', asyncWrapper(async (req, res) => {
+  .delete('/t4t/:table/delete/:id', generateTable, asyncWrapper(async (req, res) => {
+    const { table } = req
     const where = req.params.id ? { id: req.params.id } : formUniqueKey(table, req.query)
     if (!where) return res.status(400).json() // bad request
     // knex
@@ -124,7 +153,8 @@ module.exports = express.Router()
     // await mongo.db.collection(table.name).deleteOne(where)
     res.json()
   }))
-  .delete('/t4t/:table/delete-many', asyncWrapper(async (req, res) => {
+  .delete('/t4t/:table/delete-many', generateTable, asyncWrapper(async (req, res) => {
+    const { table } = req
     const ids = JSON.parse(req.query.ids) // [1,2,3]
     // knex
     await knex(table.name).whereIn(id, ids).delete()
@@ -133,7 +163,8 @@ module.exports = express.Router()
     res.json()
   }))
 
-  .post('/t4t/:table/upload', upload.single('file'), asyncWrapper(async (req, res) => {
+  .post('/t4t/:table/upload', generateTable, upload.single('file'), asyncWrapper(async (req, res) => {
+    const { table } = req
     const csv = req.file.buffer.toString('utf-8')
     const output = []
     let errors = []
