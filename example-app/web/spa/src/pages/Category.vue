@@ -84,12 +84,11 @@ export default {
           find: async ({ pagination = {}, filters = {}, sorters = {} }) => {
             let records = []
             let totalRecords = 0
-            // const { pagination } = payload // filters
-            // const { page, itemsPerPage } = pagination // sortBy, descending
+            const { page, itemsPerPage } = pagination
             // console.log('TOREMOVE', page, itemsPerPage)
             // GrqphQL
             try {
-              const rv = await apolloClient.query({ query: GET_CATEGORIES })
+              const rv = await apolloClient.query({ query: GET_CATEGORIES, variables: { page: page > 0 ? page - 1 : 0 ,  limit: parseInt(itemsPerPage) } })
               // console.log('ABC', rv.data.getCategories)
               records = rv.data.getCategories.results
               totalRecords = rv.data.getCategories.total
@@ -190,7 +189,6 @@ export default {
           },
           update: async (payload) => {
             // GrqphQL
-            // console.log(payload)
             try {
               let { record: { id, ...noIdData } } = payload
               console.log(noIdData)
@@ -205,7 +203,7 @@ export default {
                 }
               })
               // console.log('rv', rv)
-              return { status: 200, data: null }
+              return { status: 200, data: payload.record }
             } catch (e) {
               return { status: 500, error: e.toString() }
             }

@@ -28,7 +28,15 @@ const t4tCfg = {
         name: {
           label: 'Name',
           multiKey: true,
-          type: 'string'
+
+          type: 'string', // Number (Integer, Decimal), Boolean, Date (datetime, date, time)
+
+          formEditor: '',
+
+          filterEditor: '', // date, numner, string, date, datetime, time, dropdown, lookup
+          filterOp: '=', // '=,!=,like,>=,<=,>,<,><,=><=,><=,><='
+
+          transform: ''
         },
         categoryId: {
           label: 'Category', // key value...

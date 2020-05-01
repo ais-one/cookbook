@@ -53,6 +53,7 @@ const resolvers = {
     },
     getCategories: async (parent, args, context, info) => {
       try {
+        console.log('getCategories', args)
         const limit = args.limit ? args.limit : 2
         const page = args.page ? args.page : 0
         const categories = await Category.query().page(page, limit)
