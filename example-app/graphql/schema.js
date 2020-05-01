@@ -45,7 +45,6 @@ const resolvers = {
     getCategory: async (parent, args, context, info) => {
       try {
         const category = await Category.query().findById(args.id)
-        console.log('graphql', category)
         return category
       } catch (e) {
         return {}
@@ -53,11 +52,10 @@ const resolvers = {
     },
     getCategories: async (parent, args, context, info) => {
       try {
-        console.log('getCategories', args)
         const limit = args.limit ? args.limit : 2
         const page = args.page ? args.page : 0
         const categories = await Category.query().page(page, limit)
-        // console.log(categories)
+        // console.log('categories', page, limit, categories)
         return categories  
       } catch (e) {
         return {}

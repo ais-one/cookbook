@@ -1,6 +1,6 @@
 <template>
   <div id="not-needed">
-    <v-layout row wrap>
+    <v-layout row wrap class="px-2">
       <v-flex xs12>
         <vue-crud-x ref="book-table" :parentId="null" v-bind="bookDefs" @form-open="openBookForm">
           <template v-slot:filter="{ filters, parentId, vcx }">

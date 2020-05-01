@@ -7,8 +7,6 @@
 // TODEPRECATE - to deprecate & remove
 // UNUSED - not used
 
-// import _cloneDeep from 'lodash.clonedeep'
-
 export default {
   props: {
     parentId: { type: String, default: null }
@@ -58,16 +56,8 @@ export default {
         delete: { name: 'delete', props: { small: true, class: 'mr-1' } }
       },
       vtoolbar: { height: 48, dark: false, light: true, color: 'grey' }, // v-toolbar Component
-      vform: { // v-form Component for filter
-        class: 'grey lighten-3 pa-2',
-        style: { overflow: 'auto' },
-        'lazy-validation': true
-      },
-      vformCrud: { // v-form Component for CRUD
-        class: 'grey lighten-3 pa-2',
-        style: { overflow: 'auto' },
-        'lazy-validation': true
-      },
+      vformFilter: { class: 'grey lighten-3 pa-2', style: { overflow: 'auto' }, 'lazy-validation': true }, // v-form Component for filter
+      vformCrud: { class: 'grey lighten-3 pa-2', style: { overflow: 'auto' }, 'lazy-validation': true }, // v-form Component for CRUD
       vtable: { // props
         headers: [],
         'footer-props': {
@@ -114,7 +104,6 @@ export default {
 
       filters: null,
       form: null,
-
       crud: {
         create: null, // operations
         update: null,
@@ -125,10 +114,7 @@ export default {
       }
 
       // Overrideable Methods
-      // onRowClick
-      // created, updated, deleted
-      // confirmCreate, confirmUpdate, confirmDelete
-      // notifyCreate, notifyUpdate, notifyDelete, notifyExport, notifyFind, notifyFindOne
+      // onRowClick; created, updated, deleted; confirmCreate, confirmUpdate, confirmDelete; notifyCreate, notifyUpdate, notifyDelete, notifyExport, notifyFind, notifyFindOne
     }
   },
   async created () {
@@ -141,13 +127,10 @@ export default {
     // VARIATION Start Vuetify2
     this.vicon = Object.assign(this.vicon, this.$attrs.vicon || {})
     this.vbtn = Object.assign(this.vbtn, this.$attrs.vbtn || {})
-    this.vform = Object.assign(this.vform, this.$attrs.vform || {})
+    this.vformFilter = Object.assign(this.vformFilter, this.$attrs.vformFilter || {})
     this.vformCrud = Object.assign(this.vformCrud, this.$attrs.vformCrud || {})
     this.vtoolbar = Object.assign(this.vtoolbar, this.$attrs.vtoolbar || {})
     this.vtable = Object.assign(this.vtable, this.$attrs.vtable || {})
-
-    // console.log('this.vtable', this.vtable)
-
     this.sorters = Object.assign(this.sorters, this.$attrs.sorters || {})
     this.sortDefaults = Object.assign(this.sortDefaults, this.$attrs.sortDefaults || {})
     this.pageDefaults = Object.assign(this.pageDefaults, this.$attrs.pageDefaults || {})
@@ -170,90 +153,64 @@ export default {
     this.onRowClick = this.$attrs.onRowClick || ((item, event, vcx) => { // open form on row click? default true
       if (!this.inline.update) this.formOpen(item[this.idName]) // no action column && row click opens form
     })
-    this.created = this.$attrs.created || (async ({ data }) => { // TBD realtime updates
+    this.created = this.$attrs.created || (async ({ data }) => { // do not handle realtime updates of create
       this.filters = this.$attrs.filters || null
       this.pagination.page = this.pageDefaults.start
-      // this.pagination.itemsPerPage: this.pageDefaults.itemsPerPage - remain
       this.pagination.sortBy = this.pageDefaults.sortBy
       this.pagination.sortDesc = this.pageDefaults.sortDesc
       await this.getRecords({ mode: 'created' })
-      // }
+    })
+    this.deleted = this.$attrs.deleted || (async (id) => { // do not handle realtime updates of delete
+      this.filters = this.$attrs.filters || null
+      this.pagination.page = this.pageDefaults.start
+      this.pagination.sortBy = this.pageDefaults.sortBy
+      this.pagination.sortDesc = this.pageDefaults.sortDesc
+      await this.getRecords({ mode: 'deleted' })
     })
     this.updated = this.$attrs.updated || (({ data }) => { // also handles real-time updates
       const idx = this.records.findIndex(rec => rec[this.idName] === data[this.idName])
       if (idx !== -1) {
         for (let key in this.records[idx]) {
-          if (key !== this.idName && data[key]) {
-            this.records[idx][key] = data[key]
-          }
+          if (key !== this.idName && data[key]) this.records[idx][key] = data[key]
         }
       }
     })
-    this.deleted = this.$attrs.deleted || (async (id) => { // TBD realtime updates
-      this.filters = this.$attrs.filters || null
-      //   let lastPage = Math.ceil(this.totalRecords / this.pagination.itemsPerPage)
-      //   if (this.totalRecords % this.pagination.itemsPerPage === 1) lastPage -= 1
-      //   if (this.pagination.page > lastPage) this.pagination.page = lastPage
-      this.pagination.page = this.pageDefaults.start
-      // this.pagination.itemsPerPage: this.pageDefaults.itemsPerPage - remain
-      this.pagination.sortBy = this.pageDefaults.sortBy
-      this.pagination.sortDesc = this.pageDefaults.sortDesc
-      await this.getRecords({ mode: 'deleted' })
-    })
-
     // notifications
-    this.notifyCreate = this.$attrs.notifyCreate || (({ status, error }) => {
-      if (status === 200 || status === 201) alert('Create OK')
-      else alert('Create Error ' + error.toString())
-    })
-    this.notifyUpdate = this.$attrs.notifyUpdate || (({ status, error }) => {
-      if (status === 200 || status === 201) alert('Update OK')
-      else alert('Update Error ' + error.toString())
-    })
-    this.notifyDelete = this.$attrs.notifyDelete || (({ status, error }) => {
-      if (status === 200 || status === 201) alert('Delete OK')
-      else alert('Delete Error ' + error.toString())
-    })
-    this.notifyExport = this.$attrs.notifyExport || (({ status, error }) => {
-      if (!(status === 200 || status === 201)) alert('Export Error ' + error.toString())
-    })
-    this.notifyFind = this.$attrs.notifyFind || (({ status, error }) => {
-      if (!(status === 200 || status === 201)) alert('Find Error ' + error.toString())
-    })
-    this.notifyFindOne = this.$attrs.notifyFindOne || (({ status, error }) => {
-      if (!(status === 200 || status === 201)) alert('FindOne Error ' + error.toString())
-    })
-
+    this.notifyCreate = this.$attrs.notifyCreate || ( ({ status, error }) => (status === 200 || status === 201) ? alert('Create OK') : alert('Create Error ' + error.toString()) )
+    this.notifyUpdate = this.$attrs.notifyUpdate || ( ({ status, error }) => (status === 200 || status === 201) ? alert('Update OK') : alert('Update Error ' + error.toString()) )
+    this.notifyDelete = this.$attrs.notifyDelete || ( ({ status, error }) => (status === 200 || status === 201) ? alert('Delete OK') : alert('Delete Error ' + error.toString()) )
+    this.notifyExport = this.$attrs.notifyExport || (({ status, error }) => { if (!(status === 200 || status === 201)) alert('Export Error ' + error.toString()) })
+    this.notifyFind = this.$attrs.notifyFind || (({ status, error }) => { if (!(status === 200 || status === 201)) alert('Find Error ' + error.toString()) })
+    this.notifyFindOne = this.$attrs.notifyFindOne || (({ status, error }) => { if (!(status === 200 || status === 201)) alert('FindOne Error ' + error.toString()) })
     // confirmations - do this part after getting inline status
     this.confirmCreate = this.$attrs.confirmCreate || (() => this.inline.create ? confirm(this.$t('vueCrudX.confirm')) : true) // default only confirm if inline create
     this.confirmUpdate = this.$attrs.confirmUpdate || (() => true) // default always no need confirmation
     this.confirmDelete = this.$attrs.confirmDelete || (() => confirm(this.$t('vueCrudX.confirm'))) // default always need confirmation
     // non-ui reactive data - END
-
-    this.ready = true // TOREMOVE
   },
   async mounted () {
     // not needed in data() because it does not exist in template, an optimization which should be done for others as well
     if (typeof this.$t !== 'function') this.$t = text => text // if no internationalization
   },
-  beforeUpdate () { },
-  beforeRouteEnter (to, from, next) { next(vm => { }) },
   computed: {
     showTitle () { return this.title || '' }
   },
-  // watch: { loading: function (newValue, oldValue) { } }, // UNUSED
+  watch: {
+    pagination: async function (newValue, oldValue) {
+      console.log('watch - pagination')
+      await this.getRecords({ mode: 'pagesort' })
+    }
+  },
   methods: {
     goBack () { this.$router.back() }, // return from child
     // mode - (user action): created, deleted, filter-paged, filter-infinite
-    //      - (page, sort events & initial load): pagination, load-more (for subsequent infinite scroll loads)
+    //      - (page, sort events & initial load): pagesort, load-more (for subsequent infinite scroll loads)
     async getRecords ({ mode }) {
-      // console.log('getRecords', mode)
-
       // VARIATION Start - Vuetify2
       if (this.infinite) {
         if (mode === 'load-more') this.pagination.page = this.cursor // load more, this does not fire pagination event
         else if (mode === 'filter-infinite' || mode === 'created' || mode === 'deleted') this.pagination.page = this.pageDefaults.start
-        else if (mode === 'pagination' && this.pagination.page === this.pageDefaults.start) {
+        else if (mode === 'pagesort' && this.pagination.page === this.pageDefaults.start) {
           // console.log('ok')
         } else return
       }
@@ -271,7 +228,6 @@ export default {
         }
       }
       // VARIATION End - Vuetify2
-
       const payload = {
         parentId: this.parentId,
         pagination: this.pagination,
@@ -292,10 +248,6 @@ export default {
           this.totalRecords = totalRecords
           this.records = records
         }
-        // TBD - reset and find?
-        // if (totalRecords > 0 && records.length === 0) {
-        //   page = Math.ceil(totalRecords / pagination.itemsPerPage) need to reload page...
-        // }
       }
       this.notifyFind({ status, error })
       this.loading = false
@@ -303,7 +255,6 @@ export default {
     async getRecord (id) {
       this.loading = true
       const { status = 500, data = null, error = null } = await this.crud.findOne(id)
-      // console.log(status, data, error)
       if (status === 200 && data) {
         for (let key in this.form) {
           this.form[key].value = this.form[key].render ? this.form[key].render(data[key]) : data[key]
@@ -318,9 +269,7 @@ export default {
       // eslint-disable-next-line
       const { status = 500, data = null, error = null } = await this.crud.update({ record })
       this.loading = false
-      if (status === 200) {
-        await this.updated({ data })
-      }
+      if (status === 200) await this.updated({ data })
       this.notifyUpdate({ status, error })
     },
     async createRecord ({ record, parentId }) {
@@ -329,9 +278,7 @@ export default {
       // eslint-disable-next-line
       const { status = 500, data = null, error = null } = await this.crud.create({ record, parentId })
       this.loading = false
-      if (status === 201) {
-        await this.created({ data })
-      }
+      if (status === 201) await this.created({ data })
       this.notifyCreate({ status, error })
     },
     async deleteRecord (id) {
@@ -339,15 +286,12 @@ export default {
       this.loading = true
       // eslint-disable-next-line
       const { status = 500, data = null, error = null } = await this.crud.delete(id)
-      if (status === 200) {
-        await this.deleted(id)
-      }
+      if (status === 200) await this.deleted(id)
       this.loading = false
       this.notifyDelete({ status, error })
     },
     async exportRecords () {
       this.loading = true
-
       // VARIATION Start - Vuetify2
       let filters = {}
       for (let key in this.filters) {
@@ -355,7 +299,6 @@ export default {
         if (value) filters[key] = value
       }
       // VARIATION End - Vuetify2
-
       const payload = {
         parentId: this.parentId,
         pagination: this.pagination, // not used
@@ -377,10 +320,7 @@ export default {
         await this.getRecord(id) // update
       } else { // create - set initial data
         this.editingRow = null
-        for (let key in this.form) {
-          // console.log(key, this.$attrs.form[key])
-          this.form[key].value = this.$attrs.form[key].default || ''
-        }
+        for (let key in this.form) this.form[key].value = this.$attrs.form[key].default || ''
       }
       this.showForm = true
       this.$emit('form-open', this.form)
@@ -392,18 +332,13 @@ export default {
         if (key !== this.idName) record[key] = this.form[key].value // ignore id, get from selectedId
       }
       record[this.idName] = id
-      if (id) {
-        await this.updateRecord({ record })
-      } else {
-        await this.createRecord({ record, parentId: this.parentId })
-      }
+      if (id) await this.updateRecord({ record })
+      else await this.createRecord({ record, parentId: this.parentId })
       this.formClose()
     },
     async formDelete (e) {
       const id = this.selectedId
-      if (id) {
-        await this.deleteRecord(id)
-      }
+      if (id) await this.deleteRecord(id)
       this.formClose()
     },
 
@@ -413,12 +348,11 @@ export default {
       this.records = []
       if (this.infinite) {
         // VARIATION Start Vuetify2
-        this.pagination.page = this.pageDefaults.start // this does not fire off pagination event
+        // NO NEED... IT IS ALREADY DONE this.pagination.page = this.pageDefaults.start // this does not fire off pagination event
         await this.getRecords({ mode: 'filter-infinite' }) // so need to call this after
         // VARIATION End Vuetify2
       } else {
         // VARIATION Start Vuetify2
-        // console.log('onFilter', this.pagination, this.pageDefaults, this.pagination.page !== this.pageDefaults.start)
         if (this.pagination.page !== this.pageDefaults.start) {
           this.pagination = { // this fire off pagination event
             ...this.pagination,
@@ -430,20 +364,11 @@ export default {
         // VARIATION End Vuetify2
       }
     },
+    async onExport () { await this.exportRecords() },
     // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
-    async onExport () {
-      await this.exportRecords()
-    },
-    async onTable () {
-      await this.getRecords({ mode: 'pagination' })
-    },
 
     // INLINE EDIT START
-    _isRowEditing (item) {
-      // console.log('_isRowEditing', this.editingRow, item)
-      if (!this.editingRow) return false
-      return item[this.idName] === this.editingRow[this.idName]
-    },
+    _isRowEditing (item) { return (!this.editingRow) ? false : item[this.idName] === this.editingRow[this.idName] },
     async _inlineSave (item) {
       item = { ...this.editingRow }
       this.editingRow = null
@@ -454,17 +379,10 @@ export default {
       await this.createRecord({ record: {}, parentId: this.parentId })
     },
     // INLINE EDIT END
-
-    _isHidden (hidden) {
-      return (hidden === 'add' && !this.selectedId) || (hidden === 'edit' && !!this.selectedId) || hidden === 'all'
-    },
-    _isReadOnly (readonly) {
-      return (readonly === 'add' && !this.selectedId) || (readonly === 'edit' && !!this.selectedId) || readonly === 'all'
-    },
+    _isHidden (hidden) { return (hidden === 'add' && !this.selectedId) || (hidden === 'edit' && !!this.selectedId) || hidden === 'all' },
+    _isReadOnly (readonly) { return (readonly === 'add' && !this.selectedId) || (readonly === 'edit' && !!this.selectedId) || readonly === 'all' },
     _isObject (obj) { return obj !== null && typeof obj === 'object' },
-    async testFunction (_in) { // for testing anything
-      // console.log('testFunction', this.pagination)
-    }
+    async testFunction (_in) { } // for testing anything
   }
 }
 </script>
@@ -491,7 +409,7 @@ export default {
       </slot>
       <div v-if="showFilter">
         <slot name="filter" :filters="filters" :parentId="parentId" :vcx="_self">
-          <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="vform">
+          <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="vformFilter">
             <v-container fluid>
               <v-layout row wrap>
                 <template v-for="(filter, i) in filters">
@@ -505,14 +423,6 @@ export default {
         </slot>
       </div>
       <slot name="table" :records="records" :totalRecords="totalRecords" :pagination="pagination" :vcx="_self">
-        <!--
-          after sorter is clicked, page is changed to -1
-          disable sorting for infinite scroll
-          @sort-by not needed, only need @sort-desc
-          @update:page="testFunction"
-          @pagination="testFunction"
-          :disable-sort="infinite"
-        -->
         <v-data-table
           :headers="vtable.headers"
           :items="records"
@@ -521,24 +431,14 @@ export default {
           :hide-default-footer="infinite"
           v-bind="vtable"
           :item-key="idName"
-          @pagination="onTable"
         >
           <template v-slot:headerCell="props">
             <span v-html="props.header.text"></span>
           </template>
-
-          <!-- Overide Entire Table -->
-          <!-- <template v-slot:body="{ items }">
-            <tr v-for="item in items" :key="item[idName]">
-              <td>
-            </tr>
-          </template> -->
-
           <!-- <template v-slot:item.data-table-select="{ on, props }">
             <v-simple-checkbox color="green" v-bind="props" v-on="on"></v-simple-checkbox>
           </template> -->
-
-          <template v-slot:item="{ item }"><!-- was items -->
+          <template v-slot:item="{ item }">
             <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="onRowClick(item, $event, _self)">
               <slot name="td" :headers="vtable.headers" :item="item" :vcx="_self">
                 <td :key="header.value + index" v-for="(header, index) in vtable.headers" :class="header.class">

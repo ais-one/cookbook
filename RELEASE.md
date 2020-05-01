@@ -3,6 +3,10 @@
 - add telegram - send to group or channel via bot
 - improved on error handling (less boilerplate)
 - work on improving documentation
+- vue-crud-x
+  - fixed sorting
+  - fixed graphql example to do pagination
+  - cleanup code
 - [Work-in-progress]
   - backend
     - long running process support such as tcp servers, cronjobs
