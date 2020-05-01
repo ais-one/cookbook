@@ -5,7 +5,9 @@
 - work on improving documentation
 - vue-crud-x
   - fixed sorting
-  - fixed graphql example to do pagination
+  - fixed graphql example to include pagination
+  - fixed infinite scroll bug
+  - fixed code to work with latest vuetify (2.2.15 onwards) and fix infinite scroll double xhr call on filter button press
   - cleanup code
 - [Work-in-progress]
   - backend
