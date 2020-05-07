@@ -1,7 +1,7 @@
 ### Version 0.3.1
 - update packages & cleanup
 - work on improving documentation
-- add vite and do sample composition api
+- add vite and do sample composition api (example-app/web/vite)
 - pwa
   - add a pwa sample app
   - add Firebase Cloud Messaging (FCM) push notification
