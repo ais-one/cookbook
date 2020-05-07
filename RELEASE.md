@@ -1,11 +1,11 @@
 ### Version 0.3.1
 - update packages & cleanup
 - work on improving documentation
-- add no bundler implementation of SPA using ES Modules
 - pwa
   - add a pwa sample app
   - add Firebase Cloud Messaging (FCM) push notification
 - backend
+  - add no bundler implementation of Vue SPA using ES Modules
   - add telegram - send to group or channel via bot
   - add FCM push notification
   - improved on error handling (less boilerplate, see example-app/routes/api.js)
