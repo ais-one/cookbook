@@ -4,7 +4,7 @@ const path = require('path')
 console.log('TEST_ENV=',process.env.TEST_ENV)
 const KNEXFILE = require('../knexfile')
 
-const FIREBASE_KEY = '' // require('./firebase.key.json') || ''
+const FIREBASE_KEY = require('./firebase.key.json') || ''
 
 const JWT_CERT = process.env.JWT_CERT || path.join(__dirname, 'certs/jwt') // RS256
 const HTTPS_CERT = process.env.HTTPS_CERT || ''
@@ -60,6 +60,7 @@ module.exports = {
 
   // FIREBASE SERVICE ACCOUNT
   FIREBASE_KEY,
+  FCM_SERVER_KEY: process.env.FCM_SERVER_KEY || '',
 
   // Github
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || '', // verify a github token

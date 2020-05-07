@@ -164,4 +164,21 @@ apiRoutes
     // req.body will contain the text fields, if there were any
   })
 
+  // test FCM push notification when device registers... 
+  .get('/test-pn-token/:pnToken', async (req, res) => {
+    try {
+      console.log('PN token received: ' + req.params.pnToken, req.query)
+      if (req.query.reply === 'yes') {
+        const rv = await firebase.fcmSend(req.params.pnToken, 'FCM Message', 'Received from My Server ' + Date.now())
+        console.log('send rv', rv.status)
+        res.status(200).json({ status: rv.status })  
+      } else {
+        res.status(200).json({ pnToken: req.params.pnToken })  
+      }
+    } catch (e) {
+      res.status(500).json({ e: e.toString() })
+    }
+  })
+  
+
 module.exports = apiRoutes

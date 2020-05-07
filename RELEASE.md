@@ -1,8 +1,13 @@
 ### Version 0.3.1
 - update packages & cleanup
-- add telegram - send to group or channel via bot
-- improved on error handling (less boilerplate)
 - work on improving documentation
+- pwa
+  - add a pwa sample app
+  - add Firebase Cloud Messaging (FCM) push notification
+- backend
+  - add telegram - send to group or channel via bot
+  - add FCM push notification
+  - improved on error handling (less boilerplate, see example-app/routes/api.js)
 - vue-crud-x
   - fixed sorting
   - fixed graphql example to include pagination

@@ -72,8 +72,8 @@
 import { from } from 'rxjs'
 import { pluck, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators' // map
 import { http } from '@/axios'
-import { downloadData } from '@/assets/util'
 import { parse } from 'json2csv'
+import { downloadData } from '../../../../../common-web/util'
 
 export default {
   subscriptions () {
