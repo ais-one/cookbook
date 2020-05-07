@@ -1,6 +1,7 @@
 ### Version 0.3.1
 - update packages & cleanup
 - work on improving documentation
+- add no bundler implementation of SPA using ES Modules
 - pwa
   - add a pwa sample app
   - add Firebase Cloud Messaging (FCM) push notification

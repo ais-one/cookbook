@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <h1>Refresh Token <a href="/index.html">Back</a></h1>
+  <h1>Refresh Token <a href="index.html">Back</a></h1>
   <p>
     check console for logs
   </p>
@@ -49,8 +49,8 @@
           const rv2 = await fetch(url + qs, options)
           return rv2
         } else {
-          console.log('bbbbbbb')
-          return rv1 // refresh failed
+          console.log('refresh failed')
+          return rv1
         }
       }
     }
