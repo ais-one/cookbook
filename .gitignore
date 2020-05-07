@@ -1,7 +1,12 @@
+# npm
+node_modules
+
+#snowpack
+web_modules
+
 .DS_Store
 dist
 .nuxt
-node_modules
 coverage
 **/.firebaserc
 

@@ -21,6 +21,8 @@ const template = /*html*/`
             <div class="field">
               <div class="control" @click="login"><button class="button is-primary is-medium is-fullwidth">Login</button></div>
             </div>
+            <p><a href="../index.html">Back To Demo</a></p>
+
             {{ errorMsg }}
           </div>
         </article>
