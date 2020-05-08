@@ -67,25 +67,29 @@ const t4tCfg = {
 }
 
 async function generateTable (req, res, next) {
-  const tableKey = 'books' // its the table name also
-  // const tableKey = req.params.table
-  const table = t4tCfg.tables[tableKey]
-  const cols = table.cols
-  for (let key in cols) {
-    if (cols[key].auto) {
-      if (cols[key].auto === 'pk') {
-        table.pk = key
+  try {
+    const tableKey = 'books' // its the table name also
+    // const tableKey = req.params.table
+    // TOREMOVE const table = t4tCfg.tables[tableKey]
+    req.table = require('./tables/' + tableKey + '.js')
+    const cols = req.table.cols
+    for (let key in cols) {
+      if (cols[key].auto) {
+        if (cols[key].auto === 'pk') {
+          req.table.pk = key
+        } else {
+          req.table.auto.push(key)
+        }
       } else {
-        table.auto.push(key)
+        req.table.nonAuto.push(key)
       }
-    } else {
-      table.nonAuto.push(key)
+      if (cols[key].multiKey) req.table.multiKey.push(key)
     }
-    if (cols[key].multiKey) table.multiKey.push(key)
+    // console.log(req.table)
+    next()  
+  } catch (e) {
+    res.status(500).json({ e: e.toString() })
   }
-  // console.log(table)
-  req.table = table
-  next()
 }
 
 function formUniqueKey(table, args) {
