@@ -1,6 +1,8 @@
 <template>
   <div>
     <h1>A Test Application For Vite</h1>
+     <b-button @click="clickMe">Click Me</b-button>
+     <!-- <button class="button">Button</button> -->
     <router-view></router-view>
   </div>
 </template>
@@ -8,6 +10,11 @@
 <script>
 // :key="$route.fullPath" // this is causing problems
 export default {
+  methods: {
+    clickMe () {
+      alert('Clicked')
+    }
+  }
 }
 </script>
 

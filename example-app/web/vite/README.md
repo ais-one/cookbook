@@ -14,7 +14,7 @@ We should have the following
 - Vuex
 - VueRouter
 - External non-ESM libraries (using snowpack)
-- (TBD) Get some UI library
+- (TBD) Get some UI library - Buefy does not work with Vue 3 yet...
 
 [https://github.com/vuejs/vite](https://github.com/vuejs/vite)
 
