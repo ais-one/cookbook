@@ -1,6 +1,5 @@
 const path = require('path')
 const express = require('express')
-const authorRoutes = express.Router()
 const { UPLOAD_FOLDER } = require('../config')
 const { authUser } = require('../middlewares/auth')
 
@@ -32,7 +31,7 @@ const upload = multer({
 
 const authorController = require('../controllers/author') // use controller
 
-authorRoutes
+module.exports = express.Router()
   /**
    * @swagger
    * definition:
@@ -62,7 +61,7 @@ authorRoutes
    *          schema:
    *            $ref: '#/definitions/AuthorObject'
    */
-  .post('/authors', authUser, authorController.create
+  .post('/', authUser, authorController.create
     // async (req, res) => {
     //   try {
     //     const author = await Author.query().insert(req.body)
@@ -90,7 +89,7 @@ authorRoutes
    *            $ref: '#/definitions/AuthorObject'
 
    */
-  .patch('/authors/:id', authUser, upload.single('filex'), authorController.update
+  .patch('/:id', authUser, upload.single('filex'), authorController.update
     // async (req, res) => {
     //   try {
     //     // console.log('express file', req.file)
@@ -117,7 +116,7 @@ authorRoutes
    *        - name: id
    *          in: path
    */
-  .get('/authors/:id', authUser, authorController.findOne
+  .get('/:id', authUser, authorController.findOne
     // async (req, res) => {
     //   try {
     //     const author = await Author.query().findById(req.params.id)
@@ -146,7 +145,7 @@ authorRoutes
    *        - name: sort
    *          in: query
    */
-  .get('/authors', authUser, authorController.find
+  .get('/', authUser, authorController.find
     // async (req, res) => {
     //   try {
     //     const limit = req.query.limit ? req.query.limit : 2
@@ -184,7 +183,7 @@ authorRoutes
    *        - name: id
    *          in: path
    */
-  .delete('/authors/:id', authUser, authorController.remove
+  .delete('/:id', authUser, authorController.remove
     // async (req, res) => {
     //   try {
     //     trx = await transaction.start(knex)
@@ -200,5 +199,3 @@ authorRoutes
     //   }
     // }
   )
-
-module.exports = authorRoutes

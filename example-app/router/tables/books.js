@@ -1,4 +1,5 @@
 module.exports = {
+  db: 'knex', // knex / mongodb
   name: 'books', // table name
   cols: {
     id: { // primary key column, _id for mongodb

@@ -9,7 +9,8 @@
   - add no bundler implementation of Vue SPA using ES Modules
   - add telegram - send to group or channel via bot
   - add FCM push notification
-  - improved on error handling (less boilerplate, see example-app/routes/api.js)
+  - improved on error handling (less boilerplate, see example-app/router/api.js)
+  - improved router organization
 - vue-crud-x
   - fixed sorting
   - fixed graphql example to include pagination

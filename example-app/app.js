@@ -28,19 +28,9 @@ if (UPLOAD_URL) app.use(UPLOAD_URL, express.static( path.join(__dirname, '..', A
 // https://codewithhugo.com/use-es-modules-in-node-without-babel/webpack-using-esm/
 const esmImport = require('esm')(module);
 const { foo } = esmImport('../common/datetime')
-console.log(foo)
+console.log('Value from ES Module file...', foo)
 
-const authRoutes = require('./routes/auth')
-const apiRoutes = require('./routes/api')
-
-const authorRoutes = require('./routes/author')
-const bookRoutes = require('./routes/book')
-const categoryRoutes = require('./routes/category')
-const pageRoutes = require('./routes/page')
-
-const t4tRoutes = require('./routes/t4t')
-
-app.use('/api', authRoutes, apiRoutes, authorRoutes, bookRoutes, categoryRoutes, pageRoutes, t4tRoutes)
+const router = require('./router')(app)
 require('../common-app/proxy')(app, express) //require after routes setup
 require('../common-app/errorHandler')(app)
 

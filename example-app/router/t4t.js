@@ -15,63 +15,12 @@ const upload = multer({
   storage: multer.memoryStorage() 
 })
 
-const t4tCfg = {
-  db: 'knex', // knex / mongodb
-  tables: {
-    'books': { // table alias
-      name: 'books', // table name
-      cols: {
-        id: { // primary key column, _id for mongodb
-          label: 'ID',
-          auto: 'pk'
-        },
-        name: {
-          label: 'Name',
-          multiKey: true,
-
-          type: 'string', // Number (Integer, Decimal), Boolean, Date (datetime, date, time)
-
-          formEditor: '',
-
-          filterEditor: '', // date, numner, string, date, datetime, time, dropdown, lookup
-          filterOp: '=', // '=,!=,like,>=,<=,>,<,><,=><=,><=,><='
-
-          transform: ''
-        },
-        categoryId: {
-          label: 'Category', // key value...
-          type: 'single' // single select
-          // related
-        },
-        rating: {
-          label: 'Rating',
-          type: 'integer'
-        },
-        yearPublished: {
-          label: 'Year Published',
-          type: 'string'
-        },
-        created_at: {
-          label: 'Created At',
-          auto: 'ts'
-        }
-      },
-      // generated values
-      pk: '', // eight pk or multikey
-      multiKey: [],
-      auto: [],
-      nonAuto: []
-      // {id: 1, name: 'book1', categoryId: 1, rating: 5, yearPublished: '2004', created_at: mkDt() },
-    }
-  },
-}
-
 async function generateTable (req, res, next) {
   try {
-    const tableKey = 'books' // its the table name also
-    // const tableKey = req.params.table
+    const tableKey = req.params.table // 'books' // its the table name also
     // TOREMOVE const table = t4tCfg.tables[tableKey]
-    req.table = require('./tables/' + tableKey + '.js')
+    const ref = require('./tables/' + tableKey + '.js') // get table from a file...
+    req.table = JSON.parse(JSON.stringify(ref))
     const cols = req.table.cols
     for (let key in cols) {
       if (cols[key].auto) {
@@ -104,7 +53,7 @@ function formUniqueKey(table, args) {
 }
 
 module.exports = express.Router()
-  .get('/t4t/:table', generateTable, asyncWrapper(async (req, res) => {
+  .get('/:table', generateTable, asyncWrapper(async (req, res) => {
     res.json(req.table) // return the table info...
   }))
   .get('/t4t/:table/find', generateTable, asyncWrapper(async (req, res) => {

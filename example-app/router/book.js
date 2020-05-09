@@ -1,5 +1,4 @@
 const express = require('express')
-const bookRoutes = express.Router()
 
 const { authUser } = require('../middlewares/auth')
 
@@ -10,8 +9,8 @@ const Page = require('../models/Page')
 const { transaction } = require('objection')
 const knex = Book.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
 
-bookRoutes
-  .post('/books', authUser, async (req,res) => {
+module.exports = express.Router()
+  .post('/', authUser, async (req,res) => {
     try {
       console.log(req.body.authorIds)
       const { authorIds, ...data } = req.body
@@ -36,7 +35,7 @@ bookRoutes
     }
     return res.status(500).json()
   })
-  .patch('/books/:id', authUser, async (req,res) => {
+  .patch('/:id', authUser, async (req,res) => {
     let trx
     const { name, categoryId, authorIds } = req.body
     try {
@@ -58,7 +57,7 @@ bookRoutes
     }
     return res.status(500).json()
   })
-  .get('/books/:id', authUser, async (req, res) => {
+  .get('/:id', authUser, async (req, res) => {
     try {
       const book = await Book.query().findById(req.params.id)
         .select('books.*', 'category.name as categoryName')
@@ -77,7 +76,7 @@ bookRoutes
     }
     return res.status(500).json()
   })
-  .get('/books', authUser, async (req,res) => {
+  .get('/', authUser, async (req,res) => {
     try {
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
@@ -117,7 +116,7 @@ bookRoutes
     } catch (e) { console.log(e) }
     return res.status(500).json()
   })
-  .get('/books/:id/pages', authUser, async (req, res) => { // get pages of a book
+  .get('/:id/pages', authUser, async (req, res) => { // get pages of a book
     try {
       const limit = req.query.limit ? req.query.limit : 2
       const page = req.query.page ? req.query.page : 0
@@ -129,7 +128,7 @@ bookRoutes
     } catch (e) { console.log(e) }
     return res.status(500).json()
   })
-  .post('/books/:id/pages', authUser, async (req, res) => { // add page to book
+  .post('/:id/pages', authUser, async (req, res) => { // add page to book
     try {
       const book = await Book.query().findById(req.params.id)
       if (!book) return res.status(404).json()
@@ -138,7 +137,7 @@ bookRoutes
     } catch (e) { console.log(e) }
     return res.status(500).json()
   })
-  .post('/books/:id/authors/:authorId', authUser, async (req, res) => { // relate author to book - set unique index to prevent duplicates... - IS THIS USED?
+  .post('/:id/authors/:authorId', authUser, async (req, res) => { // relate author to book - set unique index to prevent duplicates... - IS THIS USED?
     // unique index does not seem to work...
     try {
       const book = await Book.query().findById(req.params.id)
@@ -149,7 +148,7 @@ bookRoutes
     } catch (e) { console.log(e) }
     return res.status(500).json()
   })
-  .delete('/books/:id/authors/:authorId', authUser, async (req, res) => { // unrelate author from book - IS THIS USED?
+  .delete('/:id/authors/:authorId', authUser, async (req, res) => { // unrelate author from book - IS THIS USED?
     try {
       const book = await Book.query().findById(req.params.id)
       if (!book) return res.status(404).json()
@@ -161,7 +160,7 @@ bookRoutes
   })
 
   // deletions
-  .delete('/books/:id', authUser, async (req, res) => {
+  .delete('/:id', authUser, async (req, res) => {
     try {
       trx = await transaction.start(knex)
       const book = await Book.query(trx).findById(req.params.id)
@@ -175,5 +174,3 @@ bookRoutes
       console.log('delete book', e.toString())
     }
   })
-
-module.exports = bookRoutes

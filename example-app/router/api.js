@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
-const apiRoutes = express.Router()
 
 const agenda = require('../../common-app/mq/agenda') // message queue
 const bull = require('../../common-app/mq/bull')
@@ -55,7 +54,7 @@ const upload = multer({
   })
 })
 
-apiRoutes
+module.exports = express.Router()
   .get('/firebase-upload-enable', asyncWrapper(async (req,res) => {
     // need to allow CORS...
     const rv = await bucket.setCorsConfiguration([{
@@ -179,6 +178,3 @@ apiRoutes
       res.status(500).json({ e: e.toString() })
     }
   })
-  
-
-module.exports = apiRoutes

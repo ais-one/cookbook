@@ -1,10 +1,7 @@
 // test for mongoDB
 const express = require('express')
-const jobRoutes = express.Router()
-
 const mongo = require('../../common-app/mongo')
 const { authUser } = require('../../middlewares/auth')
-
 const { ObjectID } = require('mongodb')
 
 /*
@@ -25,7 +22,7 @@ updatedBy
 updatedTime
 */
 
-jobRoutes
+module.exports = express.Router()
   .get('/mongo-test', async (req,res) => {
     try {
       const results = mongo ? await mongo.db.collection('jobs').find({}).toArray() : []
@@ -86,5 +83,3 @@ jobRoutes
     } catch (e) { }
     return res.status(500).json()
   })
-
-module.exports = jobRoutes
