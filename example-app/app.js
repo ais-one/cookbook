@@ -57,8 +57,8 @@ if (USE_HTTPS) {
 apollo.installSubscriptionHandlers(server) // if put before server.listen, will mess with WS API
 console.log(`🚀 GraphQL Server ready at ${apollo.graphqlPath}`)
 console.log(`🚀 GraphQL Subscriptions ready at ${apollo.subscriptionsPath}`)  
-const wss = require('../common-app/websocket').open((err) => console.log(err || 'WS API OPEN OK')) // or set to null
 
+const wss = require('../common-app/websocket').open((err) => console.log(err || 'WS API OPEN OK')) // or set to null
 const agenda = require('../common-app/mq/agenda') // add message queue
 require('../common-app/mq/bull') // add message queue
 

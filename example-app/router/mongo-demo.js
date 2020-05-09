@@ -4,24 +4,6 @@ const mongo = require('../../common-app/mongo')
 const { ObjectID } = require('mongodb')
 // const { authUser } = require('../../middlewares/auth')
 
-/*
-jobId
-boatNumber: []
-company: [cash, ...]
-contact: []
-master: []
-vessel
-location: []
-remarks
-pax
-orderDateTime
-jobType: [up, down, 2way]
-base: [WCP, MSP]
-purpose
-updatedBy
-updatedTime
-*/
-
 module.exports = express.Router()
   .get('/test', async (req,res) => {
     try {
