@@ -14,7 +14,8 @@
 </template>
 
 <script>
-// defineComponent, getCurrentInstance,
+// defineComponent, getCurrentInstance, reactive, readonly, watch, watchEffect
+// provide, inject ??? 
 import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
@@ -36,6 +37,32 @@ export default {
     // const plusOne = computed(() => count.value + 1)
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
 
+    // const stop = watchEffect(() => console.log(count.value))
+    // // -> logs 0
+    // setTimeout(() => {
+    //   count.value++
+    //   // -> logs 1
+    // }, 100)
+    // // stop()
+
+    // put watchEffect inside onMounted to have access to DOM
+
+    // // watching a getter
+    // const state = reactive({ count: 0 })
+    // watch(
+    //   () => state.count,
+    //   (count, prevCount) => {
+    //   }
+    // )
+
+    // // directly watching a ref
+    // const count = ref(0)
+    // watch(count, (count, prevCount) => {
+    // })
+
+    // watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
+    // })
+
     onMounted(async () => {
       console.log('mounted!')
       console.log('props', props)
@@ -51,7 +78,7 @@ export default {
       console.log('updated!')
     })
     onBeforeUnmount(() => {
-      console.log('unmounted!')
+      console.log('before mounted!')
     })
     onUnmounted(() => {
       console.log('unmounted!')
