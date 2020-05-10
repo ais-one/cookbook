@@ -12,10 +12,6 @@ require('../common-app/logger')(app) // use as early as possible
 require('../common-app/cors')(app)
 require('../common-app/security')(app)
 require('../common-app/swagger')(app)
-
-const apollo = require('./graphql')
-apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
-
 require('../common-app/parser')(app)
 
 // Upload URL, Should use Signed URL and get from cloud storage instead
@@ -26,11 +22,13 @@ if (UPLOAD_URL) app.use(UPLOAD_URL, express.static( path.join(__dirname, '..', A
 
 // mixing ES Modules into a CommonJS project
 // https://codewithhugo.com/use-es-modules-in-node-without-babel/webpack-using-esm/
-const esmImport = require('esm')(module);
-const { foo } = esmImport('../common/datetime')
+const { foo } = require('esm')(module)('../common/datetime')
 console.log('Value from ES Module file...', foo)
 
-const router = require('./router')(app)
+const apollo = require('./graphql')(app, null)
+apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
+
+require('./router')(app)
 require('../common-app/proxy')(app, express) //require after routes setup
 require('../common-app/errorHandler')(app)
 

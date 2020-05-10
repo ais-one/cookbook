@@ -1,32 +1,78 @@
+
 <template>
   <div>
     [<router-link to="/site-a">Site A</router-link>] [<router-link to="/site-b">Site B</router-link>]
     <h1>A Hello Vite + Vue 3!</h1>
-    <p>Edit ./App.vue to test hot module replacement (HMR).</p>
+    <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>    
     <p>
       <span>Count is: {{ count }}</span>
       <button @click="count++">increment</button>
     </p>
-    <p>Vuex Store {{ $store.state.count }}</p>
+    <p>Vuex Store {{ storeCount }}</p>
     <p>Axios GET {{ msg }}</p>
   </div>
 </template>
 
 <script>
+// defineComponent, getCurrentInstance,
+import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter, useRoute } from 'vue-router'
+
 import axios from '/web_modules/axios.js'
 
 export default {
-  name: 'Home',
-  data: () => ({ count: 0, msg: '' }),
-  async mounted () {
-    console.log('mounted')
-    const rv = await axios.get('https://swapi.dev/api/people/1')
-    this.msg = JSON.stringify(rv.data)
-    console.log(this.$router, this.$store)
-  },
-  created () {
-    console.log('created')
+  // name: 'Home',
+  setup(props, context) {
+    const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
+
+    // const obj = reactive({ count: 0 })
+    const count = ref(0)
+    const msg = ref('')
+    const titleRef = ref(null)
+
+    // const plusOne = computed(() => count.value + 1)
+    const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
+
+    onMounted(async () => {
+      console.log('mounted!')
+      console.log('props', props)
+      console.log('context', context)
+      console.log("template ref titleRef", titleRef.value)
+      const rv = await axios.get('https://swapi.dev/api/people/1')
+      msg.value = JSON.stringify(rv.data)
+      console.log('useStore', store)
+      console.log('useRouter', router)
+      console.log('useRoute', route)
+    })
+    onUpdated(() => {
+      console.log('updated!')
+    })
+    onBeforeUnmount(() => {
+      console.log('unmounted!')
+    })
+    onUnmounted(() => {
+      console.log('unmounted!')
+    })
+    return {
+      count,
+      msg,
+      titleRef,
+      storeCount
+    }
   }
+  // data: () => ({ count: 0, msg: '' }),
+  // async mounted () {
+  //   console.log('mounted')
+  //   const rv = await axios.get('https://swapi.dev/api/people/1')
+  //   this.msg = JSON.stringify(rv.data)
+  //   console.log(this.$router, this.$store)
+  // },
+  // created () {
+  //   console.log('created')
+  // }
 }
 </script>
 

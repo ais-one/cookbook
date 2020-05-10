@@ -2,11 +2,8 @@
 const Author = require('../models/Author')
 const Category = require('../models/Category')
 
-const { gql } = require('apollo-server-express')
+// const { gql } = require('apollo-server-express')
 // graphql Schema
-
-// const xxx = require('./schema.gql')
-// console.log(xxx)
 
 const fs = require('fs')
 const typeDefs = fs.readFileSync('./example-app/graphql/schema.gql', 'utf8').toString() // relative to package.json directory where script is executed
