@@ -44,10 +44,7 @@ module.exports = function (app, server) {
         }
       }
     })
-    // apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
-    // apollo.installSubscriptionHandlers(server) // if put before server.listen, will mess with WS API
-    // console.log(`🚀 GraphQL Server ready at ${apollo.graphqlPath}`)
-    // console.log(`🚀 GraphQL Subscriptions ready at ${apollo.subscriptionsPath}`)  
+    apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
   }
   return apollo
 }

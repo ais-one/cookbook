@@ -1,5 +1,5 @@
 const APPNAME = require('./appname')
-const { server } = require('./'+ APPNAME + '/app')
+const { server } = require('./app')
 const { API_PORT } = require('./'+ APPNAME + '/config')
 console.log(APPNAME, process.env.NODE_ENV, API_PORT)
 

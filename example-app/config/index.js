@@ -156,9 +156,10 @@ module.exports = {
     produces: ['application/json']
   },
 
+  JOB_TYPES: '', // 'email', // 'email,sms,telegram'
   JOB_DB: '127.0.0.1:27017/agenda-test', //  agenda message queue job types, comma seperated
   JOB_COLLECTION: 'agendaJobs',
-  JOB_TYPES: 'email',
+
   JOB_BULL: false,
 
   // Role-based access control - currently not used, for future implementation
@@ -177,6 +178,7 @@ module.exports = {
     }
   },
 
-  ENABLE_LOGGER: false
+  ENABLE_LOGGER: false,
+  USE_GRAPQL: true
 }
 

@@ -116,7 +116,7 @@ module.exports = express.Router()
   }))
 
   .get('/crash', asyncWrapper(async (req, res) => { // for crashing the application - catching error in process exception
-    fs.readFile('somefile.txt', function (err, data) {
+    fs.readFile('somefile.txt', (err, data) => {
       if (err) throw err
       console.log(data)
     })
