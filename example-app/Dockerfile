@@ -39,7 +39,7 @@ RUN npm install --only=production && npm cache clean --force
 
 # Get all the code needed to run the app
 # COPY . .
-COPY index.js appname.js ./
+COPY index.js app.js appname.js ./
 COPY common common/
 COPY common-app common-app/
 COPY example-app example-app/

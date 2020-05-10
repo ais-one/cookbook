@@ -14,8 +14,9 @@
     "test-example": "cross-env NODE_ENV=development jest [project name] --watchAll",
     "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=development npm run serve",
     "ssr": "cd %npm_package_config_app%/web/ssr && cross-env NODE_ENV=development npm run dev",
-    "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
-    "deploy": "cd %npm_package_config_app%/deploy && run.sh",
+    "dev:spa": "concurrently \"npm run dev -- app=example-app\" \"npm run spa\"",
+    "deploy": "deploy.sh",
+    "deploy-todelete": "cd %npm_package_config_app%/deploy && run.sh",
     "lint": "eslint ."
   },
   "engines": {
