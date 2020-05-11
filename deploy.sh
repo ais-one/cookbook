@@ -9,7 +9,7 @@
 
 if [ ! $1 ]
 then
-    echo "Usage npm run deploy -- [app folder]"
+    echo "Usage npm run deploy-vm -- [app folder]"
     exit
 fi
 
@@ -54,8 +54,7 @@ do
       # cd "$packagePath/deploy"
       ;;
     "be")
-      echo "Deploy Back End"
-      # cd "${packagePath}/.."
+      echo "Deploy Back End... take note public and upload folders"
       tar \
         --exclude=".git" \
         --exclude="node_modules" \

@@ -74,6 +74,7 @@ module.exports = {
   SENDGRID_KEY: process.env.SENDGRID_KEY || '',
 
   // Communications - Nexmo
+  NEXMO_FROM: process.env.NEXMO_FROM || 'VCXSMS', 
   NEXMO_KEY: process.env.NEXMO_KEY || '',
   NEXMO_SECRET: process.env.NEXMO_SECRET || '',
 

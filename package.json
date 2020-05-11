@@ -5,18 +5,15 @@
     "app": "example-app"
   },
   "scripts": {
-    "install-libs": "npm i && cd %npm_package_config_app%/web/spa && npm i && cd ../ssr && npm i",
+    "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd web/spa && npm i && cd ../ssr && npm i",
     "install-db": "cd %npm_package_config_app% && npm run install-db",
-    "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "dev-example": "cross-env NODE_ENV=development nodemon index.js app=[project name]",
-    "dev-todelete": "cross-env NODE_ENV=development nodemon index.js %npm_package_config_app%",
-    "test": "cross-env NODE_ENV=development jest",
-    "test-example": "cross-env NODE_ENV=development jest [project name] --watchAll",
     "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=development npm run serve",
     "ssr": "cd %npm_package_config_app%/web/ssr && cross-env NODE_ENV=development npm run dev",
-    "dev:spa": "concurrently \"npm run dev -- app=example-app\" \"npm run spa\"",
-    "deploy": "deploy.sh",
-    "deploy-todelete": "cd %npm_package_config_app%/deploy && run.sh",
+    "dev:spa": "concurrently \"npm run dev -- app=%npm_package_config_app%\" \"npm run spa\"",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "cross-env NODE_ENV=development jest",
+    "test-example": "cross-env NODE_ENV=development jest [project name] --watchAll",
+    "deploy-vm": "deploy.sh",
     "lint": "eslint ."
   },
   "engines": {
@@ -52,7 +49,7 @@
     "sqlite3": "^4.2.0",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4",
-    "ws": "^7.2.5"
+    "ws": "^7.3.0"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",

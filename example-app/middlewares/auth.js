@@ -6,6 +6,8 @@ const { HTTPONLY_TOKEN, JWT_ALG, JWT_EXPIRY, JWT_SECRET, JWT_REFRESH_EXPIRY } = 
 const { jwtCerts } = require('../config')
 const { createToken } = require('../../common-app/auth')
 
+const KEYV_REFRESH_TOKEN = true
+
 const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
   let token
@@ -31,10 +33,18 @@ const authUser = async (req, res, next) => {
             try {
               // check refresh token & user - always stateful
               const { id, groups, exp } = jwt.decode(token)
-              const user = await User.query().where('id', '=', id)
-              if (user && !user[0].revoked && req.body) {
-                const refreshToken = true ? await keyv.get(id) // use Cache
-                  : user[0].refreshToken // TBD use DB - maybe better to use DB since it is already being read
+              let refreshToken
+
+              if (KEYV_REFRESH_TOKEN) {
+                refreshToken = await keyv.get(id)
+              } else { // TBD use DB - maybe better to use DB since it is already being read
+                const user = await User.query().where('id', '=', id) // TBD FIX THIS
+                if (user && !user[0].revoked && req.body) {
+                  refreshToken = user[0].refreshToken
+                }
+              }
+
+              if (refreshToken) {
                 // console.log('ggg', req.baseUrl, req.path, parseInt(Date.now() / 1000) - exp, JWT_REFRESH_EXPIRY, e.toString(), parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY, token)
                 if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
                   if (refreshToken === req.body.refresh_token) { // ok... generate new access token & refresh token?
@@ -68,8 +78,12 @@ const authUser = async (req, res, next) => {
 }
 
 const authIsAdmin = async (req, res, next) => {
-  if (req.decoded.groups === 'admin') next()
-  else res.status(401).json({ e: 'Not Allowed' })
+  if (req.decoded.groups === 'admin') {
+    return next()
+  }
+  else {
+    return res.status(401).json({ e: 'Not Allowed' })
+  }
 }
 
 module.exports = {
