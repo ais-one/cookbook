@@ -35,11 +35,11 @@ module.exports = {
   // JWT - secret key
   JWT_ALG: process.env.JWT_ALG || 'HS256', // 'RS256' (use SSL certs), 'HS256' (use secret string)
   JWT_SECRET: process.env.JWT_SECRET || '123456789', // HS256
-  JWT_EXPIRY: process.env.JWT_EXPIRY || '5s', // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism
+  JWT_EXPIRY: process.env.JWT_EXPIRY || 5, // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism, numeric is seconds
   JWT_REFRESH_EXPIRY: 3600, // do not allow refresh handling after X seconds
 
   // OTP
-  USE_OTP: process.env.USE_OTP || '', // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
+  USE_OTP: process.env.USE_OTP || 'TEST', // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
   OTP_EXPIRY: process.env.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP
   // OTP_SERVICE_NAME=Test Service // OTP / 2FA
 
@@ -67,7 +67,7 @@ module.exports = {
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '',
 
   // Communications - Telegram
-  TELEGRAM_BOT_ID: process.env.TELEGRAM_BOT_ID || '',
+  TELEGRAM_CHANNEL_ID: process.env.TELEGRAM_CHANNEL_ID || '',
   TELEGRAM_API_KEY: process.env.TELEGRAM_API_KEY || '',
 
   // Communications - Sendgrid

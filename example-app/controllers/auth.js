@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const axios = require('axios')
+const otplib = require('otplib')
 const { SALT_ROUNDS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
 const { createToken, revokeToken } = require('../../common-app/auth')
 
@@ -7,9 +8,6 @@ const User = require('../models/User')
 
 // const uuid = require('uuid/v4')
 // const qrcode = require('qrcode')
-// const otplib = require('otplib')
-// const axios = require('axios')
-// const bcrypt = require('bcryptjs')
 
 // Check if the user github exists in database
 async function isGithubAuthenticated(mode, { githubId }) {
@@ -131,6 +129,8 @@ exports.otp = async (req, res) => {
         const tokens = await createToken({ id, verified: true, groups }, {expiresIn: JWT_EXPIRY})
         if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
         return res.status(200).json(tokens)
+      } else {
+        return res.status(401).json({ message: 'Error token wrong pin' })
       }
     }
   } catch (e) { console.log('otp err', e.toString()) }
