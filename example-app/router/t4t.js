@@ -43,11 +43,9 @@ async function generateTable (req, res, next) {
 
 function formUniqueKey(table, args) {
   const where = {}
-  for (let col in table.cols) {
-    if (table.cols[col].key) {
-      if (args[col]) where[col] = args[col]
-      else return null
-    }
+  for (let col of table.multiKey) {
+    if (args[col]) where[col] = args[col]
+    else return null
   }
   return (Object.keys(where).length) ? where : null
 }
