@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken')
-const { JWT_ALG, JWT_SECRET, jwtCerts, HTTPONLY_TOKEN, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE } = require('../config')
+const { JWT_ALG, JWT_SECRET, jwtCerts, HTTPONLY_TOKEN, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv' } = require('../config')
 
 // TBD getToken - checked for revoked token? such token should not be available in Key-Value storage already
+
 const { setToken, getToken, revokeToken } = require('./' + JWT_REFRESH_STORE)
 // algorithm
 // expiresIn
