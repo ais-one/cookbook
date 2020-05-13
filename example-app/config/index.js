@@ -36,7 +36,9 @@ module.exports = {
   JWT_ALG: process.env.JWT_ALG || 'HS256', // 'RS256' (use SSL certs), 'HS256' (use secret string)
   JWT_SECRET: process.env.JWT_SECRET || '123456789', // HS256
   JWT_EXPIRY: process.env.JWT_EXPIRY || 5, // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism, numeric is seconds
-  JWT_REFRESH_EXPIRY: 3600, // do not allow refresh handling after X seconds
+  JWT_REFRESH_EXPIRY: process.env.JWT_REFRESH_EXPIRY || 3600, // do not allow refresh handling after X seconds
+  JWT_REFRESH_STORE: process.env.JWT_REFRESH_STORE || 'keyv', // mongo, database, redis, keyv (default)
+  JWT_REFRESH_STORE_NAME: process.env.JWT_REFRESH_STORE_NAME || 'user_session', // collection or table name
 
   // OTP
   USE_OTP: process.env.USE_OTP || 'TEST', // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
@@ -54,6 +56,18 @@ module.exports = {
   // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}
   // MONGO_URL=mongodb://127.0.0.1:27017/mm?replicaSet=rs0
   MONGO_URL: process.env.MONGO_URL || '',
+
+  // {
+  //   port: 6379,
+  //   host: '127.0.0.1',
+  //   family: 4, // 4 (IPv4) or 6 (IPv6)
+  //   password: 'auth',
+  //   db: 0,
+  //   // if using sentinels
+  //   // sentinels: [{ host: 'localhost', port: 26379 }, { host: 'localhost', port: 26380 }],
+  //   // name: 'mymaster',
+  // }
+  REDIS_CONFIG: null,
 
   // KNEX DB 
   KNEXFILE,

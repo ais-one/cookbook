@@ -1,9 +1,8 @@
 const jwt = require('jsonwebtoken')
-const keyv = require('./keyv')
-const { JWT_ALG, JWT_SECRET, jwtCerts, HTTPONLY_TOKEN, JWT_EXPIRY, JWT_REFRESH_EXPIRY } = require('./config')
+const { JWT_ALG, JWT_SECRET, jwtCerts, HTTPONLY_TOKEN, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE } = require('../config')
 
-const KEYV_REFRESH_TOKEN = true
-
+// TBD getToken - checked for revoked token? such token should not be available in Key-Value storage already
+const { setToken, getToken, revokeToken } = require('./' + JWT_REFRESH_STORE)
 // algorithm
 // expiresIn
 // issuer  = 'Mysoft corp' 
@@ -22,28 +21,13 @@ async function createToken(payload, options) {
     token = jwt.sign(payload, secretKey, options)
     // console.log(token)
     refresh_token = Date.now()
-    await keyv.set(payload.id, refresh_token) // TBD set in DB instead...
+    await setToken(payload.id, refresh_token) // TBD set in DB instead...
   } catch (e) {
     console.log('createToken', e.toString())
   }
   return { token, refresh_token }          
 }
 
-async function getToken(id) {
-  if (KEYV_REFRESH_TOKEN) {
-    return await keyv.get(id)
-  } else { // TBD use DB - maybe better to use DB since it is already being read
-    // const User = require('../models/User') // TBD to change this...
-    // const user = await User.query().where('id', '=', id) // TBD FIX THIS
-    // if (user && !user[0].revoked && req.body) {
-    //   refreshToken = user[0].refreshToken
-    // }
-  }
-}
-
-async function revokeToken(id) {
-  await keyv.delete(id) // clear
-}
 
 const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
@@ -68,14 +52,8 @@ const authUser = async (req, res, next) => {
           return res.status(401).json({ message: 'Token Verification Error' })
         }
       } catch (e) {
-        const aa = jwt.decode(token)
-        // console.log(
-        //   e.name,
-        //   aa,
-        //   (new Date(aa.iat * 1000)).toISOString(),
-        //   (new Date(aa.exp * 1000)).toISOString(),
-        //   (new Date(Date.now())).toISOString()
-        // )
+        // const aa = jwt.decode(token)
+        // console.log( e.name, aa, (new Date(aa.iat * 1000)).toISOString(), (new Date(aa.exp * 1000)).toISOString(), (new Date(Date.now())).toISOString() )
         if (e.name === 'TokenExpiredError') {
           // console.log('req.path', req.baseUrl + req.path)
           if (req.baseUrl + req.path === '/api/auth/refresh') {
@@ -116,31 +94,7 @@ const authUser = async (req, res, next) => {
   return res.status(401).json({ e: 'Error in token' })
 }
 
-module.exports = {
-  createToken,
-  getToken,
-  revokeToken,
-  authUser
-  /*
-  processError: (e) => {
-    const messages = {
-      '200': 'Ok',
-      '201': 'Created',
-      '400': 'Client Error',
-      '403': 'Forbidden',
-      '404': 'Not Found',
-      '422': 'Invalid Input'
-    }
-    let status = '500'
-    let data = 'Server Error'
-    try {
-      data = messages[e.message]
-      status = e.message
-    } catch(e) { }
-    return { status, data }
-  }
-  */
-}
+module.exports = { createToken, revokeToken, authUser } // getToken, setToken,
 
 /*
 const crypto = require('crypto')

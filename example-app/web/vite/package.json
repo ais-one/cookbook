@@ -7,14 +7,14 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
-    "vue": "^3.0.0-beta.10",
-    "vue-router": "^4.0.0-alpha.10",
-    "vuex": "^4.0.0-beta.1"
+    "vue": "^3.0.0-beta.12",
+    "vue-router": "^4.0.0-alpha.11",
+    "vuex": "^4.0.0-beta.2"
   },
   "devDependencies": {
-    "@vue/compiler-sfc": "^3.0.0-beta.10",
+    "@vue/compiler-sfc": "^3.0.0-beta.12",
     "snowpack": "^1.7.1",
-    "vite": "^0.14.1"
+    "vite": "^0.14.3"
   },
   "snowpack": {
     "webDependencies": [

@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
 const axios = require('axios')
 const otplib = require('otplib')
-const { SALT_ROUNDS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, NODE_ENV } = require('../config')
+const { SALT_ROUNDS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require('../config')
 const { createToken, revokeToken } = require('../../common-app/auth')
 
 const User = require('../models/User')
@@ -15,7 +15,9 @@ async function isGithubAuthenticated(mode, { githubId }) {
   try {
     user = await User.query().where('githubId', '=', githubId)
     if (user) return user[0]
-  } catch (e) { }
+  } catch (e) {
+    console.log(e.toSting())
+  }
   return null
 }
 
@@ -75,7 +77,9 @@ exports.logout = async (req, res) => {
   try {
     await revokeToken(req.decoded.id) // clear
     return res.status(200).json({ message: 'Logged Out' })  
-  } catch (e) { }
+  } catch (e) {
+    console.log(e.toSting())
+  }
   return res.status(500).json()  
 }
 
@@ -142,6 +146,8 @@ exports.me = async (req, res) => {
     const { id } = req.decoded
     // you can also get more user information from here from a datastore
     return res.status(200).json({ user: id, ts: Date.now() })
-  } catch (e) { }
+  } catch (e) {
+    console.log(e.toSting())
+  }
   return res.status(401).json({ message: 'Error token revoked' })
 }

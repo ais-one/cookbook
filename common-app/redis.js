@@ -1,14 +1,15 @@
 const Redis = require('ioredis')
-const redis
+const  { REDIS_CONFIG } = require('./config')
 
-if (!redis) {
+let redis
+
+if (!redis && REDIS_CONFIG) {
   redis = new Redis({
     port: 6379,          // Redis port
     host: '127.0.0.1',   // Redis host
     family: 4,           // 4 (IPv4) or 6 (IPv6)
     password: 'auth',
     db: 0,
-
     // if using sentinels
     // sentinels: [{ host: 'localhost', port: 26379 }, { host: 'localhost', port: 26380 }],
     // name: 'mymaster',
@@ -27,6 +28,7 @@ if (!redis) {
         // Only reconnect when the error starts with "READONLY"
         return true // or `return 1`
       }
+      return false
     }
   })
 

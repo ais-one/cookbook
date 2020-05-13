@@ -15,7 +15,7 @@ const errorMap = {
 }
 
 module.exports = function (app) {
-  app.use(function (error, req, res, next) {
+  app.use((error, req, res, next) => {
     // console.log('message', error.message)
     // console.log('name', error.name)
     // console.log('stack', error.stack)
@@ -31,5 +31,23 @@ module.exports = function (app) {
     }
     res.status(statusCode).json(body)
   })
+  /* TOREMOVE
+  processError: (e) => {
+    const messages = {
+      '200': 'Ok',
+      '201': 'Created',
+      '400': 'Client Error',
+      '403': 'Forbidden',
+      '404': 'Not Found',
+      '422': 'Invalid Input'
+    }
+    let status = '500'
+    let data = 'Server Error'
+    try {
+      data = messages[e.message]
+      status = e.message
+    } catch(e) { }
+    return { status, data }
+  }
+  */
 }
-
