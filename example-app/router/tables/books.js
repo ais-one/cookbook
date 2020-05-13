@@ -14,7 +14,7 @@ module.exports = {
 
       formEditor: '',
 
-      filterEditor: '', // date, numner, string, date, datetime, time, dropdown, lookup
+      filterEditor: '', // date, number, string, date, datetime, time, select, multi-select, dropdown, lookup
       filterOp: '=', // '=,!=,like,>=,<=,>,<,><,=><=,><=,><='
 
       transform: ''
