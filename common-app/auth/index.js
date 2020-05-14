@@ -72,11 +72,11 @@ const authUser = async (req, res, next) => {
                   }
                 }
               }
-            } catch (e) {
-              console.log('refreshing auth err', e.toString())
-              return res.status(401).json({ message: 'Refresh Error 2' })
+            } catch (err) { // use err instead of e (fix no-catch-shahow issue)
+              console.log('refreshing auth err', err.toString())
+              return res.status(401).json({ message: 'Refresh Error' })
             }
-            return res.status(401).json({ message: 'Refresh Error' })
+            return res.status(401).json({ message: 'Uncaught Refresh Error' })
           } else {
             return res.status(401).json({ message: 'Token Expired Error' })
           }
