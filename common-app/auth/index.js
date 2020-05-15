@@ -3,7 +3,10 @@ const jwt = require('jsonwebtoken')
 const { JWT_ALG, JWT_SECRET, jwtCerts, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv' } = require('../config')
 const { AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELD_GROUPS_FOR_JWT } = require('../config')
 
-// TBD getToken - checked for revoked token? such token should not be available in Key-Value storage already
+// const uuid = require('uuid/v4')
+// const qrcode = require('qrcode')
+
+// TBD getToken - check for revoked token? such token should not be available in Key-Value storage already
 
 const { setToken, getToken, revokeToken } = require('./' + JWT_REFRESH_STORE)
 const findUser = require('./findUser')

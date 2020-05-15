@@ -1,11 +1,7 @@
 const axios = require('axios')
 const { SALT_ROUNDS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require('../config')
 const { createToken, revokeToken, logout, refresh, login, otp } = require('../../common-app/auth')
-
-const User = require('../models/User')
-
-// const uuid = require('uuid/v4')
-// const qrcode = require('qrcode')
+const findUser = require('../../common-app/auth/findUser')
 
 const signup = async (req, res) => {
   // let encryptedPassword = bcrypt.hashSync(clearPassword, SALT_ROUNDS)
@@ -27,11 +23,8 @@ const checkGithub = async (req, res) => {
     })
     const rv = await axios.get('https://api.github.com/user?access_token=' + data.access_token)
     const githubId = rv.data.id // github id, email
-    const user = await User.query().where('githubId', '=', githubId).first() // match github id (or email?) with our user in our application
-    if (!user) {
-      const message = 'Unauthorized'
-      return res.status(401).json({ message })
-    }
+    const user = await findUser({ githubId }) // match github id (or email?) with our user in our application
+    if (!user) return res.status(401).json({ message: 'Unauthorized' })
     const { id, groups } = user
     const tokens = await createToken({ id, verified: true, groups }, {expiresIn: JWT_EXPIRY}) // 5 minute expire for login
     if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
