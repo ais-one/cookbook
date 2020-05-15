@@ -43,8 +43,8 @@ module.exports = {
   // AUTH
   AUTH_USER_STORE: process.env.AUTH_USER_STORE || 'database', // mongo, database 
   AUTH_USER_STORE_NAME: process.env.AUTH_USER_STORE_NAME || 'users',
-  AUTH_USER_FIELD_ID_FOR_JWT: process.env.AUTH_USER_FIELD_ID_FOR_JWT || 'id', // mongo = _id, database = id
-  AUTH_USER_FIELD_GROUPS_FOR_JWT: process.env.AUTH_USER_FIELD_GROUPS_FOR_JWT || 'groups', 
+  AUTH_USER_FIELD_ID_FOR_JWT: process.env.AUTH_USER_FIELD_ID_FOR_JWT || 'id', // mongo = _id, database = id // can be NTID from SAML
+  AUTH_USER_FIELD_GROUPS_FOR_JWT: process.env.AUTH_USER_FIELD_GROUPS_FOR_JWT || 'groups', // can be AD Groups from SAML
   AUTH_USER_FIELD_LOGIN: process.env.AUTH_USER_FIELD_LOGIN || 'email', 
   AUTH_USER_FIELD_PASSWORD: process.env.AUTH_USER_FIELD_PASSWORD || 'password', 
   AUTH_USER_FIELD_GAKEY: process.env.AUTH_USER_FIELD_GAKEY || 'gaKey', 
