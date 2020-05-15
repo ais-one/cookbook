@@ -40,6 +40,15 @@ module.exports = {
   JWT_REFRESH_STORE: process.env.JWT_REFRESH_STORE || 'keyv', // mongo, database, redis, keyv (default)
   JWT_REFRESH_STORE_NAME: process.env.JWT_REFRESH_STORE_NAME || 'user_session', // collection or table name
 
+  // AUTH
+  AUTH_USER_STORE: process.env.AUTH_USER_STORE || 'database', // mongo, database 
+  AUTH_USER_STORE_NAME: process.env.AUTH_USER_STORE_NAME || 'users',
+  AUTH_USER_FIELD_ID_FOR_JWT: process.env.AUTH_USER_FIELD_ID_FOR_JWT || 'id', // mongo = _id, database = id
+  AUTH_USER_FIELD_GROUPS_FOR_JWT: process.env.AUTH_USER_FIELD_GROUPS_FOR_JWT || 'groups', 
+  AUTH_USER_FIELD_LOGIN: process.env.AUTH_USER_FIELD_LOGIN || 'email', 
+  AUTH_USER_FIELD_PASSWORD: process.env.AUTH_USER_FIELD_PASSWORD || 'password', 
+  AUTH_USER_FIELD_GAKEY: process.env.AUTH_USER_FIELD_GAKEY || 'gaKey', 
+  
   // OTP
   USE_OTP: process.env.USE_OTP || 'TEST', // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
   OTP_EXPIRY: process.env.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP

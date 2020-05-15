@@ -6,7 +6,12 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@material/mwc-button": "^0.15.0",
+    "@vaadin/vaadin-button": "^2.3.0",
+    "@webcomponents/webcomponentsjs": "^2.4.3",
+    "app-datepicker": "^4.1.0",
     "axios": "^0.19.2",
+    "dayjs": "^1.8.27",
     "vue": "^3.0.0-beta.12",
     "vue-router": "^4.0.0-alpha.11",
     "vuex": "^4.0.0-beta.2"
@@ -18,7 +23,9 @@
   },
   "snowpack": {
     "webDependencies": [
-      "axios"
+      "axios",
+      "@material/mwc-button",
+      "@vaadin/vaadin-button"
     ]
   }
 }

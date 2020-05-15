@@ -7,6 +7,9 @@
     <p>
       <span>Count is: {{ count }}</span>
       <button @click="count++">increment</button>
+      <mwc-button label="Click Me!" raised @click="count++"></mwc-button>
+      <!-- <vaadin-button @click="count++">Add</vaadin-button> -->
+      <!-- <app-datepicker></app-datepicker> -->
     </p>
     <p>Vuex Store {{ storeCount }}</p>
     <p>Axios GET {{ msg }}</p>
@@ -20,7 +23,12 @@ import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed } fro
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 
-import axios from '/web_modules/axios.js'
+// import axios from '/web_modules/axios.js'
+import axios from 'axios'
+// import dayjs from 'dayjs'
+import '@material/mwc-button' //  need snowpack
+// import 'app-datepicker'
+// import '@vaadin/vaadin-button/vaadin-button.js'
 
 export default {
   // name: 'Home',
