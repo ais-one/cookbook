@@ -10,7 +10,8 @@
   - add telegram - send to group or channel via bot
   - add FCM push notification
   - improved on error handling (less boilerplate, see example-app/router/api.js)
-  - improved router organization
+  - improved router organization, and auth
+  - clear httponly cookie on logout
 - vue-crud-x
   - fixed sorting
   - fixed graphql example to include pagination

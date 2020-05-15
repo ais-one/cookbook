@@ -12,10 +12,7 @@ const checkGithub = async (req, res) => {
   try {
     const { code, state } = req.body
     const { data } = await axios.post('https://github.com/login/oauth/access_token', {
-      client_id: GITHUB_CLIENT_ID,
-      client_secret: GITHUB_CLIENT_SECRET,
-      code,
-      state
+      client_id: GITHUB_CLIENT_ID, client_secret: GITHUB_CLIENT_SECRET, code, state
     }, {
       headers: {
         Accept: 'application/json'
