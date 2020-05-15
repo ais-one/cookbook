@@ -119,7 +119,7 @@ const refresh = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    // const { email, password } = req.body
+    // console.log(AUTH_USER_FIELD_LOGIN, req.body)
     const user = await findUser({
       [AUTH_USER_FIELD_LOGIN]: req.body[AUTH_USER_FIELD_LOGIN] // email
     })
