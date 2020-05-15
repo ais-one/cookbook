@@ -158,7 +158,7 @@ const otp = async (req, res) => { // need to be authentication, body { pin: '123
     if (user) {
       const { pin } = req.body
       const gaKey = user[AUTH_USER_FIELD_GAKEY]
-      const isValid = USE_OTP !== 'TEST' ? otplib.authenticator.check(pin, gaKey) : pin === '111111'
+      const isValid = USE_OTP !== 'TEST' ? otplib.authenticator.check(pin, gaKey) : String(pin) === '111111'
       if (isValid) {
         await revokeToken(id)
         const tokens = await createToken({ id, verified: true, groups }, {expiresIn: JWT_EXPIRY})

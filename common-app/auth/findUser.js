@@ -1,6 +1,8 @@
 const mongo = require('../mongo')
-const knex = require('../database').knex()
 const ObjectID = require('mongodb').ObjectID
+
+const Model = require('../database')
+const knex = Model ? Model.knex() : null
 
 const { AUTH_USER_STORE, AUTH_USER_STORE_NAME } = require('../config')
 
