@@ -31,6 +31,7 @@ const template = /*html*/`
   </div>
 </section>
 `
+import api from '/js/http.js'
 
 export default {
   template,
@@ -59,7 +60,7 @@ export default {
       localStorage.setItem('ms', JSON.stringify({ user: data.user, token: data.token }))
       this.$router.push('/dashboard')
 
-      // try {
+      // try { 
       //   let res = await fetch('/api/auth/login', {
       //     method: 'POST', // *GET, POST, PUT, DELETE, etc.
       //     // mode: 'cors', // no-cors, *cors, same-origin

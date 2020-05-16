@@ -125,8 +125,8 @@ const login = async (req, res) => {
     })
     const password = req.body[AUTH_USER_FIELD_PASSWORD]
 
-    if (!user) return res.status(401).json({ message: 'Incorrect user or password' })
-    if (!bcrypt.compareSync(password, user[AUTH_USER_FIELD_PASSWORD])) return res.status(401).json({ message: 'Incorrect user or password' })
+    if (!user) return res.status(401).json({ message: 'Incorrect credentials' })
+    if (!bcrypt.compareSync(password, user[AUTH_USER_FIELD_PASSWORD])) return res.status(401).json({ message: 'Incorrect credentials' })
     if (user.revoked) return res.status(401).json({ message: 'Authorization Revoked' })
     let verified = true
     const id = user[AUTH_USER_FIELD_ID_FOR_JWT] || ''

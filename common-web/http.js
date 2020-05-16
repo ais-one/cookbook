@@ -1,5 +1,3 @@
-import store from './store.js'
-
 const http = async (method, url, body = null, query = null) => {
   const qs = query ? '?' + Object.keys(query).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&') : ''
   const options = {
@@ -9,7 +7,7 @@ const http = async (method, url, body = null, query = null) => {
       'Content-Type': 'application/json',
     }
   }
-  if (store.state.token) options.headers['Authorization'] = `Bearer ${store.state.token}`
+  if (window.store && window.store.jwt) options.headers['Authorization'] = `Bearer ${window.store.jwt}`
   if (body) options.body = JSON.stringify(body)
 
   return await fetch(url + qs, options)
