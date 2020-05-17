@@ -9,4 +9,3 @@ cd web/spa
 # npm i
 npm run build
 cd ../..
-cp -rf web/spa/dist aaaa

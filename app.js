@@ -15,8 +15,8 @@ require('./common-app/swagger')(app)
 require('./common-app/parser')(app)
 
 // Upload URL, Should use Signed URL and get from cloud storage instead
-const { UPLOAD_URL, UPLOAD_FOLDER, APPNAME, USE_GRAPQL } = config
-if (UPLOAD_URL) app.use(UPLOAD_URL, express.static( path.join(__dirname, APPNAME, UPLOAD_FOLDER) ))
+const { APPNAME, USE_GRAPQL } = config
+// TOREMOVE if (UPLOAD_URL) app.use(UPLOAD_URL, express.static( path.join(__dirname, APPNAME, UPLOAD_FOLDER) ))
 
 // PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see common-app folder for saml)
 
@@ -27,7 +27,6 @@ console.log('Value from ES Module file...', foo)
 
 const apollo = USE_GRAPQL ? require(`./${APPNAME}/graphql`)(app, null) : null
 require(`./${APPNAME}/router`)(app)
-
 require('./common-app/proxy')(app, express) //require after routes setup
 require('./common-app/errorHandler')(app)
 

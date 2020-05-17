@@ -21,7 +21,7 @@ const bull = require('../../common-app/mq/bull')
 //   size: 110
 // }
 
-const { UPLOAD_FOLDER, FIREBASE_KEY } = require('../config')
+const { UPLOAD_PATH, FIREBASE_KEY } = require('../config')
 const firebase = FIREBASE_KEY ? require('../../common-app/firebase') : null
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
@@ -49,61 +49,12 @@ const upload = multer({
   //   cb(null, true);
   // },
   storage: multer.diskStorage({
-    destination: function (req, file, cb) { cb(null, path.join(__dirname, '..', UPLOAD_FOLDER)) },
+    destination: function (req, file, cb) { cb(null, UPLOAD_PATH) },
     filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname) }
   })
 })
 
 module.exports = express.Router()
-  .get('/firebase-upload-enable', asyncWrapper(async (req,res) => {
-    // need to allow CORS...
-    const rv = await bucket.setCorsConfiguration([{
-      maxAgeSeconds: 3600,
-      method: [ 'GET', 'HEAD', 'PUT' ],
-      responseHeader: ['*'],
-      origin: [ '*' ] 
-    }])
-    // console.log('rv', rv)
-  }))
-  .get('/firebase-upload/:filename', asyncWrapper(async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
-    if (!firebase) return res.status(500).json({ e: 'No Firebase Service' })
-    const { bucket } = firebase
-    const action = 'write'
-    const fileName = req.params.filename || 'my-file.txt'
-    const options = {
-      version: 'v4',
-      action,
-      expires: Date.now() + (120 * 60 * 1000) // 120 minutes
-    }
-    // The option below will allow temporary uploading of the file with outgoing Content-Type: application/octet-stream header.
-    if (action === 'write') options.contentType = 'application/octet-stream'
-  
-    // Get a v4 signed URL for uploading file
-    const [url] = await bucket.file(fileName).getSignedUrl(options)
-    // console.log(url)
-    // // curl command for uploading using signed URL
-    // console.log("curl -X PUT -H 'Content-Type: application/octet-stream' " + `--upload-file my-file '${url}'`)
-    // curl -X PUT -H 'Content-Type: application/octet-stream' --upload-file my-file 'http://www.test.com'
-    res.status(200).json({ url })
-  }))
-
-  .get('/mq-agenda', asyncWrapper(async (req, res) => { // test message queue - agenda
-    const job = await agenda.now('registration email', { email: 'abc@test.com' })
-    console.log('Agenda Pub')
-    res.json({ job, note: 'Check Server Console Log For Processed Message...' })
-  }))
-
-  .get('/mq-bull', asyncWrapper(async (req, res) => { // test message queue - bullmq
-    if (bull) {
-      const jobOpts = { removeOnComplete: true, removeOnFail: true }
-      bull.add({ message: new Date() }, jobOpts)
-      console.log('Bull Pub')
-    } else {
-      console.log('No Bull MQ configured')
-    }
-    res.json({ note: 'Check Server Console Log For Processed Message...' })
-  }))
-
   .get('/wrap-test', asyncWrapper(async (req, res) => {
     // return res.status(201).json({ aa: 'bb' }) // should not return...
     // next(new Error('Generated Wrapper Error - next')) // use throw instead
@@ -145,6 +96,39 @@ module.exports = express.Router()
   .get('/health-auth', authUser, (req, res) => { res.json({ message: 'OK' }) }) // health check auth
 
   // test uploads
+  .get('/firebase-upload-enable', asyncWrapper(async (req,res) => {
+    // need to allow CORS...
+    const rv = await bucket.setCorsConfiguration([{
+      maxAgeSeconds: 3600,
+      method: [ 'GET', 'HEAD', 'PUT' ],
+      responseHeader: ['*'],
+      origin: [ '*' ] 
+    }])
+    // console.log('rv', rv)
+  }))
+  .get('/firebase-upload/:filename', asyncWrapper(async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
+    if (!firebase) return res.status(500).json({ e: 'No Firebase Service' })
+    const { bucket } = firebase
+    const action = 'write'
+    const fileName = req.params.filename || 'my-file.txt'
+    const options = {
+      version: 'v4',
+      action,
+      expires: Date.now() + (120 * 60 * 1000) // 120 minutes
+    }
+    // The option below will allow temporary uploading of the file with outgoing Content-Type: application/octet-stream header.
+    if (action === 'write') options.contentType = 'application/octet-stream'
+  
+    // Get a v4 signed URL for uploading file
+    const [url] = await bucket.file(fileName).getSignedUrl(options)
+    // console.log(url)
+    // // curl command for uploading using signed URL
+    // console.log("curl -X PUT -H 'Content-Type: application/octet-stream' " + `--upload-file my-file '${url}'`)
+    // curl -X PUT -H 'Content-Type: application/octet-stream' --upload-file my-file 'http://www.test.com'
+    res.status(200).json({ url })
+  }))
+
+
   .post('/upload', upload.single('filedata'), (req,res) => { // avatar is form input name
     console.log('file original name', req.file.originalname)
     console.log('text data', req.body.textdata)
@@ -178,3 +162,22 @@ module.exports = express.Router()
       res.status(500).json({ e: e.toString() })
     }
   })
+
+  // message queues
+  .get('/mq-agenda', asyncWrapper(async (req, res) => { // test message queue - agenda
+    const job = await agenda.now('registration email', { email: 'abc@test.com' })
+    console.log('Agenda Pub')
+    res.json({ job, note: 'Check Server Console Log For Processed Message...' })
+  }))
+
+  .get('/mq-bull', asyncWrapper(async (req, res) => { // test message queue - bullmq
+    if (bull) {
+      const jobOpts = { removeOnComplete: true, removeOnFail: true }
+      bull.add({ message: new Date() }, jobOpts)
+      console.log('Bull Pub')
+    } else {
+      console.log('No Bull MQ configured')
+    }
+    res.json({ note: 'Check Server Console Log For Processed Message...' })
+  }))
+

@@ -144,18 +144,18 @@ module.exports = {
     credentials: true, // Access-Control-Allow-Credentials value to true
     origin: 'http://127.0.0.1:8080' // '*'
   },
-  // serve static content
-  WWW_FOLDER: 'public', // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
-  // WWW_PATH: '' // NOT USED
-  JS_FOLDER_1: 'common-web',
-  JS_URL_1: '/js', // - <protocol>://<ip><:port>/js
-  JS_FOLDER_2: 'common',
-  JS_URL_2: '/js2', // - <protocol>://<ip><:port>/js2
 
-  UPLOAD_URL: '/uploads',
-  UPLOAD_FOLDER: 'uploads/',
-  // File Uploads
-  UPLOAD_PATH: 'uploads/', // for server uploads - // Should be relative to packsage json script folder
+  // serve static content
+  WEB_STATIC: [  // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
+    // folder is relative to vue-crud-x
+    // { folder: 'example-app/web/spa/dist', url: '/' },
+    { folder: 'example-app/public', url: '/' },
+    { folder: 'common-web', url: '/js' },
+    { folder: 'common', url: '/js2' }
+  ],
+  UPLOAD_URL: '/uploads', // for server uploads
+  UPLOAD_FOLDER: 'uploads', // folder is relative to vue-crud-x/[app]
+  UPLOAD_PATH: path.join(__dirname, '..', 'uploads'),
 
   SWAGGER_DEFS: { // Swagger / OpenAPI definitions
     info: {
