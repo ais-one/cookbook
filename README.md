@@ -14,7 +14,7 @@ Well... what started as a CRUD component for VueJS has grown to a full-stack app
 
 # NOTICES & UPDATES
 
-Latest Version [0.3.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.1) - Released 2020 March 30 0945 +8GMT
+Latest Version [0.3.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.1) - Released 2020 May 18 1230 +8GMT
 
 **vue-crud-x 0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
 
@@ -189,6 +189,27 @@ npm run dev
 9. PWA and vite
 
 TBD
+
+10. Building & Deployment for Production (WIP)
+
+From vue-crud-x folder
+
+```
+npm run build
+```
+
+runs the following scripts
+- build.sh
+- <example-app>/build-app.sh
+- <example-app>/build-web.sh
+
+places everything into vue-crud-x/**build** folder
+
+node modules are not built
+
+Use ssh, scp to deploy to vm, start / stop, check PM2 (TBD)
+
+Use docker (TBD) -> User kubernetes (TBD)
 
 ---
 
