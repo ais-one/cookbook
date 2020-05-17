@@ -1,3 +1,30 @@
+### Version 0.3.2
+- [chore] update packages & cleanup & work on improving documentation
+- [Work-in-progress]
+  - deployment
+    - vm, pm2
+    - docker, kubernetes
+  - backend
+    - long running process support such as tcp servers, cronjobs
+    - add kafka working example
+  - frontend
+    - web components or no bundler required UI framework
+    - ant design version (kiv until above is solved)
+    - research for e2e framework agnostic test util for frontend
+  - others
+    - CI / CD (work on SSH, etc...)
+    - deployment to GCP cloud storage / Firebase Host / AWS S3
+    - deploment in container... see docs/Containers.md & example-app/Dockerfile & example-app/.dockerignore
+- [low-priority]
+  - backend
+    - research websocket testing, improve coverage
+    - research auto generated REST API and Testing (keep in view dredd.io)
+    - JsonSchema
+  - others
+    - ISO config definition naming (identify configs common to both FE and BE)
+    - Should we change Vuex action setLayout to setPublic and setSecure?
+    - graphql security & performance review
+
 ### Version 0.3.1
 - update packages & cleanup
 - work on improving documentation
