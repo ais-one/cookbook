@@ -57,7 +57,7 @@
     "url": "git+https://github.com/ais-one/vue-crud-x.git"
   },
   "scripts": {
-    "build": "vue-cli-service build --prod --target lib --name VueCrudX --formats commonjs ./VueCrudX.vue&&mv ./dist/VueCrudX.common.js ./dist/VueCrudX.js",
+    "build": "vue-cli-service build --mode production --target lib --name VueCrudX --formats commonjs ./VueCrudX.vue&&mv ./dist/VueCrudX.common.js ./dist/VueCrudX.js",
     "clean": "rm package-lock.json && rm node_modules"
   },
   "version": "0.3.1"

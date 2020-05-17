@@ -13,6 +13,32 @@ then
     exit
 fi
 
+# build and install frontend?
+PWD=`pwd`
+cd $1 && ./deploy-web.sh
+# cd $1 && ls
+# echo `pwd` Hello
+# deploy-web.sh
+# cd $PWD
+
+# copy the sources
+
+# rm -rf build
+# mkdir build
+# ls -A "$1" | grep -v "node_modules" | grep -v "web"
+# for f in `ls -A "$1" | grep -v "node_modules" | grep -v "web"`; do
+#   cp -r $1/$f build
+# done
+
+# install npm?
+
+
+# deploy to server?
+
+echo "Done... press enter to exit"
+read # pause exit in windows
+exit 0
+
 PEM=./$1/id_rsa
 echo $PEM
 
@@ -23,8 +49,6 @@ URL=ubuntu@3.1.138.164
 # echo $PEM $URL
 # echo --- $PEM $URL --- $1 $2
 
-packagePath=`pwd`
-echo $packagePath
 # exit
 
 PS3="Please enter your choice: "
@@ -86,6 +110,6 @@ do
   esac
 done
 
-# echo "Done... press enter to exit"
-# read # pause exit in windows
+echo "Done... press enter to exit"
+read # pause exit in windows
 

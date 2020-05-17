@@ -23,3 +23,14 @@ ESLint + Standard config
 Lint on save
 dedicated config file (for babel, postcss, eslint, etc)
 Save this as a preset? N
+
+## Checking bundle sizes
+
+https://medium.com/js-dojo/how-to-reduce-your-vue-js-bundle-size-with-webpack-3145bf5019b7
+
+above not needed, just use "npm run build -- --report"
+
+## Remove console.log in production build
+
+https://forum.vuejs.org/t/remove-console-logs-from-production-buils/39327
+

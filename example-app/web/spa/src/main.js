@@ -17,16 +17,8 @@ import { apolloClient } from './graphql'
 import VueApollo from 'vue-apollo'
 import { DO_HELLO } from './queries'
 
-import VueCrudA from '../../../../common-web/VueCrudA' // Ant design
-import { Button, Table, Form, Input } from 'ant-design-vue'
-
 import { dateISO } from '../../../../common/datetime.js' // test JS used in both front end backend
 console.log('dateISO', dateISO(new Date()))
-
-Vue.use(Button) // ant design stuff
-Vue.use(Table)
-Vue.use(Form)
-Vue.use(Input)
 
 Vue.use(VueApollo)
 
@@ -65,7 +57,6 @@ Vue.component('app-date-picker', DatePicker)
 Vue.component('app-time-picker', TimePicker)
 Vue.component('app-file-upload', FileUpload)
 Vue.component('vue-crud-x', VueCrudX)
-Vue.component('vue-crud-a', VueCrudA)
 
 /* eslint-disable no-new */
 export const app = new Vue({
