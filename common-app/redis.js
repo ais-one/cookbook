@@ -8,7 +8,7 @@ if (!redis && REDIS_CONFIG) {
     port: 6379,          // Redis port
     host: '127.0.0.1',   // Redis host
     family: 4,           // 4 (IPv4) or 6 (IPv6)
-    password: 'auth',
+    password: process.env.REDIS_PWD || '',
     db: 0,
     // if using sentinels
     // sentinels: [{ host: 'localhost', port: 26379 }, { host: 'localhost', port: 26380 }],

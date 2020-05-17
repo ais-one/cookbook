@@ -159,12 +159,14 @@ export default {
       if (this.loading) return
       this.loading = true
       if (this.form === 'filters') {
+        console.log('TBD handle filters')
       } else {
         const { _id, ...body } = this.addEdit // shallow copy
         console.log(_id, body)
         if (this.form === 'add') {
           try {
             let res = await api.create('/api/crud/user', body)             
+            console.log(res)
             alert('Created. Please Reload And Search')
           } catch (e) {
             alert('Create Error')

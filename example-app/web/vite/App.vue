@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>A Test Application For Vite</h1>
-     <!-- <button class="button">Button</button> -->
     <router-view></router-view>
   </div>
 </template>
@@ -16,6 +15,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-</style>

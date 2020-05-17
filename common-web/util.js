@@ -57,7 +57,7 @@ function exportJson (jsonContent, filename) {
 }
 
 // improved download function
-function downloadData (content, type = 'text/csv;charset=utf-8;', filename) {
+function downloadData (content, filename, type = 'text/csv;charset=utf-8;') {
   const blob = new Blob([content], { type })
   // IE11 & Edge
   if (navigator.msSaveBlob) { // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx

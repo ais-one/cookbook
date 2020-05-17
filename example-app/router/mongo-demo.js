@@ -22,8 +22,10 @@ module.exports = express.Router()
     const session = client.startSession({ defaultTransactionOptions }) // for transactions
     session.startTransaction()
     try {
-      const rv0 = await mongo.db.collection('mongo-test').insertOne({ name: 'Hello 1', ts: Date.now() }, { session })
-      const rv1 = await mongo.db.collection('mongo-test').insertOne({ name: 'Hello 2', ts: Date.now() }, { session })
+      // const rv0 =
+      await mongo.db.collection('mongo-test').insertOne({ name: 'Hello 1', ts: Date.now() }, { session })
+      // const rv1 =
+      await mongo.db.collection('mongo-test').insertOne({ name: 'Hello 2', ts: Date.now() }, { session })
       // if (!rv0.result.ok || !rv1.result.ok) throw new Error('DB Update Failed')
       await session.commitTransaction()
       res.status(200).json() // success
@@ -40,6 +42,7 @@ module.exports = express.Router()
     // Starts a transaction, executes the specified operations, and commits (or aborts on error).
     // Automatically incorporates error handling logic for "TransientTransactionError" and "UnknownTransactionCommitResult".
     const { defaultTransactionOptions, client } = mongo
+    console.log(defaultTransactionOptions)
     const transactionOptions = {
       readPreference: 'primary',
       readConcern: { level: 'local' },

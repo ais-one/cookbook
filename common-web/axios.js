@@ -46,8 +46,8 @@ http.interceptors.response.use(
               // console.log('retrying...', error.config, error.config.headers.Authorization)
             }
             return http.request(error.config) // http.request(error.config)
-          }).catch(function (error) {
-            return Promise.reject(error)
+          }).catch(function (error2) {
+            return Promise.reject(error2)
           })
         } else {
           // error.config.store.dispatch('logout', { forced: true })
