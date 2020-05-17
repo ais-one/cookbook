@@ -98,7 +98,8 @@ module.exports = express.Router()
   // test uploads
   .get('/firebase-upload-enable', asyncWrapper(async (req,res) => {
     // need to allow CORS...
-    const rv = await bucket.setCorsConfiguration([{
+    // const rv =
+    await bucket.setCorsConfiguration([{
       maxAgeSeconds: 3600,
       method: [ 'GET', 'HEAD', 'PUT' ],
       responseHeader: ['*'],

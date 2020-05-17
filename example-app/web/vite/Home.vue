@@ -7,9 +7,7 @@
     <p>
       <span>Count is: {{ count }}</span>
       <button @click="count++">increment</button>
-      <!-- <mwc-button label="Click Me!" raised @click="count++"></mwc-button> -->
       <vaadin-button @click="count++">Add</vaadin-button>
-      <!-- <app-datepicker></app-datepicker> -->
     </p>
     <p>Vuex Store {{ storeCount }}</p>
     <p>Axios GET {{ msg }}</p>
@@ -27,7 +25,6 @@ import { useRouter, useRoute } from 'vue-router'
 import axios from 'axios'
 // import dayjs from 'dayjs'
 // import '@material/mwc-button' //  need snowpack
-// import 'app-datepicker'
 import '@vaadin/vaadin-button'
 
 export default {

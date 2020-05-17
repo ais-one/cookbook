@@ -134,13 +134,13 @@ const login = async (req, res) => {
     if (!id) return res.status(401).json({ message: 'Authorization Format Error' })
     if (USE_OTP) {
       verified = false
-      if (USE_OTP === 'SMS') {
-        // Generate PIN
-        const pin = (Math.floor(Math.random() * (999999 - 0 + 1)) + 0).toString().padStart(6, "0")
-        const ts = new Date() // utc?
-        // update pin where ts > ?
-        // set user SMS & send it
-      }
+      // if (USE_OTP === 'SMS') {
+      //   // Generate PIN
+      //   const pin = (Math.floor(Math.random() * (999999 - 0 + 1)) + 0).toString().padStart(6, "0")
+      //   const ts = new Date() // utc?
+      //   // update pin where ts > ?
+      //   // set user SMS & send it
+      // }
     }
     const tokens = await createToken({ id, verified, groups }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
     if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?

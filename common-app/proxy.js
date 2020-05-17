@@ -5,8 +5,8 @@ const path = require('path')
 module.exports = function (app, express) {
   // app.set('case sensitive routing', true)
   const  {
-    PROXY_WWW_ORIGIN, WEB_STATIC, APPNAME,
-    UPLOAD_URL, UPLOAD_FOLDER, UPLOAD_PATH
+    PROXY_WWW_ORIGIN, WEB_STATIC,
+    UPLOAD_URL, UPLOAD_PATH
   } = require('./config')
   const hasWebStatic = WEB_STATIC && WEB_STATIC.length
   if (PROXY_WWW_ORIGIN && !hasWebStatic) {

@@ -11,11 +11,11 @@ const state = {
 }
 
 const mutations = {
-  increment (state) {
-    state.count++
+  increment (payload) {
+    payload.count++
   },
-  decrement (state) {
-    state.count--
+  decrement (payload) {
+    payload.count--
   }
 }
 
@@ -24,8 +24,8 @@ const mutations = {
 const actions = {
   increment: ({ commit }) => commit('increment'),
   decrement: ({ commit }) => commit('decrement'),
-  incrementIfOdd ({ commit, state }) {
-    if ((state.count + 1) % 2 === 0) {
+  incrementIfOdd ({ commit, payload }) {
+    if ((payload.count + 1) % 2 === 0) {
       commit('increment')
     }
   },
@@ -41,7 +41,7 @@ const actions = {
 
 // getters are functions.
 const getters = {
-  evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd'
+  evenOrOdd: payload => payload.count % 2 === 0 ? 'even' : 'odd'
 }
 
 const store = createStore({
@@ -49,11 +49,6 @@ const store = createStore({
   getters,
   actions,
   mutations
-  // state () {
-  //   return {
-  //     count: 100
-  //   }
-  // }
 })
 
 // const store = 123

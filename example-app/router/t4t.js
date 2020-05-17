@@ -59,6 +59,8 @@ module.exports = express.Router()
     const { page = 1, limit = 2, ...filters } = req.query
     const rv = { results: [], total: 0 }
 
+    console.log('t4t filters', filters)
+
     // knex
     const query = knex(table.name)
     let total = await query.clone().count()
@@ -136,11 +138,13 @@ module.exports = express.Router()
         while (record = this.read()) {
           currLine++
           if (currLine == 1) continue // ignore first line
-          if (record.length === 2) { // ok
+          if (record.length === table.nonAuto.length) { // ok
             if (record.join('')) {
               // if (permissionOk) {
               // } else {
               // }
+              // format before push?
+              output.push(record)
             } else {
               errors.push({ currLine, data: record.join(','), msg: 'Empty Row' })
             }
@@ -155,8 +159,11 @@ module.exports = express.Router()
           line++
           try {
             // TBD insert to table
+            // also take care of auto populating fields
+            console.log(output)
           } catch (e) {
             errors.push({ line, data: row.join(','), msg: 'Caught exception: ' + e.toString() })
+            res.status(200).json({ errorCount: errors.length })
           }
         }
       })

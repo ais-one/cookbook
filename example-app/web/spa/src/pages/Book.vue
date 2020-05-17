@@ -162,7 +162,7 @@ export default {
               const { data } = await http.get('/api/books', { params })
               if (data.results.length > 0) {
                 const csv = parse(data.results) // const opts = { fields: ['field1', 'field2', 'field3'] }
-                downloadData(csv, 'text/csv;charset=utf-8;', 'job.csv')
+                downloadData(csv, 'job.csv', 'text/csv;charset=utf-8;')
               }
               return { status: 200, error: '' }
             } catch (e) {
