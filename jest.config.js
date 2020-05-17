@@ -1,5 +1,5 @@
 //  useful command line options: --detectOpenHandles --forceExit
-console.log(require('./appname'))
+const appname = require('./appname')
 module.exports = {
   // bail: 0,
   // testTimeout: 5000,
@@ -22,7 +22,7 @@ module.exports = {
   //   },
   // },
   // roots: ['<rootDir>/' + require('./appname') + '/tests'], // directories to match
-  roots: ['<rootDir>/' + require('./appname') + '/tests'], // directories to match
+  roots: ['<rootDir>/' + appname + '/tests'], // directories to match
   testEnvironment: 'node',
   // testPathIgnorePatterns: ["/node_modules/"],
   // testMatch: [ "**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)" ], // files to match

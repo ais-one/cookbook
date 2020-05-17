@@ -1,10 +1,9 @@
-
-export function localDateISO (date) {
-    (new Date(date.getTime() - (date.getTimezoneOffset() * 60000))).toISOString().substring(0, 10)
+export function dateISO (date) {
+    return (new Date(date.getTime() - (date.getTimezoneOffset() * 60000))).toISOString().substring(0, 10)
 }
 
-export function localTimeISO (date) {
-    (new Date(date.getTime() - (date.getTimezoneOffset() * 60000))).toISOString().substring(11, 22)
+export function timeISO (date) {
+    return (new Date(date.getTime() - (date.getTimezoneOffset() * 60000))).toISOString().substring(11, 22)
 }
 
 export function dateStrAddDay (dateStr, days = 0) {

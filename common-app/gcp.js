@@ -3,7 +3,7 @@ const {Storage} = require('@google-cloud/storage');
 
 // Creates a client
 const storage = new Storage(
-    require('./serviceAccountKey.json') // use correct account key
+  require('./serviceAccountKey.json') // use correct account key
 )
 
 async function generateV4USignedUrl(bucketName, fileName, action = 'write') { // read action
@@ -28,7 +28,7 @@ async function generateV4USignedUrl(bucketName, fileName, action = 'write') { //
 }
 
 module.exports = {
-    generateV4USignedUrl
+  generateV4USignedUrl
 }
 
 

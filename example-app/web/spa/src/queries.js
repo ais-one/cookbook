@@ -16,8 +16,8 @@ export const GET_CATEGORY = gql`
   }
 `
 export const GET_CATEGORIES = gql`
-  query {
-    getCategories {
+  query($page: Int!, $limit: Int!) {
+    getCategories(page: $page, limit: $limit) {
       total
       results {
         id

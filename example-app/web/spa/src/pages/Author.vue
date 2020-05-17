@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <v-layout row wrap class="px-2">
-      <v-flex xs12>
-        <vue-crud-x ref="author" :parentId="parentId" v-bind="authorDefs" />
-      </v-flex>
-    </v-layout>
-  </div>
+  <v-layout row wrap class="px-2">
+    <v-flex xs12>
+      <vue-crud-x ref="author" :parentId="parentId" v-bind="authorDefs" />
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

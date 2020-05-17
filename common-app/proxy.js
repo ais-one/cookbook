@@ -4,9 +4,12 @@ const path = require('path')
 
 module.exports = function (app, express) {
   // app.set('case sensitive routing', true)
-
-  const  { PROXY_WWW_ORIGIN, WWW_FOLDER, JS_URL_1, JS_FOLDER_1, JS_URL_2, JS_FOLDER_2, APPNAME } = require('./config')
-  if (PROXY_WWW_ORIGIN && !WWW_FOLDER) {
+  const  {
+    PROXY_WWW_ORIGIN, WEB_STATIC, APPNAME,
+    UPLOAD_URL, UPLOAD_FOLDER, UPLOAD_PATH
+  } = require('./config')
+  const hasWebStatic = WEB_STATIC && WEB_STATIC.length
+  if (PROXY_WWW_ORIGIN && !hasWebStatic) {
     app.set('trust proxy', true) // true if behind proxy, false if direct connect... You now can get IP from req.ip, req.ips
     app.use('*', proxy({
       target: PROXY_WWW_ORIGIN,
@@ -15,16 +18,21 @@ module.exports = function (app, express) {
       // if you need to upgrade quicker... https://github.com/chimurai/http-proxy-middleware#external-websocket-upgrade
     }))
   } else {
-    if (WWW_FOLDER) {
+    if (hasWebStatic) {
       app.use(history()) // causes problems when using postman - set header accept application/json in postman
       // const appPath = path.join(__dirname, '..', APPNAME)
       // console.log(appPath)
       const appParent = path.join(__dirname, '..')
-      app.use(express.static(appParent + '/' + APPNAME + '/' + WWW_FOLDER))
-      if (JS_URL_1) app.use(JS_URL_1, express.static(appParent + '/' + JS_FOLDER_1))
-      if (JS_URL_2) app.use(JS_URL_2, express.static(appParent + '/' + JS_FOLDER_2))
+      WEB_STATIC.forEach(item => {
+        app.use(item.url, express.static(appParent + '/' + item.folder))
+      })
     }
     app.use("*", async (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
+  }
+  // console.log('UPLOAD_PATH', UPLOAD_PATH)
+  if (UPLOAD_URL) {
+    // console.log('UPLOAD: ', path.join(__dirname, '..', APPNAME, UPLOAD_FOLDER) )
+    app.use(UPLOAD_URL, express.static( UPLOAD_PATH ))
   }
   return this
 }

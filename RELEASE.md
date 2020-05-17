@@ -1,3 +1,52 @@
+### Version 0.3.1
+- update packages & cleanup
+- work on improving documentation
+- example-app/web/vite
+  - add vite and do sample composition api
+- example-app/web/spa
+  - removed Ant Design (look to using web components or something that does not use bundler)
+  - fixed run run  build
+- example-app/web/pwa
+  - add a pwa sample app
+  - add Firebase Cloud Messaging (FCM) push notification
+- example-app/public/demo-nobundler
+  - add no bundler implementation of Vue SPA using ES Modules
+- common-app
+  - add telegram - send to group or channel via bot
+  - add FCM push notification
+  - improved on error handling (less boilerplate, see example-app/router/api.js)
+- example-app
+  - improved router organization, and auth
+  - clear httponly cookie on logout
+- vue-crud-x
+  - fixed sorting
+  - fixed graphql example to include pagination
+  - fixed infinite scroll bug
+  - fixed code to work with latest vuetify (2.2.15 onwards) and fix infinite scroll double xhr call on filter button press
+  - cleanup code
+  - update build
+- [Work-in-progress]
+  - backend
+    - long running process support such as tcp servers, cronjobs
+    - add kafka working example
+  - frontend
+    - web components or no bundler required UI framework
+    - ant design version (kiv until above is solved)
+    - research for e2e framework agnostic test util for frontend
+  - others
+    - CI / CD (work on SSH, etc...)
+    - deployment to GCP cloud storage / Firebase Host / AWS S3
+    - deploment in container... see docs/Containers.md & example-app/Dockerfile & example-app/.dockerignore
+- [low-priority]
+  - backend
+    - research websocket testing, improve coverage
+    - research auto generated REST API and Testing (keep in view dredd.io)
+    - JsonSchema
+  - others
+    - ISO config definition naming (identify configs common to both FE and BE)
+    - Should we change Vuex action setLayout to setPublic and setSecure?
+    - graphql security & performance review
+
 ### Version 0.3.0
 - update packages
 - re-architect for better scalability - able to use as base for multiple full-stack applications

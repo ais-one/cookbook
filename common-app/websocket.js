@@ -19,7 +19,9 @@ let onClientMessage = async (message, ws) => { // client incoming message
       // ws.send('something', function ack(error) { console.log }) // If error !defined, send has been completed, otherwise error object will indicate what failed.
       ws.send(message) // echo back message...
     }
-  } catch (e) {}
+  } catch (e) {
+    console.log(e.toString())
+  }
 }
 
 exports.open = function (cb) {

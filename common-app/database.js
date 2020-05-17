@@ -1,9 +1,9 @@
+const { NODE_ENV, KNEXFILE } = require('./config')
 let Model
 
-if (!Model) {
-  const { NODE_ENV, KNEXFILE } = require('./config')
+if (!Model && KNEXFILE) {
   const Knex = require('knex')
-  const config = { ...KNEXFILE[NODE_ENV] }
+  const config = KNEXFILE[NODE_ENV]
   // kludge for sqlite file connection - TOREMOVE
   // if (config.client === 'sqlite3') {
   //   config.connection.filename = './' + require('../appname') + config.connection.filename.substring(1)

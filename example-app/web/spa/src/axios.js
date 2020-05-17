@@ -1,3 +1,4 @@
+/*
 import Vue from 'vue'
 import axios from 'axios'
 import { store } from '@/store'
@@ -62,5 +63,8 @@ http.interceptors.response.use(
     }
   }
 )
+*/
+import { http } from '../../../../common-web/axios'
+export { http }
 
-Vue.prototype.$http = http
+// Vue.prototype.$http = http

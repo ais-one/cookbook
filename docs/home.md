@@ -163,3 +163,8 @@ busboy, formidable
 - https://dev.to/helenanders26/sql-301-why-you-need-sql-window-functions-part-1-6e1
 - https://dev.to/helenanders26/sql-301-why-you-need-sql-window-functions-part-2-2nmj
 
+
+## NPM corruption
+1. delete node_modules
+2. delete package-lock.json ???
+3. npm cache clean --force

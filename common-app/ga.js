@@ -1,8 +1,8 @@
 
 // // Generate Password
-// const bcrypt = require('bcryptjs')
-// let password = bcrypt.hashSync('jsos87E@', 12)
-// console.log(password)
+const bcrypt = require('bcryptjs')
+let password = bcrypt.hashSync('1111', 12)
+console.log(password)
 
 // Generate GA OTP Password
 const otplib = require('otplib')

@@ -21,7 +21,7 @@ EXPOSE 3001
 WORKDIR /usr/src/app
 
 # Set Environment Variables Here
-ENV NODE_ENV development
+ENV NODE_ENV=development
 # ENV DB_USER=test
 # ENV DB_PASSWORD=
 
@@ -38,11 +38,12 @@ COPY package*.json ./
 RUN npm install --only=production && npm cache clean --force
 
 # Get all the code needed to run the app
-# COPY . .
-COPY index.js appname.js ./
-COPY common common/
-COPY common-app common-app/
-COPY example-app example-app/
+COPY . .
+# TOREMOVE
+# COPY index.js app.js appname.js ./
+# COPY common common/
+# COPY common-app common-app/
+# COPY example-app example-app/
 
 # Install dependencies
 RUN cd example-app && npm install --only=production && npm cache clean --force
@@ -54,7 +55,7 @@ RUN cd example-app && npm install --only=production && npm cache clean --force
 
 # RUN cd example-app/web && rm -rf spa
 # remove the frontend stuffs
-RUN cd example-app && rm -rf web
+# RUN cd example-app && rm -rf web
 
 # Serve the app
 # https://www.docker.com/blog/keep-nodejs-rockin-in-docker/

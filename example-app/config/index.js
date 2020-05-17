@@ -4,7 +4,7 @@ const path = require('path')
 console.log('TEST_ENV=',process.env.TEST_ENV)
 const KNEXFILE = require('../knexfile')
 
-const FIREBASE_KEY = '' // require('./firebase.key.json') || ''
+const FIREBASE_KEY = require('./firebase.key.json') || ''
 
 const JWT_CERT = process.env.JWT_CERT || path.join(__dirname, 'certs/jwt') // RS256
 const HTTPS_CERT = process.env.HTTPS_CERT || ''
@@ -35,11 +35,22 @@ module.exports = {
   // JWT - secret key
   JWT_ALG: process.env.JWT_ALG || 'HS256', // 'RS256' (use SSL certs), 'HS256' (use secret string)
   JWT_SECRET: process.env.JWT_SECRET || '123456789', // HS256
-  JWT_EXPIRY: process.env.JWT_EXPIRY || '5s', // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism
-  JWT_REFRESH_EXPIRY: 3600, // do not allow refresh handling after X seconds
+  JWT_EXPIRY: process.env.JWT_EXPIRY || 5, // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism, numeric is seconds
+  JWT_REFRESH_EXPIRY: process.env.JWT_REFRESH_EXPIRY || 3600, // do not allow refresh handling after X seconds
+  JWT_REFRESH_STORE: process.env.JWT_REFRESH_STORE || 'keyv', // mongo, database, redis, keyv (default)
+  JWT_REFRESH_STORE_NAME: process.env.JWT_REFRESH_STORE_NAME || 'user_session', // collection or table name
 
+  // AUTH
+  AUTH_USER_STORE: process.env.AUTH_USER_STORE || 'database', // mongo, database 
+  AUTH_USER_STORE_NAME: process.env.AUTH_USER_STORE_NAME || 'users',
+  AUTH_USER_FIELD_ID_FOR_JWT: process.env.AUTH_USER_FIELD_ID_FOR_JWT || 'id', // mongo = _id, database = id // can be NTID from SAML
+  AUTH_USER_FIELD_GROUPS_FOR_JWT: process.env.AUTH_USER_FIELD_GROUPS_FOR_JWT || 'groups', // can be AD Groups from SAML
+  AUTH_USER_FIELD_LOGIN: process.env.AUTH_USER_FIELD_LOGIN || 'email', 
+  AUTH_USER_FIELD_PASSWORD: process.env.AUTH_USER_FIELD_PASSWORD || 'password', 
+  AUTH_USER_FIELD_GAKEY: process.env.AUTH_USER_FIELD_GAKEY || 'gaKey', 
+  
   // OTP
-  USE_OTP: process.env.USE_OTP || '', // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
+  USE_OTP: process.env.USE_OTP || 'TEST', // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
   OTP_EXPIRY: process.env.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP
   // OTP_SERVICE_NAME=Test Service // OTP / 2FA
 
@@ -53,26 +64,41 @@ module.exports = {
   // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
   // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}
   // MONGO_URL=mongodb://127.0.0.1:27017/mm?replicaSet=rs0
-  MONGO_URL: process.env.MONGO_URL || '',
+  MONGO_DB: process.env.MONGO_DB || '', // testdb
+  MONGO_URL: process.env.MONGO_URL || '', // mongodb://127.0.0.1:27017/testdb
+
+  // {
+  //   port: 6379,
+  //   host: '127.0.0.1',
+  //   family: 4, // 4 (IPv4) or 6 (IPv6)
+  //   password: 'auth',
+  //   db: 0,
+  //   // if using sentinels
+  //   // sentinels: [{ host: 'localhost', port: 26379 }, { host: 'localhost', port: 26380 }],
+  //   // name: 'mymaster',
+  // }
+  REDIS_CONFIG: null,
 
   // KNEX DB 
   KNEXFILE,
 
   // FIREBASE SERVICE ACCOUNT
   FIREBASE_KEY,
+  FCM_SERVER_KEY: process.env.FCM_SERVER_KEY || '',
 
   // Github
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || '', // verify a github token
   GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET || '',
 
   // Communications - Telegram
-  TELEGRAM_BOT_ID: process.env.TELEGRAM_BOT_ID || '',
+  TELEGRAM_CHANNEL_ID: process.env.TELEGRAM_CHANNEL_ID || '',
   TELEGRAM_API_KEY: process.env.TELEGRAM_API_KEY || '',
 
   // Communications - Sendgrid
   SENDGRID_KEY: process.env.SENDGRID_KEY || '',
 
   // Communications - Nexmo
+  NEXMO_FROM: process.env.NEXMO_FROM || 'VCXSMS', 
   NEXMO_KEY: process.env.NEXMO_KEY || '',
   NEXMO_SECRET: process.env.NEXMO_SECRET || '',
 
@@ -118,18 +144,18 @@ module.exports = {
     credentials: true, // Access-Control-Allow-Credentials value to true
     origin: 'http://127.0.0.1:8080' // '*'
   },
-  // serve static content
-  WWW_FOLDER: 'public', // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
-  // WWW_PATH: '' // NOT USED
-  JS_FOLDER_1: 'common-web',
-  JS_URL_1: '/js', // - <protocol>://<ip><:port>/js
-  JS_FOLDER_2: 'common',
-  JS_URL_2: '/js2', // - <protocol>://<ip><:port>/js2
 
-  UPLOAD_URL: '/uploads',
-  UPLOAD_FOLDER: 'uploads/',
-  // File Uploads
-  UPLOAD_PATH: 'uploads/', // for server uploads - // Should be relative to packsage json script folder
+  // serve static content
+  WEB_STATIC: [  // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
+    // folder is relative to vue-crud-x
+    // { folder: 'example-app/web/spa/dist', url: '/' },
+    { folder: 'example-app/public', url: '/' },
+    { folder: 'common-web', url: '/js' },
+    { folder: 'common', url: '/js2' }
+  ],
+  UPLOAD_URL: '/uploads', // for server uploads
+  UPLOAD_FOLDER: 'uploads', // folder is relative to vue-crud-x/[app]
+  UPLOAD_PATH: path.join(__dirname, '..', 'uploads'),
 
   SWAGGER_DEFS: { // Swagger / OpenAPI definitions
     info: {
@@ -155,9 +181,10 @@ module.exports = {
     produces: ['application/json']
   },
 
+  JOB_TYPES: '', // 'email', // 'email,sms,telegram'
   JOB_DB: '127.0.0.1:27017/agenda-test', //  agenda message queue job types, comma seperated
   JOB_COLLECTION: 'agendaJobs',
-  JOB_TYPES: 'email',
+
   JOB_BULL: false,
 
   // Role-based access control - currently not used, for future implementation
@@ -176,6 +203,7 @@ module.exports = {
     }
   },
 
-  ENABLE_LOGGER: false
+  ENABLE_LOGGER: false,
+  USE_GRAPQL: true
 }
 

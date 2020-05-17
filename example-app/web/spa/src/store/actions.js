@@ -1,7 +1,7 @@
 import { http } from '@/axios'
 import router from '../router'
 
-const { USE_OTP } = '../config'
+import { USE_OTP } from '../config'
 
 export default {
   async signUserUp ({ commit }, payload) {

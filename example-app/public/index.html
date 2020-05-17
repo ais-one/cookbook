@@ -4,76 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Vanilla Javascript Samples & Demos</title>
+  <title>Demos</title>
 </head>
 
-<h1>Sample & Demo</h1>
+<h1>Demos</h1>
 <ul>
-  <li>Demo Express</li>
-  <ul>
-    <li><a href="#" onclick="health()">Express Server Health Check</a></li>
-    <li><a href="#" onclick="makeError()">Test Express Server Error Handler</a></li>
-    <li><a href="#" onclick="makeCrash()">Crash Express Server</a></li>  
-  </ul>
-  <li>Demo Message Queues</li>
-  <ul>
-    <li><a href="#" onclick="mq()">Test Agenda Message Queue (requires MongoDB, and need to be enabled - see config.js - JOB_DB, JOB_COLLECTION, JOB_TYPES)</a></li>
-    <li><a href="#" onclick="mqBull()">Test Bull v3 Message Queue (requires Redis, and need to be enabled - see config.js - JOB_BULL)</a></li>
-  </ul>
-  <li>Express Samples</li>
-  <ul>
-    <li><a href="/upload.html">FILE UPLOAD</a></li>
-    <li><a href="/refresh-token.html">REFRESH TOKEN</a></li>  
-  </ul>
+  <li><a href="demo-express/index.html">Demo Basic Express Stuff</a></li>
+  <li><a href="demo-nobundler/index.html">Demo Vue SPA Without Bundler</a></li>
 </ul>
 
-<script>
-  async function health() {
-    try {
-      const res = await fetch('/api/health', { method: 'GET' })
-      const rv = await res.json()
-      console.log(rv)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-  async function makeError() {
-    try {
-      const res = await fetch('/api/error', { method: 'GET' })
-      const rv = await res.json()
-      console.log(rv)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-  async function makeCrash() {
-    try {
-      const res = await fetch('/api/crash', { method: 'GET' })
-      const rv = await res.json()
-      console.log(rv)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  async function mq() {
-    try {
-      const res = await fetch('/api/mq', { method: 'GET' })
-      const rv = await res.json()
-      console.log(rv)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-  async function mqBull() {
-    try {
-      const res = await fetch('/api/mq-bull', { method: 'GET' })
-      const rv = await res.json()
-      console.log(rv)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-</script>
 
 </html>

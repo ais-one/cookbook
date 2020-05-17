@@ -1,6 +1,6 @@
 <template>
   <div id="not-needed">
-    <v-layout row wrap>
+    <v-layout row wrap class="px-2">
       <v-flex xs12>
         <vue-crud-x ref="book-table" :parentId="null" v-bind="bookDefs" @form-open="openBookForm">
           <template v-slot:filter="{ filters, parentId, vcx }">
@@ -72,8 +72,8 @@
 import { from } from 'rxjs'
 import { pluck, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators' // map
 import { http } from '@/axios'
-import { downloadData } from '@/assets/util'
-import { parse } from 'json2csv'
+import { parse } from 'json2csv' // TBD this should be done on backend...
+import { downloadData } from '../../../../../common-web/util'
 
 export default {
   subscriptions () {

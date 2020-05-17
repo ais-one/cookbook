@@ -45,7 +45,7 @@ export default {
     },
     async onUploadFileToFirebase (fileObj) { // firebase account required
       try {
-        const { data } = await http.get(`/api/upload-firebase/${fileObj.name}`)
+        const { data } = await http.get(`/api/firebase-upload/${fileObj.name}`)
         const rv = await http.put(data.url, fileObj, {
           // withCredentials: true,
           headers: { 'Content-Type': 'application/octet-stream' }

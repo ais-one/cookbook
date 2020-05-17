@@ -1,16 +1,9 @@
 <template>
-  <div>
-    <v-layout row wrap>
-      <v-flex xs12>
-        <vue-crud-x
-          ref="category"
-          :parentId="parentId"
-          v-bind="pageDefs"
-        >
-        </vue-crud-x>
-      </v-flex>
-    </v-layout>
-  </div>
+  <v-layout row wrap class="px-2">
+    <v-flex xs12>
+      <vue-crud-x ref="category" :parentId="parentId" v-bind="categoryDefs" />
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -47,7 +40,7 @@ export default {
   data () {
     return {
       parentId: null,
-      pageDefs: {
+      categoryDefs: {
         title: 'Category',
         vtable: {
           headers: [
@@ -84,12 +77,10 @@ export default {
           find: async ({ pagination = {}, filters = {}, sorters = {} }) => {
             let records = []
             let totalRecords = 0
-            // const { pagination } = payload // filters
-            // const { page, itemsPerPage } = pagination // sortBy, descending
-            // console.log('TOREMOVE', page, itemsPerPage)
+            const { page, itemsPerPage } = pagination
             // GrqphQL
             try {
-              const rv = await apolloClient.query({ query: GET_CATEGORIES })
+              const rv = await apolloClient.query({ query: GET_CATEGORIES, variables: { page: page > 0 ? page - 1 : 0 ,  limit: parseInt(itemsPerPage) } })
               // console.log('ABC', rv.data.getCategories)
               records = rv.data.getCategories.results
               totalRecords = rv.data.getCategories.total
@@ -143,10 +134,11 @@ export default {
                 },
                 // use in memory cache
                 update: (cache, { data: { postCategory } }) => {
-                  const data = cache.readQuery({ query: GET_CATEGORIES })
+                  const data = cache.readQuery({ query: GET_CATEGORIES, variables: { page: 0, limit: 2 } })
                   // work with the cache data - START
                   // if you are working with paging, you may want to comment the lines below out if page limit already reached. e.g
                   // if (this.$refs.category.totalRecords < data.getCategories.total) {
+                  alert('skip this if page limit. otherwise you get extra line!')
                   data.getCategories.results.push(postCategory)
                   data.getCategories.total += 1
                   // }
@@ -160,7 +152,7 @@ export default {
                   __typename: 'Mutation',
                   postCategory: {
                     __typename: 'Category',
-                    _id: -1, // set as invalid number so no clashes with existing
+                    id: -1, // set as invalid number so no clashes with existing
                     body: {
                       name: noIdData.name
                     }
@@ -170,7 +162,7 @@ export default {
                 // Not applicable for now as vue-crud-x reloads data after create/update/delete
                 // Can set poll export default graphql(channelsListQuery, { options: { pollInterval: 5000 }, })(ChannelsList);
                 refetchQueries: [
-                  { query: GET_CATEGORIES }
+                  { query: GET_CATEGORIES, variables: { page: 0, limit: 2 } }
                   // add additional queries here, e.g.
                   // { query: GET_SOMETHING_RELATED, variables: { pageNum: 1, pageSize: 2 } }
                 ]
@@ -190,7 +182,6 @@ export default {
           },
           update: async (payload) => {
             // GrqphQL
-            // console.log(payload)
             try {
               let { record: { id, ...noIdData } } = payload
               console.log(noIdData)
@@ -205,7 +196,7 @@ export default {
                 }
               })
               // console.log('rv', rv)
-              return { status: 200, data: null }
+              return { status: 200, data: payload.record }
             } catch (e) {
               return { status: 500, error: e.toString() }
             }

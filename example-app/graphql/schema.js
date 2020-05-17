@@ -2,11 +2,8 @@
 const Author = require('../models/Author')
 const Category = require('../models/Category')
 
-const { gql } = require('apollo-server-express')
+// const { gql } = require('apollo-server-express')
 // graphql Schema
-
-// const xxx = require('./schema.gql')
-// console.log(xxx)
 
 const fs = require('fs')
 const typeDefs = fs.readFileSync('./example-app/graphql/schema.gql', 'utf8').toString() // relative to package.json directory where script is executed
@@ -45,7 +42,6 @@ const resolvers = {
     getCategory: async (parent, args, context, info) => {
       try {
         const category = await Category.query().findById(args.id)
-        console.log('graphql', category)
         return category
       } catch (e) {
         return {}
@@ -56,7 +52,7 @@ const resolvers = {
         const limit = args.limit ? args.limit : 2
         const page = args.page ? args.page : 0
         const categories = await Category.query().page(page, limit)
-        // console.log(categories)
+        // console.log('categories', page, limit, categories)
         return categories  
       } catch (e) {
         return {}

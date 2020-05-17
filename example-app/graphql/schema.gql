@@ -4,7 +4,7 @@ type Query {
   getAuthors(page: Int, limit: Int, search: String): [Author!]!
 
   getCategory(id: Int!): Category
-  getCategories: Categories
+  getCategories(page: Int!, limit: Int!): Categories
 
   uploads: [File] # file upload
 }

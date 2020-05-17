@@ -1,5 +1,5 @@
 const morgan = require('morgan')
-const { ENABLE_LOGGER=false } = require('./config')
+const { ENABLE_LOGGER = false } = require('./config')
 
 module.exports = function(app) {
   if (!this.logger && ENABLE_LOGGER) {

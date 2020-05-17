@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vite Test</title>
+  <!-- Your application must load the Roboto and Material Icons fonts. -->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module">
+  import { createApp } from 'vue'
+  import App from './App.vue'
+  
+  import router from './router.js'
+  import store from './store.js'
+  
+  const app = createApp(App)
+  // Vue.config.ignoredElements = [/test-\w*/]
+  // app.config.isCustomElement = tag => {
+  //   console.log('tag', tag)
+  //   return tag === 'mwc-button' // https://zhuanlan.zhihu.com/p/135280049
+  // }
+  // app.config.isCustomElement = () => true
+  // console.log('app.config', app.config)
+
+  app.use(store)
+  app.use(router)
+  app.mount('#app')
+  </script>    
+</body>
+</html>
