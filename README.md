@@ -76,7 +76,7 @@ git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
 npm run install-libs
 npm run install-db
-npm run dev:spa
+npm run dev -- app=example-app
 ```
 
 ## NOTES:

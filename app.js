@@ -12,9 +12,8 @@ require('./common-app/logger')(app) // use as early as possible
 require('./common-app/cors')(app)
 require('./common-app/security')(app)
 require('./common-app/swagger')(app)
-require('./common-app/parser')(app)
+require('./common-app/parser')(app) // Upload URL, Should use Signed URL and get from cloud storage instead
 
-// Upload URL, Should use Signed URL and get from cloud storage instead
 const { APPNAME, USE_GRAPQL } = config
 
 // PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see common-app folder for saml)
