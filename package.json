@@ -13,7 +13,7 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "test": "cross-env NODE_ENV=development jest",
     "test-example": "cross-env NODE_ENV=development jest [project name] --watchAll",
-    "deploy-vm": "deploy.sh",
+    "build": "build.sh",
     "lint": "eslint ."
   },
   "engines": {

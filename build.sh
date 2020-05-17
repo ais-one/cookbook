@@ -9,20 +9,17 @@
 
 if [ ! $1 ]
 then
-    echo "Usage npm run deploy-vm -- [app folder]"
+    echo "Usage npm run build -- [app folder]"
     exit
 fi
 
 # build and install frontend?
-PWD=`pwd`
-cd $1 && ./deploy-web.sh
+baseDir=`pwd`
+cd $1 && ./build-web.sh
 # cd $1 && ls
-# echo `pwd` Hello
-# deploy-web.sh
-# cd $PWD
+cd $baseDir
 
 # copy the sources
-
 # rm -rf build
 # mkdir build
 # ls -A "$1" | grep -v "node_modules" | grep -v "web"
