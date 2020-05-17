@@ -1,27 +1,5 @@
-let APPNAME
-// if (!APPNAME) {
-//   try {
-//     APPNAME = process.argv.find(arg => arg.indexOf('app') !== -1).split('=')[1]
-//   } catch (e) {
-//     // APPNAME = 'example-app'
-//     // console.log(e.toString())
-//     console.log('Usage: npm run dev -- app=[app folder name]')
-//     process.exit(0)
-//   }
-// }
+// we cannot use process.argv due to jest not passing it down... so use environment
+if (!process.env.APPNAME) process.exit(1)
+if (!process.env.NODE_ENV) process.exit(2)
 
-console.log('xxx', process.argv) // TBD JEST RUNNER ARGUMENTS is different already... 
-// So, how to get the APPNAME?
-// xxx [
-//   'C:\\Program Files\\nodejs\\node.exe',
-//   'C:\\Users\\user\\test\\vue-crud-x\\node_modules\\jest-worker\\build\\workers\\processChild.js'
-// ]
-
-try {
-  APPNAME = process.argv[2] || 'example-app'
-} catch (e) {
-  console.log('Usage: npm run dev -- [app folder name]')
-  process.exit(0)
-}
-
-module.exports = APPNAME
+module.exports = process.env.APPNAME

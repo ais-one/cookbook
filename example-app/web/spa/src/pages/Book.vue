@@ -72,7 +72,7 @@
 import { from } from 'rxjs'
 import { pluck, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators' // map
 import { http } from '@/axios'
-import { parse } from 'json2csv'
+import { parse } from 'json2csv' // TBD this should be done on backend...
 import { downloadData } from '../../../../../common-web/util'
 
 export default {

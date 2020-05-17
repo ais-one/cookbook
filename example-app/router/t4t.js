@@ -117,7 +117,6 @@ module.exports = express.Router()
     const ids = JSON.parse(req.query.ids) // [1,2,3]
     // knex
     await knex(table.name).whereIn(id, ids).delete()
-    // mongodb - TBD
     // await mongo.db.collection(table.name).delete(where)
     res.json()
   }))

@@ -1,19 +1,17 @@
 {
   "name": "app",
-  "description": "Backend application",
+  "description": "Generic Application Template",
   "config": {
     "app": "example-app"
   },
   "scripts": {
-    "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd web/spa && npm i && cd ../ssr && npm i",
+    "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd web/spa && npm i",
     "install-db": "cd %npm_package_config_app% && npm run install-db",
     "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=development npm run serve",
-    "ssr": "cd %npm_package_config_app%/web/ssr && cross-env NODE_ENV=development npm run dev",
-    "dev:spa": "concurrently \"npm run dev -- app=%npm_package_config_app%\" \"npm run spa\"",
-    "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "test": "cross-env NODE_ENV=development jest",
-    "test-example": "cross-env NODE_ENV=development jest [project name] --watchAll",
-    "build": "build.sh",
+    "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
+    "dev": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% nodemon index.js",
+    "test": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% jest --watchAll",
+    "build": "build.sh %npm_package_config_app%",
     "lint": "eslint ."
   },
   "engines": {
@@ -21,7 +19,6 @@
   },
   "main": "common-web/dist/VueCrudX.js",
   "dependencies": {
-    "@keyv/redis": "^2.1.1",
     "agenda": "^3.0.0",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",

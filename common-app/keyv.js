@@ -1,4 +1,4 @@
-// const KeyvRedis = require('@keyv/redis')
+// const KeyvRedis = require('@keyv/redis') // npm i @keyv/redis
 // const Redis = require('ioredis')
 
 // const redis = new Redis('redis://user:pass@localhost:6379')
