@@ -15,20 +15,35 @@ fi
 
 # build and install frontend?
 baseDir=`pwd`
-cd $1 && ./build-web.sh
-# cd $1 && ls
-cd $baseDir
 
-# copy the sources
-# rm -rf build
-# mkdir build
+# cleanup build directory
+rm -rf build
+mkdir -p build build/common-web build/$1
+
+# copy common stuff
+cp -r common common-app app.js appname.js index.js package.json build
+for f in `ls -A "common-web" | grep -v "node_modules" | grep -v "dist"`; do
+  # echo $f
+  cp -r common-web/$f build/common-web
+done
+
+# build the backend
+cd $1 && ./build-app.sh $baseDir/build/$1 && cd $baseDir
+
+# build the frontend
+cd $1 && ./build-web.sh $baseDir/build/$1 && cd $baseDir
+
+
 # ls -A "$1" | grep -v "node_modules" | grep -v "web"
 # for f in `ls -A "$1" | grep -v "node_modules" | grep -v "web"`; do
 #   cp -r $1/$f build
 # done
 
-# install npm?
-
+# # install npm
+# cd $baseDir
+# npm i
+# cd $baseDir/$1
+# npm i
 
 # deploy to server?
 
