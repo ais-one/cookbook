@@ -28,15 +28,18 @@ fi
 # build and install frontend?
 baseDir=`pwd`
 
-uat-PEM=./$1/config/uat.pem
-uat-URL=ubuntu@34.87.160.194
-production-PEM=
-production-URL=
+PEM=
+URL=
+if [ $2 == "uat" ]; then
+  PEM=./$1/config/uat.pem
+  URL=ubuntu@34.87.160.194
+fi
 
 PS3="Please enter your choice: "
 options=(
   "ssh"
   "deploy"
+  "install"
   "list"
   "start"
   "stop"
@@ -56,12 +59,16 @@ do
       ssh -i $PEM $URL "tar -zxvf deploy-app.tgz -C ~/app;rm deploy-app.tgz"
       # cd $packagePath/deploy
       ;;
+    "install")
+      echo "Install packages"
+      ssh -i $PEM $URL "cd ~/app;npm i;cd $1;npm i"
+      ;;
     "list")
       ssh -i $PEM $URL "pm2 list"
       ;;
     "start")
         # ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start --only app,cron --env $2;"
-        ssh -i $PEM $URL "cd ~/app; pm2 start --only app --env $2;"
+        ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start --only app --env $2;"
       ;;
     "stop")
         # ssh -i $PEM $URL "cd ~/app; pm2 delete app cron;"
@@ -77,4 +84,3 @@ done
 
 echo "Done... press enter to exit"
 read # pause exit in windows
-
