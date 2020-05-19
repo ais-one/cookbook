@@ -8,6 +8,8 @@ And let's try out vitepress
 
 And also try out Vue 3 composition API
 
+Use ESM libraries... this means no axios for now unless they have an esm build or use snowpack
+
 ## Vite
 
 We should have the following
@@ -37,7 +39,7 @@ If this is interesting, look at my other project on github [https://github.com/a
 npm i
 ```
 
-2. Do snowpack to convert some of them to ES Modules, e.g. axios, moment
+2. [REMOVED] Do snowpack to convert some of them to ES Modules, e.g. axios, moment
 
 ```
 npx snowpack

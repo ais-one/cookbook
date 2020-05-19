@@ -22,9 +22,7 @@ import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 
 // import axios from '/web_modules/axios.js'
-import axios from 'axios'
-// import dayjs from 'dayjs'
-// import '@material/mwc-button' //  need snowpack
+// import axios from 'axios'
 import '@vaadin/vaadin-button'
 
 export default {
@@ -73,8 +71,8 @@ export default {
       console.log('props', props)
       console.log('context', context)
       console.log("template ref titleRef", titleRef.value)
-      const rv = await axios.get('https://swapi.dev/api/people/1')
-      msg.value = JSON.stringify(rv.data)
+      // const rv = await axios.get('https://swapi.dev/api/people/1')
+      // msg.value = JSON.stringify(rv.data)
       console.log('useStore', store)
       console.log('useRouter', router)
       console.log('useRoute', route)

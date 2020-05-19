@@ -9,25 +9,29 @@
 # $@ Values of all the arguments.
 # $? Exit status id of last command.
 
+# $1 relative path to project folder from vue-crud-x
+# $2 environment
+
+echo "IMPORTANT! Run this in the vue-crud-x/build folder"
+
 if [ ! $1 ]
 then
-    echo "Usage: npm run deploy"
+    echo "Missing path to project. Set at package.json"
+    exit
+fi
+if [ ! $2 ]
+then
+    echo "Missing project environment. Set at package.json"
     exit
 fi
 
 # build and install frontend?
 baseDir=`pwd`
 
-PEM=./$1/deploy/id_rsa
-echo $PEM
-
-# URL=ubuntu@127.0.0.1
-URL=ubuntu@3.1.138.164
-# root@128.199.139.34
-
-# echo $PEM $URL
-# echo --- $PEM $URL --- $1 $2
-# exit
+uat-PEM=./$1/config/uat.pem
+uat-URL=ubuntu@34.87.160.194
+production-PEM=
+production-URL=
 
 PS3="Please enter your choice: "
 options=(
@@ -48,27 +52,16 @@ do
     "deploy")
       echo "Deploy Back End... take note public and upload folders"
       tar -zcvf deploy-app.tgz .
-      # tar \
-      #   --exclude=".git" \
-      #   --exclude="node_modules" \
-      #   --exclude="${packagePath}/$1/.git" \
-      #   --exclude="${packagePath}/$1/node_modules" \
-      #   --exclude="${packagePath}/$1/deploy" \
-      #   --exclude="${packagePath}/$1/coverage" \
-      #   --exclude="${packagePath}/$1/tests" \
-      #   --exclude="${packagePath}/$1/web" \
-      #   -zcvf deploy-app.tgz .
-
-      # scp -i $PEM deploy-app.tgz $URL:~ && rm deploy-app.tgz
-      # ssh -i $PEM $URL "tar -zxvf deploy-app.tgz -C ~/app;rm deploy-app.tgz"
+      scp -i $PEM deploy-app.tgz $URL:~ && rm deploy-app.tgz
+      ssh -i $PEM $URL "tar -zxvf deploy-app.tgz -C ~/app;rm deploy-app.tgz"
       # cd $packagePath/deploy
       ;;
     "list")
       ssh -i $PEM $URL "pm2 list"
       ;;
     "start")
-        # ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start --only app,cron --env production;"
-        ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start --only app --env production;"
+        # ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start --only app,cron --env $2;"
+        ssh -i $PEM $URL "cd ~/app; pm2 start --only app --env $2;"
       ;;
     "stop")
         # ssh -i $PEM $URL "cd ~/app; pm2 delete app cron;"

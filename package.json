@@ -2,17 +2,18 @@
   "name": "app",
   "description": "Generic Application Template",
   "config": {
-    "app": "example-app"
+    "env": "uat",
+    "app": "viow"
   },
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd web/spa && npm i",
     "install-db": "cd %npm_package_config_app% && npm run install-db",
-    "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=development npm run serve",
+    "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=%npm_package_config_env% npm run serve",
     "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
-    "dev": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% nodemon index.js",
-    "test": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% jest --watchAll",
-    "build": "build.sh %npm_package_config_app%",
-    "deploy": "deploy.sh %npm_package_config_app%",
+    "dev": "cross-env NODE_ENV=%npm_package_config_env% APPNAME=%npm_package_config_app% nodemon index.js",
+    "test": "cross-env NODE_ENV=%npm_package_config_env% APPNAME=%npm_package_config_app% jest --watchAll",
+    "build": "build.sh %npm_package_config_app% %npm_package_config_env%",
+    "deploy": "deploy.sh %npm_package_config_app% %npm_package_config_env%",
     "lint": "eslint ."
   },
   "engines": {

@@ -7,10 +7,15 @@
 # $@ Values of all the arguments.
 # $? Exit status id of last command.
 
-if [ ! $1 ]
-then
-    echo "Usage: npm run build"
-    exit
+# $1 relative path to project folder from vue-crud-x
+# $2 environment
+echo "IMPORTANT! Run this in the vue-crud-x folder"
+
+if [ ! $1 ]; then
+    echo "Missing path to project. Set at package.json" && read && exit
+fi
+if [ ! $2 ]; then
+    echo "Missing project environment. Set at package.json" && read && exit
 fi
 
 # build and install frontend?
@@ -27,11 +32,14 @@ for f in `ls -A "common-web" | grep -v "node_modules" | grep -v "dist"`; do
   cp -r common-web/$f build/common-web
 done
 
-# build the backend
-cd $1 && ./build-app.sh $baseDir/build/$1 && cd $baseDir
+read -p "Build the backend (y/n)?" yn
+if [[ $yn == "Y" || $yn == "y" ]]; then
+  cd $1 && ./build-app.sh $baseDir/build/$1 $2 && cd $baseDir
+fi
+
+cd $1 && ./build-web.sh $baseDir/build/$1 $2 && cd $baseDir
 
 # build the frontend
-cd $1 && ./build-web.sh $baseDir/build/$1 && cd $baseDir
 
 # move the deploy.sh file
 mv $baseDir/build/$1/deploy.sh $baseDir/build
