@@ -32,10 +32,7 @@ for f in `ls -A "common-web" | grep -v "node_modules" | grep -v "dist"`; do
   cp -r common-web/$f build/common-web
 done
 
-read -p "Build the backend (y/n)?" yn
-if [[ $yn == "Y" || $yn == "y" ]]; then
-  cd $1 && ./build-app.sh $baseDir/build/$1 $2 && cd $baseDir
-fi
+cd $1 && ./build-app.sh $baseDir/build/$1 $2 && cd $baseDir
 
 cd $1 && ./build-web.sh $baseDir/build/$1 $2 && cd $baseDir
 

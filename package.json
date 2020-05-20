@@ -10,7 +10,7 @@
     "install-db": "cd %npm_package_config_app% && npm run install-db",
     "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=%npm_package_config_env% npm run serve",
     "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
-    "dev": "cross-env NODE_ENV=%npm_package_config_env% APPNAME=%npm_package_config_app% nodemon index.js",
+    "dev": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% nodemon index.js",
     "test": "cross-env NODE_ENV=%npm_package_config_env% APPNAME=%npm_package_config_app% jest --watchAll",
     "build": "build.sh %npm_package_config_app% %npm_package_config_env%",
     "deploy": "deploy.sh %npm_package_config_app% %npm_package_config_env%",

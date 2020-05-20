@@ -7,6 +7,7 @@
   "scripts": {
     "serve": "vue-cli-service serve --port 8080",
     "build": "vue-cli-service build",
+    "build-uat": "vue-cli-service build --mode uat",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
