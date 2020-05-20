@@ -7,7 +7,7 @@
 module.exports = function (app) {
   const cors = require('cors')
   const  { CORS_OPTIONS } = require('./config')
-  const { origin, ...options } = CORS_OPTIONS  // origin = ['http://example1.com', 'http://example2.com']
+  let { origin, ...options } = CORS_OPTIONS  // origin = ['http://example1.com', 'http://example2.com']
 
   let whitelist = origin.split(',')
   if (whitelist.length === 1) origin = whitelist[0]

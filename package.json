@@ -2,7 +2,7 @@
   "name": "app",
   "description": "Generic Application Template",
   "config": {
-    "env": "uat",
+    "env": "development",
     "app": "viow"
   },
   "scripts": {
