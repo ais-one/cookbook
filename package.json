@@ -3,7 +3,9 @@
   "description": "Generic Application Template",
   "config": {
     "env": "uat",
-    "app": "viow"
+    "app": "viow",
+    "web": "web/spa,web/admin",
+    "gs": "gs://uat.viow.co,gs://uat-admin.viow.co"
   },
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd web/spa && npm i",
@@ -12,8 +14,8 @@
     "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
     "dev": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% nodemon index.js",
     "test": "cross-env NODE_ENV=%npm_package_config_env% APPNAME=%npm_package_config_app% jest --watchAll",
-    "build": "build.sh %npm_package_config_app% %npm_package_config_env%",
-    "deploy": "deploy.sh %npm_package_config_app% %npm_package_config_env%",
+    "build": "build.sh %npm_package_config_app% %npm_package_config_env% %npm_package_config_web%",
+    "deploy": "deploy.sh %npm_package_config_app% %npm_package_config_env% %npm_package_config_web%",
     "lint": "eslint ."
   },
   "engines": {

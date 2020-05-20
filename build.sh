@@ -34,16 +34,15 @@ echo "building  - backend ($2) to $baseDir/build/$1" # build the backend
 cd $1
 # copy to build folder
 for f in `ls -A | grep -v "node_modules" | grep -v "web" | grep -v ".git"`; do
-  # echo $f
   cp -r $f $baseDir/build/$1
 done
 cd $baseDir
 echo "done"
 
-sites=( "web/spa" "web/admin" ) # build the frontend
+
 cd $1
-for site in "${sites[@]}"
-do
+OIFS=$IFS;
+while IFS=, read -r site gs; do
   cd $site
   echo "building - site $site ($2)"
   read -p "install packages (y/n)?" yn
@@ -58,7 +57,8 @@ do
   mkdir -p $baseDir/build/$1/$site/dist
   cp -r $site/dist $baseDir/build/$1/$site
   echo "Site copied to $baseDir/build/$1"
-done
+done < config/web.csv
+IFS=$OIFS
 cd $baseDir
 
 mv $baseDir/build/$1/ecosystem.config.js $baseDir/build # move the ecosystem.config.js file - for PM2

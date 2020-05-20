@@ -23,6 +23,11 @@ then
     echo "Missing project environment. Set at package.json" && read && exit
 fi
 
+# OIFS=$IFS; IFS=","; sites=($3); IFS=$OIFS
+# for site in "${sites[@]}"; do
+#    echo $site
+# done
+
 # build and install frontend?
 baseDir=`pwd`
 
@@ -38,7 +43,6 @@ options=(
   "ssh"
   "deploy"
   "deploy-fe"
-  "deploy-fe-admin"
   "list"
   "start"
   "stop"
@@ -53,15 +57,17 @@ do
       ;;
     "deploy-fe")
       echo "gsutil.cmd in windows git bash"
-      cd build
-      gsutil.cmd rsync -R $1/web/spa/dist gs://uat.viow.co
-      cd ..
-      ;;
-    "deploy-fe-admin")
-      echo "gsutil.cmd in windows git bash"
-      cd build
-      gsutil.cmd rsync -R $1/web/admin/dist gs://uat-admin.viow.co
-      cd ..
+      OIFS=$IFS;
+      while IFS=, read -r site gs; do
+        read -p "deploy gs $site (y/n)?" yn
+        if [[ $yn == "Y" || $yn == "y" ]]; then
+          gsutil.cmd rsync -R $1/$site/dist $gs
+        fi
+      done < $1/config/web.csv
+      IFS=$OIFS
+      # cd build
+      # gsutil.cmd rsync -R $1/web/spa/dist gs://uat.viow.co
+      # cd ..
       ;;
     "deploy")
       echo "Deploy Back End... take note public and upload folders"
