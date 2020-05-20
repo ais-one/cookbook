@@ -21,16 +21,14 @@ EXPOSE 3001
 WORKDIR /usr/src/app
 
 # Set Environment Variables Here
-ENV NODE_ENV=development
-# ENV DB_USER=test
-# ENV DB_PASSWORD=
+ENV NODE_ENV=production
+ENV APPNAME=example-app
 
 # Copy dependency definitions
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 # COPY package.json package-lock*.json ./
 COPY package*.json ./
-
 
 # Install dependecies
 # If you are building your code for production
@@ -48,11 +46,9 @@ COPY . .
 # Install dependencies
 RUN cd example-app && npm install --only=production && npm cache clean --force
 
-# Front end build - TO TEST
+# Front end build - TOREMOVE already build
 # RUN cd example-app/web/spa && npm install && npm cache clean --force && npm run build
 # RUN cp -rf example-app/web/spa/dist example-app/public
-
-
 # RUN cd example-app/web && rm -rf spa
 # remove the frontend stuffs
 # RUN cd example-app && rm -rf web

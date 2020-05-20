@@ -63,7 +63,7 @@ cd $baseDir
 
 mv $baseDir/build/$1/ecosystem.config.js $baseDir/build # move the ecosystem.config.js file - for PM2
 
-# Dockerfile... TBD docker and kubernetes deployments
+mv $baseDir/build/$1/Dockerfile $baseDir/build # move the Dockerfile - K8s
 
 # node modules to be deployed on server
 

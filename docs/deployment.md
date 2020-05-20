@@ -86,6 +86,11 @@ give permissions to view for public
 
 set website info index page, error page
 
+
+gsutil web set -m index.html -e 404.html gs://www.example.com
+gsutil rm -r gs://www.example.com
+
+
 ### SSL
 
 https://cloud.google.com/load-balancing/docs/ssl-certificates
