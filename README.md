@@ -238,6 +238,8 @@ vue-crud-x
 | +- migrations/
 | +- models/
 | +- public/ : for serving static files - website
+| | +- site1/ (127.0.0.1/)
+| | +- site2/ (127.0.0.1/www2/index.html)
 | +- routes/
 | +- seeds/
 | +- tests/

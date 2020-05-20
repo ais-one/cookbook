@@ -12,9 +12,7 @@
 # $1 relative path to project folder from vue-crud-x
 # $2 environment
 
-# NodeJS and DB need to be installed
-
-echo "IMPORTANT! Run this in the vue-crud-x/build folder - NodeJS and DB need to be installed"
+echo "IMPORTANT! Run this in the vue-crud-x/build folder"
 
 if [ ! $1 ] # eg. example-app
 then
@@ -40,6 +38,7 @@ options=(
   "ssh"
   "deploy"
   "deploy-fe"
+  "deploy-fe-admin"
   "list"
   "start"
   "stop"
@@ -51,18 +50,26 @@ do
   case $opt in
     "ssh")
       ssh -i $PEM $URL -L 27000:127.0.0.1:27017
-      # ssh $URL -L 27000:127.0.0.1:27017
       ;;
     "deploy-fe")
       echo "gsutil.cmd in windows git bash"
-      gsutil.cmd rsync -R $1/web/spa/dist gs://uat.mybot.live
+      cd build
+      gsutil.cmd rsync -R $1/web/spa/dist gs://uat.viow.co
+      cd ..
+      ;;
+    "deploy-fe-admin")
+      echo "gsutil.cmd in windows git bash"
+      cd build
+      gsutil.cmd rsync -R $1/web/admin/dist gs://uat-admin.viow.co
+      cd ..
       ;;
     "deploy")
-      echo "Deploy... take note public and upload folders"
+      echo "Deploy Back End... take note public and upload folders"
+      cd build
       tar -zcvf deploy-app.tgz .
       scp -i $PEM deploy-app.tgz $URL:~ && rm deploy-app.tgz
       ssh -i $PEM $URL "tar -zxvf deploy-app.tgz -C ~/app;rm deploy-app.tgz"
-      # cd $packagePath/deploy
+      cd ..
       ;;
     "install")
       echo "Install packages"
@@ -72,7 +79,6 @@ do
       ssh -i $PEM $URL "pm2 list"
       ;;
     "start")
-        echo "ensure authbind is installed and configured, and pm2 app name is correct"
         # ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start --only app,cron --env $2;"
         ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start --only app --env $2;"
       ;;

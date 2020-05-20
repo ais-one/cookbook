@@ -18,42 +18,58 @@ if [ ! $2 ]; then
     echo "Missing project environment. Set at package.json" && read && exit
 fi
 
-# build and install frontend?
 baseDir=`pwd`
 
 # cleanup build directory
 rm -rf build
 mkdir -p build build/common-web build/$1
 
-# copy common stuff
+# copy the base
 cp -r common common-app app.js appname.js index.js package.json build
 for f in `ls -A "common-web" | grep -v "node_modules" | grep -v "dist"`; do
-  # echo $f
   cp -r common-web/$f build/common-web
 done
 
-cd $1 && ./build-app.sh $baseDir/build/$1 $2 && cd $baseDir
+echo "building  - backend ($2) to $baseDir/build/$1" # build the backend
+cd $1
+# copy to build folder
+for f in `ls -A | grep -v "node_modules" | grep -v "web" | grep -v ".git"`; do
+  # echo $f
+  cp -r $f $baseDir/build/$1
+done
+cd $baseDir
+echo "done"
 
-cd $1 && ./build-web.sh $baseDir/build/$1 $2 && cd $baseDir
+sites=( "/web/spa" "/web/admin" ) # build the frontend
+cd $1
+for site in "${sites[@]}"
+do
+  cd $site
+  echo "building - site $site ($2)"
+  read -p "install packages (y/n)?" yn
+  if [[ $yn == "Y" || $yn == "y" ]]; then
+    npm i
+  fi
+  read -p "build $2 (y/n)?" yn
+  if [[ $yn == "Y" || $yn == "y" ]]; then
+    npm run build-$2
+  fi
+  cd ../..
+  mkdir -p $baseDir/build/$1/$site/dist
+  cp -r $site/dist $baseDir/build/$1/$site
+  echo "Site copied to $baseDir/build/$1"
+done
+cd $baseDir
 
-# build the frontend
+mv $baseDir/build/$1/deploy.sh $baseDir/build # move the deploy.sh file
 
-# move the deploy.sh file
-mv $baseDir/build/$1/deploy.sh $baseDir/build
+mv $baseDir/build/$1/ecosystem.config.js $baseDir/build # move the ecosystem.config.js file - for PM2
 
-# move the ecosystem.config.js file - for PM2
-mv $baseDir/build/$1/ecosystem.config.js $baseDir/build
+# Dockerfile... TBD docker and kubernetes deployments
 
-# ls -A "$1" | grep -v "node_modules" | grep -v "web"
-# for f in `ls -A "$1" | grep -v "node_modules" | grep -v "web"`; do
-#   cp -r $1/$f build
-# done
+# node modules to be deployed on server
 
-# # install npm
-# cd $baseDir
-# npm i
-# cd $baseDir/$1
-# npm i
+# cd $baseDir && npm i && cd $baseDir/$1 && npm i
 
 echo "Done... press enter to exit"
 read # pause exit in windows
