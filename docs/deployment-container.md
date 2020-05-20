@@ -49,3 +49,33 @@ docker image rm <image>
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 docker rmi $(docker images -q)
+
+
+export PROJECT_ID=project-id
+docker build -t gcr.io/${PROJECT_ID}/vue-crud-x:latest .
+gcloud auth configure-docker
+docker push gcr.io/${PROJECT_ID}/vue-crud-x:latest
+
+gcloud config set project $PROJECT_ID
+gcloud config set compute/zone compute-zone
+
+gcloud container clusters create hello-cluster --num-nodes=2
+gcloud compute instances list
+
+kubectl create deployment hello-web --image=gcr.io/${PROJECT_ID}/vue-crud-x:latest
+kubectl get pods
+
+
+kubectl expose deployment hello-web --type=LoadBalancer --port 80 --target-port 8080
+kubectl get service
+kubectl scale deployment hello-web --replicas=3
+kubectl get deployment hello-web
+
+# deploy new version
+docker build -t gcr.io/${PROJECT_ID}/hello-app:v2 .
+docker push gcr.io/${PROJECT_ID}/hello-app:v2
+kubectl set image deployment/hello-web hello-app=gcr.io/${PROJECT_ID}/hello-app:v2
+
+# cleanup
+kubectl delete service hello-web
+gcloud container clusters delete hello-cluster

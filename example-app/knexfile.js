@@ -9,25 +9,28 @@ module.exports = {
       filename: path.join(__dirname, 'dev.sqlite3')
       // filename: './dev.sqlite3' // TOREMOVE
     },
-    migrations: {
-      directory: './migrations'
-    },
-    seeds: {
-      directory: './seeds'
-    },
+    migrations: { directory: './migrations' },
+    seeds: { directory: './seeds' },
     useNullAsDefault: true
   },
   production: {
-    client: 'mysql',
+    client: 'sqlite3',
     connection: {
-      host: 'localhost',
-      database: 'db',
-      user: 'name',
-      password: 'user123!@#PK'
+      filename: path.join(__dirname, 'dev.sqlite3')
     },
-    pool: {
-      min: 1,
-      max: 5
-    }
+    migrations: { directory: './migrations' },
+    seeds: { directory: './seeds' },
+    useNullAsDefault: true,
+
+    // client: 'mysql',
+    // connection: {
+    //   host: 'localhost',
+    //   database: 'db',
+    //   user: 'name',
+    //   password: 'user123!@#PK'
+    // },
+    // pool: {
+    //   min: 1, max: 5
+    // }
   }
 }
