@@ -155,7 +155,7 @@ module.exports = {
   ],
   UPLOAD_URL: '/uploads', // for server uploads
   UPLOAD_FOLDER: 'uploads', // folder is relative to vue-crud-x/[app]
-  UPLOAD_PATH: path.join(__dirname, '..', 'uploads'),
+  UPLOAD_PATH: path.join(__dirname, '..', 'uploads/'),
 
   SWAGGER_DEFS: { // Swagger / OpenAPI definitions
     info: {

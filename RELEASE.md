@@ -2,9 +2,10 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [Work-in-progress]
   - deployment
-    - vm, pm2, SSH
-    - docker container, kubernetes
-    - firebase hosting / gcp cloud storage / AWS S3
+    - Small scale - all in one server - vm, pm2, SSH (express also serves the frontend)
+    - Medium to large
+      - Frontend deploy to GCP Storage / AWS S3 etc.
+      - Backend as docker container, kubernetes, GKE
   - backend
     - generic table crud frontend
   - frontend
