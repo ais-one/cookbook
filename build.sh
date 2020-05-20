@@ -40,7 +40,7 @@ done
 cd $baseDir
 echo "done"
 
-sites=( "/web/spa" "/web/admin" ) # build the frontend
+sites=( "web/spa" "web/admin" ) # build the frontend
 cd $1
 for site in "${sites[@]}"
 do
@@ -50,7 +50,7 @@ do
   if [[ $yn == "Y" || $yn == "y" ]]; then
     npm i
   fi
-  read -p "build $2 (y/n)?" yn
+  read -p "build (y/n)?" yn
   if [[ $yn == "Y" || $yn == "y" ]]; then
     npm run build-$2
   fi
@@ -60,8 +60,6 @@ do
   echo "Site copied to $baseDir/build/$1"
 done
 cd $baseDir
-
-mv $baseDir/build/$1/deploy.sh $baseDir/build # move the deploy.sh file
 
 mv $baseDir/build/$1/ecosystem.config.js $baseDir/build # move the ecosystem.config.js file - for PM2
 
