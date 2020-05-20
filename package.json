@@ -34,7 +34,7 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "firebase-admin": "^8.12.1",
-    "http-proxy-middleware": "^1.0.3",
+    "http-proxy-middleware": "^1.0.4",
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.0.1",
     "knex": "^0.21.1",
