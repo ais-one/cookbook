@@ -45,11 +45,11 @@ OIFS=$IFS;
 while IFS=, read -r site gs; do
   cd $site
   echo "building - site $site ($2)"
-  read -p "install packages (y/n)?" yn
+  read -p "install packages (y/n)?" yn < /dev/tty
   if [[ $yn == "Y" || $yn == "y" ]]; then
     npm i
   fi
-  read -p "build (y/n)?" yn
+  read -p "build (y/n)?" yn < /dev/tty
   if [[ $yn == "Y" || $yn == "y" ]]; then
     npm run build-$2
   fi

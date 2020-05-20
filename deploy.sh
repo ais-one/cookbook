@@ -27,6 +27,7 @@ fi
 # for site in "${sites[@]}"; do
 #    echo $site
 # done
+# read && exit
 
 # build and install frontend?
 baseDir=`pwd`
@@ -59,7 +60,7 @@ do
       echo "gsutil.cmd in windows git bash"
       OIFS=$IFS;
       while IFS=, read -r site gs; do
-        read -p "deploy gs $site (y/n)?" yn
+        read -p "deploy gs $site (y/n)?" yn < /dev/tty
         if [[ $yn == "Y" || $yn == "y" ]]; then
           gsutil.cmd rsync -R $1/$site/dist $gs
         fi
