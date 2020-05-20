@@ -7,13 +7,14 @@
 module.exports = function (app) {
   const cors = require('cors')
   const  { CORS_OPTIONS } = require('./config')
-  const { origins, ...options } = CORS_OPTIONS  // origins = ['http://example1.com', 'http://example2.com']
+  const { origin, ...options } = CORS_OPTIONS  // origin = ['http://example1.com', 'http://example2.com']
 
-  let origin = origins
-  if (origins.split(',').length > 1) {
+  let whitelist = origin.split(',')
+  if (whitelist.length === 1) origin = whitelist[0]
+  else if (whitelist.length > 1) {
     origin = function (origin, callback) {
       if(!origin) return callback(null, true) // allow requests with no origin (like mobile apps or curl requests)
-      if (origins.split(',').indexOf(origin) !== -1) {
+      if (whitelist.indexOf(origin) !== -1) {
         return callback(null, true)
       } else {
         return callback(new Error('Not allowed by CORS'), false)

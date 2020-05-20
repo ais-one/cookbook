@@ -142,7 +142,7 @@ module.exports = {
     optionsSuccessStatus: 204,
     // ALLOW CORS
     credentials: true, // Access-Control-Allow-Credentials value to true
-    origins: process.env.CORS_ORIGINS || 'http://127.0.0.1:8080' // convert to array...
+    origin: process.env.CORS_ORIGINS || 'http://127.0.0.1:8080' // convert to array...
   },
 
   // serve static content
