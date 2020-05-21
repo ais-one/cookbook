@@ -1,12 +1,32 @@
-# SCALING & DEPLOYMENT (WORK IN PROGRESS)
+# SCALING & DEPLOYMENT STRATEGIES
 
-## Local (without docker)
+## Local Development Setup
 
-WSL Ubuntu
+This is for local development purpose and tries to replicate as much of the real-life environment is possible
+
+- git
+- webhooks testing
+  - called by internal - http://xip.io/ - e.g. https://www.127.0.0.1.xip.io/api/health
+  - ngrok - called by external site
+- NodeJS
+  - selfsigned
 - MongoDB
+- WSL Ubuntu
+- Docker
 - Redis
 
-## On VM
+## Cloud Dev Demo
+
+Requires
+- VM
+- Firewall
+- Docker
+
+## Deployment Strategies
+
+1. Small
+
+Deploy on single VM everything
 
 - pm2 or systemd
 - local upload folder
@@ -14,101 +34,96 @@ WSL Ubuntu
 - redis
 - nodejs
 
-## Google Cloud
+- GCE, EC2
 
-0. Download and install Google Cloud SDK
-1. create project
-2. add users
-3. create service keys
+2. Medium
 
-4. setup cloud object storage
-  - Google Cloud Storage, AWS S3, Alibaba Object Store
+Frontend
+- GCS / S3 / Azure Storage
 
-5. setup MongoDB Atlas on Google Cloud
-  - https://www.mongodb.com/cloud/atlas
-  - also available on Azure and AWS
+File/Object Storage
+- GCS / S3 / Azure Storage
 
-6. setup Memory key-value store
-  - https://cloud.google.com/memorystore/docs/redis
-  - Redis Labs
+Backend
+- Docker, Instance Templates & GCE Grouped Instances & Load Balancer
+- Google App Engine 
+  - https://cloud.google.com/appengine/docs/standard/nodejs/quickstart
+- Lambda, Functions (Stateless) / CloudRun
 
-7. Express Application
-  - Google Kubernetes Engine, Azure Kubernetes Engine
-  - Google App Engine 
-    - https://cloud.google.com/appengine/docs/standard/nodejs/quickstart
-  - Google Compute Engine, EC2
-  - Lambda, Functions (Stateless)
+Database
+- RDS / CloudSQL
+- Mongo Atlas
 
-8. RDS (if RDBMS is required)
+3. Large
 
-9. MQ
-  - Google Pubsub https://cloud.google.com/pubsub/docs
-  - agenda (uses MongoDB)
-  - bull/bullmq (uses Redis)
+Frontend
+- GCS / S3 / Azure Storage
+
+File/Object Storage
+- GCS / S3 / Azure Storage
+
+Backend
+- Docker, GKE (Google Kubernetes Engine) & load balancer
+- AKE (Azure Kubernetes Engine)
+- Lambda, Functions (Stateless) / CloudRun
+
+4. Other Backend Services
+
+Database
+- RDS / CloudSQL
+- MongoDB Atlas https://www.mongodb.com/cloud/atlas (GCP/AWS/Azure)
+
+Memory Key-Value Store
+- https://cloud.google.com/memorystore/docs/redis
+- Redis Labs - https://app.redislabs.com/
+
+MQ
+- Google Pubsub https://cloud.google.com/pubsub/docs
+- agenda (uses MongoDB)
+- bull/bullmq (uses Redis)
 
 There should always be alternatives
 
 
-# Google Cloud Platform
+4. CloudFlare
 
-## Install GS UTIL 
+CloudFlare should be used for all deployments
 
-https://cloud.google.com/storage/docs/gsutil_install
+We do not use https://cloud.google.com/load-balancing/docs/ssl-certificates
 
-gsutil init
+SSL Strategies 
 
-## gcloud auth, change users, set projects, etc.
+- Flexible: SSL User --> SSL --> CF --> GCP
 
-If you want to logout from all the accounts run the following command
+- Full: SSL User --> SSL --> CF --> SSL --> GCP
 
-gcloud auth revoke --all - If you want to logout from a specific account then run the following command
-gcloud auth revoke <your_account> - If you want to login with a different account, you can run the following command
-gcloud auth login
+Redirect
 
-gcloud projects list
-
-gcloud config set project PROJECT_ID
-gcloud config list
-
-## Hosting Statuc Website on GCS
-
-https://cloud.google.com/storage/docs/hosting-static-website
-
-NAME                  TYPE     DATA
-www.example.com       CNAME    c.storage.googleapis.com
+- always redirect http to https
 
 
-Verify Domain ownership/control using TXT
+## CORS
 
-gsutil rsync -R spa/dist gs://uat.mybot.live
+CORS Origin settings will follow frontend name - e.g. https://app.mybot.live
 
-give permissions to view for public
+## Pricings
 
-set website info index page, error page
+Cloud Flare USD20/mth
 
+GCP Mongo 1.7G RAM, 10+50GB USD0.15/hr -> 108/mth
 
-gsutil web set -m index.html -e 404.html gs://www.example.com
-gsutil rm -r gs://www.example.com
+GCP Mongo 1.7G RAM, 10+10GB USD0.10/hr -> 72/mth
 
+GCP Storage -> 1 (50GB) + 5.40 (1M class A + 1M class B)
+GCP LB 20.44 (5 rules) + 0.01 (1GB)
+Egress $1 per GB x all regions
 
-### SSL
-
-https://cloud.google.com/load-balancing/docs/ssl-certificates
-
-## Deployment Strategies
-
-1. Small
-deploy on single VM everything
-
-2. Medium to large
-Frontend - GCS / S3 / Azure Storage
-
-3. Medium to Large
-Backend - GKE / AKE
-
-
-CloudFlare
-
-Flexible SSL User --> SSL --> CF --> GCP
-
-
+2 x
+1,460 total hours per month
+VM class: regular
+Instance type: n2-standard-2
+Region: Singapore
+Ephemeral public IP 1,460 hours: USD 5.84
+Sustained Use Discount: 20% 
+Effective Hourly Rate: USD 0.100
+Estimated Component Cost: USD 145.77 per 1 month

@@ -22,20 +22,17 @@ See [deployment-container.md](deployment-container.md)
 
 And [../example-app/Dockerfile](../example-app/Dockerfile)
 
-## Deployment on Google Cloud Kubernetes
+## Deployment on Google Cloud
+
+
+### Instance Groups
+
+See [deployment-vmgroups.md](deployment-vmgroups.md) - WORK IN PROGRESS
+
+### Kubernetes
 
 See [deployment-gke-k8s.md](deployment-gke-k8s.md) - WORK IN PROGRESS
 
-
-# BaaS Services
-
-## Firebase
-
-[baas-firebase.md](baas-firebase.md)
-
-## Mongo Atlas
-
-[baas-mongo-atlas.md](baas-mongo-atlas.md)
 
 # Mongo DB
 
@@ -168,7 +165,3 @@ busboy, formidable
 1. delete node_modules
 2. delete package-lock.json ???
 3. npm cache clean --force
-
-## Testing Webhooks
-
-1. Use XIP - http://xip.io/ - e.g. https://www.127.0.0.1.xip.io/api/health
