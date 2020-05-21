@@ -105,3 +105,10 @@ Frontend - GCS / S3 / Azure Storage
 
 3. Medium to Large
 Backend - GKE / AKE
+
+
+CloudFlare
+
+Flexible SSL User --> SSL --> CF --> GCP
+
+
