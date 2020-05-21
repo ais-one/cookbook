@@ -57,6 +57,19 @@ Reference: https://levelup.gitconnected.com/dockerizing-and-autoscaling-node-js-
 
 1. Prerequisites - docker image in gcr.io
 
+```bash
+gcloud builds submit --tag gcr.io/viow-270002/viow-node-app .
+
+# https://codelabs.developers.google.com/codelabs/cloud-running-a-nodejs-container
+git clone https://github.com/GoogleCloudPlatform/nodejs-docs-samples.git
+cd nodejs-docs-samples/containerengine/hello-world/
+docker build -t gcr.io/viow-270002/viow-node-app .
+gcloud auth configure-docker
+docker push gcr.io/viow-270002/viow-node-app:latest
+```
+
+Need to enable Cloud Build - https://console.cloud.google.com/cloud-build
+
 ## Configure Firewall Rules
 
 - https://console.cloud.google.com/networking/firewalls
@@ -67,7 +80,13 @@ Reference: https://levelup.gitconnected.com/dockerizing-and-autoscaling-node-js-
   - Protocols and ports: check tcp and enter 3000
   - Click Create.
 
-## Create VM
+```bash
+gcloud compute --project=viow-270002 firewall-rules create vm-firewall-rule --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:3000 --source-ranges=0.0.0.0/0 --target-tags=vm-firewall-tag
+
+gcloud compute --project=viow-270002 firewall-rules delete vm-firewall-rule
+```
+
+## Create Instance Template
 
 - https://console.cloud.google.com/compute
   - click Instance Templates in the left menu bar
@@ -77,6 +96,10 @@ Reference: https://levelup.gitconnected.com/dockerizing-and-autoscaling-node-js-
     - container image: gcr.io/<project-id>/docker-image:latest
     - Click the Management, security, disks, networking, sole tenancy dropdown and navigate to the Networking tab. In the Network tags form, enter vm-firewall-tag and hit tab. This establishes the link I previously mentioned to our firewall rule. Leave all other settings the same
     - click Create.
+
+```bash
+# does not work yet
+```
 
 ## Create a managed instance group
 
@@ -90,6 +113,14 @@ Reference: https://levelup.gitconnected.com/dockerizing-and-autoscaling-node-js-
 
 If you head over to the VM instances tab, you should now see at least one VM instance spinning up. Once it finishes booting, we’ll SSH into that instance to ensure its running properly with our Docker image.
 
+```bash
+gcloud compute --project=viow-270002 instance-groups managed create gcloud-docker-node-group --base-instance-name=gcloud-docker-node-group --template=gcloud-docker-node-template --size=1 --zone=asia-southeast1-b
+
+#below might not work
+gcloud beta compute --project "viow-270002" instance-groups managed set-autoscaling "gcloud-docker-node-group" --zone "asia-southeast1-b" --cool-down-period "60" --max-num-replicas "3" --min-num-replicas "1" --target-cpu-utilization "0.8" --mode "on"
+```
+
+Test the template IP test with - http://<vm instance ip>:3000/
 
 ## Add a load balancer
 - https://console.cloud.google.com/net-services/loadbalancing
@@ -106,11 +137,11 @@ If you head over to the VM instances tab, you should now see at least one VM ins
        - name : lb-health-check
        - set the protocol to HTTP and the port to 3000
        - Hit Save and continue then hit Create.
-  - Click Frontend configuration
-    - name: lb-frontend.
-    - Click the IP address dropdown, selecting Create IP address. Name it lb-ip and click Reserve.
-    - Finally, click Done.
-  - Hit Review and finalize, ensure all the values are correct and click Create.
+   - Click Frontend configuration
+     - name: lb-frontend.
+     - Click the IP address dropdown, selecting Create IP address. Name it lb-ip and click Reserve.
+     - Finally, click Done.
+   - Hit Review and finalize, ensure all the values are correct and click Create.
 
 And that’s it! Under the Instance groups section (still on the load balancer page), after a few minutes, 1/1 should be shown under Healthy, indicating that the health checks are passing.
 
