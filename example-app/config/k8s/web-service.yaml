@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: default
+spec:
+  ports:
+  - port: 3000
+    protocol: TCP
+    targetPort: 3000
+  - port: 3001
+    protocol: TCP
+    targetPort: 3001
+  selector:
+    run: web
+    # app: web
+  type: NodePort

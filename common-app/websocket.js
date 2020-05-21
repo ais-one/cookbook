@@ -24,18 +24,21 @@ let onClientMessage = async (message, ws) => { // client incoming message
   }
 }
 
-exports.open = function (cb) {
+exports.open = function (server=null, app=null, cb) {
   let err
   try {
     if (!wss && WS_PORT) {
       const WebSocket = require('ws')
       const https = require('https')
-    
       if (httpsCerts) {
-        wss = new WebSocket.Server({ server: https.createServer(httpsCerts).listen(WS_PORT) })
+        if (!server) server = https.createServer(httpsCerts).listen(WS_PORT) // use same port
+        wss = new WebSocket.Server({ server })
       } else {
-        wss = new WebSocket.Server({ port: WS_PORT })
+        if (!server) wss = new WebSocket.Server({ port: WS_PORT }) // use seperate port
+        else wss = new WebSocket.Server({ server })
       }
+      if (app) server.on('request', app)
+
       console.log('WS API listening on port ' + WS_PORT)
       if (wss) {
         wss.on('connection', (ws) => {
@@ -99,3 +102,8 @@ exports.setOnClientCLose = function (onClientCloseFn) {
 //   client.on('close', function clear() {
 //   clearTimeout(this.pingTimeout)
 // })
+
+// let WSServer = require('ws').Server
+// // Create web socket server on top of a regular http server
+// let wss = new WSServer({ server })
+// server.on('request', app)

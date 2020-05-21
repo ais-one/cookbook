@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: web
+  namespace: default
+  # labels:
+  #   app: gke-tutorial-deployment
+spec:
+  selector:
+    matchLabels:
+      run: web
+  # replicas: 1 # number of pods
+  template:
+    metadata:
+      labels:
+        run: web
+        # app: web
+    spec:
+      containers:
+      - image: gcr.io/google-samples/hello-app:1.0
+        imagePullPolicy: IfNotPresent # Always
+        name: web
+        ports:
+        - containerPort: 8080
+          protocol: TCP

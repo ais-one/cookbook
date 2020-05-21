@@ -1,0 +1,11 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: basic-ingress
+  # annotations:
+  #   kubernetes.io/ingress.global-static-ip-name: "gke-tutorial-ip"
+spec:
+  backend:
+    serviceName: web
+    servicePort: 3080
+# TBD port 3001 webservice?

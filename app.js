@@ -54,8 +54,7 @@ if (apollo) {
   console.log(`🚀 GraphQL Subscriptions ready at ${apollo.subscriptionsPath}`)  
 }
 
-const wss = require('./common-app/websocket').open((err) => console.log(err || 'WS API OPEN OK')) // or set to null
-
+const wss = require('./common-app/websocket').open(null, null, (err) => console.log(err || 'WS API OPEN OK')) // or set to null
 
 const agenda = require('./common-app/mq/agenda') // add message queue
 require('./common-app/mq/bull') // add message queue
