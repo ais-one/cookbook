@@ -1,92 +1,9 @@
-0. Download and install Google Cloud SDK
-1. create project
-2. add users
-3. create service keys
-
-4. setup cloud object storage
-  - Google Cloud Storage, AWS S3, Alibaba Object Store
-
-
-## Google Cloud
-
-# Google Cloud Platform
-
-## Install GS UTIL 
-
-https://cloud.google.com/storage/docs/gsutil_install
-
-gsutil init
-
-## gcloud auth, change users, set projects, etc.
-
-If you want to logout from all the accounts run the following command
-
-gcloud auth revoke --all - If you want to logout from a specific account then run the following command
-gcloud auth revoke <your_account> - If you want to login with a different account, you can run the following command
-gcloud auth login
-
-gcloud projects list
-
-gcloud config set project PROJECT_ID
-gcloud config list
-
-## Hosting Statuc Website on GCS
-
-https://cloud.google.com/storage/docs/hosting-static-website
-
-NAME                  TYPE     DATA
-www.example.com       CNAME    c.storage.googleapis.com
-
-
-Verify Domain ownership/control using TXT
-
-gsutil rsync -R spa/dist gs://uat.mybot.live
-
-give permissions to view for public
-
-set website info index page, error page
-
-
-gsutil web set -m index.html -e 404.html gs://www.example.com
-gsutil rm -r gs://www.example.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # GCP Only Dockerized Google Compute Engine
 
-Reference: https://levelup.gitconnected.com/dockerizing-and-autoscaling-node-js-on-google-cloud-ef8db3b99486
+Prerequisites: Docker image in container registry gcr.io
 
-1. Prerequisites - docker image in gcr.io
+See [deployment-gcp.md](deployment-gcp.md) "Docker Build And Push To gcr.io"
 
-```bash
-gcloud builds submit --tag gcr.io/viow-270002/viow-node-app .
-
-# https://codelabs.developers.google.com/codelabs/cloud-running-a-nodejs-container
-git clone https://github.com/GoogleCloudPlatform/nodejs-docs-samples.git
-cd nodejs-docs-samples/containerengine/hello-world/
-docker build -t gcr.io/viow-270002/viow-node-app .
-gcloud auth configure-docker
-docker push gcr.io/viow-270002/viow-node-app:latest
-```
-
-Need to enable Cloud Build - https://console.cloud.google.com/cloud-build
 
 ## Configure Firewall Rules
 

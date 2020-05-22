@@ -6,7 +6,7 @@ Reference - https://nodejs.org/de/docs/guides/nodejs-docker-webapp/
 
 From vue-crud-x folder (replace **ais-one/node-web-app** with your own image name)
 
-```bash
+```Dockerfile
 # build the container
 docker build -t ais-one/node-web-app:latest -f example-app/Dockerfile . 
 

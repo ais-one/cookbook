@@ -40,6 +40,13 @@ Deploy on single VM everything - GCP GCE, AWS EC2, Digital Ocean, Linode
 See [deployment-vm.md](deployment-vm.md)
 
 
+## Cloud Provider Specific SDKs
+
+You need to know about SDK from each cloud provider to use them effectively
+
+Google Cloud Platform - See [deployment-gcp.md](deployment-gcp.md)
+
+
 ## Demo Deployment On Cloud
 
 Alternative for demo

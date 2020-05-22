@@ -1,19 +1,22 @@
-https://github.com/ais-one/vue-crud-x/pull/85
+# A list of Software Quality Assurance Tools
 
+## Dependency Security
 
-# Dependency Security
 - https://snyk.io/plans/
 
-# Code Quality Analysis
-- https://sonarcloud.io/ (BEST) - https://www.sonarqube.org/
+## Code Quality Analysis
+
+- https://sonarcloud.io/ (BEST) - https://www.sonarqube.org/ (https://github.com/ais-one/vue-crud-x/pull/85)
 - https://deepsource.io/
 - https://www.veracode.com/
 
 # CI/CD
+
 - circleCI
 - jenkins
 
 # APM & Logging
+
 - https://www.appdynamics.com/
 - https://www.datadoghq.com/
 - https://newrelic.com/
@@ -23,5 +26,6 @@ https://github.com/ais-one/vue-crud-x/pull/85
 - https://sentry.io/welcome/
 - https://rollbar.com/
 
-# Analytics
+# Usage Analytics
+
 - https://mixpanel.com/home/
