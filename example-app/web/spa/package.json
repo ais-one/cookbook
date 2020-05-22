@@ -8,6 +8,7 @@
     "serve": "vue-cli-service serve --port 8080",
     "build": "vue-cli-service build",
     "build-uat": "vue-cli-service build --mode uat",
+    "build-report": "npm run build --report",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

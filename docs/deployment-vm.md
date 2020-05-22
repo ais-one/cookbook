@@ -179,13 +179,6 @@ curl -G "https://sms.era.sg/tg_out.php?user=aaronjxz" --data-urlencode "msg=$HI 
 
 
 
-
-
-
-
-
-
-
 # Configuring systemd to Run Multiple Instances
 
 https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-2

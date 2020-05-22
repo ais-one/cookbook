@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: web2
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      run: web2
+  template:
+    metadata:
+      labels:
+        run: web2
+    spec:
+      containers:
+      - image: gcr.io/google-samples/hello-app:2.0
+        imagePullPolicy: IfNotPresent
+        name: web2
+        ports:
+        - containerPort: 8080
+          protocol: TCP

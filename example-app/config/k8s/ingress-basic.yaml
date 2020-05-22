@@ -1,9 +1,10 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: basic-ingress
+  name: ingress-basic # basic-ingress
+  # Uncomment below if using static IP
   # annotations:
-  #   kubernetes.io/ingress.global-static-ip-name: "gke-tutorial-ip"
+  #   kubernetes.io/ingress.global-static-ip-name: "gke-static-ip"
 spec:
   backend:
     serviceName: web

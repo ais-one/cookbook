@@ -87,31 +87,26 @@ We could setup HTTPS quite easily on the user-facing frontend using Google’s m
 
 ## Restrict traffic
 
-Now that our load balancer is hooked up, we can close off all incoming traffic to our VM, with the exception of our load balancer and health checks. Navigate back over to the firewall rules page and click on the rule we previously made, 
-
-vm-firewall-rule. Click Edit, and in the Source IP ranges, replace 0.0.0.0/0 with 130.211.0.0/22 and 35.191.0.0/16 (hit tab after entering in each IP). Click Save. Now if you try and access the server through the VMs external IP address, the browser will just hang. All traffic will need to come in through our load balancer.
-
+Only allow incoming from Load balancer or Health check
+- Goto Firewall Rules
+- Select vm-firewall-rule
+- Click Edit, and in Source IP ranges, replace 0.0.0.0/0 with 130.211.0.0/22 and 35.191.0.0/16. Click Save.
+- Can only access from LB
 
 ## Deploying new versions
 
-So what if you need to make changes to your code? Although we haven’t setup a build server or automation with git, we can write a simple script to update our VM instances with a new deployment. This includes two steps, the first being to build and deploy our Docker image, as previously done. After that, we need to perform a rolling restart on our managed instance group to restart the VMs. Upon booting up, they will pull the newest Docker image in the Container Registry, which will be built with our newly updated code. Note: the rolling restart feature is still in beta, but I have never ran into issues with it.
-To perform a rolling restart, we first need to install the gcloud beta CLI tools. Run gcloud components install beta and follow the prompts.
-Once that’s done, we can start a rolling restart with the following command:
-gcloud beta compute instance-groups managed rolling-action restart gcloud-docker-node-group --zone us-east1-b
-Note: if you used a different zone then the default, you will need to adjust it above.
-This command will start the process of a rolling restart. To check on its status, use:
-gcloud beta compute instance-groups managed list-instances gcloud-docker-node-group --zone us-east1-b
-Rather than needing to memorize and type out both these steps every time we update our code, we’ll write a simple deploy.sh script which will do it automatically.
-Create the file using touch deploy.sh and copy both commands into it:
+1. Build and deploy our Docker image
+2. Perform a rolling restart (beta) on our managed instance group to restart the VMs. Upon booting up, they will pull the newest Docker image in the Container Registry, which will be built with our newly updated code.
+3. To perform a rolling restart, we first need to install the gcloud beta CLI tools (gcloud components install beta)
+4. gcloud beta compute instance-groups managed rolling-action restart gcloud-docker-node-group --zone us-east1-b
+5. check status: gcloud beta compute instance-groups managed list-instances gcloud-docker-node-group --zone us-east1-b
+
+deploy.sh
+
+```bash
 #!/bin/bash
 # build docker image
 gcloud builds submit --tag gcr.io/<project-id>/docker-image . --project <project-id>
 # restart instances (this loads new images)
 gcloud beta compute instance-groups managed rolling-action restart gcloud-docker-node-group --zone us-east1-b --project <project-id>
-Make sure to replace <project-id> with your own project ID and change the zone if you did not use the default. Although our project is automatically set by our CLI, I am adding the --project flag in case you need to configure deployments for multiple projects at once.
-Run chmod +x deploy.sh to enable permissions. Now if you make any changes to your code, simply run:
-./deploy.sh
-to deploy the new code.
-And that’s it! 🤙 I hope you found the tutorial helpful. I would love to get your feedback, so leave a comment below if you enjoyed it or ran into any issues. Make sure to check out Part 2! If you are interested in doing something similar but with Kubernetes, check out my post on that here.
-
-
+```
