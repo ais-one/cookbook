@@ -1,8 +1,11 @@
+https://github.com/ais-one/vue-crud-x/pull/85
+
+
 # Dependency Security
 - https://snyk.io/plans/
 
 # Code Quality Analysis
-- https://www.sonarqube.org/
+- https://sonarcloud.io/ (BEST) - https://www.sonarqube.org/
 - https://deepsource.io/
 - https://www.veracode.com/
 

@@ -12,28 +12,6 @@
 
 See [deployment.md](deployment.md) - WORK IN PROGRESS
 
-## Deployment on VM
-
-See [deployment-vm.md](deployment-vm.md)
-
-## Deployment on Container
-
-See [deployment-container.md](deployment-container.md)
-
-And [../example-app/Dockerfile](../example-app/Dockerfile)
-
-## Deployment on Google Cloud
-
-
-### Instance Groups
-
-See [deployment-vmgroups.md](deployment-vmgroups.md) - WORK IN PROGRESS
-
-### Kubernetes
-
-See [deployment-gke-k8s.md](deployment-gke-k8s.md) - WORK IN PROGRESS
-
-
 # Mongo DB
 
 [mongodb.md](mongodb.md) - WORK IN PROGRESS

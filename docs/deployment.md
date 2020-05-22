@@ -1,6 +1,8 @@
 # SCALING & DEPLOYMENT STRATEGIES
 
-## Local Development Setup
+There should always be alternatives
+
+## Local Development
 
 This is for local development purpose and tries to replicate as much of the real-life environment is possible
 
@@ -15,59 +17,79 @@ This is for local development purpose and tries to replicate as much of the real
 - Docker
 - Redis
 
-## Cloud Dev Demo
+## Backend Application Container Build
 
-Requires
-- VM
-- Firewall
-- Docker
+We can build backend on container so that we can orchestrate using K8s
 
-## Deployment Strategies
+See [deployment-container.md](deployment-container.md)
 
-1. Small
+And [../example-app/Dockerfile](../example-app/Dockerfile)
 
-Deploy on single VM everything
 
+## Deployment On Single VM
+
+For FIXED scale deployments / demos
+
+Deploy on single VM everything - GCP GCE, AWS EC2, Digital Ocean, Linode
 - pm2 or systemd
 - local upload folder
 - mongodb
 - redis
 - nodejs
 
-- GCE, EC2
+See [deployment-vm.md](deployment-vm.md)
 
-2. Medium
 
-Frontend
-- GCS / S3 / Azure Storage
+## Demo Deployment On Cloud
 
-File/Object Storage
-- GCS / S3 / Azure Storage
+Alternative for demo
 
-Backend
+Requires
+- *VM
+- *Cloud Storage
+- *Firewall 80 -> 3000
+- *Docker
+- *Domain Name (no https, set cors origin)
+
+* has free tier or Non-GCP item
+
+
+## Scalable Deployment On Cloud (GCP)
+
+### Frontend
+
+**Frontend**
+
+GCS / S3 / Azure Storage
+
+**File/Object Storage**
+
+GCS / S3 / Azure Storage
+
+
+### Backend
+
+**Google Compute Engine - Instance Groups**
+
+See [deployment-vmgroups.md](deployment-gcp-vmgroups.md) - WORK IN PROGRESS
+
 - Docker, Instance Templates & GCE Grouped Instances & Load Balancer
-- Google App Engine 
-  - https://cloud.google.com/appengine/docs/standard/nodejs/quickstart
-- Lambda, Functions (Stateless) / CloudRun
 
-Database
-- RDS / CloudSQL
-- Mongo Atlas
+**Google Kubernetes Engine**
 
-3. Large
+See [deployment-gke-k8s.md](deployment-gcp-k8s.md) - WORK IN PROGRESS
 
-Frontend
-- GCS / S3 / Azure Storage
-
-File/Object Storage
-- GCS / S3 / Azure Storage
-
-Backend
 - Docker, GKE (Google Kubernetes Engine) & load balancer
 - AKE (Azure Kubernetes Engine)
-- Lambda, Functions (Stateless) / CloudRun
 
-4. Other Backend Services
+**Others**
+
+- Lambda, Functions (Stateless) / CloudRun
+- Google App Engine 
+  - https://cloud.google.com/appengine/docs/standard/nodejs/quickstart
+
+
+### Other Services
 
 Database
 - RDS / CloudSQL
@@ -82,8 +104,7 @@ MQ
 - agenda (uses MongoDB)
 - bull/bullmq (uses Redis)
 
-There should always be alternatives
-
+---
 
 4. CloudFlare
 
@@ -106,6 +127,9 @@ Redirect
 
 CORS Origin settings will follow frontend name - e.g. https://app.mybot.live
 
+
+
+
 ## Pricings
 
 Cloud Flare USD20/mth
@@ -121,9 +145,16 @@ Egress $1 per GB x all regions
 2 x
 1,460 total hours per month
 VM class: regular
-Instance type: n2-standard-2
+Instance type: n2-standard-2 (2cpu / 8GB RAM / 10GB SSD)
 Region: Singapore
 Ephemeral public IP 1,460 hours: USD 5.84
 Sustained Use Discount: 20% 
-Effective Hourly Rate: USD 0.100
-Estimated Component Cost: USD 145.77 per 1 month
+Effective Hourly Rate: 0.100
+Estimated Component Cost: 145.77 per 1 month (72.77 per month for 1 machine)
+
+
+Mongo DB 10GB - 72 per month, 108 for 50GB
+2cpu / 8GB RAM / 10GB SSD - 72.77 per month
+File storage - 10 per month
+Egress 0.11/GB per month (standard)
+Egress 0.12 - 0.19/GB per month (premium)
