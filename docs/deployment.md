@@ -25,6 +25,31 @@ See [deployment-container.md](deployment-container.md)
 
 And [../example-app/Dockerfile](../example-app/Dockerfile)
 
+## Deployment Preparation
+
+You need these files and configure them (see example-app)
+
+- vue-crud-x/<project>/config/uat.pem
+- vue-crud-x/<project>/config/uat.url
+- vue-crud-x/<project>/config/uat.web.csv
+- vue-crud-x/<project>/config/.env.uat
+- vue-crud-x/<project>/ecosystem.config.js (for pm2 deployments)
+- vue-crud-x/<project>/Dockerfile (for docker deployments)
+
+- vue-crud-x/<project>/web/spa/.env.uat
+- vue-crud-x/<project>/web/{some other app}/.env.uat
+
+vue-crud-x/package.json settings
+
+```json
+  "config": {
+    "env": "uat",
+    "app": "viow"
+  },
+```
+
+npm run build
+
 
 ## Deployment On Single VM
 

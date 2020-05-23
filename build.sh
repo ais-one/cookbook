@@ -57,7 +57,7 @@ while IFS=, read -r site gs; do
   mkdir -p $baseDir/build/$1/$site/dist
   cp -r $site/dist $baseDir/build/$1/$site
   echo "Site copied to $baseDir/build/$1"
-done < config/web.csv
+done < config/$2.web.csv
 IFS=$OIFS
 cd $baseDir
 

@@ -36,17 +36,14 @@ PEM=
 URL=
 if [ $2 == "uat" ]; then
   PEM=./$1/config/uat.pem
-  URL=ubuntu@34.87.160.194
+  read URL < $1/config/uat.url # ubuntu@35.187.243.253
 fi
 
 PS3="Please enter your choice: "
 options=(
   "ssh"
-  "deploy"
-  "deploy-fe"
-  "list"
-  "start"
-  "stop"
+  "deploy" "deploy-fe"
+  "list" "start" "stop"
   "install"
   "quit"
 )
@@ -54,7 +51,7 @@ select opt in "${options[@]}"
 do
   case $opt in
     "ssh")
-      ssh -i $PEM $URL -L 27000:127.0.0.1:27017
+      ssh -i $PEM $URL -L 27000:127.0.0.1:27017 # allow connection to mongodb via port 27000
       ;;
     "deploy-fe")
       echo "gsutil.cmd in windows git bash"
@@ -64,7 +61,7 @@ do
         if [[ $yn == "Y" || $yn == "y" ]]; then
           gsutil.cmd rsync -R $1/$site/dist $gs
         fi
-      done < $1/config/web.csv
+      done < $1/config/$2.web.csv
       IFS=$OIFS
       # cd build
       # gsutil.cmd rsync -R $1/web/spa/dist gs://uat.viow.co
