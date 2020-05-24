@@ -30,9 +30,13 @@ And [../example-app/Dockerfile](../example-app/Dockerfile)
 You need these files and configure them (see example-app)
 
 - vue-crud-x/<project>/config/uat.pem
+  - PEM of the VM
 - vue-crud-x/<project>/config/uat.url
+  - user and location of the VM
 - vue-crud-x/<project>/config/uat.web.csv
+  - the list of web applications, also the list bucket location if deploying to S3
 - vue-crud-x/<project>/config/.env.uat
+  - 
 - vue-crud-x/<project>/ecosystem.config.js (for pm2 deployments)
 - vue-crud-x/<project>/Dockerfile (for docker deployments)
 
@@ -44,11 +48,26 @@ vue-crud-x/package.json settings
 ```json
   "config": {
     "env": "uat",
-    "app": "viow"
+    "app": "example-app"
   },
 ```
 
+
+### Build
+
+Create vue-crud-x/build folder and build project into the folder
+
+```
 npm run build
+```
+
+Follow the instructions on whether to install, build frontends
+
+### Deploy
+
+```
+npm run deploy
+```
 
 
 ## Deployment On Single VM
