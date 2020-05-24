@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: ingress-basic # basic-ingress
-  # Uncomment below if using static IP
+  # Uncomment below if using static IP - from compute-ddress.yaml
   # annotations:
   #   kubernetes.io/ingress.global-static-ip-name: "gke-static-ip"
 spec:

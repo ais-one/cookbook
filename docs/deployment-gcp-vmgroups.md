@@ -78,12 +78,7 @@ Test the template IP test with - http://<vm instance ip>:3000/
      - Finally, click Done.
    - Hit Review and finalize, ensure all the values are correct and click Create.
 
-And that’s it! Under the Instance groups section (still on the load balancer page), after a few minutes, 1/1 should be shown under Healthy, indicating that the health checks are passing.
-
-Once our health checks are passing, grab the value under IP:PORT in the Frontend section of the load balancer page and navigate to http://<ip:port>/api/examples/hello, where you should again see the “hello world” message, although this time you’ve accessed your server through the load balancer!
-
-We could setup HTTPS quite easily on the user-facing frontend using Google’s managed SSL certificates, but that would require us to obtain a domain, so for the purpose of this tutorial we will use HTTP. 
-
+Test the url to see that it is working. For HTTPS -> HTTP, use cloudflare, redirect http to https.
 
 ## Restrict traffic
 
@@ -93,20 +88,9 @@ Only allow incoming from Load balancer or Health check
 - Click Edit, and in Source IP ranges, replace 0.0.0.0/0 with 130.211.0.0/22 and 35.191.0.0/16. Click Save.
 - Can only access from LB
 
-## Deploying new versions
+## Deploying new versions - rolling restart
 
-1. Build and deploy our Docker image
-2. Perform a rolling restart (beta) on our managed instance group to restart the VMs. Upon booting up, they will pull the newest Docker image in the Container Registry, which will be built with our newly updated code.
-3. To perform a rolling restart, we first need to install the gcloud beta CLI tools (gcloud components install beta)
-4. gcloud beta compute instance-groups managed rolling-action restart gcloud-docker-node-group --zone us-east1-b
-5. check status: gcloud beta compute instance-groups managed list-instances gcloud-docker-node-group --zone us-east1-b
-
-deploy.sh
-
-```bash
-#!/bin/bash
-# build docker image
-gcloud builds submit --tag gcr.io/<project-id>/docker-image . --project <project-id>
-# restart instances (this loads new images)
-gcloud beta compute instance-groups managed rolling-action restart gcloud-docker-node-group --zone us-east1-b --project <project-id>
-```
+- Build and deploy our Docker image
+- Install gcloud beta CLI tools (gcloud components install beta)
+- gcloud beta compute instance-groups managed rolling-action restart gcloud-docker-node-group --zone asia-southeast1-b
+- gcloud beta compute instance-groups managed list-instances gcloud-docker-node-group --asia-southeast1-b

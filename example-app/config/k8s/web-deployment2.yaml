@@ -13,8 +13,8 @@ spec:
         run: web2
     spec:
       containers:
-      - image: gcr.io/google-samples/hello-app:2.0
-        imagePullPolicy: IfNotPresent
+      - image: gcr.io/google-samples/hello-app:1.0
+        imagePullPolicy: IfNotPresent # Always
         name: web2
         ports:
         - containerPort: 8080

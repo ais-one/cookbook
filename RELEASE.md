@@ -4,7 +4,7 @@
   - Small scale - all in one server - vm, pm2, SSH (express also serves the frontend)
   - Medium to large
     - Frontend deploy to GCP Storage / AWS S3 etc.
-    - Backend as docker container, kubernetes, GKE (in progress)
+    - Backend as docker container, kubernetes, GKE
 - [Work-in-progress]
   - backend
     - generic table crud frontend

@@ -15,9 +15,6 @@ Use cloud shell or local gcloud CLI
 git clone https://github.com/GoogleCloudPlatform/kubernetes-engine-samples.git
 cd kubernetes-engine-samples/hello-app
 
-# No local docker Only if you have gloud build
-# gcloud builds submit --tag gcr.io/<project-id>/gke-tutorial-image .
-
 ## need to install kubeclt?
 
 gcloud components install kubectl
@@ -89,73 +86,42 @@ gcloud container clusters delete hello-cluster
 
 # https://cloud.google.com/kubernetes-engine/docs/tutorials/http-balancer
 
-[web-deployment.yaml](../example-app/config/k8s/web-deployment.yaml)
-
-kubectl apply -f web-deployment.yaml
-
----
-
-[web-service.yaml](../example-app/config/k8s/web-service.yaml)
-
-kubectl apply -f web-service.yaml
-
-[ingress-basic.yaml](../example-app/config/k8s/ingress-basic.yaml)
-
-kubectl apply -f ingress-basic.yaml
-kubectl get ingress ingress-basic
-
----
-
-OPTION STATIC IP ADDRESS
-
-[compute-address.yaml](../example-app/config/k8s/compute-address.yaml)
-
-kubectl apply -f compute-address.yaml
-kubectl apply -f basic-ingress.yaml # with the computed address
-
----
-
-MULTIPLE APPS ON A LB
-
-[web-deployment2.yaml](../example-app/config/k8s/web-deployment2.yaml)
-
-kubectl apply -f web-deployment-v2.yaml
-
-[web-service2.yaml](../example-app/config/k8s/web-service2.yaml)
-
-kubectl apply -f web-service2.yaml
-
-[ingress-fanout.yaml](../example-app/config/k8s/ingress-fanout.yaml)
-
-kubectl apply -f ingress-fanout.yaml
-
-kubectl get ingress ingress-fanout
-
----
-
-# DELETION
-
-kubectl delete ingress ingress-basic
-kubectl delete ingress ingress-fanout
-gcloud compute addresses delete gke-static-ip --global
-
-Delete the cluster: This deletes the compute nodes of your container cluster and other resources such as the Deployments in the cluster:
-
-gcloud container clusters delete loadbalancedcluster
-
-# cleanup
-kubectl delete service hello-web
-gcloud container clusters delete hello-cluster
+- [web-deployment.yaml](../example-app/config/k8s/web-deployment.yaml)
+- [web-service.yaml](../example-app/config/k8s/web-service.yaml)
+- [ingress-basic.yaml](../example-app/config/k8s/ingress-basic.yaml)
+- [compute-address.yaml](../example-app/config/k8s/compute-address.yaml)
+- [web-deployment2.yaml](../example-app/config/k8s/web-deployment2.yaml)
+- [web-service2.yaml](../example-app/config/k8s/web-service2.yaml)
+- [ingress-fanout.yaml](../example-app/config/k8s/ingress-fanout.yaml)
 
 
 ```bash
+kubectl apply -f web-deployment.yaml
+kubectl apply -f web-service.yaml
+kubectl apply -f ingress-basic.yaml
+kubectl get ingress ingress-basic
+# OPTION STATIC IP ADDRESS
+# kubectl apply -f compute-address.yaml
+# kubectl apply -f ingress-basic.yaml # with the computed address
+
+# multiple apps
+kubectl apply -f web-deployment-v2.yaml
+kubectl apply -f web-service2.yaml
+kubectl apply -f ingress-fanout.yaml
+kubectl get ingress ingress-fanout
+
+# deletion
+kubectl delete ingress ingress-basic
+kubectl delete ingress ingress-fanout
+# kubectl delete service hello-web
+gcloud compute addresses delete gke-static-ip --global
+gcloud container clusters delete [cluster-name] # delete cluster and deployments
+
+# other commands - need to test
 kubectl get services
 kubectl cluster-info
 kubectl config view
 kubectl get events
 kubectl logs <pod-name>
 kubectl get deployments
-kubectl scale deployment hello-node --replicas=4
-kubectl get deployment
-kubectl get pods
 ```

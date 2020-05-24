@@ -5,9 +5,9 @@ metadata:
   namespace: default
 spec:
   ports:
-  - port: 8080
+  - port: 3000
     protocol: TCP
-    targetPort: 8080
+    targetPort: 3000
   selector:
     run: web2
   type: NodePort
