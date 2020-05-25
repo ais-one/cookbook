@@ -59,7 +59,7 @@ do
       while IFS=, read -r site gs; do
         read -p "deploy gs $site (y/n)?" yn < /dev/tty
         if [[ $yn == "Y" || $yn == "y" ]]; then
-          gsutil.cmd rsync -R $1/$site/dist $gs
+          gsutil.cmd -m rsync -R $1/$site/dist $gs
         fi
       done < $1/config/$2.web.csv
       IFS=$OIFS
