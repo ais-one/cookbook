@@ -55,6 +55,8 @@ do
       ;;
     "deploy-fe")
       echo "gsutil.cmd in windows git bash"
+      echo "If cannot find command in Windows, it could be space in path (.../Google Cloud/...) to gsutil."
+      echo "Fix by renaming with no space, also edit the PATH env, restart the command console."
       OIFS=$IFS;
       while IFS=, read -r site gs; do
         read -p "deploy gs $site (y/n)?" yn < /dev/tty
