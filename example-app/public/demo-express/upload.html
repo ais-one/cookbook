@@ -16,13 +16,100 @@
   Upload Memory <input type="file" onchange="uploadMemory(this.files)"></br>
   Upload Single (+ body JSON) <input type="file" onchange="uploadSingle(this.files)"></br>
   Upload Multiple <input type="file" onchange="uploadMultiple(this.files)" multiple></br>
+  Upload Google <input type="file" onchange="uploadGoogle(this.files)"></br>
+  <button onclick="enableCorsGoogle()">Enable Cors Google</button>
+  <button onclick="readGoogle()">Read Google</button>
+  <button onclick="deleteGoogle()">Delete Google</button><br/>
   <button onclick="clear()">Clear Inputs</button>
 </body>
 
 <script>
+var gFileName = ''
   function clear () {
 
   }
+
+  async function enableCorsGoogle () {
+    const res = await fetch(`/api/firebase-upload-enable`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })
+    alert(res.ok)
+  }
+
+  async function readGoogle (files) {
+    const res = await fetch(`/api/firebase-upload`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ filename: 'test.txt', action: 'read' })
+    })
+    const rv = await res.json()
+    const res2 = await fetch(rv.url, { method: 'GET' })
+
+    const decoder = new TextDecoder('utf-8')
+    fetch(rv.url, { method: 'GET' }).then(response => {
+      response.body
+        .getReader()
+        .read()
+        .then(({value, done}) => {
+          console.log(done, "boo", decoder.decode(value))
+        })
+    })
+    // const xxx = await res2.body.getReader().read()
+    // console.log(xxx)
+    // alert('Google Read: ' + (res2.ok) ? 'OK' : 'FAIL') 
+  }
+
+  async function deleteGoogle (files) {
+    try {
+      const res = await fetch(`/api/firebase-upload`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ filename: 'test.txt', action: 'delete' })
+      })
+      const rv = await res.json()
+      const res2 = await fetch(rv.url, { method: 'DELETE' })
+      console.log(res2)
+      alert('Google Delete: ' + (res2.ok) ? 'OK' : 'FAIL') 
+    } catch (e) {
+      alert('Google Delete: ' + e.toString())
+    }
+  }
+
+  async function uploadGoogle (files) {
+    try {
+      const file = files[0]
+      const res = await fetch(`/api/firebase-upload`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ filename: 'test.txt', action: 'write' })
+      })
+      const rv = await res.json()
+      // const formData = new FormData()
+      // formData.append('gcp', files[0])
+      const res2 = await fetch(rv.url, { 
+        method: 'PUT',
+        body: files[0], // formData,
+        headers: { 'Content-Type': 'application/octet-stream' }
+      })
+      alert('Google Upload: ' + (res2.ok) ? 'OK' : 'FAIL') 
+    } catch (e) {
+      alert('Google Upload: ' + e.toString())
+    }
+  }
+        
 
   async function uploadMemory(files) {
     // console.log(files)

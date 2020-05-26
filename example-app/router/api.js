@@ -97,21 +97,23 @@ module.exports = express.Router()
 
   // test uploads
   .get('/firebase-upload-enable', asyncWrapper(async (req,res) => {
-    // need to allow CORS...
-    // const rv =
+    if (!firebase) return res.status(500).json({ e: 'No Firebase Service' })
+    const { bucket } = firebase
     await bucket.setCorsConfiguration([{
       maxAgeSeconds: 3600,
-      method: [ 'GET', 'HEAD', 'PUT' ],
+      method: [ 'GET', 'HEAD', 'PUT', 'DELETE' ],
       responseHeader: ['*'],
       origin: [ '*' ] 
     }])
     // console.log('rv', rv)
+    res.status(200).json()
   }))
-  .get('/firebase-upload/:filename', asyncWrapper(async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
+  .post('/firebase-upload', asyncWrapper(async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
+    // action "read" (HTTP: GET), "write" (HTTP: PUT), or "delete" (HTTP: DELETE),
     if (!firebase) return res.status(500).json({ e: 'No Firebase Service' })
     const { bucket } = firebase
-    const action = 'write'
-    const fileName = req.params.filename || 'my-file.txt'
+    const action = req.body.action || 'write'
+    const fileName = req.body.filename || 'my-file.txt'
     const options = {
       version: 'v4',
       action,
