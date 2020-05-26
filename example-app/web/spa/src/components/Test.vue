@@ -45,7 +45,7 @@ export default {
     },
     async onUploadFileToFirebase (fileObj) { // firebase account required
       try {
-        const { data } = await http.post(`/api/firebase-upload`, {
+        const { data } = await http.post(`/api/gcp-sign`, {
           filename: fileObj.name,
           action: 'write'
         })

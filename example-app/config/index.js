@@ -85,6 +85,7 @@ module.exports = {
   // FIREBASE SERVICE ACCOUNT
   FIREBASE_KEY,
   FCM_SERVER_KEY: process.env.FCM_SERVER_KEY || '',
+  GCP_DEFAULT_BUCKET: process.env.GCP_DEFAULT_BUCKET || 'mybot-live.appspot.com',
 
   // Github
   GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID || '', // verify a github token
@@ -144,6 +145,7 @@ module.exports = {
     credentials: true, // Access-Control-Allow-Credentials value to true
     origin: process.env.CORS_ORIGINS || 'http://127.0.0.1:8080' // convert to array...
   },
+  CORS_ORIGINS: process.env.CORS_ORIGINS || '*', // http://127.0.0.1:8080
 
   // serve static content
   WEB_STATIC: [  // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN

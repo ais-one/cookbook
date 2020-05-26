@@ -12,7 +12,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
-    "firebase": "^7.14.4",
+    "firebase": "^7.14.5",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11"
   },
@@ -23,7 +23,7 @@
     "@vue/cli-service": "^4.3.1",
     "babel-eslint": "^10.1.0",
     "deepmerge": "^4.2.2",
-    "eslint": "^6.8.0",
+    "eslint": "^7.1.0",
     "eslint-plugin-vue": "^6.2.2",
     "vue-template-compiler": "^2.6.11"
   },

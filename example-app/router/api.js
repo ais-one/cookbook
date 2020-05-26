@@ -21,8 +21,8 @@ const bull = require('../../common-app/mq/bull')
 //   size: 110
 // }
 
-const { UPLOAD_PATH, FIREBASE_KEY } = require('../config')
-const firebase = FIREBASE_KEY ? require('../../common-app/firebase') : null
+const { UPLOAD_PATH } = require('../config')
+const { gcpSetBucket, gcpEnableCors, gcpGetSignedUrl } = require('../../common-app/firebase')
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
 
@@ -96,41 +96,8 @@ module.exports = express.Router()
   .get('/health-auth', authUser, (req, res) => { res.json({ message: 'OK' }) }) // health check auth
 
   // test uploads
-  .get('/firebase-upload-enable', asyncWrapper(async (req,res) => {
-    if (!firebase) return res.status(500).json({ e: 'No Firebase Service' })
-    const { bucket } = firebase
-    await bucket.setCorsConfiguration([{
-      maxAgeSeconds: 3600,
-      method: [ 'GET', 'HEAD', 'PUT', 'DELETE' ],
-      responseHeader: ['*'],
-      origin: [ '*' ] 
-    }])
-    // console.log('rv', rv)
-    res.status(200).json()
-  }))
-  .post('/firebase-upload', asyncWrapper(async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
-    // action "read" (HTTP: GET), "write" (HTTP: PUT), or "delete" (HTTP: DELETE),
-    if (!firebase) return res.status(500).json({ e: 'No Firebase Service' })
-    const { bucket } = firebase
-    const action = req.body.action || 'write'
-    const fileName = req.body.filename || 'my-file.txt'
-    const options = {
-      version: 'v4',
-      action,
-      expires: Date.now() + (120 * 60 * 1000) // 120 minutes
-    }
-    // The option below will allow temporary uploading of the file with outgoing Content-Type: application/octet-stream header.
-    if (action === 'write') options.contentType = 'application/octet-stream'
-  
-    // Get a v4 signed URL for uploading file
-    const [url] = await bucket.file(fileName).getSignedUrl(options)
-    // console.log(url)
-    // // curl command for uploading using signed URL
-    // console.log("curl -X PUT -H 'Content-Type: application/octet-stream' " + `--upload-file my-file '${url}'`)
-    // curl -X PUT -H 'Content-Type: application/octet-stream' --upload-file my-file 'http://www.test.com'
-    res.status(200).json({ url })
-  }))
-
+  .get('/gcp-cors', asyncWrapper(gcpEnableCors))
+  .post('/gcp-sign', asyncWrapper(gcpGetSignedUrl))
 
   .post('/upload', upload.single('filedata'), (req,res) => { // avatar is form input name
     console.log('file original name', req.file.originalname)

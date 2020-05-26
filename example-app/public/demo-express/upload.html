@@ -24,29 +24,25 @@
 </body>
 
 <script>
-var gFileName = ''
+  const headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  }
   function clear () {
 
   }
 
   async function enableCorsGoogle () {
-    const res = await fetch(`/api/firebase-upload-enable`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
+    const res = await fetch('/api/gcp-cors', {
+      method: 'GET', headers
     })
     alert(res.ok)
   }
 
   async function readGoogle (files) {
-    const res = await fetch(`/api/firebase-upload`, {
+    const res = await fetch('/api/gcp-sign', {
         method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({ filename: 'test.txt', action: 'read' })
     })
     const rv = await res.json()
@@ -68,12 +64,9 @@ var gFileName = ''
 
   async function deleteGoogle (files) {
     try {
-      const res = await fetch(`/api/firebase-upload`, {
+      const res = await fetch(`/api/gcp-sign`, {
         method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({ filename: 'test.txt', action: 'delete' })
       })
       const rv = await res.json()
@@ -88,12 +81,9 @@ var gFileName = ''
   async function uploadGoogle (files) {
     try {
       const file = files[0]
-      const res = await fetch(`/api/firebase-upload`, {
+      const res = await fetch(`/api/gcp-sign`, {
         method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({ filename: 'test.txt', action: 'write' })
       })
       const rv = await res.json()
@@ -109,7 +99,6 @@ var gFileName = ''
       alert('Google Upload: ' + e.toString())
     }
   }
-        
 
   async function uploadMemory(files) {
     // console.log(files)

@@ -52,7 +52,7 @@
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.4.3"
+    "vuetify-loader": "^1.4.4"
   },
   "browserslist": [
     "last 1 Chrome versions"
