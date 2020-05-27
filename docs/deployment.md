@@ -9,9 +9,9 @@ This is for local development purpose and tries to replicate as much of the real
 - git
 - webhooks testing
   - called by internal - http://xip.io/ - e.g. https://www.127.0.0.1.xip.io/api/health
-  - ngrok - called by external site
+  - called by external site - ngrok
 - NodeJS
-  - selfsigned
+  - with self signed cert
 - MongoDB
 - WSL Ubuntu
 - Docker

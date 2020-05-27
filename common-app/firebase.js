@@ -5,7 +5,7 @@ const axios = require('axios')
 const { FIREBASE_KEY, FCM_SERVER_KEY, GCP_DEFAULT_BUCKET = '', CORS_ORIGINS } = require('./config')
 let bucketName = GCP_DEFAULT_BUCKET
 
-if (admin.apps.length === 0 && FIREBASE_KEY) {
+if (admin.apps.length === 0 && FIREBASE_KEY && FIREBASE_KEY.project_id) {
   console.log('Init Firebase')
   const credential = admin.credential.cert(FIREBASE_KEY) // for Firebase Functions
   // const credential = admin.credential.applicationDefault() // if hosted on Firebase Functions
