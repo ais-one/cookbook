@@ -18,7 +18,7 @@ dev.sqlite3
 .env.*
 .rnd
 
-firebase.key.json
+*.gcp.json
 id_rsa
 sandbox
 
