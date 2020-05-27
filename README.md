@@ -188,7 +188,7 @@ npm run dev
 
 9. PWA and vite
 
-TBD
+Work In Progress
 
 10. Building & Deployment for Production (WIP)
 
