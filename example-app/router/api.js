@@ -22,7 +22,7 @@ const bull = require('../../common-app/mq/bull')
 // }
 
 const { UPLOAD_PATH } = require('../config')
-const { gcpSetBucket, gcpEnableCors, gcpGetSignedUrl } = require('../../common-app/firebase')
+const { gcpGetSignedUrl } = require('../../common-app/firebase')
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
 
@@ -96,7 +96,6 @@ module.exports = express.Router()
   .get('/health-auth', authUser, (req, res) => { res.json({ message: 'OK' }) }) // health check auth
 
   // test uploads
-  .get('/gcp-cors', asyncWrapper(gcpEnableCors))
   .post('/gcp-sign', asyncWrapper(gcpGetSignedUrl))
 
   .post('/upload', upload.single('filedata'), (req,res) => { // avatar is form input name

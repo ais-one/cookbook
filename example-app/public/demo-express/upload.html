@@ -33,10 +33,7 @@
   }
 
   async function enableCorsGoogle () {
-    const res = await fetch('/api/gcp-cors', {
-      method: 'GET', headers
-    })
-    alert(res.ok)
+    alert('USE: gsutil cors set [JSON_FILE_NAME].json gs://[BUCKET_NAME]')
   }
 
   async function readGoogle (files) {

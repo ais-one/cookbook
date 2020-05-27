@@ -31,17 +31,29 @@ const fcmSend = async (to, title, body) => { // send firebase push notification
 
 const gcpSetBucket = async (newBucketName) => bucketName = newBucketName || bucketName
 
-const gcpEnableCors = async (req,res) => {
-  // console.log(CORS_ORIGINS.split(','), bucketName)
-  const bucket = admin.storage().bucket(bucketName)
-  await bucket.setCorsConfiguration([{
-    maxAgeSeconds: 3600,
-    method: [ 'GET', 'HEAD', 'PUT', 'DELETE' ],
-    responseHeader: ['*'],
-    origin: CORS_ORIGINS ? CORS_ORIGINS.split(',') : [ '*' ]
-  }])
-  res.status(200).json()
-}
+// Set CORs
+// [
+//     {
+//       "origin": ["https://uat.mybot.live"],
+//       "responseHeader": ["*"],
+//       "method": ["GET", "HEAD", "PUT", "DELETE"],
+//       "maxAgeSeconds": 3600
+//     }
+// ]
+
+// gsutil cors set [JSON_FILE_NAME].json gs://[BUCKET_NAME]
+// gsutil cors get gs://[BUCKET_NAME]
+
+// const gcpEnableCors = async (req,res) => {
+//   const bucket = admin.storage().bucket(bucketName)
+//   await bucket.setCorsConfiguration([{
+//     maxAgeSeconds: 3600,
+//     method: [ 'GET', 'HEAD', 'PUT', 'DELETE' ],
+//     responseHeader: ['*'],
+//     origin: CORS_ORIGINS ? CORS_ORIGINS.split(',') : [ '*' ]
+//   }])
+//   res.status(200).json()
+// }
 
 const gcpGetSignedUrl = async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
   // action "read" (HTTP: GET), "write" (HTTP: PUT), or "delete" (HTTP: DELETE),
@@ -65,4 +77,4 @@ const gcpGetSignedUrl = async (req,res) => { // test upload/get with cloud opjec
   res.status(200).json({ url })
 }
 
-module.exports = { fcmSend, gcpEnableCors, gcpGetSignedUrl, gcpSetBucket }
+module.exports = { fcmSend, gcpGetSignedUrl, gcpSetBucket }
