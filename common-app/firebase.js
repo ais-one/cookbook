@@ -1,19 +1,21 @@
 'use strict'
-const admin = require('firebase-admin')
+// const admin = require('firebase-admin')
+const {Storage} = require('@google-cloud/storage')
 const axios = require('axios')
 
-const { FIREBASE_KEY, FCM_SERVER_KEY, GCP_DEFAULT_BUCKET = '', CORS_ORIGINS } = require('./config')
+const { GCP_KEY, FCM_SERVER_KEY, GCP_DEFAULT_BUCKET = '', CORS_ORIGINS } = require('./config')
 let bucketName = GCP_DEFAULT_BUCKET
 
-if (admin.apps.length === 0 && FIREBASE_KEY && FIREBASE_KEY.project_id) {
-  console.log('Init Firebase')
-  const credential = admin.credential.cert(FIREBASE_KEY) // for Firebase Functions
-  // const credential = admin.credential.applicationDefault() // if hosted on Firebase Functions
-  admin.initializeApp({ credential })
+let storage
+if (!storage && GCP_KEY && GCP_KEY.project_id) {
+  const { client_email, private_key } = GCP_KEY
+  storage = new Storage({ credentials: {
+    client_email, private_key
+  } })
 }
 
 const fcmSend = async (to, title, body) => { // send firebase push notification
-  try { // using post instead
+  try {
     const rv = await axios.post('https://fcm.googleapis.com/fcm/send', {
       to, data: { notification: { title, body } }
     },{
@@ -45,7 +47,8 @@ const gcpSetBucket = async (newBucketName) => bucketName = newBucketName || buck
 // gsutil cors get gs://[BUCKET_NAME]
 
 // const gcpEnableCors = async (req,res) => {
-//   const bucket = admin.storage().bucket(bucketName)
+//   // const bucket = admin.storage().bucket(bucketName)
+//   const bucket = storage.bucket(bucketName)
 //   await bucket.setCorsConfiguration([{
 //     maxAgeSeconds: 3600,
 //     method: [ 'GET', 'HEAD', 'PUT', 'DELETE' ],
@@ -57,7 +60,8 @@ const gcpSetBucket = async (newBucketName) => bucketName = newBucketName || buck
 
 const gcpGetSignedUrl = async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
   // action "read" (HTTP: GET), "write" (HTTP: PUT), or "delete" (HTTP: DELETE),
-  const bucket = admin.storage().bucket(bucketName)
+  // const bucket = admin.storage().bucket(bucketName)
+  const bucket = storage.bucket(bucketName)
   const action = req.body.action || 'write'
   const fileName = req.body.filename || 'my-file.txt'
   const options = {

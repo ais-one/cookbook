@@ -4,7 +4,7 @@ const path = require('path')
 console.log('TEST_ENV=',process.env.TEST_ENV)
 const KNEXFILE = require('../knexfile')
 
-const FIREBASE_KEY = require('./' + process.env.NODE_ENV + '.gcp.json') || ''
+const GCP_KEY = require('./' + process.env.NODE_ENV + '.gcp.json') || ''
 
 const JWT_CERT = process.env.JWT_CERT || path.join(__dirname, 'certs/jwt') // RS256
 const HTTPS_CERT = process.env.HTTPS_CERT || ''
@@ -83,7 +83,7 @@ module.exports = {
   KNEXFILE,
 
   // FIREBASE SERVICE ACCOUNT
-  FIREBASE_KEY,
+  GCP_KEY,
   FCM_SERVER_KEY: process.env.FCM_SERVER_KEY || '',
   GCP_DEFAULT_BUCKET: process.env.GCP_DEFAULT_BUCKET || 'mybot-live.appspot.com',
 
