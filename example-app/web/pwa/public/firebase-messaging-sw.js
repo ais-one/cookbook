@@ -19,8 +19,8 @@ if (isIos() && !isInStandaloneMode()) {
 var window = self // self is service worker - simulate it as window
 importScripts('firebase.config.js') // FIREBASE_CONFIG
 // console.log('FIREBASE_CONFIG self window', self)
-importScripts('https://www.gstatic.com/firebasejs/7.14.5/firebase-app.js')
-importScripts('https://www.gstatic.com/firebasejs/7.14.5/firebase-messaging.js')
+importScripts('https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js')
+importScripts('https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js')
 
 // Initialize the Firebase app in the service worker by passing in the messagingSenderId.
 firebase.initializeApp(self.FIREBASE_CONFIG)
