@@ -1,3 +1,4 @@
+const otplib = require('otplib')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const { JWT_ALG, JWT_SECRET, jwtCerts, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv' } = require('../config')
