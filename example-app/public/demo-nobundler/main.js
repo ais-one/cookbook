@@ -7,8 +7,8 @@ import Public from './layouts/public.js'
 import router from './router.js'
 import store from './store.js'
 
-// import { something } from '/js/my-lib-esm.js' // testing
-// console.log( something )
+import { foo } from '/js2/datetime.js' // testing
+console.log( 'Value from ES Module file...', foo )
 // const urlParams = new URLSearchParams(window.location.search)
 // const myParam = urlParams.get('myParam')
 

@@ -43,6 +43,7 @@ echo "done"
 cd $1
 OIFS=$IFS;
 while IFS=, read -r site gs; do
+  webBaseDir=`pwd`
   cd $site
   echo "building - site $site ($2)"
   read -p "install packages (y/n)?" yn < /dev/tty
@@ -53,7 +54,7 @@ while IFS=, read -r site gs; do
   if [[ $yn == "Y" || $yn == "y" ]]; then
     npm run build-$2
   fi
-  cd ../..
+  cd $webBaseDir
   mkdir -p $baseDir/build/$1/$site/dist
   cp -r $site/dist $baseDir/build/$1/$site
   echo "Site copied to $baseDir/build/$1"

@@ -86,11 +86,11 @@ do
       ;;
     "start")
         # ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start --only app,cron --env $2;"
-        ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start --only app --env $2;"
+        ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start ecosystem.config.js --env $2;"
       ;;
     "stop")
         # ssh -i $PEM $URL "cd ~/app; pm2 delete app cron;"
-        ssh -i $PEM $URL "cd ~/app; pm2 delete app;"
+        ssh -i $PEM $URL "cd ~/app; pm2 stop ecosystem.config.js;"
       ;;
     "quit")
       echo "QUIT"
