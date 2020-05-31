@@ -29,14 +29,39 @@ Github is our version control system for the team to collaborate on code develop
 
 **Branch Organization**
 
+- https://www.atlassian.com/git/tutorials/comparing-workflows
+
+
+The overall flow of Gitflow is:
+
+- A develop branch is created from master
+- A release branch is created from develop (no new features, only bug fixes, documentation, etc.)
+  - When the release branch is done it is merged into develop and master (master is tagged)
+- Feature branches are created from develop
+  - When a feature is complete it is merged into the develop branch
+- If an issue in master is detected a hotfix branch is created from master
+  - Once the hotfix is complete it is merged to both develop and master
+
+Organize by User
+
 - develop, all will eventually merge into this branch
-  - [team branch]
-    - [sub-team 1]
-       - [sub-team ..N]
+  - [team branches]
+    - [sub-team branches]
+       - [sub-sub-team branches]
          - [username], branch by username
+- uat
 - staging
 - master, latest milestone and associated releases
 - [previous milestones and associated releases]
+
+
+Organize by Task
+
+- hotfix
+- feature
+
+Organize By  Both
+
 
 Note:
 
@@ -184,27 +209,4 @@ Passing pipelines are deployed to various environments so your product goes to m
 [[https://github.com/VisionGroupTech/Vision_RnD/blob/master/wiki-images/circle_ci.jpg|alt=circle_ci]]
 
 Alternative: **AppVeyor**
-
----
-
-Research In Progress
-
-## Application Performance Monitoring APM
-https://www.appdynamics.com/
-https://www.datadoghq.com/
-https://newrelic.com/
-
-## Logging
-https://logrocket.com/
-https://www.splunk.com/
-https://raygun.com/
-https://sentry.io/welcome/
-https://rollbar.com/
-
-## User Behaviour Analysis
-
-Analyze user behavior across your sites and apps
-
-1. MixPanel https://mixpanel.com/home/
-2. Google Analytics
 
