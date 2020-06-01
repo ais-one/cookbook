@@ -1,4 +1,4 @@
-## Guiding Principles
+## Team Guiding Principles
 
 - Do not built technical debt
   - balance between developing own code and using dependencies
@@ -27,7 +27,7 @@ Jest
 
 Github is our version control system for the team to collaborate on code development effectively.
 
-**Branch Organization**
+**Branch & Organization**
 
 - https://www.atlassian.com/git/tutorials/comparing-workflows
 
@@ -53,14 +53,6 @@ Organize by User
 - staging
 - master, latest milestone and associated releases
 - [previous milestones and associated releases]
-
-
-Organize by Task
-
-- hotfix
-- feature
-
-Organize By  Both
 
 
 Note:
@@ -123,7 +115,6 @@ Milestone will represent Minor version change
 Each issue is a story (which can include sub tasks)
 Issues are either in backlog, or milestone (very long sprint?)
 
-[[https://github.com/VisionGroupTech/Vision_RnD/blob/master/wiki-images/project.jpg|alt=project]]
 
 ## Tech knowledge repository
 
@@ -143,11 +134,6 @@ Snyk - https://snyk.io/plans/
 
 Continuously find and fix vulnerabilities in open source libraries and containers.
 
-TBD more description on the work
-
-
-
-[[https://github.com/VisionGroupTech/Vision_RnD/blob/master/wiki-images/snykjpg.jpg|alt=snykjpg]]
 
 ### Continuous Code Inspection
 
@@ -170,20 +156,6 @@ SonarQube analyzes branches and Pull Requests so you spot and resolve issues BEF
 
 SonarQube publishes Quality Gate and code metric results right in GitHub Checks (issues, bugs, vulnerability...)
 
-**CI/CD Integration**
-
-Integrate with Jenkins, TeamCity, Azure Pipelines or any other CI
-
-**Other alternatives studied**
-
-1. Deepsource - https://deepsource.io
-
-Limited language supported. Javascript which we use for web development is not supported
-
-2. Veracode - https://www.veracode.com/
-
-Limited information, no info, mainly on application security, which others can handle
-
 ---
 
 ## CI/CD
@@ -191,22 +163,8 @@ Limited information, no info, mainly on application security, which others can h
 **CircleCI** - Automate your development process quickly, safely, and at scale.
 
 1. VCS integration
-
-CircleCI integrates with GitHub, GitHub Enterprise, and Bitbucket. Every time you commit code, CircleCI creates a pipeline.
-
 2. Automated testing
-
-CircleCI automatically runs your pipeline in a clean container or virtual machine, allowing you to test every commit.
-
 3. Notifications
-
-Your team is notified if a pipeline fails so issues can be fixed quickly. Automate notifications with our Slack integration.
-
 4. Automated deployment
 
 Passing pipelines are deployed to various environments so your product goes to market faster.
-
-[[https://github.com/VisionGroupTech/Vision_RnD/blob/master/wiki-images/circle_ci.jpg|alt=circle_ci]]
-
-Alternative: **AppVeyor**
-

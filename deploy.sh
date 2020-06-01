@@ -45,6 +45,7 @@ options=(
   "deploy" "deploy-fe"
   "list" "start" "stop"
   "install"
+  "clear-cloud-flare-cache"
   "quit"
 )
 select opt in "${options[@]}"
@@ -92,6 +93,17 @@ do
         # ssh -i $PEM $URL "cd ~/app; pm2 delete app cron;"
         ssh -i $PEM $URL "cd ~/app; pm2 stop ecosystem.config.js;"
       ;;
+    "clear-cloud-flare-cache")
+cat <<-EOF
+# Sample command to clear cloudflare cache 
+curl -X POST "https://api.cloudflare.com/client/v4/zones/YOUR-ZONE-ID/purge_cache" \
+  -H "X-Auth-Email: YOUR-CLOUDFLARE-EMAIL" \
+  -H "X-Auth-Key: YOUR-GLOBAL-API-KEY" \
+  -H "Content-Type: application/json" \
+  --data '{"purge_everything":true}'
+# CircleCI TBD - [![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://circleci.com/gh/circleci/circleci-docs)
+EOF
+        ;;
     "quit")
       echo "QUIT"
       break
