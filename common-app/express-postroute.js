@@ -2,12 +2,12 @@ const history = require('connect-history-api-fallback')
 const proxy = require('http-proxy-middleware')
 const path = require('path')
 
-module.exports = function (app, express) {
+module.exports = function (app, express, config) {
   // app.set('case sensitive routing', true)
   const  {
     PROXY_WWW_ORIGIN, WEB_STATIC,
     UPLOAD_URL, UPLOAD_PATH
-  } = require('./config')
+  } = config
   const hasWebStatic = WEB_STATIC && WEB_STATIC.length
   if (PROXY_WWW_ORIGIN && !hasWebStatic) {
     app.set('trust proxy', true) // true if behind proxy, false if direct connect... You now can get IP from req.ip, req.ips
@@ -30,9 +30,39 @@ module.exports = function (app, express) {
     app.use("*", async (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
   }
   // console.log('UPLOAD_PATH', UPLOAD_PATH)
+  // Upload URL, Should use Signed URL and get from cloud storage instead
   if (UPLOAD_URL) {
     // console.log('UPLOAD: ', path.join(__dirname, '..', APPNAME, UPLOAD_FOLDER) )
     app.use(UPLOAD_URL, express.static( UPLOAD_PATH ))
   }
+
+  Error.stackTraceLimit = 1 // limit error stack trace to 1 level
+  const { NODE_ENV } = config
+  app.use((error, req, res, next) => { // 200s should not reach here
+    // console.log('message', error.message)
+    // console.log('name', error.name)
+    // console.log('stack', error.stack)
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+    const errorMap = {
+      'Bad Request': 400,
+      'Unauthorized': 401,
+      'Forbidden': 403,
+      'Not Found': 404,
+      'Conflict': 409,
+      'Unprocessable Entity': 422
+    }
+    const body = {
+      error: 'Unknown Error',
+      trace: null
+    }
+    let statusCode = 500
+    if (error instanceof Error || error.code) { // error.code is custom error class, which has property code
+      statusCode = error.code || errorMap[error.message] || 500
+      body.error =  error.message
+      if (NODE_ENV === 'development') body.trace = error.stack
+    }
+    res.status(statusCode).json(body)
+  })
+
   return this
 }

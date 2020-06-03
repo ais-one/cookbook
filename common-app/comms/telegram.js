@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const { TELEGRAM_API_KEY, TELEGRAM_CHANNEL_ID } = require('./config')
+const { TELEGRAM_API_KEY, TELEGRAM_CHANNEL_ID } = require('../config')
 
 console.log('TELEGRAM_API_KEY, TELEGRAM_CHANNEL_ID', TELEGRAM_API_KEY, TELEGRAM_CHANNEL_ID)
 

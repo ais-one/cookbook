@@ -1,5 +1,5 @@
 const axios = require('axios')
-const  { SENDGRID_KEY } = require('./config')
+const  { SENDGRID_KEY } = require('../config')
 
 // Sendgrid, Mailgun
 

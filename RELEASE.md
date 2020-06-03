@@ -6,6 +6,7 @@
     - Frontend deploy to GCP Storage / AWS S3 etc.
     - Backend as docker container, kubernetes, GKE
 - [Work-in-progress]
+  - make it CI/CD friendly (may need to re-organize again)
   - backend
     - generic table crud frontend
   - frontend
