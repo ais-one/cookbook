@@ -19,10 +19,10 @@ console.log('secret', secret) // save for the user
 // console.log('otpauth', otpauth)
 // // Make QR Code From OTP Path
 // const qrcode = require('qrcode')
-// qrcode.toDataURL(otpauth, (err, imageUrl) => {
+// qrcode.toDataURL(otpauth, (err, data) => {
 //   if (err) {
 //     console.log('Error with QR')
 //     return
 //   }
-//   console.log(imageUrl)
+//   console.log(data)
 // })

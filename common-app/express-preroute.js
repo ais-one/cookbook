@@ -74,14 +74,12 @@ module.exports = function(app, config) {
 
   // ------ LOGGING ------
   const morgan = require('morgan')
-  if (!ENABLE_LOGGER) {
+  if (ENABLE_LOGGER) {
     app.use(morgan('combined', { // errors
-      stream: process.stderr,
-      skip: (req, res) => res.statusCode < 400
+      stream: process.stdout, skip: (req, res) => res.statusCode < 400
     }))
     app.use(morgan('combined', { // ok
-      stream: process.stdout,
-      skip: (req, res) => res.statusCode >= 400
+      stream: process.stderr, skip: (req, res) => res.statusCode >= 400
     }))  
   }
   // const winston = require('winston')
