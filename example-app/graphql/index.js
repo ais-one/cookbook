@@ -44,7 +44,8 @@ module.exports = function (app, server) {
         }
       }
     })
-    apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
+    apollo.applyMiddleware({ app }) 
+    console.log('GraphQL init')
   }
   return apollo
 }

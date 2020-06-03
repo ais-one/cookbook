@@ -162,5 +162,6 @@ module.exports = function(app, config) {
       explorer: true
     }))  
   }
-  return this
+
+  return this // this is undefined...
 }

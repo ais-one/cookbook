@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-console.log('TEST_ENV=',process.env.TEST_ENV)
+console.log('TEST_ENV =',process.env.TEST_ENV)
 const KNEXFILE = require('../knexfile')
 
 const GCP_KEY = require('./' + process.env.NODE_ENV + '.gcp.json') || ''

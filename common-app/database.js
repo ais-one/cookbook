@@ -4,10 +4,6 @@ let Model
 if (!Model && KNEXFILE) {
   const Knex = require('knex')
   const config = KNEXFILE[NODE_ENV]
-  // kludge for sqlite file connection - TOREMOVE
-  // if (config.client === 'sqlite3') {
-  //   config.connection.filename = './' + require('../appname') + config.connection.filename.substring(1)
-  // }
   Model = require('objection').Model
   const knexConnection = Knex(config)
   Model.knex(knexConnection)
@@ -56,3 +52,12 @@ if (!Model && KNEXFILE) {
 // https://dev.to/aspittel/objection--knex--painless-postgresql-in-your-node-app--6n6
 
 module.exports = Model
+
+
+// module.exports = function(config) {
+//   if (config) {
+
+//   } else {
+
+//   }
+// }
