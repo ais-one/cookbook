@@ -16,13 +16,14 @@ const { APPNAME } = config
 const { USE_HTTPS, httpsCerts } = config 
 const server = USE_HTTPS ? https.createServer(httpsCerts, app) : http.createServer(app)
 
+require('./common-app/express/services')(server, app, config)
+
 require('./common-app/express/preroute')(app, config) // use as early as possible
 // PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see common-app folder for saml)
-require('./common-app/express/services')(server, app, config) //require after routes setup
 
-require(`./${APPNAME}/router`)(app) // add route
+require(`./${APPNAME}/router`)(app) // route setup
 const { USE_GRAPQL } = config
-const apollo = USE_GRAPQL ? require(`./${APPNAME}/graphql`)(app, null) : null // add graphql here
+USE_GRAPQL ? require(`./${APPNAME}/graphql`)(app, server) : null // add graphql here
 
 require('./common-app/express/postroute')(app, express, config) //require after routes setup
 
@@ -37,7 +38,5 @@ require('./common-app/express/postroute')(app, express, config) //require after 
 //   return app(req, res)
 //   // return res.send("Hello from Firebase!")
 // })
-
-if (apollo) apollo.installSubscriptionHandlers(server) // if put before server.listen, will mess with WS API // apollo.graphqlPath, apollo.subscriptionsPath
 
 module.exports = { server }

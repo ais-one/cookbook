@@ -45,6 +45,7 @@ module.exports = function (app, server) {
       }
     })
     apollo.applyMiddleware({ app }) 
+    apollo.installSubscriptionHandlers(server)
     console.log('GraphQL init')
   }
   return apollo
