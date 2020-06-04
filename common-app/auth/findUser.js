@@ -1,4 +1,4 @@
-const mongo = require('../mongo')
+const mongo = require('../services/db/mongodb')
 const ObjectID = require('mongodb').ObjectID
 
 const Model = require('../database')

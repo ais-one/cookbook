@@ -2,8 +2,9 @@ const fs = require('fs')
 const path = require('path')
 const express = require('express')
 
-const agenda = require('../../common-app/mq/agenda') // message queue
-const bull = require('../../common-app/mq/bull')
+const agenda = require('../../common-app/services/mq/agenda').get() // message queue
+const bull = require('../../common-app/services/mq/bull')
+const fcmSend = require('../../common-app/comms/fcm')
 
 // const path = require('path')
 // path.extname('index.html')
@@ -22,7 +23,7 @@ const bull = require('../../common-app/mq/bull')
 // }
 
 const { UPLOAD_PATH } = require('../config')
-const { gcpGetSignedUrl } = require('../../common-app/firebase')
+const { gcpGetSignedUrl } = require('../../common-app/gcp')
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
 
@@ -121,7 +122,7 @@ module.exports = express.Router()
     try {
       console.log('PN token received: ' + req.params.pnToken, req.query)
       if (req.query.reply === 'yes') {
-        const rv = await firebase.fcmSend(req.params.pnToken, 'FCM Message', 'Received from My Server ' + Date.now())
+        const rv = await fcmSend(req.params.pnToken, 'FCM Message', 'Received from My Server ' + Date.now())
         console.log('send rv', rv.status)
         res.status(200).json({ status: rv.status })  
       } else {

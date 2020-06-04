@@ -1,19 +1,31 @@
-const { get } = require('./services/db/objection')
-const Model = get()
-module.exports = Model
+let Model
 
-// const { NODE_ENV, KNEXFILE } = require('./config')
-// let Model
+exports.open = (config) => {
+  const { NODE_ENV, KNEXFILE } = config
+  if (!Model && KNEXFILE) {
+    try {
+      const Knex = require('knex')
+      const config = KNEXFILE[NODE_ENV]
+      Model = require('objection').Model
+      const knexConnection = Knex(config)
+      Model.knex(knexConnection)
+      console.log('db open ok')
+    } catch (e) {
+      console.log('db open err', e.toString())
+    }
+  }
+  return this
+}
 
-// if (!Model && KNEXFILE) {
-//   const Knex = require('knex')
-//   const config = KNEXFILE[NODE_ENV]
-//   Model = require('objection').Model
-//   const knexConnection = Knex(config)
-//   Model.knex(knexConnection)
-// }
+exports.close = async () => {
+  const knex = Model.knex()
+  if (knex) await knex.destroy()
+  console.log('db closed')
+}
 
-// module.exports = Model
+exports.get = () => Model
+
+exports.Model = Model
 
 // Model.knex().destroy(() => {}) // returns a promise
 

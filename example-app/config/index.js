@@ -64,8 +64,8 @@ module.exports = {
   // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
   // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}
   // MONGO_URL=mongodb://127.0.0.1:27017/mm?replicaSet=rs0
-  MONGO_DB: process.env.MONGO_DB || '', // 'testdb',
-  MONGO_URL: process.env.MONGO_URL || '', // 'mongodb://127.0.0.1:27017/testdb',
+  MONGO_DB: process.env.MONGO_DB || 'testdb',
+  MONGO_URL: process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/testdb',
 
   // {
   //   port: 6379,

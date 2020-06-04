@@ -11,15 +11,20 @@ const { foo } = require('esm')(module)('./common/datetime')
 console.log('Value from ES Module file...', foo)
 
 const config = require('./common-app/config') //  first thing to include
-require('./common-app/express-preroute')(app, config) // use as early as possible
-// PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see common-app folder for saml)
-
 const { APPNAME } = config
+
+const { USE_HTTPS, httpsCerts } = config 
+const server = USE_HTTPS ? https.createServer(httpsCerts, app) : http.createServer(app)
+
+require('./common-app/express/preroute')(app, config) // use as early as possible
+// PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see common-app folder for saml)
+require('./common-app/express/services')(server, app, config) //require after routes setup
+
 require(`./${APPNAME}/router`)(app) // add route
 const { USE_GRAPQL } = config
 const apollo = USE_GRAPQL ? require(`./${APPNAME}/graphql`)(app, null) : null // add graphql here
 
-require('./common-app/express-postroute')(app, express, config) //require after routes setup
+require('./common-app/express/postroute')(app, express, config) //require after routes setup
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -32,16 +37,7 @@ require('./common-app/express-postroute')(app, express, config) //require after 
 //   return app(req, res)
 //   // return res.send("Hello from Firebase!")
 // })
-const { USE_HTTPS, httpsCerts } = config 
-const server = USE_HTTPS ? https.createServer(httpsCerts, app) : http.createServer(app)
 
 if (apollo) apollo.installSubscriptionHandlers(server) // if put before server.listen, will mess with WS API // apollo.graphqlPath, apollo.subscriptionsPath
 
-// SETUP Services websockets, mongodb, knex
-const wss = require('./common-app/websocket').open(null, null, (err) => console.log(err || 'WS API OPEN OK')) // or set to null
-const agenda = require('./common-app/mq/agenda') // add message queue
-require('./common-app/mq/bull') // add message queue
-
-// CLEAN UP Services mongodb, knex
-require('./common-app/express-exit')({ server, wss, agenda }) // TBD tear-down db, etc
 module.exports = { server }

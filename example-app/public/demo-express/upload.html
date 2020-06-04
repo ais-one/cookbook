@@ -84,8 +84,6 @@
         body: JSON.stringify({ filename: 'test.txt', action: 'write' })
       })
       const rv = await res.json()
-      // const formData = new FormData()
-      // formData.append('gcp', files[0])
       const res2 = await fetch(rv.url, { 
         method: 'PUT',
         body: files[0], // formData,

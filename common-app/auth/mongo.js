@@ -1,4 +1,4 @@
-const mongo = require('../mongo')
+const mongo = require('../services/db/mongodb')
 const { JWT_REFRESH_STORE_NAME } = require('../config')
 
 // id field must be unique index (different from mongodb _id)

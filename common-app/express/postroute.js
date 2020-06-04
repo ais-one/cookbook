@@ -22,7 +22,7 @@ module.exports = function (app, express, config) {
       app.use(history()) // causes problems when using postman - set header accept application/json in postman
       // const appPath = path.join(__dirname, '..', APPNAME)
       // console.log(appPath)
-      const appParent = path.join(__dirname, '..')
+      const appParent = path.join(__dirname, '..', '..')
       WEB_STATIC.forEach(item => {
         app.use(item.url, express.static(appParent + '/' + item.folder))
       })

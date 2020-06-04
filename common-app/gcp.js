@@ -1,12 +1,11 @@
 'use strict'
 
 const {Storage} = require('@google-cloud/storage')
-const axios = require('axios')
 
-const { GCP_KEY, FCM_SERVER_KEY, GCP_DEFAULT_BUCKET = '', CORS_ORIGINS } = require('./config')
+const { GCP_KEY, GCP_DEFAULT_BUCKET = '', CORS_ORIGINS } = require('./config')
 let bucketName = GCP_DEFAULT_BUCKET
-
 let storage
+
 if (!storage && GCP_KEY && GCP_KEY.project_id) {
   const { client_email, private_key } = GCP_KEY
   storage = new Storage({ credentials: {
@@ -14,24 +13,7 @@ if (!storage && GCP_KEY && GCP_KEY.project_id) {
   } })
 }
 
-const fcmSend = async (to, title, body) => { // send firebase push notification
-  try {
-    const rv = await axios.post('https://fcm.googleapis.com/fcm/send', {
-      to, data: { notification: { title, body } }
-    },{
-      headers: {
-        Authorization: 'key=' + FCM_SERVER_KEY,
-        'Content-Type': 'application/json'
-      }
-    })
-    return rv
-  } catch (e) {
-    console.error('Firebase Messaging Error', e.toString())
-    return null
-  }
-}
-
-const gcpSetBucket = async (newBucketName) => bucketName = newBucketName || bucketName
+exports.gcpSetBucket = async (newBucketName) => bucketName = newBucketName || bucketName
 
 // Set CORs
 // [
@@ -58,7 +40,7 @@ const gcpSetBucket = async (newBucketName) => bucketName = newBucketName || buck
 //   res.status(200).json()
 // }
 
-const gcpGetSignedUrl = async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
+exports.gcpGetSignedUrl = async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
   // action "read" (HTTP: GET), "write" (HTTP: PUT), or "delete" (HTTP: DELETE),
   // const bucket = admin.storage().bucket(bucketName)
   const bucket = storage.bucket(bucketName)
@@ -80,8 +62,6 @@ const gcpGetSignedUrl = async (req,res) => { // test upload/get with cloud opjec
   // curl -X PUT -H 'Content-Type: application/octet-stream' --upload-file my-file 'http://www.test.com'
   res.status(200).json({ url })
 }
-
-module.exports = { fcmSend, gcpGetSignedUrl, gcpSetBucket }
 
 /*
 // https://stackoverflow.com/questions/20754279/creating-signed-urls-for-google-cloud-storage-using-nodejs

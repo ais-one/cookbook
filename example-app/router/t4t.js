@@ -3,9 +3,6 @@ const express = require('express')
 const Model = require('../../common-app/database')
 const knex = Model.knex()
 
-// const mongo = require('../../common-app/mongo')
-// const ObjectID = require('mongodb').ObjectID
-
 const csvParse = require('csv-parse')
 
 // const { authUser } = require('../middlewares/auth')
