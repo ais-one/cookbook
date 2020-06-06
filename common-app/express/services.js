@@ -38,10 +38,13 @@ module.exports = async function (server, app, config) {
         console.log(e)
       }
       process.exit(0)
-    })
+    })  
   }
 
-  process.on('SIGINT', handleExit)
-  process.on('SIGQUIT', handleExit)
-  process.on('SIGTERM', handleExit)
+  if (server) {
+    process.on('SIGINT', handleExit)
+    process.on('SIGQUIT', handleExit)
+    process.on('SIGTERM', handleExit)
+  }
+  return this
 }

@@ -24,10 +24,12 @@ exports.update = async (req, res) => {
     errCode = 500
   }
   // something went wrong with file upload
-  fs.unlink(req.file.path, function (e) {
-    if (e) console.log(e)
-    else console.log(req.file.path +' deleted!')
-  })
+  if (req.file) {
+    fs.unlink(req.file.path, e => {
+      if (e) console.log(e)
+      else console.log(req.file.path +' deleted!')
+    })  
+  }
   return res.status(errCode).json({ errMsg })
 }
 

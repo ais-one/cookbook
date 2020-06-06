@@ -1,5 +1,3 @@
-const history = require('connect-history-api-fallback')
-const proxy = require('http-proxy-middleware')
 const path = require('path')
 
 module.exports = function (app, express, config) {
@@ -10,6 +8,7 @@ module.exports = function (app, express, config) {
   } = config
   const hasWebStatic = WEB_STATIC && WEB_STATIC.length
   if (PROXY_WWW_ORIGIN && !hasWebStatic) {
+    const proxy = require('http-proxy-middleware')
     app.set('trust proxy', true) // true if behind proxy, false if direct connect... You now can get IP from req.ip, req.ips
     app.use('*', proxy({
       target: PROXY_WWW_ORIGIN,
@@ -19,6 +18,7 @@ module.exports = function (app, express, config) {
     }))
   } else {
     if (hasWebStatic) {
+      const history = require('connect-history-api-fallback')
       app.use(history()) // causes problems when using postman - set header accept application/json in postman
       // const appPath = path.join(__dirname, '..', APPNAME)
       // console.log(appPath)

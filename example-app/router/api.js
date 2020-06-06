@@ -77,13 +77,13 @@ module.exports = express.Router()
 
   /**
    * @swagger
-   * /api/health:
+   * /api/healthcheck:
    *    post:
    *      tags:
    *        - "Base"
    *      description: Health check
    */
-  .get('/health', (req, res) => { res.json({ message: 'OK' }) }) // health check
+  .get('/healthcheck', (req, res) => { res.json({ message: 'OK' }) }) // health check
   /**
    * @swagger
    * /api/health-auth:

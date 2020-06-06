@@ -207,6 +207,6 @@ module.exports = {
   },
 
   ENABLE_LOGGER: false,
-  USE_GRAPQL: true
+  USE_GRAPHQL: true
 }
 

@@ -1,7 +1,7 @@
-const Queue = require('bull')
 let queueMarketUpdates
 
 exports.open = (config) => {
+  const Queue = require('bull')
   const  { JOB_BULL } = config
   if (JOB_BULL) {
     if (!queueMarketUpdates) {

@@ -61,7 +61,7 @@ exports.open = function (server=null, app=null, config, cb) {
   } catch (e) {
     err = e.toString()
   }
-  if (cb) cb(err) // run the callback function, err = undefined means ok
+  if (cb) cb (err) // run the callback function, err = undefined means ok
   return this
 }
 

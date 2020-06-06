@@ -94,7 +94,7 @@ export default {
   methods: {
     async testHealth () {
       try {
-        const rv = await http.get('/api/health')
+        const rv = await http.get('/api/healthcheck')
         console.log(rv.data)
         this.testResult = JSON.stringify(rv.data)
       } catch (e) {

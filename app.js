@@ -22,8 +22,8 @@ require('./common-app/express/preroute')(app, config) // use as early as possibl
 // PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see common-app folder for saml)
 
 require(`./${APPNAME}/router`)(app) // route setup
-const { USE_GRAPQL } = config
-USE_GRAPQL ? require(`./${APPNAME}/graphql`)(app, server) : null // add graphql here
+const { USE_GRAPHQL } = config
+USE_GRAPHQL ? require(`./${APPNAME}/graphql`)(app, server) : null // add graphql here
 
 require('./common-app/express/postroute')(app, express, config) //require after routes setup
 

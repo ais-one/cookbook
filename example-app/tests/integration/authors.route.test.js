@@ -1,5 +1,14 @@
 const request = require('supertest')
-const app = require('../../../app')
+
+const config = require('../../config')
+const express = require('express')
+const app = express()
+// require('../../../common-app/express/services')(null, null, config)
+const objection = require('../../../common-app/services/db/objection').open(config)
+require('../../../common-app/express/preroute')(app, config)
+require(`../../router`)(app)
+
+// const app = require('../../../app')
 
 const endpointUrl = '/api/authors'
 
@@ -24,8 +33,10 @@ describe(endpointUrl, () => {
       Authorization: 'Bearer ' + token
     }
   })
-
-  it('GET ' + endpointUrl, async () => {
+  // afterAll(() => {
+  //   objection.close()
+  // })
+  it.only('GET ' + endpointUrl, async () => {
     const response = await request(app)
       .get(endpointUrl)
       .set(authObj)
@@ -101,7 +112,7 @@ describe(endpointUrl, () => {
   // TBD 500 error for delete
 })
 
-describe.only('Integration Test', () => {
+describe('Integration Test', () => {
   it('should pass', () => {
     expect(true).toBe(true)
   })

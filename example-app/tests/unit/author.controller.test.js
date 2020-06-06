@@ -1,3 +1,7 @@
+const config = require('../../../common-app/config')
+// require('../../../common-app/express/services')(null, null, config)
+const objection = require('../../../common-app/services/db/objection').open(config)
+
 const AuthorController = require('../../controllers/author')
 // const AuthorModel = require('../../models/Author')
 const httpMocks = require('node-mocks-http')
@@ -22,6 +26,9 @@ describe('AuthorController.create', () => {
   beforeEach(() => {
     req.body = newAuthor
   })
+  // afterAll(() => {
+  //   objection.close()
+  // })  
   it('should have AuthorController.create()', () => {
     expect(typeof AuthorController.create).toBe('function')
   })
