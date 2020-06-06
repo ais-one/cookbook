@@ -4,12 +4,12 @@
 
 const { ApolloServer, PubSub } = require('apollo-server-express')
 
-// const { PubSub } = require('apollo-server') // subscriptions
 let pubsub
 let apollo
 
-module.exports = function (app, server) {
-  if (!apollo) {
+module.exports = function (app, server, config) {
+  const { USE_GRAPHQL } = config
+  if (!apollo && USE_GRAPHQL) {
     const { typeDefs, resolvers } = require('./schema')
     pubsub = new PubSub()
     apollo = new ApolloServer({

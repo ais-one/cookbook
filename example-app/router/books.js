@@ -1,4 +1,6 @@
 const express = require('express')
+const { Parser } = require('json2csv')
+const parser = new Parser({})
 
 const { authUser } = require('../middlewares/auth')
 
@@ -78,7 +80,7 @@ module.exports = express.Router()
   })
   .get('/', authUser, async (req,res) => {
     try {
-      const limit = req.query.limit ? req.query.limit : 2
+      const limit = Number(req.query.limit)
       const page = req.query.page ? req.query.page : 0
       const name = req.query.name ? req.query.name : ''
       const categoryId = req.query.categoryId ? req.query.categoryId : ''
@@ -94,23 +96,25 @@ module.exports = express.Router()
           qb.orderBy(kv_a[0], kv_a[1])
         }
       }
-        // .orderBy
-        // .page(page, limit)
-        // .joinRelated('category') // NEED TO GET THIS TO WORK
-        // select("books.name, category.name")
-        // .joinRelated("[category]")
-        // .eager('category') // OK
-        // .select('books.*', 'category.name as categoryName')
-        // .join('categories', 'books.categoryId', 'categories.id')
-      const books = await qb.select(
+      // .orderBy
+      // .page(page, limit)
+      // .joinRelated('category') // NEED TO GET THIS TO WORK
+      // select("books.name, category.name")
+      // .joinRelated("[category]")
+      // .eager('category') // OK
+      // .select('books.*', 'category.name as categoryName')
+      // .join('categories', 'books.categoryId', 'categories.id')
+      qb.select(
           'books.*',
           'category.name as categoryName',
           Book.relatedQuery('pages').count().as('pageCount'),
           Book.relatedQuery('authors').count().as('authorCount')
-          )
+        )
         // .orderBy('updated_at', 'desc')
         .joinRelated('category')
-        .page(page, limit)
+      if (limit) qb.page(page, limit) // Not CSV
+      let books = await qb.execute()
+      if (!limit) books = parser.parse(books) // CSV
       // console.log(books[0])
       return res.status(200).json(books)  
     } catch (e) { console.log(e) }

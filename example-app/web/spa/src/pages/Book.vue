@@ -72,7 +72,6 @@
 import { from } from 'rxjs'
 import { pluck, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators' // map
 import { http } from '@/axios'
-import { parse } from 'json2csv' // TBD this should be done on backend...
 import { downloadData } from '../../../../../common-web/util'
 
 export default {
@@ -158,10 +157,10 @@ export default {
         crud: {
           export: async ({ filters = {}, sorters = {} }) => {
             try {
-              let params = { page: 0, limit: 50 } // improvement, do not paginate, get all based on filters
+              let params = { page: 0, limit: 0 } // improvement, do not paginate, get all based on filters
               const { data } = await http.get('/api/books', { params })
-              if (data.results.length > 0) {
-                const csv = parse(data.results) // const opts = { fields: ['field1', 'field2', 'field3'] }
+              if (data.length > 0) {
+                const csv = data
                 downloadData(csv, 'job.csv', 'text/csv;charset=utf-8;')
               }
               return { status: 200, error: '' }

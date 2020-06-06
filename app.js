@@ -12,17 +12,15 @@ console.log('Value from ES Module file...', foo)
 
 const config = require('./common-app/config') //  first thing to include
 const { APPNAME } = config
-
 const { USE_HTTPS, httpsCerts } = config 
 const server = USE_HTTPS ? https.createServer(httpsCerts, app) : http.createServer(app)
 
 require('./common-app/express/services')(server, app, config)
-require('./common-app/express/preroute')(app, config) // use as early as possible
+require('./common-app/express/preroute')(app, config)
 // PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token (see common-app folder for saml)
-require(`./${APPNAME}/router`)(app) // route setup
-const { USE_GRAPHQL } = config
-USE_GRAPHQL ? require(`./${APPNAME}/graphql`)(app, server) : null // add graphql here
-require('./common-app/express/postroute')(app, express, config) //require after routes setup
+require(`./${APPNAME}/router`)(app)
+require(`./${APPNAME}/graphql`)(app, server, config)
+require('./common-app/express/postroute')(app, express, config)
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
