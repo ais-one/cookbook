@@ -22,12 +22,20 @@ baseDir=`pwd`
 
 # cleanup build directory
 rm -rf build
-mkdir -p build build/common-web build/$1
 
+# mkdir -p build build/common-webpack build/$1
 # copy the base
-cp -r common-app index.js package.json build
-for f in `ls -A "common-web" | grep -v "node_modules" | grep -v "dist"`; do
-  cp -r common-web/$f build/common-web
+# mv common-app/common-webpack .
+# mv common-webpack common-app
+# cp -r common-app index.js package.json build
+# for f in `ls -A "common-webpack" | grep -v "node_modules" | grep -v "dist"`; do
+#   cp -r common-webpack/$f build/common-webpack
+# done
+
+mkdir -p build build/common-app build/$1
+cp -r package.json build
+for f in `ls -A "common-app" | grep -v "common-web"`; do
+  cp -r common-app/$f build/common-app
 done
 
 echo "building  - backend ($2) to $baseDir/build/$1" # build the backend
@@ -38,7 +46,6 @@ for f in `ls -A | grep -v "node_modules" | grep -v "web" | grep -v ".git"`; do
 done
 cd $baseDir
 echo "done"
-
 
 cd $1
 OIFS=$IFS;

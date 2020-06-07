@@ -1,12 +1,12 @@
 ### Version 0.3.2
 - [chore] update packages & cleanup & work on improving documentation
+- make it CI/CD friendly (re-organized folders again...)
 - deployment
   - Small scale - all in one server - vm, pm2, SSH (express also serves the frontend)
   - Medium to large
     - Frontend deploy to GCP Storage / AWS S3 etc.
     - Backend as docker container, kubernetes, GKE
 - [Work-in-progress]
-  - make it CI/CD friendly (may need to re-organize again)
   - backend
     - generic table crud frontend
   - frontend

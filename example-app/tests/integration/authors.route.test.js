@@ -1,11 +1,11 @@
 const request = require('supertest')
-
+const path = require('path')
 const config = require('../../config')
 const express = require('express')
 const app = express()
-// require('../../../common-app/express/services')(null, null, config)
-const objection = require('../../../common-app/services/db/objection').open(config)
-require('../../../common-app/express/preroute')(app, config)
+
+require(path.join(process.cwd(), 'common-app') + '/express/preroute')(app, config)
+const objection = require(LIB_PATH + '/services/db/objection').open(config)
 require(`../../router`)(app)
 
 // const app = require('../../../app')
@@ -16,7 +16,7 @@ const newAuthor = require('../mock-data/new-author.json')
 
 let createdAuthorId
 let authObj = {}
-const { createToken } = require('../../../common-app/auth')
+const { createToken } = require(LIB_PATH + '/auth')
 
 /*
 let firstTodo

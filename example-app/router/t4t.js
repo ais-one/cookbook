@@ -1,6 +1,6 @@
 // table for tables
 const express = require('express')
-const Model = require('../../common-app/services/db/objection').get()
+const Model = require(LIB_PATH + '/services/db/objection').get()
 const knex = Model.knex()
 
 const csvParse = require('csv-parse')

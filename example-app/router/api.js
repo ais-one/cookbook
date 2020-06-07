@@ -2,9 +2,9 @@ const fs = require('fs')
 const path = require('path')
 const express = require('express')
 
-const agenda = require('../../common-app/services/mq/agenda').get() // message queue
-const bull = require('../../common-app/services/mq/bull')
-const fcmSend = require('../../common-app/comms/fcm')
+const agenda = require(LIB_PATH + '/services/mq/agenda').get() // message queue
+const bull = require(LIB_PATH + '/services/mq/bull')
+const fcmSend = require(LIB_PATH + '/comms/fcm')
 
 // const path = require('path')
 // path.extname('index.html')
@@ -23,7 +23,7 @@ const fcmSend = require('../../common-app/comms/fcm')
 // }
 
 const { UPLOAD_PATH } = require('../config')
-const { gcpGetSignedUrl } = require('../../common-app/services/gcp')
+const { gcpGetSignedUrl } = require(LIB_PATH + '/services/gcp')
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
 

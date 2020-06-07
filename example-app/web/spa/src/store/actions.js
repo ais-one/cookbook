@@ -90,7 +90,7 @@ export default {
       }
     }
     if (payload.forced) commit('setError', { message: 'Session Expired' })
-    router.push('/')
+    if (router.app.$route.path !== '/') router.push('/')
     commit('setUser', null)
     commit('setLayout', 'layout-default')
     commit('setLoading', false)

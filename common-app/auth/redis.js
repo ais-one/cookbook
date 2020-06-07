@@ -1,4 +1,4 @@
-const redis = require('../redis')
+const redis = require('../services/redis')
 
 // set LRU and Expiry
 

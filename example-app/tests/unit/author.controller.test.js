@@ -1,6 +1,8 @@
-const config = require('../../../common-app/config')
-// require('../../../common-app/express/services')(null, null, config)
-const objection = require('../../../common-app/services/db/objection').open(config)
+const path = require('path')
+global.LIB_PATH = path.join(process.cwd(), 'common-app')
+
+const config = require(LIB_PATH + '/config')
+const objection = require(LIB_PATH + '/services/db/objection').open(config)
 
 const AuthorController = require('../../controllers/author')
 // const AuthorModel = require('../../models/Author')

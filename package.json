@@ -3,14 +3,14 @@
   "description": "Generic Application Template",
   "config": {
     "env": "development",
-    "app": "viow"
+    "app": "example-app"
   },
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd web/spa && npm i",
     "install-db": "cd %npm_package_config_app% && npm run install-db",
     "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=%npm_package_config_env% npm run serve",
     "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
-    "dev": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% nodemon index.js",
+    "dev": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% nodemon common-app/index.js",
     "test": "cross-env NODE_ENV=%npm_package_config_env% APPNAME=%npm_package_config_app% jest --config=common-app/jest.config.js --watchAll",
     "build": "build.sh %npm_package_config_app% %npm_package_config_env%",
     "deploy": "deploy.sh %npm_package_config_app% %npm_package_config_env%",
@@ -19,7 +19,7 @@
   "engines": {
     "node": "12"
   },
-  "main": "common-web/dist/VueCrudX.js",
+  "main": "dist/VueCrudX.js",
   "dependencies": {
     "@google-cloud/storage": "^5.0.1",
     "agenda": "^3.0.0",

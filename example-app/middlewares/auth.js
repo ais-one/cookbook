@@ -1,4 +1,4 @@
-const { authUser } = require('../../common-app/auth')
+const { authUser } = require(LIB_PATH + '/auth')
 
 const authIsAdmin = async (req, res, next) => {
   if (req.decoded.groups === 'admin') {

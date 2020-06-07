@@ -1,16 +1,21 @@
 const otplib = require('otplib')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { JWT_ALG, JWT_SECRET, jwtCerts, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv' } = require('../config')
-const { AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELD_GROUPS_FOR_JWT } = require('../config')
-
 // const uuid = require('uuid/v4')
 // const qrcode = require('qrcode')
+const { JWT_ALG, JWT_SECRET, jwtCerts, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv' } = require('../config')
+const { AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELD_GROUPS_FOR_JWT } = require('../config')
+const { AUTH_USER_STORE, AUTH_USER_STORE_NAME } = require('../config')
+
+
+const mongo = require('../services/db/mongodb')
+const ObjectID = require('mongodb').ObjectID
+const Model = require('../services/db/objection').get()
+const knex = Model ? Model.knex() : null
 
 // TBD getToken - check for revoked token? such token should not be available in Key-Value storage already
 
 const { setToken, getToken, revokeToken } = require('./' + JWT_REFRESH_STORE)
-const findUser = require('./findUser')
 
 // algorithm
 // expiresIn
@@ -18,6 +23,17 @@ const findUser = require('./findUser')
 // subject  = 'some@user.com'
 // audience  = 'http://mysoftcorp.in'
 // ip
+
+const findUser = async (where) => {
+  if (AUTH_USER_STORE === 'mongo') {
+    if (where.id) where = { _id: new ObjectID(where.id) }
+    return await mongo.db.collection(AUTH_USER_STORE_NAME).findOne(where)
+  } else if (AUTH_USER_STORE === 'objection') {
+    return await knex(AUTH_USER_STORE_NAME).where(where).first()
+  }
+  return null
+}
+
 
 // Create a token from a payload
 const createToken = async (payload, options) => {
@@ -126,7 +142,7 @@ const login = async (req, res) => {
     })
     const password = req.body[AUTH_USER_FIELD_PASSWORD]
 
-    if (!user) return res.status(401).json({ message: 'Incorrect credentials' })
+    if (!user) return res.status(401).json({ message: 'Incorrect credentials...' })
     if (!bcrypt.compareSync(password, user[AUTH_USER_FIELD_PASSWORD])) return res.status(401).json({ message: 'Incorrect credentials' })
     if (user.revoked) return res.status(401).json({ message: 'Authorization Revoked' })
     let verified = true
@@ -174,7 +190,7 @@ const otp = async (req, res) => { // need to be authentication, body { pin: '123
 }
 
 
-module.exports = { createToken, revokeToken, authUser, logout, refresh, login, otp } // getToken, setToken,
+module.exports = { findUser, createToken, revokeToken, authUser, logout, refresh, login, otp } // getToken, setToken,
 
 /*
 const crypto = require('crypto')

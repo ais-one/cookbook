@@ -69,6 +69,8 @@ process.on('uncaughtException', err => {
   // process.exit(1) // force it to crash anyway
 })
 
+require('../global')
+
 module.exports = function(app, config) {
   const { ENABLE_LOGGER = false } = config
 

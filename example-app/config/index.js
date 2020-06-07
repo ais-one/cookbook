@@ -37,13 +37,13 @@ module.exports = {
   JWT_SECRET: process.env.JWT_SECRET || '123456789', // HS256
   JWT_EXPIRY: process.env.JWT_EXPIRY || 5, // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism, numeric is seconds
   JWT_REFRESH_EXPIRY: process.env.JWT_REFRESH_EXPIRY || 3600, // do not allow refresh handling after X seconds
-  JWT_REFRESH_STORE: process.env.JWT_REFRESH_STORE || 'keyv', // mongo, database, redis, keyv (default)
+  JWT_REFRESH_STORE: process.env.JWT_REFRESH_STORE || 'keyv', // mongo, objection, redis, keyv (default)
   JWT_REFRESH_STORE_NAME: process.env.JWT_REFRESH_STORE_NAME || 'user_session', // collection or table name
 
   // AUTH
-  AUTH_USER_STORE: process.env.AUTH_USER_STORE || 'database', // mongo, database 
+  AUTH_USER_STORE: process.env.AUTH_USER_STORE || 'objection', // mongo, objection
   AUTH_USER_STORE_NAME: process.env.AUTH_USER_STORE_NAME || 'users',
-  AUTH_USER_FIELD_ID_FOR_JWT: process.env.AUTH_USER_FIELD_ID_FOR_JWT || 'id', // mongo = _id, database = id // can be NTID from SAML
+  AUTH_USER_FIELD_ID_FOR_JWT: process.env.AUTH_USER_FIELD_ID_FOR_JWT || 'id', // mongo = _id, objection = id // can be NTID from SAML
   AUTH_USER_FIELD_GROUPS_FOR_JWT: process.env.AUTH_USER_FIELD_GROUPS_FOR_JWT || 'groups', // can be AD Groups from SAML
   AUTH_USER_FIELD_LOGIN: process.env.AUTH_USER_FIELD_LOGIN || 'email', 
   AUTH_USER_FIELD_PASSWORD: process.env.AUTH_USER_FIELD_PASSWORD || 'password', 
