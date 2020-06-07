@@ -25,7 +25,7 @@ rm -rf build
 mkdir -p build build/common-web build/$1
 
 # copy the base
-cp -r common common-app app.js appname.js index.js package.json build
+cp -r common-app index.js package.json build
 for f in `ls -A "common-web" | grep -v "node_modules" | grep -v "dist"`; do
   cp -r common-web/$f build/common-web
 done

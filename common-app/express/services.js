@@ -6,7 +6,7 @@
 // node signal events: https://nodejs.org/dist/latest-v11.x/docs/api/process.html#process_signal_events
 // kubernetes shutdown: https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-terminating-with-grace
 
-const { sleep } = require('esm')(module)('../../common/sleep')
+const { sleep } = require('esm')(module)('../../common-app/esm/sleep')
 
 module.exports = async function (server, app, config) {
   // process.stdin.resume()

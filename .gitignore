@@ -9,7 +9,6 @@ dist
 build
 .nuxt
 coverage
-**/.firebaserc
 
 package-lock.json
 *.tgz

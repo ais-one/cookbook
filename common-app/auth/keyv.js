@@ -1,4 +1,4 @@
-const keyv = require('../keyv')
+const keyv = require('../services/keyv')
 
 // set LRU and Expiry
 

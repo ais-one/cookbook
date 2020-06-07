@@ -1,6 +1,6 @@
 let config
 if (!config) {
-  const APPNAME = require('../appname')
+  const APPNAME = require('./appname')
   const fs = require('fs')
   const path = require('path')
   const dotenv = require('dotenv')

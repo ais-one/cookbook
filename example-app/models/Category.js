@@ -1,5 +1,5 @@
 'use strict'
-const Model = require('../../common-app/database')
+const Model = require('../../common-app/services/db/objection').get()
 
 // export default
 class Category extends Model {

@@ -6,7 +6,7 @@
 // const keyv = new Keyv({ store: keyvRedis })
 
 const Keyv = require('keyv')
-const  { KEYV_CACHE } = require('./config')
+const  { KEYV_CACHE } = require('../config')
 let keyv
 
 if (!keyv) {

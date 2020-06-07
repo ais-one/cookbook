@@ -2,7 +2,7 @@
 
 const {Storage} = require('@google-cloud/storage')
 
-const { GCP_KEY, GCP_DEFAULT_BUCKET = '', CORS_ORIGINS } = require('./config')
+const { GCP_KEY, GCP_DEFAULT_BUCKET = '', CORS_ORIGINS } = require('../config')
 let bucketName = GCP_DEFAULT_BUCKET
 let storage
 

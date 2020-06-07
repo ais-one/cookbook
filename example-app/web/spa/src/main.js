@@ -17,7 +17,7 @@ import { apolloClient } from './graphql'
 import VueApollo from 'vue-apollo'
 import { DO_HELLO } from './queries'
 
-import { dateISO } from '../../../../common/datetime.js' // test JS used in both front end backend
+import { dateISO } from '../../../../common-app/esm/datetime.js' // test JS used in both front end backend
 console.log('dateISO', dateISO(new Date()))
 
 Vue.use(VueApollo)

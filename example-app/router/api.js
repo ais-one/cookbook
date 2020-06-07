@@ -23,7 +23,7 @@ const fcmSend = require('../../common-app/comms/fcm')
 // }
 
 const { UPLOAD_PATH } = require('../config')
-const { gcpGetSignedUrl } = require('../../common-app/gcp')
+const { gcpGetSignedUrl } = require('../../common-app/services/gcp')
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
 

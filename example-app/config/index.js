@@ -153,8 +153,7 @@ module.exports = {
     // { folder: 'example-app/web/spa/dist', url: '/' },
     { folder: 'example-app/public/demo-express', url: '/' },
     { folder: 'example-app/public/demo-nobundler', url: '/demo-nobundler' },
-    { folder: 'common-web', url: '/js' },
-    { folder: 'common', url: '/js2' }
+    { folder: 'common-app/esm', url: '/js' }
   ],
   UPLOAD_URL: '/uploads', // for server uploads
   UPLOAD_FOLDER: 'uploads', // folder is relative to vue-crud-x/[app]

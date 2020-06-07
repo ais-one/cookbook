@@ -219,8 +219,15 @@ The project structure is shown below
 
 ```
 vue-crud-x
-+- common/ : common components for frontend and backend
-+- common-app/ : common components for backend
++- common-app/ : common components
+|  +- auth/ : for express authentication
+|  +- comms/ : messging
+|  +- esm/ : JS that can be used by both front and backend
+|  +- express/ : express related
+|  +- services/ : nodejs libs
+|  +- app.js
+|  +- appname.js
+|  +- config.js
 +- common-web/ : common components for frontend (including vue-crud-x)
 |  +- dist/ : distribution folder for CRUD component
 +- docs/ : documentation
@@ -262,8 +269,6 @@ vue-crud-x
 +- logs/
 +- .dockerignore
 +- .eslintrc.json
-+- app.js
-+- appname.js
 +- build.sh [work in progress]
 +- index.js
 +- jest.config.js
