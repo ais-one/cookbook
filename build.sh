@@ -20,32 +20,25 @@ fi
 
 baseDir=`pwd`
 
-# cleanup build directory
-rm -rf build
+## V2 Not Needed
 
-# mkdir -p build build/common-webpack build/$1
-# copy the base
-# mv common-app/common-webpack .
-# mv common-webpack common-app
-# cp -r common-app index.js package.json build
-# for f in `ls -A "common-webpack" | grep -v "node_modules" | grep -v "dist"`; do
-#   cp -r common-webpack/$f build/common-webpack
+# cleanup build directory
+# rm -rf build
+
+# mkdir -p build build/common-app build/$1
+# cp -r package.json build
+# for f in `ls -A "common-app" | grep -v "common-web"`; do
+#   cp -r common-app/$f build/common-app
 # done
 
-mkdir -p build build/common-app build/$1
-cp -r package.json build
-for f in `ls -A "common-app" | grep -v "common-web"`; do
-  cp -r common-app/$f build/common-app
-done
-
-echo "building  - backend ($2) to $baseDir/build/$1" # build the backend
-cd $1
-# copy to build folder
-for f in `ls -A | grep -v "node_modules" | grep -v "web" | grep -v ".git"`; do
-  cp -r $f $baseDir/build/$1
-done
-cd $baseDir
-echo "done"
+# echo "building  - backend ($2) to $baseDir/build/$1" # build the backend
+# cd $1
+# # copy to build folder
+# for f in `ls -A | grep -v "node_modules" | grep -v "web" | grep -v ".git"`; do
+#   cp -r $f $baseDir/build/$1
+# done
+# cd $baseDir
+# echo "done"
 
 cd $1
 OIFS=$IFS;
@@ -69,9 +62,9 @@ done < config/$2.web.csv
 IFS=$OIFS
 cd $baseDir
 
-mv $baseDir/build/$1/ecosystem.config.js $baseDir/build # move the ecosystem.config.js file - for PM2
-
-mv $baseDir/build/$1/Dockerfile $baseDir/build # move the Dockerfile - K8s
+## V2 Not Needed
+# mv $baseDir/build/$1/ecosystem.config.js $baseDir/build # move the ecosystem.config.js file - for PM2
+# mv $baseDir/build/$1/Dockerfile $baseDir/build # move the Dockerfile - K8s
 
 # node modules to be deployed on server
 
