@@ -221,7 +221,7 @@ The project structure is shown below
 vue-crud-x
 +- common-app/ : common components
 |  +- auth/ : for express authentication
-|  +- common-webpack/ : common components for frontend (including vue-crud-x)
+|  +- webpacked/ : common components for frontend (including vue-crud-x)
 |  |  +- dist/ : distribution folder for CRUD component
 |  +- comms/ : messging
 |  +- esm/ : JS that can be used by both front and backend

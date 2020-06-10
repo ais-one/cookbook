@@ -101,7 +101,7 @@ do
       # ssh -i $PEM $URL "tar -zxvf deploy-app.tgz -C ~/app;rm deploy-app.tgz"
       # cd ..
       ## V2
-      tar -zcvf deploy-app.tgz --exclude=common-app/common-webpack/node_modules --exclude=node_modules --exclude=$1/node_modules --exclude=$1/web common-app/ --exclude=$1/.git $1/ package.json
+      tar -zcvf deploy-app.tgz --exclude=common-app/webpacked/node_modules --exclude=node_modules --exclude=$1/node_modules --exclude=$1/web common-app/ --exclude=$1/.git $1/ package.json
       scp -i $PEM deploy-app.tgz $URL:~ && rm deploy-app.tgz
       ssh -i $PEM $URL "tar -zxvf deploy-app.tgz -C ~/app;rm deploy-app.tgz"
       ;;

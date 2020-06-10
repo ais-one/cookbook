@@ -8,10 +8,10 @@ import router from './router'
 import App from './App'
 
 import vuetify from './plugins/vuetify'
-import VueCrudX from '../../../../common-app/common-webpack/VueCrudX' // Vuetify
-import TimePicker from '../../../../common-app/common-webpack/TimePicker.vue'
-import DatePicker from '../../../../common-app/common-webpack/DatePicker.vue'
-import FileUpload from '../../../../common-app/common-webpack/FileUpload.vue'
+import VueCrudX from '../../../../common-app/webpacked/VueCrudX' // Vuetify
+import TimePicker from '../../../../common-app/webpacked/TimePicker.vue'
+import DatePicker from '../../../../common-app/webpacked/DatePicker.vue'
+import FileUpload from '../../../../common-app/webpacked/FileUpload.vue'
 
 import { apolloClient } from './graphql'
 import VueApollo from 'vue-apollo'
