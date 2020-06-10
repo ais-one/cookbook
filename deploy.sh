@@ -42,7 +42,7 @@ fi
 PS3="Please enter your choice: "
 options=(
   "ssh"
-  "deploy-api" "deploy-fe"
+  "build-fe" "deploy-api" "deploy-fe"
   "list" "start" "stop"
   "install"
   "clear-cloud-flare-cache"
@@ -53,6 +53,29 @@ do
   case $opt in
     "ssh")
       ssh -i $PEM $URL -L 27000:127.0.0.1:27017 # allow connection to mongodb via port 27000
+      ;;
+    "build-fe")
+      cd $1
+      OIFS=$IFS;
+      while IFS=, read -r site gs; do
+        webBaseDir=`pwd`
+        cd $site
+        echo "building - site $site ($2)"
+        read -p "install packages (y/n)?" yn < /dev/tty
+        if [[ $yn == "Y" || $yn == "y" ]]; then
+          npm i
+        fi
+        read -p "build (y/n)?" yn < /dev/tty
+        if [[ $yn == "Y" || $yn == "y" ]]; then
+          npm run build-$2
+        fi
+        cd $webBaseDir
+        # mkdir -p $baseDir/build/$1/$site/dist
+        # cp -r $site/dist $baseDir/build/$1/$site
+        echo "Site built"
+      done < config/$2.web.csv
+      IFS=$OIFS
+      cd $baseDir
       ;;
     "deploy-fe")
       echo "gsutil.cmd in windows git bash"
@@ -120,3 +143,10 @@ done
 
 echo "Done... press enter to exit"
 read # pause exit in windows
+
+# for f in `ls -A "common-app" | grep -v "common-web"`; do
+#   cp -r common-app/$f build/common-app
+# done
+# for f in `ls -A | grep -v "node_modules" | grep -v "web" | grep -v ".git"`; do
+#   cp -r $f $baseDir/build/$1
+# done

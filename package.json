@@ -12,7 +12,6 @@
     "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
     "dev": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% nodemon common-app/index.js",
     "test": "cross-env NODE_ENV=%npm_package_config_env% APPNAME=%npm_package_config_app% jest --config=common-app/jest.config.js --watchAll",
-    "build": "build.sh %npm_package_config_app% %npm_package_config_env%",
     "deploy": "deploy.sh %npm_package_config_app% %npm_package_config_env%",
     "lint": "eslint ."
   },
