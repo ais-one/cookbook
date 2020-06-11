@@ -10,6 +10,7 @@
 // import { http } from '@/axios'
 import { apolloClient } from '@/graphql'
 import { GET_CATEGORIES, GET_CATEGORY, PATCH_CATEGORY, CATEGORY_UPDATED, POST_CATEGORY } from '@/queries'
+import { PAGESIZE, PAGESIZE_OPTS } from '@/config'
 
 export default {
   apollo: {
@@ -41,6 +42,8 @@ export default {
     return {
       parentId: null,
       categoryDefs: {
+        pageSize: PAGESIZE,
+        pageSizeOptions: PAGESIZE_OPTS,
         title: 'Category',
         vtable: {
           headers: [
