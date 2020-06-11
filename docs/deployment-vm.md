@@ -92,9 +92,6 @@ ps ax | grep 'node index.js' | grep -v grep | awk '{print $1}' | xargs kill
 See example-app/ecosystem.config.js
 
 
-
-
-
 # Startup on VM using SystemD
 
 https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-1/
@@ -183,9 +180,7 @@ curl -G "https://sms.era.sg/tg_out.php?user=aaronjxz" --data-urlencode "msg=$HI 
 
 https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-2
 
-
 ```bash
-
 cat << 'EOF' > /lib/systemd/system/hello_env@.service
 [Unit]
 Description=hello_env.js - making your environment variables rad
@@ -223,10 +218,12 @@ exit 0
 
 ## nginx
 
-$ sudo apt-get update
-$ sudo apt-get -y install nginx-full
-$ sudo rm -fv /etc/nginx/sites-enabled/default
-$ sudo nano /etc/nginx/sites-enabled/hello_env.conf
+```bash
+sudo apt-get update
+sudo apt-get -y install nginx-full
+sudo rm -fv /etc/nginx/sites-enabled/default
+
+cat << 'EOF' > /etc/nginx/sites-enabled/hello_env.conf
 upstream hello_env {
     server 127.0.0.1:3001;
     server 127.0.0.1:3002;
@@ -243,5 +240,67 @@ server {
         proxy_set_header Host $host;
     }
 }
+EOF
 
 sudo systemctl restart nginx
+```
+
+## Fail2ban
+
+https://www.techrepublic.com/article/how-to-install-fail2ban-on-ubuntu-server-18-04/
+
+```bash
+sudo apt-get install -y fail2ban
+sudo systemctl start fail2ban
+sudo systemctl enable fail2ban
+
+cat << 'EOF' > /etc/fail2ban/jail.local
+[sshd]
+enabled = true
+port = 22
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+EOF
+
+sudo systemctl restart fail2ban
+
+sudo fail2ban-client set sshd unbanip IP_ADDRESS
+```
+
+
+## Installation - NodeJS and MongoDB
+
+```bash
+#!/bin/bash
+
+# Install NodeJS 12.x
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install -y nodejs
+# sudo apt-get install -y build-essential
+
+# Allow lower ports
+sudo apt-get install -y authbind
+sudo touch /etc/authbind/byport/80
+sudo chown ubuntu /etc/authbind/byport/80
+sudo chmod 755 /etc/authbind/byport/80
+sudo touch /etc/authbind/byport/443
+sudo chown ubuntu /etc/authbind/byport/443
+sudo chmod 755 /etc/authbind/byport/443
+
+
+# Install MongoDB 4.2
+wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+sudo systemctl start mongod
+sudo systemctl enable mongod
+
+# Removing MongoDB
+# sudo service mongod stop
+# sudo apt-get purge mongodb-org*
+# sudo rm -r /var/log/mongodb
+# sudo rm -r /var/lib/mongodb
+# TBD Setup RS if necessary
+```
