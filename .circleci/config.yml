@@ -4,6 +4,11 @@ executors:
     docker:
       - image: circleci/node:latest
     working_directory: ~/repo
+  docker-publisher:
+    environment:
+      IMAGE_NAME: ais-one/cinema
+    docker:
+      - image: circleci/buildpack-deps:stretch
 aliases:
   - &show-current-branch-name
     run:
@@ -42,15 +47,6 @@ aliases:
         echo "Build successful"
 orbs:
   telegram: uniqueck/telegram-orb@0.0.1
-
-# AWS Orb - https://circleci.com/orbs/registry/orb/circleci/aws-cli
-# Azure Orb - https://circleci.com/orbs/registry/orb/circleci/azure-cli
-
-# GCP Orb - https://circleci.com/orbs/registry/orb/circleci/gcp-cli
-#  - gcp-cli: circleci/gcp-cli@1.0.0
-#     - gcp-cli/install_and_initialize_cli:
-#         context: myContext
-#         executor: gcp-cli/default
 
 # orbs:
 #   node: circleci/node@1.1.6
@@ -107,6 +103,25 @@ jobs:
       - run:
           name: Run unit test
           command: npm run test
+
+  publish-to-docker-hub:
+    executor: docker-publisher
+    steps:
+      - checkout
+      - setup_remote_docker
+      - *restore-cache
+      - run: docker login -u "${DOCKER_HUB_USER}" -p "${DOCKER_HUB_PASSWORD}"
+      - run: docker build --build-arg REACT_APP_API_SECRET=${REACT_APP_API_SECRET} --build-arg REACT_APP_SENTRY_DSN=${REACT_APP_SENTRY_DSN} -t ${IMAGE_NAME}:latest .
+      - run:
+          name: Tag and push to docker hub
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:stable-${CIRCLE_BUILD_NUM} && docker push ${IMAGE_NAME}:stable-${CIRCLE_BUILD_NUM}
+            elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:staging-${CIRCLE_BUILD_NUM} && docker push ${IMAGE_NAME}:staging-${CIRCLE_BUILD_NUM}
+            else
+              docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:dev-${CIRCLE_BUILD_NUM} && docker push ${IMAGE_NAME}:dev-${CIRCLE_BUILD_NUM}
+            fi    
   deploy-to-aws-s3:
     executor: app-executor
     steps:
@@ -174,8 +189,19 @@ workflows:
                 - develop
                 - staging
                 - master
+      # - publish-to-docker-hub
+      #     requires:
+      #       - unit-test
+      #     filters:
+      #       branches:
+      #         only:
+      #           - develop
+      #           - staging
+      #           - master
+
       - deploy-to-aws-s3:
           requires:
+            # - publish-to-docker-hub
             - unit-test
           filters:
             branches:
@@ -192,3 +218,13 @@ workflows:
                 - develop
                 - staging
                 - master
+
+
+# AWS Orb - https://circleci.com/orbs/registry/orb/circleci/aws-cli
+# Azure Orb - https://circleci.com/orbs/registry/orb/circleci/azure-cli
+
+# GCP Orb - https://circleci.com/orbs/registry/orb/circleci/gcp-cli
+#  - gcp-cli: circleci/gcp-cli@1.0.0
+#     - gcp-cli/install_and_initialize_cli:
+#         context: myContext
+#         executor: gcp-cli/default
