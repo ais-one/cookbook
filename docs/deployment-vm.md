@@ -7,11 +7,13 @@
 - https://www.caffeinecoding.com/create-self-signed-certificate-https/
 
 ### in 1 line (works)
+
 ```
 openssl req -x509 -sha256 -newkey rsa:2048 -keyout privkey.pem -out fullchain.pem -days 3650 -nodes -subj "/C=SG/ST=Singapore/L=Singapore/O=My Group/OU=My Unit/CN=127.0.0.1"
 ```
 
 ### in 2 lines, why?
+
 ```
 openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365
 openssl rsa -in keytmp.pem -out key.pem
@@ -22,7 +24,7 @@ openssl rsa -in keytmp.pem -out key.pem
 https://certbot.eff.org/
 
 
-```
+```bash
 $ sudo apt-get update
 $ sudo apt-get install -y software-properties-common
 $ sudo add-apt-repository ppa:certbot/certbot
@@ -33,22 +35,32 @@ $ sudo apt-get install certbot
 
 https://certbot.eff.org/docs/using.html#renewing-certificates
 
+```bash
 sudo service apache2 stop
 -- sudo certbot certonly --standalone -d <subdomain>.example.com
 sudo certbot certonly --standalone --preferred-challenges http -d <domain>
 sudo service apache2 start
+```
 
 ### Test Renewal
+
+```bash
 sudo certbot renew --dry-run --pre-hook "sudo service apache2 stop" --post-hook "sudo service apache2 start"
+```
 
 ### Live Renewal in crontab
+
+```bash
 sudo certbot renew --pre-hook "sudo service apache2 stop" --post-hook "sudo service apache2 start"
+```
 
 ### so you can read renewed certs
+
+```bash
 sudo su
 chmod +rx /etc/letsencrypt/live
 chmod +rx /etc/letsencrypt/archive
-
+```
 
 ## Using port below 1024
 
@@ -60,13 +72,17 @@ https://www.digitalocean.com/community/tutorials/how-to-use-pm2-to-setup-a-node-
 
 http://pm2.keymetrics.io/docs/usage/specifics/#listening-on-port-80-w-o-root
 
+```bash
 sudo apt-get install authbind
 sudo touch /etc/authbind/byport/443
 sudo chown ubuntu /etc/authbind/byport/443
 sudo chmod 755 /etc/authbind/byport/443
+```
 
+```bash
 ~/.bashrc
 alias pm2='authbind --deep pm2'
+```
 
 source ~/.bashrc
 
@@ -120,14 +136,11 @@ WantedBy=multi-user.target
 EOF
 ```
 
+```bash
 sudo systemctl daemon-reload
-
-
-
 sudo systemctl start|stop|status|restart hello
-
 sudo systemctl enable|disable hello
-
+```
 
 ### Note
 
