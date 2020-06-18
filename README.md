@@ -410,3 +410,8 @@ in package.json, **config.app** property indicates the name of the app folder
 The configuration value is passed into **appname.js**
 
 The default is set to **example-app** you can change it to your own project name
+
+set **config.env** property for the environment
+
+ssh-keygen -t rsa
+openssl req -key id_rsa -new -x509 -days 365 -out id_rsa.cer

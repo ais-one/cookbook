@@ -2,8 +2,8 @@
   "name": "app",
   "description": "Generic Application Template",
   "config": {
-    "env": "development",
-    "app": "example-app"
+    "env": "uat",
+    "app": "viow"
   },
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd web/spa && npm i",
