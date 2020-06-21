@@ -83,6 +83,7 @@ do
       while IFS=, read -r site gs; do
         read -p "deploy gs $site (y/n)?" yn < /dev/tty
         if [[ $yn == "Y" || $yn == "y" ]]; then
+          # gcloud auth activate-service-account uat-viow@viow-270002.iam.gserviceaccount.com --key-file=$1/config/secret/$2.gcp.json
           gsutil.cmd -m rsync -R $1/$site/dist $gs
         fi
       done < $1/config/$2.web.csv
@@ -103,7 +104,7 @@ do
         --exclude=common-app/webpacked/node_modules \
         --exclude=node_modules \
         --exclude=$1/node_modules \
-        --exclude=$1/web
+        --exclude=$1/web \
         --exclude=$1/.git \
         common-app $1/ package.json
       scp -i $PEM deploy-app.tgz $URL:~ && rm deploy-app.tgz
