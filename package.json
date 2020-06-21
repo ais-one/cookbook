@@ -22,7 +22,7 @@
     "node": "12"
   },
   "dependencies": {
-    "@google-cloud/storage": "^5.1.0",
+    "@google-cloud/storage": "^5.1.1",
     "agenda": "^3.0.0",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
@@ -56,7 +56,7 @@
   "devDependencies": {
     "concurrently": "^5.2.0",
     "cross-env": "^7.0.2",
-    "eslint": "^7.2.0",
+    "eslint": "^7.3.0",
     "eslint-plugin-promise": "^4.2.1",
     "jest": "^26.0.1",
     "node-mocks-http": "^1.8.1",
