@@ -18,9 +18,11 @@ exports.open = (config) => {
 }
 
 exports.close = async () => {
-  const knex = Model.knex()
-  if (knex) await knex.destroy()
-  console.log('db closed')
+  if (Model) {
+    const knex = Model.knex()
+    if (knex) await knex.destroy()
+    console.log('db closed')
+  }
 }
 
 exports.get = () => Model

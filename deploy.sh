@@ -106,7 +106,7 @@ do
         --exclude=$1/node_modules \
         --exclude=$1/web \
         --exclude=$1/.git \
-        common-app $1/ package.json
+        common-app $1/ package.json setup.js
       scp -i $PEM deploy-app.tgz $URL:~ && rm deploy-app.tgz
       ssh -i $PEM $URL "tar -zxvf deploy-app.tgz -C ~/app;rm deploy-app.tgz"
       ;;

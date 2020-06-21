@@ -4,9 +4,9 @@ module.exports = {
     // production
     {
       name      : 'api',
-      script    : 'example-app/index.js',
-      output    : 'example-app/logs/api-out.log',
-      error     : 'example-app/logs/api-error.log',
+      script    : './example-app/index.js',
+      output    : './example-app/logs/api-out.log',
+      error     : './example-app/logs/api-error.log',
       log_type  : 'json',
       env_production : { NODE_ENV: 'production' }
     }
