@@ -3,7 +3,7 @@ const path = require('path')
 module.exports = function (app, express, config) {
   // app.set('case sensitive routing', true)
   const  {
-    PROXY_WWW_ORIGIN, WEB_STATIC,
+    PROXY_WWW_ORIGIN, WEB_STATIC, UPLOAD_STATIC,
     UPLOAD_URL, UPLOAD_PATH
   } = config
   const hasWebStatic = WEB_STATIC && WEB_STATIC.length
@@ -20,19 +20,22 @@ module.exports = function (app, express, config) {
     if (hasWebStatic) {
       const history = require('connect-history-api-fallback')
       app.use(history()) // causes problems when using postman - set header accept application/json in postman
-      // const appPath = path.join(__dirname, '..', APPNAME)
-      // console.log(appPath)
-      const appParent = path.join(__dirname, '..', '..')
+      // const appParent = path.join(__dirname, '..', '..') // TBD FIX THIS!!!
       WEB_STATIC.forEach(item => {
-        app.use(item.url, express.static(appParent + '/' + item.folder))
+        // app.use(item.url, express.static(appParent + '/' + item.folder))
+        app.use(item.url, express.static(item.folder))
       })
     }
     app.use("*", async (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
   }
-  // console.log('UPLOAD_PATH', UPLOAD_PATH)
   // Upload URL, Should use Signed URL and get from cloud storage instead
+  if (UPLOAD_STATIC && UPLOAD_STATIC.length) {
+    UPLOAD_STATIC.forEach(item => {
+      if (item.url && item.folder) app.use(item.url, express.static(item.folder))
+      else console.log('blank upload details')
+    })
+  }
   if (UPLOAD_URL) {
-    // console.log('UPLOAD: ', path.join(__dirname, '..', APPNAME, UPLOAD_FOLDER) )
     app.use(UPLOAD_URL, express.static( UPLOAD_PATH ))
   }
 

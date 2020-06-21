@@ -151,13 +151,23 @@ module.exports = {
   WEB_STATIC: [  // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
     // folder is relative to vue-crud-x
     // { folder: 'example-app/web/spa/dist', url: '/' },
-    { folder: 'example-app/public/demo-express', url: '/' },
-    { folder: 'example-app/public/demo-nobundler', url: '/demo-nobundler' },
-    { folder: 'common-app/esm', url: '/js' }
+    // { folder: 'example-app/public/demo-express', url: '/' },
+    // { folder: 'example-app/public/demo-nobundler', url: '/demo-nobundler' },
+    // { folder: 'common-app/esm', url: '/js' }
+
+    // { folder: APP_PATH + '/web/spa/dist', url: '/' },
+    { folder: APP_PATH + '/public/demo-express', url: '/' },
+    { folder: APP_PATH + '/public/demo-nobundler', url: '/demo-nobundler' },
+    { folder: LIB_PATH + '/esm', url: '/js' }
+  ],
+  UPLOAD_STATIC: [
+    { folder: '', url: '' }
   ],
   UPLOAD_URL: '/uploads', // for server uploads
-  UPLOAD_FOLDER: 'uploads', // folder is relative to vue-crud-x/[app]
-  UPLOAD_PATH: path.join(__dirname, '..', 'uploads'),
+  // UPLOAD_FOLDER: 'uploads', // folder is relative to vue-crud-x/[app]
+  // UPLOAD_PATH: path.join(__dirname, '..', 'uploads'),
+  UPLOAD_FOLDER: APP_PATH + '/uploads',
+  UPLOAD_PATH: APP_PATH + '/uploads',
 
   SWAGGER_DEFS: { // Swagger / OpenAPI definitions
     info: {

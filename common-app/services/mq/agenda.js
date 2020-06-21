@@ -2,7 +2,7 @@ let agenda
 
 exports.open = (config) => {
   if (!agenda) {
-    const { APPNAME, JOB_TYPES, JOB_DB, JOB_COLLECTION } = config
+    const { JOB_TYPES, JOB_DB, JOB_COLLECTION } = config
     const jobTypes = JOB_TYPES ? JOB_TYPES.split(',') : []
 
     if (jobTypes.length) {
@@ -21,7 +21,7 @@ exports.open = (config) => {
       agenda = new Agenda(connectionOpts)
       
       jobTypes.forEach(type => {
-        require(`../../${APPNAME}/jobs/` + type)(agenda)
+        require(APP_PATH + '/jobs/' + type)(agenda)
       })
       agenda.start() // Returns a promise, which should be handled appropriately
       console.log('agenda started - job count=' + jobTypes.length)

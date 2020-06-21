@@ -1,6 +1,3 @@
-const path = require('path')
-global.LIB_PATH = path.join(process.cwd(), 'common-app')
-
 const config = require(LIB_PATH + '/config')
 const objection = require(LIB_PATH + '/services/db/objection').open(config)
 

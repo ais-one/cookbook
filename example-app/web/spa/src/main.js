@@ -8,16 +8,18 @@ import router from './router'
 import App from './App'
 
 import vuetify from './plugins/vuetify'
-import VueCrudX from '../../../../common-app/webpacked/VueCrudX' // Vuetify
-import TimePicker from '../../../../common-app/webpacked/TimePicker.vue'
-import DatePicker from '../../../../common-app/webpacked/DatePicker.vue'
-import FileUpload from '../../../../common-app/webpacked/FileUpload.vue'
+
+import VueCrudX from 'ext-lib/webpacked/VueCrudX' // Vuetify
+import TimePicker from 'ext-lib/webpacked/TimePicker.vue'
+import DatePicker from 'ext-lib/webpacked/DatePicker.vue'
+import FileUpload from 'ext-lib/webpacked/FileUpload.vue'
+
 
 import { apolloClient } from './graphql'
 import VueApollo from 'vue-apollo'
 import { DO_HELLO } from './queries'
 
-import { dateISO } from '../../../../common-app/esm/datetime.js' // test JS used in both front end backend
+import { dateISO } from 'ext-lib/esm/datetime.js' // test JS used in both front end backend
 console.log('dateISO', dateISO(new Date()))
 
 Vue.use(VueApollo)

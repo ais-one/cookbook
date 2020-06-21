@@ -69,8 +69,6 @@ process.on('uncaughtException', err => {
   // process.exit(1) // force it to crash anyway
 })
 
-require('../global')
-
 module.exports = function(app, config) {
   const { ENABLE_LOGGER = false } = config
 
@@ -154,12 +152,12 @@ module.exports = function(app, config) {
   app.use(cookieParser('some_secret'))
 
   // ------ SWAGGER ------
-  const  { SWAGGER_DEFS, APPNAME } = config
+  const  { SWAGGER_DEFS } = config
   if (SWAGGER_DEFS) {
     const swaggerUi = require('swagger-ui-express')
     const swaggerJSDoc = require('swagger-jsdoc')
     // LOWER METHOD IS BETTER - app.use('/api-docs', express.static('docs'), swaggerUi.serve, swaggerUi.setup(require('yamljs').load('./docs/openapi.yaml'), { // for OpenAPI
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc({ swaggerDefinition: SWAGGER_DEFS, apis: [`./${APPNAME}/router/**/*.js`] }), { // for OpenAPI
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc({ swaggerDefinition: SWAGGER_DEFS, apis: [`${APP_PATH}/router/**/*.js`] }), { // for OpenAPI
       swaggerOptions: { docExpansion: 'none' },
       explorer: true
     }))  

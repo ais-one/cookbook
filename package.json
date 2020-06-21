@@ -1,24 +1,26 @@
 {
-  "name": "app",
-  "description": "Generic Application Template",
+  "name": "vue-crud-x",
+  "version": "0.3.2",
+  "description": "Library for JS Application",
+  "author": "",
+  "license": "ISC",
   "config": {
-    "env": "uat",
+    "env": "development",
     "app": "viow"
   },
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd web/spa && npm i",
     "install-db": "cd %npm_package_config_app% && npm run install-db",
     "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=%npm_package_config_env% npm run serve",
+    "dev": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% nodemon %npm_package_config_app%/index.js",
     "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
-    "dev": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% nodemon common-app/index.js",
-    "test": "cross-env NODE_ENV=%npm_package_config_env% APPNAME=%npm_package_config_app% jest --config=common-app/jest.config.js --watchAll",
+    "test": "cross-env NODE_ENV=%npm_package_config_env% APPNAME=%npm_package_config_app% jest --config=%npm_package_config_app%/jest.config.js --watchAll",
     "deploy": "deploy.sh %npm_package_config_app% %npm_package_config_env%",
     "lint": "eslint ."
   },
   "engines": {
     "node": "12"
   },
-  "main": "dist/VueCrudX.js",
   "dependencies": {
     "@google-cloud/storage": "^5.1.0",
     "agenda": "^3.0.0",

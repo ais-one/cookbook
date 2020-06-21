@@ -1,14 +1,14 @@
 const request = require('supertest')
 const path = require('path')
-const config = require('../../config')
 const express = require('express')
 const app = express()
 
-require(path.join(process.cwd(), 'common-app') + '/express/preroute')(app, config)
+// const config = require('../../config')
+
+const config = require(LIB_PATH + '/config')
+require(LIB_PATH + '/express/preroute')(app, config)
 const objection = require(LIB_PATH + '/services/db/objection').open(config)
 require(`../../router`)(app)
-
-// const app = require('../../../app')
 
 const endpointUrl = '/api/authors'
 

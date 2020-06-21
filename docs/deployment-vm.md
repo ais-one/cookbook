@@ -8,6 +8,23 @@
 
 ### in 1 line (works)
 
+### generate private and public keys
+
+Using ssh-keygen, various methods
+
+```bash
+ssh-keygen -t rsa
+ssh-keygen -t rsa -b 2048
+ssh-keygen -t dsa
+ssh-keygen -t ecdsa -b 521
+ssh-keygen -t ed25519
+ssh-keygen -f ~/tatu-key-ecdsa -t ecdsa -b 521
+```
+
+### generate public cert from private keys
+openssl req -key id_rsa -new -x509 -days 365 -out id_rsa.cer
+
+
 ```
 openssl req -x509 -sha256 -newkey rsa:2048 -keyout privkey.pem -out fullchain.pem -days 3650 -nodes -subj "/C=SG/ST=Singapore/L=Singapore/O=My Group/OU=My Unit/CN=127.0.0.1"
 ```

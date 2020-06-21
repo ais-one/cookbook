@@ -10,7 +10,7 @@ const { authUser } = require('../middlewares/auth')
 
 const multer = require('multer')
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) { cb(null, path.join(__dirname, '..', UPLOAD_FOLDER)) },
+  destination: function (req, file, cb) { cb(null, UPLOAD_FOLDER) },
   filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now()) }
 })
 const upload = multer({
