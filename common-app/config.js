@@ -6,7 +6,7 @@ if (!config) {
   dotenv.config()
   if (process.env.NODE_ENV) {
     try {
-      const envFile = path.join(APP_PATH, 'config', '.env.' + process.env.NODE_ENV)
+      const envFile = path.join(APP_PATH, 'config', 'secret', '.env.' + process.env.NODE_ENV)
       const envConfig = dotenv.parse(fs.readFileSync(envFile)) //  relative to index.js call
       for (var k in envConfig) process.env[k] = envConfig[k]
     } catch (e) {

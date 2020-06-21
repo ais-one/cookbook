@@ -4,7 +4,7 @@ const path = require('path')
 console.log('TEST_ENV =',process.env.TEST_ENV)
 const KNEXFILE = require('../knexfile')
 
-const GCP_KEY = require('./' + process.env.NODE_ENV + '.gcp.json') || ''
+const GCP_KEY = require('./secret/' + process.env.NODE_ENV + '.gcp.json') || ''
 
 const JWT_CERT = process.env.JWT_CERT || path.join(__dirname, 'certs/jwt') // RS256
 const HTTPS_CERT = process.env.HTTPS_CERT || ''

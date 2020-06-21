@@ -417,3 +417,11 @@ npm i git://github.com/ais-one/vue-crud-x.git#develop
 cp node_modules/vue-crud-x/deploy.sh .
 cp node_modules/vue-crud-x/setup.js .
 cp node_modules/vue-crud-x/package.json .
+cp node_modules/vue-crud-x/.eslintrc.json .
+cp node_modules/vue-crud-x/.gitignore .
+cp node_modules/vue-crud-x/.dockerignore .
+
+git clone -b develop https://github.com/ais-one/vue-crud-x.git
+mv vue-crud-x/common-app .
+rm -rf vue-crud-x
+

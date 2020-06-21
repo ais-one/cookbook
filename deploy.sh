@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# This is meant to be copied into the build folder...
-
 # $0. The name of script itself.
 # $$ Process id of current shell.
 # $* Values of all the arguments. ...
@@ -12,7 +10,7 @@
 # $1 relative path to project folder from vue-crud-x
 # $2 environment
 
-echo "IMPORTANT! Run this in the vue-crud-x/build folder"
+echo "IMPORTANT! Run this in the vue-crud-x folder"
 
 if [ ! $1 ] # eg. example-app
 then
@@ -32,12 +30,12 @@ fi
 # build and install frontend?
 baseDir=`pwd`
 
-PEM=
-URL=
-if [ $2 == "uat" ]; then
-  PEM=./$1/config/uat.pem
-  read URL < $1/config/uat.url # ubuntu@35.187.243.253
-fi
+# PEM=
+# URL=
+# if [ $2 == "uat" ]; then
+PEM=./$1/config/secret/$2.pem
+read URL < $1/config/secret/$2.url # ubuntu@35.187.243.253
+# fi
 
 PS3="Please enter your choice: "
 options=(
@@ -102,13 +100,12 @@ do
       # cd ..
       ## V2
       tar -zcvf deploy-app.tgz \
-        --exclude=vue-crud-x/common-app/webpacked/node_modules \
         --exclude=common-app/webpacked/node_modules \
         --exclude=node_modules \
         --exclude=$1/node_modules \
         --exclude=$1/web
         --exclude=$1/.git \
-        vue-crud-x common-app $1/ package.json
+        common-app $1/ package.json
       scp -i $PEM deploy-app.tgz $URL:~ && rm deploy-app.tgz
       ssh -i $PEM $URL "tar -zxvf deploy-app.tgz -C ~/app;rm deploy-app.tgz"
       ;;
