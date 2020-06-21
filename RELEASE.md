@@ -1,6 +1,6 @@
 ### Version 0.3.2
 - [chore] update packages & cleanup & work on improving documentation
-- make it CI/CD friendly (re-organized folders again...)
+- make it CI/CD friendly [re-organized folders again...]
 - deployment
   - Small scale - all in one server - vm, pm2, SSH (express also serves the frontend)
   - Medium to large

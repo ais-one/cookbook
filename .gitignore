@@ -1,8 +1,9 @@
 # npm
 node_modules
-
 #snowpack
 web_modules
+# files not to be committed
+secret
 
 .DS_Store
 dist
@@ -14,12 +15,7 @@ package-lock.json
 *.tgz
 dist
 dev.sqlite3
-.env.*
 .rnd
-
-*.gcp.json
-id_rsa
-sandbox
 
 # Log files
 npm-debug.log*
@@ -36,8 +32,5 @@ yarn-error.log*
 *.sln
 *.sw*
 
-# local env files - allow this in our opensource project
-# .env
-
-viow/
+# To remove
 udemy/
