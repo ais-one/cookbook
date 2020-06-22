@@ -4,11 +4,9 @@
 
 > Always Remember Rule #1 - Do Not Let Technical Debt Build Up
 
-1. Ever wondered why you keep rewriting almost the same code when you work on full-stack applications?
-
-2. Do you have trouble keeping the libraries in your different applications?
-
-3. How often and how long do you spend fixing things when there is a version change in a dependency?
+- Ever wondered why you keep rewriting almost the same code when you work on full-stack applications?
+- Do you have trouble keeping the libraries in your different applications?
+- How often and how long do you spend fixing things when there is a version change in a dependency?
 
 Well... what started as a CRUD component for VueJS has grown to a full-stack app development cookbook, and further expanded into a way of building and maintaining multiple full-stack applications of different use cases with as little waste as possible, aiming to address those 3 issues above as much as possible!
 
@@ -34,9 +32,8 @@ Latest Version [0.3.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.2)
 
 1. As little technical debt as possible
 2. Ease of maintenance and updates
-3. Scalable in terms of application use cases (from v0.3 onwards)
-4. Scalable in terms of traffic and load (in progress)
-5. Ease of build, test, deployment, CI/CD, etc. (in progress)
+3. Scalable in terms of application use cases & traffic load
+5. Ease of build, test, deployment, CI/CD, etc.
 
 ## CRUD Unique Selling Points
 
@@ -65,7 +62,7 @@ Other design considerations :
 - Automated unit & integration test
 
 
-# QUICK START
+# QUICK START - ON YOUR LOCAL MACHINE
 
 1. Clone the repository, setup and run, using the following commands
 
@@ -77,8 +74,6 @@ npm run install-db
 npm run dev:spa
 ```
 
-2. VueJS example SPA Application
-
 Navigate to http://127.0.0.1:8080 to view the VueCrudX demo and example SPA application in development
 
 Login using the following:
@@ -86,13 +81,11 @@ Login using the following:
 - Password: test
 - OTP (if enabled): if USE_OTP set to TEST, use 111111 as otp pin
 
-3. View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
+View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
 
-4. View website served by express at http://127.0.0.1:3000
+View website served by Express with functional samples and demos at http://127.0.0.1:3000
 
-The page contains functional samples and demos you can use to interact with the server
-
-5. Testing
+2. Testing
 
 to run unit & integration test on /api/authors route
 
@@ -102,7 +95,7 @@ TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test
 npm run test
 ```
 
-6. To serve the VueJS SPA production build
+3. To serve the VueJS SPA production build
 
 From vue-crud-x folder
 
@@ -117,16 +110,42 @@ Change the example-app/config/index.js file contents
   //...
   WEB_STATIC: [
     //...
-    { folder: 'example-app/web/spa/dist', url: '/' }, // uncomment this
-    // { folder: 'example-app/public', url: '/' }, // comment this
+    { folder: APP_PATH + '/web/spa/dist', url: '/' }, // uncomment this
+    // { folder: APP_PATH + '/public', url: '/' }, // comment this
     //...
   ]
   //...
 ```
 
-7. Build A New Application
+4. VueJS example Nuxt SSR/Static Application
 
-**Initial Creation**
+In vue-crud-x folder, run the **frontend** from one console...
+
+```
+cd example-app/web/ssr
+npm i
+npm run dev
+```
+
+**Note:** for static content see example-ssr/README.md on generating and serving static content
+
+In vue-crud-x folder, run the **backend** from another console... 
+
+```
+cd example-app
+npm run dev
+```
+
+5. PWA and vite
+
+Work In Progress
+
+
+---
+
+# BUILDING A NEW APPLICATION
+
+## Initial Creation - the master branch
 
 ```bash
 mkdir <my-project>
@@ -142,7 +161,7 @@ mv vue-crud-x/example-app .
 rm -rf vue-crud-x
 ```
 
-**Edit package .json**
+## Edit package .json
 
 ```json
 {
@@ -157,7 +176,8 @@ Set application name in **config.app** property (indicate folder of your applica
 
 Set environment using **config.env** property (development, uat, staging, production)
 
-**Configuration**
+
+## Configuration
 
 <my-project>/example-app/config/index.js contains all the config properties
 
@@ -166,7 +186,7 @@ If too many config variables, split it to other folders and files in the **examp
 You can override the configuraions using .env.[NODE_ENV] files, e.g. .env.development or .env.production in **example-app/config/secret**
 
 
-**Updating The Library - Use master branch**
+## Updating The Library - Use master branch
 
 ```
 cd <my-project>
@@ -176,54 +196,29 @@ mv vue-crud-x/common-app .
 rm -rf vue-crud-x
 ```
 
-
-
-8. VueJS example Nuxt SSR/Static Application
-
-Run the **frontend** from one console...
-
-From vue-crud-x folder
-
-```
-cd example-app/web/ssr
-npm i
-npm run dev
-```
-
-**Note:** for static content see example-ssr/README.md on generating and serving static content
-
-Run the **backend** from another console... 
-
-From vue-crud-x folder
-
-```
-cd example-app
-npm run dev
-```
-
-9. PWA and vite
-
-Work In Progress
-
-10. Building & Deployment for Production (WIP)
-
-From vue-crud-x folder
-
-```
-npm run build
-```
-
 ## Deployment
 
-Uses deploy.sh
+The following environments are supported:
+- development (local laptop)
+- uat (vm or cloud)
+- staging (vm or cloud)
+- production (vm or cloud)
 
+For deployment to server or cloud, deploy.sh is example on how to do the following:
+- build and deploy frontend SPA bundled code to GCP storage
+- deploy express app to VM using SSH
+  - transfer code to VM
+  - install dependencies
+  - startup and monitoring using PM2
+- deploy express app to docker [TBD]
+- deploy express app to GCP Group Instances [TBD]
+- deploy express app to GKE [TBD]
+
+The command to run is
+
+```
 npm run deploy
-
-node modules are not built
-
-Use ssh, scp to deploy to vm, start / stop, check PM2 (TBD)
-
-Use docker (TBD) -> User kubernetes (TBD)
+```
 
 ---
 
