@@ -6,7 +6,7 @@ executors:
     working_directory: ~/repo
   docker-publisher:
     environment:
-      IMAGE_NAME: ais-one/cinema
+      IMAGE_NAME: ais-one/vue-crud-x
     docker:
       - image: circleci/buildpack-deps:stretch
 aliases:

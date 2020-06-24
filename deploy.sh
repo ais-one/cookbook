@@ -83,8 +83,9 @@ do
       while IFS=, read -r site gs; do
         read -p "deploy gs $site (y/n)?" yn < /dev/tty
         if [[ $yn == "Y" || $yn == "y" ]]; then
-          # gcloud auth activate-service-account uat-viow@viow-270002.iam.gserviceaccount.com --key-file=$1/config/secret/$2.gcp.json
-          gsutil.cmd -m rsync -R $1/$site/dist $gs
+          gcloud auth activate-service-account `cat $1/config/secret/$2.gcp.txt` --key-file=$1/config/secret/$2.gcp.json
+          # gsutil.cmd -m rsync -R $1/$site/dist $gs
+          gsutil.cmd ls $gs
         fi
       done < $1/config/$2.web.csv
       IFS=$OIFS
