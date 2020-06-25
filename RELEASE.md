@@ -1,15 +1,20 @@
 ### Version 0.3.2
 - [chore] update packages & cleanup & work on improving documentation
 - make it CI/CD friendly [re-organized folders again...]
+- renamed common-app to common-lib and it contain reusable stuff
 - deployment
   - Small scale - all in one server - vm, pm2, SSH (express also serves the frontend)
   - Medium to large
     - Frontend deploy to GCP Storage / AWS S3 etc.
     - Backend as docker container, kubernetes, GKE
 - [Work-in-progress]
+  - circleci workflow
+    - deploy backend to GCP
+    - deploy SPA frontend to S3
   - backend
     - generic table crud frontend
   - frontend
+    - cypress e2e testing
     - generaic table crud backend
     - Preparing for VueJS 3
     - PWA cookbook (many things to consider)
@@ -22,22 +27,17 @@
     - research auto generated REST API and Testing (keep in view dredd.io)
     - JsonSchema
   - frontend
-    - Handle/Test Signature input
-    - Handle/Test Webcam input
-    - e2e framework agnostic automated test for frontend (jsdom?)
+    - Handle/Test Signature & Webcam input
     - Remove date-fns library and use native JS libraries for handling date, time
     - explore use of fetch API instead of axios (abort fetch, etc)
     - ant design version (kiv until web components / more UI framework agnostic code is implemened)
   - others
     - Make ES module build (only possible when UI framework e.g. Vuetify has ES module version)
-    - ISO config definition naming (identify configs common to both FE and BE)
     - Should we change Vuex action setLayout to setPublic and setSecure?
     - graphql security & performance review
 - [Findings]
   - Logging (Use APM instead?) - use console.log & morgan
-  - use native html5 validation rather then Vuelidate / Vee-validate (major version changes is painful), worse-case use validation available in Vuetify
-  - Related to validation Fix Date Range Input Validation Issues... (alternative is to check only on submit)
-
+  - use native html5 validation rather then Vuelidate / Vee-validate (major version changes is painful), worse-case use validation available in 
 
 ### Version 0.3.1
 - update packages & cleanup

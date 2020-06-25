@@ -40,7 +40,7 @@ COPY . .
 # TOREMOVE REDO
 # COPY setup.js app.js appname.js ./
 # COPY common common/
-# COPY common-app common-app/
+# COPY common-lib common-lib/
 # COPY example-app example-app/
 
 # Install dependencies

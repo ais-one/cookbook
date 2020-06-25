@@ -153,7 +153,7 @@ module.exports = {
     // { folder: 'example-app/web/spa/dist', url: '/' },
     // { folder: 'example-app/public/demo-express', url: '/' },
     // { folder: 'example-app/public/demo-nobundler', url: '/demo-nobundler' },
-    // { folder: 'common-app/esm', url: '/js' }
+    // { folder: 'common-lib/esm', url: '/js' }
 
     // { folder: APP_PATH + '/web/spa/dist', url: '/' },
     { folder: APP_PATH + '/public/demo-express', url: '/' },

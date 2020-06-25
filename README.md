@@ -3,9 +3,8 @@
 # WHY
 
 > Always Remember Rule #1 - Do Not Let Technical Debt Build Up
-
 - Ever wondered why you keep rewriting almost the same code when you work on full-stack applications?
-- Do you have trouble keeping the libraries in your different applications?
+- Do you have trouble keeping the libraries in your different applications updated?
 - How often and how long do you spend fixing things when there is a version change in a dependency?
 
 Well... what started as a CRUD component for VueJS has grown to a full-stack app development cookbook, and further expanded into a way of building and maintaining multiple full-stack applications of different use cases with as little waste as possible, aiming to address those 3 issues above as much as possible!
@@ -34,6 +33,8 @@ Latest Version [0.3.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.2)
 2. Ease of maintenance and updates
 3. Scalable in terms of application use cases & traffic load
 5. Ease of build, test, deployment, CI/CD, etc.
+6. https://12factor.net/
+
 
 ## CRUD Unique Selling Points
 
@@ -99,7 +100,7 @@ npm run test
 
 From vue-crud-x folder
 
-```
+```bash
 cd example-app/web/spa
 npm run build
 ```
@@ -121,7 +122,7 @@ Change the example-app/config/index.js file contents
 
 In vue-crud-x folder, run the **frontend** from one console...
 
-```
+```bash
 cd example-app/web/ssr
 npm i
 npm run dev
@@ -131,7 +132,7 @@ npm run dev
 
 In vue-crud-x folder, run the **backend** from another console... 
 
-```
+```bash
 cd example-app
 npm run dev
 ```
@@ -154,7 +155,7 @@ git clone -b develop https://github.com/ais-one/vue-crud-x.git
 # copy required files
 cp vue-crud-x/deploy.sh vue-crud-x/setup.js vue-crud-x/package.json vue-crud-x/.eslintrc.json vue-crud-x/.gitignore vue-crud-x/.dockerignore
 # copy required folders
-mv vue-crud-x/common-app .
+mv vue-crud-x/common-lib .
 # you can copy the example-app below and use as reference
 mv vue-crud-x/example-app .
 # cleanup
@@ -191,12 +192,12 @@ You can override the configuraions using .env.[NODE_ENV] files, e.g. .env.develo
 ```
 cd <my-project>
 git clone -b develop https://github.com/ais-one/vue-crud-x.git
-rm -rf common-app
-mv vue-crud-x/common-app .
+rm -rf common-lib
+mv vue-crud-x/common-lib .
 rm -rf vue-crud-x
 ```
 
-## Deployment
+## Manual Deployment (Work In Progress)
 
 The following environments are supported:
 - development (local laptop)
@@ -214,11 +215,15 @@ For deployment to server or cloud, deploy.sh is example on how to do the followi
 - deploy express app to GCP Group Instances [TBD]
 - deploy express app to GKE [TBD]
 
-The command to run is
-
 ```
 npm run deploy
 ```
+
+> work needs to be done on the organise and reference the setup documentation in the docs folder
+
+## CircleCI Deployment (Work In Progress)
+
+TBD
 
 ---
 
@@ -228,7 +233,7 @@ The project structure is shown below
 
 ```
 vue-crud-x
-+- common-app/ : common components
++- common-lib/ : common components
 |  +- auth/ : for express authentication
 |  +- comms/ : messging
 |  +- esm/ : JS that can be used by both front and backend
@@ -236,8 +241,8 @@ vue-crud-x
 |  +- services/ : nodejs libs
 |  +- webpacked/ : webpacked components for frontend (including vue-crud-x)
 |  |  +- dist/ : distribution folder for CRUD component
-|  +- app.js
-|  +- config.js
+|  +- app.js : the express app boilerplate
+|  +- config.js: the base config
 +- docs/ : documentation
 +- example-app : an example backend application **Use this example for your project**
 |  +- config/ : centralized config folder
@@ -276,13 +281,13 @@ vue-crud-x
 |  +- README.md
 +- .dockerignore
 +- .eslintrc.json
-+- build.sh
++- .gitignore
 +- deploy.sh
-+- setup.js
 +- LICENCE
 +- package.json
 +- README.md
 +- RELEASE.md
++- setup.js
 ```
 
 
@@ -306,7 +311,7 @@ Recipes for a production-ready SPA:
   - Image capture via webcam
   - Signature capture on canvas
 
-## [backend & libs](https://github.com/ais-one/vue-crud-x/tree/master/common-app/)
+## [backend & libs](https://github.com/ais-one/vue-crud-x/tree/master/common-lib/)
 
 Recipes for a production-ready Express server used by **example-app/web/spa** and **example-app/web/ssr**:
 - ObjectionJS

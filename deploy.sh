@@ -102,12 +102,12 @@ do
       # cd ..
       ## V2
       tar -zcvf deploy-app.tgz \
-        --exclude=common-app/webpacked/node_modules \
+        --exclude=common-lib/webpacked/node_modules \
         --exclude=node_modules \
         --exclude=$1/node_modules \
         --exclude=$1/web \
         --exclude=$1/.git \
-        common-app $1/ package.json setup.js
+        common-lib $1/ package.json setup.js
       scp -i $PEM deploy-app.tgz $URL:~ && rm deploy-app.tgz
       ssh -i $PEM $URL "tar -zxvf deploy-app.tgz -C ~/app;rm deploy-app.tgz"
       ;;
@@ -150,8 +150,8 @@ done
 echo "Done... press enter to exit"
 read # pause exit in windows
 
-# for f in `ls -A "common-app" | grep -v "common-web"`; do
-#   cp -r common-app/$f build/common-app
+# for f in `ls -A "common-lib" | grep -v "common-web"`; do
+#   cp -r common-lib/$f build/common-lib
 # done
 # for f in `ls -A | grep -v "node_modules" | grep -v "web" | grep -v ".git"`; do
 #   cp -r $f $baseDir/build/$1

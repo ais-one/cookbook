@@ -1,6 +1,6 @@
 const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 
-const EXT_LIB_PATH = require('path').join(__dirname, '..', '..', '..', 'common-app') // C:\Users\user\test\vue-crud-x\example-app\web\spa
+const EXT_LIB_PATH = require('path').join(__dirname, '..', '..', '..', 'common-lib') // C:\Users\user\test\vue-crud-x\example-app\web\spa
 
 module.exports = {
   configureWebpack: {
