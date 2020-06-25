@@ -35,6 +35,18 @@ exports.up = async (knex) => {
       // table.integer('authorId').unsigned().references('id').inTable('authors').onDelete('CASCADE')
       table.unique(['bookId', 'authorId']) // remove this and you will have duplicates
     })
+
+    .createTable('country', (table) => {
+      table.increments('id').primary()
+      table.string('name')
+      table.timestamps(true, true)
+    })
+    .createTable('person', (table) => {
+      table.increments('id').primary()
+      table.string('name')
+      table.timestamps(true, true)
+    })
+
 }
 
 exports.down = async (knex) => {
