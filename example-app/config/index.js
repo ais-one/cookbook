@@ -2,16 +2,22 @@ const fs = require('fs')
 const path = require('path')
 
 console.log('TEST_ENV =',process.env.TEST_ENV)
-const KNEXFILE = require('../knexfile')
-
-const GCP_KEY = require('./secret/' + process.env.NODE_ENV + '.gcp.json') || ''
-
+let KNEXFILE = null
+let GCP_KEY = null
+try {
+  KNEXFILE = require('../knexfile')
+  GCP_KEY= require('./secret/' + process.env.NODE_ENV + '.gcp.json') || ''
+} catch (e) {
+  // console.log(e.toString())
+}
 const JWT_CERT = process.env.JWT_CERT || path.join(__dirname, 'certs/jwt') // RS256
 const HTTPS_CERT = process.env.HTTPS_CERT || ''
 
+if (!global.APP_PATH) APP_PATH = ''
+if (!global.LIB_PATH) LIB_PATH = ''
+
 let jwtCerts
 let httpsCerts
-
 if (!jwtCerts && JWT_CERT) jwtCerts = { key: fs.readFileSync(`${JWT_CERT}.key`), cert: fs.readFileSync(`${JWT_CERT}.crt`) }
 if (!httpsCerts && HTTPS_CERT) httpsCerts = { key: fs.readFileSync(`${HTTPS_CERT}.key`), cert: fs.readFileSync(`${HTTPS_CERT}.crt`) }
 
@@ -64,8 +70,8 @@ module.exports = {
   // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
   // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}
   // MONGO_URL=mongodb://127.0.0.1:27017/mm?replicaSet=rs0
-  MONGO_DB: process.env.MONGO_DB || '', // 'testdb',
-  MONGO_URL: process.env.MONGO_URL || '', // 'mongodb://127.0.0.1:27017/testdb',
+  MONGO_DB: process.env.MONGO_DB || 'testdb-' + process.env.NODE_ENV,
+  MONGO_URL: process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/testdb-' + process.env.NODE_ENV,
 
   // {
   //   port: 6379,

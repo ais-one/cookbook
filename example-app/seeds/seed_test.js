@@ -12,6 +12,9 @@ exports.seed = async (knex) => {
   await knex('authors').del()
   await knex('categories').del()
 
+  await knex('person').del()
+  await knex('country').del()
+
   var dt = new Date()
 
   await knex('authors').insert([
@@ -53,4 +56,6 @@ exports.seed = async (knex) => {
     {id: 7, content: 'page7', bookId: 4, created_at: mkDt()},
     {id: 8, content: 'page8', bookId: 5, created_at: mkDt()}
   ])
+
+  await knex('country').insert( require('./icc.json') )
 }

@@ -27,15 +27,10 @@ fi
 # done
 # read && exit
 
-# build and install frontend?
 baseDir=`pwd`
 
-# PEM=
-# URL=
-# if [ $2 == "uat" ]; then
 PEM=./$1/config/secret/$2.pem
-read URL < $1/config/secret/$2.url # ubuntu@35.187.243.253
-# fi
+read URL < $1/config/secret/$2.url
 
 PS3="Please enter your choice: "
 options=(
@@ -84,23 +79,14 @@ do
         read -p "deploy gs $site (y/n)?" yn < /dev/tty
         if [[ $yn == "Y" || $yn == "y" ]]; then
           gcloud auth activate-service-account `cat $1/config/secret/$2.gcp.txt` --key-file=$1/config/secret/$2.gcp.json
-          # gsutil.cmd -m rsync -R $1/$site/dist $gs
-          gsutil.cmd ls $gs
+          gsutil.cmd -m rsync -R $1/$site/dist $gs
+          # gsutil.cmd ls $gs
         fi
       done < $1/config/$2.web.csv
       IFS=$OIFS
-      # cd build
-      # gsutil.cmd rsync -R $1/web/spa/dist gs://uat.viow.co
-      # cd ..
       ;;
     "deploy-api")
       echo "Deploy Back End... take note public and upload folders"
-      # cd build
-      # tar -zcvf deploy-app.tgz .
-      # scp -i $PEM deploy-app.tgz $URL:~ && rm deploy-app.tgz
-      # ssh -i $PEM $URL "tar -zxvf deploy-app.tgz -C ~/app;rm deploy-app.tgz"
-      # cd ..
-      ## V2
       tar -zcvf deploy-app.tgz \
         --exclude=common-lib/webpacked/node_modules \
         --exclude=node_modules \
@@ -120,12 +106,10 @@ do
       ;;
     "start")
         # ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start --only app,cron --env $2;"
-        # ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start ecosystem.config.js --env $2;"
         ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start $1/ecosystem.config.js --env $2;"
       ;;
     "stop")
         # ssh -i $PEM $URL "cd ~/app; pm2 delete app cron;"
-        # ssh -i $PEM $URL "cd ~/app; pm2 stop ecosystem.config.js;"
         ssh -i $PEM $URL "cd ~/app; pm2 stop $1/ecosystem.config.js;"
       ;;
     "clear-cloud-flare-cache")

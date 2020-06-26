@@ -32,7 +32,7 @@ async function generateTable (req, res, next) {
       if (cols[key].required) req.table.required.push(key)
     }
     // console.log(req.table)
-    next()  
+    return next()
   } catch (e) {
     res.status(500).json({ e: e.toString() })
   }
@@ -56,9 +56,24 @@ module.exports = express.Router()
     let { page = 1, limit = 2, filters, sorter, csv = '' } = req.query
 
     console.log('t4t filters and sort', filters, sorter)
-    filters = JSON.parse(filters)
-    sorter = JSON.parse(sorter)
+    // TBD MongoDB
 
+    filters = JSON.parse(filters)
+    // [
+    //   {
+    //     column
+    //     compare
+    //     value
+    //     andOr
+    //   }
+    // ]
+    sorter = JSON.parse(sorter)
+    // [
+    //   {
+    //     column
+    //     order
+    //   }
+    // ]
     if (page < 1) page = 1
     let rv = { results: [], total: 0 }
 
@@ -204,9 +219,9 @@ module.exports = express.Router()
       })
       .on('readable', () => {
         let record
-        while (record = this.read()) {
+        while ( (record = this.read()) ) {
           currLine++
-          if (currLine == 1) continue // ignore first line
+          if (currLine === 1) continue // ignore first line
           if (record.length === table.nonAuto.length) { // ok
             if (record.join('')) {
               // if (permissionOk) {

@@ -39,12 +39,22 @@ exports.up = async (knex) => {
     .createTable('country', (table) => {
       table.increments('id').primary()
       table.string('name')
-      table.timestamps(true, true)
+      table.string('code')
+      table.string('icc')
     })
     .createTable('person', (table) => {
-      table.increments('id').primary()
-      table.string('name')
-      table.timestamps(true, true)
+      table.string('firstName')
+      table.string('lastName')
+      table.string('country')
+      table.string('sex')
+      table.integer('weightKg')
+      table.integer('heightCm')
+      table.date('dateOfBirth')
+      table.time('timeOfBirth')
+      table.datetime('testDateTime')
+      table.string('updated_by')
+      table.datetime('updated_at')      
+      table.unique(['firstName', 'lastName'])
     })
 
 }
@@ -54,6 +64,9 @@ exports.down = async (knex) => {
     .dropTableIfExists('pages')
     .dropTableIfExists('authors')
     .dropTableIfExists('books')
+
+    .dropTableIfExists('country')
+    .dropTableIfExists('person')
 }
 
 

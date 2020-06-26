@@ -153,7 +153,7 @@ mkdir <my-project>
 cd <my-project>
 git clone -b develop https://github.com/ais-one/vue-crud-x.git
 # copy required files
-cp vue-crud-x/deploy.sh vue-crud-x/setup.js vue-crud-x/package.json vue-crud-x/.eslintrc.json vue-crud-x/.gitignore vue-crud-x/.dockerignore
+cp vue-crud-x/deploy.sh vue-crud-x/setup.js vue-crud-x/package.json vue-crud-x/.eslintrc.json vue-crud-x/.gitignore vue-crud-x/.dockerignore .
 # copy required folders
 mv vue-crud-x/common-lib .
 # you can copy the example-app below and use as reference
@@ -164,6 +164,10 @@ rm -rf vue-crud-x
 
 ## Edit package .json
 
+Set application name in **config.app** property (indicate folder of your application - set to example-app if using example-app folder)
+
+Set environment using **config.env** property (development, uat, staging, production)
+
 ```json
 {
   "config": {
@@ -173,18 +177,13 @@ rm -rf vue-crud-x
 }
 ```
 
-Set application name in **config.app** property (indicate folder of your application - set to example-app if using example-app folder)
-
-Set environment using **config.env** property (development, uat, staging, production)
-
-
 ## Configuration
 
-<my-project>/example-app/config/index.js contains all the config properties
+<my-project>/example-app/config/index.js contains all the config properties.
 
-If too many config variables, split it to other folders and files in the **example-app/config** folder
+If too many config properties, split it to other folders and files
 
-You can override the configuraions using .env.[NODE_ENV] files, e.g. .env.development or .env.production in **example-app/config/secret**
+You can override the configurations using .env.<NODE_ENV> files, e.g. .env.development or .env.production in **example-app/config/secret**
 
 
 ## Updating The Library - Use master branch

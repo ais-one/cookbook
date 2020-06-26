@@ -15,16 +15,32 @@ module.exports = {
       multiKey: true,
       type: 'string', // Number (Integer, Decimal), Boolean, Date (datetime, date, time)
       formEditor: '',
-      // '=,!=,like,>=,<=,>,<' - compare operator
-      // AND, OR - boolean operator
     },
     country: {
       label: 'Country', // key value...
-      type: 'autocomplete' // single select
-      // related
+      type: 'autocomplete', // single select
+      options: {
+        tableName: 'country',
+        limit:8,
+        key: 'name'
+      }
     },
-    age: {
-      label: 'Age',
+    sex: {
+      label: 'Sex',
+      type: 'select',
+      options: [
+        { key: '', txt: '' },
+        { key: 'M', txt: 'Male' },
+        { key: 'F', txt: 'Female' }
+      ]
+    },
+    weightKg: {
+      label: 'Weight kg',
+      type: 'decimal',
+      required: true
+    },
+    heightCm: {
+      label: 'Height cm',
       type: 'integer',
       required: true
     },
@@ -35,6 +51,10 @@ module.exports = {
     timeOfBirth: {
       label: 'Time Of Birth',
       type: 'time'
+    },
+    testDateTime: {
+      label: 'Test Date Time',
+      type: 'datetime'
     },
     updated_by: { label: 'Updated By', auto: 'user' },
     updated_at: { label: 'Updated At', auto: 'ts' }
