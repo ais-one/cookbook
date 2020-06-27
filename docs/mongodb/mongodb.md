@@ -1,5 +1,30 @@
 # Mongo DB - WORK IN PROGRESS
 
+## Docker Installation (With Replica Set)
+
+refer to folder: docker-mongodb-replicaset
+
+Reference : https://gitlab.com/Tjth-ltd/docker-mongodb-replicaset
+
+## Import & Export - Non Production
+
+mongoimport --db ahop --collection mdh-snapshot --file mdh-snapshot.json
+mongoexport --db ahop --collection mdh-snapshot --out mdh-snapshot.json --jsonArray
+mongoexport --db ahop --collection vts-hist --out vts-hist.json --jsonArray
+mongoexport --db ahop --collection job --out job.json --jsonArray
+
+
+mongodump --archive=mdh.gz --gzip --db ahop --collection mdh-snapshot
+mongodump --db ahop --collection mdh-snapshot
+mongorestore --db ahop --collection mdh-snapshot --archive=mdh.gz --gzip
+mongorestore --db ahop --collection mdh-snapshot dump/ahop/mdh-snapshot.bson --writeConcern '{w:0}'
+mongodump --db ahop --archive=db.archive
+mongorestore --db ahop --archive=db.archive
+
+mongodump --archive=db.gz --gzip
+mongorestore --archive=db.gz --gzip
+
+
 ## Outstanding Issues
 
 1. Cannot reconnect if there is no initial connection

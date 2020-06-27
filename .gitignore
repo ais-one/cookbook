@@ -31,6 +31,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-
-# To remove
-udemy/
