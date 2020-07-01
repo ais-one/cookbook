@@ -1,14 +1,18 @@
 version: 2.1
 executors:
-  app-executor:
+  nodejs-executor:
     docker:
       - image: circleci/node:latest
     working_directory: ~/repo
-  docker-publisher:
-    environment:
-      IMAGE_NAME: ais-one/vue-crud-x
-    docker:
-      - image: circleci/buildpack-deps:stretch
+  # app-executor:
+  #   docker:
+  #     - image: circleci/node:latest
+  #   working_directory: ~/repo
+  # docker-publisher:
+  #   environment:
+  #     IMAGE_NAME: ais-one/vue-crud-x
+  #   docker:
+  #     - image: circleci/buildpack-deps:stretch
 aliases:
   - &show-current-branch-name
     run:
@@ -19,35 +23,42 @@ aliases:
       keys:
         - app-{{ checksum "package.json" }}
         - app-
-  - &install-dependencies
-    run:
-      name: Install dependencies
-      command: npm install
   - &save-cache
     save_cache:
       paths:
         - node_modules
       key: app-{{ checksum "package.json" }}
-  - &install-aws-cli
+  # - &install-aws-cli
+  #   run:
+  #     name: Install AWS CLI
+  #     working_directory: /
+  #     command: |
+  #       sudo apt-get -y -qq update
+  #       sudo apt-get install -y awscli
+  #       sudo apt-get install -y python-pip python-dev build-essential
+  # - &build-project
+  #   run:
+  #     name: Build Project
+  #     command: |
+  #       npm install
+  #       CI=false npm run build
+  #       cd build
+  #       zip ../build.zip -r * .[^.]*
+  #       echo "Build successful"
+  - &build-project-www
     run:
-      name: Install AWS CLI
-      working_directory: /
-      command: |
-        sudo apt-get -y -qq update
-        sudo apt-get install -y awscli
-        sudo apt-get install -y python-pip python-dev build-essential
-  - &build-project
-    run:
-      name: Build Project
+      name: Build Project SPA
       command: |
         npm install
         CI=false npm run build
-        cd build
-        zip ../build.zip -r * .[^.]*
-        echo "Build successful"
+        echo "Build spa successful"
+
 orbs:
   telegram: uniqueck/telegram-orb@0.0.1
-
+  # for GKE
+  node: circleci/node@1.0.1
+  gcp-gke: circleci/gcp-gke@0.1.0
+  gcr: circleci/gcp-gcr@0.0.2
 # orbs:
 #   node: circleci/node@1.1.6
 # jobs:
@@ -65,8 +76,100 @@ orbs:
 #       jobs:
 #         - build-and-test
 jobs:
-  build:
-    executor: app-executor
+  # build:
+  #   executor: app-executor
+  #   steps:
+  #     - checkout
+  #     - *show-current-branch-name
+  #     - *restore-cache
+  #     - *install-dependencies
+  #     - *save-cache
+  #     - telegram/status:
+  #         success_message: "[${CIRCLE_BRANCH}] Build Stage: SUCCESS"        
+  # linting:
+  #   executor: app-executor
+  #   steps:
+  #     - checkout
+  #     - *show-current-branch-name
+  #     - *restore-cache
+  #     - run:
+  #         name: Run Linting
+  #         command: npm run lint
+  # prettier:
+  #   executor: app-executor
+  #   steps:
+  #     - checkout
+  #     - *show-current-branch-name
+  #     - *restore-cache
+  #     - run:
+  #         name: Run prettier check
+  #         command: npm run prettier:check
+  # unit-test:
+  #   executor: app-executor
+  #   steps:
+  #     - checkout
+  #     - *show-current-branch-name
+  #     - *restore-cache
+  #     - run:
+  #         name: Run unit test
+  #         command: npm run test
+
+  # publish-to-docker-hub:
+  #   executor: docker-publisher
+  #   steps:
+  #     - checkout
+  #     - setup_remote_docker
+  #     - *restore-cache
+  #     - run: docker login -u "${DOCKER_HUB_USER}" -p "${DOCKER_HUB_PASSWORD}"
+  #     - run: docker build --build-arg REACT_APP_API_SECRET=${REACT_APP_API_SECRET} --build-arg REACT_APP_SENTRY_DSN=${REACT_APP_SENTRY_DSN} -t ${IMAGE_NAME}:latest .
+  #     - run:
+  #         name: Tag and push to docker hub
+  #         command: |
+  #           if [ "${CIRCLE_BRANCH}" == "master" ]; then
+  #             docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:stable-${CIRCLE_BUILD_NUM} && docker push ${IMAGE_NAME}:stable-${CIRCLE_BUILD_NUM}
+  #           elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+  #             docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:staging-${CIRCLE_BUILD_NUM} && docker push ${IMAGE_NAME}:staging-${CIRCLE_BUILD_NUM}
+  #           else
+  #             docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:dev-${CIRCLE_BUILD_NUM} && docker push ${IMAGE_NAME}:dev-${CIRCLE_BUILD_NUM}
+  #           fi    
+  # deploy-to-aws-s3:
+  #   executor: app-executor
+  #   steps:
+  #     - checkout
+  #     - *show-current-branch-name
+  #     - *install-aws-cli
+  #     - *build-project
+  #     - run:
+  #         name: Deploy to AWS S3
+  #         command: |
+  #           if [ "${CIRCLE_BRANCH}" == "master" ]; then
+  #             aws --region ${AWS_REGION} s3 sync ~/repo/build s3://${AWS_BUCKET_PRODUCTION} --delete
+  #           elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+  #             aws --region ${AWS_REGION} s3 sync ~/repo/build s3://${AWS_BUCKET_STAGING} --delete
+  #           else
+  #             aws --region ${AWS_REGION} s3 sync ~/repo/build s3://${AWS_DEV_BUCKET} --delete
+  #           fi
+  # deploy-to-aws-cloudfront:
+  #   executor: app-executor
+  #   steps:
+  #     - checkout
+  #     - *show-current-branch-name
+  #     - *install-aws-cli
+  #     - *build-project
+  #     - run:
+  #         name: Deploy to AWS Cloudfront
+  #         command: |
+  #           aws configure set preview.cloudfront true
+  #           if [ "${CIRCLE_BRANCH}" == "master" ]; then
+  #             aws cloudfront create-invalidation --distribution-id ${PRODUCTION_DISTRIBUTION_ID} --paths /\*
+  #           elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+  #             aws cloudfront create-invalidation --distribution-id ${STAGING_DISTRIBUTION_ID} --paths /\*
+  #           else
+  #             aws cloudfront create-invalidation --distribution-id ${DEV_DISTRIBUTION_ID} --paths /\*
+  #           fi
+
+  setup-frontend:
+    executor: nodejs-executor
     steps:
       - checkout
       - *show-current-branch-name
@@ -75,120 +178,143 @@ jobs:
       - *save-cache
       - telegram/status:
           success_message: "[${CIRCLE_BRANCH}] Build Stage: SUCCESS"
-        
-  linting:
-    executor: app-executor
+  build-frontend:
+    executor: nodejs-executor
     steps:
       - checkout
-      - *show-current-branch-name
-      - *restore-cache
-      - run:
-          name: Run Linting
-          command: npm run lint
-  prettier:
-    executor: app-executor
+      - *restore_cache
+      - *build-project-www
+      # - run: npm run build
+      - persist_to_workspace:
+          root: .
+          paths: dist
+  deploy-frontend:
+    docker:
+      - image: google/cloud-sdk
     steps:
       - checkout
-      - *show-current-branch-name
-      - *restore-cache
+      - attach_workspace:
+        at: .
+      # - attach_workspace:
+      #     # Must be absolute path or relative path from working_directory
+      #     at: /tmp/workspace
+      # - run:
+      #     name: Create keyfile from env
+      #     command: echo $GCLOUD_SERVICE_KEY >> /tmp/key.json
+      # - run:
+      #     name: Set up gcloud
+      #     command: gcloud auth activate-service-account --key-file=/tmp/key.json && gcloud --quiet config set project ${GOOGLE_PROJECT_ID}    
+      # - run:
+      #   name: Upload to Storage Bucket
+      #   command: gsutil cp -r /tmp/workspace/site/. gs://${BUCKET_NAME}
       - run:
-          name: Run prettier check
-          command: npm run prettier:check
-  unit-test:
-    executor: app-executor
-    steps:
-      - checkout
-      - *show-current-branch-name
-      - *restore-cache
+          name: Authenticate service account
+          command: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
       - run:
-          name: Run unit test
-          command: npm run test
+          name: Upload to Storage Bucket
+          command: gsutil -m rsync -R ~/repo/dist/ gs://${STORAGE_BUCKET}
+          # gsutil defacl ch -u AllUsers:READER gs://$STORAGE_BUCKET
+          # gsutil -m rsync -R ~/repo/dist/ gs://${STORAGE_BUCKET}
+          # gsutil setmeta -h "Cache-Control:private, max-age=0, no-transform" gs://$STORAGE_BUCKET/*.js
 
-  publish-to-docker-hub:
-    executor: docker-publisher
+  build-backend:
+    description: Install npm
+    # machine option runs your jobs in a dedicated, ephemeral VM that has the following specifications:
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker
-      - *restore-cache
-      - run: docker login -u "${DOCKER_HUB_USER}" -p "${DOCKER_HUB_PASSWORD}"
-      - run: docker build --build-arg REACT_APP_API_SECRET=${REACT_APP_API_SECRET} --build-arg REACT_APP_SENTRY_DSN=${REACT_APP_SENTRY_DSN} -t ${IMAGE_NAME}:latest .
-      - run:
-          name: Tag and push to docker hub
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:stable-${CIRCLE_BUILD_NUM} && docker push ${IMAGE_NAME}:stable-${CIRCLE_BUILD_NUM}
-            elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
-              docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:staging-${CIRCLE_BUILD_NUM} && docker push ${IMAGE_NAME}:staging-${CIRCLE_BUILD_NUM}
-            else
-              docker tag ${IMAGE_NAME}:latest ${IMAGE_NAME}:dev-${CIRCLE_BUILD_NUM} && docker push ${IMAGE_NAME}:dev-${CIRCLE_BUILD_NUM}
-            fi    
-  deploy-to-aws-s3:
-    executor: app-executor
+      - node/install
+      - node/install-npm
+      - node/with-cache:
+          steps:
+            - run:
+                name: Install application dependencies
+                command: npm install
+          # Save cache
+          cache-key: package.json
+          # Ignore non-checksum cache hits
+          use-strict-cache: true
+  dockerize-backend:
+    description: Build and push image to Google Container Registry
+    machine: true
     steps:
       - checkout
-      - *show-current-branch-name
-      - *install-aws-cli
-      - *build-project
-      - run:
-          name: Deploy to AWS S3
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              aws --region ${AWS_REGION} s3 sync ~/repo/build s3://${AWS_BUCKET_PRODUCTION} --delete
-            elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
-              aws --region ${AWS_REGION} s3 sync ~/repo/build s3://${AWS_BUCKET_STAGING} --delete
-            else
-              aws --region ${AWS_REGION} s3 sync ~/repo/build s3://${AWS_DEV_BUCKET} --delete
-            fi
-  deploy-to-aws-cloudfront:
-    executor: app-executor
+      - gcr/gcr-auth
+      - gcr/build-image:
+          image: circle-gke
+          tag: "${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
+      - gcr/push-image:
+          image: circle-gke
+          tag: "${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
+  deploy-backend:
+    description: Deploy application to Google Kubernetes Engine
+    machine: true
     steps:
-      - checkout
-      - *show-current-branch-name
-      - *install-aws-cli
-      - *build-project
-      - run:
-          name: Deploy to AWS Cloudfront
-          command: |
-            aws configure set preview.cloudfront true
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              aws cloudfront create-invalidation --distribution-id ${PRODUCTION_DISTRIBUTION_ID} --paths /\*
-            elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
-              aws cloudfront create-invalidation --distribution-id ${STAGING_DISTRIBUTION_ID} --paths /\*
-            else
-              aws cloudfront create-invalidation --distribution-id ${DEV_DISTRIBUTION_ID} --paths /\*
-            fi
+      # Install `gcloud` and `kubectl` if not already installed.
+      - gcp-gke/install
+      # Initialize the `gcloud` CLI.
+      - gcp-gke/init
+      # Update a deployment Docker image.
+      - gcp-gke/rollout-image:
+          deployment: circle-ci-cluster
+          container: some-container-name
+          image: "gcr.io/circle-ci-demo/circle-gke:${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}" # change version when updating
 workflows:
-  build_and_deploy:
+  # TBD
+  # build_and_deploy_backend:
+  #   jobs:
+  #     - build-backend
+  #     - dockerize-backend:
+  #         requires:
+  #           - build-backend
+  #     - deploy-backend:
+  #         requires:
+  #           - dockerize-backend
+  # Frontend Deployment
+  build_and_deploy_frontend:
     jobs:
-      - build
-      - linting:
-          requires:
-            - build
+      - setup-frontend
           filters:
             branches:
               only:
                 - develop
-                - staging
-                - master
-      - prettier:
+      - build-frontend
           requires:
-            - build
-          filters:
-            branches:
-              only:
-                - develop
-                - staging
-                - master
-      - unit-test:
+            - setup-frontend
+      - deploy-frontend
           requires:
-            - linting
-            - prettier
-          filters:
-            branches:
-              only:
-                - develop
-                - staging
-                - master
+            - build-frontend
+      # - build
+      # - linting:
+      #     requires:
+      #       - build
+      #     filters:
+      #       branches:
+      #         only:
+      #           - develop
+      #           - staging
+      #           - master
+      # - prettier:
+      #     requires:
+      #       - build
+      #     filters:
+      #       branches:
+      #         only:
+      #           - develop
+      #           - staging
+      #           - master
+      # - unit-test:
+      #     requires:
+      #       - linting
+      #       - prettier
+      #     filters:
+      #       branches:
+      #         only:
+      #           - develop
+      #           - staging
+      #           - master
       # - publish-to-docker-hub
       #     requires:
       #       - unit-test
@@ -198,26 +324,25 @@ workflows:
       #           - develop
       #           - staging
       #           - master
-
-      - deploy-to-aws-s3:
-          requires:
-            # - publish-to-docker-hub
-            - unit-test
-          filters:
-            branches:
-              only:
-                - develop
-                - staging
-                - master
-      - deploy-to-aws-cloudfront:
-          requires:
-            - deploy-to-aws-s3
-          filters:
-            branches:
-              only:
-                - develop
-                - staging
-                - master
+      # - deploy-to-aws-s3:
+      #     requires:
+      #       # - publish-to-docker-hub
+      #       - unit-test
+      #     filters:
+      #       branches:
+      #         only:
+      #           - develop
+      #           - staging
+      #           - master
+      # - deploy-to-aws-cloudfront:
+      #     requires:
+      #       - deploy-to-aws-s3
+      #     filters:
+      #       branches:
+      #         only:
+      #           - develop
+      #           - staging
+      #           - master
 
 
 # AWS Orb - https://circleci.com/orbs/registry/orb/circleci/aws-cli
@@ -228,3 +353,94 @@ workflows:
 #     - gcp-cli/install_and_initialize_cli:
 #         context: myContext
 #         executor: gcp-cli/default
+
+
+https://circleci.com/blog/simplifying-your-ci-cd-build-pipeline-to-gke-with-circleci-orbs/
+
+gcloud components install kubectl
+gcloud container clusters create circle-ci-cluster
+# ? gcloud container clusters list
+gcloud container clusters get-credentials circle-ci-cluster
+kubectl config current-context
+# docker build -t circleci-gke:v1
+# docker tag circleci-gke:v1 gcr.io/circle-ci-demo/circleci-gke:v1
+# docker push gcr.io/circle-ci-demo/circleci-gke:v1
+
+admin/app-deployment.yaml
+
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: production-circle-demo
+  labels:
+    app: simple-backend
+spec:
+  selector:
+    matchLabels:
+      app: ci-deploy
+      tier: backend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: ci-deploy
+        tier: backend
+    spec:
+      containers:
+        - image: gcr.io/circle-ci-demo/circleci-gke:v1
+          name: rusty-pangolin
+          ports:
+            - containerPort: 3000
+              name: ci-deploy
+
+
+admin/app-service.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: circle-service
+  labels:
+    app: circle
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    app: ci-deploy
+    tier: backend
+  type: LoadBalancer
+  # clusterIP: 10.0.171.239
+  # status:
+  #   loadBalancer:
+  #     ingress:
+  #     - ip: 192.0.2.127
+
+kubectl apply --validate=true --dry-run=true -f admin/
+kubectl apply --validate=true   -f admin/
+
+
+# kubectl create deployment hello-web --image=gcr.io/${PROJECT_ID}/vue-crud-x:latest --port 8080
+# kubectl expose deployment hello-web --type=LoadBalancer --port 80 --target-port 8080
+
+# ? kubectl get services
+# ? gcloud container clusters describe circle-ci-cluster
+
+
+
+# create static IP
+# gcloud compute addresses create web-static-ip --global
+
+# ingress controller
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: basic-ingress
+#   annotations:
+#     kubernetes.io/ingress.global-static-ip-name: "web-static-ip"
+# spec:
+#   backend:
+#     serviceName: web
+#     servicePort: 8080

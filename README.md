@@ -188,15 +188,10 @@ If too many config properties, split it to other folders and files
 You can override the configurations using .env.<NODE_ENV> files, e.g. .env.development or .env.production in **example-app/config/secret**
 
 
-## Updating The Library - Use master branch
+## Updating The Library
 
-```
-cd <my-project>
-git clone -b develop https://github.com/ais-one/vue-crud-x.git
-rm -rf common-lib
-mv vue-crud-x/common-lib .
-rm -rf vue-crud-x
-```
+See script **update.sh**
+
 
 ## Manual Deployment (Work In Progress)
 

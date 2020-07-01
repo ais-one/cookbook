@@ -37,21 +37,9 @@ RUN npm install --only=production && npm cache clean --force
 
 # Get all the code needed to run the app
 COPY . .
-# TOREMOVE REDO
-# COPY setup.js app.js appname.js ./
-# COPY common common/
-# COPY common-lib common-lib/
-# COPY example-app example-app/
 
 # Install dependencies
 RUN cd example-app && npm install --only=production && npm cache clean --force
-
-# Front end build - TOREMOVE already build
-# RUN cd example-app/web/spa && npm install && npm cache clean --force && npm run build
-# RUN cp -rf example-app/web/spa/dist example-app/public
-# RUN cd example-app/web && rm -rf spa
-# remove the frontend stuffs
-# RUN cd example-app && rm -rf web
 
 # Serve the app
 # https://www.docker.com/blog/keep-nodejs-rockin-in-docker/
