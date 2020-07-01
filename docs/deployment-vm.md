@@ -1,39 +1,47 @@
 # DEPLOYMENT ON CLOUD (OPTIONAL)
 
-## Generate Self-Signed SSL keys
+## SSH Keys For use with ssh, scp
 
-- https://itnext.io/node-express-letsencrypt-generate-a-free-ssl-certificate-and-run-an-https-server-in-5-minutes-a730fbe528ca
-- https://www.sitepoint.com/how-to-use-ssltls-with-node-js/
-- https://www.caffeinecoding.com/create-self-signed-certificate-https/
-
-### in 1 line (works)
-
-### generate private and public keys
-
-Using ssh-keygen, various methods
+generate private and public keys
 
 ```bash
-ssh-keygen -t rsa
-ssh-keygen -t rsa -b 2048
-ssh-keygen -t dsa
-ssh-keygen -t ecdsa -b 521
-ssh-keygen -t ed25519
-ssh-keygen -f ~/tatu-key-ecdsa -t ecdsa -b 521
+# -t dsa|rsa|ecdsa|ed25519
+# -b 521|2048...
+ssh-keygen -f ./id_rsa -t rsa -b 2048
 ```
 
-### generate public cert from private keys
-openssl req -key id_rsa -new -x509 -days 365 -out id_rsa.cer
+## SSL Certs For use with on web applications
 
+1. generate self-signed cert
 
+```bash
+# private key: privkey.pem
+# public cert self-signed: fullchain.pem
+# -nodes = no DES if not pass phrase
+# -subj "/C=SG/ST=Singapore/L=Singapore/O=My Group/OU=My Unit/CN=127.0.0.1"
+openssl req -x509 -newkey rsa:2048 -keyout privkey.pem -out fullchain.pem -days 3650 -nodes  -subj "/CN=127.0.0.1"
 ```
-openssl req -x509 -sha256 -newkey rsa:2048 -keyout privkey.pem -out fullchain.pem -days 3650 -nodes -subj "/C=SG/ST=Singapore/L=Singapore/O=My Group/OU=My Unit/CN=127.0.0.1"
+
+2. generate private key and CSR
+
+```bash
+openssl req -new -newkey rsa:2048 -nodes -keyout id_rsa -out id_rsa.csr -days 3650 -subj "/CN=127.0.0.1"
 ```
 
-### in 2 lines, why?
+alternative generate only private key
 
+```bash
+# linux
+openssl genrsa -des3 -out id_rsa 2048
+
+# windows
+openssl genrsa -out id_rsa 2048
 ```
-openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365
-openssl rsa -in keytmp.pem -out key.pem
+
+3. generate CSR from exiting private key
+
+```bash
+openssl req -new -key id_rsa -out id_rsa.csr -subj "/CN=127.0.0.1"
 ```
 
 ## Generate SSL Keys using Certbot
@@ -317,7 +325,6 @@ sudo chmod 755 /etc/authbind/byport/80
 sudo touch /etc/authbind/byport/443
 sudo chown ubuntu /etc/authbind/byport/443
 sudo chmod 755 /etc/authbind/byport/443
-
 
 # Install MongoDB 4.2
 wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -

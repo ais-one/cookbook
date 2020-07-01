@@ -151,9 +151,9 @@ Work In Progress
 ```bash
 mkdir <my-project>
 cd <my-project>
-git clone -b develop https://github.com/ais-one/vue-crud-x.git
+git clone --depth=1 --branch=develop https://github.com/ais-one/vue-crud-x.git
 # copy required files
-cp vue-crud-x/deploy.sh vue-crud-x/setup.js vue-crud-x/package.json vue-crud-x/.eslintrc.json vue-crud-x/.gitignore vue-crud-x/.dockerignore .
+cp vue-crud-x/deploy.sh vue-crud-x/setup.js vue-crud-x/package.json vue-crud-x/.eslintrc.json vue-crud-x/.gitignore vue-crud-x/.dockerignore vue-crud-x/update.sh .
 # copy required folders
 mv vue-crud-x/common-lib .
 # you can copy the example-app below and use as reference
@@ -162,11 +162,13 @@ mv vue-crud-x/example-app .
 rm -rf vue-crud-x
 ```
 
-## Edit package .json
+## Next Steps
 
-Set application name in **config.app** property (indicate folder of your application - set to example-app if using example-app folder)
-
-Set environment using **config.env** property (development, uat, staging, production)
+- In **package.json**
+  - Set application name in **config.app** property (indicate folder of your application - set to example-app if using example-app folder)
+  - Set environment using **config.env** property (development, uat, staging, production)
+- In **update.sh**
+  - Uncomment the lines, this script is used to update the common library
 
 ```json
 {

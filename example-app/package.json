@@ -4,7 +4,8 @@
   "description": "Example Project",
   "main": "app.js",
   "scripts": {
-    "install-db": "npx knex migrate:latest --env development&&npx knex seed:run --env development"
+    "install-db": "npx knex migrate:latest --env development&&npx knex seed:run --env development",
+    "install-mongo": "node seeds/mongo/seed.js"
   },
   "author": "",
   "license": "ISC",
