@@ -1,4 +1,4 @@
-const { MONGO_DB, MONGO_URL } = require('../config')
+const { MONGO_DB, MONGO_URL, JWT_REFRESH_STORE, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE_NAME } = require('../../config')
 
 let db
 const MongoClient = require('mongodb').MongoClient
@@ -8,7 +8,14 @@ client.connect(async err => {
     try {
       db = client.db(MONGO_DB)
 
-      const icc = require('../seeds/icc.json')
+      // Create JWT User Session Store
+      if (JWT_REFRESH_STORE === 'mongo') {
+        await db.collection(JWT_REFRESH_STORE_NAME).deleteMany({})
+        await db.collection(JWT_REFRESH_STORE_NAME).createIndex({ id: 1 }, { unique: true })
+        await db.collection(JWT_REFRESH_STORE_NAME).createIndex( { setAt: 1 }, { expireAfterSeconds: JWT_REFRESH_EXPIRY } )  
+      }
+
+      const icc = require('../icc.json')
       await db.collection('country').deleteMany({})
       await db.collection('country').createIndex({ code: 1 }, { unique: true })
       await db.collection('country').insertMany(icc)
