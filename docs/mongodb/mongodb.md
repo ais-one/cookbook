@@ -1,10 +1,8 @@
 # Mongo DB - WORK IN PROGRESS
 
-## Docker Installation (With Replica Set)
+## Docker Installation (With Replica Set) on WSL2 Ubuntu
 
-refer to folder: docker-mongodb-replicaset
-
-Reference : https://gitlab.com/Tjth-ltd/docker-mongodb-replicaset
+Reference : https://github.com/ais-one/docker-devenv
 
 ## Import & Export - Non Production
 

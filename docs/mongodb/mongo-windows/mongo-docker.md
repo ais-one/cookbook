@@ -1,4 +1,6 @@
-Here is the simplest way to create a 3-node MongoDb replica set using Docker. These instructions were created using Docker on Windows 10 and setup to use Linux containers.
+Here is the simplest way to create a 3-node MongoDb replica set using Docker.
+
+These instructions were created using Docker on Windows 10 and setup to use Linux containers.
 
 Step 1: Create data volumes for each node
 
