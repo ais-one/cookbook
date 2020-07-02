@@ -32,7 +32,7 @@ module.exports = function (app, express, config) {
   if (UPLOAD_STATIC && UPLOAD_STATIC.length) {
     UPLOAD_STATIC.forEach(item => {
       if (item.url && item.folder) app.use(item.url, express.static(item.folder))
-      else console.log('blank upload details')
+      else console.log('blank upload details', item)
     })
   }
   if (UPLOAD_URL) {

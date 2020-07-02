@@ -4,7 +4,7 @@ module.exports = {
     // production
     {
       name      : 'api',
-      script    : './example-app/index.js',
+      script    : './common-lib/index.js', // path relative to calling package.json
       output    : './example-app/logs/api-out.log',
       error     : './example-app/logs/api-error.log',
       log_type  : 'json',

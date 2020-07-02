@@ -1,9 +1,9 @@
 let queueMarketUpdates
 
 exports.open = (config) => {
-  const Queue = require('bull')
   const  { JOB_BULL } = config
   if (JOB_BULL) {
+    const Queue = require('bull')
     if (!queueMarketUpdates) {
       queueMarketUpdates = new Queue('market-updates', 'redis://127.0.0.1:6379')  
       queueMarketUpdates.process(processQueueMarketUpdates)  

@@ -6,16 +6,18 @@
   "license": "ISC",
   "config": {
     "env": "development",
-    "app": "viow"
+    "app": "example-app",
+    "web": "example-web"
   },
   "scripts": {
     "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd web/spa && npm i",
     "install-db": "cd %npm_package_config_app% &&cross-env NODE_ENV=%npm_package_config_env% npm run install-db",
     "spa": "cd %npm_package_config_app%/web/spa && cross-env NODE_ENV=%npm_package_config_env% npm run serve",
-    "dev": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% nodemon %npm_package_config_app%/index.js",
+    "dev": "cross-env NODE_ENV=development APPNAME=%npm_package_config_app% nodemon common-lib/index.js",
     "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
     "test": "cross-env NODE_ENV=%npm_package_config_env% APPNAME=%npm_package_config_app% jest --config=%npm_package_config_app%/jest.config.js --watchAll",
-    "deploy": "deploy.sh %npm_package_config_app% %npm_package_config_env%",
+    "deploy:be": "deploy-be.sh %npm_package_config_app% %npm_package_config_env%",
+    "deploy:fe": "deploy-fe.sh %npm_package_config_web% %npm_package_config_env%",
     "lint": "eslint ."
   },
   "engines": {
@@ -27,7 +29,6 @@
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
-    "bull": "^3.14.0",
     "connect-history-api-fallback": "^1.6.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.4",
@@ -35,6 +36,7 @@
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
+    "helmet": "^3.23.3",
     "http-proxy-middleware": "^1.0.4",
     "json2csv": "^5.0.1",
     "jsonwebtoken": "^8.5.1",

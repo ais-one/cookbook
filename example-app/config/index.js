@@ -153,15 +153,8 @@ module.exports = {
   },
   CORS_ORIGINS: process.env.CORS_ORIGINS || '*', // http://127.0.0.1:8080
 
-  // serve static content
+  // serve static content - folder is relative to calling package.json
   WEB_STATIC: [  // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
-    // folder is relative to vue-crud-x
-    // { folder: 'example-app/web/spa/dist', url: '/' },
-    // { folder: 'example-app/public/demo-express', url: '/' },
-    // { folder: 'example-app/public/demo-nobundler', url: '/demo-nobundler' },
-    // { folder: 'common-lib/esm', url: '/js' }
-
-    // { folder: APP_PATH + '/web/spa/dist', url: '/' },
     { folder: APP_PATH + '/public/demo-express', url: '/' },
     { folder: APP_PATH + '/public/demo-nobundler', url: '/demo-nobundler' },
     { folder: LIB_PATH + '/esm', url: '/js' }
@@ -170,8 +163,6 @@ module.exports = {
     { folder: '', url: '' }
   ],
   UPLOAD_URL: '/uploads', // for server uploads
-  // UPLOAD_FOLDER: 'uploads', // folder is relative to vue-crud-x/[app]
-  // UPLOAD_PATH: path.join(__dirname, '..', 'uploads'),
   UPLOAD_FOLDER: APP_PATH + '/uploads',
   UPLOAD_PATH: APP_PATH + '/uploads',
 

@@ -2,8 +2,8 @@ const fs = require('fs')
 const path = require('path')
 const express = require('express')
 
-const agenda = require(LIB_PATH + '/services/mq/agenda').get() // message queue
-const bull = require(LIB_PATH + '/services/mq/bull')
+const agenda = require(LIB_PATH + '/services/mq/agenda').get() // agenda message queue
+const bull = require(LIB_PATH + '/services/mq/bull').get() // bull message queue
 const fcmSend = require(LIB_PATH + '/comms/fcm')
 
 // const path = require('path')
@@ -135,9 +135,14 @@ module.exports = express.Router()
 
   // message queues
   .get('/mq-agenda', asyncWrapper(async (req, res) => { // test message queue - agenda
-    const job = await agenda.now('registration email', { email: 'abc@test.com' })
-    console.log('Agenda Pub')
-    res.json({ job, note: 'Check Server Console Log For Processed Message...' })
+    if (agenda) {
+      const job = await agenda.now('registration email', { email: 'abc@test.com' })
+      console.log('Agenda Pub')
+      res.json({ job, note: 'Check Server Console Log For Processed Message...' })
+    } else {
+      console.log('Agenda Not Configured')
+      res.json({ job, note: 'Agenda Not Configured' })
+    }
   }))
 
   .get('/mq-bull', asyncWrapper(async (req, res) => { // test message queue - bullmq
@@ -145,9 +150,10 @@ module.exports = express.Router()
       const jobOpts = { removeOnComplete: true, removeOnFail: true }
       bull.add({ message: new Date() }, jobOpts)
       console.log('Bull Pub')
+      res.json({ note: 'Check Server Console Log For Processed Message...' })
     } else {
       console.log('No Bull MQ configured')
+      res.json({ note: 'No Bull MQ configured' })
     }
-    res.json({ note: 'Check Server Console Log For Processed Message...' })
   }))
 

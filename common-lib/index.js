@@ -1,6 +1,6 @@
-const path = require('path')
-require(path.join(process.cwd(), 'setup'))
-
+// const path = require('path')
+// require(path.join(process.cwd(), 'setup'))
+require('./setup')
 const { server } = require(LIB_PATH + '/app')
 const { API_PORT } = require(LIB_PATH + '/config')
 

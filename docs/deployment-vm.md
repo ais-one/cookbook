@@ -62,7 +62,7 @@ https://certbot.eff.org/docs/using.html#renewing-certificates
 
 ```bash
 sudo service apache2 stop
--- sudo certbot certonly --standalone -d <subdomain>.example.com
+# sudo certbot certonly --standalone -d <subdomain>.example.com
 sudo certbot certonly --standalone --preferred-challenges http -d <domain>
 sudo service apache2 start
 ```
@@ -89,11 +89,7 @@ chmod +rx /etc/letsencrypt/archive
 
 ## Using port below 1024
 
-### PM2
-
-https://www.digitalocean.com/community/tutorials/how-to-use-pm2-to-setup-a-node-js-production-environment-on-an-ubuntu-vps
-
-> this one we did not use
+### Method 1 - Use Authbind (Preferred)
 
 http://pm2.keymetrics.io/docs/usage/specifics/#listening-on-port-80-w-o-root
 
@@ -114,6 +110,10 @@ source ~/.bashrc
 **package.json**
 "production-start": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"cd ~/api; authbind --deep pm2 start --only api --env production;\"",
 "production-stop": "ssh -i ../../test.pem ubuntu@127.0.0.1 \"cd ~/api; pm2 delete api;\"",
+
+### Method 2 - Create Safe User
+
+https://www.digitalocean.com/community/tutorials/how-to-use-pm2-to-setup-a-node-js-production-environment-on-an-ubuntu-vps
 
 
 ## Running on VM (eg. Droplet / EC2 / GCE)
