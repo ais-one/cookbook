@@ -240,6 +240,7 @@ vue-crud-x
 |  |  +- dist/ : distribution folder for CRUD component
 |  +- app.js : the express app boilerplate
 |  +- config.js: the base config
+|  +- setup.js: setup globals
 +- docs/ : documentation
 +- example-app : an example backend application **Use this example for your project**
 |  +- config/ : centralized config folder
@@ -262,12 +263,6 @@ vue-crud-x
 |  +- seeds/
 |  +- tests/ : Jest tests
 |  +- uploads/ : for serving static files - files
-|  +- web/ : frontend associated to the application
-|  |  +- pwa/
-|  |  +- spa/
-|  |  +- ssr/
-|  |  +- vite/
-|  |  +- <your other front end here>
 |  +- docker-compose.yml : docker stuff, [work in progress]
 |  +- Dockerfile : docker stuff, [work in progress]
 |  +- ecosystem.config.js
@@ -276,15 +271,23 @@ vue-crud-x
 |  +- knexfile.js
 |  +- package.json
 |  +- README.md
++- example-web/ : frontend associated to the application
+|  +- pwa/
+|  +- spa/
+|  +- ssr/
+|  +- vite/
+|  +- <your other front end here>
++- sandbox/ : Useful scripts
 +- .dockerignore
 +- .eslintrc.json
 +- .gitignore
-+- deploy.sh
++- deploy-be.sh
++- deploy-fe.sh
 +- LICENCE
 +- package.json
 +- README.md
 +- RELEASE.md
-+- setup.js
++- update.sh
 ```
 
 

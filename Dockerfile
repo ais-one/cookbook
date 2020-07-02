@@ -22,7 +22,7 @@ WORKDIR /usr/src/app
 
 # Set Environment Variables Here
 ENV NODE_ENV=production
-ENV APPNAME=example-app
+ENV APP_NAME=example-app
 
 # Copy dependency definitions
 # A wildcard is used to ensure both package.json AND package-lock.json are copied

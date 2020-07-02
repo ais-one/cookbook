@@ -1,5 +1,5 @@
 // use the command below in Windows to test exit
-// set NODE_ENV=development&&set APPNAME=example-app&&node index.js
+// set NODE_ENV=development&&node index.js
 
 // https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
 // signals: http://man7.org/linux/man-pages/man7/signal.7.html
