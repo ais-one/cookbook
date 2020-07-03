@@ -1,0 +1,114 @@
+# Reference https://gitlab.com/Tjth-ltd/docker-mongodb-replicaset
+#
+# sudo docker-compose up -d
+# rs.initiate( { _id : "test", members: [ { _id: 0, host: "mongodb1:27017" }, { _id: 1, host: "mongodb2:27018" }, { _id: 2, host: "mongodb3:27019" },] })
+# rs.initiate() # if you are only initiating with 1 member
+# rs.status()
+# rs.add( { host: "mongodb4:27020", priority: 0, votes: 0 } ) # add new member
+# Making a "Hidden" Replicaset member
+# rs.add( { host: "mongodb5:27021", priority: 0, votes: 0 } )
+# Now use rs.status() to get the "id" of the new replicaset member - Make a note of this _id:
+# Now edit the replicaset configuration to set this new member to "hidden", replacing *id* with the value you noted before (Eg 4)
+# cfg = rs.conf()
+# cfg.members[4].priority = 0
+# cfg.members[4].hidden = true
+# rs.reconfig(cfg)
+# rs.remove("mongodb4:27020") # Removing a Replicaset Member - run command on current Mongodb PRIMARY server
+version: '3.5'
+services:
+  # nodejs:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   image: nodejs # image name
+  #   container_name: nodejs # container name
+  #   restart: unless-stopped
+  #   environment:
+  #     - NODE_ENV=$NODE_ENV
+  #   ports:
+  #     - '80:3000' # "host:container"
+  #   depends_on: 
+  #     - mongodb1:
+  #         condition: service_healthy
+  #   env_file: .env
+  #   volumes:
+  #     - .:/home/node/app # "host:container"
+  #     - node_modules:/home/node/app/node_modules # "host:container"
+  #   networks:
+  #     - app-network
+  #   command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon app.js
+  #   links:
+  #     - mongo
+
+  # app:
+  #   image: 'workflowengine:0.6.0'
+  #   depends_on: 
+  #     - mongodb1:
+  #         condition: service_healthy
+  #   environment:
+  #     - NODE_ENV=uat
+  #   ports:
+  #     - '8080:8080'
+  mongodb1:
+    networks:
+      - my-network-name
+    image: 'mongo:latest'
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+    container_name: 'mongodb1'
+    environment:
+      - 'MONGO_DATA_DIR=/data/db'
+    ports:
+      - '27017:27017'
+    volumes:
+      - './data/db1:/data/db'
+    command: 'mongod --replSet "test" --bind_ip 0.0.0.0 --port 27017'
+    restart: 'unless-stopped' # no (default), on-failure, always, unless-stopped
+  # mongodb2:
+  #   image: 'mongo:latest'
+  #   container_name: 'mongodb2'
+  #   environment:
+  #     - 'MONGO_DATA_DIR=/data/db'
+  #   ports:
+  #     - '27018:27018'
+  #   volumes:
+  #     - './data/db2:/data/db'
+  #   command: 'mongod --replSet "test" --bind_ip 0.0.0.0 --port 27018'
+  #   restart: 'always'
+  # mongodb3:
+  #   image: 'mongo:latest'
+  #   container_name: 'mongodb3'
+  #   environment:
+  #     - 'MONGO_DATA_DIR=/data/db'
+  #   ports:
+  #     - '27019:27019'
+  #   volumes:
+  #     - './data/db3:/data/db'
+  #   command: 'mongod --replSet "test" --bind_ip 0.0.0.0 --port 27019'
+  #   restart: 'always'
+  # mongodb4:
+  #   image: 'mongo:latest'
+  #   container_name: 'mongodb4'
+  #   environment:
+  #     - 'MONGO_DATA_DIR=/data/db'
+  #   ports:
+  #     - '27020:27020'
+  #   volumes:
+  #     - './data/db4:/data/db'
+  #   command: 'mongod --replSet "test" --bind_ip 0.0.0.0 --port 27020'
+  #   restart: 'always'
+  # mongodb5:
+  #   image: 'mongo:latest'
+  #   container_name: 'mongodb5'
+  #   environment:
+  #     - 'MONGO_DATA_DIR=/data/db'
+  #   ports:
+  #     - '27021:27021'
+  #   volumes:
+  #     - './data/db5:/data/db'
+  #   command: 'mongod --replSet "test" --bind_ip 0.0.0.0 --port 27021'
+  #   restart: 'always'
+
+networks:
+  my-network-name:
+    name: my-test-net

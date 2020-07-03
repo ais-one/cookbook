@@ -5,6 +5,7 @@ web_modules
 # files not to be committed
 secret
 
+docker-devenv/mongodb/data
 .DS_Store
 dist
 build

@@ -21,7 +21,7 @@ EXPOSE 3001
 WORKDIR /usr/src/app
 
 # Set Environment Variables Here
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 ENV APP_NAME=example-app
 
 # Copy dependency definitions
@@ -30,8 +30,8 @@ ENV APP_NAME=example-app
 # COPY package.json package-lock*.json ./
 COPY package*.json ./
 # Get all the code needed to run the app
-COPY common-lib .
-COPY example-app .
+COPY common-lib ./common-lib
+COPY example-app ./example-app
 
 # Install dependecies
 # If you are building your code for production
@@ -41,7 +41,7 @@ RUN npm install --only=production && npm cache clean --force && cd example-app &
 # Serve the app
 # https://www.docker.com/blog/keep-nodejs-rockin-in-docker/
 # do not use file watchers or process managers in production
-CMD ["node", "index.js"]
+CMD ["node", "example-app/index.js"]
 
 # WORKDIR ${foo}   # WORKDIR /bar
 # ADD . $foo       # ADD . /bar

@@ -8,21 +8,15 @@ services:
     image: nodejs # image name
     container_name: nodejs # container name
     restart: unless-stopped
-    env_file: .env
-    environment:
-      - NODE_ENV=$NODE_ENV
     ports:
-      - "80:3000" # "host:container"
-    volumes:
-      - .:/home/node/app # "host:container"
-      - node_modules:/home/node/app/node_modules # "host:container"
-    networks:
-      - app-network
-    command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon app.js
-    links:
-      - mongo
-  mongo:
-    container_name: mongo
-    image: mongo
-    ports:
-      - "27017:27017"
+      - "8080:3000" # "host:container"
+    # environment:
+    #   - NODE_ENV=$NODE_ENV
+    # volumes:
+    #   - .:/home/node/app # "host:container"
+    #   - node_modules:/home/node/app/node_modules # "host:container"
+    # command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon app.js
+networks:
+  default:
+    external:
+      name: my-test-net # this name is in the ais-one/docker-devenv project, mongodb docker-compose.yml file
