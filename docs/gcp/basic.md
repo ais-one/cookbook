@@ -15,6 +15,7 @@ https://cloud.google.com/storage/docs/gsutil_install
 
 ### auth, change users, set projects, etc.
 
+```bash
 gcloud init
 
 login: gcloud auth login
@@ -25,14 +26,19 @@ gcloud projects list
 
 gcloud config set project [PROJECT_ID]
 
+gcloud config set compute/zone [ZONE]
+
 gcloud config list
+```
 
 ### components
 
+```
 gcloud components list
 gcloud components install [COMPONENT_ID] (e.g. kubectl)
 gcloud components update
 gcloud components remove [COMPONENT_ID]
+```
 
 ## Add Users To Pooject
 
@@ -41,6 +47,11 @@ TBD
 ## Create Service Keys
 
 TBD
+
+
+## Using Service Keys
+
+gcloud auth activate-service-account <service_key.client_email> --key-file=service_key.json
 
 
 

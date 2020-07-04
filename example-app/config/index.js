@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-console.log('TEST_ENV =',process.env.TEST_ENV)
+if (process.env.TEST_ENV) console.log('TEST_ENV =', process.env.TEST_ENV)
 let KNEXFILE = null
 let GCP_KEY = null
 try {

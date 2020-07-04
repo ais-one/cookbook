@@ -5,13 +5,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        ARG_API_PORT: 3334
     image: nodejs # image name
     container_name: nodejs # container name
     restart: unless-stopped
     ports:
-      - "8080:3000" # "host:container"
+      - "4000:3334" # "host:container"
     # environment:
-    #   - NODE_ENV=$NODE_ENV
+    #   - API_PORT=3333
+    #   - NODE_ENV=development
+    #   - APP_NAME=example-app
     # volumes:
     #   - .:/home/node/app # "host:container"
     #   - node_modules:/home/node/app/node_modules # "host:container"

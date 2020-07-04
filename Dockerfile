@@ -6,10 +6,15 @@
 # Create image based on the official Node 6 image from the dockerhub
 # FROM node:12
 FROM node:12-alpine
+# RUN apk update && apk add python && rm -rf /var/cache/apk/*
+RUN apk update && apk add python make g++ && rm -rf /var/cache/apk/*
 
+ARG ARG_API_PORT=3333
+ARG ARG_NODE_ENV=development
+ARG ARG_APP_NAME=example-app
 
 # Expose the port the app runs in
-EXPOSE 3000
+EXPOSE $ARG_API_PORT
 
 # websocket
 EXPOSE 3001
@@ -21,22 +26,29 @@ EXPOSE 3001
 WORKDIR /usr/src/app
 
 # Set Environment Variables Here
-ENV NODE_ENV=development
-ENV APP_NAME=example-app
+# or should be passed in ?
+ENV API_PORT=$ARG_API_PORT
+ENV NODE_ENV=$ARG_NODE_ENV
+ENV APP_NAME=$ARG_APP_NAME
 
 # Copy dependency definitions
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 # COPY package.json package-lock*.json ./
 COPY package*.json ./
+
+# Install dependecies here before other copy so you do not bust the cache
+# If you are building your code for production
+# RUN npm ci --only=production
+RUN npm install --only=production && npm cache clean --force
+
+
 # Get all the code needed to run the app
 COPY common-lib ./common-lib
 COPY example-app ./example-app
 
-# Install dependecies
-# If you are building your code for production
-# RUN npm ci --only=production
-RUN npm install --only=production && npm cache clean --force && cd example-app && npm install --only=production && npm cache clean --force
+RUN cd example-app && npm install --only=production && npm cache clean --force
+
 
 # Serve the app
 # https://www.docker.com/blog/keep-nodejs-rockin-in-docker/

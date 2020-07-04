@@ -22,7 +22,7 @@ const fcmSend = require(LIB_PATH + '/comms/fcm')
 //   size: 110
 // }
 
-const { UPLOAD_PATH } = require('../config')
+const { UPLOAD_PATH, NODE_ENV } = require('../config')
 const { gcpGetSignedUrl } = require(LIB_PATH + '/services/gcp')
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
@@ -83,7 +83,11 @@ module.exports = express.Router()
    *        - "Base"
    *      description: Health check
    */
-  .get('/healthcheck', (req, res) => { res.json({ message: 'OK' }) }) // health check
+  .get('/healthcheck', (req, res) => { res.json({
+    message: 'OK',
+    app: APP_NAME,
+    environment: NODE_ENV
+  }) }) // health check
   /**
    * @swagger
    * /api/health-auth:
