@@ -1,17 +1,17 @@
 version: '3'
 
 services:
-  nodejs:
+  vcx-app:
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        ARG_API_PORT: 3334
+        ARG_API_PORT: 3000
     image: nodejs # image name
     container_name: nodejs # container name
     restart: unless-stopped
     ports:
-      - "4000:3334" # "host:container"
+      - "3000:3000" # "host:container"
     # environment:
     #   - API_PORT=3333
     #   - NODE_ENV=development

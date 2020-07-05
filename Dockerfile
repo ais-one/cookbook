@@ -9,7 +9,8 @@ FROM node:12-alpine
 # RUN apk update && apk add python && rm -rf /var/cache/apk/*
 RUN apk update && apk add python make g++ && rm -rf /var/cache/apk/*
 
-ARG ARG_API_PORT=3333
+# available in build time only
+ARG ARG_API_PORT=8080
 ARG ARG_NODE_ENV=development
 ARG ARG_APP_NAME=example-app
 
@@ -25,11 +26,14 @@ EXPOSE 3001
 # Change directory so that our commands run inside this new directory
 WORKDIR /usr/src/app
 
-# Set Environment Variables Here
+# Set Environment Variables Here - available in run time
 # or should be passed in ?
-ENV API_PORT=$ARG_API_PORT
-ENV NODE_ENV=$ARG_NODE_ENV
-ENV APP_NAME=$ARG_APP_NAME
+ENV API_PORT $ARG_API_PORT
+ENV NODE_ENV $ARG_NODE_ENV
+ENV APP_NAME $ARG_APP_NAME
+
+# for cloud run
+ENV PORT $ARG_API_PORT
 
 # Copy dependency definitions
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -45,15 +49,15 @@ RUN npm install --only=production && npm cache clean --force
 
 # Get all the code needed to run the app
 COPY common-lib ./common-lib
-COPY example-app ./example-app
+COPY $ARG_APP_NAME ./$ARG_APP_NAME
 
-RUN cd example-app && npm install --only=production && npm cache clean --force
+RUN cd $APP_NAME && npm install --only=production && npm cache clean --force
 
 
 # Serve the app
 # https://www.docker.com/blog/keep-nodejs-rockin-in-docker/
 # do not use file watchers or process managers in production
-CMD ["node", "example-app/index.js"]
+CMD node ${APP_NAME}/index.js
 
 # WORKDIR ${foo}   # WORKDIR /bar
 # ADD . $foo       # ADD . /bar

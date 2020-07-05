@@ -94,3 +94,18 @@ docker build -t gcr.io/[PROJECT_ID]/[your-app-name]:latest .
 gcloud auth configure-docker
 docker push gcr.io/[PROJECT_ID]/[your-app-name]:latest
 ```
+
+```bash
+# run in wsl
+sudo docker build -t gcr.io/mybot-live/vcx-app:latest --build-arg ARG_API_PORT=8080 .
+
+# run in windows - slow in wsl
+gcloud config set project mybot-live
+gcloud auth configure-docker
+docker push gcr.io/mybot-live/vcx-app:latest
+gcloud run deploy vcx-app-service --image gcr.io/mybot-live/vcx-app:latest --platform managed --region asia-east1 --allow-unauthenticated
+
+gcloud run deploy helloworld --image gcr.io/cloudrun/hello --platform managed --region asia-east1 --allow-unauthenticated --port=3000
+gcloud container images delete gcr.io/cloudrun/helloworld
+gcloud run services delete helloworld --platform managed --region asia-east1
+```

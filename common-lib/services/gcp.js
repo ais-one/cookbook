@@ -1,6 +1,7 @@
 'use strict'
 
 const {Storage} = require('@google-cloud/storage')
+const Firestore = require('@google-cloud/firestore')
 
 const { GCP_KEY, GCP_DEFAULT_BUCKET = '', CORS_ORIGINS } = require('../config')
 let bucketName = GCP_DEFAULT_BUCKET
@@ -12,6 +13,16 @@ if (!storage && GCP_KEY && GCP_KEY.project_id) {
     client_email, private_key
   } })
 }
+
+let firestore // use firestore like redis for user sessions
+if (!firestore && GCP_KEY && GCP_KEY.project_id) {
+  const { client_email, private_key } = GCP_KEY
+  firestore = new Firestore({ credentials: {
+    client_email, private_key
+  } })  
+}
+
+exports.firestore = firestore
 
 exports.gcpSetBucket = async (newBucketName) => bucketName = newBucketName || bucketName
 

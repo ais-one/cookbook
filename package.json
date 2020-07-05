@@ -24,6 +24,7 @@
     "node": "12"
   },
   "dependencies": {
+    "@google-cloud/firestore": "^4.0.0",
     "@google-cloud/storage": "^5.1.1",
     "agenda": "^3.0.0",
     "axios": "^0.19.2",
