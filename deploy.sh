@@ -18,8 +18,11 @@ fi
 if [ ! $2 ]; then # eg. uat
     echo "Missing project environment. Set at package.json" && read && exit
 fi
+if [ ! $3 ]; then # eg. example-web
+    echo "Missing path to web. Set at package.json" && read && exit
+fi
 
-# OIFS=$IFS; IFS=","; sites=($3); IFS=$OIFS
+# OIFS=$IFS; IFS=","; sites=("site 1,site b,site aaa"); IFS=$OIFS
 # for site in "${sites[@]}"; do
 #    echo $site
 # done
@@ -30,10 +33,24 @@ baseDir=`pwd`
 PEM=./$1/config/secret/$2.pem
 read URL < $1/config/secret/$2.url
 
+# deploy to cloud run etc...
+# get current timestamp...
+# gcloud auth activate-service-account --key-file=$1/config/secret/$2.gcp.json
+# gcloud config set project mybot-live
+# gcloud auth configure-docker
+# docker build -t gcr.io/[PROJECT_ID]/[your-app-name]:latest .
+# docker push gcr.io/[PROJECT_ID]/[your-app-name]:latest
+# gcloud run deploy vcx-app-service --image gcr.io/mybot-live/vcx-app:latest --platform managed --region asia-east1 --allow-unauthenticated --port=3000
+
+# gcloud container images delete gcr.io/cloudrun/helloworld
+# gcloud run services delete helloworld --platform managed --region asia-east1
+
+
 PS3="Please enter your choice: "
 options=(
   "ssh"
   "deploy-api"
+  "deploy-fe"
   "list" "start" "stop"
   "quit"
 )
@@ -53,6 +70,36 @@ do
         echo "Installing packages"
         ssh -i $PEM $URL "cd ~/app;npm i;cd $1;npm i"
       fi
+      ;;
+    "deploy-fe")
+      echo "NOTE: gsutil.cmd in windows git bash. If cannot find command in Windows, it could be space in path (.../Google Cloud/...) to gsutil."
+      echo "Fix by renaming with no space, also edit the PATH env, restart the command console."
+      gcloud auth activate-service-account --key-file=$1/config/secret/$2.gcp.json
+      baseDir=`pwd`
+      OIFS=$IFS;
+      while IFS=, read -r site gs; do
+        # build
+        cd $3/$site
+        read -p "build and deploy - site $3/$site ($2) (y/n)?" yn < /dev/tty
+        if [[ $yn == "Y" || $yn == "y" ]]; then
+          npm run build-$2
+          gsutil.cmd -m rsync -R dist $gs
+        fi
+        # mkdir -p $baseDir/build/$1/$site/dist
+        # cp -r $site/dist $baseDir/build/$1/$site
+        echo "Site built"
+        cd $baseDir
+      done < $1/config/secret/$2.web.csv
+      IFS=$OIFS
+      cd $baseDir
+# clear cloudflare cache
+# cat <<-EOF
+# # Sample command to clear cloudflare cache 
+# curl -X POST "https://api.cloudflare.com/client/v4/zones/YOUR-ZONE-ID/purge_cache" \
+#   -H "X-Auth-Email: YOUR-CLOUDFLARE-EMAIL" -H "X-Auth-Key: YOUR-GLOBAL-API-KEY" \
+#   -H "Content-Type: application/json" --data '{"purge_everything":true}'
+# # CircleCI TBD - [![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://circleci.com/gh/circleci/circleci-docs)
+# EOF
       ;;
     "list") ssh -i $PEM $URL "pm2 list" ;;
     "start") ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start $1/ecosystem.config.js --env $2;" ;;

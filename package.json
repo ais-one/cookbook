@@ -5,7 +5,7 @@
   "author": "",
   "license": "ISC",
   "config": {
-    "env": "development",
+    "env": "uat",
     "app": "example-app",
     "web": "example-web"
   },
@@ -16,8 +16,7 @@
     "dev": "cross-env NODE_ENV=development nodemon %npm_package_config_app%/index.js",
     "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
     "test": "cross-env NODE_ENV=%npm_package_config_env% jest --config=%npm_package_config_app%/jest.config.js --watchAll",
-    "deploy:be": "deploy-be.sh %npm_package_config_app% %npm_package_config_env%",
-    "deploy:fe": "deploy-fe.sh %npm_package_config_web% %npm_package_config_env%",
+    "deploy": "deploy.sh %npm_package_config_app% %npm_package_config_env% %npm_package_config_web%",
     "lint": "eslint ."
   },
   "engines": {
