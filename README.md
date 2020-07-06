@@ -198,33 +198,59 @@ You can override the configurations using .env.<NODE_ENV> files, e.g. .env.devel
 See script **update.sh**
 
 
-## Manual Deployment (Work In Progress)
+## Deployment
 
-The following environments are supported:
-- development (local laptop)
-- uat (vm or cloud)
-- staging (vm or cloud)
-- production (vm or cloud)
+The following environments
 
-For deployment to server or cloud, deploy.sh is example on how to do the following:
-- build and deploy frontend SPA bundled code to GCP storage
-- deploy express app to VM using SSH
-  - transfer code to VM
-  - install dependencies
-  - startup and monitoring using PM2
-- deploy express app to docker [TBD]
-- deploy express app to GCP Group Instances [TBD]
-- deploy express app to GKE [TBD]
+- development (used for local development)
+- uat (uat deployment design can also be used for higher environments such as production)
+
+### development
+
+- cloudflare - no
+- frontend - local
+- backend - local
+- mongodb - local
+- file uploads - local folder / Google object storage
+- sqlite - local file
+- user_session - local memory 
+
+**Commands**
 
 ```
-npm run deploy
+npm run dev
+npm run dev:spa
 ```
+
+### uat (and also production)
+
+- Domain name verification
+- cloudflare
+  - DNS (for API, for frontend)
+  - full SSL (can be self-signed at server side)
+- frontend - GCP object storage, https
+- backend - docker-> Google Cloud Run, https
+  - OPTION deploy to GCP Group Instances [TBD]
+  - OPTION deploy to GKE [TBD]
+- mongodb - Mongo Atlas
+- file uploads - Google object storage
+- sqlite - local file (should replace with SQL DB)
+- user_session - mongodb
+
+**Commands**
+
+- deploy.sh -> deploy-cr
+- deploy.sh -> deploy-fe
+
+> UNUSED (for VM deployment): deploy.sh -> deploy-vm -> stop -> start -> list
 
 > work needs to be done on the organise and reference the setup documentation in the docs folder
+
 
 ## CircleCI Deployment (Work In Progress)
 
 TBD
+
 
 ---
 
@@ -245,9 +271,9 @@ vue-crud-x
 |  +- app.js : the express app boilerplate
 |  +- config.js: the base config
 |  +- setup.js: setup globals
-+- docs/ : documentation
 +- docker-devenv/ : docker for development environment (e.g. run redis, mongodb from here)
 |  +- mongodb
++- docs/ : documentation
 +- example-app : an example backend application **Use this example for your project**
 |  +- config/ : centralized config folder
 |  |  +- certs/ : certificates for HTTPS and JWT signing

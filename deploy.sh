@@ -58,7 +58,7 @@ do
       # get current timestamp...
       gcloud auth activate-service-account --key-file=$1/config/secret/$2.gcp.json
       gcloud config set project $GCP_PROJECT_ID
-      # gcloud auth configure-docker
+      gcloud auth configure-docker
       # docker build -t gcr.io/$GCP_PROJECT_ID/$1:latest .
       # docker push gcr.io/$GCP_PROJECT_ID/$1:latest
       # gcloud run deploy $1-service --image gcr.io/$GCP_PROJECT_ID/$1:latest --platform managed --region asia-east1 --allow-unauthenticated --port=3000
@@ -83,6 +83,7 @@ do
       echo "NOTE: gsutil.cmd in windows git bash. If cannot find command in Windows, it could be space in path (.../Google Cloud/...) to gsutil."
       echo "Fix by renaming with no space, also edit the PATH env, restart the command console."
       gcloud auth activate-service-account --key-file=$1/config/secret/$2.gcp.json
+      gcloud config set project $GCP_PROJECT_ID
       baseDir=`pwd`
 
       IFS=';' read -r -a rows <<< $WEB
