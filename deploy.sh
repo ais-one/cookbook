@@ -31,25 +31,19 @@ fi
 baseDir=`pwd`
 
 PEM=./$1/config/secret/$2.pem
-read URL < $1/config/secret/$2.url
+URL=`grep URL $1/config/secret/$2.deploy | cut -d '=' -f2`
+WEB=`grep WEB $1/config/secret/$2.deploy | cut -d '=' -f2`
+GCP_PROJECT_ID=`grep GCP_PROJECT_ID $1/config/secret/$2.deploy | cut -d '=' -f2`
 
-# deploy to cloud run etc...
-# get current timestamp...
-# gcloud auth activate-service-account --key-file=$1/config/secret/$2.gcp.json
-# gcloud config set project mybot-live
-# gcloud auth configure-docker
-# docker build -t gcr.io/[PROJECT_ID]/[your-app-name]:latest .
-# docker push gcr.io/[PROJECT_ID]/[your-app-name]:latest
-# gcloud run deploy vcx-app-service --image gcr.io/mybot-live/vcx-app:latest --platform managed --region asia-east1 --allow-unauthenticated --port=3000
-
-# gcloud container images delete gcr.io/cloudrun/helloworld
-# gcloud run services delete helloworld --platform managed --region asia-east1
-
+# echo $WEB
+# echo $URL
+# echo $PEM
 
 PS3="Please enter your choice: "
 options=(
   "ssh"
-  "deploy-api"
+  "deploy-vm"
+  "deploy-cr"
   "deploy-fe"
   "list" "start" "stop"
   "quit"
@@ -58,8 +52,22 @@ select opt in "${options[@]}"
 do
   case $opt in
     "ssh") ssh -i $PEM $URL -L 27000:127.0.0.1:27017 ;; # allow connection to mongodb via port 27000
-    "deploy-api")
-      echo "Deploy Back End... take note public and upload folders"
+    "deploy-cr")
+      echo "Deploy Back End to GCP Cloud Run"
+      # deploy to cloud run etc...
+      # get current timestamp...
+      gcloud auth activate-service-account --key-file=$1/config/secret/$2.gcp.json
+      gcloud config set project $GCP_PROJECT_ID
+      # gcloud auth configure-docker
+      # docker build -t gcr.io/$GCP_PROJECT_ID/$1:latest .
+      # docker push gcr.io/$GCP_PROJECT_ID/$1:latest
+      # gcloud run deploy $1-service --image gcr.io/$GCP_PROJECT_ID/$1:latest --platform managed --region asia-east1 --allow-unauthenticated --port=3000
+
+      # gcloud run services delete $1-service --platform managed --region asia-east1
+      # gcloud container images delete gcr.io/cloudrun/helloworld
+      ;;
+    "deploy-vm")
+      echo "Deploy Back End to VM... take note public and upload folders"
       tar -zcvf deploy-app.tgz \
         --exclude=common-lib/webpacked/node_modules --exclude=$1/node_modules \
         common-lib $1/ package.json
@@ -76,21 +84,25 @@ do
       echo "Fix by renaming with no space, also edit the PATH env, restart the command console."
       gcloud auth activate-service-account --key-file=$1/config/secret/$2.gcp.json
       baseDir=`pwd`
-      OIFS=$IFS;
-      while IFS=, read -r site gs; do
-        # build
-        cd $3/$site
-        read -p "build and deploy - site $3/$site ($2) (y/n)?" yn < /dev/tty
-        if [[ $yn == "Y" || $yn == "y" ]]; then
-          npm run build-$2
-          gsutil.cmd -m rsync -R dist $gs
-        fi
-        # mkdir -p $baseDir/build/$1/$site/dist
-        # cp -r $site/dist $baseDir/build/$1/$site
-        echo "Site built"
-        cd $baseDir
-      done < $1/config/secret/$2.web.csv
-      IFS=$OIFS
+
+      IFS=';' read -r -a rows <<< $WEB
+      for row in "${rows[@]}"; do
+          IFS=', ' read -r -a cols <<< $row
+          site=${cols[0]}
+          gs=${cols[1]}
+
+          # build
+          cd $3/$site
+          read -p "build and deploy - site $3/$site ($2) (y/n)?" yn < /dev/tty
+          if [[ $yn == "Y" || $yn == "y" ]]; then
+            npm run build-$2
+            gsutil.cmd -m rsync -R dist $gs
+          fi
+          # mkdir -p $baseDir/build/$1/$site/dist
+          # cp -r $site/dist $baseDir/build/$1/$site
+          echo "Site built"
+          cd $baseDir
+      done
       cd $baseDir
 # clear cloudflare cache
 # cat <<-EOF
@@ -114,10 +126,3 @@ done
 
 echo "Done... press enter to exit"
 read # pause exit in windows
-
-# for f in `ls -A "common-lib" | grep -v "common-web"`; do
-#   cp -r common-lib/$f build/common-lib
-# done
-# for f in `ls -A | grep -v "node_modules" | grep -v "web" | grep -v ".git"`; do
-#   cp -r $f $baseDir/build/$1
-# done
