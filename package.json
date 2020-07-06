@@ -10,7 +10,7 @@
     "web": "example-web"
   },
   "scripts": {
-    "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd web/spa && npm i",
+    "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd ../%npm_package_config_web%/spa && npm i",
     "install-db": "cd %npm_package_config_app% &&cross-env NODE_ENV=%npm_package_config_env% npm run install-db",
     "spa": "cd %npm_package_config_web%/spa && cross-env NODE_ENV=%npm_package_config_env% npm run serve",
     "dev": "cross-env NODE_ENV=development nodemon %npm_package_config_app%/index.js",
@@ -53,13 +53,13 @@
     "sqlite3": "^4.2.0",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4",
-    "ws": "^7.3.0"
+    "ws": "^7.3.1"
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
     "cross-env": "^7.0.2",
     "cypress": "^4.9.0",
-    "eslint": "^7.3.1",
+    "eslint": "^7.4.0",
     "eslint-plugin-promise": "^4.2.1",
     "jest": "^26.1.0",
     "node-mocks-http": "^1.8.1",
