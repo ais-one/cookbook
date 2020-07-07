@@ -41,7 +41,7 @@ async function sendGrid(to, from, subject, text, html) {
     await axios.post('https://api.sendgrid.com/v3/mail/send', body, options)
     console.log('sendMail ok', to, from, subject, text)
   } catch (e) {
-    console.log('sendMail err', e.toString())
+    console.log('sendMail err', e.toString(), SENDGRID_KEY)
   }
 }
 

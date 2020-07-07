@@ -3,7 +3,7 @@
     <loading-blocker :loading="loading"></loading-blocker>
     <v-layout row>
       <v-flex xs12 sm6 offset-sm3>
-        <h2 class="text-center">Sign In</h2>
+        <h2 class="text-center">Sign In (V{{ APP_VERSION }})</h2>
         <v-card>
           <v-card-text>
             <v-container v-if="!(user && !user.verified)">
@@ -42,7 +42,7 @@
 import VueRecaptcha from 'vue-recaptcha'
 import { mapState } from 'vuex'
 import 'ext-lib/webpacked/vcx-loading-blocker.js'
-import { RECAPTCHA_KEY, GITHUB_CLIENT_ID } from '@/config'
+import { RECAPTCHA_KEY, GITHUB_CLIENT_ID, APP_VERSION } from '@/config'
 
 export default {
   components: { VueRecaptcha }, // recaptcha

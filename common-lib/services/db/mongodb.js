@@ -35,7 +35,7 @@ const mongo = {
         // mongo.client.startSession({ defaultTransactionOptions })
         client.connect(err => {
           if (!err) {
-            console.log('MONGO CONNECTED')
+            console.log('MONGO CONNECTED', MONGO_URL)
             mongo.db = client.db()
             // mongo.stream = db.db('mm').collection('exchangeUsers').watch() //  for streaming data
             // mongo.stream.on('change', (change) => {

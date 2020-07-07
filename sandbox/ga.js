@@ -1,7 +1,7 @@
 
 // // Generate Password
 const bcrypt = require('bcryptjs')
-let password = bcrypt.hashSync('1111', 12)
+let password = bcrypt.hashSync('tech@!@#', 12)
 console.log(password)
 
 // Generate GA OTP Password
@@ -46,6 +46,7 @@ console.log('secret', secret) // save for the user
 // organizationName
 // organizationalUnitName
 // emailAddress
+const selfsigned = require('selfsigned')
 var attrs = [{ name: 'commonName', value: 'contoso.com' }];
 
 var pems = selfsigned.generate(attrs, {
