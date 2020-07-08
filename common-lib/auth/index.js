@@ -3,10 +3,9 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 // const uuid = require('uuid/v4')
 // const qrcode = require('qrcode')
-const { JWT_ALG, JWT_SECRET, jwtCerts, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv' } = require('../config')
-const { AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELD_GROUPS_FOR_JWT } = require('../config')
-const { AUTH_USER_STORE, AUTH_USER_STORE_NAME } = require('../config')
-
+const { USE_OTP, OTP_EXPIRY, HTTPONLY_TOKEN, AUTH_USER_STORE, AUTH_USER_STORE_NAME } = global.CONFIG
+const { AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELD_GROUPS_FOR_JWT } = global.CONFIG
+const { JWT_ALG, JWT_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv', jwtCerts } = global.CONFIG
 
 const mongo = require('../services/db/mongodb')
 const ObjectID = require('mongodb').ObjectID

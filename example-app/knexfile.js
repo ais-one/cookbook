@@ -14,7 +14,7 @@ dbConfigs = {
   uat: {
     client: 'sqlite3',
     connection: {
-      filename: path.join(__dirname, 'dev.sqlite3')
+      filename: path.join(__dirname, 'dev.sqlite3') // relative to directory that package.json was run
     },
     migrations: { directory: './migrations/db-uat' },
     seeds: { directory: './seeds/db-uat' },

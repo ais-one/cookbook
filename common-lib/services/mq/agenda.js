@@ -1,15 +1,16 @@
 let agenda
 
-exports.open = (config) => {
+exports.open = () => {
   if (!agenda) {
-    const { JOB_TYPES, JOB_DB, JOB_COLLECTION } = config
-    const jobTypes = JOB_TYPES ? JOB_TYPES.split(',') : []
+    const { MONGO_URL, JOB_TYPES, JOB_MONGO_URL, JOB_COLLECTION } = global.CONFIG
 
-    if (jobTypes.length) {
+    const address = JOB_MONGO_URL === 'mongo' ? MONGO_URL : JOB_MONGO_URL || ''
+    const jobTypes = JOB_TYPES ? JOB_TYPES.split(',') : []
+    if (jobTypes.length && JOB_MONGO_URL) {
       const Agenda = require('agenda')
       const connectionOpts = { // mongodb options
         db: {
-          address: JOB_DB,
+          address,
           collection: JOB_COLLECTION,
           options: {
             useUnifiedTopology: true
@@ -17,7 +18,6 @@ exports.open = (config) => {
           }
         }
       }
-      
       agenda = new Agenda(connectionOpts)
       
       jobTypes.forEach(type => {

@@ -16,8 +16,8 @@ const mongo = {
     if (mongo.client) await mongo.client.close()
     console.log('mongodb closed')
   },
-  open: async (config) => {
-    const { MONGO_URL } = config
+  open: async () => {
+    const { MONGO_URL } = global.CONFIG
     if (!mongo.db && MONGO_URL) {
       const { MongoClient } = require('mongodb')
       try {

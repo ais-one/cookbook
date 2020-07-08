@@ -22,7 +22,7 @@ const fcmSend = require(LIB_PATH + '/comms/fcm')
 //   size: 110
 // }
 
-const { UPLOAD_PATH, NODE_ENV } = require('../config')
+const { UPLOAD_FOLDER } = global.CONFIG
 const { gcpGetSignedUrl } = require(LIB_PATH + '/services/gcp')
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
@@ -50,7 +50,7 @@ const upload = multer({
   //   cb(null, true);
   // },
   storage: multer.diskStorage({
-    destination: function (req, file, cb) { cb(null, UPLOAD_PATH) },
+    destination: function (req, file, cb) { cb(null, UPLOAD_FOLDER) },
     filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname) }
   })
 })
@@ -86,7 +86,7 @@ module.exports = express.Router()
   .get('/healthcheck', (req, res) => { res.json({
     message: 'OK',
     app: APP_NAME,
-    environment: NODE_ENV
+    environment: process.env.NODE_ENV
   }) }) // health check
   /**
    * @swagger
@@ -101,6 +101,7 @@ module.exports = express.Router()
   .get('/health-auth', authUser, (req, res) => { res.json({ message: 'OK' }) }) // health check auth
 
   // test uploads
+  // body action: 'read' | 'write', filename: 'my-file.txt', bucket: 'bucket name'
   .post('/gcp-sign', asyncWrapper(gcpGetSignedUrl))
 
   .post('/upload', upload.single('filedata'), (req,res) => { // avatar is form input name

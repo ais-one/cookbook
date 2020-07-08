@@ -1,4 +1,14 @@
-const  { REDIS_CONFIG } = require('./config')
+const  { REDIS_CONFIG } = global.CONFIG
+// {
+//   port: 6379,
+//   host: '127.0.0.1',
+//   family: 4, // 4 (IPv4) or 6 (IPv6)
+//   password: 'auth',
+//   db: 0,
+//   // if using sentinels
+//   // sentinels: [{ host: 'localhost', port: 26379 }, { host: 'localhost', port: 26380 }],
+//   // name: 'mymaster',
+// }
 
 let redis
 
@@ -8,20 +18,20 @@ if (!redis && REDIS_CONFIG) {
     port: 6379,          // Redis port
     host: '127.0.0.1',   // Redis host
     family: 4,           // 4 (IPv4) or 6 (IPv6)
-    password: process.env.REDIS_PWD || '',
+    password: '',
     db: 0,
     // if using sentinels
     // sentinels: [{ host: 'localhost', port: 26379 }, { host: 'localhost', port: 26380 }],
     // name: 'mymaster',
+    maxRetriesPerRequest: 20,
+    autoResubscribe: true, // default
+    // autoResendUnfulfilledCommands: true,
 
     // This is the default value of `retryStrategy`
     retryStrategy: function (times) {
       var delay = Math.min(times * 50, 2000)
       return delay
     },
-    maxRetriesPerRequest: 20,
-    autoResubscribe: true, // default
-    // autoResendUnfulfilledCommands: true,
     reconnectOnError: function (err) {
       var targetError = 'READONLY'
       if (err.message.slice(0, targetError.length) === targetError) {

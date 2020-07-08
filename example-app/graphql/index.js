@@ -7,8 +7,8 @@ const { ApolloServer, PubSub } = require('apollo-server-express')
 let pubsub
 let apollo
 
-module.exports = function (app, server, config) {
-  const { USE_GRAPHQL } = config
+module.exports = function (app, server) {
+  const { USE_GRAPHQL } = process.env
   if (!apollo && USE_GRAPHQL) {
     const { typeDefs, resolvers } = require('./schema')
     pubsub = new PubSub()

@@ -69,31 +69,30 @@ process.on('uncaughtException', err => {
   // process.exit(1) // force it to crash anyway
 })
 
-module.exports = function(app, config) {
-  const { ENABLE_LOGGER = false } = config
-
+module.exports = function(app) {
   // ------ LOGGING ------
-  const morgan = require('morgan')
+  const { ENABLE_LOGGER } = global.CONFIG
   if (ENABLE_LOGGER) {
+    const morgan = require('morgan')
     app.use(morgan('combined', { // errors
       stream: process.stdout, skip: (req, res) => res.statusCode < 400
     }))
     app.use(morgan('combined', { // ok
       stream: process.stderr, skip: (req, res) => res.statusCode >= 400
     }))  
+    // const winston = require('winston')
+    // logger = winston.createLogger({
+    //   level: 'info',
+    //   format: winston.format.json(),
+    //   defaultMeta: { service: 'user-service' },
+    //   transports: [
+    //     new winston.transports.Console({
+    //       handleExceptions: true,
+    //       json: false
+    //     })
+    //   ]
+    // })
   }
-  // const winston = require('winston')
-  // logger = winston.createLogger({
-  //   level: 'info',
-  //   format: winston.format.json(),
-  //   defaultMeta: { service: 'user-service' },
-  //   transports: [
-  //     new winston.transports.Console({
-  //       handleExceptions: true,
-  //       json: false
-  //     })
-  //   ]
-  // })
 
   // ------ SECURITY ------
   // const helmet = require('helmet')
@@ -104,15 +103,15 @@ module.exports = function(app, config) {
   // Access-Control-Allow-Methods=GET,POST,PUT,PATCH,DELETE,OPTIONS
   // Access-Control-Allow-Headers=Content-Type
   const cors = require('cors')
-  const  { CORS_OPTIONS } = config
+  const  { CORS_OPTIONS } = global.CONFIG
   let { origin, ...options } = CORS_OPTIONS  // origin = ['http://example1.com', 'http://example2.com']
 
-  let whitelist = origin.split(',')
-  if (whitelist.length === 1) origin = whitelist[0]
-  else if (whitelist.length > 1) {
+  let allowList = origin.split(',')
+  if (allowList.length === 1) origin = allowList[0]
+  else if (allowList.length > 1) {
     origin = function (origin, callback) {
       if(!origin) return callback(null, true) // allow requests with no origin (like mobile apps or curl requests)
-      if (whitelist.indexOf(origin) !== -1) {
+      if (allowList.indexOf(origin) !== -1) {
         return callback(null, true)
       } else {
         return callback(new Error('Not allowed by CORS'), false)
@@ -152,7 +151,31 @@ module.exports = function(app, config) {
   app.use(cookieParser('some_secret'))
 
   // ------ SWAGGER ------
-  const  { SWAGGER_DEFS } = config
+  // {
+  //   // Swagger / OpenAPI definitions
+  //   info: {
+  //     title: 'example-app',
+  //     version: '1.0.0',
+  //     description: 'A sample API',
+  //   },
+  //   host: '127.0.0.1:3000', // API host
+  //   basePath: '/',
+  //   tags: [
+  //     { name: 'Auth', description: 'Authentication' },
+  //     { name: 'Base', description: 'The Base API' },
+  //   ],
+  //   schemes: [ 'http', 'https' ],
+  //   securityDefinitions: {
+  //     Bearer: {
+  //       type: 'apiKey',
+  //       name: 'Authorization',
+  //       in: 'header'
+  //     }
+  //   },
+  //   consumes: ['application/json'],
+  //   produces: ['application/json']
+  // },
+  const  { SWAGGER_DEFS } = global.CONFIG
   if (SWAGGER_DEFS) {
     const swaggerUi = require('swagger-ui-express')
     const swaggerJSDoc = require('swagger-jsdoc')
@@ -162,6 +185,5 @@ module.exports = function(app, config) {
       explorer: true
     }))  
   }
-
   return this // this is undefined...
 }

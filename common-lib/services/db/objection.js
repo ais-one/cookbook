@@ -1,7 +1,7 @@
 let Model
 
-exports.open = (config) => {
-  const { NODE_ENV, KNEXFILE } = config
+exports.open = () => {
+  const { NODE_ENV, KNEXFILE } = global.CONFIG
   if (!Model && KNEXFILE) {
     try {
       const Knex = require('knex')

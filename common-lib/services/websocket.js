@@ -23,8 +23,8 @@ let onClientMessage = async (message, ws) => { // client incoming message
   }
 }
 
-exports.open = function (server=null, app=null, config, cb) {
-  const { WS_PORT, WS_KEEEPALIVE_MS, httpsCerts } = config
+exports.open = function (server=null, app=null) {
+  const { WS_PORT, WS_KEEEPALIVE_MS, httpsCerts } = global.CONFIG
   let err
   try {
     if (!wss && WS_PORT) {
@@ -61,11 +61,11 @@ exports.open = function (server=null, app=null, config, cb) {
   } catch (e) {
     err = e.toString()
   }
-  if (cb) cb (err) // run the callback function, err = undefined means ok
+  console.log(err || 'WS API OPEN OK')
   return this
 }
 
-exports.close = function (cb) {
+exports.close = function () {
   let err
   try { // close all connections
     if (wss) {
@@ -77,7 +77,7 @@ exports.close = function (cb) {
   } catch (e) {
     err = e.toString()
   }
-  if (cb) cb(err) // run the callback function, err = undefined means ok
+  console.log(err || 'WS API CLOSE OK')
 }
 
 exports.setOnClientMessage = function (onClientMessageFn) {

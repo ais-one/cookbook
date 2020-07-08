@@ -10,16 +10,20 @@ const app = express()
 const { foo } = require('esm')(module)('./esm/datetime')
 console.log('Value from ES Module file...', foo)
 
-const config = require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
-const { USE_HTTPS, httpsCerts, USE_GRAPHQL } = config
+require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
+const { USE_HTTPS, USE_GRAPHQL, httpsCerts } = global.CONFIG
 const server = USE_HTTPS ? https.createServer(httpsCerts, app) : http.createServer(app)
 
-require(LIB_PATH + '/express/services')(server, app, config)
-require(LIB_PATH + '/express/preroute')(app, config)
+require(LIB_PATH + '/express/services')(server)
+require(LIB_PATH + '/express/preroute')(app)
 // PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token
-require(APP_PATH + '/router')(app)
-if (USE_GRAPHQL) require(APP_PATH + '/graphql')(app, server, config)
-require('./express/postroute')(app, express, config)
+try {
+  require(APP_PATH + '/router')(app)
+  if (USE_GRAPHQL) require(APP_PATH + '/graphql')(app, server)  
+} catch (e) {
+  console.log(e.toString())
+}
+require(LIB_PATH + '/express/postroute')(app, express)
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions

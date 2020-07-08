@@ -1,5 +1,5 @@
 const mongo = require('../services/db/mongodb')
-const { JWT_REFRESH_STORE_NAME } = require('../config')
+const { JWT_REFRESH_STORE_NAME } = global.CONFIG
 
 // NOTES:
 // 1. id field must be unique index (different from mongodb _id) - db.collection('user_session').createIndex({ id: 1 }, { unique: true })

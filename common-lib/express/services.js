@@ -8,15 +8,15 @@
 
 const { sleep } = require('esm')(module)('../esm/sleep')
 
-module.exports = async function (server, app, config) {
+module.exports = async function (server) {
   // process.stdin.resume()
 
-  const objection = require('../services/db/objection').open(config)
-  const mongodb = await require('../services/db/mongodb').open(config)
+  const objection = require('../services/db/objection').open()
+  const mongodb = await require('../services/db/mongodb').open()
 
-  const websocket = require('../services/websocket').open(null, null, config, (err) => console.log(err || 'WS API OPEN OK')) // or set to null
-  const agenda = require('../services/mq/agenda').open(config)
-  const bull = require('../services/mq/bull').open(config)
+  const websocket = require('../services/websocket').open(null, null) // or set to null
+  const agenda = require('../services/mq/agenda').open()
+  const bull = require('../services/mq/bull').open()
 
   // this will not work when run using npm
   const handleExit = async (signal) => {
@@ -25,7 +25,7 @@ module.exports = async function (server, app, config) {
       // close your other stuff...
       try {
         // console.log('websocket', websocket.close)
-        websocket.close((e) => console.log(e || 'WS API CLOSE OK')) // websockets
+        websocket.close() // websockets
         await agenda.close()
         await bull.close()
         await mongodb.close()

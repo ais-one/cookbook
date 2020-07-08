@@ -1,4 +1,5 @@
-const { MONGO_DB, MONGO_URL, JWT_REFRESH_STORE, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE_NAME } = require('../../config')
+const { MONGO_DB, MONGO_URL } = global.CONFIG
+const { JWT_REFRESH_STORE, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE_NAME } = global.CONFIG
 
 let db
 const MongoClient = require('mongodb').MongoClient

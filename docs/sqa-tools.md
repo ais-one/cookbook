@@ -49,3 +49,12 @@ Analyze user behavior across your sites and apps
   * [Page C](../wiki/Page-C)
   * [Page D](../wiki/Page-D)
 * [Page E](../wiki/Page-E)
+
+
+# CI/CD - Gitlab Auto Devops
+
+https://gitlab.com/help/topics/autodevops/index.md
+https://www.gitlab.com/help/user/application_security/sast/index.md
+https://github.com/ajinabraham/NodeJsScan - SAST
+https://github.com/zaproxy/zaproxy - DAST
+https://prometheus.io/ - monitoring

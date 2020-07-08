@@ -1,8 +1,8 @@
 const axios = require('axios')
 
-const { TELEGRAM_API_KEY, TELEGRAM_CHANNEL_ID } = require('../config')
+const { TELEGRAM_API_KEY, TELEGRAM_CHANNEL_ID } = global.CONFIG
 
-console.log('TELEGRAM_API_KEY, TELEGRAM_CHANNEL_ID', TELEGRAM_API_KEY, TELEGRAM_CHANNEL_ID)
+// console.log('TELEGRAM_API_KEY, TELEGRAM_CHANNEL_ID', TELEGRAM_API_KEY, TELEGRAM_CHANNEL_ID)
 
 async function sendTgChannel(text) {
   try {

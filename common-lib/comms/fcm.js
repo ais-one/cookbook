@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-const { FCM_SERVER_KEY } = require('../config')
+const { FCM_SERVER_KEY } = global.CONFIG
 
 const fcmSend = async (to, title, body) => { // send firebase push notification
   try {

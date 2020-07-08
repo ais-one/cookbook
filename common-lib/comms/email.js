@@ -1,5 +1,5 @@
 const axios = require('axios')
-const  { SENDGRID_KEY } = require('../config')
+const  { SENDGRID_KEY, SENDGRID_SENDER } = global.CONFIG
 
 // Sendgrid, Mailgun
 
@@ -22,6 +22,7 @@ async function sendGrid(to, from, subject, text, html) {
     // if (html) msg.html = html
     // await sgMail.send(msg)
     if (!SENDGRID_KEY) return
+    if (!from) from = SENDGRID_SENDER
 
     body = {
       personalizations: [

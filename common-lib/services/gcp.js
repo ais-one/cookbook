@@ -1,7 +1,6 @@
 'use strict'
 
-const { GCP_KEY, GCP_DEFAULT_BUCKET = '', CORS_ORIGINS } = require('../config')
-let bucketName = GCP_DEFAULT_BUCKET
+const { GCP_KEY, GCP_DEFAULT_BUCKET = '' } = global.CONFIG
 let storage
 
 if (!storage && GCP_KEY && GCP_KEY.project_id) {
@@ -20,10 +19,7 @@ if (!storage && GCP_KEY && GCP_KEY.project_id) {
 //     client_email, private_key
 //   } })  
 // }
-
 // exports.firestore = firestore
-
-exports.gcpSetBucket = async (newBucketName) => bucketName = newBucketName || bucketName
 
 // Set CORs
 // [
@@ -34,26 +30,13 @@ exports.gcpSetBucket = async (newBucketName) => bucketName = newBucketName || bu
 //       "maxAgeSeconds": 3600
 //     }
 // ]
-
+// use gsutil app, instead of setCorsConfiguration()
 // gsutil cors set [JSON_FILE_NAME].json gs://[BUCKET_NAME]
 // gsutil cors get gs://[BUCKET_NAME]
 
-// const gcpEnableCors = async (req,res) => {
-//   // const bucket = admin.storage().bucket(bucketName)
-//   const bucket = storage.bucket(bucketName)
-//   await bucket.setCorsConfiguration([{
-//     maxAgeSeconds: 3600,
-//     method: [ 'GET', 'HEAD', 'PUT', 'DELETE' ],
-//     responseHeader: ['*'],
-//     origin: CORS_ORIGINS ? CORS_ORIGINS.split(',') : [ '*' ]
-//   }])
-//   res.status(200).json()
-// }
-
 exports.gcpGetSignedUrl = async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
   // action "read" (HTTP: GET), "write" (HTTP: PUT), or "delete" (HTTP: DELETE),
-  // const bucket = admin.storage().bucket(bucketName)
-  const bucket = storage.bucket(bucketName)
+  const bucket = storage.bucket(req.body.bucket || GCP_DEFAULT_BUCKET)
   const action = req.body.action || 'write'
   const fileName = req.body.filename || 'my-file.txt'
   const options = {

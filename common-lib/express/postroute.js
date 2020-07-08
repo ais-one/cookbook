@@ -1,11 +1,9 @@
 const path = require('path')
 
-module.exports = function (app, express, config) {
+module.exports = function (app, express) {
+  const  { UPLOAD_FOLDER, UPLOAD_URL, UPLOAD_STATIC, PROXY_WWW_ORIGIN, WEB_STATIC } = global.CONFIG
+  
   // app.set('case sensitive routing', true)
-  const  {
-    PROXY_WWW_ORIGIN, WEB_STATIC, UPLOAD_STATIC,
-    UPLOAD_URL, UPLOAD_PATH
-  } = config
   const hasWebStatic = WEB_STATIC && WEB_STATIC.length
   if (PROXY_WWW_ORIGIN && !hasWebStatic) {
     const proxy = require('http-proxy-middleware')
@@ -36,11 +34,10 @@ module.exports = function (app, express, config) {
     })
   }
   if (UPLOAD_URL) {
-    app.use(UPLOAD_URL, express.static( UPLOAD_PATH ))
+    app.use(UPLOAD_URL, express.static( UPLOAD_FOLDER ))
   }
 
   Error.stackTraceLimit = 1 // limit error stack trace to 1 level
-  const { NODE_ENV } = config
   app.use((error, req, res, next) => { // 200s should not reach here
     // console.log('message', error.message)
     // console.log('name', error.name)
@@ -62,7 +59,7 @@ module.exports = function (app, express, config) {
     if (error instanceof Error || error.code) { // error.code is custom error class, which has property code
       statusCode = error.code || errorMap[error.message] || 500
       body.error =  error.message
-      if (NODE_ENV === 'development') body.trace = error.stack
+      if (process.env.NODE_ENV === 'development') body.trace = error.stack
     }
     res.status(statusCode).json(body)
   })

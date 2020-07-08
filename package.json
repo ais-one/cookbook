@@ -5,7 +5,7 @@
   "author": "",
   "license": "ISC",
   "config": {
-    "env": "uat",
+    "env": "development",
     "app": "example-app",
     "web": "example-web"
   },

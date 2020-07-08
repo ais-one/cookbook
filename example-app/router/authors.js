@@ -1,6 +1,6 @@
 const path = require('path')
 const express = require('express')
-const { UPLOAD_FOLDER } = require('../config')
+const { UPLOAD_FOLDER } = global.CONFIG
 const { authUser } = require('../middlewares/auth')
 
 // const Category = require('../models/Category')

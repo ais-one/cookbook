@@ -1,5 +1,6 @@
 const axios = require('axios')
-const { SALT_ROUNDS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require('../config')
+const { SALT_ROUNDS, HTTPONLY_TOKEN, JWT_EXPIRY } = global.CONFIG
+const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = global.CONFIG
 const { findUser, createToken, revokeToken, logout, refresh, login, otp } = require(LIB_PATH + '/auth')
 
 const signup = async (req, res) => {
