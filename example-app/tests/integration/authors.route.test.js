@@ -3,11 +3,9 @@ const path = require('path')
 const express = require('express')
 const app = express()
 
-// const config = require('../../config')
-
-const config = require(LIB_PATH + '/config')
-require(LIB_PATH + '/express/preroute')(app, config)
-const objection = require(LIB_PATH + '/services/db/objection').open(config)
+require(LIB_PATH + '/config')
+require(LIB_PATH + '/express/preroute')(app)
+const objection = require(LIB_PATH + '/services/db/objection').open()
 require(`../../router`)(app)
 
 const endpointUrl = '/api/authors'

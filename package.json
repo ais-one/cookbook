@@ -10,6 +10,7 @@
     "web": "example-web"
   },
   "scripts": {
+    "ff": "cd %npm_package_config_app% && npm run blah -- aaa",
     "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd ../%npm_package_config_web%/spa && npm i",
     "install-db": "cd %npm_package_config_app% &&cross-env NODE_ENV=%npm_package_config_env% npm run install-db",
     "spa": "cd %npm_package_config_web%/spa && cross-env NODE_ENV=%npm_package_config_env% npm run serve",

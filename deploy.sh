@@ -41,18 +41,18 @@ GCP_PROJECT_ID=`grep GCP_PROJECT_ID $1/config/secret/$2.deploy | cut -d '=' -f2`
 
 PS3="Please enter your choice: "
 options=(
-  "ssh"
-  "deploy-vm"
-  "deploy-cr"
+  "uat-ssh"
+  "uat-list" "uat-start" "uat-stop"
+  "uat-deploy-vm"
+  "prod-deploy-cr"
   "deploy-fe"
-  "list" "start" "stop"
   "quit"
 )
 select opt in "${options[@]}"
 do
   case $opt in
-    "ssh") ssh -i $PEM $URL -L 27000:127.0.0.1:27017 ;; # allow connection to mongodb via port 27000
-    "deploy-cr")
+    "uat-ssh") ssh -i $PEM $URL -L 27000:127.0.0.1:27017 ;; # allow connection to mongodb via port 27000
+    "prod-deploy-cr")
       echo "Deploy Back End to GCP Cloud Run"
       # deploy to cloud run etc...
       # get current timestamp...
@@ -66,7 +66,7 @@ do
       # gcloud run services delete $1-service --platform managed --region asia-east1
       # gcloud container images delete gcr.io/cloudrun/helloworld
       ;;
-    "deploy-vm")
+    "uat-deploy-vm")
       echo "Deploy Back End to VM... take note public and upload folders"
       tar -zcvf deploy-app.tgz \
         --exclude=common-lib/webpacked/node_modules --exclude=$1/node_modules \
@@ -78,6 +78,8 @@ do
         echo "Installing packages"
         ssh -i $PEM $URL "cd ~/app;npm i;cd $1;npm i"
       fi
+      echo "Restart"
+      ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start $1/ecosystem.config.js --env $2;" ;;
       ;;
     "deploy-fe")
       echo "NOTE: gsutil.cmd in windows git bash. If cannot find command in Windows, it could be space in path (.../Google Cloud/...) to gsutil."
@@ -114,9 +116,9 @@ do
 # # CircleCI TBD - [![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://circleci.com/gh/circleci/circleci-docs)
 # EOF
       ;;
-    "list") ssh -i $PEM $URL "pm2 list" ;;
-    "start") ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start $1/ecosystem.config.js --env $2;" ;;
-    "stop") ssh -i $PEM $URL "cd ~/app; pm2 stop $1/ecosystem.config.js;" ;;
+    "uat-list") ssh -i $PEM $URL "pm2 list" ;;
+    "uat-start") ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start $1/ecosystem.config.js --env $2;" ;;
+    "uat-stop") ssh -i $PEM $URL "cd ~/app; pm2 stop $1/ecosystem.config.js;" ;;
     "quit")
       echo "QUIT"
       break

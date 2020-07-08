@@ -2,16 +2,20 @@
 - [chore] update packages & cleanup & work on improving documentation
 - make it CI/CD friendly [re-organized folders again...]
 - renamed common-app to common-lib and it contain reusable stuff
+- use NodeJS globals for CONFIG, LIB_PATH, APP_PATH, APP_NAME
 - deployment
   - Small scale - all in one server - vm, pm2, SSH (express also serves the frontend)
   - Medium to large
     - Frontend deploy to GCP Storage / AWS S3 etc.
-    - Backend as docker container, kubernetes, GKE
+    - Backend as docker container, Google Cloud Run
+
+### Ongoing
 - [Work-in-progress]
   - circleci workflow
     - deploy backend to GCP
     - deploy SPA frontend to S3
   - backend
+    - GKE, Kubernetes
     - generic table crud frontend
   - frontend
     - cypress e2e testing

@@ -1,6 +1,6 @@
 let queueMarketUpdates
 
-exports.open = (config) => {
+exports.open = () => {
   const  { JOB_BULL } = global.CONFIG
   if (JOB_BULL) {
     const Queue = require('bull')
