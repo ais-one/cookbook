@@ -1,7 +1,7 @@
 # ARG <name>[=<default value>]
 # E.G.
 # ARG SETTINGS
-# RUN ./run/setup $SETTINGS
+# RUN ./run/init-stuff $SETTINGS
 
 # Create image based on the official Node 6 image from the dockerhub
 # FROM node:12
@@ -46,13 +46,9 @@ COPY package*.json ./
 # RUN npm ci --only=production
 RUN npm install --only=production && npm cache clean --force
 
-
 # Get all the code needed to run the app
 COPY common-lib ./common-lib
 COPY $ARG_APP_NAME ./$ARG_APP_NAME
-
-RUN cd $APP_NAME && npm install --only=production && npm cache clean --force
-
 
 # Serve the app
 # https://www.docker.com/blog/keep-nodejs-rockin-in-docker/

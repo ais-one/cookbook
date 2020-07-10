@@ -52,7 +52,7 @@ try {
   // GOOGLE CLOUD/FIREBASE SERVICE ACCOUNT
   global.CONFIG.GCP_DEFAULT_BUCKET = global.CONFIG.GCP_DEFAULT_BUCKET || 'mybot-live.appspot.com'
 } catch (e) {
-  // console.log(e.toString())
+  console.log(e.toString())
 }
 
 

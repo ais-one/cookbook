@@ -1,3 +1,5 @@
+const APP_VERSION = '0.3.2'
+
 function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';', idName = 'id') { // TBD Make alphbetical order?
   if (!csvContent) {
     csvContent += idName // set id as first columns
@@ -73,4 +75,4 @@ function downloadData (content, filename, type = 'text/csv;charset=utf-8;') {
   }
 }
 
-export { makeCsvRow, exportCsv, exportJson, downloadData }
+export { APP_VERSION, makeCsvRow, exportCsv, exportJson, downloadData }

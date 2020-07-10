@@ -1,11 +1,3 @@
-# Dependencies - Project Specific
-
-You can simple install dependencies specific to this project. In this project
-- graphql
-- apollo-server-express
-
-
-
 ## Relational Database Schema
 
 ### Simple Relation

@@ -1,3 +1,5 @@
+console.log(process.env.NODE_ENV)
+
 const request = require('supertest')
 const path = require('path')
 const express = require('express')

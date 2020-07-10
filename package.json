@@ -14,9 +14,10 @@
     "initdb-mongo": "cross-env NODE_ENV=%npm_package_config_env% node %npm_package_config_app%/db/mongo/seed.js",
     "initdb-knex": "cross-env NODE_ENV=%npm_package_config_env% npx knex migrate:latest --knexfile=%npm_package_config_app%/knexfile.js && cross-env NODE_ENV=%npm_package_config_env% npx knex seed:run --knexfile=%npm_package_config_app%/knexfile.js",
     "spa": "cd %npm_package_config_web%/spa && cross-env NODE_ENV=%npm_package_config_env% npm run serve",
-    "dev": "cross-env NODE_ENV=%npm_package_config_env% npx nodemon %npm_package_config_app%/index.js",
+    "dev": "cross-env NODE_ENV=%npm_package_config_env% APP_NAME=%npm_package_config_app% npx nodemon %npm_package_config_app%/index.js",
+    "cron": "cross-env NODE_ENV=%npm_package_config_env% APP_NAME=%npm_package_config_app% node %npm_package_config_app%/long-running.js",
     "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
-    "test": "cross-env NODE_ENV=%npm_package_config_env% jest --config=%npm_package_config_app%/jest.config.js --watchAll",
+    "test": "cross-env NODE_ENV=%npm_package_config_env% APP_NAME=%npm_package_config_app% jest --config=%npm_package_config_app%/jest.config.js --watchAll",
     "deploy": "deploy.sh %npm_package_config_app% %npm_package_config_env% %npm_package_config_web%",
     "lint": "eslint ."
   },

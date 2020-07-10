@@ -1,5 +1,3 @@
-const path = require('path')
-
 module.exports = function (app, express) {
   const  { UPLOAD_FOLDER, UPLOAD_URL, UPLOAD_STATIC, PROXY_WWW_ORIGIN, WEB_STATIC } = global.CONFIG
   
@@ -18,9 +16,7 @@ module.exports = function (app, express) {
     if (hasWebStatic) {
       const history = require('connect-history-api-fallback')
       app.use(history()) // causes problems when using postman - set header accept application/json in postman
-      // const appParent = path.join(__dirname, '..', '..') // TBD FIX THIS!!!
       WEB_STATIC.forEach(item => {
-        // app.use(item.url, express.static(appParent + '/' + item.folder))
         app.use(item.url, express.static(item.folder))
       })
     }

@@ -7,10 +7,9 @@ const app = express()
 
 // mixing ES Modules into a CommonJS project
 // https://codewithhugo.com/use-es-modules-in-node-without-babel/webpack-using-esm/
-const { foo } = require('esm')(module)('./esm/datetime')
-console.log('Value from ES Module file...', foo)
+const { APP_VERSION } = require('esm')(module)('./esm/util')
+console.log('APP_VERSION from ES Module file...', APP_VERSION)
 
-require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
 const { USE_HTTPS, USE_GRAPHQL, httpsCerts } = global.CONFIG
 const server = USE_HTTPS ? https.createServer(httpsCerts, app) : http.createServer(app)
 

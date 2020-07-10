@@ -3,6 +3,7 @@
 - make it CI/CD friendly [re-organized folders again...]
 - renamed common-app to common-lib and it contain reusable stuff
 - use NodeJS globals for CONFIG, LIB_PATH, APP_PATH, APP_NAME
+- long running process support such as tcp servers, cronjobs (but better to use cronjob call an API)
 - deployment
   - Small scale - all in one server - vm, pm2, SSH (express also serves the frontend)
   - Medium to large
@@ -18,14 +19,13 @@
     - GKE, Kubernetes
     - generic table crud frontend
   - frontend
+    - generic table crud backend
     - cypress e2e testing
-    - generaic table crud backend
     - Preparing for VueJS 3
     - PWA cookbook (many things to consider)
     - web components or no bundler required UI framework, also make code more framework agnostic
 - [TODO]
   - backend
-    - long running process support such as tcp servers, cronjobs
     - add kafka working example
     - research websocket testing, improve coverage
     - research auto generated REST API and Testing (keep in view dredd.io)

@@ -207,13 +207,17 @@ The following environments
 
 ### development
 
+The development environment is on a local machine used by developers.
+
+Docker compose can be used to set up supporting applications such as Redis, ElasticSearch, Kafka, etc.
+
 - cloudflare - no
 - frontend - local
 - backend - local
 - mongodb - local
 - file uploads - local folder / Google object storage
 - sqlite - local file
-- user_session - local memory 
+- user_session - local memory
 
 **Commands**
 
@@ -224,13 +228,15 @@ npm run dev:spa
 
 ### uat (and also production)
 
+The UAT, production and (optional staging) environments are on the service provider.
+
 - Domain name verification
 - cloudflare
   - DNS (for API, for frontend)
   - full SSL (can be self-signed at server side)
 - frontend - GCP object storage, https
 - backend - docker-> Google Cloud Run, https
-  - OPTION deploy to GCP Group Instances [TBD]
+  - OPTION deploy to GCP Group Instances (need to set load balancer and networking) [TBD]
   - OPTION deploy to GKE [TBD]
 - mongodb - Mongo Atlas
 - file uploads - Google object storage
@@ -304,8 +310,9 @@ vue-crud-x
 |  +- uploads/ : for serving static files - files
 |  +- ecosystem.config.js
 |  +- index.js
-|  +- jest.config.js
-|  +- knexfile.js
+|  +- jest.config.js: JEST testing
+|  +- knexfile.js: Knex query builder
+|  +- long-running.js: sample long running process
 |  +- package.json
 |  +- README.md
 +- example-web/ : frontend associated to the application
