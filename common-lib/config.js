@@ -42,21 +42,19 @@ if (!config) {
   // const dotenv = require('dotenv')
   // dotenv.config()
   if (process.env.NODE_ENV && APP_PATH) {
+    global.CONFIG = { NODE_ENV: process.env.NODE_ENV }
     try {
-      global.CONFIG = { NODE_ENV: process.env.NODE_ENV }
-
       const commonEnv = require(path.join(APP_PATH, 'config', 'secret', 'common.env.js'))
       global.CONFIG = { ...CONFIG, ...commonEnv }
       const specificEnv = require(path.join(APP_PATH, 'config', 'secret', process.env.NODE_ENV + '.env.js'))
       global.CONFIG = { ...CONFIG, ...specificEnv }
-
       // const envFile = path.join(APP_PATH, 'config', 'secret', '.env.' + process.env.NODE_ENV)
       // const envConfig = dotenv.parse(fs.readFileSync(envFile)) //  relative to index.js call
       // for (var k in envConfig) process.env[k] = envConfig[k]
-      require(APP_PATH + '/config')
     } catch (e) {
-      console.log('missing configuration file, using defaults', e.toString())
+      console.log('missing configuration file(s), using defaults', e.toString())
     }
+    require(APP_PATH + '/config')
   } else {
     console.log('NODE_ENV and APP_PATH needs to be defined')
   }

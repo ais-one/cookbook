@@ -104,7 +104,7 @@ module.exports = function(app) {
   // Access-Control-Allow-Headers=Content-Type
   const cors = require('cors')
   const  { CORS_OPTIONS } = global.CONFIG
-  let { origin, ...options } = CORS_OPTIONS  // origin = ['http://example1.com', 'http://example2.com']
+  let { origin } = CORS_OPTIONS  // origin = ['http://example1.com', 'http://example2.com']
 
   let allowList = origin.split(',')
   if (allowList.length === 1) origin = allowList[0]
@@ -118,7 +118,7 @@ module.exports = function(app) {
       }
     }
   }
-  const corsOptions = options
+  const corsOptions = CORS_OPTIONS
   if (origin) corsOptions.origin = origin
   app.use(CORS_OPTIONS ? cors(corsOptions) : cors())
 

@@ -19,7 +19,7 @@
       <v-btn icon @click="onLogout"><v-icon>exit_to_app</v-icon></v-btn>
     </v-app-bar>
     <main>
-      <v-content>
+      <v-main>
         <v-container fluid>
           <router-view :key="$route.fullPath"></router-view>
           <v-footer class="pa-2" fixed app>
@@ -37,7 +37,7 @@
             </v-container>
           </v-dialog>
         </v-layout>
-      </v-content>
+      </v-main>
     </main>
   </v-app>
 </template>
