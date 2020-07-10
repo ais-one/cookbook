@@ -6,7 +6,7 @@ exports.open = () => {
 
     const address = JOB_MONGO_URL === 'mongo' ? MONGO_URL : JOB_MONGO_URL || ''
     const jobTypes = JOB_TYPES ? JOB_TYPES.split(',') : []
-    if (jobTypes.length && JOB_MONGO_URL) {
+    if (jobTypes.length && address) {
       const Agenda = require('agenda')
       const connectionOpts = { // mongodb options
         db: {

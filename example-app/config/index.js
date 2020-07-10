@@ -44,7 +44,7 @@ global.CONFIG.MONGO_URL = global.CONFIG.MONGO_URL || 'mongodb://127.0.0.1:27017/
 // agendamq - requires mongodb
 global.CONFIG.JOB_MONGO_URL = global.CONFIG.JOB_MONGO_URL || 'mongo' // if mongo, use MONGO_URL
 global.CONFIG.JOB_COLLECTION = global.CONFIG.JOB_COLLECTION || 'agendaJobs' // collection name
-global.CONFIG.JOB_TYPES = global.CONFIG.JOB_TYPES || '' // 'email', // 'email,sms,telegram' //  agenda message queue job types, comma seperated , find the path to agenda job
+global.CONFIG.JOB_TYPES = global.CONFIG.JOB_TYPES || '' // 'email', // 'email,nexmo,telegram' //  agenda message queue job types, comma seperated , find the path to agenda job
 
 try {
   global.CONFIG.KNEXFILE = require('../knexfile')
