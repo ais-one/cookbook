@@ -10,14 +10,14 @@
     "web": "example-web"
   },
   "scripts": {
-    "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd ../%npm_package_config_web%/spa && npm i",
+    "install-libs": "npm i && cd %npm_package_config_web%/spa && npm i",
     "initdb-mongo": "cross-env NODE_ENV=%npm_package_config_env% node %npm_package_config_app%/db/mongo/seed.js",
     "initdb-knex": "cross-env NODE_ENV=%npm_package_config_env% npx knex migrate:latest --knexfile=%npm_package_config_app%/knexfile.js && cross-env NODE_ENV=%npm_package_config_env% npx knex seed:run --knexfile=%npm_package_config_app%/knexfile.js",
     "spa": "cd %npm_package_config_web%/spa && cross-env NODE_ENV=%npm_package_config_env% npm run serve",
-    "dev": "cross-env NODE_ENV=%npm_package_config_env% APP_NAME=%npm_package_config_app% npx nodemon %npm_package_config_app%/index.js",
+    "app": "cross-env NODE_ENV=%npm_package_config_env% APP_NAME=%npm_package_config_app% npx nodemon %npm_package_config_app%/index.js",
     "process-long": "cross-env NODE_ENV=%npm_package_config_env% APP_NAME=%npm_package_config_app% node %npm_package_config_app%/process-long.js",
     "process-cron": "cross-env NODE_ENV=%npm_package_config_env% APP_NAME=%npm_package_config_app% node %npm_package_config_app%/process-cron.js",
-    "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
+    "app:spa": "concurrently \"npm run app\" \"npm run spa\"",
     "test": "cross-env NODE_ENV=%npm_package_config_env% APP_NAME=%npm_package_config_app% jest --config=%npm_package_config_app%/jest.config.js --watchAll",
     "deploy": "deploy.sh %npm_package_config_app% %npm_package_config_env% %npm_package_config_web%",
     "lint": "eslint ."
@@ -26,7 +26,7 @@
     "node": "12"
   },
   "dependencies": {
-    "@google-cloud/firestore": "^4.0.0",
+    "@google-cloud/firestore": "^4.1.1",
     "@google-cloud/storage": "^5.1.1",
     "agenda": "^3.0.0",
     "apollo-server-express": "^2.15.1",
@@ -42,11 +42,11 @@
     "express": "^4.17.1",
     "graphql": "^15.3.0",
     "helmet": "^3.23.3",
-    "http-proxy-middleware": "^1.0.4",
+    "http-proxy-middleware": "^1.0.5",
     "json2csv": "^5.0.1",
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.0.1",
-    "knex": "^0.21.1",
+    "knex": "^0.21.2",
     "mongodb": "^3.5.9",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",

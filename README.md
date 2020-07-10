@@ -72,8 +72,10 @@ git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
 npm run install-libs
 npm run install-db
-npm run dev:spa
+npm run app:spa
 ```
+
+**NOTE** mongodb is not run and there will be connection error for mongodb. To have mongodb use docker-compose file in docker-devenv\mongodb. Remember to do one-time initiate of replication set first.
 
 Navigate to http://127.0.0.1:8080 to view the VueCrudX demo and example SPA application in development
 
