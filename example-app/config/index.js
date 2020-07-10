@@ -28,14 +28,14 @@ global.CONFIG.AUTH_USER_FIELD_GAKEY = global.CONFIG.AUTH_USER_FIELD_GAKEY || 'ga
 // AUTH JWT - secret key
 global.CONFIG.JWT_ALG = global.CONFIG.JWT_ALG || 'HS256' // 'RS256' (use SSL certs), 'HS256' (use secret string)
 global.CONFIG.JWT_SECRET = global.CONFIG.JWT_SECRET || '123456789' // HS256
-global.CONFIG.JWT_EXPIRY = global.CONFIG.JWT_EXPIRY || 5, // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism, numeric is seconds
+global.CONFIG.JWT_EXPIRY = global.CONFIG.JWT_EXPIRY || 5 // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism, numeric is seconds
 global.CONFIG.JWT_REFRESH_EXPIRY = global.CONFIG.JWT_REFRESH_EXPIRY || 3600 // do not allow refresh handling after X seconds
 global.CONFIG.JWT_REFRESH_STORE = global.CONFIG.JWT_REFRESH_STORE || 'keyv' // mongo, objection, redis, keyv (default)
 global.CONFIG.JWT_REFRESH_STORE_NAME = global.CONFIG.JWT_REFRESH_STORE_NAME || 'user_session' // collection or table name
 
 // AUTH - OTP
-global.CONFIG.USE_OTP = global.CONFIG.USE_OTP || 'TEST', // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
-global.CONFIG.OTP_EXPIRY = global.CONFIG.OTP_EXPIRY || '1m', // allow 1 minute for user to do OTP
+global.CONFIG.USE_OTP = global.CONFIG.USE_OTP || 'TEST' // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
+global.CONFIG.OTP_EXPIRY = global.CONFIG.OTP_EXPIRY || '1m' // allow 1 minute for user to do OTP
 
 // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
 // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}

@@ -14,7 +14,7 @@ Well... what started as a CRUD component for VueJS has grown to a full-stack app
 
 # NOTICES & UPDATES
 
-Latest Version [0.3.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.2) - Released 2020 Jul 11 1545 +8GMT
+Latest Version [0.3.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.2) - Released 2020 Jul 11 0400 +8GMT
 
 **vue-crud-x 0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
 

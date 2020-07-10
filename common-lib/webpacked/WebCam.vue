@@ -5,7 +5,7 @@
     <canvas ref="canvas" id="canvas" width="320" height="240"></canvas>
     <ul>
       <li v-for="c in captures" :key="c">
-        <img v-bind:src="c" height="50" />
+        <img v-bind:src="c" height="50" alt="camera captures" />
       </li>
     </ul>
   </div>
