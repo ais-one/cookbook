@@ -10,6 +10,7 @@ if (global.CONFIG.TEST_ENV) console.log('TEST_ENV =', global.CONFIG.TEST_ENV)
 global.CONFIG.API_PORT = global.CONFIG.API_PORT || process.env.API_PORT || 3000
 global.CONFIG.WS_PORT = global.CONFIG.WS_PORT || process.env.WS_PORT || 3001
 global.CONFIG.WS_KEEEPALIVE_MS = global.CONFIG.WS_KEEEPALIVE_MS || 30000
+global.CONFIG.USE_GRAPHQL = true
 
 // AUTH
 global.CONFIG.SALT_ROUNDS = global.CONFIG.SALT_ROUNDS || 12

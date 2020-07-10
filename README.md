@@ -75,11 +75,12 @@ npm run initdb-knex
 npm run app:spa
 ```
 
-**NOTE** mongodb is not run and there will be connection error for mongodb. To have mongodb use docker-compose file in docker-devenv\mongodb. Remember to do one-time initiate of replication set first.
+**NOTE 1** the **secret** folder is missing so there maybe some logs about missing files (but it is ok to ignore), graphql and websockets will not work also. To get them to work, in **example-app/config** folder, rename **sample-secret** folder to **secret**
 
-**NOTE** the secrets folder is missing so there maybe some logs about missing files (but it is ok to ignore)
+**NOTE 2** mongodb is not run and there will be connection error for mongodb. To have mongodb use docker-compose file in docker-devenv\mongodb. Remember to do one-time initiate of replication set first.
 
-The code below is most important, setup and reading of configs, other than for the app, it is use also used in process-cron.js and process-long.js (long running process)
+
+The code below is important, setup and reading of configs. It is use in common-lib/app.js and also used in process-cron.js and process-long.js (long running process)
 
 ```js
 // index.js
@@ -190,15 +191,17 @@ rm -rf vue-crud-x
 
 - In **package.json**
   - Set application name in **config.app** property (indicate folder of your application - set to example-app if using example-app folder)
+  - Set web name in **config.web** property (indicate folder of your application - set to example-web if using example-web folder)
   - Set environment using **config.env** property (development, uat, staging, production)
 - In **update.sh**
-  - Uncomment the lines, this script is used to update the common library
+  - Uncomment the lines, this script is used to update the common library when needed
 
 ```json
 {
   "config": {
+    "env": "development",
     "app": "example-app",
-    "env": "development"
+    "web": "example-web"
   }
 }
 ```

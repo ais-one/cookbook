@@ -8,7 +8,7 @@ let pubsub
 let apollo
 
 module.exports = function (app, server) {
-  const { USE_GRAPHQL } = process.env
+  const { USE_GRAPHQL } = global.CONFIG
   if (!apollo && USE_GRAPHQL) {
     const { typeDefs, resolvers } = require('./schema')
     pubsub = new PubSub()
