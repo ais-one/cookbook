@@ -75,6 +75,14 @@ npm run install-db
 npm run app:spa
 ```
 
+The code below is most important, setup and reading of configs, other than for the app, it is use also used in process-cron.js and process-long.js (long running process)
+
+```js
+// index.js
+require(require('path').join(process.cwd(), 'common-lib', 'setup')) // first thing to setup
+require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
+```
+
 **NOTE** mongodb is not run and there will be connection error for mongodb. To have mongodb use docker-compose file in docker-devenv\mongodb. Remember to do one-time initiate of replication set first.
 
 Navigate to http://127.0.0.1:8080 to view the VueCrudX demo and example SPA application in development

@@ -1,5 +1,4 @@
-const path = require('path')
-require(path.join(process.cwd(), 'common-lib', 'setup')) // first thing to setup
+require(require('path').join(process.cwd(), 'common-lib', 'setup')) // first thing to setup
 require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
 
 const { server } = require(LIB_PATH + '/app')

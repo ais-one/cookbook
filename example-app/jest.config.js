@@ -2,9 +2,7 @@
 const path = require('path')
 
 module.exports = {
-  // globals: {
-  //   "APP_NAME": path.basename( path.dirname(__filename) )
-  // },
+  // globals: { "APP_NAME": path.basename( path.dirname(__filename) ) },
   // bail: 0,
   // testTimeout: 5000,
   collectCoverage: false,
