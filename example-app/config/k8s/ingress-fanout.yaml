@@ -1,0 +1,16 @@
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: ingress-fanout # fanout-ingress
+# spec:
+#   rules:
+#   - http:
+#       paths:
+#       - path: /*
+#         backend:
+#           serviceName: web
+#           servicePort: 8080
+#       - path: /v2/*
+#         backend:
+#           serviceName: web2
+#           servicePort: 8080

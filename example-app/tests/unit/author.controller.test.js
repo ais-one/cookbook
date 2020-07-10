@@ -1,3 +1,6 @@
+require(LIB_PATH + '/config')
+const objection = require(LIB_PATH + '/services/db/objection').open()
+
 const AuthorController = require('../../controllers/author')
 // const AuthorModel = require('../../models/Author')
 const httpMocks = require('node-mocks-http')
@@ -22,6 +25,9 @@ describe('AuthorController.create', () => {
   beforeEach(() => {
     req.body = newAuthor
   })
+  // afterAll(() => {
+  //   objection.close()
+  // })  
   it('should have AuthorController.create()', () => {
     expect(typeof AuthorController.create).toBe('function')
   })

@@ -98,7 +98,7 @@ const template = /*html*/`
 </template>
 `
 import { PAGE_SIZE } from '../../config.js'
-import api from '../../api.js'
+import api from '/js/http.js'
 
 export default {
   template,

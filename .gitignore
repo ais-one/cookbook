@@ -1,26 +1,26 @@
 # npm
 node_modules
-
 #snowpack
 web_modules
+# files not to be committed
+secret
 
+# database stores
+docker-devenv/mongodb/data
+*.sqlite3
+
+# apple stuff
 .DS_Store
+
+# build folders
 dist
 build
 .nuxt
-coverage
-**/.firebaserc
 
+coverage
 package-lock.json
 *.tgz
-dist
-dev.sqlite3
-.env.*
 .rnd
-
-firebase.key.json
-id_rsa
-sandbox
 
 # Log files
 npm-debug.log*
@@ -36,9 +36,3 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
-
-# local env files - allow this in our opensource project
-# .env
-
-viow/
-udemy/

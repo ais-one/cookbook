@@ -1,3 +1,49 @@
+### Version 0.3.2
+- [chore] update packages & cleanup & work on improving documentation
+- make it CI/CD friendly [re-organized folders again...]
+- renamed common-app to common-lib and it contain reusable stuff
+- use NodeJS globals for CONFIG, LIB_PATH, APP_PATH, APP_NAME
+- long running process support such as tcp servers
+- cronjobs (better that cron call an API rather than run code)
+- deployment
+  - Small scale - all in one server - vm, pm2, SSH (express also serves the frontend)
+  - Medium to large
+    - Frontend deploy to GCP Storage / AWS S3 etc.
+    - Backend as docker container, Google Cloud Run
+
+### Ongoing
+- [Work-in-progress]
+  - circleci workflow
+    - deploy backend to GCP Cloud Run
+    - deploy SPA frontend to GCP Storage
+  - backend
+    - GKE, Kubernetes
+    - generic table crud frontend
+  - frontend
+    - generic table crud backend
+    - cypress e2e testing
+    - Preparing for VueJS 3
+    - PWA cookbook (many things to consider)
+    - web components or no bundler required UI framework, also make code more framework agnostic
+- [TODO]
+  - backend
+    - add kafka working example
+    - research websocket testing, improve coverage
+    - research auto generated REST API and Testing (keep in view dredd.io)
+    - JsonSchema
+  - frontend
+    - Handle/Test Signature & Webcam input
+    - Remove date-fns library and use native JS libraries for handling date, time
+    - explore use of fetch API instead of axios (abort fetch, etc)
+    - ant design version (kiv until web components / more UI framework agnostic code is implemened)
+  - others
+    - Make ES module build (only possible when UI framework e.g. Vuetify has ES module version)
+    - Should we change Vuex action setLayout to setPublic and setSecure?
+    - graphql security & performance review
+- [Findings]
+  - Logging (Use APM instead?) - use console.log & morgan
+  - use native html5 validation rather than Vuelidate / Vee-validate (major version changes is painful)
+
 ### Version 0.3.1
 - update packages & cleanup
 - work on improving documentation
@@ -25,27 +71,6 @@
   - fixed code to work with latest vuetify (2.2.15 onwards) and fix infinite scroll double xhr call on filter button press
   - cleanup code
   - update build
-- [Work-in-progress]
-  - backend
-    - long running process support such as tcp servers, cronjobs
-    - add kafka working example
-  - frontend
-    - web components or no bundler required UI framework
-    - ant design version (kiv until above is solved)
-    - research for e2e framework agnostic test util for frontend
-  - others
-    - CI / CD (work on SSH, etc...)
-    - deployment to GCP cloud storage / Firebase Host / AWS S3
-    - deploment in container... see docs/Containers.md & example-app/Dockerfile & example-app/.dockerignore
-- [low-priority]
-  - backend
-    - research websocket testing, improve coverage
-    - research auto generated REST API and Testing (keep in view dredd.io)
-    - JsonSchema
-  - others
-    - ISO config definition naming (identify configs common to both FE and BE)
-    - Should we change Vuex action setLayout to setPublic and setSecure?
-    - graphql security & performance review
 
 ### Version 0.3.0
 - update packages
@@ -62,27 +87,6 @@
 - frontend /example-app/web folder hosts examples for SPA, SSR
   - update user replace loginType with groups (ADFS SAML claims, etc), improve on permissions handling
   - avoid single vendor lock in - remove mongo switch and firebase
-- [Work-in-progress]
-  - cleanup
-  - backend
-    - long running process support such as tcp servers
-    - add kafka working example
-  - frontend
-    - ant design version
-    - research for e2e framework agnostic test util for frontend
-  - others
-    - CI / CD (work on SSH, etc...)
-    - deployment to GCP cloud storage / Firebase Host / AWS S3
-    - deploment in container... see docs/Containers.md & example-app/Dockerfile & example-app/.dockerignore
-- [low-priority]
-  - backend
-    - research websocket testing, improve coverage
-    - research auto generated REST API and Testing (keep in view dredd.io)
-    - JsonSchema
-  - others
-    - ISO config definition naming (identify configs common to both FE and BE)
-    - Should we change Vuex action setLayout to setPublic and setSecure?
-    - graphql security & performance review
 
 ### Version 0.2.8
 - update packages
@@ -96,18 +100,6 @@
   - allow to authorize from cookie or header
 - example-spa
   - fixed axios.js, error.config.url returns only path instead of full url in updated version of axios (affected refresh token)
-- [Work-in-progress]
-  - cleanup
-  - example-spa
-    - use only 1 material design icon library...
-    - ant design version
-    - research for framework agnostic test util for frontend
-  - backend
-    - research websocket testing, improve coverage
-  - others
-    - ISO config definition naming (identify configs common to both FE and BE)
-    - Should we change Vuex action setLayout to setPublic and setSecure?
-    - graphql security & performance review
 
 ### Version 0.2.7
 - skipped pushed 0.2.6 to npm as 0.2.7

@@ -1,0 +1,7 @@
+{
+  "articles": [
+    {"title":"This is a title","slug":"this-is-a-title-tih7bt","body":"This is a body of the Article","createdAt":"2020-06-15T13:56:51.069Z","updatedAt":"2020-06-15T13:56:51.069Z","tagList":[],"description":"This is a description","author":{"username":"aaronxxx","bio":null,"image":"https://static.productionready.io/images/smiley-cyrus.jpg","following":false},"favorited":false,"favoritesCount":1},
+    {"title":"Test Again","slug":"test-again-2ovar","body":"this is a sample only","createdAt":"2020-06-15T13:52:58.003Z","updatedAt":"2020-06-15T13:52:58.003Z","tagList":[],"description":"Sample only","author":{"username":"jsarino","bio":null,"image":"https://static.productionready.io/images/smiley-cyrus.jpg","following":false},"favorited":false,"favoritesCount":5}
+  ],
+  "articlesCount":500
+}

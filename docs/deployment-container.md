@@ -6,7 +6,7 @@ Reference - https://nodejs.org/de/docs/guides/nodejs-docker-webapp/
 
 From vue-crud-x folder (replace **ais-one/node-web-app** with your own image name)
 
-```
+```Dockerfile
 # build the container
 docker build -t ais-one/node-web-app:latest -f example-app/Dockerfile . 
 
@@ -23,18 +23,17 @@ docker logs <container id>
 
 To access container command line
 
-```
+```bash
 docker exec -it <container id> /bin/bash
+
+# Example should be Running on http://localhost:3000
 ```
 
-# docker build -t <your username>/node-web-app .
-# OR
-# docker build -t node-web-app .
-# docker run -p 49160:8080 -d <your username>/node-web-app
 
-# Example
-Running on http://localhost:3000
 
+## Docker Commands
+```bash
+docker ps
 docker container ls -a
 docker container rm <contianer>
 docker container run <contianer>
@@ -45,7 +44,16 @@ docker container prune
 docker image ls
 docker image rm <image>
 
+# build with
+docker build -t <your username>/node-web-app:latest .
+# OR
+docker build -t node-web-app:latest .
+
+# make container and run the image
+docker run -p 49160:8080 -d <your username>/node-web-app
+
 
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 docker rmi $(docker images -q)
+```

@@ -1,0 +1,64 @@
+{
+  "name": "example-spa",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A rest backend example for vue-crud-x component usage",
+  "author": "Aaron Gong <aaronjxz@gmail.com>",
+  "scripts": {
+    "serve": "vue-cli-service serve --port 8080",
+    "build": "vue-cli-service build",
+    "build-uat": "vue-cli-service build --mode uat",
+    "build-report": "npm run build --report",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link": "^1.2.14",
+    "apollo-link-context": "^1.0.20",
+    "apollo-link-http": "^1.5.17",
+    "apollo-link-ws": "^1.0.20",
+    "apollo-utilities": "^1.3.4",
+    "axios": "^0.19.2",
+    "core-js": "^3.6.5",
+    "graphql": "^15.3.0",
+    "graphql-tag": "^2.10.3",
+    "json2csv": "^5.0.1",
+    "jwt-decode": "^2.2.0",
+    "lit-element": "^2.3.1",
+    "rxjs": "^6.6.0",
+    "subscriptions-transport-ws": "^0.9.16",
+    "vue": "^2.6.11",
+    "vue-apollo": "^3.0.3",
+    "vue-i18n": "^8.18.2",
+    "vue-native-websocket": "^2.0.14",
+    "vue-recaptcha": "^1.3.0",
+    "vue-router": "^3.3.4",
+    "vue-rx": "^6.2.0",
+    "vuetify": "^2.3.3",
+    "vuex": "^3.5.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.4.6",
+    "@vue/cli-plugin-eslint": "^4.4.6",
+    "@vue/cli-service": "^4.4.6",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
+    "deepmerge": "^4.2.2",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "fibers": "^4.0.3",
+    "sass": "^1.26.9",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11",
+    "vuetify-loader": "^1.5.0"
+  },
+  "browserslist": [
+    "last 1 Chrome versions"
+  ],
+  "ignored-browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

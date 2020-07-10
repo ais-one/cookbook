@@ -113,12 +113,3 @@ npm install -g firebase-tools -->
 2. Upload use signed URL
 
 3. Private download/read access use signed URL
-
-
-### Hosting Static Sites
-
-https://cloud.google.com/storage/docs/hosting-static-website
-
-## 
-
-## www.example.com       CNAME    c.storage.googleapis.com

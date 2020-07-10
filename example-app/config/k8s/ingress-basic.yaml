@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-basic # basic-ingress
+  # Uncomment below if using static IP - from compute-address.yaml
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "gke-static-ip"
+spec:
+  backend:
+    serviceName: web
+    servicePort: 80
+# TBD port 3001 webservice?

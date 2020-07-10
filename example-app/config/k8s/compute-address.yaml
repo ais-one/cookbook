@@ -1,0 +1,11 @@
+# Use a Service, which creates a TCP Network Load Balancer that works with regional IP addresses.
+# Use an Ingress, which creates an HTTP(S) Load Balancer and supports global IP addresses.
+
+# generate static ip
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: gke-static-ip
+spec:
+  location: global # global, use as ingress, which creates load balancer
+  # location: us-central1, deploy as service

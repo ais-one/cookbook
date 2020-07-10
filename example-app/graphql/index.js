@@ -4,12 +4,12 @@
 
 const { ApolloServer, PubSub } = require('apollo-server-express')
 
-// const { PubSub } = require('apollo-server') // subscriptions
 let pubsub
 let apollo
 
 module.exports = function (app, server) {
-  if (!apollo) {
+  const { USE_GRAPHQL } = global.CONFIG
+  if (!apollo && USE_GRAPHQL) {
     const { typeDefs, resolvers } = require('./schema')
     pubsub = new PubSub()
     apollo = new ApolloServer({
@@ -44,7 +44,9 @@ module.exports = function (app, server) {
         }
       }
     })
-    apollo.applyMiddleware({ app }) // console.log(`GraphqlPATH ${server.graphqlPath}`)
+    apollo.applyMiddleware({ app }) 
+    apollo.installSubscriptionHandlers(server)
+    console.log('GraphQL init')
   }
   return apollo
 }

@@ -1,5 +1,5 @@
 'use strict'
-const Model = require('../../common-app/database')
+const Model = require(LIB_PATH + '/services/db/objection').get()
 
 class Page extends Model {
   // Table name is the only required property.

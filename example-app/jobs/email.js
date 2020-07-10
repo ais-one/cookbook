@@ -9,6 +9,5 @@ module.exports = function (agenda) {
   agenda.define('reset password', async job => {
     // Etc
   })
-
   // More email related jobs
 }

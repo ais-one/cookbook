@@ -1,19 +1,16 @@
 // cookbook for mongoDB
 const express = require('express')
-const mongo = require('../../common-app/mongo')
-const { ObjectID } = require('mongodb')
-// const { authUser } = require('../../middlewares/auth')
+const mongo = require(LIB_PATH + '/services/db/mongodb')
 
 module.exports = express.Router()
   .get('/test', async (req,res) => {
+    let results = { e: 'no mongo' }
     try {
-      const results = mongo ? await mongo.db.collection('mongo-test').find({}).toArray() : []
-      console.log(results)
+      if (mongo && mongo.db) results = await mongo.db.collection('mongo-test').find({}).toArray()
     } catch (e) {
-      console.log(e)
+      results = { e: e.toString() }
     }
-    // console.log('mongo connected:', !!mongo)
-    res.status(200).json({ message: 'mongo test' })
+    res.status(200).json(results)
   })
 
   .get('/transaction-core-api', async (req,res) => {

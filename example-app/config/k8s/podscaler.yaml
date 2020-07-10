@@ -1,0 +1,19 @@
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: gke-tutorial-hpa
+  namespace: default
+  labels:
+    app: gke-tutorial-deployment
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: gke-tutorial-deployment
+    apiVersion: apps/v1beta1
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 80

@@ -14,7 +14,7 @@ npm i vue-crud-x
 
 ## Option 2 Use the source file directly
 
-Just copy the **common-web/VueCrudX.vue** file into your project and include it as a local or global Vue component
+Just copy the **common-lib/webpacked/VueCrudX.vue** file into your project and include it as a local or global Vue component
 
 ## Option 3 Build and Install (OPTIONAL: Read this if you wish to maintain own fork)
 
@@ -23,7 +23,7 @@ If you ever need to build this library from source...
 1. Go to the Vue-Crud-X project folder
 
 ```bash
-cd common-web
+cd common-lib/webpacked
 ```
 
 2. Install dependencies
@@ -75,7 +75,7 @@ To see example of usage. Please refer to source code in **example-app/web/spa pr
 - example-app/web/spa/src/pages/FirebaseRT
   -  example using Firestore with real-time updates
 
-You can also refer to the vue-crud-x source code in **common-web/VueCrudX.vue**
+You can also refer to the vue-crud-x source code in **common-lib/webpacked/VueCrudX.vue**
 
 
 ##  Props

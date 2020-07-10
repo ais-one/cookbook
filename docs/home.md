@@ -12,34 +12,9 @@
 
 See [deployment.md](deployment.md) - WORK IN PROGRESS
 
-## Deployment on VM
-
-See [deployment-vm.md](deployment-vm.md)
-
-## Deployment on Container
-
-See [deployment-container.md](deployment-container.md)
-
-And [../example-app/Dockerfile](../example-app/Dockerfile)
-
-## Deployment on Google Cloud Kubernetes
-
-See [deployment-gke-k8s.md](deployment-gke-k8s.md) - WORK IN PROGRESS
-
-
-# BaaS Services
-
-## Firebase
-
-[baas-firebase.md](baas-firebase.md)
-
-## Mongo Atlas
-
-[baas-mongo-atlas.md](baas-mongo-atlas.md)
-
 # Mongo DB
 
-[mongodb.md](mongodb.md) - WORK IN PROGRESS
+[mongodb/mongodb.md](mongodb/mongodb.md) - WORK IN PROGRESS
 
 
 ---

@@ -1,7 +1,7 @@
 const axios = require('axios')
-const { SALT_ROUNDS, HTTPONLY_TOKEN, USE_OTP, OTP_EXPIRY, JWT_EXPIRY, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = require('../config')
-const { createToken, revokeToken, logout, refresh, login, otp } = require('../../common-app/auth')
-const findUser = require('../../common-app/auth/findUser')
+const { SALT_ROUNDS, HTTPONLY_TOKEN, JWT_EXPIRY } = global.CONFIG
+const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = global.CONFIG
+const { findUser, createToken, revokeToken, logout, refresh, login, otp } = require(LIB_PATH + '/auth')
 
 const signup = async (req, res) => {
   // let encryptedPassword = bcrypt.hashSync(clearPassword, SALT_ROUNDS)

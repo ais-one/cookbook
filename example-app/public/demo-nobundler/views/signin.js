@@ -21,8 +21,7 @@ const template = /*html*/`
             <div class="field">
               <div class="control" @click="login"><button class="button is-primary is-medium is-fullwidth">Login</button></div>
             </div>
-            <p><a href="../index.html">Back To Demo</a></p>
-
+            <p class="test-bg"><a href="../index.html">Back To Demo</a></p>
             {{ errorMsg }}
           </div>
         </article>
@@ -31,6 +30,15 @@ const template = /*html*/`
   </div>
 </section>
 `
+
+const styles = /*html*/`
+.test-bg {
+  background-color: pink;
+}
+#app {
+}
+`
+
 import api from '/js/http.js'
 
 export default {
@@ -42,6 +50,11 @@ export default {
       password: '',
       errorMsg: ''
     }
+  },
+  mounted () { // thank you Arjay for this! https://plnkr.co/edit/tjhkcfNO15aTNhsU
+    const style = document.createElement('style')
+    style.innerHTML = styles
+    this.$el.prepend(style)
   },
   methods: {
     async login () {

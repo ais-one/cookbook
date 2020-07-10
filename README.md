@@ -1,20 +1,20 @@
-[![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
+[![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine) [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-# WHY
+**TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, Cloud Container Deployment
 
-> Always Remember Rule #1 - Do Not Let Technical Debt Build Up
+# VUE-CRUD-X - WHY & WHAT
 
-1. Ever wondered why you keep rewriting almost the same code when you work on full-stack applications?
-
-2. Do you have trouble keeping the libraries in your different applications?
-
-3. How often and how long do you spend fixing things when there is a version change in a dependency?
+> Writing same code each time you work on a new application? Trouble keeping the libraries updated? Many fixes when dependency version changes?
 
 Well... what started as a CRUD component for VueJS has grown to a full-stack app development cookbook, and further expanded into a way of building and maintaining multiple full-stack applications of different use cases with as little waste as possible, aiming to address those 3 issues above as much as possible!
 
+> A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, forms, use of GraphQL or REST to access various datastores. Vuetify is used for frontend UI components but can be changed to alternatives such as ElementUI (with some effort)
+
+> Over time, the example projects to show the use of **vue-crud-x** have grown to become a **cookbook** that includes many other useful **recipes** for use in production ExpressJS and VueJS web applications.
+
 # NOTICES & UPDATES
 
-Latest Version [0.3.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.1) - Released 2020 May 18 1230 +8GMT
+Latest Version [0.3.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.2) - Released 2020 Jul 11 1545 +8GMT
 
 **vue-crud-x 0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
 
@@ -22,21 +22,19 @@ Latest Version [0.3.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.1)
 
 **vue-crud-x 0.1** and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1). You can refer to the v1 [article](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054).
 
-# WHAT IS VUE-CRUD-X
+## Design Considerations
 
-**TL;DR** ExpressJS & VueJS Web App Cookbook And A Customisable CRUD Library
+> Always Remember Rule #1 - Do Not Let Technical Debt Build Up
 
-> A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, forms, use of GraphQL or REST to access various datastores. Vuetify is used for frontend UI components but can be changed to alternatives such as ElementUI (with some effort)
-
-> Over time, the example projects to show the use of **vue-crud-x** have grown to become a **cookbook** that includes many other useful **recipes** for use in production ExpressJS and VueJS web applications.
-
-## Web App Cookbook Aims
-
-1. As little technical debt as possible
-2. Ease of maintenance and updates
-3. Scalable in terms of application use cases (from v0.3 onwards)
-4. Scalable in terms of traffic and load (in progress)
-5. Ease of build, test, deployment, CI/CD, etc. (in progress)
+- keep technical debt in view
+- keep in mind https://12factor.net/
+- scalable in terms of application use cases & traffic load
+- ease of development, maintenance, updates, build, test, integration, delivery, deployment, etc.
+- size, speed, modularity (e.g. micro services)
+- limit number of languages (e.g. use JS for everything) and dependency usage
+- go native, reduce dependency, balance use of native code vs libraries
+- avoid / move away from using bundlers such as web pack, keep tooling minimal
+- automated testing, ci/cd, devopsec, cloud, container orchestration
 
 ## CRUD Unique Selling Points
 
@@ -46,13 +44,13 @@ The following differentiates vue-crud-x from other CRUD repositories:
 - Handle infinite scroll use-case
 - Handle authentication tokens, user permissions
 - Customise table, search filter, CRUD form, validation, CRUD operations (call REST, GraphQL, Firestore, etc.)
-- Inline edit (row level)
 - Auto-configure/generate Search filter and CRUD Forms using JSON
+- Inline edit (row level)
 - Export to CSV/JSON, File/Image Upload
 - Reload & optimization strategy
-- Real-time updates & subscription
 - Overridable methods with default behaviour
 - Emitted events for use by parent component
+- Real-time updates & subscription
 
 Other design considerations :
 - i18n, l10n a11y
@@ -65,7 +63,7 @@ Other design considerations :
 - Automated unit & integration test
 
 
-# QUICK START
+# QUICK START - ON YOUR LOCAL MACHINE
 
 1. Clone the repository, setup and run, using the following commands
 
@@ -73,11 +71,22 @@ Other design considerations :
 git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
 npm run install-libs
-npm run install-db
-npm run dev:spa
+npm run initdb-knex
+npm run app:spa
 ```
 
-2. VueJS example SPA Application
+**NOTE 1** the **secret** folder is missing so there maybe some logs about missing files (but it is ok to ignore), graphql and websockets will not work also. To get them to work, in **example-app/config** folder, rename **sample-secret** folder to **secret**. You can look at the readme inside **sample-secret** folder for more information
+
+**NOTE 2** mongodb is not run and there will be connection error for mongodb. To have mongodb use docker-compose file in docker-devenv\mongodb. Remember to do one-time initiate of replication set first.
+
+
+The code below is important, setup and reading of configs. It is use in common-lib/app.js and also used in process-cron.js and process-long.js (long running process)
+
+```js
+// index.js
+require(require('path').join(process.cwd(), 'common-lib', 'setup')) // first thing to setup
+require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
+```
 
 Navigate to http://127.0.0.1:8080 to view the VueCrudX demo and example SPA application in development
 
@@ -86,15 +95,13 @@ Login using the following:
 - Password: test
 - OTP (if enabled): if USE_OTP set to TEST, use 111111 as otp pin
 
-3. View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
+View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
 
-4. View website served by express at http://127.0.0.1:3000
+View website served by Express with functional samples and demos at http://127.0.0.1:3000
 
-The page contains functional samples and demos you can use to interact with the server
+2. Testing
 
-5. Testing
-
-to run unit & integration test on /api/authors route
+To run unit & integration test on /api/authors route
 
 TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in example-app/tests
 
@@ -102,11 +109,25 @@ TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test
 npm run test
 ```
 
-6. To serve the VueJS SPA production build
+3. Long Running Processes and Crons
+
+Command to run long process (do take note of caveats)
+
+```
+npm run process-long
+```
+
+Command to simulate process triggered by cron (**NOTE:** it may be better to use cron to call API rather than trigger a process)
+
+```
+npm run process-cron
+```
+
+4. To serve the VueJS SPA production build
 
 From vue-crud-x folder
 
-```
+```bash
 cd example-app/web/spa
 npm run build
 ```
@@ -117,99 +138,153 @@ Change the example-app/config/index.js file contents
   //...
   WEB_STATIC: [
     //...
-    { folder: 'example-app/web/spa/dist', url: '/' }, // uncomment this
-    // { folder: 'example-app/public', url: '/' }, // comment this
+    { folder: process.cwd() + '/spa/dist', url: '/' }, // uncomment this
+    // { folder: APP_PATH + '/public/demo-express', url: '/' }, // comment this
     //...
   ]
   //...
 ```
 
-7. Build another application
+5. VueJS example Nuxt SSR/Static Application
 
-The new folder should reside inside vue-crud-x directory, e.g. 
+In vue-crud-x folder, run the **frontend** from one console...
 
-Use the example-app to see how to build your own application
-
-```
-vue-crud-x/test-app
-```
-
-```
-vue-crud-x/group/test-app1
-vue-crud-x/group/test-app2
-```
-
-change **package.json** property **config.app** to point folder
-
-e.g. for project **def** in vue-crud-x/abc/def the value in **package.json** should be
-
-```json
-{
-  "config": {
-    "app": "abc/def",
-  }
-}
-```
-
-e.g. for project **xyz** in vue-crud-x/xyz the value in **package.json** should be
-
-```json
-{
-  "config": {
-    "app": "xyz",
-  }
-}
-```
-
-Check the vue-crud-x/example-app/config.js to also see what should be change in the configs
-
-8. VueJS example Nuxt SSR/Static Application
-
-Run the **frontend** from one console...
-
-From vue-crud-x folder
-
-```
-cd example-app/web/ssr
+```bash
+cd example-web/ssr
 npm i
 npm run dev
 ```
 
-**Note:** for static content see example-ssr/README.md on generating and serving static content
+**Note:** for static content see example-web/ssr/README.md on generating and serving static content
 
-Run the **backend** from another console... 
+6. PWA and vite
 
-From vue-crud-x folder
+Work In Progress
+
+
+---
+
+# BUILDING A NEW APPLICATION
+
+## Initial Creation - the master branch
+
+```bash
+mkdir <my-project>
+cd <my-project>
+git clone --depth=1 --branch=develop https://github.com/ais-one/vue-crud-x.git
+# copy required files
+cp vue-crud-x/deploy.sh vue-crud-x/update.sh vue-crud-x/package.json vue-crud-x/.eslintrc.json vue-crud-x/.gitignore .
+# copy required folders
+mv vue-crud-x/common-lib .
+# copy docker related files
+cp vue-crud-x/.dockerignore vue-crud-x/Dockerfile vue-crud-x/docker-compose.yml .
+
+# copy the example-app for use as reference (optional)
+mv vue-crud-x/example-app .
+# copy the example-web for use as reference (optional)
+mv vue-crud-x/example-web .
+# cleanup
+rm -rf vue-crud-x
+```
+
+## Next Steps
+
+- In **package.json**
+  - Set application name in **config.app** property (indicate folder of your application - set to example-app if using example-app folder)
+  - Set web name in **config.web** property (indicate folder of your application - set to example-web if using example-web folder)
+  - Set environment using **config.env** property (development, uat, staging, production)
+- In **update.sh**
+  - Uncomment the lines, this script is used to update the common library when needed
+
+```json
+{
+  "config": {
+    "env": "development",
+    "app": "example-app",
+    "web": "example-web"
+  }
+}
+```
+
+## Configuration
+
+The **example-app/config/** folder contains the config information.
+
+You can override the configurations using <NODE_ENV>.env.js files, e.g. development.env.js or uat.env.js in **example-app/config/secret**
+
+If too many config properties, split it to other more and files
+
+
+## Updating The Library
+
+See script **update.sh**
+
+## Deployment
+
+The following are the environments
+
+- development (used for local development)
+- uat
+- production (not shown in the example but can be created)
+
+### development environment
+
+The development environment is on a local machine used by developers.
+
+Docker compose can be used to set up supporting applications such as Redis, ElasticSearch, Kafka, etc.
+
+- cloudflare - no
+- frontend - local
+- backend - local
+- mongodb - local
+- file uploads - local folder / Google object storage
+- sqlite - local file
+- user_session - local memory
+
+Commands for running locally are described in the QUICK START.
+
+
+### uat (and also production) environment
+
+The UAT, production and (optional staging) environments are on the service provider.
+
+- Domain name verification
+- cloudflare
+  - DNS (for API, for frontend)
+  - full SSL (can be self-signed at server side)
+- frontend - GCP object storage, https
+- backend - docker-> Google Cloud Run, https
+  - OPTION deploy to GCP Group Instances (need to set load balancer and networking) [TBD]
+  - OPTION deploy to GKE [TBD]
+- mongodb - Mongo Atlas
+- file uploads - Google object storage
+- sqlite - local file (should replace with SQL DB)
+- user_session - mongodb
+
+**Manual Deployment Script**
 
 ```
-cd example-app
-npm run dev
+npm run deploy
 ```
 
-9. PWA and vite
+- Frontend
+  - select ```deploy-fe``` to deploy frontend on object storage
+- Cloud Run backend
+  - select ```deploy-cr``` to deploy backend on cloud run
+    - need to set CORS on allowed frontend origin
+    - if using custom domain, requires domain name, point to CNAME
+- VM backend (Optional)
+  - select ```deploy-vm```
+  - you can use the following commands ```stop,start,list```
+
+
+> work needs to be done on the organise and reference the setup documentation in the docs folder
+
+
+## CircleCI Deployment (Work In Progress)
 
 TBD
 
-10. Building & Deployment for Production (WIP)
-
-From vue-crud-x folder
-
-```
-npm run build
-```
-
-runs the following scripts
-- build.sh
-- <example-app>/build-app.sh
-- <example-app>/build-web.sh
-
-places everything into vue-crud-x/**build** folder
-
-node modules are not built
-
-Use ssh, scp to deploy to vm, start / stop, check PM2 (TBD)
-
-Use docker (TBD) -> User kubernetes (TBD)
 
 ---
 
@@ -219,62 +294,78 @@ The project structure is shown below
 
 ```
 vue-crud-x
-+- common/ : common components for frontend and backend
-+- common-app/ : common components for backend
-+- common-web/ : common components for frontend (including vue-crud-x)
-|  +- dist/ : distribution folder for CRUD component
++- common-lib/ : common components
+|  +- auth/ : for express authentication
+|  +- comms/ : messging
+|  +- esm/ : JS that can be used by both front and backend
+|  +- express/ : express related
+|  +- services/ : nodejs libs
+|  +- webpacked/ : webpacked components for frontend (including vue-crud-x)
+|  |  +- dist/ : distribution folder for CRUD component
+|  +- app.js : the express app boilerplate
+|  +- config.js: the base config
+|  +- setup.js: setup globals
++- docker-devenv/ : docker for development environment (e.g. run redis, mongodb from here)
+|  +- mongodb
 +- docs/ : documentation
-+- example-app : an example backend application
-| +- config/ : centralized config folder
-|   +- certs/ : certificates for HTTPS and JWT signing
-|   +- .env.<node_env>
-|   +- index.js : home to your configs, can scale by adding folders and files
-| +- controllers/
-| +- coverage/ (auto-generated by test runner)
-| +- deploy/
-| +- graphql/ : graphql stuff
-| +- jobs/ : message queue jobs
-| +- middlewares/
-| +- migrations/
-| +- models/
-| +- public/ : for serving static files - website
-| +- routes/
-| +- seeds/
-| +- tests/
-| +- uploads/ : for serving static files - files
-| +- web/ : frontend associated to the application
-| |  +- pwa/
-| |  +- spa/
-| |  +- ssr/
-| |  +- vite/
-| |  +- <your other front end here>
-| +- build-app.sh [work in progress]
-| +- build-web.sh [work in progress]
-| +- docker-compose.yml : docker stuff, [work in progress]
-| +- Dockerfile : docker stuff, [work in progress]
-| +- ecosystem.config.js
-| +- knexfile.js
-| +- package.json
-| +- README.md
-+- <your other project folder here>: (you can use .gitignore in parent directory to hide this project)
-+- logs/
++- example-app : an example backend application **Use this example for your project**
+|  +- config/ : centralized config folder
+|  |  +- certs/ : certificates for HTTPS and JWT signing
+|  |  +- k8s/ : kubernetes YAML files (WIP)
+|  |  +- secret
+|  |  |  +- .env.<node_env>
+|  |  |  +- <node_env>.deploy
+|  |  |  +- <node_env>.pem
+|  |  |  +- <node_env>.gcp.json
+|  |  |  +- <node_env>.gcp.cors.json
+|  |  +- index.js : home to your configs, can scale by adding folders and files
+|  +- controllers/
+|  +- coverage/ (auto-generated by test runner)
+|  +- db/
+|  |  +- migrations/
+|  |  +- mongo/
+|  |  +- seeds/
+|  +- graphql/ : graphql stuff
+|  +- jobs/ : message queue jobs
+|  +- logs/
+|  +- middlewares/
+|  +- models/
+|  +- public/ : for serving static files - website
+|  |  +- demo-express/ (127.0.0.1/)
+|  |  +- demo-nobundler/
+|  +- router/
+|  +- tests/ : Jest tests
+|  +- uploads/ : for serving static files - files
+|  +- ecosystem.config.js
+|  +- index.js
+|  +- jest.config.js: JEST testing
+|  +- knexfile.js: Knex query builder
+|  +- package.json
+|  +- process-long.js: sample long running process
+|  +- process-cron.js: sample cron triggered process
+|  +- README.md
++- example-web/ : frontend associated to the application
+|  +- pwa/
+|  +- spa/
+|  +- ssr/
+|  +- vite/
+|  +- <your other front end here>
++- sandbox/ : Useful scripts
 +- .dockerignore
 +- .eslintrc.json
-+- app.js
-+- appname.js
-+- build.sh [work in progress]
-+- index.js
-+- jest.config.js
++- .gitignore
++- deploy.sh
++- docker-compose.yml
++- Dockerfile
 +- LICENCE
 +- package.json
 +- README.md
 +- RELEASE.md
++- update.sh
 ```
 
 
 ## [spa](https://github.com/ais-one/vue-crud-x/tree/master/example-app/web/spa)
-
-**Best for quick start** - Please use this to try things out. Everything runs locally
 
 Recipes for a production-ready SPA:
 - Example **vue-crud-x** usage
@@ -282,17 +373,17 @@ Recipes for a production-ready SPA:
 - Graphql (Apollo client, includes authentication, subscriptions, cache, optimistic UI, refetch queries)
 - Login
   - recaptcha
-  - Local Email-password login & JWT
+  - Local Email-password login, Github login & JWT
     - optional 2FA OTP signin with Google Authenticator
       - setup with USE_OTP=GA in environement files of both the front and backend
       - Check DB seeders for the API key to use, or you can find out how to generate your own
 - rxJs for cleaner code (auto-complete, debounce, fetch latest)
-- upload to cloud provider using signed URLs
+- Upload to cloud provider using signed URLs
 - Other Features
   - Image capture via webcam
   - Signature capture on canvas
 
-## [backend](https://github.com/ais-one/vue-crud-x/tree/master)
+## [backend & libs](https://github.com/ais-one/vue-crud-x/tree/master/common-lib/)
 
 Recipes for a production-ready Express server used by **example-app/web/spa** and **example-app/web/ssr**:
 - ObjectionJS
@@ -313,7 +404,8 @@ Recipes for a production-ready Express server used by **example-app/web/spa** an
 - File uploads (to VM or to cloud storage via Signed URLs)
 - Unit Test & Integration Test
 - Logging
-- Message queues
+- Message queues (Bull, AgendaJS)
+- No-bundler frontend demo
 
 
 ## [ssr](https://github.com/ais-one/vue-crud-x/tree/master/example-app/web/ssr)
@@ -381,27 +473,3 @@ Documentation can be found starting at [docs/home.md](docs/home.md)
 - date-picker, select and other controls
 
 [![Screenshot](./docs/images/inline.png)](./docs/images/inline.png)
-
----
-
-## Configuration
-
-Refer to **example-app/config/index.js**
-
-If there are many config variables, you can split it up into other folders and files in the **example-app/config** folder
-
-You can override the configuraions using .env.[NODE_ENV] files, e.g. .env.development or .env.production in **example-app**
-
-### Making your own backend custom app
-
-You can create your own folder with your custom app, **another-example-app-project**
-
-Use the **example-app** as a template
-
-### Choosing which backend custom app to run
-
-in package.json, **config.app** property indicates the name of the app folder
-
-The configuration value is passed into **appname.js**
-
-The default is set to **example-app** you can change it to your own project name

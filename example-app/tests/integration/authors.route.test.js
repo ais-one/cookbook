@@ -1,5 +1,14 @@
+console.log(process.env.NODE_ENV)
+
 const request = require('supertest')
-const app = require('../../../app')
+const path = require('path')
+const express = require('express')
+const app = express()
+
+require(LIB_PATH + '/config')
+require(LIB_PATH + '/express/preroute')(app)
+const objection = require(LIB_PATH + '/services/db/objection').open()
+require(`../../router`)(app)
 
 const endpointUrl = '/api/authors'
 
@@ -7,7 +16,7 @@ const newAuthor = require('../mock-data/new-author.json')
 
 let createdAuthorId
 let authObj = {}
-const { createToken } = require('../../../common-app/auth')
+const { createToken } = require(LIB_PATH + '/auth')
 
 /*
 let firstTodo
@@ -24,8 +33,10 @@ describe(endpointUrl, () => {
       Authorization: 'Bearer ' + token
     }
   })
-
-  it('GET ' + endpointUrl, async () => {
+  // afterAll(() => {
+  //   objection.close()
+  // })
+  it.only('GET ' + endpointUrl, async () => {
     const response = await request(app)
       .get(endpointUrl)
       .set(authObj)
@@ -101,7 +112,7 @@ describe(endpointUrl, () => {
   // TBD 500 error for delete
 })
 
-describe.only('Integration Test', () => {
+describe('Integration Test', () => {
   it('should pass', () => {
     expect(true).toBe(true)
   })

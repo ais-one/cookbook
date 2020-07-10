@@ -2,8 +2,9 @@ const fs = require('fs')
 const path = require('path')
 const express = require('express')
 
-const agenda = require('../../common-app/mq/agenda') // message queue
-const bull = require('../../common-app/mq/bull')
+const agenda = require(LIB_PATH + '/services/mq/agenda').get() // agenda message queue
+const bull = require(LIB_PATH + '/services/mq/bull').get() // bull message queue
+const fcmSend = require(LIB_PATH + '/comms/fcm')
 
 // const path = require('path')
 // path.extname('index.html')
@@ -21,8 +22,8 @@ const bull = require('../../common-app/mq/bull')
 //   size: 110
 // }
 
-const { UPLOAD_PATH, FIREBASE_KEY } = require('../config')
-const firebase = FIREBASE_KEY ? require('../../common-app/firebase') : null
+const { UPLOAD_FOLDER } = global.CONFIG
+const { gcpGetSignedUrl } = require(LIB_PATH + '/services/gcp')
 const { authUser } = require('../middlewares/auth')
 const multer = require('multer')
 
@@ -49,7 +50,7 @@ const upload = multer({
   //   cb(null, true);
   // },
   storage: multer.diskStorage({
-    destination: function (req, file, cb) { cb(null, UPLOAD_PATH) },
+    destination: function (req, file, cb) { cb(null, UPLOAD_FOLDER) },
     filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname) }
   })
 })
@@ -76,13 +77,17 @@ module.exports = express.Router()
 
   /**
    * @swagger
-   * /api/health:
+   * /api/healthcheck:
    *    post:
    *      tags:
    *        - "Base"
    *      description: Health check
    */
-  .get('/health', (req, res) => { res.json({ message: 'OK' }) }) // health check
+  .get('/healthcheck', (req, res) => { res.json({
+    message: 'OK',
+    app: APP_NAME,
+    environment: process.env.NODE_ENV
+  }) }) // health check
   /**
    * @swagger
    * /api/health-auth:
@@ -96,39 +101,8 @@ module.exports = express.Router()
   .get('/health-auth', authUser, (req, res) => { res.json({ message: 'OK' }) }) // health check auth
 
   // test uploads
-  .get('/firebase-upload-enable', asyncWrapper(async (req,res) => {
-    // need to allow CORS...
-    // const rv =
-    await bucket.setCorsConfiguration([{
-      maxAgeSeconds: 3600,
-      method: [ 'GET', 'HEAD', 'PUT' ],
-      responseHeader: ['*'],
-      origin: [ '*' ] 
-    }])
-    // console.log('rv', rv)
-  }))
-  .get('/firebase-upload/:filename', asyncWrapper(async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
-    if (!firebase) return res.status(500).json({ e: 'No Firebase Service' })
-    const { bucket } = firebase
-    const action = 'write'
-    const fileName = req.params.filename || 'my-file.txt'
-    const options = {
-      version: 'v4',
-      action,
-      expires: Date.now() + (120 * 60 * 1000) // 120 minutes
-    }
-    // The option below will allow temporary uploading of the file with outgoing Content-Type: application/octet-stream header.
-    if (action === 'write') options.contentType = 'application/octet-stream'
-  
-    // Get a v4 signed URL for uploading file
-    const [url] = await bucket.file(fileName).getSignedUrl(options)
-    // console.log(url)
-    // // curl command for uploading using signed URL
-    // console.log("curl -X PUT -H 'Content-Type: application/octet-stream' " + `--upload-file my-file '${url}'`)
-    // curl -X PUT -H 'Content-Type: application/octet-stream' --upload-file my-file 'http://www.test.com'
-    res.status(200).json({ url })
-  }))
-
+  // body action: 'read' | 'write', filename: 'my-file.txt', bucket: 'bucket name'
+  .post('/gcp-sign', asyncWrapper(gcpGetSignedUrl))
 
   .post('/upload', upload.single('filedata'), (req,res) => { // avatar is form input name
     console.log('file original name', req.file.originalname)
@@ -153,7 +127,7 @@ module.exports = express.Router()
     try {
       console.log('PN token received: ' + req.params.pnToken, req.query)
       if (req.query.reply === 'yes') {
-        const rv = await firebase.fcmSend(req.params.pnToken, 'FCM Message', 'Received from My Server ' + Date.now())
+        const rv = await fcmSend(req.params.pnToken, 'FCM Message', 'Received from My Server ' + Date.now())
         console.log('send rv', rv.status)
         res.status(200).json({ status: rv.status })  
       } else {
@@ -166,9 +140,14 @@ module.exports = express.Router()
 
   // message queues
   .get('/mq-agenda', asyncWrapper(async (req, res) => { // test message queue - agenda
-    const job = await agenda.now('registration email', { email: 'abc@test.com' })
-    console.log('Agenda Pub')
-    res.json({ job, note: 'Check Server Console Log For Processed Message...' })
+    if (agenda) {
+      const job = await agenda.now('registration email', { email: 'abc@test.com' })
+      console.log('Agenda Pub')
+      res.json({ job, note: 'Check Server Console Log For Processed Message...' })
+    } else {
+      console.log('Agenda Not Configured')
+      res.json({ job, note: 'Agenda Not Configured' })
+    }
   }))
 
   .get('/mq-bull', asyncWrapper(async (req, res) => { // test message queue - bullmq
@@ -176,9 +155,10 @@ module.exports = express.Router()
       const jobOpts = { removeOnComplete: true, removeOnFail: true }
       bull.add({ message: new Date() }, jobOpts)
       console.log('Bull Pub')
+      res.json({ note: 'Check Server Console Log For Processed Message...' })
     } else {
       console.log('No Bull MQ configured')
+      res.json({ note: 'No Bull MQ configured' })
     }
-    res.json({ note: 'Check Server Console Log For Processed Message...' })
   }))
 
