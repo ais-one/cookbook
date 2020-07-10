@@ -14,8 +14,8 @@
 ### Ongoing
 - [Work-in-progress]
   - circleci workflow
-    - deploy backend to GCP
-    - deploy SPA frontend to S3
+    - deploy backend to GCP Cloud Run
+    - deploy SPA frontend to GCP Storage
   - backend
     - GKE, Kubernetes
     - generic table crud frontend

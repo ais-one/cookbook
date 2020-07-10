@@ -14,7 +14,7 @@ Well... what started as a CRUD component for VueJS has grown to a full-stack app
 
 # NOTICES & UPDATES
 
-Latest Version [0.3.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.2) - Released 2020 Jul 15 1230 +8GMT
+Latest Version [0.3.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.2) - Released 2020 Jul 11 1545 +8GMT
 
 **vue-crud-x 0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
 
@@ -208,24 +208,24 @@ rm -rf vue-crud-x
 
 ## Configuration
 
-<my-project>/example-app/config/index.js contains all the config properties.
+The **example-app/config/** folder contains the config information.
 
-If too many config properties, split it to other folders and files
+You can override the configurations using <NODE_ENV>.env.js files, e.g. development.env.js or uat.env.js in **example-app/config/secret**
 
-You can override the configurations using .env.<NODE_ENV> files, e.g. .env.development or .env.production in **example-app/config/secret**
+If too many config properties, split it to other more and files
 
 
 ## Updating The Library
 
 See script **update.sh**
 
-
 ## Deployment
 
-The following environments
+The following are the environments
 
 - development (used for local development)
-- uat (uat deployment design can also be used for higher environments such as production)
+- uat
+- production (not shown in the example but can be created)
 
 ### development environment
 
@@ -241,7 +241,7 @@ Docker compose can be used to set up supporting applications such as Redis, Elas
 - sqlite - local file
 - user_session - local memory
 
-Commands for running locally are described earlier
+Commands for running locally are described in the QUICK START.
 
 
 ### uat (and also production) environment
@@ -267,6 +267,8 @@ The UAT, production and (optional staging) environments are on the service provi
 npm run deploy
 ```
 
+- Frontend
+  - select ```deploy-fe``` to deploy frontend on object storage
 - Cloud Run backend
   - select ```deploy-cr``` to deploy backend on cloud run
     - need to set CORS on allowed frontend origin
@@ -274,9 +276,6 @@ npm run deploy
 - VM backend (Optional)
   - select ```deploy-vm```
   - you can use the following commands ```stop,start,list```
-
-- Frontend
-  - select ```deploy-fe``` to deploy frontend on object storage
 
 
 > work needs to be done on the organise and reference the setup documentation in the docs folder
@@ -367,8 +366,6 @@ vue-crud-x
 
 
 ## [spa](https://github.com/ais-one/vue-crud-x/tree/master/example-app/web/spa)
-
-**Best for quick start** - Please use this to try things out. Everything runs locally
 
 Recipes for a production-ready SPA:
 - Example **vue-crud-x** usage
