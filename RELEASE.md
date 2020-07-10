@@ -3,7 +3,8 @@
 - make it CI/CD friendly [re-organized folders again...]
 - renamed common-app to common-lib and it contain reusable stuff
 - use NodeJS globals for CONFIG, LIB_PATH, APP_PATH, APP_NAME
-- long running process support such as tcp servers, cronjobs (but better to use cronjob call an API)
+- long running process support such as tcp servers
+- cronjobs (better that cron call an API rather than run code)
 - deployment
   - Small scale - all in one server - vm, pm2, SSH (express also serves the frontend)
   - Medium to large
@@ -41,7 +42,7 @@
     - graphql security & performance review
 - [Findings]
   - Logging (Use APM instead?) - use console.log & morgan
-  - use native html5 validation rather then Vuelidate / Vee-validate (major version changes is painful), worse-case use validation available in 
+  - use native html5 validation rather than Vuelidate / Vee-validate (major version changes is painful)
 
 ### Version 0.3.1
 - update packages & cleanup

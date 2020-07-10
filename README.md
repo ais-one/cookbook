@@ -88,7 +88,7 @@ View website served by Express with functional samples and demos at http://127.0
 
 2. Testing
 
-to run unit & integration test on /api/authors route
+To run unit & integration test on /api/authors route
 
 TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in example-app/tests
 
@@ -96,7 +96,21 @@ TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test
 npm run test
 ```
 
-3. To serve the VueJS SPA production build
+3. Long Running Processes and Crons
+
+Command to run long process (do take note of caveats)
+
+```
+npm run process-long
+```
+
+Command to simulate process triggered by cron (**NOTE:** it may be better to use cron to call API rather than trigger a process)
+
+```
+npm run process-cron
+```
+
+4. To serve the VueJS SPA production build
 
 From vue-crud-x folder
 
@@ -111,33 +125,26 @@ Change the example-app/config/index.js file contents
   //...
   WEB_STATIC: [
     //...
-    { folder: APP_PATH + '/web/spa/dist', url: '/' }, // uncomment this
-    // { folder: APP_PATH + '/public', url: '/' }, // comment this
+    { folder: process.cwd() + '/spa/dist', url: '/' }, // uncomment this
+    // { folder: APP_PATH + '/public/demo-express', url: '/' }, // comment this
     //...
   ]
   //...
 ```
 
-4. VueJS example Nuxt SSR/Static Application
+5. VueJS example Nuxt SSR/Static Application
 
 In vue-crud-x folder, run the **frontend** from one console...
 
 ```bash
-cd example-app/web/ssr
+cd example-web/ssr
 npm i
 npm run dev
 ```
 
-**Note:** for static content see example-ssr/README.md on generating and serving static content
+**Note:** for static content see example-web/ssr/README.md on generating and serving static content
 
-In vue-crud-x folder, run the **backend** from another console... 
-
-```bash
-cd example-app
-npm run dev
-```
-
-5. PWA and vite
+6. PWA and vite
 
 Work In Progress
 
@@ -205,7 +212,7 @@ The following environments
 - development (used for local development)
 - uat (uat deployment design can also be used for higher environments such as production)
 
-### development
+### development environment
 
 The development environment is on a local machine used by developers.
 
@@ -219,14 +226,10 @@ Docker compose can be used to set up supporting applications such as Redis, Elas
 - sqlite - local file
 - user_session - local memory
 
-**Commands**
+Commands for running locally are described earlier
 
-```
-npm run dev
-npm run dev:spa
-```
 
-### uat (and also production)
+### uat (and also production) environment
 
 The UAT, production and (optional staging) environments are on the service provider.
 
@@ -243,12 +246,23 @@ The UAT, production and (optional staging) environments are on the service provi
 - sqlite - local file (should replace with SQL DB)
 - user_session - mongodb
 
-**Commands**
+**Manual Deployment Script**
 
-- deploy.sh -> deploy-cr
-- deploy.sh -> deploy-fe
+```
+npm run deploy
+```
 
-> UNUSED (for VM deployment): deploy.sh -> deploy-vm -> stop -> start -> list
+- Cloud Run backend
+  - select ```deploy-cr``` to deploy backend on cloud run
+    - need to set CORS on allowed frontend origin
+    - if using custom domain, requires domain name, point to CNAME
+- VM backend (Optional)
+  - select ```deploy-vm```
+  - you can use the following commands ```stop,start,list```
+
+- Frontend
+  - select ```deploy-fe``` to deploy frontend on object storage
+
 
 > work needs to be done on the organise and reference the setup documentation in the docs folder
 
@@ -312,8 +326,9 @@ vue-crud-x
 |  +- index.js
 |  +- jest.config.js: JEST testing
 |  +- knexfile.js: Knex query builder
-|  +- long-running.js: sample long running process
 |  +- package.json
+|  +- process-long.js: sample long running process
+|  +- process-cron.js: sample cron triggered process
 |  +- README.md
 +- example-web/ : frontend associated to the application
 |  +- pwa/

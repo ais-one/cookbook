@@ -10,8 +10,10 @@ require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
 const { sleep } = require('esm')(module)(LIB_PATH + '/esm/sleep')
 
 const run = async () => {
+  // eslint-disable-next-line no-constant-condition
   while (true) {
-    console.log('test long running ' + Date.now())
+    console.log('Test long running cron ' + Date.now())
+    // eslint-disable-next-line no-await-in-loop
     await sleep(1000)
   }
   // process.exit(0)
