@@ -5,17 +5,21 @@ web_modules
 # files not to be committed
 secret
 
+# database stores
 docker-devenv/mongodb/data
+*.sqlite3
+
+# apple stuff
 .DS_Store
+
+# build folders
 dist
 build
 .nuxt
-coverage
 
+coverage
 package-lock.json
 *.tgz
-dist
-dev.sqlite3
 .rnd
 
 # Log files

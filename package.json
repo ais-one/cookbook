@@ -10,11 +10,11 @@
     "web": "example-web"
   },
   "scripts": {
-    "ff": "cd %npm_package_config_app% && npm run blah -- aaa",
     "install-libs": "npm i && cd %npm_package_config_app% && npm i && cd ../%npm_package_config_web%/spa && npm i",
-    "install-db": "cd %npm_package_config_app% &&cross-env NODE_ENV=%npm_package_config_env% npm run install-db",
+    "initdb-mongo": "cross-env NODE_ENV=%npm_package_config_env% node %npm_package_config_app%/db/mongo/seed.js",
+    "initdb-knex": "cross-env NODE_ENV=%npm_package_config_env% npx knex migrate:latest --knexfile=%npm_package_config_app%/knexfile.js && cross-env NODE_ENV=%npm_package_config_env% npx knex seed:run --knexfile=%npm_package_config_app%/knexfile.js",
     "spa": "cd %npm_package_config_web%/spa && cross-env NODE_ENV=%npm_package_config_env% npm run serve",
-    "dev": "cross-env NODE_ENV=%npm_package_config_env% nodemon %npm_package_config_app%/index.js",
+    "dev": "cross-env NODE_ENV=%npm_package_config_env% npx nodemon %npm_package_config_app%/index.js",
     "dev:spa": "concurrently \"npm run dev\" \"npm run spa\"",
     "test": "cross-env NODE_ENV=%npm_package_config_env% jest --config=%npm_package_config_app%/jest.config.js --watchAll",
     "deploy": "deploy.sh %npm_package_config_app% %npm_package_config_env% %npm_package_config_web%",
@@ -27,6 +27,7 @@
     "@google-cloud/firestore": "^4.0.0",
     "@google-cloud/storage": "^5.1.1",
     "agenda": "^3.0.0",
+    "apollo-server-express": "^2.15.1",
     "axios": "^0.19.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -37,6 +38,7 @@
     "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
+    "graphql": "^15.3.0",
     "helmet": "^3.23.3",
     "http-proxy-middleware": "^1.0.4",
     "json2csv": "^5.0.1",
@@ -46,6 +48,7 @@
     "mongodb": "^3.5.9",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
+    "nodemon": "^2.0.4",
     "objection": "^2.2.0",
     "otplib": "^12.0.1",
     "passport": "^0.4.1",
@@ -64,7 +67,6 @@
     "eslint-plugin-promise": "^4.2.1",
     "jest": "^26.1.0",
     "node-mocks-http": "^1.8.1",
-    "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
   },
   "private": true

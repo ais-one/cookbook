@@ -57,5 +57,5 @@ exports.seed = async (knex) => {
     {id: 8, content: 'page8', bookId: 5, created_at: mkDt()}
   ])
 
-  await knex('country').insert( require('../icc.json') )
+  await knex('country').insert( require('../../icc.json') )
 }
