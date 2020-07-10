@@ -75,7 +75,7 @@ npm run initdb-knex
 npm run app:spa
 ```
 
-**NOTE 1** the **secret** folder is missing so there maybe some logs about missing files (but it is ok to ignore), graphql and websockets will not work also. To get them to work, in **example-app/config** folder, rename **sample-secret** folder to **secret**
+**NOTE 1** the **secret** folder is missing so there maybe some logs about missing files (but it is ok to ignore), graphql and websockets will not work also. To get them to work, in **example-app/config** folder, rename **sample-secret** folder to **secret**. You can look at the readme inside **sample-secret** folder for more information
 
 **NOTE 2** mongodb is not run and there will be connection error for mongodb. To have mongodb use docker-compose file in docker-devenv\mongodb. Remember to do one-time initiate of replication set first.
 
