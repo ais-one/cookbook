@@ -1,24 +1,20 @@
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine) [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-**TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, Cloud Container Deployment
+**TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment
 
-# VUE-CRUD-X - WHY & WHAT
+# VUE-CRUD-X - WHY & WHAT (EVOLUTiON)
 
-> Writing same code each time you work on a new application? Trouble keeping the libraries updated? Many fixes when dependency version changes?
+> Why: Reduce writing same code for each new application -> keep code & dependencies updated -> monitor software quality -> auto test and deploy
 
-Well... what started as a CRUD component for VueJS has grown to a full-stack app development cookbook, and further expanded into a way of building and maintaining multiple full-stack applications of different use cases with as little waste as possible, aiming to address those 3 issues above as much as possible!
+> What (Evolution): extensible CRUD component for VueJS --> ExpressJS full-stack app development cookbook and recipes --> common components for multiple apps --> automated QA, test, CI/CD with Cloud container deployment
 
-> A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, forms, use of GraphQL or REST to access various datastores. Vuetify is used for frontend UI components but can be changed to alternatives such as ElementUI (with some effort)
-
-> Over time, the example projects to show the use of **vue-crud-x** have grown to become a **cookbook** that includes many other useful **recipes** for use in production ExpressJS and VueJS web applications.
-
-# NOTICES & UPDATES
+## NOTICES & UPDATES
 
 Latest Version [0.3.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.3) - Released 2020 Aug 31 0400 +8GMT
 
 **vue-crud-x 0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
 
-**vue-crud-x 0.2+** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
+**vue-crud-x 0.2+** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, CRUD component code was refactored to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
 **vue-crud-x 0.1** and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1). You can refer to the v1 [article](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054).
 
@@ -43,7 +39,7 @@ The following differentiates vue-crud-x from other CRUD repositories:
 - Server side pagination, sorting & filtering
 - Handle infinite scroll use-case
 - Handle authentication tokens, user permissions
-- Customise table, search filter, CRUD form, validation, CRUD operations (call REST, GraphQL, Firestore, etc.)
+- Customise table, search filter, CRUD form, validation, CRUD operations (call REST, GraphQL, etc.)
 - Auto-configure/generate Search filter and CRUD Forms using JSON
 - Inline edit (row level)
 - Export to CSV/JSON, File/Image Upload
@@ -75,12 +71,17 @@ npm run initdb-knex
 npm run app:spa
 ```
 
-**NOTE 1** the **secret** folder is missing so there maybe some logs about missing files (but it is ok to ignore), graphql and websockets will not work also. To get them to work, in **example-app/config** folder, rename **sample-secret** folder to **secret**. You can look at the readme inside **sample-secret** folder for more information
+**NOTE 1** the **secret** folder is missing so there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable.
 
-**NOTE 2** mongodb is not run and there will be connection error for mongodb. To have mongodb use docker-compose file in docker-devenv\mongodb. Remember to do one-time initiate of replication set first.
+To resolve, in **example-app/config** folder, rename **sample-secret** folder to **secret**. You can look at the readme inside **sample-secret** folder for more information
 
+**NOTE 2** mongodb needs to connect to localhost or there will be connection error for mongodb. Quick start is still usable.
 
-The code below is important, setup and reading of configs. It is use in common-lib/app.js and also used in process-cron.js and process-long.js (long running process)
+To resolve, either
+- install mongodb, or
+- use docker-compose file in docker-devenv\mongodb. It creates replica set so that transactions can be handled. Remember to do one-time initiate of replication set first.
+
+**NOTE 3** The code below is important, calls setup and reading of configs. It is use in example-app/index.js and also used in example-app/process-long.js (long running process) and example-app/process-cron.js
 
 ```js
 // index.js
@@ -93,7 +94,7 @@ Navigate to http://127.0.0.1:8080 to view the VueCrudX demo and example SPA appl
 Login using the following:
 - User: test
 - Password: test
-- OTP (if enabled): if USE_OTP set to TEST, use 111111 as otp pin
+- OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin
 
 View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
 
@@ -109,7 +110,7 @@ TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test
 npm run test
 ```
 
-3. Long Running Processes and Crons
+3. Long Running Processes and Cron Triggered Process
 
 Command to run long process (do take note of caveats)
 

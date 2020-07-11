@@ -7,6 +7,7 @@
   - backend
     - GKE, Kubernetes
     - generic table crud frontend
+    - add kafka working example
   - frontend
     - generic table crud backend
     - cypress e2e testing
@@ -15,7 +16,6 @@
 ### Ongoing
 - [TODO]
   - backend
-    - add kafka working example
     - research websocket testing, improve coverage
     - research auto generated REST API and Testing (keep in view dredd.io)
     - JsonSchema
