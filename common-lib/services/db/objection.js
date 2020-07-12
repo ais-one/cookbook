@@ -2,6 +2,7 @@ let Model
 
 exports.open = () => {
   const { NODE_ENV, KNEXFILE } = global.CONFIG
+  if (!KNEXFILE) console.log('KNEXFILE property empty or undefined')
   if (!Model && KNEXFILE) {
     try {
       const Knex = require('knex')
