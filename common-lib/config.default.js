@@ -1,6 +1,3 @@
-const fs = require('fs')
-const path = require('path')
-
 if (!global.APP_PATH) APP_PATH = ''
 if (!global.LIB_PATH) LIB_PATH = ''
 if (global.CONFIG.TEST_ENV) console.log('TEST_ENV =', global.CONFIG.TEST_ENV)
@@ -20,7 +17,7 @@ global.CONFIG.HTTPONLY_TOKEN = false // true, false (also set the same on FE...,
 global.CONFIG.AUTH_USER_STORE = 'objection' // mongo, objection
 global.CONFIG.AUTH_USER_STORE_NAME = 'users'
 global.CONFIG.AUTH_USER_FIELD_ID_FOR_JWT = 'id' // mongo = _id, objection = id // can be NTID from SAML
-global.CONFIG.AUTH_USER_FIELD_GROUPS_FOR_JWT = 'groups' // can be AD Groups from SAML
+global.CONFIG.AUTH_USER_FIELDS_JWT_PAYLOAD = 'email,groups' // comma seperated, can be AD Groups from SAML, email, etc.
 global.CONFIG.AUTH_USER_FIELD_LOGIN = 'email'
 global.CONFIG.AUTH_USER_FIELD_PASSWORD = 'password' 
 global.CONFIG.AUTH_USER_FIELD_GAKEY = 'gaKey'
@@ -50,16 +47,7 @@ global.CONFIG.JOB_TYPES = '' // 'email', // 'email,nexmo,telegram' //  agenda me
 
 global.CONFIG.KNEXFILE = true
 global.CONFIG.GCP_KEY = true
-
-try {
-  global.CONFIG.KNEXFILE = global.CONFIG.KNEXFILE ? require(APP_PATH + '/knexfile') : null
-  // GOOGLE CLOUD/FIREBASE SERVICE ACCOUNT
-  global.CONFIG.GCP_KEY = global.CONFIG.GCP_KEY ? require(APP_PATH + '/config/secret/' + process.env.NODE_ENV + '.gcp.json') : ''
-  global.CONFIG.GCP_DEFAULT_BUCKET = global.CONFIG.GCP_DEFAULT_BUCKET || 'mybot-live.appspot.com'
-} catch (e) {
-  console.log(e.toString())
-}
-
+global.CONFIG.GCP_DEFAULT_BUCKET = 'mybot-live.appspot.com'
 
 // CORS - SAME ORIGIN - PROXIED
 //   CORS_OPTIONS: null
@@ -111,11 +99,8 @@ global.CONFIG.UPLOAD_STATIC = [
   { folder: '', url: '' }
 ]
 
-const JWT_CERT = process.env.JWT_CERT || '' // path.join(__dirname, 'certs/jwt') // RS256
-const HTTPS_CERT = process.env.HTTPS_CERT || ''
-
-global.CONFIG.httpsCerts = HTTPS_CERT ? { key: fs.readFileSync(`${HTTPS_CERT}.key`), cert: fs.readFileSync(`${HTTPS_CERT}.crt`) } : null
-global.CONFIG.jwtCerts = JWT_CERT ? { key: fs.readFileSync(`${JWT_CERT}.key`), cert: fs.readFileSync(`${JWT_CERT}.crt`) } : null
+global.CONFIG.JWT_CERT = process.env.JWT_CERT || '' // path.join(__dirname, 'certs/jwt') // RS256
+global.CONFIG.HTTPS_CERT = process.env.HTTPS_CERT || ''
 
 // Role-based access control - not needed, implemented by middleware - e.g. isAdmin after user authentication
 
