@@ -6,22 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Express & Vanilla JS Demos</title>
-
-  <!-- Add support for Web Components to older browsers. -->
-  <!-- <script src="./node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script> -->
-  <!-- Your application must load the Roboto and Material Icons fonts. -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
-
-  <!-- <script type="module" src="https://cdn.jsdelivr.net/npm/@material/mwc-button@0.17.2/mwc-button-base.js" integrity="sha256-+ICzqxzrBrKzBh6M+SwaO4e1js4iacf5cAIxJxrQSa4=" crossorigin="anonymous"></script>
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@material/mwc-button@0.17.2/mwc-button.min.js"></script>
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@material/mwc-button@0.17.2/mwc-button-css.js" integrity="sha256-TtMWfYaYB6Dsp/EyuBWiGORdc5wIkKtUIT8VqBNNsdw=" crossorigin="anonymous"></script> -->
-  <script type="module">
-    import { foobar } from "./js/test.js";
-    document.addEventListener("DOMContentLoaded", function(){
-      console.log('foobar', foobar)
-    })
-  </script>
 </head>
 
 <body>
@@ -33,17 +17,12 @@
   <li><a href="upload.html">FILE UPLOAD</a></li>
   <li><a href="refresh-token.html">REFRESH TOKEN</a></li>  
   <li><a href="demo-nobundler/index.html">Demo Vue SPA Without Bundler</a></li>
-  <li><a href="demo-nobundler/index.html">Demo using Material Web Component - No Bundler</a></li>
+  <li><a href="demo-mwc/index.html">Demo using Material Web Component - No Bundler</a></li>
 </ul>
 
 
 <h1>HTML5 Demos</h1>
 <div>
-  <!-- <h2>MWC</h2>
-  <div>
-    <mwc-button id="myButton" label="Click Me!" raised></mwc-button>
-  </div> -->
-
   <h2>Auto Complete</h2>
   <label for="myBrowser">Choose a browser from this list:</label>
   <input list="browsers" id="myBrowser" name="myBrowser" />
