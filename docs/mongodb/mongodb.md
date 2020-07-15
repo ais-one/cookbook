@@ -330,3 +330,13 @@ try {
 ## field update operators
 
 https://docs.mongodb.com/manual/reference/operator/update-field/
+
+
+## Bulk Write
+
+Two methods available (method 1 seems more intuitive)
+
+- http://mongodb.github.io/node-mongodb-native/3.5/tutorials/crud/#bulkwrite
+  - http://mongodb.github.io/node-mongodb-native/3.5/api/Collection.html#bulkWrite
+- http://mongodb.github.io/node-mongodb-native/3.5/tutorials/crud/#bulk-write-operations
+
