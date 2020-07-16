@@ -1,5 +1,7 @@
 ### Version 0.3.3
 - [chore] update packages & cleanup & work on improving documentation
+- spa
+  - removed vue-apollo wrapper to apollo client, just use apollo client directly, apollo client v2 to v3 has broken vue-apollo v3
 - [Work-in-progress]
   - circleci workflow
     - deploy backend to GCP Cloud Run

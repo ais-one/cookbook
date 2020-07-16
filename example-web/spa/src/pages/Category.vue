@@ -13,33 +13,21 @@ import { GET_CATEGORIES, GET_CATEGORY, PATCH_CATEGORY, CATEGORY_UPDATED, POST_CA
 import { PAGESIZE, PAGESIZE_OPTS } from '@/config'
 
 export default {
-  apollo: {
-    // getPosts: {
-    //   query: GET_POSTS,
-    //   result({ data, loading, networkStatus}) {
-    //     if (!loading) {
-    //       this.posts = data.getPosts
-    //       console.log('[networkStatus]', networkStatus)
-    //     }
-    //   },
-    //   error(e) {
-    //     console.error('[ERROR]', e)
-    //   }
-    // },
-    $subscribe: {
-      // When a post is added
-      categoryUpdated: {
-        query: CATEGORY_UPDATED,
-        result (data) {
-          // alert('POST ADDED', data.data.postAdded.title)
-          alert('SUBSCRIPTIONS: CATEGORY_UPDATED', data.data.categoryUpdated.id, data.data.categoryUpdated.name)
-        }
-      }
-    }
-  },
   name: 'category',
+  mounted() {
+    this.subscriptionObserver = apolloClient.subscribe({ query: CATEGORY_UPDATED }).subscribe(
+      data => {
+        console.log('Data', data)
+      },
+      e => console.error('Error', e.toString())
+    )  
+  },
+  beforeDestroy() {
+    if (this.subscriptionObserver) this.subscriptionObserver.unsubscribe()
+  },
   data () {
     return {
+      subscriptionObserver: null,
       parentId: null,
       categoryDefs: {
         pageSize: PAGESIZE,

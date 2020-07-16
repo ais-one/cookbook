@@ -33,37 +33,20 @@
 <script>
 import gql from 'graphql-tag'
 import { http } from '@/axios'
+import { apolloClient } from '@/graphql'
 
 export default {
   name: 'dashboard',
   components: {
   },
-  apollo: {
-    // Query with parameters
-    hello: {
-      // gql query
-      query: gql`query DoHello($message: String!) {
-        hello(message: $message)
-      }`,
-      // Static parameters
-      variables: {
-        message: 'Meow'
-      }
-      // skip() {
-      //   return this.skipQuery
-      // }
-    }
-  },
   data () {
     return {
-      // skipQuery: true,
       hello: 'NA',
       wsMsg: 'No WS Message Yet',
       testResult: 'NA'
     }
   },
   created () {
-    this.$apollo.queries.hello.skip = true
     this.priceTimerId = null
   },
   beforeDestroy () {
@@ -133,8 +116,9 @@ export default {
       }
     },
     async testGraphQL () {
-      this.$apollo.queries.hello.skip = false
-      await this.$apollo.queries.hello.refetch()
+      const rv = await apolloClient.query({ query: gql`query DoHello($message: String!) { hello(message: $message) }`, variables: { message: 'Meow' } })
+      console.log('testGraphQL', rv.data.hello)
+      this.hello = rv.data.hello
     },
     updateNetworkError (flag) {
       this.$store.dispatch('setNetworkError', flag)

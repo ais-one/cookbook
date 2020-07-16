@@ -133,10 +133,10 @@ export default {
     this.vformCrud = Object.assign(this.vformCrud, this.$attrs.vformCrud || {})
     this.vtoolbar = Object.assign(this.vtoolbar, this.$attrs.vtoolbar || {})
     this.vtable = Object.assign(this.vtable, this.$attrs.vtable || {})
-    console.log("this.$attrs.pageSizeOptions", this.$attrs.pageSizeOptions)
+    // console.log("this.$attrs.pageSizeOptions", this.$attrs.pageSizeOptions)
     if (this.$attrs.pageSizeOptions && this.$attrs.pageSizeOptions.length) {
       this.vtable['footer-props']['items-per-page-options'] = this.$attrs.pageSizeOptions
-      console.log("this.vtable['footer-props']['items-per-page-options']", this.vtable['footer-props']['items-per-page-options'])
+      // console.log("this.vtable['footer-props']['items-per-page-options']", this.vtable['footer-props']['items-per-page-options'])
     }
     this.sorters = Object.assign(this.sorters, this.$attrs.sorters || {})
     this.sortDefaults = Object.assign(this.sortDefaults, this.$attrs.sortDefaults || {})

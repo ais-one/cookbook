@@ -16,13 +16,10 @@ import FileUpload from 'ext-lib/webpacked/FileUpload.vue'
 
 
 import { apolloClient } from './graphql'
-import VueApollo from 'vue-apollo'
 import { DO_HELLO } from './queries'
 
 import { dateISO } from 'ext-lib/esm/datetime.js' // test JS used in both front end backend
 console.log('dateISO', dateISO(new Date()))
-
-Vue.use(VueApollo)
 
 apolloClient.query({
   query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
@@ -30,10 +27,6 @@ apolloClient.query({
     message: 'Meow'
   }
 }).then(data => console.log(data)).catch(error => console.error(error))
-
-const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
-})
 
 Vue.config.productionTip = false
 
@@ -67,7 +60,6 @@ export const app = new Vue({
   vuetify,
   router,
   store,
-  apolloProvider,
   render: h => h(App),
   // created () { }
 })
