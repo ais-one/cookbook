@@ -51,7 +51,7 @@ module.exports = express.Router()
    *      tags:
    *        - "Base"
    *      security:
-   *        - Bearer: []
+   *        - bearerAuth: []
    *      description: add an author
    *      parameters:
    *        - name: author
@@ -76,7 +76,7 @@ module.exports = express.Router()
    *      tags:
    *        - "Base"
    *      security:
-   *        - Bearer: []
+   *        - bearerAuth: []
    *      description: add an author
    *      parameters:
    *        - name: id
@@ -109,7 +109,7 @@ module.exports = express.Router()
    *      tags:
    *        - "Base"
    *      security:
-   *        - Bearer: []
+   *        - bearerAuth: []
    *      description: add an author
    *      parameters:
    *        - name: id
@@ -132,7 +132,7 @@ module.exports = express.Router()
    *      tags:
    *        - "Base"
    *      security:
-   *        - Bearer: []
+   *        - bearerAuth: []
    *      description: add an author
    *      parameters:
    *        - name: page
@@ -176,7 +176,7 @@ module.exports = express.Router()
    *      tags:
    *        - "Base"
    *      security:
-   *        - Bearer: []
+   *        - bearerAuth: []
    *      description: add an author
    *      parameters:
    *        - name: id

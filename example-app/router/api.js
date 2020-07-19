@@ -95,7 +95,7 @@ module.exports = express.Router()
    *      tags:
    *        - "Base"
    *      security:
-   *        - Bearer: []
+   *        - bearerAuth: []
    *      description: Health check with authorization
    */
   .get('/health-auth', authUser, (req, res) => { res.json({ message: 'OK' }) }) // health check auth
