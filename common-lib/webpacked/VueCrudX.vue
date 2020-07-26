@@ -374,6 +374,7 @@ export default {
     },
     async onExport () { await this.exportRecords() },
     // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
+    onInput (ev, key) { this.$emit(`${key}Input`, ev) },
 
     // INLINE EDIT START
     _isRowEditing (item) { return (!this.editingRow) ? false : item[this.idName] === this.editingRow[this.idName] },
@@ -390,6 +391,7 @@ export default {
     _isHidden (hidden) { return (hidden === 'add' && !this.selectedId) || (hidden === 'edit' && !!this.selectedId) || hidden === 'all' },
     _isReadOnly (readonly) { return (readonly === 'add' && !this.selectedId) || (readonly === 'edit' && !!this.selectedId) || readonly === 'all' },
     _isObject (obj) { return obj !== null && typeof obj === 'object' },
+
     async testFunction (_in) { } // for testing anything
   }
 }
@@ -497,7 +499,7 @@ export default {
             <v-layout row wrap>
               <template v-for="(item, i) in form">
                 <v-flex :key="i" v-if="!_isHidden(item.hidden)" v-bind="item['field-wrapper']">
-                  <component :is="item.type" v-model="item.value" v-bind="item['field-input']" :disabled="_isReadOnly(item.readonly)"/>
+                  <component :is="item.type" v-model="item.value" v-bind="item['field-input']" :disabled="_isReadOnly(item.readonly)" @input="onInput($event, i)" />
                 </v-flex>
               </template>
             </v-layout>

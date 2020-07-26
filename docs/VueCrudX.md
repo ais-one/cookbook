@@ -466,6 +466,36 @@ default is do nothing
 onRowClick: (item, $event, _self) => { }
 ```
 
+### On Input Event In Component
+
+Component input event handler. Contributed by @gusmanwidodo
+
+```js
+onInput (ev, key) { this.$emit(`${key}Input`, ev) }
+
+```
+
+**Usage**
+
+```html
+// need the "Input" suffix...
+<vue-crud-x v-if="ready" ref="testRef" :parentId="null" v-bind="testDefs" @testInput="testInput">
+```
+
+```js
+form: {
+  '_id': { value: '', default: '', hidden: 'all' },
+  //...
+  'test': { value: '', default: '', type: 'test-picker', 'field-input': { label: 'Testing' }, 'field-wrapper': { ...halfW } },
+  //...
+}
+
+// listen to input event from component test-picker
+async testInput (val) {
+}
+```
+
+
 ### Action Confirmation
 
 override confirmation feedback

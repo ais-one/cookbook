@@ -10,8 +10,6 @@
 # $1 relative path to project folder from vue-crud-x
 # $2 environment
 
-echo "IMPORTANT! Run this in the vue-crud-x folder"
-
 if [ ! $1 ]; then # eg. example-app
     echo "Missing path to project. Set at package.json" && read && exit
 fi
@@ -21,6 +19,8 @@ fi
 if [ ! $3 ]; then # eg. example-web
     echo "Missing path to web. Set at package.json" && read && exit
 fi
+
+echo $1 $2 $3
 
 # OIFS=$IFS; IFS=","; sites=("site 1,site b,site aaa"); IFS=$OIFS
 # for site in "${sites[@]}"; do
@@ -80,7 +80,7 @@ do
         ssh -i $PEM $URL "cd ~/app;npm i;cd $1;npm i"
       fi
       echo "Restart"
-      ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start $1/ecosystem.config.js --env $2;" ;;
+      ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start $1/ecosystem.config.js --env $2;"
       ;;
     "deploy-fe")
       echo "NOTE: gsutil.cmd in windows git bash. If cannot find command in Windows, it could be space in path (.../Google Cloud/...) to gsutil."
