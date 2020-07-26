@@ -12,6 +12,7 @@
   "scripts": {
     "install-libs": "npm i && cd $npm_package_config_web/spa && npm i",
     "initdb-mongo": "cross-env NODE_ENV=$npm_package_config_env node $npm_package_config_app/db/mongo/seed.js",
+    "update-mongo": "cross-env NODE_ENV=$npm_package_config_env node $npm_package_config_app/db/mongo/update.js",
     "initdb-knex": "cross-env NODE_ENV=$npm_package_config_env npx knex migrate:latest --knexfile=$npm_package_config_app/knexfile.js && cross-env NODE_ENV=$npm_package_config_env npx knex seed:run --knexfile=$npm_package_config_app/knexfile.js",
     "spa": "cd $npm_package_config_web/spa && cross-env NODE_ENV=$npm_package_config_env npm run serve",
     "app": "cross-env NODE_ENV=$npm_package_config_env APP_NAME=$npm_package_config_app npx nodemon $npm_package_config_app/index.js",

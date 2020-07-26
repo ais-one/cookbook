@@ -60,11 +60,11 @@ do
       gcloud config set project $GCP_PROJECT_ID
       gcloud auth configure-docker
 
-      docker build -t gcr.io/$GCP_PROJECT_ID/$1:latest .
+      docker build -t gcr.io/$GCP_PROJECT_ID/$1:latest --build-arg ARG_APP_NAME=$1 --build-arg ARG_NODE_ENV=$2  --build-arg ARG_API_PORT=3000 .
       docker push gcr.io/$GCP_PROJECT_ID/$1:latest
-      gcloud run deploy $1-service --image gcr.io/$GCP_PROJECT_ID/$1:latest --platform managed --region asia-east1 --allow-unauthenticated --port=3000
+      gcloud run deploy $1-$2-svc --image gcr.io/$GCP_PROJECT_ID/$1:latest --platform managed --region asia-east1 --allow-unauthenticated --port=3000
 
-      # gcloud run services delete $1-service --platform managed --region asia-east1
+      # gcloud run services delete $1-$2-svc --platform managed --region asia-east1
       # gcloud container images delete gcr.io/cloudrun/helloworld
       ;;
     "uat-deploy-vm")
