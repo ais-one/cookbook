@@ -11,6 +11,9 @@
     </p>
     <p>Vuex Store {{ storeCount }}</p>
     <p>Axios GET {{ msg }}</p>
+    <ul>
+      <li v-for="n in 50" :key="n">{{ n }}</li>
+    </ul>
   </div>
 </template>
 

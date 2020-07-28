@@ -86,10 +86,17 @@ The parentId is present in a child table and is used to reference the parent tab
 
 **Example:** For a car record that belongs to a driver record. The driver id, will be the parentId passed into vue-crud-x
 
-type: String
+```
+{ type: String, default: null }
+```
 
-default: null
+### refreshMs
 
+Refresh every X ms if on paged table mode. Use carefully, the refresh may not be good UX. Contributed by @gusmanwidodo
+
+```
+{ type: Number, default: 0 }
+```
 
 ## Injected Properties - Vuetify Components
 

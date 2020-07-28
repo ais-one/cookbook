@@ -1,9 +1,10 @@
 
 // // Generate Password
 const bcrypt = require('bcryptjs')
-let password = bcrypt.hashSync('tech@!@#', 12)
+// let password = bcrypt.hashSync('tech@!@#', 12)
+let password = bcrypt.hashSync('ahop8888', 12)
 console.log(password)
-
+process.exit(0)
 // Generate GA OTP Password
 const otplib = require('otplib')
 const secret = otplib.authenticator.generateSecret() // base 32 encoded hex secret key

@@ -9,7 +9,8 @@
 
 export default {
   props: {
-    parentId: { type: String, default: null }
+    parentId: { type: String, default: null },
+    refreshMs: { type: Number, default: 0 }
   },
   data () {
     return {
@@ -199,6 +200,10 @@ export default {
   async mounted () {
     // not needed in data() because it does not exist in template, an optimization which should be done for others as well
     if (typeof this.$t !== 'function') this.$t = text => text // if no internationalization
+    if (this.refreshMs > 0 && this.showForm  === false) { // should table refresh?
+      let timer = setInterval(() => { if (!this.showForm && !this.showFilter) this.onFilter() }, this.refreshMs)
+      this.$once('hook:beforeDestroy', () => { if (timer) clearInterval(timer) })
+    }
   },
   computed: {
     showTitle () { return this.title || '' }

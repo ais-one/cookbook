@@ -6,9 +6,15 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@material/mwc-drawer": "^0.17.2",
+    "@material/mwc-icon-button": "^0.17.2",
+    "@material/mwc-top-app-bar-fixed": "^0.17.2",
     "@vaadin/vaadin-button": "^2.3.0",
+    "vega": "^5.13.0",
+    "vega-embed": "^6.10.0",
+    "vega-lite": "^4.14.0",
     "vue": "^3.0.0-rc.4",
-    "vue-router": "^4.0.0-beta.3",
+    "vue-router": "^4.0.0-beta.4",
     "vuex": "^4.0.0-beta.4"
   },
   "devDependencies": {

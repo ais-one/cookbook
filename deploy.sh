@@ -108,14 +108,9 @@ do
           cd $baseDir
       done
       cd $baseDir
-# clear cloudflare cache
-# cat <<-EOF
-# # Sample command to clear cloudflare cache 
-# curl -X POST "https://api.cloudflare.com/client/v4/zones/YOUR-ZONE-ID/purge_cache" \
-#   -H "X-Auth-Email: YOUR-CLOUDFLARE-EMAIL" -H "X-Auth-Key: YOUR-GLOBAL-API-KEY" \
-#   -H "Content-Type: application/json" --data '{"purge_everything":true}'
-# # CircleCI TBD - [![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://circleci.com/gh/circleci/circleci-docs)
-# EOF
+      # Echo "clear cloudflare cache"
+      # # Sample command to clear cloudflare cache 
+      # curl -X POST "https://api.cloudflare.com/client/v4/zones/YOUR-ZONE-ID/purge_cache" -H "X-Auth-Email: YOUR-CLOUDFLARE-EMAIL" -H "X-Auth-Key: YOUR-GLOBAL-API-KEY" -H "Content-Type: application/json" --data '{"purge_everything":true}'
       ;;
     "uat-list") ssh -i $PEM $URL "pm2 list" ;;
     "uat-start") ssh -i $PEM $URL "cd ~/app; authbind --deep pm2 start $1/ecosystem.config.js --env $2;" ;;
@@ -130,3 +125,5 @@ done
 
 echo "Done... press enter to exit"
 read # pause exit in windows
+
+# # CircleCI TBD - [![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://circleci.com/gh/circleci/circleci-docs)

@@ -109,3 +109,13 @@ gcloud run deploy helloworld --image gcr.io/cloudrun/hello --platform managed --
 gcloud container images delete gcr.io/cloudrun/helloworld
 gcloud run services delete helloworld --platform managed --region asia-east1
 ```
+
+## Minimal Permissions
+
+- Storage
+  - Storage Admin
+  - Storage Object Admin
+
+- Cloud Run
+  - Service Account User
+  - Cloud Run Admin
