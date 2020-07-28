@@ -6,6 +6,9 @@
       <p>Drawer content</p>
       <mwc-icon-button icon="gesture"></mwc-icon-button>
       <mwc-icon-button icon="gavel" id="gavel"></mwc-icon-button>
+      <mwc-list>
+        <mwc-list-item v-for="n of 20" :key="n">Item {{ n }}</mwc-list-item>
+      </mwc-list>
     </div>
     <div slot="appContent">
       <mwc-top-app-bar-fixed>
@@ -19,23 +22,11 @@
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-      </div>
-    </div>
-  </mwc-drawer>
-
-    <!-- <div>
-      <mwc-top-app-bar-fixed>
-        <mwc-icon-button icon="menu" slot="navigationIcon"></mwc-icon-button>
-        <div slot="title">Title</div>
-        <mwc-icon-button icon="file_download" slot="actionItems" @click="clickMe"></mwc-icon-button>
-        <mwc-icon-button icon="print" slot="actionItems"></mwc-icon-button>
-        <mwc-icon-button icon="favorite" slot="actionItems"></mwc-icon-button>
-      </mwc-top-app-bar-fixed>
-      <div>
         <h1>A Test Application For Vite</h1>
         <router-view></router-view>
       </div>
-    </div> -->
+    </div>
+  </mwc-drawer>
 </template>
 
 <script>

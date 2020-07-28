@@ -8,6 +8,8 @@
   "dependencies": {
     "@material/mwc-drawer": "^0.17.2",
     "@material/mwc-icon-button": "^0.17.2",
+    "@material/mwc-list": "^0.17.2",
+    "@material/mwc-menu": "^0.17.2",
     "@material/mwc-top-app-bar-fixed": "^0.17.2",
     "@vaadin/vaadin-button": "^2.3.0",
     "vega": "^5.13.0",
