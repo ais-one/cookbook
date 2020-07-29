@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "@material/mwc-drawer": "^0.17.2",
+    "@material/mwc-icon": "^0.17.2",
     "@material/mwc-icon-button": "^0.17.2",
     "@material/mwc-list": "^0.17.2",
     "@material/mwc-menu": "^0.17.2",
@@ -15,12 +16,12 @@
     "vega": "^5.13.0",
     "vega-embed": "^6.10.0",
     "vega-lite": "^4.14.0",
-    "vue": "^3.0.0-rc.4",
+    "vue": "^3.0.0-rc.5",
     "vue-router": "^4.0.0-beta.4",
     "vuex": "^4.0.0-beta.4"
   },
   "devDependencies": {
-    "@vue/compiler-sfc": "^3.0.0-rc.4",
+    "@vue/compiler-sfc": "^3.0.0-rc.5",
     "vite": "^1.0.0-rc.3"
   }
 }

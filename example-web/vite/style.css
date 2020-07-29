@@ -1,0 +1,26 @@
+body {
+  display: block;
+  margin: 0;
+}
+
+.container {
+  margin: 4px 8px 8px 4px;
+}
+
+.v-center {
+  display: flex;
+  align-items: center;
+}
+
+.h-center {
+  display: flex;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+}

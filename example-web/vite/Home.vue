@@ -1,6 +1,6 @@
 
 <template>
-  <div>
+  <div class="container">
     [<router-link to="/site-a">Site A</router-link>] [<router-link to="/site-b">Site B</router-link>]
     <h1>A Hello Vite + Vue 3!</h1>
     <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>    

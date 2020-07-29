@@ -27,7 +27,6 @@
     "node": "12"
   },
   "dependencies": {
-    "@google-cloud/firestore": "^4.1.1",
     "@google-cloud/storage": "^5.1.2",
     "agenda": "^3.0.0",
     "apollo-server-express": "^2.16.1",
