@@ -12,9 +12,9 @@
 <script>
 // https://vega.github.io/vega/usage/
 
-import * as echarts from 'echarts/lib/echarts'
+// import * as echarts from 'echarts/lib/echarts'
 // import * as Echarts from 'vue-echarts'
-console.log('zzzz', echarts)
+// console.log('zzzz', echarts)
 
 import embed from 'vega-embed'
 import * as vega from 'vega'
