@@ -4,16 +4,31 @@
     <span slot="subtitle" class="h-center"><p>v0.0.1</p></span>
     <div class="drawer-content">
       <mwc-list>
-        <router-link v-for="item of menuItems" :key="item.to" :to="item.to">
-          <mwc-list-item graphic="icon">
-            <slot>{{ item.name }}</slot><mwc-icon slot="graphic">{{ item.icon }}</mwc-icon>
-          </mwc-list-item>
-        </router-link>
+        <div v-for="item of menuItems" :key="item.name">
+          <router-link v-if="item.to" :to="item.to">
+            <mwc-list-item graphic="icon">
+              <slot>{{ item.name }}</slot><mwc-icon slot="graphic">{{ item.icon }}</mwc-icon>
+            </mwc-list-item>
+          </router-link>
+          <div v-else>
+            <mwc-list-item hasMeta @click="item.show=!item.show">
+              <span>{{ item.name }}</span>
+              <mwc-icon slot="meta">{{ item.show ? item.icon1 : item.icon0 }}</mwc-icon>
+            </mwc-list-item>
+            <div v-if="item.show">
+              <router-link v-for="child of item.children" :key="child.to" :to="child.to">
+                <mwc-list-item graphic="icon">
+                  <slot>{{ child.name }}</slot><mwc-icon slot="graphic">{{ child.icon }}</mwc-icon>
+                </mwc-list-item>
+              </router-link>
+            </div>
+          </div>
+          <!-- <mwc-list-item v-for="n of 20" :key="n">Item {{ n }}</mwc-list-item> -->
+        </div>
         <mwc-list-item graphic="icon">
           <slot>Sign out</slot>
           <mwc-icon slot="graphic">exit_to_app</mwc-icon>
         </mwc-list-item>
-        <!-- <mwc-list-item v-for="n of 20" :key="n">Item {{ n }}</mwc-list-item> -->
       </mwc-list>
     </div>
     <div slot="appContent">
@@ -37,8 +52,12 @@ export default {
     return {
       menuItems: [
         { to: '/', name: 'Home', icon: 'home' },
-        { to: '/site-a', name: 'Site A', icon: '' },
-        { to: '/site-b', name: 'Vega Chart', icon: 'bar_chart' }
+        { show: false, name: 'Sites', icon0: 'keyboard_arrow_up', icon1: 'keyboard_arrow_down',
+          children: [
+            { to: '/site-a', name: 'Site A', icon: '' },
+            { to: '/site-b', name: 'Vega Chart', icon: 'bar_chart' }
+          ]
+        }
       ]
     }
   },
