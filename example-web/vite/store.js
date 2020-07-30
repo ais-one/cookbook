@@ -1,4 +1,6 @@
 import { createStore } from 'vuex'
+
+import router from './router.js'
 // import { createStore } from 'vuex/dist/vuex.esm-bundler.js'
 
 // import aaa from 'https://unpkg.com/swrv@0.3.0/esm/index.js' - will error
@@ -7,21 +9,36 @@ import { createStore } from 'vuex'
 // window.process = { env: { NODE_ENV: '' } }
 
 const state = {
-  count: 99
+  count: 99,
+  token: ''
 }
 
 const mutations = {
-  increment (payload) {
-    payload.count++
+  login (state, payload) {
+    console.log('setToken', payload)
+    state.token = payload
   },
-  decrement (payload) {
-    payload.count--
+  increment (state) {
+    state.count++
+  },
+  decrement (state) {
+    state.count--
   }
 }
 
 // actions are functions that cause side effects and can involve
 // asynchronous operations.
 const actions = {
+  doLogin: async ({ commit, ...ctx }, payload) => {
+    // await fetch here to get token from API...
+    if (payload) { // sign in ok
+      commit('login', `Token:${payload}:${Date.now()}`)
+      router.push('/dashboard')
+    } else { // sign in failed
+      commit('login', '')
+      router.push('/')
+    }
+  },
   increment: ({ commit }) => commit('increment'),
   decrement: ({ commit }) => commit('decrement'),
   incrementIfOdd ({ commit, payload }) {

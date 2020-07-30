@@ -1,6 +1,5 @@
 <template>
   <div class="countainer">
-    [<router-link to="/">Home</router-link>] [<router-link to="/site-b">Site B</router-link>]
     <h1>Site A - Test VueJS 3</h1>
     <div v-for="(item, i) in list" :key="i" :ref="el => { divs[i] = el }">{{ item }}</div>
   </div>

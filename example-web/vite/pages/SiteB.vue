@@ -1,6 +1,5 @@
 <template>
   <div class="countainer">
-    [<router-link to="/">Home</router-link>] [<router-link to="/site-a">Site A</router-link>]
     <h1>Site B - For Chart Testing Purposes - Vega - Hopefully Echarts</h1>
     <div id="viz"></div>
     <div class="edit">

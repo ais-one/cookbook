@@ -1,7 +1,6 @@
 
 <template>
   <div class="container">
-    [<router-link to="/site-a">Site A</router-link>] [<router-link to="/site-b">Site B</router-link>]
     <h1>A Hello Vite + Vue 3!</h1>
     <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>    
     <p>
@@ -9,8 +8,9 @@
       <button @click="count++">increment</button>
       <vaadin-button @click="count++">Add</vaadin-button>
     </p>
-    <p>Vuex Store {{ storeCount }}</p>
+    <p>Vuex Store {{ storeCount }} - {{ storeToken }}</p>
     <p>Axios GET {{ msg }}</p>
+    <button @click="login">Login</button>
     <ul>
       <li v-for="n in 50" :key="n">{{ n }}</li>
     </ul>
@@ -29,7 +29,7 @@ import { useRouter, useRoute } from 'vue-router'
 import '@vaadin/vaadin-button'
 
 export default {
-  // name: 'Home',
+  name: 'Dashboard',
   setup(props, context) {
     const store = useStore()
     const route = useRoute()
@@ -42,7 +42,9 @@ export default {
 
     // const plusOne = computed(() => count.value + 1)
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
+    const storeToken = computed(() => store.state.token)
 
+    const login = () => store.dispatch('doLogin', 'Test Username')
     // const stop = watchEffect(() => console.log(count.value))
     // // -> logs 0
     // setTimeout(() => {
@@ -89,11 +91,18 @@ export default {
     onUnmounted(() => {
       console.log('unmounted!')
     })
+
+    // // Watch prop value change and assign to value 'selected' Ref
+    // watch(() => props.value, (newValue: Props['value']) => {
+    //   selected.value = newValue;
+    // });
     return {
-      count,
+      login, // method
+      count, // ref
       msg,
       titleRef,
-      storeCount
+      storeCount, // store
+      storeToken
     }
   }
   // data: () => ({ count: 0, msg: '' }),
