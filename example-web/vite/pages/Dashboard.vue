@@ -10,7 +10,6 @@
     </p>
     <p>Vuex Store {{ storeCount }} - {{ storeToken }}</p>
     <p>Axios GET {{ msg }}</p>
-    <button @click="login">Login</button>
     <ul>
       <li v-for="n in 50" :key="n">{{ n }}</li>
     </ul>
@@ -44,7 +43,6 @@ export default {
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
     const storeToken = computed(() => store.state.token)
 
-    const login = () => store.dispatch('doLogin', 'Test Username')
     // const stop = watchEffect(() => console.log(count.value))
     // // -> logs 0
     // setTimeout(() => {
@@ -97,7 +95,6 @@ export default {
     //   selected.value = newValue;
     // });
     return {
-      login, // method
       count, // ref
       msg,
       titleRef,

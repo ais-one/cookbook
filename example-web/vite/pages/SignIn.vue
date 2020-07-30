@@ -18,7 +18,7 @@ export default {
     const store = useStore()
     
     const username = ref('')
-    const login = () => store.dispatch('doLogin', username)
+    const login = () => store.dispatch('doLogin', username.value)
     return {
       username, // data
       login, // method

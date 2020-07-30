@@ -13,7 +13,7 @@
           <div v-else>
             <mwc-list-item hasMeta @click="item.show=!item.show">
               <span>{{ item.name }}</span>
-              <mwc-icon slot="meta">{{ item.show ? item.icon1 : item.icon0 }}</mwc-icon>
+              <mwc-icon slot="meta">{{ item.show ? item.icon0 : item.icon1 }}</mwc-icon>
             </mwc-list-item>
             <div v-if="item.show">
               <router-link v-for="child of item.children" :key="child.to" :to="child.to">
@@ -51,25 +51,6 @@ import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
 
 export default {
-  // data () {
-  //   return {
-  //     menuItems: [
-  //       { to: '/', name: 'Home', icon: 'home' },
-  //       { show: false, name: 'Sites', icon0: 'keyboard_arrow_up', icon1: 'keyboard_arrow_down',
-  //         children: [
-  //           { to: '/site-a', name: 'Site A', icon: '' },
-  //           { to: '/site-b', name: 'Vega Chart', icon: 'bar_chart' }
-  //         ]
-  //       }
-  //     ]
-  //   }
-  // },
-  // methods: {
-  //   clickMe () {
-  //     alert('Clicked')
-  //   },
-  // },
-
   setup(props, context) {
     const store = useStore()
     onMounted(async () => {
@@ -88,11 +69,11 @@ export default {
     })
     
     const menuItems = ref([
-      { to: '/', name: 'Home', icon: 'home' },
+      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
       { show: false, name: 'Sites', icon0: 'keyboard_arrow_up', icon1: 'keyboard_arrow_down',
         children: [
-          { to: '/site-a', name: 'Site A', icon: '' },
-          { to: '/site-b', name: 'Vega Chart', icon: 'bar_chart' }
+          { to: '/demo-table', name: 'Demo Table', icon: '' },
+          { to: '/demo-chart', name: 'Demo Chart', icon: 'bar_chart' }
         ]
       }
     ])

@@ -32,6 +32,7 @@ const actions = {
   doLogin: async ({ commit, ...ctx }, payload) => {
     // await fetch here to get token from API...
     if (payload) { // sign in ok
+      console.log('aaaaaa', payload)
       commit('login', `Token:${payload}:${Date.now()}`)
       router.push('/dashboard')
     } else { // sign in failed

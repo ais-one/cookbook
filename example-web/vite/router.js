@@ -3,8 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from './store'
 
 const authGuard = (to, from, next) => {
-  // console.log('route', to.matched[0].path, store.state.user)
-  if (store.state.user) { // has user && otp is verified
+  // console.log('route', to.matched[0].path, store)
+  if (store.state.token) { // has user && otp is verified
     return next()
   } else {
     store.commit('login', '') // need user.token only
@@ -24,8 +24,8 @@ const router = createRouter({
     { path: '/signup', name: 'SignUp', component: () => import('./pages/SignUp.vue') },
     // private
     { path: '/dashboard', name: 'Dashboard', component: () => import('./pages/Dashboard.vue'), beforeEnter: authGuard },
-    { path: '/site-b', name: 'SiteB', component: () => import('./pages/SiteB.vue'), beforeEnter: authGuard },
-    { path: '/site-a', name: 'SiteA', component: () => import('./pages/SiteA.vue'), beforeEnter: authGuard },
+    { path: '/demo-chart', name: 'Demo Chart', component: () => import('./pages/DemoChart.vue'), beforeEnter: authGuard },
+    { path: '/demo-table', name: 'DemoTable', component: () => import('./pages/DemoTable.vue'), beforeEnter: authGuard },
     // catchall
     // { path: '/:catchAll(.*)', redirect: '/' }    
   ]

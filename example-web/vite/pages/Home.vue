@@ -1,7 +1,6 @@
 
 <template>
   <div class="container">
-    <!-- [<router-link to="/site-a">Site A</router-link>] [<router-link to="/site-b">Site B</router-link>] -->
     <h1>Hello Vite + Vue 3!</h1>
     <button @click="signIn">Sign In</button>
     <button @click="signUp">Sign Up</button>
