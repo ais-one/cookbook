@@ -22,6 +22,7 @@ client.connect(async err => {
       const icc = require('../icc.json')
       await db.collection('country').deleteMany({})
       await db.collection('country').createIndex({ code: 1 }, { unique: true })
+      await db.collection('country').createIndex({ name: 1 }, { unique: true })
       await db.collection('country').insertMany(icc)
 
       await db.collection('person').deleteMany({})

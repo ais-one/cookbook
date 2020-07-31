@@ -26,6 +26,7 @@ const router = createRouter({
     { path: '/dashboard', name: 'Dashboard', component: () => import('./pages/Dashboard.vue'), beforeEnter: authGuard },
     { path: '/demo-chart', name: 'Demo Chart', component: () => import('./pages/DemoChart.vue'), beforeEnter: authGuard },
     { path: '/demo-table', name: 'DemoTable', component: () => import('./pages/DemoTable.vue'), beforeEnter: authGuard },
+    { path: '/demo-flex', name: 'DemoFlex', component: () => import('./pages/DemoFlex.vue'), beforeEnter: authGuard },
     // catchall
     // { path: '/:catchAll(.*)', redirect: '/' }    
   ]

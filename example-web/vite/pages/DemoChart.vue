@@ -1,5 +1,5 @@
 <template>
-  <div class="countainer">
+  <div class="container">
     <h1>Site B - For Chart Testing Purposes - Vega - Hopefully Echarts</h1>
     <div id="viz"></div>
     <div class="edit">

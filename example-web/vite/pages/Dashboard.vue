@@ -8,6 +8,8 @@
       <button @click="count++">increment</button>
       <vaadin-button @click="count++">Add</vaadin-button>
     </p>
+    <p>Non-Reactive Data: {{ nonReactiveData }}</p>
+    <p>Reactive Data: {{ reactiveData }}</p>
     <p>Vuex Store {{ storeCount }} - {{ storeToken }}</p>
     <p>Axios GET {{ msg }}</p>
     <ul>
@@ -25,7 +27,6 @@ import { useRouter, useRoute } from 'vue-router'
 
 // import axios from '/web_modules/axios.js'
 // import axios from 'axios'
-import '@vaadin/vaadin-button'
 
 export default {
   name: 'Dashboard',
@@ -38,6 +39,8 @@ export default {
     const count = ref(0)
     const msg = ref('')
     const titleRef = ref(null)
+    let nonReactiveData = 10
+    const reactiveData = ref(20)
 
     // const plusOne = computed(() => count.value + 1)
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
@@ -68,7 +71,7 @@ export default {
 
     // watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
     // })
-
+    let timerId
     onMounted(async () => {
       console.log('mounted!')
       console.log('props', props)
@@ -79,11 +82,18 @@ export default {
       console.log('useStore', store)
       console.log('useRouter', router)
       console.log('useRoute', route)
+
+      timerId = setInterval(() => {
+        console.log('fired')
+        nonReactiveData += 1
+        reactiveData.value += 1
+      }, 1000)
     })
     onUpdated(() => {
       console.log('updated!')
     })
     onBeforeUnmount(() => {
+      if (timerId) clearInterval(timerId)
       console.log('before mounted!')
     })
     onUnmounted(() => {
@@ -95,6 +105,8 @@ export default {
     //   selected.value = newValue;
     // });
     return {
+      nonReactiveData, // non reactive
+      reactiveData, // ref reactive
       count, // ref
       msg,
       titleRef,

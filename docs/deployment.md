@@ -31,14 +31,16 @@ You need these files and configure them (see example-app)
 
 ### Backend
 
-- vue-crud-x/<project>/config/uat.pem
+- vue-crud-x/<project>/config/secret/uat.pem
   - PEM of the VM
-- vue-crud-x/<project>/config/uat.url
+- vue-crud-x/<project>/config/secret/uat.deploy
   - user and location of the VM
-- vue-crud-x/<project>/config/uat.web.csv
-  - the list of web applications, also the list bucket location if deploying to S3
-- vue-crud-x/<project>/config/.env.uat
+- vue-crud-x/<project>/config/uat.env.js
   - configs & settings for your environment 
+- vue-crud-x/<project>/config/uat.gcp.json
+  - GCP service key 
+- vue-crud-x/<project>/config/uat.gcp.cors.json
+  - GCP json for whitelisting access to GCP Storage hosting website 
 - vue-crud-x/<project>/ecosystem.config.js (for pm2 deployments)
 - vue-crud-x/<project>/Dockerfile (for docker deployments)
 
@@ -55,25 +57,26 @@ Type in the app that you are building and the environment
 ```json
   "config": {
     "env": "uat",
-    "app": "example-app"
+    "app": "example-app", // no longer in use
+    "web": "example-web" // no longer in use
   },
 ```
 
 
-### Build
-
-Create vue-crud-x/build folder and build project into the folder
-
-```
-npm run build
-```
-
-Follow the instructions on whether to install, build frontends
-
 ### Deploy
+
+Script to run on the machine doing the deployment
+
+**Windows**
 
 ```
 npm run deploy
+```
+
+**Linux / Mac**
+
+```
+npm run deploy:unix
 ```
 
 ---

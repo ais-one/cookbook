@@ -55,6 +55,8 @@ module.exports = express.Router()
   }))
   .get('/find/:table', generateTable, asyncWrapper(async (req, res) => {
     const { table } = req
+    console.log(table)
+
     let { page = 1, limit = 2, filters, sorter, csv = '' } = req.query
 
     console.log('t4t filters and sort', filters, sorter)
@@ -80,6 +82,8 @@ module.exports = express.Router()
     let rv = { results: [], total: 0 }
 
     let where = {}
+
+    /* knex
     let query = knex(table.name).where(where)
     prevFilter = {}
     if (filters && filters.length) for (filter of filters) {
@@ -99,9 +103,43 @@ module.exports = express.Router()
       }
       prevFilter= filter
     }
-
     let total = await query.clone().count()
     rv.total = Object.values(total[0])[0]
+    */
+
+    /* mongo
+    try {
+      const filter = { }
+      userFilter(filter, req.decoded)
+      if (!req.query.limit) { // reports / exports
+        const { dateStart, dateEnd } = req.query
+        filter.orderDateTime = {
+          $gte: dateStart + 'T00:00:00',
+          $lte: dateEnd + 'T23:59:59'
+        }
+        const { status = '', vesselName = '', location = '', agencyCode = '', master = '' } = req.query
+        rv.results = await mongo.db.collection(table.name).find(filter)
+          // .sort({ orderDateTime: -1 })
+          // .limit(5000) // just put here
+          // .toArray()
+        rv.total = rv.results.length
+      } else { // real-time ops
+        const { page = 0, limit = 25, shortId = '' } = req.query
+        if (shortId) filter.shortId = shortId
+        if (req.query.jobCat) filter.jobCat = req.query.jobCat.charAt(0).toUpperCase() + req.query.jobCat.slice(1)
+        rv.total = await mongo.db.collection('job').find(filter).count()
+        rv.results = await mongo.db.collection('job').find(filter)
+          .sort({ orderDateTime: -1 })
+          .skip(parseInt(page) * parseInt(limit))
+          .limit(parseInt(limit))
+          .toArray()
+      }
+    } catch (e) {
+      console.log('ERROR: job find', e.toString())
+    }
+
+    */
+
     let rows
     if (parseInt(limit) === 0 || csv) {
       rows = await query.clone().orderBy(sorter)

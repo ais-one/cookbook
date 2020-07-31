@@ -16,45 +16,60 @@ module.exports = {
       type: 'string', // Number (Integer, Decimal), Boolean, Date (datetime, date, time)
       formEditor: '',
     },
-    country: {
-      label: 'Country', // key value...
-      type: 'autocomplete', // single select
-      options: {
-        tableName: 'country',
-        limit:8,
-        key: 'name'
-      }
-    },
-    sex: {
+    sex: { // single select
       label: 'Sex',
       type: 'select',
       options: [
-        { key: '', txt: '' },
-        { key: 'M', txt: 'Male' },
-        { key: 'F', txt: 'Female' }
+        { key: '', text: '' },
+        { key: 'M', text: 'Male' },
+        { key: 'F', text: 'Female' }
       ]
     },
-    weightKg: {
-      label: 'Weight kg',
+    subjects: { // multi select
+      label: 'Subjects',
+      type: 'multi-select',
+      options: [
+        { key: 'EL1', text: 'English' },
+        { key: 'EM', text: 'E Maths' },
+        { key: 'AM', text: 'A Maths' },
+        { key: 'PHY', text: 'Chemistry' },
+        { key: 'CHEM', text: 'Physics' }
+      ]
+    },
+    age: { // integer
+      label: 'Age',
+      type: 'number',
+    },
+    gpa: { // decimal
+      label: 'GPA',
       type: 'decimal',
       required: true
     },
-    heightCm: {
-      label: 'Height cm',
-      type: 'integer',
-      required: true
+    birthDate: { // date of birth - YYYY-MM-dd (no timezone - assume local - store as string)
+      label: 'Brith date',
+      type: 'string' // date
     },
-    dateOfBirth: {
-      label: 'Date Of Birth',
-      type: 'date'
+    birthTime: { // HHmm (no timezone - assume local - store as string)
+      label: 'Birth time',
+      type: 'string' // time
     },
-    timeOfBirth: {
-      label: 'Time Of Birth',
-      type: 'time'
+    country: {
+      label: 'Country', // key text...
+      type: 'autocomplete', // single select, no custom values
+      options: {
+        tableName: 'country',
+        limit:8,
+        key: 'name',
+        text: ''
+      }
     },
-    testDateTime: {
-      label: 'Test Date Time',
+    birthDateTimeTz: { // date with time info
+      label: 'Datetime with TZ',
       type: 'datetime'
+    },
+    website: {
+      label: 'Age',
+      type: 'string'
     },
     updated_by: { label: 'Updated By', auto: 'user' },
     updated_at: { label: 'Updated At', auto: 'ts' }

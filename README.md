@@ -63,12 +63,24 @@ Other design considerations :
 
 1. Clone the repository, setup and run, using the following commands
 
+**Windows**
+
 ```bash
 git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
 npm run install-libs
-npm run initdb-knex
+npm run knex
 npm run app:spa
+```
+
+**Linux/Max**
+
+```bash
+git clone https://github.com/ais-one/vue-crud-x.git
+cd vue-crud-x
+npm run install-libs
+npm run knex:unix
+npm run app:spa:unix
 ```
 
 **NOTE 1** the **secret** folder is missing so there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable.
@@ -106,22 +118,46 @@ To run unit & integration test on /api/authors route
 
 TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in example-app/tests
 
+**Windows**
+
 ```
 npm run test
+```
+
+**Linux / Mac**
+
+```
+npm run test:unix
 ```
 
 3. Long Running Processes and Cron Triggered Process
 
 Command to run long process (do take note of caveats)
 
+**Windows**
+
 ```
 npm run process-long
 ```
 
+**Linux / Mac**
+
+```
+npm run process-long:unix
+```
+
 Command to simulate process triggered by cron (**NOTE:** it may be better to use cron to call API rather than trigger a process)
+
+**Windows**
 
 ```
 npm run process-cron
+```
+
+**Linux / Mac**
+
+```
+npm run process-cron:unix
 ```
 
 4. To serve the VueJS SPA production build
@@ -264,8 +300,16 @@ The UAT, production and (optional staging) environments are on the service provi
 
 **Manual Deployment Script**
 
+**Windows**
+
 ```
 npm run deploy
+```
+
+**Linux / Mac**
+
+```
+npm run deploy:unix
 ```
 
 - Frontend
