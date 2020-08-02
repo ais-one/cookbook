@@ -4,6 +4,7 @@ module.exports = {
   // base: './',
   // port: dev_port1,
   // sourcemap: isDev1,
+  port: 8081,
   vueCompilerOptions: {
     isCustomElement: tag => tag.startsWith('vaadin-') || tag.startsWith('mwc-')
   },
