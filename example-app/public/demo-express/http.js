@@ -1,33 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Vanilla Javascript Samples</title>
-</head>
-
-<body>
-  <h1>Authentication, OTP & Refresh Token <a href="index.html">Back</a></h1>
-  <ul>
-    <li>Clear application data (localStorage & httponly cookie)</li>
-    <li>check console for logs</li>
-    <li>check configs token expiry, refresh expiry, httponly?, use otp = TEST?</li>
-  </ul>
-  <button onclick="login()">Login test / test</button><br/>
-  <button onclick="otp()">Send OTP 111111</button><br/>
-  <button onclick="get()">Get Private Data</button><br/>
-  <button onclick="logout()">Logout</button><br/>
-  <button id="test-ed">test</button><br/>
-  <button onclick="test()">test2</button><br/>
-</body>
-
-<script type="module">
-import { test } from '/http.js'
-
-document.querySelector("#test-ed").onclick = test
-
 let token = ''
 let refreshToken = ''
 
@@ -130,6 +100,15 @@ async function logout() {
     console.log('logout error', e.toString())
   }
 }
-</script>
 
-</html>
+function test() {
+  console.log('aaaaa')
+}
+
+export {
+  test,
+  http,
+  login,
+  otp,
+  logout
+}

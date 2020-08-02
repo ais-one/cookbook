@@ -35,3 +35,20 @@ gcloud run deploy helloworld --image gcr.io/cloudrun/hello --platform managed --
 # gcloud container images delete gcr.io/cloudrun/helloworld
 gcloud run services delete helloworld --platform managed --region asia-east1
 ```
+
+## Cloudflare
+
+1. Use Full SSL
+
+https://serverfault.com/questions/995010/putting-google-cloud-platform-cloud-run-behind-cloud-flare
+
+2. Set SSL Edge Certificate Flag (Not Really Needed) 
+
+https://cloud.google.com/run/docs/mapping-custom-domains#dns_update
+
+3. Firewall -> Tools -> Rate Limiting
+
+Set filter for login API
+
+https://community.cloudflare.com/t/same-type-of-harmful-requests-slow-the-server/188520/4
+

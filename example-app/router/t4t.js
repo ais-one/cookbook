@@ -56,6 +56,7 @@ module.exports = express.Router()
   .get('/find/:table', generateTable, asyncWrapper(async (req, res) => {
     const { table } = req
     console.log(table)
+    return res.json()
 
     let { page = 1, limit = 2, filters, sorter, csv = '' } = req.query
 
