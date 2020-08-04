@@ -2,7 +2,7 @@ module.exports = {
   db: 'knex',
   name: 'country',
   cols: {
-    id: { // primary key column, _id for mongodb
+    _id: { // primary key column, _id for mongodb
       label: 'ID',
       auto: 'pk'
     },

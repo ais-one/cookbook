@@ -1,5 +1,6 @@
 let token = ''
 let refreshToken = ''
+let baseUrl = 'http://127.0.0.1:3000'
 
 function parseJwt (token) {
     var base64Url = token.split('.')[1];
@@ -12,8 +13,22 @@ function parseJwt (token) {
 }
 
 const http = async (method, url, body = null, query = null) => {
+  // settle the URL
+  // http://example.com:3001/abc/ees, /abc/ees
+  let urlPath = url
+  let urlFull = baseUrl + urlPath
+  let urlOrigin = baseUrl
+  try {
+    const { origin, pathname } = new URL(url) // http://example.com:3001/abc/ees
+    urlOrigin = origin
+    urlPath = pathname
+    urlFull = origin + pathname
+  } catch (e) {
+    // console.log('URL parse', e.message)
+  }
   try {
     const qs = query ? '?' + Object.keys(query).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&') : ''
+    console.log('qqq', query, qs)
     const options = {
       method,
       headers: {
@@ -21,28 +36,29 @@ const http = async (method, url, body = null, query = null) => {
         'Content-Type': 'application/json',
       }
     }
+
     if (token) options.headers['Authorization'] = `Bearer ${token}`
     if (body) options.body = JSON.stringify(body)
-    console.log(options)
-    const rv0 = await fetch(url + qs, options)
-    if (rv0.status === 401 && url !== '/api/auth/logout' && url !== '/api/auth/otp' && url !== '/api/auth/refresh') {
+    // console.log(options)
+    const rv0 = await fetch(urlFull + qs, options)
+    if (rv0.status === 401 && urlPath !== '/api/auth/logout' && urlPath !== '/api/auth/otp' && urlPath !== '/api/auth/refresh') {
       const body0 = await rv0.json()
       if (body0.message === 'Token Expired Error') {
-        const rv1 = await http('POST', '/api/auth/refresh', { refresh_token: refreshToken })
+        const rv1 = await http('POST', urlOrigin + '/api/auth/refresh', { refresh_token: refreshToken })
         if (rv1.status === 200) {
           const body1 = await rv1.json()
           token = body1.token
           refreshToken = body1.refresh_token
           if (token) options.headers['Authorization'] = `Bearer ${token}`
-          const rv2 = await fetch(url + qs, options)
-          return rv2
+          const rv2 = await fetch(urlFull + qs, options)
+          return await rv2.json()
         } else {
           console.log('refresh failed')
-          return rv1
+          return await rv1.json() 
         }
       }
     }
-    return rv0 // error
+    return await rv0.json() // error
   } catch (e) {
     console.log('http error', e.toString())
     return null
@@ -111,7 +127,9 @@ const find = async (url, query = null) => await http('GET', url, null, query)
 
 const create = post 
 
-const test = () => console.log('https test')
+const test = () => {
+  console.log('https test')  
+}
 
 export {
   http,

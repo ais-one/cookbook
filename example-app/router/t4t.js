@@ -3,7 +3,7 @@ const express = require('express')
 const Model = require(LIB_PATH + '/services/db/objection').get()
 const knex = Model.knex()
 
-// const mongo = require(LIB_PATH + '/services/db/mongodb')
+const mongo = require(LIB_PATH + '/services/db/mongodb')
 
 const csvParse = require('csv-parse')
 // const { authUser } = require('../middlewares/auth')
@@ -53,35 +53,24 @@ module.exports = express.Router()
   .get('/config/:table', generateTable, asyncWrapper(async (req, res) => {
     res.json(req.table) // return the table info...
   }))
-  .get('/find/:table', generateTable, asyncWrapper(async (req, res) => {
+  .get('/find/:table', generateTable, asyncWrapper(async (req, res) => { // page is 1 based
     const { table } = req
-    console.log(table)
-    return res.json()
 
-    let { page = 1, limit = 2, filters, sorter, csv = '' } = req.query
+    let { page = 1, limit = 25, filters = null, sorter = null, csv = '' } = req.query
 
-    console.log('t4t filters and sort', filters, sorter)
+    console.log('t4t filters and sort', filters, sorter, table.name, page, limit)
     // TBD MongoDB
-
     filters = JSON.parse(filters)
     // [
     //   {
-    //     column
-    //     compare
-    //     value
-    //     andOr
+    //     column, compare, value, andOr
     //   }
     // ]
     sorter = JSON.parse(sorter)
-    // [
-    //   {
-    //     column
-    //     order
-    //   }
-    // ]
+    // [ { column, order } ]
     if (page < 1) page = 1
     let rv = { results: [], total: 0 }
-
+    let rows
     let where = {}
 
     /* knex
@@ -104,48 +93,28 @@ module.exports = express.Router()
       }
       prevFilter= filter
     }
-    let total = await query.clone().count()
-    rv.total = Object.values(total[0])[0]
     */
 
-    /* mongo
-    try {
-      const filter = { }
-      userFilter(filter, req.decoded)
-      if (!req.query.limit) { // reports / exports
-        const { dateStart, dateEnd } = req.query
-        filter.orderDateTime = {
-          $gte: dateStart + 'T00:00:00',
-          $lte: dateEnd + 'T23:59:59'
-        }
-        const { status = '', vesselName = '', location = '', agencyCode = '', master = '' } = req.query
-        rv.results = await mongo.db.collection(table.name).find(filter)
-          // .sort({ orderDateTime: -1 })
-          // .limit(5000) // just put here
-          // .toArray()
-        rv.total = rv.results.length
-      } else { // real-time ops
-        const { page = 0, limit = 25, shortId = '' } = req.query
-        if (shortId) filter.shortId = shortId
-        if (req.query.jobCat) filter.jobCat = req.query.jobCat.charAt(0).toUpperCase() + req.query.jobCat.slice(1)
-        rv.total = await mongo.db.collection('job').find(filter).count()
-        rv.results = await mongo.db.collection('job').find(filter)
-          .sort({ orderDateTime: -1 })
-          .skip(parseInt(page) * parseInt(limit))
-          .limit(parseInt(limit))
-          .toArray()
-      }
-    } catch (e) {
-      console.log('ERROR: job find', e.toString())
-    }
-
-    */
-
-    let rows
     if (parseInt(limit) === 0 || csv) {
-      rows = await query.clone().orderBy(sorter)
+      // knex
+      // rows = await query.clone().orderBy(sorter)
+      // rv.total = rows.length
+
+      // mongo
+      rows = await mongo.db.collection(table.name).find(filters).toArray()
+      rv.total = rows.length
     } else {
-      rows = await query.clone().orderBy(sorter).limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
+      // knex
+      // rows = await query.clone().orderBy(sorter).limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
+      // let total = await query.clone().count()
+      // rv.total = Object.values(total[0])[0]
+
+      // mongo
+      rv.total = await mongo.db.collection(table.name).find(filters).count()
+      rows = await mongo.db.collection(table.name).find(filters)
+        .skip(parseInt(page) * parseInt(limit))
+        .limit(parseInt(limit))
+        .toArray()
     }
 
     if (csv) {
