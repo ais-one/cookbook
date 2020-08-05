@@ -1,5 +1,19 @@
 <template>
   <div class="container">
+    {{ rowsPerPage }} {{ page }}
+    <div class="pagination">
+      <a href="#">&laquo;</a>
+      <a href="#">&gt;</a>
+      <a href="#">1</a>
+      <a href="#" class="active">2</a>
+      <a href="#">3</a>
+      <input type="number" />
+      <a href="#">4</a>
+      <a href="#">5</a>
+      <a href="#">6</a>
+      <a href="#">&lt;</a>
+      <a href="#">&raquo;</a>
+    </div>
     <vaadin-grid><!-- page-size="10" height-by-rows -->
       <vaadin-grid-column
         v-for="(headerCol, index) in headerCols" :key="index"
@@ -17,15 +31,30 @@ import { test, find } from '../http'
 
 export default {
   name: 'DemoTable',
-  setup() {
+  props: {
+    rowsPerPage: {
+      type: [Number],
+      default: 10
+    },
+    rowsPerPageList: {
+      type: Array,
+      default: [5, 10, 25, 50]
+    }
+  },
+  setup(props) {
     const page = ref(1)
+    const rowsPerPage = ref(props.rowsPerPage)
+    const rowsPerPageList = ref([])
     const headerCols = ref([])
+
+    let gridEl
 
     onMounted(async () => {
 
-      test()
+      gridEl = document.querySelector('vaadin-grid')
+      // console.log('gridEl', gridEl)
+      // test()
       const rv = await find('/api/t4t/config/country')
-
       headerCols.value = Object.entries(rv.cols).map(item => {
         const [key, val] = item
         // console.log(item, key, val)
@@ -35,21 +64,30 @@ export default {
         }
       })
 
-      customElements.whenDefined('vaadin-grid').then(async function() {
-        try {
-          const rv = await find('/api/t4t/find/country', {
-            page: page.value
-          })
-          document.querySelector('vaadin-grid').items = rv.results
-        } catch (e) {
-          console.log(e.toString())
-        }
-
-      })
+      try {
+        const rv = await find('/api/t4t/find/country', {
+          page: page.value,
+          limit: rowsPerPage.value
+        })
+        gridEl.items = rv.results
+      } catch (e) {
+        console.log(e.toString())
+      }
     })
 
+// // watching value of a reactive object (watching a getter)
+// watch(() => props.selected, (selection, prevSelection) => { 
+// })
+// // directly watching a ref
+// const selected = ref(props.selected)
+// watch(selected, (selection, prevSelection) => { 
+// })
+// // Watching Multiple Sources
+// watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { 
+// })
     return {
       page,
+      rowsPerPage,
       headerCols
     }
   }
@@ -57,117 +95,24 @@ export default {
 </script>
 
 <style>
-  #pages {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 20px;
-  }
+.pagination {
+  display: inline-block;
+}
 
-  #pages > button {
-    user-select: none;
-    padding: 5px;
-    margin: 0 5px;
-    border-radius: 10%;
-    border: 0;
-    background: transparent;
-    font: inherit;
-    outline: none;
-    cursor: pointer;
-  }
+.pagination a, .pagination input {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+}
 
-  #pages > button:not([disabled]):hover,
-  #pages > button:focus {
-    color: #ccc;
-    background-color: #eee;
-  }
+.pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
 
-  #pages > button[selected] {
-    font-weight: bold;
-    color: white;
-    background-color: #ccc;
-  }
-
-  #pages > button[disabled] {
-    opacity: 0.5;
-    cursor: default;
-  }
+.pagination a:hover:not(.active) {background-color: #ddd;}
 </style>
-
-<!-- div id="pages"></div -->
-
-<!-- script>
-  customElements.whenDefined('vaadin-grid').then(function() {
-    const grid = document.querySelector('vaadin-grid');
-    const pagesControl = document.querySelector('#pages');
-    let pages;
-
-    updateItemsFromPage(1);
-
-    function updateItemsFromPage(page) {
-      if (page === undefined) {
-        return;
-      }
-
-      if (!pages) {
-        pages = Array.apply(null, {length: Math.ceil(Vaadin.GridDemo.users.length / grid.pageSize)}).map(function(item, index) {
-          return index + 1;
-        });
-
-        const prevBtn = window.document.createElement('button');
-        prevBtn.textContent = '<';
-        prevBtn.addEventListener('click', function() {
-          const selectedPage = parseInt(pagesControl.querySelector('[selected]').textContent);
-          updateItemsFromPage(selectedPage - 1);
-        });
-        pagesControl.appendChild(prevBtn);
-
-        pages.forEach(function(pageNumber) {
-          const pageBtn = window.document.createElement('button');
-          pageBtn.textContent = pageNumber;
-          pageBtn.addEventListener('click', function(e) {
-            updateItemsFromPage(parseInt(e.target.textContent));
-          });
-          if (pageNumber === page) {
-            pageBtn.setAttribute('selected', true);
-          }
-          pagesControl.appendChild(pageBtn);
-        });
-
-        const nextBtn = window.document.createElement('button');
-        nextBtn.textContent = '>';
-        nextBtn.addEventListener('click', function() {
-          const selectedPage = parseInt(pagesControl.querySelector('[selected]').textContent);
-          updateItemsFromPage(selectedPage + 1);
-        });
-        pagesControl.appendChild(nextBtn);
-      }
-
-      const buttons = Array.from(pagesControl.children);
-      buttons.forEach(function(btn, index) {
-        if (parseInt(btn.textContent) === page) {
-          btn.setAttribute('selected', true);
-        } else {
-          btn.removeAttribute('selected');
-        }
-        if (index === 0) {
-          if (page === 1) {
-            btn.setAttribute('disabled', '');
-          } else {
-            btn.removeAttribute('disabled');
-          }
-        }
-        if (index === buttons.length - 1) {
-          if (page === pages.length) {
-            btn.setAttribute('disabled', '');
-          } else {
-            btn.removeAttribute('disabled');
-          }
-        }
-      });
-
-      var start = (page - 1) * grid.pageSize;
-      var end = page * grid.pageSize;
-      grid.items = Vaadin.GridDemo.users.slice(start, end);
-    }
-  });
-</script -->

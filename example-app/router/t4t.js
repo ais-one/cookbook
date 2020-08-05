@@ -57,6 +57,8 @@ module.exports = express.Router()
     const { table } = req
 
     let { page = 1, limit = 25, filters = null, sorter = null, csv = '' } = req.query
+    page = parseInt(page)
+    limit = parseInt(limit)
 
     console.log('t4t filters and sort', filters, sorter, table.name, page, limit)
     // TBD MongoDB
@@ -95,7 +97,7 @@ module.exports = express.Router()
     }
     */
 
-    if (parseInt(limit) === 0 || csv) {
+    if (limit === 0 || csv) {
       // knex
       // rows = await query.clone().orderBy(sorter)
       // rv.total = rows.length
@@ -111,9 +113,13 @@ module.exports = express.Router()
 
       // mongo
       rv.total = await mongo.db.collection(table.name).find(filters).count()
+
+      const maxPage = Math.ceil(rv.total / limit)
+      if (page > maxPage) page = maxPage
+
       rows = await mongo.db.collection(table.name).find(filters)
-        .skip(parseInt(page) * parseInt(limit))
-        .limit(parseInt(limit))
+        .skip(page * limit)
+        .limit(limit)
         .toArray()
     }
 
