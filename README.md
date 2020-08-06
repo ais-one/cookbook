@@ -31,6 +31,7 @@ Latest Version [0.3.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.3)
 - go native, reduce dependency, balance use of native code vs libraries
 - avoid / move away from using bundlers such as web pack, keep tooling minimal
 - automated testing, ci/cd, devopsec, cloud, container orchestration
+- aiming For Simplicity, Maintainability, Testability
 
 ## CRUD Unique Selling Points
 
