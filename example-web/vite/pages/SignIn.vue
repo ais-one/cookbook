@@ -17,7 +17,7 @@ export default {
   setup(props, context) {
     const store = useStore()
     
-    const username = ref('')
+    const username = ref('Test')
     const login = () => store.dispatch('doLogin', username.value)
     return {
       username, // data

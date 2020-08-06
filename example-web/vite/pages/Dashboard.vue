@@ -84,10 +84,10 @@ export default {
       console.log('useRoute', route)
 
       timerId = setInterval(() => {
-        console.log('fired')
+        console.log('timer fired')
         nonReactiveData += 1
         reactiveData.value += 1
-      }, 1000)
+      }, 20000)
     })
     onUpdated(() => {
       console.log('updated!')

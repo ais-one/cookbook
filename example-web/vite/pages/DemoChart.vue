@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <h1>Site B - For Chart Testing Purposes - Vega - Hopefully Echarts</h1>
+    <h1>Site B - For Chart Testing Purposes - Vega / ECharts</h1>
+    <div id="main" style="width: 600px;height:400px;"></div>
     <div id="viz"></div>
     <div class="edit">
       <textarea v-model="def"></textarea>
@@ -10,76 +11,51 @@
 
 <script>
 // https://vega.github.io/vega/usage/
+// import embed from 'vega-embed'
+// import * as vega from 'vega'
 
-// import * as echarts from 'echarts/lib/echarts'
-// import * as Echarts from 'vue-echarts'
-// console.log('zzzz', echarts)
-
-import embed from 'vega-embed'
-import * as vega from 'vega'
-
-// import 'echarts/lib/chart/line'
-// import 'echarts/lib/component/polar'
+import echarts from 'echarts'
+console.log(echarts)
 
 export default {
   name: 'SiteB',
-  // async mounted(){
-  //   await embed('#viz', this.def, {actions:false})
-  // },
-  data(){
-    let data = []
+  async mounted() {
+    // await embed('#viz', 'https://vega.github.io/vega/examples/bar-chart.vg.json', {actions:false})
 
-    for (let i = 0; i <= 360; i++) {
-        let t = i / 180 * Math.PI
-        let r = Math.sin(2 * t) * Math.cos(2 * t)
-        data.push([r, i])
+    // echarts
+    var myChart = echarts.init(document.getElementById('main'))
+    // specify chart configuration item and data
+    var option = {
+        title: {
+            text: 'ECharts entry example'
+        },
+        tooltip: {},
+        legend: {
+            data:['Sales']
+        },
+        xAxis: {
+            data: ["shirt","cardign","chiffon shirt","pants","heels","socks"]
+        },
+        yAxis: {},
+        series: [{
+            name: 'Sales',
+            type: 'bar',
+            data: [5, 20, 36, 10, 10, 20]
+        }]
     }
-
+    // use configuration item and data specified to show chart
+    myChart.setOption(option)
+  },
+  data(){
     return{
       def: null,
-
-      polar: {
-        title: {
-          text: '极坐标双数值轴'
-        },
-        legend: {
-          data: ['line']
-        },
-        polar: {
-          center: ['50%', '54%']
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'cross'
-          }
-        },
-        angleAxis: {
-          type: 'value',
-          startAngle: 0
-        },
-        radiusAxis: {
-          min: 0
-        },
-        series: [
-          {
-            coordinateSystem: 'polar',
-            name: 'line',
-            type: 'line',
-            showSymbol: false,
-            data: data
-          }
-        ],
-        animationDuration: 2000
-      }
-
     }
   },
-  watch:{
-    def(v){
-      if(v) this.draw()
-    }
-  },
+  // watch:{
+  //   def(v){
+  //     if(v) this.draw()
+  //   }
+  // },
   methods:{
     async draw(){
       // let def = JSON.parse(this.def)
@@ -136,64 +112,7 @@ export default {
     }
   }
 }
-
-/*
-const vlSpec = {
-  $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
-  data: {name: 'table'},
-  width: 400,
-  mark: 'line',
-  encoding: {
-    x: {field: 'x', type: 'quantitative', scale: {zero: false}},
-    y: {field: 'y', type: 'quantitative'},
-    color: {field: 'category', type: 'nominal'}
-  }
-}
-vegaEmbed('#viz', vlSpec).then(function (res) {
-  // Generates a new tuple with random walk.
-  function newGenerator() {
-    var counter = -1;
-    var previousY = [5, 5, 5, 5];
-    return function () {
-      counter++;
-      var newVals = previousY.map(function (v, c) {
-        return {
-          x: counter,
-          y: v + Math.round(Math.random() * 10 - c * 3),
-          category: c
-        };
-      });
-      previousY = newVals.map(function (v) {
-        return v.y;
-      });
-      return newVals;
-    };
-  }
-
-  var valueGenerator = newGenerator();
-  var minimumX = -100;
-  window.setInterval(function () {
-    minimumX++;
-    var changeSet = vega
-      .changeset()
-      .insert(valueGenerator())
-      .remove(function (t) {
-        return t.x < minimumX;
-      });
-    res.view.change('table', changeSet).run();
-  }, 1000);
-});
-*/
 </script>
 
 <style>
-/**
- * The default size is 600px×400px, for responsive charts
- * you may need to set percentage values as follows (also
- * don't forget to provide a size for the container).
- */
-.echarts {
-  width: 100%;
-  height: 100%;
-}
 </style>

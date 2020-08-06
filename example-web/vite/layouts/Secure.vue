@@ -6,7 +6,7 @@
       <mwc-list>
         <div v-for="item of menuItems" :key="item.name">
           <router-link v-if="item.to" :to="item.to">
-            <mwc-list-item graphic="icon">
+            <mwc-list-item graphic="icon" @click="theDrawer.open=false">
               <slot>{{ item.name }}</slot><mwc-icon slot="graphic">{{ item.icon }}</mwc-icon>
             </mwc-list-item>
           </router-link>
@@ -17,7 +17,7 @@
             </mwc-list-item>
             <div v-if="item.show">
               <router-link v-for="child of item.children" :key="child.to" :to="child.to">
-                <mwc-list-item graphic="icon">
+                <mwc-list-item graphic="icon" @click="theDrawer.open=false">
                   <slot>{{ child.name }}</slot><mwc-icon slot="graphic">{{ child.icon }}</mwc-icon>
                 </mwc-list-item>
               </router-link>
@@ -53,6 +53,9 @@ import { useStore } from 'vuex'
 export default {
   setup(props, context) {
     const store = useStore()
+
+    const theDrawer = ref(null)
+
     onMounted(async () => {
       console.log('mounted!')
       // addEventListener('load', () => {
@@ -63,17 +66,19 @@ export default {
       if (drawer) {
         const container = drawer.parentNode;
         container.addEventListener('MDCTopAppBar:nav', () => {
-          drawer.open = !drawer.open;
-        });
+          drawer.open = !drawer.open
+        })
+        theDrawer.value = drawer
       }
     })
     
     const menuItems = ref([
       { to: '/dashboard', name: 'Dashboard', icon: 'home' },
-      { show: false, name: 'Sites', icon0: 'keyboard_arrow_up', icon1: 'keyboard_arrow_down',
+      { show: true, name: 'Sites', icon0: 'keyboard_arrow_up', icon1: 'keyboard_arrow_down',
         children: [
           { to: '/demo-flex', name: 'Demo Flex', icon: '' },
           { to: '/demo-table', name: 'Demo Table', icon: '' },
+          { to: '/demo-map', name: 'Demo Map', icon: '' },
           { to: '/demo-chart', name: 'Demo Chart', icon: 'bar_chart' }
         ]
       }
@@ -84,6 +89,7 @@ export default {
 
     return {
       menuItems, // ref,
+      theDrawer,
       logout // method
     }
   }

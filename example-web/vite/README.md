@@ -65,3 +65,9 @@ npm run build
 - drop-down menus (not in spec?)
 - cards
 - table
+
+# Clean up
+
+npm cache clean --force
+rm -rf node_modules
+rm package-lock.json

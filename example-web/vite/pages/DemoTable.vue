@@ -1,17 +1,13 @@
 <template>
   <div class="container">
-    {{ rowsPerPage }} {{ page }}
+    {{ rowsPerPage }}
     <div class="pagination">
       <a href="#">&laquo;</a>
-      <a href="#">&gt;</a>
-      <a href="#">1</a>
-      <a href="#" class="active">2</a>
-      <a href="#">3</a>
-      <input type="number" />
-      <a href="#">4</a>
-      <a href="#">5</a>
-      <a href="#">6</a>
       <a href="#">&lt;</a>
+      <div><input type="number" v-model="page" /> of</div>
+      <a href="#">{{ maxPage }}</a>
+      <a href="#">1000000000</a>
+      <a href="#">&gt;</a>
       <a href="#">&raquo;</a>
     </div>
     <vaadin-grid><!-- page-size="10" height-by-rows -->
@@ -43,6 +39,7 @@ export default {
   },
   setup(props) {
     const page = ref(1)
+    const maxPage = ref(1)
     const rowsPerPage = ref(props.rowsPerPage)
     const rowsPerPageList = ref([])
     const headerCols = ref([])
@@ -55,21 +52,27 @@ export default {
       // console.log('gridEl', gridEl)
       // test()
       const rv = await find('/api/t4t/config/country')
-      headerCols.value = Object.entries(rv.cols).map(item => {
-        const [key, val] = item
-        // console.log(item, key, val)
-        return {
-          path: key,
-          header: val.label
-        }
-      })
+      if (rv.cols) {
+        headerCols.value = Object.entries(rv.cols).map(item => {
+          const [key, val] = item
+          // console.log(item, key, val)
+          return {
+            path: key,
+            header: val.label
+          }
+        })
+      }
 
       try {
         const rv = await find('/api/t4t/find/country', {
           page: page.value,
           limit: rowsPerPage.value
         })
-        gridEl.items = rv.results
+        if (rv.results) {
+          console.log('rv.total', rv.total)
+          gridEl.items = rv.results
+          maxPage.value = Math.ceil(rv.total / rowsPerPage.value)
+        }
       } catch (e) {
         console.log(e.toString())
       }
@@ -88,6 +91,7 @@ export default {
     return {
       page,
       rowsPerPage,
+      maxPage,
       headerCols
     }
   }
@@ -99,10 +103,19 @@ export default {
   display: inline-block;
 }
 
-.pagination a, .pagination input {
+.pagination a {
   color: black;
   float: left;
   padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+}
+
+.pagination div {
+  color: black;
+  float: left;
+  padding: 4px 8px;
   text-decoration: none;
   transition: background-color .3s;
   border: 1px solid #ddd;

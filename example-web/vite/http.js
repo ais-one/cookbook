@@ -28,7 +28,6 @@ const http = async (method, url, body = null, query = null) => {
   }
   try {
     const qs = query ? '?' + Object.keys(query).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&') : ''
-    console.log('qqq', query, qs)
     const options = {
       method,
       headers: {

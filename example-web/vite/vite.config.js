@@ -10,7 +10,12 @@ module.exports = {
   },
   optimizeDeps: {
     include: [
-      '@material/mwc-list/mwc-list-item'
+      '@material/mwc-list/mwc-list-item',
+      'vega',
+      'vega-lite',
+      'vega-embed',
+      'echarts',
+      'leaflet'
     ]
   }
 }
