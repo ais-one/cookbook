@@ -1,16 +1,41 @@
 <template>
   <div class="container">
-    {{ rowsPerPage }}
-    <div class="pagination">
+    <nav class="navbar">
+      <ul class="nav-left">
+        <li class="nav-item"><mwc-icon-button icon="search"></mwc-icon-button></li>
+        <li class="nav-item"><mwc-icon-button icon="add"></mwc-icon-button></li>
+        <li class="nav-item"><mwc-icon-button icon="delete"></mwc-icon-button></li>
+        <li class="nav-item"><mwc-icon-button icon="post_add"></mwc-icon-button></li>
+        <li class="nav-item"><mwc-icon-button icon="move_to_inbox"></mwc-icon-button></li>
+      </ul>
+      <ul class="nav-right">
+        <li class="nav-item">
+          <vaadin-select :value="'5'" :renderer="selectRenderer" style="width: 80px;"></vaadin-select>
+        </li>
+        <li class="nav-item">
+          <vaadin-integer-field v-model="page" min="1" :max="maxPage" has-controls></vaadin-integer-field> / {{ maxPage }}
+        </li>
+      </ul>
+    </nav>
+    <!-- {{ rowsPerPage }}
+    <a href="#">&lt;</a>
+    <input type="number" v-model="page" min="1" :max="maxPage" /> / {{ maxPage }}
+    <a href="#">&gt;</a> -->
+    <!-- <div class="pagination">
       <a href="#">&laquo;</a>
-      <a href="#">&lt;</a>
-      <div><input type="number" v-model="page" /> of</div>
-      <a href="#">{{ maxPage }}</a>
-      <a href="#">1000000000</a>
-      <a href="#">&gt;</a>
       <a href="#">&raquo;</a>
+    </div> -->
+    <div class="filter">
+      <vaadin-grid class="filter">
+        <vaadin-grid-column path="col" header="Field"></vaadin-grid-column>
+        <vaadin-grid-column path="op" header="Operator"></vaadin-grid-column>
+        <vaadin-grid-column path="val" header="Value"></vaadin-grid-column>
+        <vaadin-grid-column path="andOr" header="And Or"></vaadin-grid-column>
+      </vaadin-grid>
     </div>
-    <vaadin-grid><!-- page-size="10" height-by-rows -->
+
+    <vaadin-grid class="table"><!-- page-size="10" height-by-rows -->
+      <vaadin-grid-selection-column auto-select></vaadin-grid-selection-column>
       <vaadin-grid-column
         v-for="(headerCol, index) in headerCols" :key="index"
         :path="headerCol.path"
@@ -38,6 +63,7 @@ export default {
     }
   },
   setup(props) {
+    const ready = ref(false)
     const page = ref(1)
     const maxPage = ref(1)
     const rowsPerPage = ref(props.rowsPerPage)
@@ -47,8 +73,15 @@ export default {
     let gridEl
 
     onMounted(async () => {
+      ready.value = true
 
-      gridEl = document.querySelector('vaadin-grid')
+      // const vv = document.querySelector('vaadin-select')
+      document.querySelector('vaadin-select').addEventListener('change', function(event) {
+        // const item = event.detail.value // gridEl.selectedItems - same
+        console.log('change', event.target.value)
+      })
+
+      gridEl = document.querySelector('vaadin-grid.table')
       // console.log('gridEl', gridEl)
       // test()
       const rv = await find('/api/t4t/config/country')
@@ -62,6 +95,12 @@ export default {
           }
         })
       }
+
+      // active-item-changed
+      gridEl.addEventListener('selected-items-changed', function(event) {
+        const item = event.detail.value // gridEl.selectedItems - same
+        console.log('bb', item)
+      })
 
       try {
         const rv = await find('/api/t4t/find/country', {
@@ -78,6 +117,17 @@ export default {
       }
     })
 
+    const selectRenderer = (root) => {
+      // I'm not familiar enough with Vue to use proper templating here. Use of innerHTML is naturally discouraged when rendering any non-static content
+      if (!root.firstElementChild) {
+        root.innerHTML = `
+          <vaadin-list-box>
+            <vaadin-item>5</vaadin-item>
+            <vaadin-item>10</vaadin-item>
+          </vaadin-list-box>
+        `;
+      }
+    }
 // // watching value of a reactive object (watching a getter)
 // watch(() => props.selected, (selection, prevSelection) => { 
 // })
@@ -89,43 +139,48 @@ export default {
 // watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { 
 // })
     return {
+      ready,
       page,
       rowsPerPage,
       maxPage,
-      headerCols
+      headerCols,
+      selectRenderer
     }
   }
 }
 </script>
 
 <style>
-.pagination {
+nav {
+  width: 100%;
+  background-color: lightgrey;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-left {
+  padding-left: 4px;
+}
+
+.nav-right {
+  padding-right: 4px;
+}
+
+.nav-left, .nav-right {
+  margin-top: 1px;
+  margin-bottom: 1px;
+  list-style: none;
+  display: flex;
+}
+.nav-item {
   display: inline-block;
-}
-
-.pagination a {
-  color: black;
-  float: left;
-  padding: 8px 16px;
+  padding: 0px 2px;
   text-decoration: none;
-  transition: background-color .3s;
-  border: 1px solid #ddd;
-}
-
-.pagination div {
-  color: black;
-  float: left;
-  padding: 4px 8px;
-  text-decoration: none;
-  transition: background-color .3s;
-  border: 1px solid #ddd;
-}
-
-.pagination a.active {
-  background-color: #4CAF50;
   color: white;
-  border: 1px solid #4CAF50;
 }
 
-.pagination a:hover:not(.active) {background-color: #ddd;}
+.nav-item mwc-textfield {
+  width: 80px;
+}
 </style>

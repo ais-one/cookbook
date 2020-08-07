@@ -1,12 +1,8 @@
 import { createStore } from 'vuex'
 
 import router from './router.js'
-// import { createStore } from 'vuex/dist/vuex.esm-bundler.js'
 
 // import aaa from 'https://unpkg.com/swrv@0.3.0/esm/index.js' - will error
-
-// Vuex will fail if below line is commented - being fixed in https://github.com/vuejs/vuex/issues/1730
-// window.process = { env: { NODE_ENV: '' } }
 
 const state = {
   count: 99,
@@ -32,7 +28,7 @@ const actions = {
   doLogin: async ({ commit, ...ctx }, payload) => {
     // await fetch here to get token from API...
     if (payload) { // sign in ok
-      console.log('aaaaaa', payload)
+      console.log('doLogin', payload)
       commit('login', `Token:${payload}:${Date.now()}`)
       router.push('/dashboard')
     } else { // sign in failed

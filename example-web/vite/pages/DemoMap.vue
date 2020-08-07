@@ -45,5 +45,6 @@ export default {
   /* height: calc(100vh - 50px); */
   height: 100vh;
   margin: auto;
+  z-index: 1;
 }
 </style>

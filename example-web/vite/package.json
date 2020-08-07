@@ -6,6 +6,7 @@
     "build": "vite build"
   },
   "dependencies": {
+    "@material/mwc-button": "^0.18.0",
     "@material/mwc-drawer": "^0.18.0",
     "@material/mwc-icon": "^0.18.0",
     "@material/mwc-icon-button": "^0.18.0",
@@ -16,6 +17,10 @@
     "@material/mwc-top-app-bar-fixed": "^0.18.0",
     "@vaadin/vaadin-button": "^2.3.0",
     "@vaadin/vaadin-grid": "^5.6.6",
+    "@vaadin/vaadin-item": "^2.2.0",
+    "@vaadin/vaadin-list-box": "^1.3.0",
+    "@vaadin/vaadin-select": "^2.3.0-beta1",
+    "@vaadin/vaadin-text-field": "^2.7.0-beta1",
     "echarts": "^4.8.0",
     "leaflet": "^1.6.0",
     "vue": "^3.0.0-rc.5",

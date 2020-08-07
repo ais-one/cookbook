@@ -96,3 +96,11 @@ export default {
 
 }
 </script>
+
+<style scoped>
+
+mwc-drawer {
+  --mdc-theme-primary: green;
+  z-index: 10000;
+}
+</style>

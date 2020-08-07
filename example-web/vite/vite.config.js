@@ -11,6 +11,8 @@ module.exports = {
   optimizeDeps: {
     include: [
       '@material/mwc-list/mwc-list-item',
+      '@vaadin/vaadin-text-field/vaadin-integer-field',
+      '@vaadin/vaadin-grid/vaadin-grid-selection-column',
       'vega',
       'vega-lite',
       'vega-embed',

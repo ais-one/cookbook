@@ -1,10 +1,15 @@
 
 <template>
-  <div class="container">
-    <h1>Sign In</h1>
-    Enter Username <input type="text" v-model="username" />
-    <button @click="login">Login</button>
-    <p>[<router-link to="/">Home</router-link>]</p>
+  <div class="page-flex">
+    <form class="form-box-flex">
+      <h1>Sign In</h1>
+      <mwc-textfield label="Username" outlined type="text" v-model="username"></mwc-textfield>
+      <mwc-textfield label="Password" outlined type="password" v-model="password"></mwc-textfield>
+      <div class="buttons-box-flex">
+        <mwc-button raised label="Login" @click="login"></mwc-button>
+      </div>
+      <p>[<router-link to="/">Home</router-link>]</p>
+    </form>  
   </div>
 </template>
 
@@ -18,9 +23,11 @@ export default {
     const store = useStore()
     
     const username = ref('Test')
+    const password = ref('1234')
     const login = () => store.dispatch('doLogin', username.value)
     return {
       username, // data
+      password,
       login, // method
     }
   }
@@ -28,11 +35,51 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  color: #4fc08d;
+
+.page-flex h1, .page-flex p {
+  text-align: center;
 }
 
-h1, p {
-  font-family: Arial, Helvetica, sans-serif;
+.page-flex {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh);
+  justify-content: center;
+  align-items: center;
 }
+
+.form-box-flex { 
+  height: 320px;
+  width: 320px;
+
+  display: flex; 
+  flex-direction: column; 
+  flex: 0 0 auto; 
+  
+  border: 1px solid; 
+  border-radius: 5px;
+  padding: 15px;
+  background: lightgray;
+}
+
+.form-box-flex mwc-textfield, .form-box-flex mwc-button {
+  margin-top: 15px;
+}
+
+.form-box-flex mwc-textfield {
+  flex: 1 1 auto;
+  font-size: 20px;
+}
+
+.buttons-box-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.buttons-box-flex mwc-button {
+  flex: 0 1 95px;
+  font-size: 20px;
+}
+
 </style>
