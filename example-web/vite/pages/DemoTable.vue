@@ -2,7 +2,8 @@
   <div class="container">
     <nav class="navbar">
       <ul class="nav-left">
-        <li class="nav-item"><mwc-icon-button icon="search"></mwc-icon-button></li>
+        <li class="nav-item"><mwc-icon-button icon="search" @click="showFilter=!showFilter"></mwc-icon-button></li>
+        <li class="nav-item"><mwc-icon-button icon="refresh" @click="refresh"></mwc-icon-button></li>
         <li class="nav-item"><mwc-icon-button icon="add"></mwc-icon-button></li>
         <li class="nav-item"><mwc-icon-button icon="delete"></mwc-icon-button></li>
         <li class="nav-item"><mwc-icon-button icon="post_add"></mwc-icon-button></li>
@@ -25,14 +26,33 @@
       <a href="#">&laquo;</a>
       <a href="#">&raquo;</a>
     </div> -->
-    <div class="filter">
+    <!-- <div class="filter">
       <vaadin-grid class="filter">
         <vaadin-grid-column path="col" header="Field"></vaadin-grid-column>
         <vaadin-grid-column path="op" header="Operator"></vaadin-grid-column>
         <vaadin-grid-column path="val" header="Value"></vaadin-grid-column>
         <vaadin-grid-column path="andOr" header="And Or"></vaadin-grid-column>
       </vaadin-grid>
-    </div>
+    </div> -->
+
+    <!-- filter row -->
+    <template v-if="showFilter">
+      <div class="filter-row" v-for="(filter, index) of filters" :key="index">
+        <select class="filter-col" v-model="filter.col">
+          <option v-for="(col, index1) of filterCols" :value="col" :key="'c'+index+'-'+index1">{{ col }}</option>
+        </select>
+        <select class="filter-col" v-model="filter.op">
+          <option v-for="(col, index2) of filterOps" :value="col" :key="'o'+index+'-'+index2">{{ col }}</option>
+        </select>
+        <input class="filter-col" v-model="filter.val" />
+        <select class="filter-col" v-model="filter.andOr">
+          <option value="and">And</option>
+          <option value="or">Or</option>
+        </select>
+        <button :disabled="filters.length<2" class="filter-col" @click="deleteFilter(index)">x</button>
+        <button class="filter-col" @click="addFilter(index + 1)">+</button>
+      </div>
+    </template>
 
     <vaadin-grid class="table"><!-- page-size="10" height-by-rows -->
       <vaadin-grid-selection-column auto-select></vaadin-grid-selection-column>
@@ -47,7 +67,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, reactive } from 'vue'
 import { test, find } from '../http'
 
 export default {
@@ -62,18 +82,22 @@ export default {
       default: [5, 10, 25, 50]
     }
   },
-  setup(props) {
-    const ready = ref(false)
+  setup(props, ctx) { // ctx = attrs, slots, emit
+    const tableCfg = ref(null) // table config
     const page = ref(1)
     const maxPage = ref(1)
     const rowsPerPage = ref(props.rowsPerPage)
     const rowsPerPageList = ref([])
     const headerCols = ref([])
+    const filters = reactive([])
+    const filterCols = ref([])
+    const filterOps = ref(['=', 'like', '!=', '>=', '>', '<=', '<'])
+    const showFilter = ref(false)
+
 
     let gridEl
 
     onMounted(async () => {
-      ready.value = true
 
       // const vv = document.querySelector('vaadin-select')
       document.querySelector('vaadin-select').addEventListener('change', function(event) {
@@ -82,11 +106,11 @@ export default {
       })
 
       gridEl = document.querySelector('vaadin-grid.table')
-      // console.log('gridEl', gridEl)
-      // test()
-      const rv = await find('/api/t4t/config/country')
-      if (rv.cols) {
-        headerCols.value = Object.entries(rv.cols).map(item => {
+
+      if (!tableCfg.value) tableCfg.value = await find('/api/t4t/config/country')
+      if (tableCfg.value) {
+        // TBD add filter to remove columns you do not want to show
+        headerCols.value = Object.entries(tableCfg.value.cols).map(item => {
           const [key, val] = item
           // console.log(item, key, val)
           return {
@@ -94,7 +118,11 @@ export default {
             header: val.label
           }
         })
+        // Object.keys(tableCfg.value.cols)
       }
+
+      filterCols.value = Object.keys(tableCfg.value.cols)
+      addFilter(0)
 
       // active-item-changed
       gridEl.addEventListener('selected-items-changed', function(event) {
@@ -128,18 +156,49 @@ export default {
         `;
       }
     }
-// // watching value of a reactive object (watching a getter)
-// watch(() => props.selected, (selection, prevSelection) => { 
-// })
-// // directly watching a ref
-// const selected = ref(props.selected)
-// watch(selected, (selection, prevSelection) => { 
-// })
-// // Watching Multiple Sources
-// watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { 
-// })
+
+    const refresh = async () => {
+      console.log(filters)
+    }
+
+    const deleteFilter = (index) => {
+      filters.splice(index, 1);
+      // console.log('remove filter', index)
+    }
+    const addFilter = (index) => {
+      // if (!index) {
+      //   filters.push({
+      //     col: filterCols.value[0],
+      //     op: '=',
+      //     val: '',
+      //     andOr: 'and'
+      //   })
+      // } else {
+        filters.splice( index, 0, {
+          col: filterCols.value[0],
+          op: '=',
+          val: '',
+          andOr: 'and'
+        } )
+      // }
+    }
+
+    // // watching value of a reactive object (watching a getter)
+    // watch(() => props.selected, (selection, prevSelection) => { })
+    // // directly watching a ref
+    // const selected = ref(props.selected)
+    // watch(selected, (selection, prevSelection) => { })
+    // // Watching Multiple Sources
+    // watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { })
     return {
-      ready,
+      refresh, // methods
+      deleteFilter,
+      addFilter,
+      showFilter,
+      filters,
+      filterCols,
+      filterOps,
+      tableCfg, // table config
       page,
       rowsPerPage,
       maxPage,
@@ -182,5 +241,9 @@ nav {
 
 .nav-item mwc-textfield {
   width: 80px;
+}
+
+.filter-row .filter-col {
+  margin: 4px;
 }
 </style>

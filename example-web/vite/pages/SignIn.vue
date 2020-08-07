@@ -1,4 +1,3 @@
-
 <template>
   <div class="page-flex">
     <form class="form-box-flex">
@@ -8,7 +7,7 @@
       <div class="buttons-box-flex">
         <mwc-button raised label="Login" @click="login"></mwc-button>
       </div>
-      <p>[<router-link to="/">Home</router-link>]</p>
+      <p><router-link to="/signup">Sign Up</router-link></p>
     </form>  
   </div>
 </template>
@@ -35,7 +34,6 @@ export default {
 </script>
 
 <style scoped>
-
 .page-flex h1, .page-flex p {
   text-align: center;
 }
@@ -49,7 +47,7 @@ export default {
 }
 
 .form-box-flex { 
-  height: 320px;
+  /* height: 320px; */
   width: 320px;
 
   display: flex; 
@@ -81,5 +79,4 @@ export default {
   flex: 0 1 95px;
   font-size: 20px;
 }
-
 </style>

@@ -19,8 +19,8 @@ const router = createRouter({
   history: routerHistory,
   routes: [
     // public
-    { path: '/', name: 'Home', component: () => import('./pages/Home.vue') },
-    { path: '/signin', name: 'SignIn', component: () => import('./pages/SignIn.vue') },
+    // { path: '/', name: 'Home', component: () => import('./pages/Home.vue') },
+    { path: '/', name: 'SignIn', component: () => import('./pages/SignIn.vue') },
     { path: '/signup', name: 'SignUp', component: () => import('./pages/SignUp.vue') },
     // private
     { path: '/dashboard', name: 'Dashboard', component: () => import('./pages/Dashboard.vue'), beforeEnter: authGuard },
@@ -29,7 +29,7 @@ const router = createRouter({
     { path: '/demo-table', name: 'DemoTable', component: () => import('./pages/DemoTable.vue'), beforeEnter: authGuard },
     { path: '/demo-flex', name: 'DemoFlex', component: () => import('./pages/DemoFlex.vue'), beforeEnter: authGuard },
     // catchall
-    // { path: '/:catchAll(.*)', redirect: '/' }    
+    { path: '/:catchAll(.*)', redirect: '/' }
   ]
 })
 
