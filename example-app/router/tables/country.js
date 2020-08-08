@@ -9,13 +9,13 @@ module.exports = {
     code: {
       label: 'Code',
       type: 'string',
-      formEditor: '',
+      input: '',
       // multiKey: true
     },
     name: {
       label: 'Name',
       type: 'string',
-      formEditor: '',
+      input: '',
       // multiKey: true
     }
   },

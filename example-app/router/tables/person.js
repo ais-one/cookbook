@@ -6,7 +6,7 @@ module.exports = {
       label: 'First Name',
       multiKey: true,
       type: 'string', // Number (Integer, Decimal), Boolean, Date (datetime, date, time)
-      formEditor: '',
+      input: '', // autocomplete, integer, decimal, select, multi-select 
       // '=,!=,like,>=,<=,>,<' - compare operator
       // AND, OR - boolean operator
     },
@@ -14,7 +14,7 @@ module.exports = {
       label: 'Last Name',
       multiKey: true,
       type: 'string', // Number (Integer, Decimal), Boolean, Date (datetime, date, time)
-      formEditor: '',
+      input: '',
     },
     sex: { // single select
       label: 'Sex',

@@ -1,10 +1,12 @@
 <template>
+  <div>
+
   <div class="container">
     <nav class="navbar">
       <ul class="nav-left">
         <li class="nav-item"><mwc-icon-button icon="search" @click="showFilter=!showFilter"></mwc-icon-button></li>
         <li class="nav-item"><mwc-icon-button icon="refresh" @click="refresh"></mwc-icon-button></li>
-        <li class="nav-item"><mwc-icon-button icon="add"></mwc-icon-button></li>
+        <li class="nav-item"><mwc-icon-button icon="add" @click="add"></mwc-icon-button></li>
         <li class="nav-item"><mwc-icon-button icon="delete"  @click="remove"></mwc-icon-button></li>
         <li class="nav-item"><mwc-icon-button icon="post_add"></mwc-icon-button></li>
         <li class="nav-item"><mwc-icon-button icon="move_to_inbox"></mwc-icon-button></li>
@@ -28,7 +30,7 @@
         <select class="filter-col" v-model="filter.op">
           <option v-for="(col, index2) of filterOps" :value="col" :key="'o'+index+'-'+index2">{{ col }}</option>
         </select>
-        <input class="filter-col" v-model="filter.val" />
+        <input placeholder="Value" class="filter-col" v-model="filter.val" />
         <select class="filter-col" v-model="filter.andOr">
           <option value="and">And</option>
           <option value="or">Or</option>
@@ -39,7 +41,7 @@
     </template>
 
     <vaadin-grid class="table"><!-- page-size="10" height-by-rows -->
-      <vaadin-grid-selection-column auto-select></vaadin-grid-selection-column>
+      <vaadin-grid-selection-column></vaadin-grid-selection-column><!-- remove auto-select click only on checkbox-->
       <vaadin-grid-column
         v-for="(headerCol, index) in headerCols" :key="index"
         :path="headerCol.path"
@@ -48,10 +50,15 @@
       <!--  for last column text-align="end" width="120px" flex-grow="0" -->
     </vaadin-grid>
   </div>
+
+  <div  class="container" v-show="false">
+  </div>
+
+  </div>
 </template>
 
 <script>
-import { onMounted, ref, reactive } from 'vue'
+import { onMounted, ref, reactive, onUnmounted } from 'vue'
 import { test, find, post } from '../http'
 
 export default {
@@ -77,11 +84,10 @@ export default {
     const filterCols = ref([])
     const filterOps = ref(['=', 'like', '!=', '>=', '>', '<=', '<'])
     const showFilter = ref(false)
-
-
-    let gridEl
+    const record = ref(null)
 
     const tableName = props.tableName || 'country'
+    let gridEl // grid element
 
     onMounted(async () => {
       // TBD handle if !tableName
@@ -112,12 +118,23 @@ export default {
       addFilter(0)
 
       // active-item-changed
-      gridEl.addEventListener('selected-items-changed', function(event) {
+      gridEl.addEventListener('active-item-changed', function(event) {
+        console.log('click not on checkbox', event)
         const item = event.detail.value // gridEl.selectedItems - same
+        gridEl.selectedItems = item ? [item] : []
+        // gridEl.selectItem(item)
+      })
+      gridEl.addEventListener('selected-items-changed', function(event) {
+        console.log('click on checkbox')
+        // const item = event.detail.value // gridEl.selectedItems - same
       })
 
       await refresh()
+    })
 
+    onUnmounted(()=> {
+      // TBD remove event listeners
+      // gridEl.removeEventListener('active-item-changed', update))
     })
 
     const selectRenderer = (root) => {
@@ -175,7 +192,9 @@ export default {
     }
 
     const add = async () => {
-        // TBD - run reload?
+      const items = gridEl.selectedItems
+      console.log('add', items)
+      // TBD - run reload?
     }
 
     const update = async () => {
@@ -204,6 +223,7 @@ export default {
     // watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { })
     return {
       remove, // methods
+      add,
       refresh,
       deleteFilter,
       addFilter,
