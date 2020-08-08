@@ -132,6 +132,7 @@ const test = () => {
 
 export {
   http,
+  post,
   login,
   otp,
   logout,

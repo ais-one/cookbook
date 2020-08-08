@@ -208,12 +208,12 @@ https://www.mongodb.com/blog/post/quick-start-nodejs--mongodb--how-to-implement-
 ```js
 db.getCollection('dd_author').insertMany([
   {
-    "_id" : ObjectId("5cdb5249525a06edd9634e1f"),
+    "_id" : ObjectID("5cdb5249525a06edd9634e1f"),
     "name" : "aaron",
     "code" : "aa"
   },
   {
-    "_id" : ObjectId("5cdb5258525a06edd9634e23"),
+    "_id" : ObjectID("5cdb5258525a06edd9634e23"),
     "name" : "ben",
     "code" : "bb"
   }
@@ -232,23 +232,23 @@ db.getCollection('dd_cat').insertMany([
 
 db.getCollection('dd_book').insertMany([
   {
-      "_id" : ObjectId("5cdb5282525a06edd9634e2f"),
+      "_id" : ObjectID("5cdb5282525a06edd9634e2f"),
       "name" : "book a",
-      "author" : ObjectId("5cdb5249525a06edd9634e1f"),
+      "author" : ObjectID("5cdb5249525a06edd9634e1f"),
       "authorCode" : "bb",
       "catCode:": "c1"
   },
   {
-      "_id" : ObjectId("5cdb52a0525a06edd9634e36"),
+      "_id" : ObjectID("5cdb52a0525a06edd9634e36"),
       "name" : "book b",
-      "author" : ObjectId("5cdb5258525a06edd9634e23"),
+      "author" : ObjectID("5cdb5258525a06edd9634e23"),
       "authorCode" : "bb",
       "catCode:": "c2"
   },
   {
-      "_id" : ObjectId("5cdb5359525a06edd9634e4e"),
+      "_id" : ObjectID("5cdb5359525a06edd9634e4e"),
       "name" : "book c",
-      "author" : ObjectId("5cdb5249525a06edd9634e1f"),
+      "author" : ObjectID("5cdb5249525a06edd9634e1f"),
       "authorCode" : "bb",
       "catCode:": "c1"
   }
@@ -338,5 +338,30 @@ Two methods available (method 1 seems more intuitive)
 
 - http://mongodb.github.io/node-mongodb-native/3.5/tutorials/crud/#bulkwrite
   - http://mongodb.github.io/node-mongodb-native/3.5/api/Collection.html#bulkWrite
+
 - http://mongodb.github.io/node-mongodb-native/3.5/tutorials/crud/#bulk-write-operations
 
+- bulkWrite can have the following 6 operations: insertOne, updateOne, updateMany, deleteOne, deleteMany, replaceOne
+- up to 1000 operations allowed, ordered flag true aborts on error
+
+```js
+    const writeOps = facilities.map(facility => {
+      const createdAt = new Date(facility.createdAt + ' +0800')
+      const op = {
+        updateOne: {
+          "filter": { spaceoutId: facility.id, createdAt },
+          "update": {
+            $set: {
+              spaceoutId: facility.id,
+              trend: facility.trend,
+              band: facility.band,
+              createdAt
+            }
+          },
+          "upsert" : true
+        }
+      }
+      return op
+    })
+    const dbRv = await db.collection('crowdlevels').bulkWrite( writeOps )
+```

@@ -4,6 +4,7 @@ const Model = require(LIB_PATH + '/services/db/objection').get()
 const knex = Model.knex()
 
 const mongo = require(LIB_PATH + '/services/db/mongodb')
+const ObjectID = require('mongodb').ObjectID
 
 const csvParse = require('csv-parse')
 // const { authUser } = require('../middlewares/auth')
@@ -13,7 +14,11 @@ const upload = multer({
   storage: multer.memoryStorage() 
 })
 
+// key is reserved property for identifying row in a multiKey table
+// | is reserved for seperating columns that make the multiKey
+
 async function generateTable (req, res, next) {
+  // TBD get config info from a table
   try {
     const tableKey = req.params.table // 'books' // its the table name also
     // TOREMOVE const table = t4tCfg.tables[tableKey]
@@ -41,7 +46,8 @@ async function generateTable (req, res, next) {
 }
 
 function formUniqueKey(table, args) {
-  const where = {}
+  if (table.pk) return table.db === 'knex' ? { [table.pk]: args } : { _id: new ObjectID(args) } // return for pk
+  const where = {} // return for multiKey
   for (let col of table.multiKey) {
     if (args[col]) where[col] = args[col]
     else return null
@@ -50,79 +56,65 @@ function formUniqueKey(table, args) {
 }
 
 module.exports = express.Router()
+  .get('/test', (req, res) => res.send('t4t ok'))
+
   .get('/config/:table', generateTable, asyncWrapper(async (req, res) => {
     res.json(req.table) // return the table info...
   }))
   .get('/find/:table', generateTable, asyncWrapper(async (req, res) => { // page is 1 based
     const { table } = req
-
     let { page = 1, limit = 25, filters = null, sorter = null, csv = '' } = req.query
     page = parseInt(page)
     limit = parseInt(limit)
-
-    console.log('t4t filters and sort', filters, sorter, table.name, page, limit)
-    // TBD MongoDB
-    filters = JSON.parse(filters)
-    // [
-    //   {
-    //     column, compare, value, andOr
-    //   }
-    // ]
-    sorter = JSON.parse(sorter)
-    // [ { column, order } ]
+    // console.log('t4t filters and sort', filters, sorter, table.name, page, limit)
+    filters = JSON.parse(filters) // ignore where col === null, sort it 'or' first then 'and' // [ { col, op, val, andOr } ]
+    sorter = JSON.parse(sorter) // [ { column, order } ]
     if (page < 1) page = 1
     let rv = { results: [], total: 0 }
     let rows
-    let where = {}
+    let where = {} // for mongo
+    let query = null // for knex
 
-    /* knex
-    let query = knex(table.name).where(where)
-    prevFilter = {}
-    if (filters && filters.length) for (filter of filters) {
-      const key = filter.name
-      const value = filter.value
-      const op = filter.op
-      if (op === 'like') {
-        if (prevFilter.andOr || prevFilter.andOr === 'AND')
-          query = query.andWhere(key, 'like', `%${value}%`)
-        else 
-        query = query.orWhere(key, 'like', `%${value}%`)
-      } else {
-        if (prevFilter.andOr || prevFilter.andOr === 'AND')
-          query = query.andWhere(key, op, value)
-        else 
-        query = query.orWhere(key, op, value)
+    if (table.db === 'knex') {
+      query = knex(table.name).where({})
+      prevFilter = {}
+      if (filters && filters.length) for (filter of filters) {
+        const key = filter.col
+        const op = filter.op
+        const value = op === 'like' ? `%${filter.val}%` : filter.val
+        if (prevFilter.andOr || prevFilter.andOr === 'and') query = query.andWhere(key, op, value)
+        else query = query.orWhere(key, op, value)
+        prevFilter = filter
       }
-      prevFilter= filter
+    } else { // mongo - TBD
+      // const query = { "$or" : [] }
     }
-    */
 
     if (limit === 0 || csv) {
-      // knex
-      // rows = await query.clone().orderBy(sorter)
-      // rv.total = rows.length
-
-      // mongo
-      rows = await mongo.db.collection(table.name).find(filters).toArray()
-      rv.total = rows.length
+      if (table.db === 'knex') {
+        rows = await query.clone().orderBy(sorter)
+        rv.total = rows.length
+      } else { // mongo
+        rows = await mongo.db.collection(table.name).find(where).toArray()
+        rv.total = rows.length
+      }
     } else {
-      // knex
-      // rows = await query.clone().orderBy(sorter).limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
-      // let total = await query.clone().count()
-      // rv.total = Object.values(total[0])[0]
-
-      // mongo
-      rv.total = await mongo.db.collection(table.name).find(filters).count()
-
-      const maxPage = Math.ceil(rv.total / limit)
-      if (page > maxPage) page = maxPage
-
-      rows = await mongo.db.collection(table.name).find(filters)
-        .skip(page * limit)
-        .limit(limit)
-        .toArray()
+      if (table.db === 'knex') {
+        let total = await query.clone().count()
+        rv.total = Object.values(total[0])[0]
+        const maxPage = Math.ceil(rv.total / limit)
+        if (page > maxPage) page = maxPage
+        rows = await query.clone().orderBy(sorter).limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
+      } else { // mongo
+        rv.total = await mongo.db.collection(table.name).find(where).count()
+        const maxPage = Math.ceil(rv.total / limit)
+        if (page > maxPage) page = maxPage
+        rows = await mongo.db.collection(table.name).find(where) // TBD sort
+          .skip(page * limit)
+          .limit(limit)
+          .toArray()
+      }
     }
-
     if (csv) {
       const parser = new Parser({})
       const csv = parser.parse(rows)
@@ -141,85 +133,119 @@ module.exports = express.Router()
       return res.json(rv) 
     }
   }))
+
   .get('/autocomplete', asyncWrapper(async (req, res) => {
     let { tableName, limit = 20, key, value } = req.query
-    const query = knex(tableName).where(key, 'like', `%${value}%`)
-    let rows = await query.clone().limit(limit) // orderBy
-    rows = rows.map(row => {
-      return {
-        key: row[key],
-        txt: row[key]
-      }
-    })
+    let rows = {}
+    if (table.db === 'knex') {
+      const query = knex(tableName).where(key, 'like', `%${value}%`)
+      rows = await query.clone().limit(limit) // TBD orderBy
+    } else { // mongo
+      rows = await mongo.db.collection(tableName).find({ [key]: { $regex: value, $options: 'i' } })
+        .limit(limit).toArray() // TBD sort
+    }
+    rows = rows.map(row => ({
+      key: row[key],
+      txt: row[key]
+    }))
     res.json(rows)
   }))
+
   .get('/find-one/:table/:id?', generateTable, asyncWrapper(async (req, res) => {
     const { table } = req
-    const where = req.params.id ? { id: req.params.id } : formUniqueKey(table, req.query)
+    const { id } = req.params
+    const where = formUniqueKey(table, id || req.query)
     if (!where) return res.status(400).json() // bad request
-    // knex
-    const rv = await knex(table.name).where(where).first()
-    // mongodb
-    // const rv = await mongo.db.collection(table.name).findOne(where) // { _id: new ObjectID(id) }
+    let rv = {}
+    if (table.db === 'knex') {
+      rv = await knex(table.name).where(where).first()
+    } else { // mongodb
+      rv = await mongo.db.collection(table.name).findOne(where) // { _id: new ObjectID(id) }
+    }    
     return res.json(rv)
   }))
+
   .patch('/update/:table/:id?', generateTable, asyncWrapper(async (req, res) => {
-    const { table } = req
-    const where = req.params.id ? { id: req.params.id } : formUniqueKey(table, req.query)
+    const { body, table } = req
+    const { id } = req.params
+    const where = formUniqueKey(table, id || req.query)
     let count = 0
     if (!where) return res.status(400).json() // bad request
-    // knex
-    const { body } = req
-    for (let key in table.cols) {
+
+    for (let key in table.cols) { // add in auto fields
       const col = table.cols[key]
       if (col.auto && col.auto === 'user') body[key] = 'TBD USER ID'
       if (col.auto && col.auto === 'ts') body[key] = new Date
       // do other transforms if necessary
     }
-    count = await knex(table.name).update(body).where(where)
-    if (!count) {
-      // do insert ?
+
+    if (table.db === 'knex') {
+      count = await knex(table.name).update(body).where(where)
+      if (!count) {
+        // do insert ?
+      }
+    } else { // mongodb
+      await mongo.db.collection(table.name).updateOne(where, { $set: body })
     }
-    // mongodb
-    // await mongo.db.collection(table.name).updateOne(where, { $set: req.body })
     res.json({count})
   }))
+
   .post('/create/:table', generateTable, asyncWrapper(async (req, res) => {
-    const { table } = req
-    // knex
-    const { body } = req
+    const { table, body } = req
     for (let key in table.cols) {
       const col = table.cols[key]
       if (col.auto && col.auto === 'user') body[key] = 'TBD USER ID'
       if (col.auto && col.auto === 'ts') body[key] = new Date
       // do other transforms if necessary
     }
-    const rv = await knex(table.name)
-      // .returning('id')
-      .insert(body)
-    // mongodb
-    // const rv = await mongo.db.collection(table.name).insertOne(req.body) // rv.insertedId, rv.result.ok
+
+    let rv = 0
+    if (table.db === 'knex') {
+      rv = await knex(table.name)
+        // .returning('id')
+        .insert(body)
+    } else { // mongodb
+      await mongo.db.collection(table.name).insertOne(body) // rv.insertedId, rv.result.ok
+    }
     res.status(201).json(rv)
   }))
-  .post('/remove/:table/:id', generateTable, asyncWrapper(async (req, res) => {
+
+  .post('/remove/:table', generateTable, asyncWrapper(async (req, res) => {
     const { table } = req
-    const { ids } = JSON.parse(req.body.ids)
-    if (table.pk) {
-      await knex(table.name).whereIn('id', ids).delete()
-    } else {
-      const promises = ids.map(id => {
+    const { ids } = req.body
+    if (ids.length > 1000) return res.status(400).json({ error: 'Select up to 1000 items' })
+    if (ids.length < 1) return res.status(400).json({ error: 'No item selected' })
+    if (table.pk) { // delete using pk
+      if (table.db === 'knex')
+        await knex(table.name).whereIn('id', ids).delete()
+      else
+        await mongo.db.collection(table.name).deleteMany({ _id: { $in: ids.map(id => new ObjectID(id)) } })  
+    } else { // delete using keys
+      const keys = ids.map(id => {
         id_a = id.split('|')
-        const keys = {}
+        const multiKey = {}
         for (let i=0; i<id_a.length; i++) {
           const keyName = table.multiKey[i]
-          keys[keyName] = id_a[i]
-        } 
-        return knex(table.name).whereIn(keys).delete()
+          multiKey[keyName] = id_a[i]
+        }
+        if (table.db === 'knex') {
+          return knex(table.name).where(multiKey).delete() 
+        } else {
+          // return mongo.db.collection(table.name).deleteOne(multiKey)
+          return {
+            deleteOne: {
+              "filter": multiKey
+            }
+          }            
+        }
       })
-      await Promise.all(promises) // allSettled
+      if (table.db === 'knex') {
+        await Promise.allSettled(keys)
+      } else {
+        const dbRv = await db.collection(table.name).bulkWrite(keys)
+        // result: dbRv.result
+      }
     }
-    // knex
-    // await mongo.db.collection(table.name).deleteOne(where)
     res.json()
   }))
 

@@ -1,5 +1,5 @@
 module.exports = {
-  db: 'knex', // knex / mongodb
+  db: 'mongo', // knex / mongodb
   name: 'person', // table name
   cols: {
     firstName: {
