@@ -8,8 +8,9 @@
         <li class="nav-item"><mwc-icon-button icon="refresh" @click="refresh"></mwc-icon-button></li>
         <li class="nav-item" v-if="tableCfg && tableCfg.create"><mwc-icon-button icon="add" @click="openAdd"></mwc-icon-button></li>
         <li class="nav-item" v-if="tableCfg && tableCfg.delete"><mwc-icon-button icon="delete" @click="remove"></mwc-icon-button></li>
-        <li class="nav-item"><mwc-icon-button icon="post_add" @click="testBtn"></mwc-icon-button></li>
-        <li class="nav-item"><mwc-icon-button icon="move_to_inbox"></mwc-icon-button></li>
+        <li class="nav-item"><mwc-icon-button icon="post_add" @click="csvImport"></mwc-icon-button></li>
+        <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="csvExport"></mwc-icon-button></li>
+        <!-- <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="testBtn"></mwc-icon-button></li> -->
       </ul>
       <ul class="nav-right">
         <li class="nav-item">
@@ -59,18 +60,12 @@
   </div>
 
   <div class="container" v-if="showForm && tableCfg">
-    <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p><!-- add or edit -->
+    <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p>
     <form>
       <template v-for="(val, col, index) of recordObj[showForm]">
         <template v-if="tableCfg.cols[col]">
-          <!-- <p :key="index">{{ tableCfg.cols[col].label }}</p> -->
+          <!-- required? readonly? (edit) -->
           <mwc-textfield :key="index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"> </mwc-textfield>
-          <!-- <template v-if="(!record.key && val.add !== 'readonly') || (record.key && val.edit !== 'readonly')">
-            Editable: {{ record.key ? record[col] : 'TBD default' }}
-          </template>
-          <template v-else>
-            {{ record.key ? record[col] : 'TBD default' }}
-          </template> -->
         </template>
       </template>
       <button type="button" @click="showForm=''">Cancel</button>
@@ -83,7 +78,7 @@
 
 <script>
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
-import { httpGet, httpPost } from '../http'
+import { httpGet, httpPost, httpPatch } from '../http'
 
 export default {
   name: 'DemoTable',
@@ -257,10 +252,20 @@ export default {
     }
 
     const doAddOrEdit = async () => {
-      console.log(recordObj['edit'])
+      // console.log(recordObj['edit'])
       // const items = gridEl.selectedItems
       // console.log('add ajax call', items)
-      // TBD - run reload?
+      // TBD - run reload?, set loading
+      try {
+        if (showForm.value === 'add') {
+          await httpPost(`/api/t4t/create/${tableName}`, recordObj['add'])
+        } else {
+          const { key, ...data } = recordObj['edit']
+          await httpPatch(`/api/t4t/update/${tableName}/${key}`, data)
+        }
+      } catch (e) {
+        console.log('patch', e.toString())
+      }
     }
 
     const update = async () => {
@@ -279,6 +284,9 @@ export default {
         andOr: 'and'
       } )
     }
+
+    const csvImport = async () => { }
+    const csvExport = async () => { }
 
     // // watching value of a reactive object (watching a getter)
     // watch(() => props.selected, (selection, prevSelection) => { })
@@ -306,7 +314,9 @@ export default {
       maxPage,
       headerCols,
       selectRenderer,
-      doAddOrEdit
+      doAddOrEdit,
+      csvImport,
+      csvExport
     }
   }
 }

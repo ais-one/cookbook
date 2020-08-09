@@ -118,9 +118,9 @@ async function logout() {
 
 const httpPost = async (url, body = null, query = null) => await http('POST', url, body, query)
 
-const update = async (url, body = null, query = null) => await http('PATCH', url, body, query)
+const httpPatch = async (url, body = null, query = null) => await http('PATCH', url, body, query)
 
-const remove = async (url, query = null) => await http('DELETE', url, null, query)
+const httpDelete = async (url, query = null) => await http('DELETE', url, null, query)
 
 const httpGet = async (url, query = null) => await http('GET', url, null, query)
 
@@ -133,10 +133,10 @@ export {
   http,
   httpPost,
   httpGet,
+  httpPatch,
   login,
   otp,
   logout,
-  update,
-  remove,
+  httpDelete,
   test,
 }

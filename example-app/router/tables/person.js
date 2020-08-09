@@ -3,6 +3,8 @@ module.exports = {
   name: 'person', // table name
   delete: true, // able to delete record(s)
   create: true, // able to add record,
+  import: true, // can import from csv
+  export: true, // can export to csv
   multiSelect: true, // multiple selection
   cols: {
     // _id: { // primary key column, _id for mongodb

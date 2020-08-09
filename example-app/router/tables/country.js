@@ -1,9 +1,11 @@
 module.exports = {
   db: 'mongo',
   name: 'country',
-  delete: true, // able to delete record(s)
-  create: true, // able to add record,
-  multiSelect: true, // multiple selection
+  delete: true,
+  create: true,
+  import: true,
+  export: true,
+  multiSelect: true,
   cols: {
     _id: { // primary key column, _id for mongodb
       // label: 'ID',
