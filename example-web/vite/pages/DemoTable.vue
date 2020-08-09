@@ -59,20 +59,22 @@
   </div>
 
   <div class="container" v-if="showForm && tableCfg">
-    <p>{{ record.key ? 'Edit' : 'Add' }} </p><!-- add or edit -->
+    <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p><!-- add or edit -->
     <form>
-      <template v-for="(val, col, index) of tableCfg.cols">
-        <template v-if="(!record.key && val.add !== 'hide') || (record.key && val.edit !== 'hide')">
-          <p :key="index">{{ val.label }}</p>
-          <template v-if="(!record.key && val.add !== 'readonly') || (record.key && val.edit !== 'readonly')">
+      <template v-for="(val, col, index) of recordObj[showForm]">
+        <template v-if="tableCfg.cols[col]">
+          <!-- <p :key="index">{{ tableCfg.cols[col].label }}</p> -->
+          <mwc-textfield :key="index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"> </mwc-textfield>
+          <!-- <template v-if="(!record.key && val.add !== 'readonly') || (record.key && val.edit !== 'readonly')">
             Editable: {{ record.key ? record[col] : 'TBD default' }}
           </template>
           <template v-else>
             {{ record.key ? record[col] : 'TBD default' }}
-          </template>
+          </template> -->
         </template>
       </template>
-      <button type="button" @click="showForm=false">Close</button>
+      <button type="button" @click="showForm=''">Cancel</button>
+      <button type="button" @click="doAddOrEdit">Confirm</button>
     </form>
   </div>
 
@@ -106,10 +108,13 @@ export default {
     const filterCols = reactive([])
     const filterOps = ref(['=', 'like', '!=', '>=', '>', '<=', '<'])
     const showFilter = ref(false)
-    const showForm = ref(false)
+    const showForm = ref('') // '', add, edit
     const loading = ref(false)
 
-    const record = reactive({})
+    const recordObj = reactive({
+      add: {},
+      edit: {}
+    })
 
     const tableName = props.tableName || 'country'
     let gridEl // grid element
@@ -130,11 +135,20 @@ export default {
         gridEl.selectedItems = item ? [item] : []
       }
 
+      console.log('aaaaaaa', item)
       if (!item) return // do not continue if item is null
+      console.log('xxxxxxx', item)
       try {
         const rv = await httpGet('/api/t4t/find-one/' + tableName + '/' + item.key)
-        rv.key = item.key
-        Object.assign(record, rv)
+
+        recordObj['edit'].key = item.key
+        Object.entries(tableCfg.value.cols).forEach(item => {
+          const [key, val] = item
+          if (val.edit !== 'hide' && !val.auto) recordObj['edit'][key] = rv[key]
+        })
+        console.log('recordObj', recordObj['edit'])
+        showForm.value = 'edit'
+
       } catch (e) {
         console.log(e.toString())
       }
@@ -229,19 +243,23 @@ export default {
     const openAdd = async () => {
       // TBD return if async happening
       console.log('tableCfg.value', tableCfg.value)
-      showForm.value = true
+
+      Object.entries(tableCfg.value.cols).forEach(item => {
+        const [key, val] = item
+        if (val.add !== 'hide' && !val.auto) recordObj['add'][key] = val.default || (val.type === 'integer' || val.type === 'decimal' ? 0 : '')
+      })
+      showForm.value = 'add'
     }
 
     const testBtn = () => {
       console.log(tableCfg.value)
-      showForm.value = !showForm.value
-      // console.log('test', record, record.key)
-      // record.key ? delete record.key : Object.assign(record, { key: 'aa' })
+      showForm.value = showForm.value ? '' : 'add'
     }
 
-    const add = async () => {
-      const items = gridEl.selectedItems
-      console.log('add', items)
+    const doAddOrEdit = async () => {
+      console.log(recordObj['edit'])
+      // const items = gridEl.selectedItems
+      // console.log('add ajax call', items)
       // TBD - run reload?
     }
 
@@ -279,7 +297,7 @@ export default {
       showFilter,
       filters,
       showForm,
-      record,
+      recordObj,
       filterCols,
       filterOps,
       tableCfg, // table config
@@ -287,7 +305,8 @@ export default {
       rowsPerPage,
       maxPage,
       headerCols,
-      selectRenderer
+      selectRenderer,
+      doAddOrEdit
     }
   }
 }

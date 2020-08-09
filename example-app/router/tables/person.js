@@ -15,13 +15,14 @@ module.exports = {
     // },
     firstName: {
       label: 'First Name',
-      multiKey: true, // part of composite unique key
+      multiKey: true, // part of composite unique key - required!
       type: 'string', // string, integer, decimal, datetime, date, time, boolean
       input: 'textfield', // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime
       table: '', // truthy means hide column on table,
       filter: '', // truthy means hide column on filter,
-      add: '', // hide, readonly, empty string means can show and edit
-      edit: ''
+      add: '', // 'hide', ''  - empty string means can show and edit
+      edit: '' // 'hide', 'readonly', '' - empty string means can show and edit
+      
     },
     lastName: {
       label: 'Last Name',
