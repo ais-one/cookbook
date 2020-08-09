@@ -8,6 +8,12 @@
       <button @click="count++">increment</button>
       <vaadin-button @click="count++">Add</vaadin-button>
     </p>
+    <mwc-select label="preselected">
+      <mwc-list-item></mwc-list-item>
+      <mwc-list-item selected value="0">Item 0</mwc-list-item>
+      <mwc-list-item value="1">Item 1</mwc-list-item>
+      <mwc-list-item value="2">Item 2</mwc-list-item>
+    </mwc-select>
     <p>Non-Reactive Data: {{ nonReactiveData }}</p>
     <p>Reactive Data: {{ reactiveData }}</p>
     <p>Vuex Store {{ storeCount }} - {{ storeToken }}</p>
