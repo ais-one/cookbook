@@ -6,9 +6,9 @@
       <ul class="nav-left">
         <li class="nav-item"><mwc-icon-button icon="search" @click="showFilter=!showFilter"></mwc-icon-button></li>
         <li class="nav-item"><mwc-icon-button icon="refresh" @click="refresh"></mwc-icon-button></li>
-        <li class="nav-item"><mwc-icon-button icon="add" @click="add"></mwc-icon-button></li>
-        <li class="nav-item"><mwc-icon-button icon="delete"  @click="remove"></mwc-icon-button></li>
-        <li class="nav-item"><mwc-icon-button icon="post_add"></mwc-icon-button></li>
+        <li class="nav-item" v-if="tableCfg && tableCfg.create"><mwc-icon-button icon="add" @click="openAdd"></mwc-icon-button></li>
+        <li class="nav-item" v-if="tableCfg && tableCfg.delete"><mwc-icon-button icon="delete" @click="remove"></mwc-icon-button></li>
+        <li class="nav-item"><mwc-icon-button icon="post_add" @click="testBtn"></mwc-icon-button></li>
         <li class="nav-item"><mwc-icon-button icon="move_to_inbox"></mwc-icon-button></li>
       </ul>
       <ul class="nav-right">
@@ -23,25 +23,32 @@
 
     <!-- filter row -->
     <template v-if="showFilter">
-      <div class="filter-row" v-for="(filter, index) of filters" :key="index">
-        <select class="filter-col" v-model="filter.col">
-          <option v-for="(col, index1) of filterCols" :value="col" :key="'c'+index+'-'+index1">{{ col }}</option>
-        </select>
-        <select class="filter-col" v-model="filter.op">
-          <option v-for="(col, index2) of filterOps" :value="col" :key="'o'+index+'-'+index2">{{ col }}</option>
-        </select>
-        <input placeholder="Value" class="filter-col" v-model="filter.val" />
-        <select class="filter-col" v-model="filter.andOr">
-          <option value="and">And</option>
-          <option value="or">Or</option>
-        </select>
-        <button :disabled="filters.length<2" class="filter-col" @click="deleteFilter(index)">x</button>
-        <button class="filter-col" @click="addFilter(index + 1)">+</button>
+      <div v-if="filters.length">
+        <div class="filter-row" v-for="(filter, index) of filters" :key="index">
+          <select class="filter-col" v-model="filter.col">
+            <option v-for="(col, index1) of filterCols" :value="col" :key="'c'+index+'-'+index1">{{ col }}</option>
+          </select>
+          <select class="filter-col" v-model="filter.op">
+            <option v-for="(col, index2) of filterOps" :value="col" :key="'o'+index+'-'+index2">{{ col }}</option>
+          </select>
+          <input placeholder="Value" class="filter-col" v-model="filter.val" />
+          <select class="filter-col" v-model="filter.andOr">
+            <option value="and">And</option>
+            <option value="or">Or</option>
+          </select>
+          <button class="filter-col" @click="deleteFilter(index)">x</button>
+          <button class="filter-col" @click="addFilter(index + 1)">+</button>
+        </div>
+      </div>
+      <div v-else>
+        <div class="filter-row">
+          <button class="filter-col" @click="addFilter(0)">+</button>
+        </div>
       </div>
     </template>
 
     <vaadin-grid class="table"><!-- page-size="10" height-by-rows -->
-      <vaadin-grid-selection-column></vaadin-grid-selection-column><!-- remove auto-select click only on checkbox-->
+      <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect"></vaadin-grid-selection-column><!-- remove auto-select click only on checkbox-->
       <vaadin-grid-column
         v-for="(headerCol, index) in headerCols" :key="index"
         :path="headerCol.path"
@@ -51,7 +58,22 @@
     </vaadin-grid>
   </div>
 
-  <div  class="container" v-show="false">
+  <div class="container" v-if="showForm && tableCfg">
+    <p>{{ record.key ? 'Edit' : 'Add' }} </p><!-- add or edit -->
+    <form>
+      <template v-for="(val, col, index) of tableCfg.cols">
+        <template v-if="(!record.key && val.add !== 'hide') || (record.key && val.edit !== 'hide')">
+          <p :key="index">{{ val.label }}</p>
+          <template v-if="(!record.key && val.add !== 'readonly') || (record.key && val.edit !== 'readonly')">
+            Editable: {{ record.key ? record[col] : 'TBD default' }}
+          </template>
+          <template v-else>
+            {{ record.key ? record[col] : 'TBD default' }}
+          </template>
+        </template>
+      </template>
+      <button type="button" @click="showForm=false">Close</button>
+    </form>
   </div>
 
   </div>
@@ -59,7 +81,7 @@
 
 <script>
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
-import { test, find, post } from '../http'
+import { httpGet, httpPost } from '../http'
 
 export default {
   name: 'DemoTable',
@@ -79,15 +101,45 @@ export default {
     const maxPage = ref(1)
     const rowsPerPage = ref(props.rowsPerPage)
     const rowsPerPageList = ref([])
-    const headerCols = ref([])
+    const headerCols = reactive([])
     const filters = reactive([])
-    const filterCols = ref([])
+    const filterCols = reactive([])
     const filterOps = ref(['=', 'like', '!=', '>=', '>', '<=', '<'])
     const showFilter = ref(false)
-    const record = ref(null)
+    const showForm = ref(false)
+    const loading = ref(false)
+
+    const record = reactive({})
 
     const tableName = props.tableName || 'country'
     let gridEl // grid element
+
+    const rowClick = async (e) => {
+      // console.log('click not on checkbox 1', e.detail.value)
+
+      const item = e.detail.value
+      e.stopPropagation()
+
+      // TBD return if something is processing
+      if (!item && tableCfg.value.multiSelect) return console.log('click item null')
+
+      if (tableCfg.value.multiSelect) {
+        gridEl.activeItem = null
+      } else {
+        console.log('single')
+        gridEl.selectedItems = item ? [item] : []
+      }
+
+      if (!item) return // do not continue if item is null
+      try {
+        const rv = await httpGet('/api/t4t/find-one/' + tableName + '/' + item.key)
+        rv.key = item.key
+        Object.assign(record, rv)
+      } catch (e) {
+        console.log(e.toString())
+      }
+    }
+    const selectClick = async (e) => { console.log('click on checkbox') }
 
     onMounted(async () => {
       // TBD handle if !tableName
@@ -100,41 +152,24 @@ export default {
 
       gridEl = document.querySelector('vaadin-grid.table')
 
-      if (!tableCfg.value) tableCfg.value = await find('/api/t4t/config/' + tableName)
+      if (!tableCfg.value) tableCfg.value = await httpGet('/api/t4t/config/' + tableName)
       if (tableCfg.value) {
-        // TBD add filter to remove columns you do not want to show
-        headerCols.value = Object.entries(tableCfg.value.cols).map(item => {
-          const [key, val] = item
-          // console.log(item, key, val)
-          return {
-            path: key,
-            header: val.label
-          }
-        })
-        // Object.keys(tableCfg.value.cols)
+        for (let col in tableCfg.value.cols) {
+          const obj = tableCfg.value.cols[col]
+          if (obj.table !== 'hide') headerCols.push({ path: col, header: obj.label }) // process table columns
+          if (obj.filter !== 'hide') filterCols.push(col) // process filters
+        }
+        // Object.entries(tableCfg.value.cols) => [ [key, obj], ... ]        
       }
 
-      filterCols.value = Object.keys(tableCfg.value.cols)
-      addFilter(0)
-
-      // active-item-changed
-      gridEl.addEventListener('active-item-changed', function(event) {
-        console.log('click not on checkbox', event)
-        const item = event.detail.value // gridEl.selectedItems - same
-        gridEl.selectedItems = item ? [item] : []
-        // gridEl.selectItem(item)
-      })
-      gridEl.addEventListener('selected-items-changed', function(event) {
-        console.log('click on checkbox')
-        // const item = event.detail.value // gridEl.selectedItems - same
-      })
-
+      gridEl.addEventListener('active-item-changed', rowClick)
+      gridEl.addEventListener('selected-items-changed', selectClick)
       await refresh()
     })
 
     onUnmounted(()=> {
-      // TBD remove event listeners
-      // gridEl.removeEventListener('active-item-changed', update))
+      gridEl.removeEventListener('active-item-changed', rowClick)
+      gridEl.removeEventListener('selected-items-changed', selectClick)
     })
 
     const selectRenderer = (root) => {
@@ -156,7 +191,7 @@ export default {
       try {
         gridEl.selectedItems = []
 
-        const rv = await find('/api/t4t/find/' + tableName, {
+        const rv = await httpGet('/api/t4t/find/' + tableName, {
           page: page.value,
           limit: rowsPerPage.value,
           filters: JSON.stringify(filters)
@@ -183,12 +218,25 @@ export default {
         } else {
           ids = items.map(item => item.key)
         }
-        const rv = await post('/api/t4t/remove/' + tableName, { ids })
+        const rv = await httpGet('/api/t4t/remove/' + tableName, { ids })
 
         // TBD - run reload?
       } catch (e) {
         console.log(e.toString())
       }
+    }
+
+    const openAdd = async () => {
+      // TBD return if async happening
+      console.log('tableCfg.value', tableCfg.value)
+      showForm.value = true
+    }
+
+    const testBtn = () => {
+      console.log(tableCfg.value)
+      showForm.value = !showForm.value
+      // console.log('test', record, record.key)
+      // record.key ? delete record.key : Object.assign(record, { key: 'aa' })
     }
 
     const add = async () => {
@@ -207,7 +255,7 @@ export default {
 
     const addFilter = (index) => {
       filters.splice( index, 0, {
-        col: filterCols.value[0],
+        col: filterCols[0],
         op: '=',
         val: '',
         andOr: 'and'
@@ -222,13 +270,16 @@ export default {
     // // Watching Multiple Sources
     // watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { })
     return {
+      testBtn,
       remove, // methods
-      add,
+      openAdd,
       refresh,
       deleteFilter,
       addFilter,
       showFilter,
       filters,
+      showForm,
+      record,
       filterCols,
       filterOps,
       tableCfg, // table config
