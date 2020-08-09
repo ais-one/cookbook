@@ -17,7 +17,7 @@
           <vaadin-select class="select-page-size" :value="String(rowsPerPage)" :renderer="selectRenderer" style="width: 80px;"></vaadin-select>
         </li>
         <li class="nav-item">
-          <vaadin-integer-field v-model="page" min="1" :max="maxPage" has-controls></vaadin-integer-field> / {{ maxPage }}
+          <vaadin-integer-field class="select-page" :value="page" min="1" :max="maxPage" has-controls></vaadin-integer-field> / {{ maxPage }}
         </li>
       </ul>
     </nav>
@@ -77,6 +77,11 @@
 </template>
 
 <script>
+// TBD debounce for async inputs
+// TBD slots for forms and 
+// TBD inline edits
+// TBD remove vaadin select and number fields...
+
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
 import { httpGet, httpPost, httpPatch } from '../http'
 
@@ -112,14 +117,14 @@ export default {
     })
 
     const tableName = props.tableName || 'country'
+
     let gridEl // grid element
 
     const rowClick = async (e) => {
+      // TBD handle single select / multi select
       // console.log('click not on checkbox 1', e.detail.value)
-
       const item = e.detail.value
       e.stopPropagation()
-
       // TBD return if something is processing
       if (!item && tableCfg.value.multiSelect) return console.log('click item null')
 
@@ -129,38 +134,27 @@ export default {
         console.log('single')
         gridEl.selectedItems = item ? [item] : []
       }
-
-      console.log('aaaaaaa', item)
       if (!item) return // do not continue if item is null
-      console.log('xxxxxxx', item)
       try {
         const rv = await httpGet('/api/t4t/find-one/' + tableName + '/' + item.key)
-
         recordObj['edit'].key = item.key
         Object.entries(tableCfg.value.cols).forEach(item => {
           const [key, val] = item
           if (val.edit !== 'hide' && !val.auto) recordObj['edit'][key] = rv[key]
         })
-        console.log('recordObj', recordObj['edit'])
         showForm.value = 'edit'
-
       } catch (e) {
         console.log(e.toString())
       }
     }
     const selectClick = async (e) => { console.log('click on checkbox') }
+    const changePage = e => page.value = e.target.value
+    const changeRowsPerPage = e => rowsPerPage.value = e.target.value
 
     onMounted(async () => {
       // TBD handle if !tableName
-
-      document.querySelector('vaadin-select.select-page-size').addEventListener('change', function(event) {
-        // const item = event.detail.value // gridEl.selectedItems - same
-        // console.log('change', event.target.value)
-        rowsPerPage.value = event.target.value
-      })
-
-      gridEl = document.querySelector('vaadin-grid.table')
-
+      // TBD handle if cannot get config
+      // TBD handle if cannot load data
       if (!tableCfg.value) tableCfg.value = await httpGet('/api/t4t/config/' + tableName)
       if (tableCfg.value) {
         for (let col in tableCfg.value.cols) {
@@ -171,14 +165,20 @@ export default {
         // Object.entries(tableCfg.value.cols) => [ [key, obj], ... ]        
       }
 
+      gridEl = document.querySelector('vaadin-grid.table')
       gridEl.addEventListener('active-item-changed', rowClick)
       gridEl.addEventListener('selected-items-changed', selectClick)
+
+      document.querySelector('vaadin-integer-field.select-page').addEventListener('change', changePage)
+      document.querySelector('vaadin-select.select-page-size').addEventListener('change', changeRowsPerPage)
+
       await refresh()
     })
-
     onUnmounted(()=> {
       gridEl.removeEventListener('active-item-changed', rowClick)
       gridEl.removeEventListener('selected-items-changed', selectClick)
+      document.querySelector('vaadin-integer-field.select-page').removeEventListener('change', changePage)
+      document.querySelector('vaadin-select.select-page-size').removeEventListener('change', changeRowsPerPage)
     })
 
     const selectRenderer = (root) => {
@@ -196,7 +196,7 @@ export default {
     }
 
     const refresh = async () => {
-      // console.log(filters)
+      console.log(page.value)
       try {
         gridEl.selectedItems = []
 

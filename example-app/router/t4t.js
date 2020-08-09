@@ -110,7 +110,7 @@ module.exports = express.Router()
         const maxPage = Math.ceil(rv.total / limit)
         if (page > maxPage) page = maxPage
         rows = await mongo.db.collection(table.name).find(where) // TBD sort
-          .skip(page * limit)
+          .skip((page > 0 ? page - 1 : 0) * limit)
           .limit(limit)
           .toArray()
       }
