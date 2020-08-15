@@ -1,77 +1,95 @@
 <template>
   <div>
+    <vcxwc-loading-overlay v-if="loading"></vcxwc-loading-overlay>
+    <div class="container" v-show="!showForm">
+      <nav class="navbar">
+        <ul class="nav-left">
+          <li class="nav-item"><mwc-icon-button icon="search" @click="showFilter=!showFilter"></mwc-icon-button></li>
+          <li class="nav-item"><mwc-icon-button icon="refresh" @click="refresh" :disabled="loading"></mwc-icon-button></li>
+          <li class="nav-item" v-if="tableCfg && tableCfg.create"><mwc-icon-button icon="add" @click="openAdd" :disabled="loading"></mwc-icon-button></li>
+          <li class="nav-item" v-if="tableCfg && tableCfg.delete"><mwc-icon-button icon="delete" @click="remove" :disabled="loading"></mwc-icon-button></li>
+          <li class="nav-item"><mwc-icon-button icon="post_add" @click="csvImport" :disabled="loading"></mwc-icon-button></li>
+          <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="csvExport" :disabled="loading"></mwc-icon-button></li>
+          <!-- <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="testBtn"></mwc-icon-button></li> -->
+        </ul>
+        <ul class="nav-right">
+          <li class="nav-item">
+            <select class="select-page-size" v-model="rowsPerPage">
+              <option v-for="val of rowsPerPageList" :key="val" :value="val" :selected="val === rowsPerPage" >{{ val }}</option>
+            </select>
+          </li>
+          <li class="nav-item">
+            <input class="select-page" type="number" v-model="page" min="1" :max="maxPage" /> / {{ maxPage }}
+          </li>
+        </ul>
+      </nav>
 
-  <div class="container">
-    <nav class="navbar">
-      <ul class="nav-left">
-        <li class="nav-item"><mwc-icon-button icon="search" @click="showFilter=!showFilter"></mwc-icon-button></li>
-        <li class="nav-item"><mwc-icon-button icon="refresh" @click="refresh"></mwc-icon-button></li>
-        <li class="nav-item" v-if="tableCfg && tableCfg.create"><mwc-icon-button icon="add" @click="openAdd"></mwc-icon-button></li>
-        <li class="nav-item" v-if="tableCfg && tableCfg.delete"><mwc-icon-button icon="delete" @click="remove"></mwc-icon-button></li>
-        <li class="nav-item"><mwc-icon-button icon="post_add" @click="csvImport"></mwc-icon-button></li>
-        <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="csvExport"></mwc-icon-button></li>
-        <!-- <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="testBtn"></mwc-icon-button></li> -->
-      </ul>
-      <ul class="nav-right">
-        <li class="nav-item">
-          <vaadin-select class="select-page-size" :value="String(rowsPerPage)" :renderer="selectRenderer" style="width: 80px;"></vaadin-select>
-        </li>
-        <li class="nav-item">
-          <vaadin-integer-field class="select-page" :value="page" min="1" :max="maxPage" has-controls></vaadin-integer-field> / {{ maxPage }}
-        </li>
-      </ul>
-    </nav>
-
-    <!-- filter row -->
-    <template v-if="showFilter">
-      <div v-if="filters.length">
-        <div class="filter-row" v-for="(filter, index) of filters" :key="index">
-          <select class="filter-col" v-model="filter.col">
-            <option v-for="(col, index1) of filterCols" :value="col" :key="'c'+index+'-'+index1">{{ col }}</option>
-          </select>
-          <select class="filter-col" v-model="filter.op">
-            <option v-for="(col, index2) of filterOps" :value="col" :key="'o'+index+'-'+index2">{{ col }}</option>
-          </select>
-          <input placeholder="Value" class="filter-col" v-model="filter.val" />
-          <select class="filter-col" v-model="filter.andOr">
-            <option value="and">And</option>
-            <option value="or">Or</option>
-          </select>
-          <button class="filter-col" @click="deleteFilter(index)">x</button>
-          <button class="filter-col" @click="addFilter(index + 1)">+</button>
+      <!-- filter row -->
+      <template v-if="showFilter">
+        <div v-if="filters.length">
+          <div class="filter-row" v-for="(filter, index) of filters" :key="index">
+            <select class="filter-col" v-model="filter.col">
+              <option v-for="(col, index1) of filterCols" :value="col" :key="'c'+index+'-'+index1">{{ col }}</option>
+            </select>
+            <select class="filter-col" v-model="filter.op">
+              <option v-for="(col, index2) of filterOps" :value="col" :key="'o'+index+'-'+index2">{{ col }}</option>
+            </select>
+            <input placeholder="Value" class="filter-col" v-model="filter.val" />
+            <select class="filter-col" v-model="filter.andOr">
+              <option value="and">And</option>
+              <option value="or">Or</option>
+            </select>
+            <button class="filter-col" @click="deleteFilter(index)">x</button>
+            <button class="filter-col" @click="addFilter(index + 1)">+</button>
+          </div>
         </div>
-      </div>
-      <div v-else>
-        <div class="filter-row">
-          <button class="filter-col" @click="addFilter(0)">+</button>
+        <div v-else>
+          <div class="filter-row">
+            <button class="filter-col" @click="addFilter(0)">+</button>
+          </div>
         </div>
-      </div>
-    </template>
-
-    <vaadin-grid class="table"><!-- page-size="10" height-by-rows -->
-      <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect"></vaadin-grid-selection-column><!-- remove auto-select click only on checkbox-->
-      <vaadin-grid-column
-        v-for="(headerCol, index) in headerCols" :key="index"
-        :path="headerCol.path"
-        :header="headerCol.header">
-      </vaadin-grid-column>
-      <!--  for last column text-align="end" width="120px" flex-grow="0" -->
-    </vaadin-grid>
-  </div>
-
-  <div class="container" v-if="showForm && tableCfg">
-    <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p>
-    <form>
-      <template v-for="(val, col, index) of recordObj[showForm]">
-        <template v-if="tableCfg.cols[col]">
-          <!-- required? readonly? (edit) -->
-          <mwc-textfield :key="index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"> </mwc-textfield>
-        </template>
       </template>
-      <button type="button" @click="showForm=''">Cancel</button>
-      <button type="button" @click="doAddOrEdit">Confirm</button>
-    </form>
-  </div>
+
+      <vaadin-grid class="table"><!-- page-size="10" height-by-rows -->
+        <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect"></vaadin-grid-selection-column><!-- remove auto-select click only on checkbox-->
+        <vaadin-grid-column
+          v-for="(headerCol, index) in headerCols" :key="index"
+          :path="headerCol.path"
+          :header="headerCol.header">
+        </vaadin-grid-column>
+        <!--  for last column text-align="end" width="120px" flex-grow="0" -->
+      </vaadin-grid>
+    </div>
+
+    <div class="page-flex" v-if="showForm && tableCfg">
+      <form class="form-box-flex">
+        <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p>
+        <div class="field-set-flex">
+          <template v-for="(val, col, index) of recordObj[showForm]">
+            <template v-if="tableCfg.cols[col]">
+              <!-- required? readonly? (edit) -->
+              <template v-if="tableCfg.cols[col].input==='number'">
+                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="number" v-model="recordObj[showForm][col]"> </mwc-textfield>
+              </template>           
+              <template v-else-if="tableCfg.cols[col].input==='datetime'">
+                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="datetime-local" v-model="recordObj[showForm][col]"> </mwc-textfield>
+              </template>           
+              <template v-else-if="tableCfg.cols[col].input==='date'">
+                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="date" v-model="recordObj[showForm][col]"> </mwc-textfield>
+              </template>           
+              <template v-else-if="tableCfg.cols[col].input==='time'">
+                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="time" v-model="recordObj[showForm][col]"> </mwc-textfield>
+              </template>
+              <template v-else>
+                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"> </mwc-textfield>
+              </template>           
+            </template>
+          </template>
+        </div>
+        <mwc-button type="button" @click="showForm=''">Cancel</mwc-button>
+        <mwc-button type="button" @click="doAddOrEdit" :disabled="loading">Confirm</mwc-button>
+      </form>
+    </div>
 
   </div>
 </template>
@@ -82,6 +100,7 @@
 // TBD inline edits
 // TBD remove vaadin select and number fields...
 
+import { APP_VERSION } from 'http://127.0.0.1:3000/js/util.js'
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
 import { httpGet, httpPost, httpPatch } from '../http'
 
@@ -98,11 +117,12 @@ export default {
     }
   },
   setup(props, ctx) { // ctx = attrs, slots, emit
+    console.log('props.rowsPerPage', props.rowsPerPage)
     const tableCfg = ref(null) // table config
     const page = ref(1)
     const maxPage = ref(1)
     const rowsPerPage = ref(props.rowsPerPage)
-    const rowsPerPageList = ref([])
+    const rowsPerPageList = ref(props.rowsPerPageList)
     const headerCols = reactive([])
     const filters = reactive([])
     const filterCols = reactive([])
@@ -116,7 +136,7 @@ export default {
       edit: {}
     })
 
-    const tableName = props.tableName || 'country'
+    const tableName = props.tableName || 'person'
 
     let gridEl // grid element
 
@@ -147,11 +167,11 @@ export default {
         console.log(e.toString())
       }
     }
+
     const selectClick = async (e) => { console.log('click on checkbox') }
-    const changePage = e => page.value = e.target.value
-    const changeRowsPerPage = e => rowsPerPage.value = e.target.value
 
     onMounted(async () => {
+      // console.log('APP_VERSION', APP_VERSION)
       // TBD handle if !tableName
       // TBD handle if cannot get config
       // TBD handle if cannot load data
@@ -166,37 +186,35 @@ export default {
       }
 
       gridEl = document.querySelector('vaadin-grid.table')
-      gridEl.addEventListener('active-item-changed', rowClick)
-      gridEl.addEventListener('selected-items-changed', selectClick)
-
-      document.querySelector('vaadin-integer-field.select-page').addEventListener('change', changePage)
-      document.querySelector('vaadin-select.select-page-size').addEventListener('change', changeRowsPerPage)
-
+      if (gridEl) {
+        gridEl.addEventListener('active-item-changed', rowClick)
+        gridEl.addEventListener('selected-items-changed', selectClick)
+      }
       await refresh()
     })
     onUnmounted(()=> {
-      gridEl.removeEventListener('active-item-changed', rowClick)
-      gridEl.removeEventListener('selected-items-changed', selectClick)
-      document.querySelector('vaadin-integer-field.select-page').removeEventListener('change', changePage)
-      document.querySelector('vaadin-select.select-page-size').removeEventListener('change', changeRowsPerPage)
+      if (gridEl) {
+        gridEl.removeEventListener('active-item-changed', rowClick)
+        gridEl.removeEventListener('selected-items-changed', selectClick)
+      }
     })
 
-    const selectRenderer = (root) => {
-      // I'm not familiar enough with Vue to use proper templating here. Use of innerHTML is naturally discouraged when rendering any non-static content
-      if (!root.firstElementChild) {
-        root.innerHTML = `
-          <vaadin-list-box>
-            <vaadin-item>5</vaadin-item>
-            <vaadin-item>10</vaadin-item>
-            <vaadin-item>25</vaadin-item>
-            <vaadin-item>50</vaadin-item>
-          </vaadin-list-box>
-        `;
-      }
+    const openAdd = async () => {
+      Object.entries(tableCfg.value.cols).forEach(item => {
+        const [key, val] = item
+        if (val.add !== 'hide' && !val.auto) recordObj['add'][key] = val.default || (val.type === 'integer' || val.type === 'decimal' ? 0 : '')
+      })
+      showForm.value = 'add'
+    }
+
+    const testBtn = () => {
+      console.log(tableCfg.value)
+      showForm.value = showForm.value ? '' : 'add'
     }
 
     const refresh = async () => {
-      console.log(page.value)
+      if (loading.value) return
+      loading.value = true
       try {
         gridEl.selectedItems = []
 
@@ -214,11 +232,13 @@ export default {
       } catch (e) {
         console.log(e.toString())
       }
+      loading.value = false
     }
 
     const remove = async () => {
+      if (loading.value) return
+      loading.value = true
       const items = gridEl.selectedItems
-      console.log('remove', items)
       let ids = []
       try {
         const { pk } = tableCfg.value
@@ -228,27 +248,12 @@ export default {
           ids = items.map(item => item.key)
         }
         const rv = await httpGet('/api/t4t/remove/' + tableName, { ids })
-
         // TBD - run reload?
       } catch (e) {
-        console.log(e.toString())
+        alert( `Error delete ${e.toString()}` )
       }
-    }
-
-    const openAdd = async () => {
-      // TBD return if async happening
-      console.log('tableCfg.value', tableCfg.value)
-
-      Object.entries(tableCfg.value.cols).forEach(item => {
-        const [key, val] = item
-        if (val.add !== 'hide' && !val.auto) recordObj['add'][key] = val.default || (val.type === 'integer' || val.type === 'decimal' ? 0 : '')
-      })
-      showForm.value = 'add'
-    }
-
-    const testBtn = () => {
-      console.log(tableCfg.value)
-      showForm.value = showForm.value ? '' : 'add'
+      loading.value = false
+      await refresh()
     }
 
     const doAddOrEdit = async () => {
@@ -256,6 +261,8 @@ export default {
       // const items = gridEl.selectedItems
       // console.log('add ajax call', items)
       // TBD - run reload?, set loading
+      if (loading.value) return
+      loading.value = true
       try {
         if (showForm.value === 'add') {
           await httpPost(`/api/t4t/create/${tableName}`, recordObj['add'])
@@ -264,11 +271,10 @@ export default {
           await httpPatch(`/api/t4t/update/${tableName}/${key}`, data)
         }
       } catch (e) {
-        console.log('patch', e.toString())
+        alert( `Error ${showForm.value} ${e.toString()}` )
       }
-    }
-
-    const update = async () => {
+      loading.value = false
+      await refresh()
     }
 
     const deleteFilter = (index) => {
@@ -313,7 +319,7 @@ export default {
       rowsPerPage,
       maxPage,
       headerCols,
-      selectRenderer,
+      loading,
       doAddOrEdit,
       csvImport,
       csvExport
@@ -356,7 +362,50 @@ nav {
   width: 80px;
 }
 
+.select-page-size {
+  height: 26px;
+}
+
 .filter-row .filter-col {
   margin: 4px;
 }
+
+
+.page-flex h1, .page-flex p {
+  text-align: center;
+}
+
+.page-flex {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 64px);
+  justify-content: center;
+  align-items: center;
+}
+
+.form-box-flex { 
+  width: 480px;
+
+  display: flex; 
+  flex-direction: column; 
+  flex: 0 0 auto; 
+  
+  border-radius: 0px;
+  padding: 15px;
+  background: #eeeeee;
+}
+
+.field-set-flex { 
+  height: calc(100vh - 300px);
+  display: flex; 
+  flex-direction: column; 
+  flex: 0 0 auto;
+  overflow: auto;
+}
+
+.field-item {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
 </style>

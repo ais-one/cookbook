@@ -81,7 +81,13 @@ export default {
           { to: '/demo-map', name: 'Demo Map', icon: '' },
           { to: '/demo-chart', name: 'Demo Chart', icon: 'bar_chart' }
         ]
-      }
+      },
+      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
+      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
+      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
+      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
+      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
+      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
     ])
     const logout = () => {
       store.dispatch('doLogin', '')

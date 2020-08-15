@@ -6,11 +6,9 @@
     <p>
       <span>Count is: {{ count }}</span>
       <button @click="count++">increment</button>
-      <vaadin-button @click="count++">Add</vaadin-button>
     </p>
-    <mwc-select label="preselected">
-      <mwc-list-item></mwc-list-item>
-      <mwc-list-item selected value="0">Item 0</mwc-list-item>
+    <mwc-select label="preselected" :value="selected" @change="updateSelected">
+      <mwc-list-item value="0">Item 0</mwc-list-item>
       <mwc-list-item value="1">Item 1</mwc-list-item>
       <mwc-list-item value="2">Item 2</mwc-list-item>
     </mwc-select>
@@ -47,6 +45,10 @@ export default {
     const titleRef = ref(null)
     let nonReactiveData = 10
     const reactiveData = ref(20)
+
+    const selected = ref(String(2))
+
+    const updateSelected = (e) => selected.value = e.target.value
 
     // const plusOne = computed(() => count.value + 1)
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
@@ -90,10 +92,10 @@ export default {
       console.log('useRoute', route)
 
       timerId = setInterval(() => {
-        console.log('timer fired')
+        console.log('timer fired', String(selected.value))
         nonReactiveData += 1
         reactiveData.value += 1
-      }, 20000)
+      }, 200000)
     })
     onUpdated(() => {
       console.log('updated!')
@@ -115,9 +117,11 @@ export default {
       reactiveData, // ref reactive
       count, // ref
       msg,
+      selected,
       titleRef,
       storeCount, // store
-      storeToken
+      storeToken,
+      updateSelected
     }
   }
   // data: () => ({ count: 0, msg: '' }),

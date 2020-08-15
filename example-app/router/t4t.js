@@ -87,6 +87,27 @@ module.exports = express.Router()
         prevFilter = filter
       }
     } else { // mongo - TBD
+      const or = [] // { "$or" : [] }
+      const and = [] // { "$and" : [] }
+      for (filter of filters) {
+        const key = filter.col
+        const op = filter.op
+        const val = filter.val
+
+        let exp
+        if (op === '=') exp = { [key]: val }
+        else if (op === 'like') exp = { [key]: { $regex: value, $options: 'i' } }
+        else if (op === '!=') exp = { [key]: { $ne: val } }
+        else if (op === '>') exp = { [key]: { $gt: val } }
+        else if (op === '>=') exp = { [key]: { $gte: val } }
+        else if (op === '<') exp = { [key]: { $lt: val } }
+        else if (op === '<=') exp = { [key]: { $lte: val } }
+        // else if (op === 'in') exp = {[key]: { $in: val } } // convert val from string to array?
+        if (filter.andOr === 'and') and.push(exp)
+        else or.push(exp)
+      }
+      if (or.length) where['$or'] = or
+      if (and.length) where['$and'] = and
       // const query = { "$or" : [] }
     }
 

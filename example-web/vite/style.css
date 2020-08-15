@@ -26,3 +26,13 @@ body {
 a {
   text-decoration: none;
 }
+
+/* super center in just 2 lines */
+.parent-grid-centered {
+  display: grid;
+  place-items: center;
+  /* resize: both; */
+  /* overflow: auto; */
+  width: 100vw;
+  height: 100vh;
+}

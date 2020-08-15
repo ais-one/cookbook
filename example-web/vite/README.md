@@ -15,15 +15,13 @@ Use ESM libraries... this means no axios for now unless they have an esm build o
 We should have the following
 - Vuex
 - VueRouter
-- External non-ESM libraries (using snowpack) ??
-- (TBD) Get some UI library - Buefy does not work with Vue 3 yet...
 
 [https://github.com/vuejs/vite](https://github.com/vuejs/vite)
 
 
 ## Vitepress 
 
-TBD [https://github.com/vuejs/vitepress](https://github.com/vuejs/vitepress)
+[https://github.com/vuejs/vitepress](https://github.com/vuejs/vitepress)
 
 
 # Shameless Plug
