@@ -48,10 +48,19 @@ async function generateTable (req, res, next) {
 function formUniqueKey(table, args) {
   if (table.pk) return table.db === 'knex' ? { [table.pk]: args } : { _id: new ObjectID(args) } // return for pk
   const where = {} // return for multiKey
+
+  const key_a = args.split('|')
+  let  i = 0
+
   for (let col of table.multiKey) {
-    if (args[col]) where[col] = args[col]
+    if (key_a[i]) {
+      where[col] = key_a[i]
+      i++
+    }
+    // if (args[col]) where[col] = args[col]
     else return null
   }
+
   return (Object.keys(where).length) ? where : null
 }
 
@@ -172,10 +181,9 @@ module.exports = express.Router()
     res.json(rows)
   }))
 
-  .get('/find-one/:table/:id?', generateTable, asyncWrapper(async (req, res) => {
+  .get('/find-one/:table', generateTable, asyncWrapper(async (req, res) => {
     const { table } = req
-    const { id } = req.params
-    const where = formUniqueKey(table, id || req.query)
+    const where = formUniqueKey(table, req.query.key)
     if (!where) return res.status(400).json() // bad request
     let rv = {}
     if (table.db === 'knex') {
@@ -188,8 +196,7 @@ module.exports = express.Router()
 
   .patch('/update/:table/:id?', generateTable, asyncWrapper(async (req, res) => {
     const { body, table } = req
-    const { id } = req.params
-    const where = formUniqueKey(table, id || req.query)
+    const where = formUniqueKey(table, req.query.key)
     let count = 0
     if (!where) return res.status(400).json() // bad request
 

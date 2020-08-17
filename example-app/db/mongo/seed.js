@@ -27,7 +27,23 @@ client.connect(async err => {
 
       await db.collection('person').deleteMany({})
       await db.collection('person').createIndex({ firstName: 1, lastName: 1 }, { unique: true })
-
+      await db.collection('person').insertOne({
+        firstName: 'first',
+        lastName: 'last',
+        sex: 'M',
+        subjects: 'EM,PHY',
+        age: 1,
+        gpa: 0,
+        birthDate: '',
+        birthTime: '',
+        country: 'SG',
+        birthDateTimeTz: null,
+        website: '',
+        remarks: '',
+        updated_by: 'someone',
+        updated_at: new Date()  
+      })
+  
       client.close()
       process.exit(0)
     } catch (e) {

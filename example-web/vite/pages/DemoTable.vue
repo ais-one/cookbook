@@ -10,7 +10,7 @@
           <li class="nav-item" v-if="tableCfg && tableCfg.delete"><mwc-icon-button icon="delete" @click="remove" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item"><mwc-icon-button icon="post_add" @click="csvImport" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="csvExport" :disabled="loading"></mwc-icon-button></li>
-          <!-- <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="testBtn"></mwc-icon-button></li> -->
+          <!-- <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="testFn"></mwc-icon-button></li> -->
         </ul>
         <ul class="nav-right">
           <li class="nav-item">
@@ -69,25 +69,53 @@
             <template v-if="tableCfg.cols[col]">
               <!-- required? readonly? (edit) -->
               <template v-if="tableCfg.cols[col].input==='number'">
-                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="number" v-model="recordObj[showForm][col]"> </mwc-textfield>
+                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="number" v-model="recordObj[showForm][col]"></mwc-textfield>
               </template>           
               <template v-else-if="tableCfg.cols[col].input==='datetime'">
-                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="datetime-local" v-model="recordObj[showForm][col]"> </mwc-textfield>
+                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="datetime-local" v-model="recordObj[showForm][col]"></mwc-textfield>
               </template>           
               <template v-else-if="tableCfg.cols[col].input==='date'">
-                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="date" v-model="recordObj[showForm][col]"> </mwc-textfield>
+                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="date" v-model="recordObj[showForm][col]"></mwc-textfield>
               </template>           
               <template v-else-if="tableCfg.cols[col].input==='time'">
-                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="time" v-model="recordObj[showForm][col]"> </mwc-textfield>
+                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="time" v-model="recordObj[showForm][col]"></mwc-textfield>
               </template>
+              <template v-else-if="tableCfg.cols[col].input==='select'">
+                <mwc-select :key="col+index" :label="tableCfg.cols[col].label" :value="recordObj[showForm][col]" @change="(e) => recordObj[showForm][col] = e.target.value">
+                  <mwc-list-item v-for="(option, index2) of tableCfg.cols[col].options" :value="option.key" :key="col+index+'-'+index2">{{ option.text }}</mwc-list-item>
+                </mwc-select>
+              </template>
+              <template v-else-if="tableCfg.cols[col].input==='multi-select'">
+                <!-- tableCfg.cols[col].label -->
+
+                <mwc-textfield
+                  class="field-item"
+                  :key="col+index"
+                  :label="tableCfg.cols[col].label"
+                  outlined
+                  type="text"
+                  disabled
+                  :value="recordObj[showForm][col]"
+                  :iconTrailing="recordObj[showForm + 'DdShow'][col] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+                  @click="recordObj[showForm + 'DdShow'][col]=!recordObj[showForm + 'DdShow'][col]"
+                ></mwc-textfield>
+                <template v-if="recordObj[showForm + 'DdShow'][col]">
+                  <mwc-list :key="'l'+col+index" multi @selected="(e) => multiSelect(e, col, showForm)">
+                    <mwc-check-list-item v-for="(option, index2) of tableCfg.cols[col].options" :selected="recordObj[showForm][col].includes(option.key)" :key="col+index+'-'+index2">{{ option.text }}</mwc-check-list-item>
+                  </mwc-list>
+                </template>
+              </template>
+              <!-- <template v-else-if="tableCfg.cols[col].input==='autocomplete'">
+              </template>            -->
               <template v-else>
-                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"> </mwc-textfield>
+                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
               </template>           
             </template>
           </template>
         </div>
         <mwc-button type="button" @click="showForm=''">Cancel</mwc-button>
         <mwc-button type="button" @click="doAddOrEdit" :disabled="loading">Confirm</mwc-button>
+        <!-- <mwc-button type="button" @click="testFn">Test</mwc-button> -->
       </form>
     </div>
 
@@ -107,22 +135,15 @@ import { httpGet, httpPost, httpPatch } from '../http'
 export default {
   name: 'DemoTable',
   props: {
-    rowsPerPage: {
-      type: [Number],
-      default: 10
-    },
-    rowsPerPageList: {
-      type: Array,
-      default: [5, 10, 25, 50]
-    }
+    rowsPerPage: { type: [Number], default: 10 },
+    rowsPerPageList: { type: Array, default: [5, 10, 25, 50] },
+    tableName: { type: String, required: true }
   },
   setup(props, ctx) { // ctx = attrs, slots, emit
-    console.log('props.rowsPerPage', props.rowsPerPage)
     const tableCfg = ref(null) // table config
     const page = ref(1)
     const maxPage = ref(1)
     const rowsPerPage = ref(props.rowsPerPage)
-    const rowsPerPageList = ref(props.rowsPerPageList)
     const headerCols = reactive([])
     const filters = reactive([])
     const filterCols = reactive([])
@@ -133,14 +154,16 @@ export default {
 
     const recordObj = reactive({
       add: {},
-      edit: {}
+      edit: {},
+      addDdShow: {},
+      editDdShow: {}
     })
 
     const tableName = props.tableName || 'person'
 
     let gridEl // grid element
 
-    const rowClick = async (e) => {
+    const _rowClick = async (e) => {
       // TBD handle single select / multi select
       // console.log('click not on checkbox 1', e.detail.value)
       const item = e.detail.value
@@ -156,11 +179,16 @@ export default {
       }
       if (!item) return // do not continue if item is null
       try {
-        const rv = await httpGet('/api/t4t/find-one/' + tableName + '/' + item.key)
+        console.log('item.key', item.key)
+        const rv = await httpGet('/api/t4t/find-one/' + tableName, { key: item.key })
         recordObj['edit'].key = item.key
         Object.entries(tableCfg.value.cols).forEach(item => {
           const [key, val] = item
-          if (val.edit !== 'hide' && !val.auto) recordObj['edit'][key] = rv[key]
+          if (val.edit !== 'hide' && !val.auto) {
+            recordObj['edit'][key] = rv[key]
+
+            if (val.input === 'multi-select') recordObj['editDdShow'][key] = false
+          }
         })
         showForm.value = 'edit'
       } catch (e) {
@@ -187,14 +215,14 @@ export default {
 
       gridEl = document.querySelector('vaadin-grid.table')
       if (gridEl) {
-        gridEl.addEventListener('active-item-changed', rowClick)
+        gridEl.addEventListener('active-item-changed', _rowClick)
         gridEl.addEventListener('selected-items-changed', selectClick)
       }
       await refresh()
     })
     onUnmounted(()=> {
       if (gridEl) {
-        gridEl.removeEventListener('active-item-changed', rowClick)
+        gridEl.removeEventListener('active-item-changed', _rowClick)
         gridEl.removeEventListener('selected-items-changed', selectClick)
       }
     })
@@ -202,14 +230,33 @@ export default {
     const openAdd = async () => {
       Object.entries(tableCfg.value.cols).forEach(item => {
         const [key, val] = item
-        if (val.add !== 'hide' && !val.auto) recordObj['add'][key] = val.default || (val.type === 'integer' || val.type === 'decimal' ? 0 : '')
+        if (val.add !== 'hide' && !val.auto) {
+          recordObj['add'][key] = val.default || (val.type === 'integer' || val.type === 'decimal' ? 0 : '')
+
+          if (val.input === 'multi-select') recordObj['addDdShow'][key] = false
+        }
       })
       showForm.value = 'add'
     }
 
-    const testBtn = () => {
-      console.log(tableCfg.value)
-      showForm.value = showForm.value ? '' : 'add'
+    const multiSelect = (e, col, showForm) => {
+      const items = []
+      console.log(e.detail.index.values())
+      e.detail.index.forEach((a, b, c) => {
+        const opt = tableCfg.value.cols[col].options[a]
+        if (opt && opt.key) {
+          const item = opt.key
+          items.push(item)
+        }
+      })
+      recordObj[showForm][col] = items.join(',')
+    }
+
+    const testFn = (e) => {
+      // console.log(tableCfg.value)
+      // console.log(recordObj)
+      // showForm.value = showForm.value ? '' : 'add'
+      console.log(e)
     }
 
     const refresh = async () => {
@@ -268,12 +315,13 @@ export default {
           await httpPost(`/api/t4t/create/${tableName}`, recordObj['add'])
         } else {
           const { key, ...data } = recordObj['edit']
-          await httpPatch(`/api/t4t/update/${tableName}/${key}`, data)
+          await httpPatch(`/api/t4t/update/${tableName}`, data, { key })
         }
       } catch (e) {
         alert( `Error ${showForm.value} ${e.toString()}` )
       }
       loading.value = false
+      showForm.value = '' // close the form
       await refresh()
     }
 
@@ -301,28 +349,37 @@ export default {
     // watch(selected, (selection, prevSelection) => { })
     // // Watching Multiple Sources
     // watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { })
+
     return {
-      testBtn,
-      remove, // methods
-      openAdd,
-      refresh,
-      deleteFilter,
-      addFilter,
-      showFilter,
-      filters,
-      showForm,
-      recordObj,
-      filterCols,
-      filterOps,
-      tableCfg, // table config
-      page,
-      rowsPerPage,
-      maxPage,
-      headerCols,
-      loading,
-      doAddOrEdit,
-      csvImport,
-      csvExport
+      testFn,
+      multiSelect, // method for multi select event...
+      openAdd, // method populate default values and open form for add
+
+      // CRUD
+      remove, // method CRUD remove
+      refresh, // method CRUD find
+      doAddOrEdit, // method CRUD post
+      csvImport, // method CRUD import
+      csvExport, // method CRUD export
+
+      // filters
+      deleteFilter, // method
+      addFilter, // method
+      showFilter, // ref
+      filters, // reactive
+      filterCols, // reactive
+      filterOps, // reactive
+
+      showForm, // ref to show form (either add or edit) or not
+      recordObj, // reactive form data
+
+      page, // ref
+      rowsPerPage, // ref
+      maxPage, // ref
+      headerCols, // reactive
+
+      tableCfg, // reactive table config
+      loading // ref
     }
   }
 }

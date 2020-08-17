@@ -21,6 +21,7 @@ module.exports = {
   optimizeDeps: {
     include: [
       '@material/mwc-list/mwc-list-item',
+      '@material/mwc-list/mwc-check-list-item',
       '@vaadin/vaadin-grid/vaadin-grid-selection-column',
       'echarts',
       'leaflet'

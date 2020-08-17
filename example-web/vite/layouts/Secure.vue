@@ -78,6 +78,7 @@ export default {
         children: [
           { to: '/demo-flex', name: 'Demo Flex', icon: '' },
           { to: '/demo-table', name: 'Demo Table', icon: '' },
+          { to: '/table-country', name: 'Country Table', icon: '' },
           { to: '/demo-map', name: 'Demo Map', icon: '' },
           { to: '/demo-chart', name: 'Demo Chart', icon: 'bar_chart' }
         ]
