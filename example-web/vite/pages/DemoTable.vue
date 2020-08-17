@@ -97,20 +97,19 @@
                   :iconTrailing="recordObj[showForm + 'DdShow'][col] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
                   @click="recordObj[showForm + 'DdShow'][col]=!recordObj[showForm + 'DdShow'][col]"
                 ></mwc-textfield>
-                <template v-if="recordObj[showForm + 'DdShow'][col]">
-                  <mwc-list :key="'ms'+col+index" multi @selected="e => multiSelect(e, col, showForm)">
+                <div :key="'ms'+col+index" class="drop-down-div">
+                  <mwc-list v-if="recordObj[showForm + 'DdShow'][col]" multi @selected="e => multiSelect(e, col, showForm)" class="drop-down">
                     <mwc-check-list-item v-for="(option, index2) of tableCfg.cols[col].options" :selected="recordObj[showForm][col].includes(option.key)" :key="col+index+'-'+index2">{{ option.text }}</mwc-check-list-item>
                   </mwc-list>
-                </template>
+                </div>
               </template>
               <template v-else-if="tableCfg.cols[col].input==='autocomplete'">
                 <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" :value="recordObj[showForm][col]" @input="(e) => autoComplete(e, col, showForm)"></mwc-textfield>
-                <template v-if="recordObj[showForm + 'Ac'][col].length">
-                  <mwc-list :key="'ac'+col+index" @selected="e => autoCompleteSelect(e, col, showForm)">
+                <div :key="'ac'+col+index" class="drop-down-div">
+                  <mwc-list v-if="recordObj[showForm + 'Ac'][col].length" @selected="e => autoCompleteSelect(e, col, showForm)" class="drop-down">
                     <mwc-list-item v-for="(option, index2) of recordObj[showForm + 'Ac'][col]" :key="col+index+'-'+index2">{{ option.text }}</mwc-list-item>
                   </mwc-list>
-                </template>
-
+                </div>
               </template>           
               <template v-else>
                 <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
@@ -411,7 +410,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="css" scoped>
 nav {
   width: 100%;
   background-color: lightgrey;
@@ -491,4 +490,11 @@ nav {
   padding-bottom: 8px;
 }
 
+
+.drop-down-div {
+  height: 150px;
+}
+.drop-down {
+  height:150px;overflow-y:scroll;
+}
 </style>

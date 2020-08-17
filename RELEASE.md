@@ -3,12 +3,13 @@
 - improve npm scripts to handler Windows and Unix environments
 - spa
   - removed vue-apollo wrapper to apollo client, just use apollo client directly, apollo client v2 to v3 has broken vue-apollo v3
+- vite
+  - web components or no bundler required UI framework, also make code more framework agnostic
+  - generic table crud
+  - add echarts and leaflet exapmle
+- backend
+  - generic table crud
 - [Work-in-progress]
-  - Urgent
-    - Make ES module build (only possible when UI framework e.g. Vuetify has ES module version)
-    - web components or no bundler required UI framework, also make code more framework agnostic
-    - generic table crud frontend
-    - generic table crud backend
   - circleci workflow
     - deploy backend to GCP Cloud Run
     - deploy SPA frontend to GCP Storage
@@ -16,11 +17,12 @@
     - GKE, Kubernetes
     - add kafka working example
   - frontend
-    - cypress e2e testing
     - Preparing for VueJS 3
+    - cypress e2e testing
 
 ### Ongoing
 - [TODO]
+  - Make ES module build (only possible when UI framework e.g. Vuetify has ES module version)
   - backend
     - research websocket testing, improve coverage
     - research auto generated REST API and Testing (keep in view dredd.io)
@@ -30,7 +32,6 @@
     - Remove date-fns library and use native JS libraries for handling date, time
     - explore use of fetch API instead of axios (abort fetch, etc)
     - PWA cookbook (many things to consider)
-    - ant design version (kiv until web components / more UI framework agnostic code is implemened)
   - others
     - Should we change Vuex action setLayout to setPublic and setSecure?
     - graphql security & performance review
