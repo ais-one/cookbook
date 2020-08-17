@@ -98,7 +98,6 @@ const debounce = (callback, delay) => {
     const next = () => 
     callback(...args);
     clearTimeout(timeout);
-    //1.   
     timeout = setTimeout(next, delay)
   }
 }

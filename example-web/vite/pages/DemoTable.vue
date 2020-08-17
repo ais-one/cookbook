@@ -86,8 +86,6 @@
                 </mwc-select>
               </template>
               <template v-else-if="tableCfg.cols[col].input==='multi-select'">
-                <!-- tableCfg.cols[col].label -->
-
                 <mwc-textfield
                   class="field-item"
                   :key="col+index"
@@ -100,13 +98,20 @@
                   @click="recordObj[showForm + 'DdShow'][col]=!recordObj[showForm + 'DdShow'][col]"
                 ></mwc-textfield>
                 <template v-if="recordObj[showForm + 'DdShow'][col]">
-                  <mwc-list :key="'l'+col+index" multi @selected="(e) => multiSelect(e, col, showForm)">
+                  <mwc-list :key="'ms'+col+index" multi @selected="e => multiSelect(e, col, showForm)">
                     <mwc-check-list-item v-for="(option, index2) of tableCfg.cols[col].options" :selected="recordObj[showForm][col].includes(option.key)" :key="col+index+'-'+index2">{{ option.text }}</mwc-check-list-item>
                   </mwc-list>
                 </template>
               </template>
-              <!-- <template v-else-if="tableCfg.cols[col].input==='autocomplete'">
-              </template>            -->
+              <template v-else-if="tableCfg.cols[col].input==='autocomplete'">
+                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" :value="recordObj[showForm][col]" @input="(e) => autoComplete(e, col, showForm)"></mwc-textfield>
+                <template v-if="recordObj[showForm + 'Ac'][col].length">
+                  <mwc-list :key="'ac'+col+index" @selected="e => autoCompleteSelect(e, col, showForm)">
+                    <mwc-list-item v-for="(option, index2) of recordObj[showForm + 'Ac'][col]" :key="col+index+'-'+index2">{{ option.text }}</mwc-list-item>
+                  </mwc-list>
+                </template>
+
+              </template>           
               <template v-else>
                 <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
               </template>           
@@ -127,7 +132,7 @@
 // TBD slots for forms and 
 // TBD inline edits
 
-import { APP_VERSION } from 'http://127.0.0.1:3000/js/util.js'
+import { APP_VERSION, debounce } from 'http://127.0.0.1:3000/js/util.js'
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
 import { httpGet, httpPost, httpPatch } from '../http'
 
@@ -154,8 +159,10 @@ export default {
     const recordObj = reactive({
       add: {},
       edit: {},
-      addDdShow: {},
-      editDdShow: {}
+      addDdShow: {}, // col: true/false
+      editDdShow: {}, // col: true/false
+      addAc: {}, // col: []
+      editAc: {}, // col: []
     })
 
     const tableName = props.tableName || 'person'
@@ -188,6 +195,7 @@ export default {
             recordObj['edit'][key] = rv[key]
 
             if (val.input === 'multi-select') recordObj['editDdShow'][key] = false
+            else if (val.input === 'autocomplete') recordObj['editAc'][key] = []
           }
         })
         showForm.value = 'edit'
@@ -234,6 +242,7 @@ export default {
           recordObj['add'][key] = val.default || (val.type === 'integer' || val.type === 'decimal' ? 0 : '')
 
           if (val.input === 'multi-select') recordObj['addDdShow'][key] = false
+          else if (val.input === 'autocomplete') recordObj['addAc'][key] = []
         }
       })
       showForm.value = 'add'
@@ -241,7 +250,7 @@ export default {
 
     const multiSelect = (e, col, showForm) => {
       const items = []
-      console.log(e.detail.index.values())
+      // console.log(e.detail.index.values())
       e.detail.index.forEach((a, b, c) => {
         const opt = tableCfg.value.cols[col].options[a]
         if (opt && opt.key) {
@@ -251,6 +260,23 @@ export default {
       })
       recordObj[showForm][col] = items.join(',')
     }
+
+    const autoCompleteSelect = (e, col, showForm) => {
+      recordObj[showForm][col] = e.target.selected.text
+      recordObj[showForm+'Ac'][col] = []
+    }
+
+    const autoComplete = debounce(async (e, col, showForm) => {
+      try {
+        const { tableName, limit, key, text } = tableCfg.value.cols[col].options
+        recordObj[showForm+'Ac'][col] = await httpGet('/api/t4t/autocomplete', {
+          db: tableCfg.value.db, tableName, limit, key, text, search: e.target.value
+        })
+      } catch (e) {
+        recordObj[showForm+'Ac'][col] = []
+        console.log('autoComplete', e.message)
+      }
+    }, 500)
 
     const testFn = (e) => {
       // console.log(tableCfg.value)
@@ -351,6 +377,8 @@ export default {
     return {
       testFn,
       multiSelect, // method for multi select event...
+      autoComplete, // method for autocomplete
+      autoCompleteSelect, // method for autocomplete
       openAdd, // method populate default values and open form for add
 
       // CRUD

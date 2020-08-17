@@ -165,18 +165,18 @@ module.exports = express.Router()
   }))
 
   .get('/autocomplete', asyncWrapper(async (req, res) => {
-    let { tableName, limit = 20, key, value } = req.query
+    let { db, tableName, limit = 20, key, text, search } = req.query
     let rows = {}
-    if (table.db === 'knex') {
-      const query = knex(tableName).where(key, 'like', `%${value}%`)
+    if (db === 'knex') {
+      const query = knex(tableName).where(key, 'like', `%${search}%`)
       rows = await query.clone().limit(limit) // TBD orderBy
     } else { // mongo
-      rows = await mongo.db.collection(tableName).find({ [key]: { $regex: value, $options: 'i' } })
-        .limit(limit).toArray() // TBD sort
+      rows = await mongo.db.collection(tableName).find({ [key]: { $regex: search, $options: 'i' } })
+        .limit(Number(limit)).toArray() // TBD sort
     }
     rows = rows.map(row => ({
       key: row[key],
-      txt: row[key]
+      text: text ? row[text] : row[key]
     }))
     res.json(rows)
   }))
