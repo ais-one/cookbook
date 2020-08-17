@@ -39,7 +39,7 @@
         <mwc-icon-button slot="actionItems" icon="fingerprint"></mwc-icon-button>
       </mwc-top-app-bar-fixed>
       <div class="main-content">
-        <router-view></router-view>
+        <router-view :key="$route.fullPath"></router-view>
       </div>
     </div>
   </mwc-drawer>

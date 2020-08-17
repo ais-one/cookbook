@@ -126,7 +126,6 @@
 // TBD debounce for async inputs
 // TBD slots for forms and 
 // TBD inline edits
-// TBD remove vaadin select and number fields...
 
 import { APP_VERSION } from 'http://127.0.0.1:3000/js/util.js'
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
@@ -168,7 +167,8 @@ export default {
       // console.log('click not on checkbox 1', e.detail.value)
       const item = e.detail.value
       e.stopPropagation()
-      // TBD return if something is processing
+      if (loading.value) return // return if something is processing
+
       if (!item && tableCfg.value.multiSelect) return console.log('click item null')
 
       if (tableCfg.value.multiSelect) {
@@ -295,7 +295,6 @@ export default {
           ids = items.map(item => item.key)
         }
         const rv = await httpGet('/api/t4t/remove/' + tableName, { ids })
-        // TBD - run reload?
       } catch (e) {
         alert( `Error delete ${e.toString()}` )
       }
@@ -307,7 +306,6 @@ export default {
       // console.log(recordObj['edit'])
       // const items = gridEl.selectedItems
       // console.log('add ajax call', items)
-      // TBD - run reload?, set loading
       if (loading.value) return
       loading.value = true
       try {
