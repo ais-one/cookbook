@@ -105,9 +105,9 @@ module.exports = express.Router()
 
         let exp
         if (op === '=') exp = { [key]: val }
-        else if (op === 'like') exp = { [key]: { $regex: value, $options: 'i' } }
+        else if (op === 'like') exp = { [key]: { $regex: val, $options: 'i' } }
         else if (op === '!=') exp = { [key]: { $ne: val } }
-        else if (op === '>') exp = { [key]: { $gt: val } }
+        else if (op === '>') exp = { [key]: { $gt: val } } //  TBD type casting?...
         else if (op === '>=') exp = { [key]: { $gte: val } }
         else if (op === '<') exp = { [key]: { $lt: val } }
         else if (op === '<=') exp = { [key]: { $lte: val } }
@@ -118,6 +118,8 @@ module.exports = express.Router()
       if (or.length) where['$or'] = or
       if (and.length) where['$and'] = and
       // const query = { "$or" : [] }
+
+      console.log('mongo where', where)
     }
 
     if (limit === 0 || csv) {
