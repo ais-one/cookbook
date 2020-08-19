@@ -5,7 +5,7 @@
       <nav class="navbar">
         <ul class="nav-left">
           <li class="nav-item"><mwc-icon-button icon="search" @click="showFilter=!showFilter"></mwc-icon-button></li>
-          <li class="nav-item"><mwc-icon-button icon="refresh" @click="refresh" :disabled="loading"></mwc-icon-button></li>
+          <li class="nav-item"><mwc-icon-button icon="refresh" @click="refreshData" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item" v-if="tableCfg && tableCfg.create"><mwc-icon-button icon="add" @click="openAdd" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item" v-if="tableCfg && tableCfg.delete"><mwc-icon-button icon="delete" @click="remove" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item"><mwc-icon-button icon="post_add" @click="csvImport" :disabled="loading"></mwc-icon-button></li>
@@ -52,11 +52,20 @@
 
       <vaadin-grid class="table"><!-- page-size="10" height-by-rows -->
         <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect"></vaadin-grid-selection-column><!-- remove auto-select click only on checkbox-->
-        <vaadin-grid-column
+        <vaadin-grid-sort-column
           v-for="(headerCol, index) in headerCols" :key="index"
           :path="headerCol.path"
-          :header="headerCol.header">
-        </vaadin-grid-column>
+          :header="headerCol.header"
+          @direction-changed="sortCllck"
+        >
+        </vaadin-grid-sort-column>
+
+        <!-- direction-changed -->
+        <!-- <vaadin-grid-column v-for="(headerCol, index) in headerCols" :key="index" :path="headerCol.path">
+          <template class="header">
+            <vaadin-grid-sorter :path="headerCol.path">{{headerCol.header}}</vaadin-grid-sorter>
+          </template>
+        </vaadin-grid-column> -->
         <!--  for last column text-align="end" width="120px" flex-grow="0" -->
       </vaadin-grid>
     </div>
@@ -154,7 +163,6 @@ export default {
     const showFilter = ref(false)
     const showForm = ref('') // '', add, edit
     const loading = ref(false)
-
     const recordObj = reactive({
       add: {},
       edit: {},
@@ -163,9 +171,7 @@ export default {
       addAc: {}, // col: []
       editAc: {}, // col: []
     })
-
     const tableName = props.tableName || 'person'
-
     let gridEl // grid element
 
     const _rowClick = async (e) => {
@@ -203,7 +209,15 @@ export default {
       }
     }
 
-    const selectClick = async (e) => { console.log('click on checkbox') }
+    const _selectClick = async (e) => console.log('click on checkbox', e.detail.value)
+    const sortCllck = async (e) => console.log('click on sort', e.target.path, e.target.direction)
+
+    // gridEl.addEventListener('dblclick', _dblClick)
+    // const _dblClick = (e) => {
+    //   const item = gridEl.getEventContext(e).item
+    //   gridEl.selectedItems = gridEl.selectedItems[0] === item ? [] : [item]
+    //   e.stopPropagation()
+    // }
 
     onMounted(async () => {
       // console.log('APP_VERSION', APP_VERSION)
@@ -223,17 +237,54 @@ export default {
       gridEl = document.querySelector('vaadin-grid.table')
       if (gridEl) {
         gridEl.addEventListener('active-item-changed', _rowClick)
-        gridEl.addEventListener('selected-items-changed', selectClick)
+        gridEl.addEventListener('selected-items-changed', _selectClick)
       }
-      await refresh()
+
+      // https://vaadin.com/forum/thread/17445015/updating-grid-data-directly-when-using-dataprovider
+      gridEl.dataProvider = async function (params, callback) {
+        if (loading.value) return
+        loading.value = true
+
+        console.log('grid.dataProvider', params)
+        try {
+          const sorter = []
+          if (params.sortOrders && params.sortOrders.length && params.sortOrders[0].direction) {
+            sorter.push({
+              column: params.sortOrders[0].path,
+              order: params.sortOrders[0].direction
+            })
+          }
+
+          gridEl.selectedItems = []
+          const rv = await httpGet('/api/t4t/find/' + tableName, {
+            page: page.value,
+            limit: rowsPerPage.value,
+            filters: JSON.stringify(filters),
+            sorter: JSON.stringify(sorter)
+          })
+          if (rv.results) {
+            // console.log('rv.total', rv.total, rv.results)
+            maxPage.value = Math.ceil(rv.total / rowsPerPage.value)
+            // gridEl.items = rv.results // do not use this, not scalable
+            gridEl.size = rv.total // TBD show all...
+            callback(rv.results)
+          }
+        } catch (e) {
+          console.log(e.toString())
+        }
+        loading.value = false
+      }
     })
     onUnmounted(()=> {
       if (gridEl) {
         gridEl.removeEventListener('active-item-changed', _rowClick)
-        gridEl.removeEventListener('selected-items-changed', selectClick)
+        gridEl.removeEventListener('selected-items-changed', _selectClick)
       }
     })
 
+    const refreshData = () => {
+      gridEl.clearCache()
+    }
     const openAdd = async () => {
       Object.entries(tableCfg.value.cols).forEach(item => {
         const [key, val] = item
@@ -281,30 +332,6 @@ export default {
       // console.log(tableCfg.value)
       // console.log(recordObj)
       // showForm.value = showForm.value ? '' : 'add'
-      console.log(e)
-    }
-
-    const refresh = async () => {
-      if (loading.value) return
-      loading.value = true
-      try {
-        gridEl.selectedItems = []
-
-        const rv = await httpGet('/api/t4t/find/' + tableName, {
-          page: page.value,
-          limit: rowsPerPage.value,
-          filters: JSON.stringify(filters)
-        })
-
-        if (rv.results) {
-          console.log('rv.total', rv.total)
-          gridEl.items = rv.results
-          maxPage.value = Math.ceil(rv.total / rowsPerPage.value)
-        }
-      } catch (e) {
-        console.log(e.toString())
-      }
-      loading.value = false
     }
 
     const remove = async () => {
@@ -324,7 +351,8 @@ export default {
         alert( `Error delete ${e.toString()}` )
       }
       loading.value = false
-      await refresh()
+      // await refresh()
+      gridEl.clearCache()
     }
 
     const doAddOrEdit = async () => {
@@ -345,22 +373,12 @@ export default {
       }
       loading.value = false
       showForm.value = '' // close the form
-      await refresh()
+      // await refresh()
+      gridEl.clearCache()
     }
 
-    const deleteFilter = (index) => {
-      filters.splice(index, 1);
-      // console.log('remove filter', index)
-    }
-
-    const addFilter = (index) => {
-      filters.splice( index, 0, {
-        col: filterCols[0],
-        op: '=',
-        val: '',
-        andOr: 'and'
-      } )
-    }
+    const deleteFilter = (index) => filters.splice(index, 1) // console.log('remove filter', index)
+    const addFilter = (index) => filters.splice( index, 0, { col: filterCols[0], op: '=', val: '', andOr: 'and' } )
 
     const csvImport = async () => { }
     const csvExport = async () => { }
@@ -374,6 +392,7 @@ export default {
     // watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { })
 
     return {
+      sortCllck,
       testFn,
       multiSelect, // method for multi select event...
       autoComplete, // method for autocomplete
@@ -382,7 +401,7 @@ export default {
 
       // CRUD
       remove, // method CRUD remove
-      refresh, // method CRUD find
+      refreshData, // method CRUD find
       doAddOrEdit, // method CRUD post
       csvImport, // method CRUD import
       csvExport, // method CRUD export

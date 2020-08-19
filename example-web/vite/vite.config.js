@@ -23,6 +23,8 @@ module.exports = {
       '@material/mwc-list/mwc-list-item',
       '@material/mwc-list/mwc-check-list-item',
       '@vaadin/vaadin-grid/vaadin-grid-selection-column',
+      '@vaadin/vaadin-grid/vaadin-grid-sort-column',
+      '@vaadin/vaadin-grid/vaadin-grid-sorter',
       'echarts',
       'leaflet'
     ]

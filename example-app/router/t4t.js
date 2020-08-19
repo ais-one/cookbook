@@ -77,12 +77,13 @@ module.exports = express.Router()
     limit = parseInt(limit)
     // console.log('t4t filters and sort', filters, sorter, table.name, page, limit)
     filters = JSON.parse(filters) // ignore where col === null, sort it 'or' first then 'and' // [ { col, op, val, andOr } ]
-    sorter = JSON.parse(sorter) // [ { column, order } ]
+    sorter = JSON.parse(sorter) // [ { column, order: 'asc' } ] / [] order = asc, desc
     if (page < 1) page = 1
     let rv = { results: [], total: 0 }
     let rows
     let where = {} // for mongo
     let query = null // for knex
+    let sort = []
 
     if (table.db === 'knex') {
       query = knex(table.name).where({})
@@ -95,14 +96,17 @@ module.exports = express.Router()
         else query = query.orWhere(key, op, value)
         prevFilter = filter
       }
-    } else { // mongo - TBD
+    } else { // mongo
+      sort = sorter && sorter.length ? [ [sorter[0].column, sorter[0].order === 'asc' ? 1 : -1] ] : []
       const or = [] // { "$or" : [] }
       const and = [] // { "$and" : [] }
       for (filter of filters) {
         const key = filter.col
         const op = filter.op
-        const val = filter.val
-
+        // TRANSFORM INPUT
+        const val = table.cols[key].type === 'integer' || table.cols[key].type === 'number' ? Number(filter.val)
+          : table.cols[key].type === 'datetime' || table.cols[key].type === 'date' || table.cols[key].type === 'time' ? new Date(filter.val)
+          : filter.val
         let exp
         if (op === '=') exp = { [key]: val }
         else if (op === 'like') exp = { [key]: { $regex: val, $options: 'i' } }
@@ -117,9 +121,7 @@ module.exports = express.Router()
       }
       if (or.length) where['$or'] = or
       if (and.length) where['$and'] = and
-      // const query = { "$or" : [] }
-
-      console.log('mongo where', where)
+      // console.log('mongo where', or, and)
     }
 
     if (limit === 0 || csv) {
@@ -141,7 +143,8 @@ module.exports = express.Router()
         rv.total = await mongo.db.collection(table.name).find(where).count()
         const maxPage = Math.ceil(rv.total / limit)
         if (page > maxPage) page = maxPage
-        rows = await mongo.db.collection(table.name).find(where) // TBD sort
+        rows = await mongo.db.collection(table.name).find(where)
+          .sort(sort)
           .skip((page > 0 ? page - 1 : 0) * limit)
           .limit(limit)
           .toArray()
@@ -205,8 +208,11 @@ module.exports = express.Router()
     for (let key in table.cols) { // add in auto fields
       const col = table.cols[key]
       if (col.auto && col.auto === 'user') body[key] = 'TBD USER ID'
-      if (col.auto && col.auto === 'ts') body[key] = new Date
-      // do other transforms if necessary
+      if (col.auto && col.auto === 'ts') body[key] = new Date()
+      // TRANSFORM INPUT
+      body[key] = table.cols[key].type === 'integer' || table.cols[key].type === 'number' ? Number(body[key])
+      : table.cols[key].type === 'datetime' || table.cols[key].type === 'date' || table.cols[key].type === 'time' ? (body[key] ? new Date(body[key]) : null)
+      : body[key]
     }
 
     if (table.db === 'knex') {
@@ -225,8 +231,11 @@ module.exports = express.Router()
     for (let key in table.cols) {
       const col = table.cols[key]
       if (col.auto && col.auto === 'user') body[key] = 'TBD USER ID'
-      if (col.auto && col.auto === 'ts') body[key] = new Date
-      // do other transforms if necessary
+      if (col.auto && col.auto === 'ts') body[key] = new Date()
+      // TRANSFORM INPUT
+      body[key] = table.cols[key].type === 'integer' || table.cols[key].type === 'number' ? Number(body[key])
+      : table.cols[key].type === 'datetime' || table.cols[key].type === 'date' || table.cols[key].type === 'time' ? (body[key] ? new Date(body[key]) : null)
+      : body[key]
     }
 
     let rv = 0
@@ -260,13 +269,8 @@ module.exports = express.Router()
         }
         if (table.db === 'knex') {
           return knex(table.name).where(multiKey).delete() 
-        } else {
-          // return mongo.db.collection(table.name).deleteOne(multiKey)
-          return {
-            deleteOne: {
-              "filter": multiKey
-            }
-          }            
+        } else {          
+          return { deleteOne: { "filter": multiKey } } // mongo.db.collection(table.name).deleteOne(multiKey)
         }
       })
       if (table.db === 'knex') {
