@@ -26,110 +26,115 @@
 
       <!-- filter row -->
       <template v-if="showFilter">
-        <div v-if="filters.length">
-          <div class="filter-row" v-for="(filter, index) of filters" :key="index">
-            <select class="filter-col" v-model="filter.col">
-              <option v-for="(col, index1) of filterCols" :value="col" :key="'c'+index+'-'+index1">{{ col }}</option>
-            </select>
-            <select class="filter-col" v-model="filter.op">
-              <option v-for="(col, index2) of filterOps" :value="col" :key="'o'+index+'-'+index2">{{ col }}</option>
-            </select>
-            <input placeholder="Value" class="filter-col" v-model="filter.val" />
-            <select class="filter-col" v-model="filter.andOr">
-              <option value="and">And</option>
-              <option value="or">Or</option>
-            </select>
-            <button class="filter-col" @click="deleteFilter(index)">x</button>
-            <button class="filter-col" @click="addFilter(index + 1)">+</button>
+        <slot name="filters" :filters="filters" :filterCols="filterCols" :filterOps="filterOps">
+          <div v-if="filters.length">
+            <div class="filter-row" v-for="(filter, index) of filters" :key="index">
+              <select class="filter-col" v-model="filter.col">
+                <option v-for="(col, index1) of filterCols" :value="col" :key="'c'+index+'-'+index1">{{ col }}</option>
+              </select>
+              <select class="filter-col" v-model="filter.op">
+                <option v-for="(col, index2) of filterOps" :value="col" :key="'o'+index+'-'+index2">{{ col }}</option>
+              </select>
+              <input placeholder="Value" class="filter-col" v-model="filter.val" />
+              <select class="filter-col" v-model="filter.andOr">
+                <option value="and">And</option>
+                <option value="or">Or</option>
+              </select>
+              <button class="filter-col" @click="deleteFilter(index)">x</button>
+              <button class="filter-col" @click="addFilter(index + 1)">+</button>
+            </div>
           </div>
-        </div>
-        <div v-else>
-          <div class="filter-row">
-            <button class="filter-col" @click="addFilter(0)">+</button>
+          <div v-else>
+            <div class="filter-row">
+              <button class="filter-col" @click="addFilter(0)">+</button>
+            </div>
           </div>
-        </div>
+        </slot>
       </template>
 
-      <vaadin-grid class="table"><!-- page-size="10" height-by-rows -->
-        <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect"></vaadin-grid-selection-column><!-- remove auto-select click only on checkbox-->
-        <vaadin-grid-sort-column
-          v-for="(headerCol, index) in headerCols" :key="index"
-          :path="headerCol.path"
-          :header="headerCol.header"
-          @direction-changed="sortCllck"
-        >
-        </vaadin-grid-sort-column>
-
-        <!-- direction-changed -->
-        <!-- <vaadin-grid-column v-for="(headerCol, index) in headerCols" :key="index" :path="headerCol.path">
-          <template class="header">
-            <vaadin-grid-sorter :path="headerCol.path">{{headerCol.header}}</vaadin-grid-sorter>
-          </template>
-        </vaadin-grid-column> -->
-        <!--  for last column text-align="end" width="120px" flex-grow="0" -->
-      </vaadin-grid>
+      <slot name="table"
+        :tableCfg="tableCfg"
+        :headerCols="headerCols" 
+        :page="page"
+        :records="records"
+        :rowsPerPage="rowsPerPage"
+        :maxPage="maxPage"
+      >
+        <vaadin-grid class="table"><!-- page-size="10" height-by-rows -->
+          <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect"></vaadin-grid-selection-column><!-- remove auto-select click only on checkbox-->
+          <vaadin-grid-sort-column
+            v-for="(headerCol, index) in headerCols" :key="index"
+            :path="headerCol.path"
+            :header="headerCol.header"
+          >
+          </vaadin-grid-sort-column>
+          <!--  for last column text-align="end" width="120px" flex-grow="0" -->
+        </vaadin-grid>
+      </slot>
     </div>
 
     <div class="page-flex" v-if="showForm && tableCfg">
-      <form class="form-box-flex">
-        <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p>
-        <div class="field-set-flex">
-          <template v-for="(val, col, index) of recordObj[showForm]">
-            <template v-if="tableCfg.cols[col]">
-              <!-- required? readonly? (edit) -->
-              <template v-if="tableCfg.cols[col].input==='number'">
-                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="number" v-model="recordObj[showForm][col]"></mwc-textfield>
-              </template>           
-              <template v-else-if="tableCfg.cols[col].input==='datetime'">
-                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="datetime-local" v-model="recordObj[showForm][col]"></mwc-textfield>
-              </template>           
-              <template v-else-if="tableCfg.cols[col].input==='date'">
-                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="date" v-model="recordObj[showForm][col]"></mwc-textfield>
-              </template>           
-              <template v-else-if="tableCfg.cols[col].input==='time'">
-                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="time" v-model="recordObj[showForm][col]"></mwc-textfield>
+      <slot name="form" :tableCfg="tableCfg" :recordObj="recordObj" :showForm="showForm">
+        <form class="form-box-flex">
+          <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p>
+          <div class="field-set-flex">
+            <template v-for="(val, col, index) of recordObj[showForm]">
+              <template v-if="tableCfg.cols[col]">
+                <!-- required? readonly? (edit) -->
+                <template v-if="tableCfg.cols[col].input==='number'">
+                  <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="number" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>           
+                <template v-else-if="tableCfg.cols[col].input==='datetime'">
+                  <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="datetime-local" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>           
+                <template v-else-if="tableCfg.cols[col].input==='date'">
+                  <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="date" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>           
+                <template v-else-if="tableCfg.cols[col].input==='time'">
+                  <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="time" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input==='select'">
+                  <mwc-select :key="col+index" :label="tableCfg.cols[col].label" :value="recordObj[showForm][col]" @change="(e) => recordObj[showForm][col] = e.target.value">
+                    <mwc-list-item v-for="(option, index2) of tableCfg.cols[col].options" :value="option.key" :key="col+index+'-'+index2">{{ option.text }}</mwc-list-item>
+                  </mwc-select>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input==='multi-select'">
+                  <mwc-textfield
+                    class="field-item"
+                    :key="col+index"
+                    :label="tableCfg.cols[col].label"
+                    outlined
+                    type="text"
+                    disabled
+                    :value="recordObj[showForm][col]"
+                    :iconTrailing="recordObj[showForm + 'DdShow'][col] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+                    @click="recordObj[showForm + 'DdShow'][col]=!recordObj[showForm + 'DdShow'][col]"
+                  ></mwc-textfield>
+                  <div :key="'ms'+col+index" class="drop-down-div">
+                    <mwc-list v-if="recordObj[showForm + 'DdShow'][col]" multi @selected="e => multiSelect(e, col, showForm)" class="drop-down">
+                      <mwc-check-list-item v-for="(option, index2) of tableCfg.cols[col].options" :selected="recordObj[showForm][col].includes(option.key)" :key="col+index+'-'+index2">{{ option.text }}</mwc-check-list-item>
+                    </mwc-list>
+                  </div>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input==='autocomplete'">
+                  <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" :value="recordObj[showForm][col]" @input="(e) => autoComplete(e, col, showForm)"></mwc-textfield>
+                  <div :key="'ac'+col+index" class="drop-down-div">
+                    <mwc-list v-if="recordObj[showForm + 'Ac'][col].length" @selected="e => autoCompleteSelect(e, col, showForm)" class="drop-down">
+                      <mwc-list-item v-for="(option, index2) of recordObj[showForm + 'Ac'][col]" :key="col+index+'-'+index2">{{ option.text }}</mwc-list-item>
+                    </mwc-list>
+                  </div>
+                </template>           
+                <template v-else>
+                  <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>           
               </template>
-              <template v-else-if="tableCfg.cols[col].input==='select'">
-                <mwc-select :key="col+index" :label="tableCfg.cols[col].label" :value="recordObj[showForm][col]" @change="(e) => recordObj[showForm][col] = e.target.value">
-                  <mwc-list-item v-for="(option, index2) of tableCfg.cols[col].options" :value="option.key" :key="col+index+'-'+index2">{{ option.text }}</mwc-list-item>
-                </mwc-select>
-              </template>
-              <template v-else-if="tableCfg.cols[col].input==='multi-select'">
-                <mwc-textfield
-                  class="field-item"
-                  :key="col+index"
-                  :label="tableCfg.cols[col].label"
-                  outlined
-                  type="text"
-                  disabled
-                  :value="recordObj[showForm][col]"
-                  :iconTrailing="recordObj[showForm + 'DdShow'][col] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-                  @click="recordObj[showForm + 'DdShow'][col]=!recordObj[showForm + 'DdShow'][col]"
-                ></mwc-textfield>
-                <div :key="'ms'+col+index" class="drop-down-div">
-                  <mwc-list v-if="recordObj[showForm + 'DdShow'][col]" multi @selected="e => multiSelect(e, col, showForm)" class="drop-down">
-                    <mwc-check-list-item v-for="(option, index2) of tableCfg.cols[col].options" :selected="recordObj[showForm][col].includes(option.key)" :key="col+index+'-'+index2">{{ option.text }}</mwc-check-list-item>
-                  </mwc-list>
-                </div>
-              </template>
-              <template v-else-if="tableCfg.cols[col].input==='autocomplete'">
-                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" :value="recordObj[showForm][col]" @input="(e) => autoComplete(e, col, showForm)"></mwc-textfield>
-                <div :key="'ac'+col+index" class="drop-down-div">
-                  <mwc-list v-if="recordObj[showForm + 'Ac'][col].length" @selected="e => autoCompleteSelect(e, col, showForm)" class="drop-down">
-                    <mwc-list-item v-for="(option, index2) of recordObj[showForm + 'Ac'][col]" :key="col+index+'-'+index2">{{ option.text }}</mwc-list-item>
-                  </mwc-list>
-                </div>
-              </template>           
-              <template v-else>
-                <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
-              </template>           
             </template>
-          </template>
-        </div>
-        <mwc-button type="button" @click="showForm=''">Cancel</mwc-button>
-        <mwc-button type="button" @click="doAddOrEdit" :disabled="loading">Confirm</mwc-button>
-        <!-- <mwc-button type="button" @click="testFn">Test</mwc-button> -->
-      </form>
+          </div>
+          <mwc-button type="button" @click="showForm=''">Cancel</mwc-button>
+          <mwc-button type="button" @click="doAddOrEdit" :disabled="loading">Confirm</mwc-button>
+          <!-- <mwc-button type="button" @click="testFn">Test</mwc-button> -->
+        </form>
+      </slot>
     </div>
 
   </div>
@@ -142,18 +147,21 @@
 
 import { APP_VERSION, debounce } from 'http://127.0.0.1:3000/js/util.js'
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
-import { httpGet, httpPost, httpPatch } from '../http'
+import { httpGet, httpPost, httpPatch } from 'http://127.0.0.1:3000/js/http.js'
 
 export default {
   name: 'DemoTable',
   props: {
     rowsPerPage: { type: [Number], default: 10 },
     rowsPerPageList: { type: Array, default: [5, 10, 25, 50] },
-    tableName: { type: String, required: true }
+    tableName: { type: String, required: true },
+    parentId: { type: String, default: null }
   },
+  // do NOT destructure the props object, as it will lose reactivity
   setup(props, ctx) { // ctx = attrs, slots, emit
     const tableCfg = ref(null) // table config
     const page = ref(1)
+    const records = ref([])
     const maxPage = ref(1)
     const rowsPerPage = ref(props.rowsPerPage)
     const headerCols = reactive([])
@@ -209,8 +217,7 @@ export default {
       }
     }
 
-    const _selectClick = async (e) => console.log('click on checkbox', e.detail.value)
-    const sortCllck = async (e) => console.log('click on sort', e.target.path, e.target.direction)
+    // const _selectClick = async (e) => console.log('click on checkbox', e.detail.value)
 
     // gridEl.addEventListener('dblclick', _dblClick)
     // const _dblClick = (e) => {
@@ -237,7 +244,7 @@ export default {
       gridEl = document.querySelector('vaadin-grid.table')
       if (gridEl) {
         gridEl.addEventListener('active-item-changed', _rowClick)
-        gridEl.addEventListener('selected-items-changed', _selectClick)
+        // gridEl.addEventListener('selected-items-changed', _selectClick)
       }
 
       // https://vaadin.com/forum/thread/17445015/updating-grid-data-directly-when-using-dataprovider
@@ -267,6 +274,7 @@ export default {
             maxPage.value = Math.ceil(rv.total / rowsPerPage.value)
             // gridEl.items = rv.results // do not use this, not scalable
             gridEl.size = rv.total // TBD show all...
+            records.value = rv.results
             callback(rv.results)
           }
         } catch (e) {
@@ -278,7 +286,7 @@ export default {
     onUnmounted(()=> {
       if (gridEl) {
         gridEl.removeEventListener('active-item-changed', _rowClick)
-        gridEl.removeEventListener('selected-items-changed', _selectClick)
+        // gridEl.removeEventListener('selected-items-changed', _selectClick)
       }
     })
 
@@ -392,7 +400,6 @@ export default {
     // watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { })
 
     return {
-      sortCllck,
       testFn,
       multiSelect, // method for multi select event...
       autoComplete, // method for autocomplete
@@ -418,6 +425,7 @@ export default {
       recordObj, // reactive form data
 
       page, // ref
+      records, // ref
       rowsPerPage, // ref
       maxPage, // ref
       headerCols, // reactive

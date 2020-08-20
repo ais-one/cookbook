@@ -77,8 +77,10 @@ export default {
       { show: true, name: 'Sites', icon0: 'keyboard_arrow_up', icon1: 'keyboard_arrow_down',
         children: [
           { to: '/demo-flex', name: 'Demo Flex', icon: '' },
-          { to: '/demo-table', name: 'Demo Table', icon: '' },
+          { to: '/table-person', name: 'Person Table', icon: '' },
           { to: '/table-country', name: 'Country Table', icon: '' },
+          { to: '/table-person-demo', name: 'Person Table Slot', icon: '' },
+          { to: '/table-country-demo', name: 'Country Table Slot', icon: '' },
           { to: '/demo-map', name: 'Demo Map', icon: '' },
           { to: '/demo-chart', name: 'Demo Chart', icon: 'bar_chart' }
         ]

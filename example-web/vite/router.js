@@ -26,8 +26,10 @@ const router = createRouter({
     { path: '/dashboard', name: 'Dashboard', component: () => import('./pages/Dashboard.vue'), beforeEnter: authGuard },
     { path: '/demo-chart', name: 'Demo Chart', component: () => import('./pages/DemoChart.vue'), beforeEnter: authGuard },
     { path: '/demo-map', name: 'Demo Map', component: () => import('./pages/DemoMap.vue'), beforeEnter: authGuard },
-    { path: '/demo-table', name: 'DemoTable', props: { tableName: 'person' }, component: () => import('./pages/DemoTable.vue'), beforeEnter: authGuard },
-    { path: '/table-country', name: 'TableCountry', props: { tableName: 'country' }, component: () => import('./pages/DemoTable.vue'), beforeEnter: authGuard },
+    { path: '/table-person-demo', name: 'TablePersonDemo', component: () => import('./pages/DemoTablePerson.vue'), beforeEnter: authGuard },
+    { path: '/table-country-demo', name: 'TableCountryDemo', component: () => import('./pages/DemoTableCountry.vue'), beforeEnter: authGuard },
+    { path: '/table-person', name: 'TablePerson', props: { tableName: 'person' }, component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
+    { path: '/table-country', name: 'TableCountry', props: { tableName: 'country' }, component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
     { path: '/demo-flex', name: 'DemoFlex', component: () => import('./pages/DemoFlex.vue'), beforeEnter: authGuard },
     // catchall
     { path: '/:catchAll(.*)', redirect: '/' }

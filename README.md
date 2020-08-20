@@ -12,7 +12,7 @@
 
 Latest Version [0.3.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.3) - Released 2020 Aug 31 0400 +8GMT
 
-**vue-crud-x 0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
+**vue-crud-x 0.3+** vite & vue 3 with material and vaadin web components and generic crud backend
 
 **vue-crud-x 0.2+** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, CRUD component code was refactored to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
