@@ -1,6 +1,6 @@
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine) [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-**TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment
+**TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
 # VUE-CRUD-X - WHY & WHAT (EVOLUTiON)
 
@@ -12,7 +12,9 @@
 
 Latest Version [0.3.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.3) - Released 2020 Aug 31 0400 +8GMT
 
-**vue-crud-x 0.3+** vite & vue 3 with material and vaadin web components and generic crud backend
+generic crud frontend with vite, vue 3, web components (example-web/vite/components/CrudTable.vue) and generic crud backend (example-app/router/t4t.js)
+
+**vue-crud-x 0.3+**  Reorganize folders and structure, for ease of developing and maintaining multiple applications.
 
 **vue-crud-x 0.2+** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, CRUD component code was refactored to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
@@ -64,6 +66,8 @@ Other design considerations :
 
 1. Clone the repository, setup and run, using the following commands
 
+[Optional] To try features using MongoDB, you need a local MongoDB instance
+
 **Windows**
 
 ```bash
@@ -71,6 +75,7 @@ git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
 npm run install-libs
 npm run knex
+npm run mongo
 npm run app:spa
 ```
 
@@ -81,6 +86,7 @@ git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
 npm run install-libs
 npm run knex:unix
+npm run mongo:unix
 npm run app:spa:unix
 ```
 
@@ -185,7 +191,7 @@ Change the example-app/config/index.js file contents
 
 5. VueJS example Nuxt SSR/Static Application
 
-In vue-crud-x folder, run the **frontend** from one console...
+From vue-crud-x folder
 
 ```bash
 cd example-web/ssr
@@ -195,10 +201,22 @@ npm run dev
 
 **Note:** for static content see example-web/ssr/README.md on generating and serving static content
 
-6. PWA and vite
+6. vite
+
+MongoDB required for testing CRUD table
+
+From vue-crud-x folder
+
+```bash
+cd example-web/vite
+npm i
+npm run dev
+```
+
+
+7. PWA
 
 Work In Progress
-
 
 ---
 

@@ -6,22 +6,18 @@ const knex = Model.knex()
 const mongo = require(LIB_PATH + '/services/db/mongodb')
 const ObjectID = require('mongodb').ObjectID
 
-const csvParse = require('csv-parse')
 // const { authUser } = require('../middlewares/auth')
+const csvParse = require('csv-parse')
 const multer = require('multer')
 const { Parser } = require('json2csv')
-const upload = multer({
-  storage: multer.memoryStorage() 
-})
+const upload = multer({ storage: multer.memoryStorage() })
 
 // key is reserved property for identifying row in a multiKey table
 // | is reserved for seperating columns that make the multiKey
 
-async function generateTable (req, res, next) {
-  // TBD get config info from a table
+async function generateTable (req, res, next) { // TBD get config info from a table
   try {
     const tableKey = req.params.table // 'books' // its the table name also
-    // TOREMOVE const table = t4tCfg.tables[tableKey]
     const ref = require('./tables/' + tableKey + '.js') // get table from a file...
     req.table = JSON.parse(JSON.stringify(ref))
     const cols = req.table.cols

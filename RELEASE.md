@@ -6,7 +6,7 @@
 - vite
   - web components or no bundler required UI framework, also make code more framework agnostic
   - generic table crud
-  - add echarts and leaflet exapmle
+  - add echarts and leaflet example
 - backend
   - generic table crud
 - [Work-in-progress]

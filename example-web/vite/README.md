@@ -24,11 +24,6 @@ We should have the following
 [https://github.com/vuejs/vitepress](https://github.com/vuejs/vitepress)
 
 
-# Shameless Plug
-
-If this is interesting, look at my other project on github [https://github.com/ais-one/vue-crud-x](https://github.com/ais-one/vue-crud-x)
-
-
 # Setup
 
 1. Install packages
@@ -37,19 +32,13 @@ If this is interesting, look at my other project on github [https://github.com/a
 npm i
 ```
 
-2. [REMOVED] Do snowpack to convert some of them to ES Modules, e.g. axios, moment
-
-```
-npx snowpack
-```
-
-3. For development Run from dev server
+2. For development Run from dev server
 
 ```
 npm run dev
 ```
 
-4. For production
+3. For production
 
 ```
 npm run build
@@ -57,15 +46,10 @@ npm run build
 
 ---
 
-# Todo
-
-- layouts
-- drop-down menus (not in spec?)
-- cards
-- table
-
 # Clean up
 
+```
 npm cache clean --force
 rm -rf node_modules
 rm package-lock.json
+```
