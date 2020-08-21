@@ -25,5 +25,17 @@
 
 [gcp/home.md](gcp/home.md)
 
+# VueCrudX
+
+[VueCrudX.md](VueCrudX.md)
+
+# Others
+
+[courses.md](courses.md)
+<wip> [cypress.md](cypress.md)
+[sqa-tools.md](sqa-tools.md)
+[team-guidance.md](team-guidance.md)
+
+
 
 
