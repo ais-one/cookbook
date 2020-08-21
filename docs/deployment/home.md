@@ -99,7 +99,7 @@ See [deployment-vm.md](deployment-vm.md)
 
 You need to know about SDK from each cloud provider to use them effectively
 
-Google Cloud Platform - See [deployment-gcp.md](deployment-gcp.md)
+Google Cloud Platform - See [../gcp/home.md](../gcp/home.md)
 
 
 ## Demo Deployment On Cloud
@@ -133,13 +133,13 @@ GCS / S3 / Azure Storage
 
 **Google Compute Engine - Instance Groups**
 
-See [deployment-vmgroups.md](deployment-gcp-vmgroups.md) - WORK IN PROGRESS
+See [../gcp/vmgroups.md](../gcp/vmgroups.md) - WORK IN PROGRESS
 
 - Docker, Instance Templates & GCE Grouped Instances & Load Balancer
 
 **Google Kubernetes Engine**
 
-See [deployment-gke-k8s.md](deployment-gcp-k8s.md) - WORK IN PROGRESS
+See [../gcp/k8s.md](../gcp/k8s.md) - WORK IN PROGRESS
 
 - Docker, GKE (Google Kubernetes Engine) & load balancer
 - AKE (Azure Kubernetes Engine)

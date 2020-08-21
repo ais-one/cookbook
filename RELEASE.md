@@ -10,6 +10,8 @@
 - backend
   - generic table crud
 - [Work-in-progress]
+  - use monorepo when npm 7 is released
+  - improve structure further
   - circleci workflow
     - deploy backend to GCP Cloud Run
     - deploy SPA frontend to GCP Storage
