@@ -35,7 +35,6 @@
     - explore use of fetch API instead of axios (abort fetch, etc)
     - PWA cookbook (many things to consider)
   - others
-    - Should we change Vuex action setLayout to setPublic and setSecure?
     - graphql security & performance review
 - [Findings]
   - Logging (Use APM instead?) - use console.log & morgan
