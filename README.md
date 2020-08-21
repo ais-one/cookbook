@@ -66,8 +66,6 @@ Other design considerations :
 
 1. Clone the repository, setup and run, using the following commands
 
-[Optional] To try features using MongoDB, you need a local MongoDB instance
-
 **Windows**
 
 ```bash
@@ -90,15 +88,13 @@ npm run mongo:unix
 npm run app:spa:unix
 ```
 
-**NOTE 1** the **secret** folder is missing so there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable.
+**NOTE 1** the **example-app/config/secret** folder is missing so there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable.
 
 To resolve, in **example-app/config** folder, rename **sample-secret** folder to **secret**. You can look at the readme inside **sample-secret** folder for more information
 
-**NOTE 2** mongodb needs to connect to localhost or there will be connection error for mongodb. Quick start is still usable.
+**NOTE 2** MongoDB needs to connect to localhost or there will be connection error for MongoDB. Quick start is still usable. MongoDB example in **example-web/vite** needs MongoDB to work
 
-To resolve, either
-- install mongodb, or
-- use docker-compose file in docker-devenv\mongodb. It creates replica set so that transactions can be handled. Remember to do one-time initiate of replication set first.
+To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
 
 **NOTE 3** The code below is important, calls setup and reading of configs. It is use in example-app/index.js and also used in example-app/process-long.js (long running process) and example-app/process-cron.js
 

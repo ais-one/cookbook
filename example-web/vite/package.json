@@ -15,7 +15,7 @@
     "@material/mwc-select": "^0.18.0",
     "@material/mwc-textfield": "^0.18.0",
     "@material/mwc-top-app-bar-fixed": "^0.18.0",
-    "@vaadin/vaadin-grid": "^5.6.7",
+    "@vaadin/vaadin-grid": "^5.7.0",
     "echarts": "^4.8.0",
     "leaflet": "^1.6.0",
     "vue": "^3.0.0-rc.6",

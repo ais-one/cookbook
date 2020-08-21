@@ -1,8 +1,20 @@
-# Mongo DB - WORK IN PROGRESS
+# Mongo DB Notes
 
-## Docker Installation (With Replica Set) on WSL2 Ubuntu
+## Dump & Restore - For Non Replica Set or Local development backups
 
-Reference : https://github.com/ais-one/docker-devenv
+mongodump --zip --archive=<file> --db <db-name> --collection <collection-name>
+mongorestore --zip --archive=<file> --db <db-name> --collection <collection-name>
+
+```bash
+mongodump --gzip --archive=db.gz
+mongorestore --gzip --archive=db.gz
+
+mongodump --gzip --archive=db.archive --db ahop
+mongorestore --gzip --archive=db.archive --db ahop
+
+mongodump --gzip --archive=mdh.gz --db ahop --collection mdh-snapshot
+mongorestore --gzip --archive=mdh.gz --db ahop --collection mdh-snapshot
+```
 
 ## Import & Export - Non Production
 
@@ -10,17 +22,6 @@ mongoimport --db ahop --collection mdh-snapshot --file mdh-snapshot.json
 mongoexport --db ahop --collection mdh-snapshot --out mdh-snapshot.json --jsonArray
 mongoexport --db ahop --collection vts-hist --out vts-hist.json --jsonArray
 mongoexport --db ahop --collection job --out job.json --jsonArray
-
-
-mongodump --archive=mdh.gz --gzip --db ahop --collection mdh-snapshot
-mongodump --db ahop --collection mdh-snapshot
-mongorestore --db ahop --collection mdh-snapshot --archive=mdh.gz --gzip
-mongorestore --db ahop --collection mdh-snapshot dump/ahop/mdh-snapshot.bson --writeConcern '{w:0}'
-mongodump --db ahop --archive=db.archive
-mongorestore --db ahop --archive=db.archive
-
-mongodump --archive=db.gz --gzip
-mongorestore --archive=db.gz --gzip
 
 
 ## Outstanding Issues

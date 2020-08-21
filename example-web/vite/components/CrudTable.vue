@@ -14,12 +14,12 @@
         </ul>
         <ul class="nav-right">
           <li class="nav-item">
-            <select class="select-page-size" v-model="rowsPerPage">
+            <select class="nav-select-page-size" v-model="rowsPerPage">
               <option v-for="val of rowsPerPageList" :key="val" :value="val" :selected="val === rowsPerPage" >{{ val }}</option>
             </select>
           </li>
           <li class="nav-item">
-            <input class="select-page" type="number" v-model="page" min="1" :max="maxPage" /> / {{ maxPage }}
+            <input class="nav-select-page" type="number" v-model="page" min="1" :max="maxPage" /> / {{ maxPage }}
           </li>
         </ul>
       </nav>
@@ -467,11 +467,11 @@ nav {
   color: white;
 }
 
-.nav-item mwc-textfield {
-  width: 80px;
+.nav-select-page {
+  height: 20px;
 }
 
-.select-page-size {
+.nav-select-page-size {
   height: 26px;
 }
 
