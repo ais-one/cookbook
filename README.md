@@ -1,18 +1,16 @@
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine) [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-**TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
+> **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.3.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.3) - Released 2020 Aug 31 0400 +8GMT
-
-> Generic crud frontend with vite, vue 3, web components (example-web/vite/components/CrudTable.vue) and generic crud backend (example-app/router/t4t.js)
+Latest Version [0.3.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.3) - Released 2020 Aug 23 0115 +8GMT
 
 # Features
 
 - Frontend Examples
-  - [Vite, Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, CRUD
+  - **NEW** [Vite, Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
   - [SPA, Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-web/spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP, Webcam (WIP), Signature canvas (WIP)
   - [PWA](https://github.com/ais-one/vue-crud-x/tree/master/example-web/pwa): FCM push notification & PWA features
-  - [SSR using Nuxt](https://github.com/ais-one/vue-crud-x/tree/master/example-web/ssr): Need to find something better to build static sites for now
+  - [SSR using Nuxt](https://github.com/ais-one/vue-crud-x/tree/master/example-web/ssr): Handling 500 and 404 errors, show gotchas of SSR
   - [Vanilla JS, ES Modules](https://github.com/ais-one/vue-crud-x/tree/master/example-app/public): No bundler, scalable VueJS Application , example codes (signed uploads, JWT refresh token, OTP)
 - [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/) & [Common Libs](https://github.com/ais-one/vue-crud-x/tree/master/common-libs/)
   - cors, proxy middleware, helmet, error handling, logging, OpenAPI
@@ -28,16 +26,6 @@ Latest Version [0.3.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.3)
   - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
   - [Deploy script](https://github.com/ais-one/vue-crud-x/tree/master/deploy.sh) to VM, GCP Cloud Run, GCP Storage (for SPA & static sites)
 - Continuously being improved
-
-
-## [ssr]
-
-Recipes for a production-ready Nuxt static sites. Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes:
-- SSR & pre-generated Static Web App 
-  - Handling of 500 and 404 errors
-- Show gotchas of SSR
-
-**IMPORTANT NOTE:** we use SSR mode, WITHOUT implementing the server side features for efficient debugging of static generated sites.
 
 
 # QUICK START - ON YOUR LOCAL MACHINE
@@ -123,7 +111,11 @@ npm i
 npm run dev
 ```
 
-**Note:** for static content see example-web/ssr/README.md on generating and serving static content
+**Notes**
+- for static content see example-web/ssr/README.md on generating and serving static content
+- Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes
+- We use SSR mode, WITHOUT implementing the server side features for efficient debugging of static generated sites.
+
 
 
 ## Testing

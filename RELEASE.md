@@ -9,9 +9,9 @@
   - add echarts and leaflet example
 - backend
   - generic table crud
+
+### Ongoing
 - [Work-in-progress]
-  - use monorepo when npm 7 is released
-  - improve structure further
   - circleci workflow
     - deploy backend to GCP Cloud Run
     - deploy SPA frontend to GCP Storage
@@ -21,21 +21,20 @@
   - frontend
     - Preparing for VueJS 3
     - cypress e2e testing
-
-### Ongoing
 - [TODO]
-  - Make ES module build (only possible when UI framework e.g. Vuetify has ES module version)
+  - Make VueCrudX ES module build (only possible when UI framework e.g. Vuetify has ES module version)
   - backend
     - research websocket testing, improve coverage
     - research auto generated REST API and Testing (keep in view dredd.io)
     - JsonSchema
   - frontend
     - Handle/Test Signature & Webcam input
-    - Remove date-fns library and use native JS libraries for handling date, time
-    - explore use of fetch API instead of axios (abort fetch, etc)
+    - Fetch API abort / retry
     - PWA cookbook (many things to consider)
   - others
     - graphql security & performance review
+    - use monorepo when npm 7 is released ?
+    - improve structure further
 - [Findings]
   - Logging (Use APM instead?) - use console.log & morgan
   - use native html5 validation rather than Vuelidate / Vee-validate (major version changes is painful)

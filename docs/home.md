@@ -1,6 +1,8 @@
-# Design Considerations
+# Documentation
 
 > Evolution: Extensible CRUD component for VueJS --> ExpressJS full-stack app development cookbook and recipes --> common components for multiple apps --> automated QA, test, CI/CD with Cloud container deployment
+
+## Design Considerations
 
 - keep technical debt in view - Rule #1 - Do Not Let Technical Debt Build Up
 - keep in mind https://12factor.net/
@@ -16,28 +18,28 @@
   - nuxt-auth could not handle 2FA or refresh token so cannot be used
 - limit number of languages (e.g. use JS for everything)
 
-# NodeJS
+## NodeJS
 
 [nodejs.md](nodejs.md)
 
 
-# Deployment And Scaling
+## Deployment And Scaling
 
 [deployment/home.md](deployment/home.md) - WORK IN PROGRESS
 
-# Mongo DB
+## Mongo DB
 
 [mongodb/home.md](mongodb/home.md)
 
-# GCP
+## GCP
 
 [gcp/home.md](gcp/home.md)
 
-# VueCrudX
+## VueCrudX
 
 [VueCrudX.md](VueCrudX.md)
 
-# Others
+## Others
 
 - Udemy Courses [courses.md](courses.md)
 - E2E Testing **WIP** [cypress.md](cypress.md)

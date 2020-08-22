@@ -32,7 +32,7 @@ ENV API_PORT $ARG_API_PORT
 ENV NODE_ENV $ARG_NODE_ENV
 ENV APP_NAME $ARG_APP_NAME
 
-# for cloud run
+# PORT for GCP Cloud Run
 ENV PORT $ARG_API_PORT
 
 # Copy dependency definitions
