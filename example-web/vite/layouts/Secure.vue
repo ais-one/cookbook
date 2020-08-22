@@ -23,7 +23,6 @@
               </router-link>
             </div>
           </div>
-          <!-- <mwc-list-item v-for="n of 20" :key="n">Item {{ n }}</mwc-list-item> -->
         </div>
         <mwc-list-item graphic="icon" @click="logout">
           <slot>Sign out</slot>
@@ -108,7 +107,7 @@ export default {
 
 <style scoped>
 
-mwc-drawer {
+mwc-drawer { /* NOSONAR */
   --mdc-theme-primary: green;
   z-index: 10000;
 }

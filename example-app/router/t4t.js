@@ -92,6 +92,16 @@ module.exports = express.Router()
         else query = query.orWhere(key, op, value)
         prevFilter = filter
       }
+      if (limit === 0 || csv) {
+        rows = await query.clone().orderBy(sorter)
+        rv.total = rows.length
+      } else {
+        let total = await query.clone().count()
+        rv.total = Object.values(total[0])[0]
+        const maxPage = Math.ceil(rv.total / limit)
+        if (page > maxPage) page = maxPage
+        rows = await query.clone().orderBy(sorter).limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
+      }
     } else { // mongo
       sort = sorter && sorter.length ? [ [sorter[0].column, sorter[0].order === 'asc' ? 1 : -1] ] : []
       const or = [] // { "$or" : [] }
@@ -118,24 +128,10 @@ module.exports = express.Router()
       if (or.length) where['$or'] = or
       if (and.length) where['$and'] = and
       // console.log('mongo where', or, and)
-    }
-
-    if (limit === 0 || csv) {
-      if (table.db === 'knex') {
-        rows = await query.clone().orderBy(sorter)
-        rv.total = rows.length
-      } else { // mongo
+      if (limit === 0 || csv) {
         rows = await mongo.db.collection(table.name).find(where).toArray()
         rv.total = rows.length
-      }
-    } else {
-      if (table.db === 'knex') {
-        let total = await query.clone().count()
-        rv.total = Object.values(total[0])[0]
-        const maxPage = Math.ceil(rv.total / limit)
-        if (page > maxPage) page = maxPage
-        rows = await query.clone().orderBy(sorter).limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
-      } else { // mongo
+      } else {
         rv.total = await mongo.db.collection(table.name).find(where).count()
         const maxPage = Math.ceil(rv.total / limit)
         if (page > maxPage) page = maxPage
@@ -146,6 +142,7 @@ module.exports = express.Router()
           .toArray()
       }
     }
+
     if (csv) {
       const parser = new Parser({})
       const csv = parser.parse(rows)
@@ -272,7 +269,8 @@ module.exports = express.Router()
       if (table.db === 'knex') {
         await Promise.allSettled(keys)
       } else {
-        const dbRv = await db.collection(table.name).bulkWrite(keys)
+        // const dbRv = 
+        await db.collection(table.name).bulkWrite(keys)
         // result: dbRv.result
       }
     }

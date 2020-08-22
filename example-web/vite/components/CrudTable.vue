@@ -202,8 +202,8 @@ export default {
         console.log('item.key', item.key)
         const rv = await httpGet('/api/t4t/find-one/' + tableName, { key: item.key })
         recordObj['edit'].key = item.key
-        Object.entries(tableCfg.value.cols).forEach(item => {
-          const [key, val] = item
+        Object.entries(tableCfg.value.cols).forEach(kv => {
+          const [key, val] = kv
           if (val.edit !== 'hide' && !val.auto) {
             recordObj['edit'][key] = rv[key]
 
@@ -212,8 +212,8 @@ export default {
           }
         })
         showForm.value = 'edit'
-      } catch (e) {
-        console.log(e.toString())
+      } catch (err) {
+        console.log(err.toString())
       }
     }
 
@@ -306,7 +306,7 @@ export default {
       showForm.value = 'add'
     }
 
-    const multiSelect = (e, col, showForm) => {
+    const multiSelect = (e, col, _showForm) => {
       const items = []
       // console.log(e.detail.index.values())
       e.detail.index.forEach((a, b, c) => {
@@ -316,23 +316,23 @@ export default {
           items.push(item)
         }
       })
-      recordObj[showForm][col] = items.join(',')
+      recordObj[_showForm][col] = items.join(',')
     }
 
-    const autoCompleteSelect = (e, col, showForm) => {
-      recordObj[showForm][col] = e.target.selected.text
-      recordObj[showForm+'Ac'][col] = []
+    const autoCompleteSelect = (e, col, _showForm) => {
+      recordObj[_showForm][col] = e.target.selected.text
+      recordObj[_showForm+'Ac'][col] = []
     }
 
-    const autoComplete = debounce(async (e, col, showForm) => {
+    const autoComplete = debounce(async (e, col, _showForm) => {
       try {
         const { tableName, limit, key, text } = tableCfg.value.cols[col].options
-        recordObj[showForm+'Ac'][col] = await httpGet('/api/t4t/autocomplete', {
+        recordObj[_showForm+'Ac'][col] = await httpGet('/api/t4t/autocomplete', {
           db: tableCfg.value.db, tableName, limit, key, text, search: e.target.value
         })
-      } catch (e) {
-        recordObj[showForm+'Ac'][col] = []
-        console.log('autoComplete', e.message)
+      } catch (err) {
+        recordObj[_showForm+'Ac'][col] = []
+        console.log('autoComplete', err.message)
       }
     }, 500)
 
@@ -354,7 +354,8 @@ export default {
         } else {
           ids = items.map(item => item.key)
         }
-        const rv = await httpGet('/api/t4t/remove/' + tableName, { ids })
+        // const rv =
+        await httpGet('/api/t4t/remove/' + tableName, { ids })
       } catch (e) {
         alert( `Error delete ${e.toString()}` )
       }

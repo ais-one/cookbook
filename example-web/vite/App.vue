@@ -20,7 +20,6 @@ export default {
     const store = useStore()
     const storeToken = computed(() => store.state.token)
     
-    const login = () => store.dispatch('doLogin', username)
     return {
       storeToken // computed
     }
