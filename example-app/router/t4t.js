@@ -142,7 +142,6 @@ module.exports = express.Router()
           .toArray()
       }
     }
-
     if (csv) {
       const parser = new Parser({})
       const csv = parser.parse(rows)
