@@ -120,5 +120,5 @@ gcloud run services delete helloworld --platform managed --region asia-east1
   - Service Account User
   - Cloud Run Admin
 
-- <WIP> GKE
-- <WIP> Scheduler
+- **WIP** GKE
+- **WIP** Scheduler

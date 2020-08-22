@@ -2,7 +2,27 @@
 
 **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-# VUE-CRUD-X - WHY & WHAT (EVOLUTiON)
+# Features
+
+- Various Frontend Examples
+  - Vite, Vue3, Web Components: Leaflet Map, ECharts, CRUD
+  - SPA + Vuetify: Websockets, Graphql, VueCrudX, i18n, RxJS, 2FA login, Github social login
+  - PWA: FCM push notification
+  - SSR using Nuxt 
+  - Scalable VueJS with Vanilla JS and ES Modules, JWT refresh token
+- Express JS Backend
+  - Objection ORM, Knex, MongoDb
+  - Relational DB data example
+  - FCM push notification, Sendgrid email, Nexmo SMS, Telegram
+  - Agenda message queue
+  - Signed filed upload to GCP Storage
+  - Websockets, graphql
+- Development & Deployment
+  - docker setup of mongodb with replica set
+  - scripts for deploying to vm, GCP Storage (for SPA & static sites), GCP Cloud Run
+  - Documentation (always work in progress and to be improved)
+
+# VUE-CRUD-X - WHY & WHAT (EVOLUTION)
 
 > Why: Reduce writing same code for each new application -> keep code & dependencies updated -> monitor software quality -> auto test and deploy
 
@@ -19,47 +39,6 @@ generic crud frontend with vite, vue 3, web components (example-web/vite/compone
 **vue-crud-x 0.2+** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, CRUD component code was refactored to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
 
 **vue-crud-x 0.1** and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1). You can refer to the v1 [article](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054).
-
-## Design Considerations
-
-> Always Remember Rule #1 - Do Not Let Technical Debt Build Up
-
-- keep technical debt in view
-- keep in mind https://12factor.net/
-- scalable in terms of application use cases & traffic load
-- ease of development, maintenance, updates, build, test, integration, delivery, deployment, etc.
-- size, speed, modularity (e.g. micro services)
-- limit number of languages (e.g. use JS for everything) and dependency usage
-- go native, reduce dependency, balance use of native code vs libraries
-- avoid / move away from using bundlers such as web pack, keep tooling minimal
-- automated testing, ci/cd, devopsec, cloud, container orchestration
-- aiming For Simplicity, Maintainability, Testability
-
-## CRUD Unique Selling Points
-
-The following differentiates vue-crud-x from other CRUD repositories:
-- Able to do nested CRUD operations (parent table call child table),
-- Server side pagination, sorting & filtering
-- Handle infinite scroll use-case
-- Handle authentication tokens, user permissions
-- Customise table, search filter, CRUD form, validation, CRUD operations (call REST, GraphQL, etc.)
-- Auto-configure/generate Search filter and CRUD Forms using JSON
-- Inline edit (row level)
-- Export to CSV/JSON, File/Image Upload
-- Reload & optimization strategy
-- Overridable methods with default behaviour
-- Emitted events for use by parent component
-- Real-time updates & subscription
-
-Other design considerations :
-- i18n, l10n a11y
-- Tree shaking, Lazy loading, Performance
-- Implementation with multiple UI frameworks
-  - remove as many UI framework dependent parts as possible
-  - indacate parts which should change if other UI frameworks are used 
-- Cleaner code with correct use of RxJS, async/await/Promises
-- Prefer static generated sites, over SSR and SPA
-- Automated unit & integration test
 
 
 # QUICK START - ON YOUR LOCAL MACHINE
@@ -96,7 +75,7 @@ To resolve, in **example-app/config** folder, rename **sample-secret** folder to
 
 To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
 
-**NOTE 3** The code below is important, calls setup and reading of configs. It is use in example-app/index.js and also used in example-app/process-long.js (long running process) and example-app/process-cron.js
+**NOTE 3** The code below is important, calls setup and reading of configs. It is used in **example-app/index.js** and also used in **example-app/process-long.js** (long running process) and **example-app/process-cron.js**
 
 ```js
 // index.js
@@ -115,55 +94,46 @@ View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
 
 View website served by Express with functional samples and demos at http://127.0.0.1:3000
 
-2. Testing
+2. Vite
 
-To run unit & integration test on /api/authors route
+MongoDB required for testing CRUD table to work
+
+From vue-crud-x folder
+
+```bash
+cd example-web/vite
+npm i
+npm run dev
+```
+
+3. Testing
+
+To run unit & integration test on /api/authors route. E2E testing is **Work In Progress**
 
 TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in example-app/tests
 
-**Windows**
-
-```
-npm run test
-```
-
-**Linux / Mac**
-
-```
-npm run test:unix
+```bash
+npm run test # windows
+npm run test:unix # linux or mac
 ```
 
-3. Long Running Processes and Cron Triggered Process
+4. Long Running Processes and Cron Triggered Process
 
-Command to run long process (do take note of caveats)
+Command to run long process (do take note of caveats, for production need a monitor to handle restart strategy)
 
-**Windows**
-
-```
-npm run process-long
-```
-
-**Linux / Mac**
-
-```
-npm run process-long:unix
+```bash
+npm run process-long # windows
+npm run process-long:unix # linux or mac
 ```
 
 Command to simulate process triggered by cron (**NOTE:** it may be better to use cron to call API rather than trigger a process)
 
-**Windows**
-
-```
-npm run process-cron
-```
-
-**Linux / Mac**
-
-```
-npm run process-cron:unix
+```bash
+npm run process-cron # windows
+npm run process-cron:unix # linux or mac
 ```
 
-4. To serve the VueJS SPA production build
+5. To serve the VueJS SPA production build
 
 From vue-crud-x folder
 
@@ -178,14 +148,14 @@ Change the example-app/config/index.js file contents
   //...
   WEB_STATIC: [
     //...
-    { folder: process.cwd() + '/spa/dist', url: '/' }, // uncomment this
-    // { folder: APP_PATH + '/public/demo-express', url: '/' }, // comment this
+    { folder: process.cwd() + '/spa/dist', url: '/' }, // UNCOMMENT this line
+    // { folder: APP_PATH + '/public/demo-express', url: '/' }, // COMMENT this line
     //...
   ]
   //...
 ```
 
-5. VueJS example Nuxt SSR/Static Application
+6. VueJS example Nuxt SSR/Static Application
 
 From vue-crud-x folder
 
@@ -197,22 +167,17 @@ npm run dev
 
 **Note:** for static content see example-web/ssr/README.md on generating and serving static content
 
-6. vite
+7. PWA
 
-MongoDB required for testing CRUD table
+For Push Notification to work, setup your firebase account and messaging, also setup FCM server key in backend
 
 From vue-crud-x folder
 
 ```bash
-cd example-web/vite
+cd example-web/pwa
 npm i
-npm run dev
+npm run serve
 ```
-
-
-7. PWA
-
-Work In Progress
 
 ---
 
