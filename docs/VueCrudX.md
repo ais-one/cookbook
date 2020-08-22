@@ -1,3 +1,28 @@
+# CRUD Unique Selling Points
+
+The following differentiates vue-crud-x from other CRUD repositories:
+- Able to do nested CRUD operations (parent table call child table),
+- Server side pagination, sorting & filtering
+- Handle infinite scroll use-case
+- Handle authentication tokens, user permissions
+- Customise table, search filter, CRUD form, validation, CRUD operations (call REST, GraphQL, etc.)
+- Auto-configure/generate Search filter and CRUD Forms using JSON
+- Inline edit (row level)
+- Export to CSV/JSON, File/Image Upload
+- Reload & optimization strategy
+- Overridable methods with default behaviour
+- Emitted events for use by parent component
+- Real-time updates & subscription
+
+Other design considerations :
+- i18n, l10n a11y
+- Tree shaking, Lazy loading, Performance
+- Implementation with multiple UI frameworks
+  - remove as many UI framework dependent parts as possible
+  - indacate parts which should change if other UI frameworks are used 
+- Cleaner code with correct use of RxJS, async/await/Promises
+
+
 # Installing The Library 
 
 ## Option 1 Use NPM package
