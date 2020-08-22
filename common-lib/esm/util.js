@@ -1,4 +1,4 @@
-const APP_VERSION = '0.3.2'
+const APP_VERSION = '0.3.3'
 
 function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';', idName = 'id') { // TBD Make alphbetical order?
   if (!csvContent) {
@@ -75,4 +75,50 @@ function downloadData (content, filename, type = 'text/csv;charset=utf-8;') {
   }
 }
 
-export { APP_VERSION, makeCsvRow, exportCsv, exportJson, downloadData }
+// Usage debounce(<Your Function>, <debounce time in milliseconds>)
+// const debounce = (func, delayMs) => { 
+//   let debounceTimer 
+//   return function() { 
+//     const context = this
+//     const args = arguments 
+//     clearTimeout(debounceTimer) 
+//     debounceTimer = setTimeout(() => func.apply(context, args), delayMs) 
+//   } 
+// }
+
+// call only after X ms has passed
+// Usage debounce(<Your Function>, <debounce time in milliseconds>)
+// searchIdDom.addEventListener('input', () => { debounce(makeApiFetch(), 1000); }
+// Application
+// - Debouncing an input type event handler. (like our search input example)
+// - Debouncing a scroll event handler.
+const debounce = (callback, delay) => {
+  let timeout = null
+  return (...args) => {
+    const next = () => 
+    callback(...args);
+    clearTimeout(timeout);
+    timeout = setTimeout(next, delay)
+  }
+}
+
+// call only X times in Y ms
+// Usage throttle(<Your Function>, <debounce time in milliseconds>)
+// const myHandler = (event) => {...do some stuf...}
+// const myThrottleHandler = throttle(myHandler, 1000);
+// myMouseDomElement.addEventListener("mousemove", myThrottleHandler);
+// Application
+// - Throttling an API call.
+// - Throttling a button click so we can’t spam click.
+// - Throttling a touch/move mouse event handler.
+function throttle(callback, wait) {
+  var time = Date.now();
+  return function() {
+   if ((time + wait - Date.now()) < 0) {
+     callback();
+     time = Date.now();
+   }
+  }
+ }
+
+export { APP_VERSION, makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle }

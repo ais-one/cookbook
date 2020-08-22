@@ -14,9 +14,9 @@
   GITHUB_CLIENT_ID: process.env.VUE_APP_GITHUB_CLIENT_ID || '',
 
   PAGESIZE: process.env.VUE_APP_PAGESIZE || 4,
-  PAGESIZE_OPTS: process.env.VUE_APP_PAGESIZE_OPTS && process.env.VUE_APP_PAGESIZE_OPTS.length ? JSON.parse(process.env.VUE_APP_PAGESIZE_OPTS) : [4, 8,10],
+  PAGESIZE_OPTS: process.env.VUE_APP_PAGESIZE_OPTS && process.env.VUE_APP_PAGESIZE_OPTS.length ? JSON.parse(process.env.VUE_APP_PAGESIZE_OPTS) : [4, 8, 10],
 
-  APP_VERSION: '0.3.2',
+  APP_VERSION: '0.3.3',
 }
 // console.log('WS_URL', WS_URL, process.env.VUE_APP_WS_URL)
 export const {

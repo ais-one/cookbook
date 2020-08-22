@@ -54,8 +54,7 @@ Courses
 
 - web dev
   - 22h https://www.udemy.com/course/the-complete-web-developer-masterclass-beginner-to-advanced
-  - jmeter (in progress)
-
+  - jmeter
 
 
 - CSS

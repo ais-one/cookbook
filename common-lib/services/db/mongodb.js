@@ -54,5 +54,5 @@ const mongo = {
 module.exports = mongo
 
 // USAGE:
-// const mongo = require('<RELATIVE PATH TO>/mongo')
+// const mongo = require('<RELATIVE PATH TO>/mongodb').open
 // await mongo.db.collection('users').findOne({ email: email })

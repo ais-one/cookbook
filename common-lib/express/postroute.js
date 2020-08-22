@@ -1,6 +1,6 @@
 module.exports = function (app, express) {
   const  { UPLOAD_FOLDER, UPLOAD_URL, UPLOAD_STATIC, PROXY_WWW_ORIGIN, WEB_STATIC } = global.CONFIG
-  
+
   // app.set('case sensitive routing', true)
   const hasWebStatic = WEB_STATIC && WEB_STATIC.length
   if (PROXY_WWW_ORIGIN && !hasWebStatic) {

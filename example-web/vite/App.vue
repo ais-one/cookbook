@@ -1,16 +1,28 @@
 <template>
-  <div>
-    <h1>A Test Application For Vite</h1>
-    <router-view></router-view>
-  </div>
+  <layout-secure v-if="storeToken" />
+  <layout-public v-else />
 </template>
 
 <script>
 // :key="$route.fullPath" // this is causing problems
+import layoutPublic from './layouts/Public.vue'
+import layoutSecure from './layouts/Secure.vue'
+
+import { computed } from 'vue'
+import { useStore } from 'vuex'
+
 export default {
-  methods: {
-    clickMe () {
-      alert('Clicked')
+  components: {
+    layoutPublic,
+    layoutSecure
+  },
+  setup(props, context) {
+    const store = useStore()
+    const storeToken = computed(() => store.state.token)
+    
+    const login = () => store.dispatch('doLogin', username)
+    return {
+      storeToken // computed
     }
   }
 }

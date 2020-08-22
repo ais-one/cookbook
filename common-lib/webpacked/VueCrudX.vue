@@ -1,3 +1,116 @@
+<template>
+  <div v-if="ready">
+    <!-- progress overlay -->
+    <slot name="progress" :vcx="_self">
+      <v-overlay :value="loading">
+        <v-progress-circular indeterminate size="64"></v-progress-circular>
+      </v-overlay>
+    </slot>
+    <!-- filter & table -->
+    <component :is="'div'" v-show="!showForm">
+      <slot name="table-toolbar" :vcx="_self">
+        <v-toolbar v-bind="vtoolbar">
+          <v-toolbar-title><v-btn v-if="parentId" v-bind="vbtn.back.props" @click.stop="goBack" :disabled="loading"><v-icon>{{vbtn.back.icon}}</v-icon><span>{{vbtn.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn v-if="filters" v-bind="vbtn.filter.props" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? vbtn.filter.icon2 : vbtn.filter.icon }}</v-icon><span>{{vbtn.filter.label}}</span></v-btn>
+          <v-btn v-bind="vbtn.reload.props" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{vbtn.reload.icon}}</v-icon><span>{{vbtn.reload.label}}</span></v-btn>
+          <v-btn v-if="crud.create" v-bind="vbtn.create.props" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{vbtn.create.icon}}</v-icon><span>{{vbtn.create.label}}</span></v-btn>
+          <v-btn v-if="crud.export" v-bind="vbtn.export.props" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{vbtn.export.icon}}</v-icon><span>{{vbtn.export.label}}</span></v-btn>
+        </v-toolbar>
+      </slot>
+      <div v-if="showFilter">
+        <slot name="filter" :filters="filters" :parentId="parentId" :vcx="_self">
+          <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="vformFilter">
+            <v-container fluid>
+              <v-layout row wrap>
+                <template v-for="(filter, i) in filters">
+                  <v-flex :key="i" v-bind="filter['field-wrapper']">
+                    <component :is="filter.type" v-model="filter.value" v-bind="filter['field-input']" />
+                  </v-flex>
+                </template>
+              </v-layout>
+            </v-container>
+          </v-form>
+        </slot>
+      </div>
+      <slot name="table" :records="records" :totalRecords="totalRecords" :pagination="pagination" :vcx="_self">
+        <v-data-table
+          :headers="vtable.headers"
+          :items="records"
+          :server-items-length="totalRecords"
+          :options.sync="pagination"
+          :hide-default-footer="infinite"
+          v-bind="vtable"
+          :item-key="idName"
+        >
+          <template v-slot:headerCell="props">
+            <span v-html="props.header.text"></span>
+          </template>
+          <!-- <template v-slot:item.data-table-select="{ on, props }">
+            <v-simple-checkbox color="green" v-bind="props" v-on="on"></v-simple-checkbox>
+          </template> -->
+          <template v-slot:item="{ item }">
+            <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="onRowClick(item, $event, _self)">
+              <slot name="td" :headers="vtable.headers" :item="item" :vcx="_self">
+                <td :key="header.value + index" v-for="(header, index) in vtable.headers" :class="header.class">
+                  <span v-if="header.action">
+                    <template v-if="_isRowEditing(item)">
+                      <v-icon v-if="crud.update && inline.update" v-bind="vicon.save.props" @click.stop="_inlineSave(item)" :disabled="loading">{{vicon.save.name}}</v-icon>
+                      <v-icon v-if="crud.update && inline.update" v-bind="vicon.cancel.props" @click.stop="editingRow=null" :disabled="loading">{{vicon.cancel.name}}</v-icon>
+                    </template>
+                    <template v-else>
+                      <v-icon v-if="crud.update && (inline.update || (!inline.update && form))" v-bind="vicon.edit.props" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">{{vicon.edit.name}}</v-icon>
+                      <v-icon v-if="crud.delete && inline.delete" v-bind="vicon.delete.props" @click.stop="deleteRecord(item[idName])" :disabled="loading">{{vicon.delete.name}}</v-icon>
+                    </template>
+                  </span>
+                  <template v-else>
+                    <component v-if="inline.update && _isRowEditing(item) && header.edit" :is="header.edit.type" v-bind="header.edit.props" :key="item[idName]+'-'+item[header.value]" v-model="editingRow[header.value]"></component>
+                    <span v-else v-html="header.render?header.render(item[header.value] || item):item[header.value]"></span>
+                  </template>
+                </td>
+              </slot>
+            </tr>
+          </template>
+          <!-- infinite scroll handling -->
+          <template v-if="infinite" v-slot:footer="">
+            <div v-bind="vbtn.more.wrapper">
+              <v-btn v-if="cursor" @click="getRecords({ mode: 'load-more' })" :disabled="loading" v-bind="vbtn.more.props">{{$t?$t('vueCrudX.more'):vbtn.more.label}}</v-btn>
+            </div>
+          </template>
+          <!-- no data display -->
+          <template v-slot:no-data>
+            <v-alert :value="!loading&&!records.length" color="error" icon="warning">{{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
+          </template>
+        </v-data-table>
+      </slot>
+    </component>
+    <!-- form use v-if instead of v-show to refresh -->
+    <component :is="'div'" v-if="showForm" row justify-center>
+      <slot name="form-toolbar" :vcx="_self">
+        <v-toolbar v-bind="vtoolbar">
+          <v-toolbar-title><v-btn v-bind="vbtn.close.props" @click.native="formClose" :disabled="loading"><v-icon>{{vbtn.close.icon}}</v-icon><span>{{vbtn.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn v-bind="vbtn.delete.props" v-if="crud.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{vbtn.delete.icon}}</v-icon><span>{{vbtn.delete.label}}</span></v-btn>
+          <v-btn v-bind="vbtn.update.props" v-if="crud.update && selectedId||crud.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{vbtn.update.icon}}</v-icon><span>{{vbtn.update.label}}</span></v-btn>
+        </v-toolbar>
+      </slot>
+      <slot name="form" :form="form" :parentId="parentId" :vcx="_self">
+        <v-form v-model="validForm" v-bind="vformCrud"  :parentId="parentId" :vcx="_self">
+          <v-container fluid>
+            <v-layout row wrap>
+              <template v-for="(item, i) in form">
+                <v-flex :key="i" v-if="!_isHidden(item.hidden)" v-bind="item['field-wrapper']">
+                  <component :is="item.type" v-model="item.value" v-bind="item['field-input']" :disabled="_isReadOnly(item.readonly)" @input="onInput($event, i)" />
+                </v-flex>
+              </template>
+            </v-layout>
+          </v-container>
+        </v-form>
+      </slot>
+    </component>
+  </div>
+</template>
+
 <script>
 // Notes:
 // TBD / TODO - todos
@@ -9,7 +122,8 @@
 
 export default {
   props: {
-    parentId: { type: String, default: null }
+    parentId: { type: String, default: null },
+    refreshMs: { type: Number, default: 0 }
   },
   data () {
     return {
@@ -133,10 +247,10 @@ export default {
     this.vformCrud = Object.assign(this.vformCrud, this.$attrs.vformCrud || {})
     this.vtoolbar = Object.assign(this.vtoolbar, this.$attrs.vtoolbar || {})
     this.vtable = Object.assign(this.vtable, this.$attrs.vtable || {})
-    console.log("this.$attrs.pageSizeOptions", this.$attrs.pageSizeOptions)
+    // console.log("this.$attrs.pageSizeOptions", this.$attrs.pageSizeOptions)
     if (this.$attrs.pageSizeOptions && this.$attrs.pageSizeOptions.length) {
       this.vtable['footer-props']['items-per-page-options'] = this.$attrs.pageSizeOptions
-      console.log("this.vtable['footer-props']['items-per-page-options']", this.vtable['footer-props']['items-per-page-options'])
+      // console.log("this.vtable['footer-props']['items-per-page-options']", this.vtable['footer-props']['items-per-page-options'])
     }
     this.sorters = Object.assign(this.sorters, this.$attrs.sorters || {})
     this.sortDefaults = Object.assign(this.sortDefaults, this.$attrs.sortDefaults || {})
@@ -199,6 +313,10 @@ export default {
   async mounted () {
     // not needed in data() because it does not exist in template, an optimization which should be done for others as well
     if (typeof this.$t !== 'function') this.$t = text => text // if no internationalization
+    if (this.refreshMs > 0 && this.showForm  === false) { // should table refresh?
+      let timer = setInterval(() => { if (!this.showForm && !this.showFilter) this.onFilter() }, this.refreshMs)
+      this.$once('hook:beforeDestroy', () => { if (timer) clearInterval(timer) })
+    }
   },
   computed: {
     showTitle () { return this.title || '' }
@@ -374,6 +492,7 @@ export default {
     },
     async onExport () { await this.exportRecords() },
     // clearFilter () { this.$refs.searchForm.reset() }, // can do test code here too
+    onInput (ev, key) { this.$emit(`${key}Input`, ev) },
 
     // INLINE EDIT START
     _isRowEditing (item) { return (!this.editingRow) ? false : item[this.idName] === this.editingRow[this.idName] },
@@ -390,123 +509,11 @@ export default {
     _isHidden (hidden) { return (hidden === 'add' && !this.selectedId) || (hidden === 'edit' && !!this.selectedId) || hidden === 'all' },
     _isReadOnly (readonly) { return (readonly === 'add' && !this.selectedId) || (readonly === 'edit' && !!this.selectedId) || readonly === 'all' },
     _isObject (obj) { return obj !== null && typeof obj === 'object' },
+
     async testFunction (_in) { } // for testing anything
   }
 }
 </script>
-
-<template>
-  <div v-if="ready">
-    <!-- progress overlay -->
-    <slot name="progress" :vcx="_self">
-      <v-overlay :value="loading">
-        <v-progress-circular indeterminate size="64"></v-progress-circular>
-      </v-overlay>
-    </slot>
-    <!-- filter & table -->
-    <component :is="'div'" v-show="!showForm">
-      <slot name="table-toolbar" :vcx="_self">
-        <v-toolbar v-bind="vtoolbar">
-          <v-toolbar-title><v-btn v-if="parentId" v-bind="vbtn.back.props" @click.stop="goBack" :disabled="loading"><v-icon>{{vbtn.back.icon}}</v-icon><span>{{vbtn.back.label}}</span></v-btn> {{ showTitle }}</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn v-if="filters" v-bind="vbtn.filter.props" @click="showFilter=!showFilter"><v-icon>{{ showFilter ? vbtn.filter.icon2 : vbtn.filter.icon }}</v-icon><span>{{vbtn.filter.label}}</span></v-btn>
-          <v-btn v-bind="vbtn.reload.props" @click="onFilter" :disabled="!validFilter || loading"><v-icon>{{vbtn.reload.icon}}</v-icon><span>{{vbtn.reload.label}}</span></v-btn>
-          <v-btn v-if="crud.create" v-bind="vbtn.create.props" @click.stop="inline.create?_inlineCreate():formOpen(null)" :disabled="loading"><v-icon>{{vbtn.create.icon}}</v-icon><span>{{vbtn.create.label}}</span></v-btn>
-          <v-btn v-if="crud.export" v-bind="vbtn.export.props" @click.stop.prevent="onExport" :disabled="loading"><v-icon>{{vbtn.export.icon}}</v-icon><span>{{vbtn.export.label}}</span></v-btn>
-        </v-toolbar>
-      </slot>
-      <div v-if="showFilter">
-        <slot name="filter" :filters="filters" :parentId="parentId" :vcx="_self">
-          <v-form v-if="filters" v-model="validFilter" ref="searchForm" v-bind="vformFilter">
-            <v-container fluid>
-              <v-layout row wrap>
-                <template v-for="(filter, i) in filters">
-                  <v-flex :key="i" v-bind="filter['field-wrapper']">
-                    <component :is="filter.type" v-model="filter.value" v-bind="filter['field-input']" />
-                  </v-flex>
-                </template>
-              </v-layout>
-            </v-container>
-          </v-form>
-        </slot>
-      </div>
-      <slot name="table" :records="records" :totalRecords="totalRecords" :pagination="pagination" :vcx="_self">
-        <v-data-table
-          :headers="vtable.headers"
-          :items="records"
-          :server-items-length="totalRecords"
-          :options.sync="pagination"
-          :hide-default-footer="infinite"
-          v-bind="vtable"
-          :item-key="idName"
-        >
-          <template v-slot:headerCell="props">
-            <span v-html="props.header.text"></span>
-          </template>
-          <!-- <template v-slot:item.data-table-select="{ on, props }">
-            <v-simple-checkbox color="green" v-bind="props" v-on="on"></v-simple-checkbox>
-          </template> -->
-          <template v-slot:item="{ item }">
-            <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="onRowClick(item, $event, _self)">
-              <slot name="td" :headers="vtable.headers" :item="item" :vcx="_self">
-                <td :key="header.value + index" v-for="(header, index) in vtable.headers" :class="header.class">
-                  <span v-if="header.action">
-                    <template v-if="_isRowEditing(item)">
-                      <v-icon v-if="crud.update && inline.update" v-bind="vicon.save.props" @click.stop="_inlineSave(item)" :disabled="loading">{{vicon.save.name}}</v-icon>
-                      <v-icon v-if="crud.update && inline.update" v-bind="vicon.cancel.props" @click.stop="editingRow=null" :disabled="loading">{{vicon.cancel.name}}</v-icon>
-                    </template>
-                    <template v-else>
-                      <v-icon v-if="crud.update && (inline.update || (!inline.update && form))" v-bind="vicon.edit.props" @click.stop="inline.update?editingRow = { ...item }:formOpen(item[idName])" :disabled="loading">{{vicon.edit.name}}</v-icon>
-                      <v-icon v-if="crud.delete && inline.delete" v-bind="vicon.delete.props" @click.stop="deleteRecord(item[idName])" :disabled="loading">{{vicon.delete.name}}</v-icon>
-                    </template>
-                  </span>
-                  <template v-else>
-                    <component v-if="inline.update && _isRowEditing(item) && header.edit" :is="header.edit.type" v-bind="header.edit.props" :key="item[idName]+'-'+item[header.value]" v-model="editingRow[header.value]"></component>
-                    <span v-else v-html="header.render?header.render(item[header.value] || item):item[header.value]"></span>
-                  </template>
-                </td>
-              </slot>
-            </tr>
-          </template>
-          <!-- infinite scroll handling -->
-          <template v-if="infinite" v-slot:footer="">
-            <div v-bind="vbtn.more.wrapper">
-              <v-btn v-if="cursor" @click="getRecords({ mode: 'load-more' })" :disabled="loading" v-bind="vbtn.more.props">{{$t?$t('vueCrudX.more'):vbtn.more.label}}</v-btn>
-            </div>
-          </template>
-          <!-- no data display -->
-          <template v-slot:no-data>
-            <v-alert :value="!loading&&!records.length" color="error" icon="warning">{{$t?$t('vueCrudX.noData'):'NO DATA'}}</v-alert>
-          </template>
-        </v-data-table>
-      </slot>
-    </component>
-    <!-- form use v-if instead of v-show to refresh -->
-    <component :is="'div'" v-if="showForm" row justify-center>
-      <slot name="form-toolbar" :vcx="_self">
-        <v-toolbar v-bind="vtoolbar">
-          <v-toolbar-title><v-btn v-bind="vbtn.close.props" @click.native="formClose" :disabled="loading"><v-icon>{{vbtn.close.icon}}</v-icon><span>{{vbtn.close.label}}</span></v-btn> {{showTitle}}</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn v-bind="vbtn.delete.props" v-if="crud.delete && selectedId" @click.native="formDelete" :disabled="loading"><v-icon>{{vbtn.delete.icon}}</v-icon><span>{{vbtn.delete.label}}</span></v-btn>
-          <v-btn v-bind="vbtn.update.props" v-if="crud.update && selectedId||crud.create && !selectedId" :disabled="!validForm||loading" @click.native="formSave"><v-icon>{{vbtn.update.icon}}</v-icon><span>{{vbtn.update.label}}</span></v-btn>
-        </v-toolbar>
-      </slot>
-      <slot name="form" :form="form" :parentId="parentId" :vcx="_self">
-        <v-form v-model="validForm" v-bind="vformCrud"  :parentId="parentId" :vcx="_self">
-          <v-container fluid>
-            <v-layout row wrap>
-              <template v-for="(item, i) in form">
-                <v-flex :key="i" v-if="!_isHidden(item.hidden)" v-bind="item['field-wrapper']">
-                  <component :is="item.type" v-model="item.value" v-bind="item['field-input']" :disabled="_isReadOnly(item.readonly)"/>
-                </v-flex>
-              </template>
-            </v-layout>
-          </v-container>
-        </v-form>
-      </slot>
-    </component>
-  </div>
-</template>
 
 <style scoped>
 </style>

@@ -1,7 +1,8 @@
 ## Team Guiding Principles
 
-- Do not built technical debt
+- Do not build-up technical debt
   - balance between developing own code and using dependencies
+
 - The tool or language should not get in the way of fulfilling business objectives and adapting to changes
 
 ## Tooling
@@ -15,7 +16,7 @@ VS Code
    - vetur, syntax highlighting for VueJS
    - live share, collaborative development
 
-Jest
+Jest?
 - Automated Testing
   - Unit Test
   - Functional Testing

@@ -15,20 +15,13 @@ Use ESM libraries... this means no axios for now unless they have an esm build o
 We should have the following
 - Vuex
 - VueRouter
-- External non-ESM libraries (using snowpack)
-- (TBD) Get some UI library - Buefy does not work with Vue 3 yet...
 
 [https://github.com/vuejs/vite](https://github.com/vuejs/vite)
 
 
 ## Vitepress 
 
-TBD [https://github.com/vuejs/vitepress](https://github.com/vuejs/vitepress)
-
-
-# Shameless Plug
-
-If this is interesting, look at my other project on github [https://github.com/ais-one/vue-crud-x](https://github.com/ais-one/vue-crud-x)
+[https://github.com/vuejs/vitepress](https://github.com/vuejs/vitepress)
 
 
 # Setup
@@ -39,22 +32,24 @@ If this is interesting, look at my other project on github [https://github.com/a
 npm i
 ```
 
-2. [REMOVED] Do snowpack to convert some of them to ES Modules, e.g. axios, moment
-
-```
-npx snowpack
-```
-
-3. For development Run from dev server
+2. For development Run from dev server
 
 ```
 npm run dev
 ```
 
-4. For production
+3. For production
 
 ```
 npm run build
 ```
 
 ---
+
+# Clean up
+
+```
+npm cache clean --force
+rm -rf node_modules
+rm package-lock.json
+```

@@ -1,3 +1,6 @@
+require(require('path').join(process.cwd(), 'common-lib', 'setup')) // first thing to setup
+require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
+
 const { MONGO_DB, MONGO_URL } = global.CONFIG
 const { JWT_REFRESH_STORE, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE_NAME } = global.CONFIG
 
@@ -19,11 +22,28 @@ client.connect(async err => {
       const icc = require('../icc.json')
       await db.collection('country').deleteMany({})
       await db.collection('country').createIndex({ code: 1 }, { unique: true })
+      await db.collection('country').createIndex({ name: 1 }, { unique: true })
       await db.collection('country').insertMany(icc)
 
       await db.collection('person').deleteMany({})
       await db.collection('person').createIndex({ firstName: 1, lastName: 1 }, { unique: true })
-
+      await db.collection('person').insertOne({
+        firstName: 'first',
+        lastName: 'last',
+        sex: 'M',
+        subjects: 'EM,PHY',
+        age: 1,
+        gpa: 0,
+        birthDate: '',
+        birthTime: '',
+        country: 'SG',
+        birthDateTimeTz: null,
+        website: '',
+        remarks: '',
+        updated_by: 'someone',
+        updated_at: new Date()  
+      })
+  
       client.close()
       process.exit(0)
     } catch (e) {

@@ -79,7 +79,7 @@ gsutil rm -r gs://www.example.com
 
 Prerequisites: Dockerfile prepared
 
-See [deployment-container.md](deployment-container.md) "Backend Application"
+See [../deployment/deployment-container.md#backend-application](../deployment/deployment-container.md#backend-application)
 
 Reference:
 - https://levelup.gitconnected.com/dockerizing-and-autoscaling-node-js-on-google-cloud-ef8db3b99486
@@ -109,3 +109,16 @@ gcloud run deploy helloworld --image gcr.io/cloudrun/hello --platform managed --
 gcloud container images delete gcr.io/cloudrun/helloworld
 gcloud run services delete helloworld --platform managed --region asia-east1
 ```
+
+## Minimal Permissions
+
+- Storage
+  - Storage Admin
+  - Storage Object Admin
+
+- Cloud Run
+  - Service Account User
+  - Cloud Run Admin
+
+- **WIP** GKE
+- **WIP** Scheduler

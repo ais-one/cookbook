@@ -57,11 +57,13 @@ exports.open = function (server=null, app=null) {
           })
         }, WS_KEEEPALIVE_MS)
       }
+    } else {
+      console.log('NO WS Service To Open')
     }
   } catch (e) {
     err = e.toString()
   }
-  console.log(err || 'WS API OPEN OK')
+  console.log('WS Open ' + (err ? err : 'Done'))
   return this
 }
 

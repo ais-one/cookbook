@@ -1,16 +1,24 @@
 
 <template>
-  <div>
-    [<router-link to="/site-a">Site A</router-link>] [<router-link to="/site-b">Site B</router-link>]
+  <div class="container">
     <h1>A Hello Vite + Vue 3!</h1>
-    <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>    
+    <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>
     <p>
       <span>Count is: {{ count }}</span>
       <button @click="count++">increment</button>
-      <vaadin-button @click="count++">Add</vaadin-button>
     </p>
-    <p>Vuex Store {{ storeCount }}</p>
+    <mwc-select label="preselected" :value="selected" @change="updateSelected">
+      <mwc-list-item value="0">Item 0</mwc-list-item>
+      <mwc-list-item value="1">Item 1</mwc-list-item>
+      <mwc-list-item value="2">Item 2</mwc-list-item>
+    </mwc-select>
+    <p>Non-Reactive Data: {{ nonReactiveData }}</p>
+    <p>Reactive Data: {{ reactiveData }}</p>
+    <p>Vuex Store {{ storeCount }} - {{ storeToken }}</p>
     <p>Axios GET {{ msg }}</p>
+    <ul>
+      <li v-for="n in 50" :key="n">{{ n }}</li>
+    </ul>
   </div>
 </template>
 
@@ -23,10 +31,9 @@ import { useRouter, useRoute } from 'vue-router'
 
 // import axios from '/web_modules/axios.js'
 // import axios from 'axios'
-import '@vaadin/vaadin-button'
 
 export default {
-  // name: 'Home',
+  name: 'Dashboard',
   setup(props, context) {
     const store = useStore()
     const route = useRoute()
@@ -36,9 +43,16 @@ export default {
     const count = ref(0)
     const msg = ref('')
     const titleRef = ref(null)
+    let nonReactiveData = 10
+    const reactiveData = ref(20)
+
+    const selected = ref(String(2))
+
+    const updateSelected = (e) => selected.value = e.target.value
 
     // const plusOne = computed(() => count.value + 1)
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
+    const storeToken = computed(() => store.state.token)
 
     // const stop = watchEffect(() => console.log(count.value))
     // // -> logs 0
@@ -65,7 +79,7 @@ export default {
 
     // watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
     // })
-
+    let timerId
     onMounted(async () => {
       console.log('mounted!')
       console.log('props', props)
@@ -76,21 +90,38 @@ export default {
       console.log('useStore', store)
       console.log('useRouter', router)
       console.log('useRoute', route)
+
+      timerId = setInterval(() => {
+        console.log('timer fired', String(selected.value))
+        nonReactiveData += 1
+        reactiveData.value += 1
+      }, 200000)
     })
     onUpdated(() => {
       console.log('updated!')
     })
     onBeforeUnmount(() => {
+      if (timerId) clearInterval(timerId)
       console.log('before mounted!')
     })
     onUnmounted(() => {
       console.log('unmounted!')
     })
+
+    // // Watch prop value change and assign to value 'selected' Ref
+    // watch(() => props.value, (newValue: Props['value']) => {
+    //   selected.value = newValue;
+    // });
     return {
-      count,
+      nonReactiveData, // non reactive
+      reactiveData, // ref reactive
+      count, // ref
       msg,
+      selected,
       titleRef,
-      storeCount
+      storeCount, // store
+      storeToken,
+      updateSelected
     }
   }
   // data: () => ({ count: 0, msg: '' }),

@@ -2,8 +2,7 @@
 
 Prerequisites: Docker image in container registry gcr.io
 
-See [basic.md](basic.md) "Docker Build And Push To gcr.io"
-
+See [basic.md#docker-build-and-push-to-gcrio](basic.md#docker-build-and-push-to-gcrio)
 
 ## Configure Firewall Rules
 

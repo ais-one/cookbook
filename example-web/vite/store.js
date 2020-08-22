@@ -1,27 +1,41 @@
 import { createStore } from 'vuex'
-// import { createStore } from 'vuex/dist/vuex.esm-bundler.js'
+
+import router from './router.js'
 
 // import aaa from 'https://unpkg.com/swrv@0.3.0/esm/index.js' - will error
 
-// Vuex will fail if below line is commented - being fixed in https://github.com/vuejs/vuex/issues/1730
-// window.process = { env: { NODE_ENV: '' } }
-
 const state = {
-  count: 99
+  count: 99,
+  token: ''
 }
 
 const mutations = {
-  increment (payload) {
-    payload.count++
+  login (state, payload) {
+    console.log('setToken', payload)
+    state.token = payload
   },
-  decrement (payload) {
-    payload.count--
+  increment (state) {
+    state.count++
+  },
+  decrement (state) {
+    state.count--
   }
 }
 
 // actions are functions that cause side effects and can involve
 // asynchronous operations.
 const actions = {
+  doLogin: async ({ commit, ...ctx }, payload) => {
+    // await fetch here to get token from API...
+    if (payload) { // sign in ok
+      console.log('doLogin', payload)
+      commit('login', `Token:${payload}:${Date.now()}`)
+      router.push('/dashboard')
+    } else { // sign in failed
+      commit('login', '')
+      router.push('/')
+    }
+  },
   increment: ({ commit }) => commit('increment'),
   decrement: ({ commit }) => commit('decrement'),
   incrementIfOdd ({ commit, payload }) {

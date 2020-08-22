@@ -1,86 +1,65 @@
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine) [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-**TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, Cloud Container Deployment
+> **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-# VUE-CRUD-X - WHY & WHAT
+Latest Version [0.3.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.3) - Released 2020 Aug 23 0215 +8GMT
 
-> Writing same code each time you work on a new application? Trouble keeping the libraries updated? Many fixes when dependency version changes?
+# Features
 
-Well... what started as a CRUD component for VueJS has grown to a full-stack app development cookbook, and further expanded into a way of building and maintaining multiple full-stack applications of different use cases with as little waste as possible, aiming to address those 3 issues above as much as possible!
-
-> A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, forms, use of GraphQL or REST to access various datastores. Vuetify is used for frontend UI components but can be changed to alternatives such as ElementUI (with some effort)
-
-> Over time, the example projects to show the use of **vue-crud-x** have grown to become a **cookbook** that includes many other useful **recipes** for use in production ExpressJS and VueJS web applications.
-
-# NOTICES & UPDATES
-
-Latest Version [0.3.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.2) - Released 2020 Jul 11 0400 +8GMT
-
-**vue-crud-x 0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
-
-**vue-crud-x 0.2+** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, we took the chance to make things better by designing component to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and supporting [article](https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0).
-
-**vue-crud-x 0.1** and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1). You can refer to the v1 [article](https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054).
-
-## Design Considerations
-
-> Always Remember Rule #1 - Do Not Let Technical Debt Build Up
-
-- keep technical debt in view
-- keep in mind https://12factor.net/
-- scalable in terms of application use cases & traffic load
-- ease of development, maintenance, updates, build, test, integration, delivery, deployment, etc.
-- size, speed, modularity (e.g. micro services)
-- limit number of languages (e.g. use JS for everything) and dependency usage
-- go native, reduce dependency, balance use of native code vs libraries
-- avoid / move away from using bundlers such as web pack, keep tooling minimal
-- automated testing, ci/cd, devopsec, cloud, container orchestration
-
-## CRUD Unique Selling Points
-
-The following differentiates vue-crud-x from other CRUD repositories:
-- Able to do nested CRUD operations (parent table call child table),
-- Server side pagination, sorting & filtering
-- Handle infinite scroll use-case
-- Handle authentication tokens, user permissions
-- Customise table, search filter, CRUD form, validation, CRUD operations (call REST, GraphQL, Firestore, etc.)
-- Auto-configure/generate Search filter and CRUD Forms using JSON
-- Inline edit (row level)
-- Export to CSV/JSON, File/Image Upload
-- Reload & optimization strategy
-- Overridable methods with default behaviour
-- Emitted events for use by parent component
-- Real-time updates & subscription
-
-Other design considerations :
-- i18n, l10n a11y
-- Tree shaking, Lazy loading, Performance
-- Implementation with multiple UI frameworks
-  - remove as many UI framework dependent parts as possible
-  - indacate parts which should change if other UI frameworks are used 
-- Cleaner code with correct use of RxJS, async/await/Promises
-- Prefer static generated sites, over SSR and SPA
-- Automated unit & integration test
-
+- Frontend Examples
+  - **NEW** [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
+  - [SPA & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-web/spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP, Webcam (WIP), Signature canvas (WIP)
+  - [PWA](https://github.com/ais-one/vue-crud-x/tree/master/example-web/pwa): FCM push notification & PWA features
+  - [SSR using Nuxt](https://github.com/ais-one/vue-crud-x/tree/master/example-web/ssr): Handling 500 and 404 errors, show gotchas of SSR
+  - [Vanilla JS, ES Modules](https://github.com/ais-one/vue-crud-x/tree/master/example-app/public): No bundler, scalable VueJS Application , example codes (signed uploads, JWT refresh token, OTP)
+- [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/) & [Common Libs](https://github.com/ais-one/vue-crud-x/tree/master/common-libs/)
+  - Cors, proxy middleware, helmet, error handling, logging, OpenAPI
+  - Objection ORM, Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis
+  - FCM push notification, Sendgrid email, Nexmo SMS, Telegram
+  - AgendaJS message queue
+  - File uploads, Signed URL file upload to GCP Storage
+  - Websockets, graphql
+  - JWT using RSA, JWT refresh token, Passwort SAML (WIP), token in HttpOnly cookies, GA OTP, role
+  - Unit Test & Integration Test
+- Development & Deployment
+  - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) of mongodb with replica set
+  - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
+  - [Deploy script](https://github.com/ais-one/vue-crud-x/tree/master/deploy.sh) to VM, GCP Cloud Run, GCP Storage (for SPA & static sites)
 
 # QUICK START - ON YOUR LOCAL MACHINE
 
-1. Clone the repository, setup and run, using the following commands
+## Backend & SPA or Vite, PWA, SSR
+
+### Backend Setup & Run
 
 ```bash
+# clone repo and install backend
 git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
-npm run install-libs
-npm run initdb-knex
-npm run app:spa
+npm run install
+
+# create and seed relational db on SQLite
+npm run knex # windows
+npm run knex:unix # linux or mac
+
+# create and seed MongoDB requires MongoDB - you can skip this but MongoDB examples will not work
+npm run mongo # windows
+npm run mongo:unix # linux or mac
+
+# run the backend
+npm run app # windows
+npm run app:unix # linux or mac
 ```
 
-**NOTE 1** the **secret** folder is missing so there maybe some logs about missing files (but it is ok to ignore), graphql and websockets will not work also. To get them to work, in **example-app/config** folder, rename **sample-secret** folder to **secret**. You can look at the readme inside **sample-secret** folder for more information
+**Visit the following URLs**
+- http://127.0.0.1:3000/api/healthcheck - app is running normally
+- http://127.0.0.1:3000/api-docs - OpenAPI UI 
+- http://127.0.0.1:3000 - Website served by Express with functional samples and demos at 
 
-**NOTE 2** mongodb is not run and there will be connection error for mongodb. To have mongodb use docker-compose file in docker-devenv\mongodb. Remember to do one-time initiate of replication set first.
-
-
-The code below is important, setup and reading of configs. It is use in common-lib/app.js and also used in process-cron.js and process-long.js (long running process)
+**NOTES**
+- MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
+- The **example-app/config/secret** folder is missing so there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. To resolve, in **example-app/config** folder, rename **sample-secret** folder to **secret**. You can look at the readme inside **sample-secret** folder for more information
+- The code below is important, calls setup and reading of configs. It is used in **example-app/index.js** and also used in **example-app/process-long.js** (long running process) and **example-app/process-cron.js**
 
 ```js
 // index.js
@@ -88,42 +67,88 @@ require(require('path').join(process.cwd(), 'common-lib', 'setup')) // first thi
 require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
 ```
 
-Navigate to http://127.0.0.1:8080 to view the VueCrudX demo and example SPA application in development
+### SPA Setup & Run
+
+```bash
+cd example-web/spa
+npm i
+npm run serve
+```
+
+Navigate to http://127.0.0.1:8080 to view application with VueCrudX demo 
 
 Login using the following:
 - User: test
 - Password: test
-- OTP (if enabled): if USE_OTP set to TEST, use 111111 as otp pin
+- OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin
 
-View example OpenAPI documentation at http://127.0.0.1:3000/api-docs
+### Vite Setup & Run
 
-View website served by Express with functional samples and demos at http://127.0.0.1:3000
+MongoDB required for testing CRUD table to work
 
-2. Testing
+```bash
+cd example-web/vite
+npm i
+npm run dev
+```
 
-To run unit & integration test on /api/authors route
+Navigate to http://127.0.0.1:8080 to view application. Just click login button
+
+
+### PWA Setup & Run
+
+For Push Notification to work, setup your firebase account and messaging, also setup FCM server key in backend
+
+```bash
+cd example-web/pwa
+npm i
+npm run serve
+```
+
+### Nuxt SSR/Static Application Setup & Run
+
+```bash
+cd example-web/ssr
+npm i
+npm run dev
+```
+
+**Notes**
+- for static content see example-web/ssr/README.md on generating and serving static content
+- Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes
+- We use SSR mode, WITHOUT implementing the server side features for efficient debugging of static generated sites.
+
+
+## Testing
+
+E2E testing is **Work In Progress**
+
+To run unit & integration test on /api/authors route.
 
 TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in example-app/tests
 
-```
-npm run test
+```bash
+npm run test # windows
+npm run test:unix # linux or mac
 ```
 
-3. Long Running Processes and Crons
+## Long Running Processes and Cron Triggered Process
 
-Command to run long process (do take note of caveats)
+Command to run long process (do take note of caveats, for production need a monitor to handle restart strategy)
 
-```
-npm run process-long
+```bash
+npm run process-long # windows
+npm run process-long:unix # linux or mac
 ```
 
 Command to simulate process triggered by cron (**NOTE:** it may be better to use cron to call API rather than trigger a process)
 
-```
-npm run process-cron
+```bash
+npm run process-cron # windows
+npm run process-cron:unix # linux or mac
 ```
 
-4. To serve the VueJS SPA production build
+## To serve the VueJS SPA production build
 
 From vue-crud-x folder
 
@@ -138,29 +163,12 @@ Change the example-app/config/index.js file contents
   //...
   WEB_STATIC: [
     //...
-    { folder: process.cwd() + '/spa/dist', url: '/' }, // uncomment this
-    // { folder: APP_PATH + '/public/demo-express', url: '/' }, // comment this
+    { folder: process.cwd() + '/spa/dist', url: '/' }, // UNCOMMENT this line
+    // { folder: APP_PATH + '/public/demo-express', url: '/' }, // COMMENT this line
     //...
   ]
   //...
 ```
-
-5. VueJS example Nuxt SSR/Static Application
-
-In vue-crud-x folder, run the **frontend** from one console...
-
-```bash
-cd example-web/ssr
-npm i
-npm run dev
-```
-
-**Note:** for static content see example-web/ssr/README.md on generating and serving static content
-
-6. PWA and vite
-
-Work In Progress
-
 
 ---
 
@@ -215,76 +223,9 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. developm
 If too many config properties, split it to other more and files
 
 
-## Updating The Library
+## Updating The Library WIP
 
 See script **update.sh**
-
-## Deployment
-
-The following are the environments
-
-- development (used for local development)
-- uat
-- production (not shown in the example but can be created)
-
-### development environment
-
-The development environment is on a local machine used by developers.
-
-Docker compose can be used to set up supporting applications such as Redis, ElasticSearch, Kafka, etc.
-
-- cloudflare - no
-- frontend - local
-- backend - local
-- mongodb - local
-- file uploads - local folder / Google object storage
-- sqlite - local file
-- user_session - local memory
-
-Commands for running locally are described in the QUICK START.
-
-
-### uat (and also production) environment
-
-The UAT, production and (optional staging) environments are on the service provider.
-
-- Domain name verification
-- cloudflare
-  - DNS (for API, for frontend)
-  - full SSL (can be self-signed at server side)
-- frontend - GCP object storage, https
-- backend - docker-> Google Cloud Run, https
-  - OPTION deploy to GCP Group Instances (need to set load balancer and networking) [TBD]
-  - OPTION deploy to GKE [TBD]
-- mongodb - Mongo Atlas
-- file uploads - Google object storage
-- sqlite - local file (should replace with SQL DB)
-- user_session - mongodb
-
-**Manual Deployment Script**
-
-```
-npm run deploy
-```
-
-- Frontend
-  - select ```deploy-fe``` to deploy frontend on object storage
-- Cloud Run backend
-  - select ```deploy-cr``` to deploy backend on cloud run
-    - need to set CORS on allowed frontend origin
-    - if using custom domain, requires domain name, point to CNAME
-- VM backend (Optional)
-  - select ```deploy-vm```
-  - you can use the following commands ```stop,start,list```
-
-
-> work needs to be done on the organise and reference the setup documentation in the docs folder
-
-
-## CircleCI Deployment (Work In Progress)
-
-TBD
-
 
 ---
 
@@ -364,71 +305,6 @@ vue-crud-x
 +- update.sh
 ```
 
-
-## [spa](https://github.com/ais-one/vue-crud-x/tree/master/example-app/web/spa)
-
-Recipes for a production-ready SPA:
-- Example **vue-crud-x** usage
-- REST and websockets
-- Graphql (Apollo client, includes authentication, subscriptions, cache, optimistic UI, refetch queries)
-- Login
-  - recaptcha
-  - Local Email-password login, Github login & JWT
-    - optional 2FA OTP signin with Google Authenticator
-      - setup with USE_OTP=GA in environement files of both the front and backend
-      - Check DB seeders for the API key to use, or you can find out how to generate your own
-- rxJs for cleaner code (auto-complete, debounce, fetch latest)
-- Upload to cloud provider using signed URLs
-- Other Features
-  - Image capture via webcam
-  - Signature capture on canvas
-
-## [backend & libs](https://github.com/ais-one/vue-crud-x/tree/master/common-lib/)
-
-Recipes for a production-ready Express server used by **example-app/web/spa** and **example-app/web/ssr**:
-- ObjectionJS
-  - Sample SQL DB with 1-1, 1-m, m-n use cases, transactions, migrations, seeders,
-  - Supports SQLite, MySQL, MariaDB, Postgres, MSSQL
-- MongoDB
-  - seeders (migration not needed)
-  - watch for real-time collection & document changes
-- Authentication & Authorization
-  - JWT (with RSA signatures) & 2FA OTP (using Google Authenticator), Refresh token, token in HttpOnly cookies
-  - Local Login, OAuth2 Github Login, SAML ADFS login using Passport
-- CORS, proxy middleware, helmet (securing express)
-- Documentation
-  - OpenAPI with JSDoc (enable for local only)
-- Key-Value Store for user token storage on server (can replace with redis in production environment)
-- Websocket (use https://www.websocket.org/echo.html & ngrok to test)
-- GraphQL (use Apollo server)
-- File uploads (to VM or to cloud storage via Signed URLs)
-- Unit Test & Integration Test
-- Logging
-- Message queues (Bull, AgendaJS)
-- No-bundler frontend demo
-
-
-## [ssr](https://github.com/ais-one/vue-crud-x/tree/master/example-app/web/ssr)
-
-Recipes for a production-ready Nuxt static sites. Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes:
-- nuxt-auth (removed, use from example-spa instead due to... lack of refresh token, and possibly lack of httponly token capability - as at time of writing 21-11-2019)
-  - Social login using Github
-- nuxt-i18n (removed, the documents are more than sufficient for now)
-- SSR & pre-generated Static Web App 
-  - Handling of 500 and 404 errors
-- Show gotchas of SSR
-
-**IMPORTANT NOTE:** we use SSR mode, WITHOUT implementing the server side features for efficient debugging of static generated sites.
-
-## [pwa](https://github.com/ais-one/vue-crud-x/tree/master/example-app/web/pwa)
-
-- PWA
-- Push Notifications
-
-## [vite](https://github.com/ais-one/vue-crud-x/tree/master/example-app/web/vite)
-
-Something new...
-
 ---
 
 # DOCUMENTATION
@@ -437,11 +313,18 @@ Something new...
 
 Roadmap and Release notes for the library and examples can be found in [Release.md](Release.md)
 
+Deployment notes can be found in (docs/deployment/home.md)
+
 Documentation can be found starting at [docs/home.md](docs/home.md)
 
-**vue-crud-x 0.2+ Article** <a href="https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0" target="_blank">VueJS+ExpressJS CRUD & Cookbook</a>
 
-**vue-crud-x 0.1 Article** <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Legacy Article (For Historical Reference)</a>
+**vue-crud-x 0.2+ Article** 
+
+## VERSION CHANGE NOTES
+
+- **v0.3+**  Reorganize folders and structure, for ease of developing and maintaining multiple applications.
+- **v0.2+** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, CRUD component code was refactored to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and <a href="https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0" target="_blank">supprting article - VueJS+ExpressJS CRUD & Cookbook</a>
+- **v0.1** and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1). You can refer to the v1  <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Legacy Article (For Historical Reference)</a>
 
 
 # SAMPLE SCREENSHOTS

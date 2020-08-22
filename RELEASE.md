@@ -1,3 +1,44 @@
+### Version 0.3.3
+- [chore] update packages & cleanup & work on improving documentation
+- improve npm scripts to handler Windows and Unix environments
+- spa
+  - removed vue-apollo wrapper to apollo client, just use apollo client directly, apollo client v2 to v3 has broken vue-apollo v3
+- vite
+  - web components or no bundler required UI framework, also make code more framework agnostic
+  - generic table crud
+  - add echarts and leaflet example
+- backend
+  - generic table crud
+
+### Ongoing
+- [Work-in-progress]
+  - circleci workflow
+    - deploy backend to GCP Cloud Run
+    - deploy SPA frontend to GCP Storage
+  - backend
+    - GKE, Kubernetes
+    - add kafka working example
+  - frontend
+    - Preparing for VueJS 3
+    - cypress e2e testing
+- [TODO]
+  - Make VueCrudX ES module build (only possible when UI framework e.g. Vuetify has ES module version)
+  - backend
+    - research websocket testing, improve coverage
+    - research auto generated REST API and Testing (keep in view dredd.io)
+    - JsonSchema
+  - frontend
+    - Handle/Test Signature & Webcam input
+    - Fetch API abort / retry
+    - PWA cookbook (many things to consider)
+  - others
+    - graphql security & performance review
+    - use monorepo when npm 7 is released ?
+    - improve structure further
+- [Findings]
+  - Logging (Use APM instead?) - use console.log & morgan
+  - use native html5 validation rather than Vuelidate / Vee-validate (major version changes is painful)
+
 ### Version 0.3.2
 - [chore] update packages & cleanup & work on improving documentation
 - make it CI/CD friendly [re-organized folders again...]
@@ -10,39 +51,6 @@
   - Medium to large
     - Frontend deploy to GCP Storage / AWS S3 etc.
     - Backend as docker container, Google Cloud Run
-
-### Ongoing
-- [Work-in-progress]
-  - circleci workflow
-    - deploy backend to GCP Cloud Run
-    - deploy SPA frontend to GCP Storage
-  - backend
-    - GKE, Kubernetes
-    - generic table crud frontend
-  - frontend
-    - generic table crud backend
-    - cypress e2e testing
-    - Preparing for VueJS 3
-    - PWA cookbook (many things to consider)
-    - web components or no bundler required UI framework, also make code more framework agnostic
-- [TODO]
-  - backend
-    - add kafka working example
-    - research websocket testing, improve coverage
-    - research auto generated REST API and Testing (keep in view dredd.io)
-    - JsonSchema
-  - frontend
-    - Handle/Test Signature & Webcam input
-    - Remove date-fns library and use native JS libraries for handling date, time
-    - explore use of fetch API instead of axios (abort fetch, etc)
-    - ant design version (kiv until web components / more UI framework agnostic code is implemened)
-  - others
-    - Make ES module build (only possible when UI framework e.g. Vuetify has ES module version)
-    - Should we change Vuex action setLayout to setPublic and setSecure?
-    - graphql security & performance review
-- [Findings]
-  - Logging (Use APM instead?) - use console.log & morgan
-  - use native html5 validation rather than Vuelidate / Vee-validate (major version changes is painful)
 
 ### Version 0.3.1
 - update packages & cleanup

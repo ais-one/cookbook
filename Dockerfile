@@ -10,7 +10,7 @@ FROM node:12-alpine
 RUN apk update && apk add python make g++ && rm -rf /var/cache/apk/*
 
 # available in build time only
-ARG ARG_API_PORT=8080
+ARG ARG_API_PORT=3000
 ARG ARG_NODE_ENV=development
 ARG ARG_APP_NAME=example-app
 
@@ -32,7 +32,7 @@ ENV API_PORT $ARG_API_PORT
 ENV NODE_ENV $ARG_NODE_ENV
 ENV APP_NAME $ARG_APP_NAME
 
-# for cloud run
+# PORT for GCP Cloud Run
 ENV PORT $ARG_API_PORT
 
 # Copy dependency definitions

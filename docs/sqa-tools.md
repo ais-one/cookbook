@@ -19,22 +19,19 @@
 
 Research In Progress
 
-## Application Performance Monitoring APM
+## Application Performance Monitoring APM & Logging
+- https://sentry.io/welcome/
 - https://www.appdynamics.com/
 - https://www.datadoghq.com/
 - https://newrelic.com/
-
-## Logging
 - https://logrocket.com/
 - https://www.splunk.com/
 - https://raygun.com/
-- https://sentry.io/welcome/
 - https://rollbar.com/
 
 ## User Behaviour Analysis
 
 Analyze user behavior across your sites and apps
-
 - MixPanel https://mixpanel.com/home/
 - Google Analytics
 

@@ -5,12 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vite Test</title>
   <!-- Your application must load the Roboto and Material Icons fonts. -->
+  <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
 </head>
 <body>
   <div id="app"></div>
   <script type="module">
+
+  // MWC
+  import '@material/mwc-top-app-bar-fixed'
+  import '@material/mwc-icon-button'
+  import '@material/mwc-icon'
+  import '@material/mwc-drawer'
+  import '@material/mwc-list'
+  import '@material/mwc-list/mwc-list-item'
+  import '@material/mwc-list/mwc-check-list-item'
+  import '@material/mwc-menu'
+  import '@material/mwc-textfield'
+  import '@material/mwc-select'
+  import '@material/mwc-button'
+
+  // Vaadin
+  import '@vaadin/vaadin-grid'
+  import '@vaadin/vaadin-grid/vaadin-grid-selection-column'
+  import '@vaadin/vaadin-grid/vaadin-grid-sort-column'
+
+  // our own web components
+  import 'http://127.0.0.1:3000/js/loading-overlay.js'
+
+
   import { createApp } from 'vue'
   import App from './App.vue'
   
@@ -18,6 +42,7 @@
   import store from './store.js'
   
   const app = createApp(App)
+
   // Vue.config.ignoredElements = [/test-\w*/]
   // app.config.isCustomElement = tag => {
   //   console.log('tag', tag)

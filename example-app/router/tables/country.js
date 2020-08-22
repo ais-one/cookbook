@@ -1,20 +1,31 @@
 module.exports = {
-  db: 'knex',
+  db: 'mongo',
   name: 'country',
+  delete: true,
+  create: true,
+  import: true,
+  export: true,
+  multiSelect: true,
   cols: {
-    id: { // primary key column, _id for mongodb
-      label: 'ID',
-      auto: 'pk'
+    _id: { // primary key column, _id for mongodb
+      // label: 'ID',
+      auto: 'pk',
+      table: 'hide',
+      filter: 'hide',
+      add: 'hide',
+      edit: 'readonly'
     },
     code: {
       label: 'Code',
       type: 'string',
-      formEditor: '',
+      input: '',
+      // multiKey: true
     },
     name: {
       label: 'Name',
       type: 'string',
-      formEditor: '',
+      input: '',
+      // multiKey: true
     }
   },
   pk: '',

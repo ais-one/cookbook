@@ -1,13 +1,10 @@
-import { ApolloClient } from 'apollo-client'
-import { HttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { setContext } from 'apollo-link-context'
+import { ApolloClient, HttpLink, split } from '@apollo/client/core'
+import { InMemoryCache } from '@apollo/client/cache'
+import { WebSocketLink } from '@apollo/client/link/ws'
+import { setContext } from '@apollo/client/link/context'
+import { getMainDefinition } from '@apollo/client/utilities'
 
-import { split } from 'apollo-link' // subscriptions
-import { WebSocketLink } from 'apollo-link-ws'
-import { getMainDefinition } from 'apollo-utilities'
-
-const wsLink = new WebSocketLink({
+const wsLink = new WebSocketLink({ // subscriptions-transport-ws package needs to be installed also
   uri: 'ws://127.0.0.1:3000/subscriptions',
   options: {
     reconnect: true

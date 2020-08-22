@@ -1,3 +1,28 @@
+# CRUD Unique Selling Points
+
+The following differentiates vue-crud-x from other CRUD repositories:
+- Able to do nested CRUD operations (parent table call child table),
+- Server side pagination, sorting & filtering
+- Handle infinite scroll use-case
+- Handle authentication tokens, user permissions
+- Customise table, search filter, CRUD form, validation, CRUD operations (call REST, GraphQL, etc.)
+- Auto-configure/generate Search filter and CRUD Forms using JSON
+- Inline edit (row level)
+- Export to CSV/JSON, File/Image Upload
+- Reload & optimization strategy
+- Overridable methods with default behaviour
+- Emitted events for use by parent component
+- Real-time updates & subscription
+
+Other design considerations :
+- i18n, l10n a11y
+- Tree shaking, Lazy loading, Performance
+- Implementation with multiple UI frameworks
+  - remove as many UI framework dependent parts as possible
+  - indacate parts which should change if other UI frameworks are used 
+- Cleaner code with correct use of RxJS, async/await/Promises
+
+
 # Installing The Library 
 
 ## Option 1 Use NPM package
@@ -86,10 +111,17 @@ The parentId is present in a child table and is used to reference the parent tab
 
 **Example:** For a car record that belongs to a driver record. The driver id, will be the parentId passed into vue-crud-x
 
-type: String
+```
+{ type: String, default: null }
+```
 
-default: null
+### refreshMs
 
+Refresh every X ms if on paged table mode. Use carefully, the refresh may not be good UX. Contributed by @gusmanwidodo
+
+```
+{ type: Number, default: 0 }
+```
 
 ## Injected Properties - Vuetify Components
 
@@ -465,6 +497,36 @@ default is do nothing
 // _self is reference to the VueCrudX component, so you can access properties in the component
 onRowClick: (item, $event, _self) => { }
 ```
+
+### On Input Event In Component
+
+Component input event handler. Contributed by @gusmanwidodo
+
+```js
+onInput (ev, key) { this.$emit(`${key}Input`, ev) }
+
+```
+
+**Usage**
+
+```html
+// need the "Input" suffix...
+<vue-crud-x v-if="ready" ref="testRef" :parentId="null" v-bind="testDefs" @testInput="testInput">
+```
+
+```js
+form: {
+  '_id': { value: '', default: '', hidden: 'all' },
+  //...
+  'test': { value: '', default: '', type: 'test-picker', 'field-input': { label: 'Testing' }, 'field-wrapper': { ...halfW } },
+  //...
+}
+
+// listen to input event from component test-picker
+async testInput (val) {
+}
+```
+
 
 ### Action Confirmation
 

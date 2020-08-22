@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 // const uuid = require('uuid/v4')
 // const qrcode = require('qrcode')
 const { USE_OTP, OTP_EXPIRY, HTTPONLY_TOKEN, AUTH_USER_STORE, AUTH_USER_STORE_NAME } = global.CONFIG
-const { AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELD_GROUPS_FOR_JWT } = global.CONFIG
+const { AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD = ''} = global.CONFIG
 const { JWT_ALG, JWT_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv', jwtCerts } = global.CONFIG
 
 const mongo = require('../services/db/mongodb')
@@ -82,13 +82,13 @@ const authUser = async (req, res, next) => {
           if (req.baseUrl + req.path === '/api/auth/refresh') {
             try {
               // check refresh token & user - always stateful
-              const { id, groups, exp } = jwt.decode(token)
+              const { id, exp, iat, verified, ...payload } = jwt.decode(token)
               let refreshToken = await getToken(id)
               if (refreshToken) {
                 // console.log('ggg', req.baseUrl, req.path, parseInt(Date.now() / 1000) - exp, JWT_REFRESH_EXPIRY, e.toString(), parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY, token)
                 if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
                   if (refreshToken === req.body.refresh_token) { // ok... generate new access token & refresh token?
-                    const tokens = await createToken({ id, verified: true, groups }, { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
+                    const tokens = await createToken({ id, verified: true, ...payload }, { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
                     if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
                     return res.status(200).json(tokens)
                   }
@@ -133,11 +133,22 @@ const refresh = async (req, res) => {
   return res.status(401).json({ message: 'Error token revoked' })
 }
 
+const addPayloadFromUserData = (user) => { // local method
+  const keys = AUTH_USER_FIELDS_JWT_PAYLOAD.split(',')
+  const payloadItems = {}
+  if (keys && keys.length) {
+    for (const key of keys) {
+      if (key && user[key] !== undefined) payloadItems[key] = user[key]
+    }
+  }
+  return payloadItems
+}
+
 const login = async (req, res) => {
   try {
     // console.log(AUTH_USER_FIELD_LOGIN, req.body)
     const user = await findUser({
-      [AUTH_USER_FIELD_LOGIN]: req.body[AUTH_USER_FIELD_LOGIN] // email
+      [AUTH_USER_FIELD_LOGIN]: req.body[AUTH_USER_FIELD_LOGIN]
     })
     const password = req.body[AUTH_USER_FIELD_PASSWORD]
 
@@ -146,7 +157,8 @@ const login = async (req, res) => {
     if (user.revoked) return res.status(401).json({ message: 'Authorization Revoked' })
     let verified = true
     const id = user[AUTH_USER_FIELD_ID_FOR_JWT] || ''
-    const groups = user[AUTH_USER_FIELD_GROUPS_FOR_JWT] || ''
+    const additionalPayload = addPayloadFromUserData(user)
+
     if (!id) return res.status(401).json({ message: 'Authorization Format Error' })
     if (USE_OTP) {
       verified = false
@@ -158,7 +170,7 @@ const login = async (req, res) => {
       //   // set user SMS & send it
       // }
     }
-    const tokens = await createToken({ id, verified, groups }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
+    const tokens = await createToken({ id, verified, ...additionalPayload }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
     if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
     return res.status(200).json(tokens)
   } catch (e) {
@@ -169,7 +181,7 @@ const login = async (req, res) => {
 
 const otp = async (req, res) => { // need to be authentication, body { pin: '123456' }
   try {
-    const { id, groups } = req.decoded
+    const { id } = req.decoded
     const user = await findUser({ id })
     if (user) {
       const { pin } = req.body
@@ -177,7 +189,8 @@ const otp = async (req, res) => { // need to be authentication, body { pin: '123
       const isValid = USE_OTP !== 'TEST' ? otplib.authenticator.check(pin, gaKey) : String(pin) === '111111'
       if (isValid) {
         await revokeToken(id)
-        const tokens = await createToken({ id, verified: true, groups }, {expiresIn: JWT_EXPIRY})
+        const additionalPayload = addPayloadFromUserData(user)
+        const tokens = await createToken({ id, verified: true, ...additionalPayload }, {expiresIn: JWT_EXPIRY})
         if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
         return res.status(200).json(tokens)
       } else {

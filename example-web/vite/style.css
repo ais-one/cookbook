@@ -1,0 +1,38 @@
+body {
+  display: block;
+  margin: 0;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+/* height: 100%; width: 100%; margin: 0; padding: 0; */
+
+.container {
+  margin: 4px 4px 4px 4px;
+}
+
+.v-center {
+  display: flex;
+  align-items: center;
+}
+
+.h-center {
+  display: flex;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* super center in just 2 lines */
+.parent-grid-centered {
+  display: grid;
+  place-items: center;
+  /* resize: both; */
+  /* overflow: auto; */
+  width: 100vw;
+  height: 100vh;
+}
