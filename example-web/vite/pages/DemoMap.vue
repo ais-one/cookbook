@@ -12,9 +12,9 @@ import 'leaflet/dist/leaflet.css'
 // import '@/assets/leaflet.latlng-graticule'
 
 // stupid hack so that leaflet's images work after going through webpack
-import marker from 'leaflet/dist/images/marker-icon.png'
-import marker2x from 'leaflet/dist/images/marker-icon-2x.png'
-import markerShadow from 'leaflet/dist/images/marker-shadow.png'
+// import marker from 'leaflet/dist/images/marker-icon.png'
+// import marker2x from 'leaflet/dist/images/marker-icon-2x.png'
+// import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 
 import { onMounted } from 'vue'
 

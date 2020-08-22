@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
+// import { useRouter, useRoute } from 'vue-router'
 
 export default {
   setup(props, context) {
@@ -60,11 +60,11 @@ export default {
   background: lightgray;
 }
 
-.form-box-flex mwc-textfield, .form-box-flex mwc-button {
+.form-box-flex mwc-textfield, .form-box-flex mwc-button { /* NOSONAR */
   margin-top: 15px;
 }
 
-.form-box-flex mwc-textfield {
+.form-box-flex mwc-textfield { /* NOSONAR */
   flex: 1 1 auto;
   font-size: 20px;
 }
@@ -75,7 +75,7 @@ export default {
   justify-content: space-around;
 }
 
-.buttons-box-flex mwc-button {
+.buttons-box-flex mwc-button { /* NOSONAR */
   flex: 0 1 95px;
   font-size: 20px;
 }
