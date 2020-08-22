@@ -1,16 +1,5 @@
-### Version 0.3.3
+### Version 0.3.4
 - [chore] update packages & cleanup & work on improving documentation
-- improve npm scripts to handler Windows and Unix environments
-- spa
-  - removed vue-apollo wrapper to apollo client, just use apollo client directly, apollo client v2 to v3 has broken vue-apollo v3
-- vite
-  - web components or no bundler required UI framework, also make code more framework agnostic
-  - generic table crud
-  - add echarts and leaflet example
-- backend
-  - generic table crud
-
-### Ongoing
 - [Work-in-progress]
   - circleci workflow
     - deploy backend to GCP Cloud Run
@@ -38,6 +27,18 @@
 - [Findings]
   - Logging (Use APM instead?) - use console.log & morgan
   - use native html5 validation rather than Vuelidate / Vee-validate (major version changes is painful)
+
+### Version 0.3.3
+- [chore] update packages & cleanup & work on improving documentation
+- improve npm scripts to handler Windows and Unix environments
+- spa
+  - removed vue-apollo wrapper to apollo client, just use apollo client directly, apollo client v2 to v3 has broken vue-apollo v3
+- vite
+  - web components or no bundler required UI framework, also make code more framework agnostic
+  - generic table crud
+  - add echarts and leaflet example
+- backend
+  - generic table crud
 
 ### Version 0.3.2
 - [chore] update packages & cleanup & work on improving documentation
