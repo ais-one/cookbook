@@ -2,22 +2,22 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.3.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.3) - Released 2020 Aug 23 0200 +8GMT
+Latest Version [0.3.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.3) - Released 2020 Aug 23 0215 +8GMT
 
 # Features
 
 - Frontend Examples
-  - **NEW** [Vite, Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
-  - [SPA, Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-web/spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP, Webcam (WIP), Signature canvas (WIP)
+  - **NEW** [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
+  - [SPA & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-web/spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP, Webcam (WIP), Signature canvas (WIP)
   - [PWA](https://github.com/ais-one/vue-crud-x/tree/master/example-web/pwa): FCM push notification & PWA features
   - [SSR using Nuxt](https://github.com/ais-one/vue-crud-x/tree/master/example-web/ssr): Handling 500 and 404 errors, show gotchas of SSR
   - [Vanilla JS, ES Modules](https://github.com/ais-one/vue-crud-x/tree/master/example-app/public): No bundler, scalable VueJS Application , example codes (signed uploads, JWT refresh token, OTP)
 - [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/) & [Common Libs](https://github.com/ais-one/vue-crud-x/tree/master/common-libs/)
-  - cors, proxy middleware, helmet, error handling, logging, OpenAPI
+  - Cors, proxy middleware, helmet, error handling, logging, OpenAPI
   - Objection ORM, Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis
   - FCM push notification, Sendgrid email, Nexmo SMS, Telegram
-  - Agenda message queue
-  - file uploads, Signed URL file upload to GCP Storage
+  - AgendaJS message queue
+  - File uploads, Signed URL file upload to GCP Storage
   - Websockets, graphql
   - JWT using RSA, JWT refresh token, Passwort SAML (WIP), token in HttpOnly cookies, GA OTP, role
   - Unit Test & Integration Test
@@ -25,14 +25,12 @@ Latest Version [0.3.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.3)
   - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) of mongodb with replica set
   - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
   - [Deploy script](https://github.com/ais-one/vue-crud-x/tree/master/deploy.sh) to VM, GCP Cloud Run, GCP Storage (for SPA & static sites)
-- Continuously being improved
-
 
 # QUICK START - ON YOUR LOCAL MACHINE
 
-## Backend & SPA or Vite
+## Backend & SPA or Vite, PWA, SSR
 
-### Backend
+### Backend Setup & Run
 
 ```bash
 # clone repo and install backend
@@ -53,9 +51,10 @@ npm run app # windows
 npm run app:unix # linux or mac
 ```
 
-http://127.0.0.1:3000/api/healthcheck - app is running normally
-http://127.0.0.1:3000/api-docs - OpenAPI UI 
-http://127.0.0.1:3000 - Website served by Express with functional samples and demos at 
+**Visit the following URLs**
+- http://127.0.0.1:3000/api/healthcheck - app is running normally
+- http://127.0.0.1:3000/api-docs - OpenAPI UI 
+- http://127.0.0.1:3000 - Website served by Express with functional samples and demos at 
 
 **NOTES**
 - MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
@@ -68,7 +67,7 @@ require(require('path').join(process.cwd(), 'common-lib', 'setup')) // first thi
 require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
 ```
 
-### SPA
+### SPA Setup & Run
 
 ```bash
 cd example-web/spa
@@ -76,16 +75,16 @@ npm i
 npm run serve
 ```
 
-Navigate to http://127.0.0.1:8080 to view the VueCrudX demo and example SPA application in development
+Navigate to http://127.0.0.1:8080 to view application with VueCrudX demo 
 
 Login using the following:
 - User: test
 - Password: test
 - OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin
 
-### Vite
+### Vite Setup & Run
 
-MongoDB required for testing CRUD table to work. Just click login button
+MongoDB required for testing CRUD table to work
 
 ```bash
 cd example-web/vite
@@ -93,7 +92,10 @@ npm i
 npm run dev
 ```
 
-### PWA
+Navigate to http://127.0.0.1:8080 to view application. Just click login button
+
+
+### PWA Setup & Run
 
 For Push Notification to work, setup your firebase account and messaging, also setup FCM server key in backend
 
@@ -103,7 +105,7 @@ npm i
 npm run serve
 ```
 
-### Nuxt SSR/Static Application
+### Nuxt SSR/Static Application Setup & Run
 
 ```bash
 cd example-web/ssr
@@ -115,7 +117,6 @@ npm run dev
 - for static content see example-web/ssr/README.md on generating and serving static content
 - Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes
 - We use SSR mode, WITHOUT implementing the server side features for efficient debugging of static generated sites.
-
 
 
 ## Testing
@@ -306,85 +307,16 @@ vue-crud-x
 
 ---
 
-## Deployment WIP
-
-The following are the environments
-
-- development (used for local development)
-- uat
-- production (not shown in the example but can be created)
-
-### development environment
-
-The development environment is on a local machine used by developers.
-
-Docker compose can be used to set up supporting applications such as Redis, ElasticSearch, Kafka, etc.
-
-- cloudflare - no
-- frontend - local
-- backend - local
-- mongodb - local
-- file uploads - local folder / Google object storage
-- sqlite - local file
-- user_session - local memory
-
-Commands for running locally are described in the QUICK START.
-
-
-### uat (and also production) environment
-
-The UAT, production and (optional staging) environments are on the service provider.
-
-- Domain name verification
-- cloudflare
-  - DNS (for API, for frontend)
-  - full SSL (can be self-signed at server side)
-- frontend - GCP object storage, https
-- backend - docker-> Google Cloud Run, https
-  - OPTION deploy to GCP Group Instances (need to set load balancer and networking) **WIP**
-  - OPTION deploy to GKE **WIP**
-- Mongodb - Mongo Atlas
-- file uploads - Google object storage
-- sqlite - local file (should replace with SQL DB)
-- user_session - mongodb
-
-**Manual Deployment Script**
-
-**Windows**
-
-```bash
-npm run deploy # windows
-npm run deploy:unix # linux or mac
-```
-
-- Frontend
-  - select ```deploy-fe``` to deploy frontend on object storage
-- Cloud Run backend
-  - select ```deploy-cr``` to deploy backend on cloud run
-    - need to set CORS on allowed frontend origin
-    - if using custom domain, requires domain name, point to CNAME
-- VM backend (Optional)
-  - select ```deploy-vm```
-  - you can use the following commands ```stop,start,list```
-
-
-> work needs to be done on the organise and reference the setup documentation in the docs folder
-
-
-## CircleCI Deployment (Work In Progress)
-
-TBD
-
-
----
-
 # DOCUMENTATION
 
 **vue-crud-x** library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
 
 Roadmap and Release notes for the library and examples can be found in [Release.md](Release.md)
 
+Deployment notes can be found in (docs/deployment/home.md)
+
 Documentation can be found starting at [docs/home.md](docs/home.md)
+
 
 **vue-crud-x 0.2+ Article** 
 

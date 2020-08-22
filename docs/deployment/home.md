@@ -1,6 +1,80 @@
+# Deployment - WIP
+
+The following are the environments
+
+- development (used for local development)
+- uat
+- production (not shown in the example but can be created)
+
+### development environment
+
+The development environment is on a local machine used by developers.
+
+Docker compose can be used to set up supporting applications such as Redis, ElasticSearch, Kafka, etc.
+
+- cloudflare - no
+- frontend - local
+- backend - local
+- mongodb - local
+- file uploads - local folder / Google object storage
+- sqlite - local file
+- user_session - local memory
+
+Commands for running locally are described in the QUICK START.
+
+
+### uat (and also production) environment
+
+The UAT, production and (optional staging) environments are on the service provider.
+
+- Domain name verification
+- cloudflare
+  - DNS (for API, for frontend)
+  - full SSL (can be self-signed at server side)
+- frontend - GCP object storage, https
+- backend - docker-> Google Cloud Run, https
+  - OPTION deploy to GCP Group Instances (need to set load balancer and networking) **WIP**
+  - OPTION deploy to GKE **WIP**
+- Mongodb - Mongo Atlas
+- file uploads - Google object storage
+- sqlite - local file (should replace with SQL DB)
+- user_session - mongodb
+
+**Current Manual Deployment Script**
+
+```bash
+npm run deploy # windows
+npm run deploy:unix # linux or mac
+```
+
+- Frontend
+  - select ```deploy-fe``` to deploy frontend on object storage
+- Cloud Run backend
+  - select ```deploy-cr``` to deploy backend on cloud run
+    - need to set CORS on allowed frontend origin
+    - if using custom domain, requires domain name, point to CNAME
+- VM backend (Optional)
+  - select ```deploy-vm```
+  - you can use the following commands ```stop,start,list```
+
+
+> work needs to be done on the organise and reference the setup documentation in the docs folder
+
+
+---
+
+## CircleCI Deployment (Work In Progress)
+
+TBD
+
+---
+
 # SCALING & DEPLOYMENT STRATEGIES
 
-There should always be alternatives
+There should always be alternatives to the service you are using.
+
+E.g S3 bucket can be replaced by GCP Cloud Storage
+
 
 ## Local Development
 
