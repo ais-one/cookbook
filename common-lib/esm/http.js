@@ -9,6 +9,7 @@ function parseJwt (_token) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
     }).join(''))
     return JSON.parse(jsonPayload)
+}
 
 const http = async (method, url, body = null, query = null) => {
   // settle the URL
