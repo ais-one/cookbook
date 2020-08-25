@@ -3,12 +3,13 @@ let refreshToken = ''
 let baseUrl = 'http://127.0.0.1:3000'
 
 function parseJwt (_token) {
-    var base64Url = _token.split('.')[1]
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-    }).join(''))
-    return JSON.parse(jsonPayload)
+  var base64Url = _token.split('.')[1]
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+  }).join(''))
+  return JSON.parse(jsonPayload)
+}
 
 const http = async (method, url, body = null, query = null) => {
   // settle the URL

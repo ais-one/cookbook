@@ -7,24 +7,30 @@ module.exports = {
   export: true, // can export to csv
   multiSelect: true, // multiple selection
   cols: {
-    // _id: { // primary key column, _id for mongodb
-    //   label: 'ID',
-    //   auto: 'pk',
-    //   table: 'hide',
-    //   filter: 'hide',
-    //   add: 'hide',
-    //   edit: 'readonly'
-    // },
+    _id: { // primary key column, _id for mongodb
+      label: 'ID',
+      auto: 'pk', // should override multiKey
+      table: 'hide',
+      filter: 'hide',
+      add: 'hide',
+      input: 'link',
+      // options: {
+      //   from: '/table-person?_id=',
+      //   to: '/table-person?_id='
+      // },
+      edit: 'readonly'
+    },
     firstName: {
       label: 'First Name',
       multiKey: true, // part of composite unique key - required!
       type: 'string', // string, integer, decimal, datetime, date, time, boolean
-      input: 'textfield', // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime
+      input: 'textfield', // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime, upload, link - to child table
       table: '', // truthy means hide column on table,
       filter: '', // truthy means hide column on filter,
       add: '', // 'hide', ''  - empty string means can show and edit
-      edit: '' // 'hide', 'readonly', '' - empty string means can show and edit
-      
+      edit: '', // 'hide', 'readonly', '' - empty string means can show and edit
+      default: '', // a default value (today? now?)
+      pattern: ''  // regex pattern
     },
     lastName: {
       label: 'Last Name',

@@ -10,7 +10,7 @@
           <li class="nav-item" v-if="tableCfg && tableCfg.delete"><mwc-icon-button icon="delete" @click="remove" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item"><mwc-icon-button icon="post_add" @click="csvImport" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="csvExport" :disabled="loading"></mwc-icon-button></li>
-          <!-- <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="testFn"></mwc-icon-button></li> -->
+          <li class="nav-item"><mwc-icon-button icon="reply"  @click="goBack" :disabled="loading"></mwc-icon-button></li>
         </ul>
         <ul class="nav-right">
           <li class="nav-item">
@@ -24,7 +24,6 @@
         </ul>
       </nav>
 
-      <!-- filter row -->
       <template v-if="showFilter">
         <slot name="filters" :filters="filters" :filterCols="filterCols" :filterOps="filterOps">
           <div v-if="filters.length">
@@ -60,15 +59,9 @@
         :rowsPerPage="rowsPerPage"
         :maxPage="maxPage"
       >
-        <vaadin-grid class="table"><!-- page-size="10" height-by-rows -->
-          <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect"></vaadin-grid-selection-column><!-- remove auto-select click only on checkbox-->
-          <vaadin-grid-sort-column
-            v-for="(headerCol, index) in headerCols" :key="index"
-            :path="headerCol.path"
-            :header="headerCol.header"
-          >
-          </vaadin-grid-sort-column>
-          <!--  for last column text-align="end" width="120px" flex-grow="0" -->
+        <vaadin-grid class="table">
+          <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect"></vaadin-grid-selection-column>
+          <vaadin-grid-sort-column v-for="(headerCol, index) in headerCols" :key="index" :path="headerCol.path" :header="headerCol.header"></vaadin-grid-sort-column>
         </vaadin-grid>
       </slot>
     </div>
@@ -80,18 +73,23 @@
           <div class="field-set-flex">
             <template v-for="(val, col, index) of recordObj[showForm]">
               <template v-if="tableCfg.cols[col]">
-                <!-- required? readonly? (edit) -->
-                <template v-if="tableCfg.cols[col].input==='number'">
-                  <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="number" v-model="recordObj[showForm][col]"></mwc-textfield>
+                <template v-if="tableCfg.cols[col].input==='link'">
+                  <mwc-textfield @click="router.push('/dashboard')" disabled class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>
+                <template v-else-if="tableCfg.cols[col][showForm]==='readonly'">
+                  <mwc-textfield disabled class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input==='number'">
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="number" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>           
                 <template v-else-if="tableCfg.cols[col].input==='datetime'">
-                  <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="datetime-local" v-model="recordObj[showForm][col]"></mwc-textfield>
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="datetime-local" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>           
                 <template v-else-if="tableCfg.cols[col].input==='date'">
-                  <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="date" v-model="recordObj[showForm][col]"></mwc-textfield>
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="date" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>           
                 <template v-else-if="tableCfg.cols[col].input==='time'">
-                  <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="time" v-model="recordObj[showForm][col]"></mwc-textfield>
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="time" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>
                 <template v-else-if="tableCfg.cols[col].input==='select'">
                   <mwc-select :key="col+index" :label="tableCfg.cols[col].label" :value="recordObj[showForm][col]" @change="(e) => recordObj[showForm][col] = e.target.value">
@@ -100,6 +98,7 @@
                 </template>
                 <template v-else-if="tableCfg.cols[col].input==='multi-select'">
                   <mwc-textfield
+                    :required="isRequired(col)"
                     class="field-item"
                     :key="col+index"
                     :label="tableCfg.cols[col].label"
@@ -117,7 +116,7 @@
                   </div>
                 </template>
                 <template v-else-if="tableCfg.cols[col].input==='autocomplete'">
-                  <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" :value="recordObj[showForm][col]" @input="(e) => autoComplete(e, col, showForm)"></mwc-textfield>
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" :value="recordObj[showForm][col]" @input="(e) => autoComplete(e, col, showForm)"></mwc-textfield>
                   <div :key="'ac'+col+index" class="drop-down-div">
                     <mwc-list v-if="recordObj[showForm + 'Ac'][col].length" @selected="e => autoCompleteSelect(e, col, showForm)" class="drop-down">
                       <mwc-list-item v-for="(option, index2) of recordObj[showForm + 'Ac'][col]" :key="col+index+'-'+index2">{{ option.text }}</mwc-list-item>
@@ -125,32 +124,35 @@
                   </div>
                 </template>           
                 <template v-else>
-                  <mwc-textfield class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>           
               </template>
             </template>
           </div>
           <mwc-button type="button" @click="showForm=''">Cancel</mwc-button>
           <mwc-button type="button" @click="doAddOrEdit" :disabled="loading">Confirm</mwc-button>
-          <!-- <mwc-button type="button" @click="testFn">Test</mwc-button> -->
         </form>
       </slot>
     </div>
-
   </div>
 </template>
 
 <script>
-// TBD debounce for async inputs
-// TBD slots for forms and 
+// TBD handle single select / multi select - _rowClick()
+// TBD handle if !tableName - onMounted()
+// TBD handle if cannot get config
+// TBD handle if cannot load data
+// TBD show all...
+// TBD back to parent button
 // TBD inline edits
-
+// TBD table columns with joined values
 import { APP_VERSION, debounce } from 'http://127.0.0.1:3000/js/util.js'
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
 import { httpGet, httpPost, httpPatch } from 'http://127.0.0.1:3000/js/http.js'
+import { useRouter, useRoute } from 'vue-router'
 
 export default {
-  name: 'DemoTable',
+  name: 'CrudTable',
   props: {
     rowsPerPage: { type: [Number], default: 10 },
     rowsPerPageList: { type: Array, default: [5, 10, 25, 50] },
@@ -159,6 +161,8 @@ export default {
   },
   // do NOT destructure the props object, as it will lose reactivity
   setup(props, ctx) { // ctx = attrs, slots, emit
+    const router = useRouter()
+    const route = useRoute()
     const tableCfg = ref(null) // table config
     const page = ref(1)
     const records = ref([])
@@ -183,7 +187,6 @@ export default {
     let gridEl // grid element
 
     const _rowClick = async (e) => {
-      // TBD handle single select / multi select
       // console.log('click not on checkbox 1', e.detail.value)
       const item = e.detail.value
       e.stopPropagation()
@@ -204,7 +207,7 @@ export default {
         recordObj['edit'].key = item.key
         Object.entries(tableCfg.value.cols).forEach(kv => {
           const [key, val] = kv
-          if (val.edit !== 'hide' && !val.auto) {
+          if (val.edit !== 'hide') {
             recordObj['edit'][key] = rv[key]
 
             if (val.input === 'multi-select') recordObj['editDdShow'][key] = false
@@ -227,10 +230,8 @@ export default {
     // }
 
     onMounted(async () => {
+      console.log('route', route.query)
       // console.log('APP_VERSION', APP_VERSION)
-      // TBD handle if !tableName
-      // TBD handle if cannot get config
-      // TBD handle if cannot load data
       if (!tableCfg.value) tableCfg.value = await httpGet('/api/t4t/config/' + tableName)
       if (tableCfg.value) {
         for (let col in tableCfg.value.cols) {
@@ -251,8 +252,7 @@ export default {
       gridEl.dataProvider = async function (params, callback) {
         if (loading.value) return
         loading.value = true
-
-        console.log('grid.dataProvider', params)
+        // console.log('grid.dataProvider', params)
         try {
           const sorter = []
           if (params.sortOrders && params.sortOrders.length && params.sortOrders[0].direction) {
@@ -273,7 +273,7 @@ export default {
             // console.log('rv.total', rv.total, rv.results)
             maxPage.value = Math.ceil(rv.total / rowsPerPage.value)
             // gridEl.items = rv.results // do not use this, not scalable
-            gridEl.size = rv.total // TBD show all...
+            gridEl.size = rv.total
             records.value = rv.results
             callback(rv.results)
           }
@@ -290,13 +290,18 @@ export default {
       }
     })
 
+    const isRequired = (col) => {
+      const { required, multiKey } = tableCfg.value.cols[col]
+      return required || multiKey
+    }
+
     const refreshData = () => {
       gridEl.clearCache()
     }
     const openAdd = async () => {
       Object.entries(tableCfg.value.cols).forEach(item => {
         const [key, val] = item
-        if (val.add !== 'hide' && !val.auto) {
+        if (val.add !== 'hide') {
           recordObj['add'][key] = val.default || (val.type === 'integer' || val.type === 'decimal' ? 0 : '')
 
           if (val.input === 'multi-select') recordObj['addDdShow'][key] = false
@@ -337,10 +342,13 @@ export default {
     }, 500)
 
     const testFn = (e) => {
+      console.log('fffff')
       // console.log(tableCfg.value)
       // console.log(recordObj)
       // showForm.value = showForm.value ? '' : 'add'
     }
+
+    const goBack = () => router.back()
 
     const remove = async () => {
       if (loading.value) return
@@ -402,6 +410,9 @@ export default {
 
     return {
       testFn,
+      router,
+      goBack, // back to parent table...
+
       multiSelect, // method for multi select event...
       autoComplete, // method for autocomplete
       autoCompleteSelect, // method for autocomplete
@@ -413,6 +424,7 @@ export default {
       doAddOrEdit, // method CRUD post
       csvImport, // method CRUD import
       csvExport, // method CRUD export
+      isRequired, // is column required
 
       // filters
       deleteFilter, // method

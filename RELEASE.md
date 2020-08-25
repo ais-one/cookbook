@@ -17,6 +17,7 @@
     - research auto generated REST API and Testing (keep in view dredd.io)
     - JsonSchema
   - frontend
+    - https://github.com/vueComponent/ant-design-vue/issues/1913
     - Handle/Test Signature & Webcam input
     - Fetch API abort / retry
     - PWA cookbook (many things to consider)

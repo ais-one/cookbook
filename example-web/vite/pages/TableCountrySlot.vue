@@ -8,6 +8,7 @@
 
 <script>
 import { onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
 import CrudTable from '../components/CrudTable.vue'
 
@@ -16,8 +17,11 @@ export default {
     'crud-table': CrudTable
   },
   setup(props, ctx) {
+    const route = useRoute()
+
     const myroot = ref(null)
     onMounted(async () => {
+      console.log('route', route.query)
       console.log('myroot', myroot.value)
     })
     return {
