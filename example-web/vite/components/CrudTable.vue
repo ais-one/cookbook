@@ -251,42 +251,42 @@ export default {
       if (gridEl) {
         gridEl.addEventListener('active-item-changed', _rowClick)
         // gridEl.addEventListener('selected-items-changed', _selectClick)
-      }
 
-      // https://vaadin.com/forum/thread/17445015/updating-grid-data-directly-when-using-dataprovider
-      gridEl.dataProvider = async function (params, callback) {
-        if (loading.value) return
-        loading.value = true
-        // console.log('grid.dataProvider', params)
-        try {
-          const sorter = []
-          if (params.sortOrders && params.sortOrders.length && params.sortOrders[0].direction) {
-            sorter.push({
-              column: params.sortOrders[0].path,
-              order: params.sortOrders[0].direction
+        // https://vaadin.com/forum/thread/17445015/updating-grid-data-directly-when-using-dataprovider
+        gridEl.dataProvider = async function (params, callback) {
+          if (loading.value) return
+          loading.value = true
+          // console.log('grid.dataProvider', params)
+          try {
+            const sorter = []
+            if (params.sortOrders && params.sortOrders.length && params.sortOrders[0].direction) {
+              sorter.push({
+                column: params.sortOrders[0].path,
+                order: params.sortOrders[0].direction
+              })
+            }
+
+            gridEl.selectedItems = []
+            if (keycol.value) filters.push( { col: keycol.value, op: "=", val: keyval.value, andOr: "and"} )
+            const rv = await httpGet('/api/t4t/find/' + tableName, {
+              page: page.value,
+              limit: rowsPerPage.value,
+              filters: JSON.stringify(filters),
+              sorter: JSON.stringify(sorter)
             })
+            if (rv.results) {
+              // console.log('rv.total', rv.total, rv.results)
+              maxPage.value = Math.ceil(rv.total / rowsPerPage.value)
+              // gridEl.items = rv.results // do not use this, not scalable
+              gridEl.size = rv.total
+              records.value = rv.results
+              callback(rv.results)
+            }
+          } catch (e) {
+            console.log(e.toString())
           }
-
-          gridEl.selectedItems = []
-          if (keycol.value) filters.push( { col: keycol.value, op: "=", val: keyval.value, andOr: "and"} )
-          const rv = await httpGet('/api/t4t/find/' + tableName, {
-            page: page.value,
-            limit: rowsPerPage.value,
-            filters: JSON.stringify(filters),
-            sorter: JSON.stringify(sorter)
-          })
-          if (rv.results) {
-            // console.log('rv.total', rv.total, rv.results)
-            maxPage.value = Math.ceil(rv.total / rowsPerPage.value)
-            // gridEl.items = rv.results // do not use this, not scalable
-            gridEl.size = rv.total
-            records.value = rv.results
-            callback(rv.results)
-          }
-        } catch (e) {
-          console.log(e.toString())
+          loading.value = false
         }
-        loading.value = false
       }
     })
     onUnmounted(()=> {

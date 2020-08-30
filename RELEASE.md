@@ -1,30 +1,30 @@
 ### Version 0.3.4
 - [chore] update packages & cleanup & work on improving documentation
-- [Work-in-progress]
+  - backend
+    - bug fix on CRUD Table patch (remove MongoDB _id from body) 
+  - frontend (common-lib/esm/http.js)
+    - Fetch API abort / retry
+  - doc
+    - jsonschema validation for MongoDB collection
+- [TODO]
   - circleci workflow
     - deploy backend to GCP Cloud Run
     - deploy SPA frontend to GCP Storage
   - backend
     - GKE, Kubernetes
     - add kafka working example
-  - frontend
-    - Preparing for VueJS 3
-    - cypress e2e testing
-- [TODO]
-  - Make VueCrudX ES module build (only possible when UI framework e.g. Vuetify has ES module version)
-  - backend
     - research websocket testing, improve coverage
     - research auto generated REST API and Testing (keep in view dredd.io)
-    - JsonSchema
   - frontend
-    - https://github.com/vueComponent/ant-design-vue/issues/1913
+    - cypress e2e testing
     - Handle/Test Signature & Webcam input
-    - Fetch API abort / retry
+    - https://github.com/vueComponent/ant-design-vue/issues/1913
     - PWA cookbook (many things to consider)
   - others
     - graphql security & performance review
     - use monorepo when npm 7 is released ?
     - improve structure further
+    - VueCrudX ESM build (only possible when UI framework e.g. Vuetify has ESM version and vue-cli can build ESM)
 
 ### Version 0.3.3
 - [chore] update packages & cleanup & work on improving documentation
