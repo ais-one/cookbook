@@ -21,11 +21,15 @@ client.connect(async err => {
         await db.collection(JWT_REFRESH_STORE_NAME).createIndex( { setAt: 1 }, { expireAfterSeconds: JWT_REFRESH_EXPIRY } )  
       }
 
-      const icc = require('../icc.json')
       await db.collection('country').deleteMany({})
       await db.collection('country').createIndex({ code: 1 }, { unique: true })
       await db.collection('country').createIndex({ name: 1 }, { unique: true })
-      await db.collection('country').insertMany(icc)
+      await db.collection('country').insertMany(require('../icc.json'))
+
+      await db.collection('state').deleteMany({})
+      await db.collection('state').createIndex({ country_name: 1, code: 1 }, { unique: true })
+      await db.collection('state').createIndex({ country_name: 1 })
+      await db.collection('state').insertMany(require('../state.json'))
 
       await db.collection('person').deleteMany({})
       await db.collection('person').createIndex({ firstName: 1, lastName: 1 }, { unique: true })
@@ -52,9 +56,9 @@ client.connect(async err => {
       await db.collection('grade').deleteMany({})
       await db.collection('grade').createIndex({ personId: 1 })
       await db.collection('grade').insertMany([
-        { personId: new ObjectID(personIdStr), subject: 'EM', grade: '80' },
-        { personId: new ObjectID(personIdStr), subject: 'AM', grade: '90' },
-        { personId: new ObjectID(personIdStr), subject: 'PHY', grade: '70' }
+        { personId: personIdStr, subject: 'EM', grade: '80' },
+        { personId: personIdStr, subject: 'AM', grade: '90' },
+        { personId: personIdStr, subject: 'PHY', grade: '70' }
       ])
 
       client.close()
@@ -70,3 +74,4 @@ client.connect(async err => {
 })
 
 // db.getCollection('job').aggregate( [ { $group : { _id : "$operatorCode", count: { $sum: 1 } } } ] )
+

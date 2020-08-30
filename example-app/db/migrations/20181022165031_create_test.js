@@ -41,6 +41,15 @@ exports.up = async (knex) => {
       table.string('name')
       table.string('code')
       table.string('icc')
+      table.unique('code')
+      table.unique('name')
+    })
+    .createTable('state', (table) => {
+      table.increments('id').primary()
+      table.string('country_name')
+      table.string('code')
+      table.string('name')
+      table.unique(['country_name', 'code'])
     })
     .createTable('person', (table) => {
       table.string('firstName')
@@ -54,11 +63,18 @@ exports.up = async (knex) => {
       table.string('country')
       table.datetime('birthDateTimeTz')
       table.string('website')
+      table.string('remarks')
       table.string('updated_by')
       table.datetime('updated_at')      
       table.unique(['firstName', 'lastName'])
     })
-
+    .createTable('grade', (table) => {
+      table.increments('id').primary()
+      table.string('personId')
+      table.string('subject')
+      table.string('grade')
+      table.index('personId')
+    })
 }
 
 exports.down = async (knex) => {
@@ -68,7 +84,9 @@ exports.down = async (knex) => {
     .dropTableIfExists('books')
 
     .dropTableIfExists('country')
+    .dropTableIfExists('state')
     .dropTableIfExists('person')
+    .dropTableIfExists('grade')
 }
 
 

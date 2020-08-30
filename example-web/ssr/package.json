@@ -16,11 +16,11 @@
     "clean": "rm -rf dist&&rm -rf .nuxt"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.20.0",
     "cross-env": "^7.0.2",
     "jwt-decode": "^2.2.0",
     "lodash.clonedeep": "^4.5.0",
-    "nuxt": "^2.14.3"
+    "nuxt": "^2.14.4"
   },
   "devDependencies": {
     "@nuxtjs/dotenv": "^1.4.1",

@@ -14,6 +14,8 @@ exports.seed = async (knex) => {
 
   await knex('person').del()
   await knex('country').del()
+  await knex('state').del()
+  await knex('grade').del()
 
   var dt = new Date()
 
@@ -58,4 +60,28 @@ exports.seed = async (knex) => {
   ])
 
   await knex('country').insert( require('../../icc.json') )
+  await knex('state').insert( require('../../state.json') )
+  await knex('person').insert( [
+    {
+      firstName: 'first',
+      lastName: 'last',
+      sex: 'M',
+      subjects: 'EM,PHY',
+      age: 1,
+      gpa: 0,
+      birthDate: '',
+      birthTime: '',
+      country: 'SG',
+      birthDateTimeTz: null,
+      website: '',
+      remarks: '',
+      updated_by: 'someone',
+      updated_at: new Date()  
+    }
+  ] )
+  await knex('grade').insert( [ // personId from insert above...
+    { personId: 1, subject: 'EM', grade: '80' },
+    { personId: 1, subject: 'AM', grade: '90' },
+    { personId: 1, subject: 'PHY', grade: '70' }
+  ] )
 }

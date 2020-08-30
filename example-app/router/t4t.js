@@ -1,10 +1,10 @@
 // table for tables
 const express = require('express')
 const Model = require(LIB_PATH + '/services/db/objection').get()
-const knex = Model.knex()
+const knex = Model ? Model.knex() : null
 
 const mongo = require(LIB_PATH + '/services/db/mongodb')
-const ObjectID = require('mongodb').ObjectID
+const ObjectID = mongo.client ? require('mongodb').ObjectID : null
 
 // const { authUser } = require('../middlewares/auth')
 const csvParse = require('csv-parse')
