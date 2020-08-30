@@ -21,9 +21,9 @@
     - https://github.com/vueComponent/ant-design-vue/issues/1913
     - PWA cookbook (many things to consider)
   - others
+    - improve structure further
     - graphql security & performance review
     - use monorepo when npm 7 is released ?
-    - improve structure further
     - VueCrudX ESM build (only possible when UI framework e.g. Vuetify has ESM version and vue-cli can build ESM)
 
 ### Version 0.3.3
