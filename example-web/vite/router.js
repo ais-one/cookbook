@@ -27,8 +27,6 @@ const router = createRouter({
     { path: '/demo-chart', name: 'Demo Chart', component: () => import('./pages/DemoChart.vue'), beforeEnter: authGuard },
     { path: '/demo-map', name: 'Demo Map', component: () => import('./pages/DemoMap.vue'), beforeEnter: authGuard },
     { path: '/table-grade-slot', props: route => ({ query: route.query }), name: 'TableGradeSlot', component: () => import('./pages/TableGradeSlot.vue'), beforeEnter: authGuard },
-    { path: '/table-person-slot', props: route => ({ query: route.query }), name: 'TablePersonDemo', component: () => import('./pages/TablePersonSlot.vue'), beforeEnter: authGuard },
-    { path: '/table-country-slot', props: route => ({ query: route.query }), name: 'TableCountryDemo', component: () => import('./pages/TableCountrySlot.vue'), beforeEnter: authGuard },
     { path: '/table-person', props: route => ({ query: route.query, tableName: 'person' }), name: 'TablePerson', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
     { path: '/table-country', props: route => ({ query: route.query, tableName: 'country' }), name: 'TableCountry', props: { tableName: 'country' }, component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
     { path: '/demo-flex', name: 'DemoFlex', component: () => import('./pages/DemoFlex.vue'), beforeEnter: authGuard },

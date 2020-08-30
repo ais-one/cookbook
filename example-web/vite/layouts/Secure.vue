@@ -78,8 +78,6 @@ export default {
           { to: '/demo-flex', name: 'Demo Flex', icon: '' },
           { to: '/table-person?k=123', name: 'Person Table', icon: '' },
           { to: '/table-country', name: 'Country Table', icon: '' },
-          { to: '/table-person-slot?k=123', name: 'Person Table Slot', icon: '' },
-          { to: '/table-country-slot', name: 'Country Table Slot', icon: '' },
           { to: '/demo-map', name: 'Demo Map', icon: '' },
           { to: '/demo-chart', name: 'Demo Chart', icon: 'bar_chart' }
         ]
