@@ -26,10 +26,9 @@ const router = createRouter({
     { path: '/dashboard', name: 'Dashboard', component: () => import('./pages/Dashboard.vue'), beforeEnter: authGuard },
     { path: '/demo-chart', name: 'Demo Chart', component: () => import('./pages/DemoChart.vue'), beforeEnter: authGuard },
     { path: '/demo-map', name: 'Demo Map', component: () => import('./pages/DemoMap.vue'), beforeEnter: authGuard },
-    { path: '/table-person-demo', name: 'TablePersonDemo', component: () => import('./pages/DemoTablePerson.vue'), beforeEnter: authGuard },
-    { path: '/table-country-demo', name: 'TableCountryDemo', component: () => import('./pages/DemoTableCountry.vue'), beforeEnter: authGuard },
-    { path: '/table-person', name: 'TablePerson', props: { tableName: 'person' }, component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
-    { path: '/table-country', name: 'TableCountry', props: { tableName: 'country' }, component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
+    { path: '/table-grade-slot', props: route => ({ query: route.query }), name: 'TableGradeSlot', component: () => import('./pages/TableGradeSlot.vue'), beforeEnter: authGuard },
+    { path: '/table-person', props: route => ({ query: route.query, tableName: 'person' }), name: 'TablePerson', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
+    { path: '/table-country', props: route => ({ query: route.query, tableName: 'country' }), name: 'TableCountry', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
     { path: '/demo-flex', name: 'DemoFlex', component: () => import('./pages/DemoFlex.vue'), beforeEnter: authGuard },
     // catchall
     { path: '/:catchAll(.*)', redirect: '/' }

@@ -1,10 +1,10 @@
 // table for tables
 const express = require('express')
 const Model = require(LIB_PATH + '/services/db/objection').get()
-const knex = Model.knex()
+const knex = Model ? Model.knex() : null
 
 const mongo = require(LIB_PATH + '/services/db/mongodb')
-const ObjectID = require('mongodb').ObjectID
+const ObjectID = mongo.client ? require('mongodb').ObjectID : null
 
 // const { authUser } = require('../middlewares/auth')
 const csvParse = require('csv-parse')
@@ -162,13 +162,17 @@ module.exports = express.Router()
   }))
 
   .get('/autocomplete', asyncWrapper(async (req, res) => {
-    let { db, tableName, limit = 20, key, text, search } = req.query
+    let { db, tableName, limit = 20, key, text, search,
+      parentTableColName, parentTableColVal } = req.query
     let rows = {}
     if (db === 'knex') {
       const query = knex(tableName).where(key, 'like', `%${search}%`)
+      if (parentTableColName !== undefined && parentTableColVal !== undefined) query.andWhere(parentTableColName, parentTableColVal)
       rows = await query.clone().limit(limit) // TBD orderBy
     } else { // mongo
-      rows = await mongo.db.collection(tableName).find({ [key]: { $regex: search, $options: 'i' } })
+      const filter = { [key]: { $regex: search, $options: 'i' } }
+      if (parentTableColName !== undefined && parentTableColVal !== undefined) filter[parentTableColName] = parentTableColVal
+      rows = await mongo.db.collection(tableName).find(filter)
         .limit(Number(limit)).toArray() // TBD sort
     }
     rows = rows.map(row => ({
@@ -213,7 +217,12 @@ module.exports = express.Router()
         // do insert ?
       }
     } else { // mongodb
-      await mongo.db.collection(table.name).updateOne(where, { $set: body })
+      try {
+        if (body._id) delete body._id
+        await mongo.db.collection(table.name).updateOne(where, { $set: body })
+      } catch (e) {
+        console.log(e.toString())
+      }
     }
     res.json({count})
   }))

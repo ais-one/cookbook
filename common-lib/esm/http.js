@@ -1,43 +1,65 @@
 let token = ''
 let refreshToken = ''
 let baseUrl = 'http://127.0.0.1:3000'
+let timeoutMs = 0
+let maxRetry = 0
 
 function parseJwt (_token) {
-    var base64Url = _token.split('.')[1]
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-    }).join(''))
-    return JSON.parse(jsonPayload)
+  var base64Url = _token.split('.')[1]
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+  }).join(''))
+  return JSON.parse(jsonPayload)
 }
 
-const http = async (method, url, body = null, query = null) => {
+// TBD add retry
+// https://dev.to/ycmjason/javascript-fetch-retry-upon-failure-3p6g
+/*
+const fetch_retry = async (url, options, n) => {
+    let error;
+    for (let i = 0; i < maxRetry; i++) {
+        try {
+            return await fetch(url, options);
+        } catch (err) {
+            error = err;
+        }
+    }
+    throw error;
+};
+*/
+
+const http = async (method, url, body = null, query = null, headers = null) => {
   // settle the URL
   // http://example.com:3001/abc/ees, /abc/ees
   let urlPath = url
   let urlFull = baseUrl + urlPath
   let urlOrigin = baseUrl
-  try {
+  try { // need this here
     const { origin, pathname } = new URL(url) // http://example.com:3001/abc/ees
     urlOrigin = origin
     urlPath = pathname
     urlFull = origin + pathname
   } catch (e) {
-    // console.log('URL parse', e.message)
   }
-  try {
-    const qs = query ? '?' + Object.keys(query).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&') : ''
-    const options = {
-      method,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    }
 
-    if (token) options.headers['Authorization'] = `Bearer ${token}`
+  try {
+    const controller = new AbortController()
+    const signal = controller.signal
+    if (timeoutMs > 0) setTimeout(() => controller.abort(), timeoutMs) // err.name === 'AbortError'
+
+    const qs = query ? '?' + Object.keys(query).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&') : ''
+
+    if (!headers) headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+    const options = { method, headers }
+
+    if (timeoutMs > 0)  options.signal = signal
+    if (token) options.headers['Authorization'] = `Bearer ${token}`  
     if (body) options.body = JSON.stringify(body)
-    // console.log(options)
+
     const rv0 = await fetch(urlFull + qs, options)
     if (rv0.status === 401 && urlPath !== '/api/auth/logout' && urlPath !== '/api/auth/otp' && urlPath !== '/api/auth/refresh') {
       const body0 = await rv0.json()
@@ -106,13 +128,13 @@ async function logout() {
   }
 }
 
-const httpPost = async (url, body = null, query = null) => await http('POST', url, body, query)
+const httpPost = async (url, body = null, query = null, headers = null) => await http('POST', url, body, query, headers)
 
-const httpPatch = async (url, body = null, query = null) => await http('PATCH', url, body, query)
+const httpPatch = async (url, body = null, query = null, headers = null) => await http('PATCH', url, body, query, headers)
 
-const httpDelete = async (url, query = null) => await http('DELETE', url, null, query)
+const httpDelete = async (url, query = null, headers = null) => await http('DELETE', url, null, query, headers)
 
-const httpGet = async (url, query = null) => await http('GET', url, null, query)
+const httpGet = async (url, query = null, headers = null) => await http('GET', url, null, query, headers)
 
 export {
   http,

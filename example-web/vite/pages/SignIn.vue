@@ -60,11 +60,11 @@ export default {
   background: lightgray;
 }
 
-.form-box-flex mwc-textfield, .form-box-flex mwc-button { /* NOSONAR */
+.form-box-flex mwc-textfield, .form-box-flex mwc-button {
   margin-top: 15px;
 }
 
-.form-box-flex mwc-textfield { /* NOSONAR */
+.form-box-flex mwc-textfield {
   flex: 1 1 auto;
   font-size: 20px;
 }
@@ -75,7 +75,7 @@ export default {
   justify-content: space-around;
 }
 
-.buttons-box-flex mwc-button { /* NOSONAR */
+.buttons-box-flex mwc-button {
   flex: 0 1 95px;
   font-size: 20px;
 }

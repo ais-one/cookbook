@@ -1,0 +1,10 @@
+[
+    {"country_name":"United States","code":"AL","name":"Alabama"},
+    {"country_name":"United States","code":"AK","name":"Alaska"},
+    {"country_name":"United States","code":"AR","name":"Arkansas"},
+    {"country_name":"United States","code":"NE","name":"Nebraska"},
+    {"country_name":"United States","code":"NY","name":"New York"},
+    {"country_name":"China","code":"FJ","name":"Fujian"},
+    {"country_name":"China","code":"GD","name":"Guangdong"},
+    {"country_name":"China","code":"GZ","name":"Guizhou"}
+]

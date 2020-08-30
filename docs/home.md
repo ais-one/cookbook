@@ -6,6 +6,7 @@
 
 - keep technical debt in view - Rule #1 - Do Not Let Technical Debt Build Up
 - keep in mind https://12factor.net/
+  - Logging (Use APM instead?) - use console.log & morgan
 - scalable in terms of application use cases & traffic load
 - aim For simplicity, maintainability, testability, take note of size & speed
 - avoid / move away from using bundlers such as Webpack, keep tooling minimal
@@ -17,6 +18,13 @@
   - momentjs is too big, date-fns from version 1 to 2 broke things, use native JS Date Object, Intl.DateTimeFormat, etc. instead
   - nuxt-auth could not handle 2FA or refresh token so cannot be used
 - limit number of languages (e.g. use JS for everything)
+
+## JS Native Libraries
+- Intl
+- Fetch
+- Date
+- Canvas
+- WebGL
 
 ## NodeJS
 
