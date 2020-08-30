@@ -28,7 +28,7 @@ const router = createRouter({
     { path: '/demo-map', name: 'Demo Map', component: () => import('./pages/DemoMap.vue'), beforeEnter: authGuard },
     { path: '/table-grade-slot', props: route => ({ query: route.query }), name: 'TableGradeSlot', component: () => import('./pages/TableGradeSlot.vue'), beforeEnter: authGuard },
     { path: '/table-person', props: route => ({ query: route.query, tableName: 'person' }), name: 'TablePerson', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
-    { path: '/table-country', props: route => ({ query: route.query, tableName: 'country' }), name: 'TableCountry', props: { tableName: 'country' }, component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
+    { path: '/table-country', props: route => ({ query: route.query, tableName: 'country' }), name: 'TableCountry', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
     { path: '/demo-flex', name: 'DemoFlex', component: () => import('./pages/DemoFlex.vue'), beforeEnter: authGuard },
     // catchall
     { path: '/:catchAll(.*)', redirect: '/' }
