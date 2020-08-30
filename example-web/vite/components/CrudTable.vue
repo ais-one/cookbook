@@ -145,7 +145,7 @@
 // TBD show all...
 // TBD back to parent button
 // TBD inline edits
-// TBD table columns with joined values
+// TBD table columns with joined values, virtual columns...
 import { APP_VERSION, debounce } from 'http://127.0.0.1:3000/js/util.js'
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
 import { httpGet, httpPost, httpPatch } from 'http://127.0.0.1:3000/js/http.js'
@@ -327,14 +327,21 @@ export default {
     const autoCompleteSelect = (e, col, _showForm) => {
       recordObj[_showForm][col] = e.target.selected.text
       recordObj[_showForm+'Ac'][col] = []
+      // TBD is there child? clear child - recursively
     }
 
     const autoComplete = debounce(async (e, col, _showForm) => {
+      recordObj[_showForm][col] = e.target.value
       try {
-        const { tableName, limit, key, text } = tableCfg.value.cols[col].options
-        recordObj[_showForm+'Ac'][col] = await httpGet('/api/t4t/autocomplete', {
+        const { tableName, limit, key, text, parentTableColName, parentCol } = tableCfg.value.cols[col].options
+        const query = {
           db: tableCfg.value.db, tableName, limit, key, text, search: e.target.value
-        })
+        }
+        if (parentTableColName) {
+          query['parentTableColName'] = parentTableColName
+          query['parentTableColVal'] = recordObj[_showForm][parentCol]
+        }
+        recordObj[_showForm+'Ac'][col] = await httpGet('/api/t4t/autocomplete', query)
       } catch (err) {
         recordObj[_showForm+'Ac'][col] = []
         console.log('autoComplete', err.message)
@@ -342,7 +349,7 @@ export default {
     }, 500)
 
     const testFn = (e) => {
-      console.log('fffff')
+      console.log('testFn')
       // console.log(tableCfg.value)
       // console.log(recordObj)
       // showForm.value = showForm.value ? '' : 'add'

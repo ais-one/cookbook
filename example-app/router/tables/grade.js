@@ -1,8 +1,9 @@
 module.exports = {
     db: 'mongo',
     name: 'country',
-    delete: false,
     create: false,
+    update: false,
+    delete: false,
     import: false,
     export: false,
     multiSelect: false,
@@ -15,7 +16,7 @@ module.exports = {
         add: 'hide',
         edit: 'readonly'
       },
-      personId: { // primary key column, _id for mongodb
+      personId: {
         label: 'Person ID',
         add: 'readonly',
         edit: 'readonly'

@@ -1,25 +1,26 @@
 module.exports = {
   db: 'mongo', // knex / mongodb
   name: 'person', // table name
-  delete: true, // able to delete record(s)
   create: true, // able to add record,
+  update: true, // able to update
+  delete: true, // able to delete record(s)
   import: true, // can import from csv
   export: true, // can export to csv
   multiSelect: true, // multiple selection
   cols: {
-    _id: { // primary key column, _id for mongodb
-      label: 'ID',
-      auto: 'pk', // should override multiKey
-      table: 'hide',
-      filter: 'hide',
-      add: 'hide',
-      input: 'link',
-      // options: {
-      //   from: '/table-person?_id=',
-      //   to: '/table-person?_id='
-      // },
-      edit: 'readonly'
-    },
+    // _id: { // primary key column, _id for mongodb (can cause error in mongodb)
+    //   label: 'ID',
+    //   auto: 'pk', // should override multiKey
+    //   table: 'hide',
+    //   filter: 'hide',
+    //   add: 'hide',
+    //   input: 'link',
+    //   // options: {
+    //   //   from: '/table-person?_id=',
+    //   //   to: '/table-person?_id='
+    //   // },
+    //   edit: 'readonly'
+    // },
     firstName: {
       label: 'First Name',
       multiKey: true, // part of composite unique key - required!
@@ -86,7 +87,24 @@ module.exports = {
       type: 'string',
       input: 'autocomplete', // single select, no custom values
       options: {
+        parentCol: '', // use column to get parent value affecting a child
+        parentTableColName: '', // the column name in the parent table
+        childCol: 'state', // affect child column in this table
         tableName: 'country',
+        limit:8,
+        key: 'name',
+        text: ''
+      }
+    },
+    state: {
+      label: 'State', // key text...
+      type: 'string',
+      input: 'autocomplete', // single select, no custom values
+      options: {
+        parentCol: 'country',
+        parentTableColName: 'country_name',
+        childCol: '',
+        tableName: 'state',
         limit:8,
         key: 'name',
         text: ''

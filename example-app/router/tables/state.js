@@ -1,9 +1,9 @@
 module.exports = {
   db: 'mongo',
-  name: 'country',
-  create: true,
-  update: true,
-  delete: true,
+  name: 'state',
+  create: false,
+  update: false,
+  delete: false,
   import: true,
   export: true,
   multiSelect: true,
@@ -15,6 +15,11 @@ module.exports = {
       filter: 'hide',
       add: 'hide',
       edit: 'readonly'
+    },
+    country_name: {
+      label: 'Code',
+      type: 'string',
+      input: '',
     },
     code: {
       label: 'Code',

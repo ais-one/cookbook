@@ -11,7 +11,7 @@ function parseJwt (_token) {
   return JSON.parse(jsonPayload)
 }
 
-const http = async (method, url, body = null, query = null) => {
+const http = async (method, url, body = null, query = null, headers = null) => {
   // settle the URL
   // http://example.com:3001/abc/ees, /abc/ees
   let urlPath = url
@@ -25,15 +25,15 @@ const http = async (method, url, body = null, query = null) => {
   } catch (e) {
     // console.log('URL parse', e.message)
   }
+
+  if (!headers) headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
+
   try {
     const qs = query ? '?' + Object.keys(query).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&') : ''
-    const options = {
-      method,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    }
+    const options = { method, headers }
 
     if (token) options.headers['Authorization'] = `Bearer ${token}`
     if (body) options.body = JSON.stringify(body)
@@ -106,13 +106,13 @@ async function logout() {
   }
 }
 
-const httpPost = async (url, body = null, query = null) => await http('POST', url, body, query)
+const httpPost = async (url, body = null, query = null, headers = null) => await http('POST', url, body, query, headers)
 
-const httpPatch = async (url, body = null, query = null) => await http('PATCH', url, body, query)
+const httpPatch = async (url, body = null, query = null, headers = null) => await http('PATCH', url, body, query, headers)
 
-const httpDelete = async (url, query = null) => await http('DELETE', url, null, query)
+const httpDelete = async (url, query = null, headers = null) => await http('DELETE', url, null, query, headers)
 
-const httpGet = async (url, query = null) => await http('GET', url, null, query)
+const httpGet = async (url, query = null, headers = null) => await http('GET', url, null, query, headers)
 
 export {
   http,
