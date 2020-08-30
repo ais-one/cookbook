@@ -10,7 +10,7 @@
           <li class="nav-item" v-if="tableCfg && tableCfg.delete"><mwc-icon-button icon="delete" @click="remove" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item"><mwc-icon-button icon="post_add" @click="csvImport" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="csvExport" :disabled="loading"></mwc-icon-button></li>
-          <li class="nav-item"><mwc-icon-button icon="reply"  @click="goBack" :disabled="loading"></mwc-icon-button></li>
+          <li v-if="keycol" class="nav-item"><mwc-icon-button icon="reply"  @click="goBack" :disabled="loading"></mwc-icon-button></li>
         </ul>
         <ul class="nav-right">
           <li class="nav-item">
@@ -74,7 +74,8 @@
             <template v-for="(val, col, index) of recordObj[showForm]">
               <template v-if="tableCfg.cols[col]">
                 <template v-if="tableCfg.cols[col].input==='link'">
-                  <mwc-textfield @click="router.push('/dashboard')" disabled class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
+                  <!-- <mwc-textfield @click="router.push('/'+tableCfg.cols[col].options.to)" disabled class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield> -->
+                  <mwc-textfield @click="router.push('/'+tableCfg.cols[col].options.to+'?keyval='+recordObj[showForm].key+'&keycol='+tableCfg.cols[col].options.relatedCol)" disabled class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>
                 <template v-else-if="tableCfg.cols[col][showForm]==='readonly'">
                   <mwc-textfield disabled class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
@@ -143,7 +144,6 @@
 // TBD handle if cannot get config
 // TBD handle if cannot load data
 // TBD show all...
-// TBD back to parent button
 // TBD inline edits
 // TBD table columns with joined values, virtual columns...
 import { APP_VERSION, debounce } from 'http://127.0.0.1:3000/js/util.js'
@@ -156,13 +156,14 @@ export default {
   props: {
     rowsPerPage: { type: [Number], default: 10 },
     rowsPerPageList: { type: Array, default: [5, 10, 25, 50] },
-    tableName: { type: String, required: true },
-    parentId: { type: String, default: null }
+    tableName: { type: String, required: true }
   },
   // do NOT destructure the props object, as it will lose reactivity
   setup(props, ctx) { // ctx = attrs, slots, emit
     const router = useRouter()
     const route = useRoute()
+    const keycol = ref(null) // parent key/id name here
+    const keyval = ref(null) // parent key/id value
     const tableCfg = ref(null) // table config
     const page = ref(1)
     const records = ref([])
@@ -191,6 +192,7 @@ export default {
       const item = e.detail.value
       e.stopPropagation()
       if (loading.value) return // return if something is processing
+      if (!tableCfg.value.update) return console.log('no update permission')
 
       if (!item && tableCfg.value.multiSelect) return console.log('click item null')
 
@@ -230,7 +232,10 @@ export default {
     // }
 
     onMounted(async () => {
-      console.log('route', route.query)
+      console.log('Crud Table route', route.query)
+      keycol.value = route.query.keycol
+      keyval.value = route.query.keyval
+
       // console.log('APP_VERSION', APP_VERSION)
       if (!tableCfg.value) tableCfg.value = await httpGet('/api/t4t/config/' + tableName)
       if (tableCfg.value) {
@@ -263,6 +268,7 @@ export default {
           }
 
           gridEl.selectedItems = []
+          if (keycol.value) filters.push( { col: keycol.value, op: "=", val: keyval.value, andOr: "and"} )
           const rv = await httpGet('/api/t4t/find/' + tableName, {
             page: page.value,
             limit: rowsPerPage.value,
@@ -418,6 +424,9 @@ export default {
     return {
       testFn,
       router,
+
+      keycol,
+      keyval,
       goBack, // back to parent table...
 
       multiSelect, // method for multi select event...
@@ -499,6 +508,13 @@ nav {
   margin: 4px;
 }
 
+
+.table {
+  /* TBD height and width should be configurable...
+    height: 800px;
+  */
+  width: 1800px;
+}
 
 .page-flex h1, .page-flex p {
   text-align: center;

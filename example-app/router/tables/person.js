@@ -8,19 +8,16 @@ module.exports = {
   export: true, // can export to csv
   multiSelect: true, // multiple selection
   cols: {
-    // _id: { // primary key column, _id for mongodb (can cause error in mongodb)
-    //   label: 'ID',
-    //   auto: 'pk', // should override multiKey
-    //   table: 'hide',
-    //   filter: 'hide',
-    //   add: 'hide',
-    //   input: 'link',
-    //   // options: {
-    //   //   from: '/table-person?_id=',
-    //   //   to: '/table-person?_id='
-    //   // },
-    //   edit: 'readonly'
-    // },
+    _id: { // primary key column, _id for mongodb (can cause error in mongodb)
+      label: 'ID',
+      auto: 'pk', // should override multiKey
+      table: 'hide',
+      filter: 'hide',
+      add: 'hide',
+      input: 'link',
+      options: { from: 'table-person', to: 'table-grade-slot', relatedCol: 'personId' }, // router link
+      edit: 'readonly'
+    },
     firstName: {
       label: 'First Name',
       multiKey: true, // part of composite unique key - required!

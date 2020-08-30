@@ -1,6 +1,6 @@
 module.exports = {
     db: 'mongo',
-    name: 'country',
+    name: 'grade',
     create: false,
     update: false,
     delete: false,

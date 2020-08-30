@@ -25,9 +25,6 @@
     - graphql security & performance review
     - use monorepo when npm 7 is released ?
     - improve structure further
-- [Findings]
-  - Logging (Use APM instead?) - use console.log & morgan
-  - use native html5 validation rather than Vuelidate / Vee-validate (major version changes is painful)
 
 ### Version 0.3.3
 - [chore] update packages & cleanup & work on improving documentation
