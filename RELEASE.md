@@ -1,11 +1,5 @@
-### Version 0.3.4
+### Version 0.3.5
 - [chore] update packages & cleanup & work on improving documentation
-  - backend
-    - bug fix on CRUD Table patch (remove MongoDB _id from body) 
-  - frontend (common-lib/esm/http.js)
-    - Fetch API abort / retry
-  - doc
-    - jsonschema validation for MongoDB collection
 - [TODO]
   - circleci workflow
     - deploy backend to GCP Cloud Run
@@ -25,6 +19,15 @@
     - graphql security & performance review
     - use monorepo when npm 7 is released ?
     - VueCrudX ESM build (only possible when UI framework e.g. Vuetify has ESM version and vue-cli can build ESM)
+
+### Version 0.3.4
+- [chore] update packages & cleanup & work on improving documentation
+  - backend
+    - bug fix on CRUD Table patch (remove MongoDB _id from body) 
+  - frontend (common-lib/esm/http.js)
+    - Fetch API abort / retry
+  - doc
+    - jsonschema validation for MongoDB collection
 
 ### Version 0.3.3
 - [chore] update packages & cleanup & work on improving documentation
