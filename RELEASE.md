@@ -1,21 +1,22 @@
 ### Version 0.3.5
 - [chore] update packages & cleanup & work on improving documentation
+  - Handle/Test Signature & Webcam input
+  - add kafka working example
+  - change out of jest?
 - [TODO]
   - circleci workflow
+    - improve structure further
     - deploy backend to GCP Cloud Run
     - deploy SPA frontend to GCP Storage
   - backend
     - GKE, Kubernetes
-    - add kafka working example
-    - research websocket testing, improve coverage
     - research auto generated REST API and Testing (keep in view dredd.io)
+    - research websocket testing, improve coverage
   - frontend
     - cypress e2e testing
-    - Handle/Test Signature & Webcam input
     - https://github.com/vueComponent/ant-design-vue/issues/1913
     - PWA cookbook (many things to consider)
   - others
-    - improve structure further
     - graphql security & performance review
     - use monorepo when npm 7 is released ?
     - VueCrudX ESM build (only possible when UI framework e.g. Vuetify has ESM version and vue-cli can build ESM)
