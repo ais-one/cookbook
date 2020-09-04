@@ -3,22 +3,6 @@ const net = require('net')
 const port = 7070
 const host = '127.0.0.1'
 
-// const { Kafka } = require('kafkajs')
- 
-// const kafka = new Kafka({
-//   clientId: 'my-app',
-//   brokers: ['localhost:9092'] // single broker test
-// })
-
-// const producer = kafka.producer()
-// await producer.connect()
-// await producer.send({
-//   topic: 'test-topic',
-//   messages: [ { value: 'Hello KafkaJS user!' } ]
-// })
-
-// await producer.disconnect()
-
 const server = net.createServer()
 server.listen(port, host, () => {
   console.log('TCP Server is running on port ' + port + '.')

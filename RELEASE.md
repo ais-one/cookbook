@@ -1,7 +1,7 @@
 ### Version 0.3.5
 - [chore] update packages & cleanup & work on improving documentation
+  - add kafka & tcp working example
   - Handle/Test Signature & Webcam input
-  - add kafka working example
   - change out of jest?
 - [TODO]
   - circleci workflow

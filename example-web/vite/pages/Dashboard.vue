@@ -2,6 +2,11 @@
 <template>
   <div class="container">
     <h1>A Hello Vite + Vue 3!</h1>
+    <mwc-autocomplete></mwc-autocomplete>
+    <vcxwc-web-cam>
+      <button slot="button-snap" class="button" id="snap">Take 123</button>
+    </vcxwc-web-cam>
+    <vcxwc-sign-pad></vcxwc-sign-pad>
     <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>
     <p>
       <span>Count is: {{ count }}</span>

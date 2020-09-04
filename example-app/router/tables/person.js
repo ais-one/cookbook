@@ -35,6 +35,10 @@ module.exports = {
       multiKey: true,
       type: 'string',
       input: 'textfield',
+      // type ? text, password, etc...
+      validation: {
+        min: 0, max: 20
+      }
     },
     sex: { // single select
       label: 'Sex',
@@ -61,7 +65,10 @@ module.exports = {
     age: { // integer
       label: 'Age',
       type: 'integer',
-      input: 'number'
+      input: 'number',
+      validation: {
+        min: 10, max: 90
+      }
     },
     gpa: { // decimal
       label: 'GPA',
@@ -82,13 +89,14 @@ module.exports = {
     country: {
       label: 'Country', // key text...
       type: 'string',
-      input: 'autocomplete', // single select, no custom values
+      input: 'autocomplete', // single select
       options: {
         parentCol: '', // use column to get parent value affecting a child
         parentTableColName: '', // the column name in the parent table
         childCol: 'state', // affect child column in this table
         tableName: 'country',
         limit:8,
+        strict: true, // cannot enter own values, must be selected
         key: 'name',
         text: ''
       }
@@ -96,7 +104,7 @@ module.exports = {
     state: {
       label: 'State', // key text...
       type: 'string',
-      input: 'autocomplete', // single select, no custom values
+      input: 'autocomplete',
       options: {
         parentCol: 'country',
         parentTableColName: 'country_name',
