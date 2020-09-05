@@ -6,11 +6,14 @@
     <vcxwc-web-cam>
       <button slot="button-snap" class="button" id="snap">Take 123</button>
     </vcxwc-web-cam>
-    <vcxwc-sign-pad></vcxwc-sign-pad>
+    <vcxwc-sign-pad width="200" height="200" v-model="imageDataUrl"></vcxwc-sign-pad>
     <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>
     <p>
       <span>Count is: {{ count }}</span>
       <button @click="count++">increment</button>
+    </p>
+    <p>
+    <button @click="testFn">TEST See Console Log</button>      
     </p>
     <mwc-select label="preselected" :value="selected" @change="updateSelected">
       <mwc-list-item value="0">Item 0</mwc-list-item>
@@ -47,6 +50,7 @@ export default {
     // const obj = reactive({ count: 0 })
     const count = ref(0)
     const msg = ref('')
+    const imageDataUrl = ref('')
     const titleRef = ref(null)
     let nonReactiveData = 10
     const reactiveData = ref(20)
@@ -87,14 +91,15 @@ export default {
     let timerId
     onMounted(async () => {
       console.log('mounted!')
-      console.log('props', props)
-      console.log('context', context)
+      // console.log('props', props)
+      // console.log('context', context)
+      // console.log('useStore', store)
+      // console.log('useRouter', router)
+      // console.log('useRoute', route)
       console.log("template ref titleRef", titleRef.value)
+
       // const rv = await axios.get('https://swapi.dev/api/people/1')
       // msg.value = JSON.stringify(rv.data)
-      console.log('useStore', store)
-      console.log('useRouter', router)
-      console.log('useRoute', route)
 
       timerId = setInterval(() => {
         console.log('timer fired', String(selected.value))
@@ -113,6 +118,11 @@ export default {
       console.log('unmounted!')
     })
 
+    const testFn = (e) => {
+      console.log('event', e)
+      console.log('imageDataUrl', imageDataUrl.value)
+    } 
+
     // // Watch prop value change and assign to value 'selected' Ref
     // watch(() => props.value, (newValue: Props['value']) => {
     //   selected.value = newValue;
@@ -124,9 +134,11 @@ export default {
       msg,
       selected,
       titleRef,
+      imageDataUrl,
       storeCount, // store
       storeToken,
-      updateSelected
+      updateSelected,
+      testFn // method
     }
   }
   // data: () => ({ count: 0, msg: '' }),
@@ -149,5 +161,10 @@ h1 {
 
 h1, p {
   font-family: Arial, Helvetica, sans-serif;
+}
+
+vcxwc-sign-pad {
+  --vcxwc-sign-pad-background-color: #faa;
+  --vcxwc-sign-pad-stroke-color: #00f;
 }
 </style>

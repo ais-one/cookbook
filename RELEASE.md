@@ -2,7 +2,6 @@
 - [chore] update packages & cleanup & work on improving documentation
   - add kafka & tcp working example
   - Handle/Test Signature & Webcam input
-  - change out of jest?
 - [TODO]
   - circleci workflow
     - improve structure further
@@ -17,6 +16,7 @@
     - https://github.com/vueComponent/ant-design-vue/issues/1913
     - PWA cookbook (many things to consider)
   - others
+    - change out of jest?
     - graphql security & performance review
     - use monorepo when npm 7 is released ?
     - VueCrudX ESM build (only possible when UI framework e.g. Vuetify has ESM version and vue-cli can build ESM)
