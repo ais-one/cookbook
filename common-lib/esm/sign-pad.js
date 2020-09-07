@@ -59,14 +59,10 @@ class SignPad extends HTMLElement {
   }
 
   connectedCallback() { // added to the DOM
-    const styleSheetList = this.shadowRoot.styleSheets // do this here, not in constructor
-
-    const context_rule = styleSheetList[0].cssRules[1]
-    const xxx = context_rule.style.getPropertyValue('--vcxwc-sign-pad-stroke-color')
-    console.log('stroke', context_rule.style.color, xxx);
-
-    const bg_rule = styleSheetList[0].cssRules[0]
-    console.log('bg', bg_rule.style.backgroundColor, bg_rule)
+    // const styleSheetList = this.shadowRoot.styleSheets // do this here, not in constructor
+    // const bg_rule = styleSheetList[0].cssRules[0]
+    // const yyy = context_rule.style.getPropertyValue('--vcxwc-sign-pad-background-color')
+    // console.log('bg', bg_rule.style.backgroundColor, yyy)
 
     // console.log('connect sign')
     this.mouse = {
@@ -81,10 +77,15 @@ class SignPad extends HTMLElement {
 
     const el = this.shadowRoot.querySelector('#canvas')
     // console.log('canvas w h', el.width, el.height)
-    var ctx = el.getContext('2d')
+    const ctx = el.getContext('2d')
     ctx.translate(0.5, 0.5)
     ctx.imageSmoothingEnabled = false
 
+    const ctx2d = JSON.parse(this.getAttribute('context2d'))
+    // console.log('ctx2d', ctx2d)
+    for (let k in ctx2d) { // strokeStyle, lineWidth
+      ctx[k] = ctx2d[k]
+    }
     el.addEventListener('mousedown', this.handleMouseDown)
     el.addEventListener('mouseup', this.handleMouseUp)
     el.addEventListener('mousemove', this.handleMouseMove)
@@ -108,7 +109,7 @@ class SignPad extends HTMLElement {
       x: event.offsetX, y: event.offsetY
     }
     const el = this.shadowRoot.querySelector('#canvas')
-    var ctx = el.getContext('2d')
+    const ctx = el.getContext('2d')
     ctx.clearRect(0, 0, el.width, el.height) // clear
     ctx.beginPath() // clear lines
     this.value = ''
@@ -140,13 +141,11 @@ class SignPad extends HTMLElement {
     if (this.mouse.down) {
       const el = this.shadowRoot.querySelector('#canvas')
       // console.log('draw', event, el.width, el.height, c)
-      // var c = document.getElementById('canvas')
-      var ctx = el.getContext('2d')
+      // const c = document.getElementById('canvas')
+      const ctx = el.getContext('2d')
       ctx.clearRect(0, 0, el.width, el.height)
       const { x, y } = this.currentMouse()
       ctx.lineTo(x, y)
-      ctx.strokeStyle = '#F63E02'
-      ctx.lineWidth = 2
       ctx.stroke()
     }
   }

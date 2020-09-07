@@ -3,10 +3,11 @@
   <div class="container">
     <h1>A Hello Vite + Vue 3!</h1>
     <mwc-autocomplete></mwc-autocomplete>
-    <vcxwc-web-cam>
+    <vcxwc-web-cam @snap="testFn" width="320" height="240">
       <button slot="button-snap" class="button" id="snap">Take 123</button>
+      <button slot="button-unsnap" class="button" id="unsnap">Prep 123</button>
     </vcxwc-web-cam>
-    <vcxwc-sign-pad width="200" height="200" v-model="imageDataUrl"></vcxwc-sign-pad>
+    <vcxwc-sign-pad width="200" height="200" v-model="imageDataUrl" context2d='{ "lineWidth": 2, "strokeStyle": "#00f" }'></vcxwc-sign-pad>
     <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>
     <p>
       <span>Count is: {{ count }}</span>

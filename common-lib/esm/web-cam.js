@@ -19,6 +19,7 @@ body {
   width: 64px;
   z-index: 1; 
 }
+
 .container>slot>.button {
   top: 5%;
   right: 5%;
@@ -36,14 +37,22 @@ body {
 #video {
   background-color: #000000;
 }
-
+#snap {
+  display: block;
+}
+#unsnap {
+  display: none;
+}
 
 </style>
 <div class="container">
   <video id="video" width="320" height="240" autoplay></video>
   <slot name="button-snap">
     <button class="button" id="snap">Take Photo</button>
-  <slot>
+  </slot>
+  <slot name="button-unsnap">
+    <button class="button" id="unsnap">Start Camera</button>
+  </slot>
 </div>
 `
 
@@ -54,21 +63,31 @@ class WebCam extends HTMLElement {
     shadowRoot.appendChild(template.content.cloneNode(true))
 
     this.capture = this.capture.bind(this) // bind callback function
-    // canvas: {},
     // captures: []
 
-    // this.element = shadowRoot.querySelector('div');
-    // const slot = this.element.querySelector('slot');
-    // // assign the rating star to a class variable, that the render class can duplicate them
-    // this.slotNode = slot.querySelector('button');
-    // slot.addEventListener('slotchange', event => {
-    //     const node = slot.assignedNodes()[0];
-    //     if (node) {
-    //         // assign the new node to the slotNode and render the new stars
-    //         this.slotNode = node;
-    //         this.render();
-    //     }
-    // })
+    this.slotNode = {
+      ['button-snap']: this.shadowRoot.querySelector('#snap'),
+      ['button-unsnap']: this.shadowRoot.querySelector('#unsnap')
+    }
+
+    const slots = this.shadowRoot.querySelectorAll('slot')
+    // console.log(slots)
+    const slotMap = { }
+    slots.forEach(slot => {
+      slotMap[slot.name] = slot
+      slot.addEventListener('slotchange', (e) => {
+        if (this.slotNode[slot.name]) {
+          const nodes = slot.assignedNodes()
+          const btnNode = nodes[0]
+          this.slotNode[slot.name].removeEventListener('click', this.capture)
+          this.slotNode[slot.name] = btnNode
+          if (slot.name === 'button-snap') this.slotNode[slot.name].style.display = 'block'
+          if (slot.name === 'button-unsnap') this.slotNode[slot.name].style.display = 'none'    
+          this.slotNode[slot.name].addEventListener('click', this.capture)
+        }
+      })
+    })
+    console.log(slotMap)
   }
 
   static get observedAttributes() {
@@ -84,8 +103,20 @@ class WebCam extends HTMLElement {
   }
 
   connectedCallback() { // added to the DOM
-    const buttonElm = this.shadowRoot.querySelector('#snap')
-    buttonElm.addEventListener('click', this.capture)
+    console.log('connected')
+
+    console.log('width', this.getAttribute('width'))
+    console.log('height', this.getAttribute('height'))
+    this.width = this.getAttribute('width') || 320
+    this.height = this.getAttribute('height') || 240
+
+    this.slotNode['button-snap'].addEventListener('click', this.capture)
+    this.slotNode['button-unsnap'].addEventListener('click', this.capture)
+
+    const containerEl = this.shadowRoot.querySelector('.container')
+    containerEl.style.width = this.width + 'px'
+    containerEl.style.height = this.height + 'px'
+    // console.log('containerEl', containerEl)
 
     const videoEl = this.shadowRoot.querySelector('#video')
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -99,6 +130,10 @@ class WebCam extends HTMLElement {
         videoEl.play()
       })
     }
+    videoEl.setAttribute('width', this.width)
+    videoEl.setAttribute('height', this.height)
+
+    this.captureMode = true
   }
 
   attributeChangedCallback(name, oldVal, newVal) { // attribute changed
@@ -108,37 +143,39 @@ class WebCam extends HTMLElement {
   }
 
   disconnectedCallback() { // removed from the DOM
-    const buttonElm = this.shadowRoot.querySelector('#snap')
-    buttonElm.removeEventListener('click', this.capture)
+    this.slotNode['button-snap'].removeEventListener('click', this.capture)
+    this.slotNode['button-unsnap'].removeEventListener('click', this.capture)
   }
 
   capture() {
     console.log('capture event')
     const videoEl = this.shadowRoot.querySelector('#video')
-    // const canvasEl = this.shadowRoot.querySelector('#canvas')
-    // canvasEl.getContext('2d').drawImage(videoEl, 0, 0, 640, 480)
-    // this.captures.push(canvasEl.toDataURL('image/png'))
-    const scale = 1
-    const canvas = document.createElement("canvas")
-    canvas.width = videoEl.clientWidth * scale
-    canvas.height = videoEl.clientHeight * scale
-    canvas.getContext('2d').drawImage(videoEl, 0, 0, canvas.width, canvas.height)
-
-    videoEl.pause()
-    // const image = new Image()
-    // image.src = canvas.toDataURL();
-    // return image;
-
-    // console.log('videoEl', canvas.toDataURL('image/png'))
-
-    // TDB emit event?
-    // const event = new CustomEvent('click', {
-    //   image: canvas.toDataURL('image/png')
-    // })
-    // this.dispatchEvent(event)
-
-    // TBD use mwc-button
-    // TBD add canvas / video option
+    if (this.captureMode) {
+      const scale = 1
+      const canvas = document.createElement("canvas")
+      canvas.width = videoEl.clientWidth * scale
+      canvas.height = videoEl.clientHeight * scale
+      canvas.getContext('2d').drawImage(videoEl, 0, 0, canvas.width, canvas.height)
+      videoEl.pause()
+  
+      // console.log('videoEl', canvas.toDataURL('image/png'))
+      this.slotNode['button-snap'].style.display = 'none'
+      this.slotNode['button-unsnap'].style.display = 'block'
+  
+      const event = new CustomEvent('snap', {
+        detail: canvas.toDataURL('image/png')
+      })
+      this.dispatchEvent(event)
+  
+      // TBD use mwc-button
+      this.captureMode = false
+    } else {
+      videoEl.play()
+      this.captureMode = true
+      this.slotNode['button-snap'].style.display = 'block'
+      this.slotNode['button-unsnap'].style.display = 'none'
+      // set image data back to empty
+    }
   }
 }
 
