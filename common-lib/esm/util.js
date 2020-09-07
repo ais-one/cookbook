@@ -1,4 +1,4 @@
-const APP_VERSION = '0.3.5'
+const APP_VERSION = '0.3.6'
 
 function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';', idName = 'id') { // TBD Make alphbetical order?
   if (!csvContent) {

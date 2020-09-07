@@ -9,8 +9,6 @@
   - research auto generated REST API and Testing (keep in view dredd.io)
   - research websocket testing, improve coverage
 - frontend
-  - validation
-  - mwc-autocomplete (use webcomponent in a webcomponent)
   - cypress e2e testing
   - https://github.com/vueComponent/ant-design-vue/issues/1913
   - PWA cookbook (many things to consider)
@@ -18,6 +16,11 @@
   - graphql security & performance review
   - use monorepo when npm 7 is released ?
   - VueCrudX ESM build (only possible when UI framework e.g. Vuetify has ESM version and vue-cli can build ESM)
+
+### Version 0.3.6
+- [chore] update packages & cleanup & work on improving documentation
+- [table] validation
+- [frontend] mwc-autocomplete (use webcomponent in a webcomponent)
 
 ### Version 0.3.5
 - [chore] update packages & cleanup & work on improving documentation
