@@ -28,8 +28,8 @@ body {
 }
 
 ::slotted(button) {
-  top: 25%;
-  right: 25%;
+  top: var(--vcxwc-web-cam-top, 25%);
+  right: var(--vcxwc-web-cam-top, 25%);
   position: absolute;
   z-index: 1; 
 }
@@ -82,7 +82,7 @@ class WebCam extends HTMLElement {
           this.slotNode[slot.name].removeEventListener('click', this.capture)
           this.slotNode[slot.name] = btnNode
           if (slot.name === 'button-snap') this.slotNode[slot.name].style.display = 'block'
-          if (slot.name === 'button-unsnap') this.slotNode[slot.name].style.display = 'none'    
+          if (slot.name === 'button-unsnap') this.slotNode[slot.name].style.display = 'none'
           this.slotNode[slot.name].addEventListener('click', this.capture)
         }
       })

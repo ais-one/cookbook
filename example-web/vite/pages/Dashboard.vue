@@ -3,9 +3,9 @@
   <div class="container">
     <h1>A Hello Vite + Vue 3!</h1>
     <mwc-autocomplete></mwc-autocomplete>
-    <vcxwc-web-cam @snap="testFn" width="320" height="240">
-      <button slot="button-snap" class="button" id="snap">Take 123</button>
-      <button slot="button-unsnap" class="button" id="unsnap">Prep 123</button>
+    <vcxwc-web-cam @snap="snapped" width="320" height="240">
+      <button slot="button-snap" class="button" id="snap">Take Photo</button>
+      <button slot="button-unsnap" class="button" id="unsnap">Start Camera</button>
     </vcxwc-web-cam>
     <vcxwc-sign-pad width="200" height="200" v-model="imageDataUrl" context2d='{ "lineWidth": 2, "strokeStyle": "#00f" }'></vcxwc-sign-pad>
     <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>
@@ -124,6 +124,10 @@ export default {
       console.log('imageDataUrl', imageDataUrl.value)
     } 
 
+    const snapped = (e) => {
+      console.log('snapped', e.detail)
+    } 
+
     // // Watch prop value change and assign to value 'selected' Ref
     // watch(() => props.value, (newValue: Props['value']) => {
     //   selected.value = newValue;
@@ -138,8 +142,9 @@ export default {
       imageDataUrl,
       storeCount, // store
       storeToken,
-      updateSelected,
-      testFn // method
+      updateSelected, // method
+      snapped,
+      testFn
     }
   }
   // data: () => ({ count: 0, msg: '' }),
@@ -167,5 +172,10 @@ h1, p {
 vcxwc-sign-pad {
   --vcxwc-sign-pad-background-color: #faa;
   --vcxwc-sign-pad-stroke-color: #00f;
+}
+
+vcxwc-web-cam {
+  --vcxwc-web-cam-top: 5%;
+  --vcxwc-web-cam-right: 5%;
 }
 </style>
