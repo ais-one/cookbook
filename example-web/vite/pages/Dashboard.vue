@@ -3,18 +3,16 @@
   <div class="container">
     <h1>A Hello Vite + Vue 3!</h1>
     <mwc-autocomplete></mwc-autocomplete>
-    <vcxwc-web-cam @snap="snapped" width="320" height="240">
+    <vcxwc-web-cam @snap="snappedFn" width="320" height="240">
       <button slot="button-snap" class="button" id="snap">Take Photo</button>
       <button slot="button-unsnap" class="button" id="unsnap">Start Camera</button>
     </vcxwc-web-cam>
     <vcxwc-sign-pad width="200" height="200" v-model="imageDataUrl" context2d='{ "lineWidth": 2, "strokeStyle": "#00f" }'></vcxwc-sign-pad>
+    <p><button @click="signDataFn">See Signature Data</button>      </p>
     <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>
     <p>
       <span>Count is: {{ count }}</span>
       <button @click="count++">increment</button>
-    </p>
-    <p>
-    <button @click="testFn">TEST See Console Log</button>      
     </p>
     <mwc-select label="preselected" :value="selected" @change="updateSelected">
       <mwc-list-item value="0">Item 0</mwc-list-item>
@@ -119,13 +117,14 @@ export default {
       console.log('unmounted!')
     })
 
-    const testFn = (e) => {
-      console.log('event', e)
+    const signDataFn = (e) => {
+      alert('see console log for signature data')
       console.log('imageDataUrl', imageDataUrl.value)
     } 
 
-    const snapped = (e) => {
-      console.log('snapped', e.detail)
+    const snappedFn = (e) => {
+      alert('see console log for snapped picture data')
+      console.log('snappedFn', e.detail)
     } 
 
     // // Watch prop value change and assign to value 'selected' Ref
@@ -143,8 +142,8 @@ export default {
       storeCount, // store
       storeToken,
       updateSelected, // method
-      snapped,
-      testFn
+      snappedFn,
+      signDataFn
     }
   }
   // data: () => ({ count: 0, msg: '' }),
@@ -171,7 +170,6 @@ h1, p {
 
 vcxwc-sign-pad {
   --vcxwc-sign-pad-background-color: #faa;
-  --vcxwc-sign-pad-stroke-color: #00f;
 }
 
 vcxwc-web-cam {

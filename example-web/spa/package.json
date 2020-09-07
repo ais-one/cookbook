@@ -19,7 +19,7 @@
     "graphql-tag": "^2.11.0",
     "jwt-decode": "^2.2.0",
     "lit-element": "^2.4.0",
-    "rxjs": "^6.6.2",
+    "rxjs": "^6.6.3",
     "subscriptions-transport-ws": "^0.9.18",
     "vue": "^2.6.12",
     "vue-i18n": "^8.21.0",

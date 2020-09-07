@@ -1,25 +1,28 @@
+### Backlog
+- circleci workflow
+  - improve structure further
+  - deploy backend to GCP Cloud Run
+  - deploy SPA frontend to GCP Storage
+- backend
+  - change out of jest?
+  - GKE, Kubernetes
+  - research auto generated REST API and Testing (keep in view dredd.io)
+  - research websocket testing, improve coverage
+- frontend
+  - validation
+  - mwc-autocomplete (use webcomponent in a webcomponent)
+  - cypress e2e testing
+  - https://github.com/vueComponent/ant-design-vue/issues/1913
+  - PWA cookbook (many things to consider)
+- others
+  - graphql security & performance review
+  - use monorepo when npm 7 is released ?
+  - VueCrudX ESM build (only possible when UI framework e.g. Vuetify has ESM version and vue-cli can build ESM)
+
 ### Version 0.3.5
 - [chore] update packages & cleanup & work on improving documentation
-  - add kafka & tcp working example
-  - Handle/Test Signature & Webcam input
-- [TODO]
-  - circleci workflow
-    - improve structure further
-    - deploy backend to GCP Cloud Run
-    - deploy SPA frontend to GCP Storage
-  - backend
-    - GKE, Kubernetes
-    - research auto generated REST API and Testing (keep in view dredd.io)
-    - research websocket testing, improve coverage
-  - frontend
-    - cypress e2e testing
-    - https://github.com/vueComponent/ant-design-vue/issues/1913
-    - PWA cookbook (many things to consider)
-  - others
-    - change out of jest?
-    - graphql security & performance review
-    - use monorepo when npm 7 is released ?
-    - VueCrudX ESM build (only possible when UI framework e.g. Vuetify has ESM version and vue-cli can build ESM)
+  - add kafka [docs/kafka.md](docs/kafka.md) and tcp [docs/tcp.md](docs/tcp.md) working example
+  - Handle/Test Signature & Webcam input see [docs/custom-element.md](docs/custom-element.md)
 
 ### Version 0.3.4
 - [chore] update packages & cleanup & work on improving documentation

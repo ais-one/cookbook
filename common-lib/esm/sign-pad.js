@@ -4,9 +4,6 @@ template.innerHTML = `
 canvas {
   background-color: var(--vcxwc-sign-pad-background-color, #ddd);
 }
-canvas-context {
-  color: var(--vcxwc-sign-pad-stroke-color, #000);
-}
 </style>
 <canvas id="canvas"></canvas>
 `

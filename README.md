@@ -309,14 +309,16 @@ vue-crud-x
 
 # DOCUMENTATION
 
-**vue-crud-x** library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
+Main documentation can be found starting at [docs/home.md](docs/home.md)
 
 Roadmap and Release notes for the library and examples can be found in [Release.md](Release.md)
 
-Deployment notes can be found in (docs/deployment/home.md)
-
-Documentation can be found starting at [docs/home.md](docs/home.md)
-
+Other documents
+- **vue-crud-x** library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
+- Deployment notes can be found in (docs/deployment/home.md)
+- Custom Element [docs/custom-element.md](docs/custom-element.md)
+- Kafka [docs/kafka.md](docs/kafka.md)
+- TCP Server [docs/tcp.md](docs/tcp.md)
 
 **vue-crud-x 0.2+ Article** 
 
