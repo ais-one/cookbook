@@ -117,7 +117,17 @@
                   </div>
                 </template>
                 <template v-else-if="tableCfg.cols[col].input==='autocomplete'">
-                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" :value="recordObj[showForm][col]" @input="(e) => autoComplete(e, col, showForm)"></mwc-textfield>
+                  <mwc-textfield
+                    :required="isRequired(col)"
+                    class="field-item"
+                    :key="col+index"
+                    :label="tableCfg.cols[col].label"
+                    outlined type="text"
+                    :value="recordObj[showForm][col]"
+                    @input="(e) => autoComplete(e, col, showForm)"
+                    @blur="(e) => console.log('blur', e)"
+                    @focus="(e) => console.log('focus', e)"
+                  ></mwc-textfield>
                   <div :key="'ac'+col+index" class="drop-down-div">
                     <mwc-list v-if="recordObj[showForm + 'Ac'][col].length" @selected="e => autoCompleteSelect(e, col, showForm)" class="drop-down">
                       <mwc-list-item v-for="(option, index2) of recordObj[showForm + 'Ac'][col]" :key="col+index+'-'+index2">{{ option.text }}</mwc-list-item>

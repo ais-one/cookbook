@@ -2,31 +2,6 @@ import { LitElement, html, css } from 'lit-element'
 
 class LoadingBlocker extends LitElement {
   static get styles () {
-    /*
-      :host {
-        display: block;
-      }
-     .overlay {
-        position: absolute;
-        background-color: rgba(255, 255, 255, 0.5);
-        color: grey;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
-        z-index: 10;
-      }
-      #spinner {
-        -webkit-animation-name: rotateThis;
-        -webkit-animation-duration:2s;
-        -webkit-animation-iteration-count:infinite;
-        -webkit-animation-timing-function:linear;
-      }
-      @-webkit-keyframes rotateThis {
-        from {-webkit-transform:scale(0.5) rotate(0deg);}
-        to {-webkit-transform:scale(0.5) rotate(360deg);}
-      }
-    */
     return css`
       #overlay {
         position: fixed;
