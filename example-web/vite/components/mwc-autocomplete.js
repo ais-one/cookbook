@@ -1,3 +1,5 @@
+import '@material/mwc-textfield'
+
 const template = document.createElement('template')
 template.innerHTML = `
 <h1>Hi</h1>

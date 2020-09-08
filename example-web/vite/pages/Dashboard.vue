@@ -3,12 +3,6 @@
   <div class="container">
     <h1>A Hello Vite + Vue 3!</h1>
     <mwc-autocomplete></mwc-autocomplete>
-    <vcxwc-web-cam @snap="snappedFn" width="320" height="240">
-      <button slot="button-snap" class="button" id="snap">Take Photo</button>
-      <button slot="button-unsnap" class="button" id="unsnap">Start Camera</button>
-    </vcxwc-web-cam>
-    <vcxwc-sign-pad width="200" height="200" v-model="imageDataUrl" context2d='{ "lineWidth": 2, "strokeStyle": "#00f" }'></vcxwc-sign-pad>
-    <p><button @click="signDataFn">See Signature Data</button>      </p>
     <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>
     <p>
       <span>Count is: {{ count }}</span>
@@ -49,7 +43,6 @@ export default {
     // const obj = reactive({ count: 0 })
     const count = ref(0)
     const msg = ref('')
-    const imageDataUrl = ref('')
     const titleRef = ref(null)
     let nonReactiveData = 10
     const reactiveData = ref(20)
@@ -117,16 +110,6 @@ export default {
       console.log('unmounted!')
     })
 
-    const signDataFn = (e) => {
-      alert('see console log for signature data')
-      console.log('imageDataUrl', imageDataUrl.value)
-    } 
-
-    const snappedFn = (e) => {
-      alert('see console log for snapped picture data')
-      console.log('snappedFn', e.detail)
-    } 
-
     // // Watch prop value change and assign to value 'selected' Ref
     // watch(() => props.value, (newValue: Props['value']) => {
     //   selected.value = newValue;
@@ -138,12 +121,9 @@ export default {
       msg,
       selected,
       titleRef,
-      imageDataUrl,
       storeCount, // store
       storeToken,
-      updateSelected, // method
-      snappedFn,
-      signDataFn
+      updateSelected // method
     }
   }
   // data: () => ({ count: 0, msg: '' }),
@@ -170,10 +150,5 @@ h1, p {
 
 vcxwc-sign-pad {
   --vcxwc-sign-pad-background-color: #faa;
-}
-
-vcxwc-web-cam {
-  --vcxwc-web-cam-top: 5%;
-  --vcxwc-web-cam-right: 5%;
 }
 </style>

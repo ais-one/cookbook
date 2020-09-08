@@ -79,7 +79,9 @@ export default {
           { to: '/table-person?k=123', name: 'Person Table', icon: '' },
           { to: '/table-country', name: 'Country Table', icon: '' },
           { to: '/demo-map', name: 'Demo Map', icon: '' },
-          { to: '/demo-chart', name: 'Demo Chart', icon: 'bar_chart' }
+          { to: '/demo-chart', name: 'Demo Chart', icon: 'bar_chart' },
+          { to: '/demo-web-cam', name: 'Demo Web Cam', icon: '' },
+          { to: '/demo-sign-pad', name: 'Demo Sign Pad', icon: '' }
         ]
       },
       { to: '/dashboard', name: 'Dashboard', icon: 'home' },

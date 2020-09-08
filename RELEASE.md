@@ -1,6 +1,6 @@
 ### Backlog
 - circleci workflow
-  - improve structure further
+  - improve structure further (or microservices)
   - deploy backend to GCP Cloud Run
   - deploy SPA frontend to GCP Storage
 - backend

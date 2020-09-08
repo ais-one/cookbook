@@ -24,6 +24,8 @@ const router = createRouter({
     { path: '/signup', name: 'SignUp', component: () => import('./pages/SignUp.vue') },
     // private
     { path: '/dashboard', name: 'Dashboard', component: () => import('./pages/Dashboard.vue'), beforeEnter: authGuard },
+    { path: '/demo-web-cam', name: 'Demo Web Cam', component: () => import('./pages/DemoWebCam.vue'), beforeEnter: authGuard },
+    { path: '/demo-sign-pad', name: 'Demo Sign Pad', component: () => import('./pages/DemoSignPad.vue'), beforeEnter: authGuard },
     { path: '/demo-chart', name: 'Demo Chart', component: () => import('./pages/DemoChart.vue'), beforeEnter: authGuard },
     { path: '/demo-map', name: 'Demo Map', component: () => import('./pages/DemoMap.vue'), beforeEnter: authGuard },
     { path: '/table-grade-slot', props: route => ({ query: route.query }), name: 'TableGradeSlot', component: () => import('./pages/TableGradeSlot.vue'), beforeEnter: authGuard },
