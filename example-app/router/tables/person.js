@@ -28,7 +28,10 @@ module.exports = {
       add: '', // 'hide', ''  - empty string means can show and edit
       edit: '', // 'hide', 'readonly', '' - empty string means can show and edit
       default: '', // a default value (today? now?)
-      pattern: ''  // regex pattern
+      rules: {
+        min: 2,
+        regex: '^[A-Za-z]+$' // {10} // must be 10
+      }
     },
     lastName: {
       label: 'Last Name',
@@ -36,7 +39,7 @@ module.exports = {
       type: 'string',
       input: 'textfield',
       // type ? text, password, etc...
-      validation: {
+      rules: {
         min: 0, max: 20
       }
     },

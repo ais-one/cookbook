@@ -157,8 +157,10 @@
 // TBD inline edits
 // TBD table columns with joined values, virtual columns...
 import { APP_VERSION, debounce } from 'http://127.0.0.1:3000/js/util.js'
-import { onMounted, ref, reactive, onUnmounted } from 'vue'
+import { validate } from 'http://127.0.0.1:3000/js/validate.js'
 import { httpGet, httpPost, httpPatch } from 'http://127.0.0.1:3000/js/http.js'
+
+import { onMounted, ref, reactive, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 export default {
@@ -399,6 +401,22 @@ export default {
       // console.log(recordObj['edit'])
       // const items = gridEl.selectedItems
       // console.log('add ajax call', items)
+
+      // validate
+      const rec = recordObj[showForm.value]
+      for (let col in rec) {
+        if (tableCfg.value.cols[col]) {
+          const { rules, type } = tableCfg.value.cols[col]
+          if (rules) {
+            const invalid = validate(rules, type, col, rec)
+            if (invalid) {
+              showForm.value = ''
+              return alert(`Invalid ${col} - ${invalid}`)
+            }
+          }
+        }
+      }
+
       if (loading.value) return
       loading.value = true
       try {
