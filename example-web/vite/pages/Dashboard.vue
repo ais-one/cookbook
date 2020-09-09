@@ -26,7 +26,7 @@
 <script>
 // defineComponent, getCurrentInstance, reactive, readonly, watch, watchEffect
 // provide, inject ??? 
-import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed } from 'vue'
+import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, provide, inject } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
 
@@ -35,7 +35,17 @@ import { useRouter, useRoute } from 'vue-router'
 
 export default {
   name: 'Dashboard',
+
   setup(props, context) {
+    console.log('provide-inject MyTheme', inject('MyTheme'))
+    // reactivity
+    // // in provider
+    // const themeRef = ref('dark')
+    // provide(SubThemeSymbol, themeRef)
+    // // in consumer
+    // const theme = inject(SubThemeSymbol, ref('light'))
+    // watchEffect(() => console.log(`theme set to: ${theme.value}`))
+
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
@@ -82,16 +92,13 @@ export default {
     // })
     let timerId
     onMounted(async () => {
-      console.log('mounted!')
+      console.log('dash mounted!', chrome)
       // console.log('props', props)
       // console.log('context', context)
       // console.log('useStore', store)
       // console.log('useRouter', router)
       // console.log('useRoute', route)
-      console.log("template ref titleRef", titleRef.value)
-
-      // const rv = await axios.get('https://swapi.dev/api/people/1')
-      // msg.value = JSON.stringify(rv.data)
+      // console.log("template ref titleRef", titleRef.value)
 
       timerId = setInterval(() => {
         console.log('timer fired', String(selected.value))
@@ -126,16 +133,6 @@ export default {
       updateSelected // method
     }
   }
-  // data: () => ({ count: 0, msg: '' }),
-  // async mounted () {
-  //   console.log('mounted')
-  //   const rv = await axios.get('https://swapi.dev/api/people/1')
-  //   this.msg = JSON.stringify(rv.data)
-  //   console.log(this.$router, this.$store)
-  // },
-  // created () {
-  //   console.log('created')
-  // }
 }
 </script>
 

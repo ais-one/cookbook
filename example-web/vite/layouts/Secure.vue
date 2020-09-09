@@ -52,15 +52,11 @@ import { useStore } from 'vuex'
 export default {
   setup(props, context) {
     const store = useStore()
-
     const theDrawer = ref(null)
 
     onMounted(async () => {
       console.log('mounted!')
-      // addEventListener('load', () => {
-      //   document.body.classList.remove('unresolved');
-      // });
-
+      // addEventListener('load', () => { document.body.classList.remove('unresolved'); });
       const drawer = document.getElementsByTagName('mwc-drawer')[0];
       if (drawer) {
         const container = drawer.parentNode;

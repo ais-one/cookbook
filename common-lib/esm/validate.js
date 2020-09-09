@@ -14,6 +14,9 @@
 // }
 
 // TBD i18n
+// for use with
+// - example-app/router/t4t.js
+// - example-web/vite/src/components/CrudTable.vue
 function validate (rules, type, col, record) {
   let invalid = ''
   for (let rule in rules) {

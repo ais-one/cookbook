@@ -44,6 +44,10 @@
   
   const app = createApp(App)
 
+  const theme = 'dark'
+  // const ThemeSymbol = Symbol()
+  app.provide('MyTheme', theme) // provide & inject
+
   // Vue.config.ignoredElements = [/test-\w*/]
   // app.config.isCustomElement = tag => {
   //   console.log('tag', tag)
