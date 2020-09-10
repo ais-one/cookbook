@@ -9,6 +9,7 @@
       </div>
       <p><router-link to="/signup">Sign Up</router-link></p>
     </form>  
+    <mwc-autocomplete></mwc-autocomplete>
   </div>
 </template>
 

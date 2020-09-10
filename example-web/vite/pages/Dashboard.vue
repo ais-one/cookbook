@@ -2,7 +2,6 @@
 <template>
   <div class="container">
     <h1>A Hello Vite + Vue 3!</h1>
-    <mwc-autocomplete></mwc-autocomplete>
     <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>
     <p>
       <span>Count is: {{ count }}</span>

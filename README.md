@@ -311,7 +311,8 @@ vue-crud-x
 
 Main documentation can be found starting at [docs/home.md](docs/home.md)
 
-Roadmap and Release notes for the library and examples can be found in [Release.md](Release.md)
+Release notes for the library and examples can be found in [CHANGELOG.md](CHANGELOG.md)
+Roadmap for the library and examples can be found in [BACKLOG.md](BACKLOG.md)
 
 Other documents
 - **vue-crud-x** library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
