@@ -22,4 +22,4 @@ For future product improvement
 ### others
 - graphql security & performance review
 - use monorepo when npm 7 is released ?
-- VueCrudX ESM build (only possible when UI framework e.g. Vuetify has ESM version and vue-cli can build ESM)
+- VueCrudX (update to VueJS 3 and Vuetify 3)

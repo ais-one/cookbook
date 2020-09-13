@@ -18,39 +18,38 @@ template.innerHTML = `
   class="field-item"
   outlined
   type="text"
+  disabled
+  iconTrailing="keyboard_arrow_down"
 ></mwc-textfield>
 <div class="drop-down-div">
-  <mwc-list class="drop-down">
+  <mwc-list class="drop-down" multi>
   </mwc-list>
 </div>
 `
 
-class AutoComplete extends HTMLElement {
+// :iconTrailing="recordObj[showForm + 'DdShow'][col] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+// @click="recordObj[showForm + 'DdShow'][col]=!recordObj[showForm + 'DdShow'][col]"
+// @selected="e => multiSelect(e, col, showForm)"
+class MultiSelect extends HTMLElement {
   constructor () {
     super()
     this.root = this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
-
-    this.input = this.input.bind(this)
-    this.blur = this.blur.bind(this)
-    this.focus = this.focus.bind(this)
-    this.selected = this.selected.bind(this)
-  }
-
-  showList (show) {
-    console.log('showList', show)
-    this.listShow = show
-    const dd = this.shadowRoot.querySelector('.drop-down-div')
-    dd.style.display = this.listShow ? 'block' : 'none'
   }
 
   connectedCallback () {
     this.listShow = false
-    this.list = []
+    this.value = "aa,cc"
+    this.list = [
+      { key: 'aa', text: 'aa11'},
+      { key: 'bb', text: 'bb22'},
+      { key: 'cc', text: 'cc33'},
+      { key: 'dd', text: 'dd44'},
+      { key: 'ee', text: 'ee55'},
+    ]
  
     if (!this.hasAttribute('value')) this.setAttribute('value', '')
     if (!this.hasAttribute('label')) this.setAttribute('label', '')
-    // if (!this.hasAttribute('required')) this.setAttribute('required', '')
 
     const el = this.shadowRoot.querySelector('mwc-textfield')
     el.addEventListener('input', this.input)
@@ -59,15 +58,6 @@ class AutoComplete extends HTMLElement {
     el.value = this.getAttribute('value')
     const dd = this.shadowRoot.querySelector('.drop-down')
     dd.addEventListener('selected', this.selected)
-
-    // this.listShow = true
-    // this.list = ['aaa', 'bbb']
-    // this.showList(this.listShow)
-    // this.list.forEach(item => {
-    //   const li = document.createElement('mwc-list-item')
-    //   li.innerHTML = item
-    //   dd.appendChild(li)
-    // })
   }
 
   attributeChangedCallback(name, oldVal, newVal) { // attribute changed
@@ -81,19 +71,13 @@ class AutoComplete extends HTMLElement {
       case 'label':
         el.setAttribute('label', newVal)
         break;
-      case 'required':
-        console.log('required', newVal)
-        el.setAttribute('required', newVal)
-        break;
     }
   }
-  static get observedAttributes() { return ['value', 'label', 'required'] }
+  static get observedAttributes() { return ['value', 'label'] }
   get value() { return this.getAttribute('value') }
   set value(val) { this.setAttribute('value', val) }
   get label() { return this.getAttribute('label') }
   set label(val) { this.setAttribute('label', val) }
-  get required() { return this.getAttribute('required') }
-  set required(val) { this.setAttribute('required', val) }
 
   disconnectedCallback() { // removed from the DOM
     const el = this.shadowRoot.querySelector('mwc-textfield')
@@ -103,6 +87,7 @@ class AutoComplete extends HTMLElement {
     const dd = this.shadowRoot.querySelector('.drop-down')
     dd.removeEventListener('selected', this.selected)
   }
+
   selected (e) {
     console.log('selected', e)
     if (e.detail.index == -1) return
@@ -113,37 +98,31 @@ class AutoComplete extends HTMLElement {
     const event = new CustomEvent('input', { detail: this.value })
     this.dispatchEvent(event)
   }
+
   blur (e) {
     // console.log('blur', e)
     this.showList(false)
   }
   input (e) {
-    const el = this.shadowRoot.querySelector('mwc-textfield')
-    this.value = el.value
-    const event = new CustomEvent('search', { detail: this.value })
-    this.dispatchEvent(event)
+    // console.log('input', e)
   }
   focus (e) {
     // console.log('focus', e)
   }
-  hello () {
-    console.log('hello autocomplete', this.value)
-  }
+
   setList(items) {
     console.log('setList', items.length)
     this.list = []
     const dd = this.shadowRoot.querySelector('.drop-down')
     dd.innerHTML = ''
     items.forEach(item => {
-      const li = document.createElement('mwc-list-item')
+      const li = document.createElement('mwc-check-list-item')
       li.innerHTML = item
       dd.appendChild(li)
       this.list.push(item)
     })
     this.showList(!!this.list.length)
-    //   <mwc-check-list-item v-for="(option, index2) of tableCfg.cols[col].options" :selected="recordObj[showForm][col].includes(option.key)" :key="col+index+'-'+index2">{{ option.text }}</mwc-check-list-item>
   }
 }
 
-customElements.define('mwc-autocomplete', AutoComplete)
-  
+customElements.define('mwc-multiselect', MultiSelect)
