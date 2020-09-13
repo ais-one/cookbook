@@ -16,8 +16,7 @@
     <p>Reactive Data: {{ reactiveData }}</p>
     <p>Vuex Store {{ storeCount }} - {{ storeToken }}</p>
     <mwc-autocomplete required label="ac-test" v-model="ac" @search="(e)=>autoComplete(e, 'my-col', 'add')"></mwc-autocomplete>
-    <p><button @click="doAc">see ac</button></p>
-    <p><button @click="setAc">set ac</button></p>
+    <p><button @click="doAc">see ac</button>&nbsp;<button @click="setAc">set ac</button></p>
     <mwc-multiselect required label="ms-test" v-model="ms" :options="msOptions"></mwc-multiselect>
     <p>Axios GET {{ msg }}</p>
     <ul>

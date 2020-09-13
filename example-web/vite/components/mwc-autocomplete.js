@@ -18,7 +18,8 @@ template.innerHTML = `
   class="field-item"
   outlined
   type="text"
-></mwc-textfield>
+>
+</mwc-textfield>
 <div class="drop-down-div">
   <mwc-list class="drop-down">
   </mwc-list>
@@ -61,6 +62,15 @@ class AutoComplete extends HTMLElement {
     dd.addEventListener('selected', this.selected)
   }
 
+  disconnectedCallback() { // removed from the DOM
+    const el = this.shadowRoot.querySelector('mwc-textfield')
+    el.removeEventListener('input', this.input)
+    el.removeEventListener('blur', this.blur)
+    el.removeEventListener('focus', this.focus)
+    const dd = this.shadowRoot.querySelector('.drop-down')
+    dd.removeEventListener('selected', this.selected)
+  }
+
   attributeChangedCallback(name, oldVal, newVal) { // attribute changed
     const el = this.shadowRoot.querySelector('mwc-textfield')
     switch (name) {
@@ -86,14 +96,6 @@ class AutoComplete extends HTMLElement {
   get required() { return this.getAttribute('required') }
   set required(val) { this.setAttribute('required', val) }
 
-  disconnectedCallback() { // removed from the DOM
-    const el = this.shadowRoot.querySelector('mwc-textfield')
-    el.removeEventListener('input', this.input)
-    el.removeEventListener('blur', this.blur)
-    el.removeEventListener('focus', this.focus)
-    const dd = this.shadowRoot.querySelector('.drop-down')
-    dd.removeEventListener('selected', this.selected)
-  }
   selected (e) {
     console.log('selected', e)
     if (e.detail.index == -1) return
@@ -105,8 +107,19 @@ class AutoComplete extends HTMLElement {
     this.dispatchEvent(event)
   }
   blur (e) {
-    console.log('blur', e)
-    // this.showList(false)
+    // console.log('blur', e, e.relatedTarget, e.relatedTarget.innerHTML)
+    // console.log('blur parents', e.target.parentNode, e.relatedTarget.parentNode, e.target.parentNode === e.relatedTarget.parentNode.parentNode.parentNode)
+    if (e.relatedTarget
+      && e.relatedTarget.parentNode
+      && e.relatedTarget.parentNode.parentNode
+      && e.relatedTarget.parentNode.parentNode.parentNode
+      && e.target.parentNode === e.relatedTarget.parentNode.parentNode.parentNode
+    ) {
+      // do nothing, let selected event take its course
+    } else {
+      this.showList(false)
+    }
+    // setTimeout(() => this.showList(false), 200); // dangerous, do not use
   }
   input (e) {
     console.log('input', e)
