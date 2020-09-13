@@ -39,13 +39,13 @@ class AutoComplete extends HTMLElement {
 
   showList (show) {
     console.log('showList', show)
-    this.listShow = show
+    this.show = show
     const dd = this.shadowRoot.querySelector('.drop-down-div')
-    dd.style.display = this.listShow ? 'block' : 'none'
+    dd.style.display = this.show ? 'block' : 'none'
   }
 
   connectedCallback () {
-    this.listShow = false
+    this.show = false
     this.list = []
  
     if (!this.hasAttribute('value')) this.setAttribute('value', '')
@@ -59,15 +59,6 @@ class AutoComplete extends HTMLElement {
     el.value = this.getAttribute('value')
     const dd = this.shadowRoot.querySelector('.drop-down')
     dd.addEventListener('selected', this.selected)
-
-    // this.listShow = true
-    // this.list = ['aaa', 'bbb']
-    // this.showList(this.listShow)
-    // this.list.forEach(item => {
-    //   const li = document.createElement('mwc-list-item')
-    //   li.innerHTML = item
-    //   dd.appendChild(li)
-    // })
   }
 
   attributeChangedCallback(name, oldVal, newVal) { // attribute changed
@@ -141,7 +132,6 @@ class AutoComplete extends HTMLElement {
       this.list.push(item)
     })
     this.showList(!!this.list.length)
-    //   <mwc-check-list-item v-for="(option, index2) of tableCfg.cols[col].options" :selected="recordObj[showForm][col].includes(option.key)" :key="col+index+'-'+index2">{{ option.text }}</mwc-check-list-item>
   }
 }
 

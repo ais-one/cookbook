@@ -27,34 +27,26 @@ template.innerHTML = `
 </div>
 `
 
-// :iconTrailing="recordObj[showForm + 'DdShow'][col] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-// @click="recordObj[showForm + 'DdShow'][col]=!recordObj[showForm + 'DdShow'][col]"
-// @selected="e => multiSelect(e, col, showForm)"
 class MultiSelect extends HTMLElement {
   constructor () {
     super()
     this.root = this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+
+    this.click = this.click.bind(this)
+    this.selected = this.selected.bind(this)
   }
 
   connectedCallback () {
-    this.listShow = false
-    this.value = "aa,cc"
-    this.list = [
-      { key: 'aa', text: 'aa11'},
-      { key: 'bb', text: 'bb22'},
-      { key: 'cc', text: 'cc33'},
-      { key: 'dd', text: 'dd44'},
-      { key: 'ee', text: 'ee55'},
-    ]
+    this.show = false
+    this.list = []
  
     if (!this.hasAttribute('value')) this.setAttribute('value', '')
     if (!this.hasAttribute('label')) this.setAttribute('label', '')
 
     const el = this.shadowRoot.querySelector('mwc-textfield')
+    el.addEventListener('click', this.click)
     el.addEventListener('input', this.input)
-    el.addEventListener('blur', this.blur)
-    el.addEventListener('focus', this.focus)
     el.value = this.getAttribute('value')
     const dd = this.shadowRoot.querySelector('.drop-down')
     dd.addEventListener('selected', this.selected)
@@ -81,47 +73,80 @@ class MultiSelect extends HTMLElement {
 
   disconnectedCallback() { // removed from the DOM
     const el = this.shadowRoot.querySelector('mwc-textfield')
+    el.removeEventListener('click', this.click)
     el.removeEventListener('input', this.input)
-    el.removeEventListener('blur', this.blur)
-    el.removeEventListener('focus', this.focus)
     const dd = this.shadowRoot.querySelector('.drop-down')
     dd.removeEventListener('selected', this.selected)
   }
 
   selected (e) {
-    console.log('selected', e)
-    if (e.detail.index == -1) return
+    console.log('selected', e.detail.index, e.detail.index.size)
+    const selects = []
+    e.detail.index.forEach(item => {
+      // console.log(this.list, item, this.list[item])
+      selects.push(this.list[item]) // aa
+    })
+    console.log(selects)
+    if (selects.length) {
+      this.value = selects.join(',')
+    } else {
+      this.value = ''
+    }
+    const el = this.shadowRoot.querySelector('mwc-textfield')
+    el.value = this.value
 
-    this.value = this.list[e.detail.index]
-    this.showList(false)
-
-    const event = new CustomEvent('input', { detail: this.value })
-    this.dispatchEvent(event)
+    // const event = new CustomEvent('input', { detail: this.value })
+    // this.dispatchEvent(event)
   }
 
-  blur (e) {
-    // console.log('blur', e)
-    this.showList(false)
+  showList (show) {
+    this.show = show
+    const dd = this.shadowRoot.querySelector('.drop-down-div')
+    dd.style.display = this.show ? 'block' : 'none'
   }
+
+  click (e) { // dropdown arrow
+    if (this.list.length) {
+      console.log('click', !this.show)
+      this.showList(!this.show)
+      const el = this.shadowRoot.querySelector('mwc-textfield')
+      el.setAttribute('iconTrailing', this.show ? 'keyboard_arrow_up' : 'keyboard_arrow_down')
+    }
+  }
+
   input (e) {
     // console.log('input', e)
   }
-  focus (e) {
-    // console.log('focus', e)
-  }
 
   setList(items) {
-    console.log('setList', items.length)
+    items = [
+      { key: 'aa', text: 'aa11'},
+      { key: 'bb', text: 'bb22'},
+      { key: 'cc', text: 'cc33'},
+      { key: 'dd', text: 'dd44'},
+      { key: 'ee', text: 'ee55'},
+    ]
+
+    // console.log('setList', items.length)
+
+    const el = this.shadowRoot.querySelector('mwc-textfield')
+    if (!items.length) {
+      el.removeAttribute('iconTrailing')
+    } else {
+      el.setAttribute('iconTrailing', 'keyboard_arrow_down')
+    }
+    this.show = false
+
     this.list = []
     const dd = this.shadowRoot.querySelector('.drop-down')
     dd.innerHTML = ''
     items.forEach(item => {
       const li = document.createElement('mwc-check-list-item')
-      li.innerHTML = item
+      li.innerHTML = item.key
+      if ( this.value.includes(item.key) ) li.setAttribute('selected', '')
       dd.appendChild(li)
-      this.list.push(item)
+      this.list.push(item.key) // aa
     })
-    this.showList(!!this.list.length)
   }
 }
 
