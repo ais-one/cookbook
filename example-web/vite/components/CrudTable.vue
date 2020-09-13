@@ -125,8 +125,8 @@
                     outlined type="text"
                     :value="recordObj[showForm][col]"
                     @input="(e) => autoComplete(e, col, showForm)"
-                    @blur="(e) => console.log('blur', e)"
-                    @focus="(e) => console.log('focus', e)"
+                    @blur="(e) => test2('blur', e)"
+                    @focus="(e) => test2('focus', e)"
                   ></mwc-textfield>
                   <div :key="'ac'+col+index" class="drop-down-div">
                     <mwc-list v-if="recordObj[showForm + 'Ac'][col].length" @selected="e => autoCompleteSelect(e, col, showForm)" class="drop-down">
@@ -351,10 +351,8 @@ export default {
     const autoComplete = debounce(async (e, col, _showForm) => {
       recordObj[_showForm][col] = e.target.value
       try {
-        const { tableName, limit, key, text, parentTableColName, parentCol } = tableCfg.value.cols[col].options
-        const query = {
-          db: tableCfg.value.db, tableName, limit, key, text, search: e.target.value
-        }
+        const { dbName, tableName, limit, key, text, parentTableColName, parentCol } = tableCfg.value.cols[col].options
+        const query = { dbName, tableName, limit, key, text, search: e.target.value }
         if (parentTableColName) {
           query['parentTableColName'] = parentTableColName
           query['parentTableColVal'] = recordObj[_showForm][parentCol]
@@ -372,7 +370,7 @@ export default {
       // console.log(recordObj)
       // showForm.value = showForm.value ? '' : 'add'
     }
-
+    const test2 = (txt, e) => console.log(txt, e)
     const goBack = () => router.back()
 
     const remove = async () => {
@@ -450,6 +448,7 @@ export default {
     // watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { })
 
     return {
+      test2,
       testFn,
       router,
 
@@ -580,7 +579,6 @@ nav {
   padding-top: 8px;
   padding-bottom: 8px;
 }
-
 
 .drop-down-div {
   height: 150px;

@@ -9,14 +9,18 @@
       </div>
       <p><router-link to="/signup">Sign Up</router-link></p>
     </form>  
-    <mwc-autocomplete></mwc-autocomplete>
+    <mwc-autocomplete v-model="ac" @search="(e)=>autoComplete(e, 'my-col', 'add')"></mwc-autocomplete>
+    <p><button @click="doAc">see ac</button></p>
+    <p><button @click="setAc">set ac</button></p>
+
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 // import { useRouter, useRoute } from 'vue-router'
+import { debounce } from 'http://127.0.0.1:3000/js/util.js'
 
 export default {
   setup(props, context) {
@@ -24,8 +28,50 @@ export default {
     
     const username = ref('Test')
     const password = ref('1234')
+    const ac = ref('abcde')
+
+    onMounted(async () => {
+    })
+
+    const autoComplete = debounce(async (e, col, _showForm) => {
+      console.log('search', e.detail, col, _showForm)
+      const result = []
+      for (let i=0; i<e.detail.length; i++) {
+        result.push('aaa' + i)        
+      }
+      // recordObj[_showForm][col] = e.target.value
+      // try {
+      //   const { dbName, tableName, limit, key, text, parentTableColName, parentCol } = tableCfg.value.cols[col].options
+      //   const query = {
+      //     dbName, tableName, limit, key, text, search: e.target.value
+      //   }
+      //   if (parentTableColName) {
+      //     query['parentTableColName'] = parentTableColName
+      //     query['parentTableColVal'] = recordObj[_showForm][parentCol]
+      //   }
+      //   recordObj[_showForm+'Ac'][col] = await httpGet('/api/t4t/autocomplete', query)
+      // } catch (err) {
+      //   recordObj[_showForm+'Ac'][col] = []
+      //   console.log('autoComplete', err.message)
+      // }
+      const mwcAc = document.querySelector('mwc-autocomplete')
+      mwcAc.setList(result)
+    }, 500)
+
     const login = () => store.dispatch('doLogin', username.value)
+    const setAc = () => {
+      const mwcAc = document.querySelector('mwc-autocomplete')
+      mwcAc.value = 'edcba'
+      mwcAc.hello()
+    }
+    const doAc = () => {
+      console.log('ac', ac.value)
+    }
     return {
+      ac,
+      doAc,
+      setAc,
+      autoComplete,
       username, // data
       password,
       login, // method

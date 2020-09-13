@@ -97,6 +97,7 @@ module.exports = {
         parentCol: '', // use column to get parent value affecting a child
         parentTableColName: '', // the column name in the parent table
         childCol: 'state', // affect child column in this table
+        dbName: 'mongo',
         tableName: 'country',
         limit:8,
         strict: true, // cannot enter own values, must be selected
@@ -112,6 +113,7 @@ module.exports = {
         parentCol: 'country',
         parentTableColName: 'country_name',
         childCol: '',
+        dbName: 'mongo',
         tableName: 'state',
         limit:8,
         key: 'name',

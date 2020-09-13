@@ -166,7 +166,7 @@ class WebCam extends HTMLElement {
         detail: canvas.toDataURL('image/png')
       })
       this.dispatchEvent(event)
-  
+
       // TBD use mwc-button
       this.captureMode = false
     } else {

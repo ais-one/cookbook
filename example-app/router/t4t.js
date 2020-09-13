@@ -165,10 +165,9 @@ module.exports = express.Router()
   }))
 
   .get('/autocomplete', asyncWrapper(async (req, res) => {
-    let { db, tableName, limit = 20, key, text, search,
-      parentTableColName, parentTableColVal } = req.query
     let rows = {}
-    if (db === 'knex') {
+    let { dbName, tableName, limit = 20, key, text, search, parentTableColName, parentTableColVal } = req.query
+    if (dbName === 'knex') {
       const query = knex(tableName).where(key, 'like', `%${search}%`)
       if (parentTableColName !== undefined && parentTableColVal !== undefined) query.andWhere(parentTableColName, parentTableColVal)
       rows = await query.clone().limit(limit) // TBD orderBy

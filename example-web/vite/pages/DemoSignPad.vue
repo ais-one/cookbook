@@ -3,7 +3,7 @@
   <div class="container">
     <h1>Sign Pad Custom Element</h1>
     <vcxwc-sign-pad width="200" height="200" v-model="imageDataUrl" context2d='{ "lineWidth": 2, "strokeStyle": "#00f" }'></vcxwc-sign-pad>
-    <p><button @click="signDataFn">See Signature Data</button>      </p>
+    <p><button @click="signDataFn">See Signature Data</button></p>
   </div>
 </template>
 
