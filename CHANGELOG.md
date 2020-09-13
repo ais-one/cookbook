@@ -3,7 +3,7 @@
 - [table] validation
 - in progress
   - [i18n] node-polyglot
-  - [frontend] mwc-autocomplete (use webcomponent in a webcomponent)
+  - [frontend] (use webcomponent in a webcomponent) mwc-autocomplete, mwc-multiselect
 
 ### Version 0.3.5
 - [chore] update packages & cleanup & work on improving documentation

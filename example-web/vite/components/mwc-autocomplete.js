@@ -105,17 +105,18 @@ class AutoComplete extends HTMLElement {
     this.dispatchEvent(event)
   }
   blur (e) {
-    // console.log('blur', e)
-    this.showList(false)
+    console.log('blur', e)
+    // this.showList(false)
   }
   input (e) {
+    console.log('input', e)
     const el = this.shadowRoot.querySelector('mwc-textfield')
     this.value = el.value
     const event = new CustomEvent('search', { detail: this.value })
     this.dispatchEvent(event)
   }
   focus (e) {
-    // console.log('focus', e)
+    console.log('focus', e)
   }
   hello () {
     console.log('hello autocomplete', this.value)
@@ -127,9 +128,10 @@ class AutoComplete extends HTMLElement {
     dd.innerHTML = ''
     items.forEach(item => {
       const li = document.createElement('mwc-list-item')
-      li.innerHTML = item
+      const val = typeof item === 'string' ? item : item.key
+      li.innerHTML = val
       dd.appendChild(li)
-      this.list.push(item)
+      this.list.push(val)
     })
     this.showList(!!this.list.length)
   }

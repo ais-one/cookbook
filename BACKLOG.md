@@ -17,7 +17,7 @@ For future product improvement
 - cypress e2e testing
 - https://github.com/vueComponent/ant-design-vue/issues/1913
 - PWA cookbook (many things to consider)
-- Table & Pagination web component
+- mwc Table & Pagination web component
 
 ### others
 - graphql security & performance review

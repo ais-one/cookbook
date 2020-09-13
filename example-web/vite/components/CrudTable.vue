@@ -98,6 +98,14 @@
                   </mwc-select>
                 </template>
                 <template v-else-if="tableCfg.cols[col].input==='multi-select'">
+                  <mwc-multiselect
+                    :required="isRequired(col)"
+                    :key="col+index"
+                    :label="tableCfg.cols[col].label"
+                    v-model="recordObj[showForm][col]"
+                    :options="JSON.stringify(tableCfg.cols[col].options)"
+                  ></mwc-multiselect>
+                  <!--
                   <mwc-textfield
                     :required="isRequired(col)"
                     class="field-item"
@@ -115,8 +123,18 @@
                       <mwc-check-list-item v-for="(option, index2) of tableCfg.cols[col].options" :selected="recordObj[showForm][col].includes(option.key)" :key="col+index+'-'+index2">{{ option.text }}</mwc-check-list-item>
                     </mwc-list>
                   </div>
+                  -->
                 </template>
                 <template v-else-if="tableCfg.cols[col].input==='autocomplete'">
+                  <mwc-autocomplete
+                    :class="col"
+                    :required="isRequired(col)"
+                    :key="col+index"
+                    :label="tableCfg.cols[col].label"
+                    v-model="recordObj[showForm][col]"
+                    @search="(e) => autoComplete(e, col, showForm)"
+                  ></mwc-autocomplete>
+                  <!--
                   <mwc-textfield
                     :required="isRequired(col)"
                     class="field-item"
@@ -133,6 +151,7 @@
                       <mwc-list-item v-for="(option, index2) of recordObj[showForm + 'Ac'][col]" :key="col+index+'-'+index2">{{ option.text }}</mwc-list-item>
                     </mwc-list>
                   </div>
+                  -->
                 </template>           
                 <template v-else>
                   <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
@@ -329,7 +348,7 @@ export default {
       showForm.value = 'add'
     }
 
-    const multiSelect = (e, col, _showForm) => {
+    const multiSelect = (e, col, _showForm) => { // TOREMOVE
       const items = []
       // console.log(e.detail.index.values())
       e.detail.index.forEach((a, b, c) => {
@@ -342,13 +361,14 @@ export default {
       recordObj[_showForm][col] = items.join(',')
     }
 
-    const autoCompleteSelect = (e, col, _showForm) => {
+    const autoCompleteSelect = (e, col, _showForm) => { // TOREMOVE
       recordObj[_showForm][col] = e.target.selected.text
       recordObj[_showForm+'Ac'][col] = []
       // TBD is there child? clear child - recursively
     }
 
     const autoComplete = debounce(async (e, col, _showForm) => {
+      let res = []
       recordObj[_showForm][col] = e.target.value
       try {
         const { dbName, tableName, limit, key, text, parentTableColName, parentCol } = tableCfg.value.cols[col].options
@@ -357,11 +377,15 @@ export default {
           query['parentTableColName'] = parentTableColName
           query['parentTableColVal'] = recordObj[_showForm][parentCol]
         }
-        recordObj[_showForm+'Ac'][col] = await httpGet('/api/t4t/autocomplete', query)
+        // recordObj[_showForm+'Ac'][col] = await httpGet('/api/t4t/autocomplete', query)
+        res = await httpGet('/api/t4t/autocomplete', query)
       } catch (err) {
-        recordObj[_showForm+'Ac'][col] = []
+        // recordObj[_showForm+'Ac'][col] = []
         console.log('autoComplete', err.message)
       }
+      const mwcAc = document.querySelector('mwc-autocomplete.'+col)
+      // console.log('autoComplete res', res, mwcAc, col)
+      mwcAc.setList(res)
     }, 500)
 
     const testFn = (e) => {
@@ -370,7 +394,6 @@ export default {
       // console.log(recordObj)
       // showForm.value = showForm.value ? '' : 'add'
     }
-    const test2 = (txt, e) => console.log(txt, e)
     const goBack = () => router.back()
 
     const remove = async () => {
@@ -448,7 +471,6 @@ export default {
     // watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { })
 
     return {
-      test2,
       testFn,
       router,
 

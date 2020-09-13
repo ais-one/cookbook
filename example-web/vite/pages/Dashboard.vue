@@ -18,7 +18,7 @@
     <mwc-autocomplete required label="ac-test" v-model="ac" @search="(e)=>autoComplete(e, 'my-col', 'add')"></mwc-autocomplete>
     <p><button @click="doAc">see ac</button></p>
     <p><button @click="setAc">set ac</button></p>
-    <mwc-multiselect required label="ms-test" v-model="ms"></mwc-multiselect>
+    <mwc-multiselect required label="ms-test" v-model="ms" :options="msOptions"></mwc-multiselect>
     <p>Axios GET {{ msg }}</p>
     <ul>
       <li v-for="n in 50" :key="n">{{ n }}</li>
@@ -93,6 +93,13 @@ export default {
     // })
 
     const ms = ref('bb,cc')
+    const msOptions = ref(JSON.stringify([
+      { key: 'aa', text: 'aa11'},
+      { key: 'bb', text: 'bb22'},
+      { key: 'cc', text: 'cc33'},
+      { key: 'dd', text: 'dd44'},
+      { key: 'ee', text: 'ee55'},
+    ]))
 
     const ac = ref('aaa0') // autocomplete
     const autoComplete = debounce(async (e, col, _showForm) => {
@@ -123,8 +130,8 @@ export default {
       // console.log('useRoute', route)
       // console.log("template ref titleRef", titleRef.value)
 
-      const mwcMs = document.querySelector('mwc-multiselect')
-      mwcMs.setList([])
+      // const mwcMs = document.querySelector('mwc-multiselect')
+      // mwcMs.setList([])
 
       timerId = setInterval(() => {
         console.log('timer fired', String(selected.value))
@@ -149,6 +156,7 @@ export default {
     // });
     return {
       ms, // multiselect
+      msOptions,
       ac, // autocomplete
       doAc,
       setAc,

@@ -44,6 +44,8 @@ class MultiSelect extends HTMLElement {
     if (!this.hasAttribute('value')) this.setAttribute('value', '')
     if (!this.hasAttribute('label')) this.setAttribute('label', '')
 
+    if (this.hasAttribute('options')) this.setList( JSON.parse(this.getAttribute('options')) || [] )
+
     const el = this.shadowRoot.querySelector('mwc-textfield')
     el.addEventListener('click', this.click)
     el.addEventListener('input', this.input)
@@ -119,16 +121,14 @@ class MultiSelect extends HTMLElement {
   }
 
   setList(items) {
-    items = [
-      { key: 'aa', text: 'aa11'},
-      { key: 'bb', text: 'bb22'},
-      { key: 'cc', text: 'cc33'},
-      { key: 'dd', text: 'dd44'},
-      { key: 'ee', text: 'ee55'},
-    ]
-
+    // items = [
+    //   { key: 'aa', text: 'aa11'},
+    //   { key: 'bb', text: 'bb22'},
+    //   { key: 'cc', text: 'cc33'},
+    //   { key: 'dd', text: 'dd44'},
+    //   { key: 'ee', text: 'ee55'},
+    // ]
     // console.log('setList', items.length)
-
     const el = this.shadowRoot.querySelector('mwc-textfield')
     if (!items.length) {
       el.removeAttribute('iconTrailing')
