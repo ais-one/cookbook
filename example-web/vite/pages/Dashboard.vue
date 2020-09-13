@@ -15,6 +15,9 @@
     <p>Non-Reactive Data: {{ nonReactiveData }}</p>
     <p>Reactive Data: {{ reactiveData }}</p>
     <p>Vuex Store {{ storeCount }} - {{ storeToken }}</p>
+    <mwc-autocomplete required label="ac-test" v-model="ac" @search="(e)=>autoComplete(e, 'my-col', 'add')"></mwc-autocomplete>
+    <p><button @click="doAc">see ac</button></p>
+    <p><button @click="setAc">set ac</button></p>
     <p>Axios GET {{ msg }}</p>
     <ul>
       <li v-for="n in 50" :key="n">{{ n }}</li>
@@ -28,9 +31,7 @@
 import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, provide, inject } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-
-// import axios from '/web_modules/axios.js'
-// import axios from 'axios'
+import { debounce } from 'http://127.0.0.1:3000/js/util.js'
 
 export default {
   name: 'Dashboard',
@@ -89,6 +90,26 @@ export default {
 
     // watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
     // })
+
+    const ac = ref('abcde') // autocomplete
+    const autoComplete = debounce(async (e, col, _showForm) => {
+      console.log('search', e.detail, col, _showForm)
+      const result = []
+      for (let i=0; i<e.detail.length; i++) {
+        result.push('aaa' + i)        
+      }
+      const mwcAc = document.querySelector('mwc-autocomplete')
+      mwcAc.setList(result)
+    }, 500)
+    const setAc = () => {
+      const mwcAc = document.querySelector('mwc-autocomplete')
+      mwcAc.value = 'edcba'
+      mwcAc.hello()
+    }
+    const doAc = () => {
+      console.log('ac', ac.value)
+    }
+
     let timerId
     onMounted(async () => {
       console.log('dash mounted!', chrome)
@@ -121,6 +142,10 @@ export default {
     //   selected.value = newValue;
     // });
     return {
+      ac, // autocomplete
+      doAc,
+      setAc,
+      autoComplete,
       nonReactiveData, // non reactive
       reactiveData, // ref reactive
       count, // ref

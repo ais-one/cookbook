@@ -9,15 +9,14 @@ template.innerHTML = `
 }
 .drop-down-div {
   height: 150px;
+  display: none;
 }
 .drop-down {
   height:150px;overflow-y:scroll;
 }
 </style>
 <mwc-textfield
-  required
   class="field-item"
-  label="Label"
   outlined
   type="text"
 ></mwc-textfield>
@@ -26,12 +25,7 @@ template.innerHTML = `
 </mwc-list>
 </div>
 `
-/*
-  @input="(e) => autoComplete(e, col, showForm)"
-  @blur="(e) => console.log('blur', e)"
-  @focus="(e) => console.log('focus', e)"
-  <mwc-list-item>{{ option.text }}</mwc-list-item>
-*/
+
 class AutoComplete extends HTMLElement {
   constructor () {
     super()
@@ -45,18 +39,19 @@ class AutoComplete extends HTMLElement {
   }
 
   showList (show) {
+    console.log('showList', show)
     this.listShow = show
-    const dd = this.shadowRoot.querySelector('.drop-down')
+    const dd = this.shadowRoot.querySelector('.drop-down-div')
     dd.style.display = this.listShow ? 'block' : 'none'
   }
 
   connectedCallback () {
-    // this.listShow = false
-    // this.list = []
-    this.listShow = true
-    this.list = ['aaa', 'bbb']
-
+    this.listShow = false
+    this.list = []
+ 
     if (!this.hasAttribute('value')) this.setAttribute('value', '')
+    if (!this.hasAttribute('label')) this.setAttribute('label', '')
+    // if (!this.hasAttribute('required')) this.setAttribute('required', '')
 
     const el = this.shadowRoot.querySelector('mwc-textfield')
     el.addEventListener('input', this.input)
@@ -66,6 +61,8 @@ class AutoComplete extends HTMLElement {
     const dd = this.shadowRoot.querySelector('.drop-down')
     dd.addEventListener('selected', this.selected)
 
+    // this.listShow = true
+    // this.list = ['aaa', 'bbb']
     // this.showList(this.listShow)
     // this.list.forEach(item => {
     //   const li = document.createElement('mwc-list-item')
@@ -75,18 +72,29 @@ class AutoComplete extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldVal, newVal) { // attribute changed
+    const el = this.shadowRoot.querySelector('mwc-textfield')
     switch (name) {
-      case 'value': // set canvas height
-        const el = this.shadowRoot.querySelector('mwc-textfield')
+      case 'value':
         el.value = newVal
         const event = new CustomEvent('input', { detail: newVal })
         this.dispatchEvent(event)
         break;
+      case 'label':
+        el.setAttribute('label', newVal)
+        break;
+      case 'required':
+        console.log('required', newVal)
+        el.setAttribute('required', newVal)
+        break;
     }
   }
-  static get observedAttributes() { return ['value'] }
+  static get observedAttributes() { return ['value', 'label', 'required'] }
   get value() { return this.getAttribute('value') }
   set value(val) { this.setAttribute('value', val) }
+  get label() { return this.getAttribute('label') }
+  set label(val) { this.setAttribute('label', val) }
+  get required() { return this.getAttribute('required') }
+  set required(val) { this.setAttribute('required', val) }
 
   disconnectedCallback() { // removed from the DOM
     const el = this.shadowRoot.querySelector('mwc-textfield')
@@ -98,15 +106,17 @@ class AutoComplete extends HTMLElement {
   }
   selected (e) {
     console.log('selected', e)
+    if (e.detail.index == -1) return
+
     this.value = this.list[e.detail.index]
     this.showList(false)
-    // e => autoCompleteSelect(e, col, showForm)
 
     const event = new CustomEvent('input', { detail: this.value })
     this.dispatchEvent(event)
   }
   blur (e) {
     // console.log('blur', e)
+    this.showList(false)
   }
   input (e) {
     const el = this.shadowRoot.querySelector('mwc-textfield')
@@ -123,17 +133,14 @@ class AutoComplete extends HTMLElement {
   setList(items) {
     console.log('setList', items.length)
     this.list = []
-
     const dd = this.shadowRoot.querySelector('.drop-down')
     dd.innerHTML = ''
     items.forEach(item => {
       const li = document.createElement('mwc-list-item')
       li.innerHTML = item
       dd.appendChild(li)
-
       this.list.push(item)
     })
-
     this.showList(!!this.list.length)
   }
 }
