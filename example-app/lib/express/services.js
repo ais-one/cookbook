@@ -6,7 +6,7 @@
 // node signal events: https://nodejs.org/dist/latest-v11.x/docs/api/process.html#process_signal_events
 // kubernetes shutdown: https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-terminating-with-grace
 
-const { sleep } = require('esm')(module)('../esm/sleep')
+// const { sleep } = require('esm')(module)('../esm/sleep') // TBD ADD IN LATER...
 
 module.exports = async function (server) {
   // process.stdin.resume()
@@ -32,7 +32,7 @@ module.exports = async function (server) {
         await objection.close()
         // console.log('bull', bull.close)
         // TBD does apollo graphql have a shutdown?
-        await sleep(10) // wait awhile more for things to settle
+        // await sleep(10) // wait awhile more for things to settle
         console.log('Server close done')
       } catch (e) {
         console.log(e)

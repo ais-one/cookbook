@@ -60,7 +60,7 @@
         :maxPage="maxPage"
       >
         <vaadin-grid class="table">
-          <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect"></vaadin-grid-selection-column>
+          <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect" @select-all-changed="selectAllChanged"></vaadin-grid-selection-column>
           <vaadin-grid-sort-column v-for="(headerCol, index) in headerCols" :key="index" :path="headerCol.path" :header="headerCol.header"></vaadin-grid-sort-column>
         </vaadin-grid>
       </slot>
@@ -74,7 +74,6 @@
             <template v-for="(val, col, index) of recordObj[showForm]">
               <template v-if="tableCfg.cols[col]">
                 <template v-if="tableCfg.cols[col].input==='link'">
-                  <!-- <mwc-textfield @click="router.push('/'+tableCfg.cols[col].options.to)" disabled class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield> -->
                   <mwc-textfield @click="router.push('/'+tableCfg.cols[col].options.to+'?keyval='+recordObj[showForm].key+'&keycol='+tableCfg.cols[col].options.relatedCol)" disabled class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>
                 <template v-else-if="tableCfg.cols[col][showForm]==='readonly'">
@@ -105,25 +104,6 @@
                     v-model="recordObj[showForm][col]"
                     :options="JSON.stringify(tableCfg.cols[col].options)"
                   ></mwc-multiselect>
-                  <!--
-                  <mwc-textfield
-                    :required="isRequired(col)"
-                    class="field-item"
-                    :key="col+index"
-                    :label="tableCfg.cols[col].label"
-                    outlined
-                    type="text"
-                    disabled
-                    :value="recordObj[showForm][col]"
-                    :iconTrailing="recordObj[showForm + 'DdShow'][col] ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-                    @click="recordObj[showForm + 'DdShow'][col]=!recordObj[showForm + 'DdShow'][col]"
-                  ></mwc-textfield>
-                  <div :key="'ms'+col+index" class="drop-down-div">
-                    <mwc-list v-if="recordObj[showForm + 'DdShow'][col]" multi @selected="e => multiSelect(e, col, showForm)" class="drop-down">
-                      <mwc-check-list-item v-for="(option, index2) of tableCfg.cols[col].options" :selected="recordObj[showForm][col].includes(option.key)" :key="col+index+'-'+index2">{{ option.text }}</mwc-check-list-item>
-                    </mwc-list>
-                  </div>
-                  -->
                 </template>
                 <template v-else-if="tableCfg.cols[col].input==='autocomplete'">
                   <mwc-autocomplete
@@ -134,24 +114,6 @@
                     v-model="recordObj[showForm][col]"
                     @search="(e) => autoComplete(e, col, showForm)"
                   ></mwc-autocomplete>
-                  <!--
-                  <mwc-textfield
-                    :required="isRequired(col)"
-                    class="field-item"
-                    :key="col+index"
-                    :label="tableCfg.cols[col].label"
-                    outlined type="text"
-                    :value="recordObj[showForm][col]"
-                    @input="(e) => autoComplete(e, col, showForm)"
-                    @blur="(e) => test2('blur', e)"
-                    @focus="(e) => test2('focus', e)"
-                  ></mwc-textfield>
-                  <div :key="'ac'+col+index" class="drop-down-div">
-                    <mwc-list v-if="recordObj[showForm + 'Ac'][col].length" @selected="e => autoCompleteSelect(e, col, showForm)" class="drop-down">
-                      <mwc-list-item v-for="(option, index2) of recordObj[showForm + 'Ac'][col]" :key="col+index+'-'+index2">{{ option.text }}</mwc-list-item>
-                    </mwc-list>
-                  </div>
-                  -->
                 </template>           
                 <template v-else>
                   <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
@@ -175,7 +137,7 @@
 // TBD show all...
 // TBD inline edits
 // TBD table columns with joined values, virtual columns...
-import { APP_VERSION, debounce } from 'http://127.0.0.1:3000/js/util.js'
+import { debounce } from 'http://127.0.0.1:3000/js/util.js'
 import { validate } from 'http://127.0.0.1:3000/js/validate.js'
 import { httpGet, httpPost, httpPatch } from 'http://127.0.0.1:3000/js/http.js'
 
@@ -210,12 +172,8 @@ export default {
     const recordObj = reactive({
       add: {},
       edit: {},
-      addDdShow: {}, // col: true/false
-      editDdShow: {}, // col: true/false
-      addAc: {}, // col: []
-      editAc: {}, // col: []
     })
-    const tableName = props.tableName || 'person'
+    const tableName = props.tableName
     let gridEl // grid element
 
     const _rowClick = async (e) => {
@@ -242,9 +200,6 @@ export default {
           const [key, val] = kv
           if (val.edit !== 'hide') {
             recordObj['edit'][key] = rv[key]
-
-            if (val.input === 'multi-select') recordObj['editDdShow'][key] = false
-            else if (val.input === 'autocomplete') recordObj['editAc'][key] = []
           }
         })
         showForm.value = 'edit'
@@ -267,7 +222,6 @@ export default {
       keycol.value = route.query.keycol
       keyval.value = route.query.keyval
 
-      // console.log('APP_VERSION', APP_VERSION)
       if (!tableCfg.value) tableCfg.value = await httpGet('/api/t4t/config/' + tableName)
       if (tableCfg.value) {
         for (let col in tableCfg.value.cols) {
@@ -332,39 +286,16 @@ export default {
       return required || multiKey
     }
 
-    const refreshData = () => {
-      gridEl.clearCache()
-    }
+    const refreshData = () => gridEl.clearCache()
+
     const openAdd = async () => {
       Object.entries(tableCfg.value.cols).forEach(item => {
         const [key, val] = item
         if (val.add !== 'hide') {
           recordObj['add'][key] = val.default || (val.type === 'integer' || val.type === 'decimal' ? 0 : '')
-
-          if (val.input === 'multi-select') recordObj['addDdShow'][key] = false
-          else if (val.input === 'autocomplete') recordObj['addAc'][key] = []
         }
       })
       showForm.value = 'add'
-    }
-
-    const multiSelect = (e, col, _showForm) => { // TOREMOVE
-      const items = []
-      // console.log(e.detail.index.values())
-      e.detail.index.forEach((a, b, c) => {
-        const opt = tableCfg.value.cols[col].options[a]
-        if (opt && opt.key) {
-          const item = opt.key
-          items.push(item)
-        }
-      })
-      recordObj[_showForm][col] = items.join(',')
-    }
-
-    const autoCompleteSelect = (e, col, _showForm) => { // TOREMOVE
-      recordObj[_showForm][col] = e.target.selected.text
-      recordObj[_showForm+'Ac'][col] = []
-      // TBD is there child? clear child - recursively
     }
 
     const autoComplete = debounce(async (e, col, _showForm) => {
@@ -397,6 +328,7 @@ export default {
     const goBack = () => router.back()
 
     const remove = async () => {
+      // return console.log('remove gridEl.selectedItems', gridEl.selectedItems)
       if (loading.value) return
       loading.value = true
       const items = gridEl.selectedItems
@@ -462,15 +394,36 @@ export default {
     const csvImport = async () => { }
     const csvExport = async () => { }
 
-    // // watching value of a reactive object (watching a getter)
-    // watch(() => props.selected, (selection, prevSelection) => { })
-    // // directly watching a ref
-    // const selected = ref(props.selected)
+    // watch(() => props.selected, (selection, prevSelection) => { }) // watching value of a reactive object (watching a getter)
+    // const selected = ref(props.selected) // directly watching a ref
     // watch(selected, (selection, prevSelection) => { })
-    // // Watching Multiple Sources
-    // watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { })
+    // watch([ref1, ref2, ...], ([refVal1, refVal2, ...],[prevRef1, prevRef2, ...]) => { }) // Watching Multiple Sources
+
+    const selectAllChanged = (e) => {
+      if (!gridEl) return
+      console.log(gridEl)
+      const xxx = gridEl.querySelectorAll('vaadin-grid-selection-column')
+      // console.log('xxx', xxx)
+      .forEach(function(node) {
+        console.log('node', node)
+      })
+      if (e.detail.value) {
+        console.log('select all', e)
+        // gridEl.selectedItems = [ ...gridEl.items ]
+      } else {
+        console.log('unselect all')
+        // gridEl.selectedItems = []
+      }
+      // if (gridEl) gridEl.selectedItems = []
+      // e.detail.value
+      // set all checkboxes
+      // clear all checkboxes
+      // console.log('selectAllChanged', e.detail.value, e.target.selectAll)
+    }
 
     return {
+      selectAllChanged,
+
       testFn,
       router,
 
@@ -478,9 +431,7 @@ export default {
       keyval,
       goBack, // back to parent table...
 
-      multiSelect, // method for multi select event...
       autoComplete, // method for autocomplete
-      autoCompleteSelect, // method for autocomplete
       openAdd, // method populate default values and open form for add
 
       // CRUD
@@ -499,7 +450,7 @@ export default {
       filterCols, // reactive
       filterOps, // reactive
 
-      showForm, // ref to show form (either add or edit) or not
+      showForm, // ref to show form (either add or edit) or not (empty string)
       recordObj, // reactive form data
 
       page, // ref
@@ -557,12 +508,11 @@ nav {
   margin: 4px;
 }
 
-
 .table {
   /* TBD height and width should be configurable...
     height: 800px;
   */
-  width: 1800px;
+  /* width: 1800px; */
 }
 
 .page-flex h1, .page-flex p {

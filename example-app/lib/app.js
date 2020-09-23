@@ -5,16 +5,11 @@ const https = require('https')
 const express = require('express')
 const app = express()
 
-// mixing ES Modules into a CommonJS project
-// https://codewithhugo.com/use-es-modules-in-node-without-babel/webpack-using-esm/
-const { APP_VERSION } = require('esm')(module)('./esm/util')
-console.log('APP_VERSION from ES Module file...', APP_VERSION)
+const { USE_GRAPHQL, httpsCerts } = global.CONFIG
+const server = httpsCerts ? https.createServer(httpsCerts, app) : http.createServer(app)
 
-const { USE_HTTPS, USE_GRAPHQL, httpsCerts } = global.CONFIG
-const server = USE_HTTPS ? https.createServer(httpsCerts, app) : http.createServer(app)
-
-require(LIB_PATH + '/express/services')(server)
 require(LIB_PATH + '/express/preroute')(app)
+require(LIB_PATH + '/express/services')(server)
 // PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token
 try {
   require(APP_PATH + '/router')(app)

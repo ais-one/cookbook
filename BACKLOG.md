@@ -2,11 +2,6 @@
 
 For future product improvement
 
-### circleci workflow
-- improve structure further (or microservices)
-- deploy backend to GCP Cloud Run
-- deploy SPA frontend to GCP Storage
-
 ### backend
 - change out of jest? use native assert instead of chai
 - GKE, Kubernetes
@@ -20,6 +15,7 @@ For future product improvement
 - mwc Table & Pagination web component
 
 ### others
+- circleci / github actions
 - graphql security & performance review
 - use monorepo when npm 7 is released ?
 - VueCrudX (update to VueJS 3 and Vuetify 3)

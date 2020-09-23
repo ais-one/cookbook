@@ -8,7 +8,8 @@ const app = express()
 require(LIB_PATH + '/config')
 require(LIB_PATH + '/express/preroute')(app)
 const objection = require(LIB_PATH + '/services/db/objection').open()
-require(`../../router`)(app)
+// require(`../../router`)(app)
+require(APP_PATH + `/router`)(app)
 
 const endpointUrl = '/api/authors'
 

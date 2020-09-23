@@ -1,5 +1,3 @@
-const APP_VERSION = '0.3.6'
-
 function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';', idName = 'id') { // TBD Make alphbetical order?
   if (!csvContent) {
     csvContent += idName // set id as first columns
@@ -121,4 +119,4 @@ function throttle(callback, wait) {
   }
  }
 
-export { APP_VERSION, makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle }
+export { makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle }

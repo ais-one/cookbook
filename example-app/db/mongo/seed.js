@@ -1,9 +1,7 @@
-require(require('path').join(process.cwd(), 'common-lib', 'setup')) // first thing to setup
-require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
+const { exit } = require('process')
 
 const { MONGO_DB, MONGO_URL } = global.CONFIG
 const { JWT_REFRESH_STORE, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE_NAME } = global.CONFIG
-
 const ObjectID = require('mongodb').ObjectID
 
 let db

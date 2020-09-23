@@ -1,9 +1,12 @@
 ### Version 0.3.6
 - [chore] update packages & cleanup & work on improving documentation
 - [table] validation
+- [frontend] (use webcomponent in a webcomponent) mwc-autocomplete, mwc-multiselect
 - in progress
+  - improve structure further (or microservices)
+  - deploy backend to GCP Cloud Run
+  - deploy SPA frontend to GCP Storage
   - [i18n] node-polyglot
-  - [frontend] (use webcomponent in a webcomponent) mwc-autocomplete, mwc-multiselect
 
 ### Version 0.3.5
 - [chore] update packages & cleanup & work on improving documentation

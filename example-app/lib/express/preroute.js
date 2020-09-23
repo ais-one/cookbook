@@ -152,30 +152,6 @@ module.exports = function(app) {
   app.use(cookieParser('some_secret'))
 
   // ------ SWAGGER ------
-  // {
-  //   // Swagger / OpenAPI definitions
-  //   info: {
-  //     title: 'example-app',
-  //     version: '1.0.0',
-  //     description: 'A sample API',
-  //   },
-  //   host: '127.0.0.1:3000', // API host
-  //   basePath: '/',
-  //   tags: [
-  //     { name: 'Auth', description: 'Authentication' },
-  //     { name: 'Base', description: 'The Base API' },
-  //   ],
-  //   schemes: [ 'http', 'https' ],
-  //   securityDefinitions: {
-  //     Bearer: {
-  //       type: 'apiKey',
-  //       name: 'Authorization',
-  //       in: 'header'
-  //     }
-  //   },
-  //   consumes: ['application/json'],
-  //   produces: ['application/json']
-  // },
   const  { SWAGGER_DEFS } = global.CONFIG
   if (SWAGGER_DEFS) {
     const swaggerUi = require('swagger-ui-express')

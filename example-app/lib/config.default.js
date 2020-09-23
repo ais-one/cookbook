@@ -90,7 +90,7 @@ global.CONFIG.PROXY_WWW_ORIGIN = '' // 'http://127.0.0.1:8080', // used by proxy
 global.CONFIG.WEB_STATIC = [  // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
   { folder: APP_PATH + '/public/demo-express', url: '/' },
   { folder: APP_PATH + '/public/demo-nobundler', url: '/demo-nobundler' },
-  { folder: LIB_PATH + '/esm', url: '/js' }
+  { folder: COMMON_LIB_PATH + '/esm', url: '/js' }
 ]
 
 global.CONFIG.UPLOAD_FOLDER = APP_PATH + '/uploads' // for server uploads - to remove
@@ -109,7 +109,6 @@ global.CONFIG.HTTPS_CERT = process.env.HTTPS_CERT || ''
 // Express - OpenAPI - refer to common-lib/express/preroute.js
 global.CONFIG.SWAGGER_DEFS = null
 global.CONFIG.ENABLE_LOGGER = false
-global.CONFIG.USE_HTTPS = false
 
 // Github
 // global.CONFIG.GITHUB_CLIENT_ID = ''

@@ -1,7 +1,6 @@
 require(LIB_PATH + '/config')
 const objection = require(LIB_PATH + '/services/db/objection').open()
-
-const AuthorController = require('../../controllers/author')
+const AuthorController = require(APP_PATH + '/controllers/author')
 // const AuthorModel = require('../../models/Author')
 const httpMocks = require('node-mocks-http')
 

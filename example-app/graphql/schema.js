@@ -6,7 +6,7 @@ const Category = require('../models/Category')
 // graphql Schema
 
 const fs = require('fs')
-const typeDefs = fs.readFileSync('./example-app/graphql/schema.gql', 'utf8').toString() // relative to package.json directory where script is executed
+const typeDefs = fs.readFileSync('./graphql/schema.gql', 'utf8').toString() // relative to package.json directory where script is executed
 
 // Provide resolver functions for your schema fields
 const resolvers = {

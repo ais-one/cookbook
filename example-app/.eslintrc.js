@@ -1,13 +1,22 @@
-{
+module.exports = {
   "parserOptions": {
     // Required for certain syntax usages
-    "ecmaVersion": 8
+    "ecmaVersion": 2018,
+    sourceType: 'module'
+  },
+  "env" : {
+    "browser" : true,
+    "node" : true,
+    "es6" : true
   },
   "plugins": [
-    "promise"
+    // "promise" // eslint-plugin-promise not needed
   ],
   "extends": "eslint:recommended",
   "rules": {
+    // disallow empty block statements (no-empty)
+    "no-empty": "warn",
+
     // Removed rule "disallow the use of console" from recommended eslint rules
     "no-console": "off",
 
@@ -39,7 +48,7 @@
     "eqeqeq": 2,
 
     // Disallow the use of alert, confirm, and prompt
-    "no-alert": 2,
+    "no-alert": 1,
 
     // Disallow the use of arguments.caller or arguments.callee
     "no-caller": 2,
@@ -112,12 +121,12 @@
 
     // Return inside each then() to create readable and reusable Promise chains.
     // Forces developers to return console logs and http calls in promises. 
-    "promise/always-return": 2,
+    // "promise/always-return": 2,
 
     //Enforces the use of catch() on un-returned promises
-    "promise/catch-or-return": 2,
+    // "promise/catch-or-return": 2,
 
     // Warn against nested then() or catch() statements
-    "promise/no-nesting": 1
+    // "promise/no-nesting": 1
   }
 }
