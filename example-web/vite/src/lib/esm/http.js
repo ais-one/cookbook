@@ -1,3 +1,7 @@
+// console.log('baseUrl', process.env, import.meta.env)
+
+// import { aa } from '/@/lib/esm/aaa.js'
+
 let token = ''
 let refreshToken = ''
 let baseUrl = 'http://127.0.0.1:3000'

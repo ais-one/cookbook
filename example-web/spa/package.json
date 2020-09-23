@@ -2,7 +2,7 @@
   "name": "example-spa",
   "version": "0.0.0",
   "private": true,
-  "description": "A rest backend example for vue-crud-x component usage",
+  "description": "VueJS 2 SPA + Webpack example",
   "author": "Aaron Gong <aaronjxz@gmail.com>",
   "scripts": {
     "serve": "vue-cli-service serve --port 8080",

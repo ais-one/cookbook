@@ -1,17 +1,22 @@
+const path = require('path')
 // const isDev1 = import.meta.env.MODE === 'development'
 // const dev_port1 = import.meta.env.VUE_DEVPORT
 module.exports = {
+  // alias useless... https://github.com/vitejs/vite/issues/279#issuecomment-636110354
+  // alias: {
+  //   '/@/': path.resolve(__dirname, './lib/') // import aa from '/@/esm/aaa.js'
+  // },
   port: 8080,
-  proxy: {
-    // string shorthand
-    '/foo': 'http://localhost:4567/foo',
-    // with options
-    '/api': {
-      target: 'http://jsonplaceholder.typicode.com',
-      changeOrigin: true,
-      rewrite: path => path.replace(/^\/api/, '')
-    }
-  },
+  // proxy: {
+  //   // string shorthand
+  //   '/foo': 'http://localhost:4567/foo',
+  //   // with options
+  //   '/api': {
+  //     target: 'http://jsonplaceholder.typicode.com',
+  //     changeOrigin: true,
+  //     rewrite: path => path.replace(/^\/api/, '')
+  //   }
+  // },
   // base: '/',
   // port: dev_port1,
   // sourcemap: isDev1,
