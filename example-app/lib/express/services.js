@@ -9,8 +9,6 @@
 // const { sleep } = require('esm')(module)('../esm/sleep') // TBD ADD IN LATER...
 
 module.exports = async function (server) {
-  // process.stdin.resume()
-
   const objection = require('../services/db/objection').open()
   const mongodb = await require('../services/db/mongodb').open()
 

@@ -168,6 +168,15 @@ jobs:
   #             aws cloudfront create-invalidation --distribution-id ${DEV_DISTRIBUTION_ID} --paths /\*
   #           fi
 
+  # deploy:
+  #   docker:
+  #     - image: google/cloud-sdk
+  #   steps:
+  #     - run: |
+  #         sudo gcloud --quiet components update
+  #         echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+  #         gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+  #         gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
   setup-frontend:
     executor: nodejs-executor
     steps:

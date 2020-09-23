@@ -12,7 +12,6 @@ For future product improvement
 - cypress e2e testing
 - https://github.com/vueComponent/ant-design-vue/issues/1913
 - PWA cookbook (many things to consider)
-- mwc Table & Pagination web component
 
 ### others
 - circleci / github actions

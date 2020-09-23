@@ -1,7 +1,7 @@
 ### Version 0.3.6
 - [chore] update packages & cleanup & work on improving documentation
 - [table] validation
-- [frontend] (use webcomponent in a webcomponent) mwc-autocomplete, mwc-multiselect
+- [frontend] (use webcomponent in a webcomponent) mwc-autocomplete, mwc-multiselect, mwc-fileupload
 - in progress
   - improve structure further (or microservices)
   - deploy backend to GCP Cloud Run

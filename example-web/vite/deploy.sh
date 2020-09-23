@@ -11,8 +11,8 @@ if [ ! $1 ]; then # environment eg. uat
 fi
 
 GCP_PROJECT_ID=mybot-live
-site=vite
-gs=gs://uat.mybot.live
+SITE=vite
+GS=gs://$1.mybot.live
 
 echo "NOTE: gsutil.cmd in windows git bash. If cannot find command in Windows, it could be space in path (.../Google Cloud/...) to gsutil."
 echo "Fix by renaming with no space, also edit the PATH env, restart the command console."
@@ -20,9 +20,9 @@ gcloud auth activate-service-account --key-file=$2/config/secret/$1.gcp.json
 gcloud config set project $GCP_PROJECT_ID
 baseDir=`pwd`
 
-echo "build and deploy - site $site ($1)"
+echo "build and deploy - site $SITE ($1)"
 npm run build-$1
-gsutil.cmd -m rsync -R dist $gs
+gsutil.cmd -m rsync -R dist $GS
 echo "done"
 # Echo "clear cloudflare cache"
 # # Sample command to clear cloudflare cache 

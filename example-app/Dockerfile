@@ -12,7 +12,6 @@ RUN apk update && apk add python make g++ && rm -rf /var/cache/apk/*
 # available in build time only
 ARG ARG_API_PORT=3000
 ARG ARG_NODE_ENV=development
-#TOREMOVE ARG ARG_APP_NAME=example-app
 
 # Expose the port the app runs in
 EXPOSE $ARG_API_PORT
@@ -30,7 +29,6 @@ WORKDIR /usr/src/app
 # or should be passed in ?
 ENV API_PORT $ARG_API_PORT
 ENV NODE_ENV $ARG_NODE_ENV
-#TOREMOVE ENV APP_NAME $ARG_APP_NAME
 
 # PORT for GCP Cloud Run
 ENV PORT $ARG_API_PORT
@@ -47,13 +45,12 @@ COPY package*.json ./
 RUN npm install --only=production && npm cache clean --force
 
 # Get all the code needed to run the app
-COPY ../common-lib ./common-lib
-#TOREMOVE COPY $ARG_APP_NAME ./$ARG_APP_NAME
+COPY . .
 
 # Serve the app
 # https://www.docker.com/blog/keep-nodejs-rockin-in-docker/
 # do not use file watchers or process managers in production
-CMD node ${APP_NAME}/index.js
+CMD node index.js
 
 # WORKDIR ${foo}   # WORKDIR /bar
 # ADD . $foo       # ADD . /bar

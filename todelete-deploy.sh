@@ -6,6 +6,8 @@
 # $@ Values of all the arguments.
 # $? Exit status id of last command.
 
+# ORIGINAL TO DELETE...
+
 if [ ! $1 ]; then # environment eg. uat
     echo "Missing project environment. Set at package.json" && read && exit
 fi

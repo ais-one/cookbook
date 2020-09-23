@@ -26,9 +26,7 @@
     "app:spa": "concurrently \"npm run app\" \"npm run spa\"",
     "app:spa:unix": "concurrently \"npm run app:unix\" \"npm run spa\"",
     "test": "cd example-app&&npm run test",
-    "test:unix": "cd example-app&&npm run test:unix",
-    "deploy": "deploy.sh %npm_package_config_env% example-app example-web",
-    "deploy:unix": "deploy.sh $npm_package_config_env example-app example-web"
+    "test:unix": "cd example-app&&npm run test:unix"
   },
   "engines": {
     "node": "12"
