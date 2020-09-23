@@ -10,4 +10,3 @@ global.APP_VERSION = version
 global.APP_NAME = name
 global.LIB_PATH = path.join(process.cwd(), 'lib') // Set Common Paths
 global.APP_PATH = path.join(process.cwd())
-global.COMMON_LIB_PATH = path.join(process.cwd(), '..', 'common-lib') // Set Common Paths

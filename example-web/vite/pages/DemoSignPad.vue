@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import 'http://127.0.0.1:3000/js/sign-pad.js'
+import '../lib/esm/sign-pad.js'
 import { ref } from 'vue'
 
 export default {

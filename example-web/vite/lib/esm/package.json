@@ -1,0 +1,22 @@
+{
+  "author": {
+    "name": "Aaron Gong",
+    "email": "aaronjxz@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/ais-one/vue-crud-x/issues"
+  },
+  "bundleDependencies": [],
+  "dependencies": {},
+  "deprecated": false,
+  "description": "Common components for front end backend",
+  "devDependencies": {
+    "@vue/cli-service": "^4.2.3",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "homepage": "https://github.com/ais-one/vue-crud-x#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "name": "common",
+  "version": "0.0.0"
+}

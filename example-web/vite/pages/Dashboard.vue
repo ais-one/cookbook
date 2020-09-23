@@ -31,7 +31,7 @@
 import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, provide, inject } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-import { debounce } from 'http://127.0.0.1:3000/js/util.js'
+import { debounce } from '../lib/esm/util.js'
 
 export default {
   name: 'Dashboard',

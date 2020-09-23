@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vite Test</title>
   <!-- Your application must load the Roboto and Material Icons fonts. -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
 </head>
@@ -32,10 +32,9 @@
   import '@vaadin/vaadin-grid/vaadin-grid-sort-column'
 
   // our own web components
-  import 'http://127.0.0.1:3000/js/loading-overlay.js' // global import
-
-  import './components/mwc-autocomplete.js' // in progress
-  import './components/mwc-multiselect.js' // in progress
+  import './lib/esm/loading-overlay.js' // global import
+  import './components/mwc-autocomplete.js'
+  import './components/mwc-multiselect.js'
 
   import { createApp } from 'vue'
   import App from './App.vue'

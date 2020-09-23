@@ -1,5 +1,5 @@
 <template>
-  <div class="file-upload">
+  <div>
     <v-text-field
       :label="value.savedUrl ?  `Current file ${value.savedUrl}`:' N.A.'"
       @click="pickFile"

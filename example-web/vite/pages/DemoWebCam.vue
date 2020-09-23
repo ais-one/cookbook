@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import 'http://127.0.0.1:3000/js/web-cam.js'
+import '../lib/esm/web-cam.js'
 
 export default {
   name: 'WebCam',

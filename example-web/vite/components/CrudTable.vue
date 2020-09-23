@@ -137,9 +137,9 @@
 // TBD show all...
 // TBD inline edits
 // TBD table columns with joined values, virtual columns...
-import { debounce } from 'http://127.0.0.1:3000/js/util.js'
-import { validate } from 'http://127.0.0.1:3000/js/validate.js'
-import { httpGet, httpPost, httpPatch } from 'http://127.0.0.1:3000/js/http.js'
+import { debounce } from '../lib/esm/util.js'
+import { validate } from '../lib/esm/validate.js'
+import { httpGet, httpPost, httpPatch } from '../lib/esm/http.js'
 
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'

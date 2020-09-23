@@ -1,7 +1,5 @@
 <template>
   <v-container fluid>
-    <drawing-canvas />
-    <web-cam />
     <v-flex xs12 sm6>
       <v-file-input
         show-size
@@ -19,13 +17,9 @@
 
 <script>
 import { http } from '@/axios'
-import WebCam from 'ext-lib/webpacked/WebCam'
-import DrawingCanvas from 'ext-lib/webpacked/DrawingCanvas'
 
 export default {
   components: {
-    DrawingCanvas,
-    WebCam
   },
   data: () => ({ // try not to use this way due to scoping issues
     isLoading: false

@@ -8,7 +8,7 @@ require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
 
 // mixing ES Modules into a CommonJS project
 // https://codewithhugo.com/use-es-modules-in-node-without-babel/webpack-using-esm/
-const { sleep } = require('esm')(module)(COMMON_LIB_PATH + '/esm/sleep')
+const { sleep } = require('esm')(module)(LIB_PATH + '/esm/sleep')
 
 const run = async () => {
   // eslint-disable-next-line no-constant-condition
