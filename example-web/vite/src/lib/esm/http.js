@@ -1,10 +1,10 @@
 // console.log('baseUrl', process.env, import.meta.env)
 
-// import { aa } from '/@/lib/esm/aaa.js'
+import { VITE_API_URL } from '/config.js'
 
 let token = ''
 let refreshToken = ''
-let baseUrl = 'http://127.0.0.1:3000'
+let baseUrl = VITE_API_URL || 'http://127.0.0.1:3000'
 let timeoutMs = 0
 let maxRetry = 0
 
