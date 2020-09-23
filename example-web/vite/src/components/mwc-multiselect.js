@@ -121,13 +121,7 @@ class MultiSelect extends HTMLElement {
   }
 
   setList(items) {
-    // items = [
-    //   { key: 'aa', text: 'aa11'},
-    //   { key: 'bb', text: 'bb22'},
-    //   { key: 'cc', text: 'cc33'},
-    //   { key: 'dd', text: 'dd44'},
-    //   { key: 'ee', text: 'ee55'},
-    // ]
+    // items = [ { key: 'aa', text: 'aa11'}, { key: 'bb', text: 'bb22'}, { key: 'cc', text: 'cc33'}, { key: 'dd', text: 'dd44'}, { key: 'ee', text: 'ee55'}, ]
     // console.log('setList', items.length)
     const el = this.shadowRoot.querySelector('mwc-textfield')
     if (!items.length) {

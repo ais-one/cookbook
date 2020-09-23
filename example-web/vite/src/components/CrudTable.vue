@@ -1,6 +1,12 @@
 <template>
   <div>
     <vcxwc-loading-overlay v-if="loading"></vcxwc-loading-overlay>
+    <mwc-dialog id="upload-dialog" :open="false" heading="Upload CSV">
+      <p>Upload CSV Files Here</p>
+      <mwc-fileupload></mwc-fileupload>
+      <mwc-button id="primary-action-button" dialogAction="close" slot="primaryAction" @click="doUpload">Upload</mwc-button>
+      <mwc-button slot="secondaryAction" dialogAction="close">Cancel</mwc-button>
+    </mwc-dialog>
     <div class="container" v-show="!showForm">
       <nav class="navbar">
         <ul class="nav-left">
@@ -8,8 +14,8 @@
           <li class="nav-item"><mwc-icon-button icon="refresh" @click="refreshData" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item" v-if="tableCfg && tableCfg.create"><mwc-icon-button icon="add" @click="openAdd" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item" v-if="tableCfg && tableCfg.delete"><mwc-icon-button icon="delete" @click="remove" :disabled="loading"></mwc-icon-button></li>
-          <li class="nav-item"><mwc-icon-button icon="post_add" @click="csvImport" :disabled="loading"></mwc-icon-button></li>
-          <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="csvExport" :disabled="loading"></mwc-icon-button></li>
+          <li class="nav-item"><mwc-icon-button icon="post_add" @click="csvUpload" :disabled="loading"></mwc-icon-button></li>
+          <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="csvDownload" :disabled="loading"></mwc-icon-button></li>
           <li v-if="keycol" class="nav-item"><mwc-icon-button icon="reply"  @click="goBack" :disabled="loading"></mwc-icon-button></li>
         </ul>
         <ul class="nav-right">
@@ -51,14 +57,7 @@
         </slot>
       </template>
 
-      <slot name="table"
-        :tableCfg="tableCfg"
-        :headerCols="headerCols" 
-        :page="page"
-        :records="records"
-        :rowsPerPage="rowsPerPage"
-        :maxPage="maxPage"
-      >
+      <slot name="table" :tableCfg="tableCfg" :headerCols="headerCols" :page="page" :records="records" :rowsPerPage="rowsPerPage" :maxPage="maxPage">
         <vaadin-grid class="table">
           <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect" @select-all-changed="selectAllChanged"></vaadin-grid-selection-column>
           <vaadin-grid-sort-column v-for="(headerCol, index) in headerCols" :key="index" :path="headerCol.path" :header="headerCol.header"></vaadin-grid-sort-column>
@@ -137,7 +136,7 @@
 // TBD show all...
 // TBD inline edits
 // TBD table columns with joined values, virtual columns...
-import { debounce } from '../lib/esm/util.js'
+import { debounce, downloadData } from '../lib/esm/util.js'
 import { validate } from '../lib/esm/validate.js'
 import { httpGet, httpPost, httpPatch } from '../lib/esm/http.js'
 
@@ -173,8 +172,10 @@ export default {
       add: {},
       edit: {},
     })
+
     const tableName = props.tableName
     let gridEl // grid element
+    let sorter = []
 
     const _rowClick = async (e) => {
       // console.log('click not on checkbox 1', e.detail.value)
@@ -243,20 +244,19 @@ export default {
           loading.value = true
           // console.log('grid.dataProvider', params)
           try {
-            const sorter = []
+            gridEl.selectedItems = []
+
+            sorter = [] // reset sorter
             if (params.sortOrders && params.sortOrders.length && params.sortOrders[0].direction) {
               sorter.push({
                 column: params.sortOrders[0].path,
                 order: params.sortOrders[0].direction
               })
             }
-
-            gridEl.selectedItems = []
-            if (keycol.value) filters.push( { col: keycol.value, op: "=", val: keyval.value, andOr: "and"} )
             const rv = await httpGet('/api/t4t/find/' + tableName, {
               page: page.value,
               limit: rowsPerPage.value,
-              filters: JSON.stringify(filters),
+              filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: "=", val: keyval.value, andOr: "and"}] : filters),
               sorter: JSON.stringify(sorter)
             })
             if (rv.results) {
@@ -286,7 +286,7 @@ export default {
       return required || multiKey
     }
 
-    const refreshData = () => gridEl.clearCache()
+    const refreshData = () => gridEl && gridEl.clearCache()
 
     const openAdd = async () => {
       Object.entries(tableCfg.value.cols).forEach(item => {
@@ -346,8 +346,7 @@ export default {
         alert( `Error delete ${e.toString()}` )
       }
       loading.value = false
-      // await refresh()
-      gridEl.clearCache()
+      refreshData()
     }
 
     const doAddOrEdit = async () => {
@@ -384,15 +383,58 @@ export default {
       }
       loading.value = false
       showForm.value = '' // close the form
-      // await refresh()
-      gridEl.clearCache()
+      refreshData()
     }
 
     const deleteFilter = (index) => filters.splice(index, 1) // console.log('remove filter', index)
     const addFilter = (index) => filters.splice( index, 0, { col: filterCols[0], op: '=', val: '', andOr: 'and' } )
 
-    const csvImport = async () => { }
-    const csvExport = async () => { }
+    const csvUpload = async () => {
+      try { document.querySelector('#upload-dialog').setAttribute('open', true) } catch (e) { }
+    }
+
+    const doUpload = async () => {
+      const file = document.querySelector('mwc-fileupload').getFile()
+      console.log('doUpload', file)
+      // const formData = new FormData()
+      // formData.append('filedata', files[0])
+      // formData.append('textdata', JSON.stringify({ name: 'name', age: 25 }))
+      // const res = await fetch('/api/upload', {
+      //   method: 'POST',
+      //   body: formData
+      // })
+
+      // const { id, name, avatar } = record
+      // const json = JSON.stringify({ name })
+      // // const blob = new Blob([json], { type: 'application/json' })
+      // // console.log('json', blob)
+      // const formData = new FormData()
+      // formData.append('filex', avatar.imageFile) // const { name, size, type } = avatar.imageFile
+      // formData.append('docx', json)
+      // const { data } = await http.patch(`/api/authors/${id}`, formData,
+      //   {
+      //     // onUploadProgress: progressEvent => {
+      //     //   console.log(Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
+      //     // },
+      //     headers: {
+      //       'Content-Type': 'multipart/form-data'
+      //     }
+      //   }
+      // )
+    }
+
+    const csvDownload = async () => {
+      console.log('export', keycol.value, filters)
+      const rv = await httpGet('/api/t4t/find/' + tableName, {
+        page: 0,
+        limit: 0,
+        csv: 1, // it is a csv
+        filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: "=", val: keyval.value, andOr: "and"}] : filters),
+        sorter: JSON.stringify(sorter)
+      })
+      console.log(rv)
+      downloadData(rv.csv, 'job.csv', 'text/csv;charset=utf-8;')
+    }
 
     // watch(() => props.selected, (selection, prevSelection) => { }) // watching value of a reactive object (watching a getter)
     // const selected = ref(props.selected) // directly watching a ref
@@ -438,8 +480,9 @@ export default {
       remove, // method CRUD remove
       refreshData, // method CRUD find
       doAddOrEdit, // method CRUD post
-      csvImport, // method CRUD import
-      csvExport, // method CRUD export
+      csvUpload, // method CRUD upload
+      doUpload, // method do upload
+      csvDownload, // method CRUD download
       isRequired, // is column required
 
       // filters

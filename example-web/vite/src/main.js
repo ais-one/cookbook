@@ -2,6 +2,7 @@
   import '@material/mwc-top-app-bar-fixed'
   import '@material/mwc-icon-button'
   import '@material/mwc-icon'
+  // import '@material/mwc-icon/mwc-icon-font'
   import '@material/mwc-drawer'
   import '@material/mwc-list'
   import '@material/mwc-list/mwc-list-item'
@@ -10,6 +11,7 @@
   import '@material/mwc-textfield'
   import '@material/mwc-select'
   import '@material/mwc-button'
+  import '@material/mwc-dialog'
 
   // Vaadin
   import '@vaadin/vaadin-grid'
@@ -20,6 +22,7 @@
   import './lib/esm/loading-overlay.js' // global import
   import './components/mwc-autocomplete.js'
   import './components/mwc-multiselect.js'
+  import './components/mwc-fileupload.js'
 
   import { createApp } from 'vue'
   import App from './App.vue'

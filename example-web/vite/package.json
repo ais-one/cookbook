@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@material/mwc-button": "^0.18.0",
+    "@material/mwc-dialog": "^0.18.0",
     "@material/mwc-drawer": "^0.18.0",
     "@material/mwc-icon": "^0.18.0",
     "@material/mwc-icon-button": "^0.18.0",
