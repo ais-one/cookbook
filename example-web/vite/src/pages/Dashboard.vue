@@ -14,7 +14,7 @@
     </mwc-select>
     <p>Non-Reactive Data: {{ nonReactiveData }}</p>
     <p>Reactive Data: {{ reactiveData }}</p>
-    <p>Vuex Store {{ storeCount }} - {{ storeToken }}</p>
+    <p>Vuex Store {{ storeCount }} - {{ storeUser }}</p>
     <mwc-autocomplete required label="ac-test" v-model="ac" @search="(e)=>autoComplete(e, 'my-col', 'add')"></mwc-autocomplete>
     <p><button @click="doAc">see ac</button>&nbsp;<button @click="setAc">set ac</button></p>
     <mwc-multiselect required label="ms-test" v-model="ms" :options="msOptions"></mwc-multiselect>
@@ -63,7 +63,7 @@ export default {
 
     // const plusOne = computed(() => count.value + 1)
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
-    const storeToken = computed(() => store.state.token)
+    const storeUser = computed(() => store.state.user)
 
     // const stop = watchEffect(() => console.log(count.value))
     // // -> logs 0
@@ -167,7 +167,7 @@ export default {
       selected,
       titleRef,
       storeCount, // store
-      storeToken,
+      storeUser,
       updateSelected // method
     }
   }

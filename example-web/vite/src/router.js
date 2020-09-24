@@ -4,10 +4,10 @@ import store from './store'
 
 const authGuard = (to, from, next) => {
   // console.log('route', to.matched[0].path, store)
-  if (store.state.token) { // has user && otp is verified
+  if (store.state.user) { // has user && otp is verified
     return next()
   } else {
-    store.commit('login', '') // need user.token only
+    store.commit('login', null) // need user.token only
     // store.commit('setLayout', 'layout-admin')
     return next('/')
   }

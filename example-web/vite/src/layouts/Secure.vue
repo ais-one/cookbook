@@ -48,10 +48,13 @@
 // :key="$route.fullPath" // this is causing problems
 import { onMounted, ref } from 'vue'
 import { useStore } from 'vuex'
+import { useXhr } from '/src/plugins/xhr.js'
 
 export default {
   setup(props, context) {
     const store = useStore()
+    const http = useXhr()
+
     const theDrawer = ref(null)
 
     onMounted(async () => {
@@ -87,8 +90,8 @@ export default {
       { to: '/dashboard', name: 'Dashboard', icon: 'home' },
       { to: '/dashboard', name: 'Dashboard', icon: 'home' },
     ])
-    const logout = () => {
-      store.dispatch('doLogin', '')
+    const logout = async () => {
+      await store.dispatch('doLogin', null)
     }
 
     return {

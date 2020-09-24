@@ -1,5 +1,5 @@
 <template>
-  <layout-secure v-if="storeToken" />
+  <layout-secure v-if="storeUser" />
   <layout-public v-else />
 </template>
 
@@ -14,6 +14,10 @@ import { useStore } from 'vuex'
 import { provideXhr } from './plugins/xhr.js'
 import * as http from '/src/lib/esm/http.js'
 
+import { VITE_API_URL, VITE_WITH_CREDENTIALS } from '/config.js'
+http.setBaseUrl(VITE_API_URL)
+http.setCredentials(VITE_WITH_CREDENTIALS || 'same-origin')
+
 export default {
   components: {
     layoutPublic,
@@ -21,10 +25,10 @@ export default {
   },
   setup(props, context) {
     const store = useStore()
-    const storeToken = computed(() => store.state.token)
+    const storeUser = computed(() => store.state.user)
     provideXhr(http)
     return {
-      storeToken // computed
+      storeUser // computed
     }
   }
 }

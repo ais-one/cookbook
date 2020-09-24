@@ -1,8 +1,15 @@
 let token = ''
 let refreshToken = ''
-let baseUrl = 'http://127.0.0.1:3000'
+
+let baseUrl = '' // 'http://127.0.0.1:3000'
 let timeoutMs = 0
 let maxRetry = 0
+let credentials = 'same-origin'
+
+const setBaseUrl = (_baseUrl) => baseUrl = _baseUrl
+const setToken = (_token) => token = _token
+const setRefreshToken = (_refreshToken) => refreshToken = _refreshToken
+const setCredentials = (_credentials) => credentials = _credentials
 
 function parseJwt (_token) {
   var base64Url = _token.split('.')[1]
@@ -41,6 +48,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     urlPath = pathname
     urlFull = origin + pathname
   } catch (e) {
+    // no need to throw anything here
   }
 
   try {
@@ -55,52 +63,54 @@ const http = async (method, url, body = null, query = null, headers = null) => {
       'Content-Type': 'application/json'
     }
     const options = { method, headers }
-
     if (timeoutMs > 0)  options.signal = signal
-    if (token) options.headers['Authorization'] = `Bearer ${token}`  
+    if (token && credentials !== 'include') options.headers['Authorization'] = `Bearer ${token}` // include === HTTPONLY_TOKEN
     if (body) options.body = JSON.stringify(body)
+    options.credentials = credentials
 
     const rv0 = await fetch(urlFull + qs, options)
-    if (rv0.status === 401 && urlPath !== '/api/auth/logout' && urlPath !== '/api/auth/otp' && urlPath !== '/api/auth/refresh') {
-      const body0 = await rv0.json()
-      if (body0.message === 'Token Expired Error') {
+    rv0.data = await rv0.json()
+    if (rv0.status >= 200 && rv0.status < 400) return rv0
+    else if (rv0.status === 401 && urlPath !== '/api/auth/logout' && urlPath !== '/api/auth/otp' && urlPath !== '/api/auth/refresh') {
+      if (rv0.data.message === 'Token Expired Error') {
         const rv1 = await http('POST', urlOrigin + '/api/auth/refresh', { refresh_token: refreshToken })
         if (rv1.status === 200) {
-          const body1 = await rv1.json()
-          token = body1.token
-          refreshToken = body1.refresh_token
-          if (token) options.headers['Authorization'] = `Bearer ${token}`
+          rv1.data = await rv1.json()
+          token = rv1.data.token
+          refreshToken = rv1.data.refresh_token
+          if (token && credentials !== 'include') options.headers['Authorization'] = `Bearer ${token}` // include === HTTPONLY_TOKEN
           const rv2 = await fetch(urlFull + qs, options)
-          return await rv2.json()
+          rv2.data = await rv2.json()
+          return rv2
         } else {
           console.log('refresh failed')
-          return await rv1.json() 
+          rv1.data = await rv1.json()
+          return rv1
         }
       }
     }
-    return await rv0.json() // error
+    throw rv0 // error
   } catch (e) {
-    console.log('http error', e.toString())
-    return null
+    throw e // some other error 
   }
 }
 
 async function login() {
-  const body = await http('POST', '/api/auth/login', { email: 'test', password: 'test' })
-  token = body.token
-  refreshToken = body.refresh_token
-  console.log('logged in', token, refreshToken, body, parseJwt(token))
+  const { data } = await http('POST', '/api/auth/login', { email: 'test', password: 'test' })
+  token = data.token
+  refreshToken = data.refresh_token
+  console.log('logged in', token, refreshToken, data, parseJwt(token))
 }
 
 async function otp() {
   try {
-    const body = await http('POST', '/api/auth/otp', { pin: '111111' })
-    if (body.token) {
-      token = body.token
-      refreshToken = body.refresh_token
-      console.log('otp ok', token, refreshToken, body)      
+    const { data } = await http('POST', '/api/auth/otp', { pin: '111111' })
+    if (data.token) {
+      token = data.token
+      refreshToken = data.refresh_token
+      console.log('otp ok', token, refreshToken, data)      
     } else {
-      console.log('otp error', body)
+      console.log('otp error', data)
     }
   } catch (e) {
     console.log('otp', e.toString())
@@ -111,9 +121,9 @@ const test = () => console.log('https test')
 
 async function testAuth() {
   try {
-    const body = await http('GET', '/api/health-auth')
-    if (body) console.log('/api/health-auth', body)
-    else console.log('get no data', body)
+    const { data } = await http('GET', '/api/health-auth')
+    if (data) console.log('/api/health-auth', data)
+    else console.log('get no data', data)
   } catch (e) {
     console.log('get', e.toString())
   }
@@ -121,30 +131,65 @@ async function testAuth() {
 
 async function logout() {
   try {
-    const body = await http('GET', '/api/auth/logout')
-    console.log('logout done', body)
+    const { data } = await http('GET', '/api/auth/logout')
+    console.log('logout done', data)
   } catch (e) {
     console.log('logout error', e.toString())
   }
 }
 
-const httpPost = async (url, body = null, query = null, headers = null) => await http('POST', url, body, query, headers)
+const post = async (url, body = null, query = null, headers = null) => { try { return await http('POST', url, body, query, headers) } catch (e) { throw e } }
 
-const httpPatch = async (url, body = null, query = null, headers = null) => await http('PATCH', url, body, query, headers)
+const patch = async (url, body = null, query = null, headers = null) =>  { try { return await http('PATCH', url, body, query, headers) } catch (e) { throw e } } 
 
-const httpDelete = async (url, query = null, headers = null) => await http('DELETE', url, null, query, headers)
+const del = async (url, query = null, headers = null) => { try { return await http('DELETE', url, null, query, headers) } catch (e) { throw e } }
 
-const httpGet = async (url, query = null, headers = null) => await http('GET', url, null, query, headers)
+const get = async (url, query = null, headers = null) => { try { return await http('GET', url, null, query, headers) } catch (e) { throw e } }
 
 export {
   http,
-  httpPost,
-  httpGet,
-  httpPatch,
-  httpDelete,
+  post,
+  get,
+  patch,
+  del,
   test,
   testAuth,
   login,
   otp,
-  logout
+  logout,
+  setBaseUrl,
+  setToken,
+  setRefreshToken,
+  setCredentials,
+  parseJwt
 }
+
+// try { 
+//   let res = await fetch('/api/auth/login', {
+//     method: 'POST', // *GET, POST, PUT, DELETE, etc.
+//     // mode: 'cors', // no-cors, *cors, same-origin
+//     // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+//     // credentials: 'same-origin', // include, *same-origin, omit
+//     headers: {
+//       'Content-Type': 'application/json'
+//       // 'Content-Type': 'application/x-www-form-urlencoded',
+//     },
+//     // redirect: 'follow', // manual, *follow, error
+//     // referrer: 'no-referrer', // no-referrer, *client
+//     body: JSON.stringify({ email: this.email, password: this.password }) // body data type must match "Content-Type" header
+//   })
+//   if (res.ok) {
+//     let data = await res.json()
+//     if (data) {
+//       this.$store.commit('setUser', data.user)
+//       this.$store.commit('setToken', data.token)
+//       localStorage.setItem('ms', JSON.stringify({ user: data.user, token: data.token }))
+//       this.$router.push('/dashboard')
+//     }  
+//   } else {
+//     this.errorMsg = 'Fail to login'
+//   }
+//   // dispatch('autoSignIn', rv.data) // token, exchanges && pairs
+// } catch (e) {
+//   console.log(e.toString())
+// }

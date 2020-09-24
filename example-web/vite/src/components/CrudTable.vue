@@ -136,12 +136,9 @@
 // TBD show all...
 // TBD inline edits
 // TBD table columns with joined values, virtual columns...
-import { debounce, downloadData } from '../lib/esm/util.js'
-import { validate } from '../lib/esm/validate.js'
-
-import { useXhr } from '../plugins/xhr.js'
-
-import { httpGet, httpPost, httpPatch } from '../lib/esm/http.js'
+import { debounce, downloadData } from '/src/lib/esm/util.js'
+import { validate } from '/src/lib/esm/validate.js'
+import { useXhr } from '/src/plugins/xhr.js'
 
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -155,7 +152,7 @@ export default {
   },
   // do NOT destructure the props object, as it will lose reactivity
   setup(props, ctx) { // ctx = attrs, slots, emit
-    const { httpGet, httpPost, httpPatch } = useXhr()
+    const http = useXhr()
     const router = useRouter()
     const route = useRoute()
     const keycol = ref(null) // parent key/id name here
@@ -199,12 +196,12 @@ export default {
       if (!item) return // do not continue if item is null
       try {
         console.log('item.key', item.key)
-        const rv = await httpGet('/api/t4t/find-one/' + tableName, { key: item.key })
+        const { data } = await http.get('/api/t4t/find-one/' + tableName, { key: item.key })
         recordObj['edit'].key = item.key
         Object.entries(tableCfg.value.cols).forEach(kv => {
           const [key, val] = kv
           if (val.edit !== 'hide') {
-            recordObj['edit'][key] = rv[key]
+            recordObj['edit'][key] = data[key]
           }
         })
         showForm.value = 'edit'
@@ -227,7 +224,10 @@ export default {
       keycol.value = route.query.keycol
       keyval.value = route.query.keyval
 
-      if (!tableCfg.value) tableCfg.value = await httpGet('/api/t4t/config/' + tableName)
+      if (!tableCfg.value) {
+        const { data } = await http.get('/api/t4t/config/' + tableName)
+        tableCfg.value = data
+      }
       if (tableCfg.value) {
         for (let col in tableCfg.value.cols) {
           const obj = tableCfg.value.cols[col]
@@ -257,12 +257,13 @@ export default {
                 order: params.sortOrders[0].direction
               })
             }
-            const rv = await httpGet('/api/t4t/find/' + tableName, {
+            const { data } = await http.get('/api/t4t/find/' + tableName, {
               page: page.value,
               limit: rowsPerPage.value,
               filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: "=", val: keyval.value, andOr: "and"}] : filters),
               sorter: JSON.stringify(sorter)
             })
+            const rv = data
             if (rv.results) {
               // console.log('rv.total', rv.total, rv.results)
               maxPage.value = Math.ceil(rv.total / rowsPerPage.value)
@@ -312,14 +313,12 @@ export default {
           query['parentTableColName'] = parentTableColName
           query['parentTableColVal'] = recordObj[_showForm][parentCol]
         }
-        // recordObj[_showForm+'Ac'][col] = await httpGet('/api/t4t/autocomplete', query)
-        res = await httpGet('/api/t4t/autocomplete', query)
+        const { data } = await http.get('/api/t4t/autocomplete', query)
+        res = data
       } catch (err) {
-        // recordObj[_showForm+'Ac'][col] = []
         console.log('autoComplete', err.message)
       }
       const mwcAc = document.querySelector('mwc-autocomplete.'+col)
-      // console.log('autoComplete res', res, mwcAc, col)
       mwcAc.setList(res)
     }, 500)
 
@@ -345,7 +344,7 @@ export default {
           ids = items.map(item => item.key)
         }
         // const rv =
-        await httpGet('/api/t4t/remove/' + tableName, { ids })
+        await http.get('/api/t4t/remove/' + tableName, { ids })
       } catch (e) {
         alert( `Error delete ${e.toString()}` )
       }
@@ -377,10 +376,10 @@ export default {
       loading.value = true
       try {
         if (showForm.value === 'add') {
-          await httpPost(`/api/t4t/create/${tableName}`, recordObj['add'])
+          await http.post(`/api/t4t/create/${tableName}`, recordObj['add'])
         } else {
           const { key, ...data } = recordObj['edit']
-          await httpPatch(`/api/t4t/update/${tableName}`, data, { key })
+          await http.patch(`/api/t4t/update/${tableName}`, data, { key })
         }
       } catch (e) {
         alert( `Error ${showForm.value} ${e.toString()}` )
@@ -429,15 +428,14 @@ export default {
 
     const csvDownload = async () => {
       console.log('export', keycol.value, filters)
-      const rv = await httpGet('/api/t4t/find/' + tableName, {
+      const { data } = await http.get('/api/t4t/find/' + tableName, {
         page: 0,
         limit: 0,
         csv: 1, // it is a csv
         filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: "=", val: keyval.value, andOr: "and"}] : filters),
         sorter: JSON.stringify(sorter)
       })
-      console.log(rv)
-      downloadData(rv.csv, 'job.csv', 'text/csv;charset=utf-8;')
+      downloadData(data.csv, 'job.csv', 'text/csv;charset=utf-8;')
     }
 
     // watch(() => props.selected, (selection, prevSelection) => { }) // watching value of a reactive object (watching a getter)

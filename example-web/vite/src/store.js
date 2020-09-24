@@ -6,13 +6,13 @@ import router from './router.js'
 
 const state = {
   count: 99,
-  token: ''
+  user: null
 }
 
 const mutations = {
   login (state, payload) {
     console.log('setToken', payload)
-    state.token = payload
+    state.user = payload
   },
   increment (state) {
     state.count++
@@ -28,12 +28,25 @@ const actions = {
   doLogin: async ({ commit, ...ctx }, payload) => {
     // await fetch here to get token from API...
     if (payload) { // sign in ok
-      console.log('doLogin', payload)
-      commit('login', `Token:${payload}:${Date.now()}`)
-      router.push('/dashboard')
+      commit('login', payload)
+      await router.push('/dashboard')
     } else { // sign in failed
-      commit('login', '')
-      router.push('/')
+      // if (payload.forced) { // auth failure detected
+      // } else { // logout button clicked
+      //   try {
+      //     await http.get('/api/auth/logout')
+      //   } catch (e) {
+      //     // if (!e.response || e.response.status === 401) { // server or authorization error
+      //     //   // ok please continue
+      //     // } else {
+      //     //   return // may have problems here... loading still true, etc...
+      //     // }
+      //   }
+      // }
+      // if (payload.forced) commit('setError', { message: 'Session Expired' })
+      // commit('setLayout', 'layout-default')
+      commit('login', null)
+      await router.push('/')
     }
   },
   increment: ({ commit }) => commit('increment'),

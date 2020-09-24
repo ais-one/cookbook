@@ -1,6 +1,9 @@
 const template = /*html*/`
 <template>
   <div class="container">
+    <br/>
+    <h1><b>CRUD IS NOT WORKING AT THE MOMENT. LOOK AT SPA OR VITE EXAMPLE FOR CRUD</b></h1>
+    <br/>
     <div v-if="!form || form==='filters'">
       <div v-if="form==='filters'" class="card">
         <div class="card-content">
@@ -98,7 +101,7 @@ const template = /*html*/`
 </template>
 `
 import { PAGE_SIZE } from '../../config.js'
-import api from '/js/http.js'
+import * as api from '/js/http.js'
 
 export default {
   template,
@@ -165,7 +168,7 @@ export default {
         console.log(_id, body)
         if (this.form === 'add') {
           try {
-            let res = await api.create('/api/crud/user', body)             
+            let res = await api.post('/api/crud/user', body)             
             console.log(res)
             alert('Created. Please Reload And Search')
           } catch (e) {
@@ -173,7 +176,7 @@ export default {
           }    
         } else {
           try {
-            let res = await api.update('/api/crud/user/' + _id, body)             
+            let res = await api.patch('/api/crud/user/' + _id, body)             
             console.log(res)
             alert('Updated. Please Reload And Search')
           } catch (e) {
@@ -192,9 +195,8 @@ export default {
     },
     async rowSelected(n, o) { // doEdit
       try {
-        let res = await api.find('/api/crud/user/' + n._id)
-        const rv = await res.json()
-        this.addEdit = rv
+        let { data } = await api.get('/api/crud/user/' + n._id)
+        this.addEdit = data
         this.form = 'edit'
       } catch (e) { }
     },
@@ -207,9 +209,7 @@ export default {
       this.resetForm()
     },
     async loadAsyncData() {
-      // console.log(this.sortField, this.sortOrder)
       if (this.loading) return
-
       this.loading = true
       try {
         const params = {
@@ -219,8 +219,8 @@ export default {
         for (let key in this.filters) {
           if (this.filters[key] || this.filters[key] === false) params[key] = this.filters[key]
         }
-        let res = await api.find('/api/crud/user', params)             
-        const rv = await res.json()
+        let { data } = await api.get('/api/crud/user', params)             
+        const rv = data
         this.data = rv.results
         this.total = rv.total
       } catch (e) {

@@ -2,10 +2,11 @@
 export const {
   VITE_API_URL,
   VITE_WS_URL, // ws://127.0.0.1:3001, wss://127.0.0.1:3001
-  VITE_USE_OTP, // GA, SMS, ''
+  // NOT NEEDED... BACKEND DETERMINES VITE_USE_OTP, // GA, SMS, ''
   VITE_RECAPTCHA_KEY,
-  // HTTPONLY_TOKEN: false, // true, false use HTTPONLY_TOKEN for more security, but needs same domain
-  // WITH_CREDENTIALS: false, // true = use same origin, false = cors  
+  VITE_HTTPONLY_TOKEN = false, // true, false use VITE_HTTPONLY_TOKEN for more security, but needs same domain
+  VITE_WITH_CREDENTIALS = 'same-origin', // same-origin, includes = cors
+
   // VITE_GITHUB_CLIENT_ID
 } = import.meta.env
 

@@ -1,32 +1,132 @@
 <template>
   <div class="page-flex">
+    <vcxwc-loading-overlay v-if="loading"></vcxwc-loading-overlay>
     <form class="form-box-flex">
-      <h1>Sign In</h1>
-      <mwc-textfield label="Username" outlined type="text" v-model="username"></mwc-textfield>
-      <mwc-textfield label="Password" outlined type="password" v-model="password"></mwc-textfield>
-      <div class="buttons-box-flex">
-        <mwc-button raised label="Login" @click="login"></mwc-button>
+      <div v-if="mode==='login'">
+        <h1>Sign In</h1>
+        <mwc-textfield label="Username" outlined type="text" v-model="email"></mwc-textfield>
+        <mwc-textfield label="Password" outlined type="password" v-model="password"></mwc-textfield>
+        <div class="buttons-box-flex">
+          <mwc-button raised label="Login" @click="login"></mwc-button>
+        </div>
+        <p><router-link to="/signup">Sign Up</router-link></p>
       </div>
-      <p><router-link to="/signup">Sign Up</router-link></p>
-    </form>  
+      <div v-else-if="mode==='otp'">
+        <h1>Enter OTP</h1>
+        <mwc-textfield label="OTP" outlined type="text" v-model="otp"></mwc-textfield>
+        <div class="buttons-box-flex">
+          <mwc-button raised label="OTP" @click="otpLogin"></mwc-button>
+        </div>
+      </div>
+      <p v-if="errorMessage">{{ errorMessage }}</p>
+    </form>
   </div>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
-// import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { useXhr } from '/src/plugins/xhr.js'
 
 export default {
   setup(props, context) {
     const store = useStore()
-    const username = ref('Test')
-    const password = ref('1234')
-    const login = () => store.dispatch('doLogin', username.value)
+    const router = useRouter()
+    const http = useXhr()
+    const loading = ref(false)
+    const email = ref('test')
+    const password = ref('test')
+    const errorMessage = ref('')
+    const mode = ref('login') // login, otp
+    const otp = ref('')
+
+    let otpCount = 0
+
+    const setToLogin = () => {
+      mode.value = 'login'
+      otp.value = ''
+      otpCount = 0
+    }
+
+    onMounted(async () => {
+      setToLogin()
+      errorMessage.value = ''
+      loading.value = false
+      // email
+      // password
+
+    })
+
+    const _setUser = async (data, decoded) => {
+      await store.dispatch('doLogin', decoded) // store user
+      await router.push('/dashboard')
+      // id, verified, groups, token, refresh_token
+    }
+
+    const login = async () => {
+      if (loading.value) return
+      loading.value = true
+      errorMessage.value = ''
+      try {
+        const { data } = await http.post('/api/auth/login', { email: email.value, password: password.value })
+        const decoded = http.parseJwt(data.token)
+
+        http.setToken(data.token)
+        http.setRefreshToken(data.refreshToken)
+
+        if (decoded.verified) {
+          // await dispatch('autoSignIn', data) // token
+          _setUser(data, decoded)
+        } else { // OTP
+          mode.value = 'otp'
+          otpCount = 0
+        }
+        // console.log('rv', data, decoded)
+      } catch (e) {
+        errorMessage.value = e.data ? e.data.message : JSON.stringify(e)
+      }
+      loading.value = false
+    }
+
+    const otpLogin = async () => {
+      if (loading.value) return
+      loading.value = true
+      errorMessage.value = ''
+      try {
+        const { data } = await http.post('/api/auth/otp', { pin: otp.value })
+        const decoded = http.parseJwt(data.token)
+
+        http.setToken(data.token)
+        http.setRefreshToken(data.refreshToken)
+
+        if (decoded.verified) {
+          _setUser(data, decoded)
+        } else { // OTP
+          // increment reset
+          otpCount++
+          errorMessage.value = 'OTP Error'
+        }
+        if (otpCount === 3) {
+          setToLogin()
+          errorMessage.value = 'OTP Tries Exceeded'
+        }
+      } catch (e) {
+        setToLogin()
+        errorMessage.value = e.data ? e.data.message : JSON.stringify(e)
+      }
+      loading.value = false
+    }
+
     return {
-      username, // data
+      email, // data
       password,
+      errorMessage,
+      loading,
+      mode,
+      otp,
       login, // method
+      otpLogin
     }
   }
 }

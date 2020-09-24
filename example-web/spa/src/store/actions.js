@@ -3,6 +3,8 @@ import router from '../router'
 
 import { USE_OTP } from '../config'
 
+console.log('xx USE_OTP', USE_OTP)
+
 export default {
   async signUserUp ({ commit }, payload) {
     commit('setLoading', true)
