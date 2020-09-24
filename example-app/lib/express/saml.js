@@ -1,3 +1,5 @@
+'use strict'
+
 // working SAML ADFS example
 // https://github.com/bergie/passport-saml/blob/master/docs/adfs/README.md
 

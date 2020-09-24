@@ -2,6 +2,7 @@
 
 List of urgent issues to take care of
 
+- add auth to vite app
 - CrudTable.vue
   - select all
   - header widths
@@ -13,6 +14,11 @@ List of urgent issues to take care of
   - docker
   - GCP Cloud Run
   - GCP Cloud Storage
-- refactoring
-  - app.js
-  - esm folder
+
+
+Things to change
+- deploy.sh, Dockerfile, etc. moved into example folders
+- express/services -> express/shutdown
+- express/preroute -> express/preRoute
+- express/postroute -> express/postRoute
+- errorMiddleware

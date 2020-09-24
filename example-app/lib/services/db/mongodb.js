@@ -14,9 +14,9 @@ const mongo = {
 
   close: async () => {
     if (mongo.client) await mongo.client.close()
-    console.log('mongodb closed')
+    console.log('MONGODB CLOSED')
   },
-  open: async () => {
+  open: () => {
     const { MONGO_URL } = global.CONFIG
     if (!mongo.db && MONGO_URL) {
       const { MongoClient } = require('mongodb')
@@ -35,7 +35,7 @@ const mongo = {
         // mongo.client.startSession({ defaultTransactionOptions })
         client.connect(err => {
           if (!err) {
-            console.log('MONGO CONNECTED', MONGO_URL)
+            console.log('MONGODB CONNECTED', MONGO_URL)
             mongo.db = client.db()
             // mongo.stream = db.db('mm').collection('exchangeUsers').watch() //  for streaming data
             // mongo.stream.on('change', (change) => {
@@ -43,9 +43,9 @@ const mongo = {
             //   // use websocket to listen to changes
             // })
           }
-          else console.log('MONGO', err)
+          else console.log('MONGODB', err)
         })
-      } catch (e) { console.log('mongo', e) }
+      } catch (e) { console.log('MONGODB', e) }
     }
     return mongo
   }
