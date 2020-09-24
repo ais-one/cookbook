@@ -33,9 +33,7 @@ const findUser = async (where) => {
   return null
 }
 
-
-// Create a token from a payload
-const createToken = async (payload, options) => {
+const createToken = async (payload, options) => { // Create a token from a payload
   let token
   let refresh_token
   try {
@@ -200,7 +198,6 @@ const otp = async (req, res) => { // need to be authentication, body { pin: '123
   } catch (e) { console.log('otp err', e.toString()) }
   return res.status(401).json({ message: 'Error token revoked' })
 }
-
 
 module.exports = { findUser, createToken, revokeToken, authUser, logout, refresh, login, otp } // getToken, setToken,
 

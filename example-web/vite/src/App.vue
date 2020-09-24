@@ -11,6 +11,9 @@ import layoutSecure from './layouts/Secure.vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 
+import { provideXhr } from './plugins/xhr.js'
+import * as http from '/src/lib/esm/http.js'
+
 export default {
   components: {
     layoutPublic,
@@ -19,7 +22,7 @@ export default {
   setup(props, context) {
     const store = useStore()
     const storeToken = computed(() => store.state.token)
-    
+    provideXhr(http)
     return {
       storeToken // computed
     }

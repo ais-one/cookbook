@@ -138,6 +138,9 @@
 // TBD table columns with joined values, virtual columns...
 import { debounce, downloadData } from '../lib/esm/util.js'
 import { validate } from '../lib/esm/validate.js'
+
+import { useXhr } from '../plugins/xhr.js'
+
 import { httpGet, httpPost, httpPatch } from '../lib/esm/http.js'
 
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
@@ -152,6 +155,7 @@ export default {
   },
   // do NOT destructure the props object, as it will lose reactivity
   setup(props, ctx) { // ctx = attrs, slots, emit
+    const { httpGet, httpPost, httpPatch } = useXhr()
     const router = useRouter()
     const route = useRoute()
     const keycol = ref(null) // parent key/id name here
