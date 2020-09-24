@@ -1,9 +1,7 @@
 ## Issues
 
 List of urgent issues to take care of
-- how did it go to public layout when logout ?
 - handle when user is forced logout ?
-- add auth to vite app
 - add ws to vite
 - add gql to vite?
 
@@ -18,7 +16,6 @@ List of urgent issues to take care of
   - docker
   - GCP Cloud Run
   - GCP Cloud Storage
-
 
 Things to change
 - deploy.sh, Dockerfile, etc. moved into example folders

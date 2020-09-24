@@ -7,6 +7,7 @@
       <span>Count is: {{ count }}</span>
       <button @click="count++">increment</button>
     </p>
+    <p><button @click="e => testApi('healthcheck')">Test API</button> <button @click="e => testApi('health-auth')">Test API Auth</button></p>
     <mwc-select label="preselected" :value="selected" @change="updateSelected">
       <mwc-list-item value="0">Item 0</mwc-list-item>
       <mwc-list-item value="1">Item 1</mwc-list-item>
@@ -31,13 +32,15 @@
 import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, provide, inject } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter, useRoute } from 'vue-router'
-import { debounce } from '../lib/esm/util.js'
+import { debounce } from '/src/lib/esm/util.js'
+import { useXhr } from '/src/plugins/xhr.js'
 
 export default {
   name: 'Dashboard',
 
   setup(props, context) {
     console.log('provide-inject MyTheme', inject('MyTheme'))
+    const http = useXhr()
     // reactivity
     // // in provider
     // const themeRef = ref('dark')
@@ -121,7 +124,7 @@ export default {
 
     let timerId
     onMounted(async () => {
-      console.log('dash mounted!', chrome)
+      console.log('dash mounted!')
       // console.log('props', props)
       // console.log('context', context)
       // console.log('useStore', store)
@@ -139,16 +142,24 @@ export default {
       }, 200000)
     })
     onUpdated(() => {
-      console.log('updated!')
+      console.log('dash updated!')
     })
     onBeforeUnmount(() => {
       if (timerId) clearInterval(timerId)
-      console.log('before mounted!')
+      console.log('dash before unmount!')
     })
     onUnmounted(() => {
-      console.log('unmounted!')
+      console.log('dash unmounted!')
     })
 
+    const testApi = async (test) => {
+      try {
+        const { data } = await http.get('/api/' + test)
+        console.log(data)
+      } catch (e) {
+        console.log(e)
+      }
+    }
     // // Watch prop value change and assign to value 'selected' Ref
     // watch(() => props.value, (newValue: Props['value']) => {
     //   selected.value = newValue;
@@ -168,7 +179,8 @@ export default {
       titleRef,
       storeCount, // store
       storeUser,
-      updateSelected // method
+      updateSelected, // method
+      testApi // test API
     }
   }
 }

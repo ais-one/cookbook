@@ -73,7 +73,7 @@ export default {
         const decoded = http.parseJwt(data.token)
 
         http.setToken(data.token)
-        http.setRefreshToken(data.refreshToken)
+        http.setRefreshToken(data.refresh_token)
 
         if (decoded.verified) {
           // await dispatch('autoSignIn', data) // token
@@ -98,7 +98,7 @@ export default {
         const decoded = http.parseJwt(data.token)
 
         http.setToken(data.token)
-        http.setRefreshToken(data.refreshToken)
+        http.setRefreshToken(data.refresh_token)
 
         if (decoded.verified) {
           _setUser(data, decoded)

@@ -90,9 +90,7 @@ export default {
       { to: '/dashboard', name: 'Dashboard', icon: 'home' },
       { to: '/dashboard', name: 'Dashboard', icon: 'home' },
     ])
-    const logout = async () => {
-      await store.dispatch('doLogin', null)
-    }
+    const logout = async () => await store.dispatch('doLogin', null)
 
     return {
       menuItems, // ref,

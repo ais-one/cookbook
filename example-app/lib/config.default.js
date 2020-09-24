@@ -32,7 +32,7 @@ global.CONFIG.JWT_REFRESH_STORE_NAME = 'user_session' // collection or table nam
 
 // AUTH - OTP
 global.CONFIG.USE_OTP = 'TEST' // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
-global.CONFIG.OTP_EXPIRY = '1m' // allow 1 minute for user to do OTP
+global.CONFIG.OTP_EXPIRY = 10 // allow 1 minute for user to do OTP
 
 // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
 // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}

@@ -5,11 +5,14 @@ let baseUrl = '' // 'http://127.0.0.1:3000'
 let timeoutMs = 0
 let maxRetry = 0
 let credentials = 'same-origin'
+let forceLogoutFn = () => {} // function to call when forcing a logout
 
 const setBaseUrl = (_baseUrl) => baseUrl = _baseUrl
 const setToken = (_token) => token = _token
 const setRefreshToken = (_refreshToken) => refreshToken = _refreshToken
 const setCredentials = (_credentials) => credentials = _credentials
+const setForceLogoutFn = (_forceLogoutFn) => forceLogoutFn = _forceLogoutFn
+
 
 function parseJwt (_token) {
   var base64Url = _token.split('.')[1]
@@ -83,14 +86,17 @@ const http = async (method, url, body = null, query = null, headers = null) => {
           rv2.data = await rv2.json()
           return rv2
         } else {
-          console.log('refresh failed')
+          // console.log('refresh failed')
           rv1.data = await rv1.json()
-          return rv1
+          forceLogoutFn()
+          throw rv1 // error
         }
       }
     }
+    forceLogoutFn()
     throw rv0 // error
   } catch (e) {
+    forceLogoutFn()
     throw e // some other error 
   }
 }
@@ -161,6 +167,7 @@ export {
   setToken,
   setRefreshToken,
   setCredentials,
+  setForceLogoutFn,
   parseJwt
 }
 

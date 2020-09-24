@@ -57,7 +57,7 @@
     "mongo:unix": "cross-env NODE_ENV=$npm_package_config_env node db/mongo/index.js",
     "knex": "cross-env NODE_ENV=%npm_package_config_env% npx knex migrate:latest --knexfile=knexfile.js && cross-env NODE_ENV=%npm_package_config_env% npx knex seed:run --knexfile=knexfile.js",
     "knex:unix": "cross-env NODE_ENV=$npm_package_config_env npx knex migrate:latest --knexfile=knexfile.js && cross-env NODE_ENV=$npm_package_config_env npx knex seed:run --knexfile=knexfile.js",
-    "app": "cross-env NODE_ENV=%npm_package_config_env% npx node index.js",
+    "app": "cross-env NODE_ENV=%npm_package_config_env% npx nodemon index.js",
     "app:unix": "cross-env NODE_ENV=$npm_package_config_env npx nodemon index.js",
     "process-cron": "cross-env NODE_ENV=%npm_package_config_env% node process-cron.js",
     "process-cron:unix": "cross-env NODE_ENV=$npm_package_config_env node process-cron.js",
