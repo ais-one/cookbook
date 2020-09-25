@@ -5,11 +5,14 @@ let baseUrl = '' // 'http://127.0.0.1:3000'
 let timeoutMs = 0
 let maxRetry = 0
 let credentials = 'same-origin'
+let forceLogoutFn = () => {} // function to call when forcing a logout
 
 const setBaseUrl = (_baseUrl) => baseUrl = _baseUrl
 const setToken = (_token) => token = _token
 const setRefreshToken = (_refreshToken) => refreshToken = _refreshToken
 const setCredentials = (_credentials) => credentials = _credentials
+const setForceLogoutFn = (_forceLogoutFn) => forceLogoutFn = _forceLogoutFn
+
 
 function parseJwt (_token) {
   var base64Url = _token.split('.')[1]
@@ -65,6 +68,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     const options = { method, headers }
     if (timeoutMs > 0)  options.signal = signal
     if (token && credentials !== 'include') options.headers['Authorization'] = `Bearer ${token}` // include === HTTPONLY_TOKEN
+    if (urlPath === '/api/auth/logout') options.headers['refresh_token'] = refreshToken // add refresh token for logout
     if (body) options.body = JSON.stringify(body)
     options.credentials = credentials
 
@@ -73,9 +77,8 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     if (rv0.status >= 200 && rv0.status < 400) return rv0
     else if (rv0.status === 401 && urlPath !== '/api/auth/logout' && urlPath !== '/api/auth/otp' && urlPath !== '/api/auth/refresh') {
       if (rv0.data.message === 'Token Expired Error') {
-        const rv1 = await http('POST', urlOrigin + '/api/auth/refresh', { refresh_token: refreshToken })
+        const rv1 = await http('POST', urlOrigin + '/api/auth/refresh', { refresh_token: refreshToken }) // rv1 JSON already processed
         if (rv1.status === 200) {
-          rv1.data = await rv1.json()
           token = rv1.data.token
           refreshToken = rv1.data.refresh_token
           if (token && credentials !== 'include') options.headers['Authorization'] = `Bearer ${token}` // include === HTTPONLY_TOKEN
@@ -83,14 +86,15 @@ const http = async (method, url, body = null, query = null, headers = null) => {
           rv2.data = await rv2.json()
           return rv2
         } else {
-          console.log('refresh failed')
-          rv1.data = await rv1.json()
-          return rv1
+          // console.log('refresh failed')
+          throw rv1 // error
         }
       }
     }
     throw rv0 // error
   } catch (e) {
+    if (e && e.data && e.data.message !== 'Token Expired Error') forceLogoutFn()
+    // console.log('aaaaaaaaaaaaaaaaaa', e)
     throw e // some other error 
   }
 }
@@ -125,7 +129,7 @@ async function testAuth() {
     if (data) console.log('/api/health-auth', data)
     else console.log('get no data', data)
   } catch (e) {
-    console.log('get', e.toString())
+    console.log('get', e)
   }
 }
 
@@ -134,7 +138,7 @@ async function logout() {
     const { data } = await http('GET', '/api/auth/logout')
     console.log('logout done', data)
   } catch (e) {
-    console.log('logout error', e.toString())
+    console.log('logout error', e)
   }
 }
 
@@ -161,6 +165,7 @@ export {
   setToken,
   setRefreshToken,
   setCredentials,
+  setForceLogoutFn,
   parseJwt
 }
 

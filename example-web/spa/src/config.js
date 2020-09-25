@@ -1,5 +1,4 @@
  const config = {
-  USE_OTP: process.env.VUE_APP_USE_OTP || '', // GA, SMS, ''
   API_URL: process.env.VUE_APP_API_URL || 'http://127.0.0.1:3000', // https://127.0.0.1:3000
   // WS_URL: process.env.VUE_APP_WS_URL || process.env.VUE_APP_WS_URL === undefined ? 'ws://127.0.0.1:3001' : '' // 'wss://echo.websocket.org'
   WS_URL: process.env.VUE_APP_WS_URL || 'ws://127.0.0.1:3001', // wss://127.0.0.1:3001
@@ -20,5 +19,5 @@
 }
 // console.log('WS_URL', WS_URL, process.env.VUE_APP_WS_URL)
 export const {
-  USE_OTP, API_URL, WS_URL, RECAPTCHA_KEY, HTTPONLY_TOKEN, WITH_CREDENTIALS, GITHUB_CLIENT_ID, PAGESIZE, PAGESIZE_OPTS, APP_VERSION
+  API_URL, WS_URL, RECAPTCHA_KEY, HTTPONLY_TOKEN, WITH_CREDENTIALS, GITHUB_CLIENT_ID, PAGESIZE, PAGESIZE_OPTS, APP_VERSION
 } = config 

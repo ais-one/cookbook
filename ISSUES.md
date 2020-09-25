@@ -1,7 +1,6 @@
 ## Issues
 
 List of urgent issues to take care of
-- handle when user is forced logout ?
 - add ws to vite
 - add gql to vite?
 

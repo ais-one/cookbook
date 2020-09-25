@@ -129,7 +129,7 @@ async function testAuth() {
     if (data) console.log('/api/health-auth', data)
     else console.log('get no data', data)
   } catch (e) {
-    console.log('get', e.toString())
+    console.log('get', e)
   }
 }
 
@@ -138,7 +138,7 @@ async function logout() {
     const { data } = await http('GET', '/api/auth/logout')
     console.log('logout done', data)
   } catch (e) {
-    console.log('logout error', e.toString())
+    console.log('logout error', e)
   }
 }
 

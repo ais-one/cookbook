@@ -28,7 +28,7 @@ const mutations = {
 // asynchronous operations.
 const actions = {
   doLogin: async ({ commit, ...ctx }, payload) => {
-    console.log('doLogin', payload)
+    // console.log('doLogin', payload)
     if (payload) {
       if (payload.forced) { //  forced - refresh token error
         // console.log('payload forced === true')
