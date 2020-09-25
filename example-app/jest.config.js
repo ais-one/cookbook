@@ -14,7 +14,6 @@ module.exports = {
   // },
   roots: ['<rootDir>/tests'], // directories to match // root dir
   testEnvironment: 'node',
-  // setupFiles: [ path.join(process.cwd(), 'common-lib', 'setup.js') ],
   setupFiles: [ path.join(process.cwd(), 'setup.js') ],
   // testPathIgnorePatterns: ["/node_modules/"],
   // testMatch: [ "**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)" ], // files to match

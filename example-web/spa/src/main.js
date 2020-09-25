@@ -18,9 +18,6 @@ import FileUpload from 'ext-lib/webpacked/FileUpload.vue'
 import { apolloClient } from './graphql'
 import { DO_HELLO } from './queries'
 
-import { dateISO } from 'ext-lib/esm/datetime.js' // test JS used in both front end backend
-console.log('dateISO', dateISO(new Date()))
-
 apolloClient.query({
   query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
   variables: {

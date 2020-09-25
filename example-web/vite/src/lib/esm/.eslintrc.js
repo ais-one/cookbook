@@ -1,3 +1,4 @@
+// needed when used with webpack, vue-cli
 module.exports = {
   root: true,
   env: {

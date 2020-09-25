@@ -112,11 +112,13 @@ const debounce = (callback, delay) => {
 function throttle(callback, wait) {
   var time = Date.now();
   return function() {
-   if ((time + wait - Date.now()) < 0) {
-     callback();
-     time = Date.now();
-   }
+    if ((time + wait - Date.now()) < 0) {
+      callback();
+      time = Date.now();
+    }
   }
- }
+}
 
-export { makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle }
+const foo = Math.PI + Math.SQRT2
+
+export { foo, makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle }

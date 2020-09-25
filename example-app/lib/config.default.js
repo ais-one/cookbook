@@ -106,7 +106,7 @@ global.CONFIG.HTTPS_CERT = process.env.HTTPS_CERT || ''
 
 // master list of config keys - defaults will be undefined unless specified
 
-// Express - OpenAPI - refer to common-lib/express/preroute.js
+// Express - OpenAPI - refer to <lib>/express/preroute.js
 global.CONFIG.SWAGGER_DEFS = null
 global.CONFIG.ENABLE_LOGGER = false
 
@@ -114,27 +114,27 @@ global.CONFIG.ENABLE_LOGGER = false
 // global.CONFIG.GITHUB_CLIENT_ID = ''
 // global.CONFIG.GITHUB_CLIENT_SECRET = ''
 
-// MQ - bullmq - requires redis - common-lib/services/mq/bull.js - currently not used
+// MQ - bullmq - requires redis - <lib>/services/mq/bull.js - currently not used
 global.CONFIG.JOB_BULL = null
 
-// Communications - Nexmo - common-lib/comms/nexmo.js
+// Communications - Nexmo - <lib>/comms/nexmo.js
 global.CONFIG.NEXMO_FROM = ''
 global.CONFIG.NEXMO_KEY = ''
 global.CONFIG.NEXMO_SECRET = ''
 
-// Communications - Telegram - common-lib/comms/telegram.js
+// Communications - Telegram - <lib>/comms/telegram.js
 global.CONFIG.TELEGRAM_CHANNEL_ID = ''
 global.CONFIG.TELEGRAM_API_KEY = ''
 
-// Communications - Sendgrid - common-lib/comms/email.js
+// Communications - Sendgrid - <lib>/comms/email.js
 global.CONFIG.SENDGRID_KEY = ''
 global.CONFIG.SENDGRID_SENDER = ''
 
-// Communications - Firebase MEssaging - common-lib/comms/fcm.js
+// Communications - Firebase MEssaging - <lib>/comms/fcm.js
 global.CONFIG.FCM_SERVER_KEY = ''
 
-// Caching - refer to common-lib/services/redis.js
+// Caching - refer to <lib>/services/redis.js
 global.CONFIG.REDIS_CONFIG = null
 
-// Caching - refer to common-lib/services/keyv.js
+// Caching - refer to <lib>/services/keyv.js
 global.CONFIG.KEYV_CACHE = null
