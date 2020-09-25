@@ -68,6 +68,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     const options = { method, headers }
     if (timeoutMs > 0)  options.signal = signal
     if (token && credentials !== 'include') options.headers['Authorization'] = `Bearer ${token}` // include === HTTPONLY_TOKEN
+    if (urlPath === '/api/auth/logout') options.headers['refresh_token'] = refreshToken // add refresh token for logout
     if (body) options.body = JSON.stringify(body)
     options.credentials = credentials
 
@@ -81,23 +82,19 @@ const http = async (method, url, body = null, query = null, headers = null) => {
           token = rv1.data.token
           refreshToken = rv1.data.refresh_token
           if (token && credentials !== 'include') options.headers['Authorization'] = `Bearer ${token}` // include === HTTPONLY_TOKEN
-          console.log('urlFull', urlFull)
           const rv2 = await fetch(urlFull + qs, options)
           rv2.data = await rv2.json()
           return rv2
         } else {
           // console.log('refresh failed')
-          forceLogoutFn()
           throw rv1 // error
         }
       }
     }
-    forceLogoutFn()
-    console.log('fffffffffffffffffffff')
     throw rv0 // error
   } catch (e) {
-    forceLogoutFn()
-    console.log('aaaaaaaaaaaaaaaaaa', e)
+    if (e && e.data && e.data.message !== 'Token Expired Error') forceLogoutFn()
+    // console.log('aaaaaaaaaaaaaaaaaa', e)
     throw e // some other error 
   }
 }

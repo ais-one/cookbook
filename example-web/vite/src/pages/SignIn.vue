@@ -2,20 +2,20 @@
   <div class="page-flex">
     <vcxwc-loading-overlay v-if="loading"></vcxwc-loading-overlay>
     <form class="form-box-flex">
-      <div v-if="mode==='login'">
+      <div v-show="mode==='login'">
         <h1>Sign In</h1>
         <mwc-textfield label="Username" outlined type="text" v-model="email"></mwc-textfield>
         <mwc-textfield label="Password" outlined type="password" v-model="password"></mwc-textfield>
         <div class="buttons-box-flex">
-          <mwc-button raised label="Login" @click="login"></mwc-button>
+          <mwc-button raised label="Login" type="button" @click="login"></mwc-button>
         </div>
         <p><router-link to="/signup">Sign Up</router-link></p>
       </div>
-      <div v-else-if="mode==='otp'">
+      <div v-show="mode==='otp'">
         <h1>Enter OTP</h1>
         <mwc-textfield label="OTP" outlined type="text" v-model="otp"></mwc-textfield>
         <div class="buttons-box-flex">
-          <mwc-button raised label="OTP" @click="otpLogin"></mwc-button>
+          <mwc-button raised label="OTP" type="button" @click="otpLogin"></mwc-button>
         </div>
       </div>
       <p v-if="errorMessage">{{ errorMessage }}</p>
@@ -71,18 +71,14 @@ export default {
       try {
         const { data } = await http.post('/api/auth/login', { email: email.value, password: password.value })
         const decoded = http.parseJwt(data.token)
-
         http.setToken(data.token)
         http.setRefreshToken(data.refresh_token)
-
         if (decoded.verified) {
-          // await dispatch('autoSignIn', data) // token
           _setUser(data, decoded)
         } else { // OTP
           mode.value = 'otp'
           otpCount = 0
         }
-        // console.log('rv', data, decoded)
       } catch (e) {
         errorMessage.value = e.data ? e.data.message : JSON.stringify(e)
       }
@@ -98,20 +94,19 @@ export default {
         const decoded = http.parseJwt(data.token)
         http.setToken(data.token)
         http.setRefreshToken(data.refresh_token)
-
         if (decoded.verified) {
           _setUser(data, decoded)
         }
       } catch (e) {
         if (e.data.message === 'Token Expired Error') {
-          errorMessage.value = 'Time Expired'
+          errorMessage.value = 'OTP Expired'
           setToLogin()
         } else if (otpCount < 3) {
           otpCount++
           errorMessage.value = 'OTP Error'
         } else {
-          setToLogin()
           errorMessage.value = 'OTP Tries Exceeded'
+          setToLogin()
         }
       }
       loading.value = false

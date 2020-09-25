@@ -24,11 +24,12 @@ export default {
   setup(props, context) {
     const store = useStore()
     const storeUser = computed(() => store.state.user)
-
-    // const logout = async () => await store.dispatch('doLogin', { forced: true })
+    const logout = async () => {
+      await store.dispatch('doLogin', { forced: true })
+    }
     http.setBaseUrl(VITE_API_URL)
     http.setCredentials(VITE_WITH_CREDENTIALS || 'same-origin')
-    // http.setForceLogoutFn(logout)
+    http.setForceLogoutFn(logout)
     provideXhr(http)
     return {
       storeUser // computed

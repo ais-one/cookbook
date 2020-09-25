@@ -28,11 +28,10 @@ const mutations = {
 // asynchronous operations.
 const actions = {
   doLogin: async ({ commit, ...ctx }, payload) => {
-    // await fetch here to get token from API...
-    // console.log('doLogin - http', http)
+    console.log('doLogin', payload)
     if (payload) {
-      if (payload.forced) { //  forced...
-        console.log('payload forced === true')
+      if (payload.forced) { //  forced - refresh token error
+        // console.log('payload forced === true')
         commit('login', null)
         await router.push('/')
       } else { // sign in ok
@@ -40,23 +39,17 @@ const actions = {
         await router.push('/dashboard')
       }
     } else { // sign in failed
-      console.log('payload forced === false')
-      // if (payload.forced) { // auth failure detected
-      // } else { // logout button clicked
+      // console.log('payload forced === false')
       try {
         await http.get('/api/auth/logout')
+        commit('login', null)
+        await router.push('/')
       } catch (e) {
-        // if (!e.response || e.response.status === 401) { // server or authorization error
-        //   // ok please continue
-        // } else {
-        //   return // may have problems here... loading still true, etc...
-        // }
+        if (e && e.data && e.data.message !== 'Token Expired Error') {
+          commit('login', null)
+          await router.push('/')  
+        }
       }
-      // }
-      // if (payload.forced) commit('setError', { message: 'Session Expired' })
-      // commit('setLayout', 'layout-default')
-      commit('login', null)
-      await router.push('/')
     }
   },
   increment: ({ commit }) => commit('increment'),

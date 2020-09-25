@@ -23,6 +23,8 @@ const { setToken, getToken, revokeToken } = require('./' + JWT_REFRESH_STORE)
 // audience  = 'http://mysoftcorp.in'
 // ip
 
+// We implement stateful refresh_token not stateless ATM
+
 const findUser = async (where) => {
   if (AUTH_USER_STORE === 'mongo') {
     if (where.id) where = { _id: new ObjectID(where.id) }
@@ -77,26 +79,37 @@ const authUser = async (req, res, next) => {
         // console.log( e.name, aa, (new Date(aa.iat * 1000)).toISOString(), (new Date(aa.exp * 1000)).toISOString(), (new Date(Date.now())).toISOString() )
         if (e.name === 'TokenExpiredError') {
           // console.log('req.path', req.baseUrl + req.path)
-          if (req.baseUrl + req.path === '/api/auth/refresh') {
+          if (req.baseUrl + req.path === '/api/auth/refresh' || req.baseUrl + req.path === '/api/auth/logout') {
             try {
               // check refresh token & user - always stateful
-              const { id, exp, iat, verified, ...payload } = jwt.decode(token)
+              result = jwt.decode(token)
+              const { id, exp, iat, verified, ...payload } = result
+
               let refreshToken = await getToken(id)
               if (refreshToken) {
                 // console.log('ggg', req.baseUrl, req.path, parseInt(Date.now() / 1000) - exp, JWT_REFRESH_EXPIRY, e.toString(), parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY, token)
                 if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
-                  if (refreshToken === req.body.refresh_token) { // ok... generate new access token & refresh token?
-                    const tokens = await createToken({ id, verified: true, ...payload }, { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
-                    if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
-                    return res.status(200).json(tokens)
+                  if (String(refreshToken) === String(req.body.refresh_token) || String(refreshToken) === String(req.headers.refresh_token)) { // ok... generate new access token & refresh token?
+                    if (req.baseUrl + req.path === '/api/auth/logout') {
+                      req.decoded = result
+                      return next()
+                    } else {
+                      const tokens = await createToken({ id, verified: true, ...payload }, { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
+                      if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
+                      return res.status(200).json(tokens)  
+                    }
                   }
+                } else { // refresh_token expired
+                  return res.status(401).json({ message: 'Refresh Token Error: Expired Or Invalid' })
                 }
+              } else {
+                return res.status(401).json({ message: 'Refresh Token Error: Invalid Or Expired' })
               }
             } catch (err) { // use err instead of e (fix no-catch-shahow issue)
-              console.log('refreshing auth err', err.toString())
-              return res.status(401).json({ message: 'Refresh Error' })
+              // console.log('refreshing auth err', err.toString())
+              return res.status(401).json({ message: 'Refresh Token Error: Unknown' })
             }
-            return res.status(401).json({ message: 'Uncaught Refresh Error' })
+            return res.status(401).json({ message: 'Refresh Token Error: Uncaught' })
           } else {
             return res.status(401).json({ message: 'Token Expired Error' })
           }

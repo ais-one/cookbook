@@ -21,6 +21,8 @@ export const http = axios.create({
 
 http.interceptors.request.use((config) => {
   // Do something before request is sent if needed
+  const myURL = new URL(config.baseURL + config.url)
+  if (myURL.pathname === '/api/auth/logout') config.headers['refresh_token'] = store.state.user.refresh_token // add refresh token for logout
   return config
 }, (error) => {
   // Do something with request error if needed
