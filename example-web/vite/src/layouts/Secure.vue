@@ -4,6 +4,10 @@
     <span slot="subtitle" class="h-center"><p>v0.0.1</p></span>
     <div class="drawer-content">
       <mwc-list>
+        <mwc-list-item graphic="icon" @click="logout">
+          <slot>Sign out</slot>
+          <mwc-icon slot="graphic">exit_to_app</mwc-icon>
+        </mwc-list-item>
         <div v-for="item of menuItems" :key="item.name">
           <router-link v-if="item.to" :to="item.to">
             <mwc-list-item graphic="icon" @click="theDrawer.open=false">
@@ -24,10 +28,6 @@
             </div>
           </div>
         </div>
-        <mwc-list-item graphic="icon" @click="logout">
-          <slot>Sign out</slot>
-          <mwc-icon slot="graphic">exit_to_app</mwc-icon>
-        </mwc-list-item>
       </mwc-list>
     </div>
     <div slot="appContent">

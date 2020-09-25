@@ -96,24 +96,23 @@ export default {
       try {
         const { data } = await http.post('/api/auth/otp', { pin: otp.value })
         const decoded = http.parseJwt(data.token)
-
         http.setToken(data.token)
         http.setRefreshToken(data.refresh_token)
 
         if (decoded.verified) {
           _setUser(data, decoded)
-        } else { // OTP
-          // increment reset
+        }
+      } catch (e) {
+        if (e.data.message === 'Token Expired Error') {
+          errorMessage.value = 'Time Expired'
+          setToLogin()
+        } else if (otpCount < 3) {
           otpCount++
           errorMessage.value = 'OTP Error'
-        }
-        if (otpCount === 3) {
+        } else {
           setToLogin()
           errorMessage.value = 'OTP Tries Exceeded'
         }
-      } catch (e) {
-        setToLogin()
-        errorMessage.value = e.data ? e.data.message : JSON.stringify(e)
       }
       loading.value = false
     }

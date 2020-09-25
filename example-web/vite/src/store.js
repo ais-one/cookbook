@@ -29,11 +29,10 @@ const mutations = {
 const actions = {
   doLogin: async ({ commit, ...ctx }, payload) => {
     // await fetch here to get token from API...
-    console.log('doLogin - http', http)
+    // console.log('doLogin - http', http)
     if (payload) {
       if (payload.forced) { //  forced...
         console.log('payload forced === true')
-
         commit('login', null)
         await router.push('/')
       } else { // sign in ok

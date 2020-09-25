@@ -155,9 +155,9 @@ export default {
     const testApi = async (test) => {
       try {
         const { data } = await http.get('/api/' + test)
-        console.log(data)
+        console.log('testApi', data)
       } catch (e) {
-        console.log(e)
+        console.log('testApi err', e)
       }
     }
     // // Watch prop value change and assign to value 'selected' Ref

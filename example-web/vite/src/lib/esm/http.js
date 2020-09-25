@@ -76,27 +76,28 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     if (rv0.status >= 200 && rv0.status < 400) return rv0
     else if (rv0.status === 401 && urlPath !== '/api/auth/logout' && urlPath !== '/api/auth/otp' && urlPath !== '/api/auth/refresh') {
       if (rv0.data.message === 'Token Expired Error') {
-        const rv1 = await http('POST', urlOrigin + '/api/auth/refresh', { refresh_token: refreshToken })
+        const rv1 = await http('POST', urlOrigin + '/api/auth/refresh', { refresh_token: refreshToken }) // rv1 JSON already processed
         if (rv1.status === 200) {
-          rv1.data = await rv1.json()
           token = rv1.data.token
           refreshToken = rv1.data.refresh_token
           if (token && credentials !== 'include') options.headers['Authorization'] = `Bearer ${token}` // include === HTTPONLY_TOKEN
+          console.log('urlFull', urlFull)
           const rv2 = await fetch(urlFull + qs, options)
           rv2.data = await rv2.json()
           return rv2
         } else {
           // console.log('refresh failed')
-          rv1.data = await rv1.json()
           forceLogoutFn()
           throw rv1 // error
         }
       }
     }
     forceLogoutFn()
+    console.log('fffffffffffffffffffff')
     throw rv0 // error
   } catch (e) {
     forceLogoutFn()
+    console.log('aaaaaaaaaaaaaaaaaa', e)
     throw e // some other error 
   }
 }
