@@ -1,9 +1,13 @@
 ### Version 0.3.6
 - [chore] update packages & cleanup & work on improving documentation
 - [table] validation
-- [frontend] (use webcomponent in a webcomponent) mwc-autocomplete, mwc-multiselect, mwc-fileupload
-- in progress
+- [frontend] (vite)
+  - use webcomponent in a webcomponent - mwc-autocomplete, mwc-multiselect, mwc-fileupload
+  - provide/inject use pattern for http calls (useXhr)
+- [full-stack]
+  - fixed auth system
   - improve structure further (or microservices)
+- in progress
   - deploy backend to GCP Cloud Run
   - deploy SPA frontend to GCP Storage
   - [i18n] node-polyglot

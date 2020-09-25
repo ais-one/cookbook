@@ -1,7 +1,9 @@
 ## Issues
 
 List of urgent issues to take care of
+- remove NUXT
 - add ws to vite
+- add i18n to vite
 - add gql to vite?
 
 - CrudTable.vue
