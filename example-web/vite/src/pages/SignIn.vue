@@ -55,7 +55,6 @@ export default {
       loading.value = false
       // email
       // password
-
     })
 
     const _setUser = async (data, decoded) => {
@@ -139,7 +138,7 @@ export default {
   align-items: center;
 }
 
-.form-box-flex { 
+.form-box-flex > div { 
   /* height: 320px; */
   width: 320px;
 
@@ -153,11 +152,11 @@ export default {
   background: lightgray;
 }
 
-.form-box-flex mwc-textfield, .form-box-flex mwc-button {
+.form-box-flex > div > mwc-textfield, .form-box-flex > div > .buttons-box-flex {
   margin-top: 15px;
 }
 
-.form-box-flex mwc-textfield {
+.form-box-flex > div > mwc-textfield {
   flex: 1 1 auto;
   font-size: 20px;
 }
@@ -168,7 +167,7 @@ export default {
   justify-content: space-around;
 }
 
-.buttons-box-flex mwc-button {
+.buttons-box-flex > div > mwc-button {
   flex: 0 1 95px;
   font-size: 20px;
 }

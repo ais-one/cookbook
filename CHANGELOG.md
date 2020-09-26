@@ -1,9 +1,12 @@
 ### Version 0.3.6
 - [chore] update packages & cleanup & work on improving documentation
 - [table] validation
-- [frontend] (vite)
-  - use webcomponent in a webcomponent - mwc-autocomplete, mwc-multiselect, mwc-fileupload
-  - provide/inject use pattern for http calls (useXhr)
+- [frontend]
+  - example-web/vite
+    - use webcomponent in a webcomponent - mwc-autocomplete, mwc-multiselect, mwc-fileupload
+    - provide/inject use pattern for http calls (useXhr)
+    - add PWA, FCM(google cloud) and Webpush(self hosted) functionality
+  - example-web/pwa REMOVED
 - [full-stack]
   - fixed auth system
   - improve structure further (or microservices)

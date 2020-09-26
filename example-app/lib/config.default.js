@@ -130,7 +130,7 @@ global.CONFIG.TELEGRAM_API_KEY = ''
 global.CONFIG.SENDGRID_KEY = ''
 global.CONFIG.SENDGRID_SENDER = ''
 
-// Communications - Firebase MEssaging - <lib>/comms/fcm.js
+// Communications - Firebase Messaging - <lib>/comms/fcm.js
 global.CONFIG.FCM_SERVER_KEY = ''
 
 // Caching - refer to <lib>/services/redis.js

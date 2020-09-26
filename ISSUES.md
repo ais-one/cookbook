@@ -1,6 +1,7 @@
 ## Issues
 
 List of urgent issues to take care of
+- clean up pwa code (including webpush) on vite and express
 - remove NUXT
 - add ws to vite
 - add i18n to vite

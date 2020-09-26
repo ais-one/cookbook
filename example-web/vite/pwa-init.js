@@ -1,72 +1,11 @@
-/*
-"use strict";
+// Chrome -> devtools -> Application -> Service Workers -> check Update on reload
 
-// firebase stuff????
-
-const notificationButton = document.getElementById("enableNotifications");
-let swRegistration = null;
-
-initializeApp();
-
-function initializeApp() {
-  if ("serviceWorker" in navigator && "PushManager" in window) {
-    console.log("Service Worker and Push is supported");
-
-    //Register the service worker
-    navigator.serviceWorker
-      .register("service-worker.js")
-      .then(swReg => {
-        console.log("Service Worker is registered", swReg);
-
-        swRegistration = swReg;
-        initializeUi();
-      })
-      .catch(error => {
-        console.error("Service Worker Error", error);
-      });
-  } else {
-    console.warn("Push messaging is not supported");
-    notificationButton.textContent = "Push Not Supported";
-  }
-}
-
-function initializeUi() {
-  notificationButton.addEventListener("click", () => {
-    displayNotification();
-  });
-}
-
-function displayNotification() {
-  if (window.Notification && Notification.permission === "granted") {
-    notification();
-  }
-  // If the user hasn't told if he wants to be notified or not
-  // Note: because of Chrome, we are not sure the permission property
-  // is set, therefore it's unsafe to check for the "default" value.
-  else if (window.Notification && Notification.permission !== "denied") {
-    Notification.requestPermission(status => {
-      if (status === "granted") {
-        notification();
-      } else {
-        alert("You denied or dismissed permissions to notifications.");
-      }
-    });
-  } else {
-    // If the user refuses to get notified
-    alert(
-      "You denied permissions to notifications. Please go to your browser or phone setting to allow notifications."
-    );
-  }
-}
-
-
+// 'use strict';
 // // Checking if we already have permission to send notifications
 // const notificationsAllowed = await navigator.permissions.query({name: 'notifications'});
-
 // if (notificationsAllowed.state !== 'granted'){
 //   // Requesting permission
 //   const permission = await Notification.requestPermission();
-
 //   // If the permission is not granted the application won't work
 //   if (permission !== 'granted') {
 //     // I am a very sour developer so I replace all of my page with an error message
@@ -77,36 +16,66 @@ function displayNotification() {
 // }
 // // Then you can continue with your notification driven code
 
+// import config from '/firebase.config.js'
+firebase.initializeApp(FIREBASE_CONFIG);
+const messaging = firebase.messaging();
+messaging.usePublicVapidKey(VAPID_KEY)
 
-function notification() {
-  const options = {
-    body: "Testing Our Notification",
-    icon: "./bell.png"
-  };
-  swRegistration.showNotification("PWA Notification!", options);
-}
-*/
-
-  if('serviceWorker' in navigator) {
-    window.addEventListener("load", async function() {
-      navigator.serviceWorker
-        .register("/service-worker.js")
-        .then(res => console.log("service worker registered"))
-        .catch(err => console.log(err));
-
-      // We first get the registration
-      const registration = await navigator.serviceWorker.ready;
-      // Asking for the subscription object
-      let subscription = await registration.pushManager.getSubscription();
-
-      // If we don't have a subscription we have to create and register it!
-      if (!subscription) {
-        subscription = await subscribe(registration);
-      }
-      // Implementing an unsubscribe button
-      // document.getElementById('unsubscribe').onclick = () => unsubscribe();
+const sendToken = (token) => {
+  const query = { reply: 'no' }  // yes=reply. no=no reply
+  const qs = query ? '?' + Object.keys(query).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&') : ''
+  console.log('Sending Token', token)
+  fetch('http://127.0.0.1:3000/api/test-pn-token/' + token + qs).then(res => {
+    res.json().then(data => {
+      console.log('send token response', data)
     })
+  })
+}
+
+messaging.requestPermission().then(() => {
+  messaging.getToken().then(async (token) => {
+    sendToken(token)
+  })
+})
+
+messaging.onTokenRefresh(() => {
+  messaging.getToken().then(async (token) => {
+    sendToken(token)
+  })
+})
+
+messaging.onMessage((payload) => {
+  console.log('Message received. ', payload)
+  try {
+    const { title, body } = JSON.parse(payload.data.notification)
+    console.log((new Date()).toISOString(), title, body) 
+  } catch (e) {
+    console.log('GCM msg error', e.toString())
   }
+})
+
+
+if('serviceWorker' in navigator) {
+  window.addEventListener("load", async function() {
+    navigator.serviceWorker
+      .register("/service-worker.js")
+      .then(res => console.log("service worker registered"))
+      .catch(err => console.log(err));
+
+    // WebPush
+    // // We first get the registration
+    // const registration = await navigator.serviceWorker.ready;
+    // // Asking for the subscription object
+    // let subscription = await registration.pushManager.getSubscription();
+    // // If we don't have a subscription we have to create and register it!
+    // if (!subscription) {
+    //   subscription = await subscribe(registration);
+    // }
+    // TBD Implement... unsubscribe
+  })
+}
+
+// WebPush
 
 // We use this function to subscribe to our push notifications
 // As soon as you run this code once, it shouldn't run again if the initial subscription went well
@@ -153,12 +122,6 @@ const unsubscribe = async () => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(subscription.toJSON())
   });
-  writeSubscriptionStatus("Unsubscribed");
-};
-
-// This simply shows our user that they are unsubscribed
-const writeSubscriptionStatus = subscriptionStatus => {
-  document.getElementById("status").innerHTML = subscriptionStatus;
 };
 
 // I have found this code (or variations of) from; multiple sources

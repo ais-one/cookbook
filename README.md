@@ -7,9 +7,8 @@ Latest Version [0.3.6](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.6)
 # Features
 
 - Frontend Examples
-  - **NEW** [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
-  - [SPA & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-web/spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP, Webcam (WIP), Signature canvas (WIP)
-  - [PWA](https://github.com/ais-one/vue-crud-x/tree/master/example-web/pwa): FCM push notification & PWA features
+  - [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA (**NEW**), [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
+  - [SPA & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-web/spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP
   - [SSR using Nuxt](https://github.com/ais-one/vue-crud-x/tree/master/example-web/ssr): Handling 500 and 404 errors, show gotchas of SSR
   - [Vanilla JS, ES Modules](https://github.com/ais-one/vue-crud-x/tree/master/example-app/public): No bundler, scalable VueJS Application , example codes (signed uploads, JWT refresh token, OTP)
 - [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/) & [Common Libs](https://github.com/ais-one/vue-crud-x/tree/master/common-libs/)
@@ -86,6 +85,10 @@ Login using the following:
 
 MongoDB required for testing CRUD table to work
 
+For Push Notification
+- using Google FCM, setup your firebase account and messaging, also setup FCM server key in backend
+- using self hosted webpush is also supported and available
+
 ```bash
 cd example-web/vite
 npm i
@@ -94,16 +97,6 @@ npm run dev
 
 Navigate to http://127.0.0.1:8080 to view application. Just click login button
 
-
-### PWA Setup & Run
-
-For Push Notification to work, setup your firebase account and messaging, also setup FCM server key in backend
-
-```bash
-cd example-web/pwa
-npm i
-npm run serve
-```
 
 ### Nuxt SSR/Static Application Setup & Run
 
