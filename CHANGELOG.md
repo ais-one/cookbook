@@ -5,8 +5,8 @@
   - example-web/vite
     - use webcomponent in a webcomponent - mwc-autocomplete, mwc-multiselect, mwc-fileupload
     - provide/inject use pattern for http calls (useXhr)
-    - add PWA, FCM(google cloud) and Webpush(self hosted) functionality
-  - example-web/pwa REMOVED
+    - add PWA, FCM(google cloud) and Webspush(self hosted) functionality
+  - example-web/pwa and example-web/ssr REMOVED
 - [full-stack]
   - fixed auth system
   - improve structure further (or microservices)
@@ -94,7 +94,7 @@
   - add file upload to GCP storage using signed Urls (alternative vendors include AWS S3 or Azure Storage)
   - add Dockerfile see docs/Containers.md & example-app/Dockerfile & example-app/.dockerignore
   - add message queue example using agenda /api/mq (requires MongoDB) & bull /api/mq-bull (requires Redis)
-- frontend /example-app/web folder hosts examples for SPA, SSR
+- frontend /example-app/web folder hosts examples for SPA, static HTML
   - update user replace loginType with groups (ADFS SAML claims, etc), improve on permissions handling
   - avoid single vendor lock in - remove mongo switch and firebase
 

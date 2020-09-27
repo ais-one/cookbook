@@ -1,6 +1,6 @@
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine) [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-> **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
+> **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, (REMOVED Nuxt SSR)
 
 Latest Version [0.3.6](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.6) - Released 2020 Oct 07 2100 +8GMT
 
@@ -9,12 +9,11 @@ Latest Version [0.3.6](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.6)
 - Frontend Examples
   - [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA (**NEW**), [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
   - [SPA & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-web/spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP
-  - [SSR using Nuxt](https://github.com/ais-one/vue-crud-x/tree/master/example-web/ssr): Handling 500 and 404 errors, show gotchas of SSR
   - [Vanilla JS, ES Modules](https://github.com/ais-one/vue-crud-x/tree/master/example-app/public): No bundler, scalable VueJS Application , example codes (signed uploads, JWT refresh token, OTP)
-- [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/) & [Common Libs](https://github.com/ais-one/vue-crud-x/tree/master/common-libs/)
+- [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/)
   - Cors, proxy middleware, helmet, error handling, logging, OpenAPI
   - Objection ORM, Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis
-  - FCM push notification, Sendgrid email, Nexmo SMS, Telegram
+  - Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram
   - AgendaJS message queue
   - File uploads, Signed URL file upload to GCP Storage
   - Websockets, graphql
@@ -23,11 +22,11 @@ Latest Version [0.3.6](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.6)
 - Development & Deployment
   - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) of mongodb with replica set
   - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
-  - [Deploy script](https://github.com/ais-one/vue-crud-x/tree/master/deploy.sh) to VM, GCP Cloud Run, GCP Storage (for SPA & static sites)
+
 
 # QUICK START - ON YOUR LOCAL MACHINE
 
-## Backend & SPA or Vite, PWA, SSR
+## Backend & SPA or Vite
 
 ### Backend Setup & Run
 
@@ -83,6 +82,8 @@ Login using the following:
 
 ### Vite Setup & Run
 
+[Why Use Vite](https://indepth.dev/a-note-on-vite-a-very-fast-dev-build-tool/)
+
 MongoDB required for testing CRUD table to work
 
 For Push Notification
@@ -97,26 +98,16 @@ npm run dev
 
 Navigate to http://127.0.0.1:8080 to view application. Just click login button
 
+### Why No SSR or SSG
 
-### Nuxt SSR/Static Application Setup & Run
-
-```bash
-cd example-web/ssr
-npm i
-npm run dev
-```
-
-**Notes**
-- for static content see example-web/ssr/README.md on generating and serving static content
-- Static sites have the same advantages as SSR but are less complex to set up. The only thing to take care of is redirection of unknown dynamic routes
-- We use SSR mode, WITHOUT implementing the server side features for efficient debugging of static generated sites.
+- potential slow rendering by server app, added complexity in code, rehydration errors, added complexity in server
+- https://github.com/nuxt/nuxt.js/issues/8102
+- prefer static sites and lazy loaded SPA
 
 
 ## Testing
 
-E2E testing is **Work In Progress**
-
-To run unit & integration test on /api/authors route.
+To run unit & integration test on /api/authors. E2E testing is **Work In Progress**
 
 TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in example-app/tests
 
@@ -134,7 +125,7 @@ npm run process-long # windows
 npm run process-long:unix # linux or mac
 ```
 
-Command to simulate process triggered by cron (**NOTE:** it may be better to use cron to call API rather than trigger a process)
+Command to simulate process triggered by cron (**NOTE:** may be better to use cron to call API than trigger a process)
 
 ```bash
 npm run process-cron # windows
@@ -165,44 +156,27 @@ Change the example-app/config/index.js file contents
 
 ---
 
-# BUILDING A NEW APPLICATION
+# Using The Common Libraries In Your Own Application
 
-## Initial Creation - the master branch
+- use example-app for backend example
+  - see example-app/lib/esm for common ESM codes to be used by express applications
+  - see example-app/lib/<all others> for common CJS codes to be used by express applications
+- use example-app/public for vanillaJS frontend exxample
+- use example-web/vite for Vite Vue3 frontend example
+  - see example-web/vite/lib/esm for common codes to be used by Vite Vue 3
+- use example-web/spa for Webpack Vue2 frontend example
+  - see example-web/spa/lib/webpacked for common codes to be used by Webpacked Vue 2
 
-```bash
-mkdir <my-project>
-cd <my-project>
-git clone --depth=1 --branch=develop https://github.com/ais-one/vue-crud-x.git
-# copy required files
-cp vue-crud-x/deploy.sh vue-crud-x/update.sh vue-crud-x/package.json vue-crud-x/.eslintrc.json vue-crud-x/.gitignore .
-# copy required folders
-mv vue-crud-x/common-lib .
-# copy docker related files
-cp vue-crud-x/.dockerignore vue-crud-x/Dockerfile vue-crud-x/docker-compose.yml .
 
-# copy the example-app for use as reference (optional)
-mv vue-crud-x/example-app .
-# copy the example-web for use as reference (optional)
-mv vue-crud-x/example-web .
-# cleanup
-rm -rf vue-crud-x
-```
+## Environment Settings
 
-## Next Steps
-
-- In **package.json**
-  - Set application name in **config.app** property (indicate folder of your application - set to example-app if using example-app folder)
-  - Set web name in **config.web** property (indicate folder of your application - set to example-web if using example-web folder)
+- In **package.json** Files
   - Set environment using **config.env** property (development, uat, staging, production)
-- In **update.sh**
-  - Uncomment the lines, this script is used to update the common library when needed
 
 ```json
 {
   "config": {
     "env": "development",
-    "app": "example-app",
-    "web": "example-web"
   }
 }
 ```
@@ -215,30 +189,13 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. developm
 
 If too many config properties, split it to other more and files
 
-
-## Updating The Library WIP
-
-See script **update.sh**
-
 ---
 
 # Project Strcuture
 
-The project structure is shown below
-
 ```
 vue-crud-x
-+- common-lib/ : common components
-|  +- auth/ : for express authentication
-|  +- comms/ : messging
-|  +- esm/ : JS that can be used by both front and backend
-|  +- express/ : express related
-|  +- services/ : nodejs libs
-|  +- webpacked/ : webpacked components for frontend (including vue-crud-x)
-|  |  +- dist/ : distribution folder for CRUD component
-|  +- app.js : the express app boilerplate
-|  +- config.js: the base config
-|  +- setup.js: setup globals
++- common-lib/ : contains document to indicate which are the common libraries
 +- docker-devenv/ : docker for development environment (e.g. run redis, mongodb from here)
 |  +- mongodb
 +- docs/ : documentation
@@ -261,6 +218,15 @@ vue-crud-x
 |  |  +- seeds/
 |  +- graphql/ : graphql stuff
 |  +- jobs/ : message queue jobs
+|  +- libs/ : common libs
+|  |  +- auth/ : for express authentication
+|  |  +- comms/ : messaging
+|  |  +- esm/ : from example-web/vite/lib
+|  |  +- express/ : express related
+|  |  +- services/ : nodejs libs
+|  |  +- dist/ : distribution folder for CRUD component
+|  |  +- config.default.js: the base config
+|  |  +- config.js: the base config
 |  +- logs/
 |  +- middlewares/
 |  +- models/
@@ -270,51 +236,53 @@ vue-crud-x
 |  +- router/
 |  +- tests/ : Jest tests
 |  +- uploads/ : for serving static files - files
+|  +- .dockerignore
+|  +- .eslintrc.js
+|  +- app.js : the express app boilerplate
+|  +- deploy-gcr.sh
+|  +- deploy-vm.sh
+|  +- docker-compose.yml
+|  +- Dockerfile
 |  +- ecosystem.config.js
 |  +- index.js
 |  +- jest.config.js: JEST testing
 |  +- knexfile.js: Knex query builder
 |  +- package.json
-|  +- process-long.js: sample long running process
 |  +- process-cron.js: sample cron triggered process
+|  +- process-long.js: sample long running process
 |  +- README.md
+|  +- setup.js
 +- example-web/ : frontend associated to the application
-|  +- pwa/
 |  +- spa/
-|  +- ssr/
+|  |  +- libs/ : common libs
+|  |  |  +- webpacked/ : webpacked components for frontend (including vue-crud-x)
 |  +- vite/
+|  |  +- libs/ : common libs
+|  |  |  +- esm/ : JS that can be used by both front and backend
 |  +- <your other front end here>
 +- sandbox/ : Useful scripts
-+- .dockerignore
-+- .eslintrc.json
 +- .gitignore
-+- deploy.sh
-+- docker-compose.yml
-+- Dockerfile
++- BACKLOG.md
++- CHANGELOG.md
++- ISSUES.md
 +- LICENCE
 +- package.json
 +- README.md
-+- RELEASE.md
-+- update.sh
 ```
 
 ---
 
 # DOCUMENTATION
 
-Main documentation can be found starting at [docs/home.md](docs/home.md)
-
-Release notes for the library and examples can be found in [CHANGELOG.md](CHANGELOG.md)
-Roadmap for the library and examples can be found in [BACKLOG.md](BACKLOG.md)
-
-Other documents
+- Project roadmap at [BACKLOG.md](BACKLOG.md)
+- Release notes at [CHANGELOG.md](CHANGELOG.md)
+- Main documentation starts at [docs/home.md](docs/home.md)
 - **vue-crud-x** library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
 - Deployment notes can be found in (docs/deployment/home.md)
 - Custom Element [docs/custom-element.md](docs/custom-element.md)
 - Kafka [docs/kafka.md](docs/kafka.md)
 - TCP Server [docs/tcp.md](docs/tcp.md)
 
-**vue-crud-x 0.2+ Article** 
 
 ## VERSION CHANGE NOTES
 

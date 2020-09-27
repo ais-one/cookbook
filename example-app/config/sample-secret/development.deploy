@@ -1,3 +1,3 @@
 URL=username@test-com.com
-WEB=spa,gs://spa.test.com;ssr,gs://ssr.test.com
+WEB=spa,gs://spa.test.com
 GCP_PROJECT_ID=test-project-id

@@ -6,7 +6,7 @@
 # $@ Values of all the arguments.
 # $? Exit status id of last command.
 
-# ORIGINAL TO DELETE...
+echo "SAMPLE SHELL SCRIPT"
 
 if [ ! $1 ]; then # environment eg. uat
     echo "Missing project environment. Set at package.json" && read && exit
@@ -18,8 +18,6 @@ if [ ! $3 ]; then # path to frontends eg. example-web
     echo "Missing path to web. Set at package.json" && read && exit
 fi
 
-echo Deploying $1 $2 $3
-
 # OIFS=$IFS; IFS=","; sites=("site 1,site b,site aaa"); IFS=$OIFS
 # for site in "${sites[@]}"; do
 #    echo $site
@@ -28,15 +26,18 @@ echo Deploying $1 $2 $3
 
 baseDir=`pwd`
 
+# sample .deploy file contents
+# URL=ubuntu@35.187.243.253
+# WEB=spa1,gs://uat.mybot.live;admin,gs://admin.mybot.live
+# GCP_PROJECT_ID=mybot-live
+
 PEM=./$2/config/secret/$1.pem
 URL=`grep URL $2/config/secret/$1.deploy | cut -d '=' -f2`
 WEB=`grep WEB $2/config/secret/$1.deploy | cut -d '=' -f2`
 GCP_PROJECT_ID=`grep GCP_PROJECT_ID $2/config/secret/$1.deploy | cut -d '=' -f2`
 
-# echo $WEB
-# echo $URL
-# echo $PEM
 
+# choose action
 PS3="Please enter your choice: "
 options=(
   "uat-ssh"

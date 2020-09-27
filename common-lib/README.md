@@ -14,8 +14,6 @@ We will find a better way of updating to have correct CI the following folders s
 - example-app
 - example-web/vite
 - example-web/spa
-- example-web/pwa - to merge it with either spa or vite
-- example-web/ssr - to find a better replacement for nuxt
 
 
 
