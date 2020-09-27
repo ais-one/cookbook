@@ -133,6 +133,8 @@ global.CONFIG.SENDGRID_SENDER = ''
 // Communications - Firebase Messaging - <lib>/comms/fcm.js
 global.CONFIG.FCM_SERVER_KEY = ''
 
+global.CONFIG.WEBPUSH_VAPID_URL = process.env.WEBPUSH_VAPID_URL || 'http://127.0.0.1:3000'
+
 // Caching - refer to <lib>/services/redis.js
 global.CONFIG.REDIS_CONFIG = null
 

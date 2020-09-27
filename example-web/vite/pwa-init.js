@@ -17,45 +17,50 @@
 // // Then you can continue with your notification driven code
 
 // import config from '/firebase.config.js'
-firebase.initializeApp(FIREBASE_CONFIG);
-const messaging = firebase.messaging();
-messaging.usePublicVapidKey(VAPID_KEY)
+let pnMode = '' // FCM, Webpush, empty string
 
-const sendToken = (token) => {
-  const query = { reply: 'no' }  // yes=reply. no=no reply
-  const qs = query ? '?' + Object.keys(query).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&') : ''
-  console.log('Sending Token', token)
-  fetch('http://127.0.0.1:3000/api/test-pn-token/' + token + qs).then(res => {
-    res.json().then(data => {
-      console.log('send token response', data)
+if (pnMode === 'FCM') {
+  console.log('pnMode', pnMode)
+  firebase.initializeApp(FIREBASE_CONFIG);
+  const messaging = firebase.messaging();
+  messaging.usePublicVapidKey(VAPID_KEY)
+  
+  const sendToken = (token) => {
+    const query = { reply: 'yes' }  // yes=reply. no=no reply
+    const qs = query ? '?' + Object.keys(query).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&') : ''
+    console.log('Sending Token', token)
+    fetch('http://127.0.0.1:3000/api/test-pn-token/' + token + qs).then(res => {
+      res.json().then(data => {
+        console.log('send token response', data)
+      })
     })
+  }
+  
+  messaging.requestPermission().then(() => {
+    messaging.getToken().then(async (token) => {
+      sendToken(token)
+    })
+  })
+  
+  messaging.onTokenRefresh(() => {
+    messaging.getToken().then(async (token) => {
+      sendToken(token)
+    })
+  })
+  
+  messaging.onMessage((payload) => {
+    console.log('Message received. ', payload)
+    try {
+      const { title, body } = JSON.parse(payload.data.notification)
+      console.log((new Date()).toISOString(), title, body) 
+    } catch (e) {
+      console.log('GCM msg error', e.toString())
+    }
   })
 }
 
-messaging.requestPermission().then(() => {
-  messaging.getToken().then(async (token) => {
-    sendToken(token)
-  })
-})
 
-messaging.onTokenRefresh(() => {
-  messaging.getToken().then(async (token) => {
-    sendToken(token)
-  })
-})
-
-messaging.onMessage((payload) => {
-  console.log('Message received. ', payload)
-  try {
-    const { title, body } = JSON.parse(payload.data.notification)
-    console.log((new Date()).toISOString(), title, body) 
-  } catch (e) {
-    console.log('GCM msg error', e.toString())
-  }
-})
-
-
-if('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator) {
   window.addEventListener("load", async function() {
     navigator.serviceWorker
       .register("/service-worker.js")
@@ -63,15 +68,18 @@ if('serviceWorker' in navigator) {
       .catch(err => console.log(err));
 
     // WebPush
-    // // We first get the registration
-    // const registration = await navigator.serviceWorker.ready;
-    // // Asking for the subscription object
-    // let subscription = await registration.pushManager.getSubscription();
-    // // If we don't have a subscription we have to create and register it!
-    // if (!subscription) {
-    //   subscription = await subscribe(registration);
-    // }
-    // TBD Implement... unsubscribe
+    // We first get the registration
+    if (pnMode === 'Webpush') {
+      console.log('pnMode', pnMode)
+      const registration = await navigator.serviceWorker.ready;
+      // Asking for the subscription object
+      let subscription = await registration.pushManager.getSubscription();
+      // If we don't have a subscription we have to create and register it!
+      if (!subscription) {
+        subscription = await subscribe(registration);
+      }
+      // TBD Implement... unsub
+    }
   })
 }
 
@@ -98,14 +106,13 @@ const subscribe = async (registration) => {
   });
 
   // Sending the subscription object to our Express server
-  await fetch('http://127.0.0.1:3000/api/webpush/sub',
+  await fetch('http://127.0.0.1:3000/api/webpush/sub?subId=test',
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(subscription.toJSON())
     }
   );
-  return subscription;
 };
 
 // Let's create an unsubscribe function as well
@@ -117,7 +124,7 @@ const unsubscribe = async () => {
   await subscription.unsubscribe();
 
   // This tells our Express server that we want to unsubscribe
-  await fetch("http://127.0.0.1:3000/api/webpush/unsub", {
+  await fetch('http://127.0.0.1:3000/api/webpush/unsub?subId=test', {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(subscription.toJSON())

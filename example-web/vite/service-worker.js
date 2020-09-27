@@ -45,7 +45,10 @@ const cacheFiles = [
 
 // WebPush
 self.addEventListener('push', function (e) {
-  const message = e.data;
+  let message = 'Push message no payload'
+  if (e.data) {
+    message = e.data.text()
+  }
 
   // The notificationOptions will shape the look and behavior of our notification
   const notificationOptions = {
