@@ -57,13 +57,7 @@ npm run app:unix # linux or mac
 **NOTES**
 - MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
 - The **example-app/config/secret** folder is missing so there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. To resolve, in **example-app/config** folder, rename **sample-secret** folder to **secret**. You can look at the readme inside **sample-secret** folder for more information
-- The code below is important, calls setup and reading of configs. It is used in **example-app/index.js** and also used in **example-app/process-long.js** (long running process) and **example-app/process-cron.js**
 
-```js
-// index.js
-require(require('path').join(process.cwd(), 'common-lib', 'setup')) // first thing to setup
-require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
-```
 
 ### SPA Setup & Run
 
@@ -156,16 +150,16 @@ Change the example-app/config/index.js file contents
 
 ---
 
-# Using The Common Libraries In Your Own Application
+## Using The Common Libraries In Your Own Application
 
-- use example-app for backend example
-  - see example-app/lib/esm for common ESM codes to be used by express applications
-  - see example-app/lib/<all others> for common CJS codes to be used by express applications
-- use example-app/public for vanillaJS frontend exxample
-- use example-web/vite for Vite Vue3 frontend example
-  - see example-web/vite/lib/esm for common codes to be used by Vite Vue 3
-- use example-web/spa for Webpack Vue2 frontend example
-  - see example-web/spa/lib/webpacked for common codes to be used by Webpacked Vue 2
+- see example-app for backend example
+  - example-app/lib/esm for common ESM codes to be used by express applications
+  - example-app/lib/<all others> for common CJS codes to be used by express applications
+- see example-app/public for vanillaJS frontend exxample
+- see example-web/vite for Vite Vue3 frontend example
+  - example-web/vite/lib/esm for common codes to be used by Vite Vue 3 (should have same contents as example-app/lib/esm)
+- see example-web/spa for Webpack Vue2 frontend example
+  - example-web/spa/lib/webpacked for common codes to be used by Webpacked Vue 2
 
 
 ## Environment Settings
@@ -221,7 +215,7 @@ vue-crud-x
 |  +- libs/ : common libs
 |  |  +- auth/ : for express authentication
 |  |  +- comms/ : messaging
-|  |  +- esm/ : from example-web/vite/lib
+|  |  +- esm/ : same as example-web/vite/lib
 |  |  +- express/ : express related
 |  |  +- services/ : nodejs libs
 |  |  +- dist/ : distribution folder for CRUD component
@@ -276,6 +270,7 @@ vue-crud-x
 
 - Project roadmap at [BACKLOG.md](BACKLOG.md)
 - Release notes at [CHANGELOG.md](CHANGELOG.md)
+- Current Issues at [CHANGELOG.md](ISSUES.md)
 - Main documentation starts at [docs/home.md](docs/home.md)
 - **vue-crud-x** library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
 - Deployment notes can be found in (docs/deployment/home.md)
