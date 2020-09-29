@@ -24,11 +24,14 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+
 import { useXhr } from '/src/plugins/xhr.js'
 import { useI18n } from '/src/plugins/i18n.js'
+import { useWs } from '/src/plugins/ws.js'
+
 
 export default {
   setup(props, context) {
@@ -36,6 +39,7 @@ export default {
     const router = useRouter()
     const http = useXhr()
     const i18n = useI18n()
+    const ws = useWs()
 
     const loading = ref(false)
     const email = ref('test')
@@ -45,6 +49,8 @@ export default {
     const otp = ref('')
 
     let otpCount = 0
+
+    let timerId = null
 
     const setToLogin = () => {
       mode.value = 'login'
@@ -58,6 +64,27 @@ export default {
       loading.value = false
       // email
       // password
+
+      if (ws) ws.onmessage = e => console.log('ws onmessage', e, e.data)
+
+      timerId = setInterval(async () => {
+        if (ws) {
+          console.log('ws interval', ws)
+          ws.send('Hello ' + new Date())
+          // if (navigator.onLine) this.updateNetworkError(false)
+          // else this.updateNetworkError(true)
+        } else {
+          console.log('ws falsy')
+        }
+      }, 10000)
+    })
+
+    onBeforeUnmount(() => {
+      if (timerId) {
+        clearInterval(timerId)
+        timerId = null
+      }
+      if (ws) ws.onmessage = null
     })
 
     const _setUser = async (data, decoded) => {

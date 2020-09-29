@@ -5,7 +5,7 @@
   - example-web/vite
     - use webcomponent in a webcomponent - mwc-autocomplete, mwc-multiselect, mwc-fileupload
     - provide/inject use pattern for http calls (useXhr), i18n (useI18n)
-    - add PWA, FCM(google cloud) and Webspush(self hosted) functionality, apollo-client (graphql)
+    - add PWA, FCM(google cloud) and Webspush(self hosted) functionality, apollo-client (graphql), ws
   - REMOVED example-web/pwa and example-web/ssr
 - [full-stack]
   - fixed auth system

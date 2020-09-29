@@ -3,7 +3,7 @@
 
 import { ref, provide, inject } from 'vue'
 
-const createI18n = config => ({
+const _createI18n = config => ({
   locale: ref(config.locale),
   messages: config.messages,
   $t(key) {
@@ -12,15 +12,15 @@ const createI18n = config => ({
   }
 })
 
-const i18nSymbol = Symbol()
+const I18nSymbol = Symbol()
 
 export function provideI18n(i18nConfig) {
-  const i18n = createI18n(i18nConfig)
-  provide(i18nSymbol, i18n)
+  const i18n = _createI18n(i18nConfig)
+  provide(I18nSymbol, i18n)
 }
 
 export function useI18n() {
-  const i18n = inject(i18nSymbol)
+  const i18n = inject(I18nSymbol)
   if (!i18n) throw new Error("No i18n provided!!!")
   return i18n
 }

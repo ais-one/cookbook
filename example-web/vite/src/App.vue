@@ -17,6 +17,7 @@ import * as http from '/src/lib/esm/http.js'
 import { VITE_API_URL, VITE_WITH_CREDENTIALS } from '/config.js'
 
 import { provideI18n } from '/src/plugins/i18n.js'
+import { provideWs } from '/src/plugins/ws.js'
 
 export default {
   components: {
@@ -44,6 +45,9 @@ export default {
         id: { sign_in: "Masuk (id)" }
       }
     })
+
+    // set ws
+    provideWs()
 
     return {
       storeUser // computed

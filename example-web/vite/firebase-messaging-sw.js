@@ -19,6 +19,7 @@ if (isIos() && !isInStandaloneMode()) {
 var window = self // self is service worker - simulate it as window
 importScripts('firebase.config.js') // FIREBASE_CONFIG
 // console.log('FIREBASE_CONFIG self window', self)
+// https://firebase.google.com/support/releases
 importScripts('https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js')
 importScripts('https://www.gstatic.com/firebasejs/7.21.1/firebase-messaging.js')
 

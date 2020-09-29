@@ -1,7 +1,6 @@
 ## Issues
 
 List of urgent issues to take care of
-- add ws to vite
 - Test Dockerfile
 - Test deploy backend to GCP Cloud Run (script, CI)
 - Test deploy SPA frontend to GCP Storage (script, CI)
@@ -12,7 +11,6 @@ List of urgent issues to take care of
   - header widths (to improve)
   - csv upload (to implement)
   - file upload column (to implement)
-
 
 Things Changed...
 - deploy.sh, Dockerfile, etc. moved into respective example folders

@@ -17,6 +17,9 @@ For future product improvement
 - VueCrudX (update to VueJS 3 and Vuetify 3)
 
 ### others
-- circleci / github actions
+- fix eslint & prettier
+- circleci / github actions (consider for monorepo)
 - graphql security & performance review
 - use monorepo when npm 7 is released ?
+- git clone without git history
+- disable console.log in production / proper console logging
