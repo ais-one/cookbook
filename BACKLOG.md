@@ -6,9 +6,10 @@ For future product improvement
 - change out of jest? use native assert instead of chai
 - GKE, Kubernetes
 - research auto generated REST API and Testing (keep in view dredd.io)
-- research websocket testing, improve coverage
+- research websocket testing
 
 ### frontend
+- [i18n] node-polyglot
 - cypress e2e testing
 - https://github.com/vueComponent/ant-design-vue/issues/1913
 - PWA cookbook (many things to consider)

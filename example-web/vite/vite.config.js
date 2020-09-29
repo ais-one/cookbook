@@ -31,7 +31,17 @@ module.exports = {
       '@vaadin/vaadin-grid/vaadin-grid-selection-column',
       '@vaadin/vaadin-grid/vaadin-grid-sort-column',
       'echarts',
-      'leaflet'
+      'leaflet',
+      '@apollo/client/core',
+      '@apollo/client/cache',
+      '@apollo/client/link/ws',
+      '@apollo/client/link/context',
+      '@apollo/client/utilities',
+    ]
+  },
+  rollupInputOptions: { // ignore react stuff
+    external: [
+      'react'
     ]
   }
 }

@@ -11,6 +11,7 @@
     "deploy:unix": "deploy.sh $npm_package_config_env"
   },
   "dependencies": {
+    "@apollo/client": "^3.2.1",
     "@material/mwc-button": "^0.18.0",
     "@material/mwc-dialog": "^0.18.0",
     "@material/mwc-drawer": "^0.18.0",
@@ -23,7 +24,10 @@
     "@material/mwc-top-app-bar-fixed": "^0.18.0",
     "@vaadin/vaadin-grid": "^5.7.4",
     "echarts": "^4.9.0",
+    "graphql": "^15.3.0",
+    "graphql-tag": "^2.11.0",
     "leaflet": "^1.7.1",
+    "subscriptions-transport-ws": "^0.9.18",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-beta.12",
     "vuex": "^4.0.0-beta.4"

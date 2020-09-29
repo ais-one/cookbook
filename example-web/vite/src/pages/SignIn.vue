@@ -3,7 +3,7 @@
     <vcxwc-loading-overlay v-if="loading"></vcxwc-loading-overlay>
     <form class="form-box-flex">
       <div v-show="mode==='login'">
-        <h1>Sign In</h1>
+        <h1>{{ i18n.$t('sign_in') }}</h1>
         <mwc-textfield label="Username" outlined type="text" v-model="email"></mwc-textfield>
         <mwc-textfield label="Password" outlined type="password" v-model="password"></mwc-textfield>
         <div class="buttons-box-flex">
@@ -28,12 +28,15 @@ import { ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { useXhr } from '/src/plugins/xhr.js'
+import { useI18n } from '/src/plugins/i18n.js'
 
 export default {
   setup(props, context) {
     const store = useStore()
     const router = useRouter()
     const http = useXhr()
+    const i18n = useI18n()
+
     const loading = ref(false)
     const email = ref('test')
     const password = ref('test')
@@ -119,7 +122,8 @@ export default {
       mode,
       otp,
       login, // method
-      otpLogin
+      otpLogin,
+      i18n
     }
   }
 }

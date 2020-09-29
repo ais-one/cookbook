@@ -1,3 +1,5 @@
+import { ref, provide, inject } from 'vue'
+
 const WsSymbol = Symbol()
 
 export function provideWs(ws) {

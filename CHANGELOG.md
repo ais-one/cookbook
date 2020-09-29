@@ -4,16 +4,13 @@
 - [frontend]
   - example-web/vite
     - use webcomponent in a webcomponent - mwc-autocomplete, mwc-multiselect, mwc-fileupload
-    - provide/inject use pattern for http calls (useXhr)
+    - provide/inject use pattern for http calls (useXhr), i18n (useI18n)
     - add PWA, FCM(google cloud) and Webspush(self hosted) functionality
   - REMOVED example-web/pwa and example-web/ssr
 - [full-stack]
   - fixed auth system
   - improve structure further (or microservices)
-- in progress
-  - deploy backend to GCP Cloud Run
-  - deploy SPA frontend to GCP Storage
-  - [i18n] node-polyglot
+  - moved deploy scripts to respective individual project folders (example-app, example-web/vite)
 
 ### Version 0.3.5
 - [chore] update packages & cleanup & work on improving documentation

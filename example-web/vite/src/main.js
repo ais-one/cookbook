@@ -29,7 +29,19 @@ import App from './App.vue'
 
 import router from './router.js'
 import store from './store.js'
-  
+
+import { apolloClient } from './graphql'
+import { DO_HELLO } from './queries'
+
+console.log('DO_HELLO', DO_HELLO)
+apolloClient.query({
+  query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
+  variables: {
+    message: 'Meow'
+  }
+}).then(data => console.log(data)).catch(error => console.error(error))
+
+
 const app = createApp(App)
 
 const theme = 'dark'
@@ -46,4 +58,5 @@ app.provide('MyTheme', theme) // provide & inject
 
 app.use(store)
 app.use(router)
+
 app.mount('#app')
