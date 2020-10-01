@@ -10,7 +10,7 @@ For future product improvement
 - [vite] migrate vue-crud-x table examples to vite
 - [frontend-graphql] try @octokit/graphql
 
-- [chore] graphql security & performance review
+- [chore] apollo-client graphql security & performance review
 - [chore] use monorepo when npm 7 is released ?
 - [chore] git clone without git history
 

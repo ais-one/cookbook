@@ -106,7 +106,7 @@ global.CONFIG.HTTPS_CERT = process.env.HTTPS_CERT || ''
 
 // master list of config keys - defaults will be undefined unless specified
 
-// Express - OpenAPI - refer to <lib>/express/preroute.js
+// Express - OpenAPI - refer to <lib>/express/preRoute.js
 global.CONFIG.SWAGGER_DEFS = null
 global.CONFIG.ENABLE_LOGGER = false
 

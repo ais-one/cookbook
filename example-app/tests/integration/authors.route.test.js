@@ -1,14 +1,18 @@
 console.log(process.env.NODE_ENV)
 
 const request = require('supertest')
-const path = require('path')
 const express = require('express')
 const app = express()
 
 require(LIB_PATH + '/config')
-require(LIB_PATH + '/express/preroute')(app)
-const objection = require(LIB_PATH + '/services/db/objection').open()
-// require(`../../router`)(app)
+require(LIB_PATH + '/express/errorHandler')({ 
+  unhandledRejection: null, // (reason, promise) => {}
+  uncaughtException: null, // err => {}
+  stackTraceLimit: 1
+})
+// const objection =
+require(LIB_PATH + '/services/db/objection').open()
+require(LIB_PATH + '/express/preRoute')(app)
 require(APP_PATH + `/router`)(app)
 
 const endpointUrl = '/api/authors'
