@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
@@ -49,47 +49,53 @@ export default {
     const otp = ref('')
 
     let otpCount = 0
-
     let timerId = null
 
     const setToLogin = () => {
-      mode.value = 'login'
+      mode.value = 'login' // ui-reactive...
       otp.value = ''
-      otpCount = 0
+      // email.value = ''
+      // password.value = ''
+
+      otpCount = 0 // non-ui-reactive
     }
 
+    onUnmounted(() => console.log('signIn unmounted'))
     onMounted(async () => {
+      console.log('signIn mounted!')
+
       setToLogin()
       errorMessage.value = ''
       loading.value = false
-      // email
-      // password
 
-      if (ws) ws.onmessage = e => console.log('ws onmessage', e, e.data)
+      ws.connect()
+      const wsHandler = e => console.log('ws onmessage', e.data)
+      ws.setMessage(wsHandler)
 
       timerId = setInterval(async () => {
         if (ws) {
-          console.log('ws interval', ws)
+          console.log('ws interval - send')
           ws.send('Hello ' + new Date())
           // if (navigator.onLine) this.updateNetworkError(false)
           // else this.updateNetworkError(true)
         } else {
           console.log('ws falsy')
         }
-      }, 10000)
+      }, 2000)
     })
 
     onBeforeUnmount(() => {
+      // console.log('signIn onBeforeUnmount')
       if (timerId) {
         clearInterval(timerId)
         timerId = null
       }
-      if (ws) ws.onmessage = null
+      if (ws) ws.setMessage(null)
+      ws.close()
     })
 
     const _setUser = async (data, decoded) => {
       await store.dispatch('doLogin', decoded) // store user
-      await router.push('/dashboard')
       // id, verified, groups, token, refresh_token
     }
 

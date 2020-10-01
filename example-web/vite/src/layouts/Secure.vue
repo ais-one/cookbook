@@ -38,7 +38,8 @@
         <mwc-icon-button slot="actionItems" icon="fingerprint"></mwc-icon-button>
       </mwc-top-app-bar-fixed>
       <div class="main-content">
-        <router-view :key="$route.fullPath"></router-view>
+        <router-view></router-view>
+        <!-- <router-view :key="$route.fullPath"></router-view> -->
       </div>
     </div>
   </mwc-drawer>
@@ -46,7 +47,7 @@
 
 <script>
 // :key="$route.fullPath" // this is causing problems
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useXhr } from '/src/plugins/xhr.js'
 
@@ -58,7 +59,7 @@ export default {
     const theDrawer = ref(null)
 
     onMounted(async () => {
-      console.log('mounted!')
+      console.log('SECURE mounted!')
       // addEventListener('load', () => { document.body.classList.remove('unresolved'); });
       const drawer = document.getElementsByTagName('mwc-drawer')[0];
       if (drawer) {
@@ -69,7 +70,7 @@ export default {
         theDrawer.value = drawer
       }
     })
-    
+    onUnmounted(() => console.log('SECURE unmounted'))
     const menuItems = ref([
       { to: '/dashboard', name: 'Dashboard', icon: 'home' },
       { show: true, name: 'Sites', icon0: 'keyboard_arrow_up', icon1: 'keyboard_arrow_down',

@@ -8,7 +8,7 @@ import * as http from '/src/lib/esm/http.js'
 
 const state = {
   count: 99,
-  user: null
+  user: null,
 }
 
 const mutations = {
@@ -33,7 +33,7 @@ const actions = {
       if (payload.forced) { //  forced - refresh token error
         // console.log('payload forced === true')
         commit('login', null)
-        await router.push('/')
+        await router.push('/signin')
       } else { // sign in ok
         commit('login', payload)
         await router.push('/dashboard')
@@ -43,11 +43,11 @@ const actions = {
       try {
         await http.get('/api/auth/logout')
         commit('login', null)
-        await router.push('/')
+        await router.push('/signin')
       } catch (e) {
         if (e && e.data && e.data.message !== 'Token Expired Error') {
           commit('login', null)
-          await router.push('/')  
+          await router.push('/signin')
         }
       }
     }

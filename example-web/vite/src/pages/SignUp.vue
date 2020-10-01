@@ -3,7 +3,7 @@
     <form class="form-box-flex">
       <h1>Sign Up</h1>
       <p>Not Yet Ready</p>
-      <p><router-link to="/">Sign In</router-link></p>
+      <p><router-link to="/signin">Sign In</router-link></p>
     </form>  
   </div>
 </template>

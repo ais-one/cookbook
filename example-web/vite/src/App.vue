@@ -1,6 +1,5 @@
 <template>
-  <layout-secure v-if="storeUser" />
-  <layout-public v-else />
+  <component :is="$route.meta.layout || 'layout-public'"></component>
 </template>
 
 <script>
@@ -8,7 +7,7 @@
 import layoutPublic from './layouts/Public.vue' // store.state.user determines if public or secure
 import layoutSecure from './layouts/Secure.vue'
 
-import { computed } from 'vue'
+import { computed, onMounted, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 
 import { provideXhr } from '/src/plugins/xhr.js'
@@ -21,8 +20,8 @@ import { provideWs } from '/src/plugins/ws.js'
 
 export default {
   components: {
-    layoutPublic,
-    layoutSecure
+    'layout-public': layoutPublic,
+    'layout-secure': layoutSecure
   },
   setup(props, context) {
     const store = useStore()

@@ -124,7 +124,7 @@ export default {
 
     let timerId
     onMounted(async () => {
-      console.log('dash mounted!')
+      console.log('dashboard mounted!')
       // console.log('props', props)
       // console.log('context', context)
       // console.log('useStore', store)
@@ -141,16 +141,12 @@ export default {
         reactiveData.value += 1
       }, 200000)
     })
-    onUpdated(() => {
-      console.log('dash updated!')
-    })
     onBeforeUnmount(() => {
       if (timerId) clearInterval(timerId)
-      console.log('dash before unmount!')
+      // / console.log('dash before unmount!')
     })
-    onUnmounted(() => {
-      console.log('dash unmounted!')
-    })
+    // onUpdated(() => console.log('dash updated!'))
+    onUnmounted(() => console.log('dashboard unmounted!'))
 
     const testApi = async (test) => {
       try {

@@ -6,6 +6,7 @@
     - use webcomponent in a webcomponent - mwc-autocomplete, mwc-multiselect, mwc-fileupload
     - provide/inject use pattern for http calls (useXhr), i18n (useI18n)
     - add PWA, FCM(google cloud) and Webspush(self hosted) functionality, apollo-client (graphql), ws
+    - fixed layout bug [https://dev.to/lampewebdev/vuejs-pages-with-dynamic-layouts-problems-and-a-solution-4460]
   - REMOVED example-web/pwa and example-web/ssr
 - [full-stack]
   - fixed auth system

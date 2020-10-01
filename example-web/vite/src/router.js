@@ -1,43 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-
 import store from './store'
-
-const authGuard = (to, from, next) => {
-  // console.log('route', to.matched[0].path, store)
-  if (store.state.user) { // has user && otp is verified
-    return next()
-  } else {
-    store.commit('login', null) // need user.token only
-    // store.commit('setLayout', 'layout-admin')
-    return next('/')
-  }
-}
-
-const routerHistory = createWebHistory()
-
-const router = createRouter({
-  history: routerHistory,
-  routes: [
-    // public
-    // { path: '/', name: 'Home', component: () => import('./pages/Home.vue') },
-    { path: '/', name: 'SignIn', component: () => import('./pages/SignIn.vue') },
-    { path: '/signup', name: 'SignUp', component: () => import('./pages/SignUp.vue') },
-    // private
-    { path: '/dashboard', name: 'Dashboard', component: () => import('./pages/Dashboard.vue'), beforeEnter: authGuard },
-    { path: '/demo-web-cam', name: 'Demo Web Cam', component: () => import('./pages/DemoWebCam.vue'), beforeEnter: authGuard },
-    { path: '/demo-sign-pad', name: 'Demo Sign Pad', component: () => import('./pages/DemoSignPad.vue'), beforeEnter: authGuard },
-    { path: '/demo-chart', name: 'Demo Chart', component: () => import('./pages/DemoChart.vue'), beforeEnter: authGuard },
-    { path: '/demo-map', name: 'Demo Map', component: () => import('./pages/DemoMap.vue'), beforeEnter: authGuard },
-    { path: '/table-grade-slot', props: route => ({ query: route.query }), name: 'TableGradeSlot', component: () => import('./pages/TableGradeSlot.vue'), beforeEnter: authGuard },
-    { path: '/table-person', props: route => ({ query: route.query, tableName: 'person' }), name: 'TablePerson', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
-    { path: '/table-country', props: route => ({ query: route.query, tableName: 'country' }), name: 'TableCountry', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard },
-    { path: '/demo-flex', name: 'DemoFlex', component: () => import('./pages/DemoFlex.vue'), beforeEnter: authGuard },
-    // catchall
-    { path: '/:catchAll(.*)', redirect: '/' }
-  ]
-})
-
-export default router
 
 /*
 import permissions from '@/permissions'
@@ -75,3 +37,44 @@ export default (to, from, next) => {
   }
 }
 */
+const authGuard = (to, from, next) => {
+  console.log('authGuard', store.state.user ? 'user':'anon', from.path, to.path)
+  const loggedIn = !!(store.state.user && store.state.user.verified)
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  if (loggedIn === requiresAuth) {
+      next()
+  } else if (!loggedIn && requiresAuth) {
+    next('/signin')
+  } else if (loggedIn && !requiresAuth) {
+    next('/dashboard')
+  } else { // should not get here
+    console.log(loggedIn, requiresAuth)
+  }
+}
+
+const routerHistory = createWebHistory()
+
+const router = createRouter({
+  history: routerHistory,
+  routes: [
+    // public
+    // { path: '/', name: 'Home', component: () => import('./pages/Home.vue') },
+    { path: '/signin', name: 'SignIn', component: () => import('./pages/SignIn.vue'), beforeEnter: authGuard, meta: { requiresAuth: false, layout: 'layout-public' } },
+    { path: '/signup', name: 'SignUp', component: () => import('./pages/SignUp.vue'), beforeEnter: authGuard, meta: { requiresAuth: false, layout: 'layout-public' } },
+    // catchall
+    { path: '/:catchAll(.*)', name: 'catchAll', redirect: { name: 'SignIn' }, meta: { requiresAuth: false, layout: 'layout-public' } },
+
+    // private
+    { path: '/dashboard', name: 'Dashboard', component: () => import('./pages/Dashboard.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-web-cam', name: 'Demo Web Cam', component: () => import('./pages/DemoWebCam.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-sign-pad', name: 'Demo Sign Pad', component: () => import('./pages/DemoSignPad.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-chart', name: 'Demo Chart', component: () => import('./pages/DemoChart.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-map', name: 'Demo Map', component: () => import('./pages/DemoMap.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/table-grade-slot', props: route => ({ query: route.query }), name: 'TableGradeSlot', component: () => import('./pages/TableGradeSlot.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/table-person', props: route => ({ query: route.query, tableName: 'person' }), name: 'TablePerson', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/table-country', props: route => ({ query: route.query, tableName: 'country' }), name: 'TableCountry', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-flex', name: 'DemoFlex', component: () => import('./pages/DemoFlex.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+  ]
+})
+
+export default router

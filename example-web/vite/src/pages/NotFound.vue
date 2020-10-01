@@ -16,8 +16,8 @@ export default {
     const route = useRoute()
     const router = useRouter()
 
-    const signIn = () => router.push('/signin')
-    const signUp = () => router.push('/signup')
+    const signIn = async () => await router.push('/signin')
+    const signUp = async () => await router.push('/signup')
     return {
       signIn, // method
       signUp
