@@ -30,15 +30,19 @@ import App from './App.vue'
 import router from './router.js'
 import store from './store.js'
 
+
 // GraphQL
-import { apolloClient } from './graphql'
-import { DO_HELLO } from './queries'
-apolloClient.query({
-  query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
-  variables: {
-    message: 'Meow'
-  }
-}).then(data => console.log(data)).catch(error => console.error(error))
+// import { VITE_GRAPHQL } from '/config.js'
+// import { apolloClient } from './graphql'
+// import { DO_HELLO } from './queries'
+// if (VITE_GRAPHQL) { // test
+//   apolloClient.query({
+//     query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
+//     variables: {
+//       message: 'Meow'
+//     }
+//   }).then(data => console.log(data)).catch(error => console.error(error))
+// }
 
 const app = createApp(App)
 

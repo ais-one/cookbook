@@ -1,9 +1,8 @@
 ### Version 0.4.1
 - [chore] update packages & cleanup & work on improving documentation
-- [tested] Dockerfile, vite to GCP storage via script
+- [tested] Dockerfile, vite to GCP storage (script), backend to GCP Cloud Run (script)
 - [inprogress]
-  - Test deploy backend to GCP Cloud Run (script, CI)
-  - Test deploy backend to GCP VM (script, CI)
+  - Test deploy backend to GCP VM (script)
   - [frontend] styling for custom build mwc-*
   - [chore] fix eslint & prettier
   - [chore] circleci / github actions (consider for monorepo)

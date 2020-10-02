@@ -1,6 +1,15 @@
-dist
+# npm
 node_modules
-secrets
+
+# files not to be committed
+secret
+
+# database stores
+*.sqlite3
+
+coverage
+package-lock.json
+*.tgz
 
 # Log files
 npm-debug.log*

@@ -29,6 +29,29 @@ client.connect(async err => {
       await db.collection('state').createIndex({ country_name: 1 })
       await db.collection('state').insertMany(require('../state.json'))
 
+
+      await db.collection('users').deleteMany({})
+      await db.collection('users').createIndex({ email: 1 }, { unique: true })
+      await db.collection('users').createIndex({ username: 1 }, { unique: true })
+      await db.collection('users').insertOne({
+        groups: 'TestGroup',
+        orgId: 1,
+        username: 'test',
+        email: 'test',
+        githubId: null,
+        password: '$2b$12$Rr1kYTVjZ.9Mnz8EpvRHk.EccoXNtt574A5mwvDn97S5Gu2xIMFhO', // test
+        gaKey: 'IZDXCUDYNQ4ESMZZNY4HGZSDJRAVGZCO',
+        sms: '6596935500',
+        // smsLastSent
+        // smsOtpPin
+        smsVerified: 0,
+        telegramId: '',
+        telegramUsername: '',
+        pnToken: '', // push notification token
+        revoked: '', // if not empty means user has been revoked
+        refreshToken: '' // to match user with refreshToken to extend access token
+      })
+  
       await db.collection('person').deleteMany({})
       await db.collection('person').createIndex({ firstName: 1, lastName: 1 }, { unique: true })
       let rv = await db.collection('person').insertOne({
