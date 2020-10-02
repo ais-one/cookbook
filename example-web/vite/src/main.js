@@ -32,17 +32,23 @@ import store from './store.js'
 
 
 // GraphQL
-// import { VITE_GRAPHQL } from '/config.js'
-// import { apolloClient } from './graphql'
-// import { DO_HELLO } from './queries'
-// if (VITE_GRAPHQL) { // test
-//   apolloClient.query({
-//     query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
-//     variables: {
-//       message: 'Meow'
-//     }
-//   }).then(data => console.log(data)).catch(error => console.error(error))
-// }
+import { VITE_GQL_URI, VITE_GWS_URI } from '/config.js'
+// import createApollo from './graphql'
+import createApollo from '/src/lib/esm/graphql'
+import { DO_HELLO } from './queries'
+
+let apolloClient = createApollo({
+  gws_uri: VITE_GWS_URI,
+  gql_uri: VITE_GQL_URI
+})
+if (apolloClient) { // test
+  apolloClient.query({
+    query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
+    variables: {
+      message: 'Meow'
+    }
+  }).then(data => console.log('graphql', data)).catch(error => console.error(error))
+}
 
 const app = createApp(App)
 

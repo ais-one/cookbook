@@ -1,3 +1,4 @@
+// FRONTEND ONLY
 let token = ''
 let refreshToken = ''
 

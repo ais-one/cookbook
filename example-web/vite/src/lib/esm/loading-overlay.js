@@ -1,8 +1,4 @@
-/*
-<!-- <div class="overlay"><div class="loader"></div></div> -->
-.loader {
-}
-*/
+// FRONTEND ONLY
 
 const template = document.createElement('template')
 template.innerHTML = `
