@@ -2,7 +2,7 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, (REMOVED Nuxt SSR)
 
-Latest Version [0.3.6](https://github.com/ais-one/vue-crud-x/releases/tag/0.3.6) - Released 2020 Oct 07 2100 +8GMT
+Latest Version [0.4.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.0) - Released 2020 Oct 01 2330 +8GMT
 
 # Features
 
@@ -152,14 +152,17 @@ Change the example-app/config/index.js file contents
 
 ## Using The Common Libraries In Your Own Application
 
-- see example-app for backend example
-  - example-app/lib/esm for common ESM codes to be used by express applications
-  - example-app/lib/<all others> for common CJS codes to be used by express applications
-- see example-app/public for vanillaJS frontend exxample
-- see example-web/vite for Vite Vue3 frontend example
-  - example-web/vite/lib/esm for common codes to be used by Vite Vue 3 (should have same contents as example-app/lib/esm)
-- see example-web/spa for Webpack Vue2 frontend example
-  - example-web/spa/lib/webpacked for common codes to be used by Webpacked Vue 2
+1. see example-app for backend example
+  - **example-app/lib/esm** for common ESM codes to be used by express applications
+  - **example-app/lib/<all_others>** for common CJS codes to be used by express applications
+
+2. see **example-app/public** for vanillaJS frontend exxample
+
+3. see **example-web/vite** for Vite Vue3 frontend example
+  - **example-web/vite/lib/esm** for common codes to be used by Vite Vue 3 (should have same contents as **example-app/lib/esm**)
+
+4. see **example-web/spa** for Webpack Vue2 frontend example
+  - **example-web/spa/lib/webpacked** for common codes to be used by Webpacked Vue 2 applications
 
 
 ## Environment Settings

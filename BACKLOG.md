@@ -2,7 +2,6 @@
 
 For future product improvement
 - [chore] fix eslint & prettier
-
 - [chore] circleci / github actions (consider for monorepo)
 - [backend-deployment] GKE, Kubernetes
 - [frontend-i18n] node-polyglot

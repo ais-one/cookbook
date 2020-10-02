@@ -1,4 +1,4 @@
-### Version 0.3.6
+### Version 0.4.0
 - [chore] update packages & cleanup & work on improving documentation
 - [table] validation
 - [frontend]
@@ -10,7 +10,7 @@
   - REMOVED example-web/pwa and example-web/ssr
 - [full-stack]
   - fixed auth system
-  - improve structure further (or microservices)
+  - improve structure further (for microservices and CICD)
   - moved deploy scripts to respective individual project folders (example-app, example-web/vite)
 
 ### Version 0.3.5
