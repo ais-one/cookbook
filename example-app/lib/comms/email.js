@@ -24,7 +24,7 @@ async function sendGrid(to, from, subject, text, html) {
     if (!SENDGRID_KEY) return
     if (!from) from = SENDGRID_SENDER
 
-    body = {
+    const body = {
       personalizations: [
         {
           to: [{ email: to }]
@@ -34,7 +34,7 @@ async function sendGrid(to, from, subject, text, html) {
       subject,
       content: [{"type": "text/plain", "value": text}]
     }
-    options = {
+    const options = {
       headers: {
         AUthorization: 'Bearer ' + SENDGRID_KEY
       } 

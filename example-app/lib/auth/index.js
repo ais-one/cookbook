@@ -71,7 +71,7 @@ const authUser = async (req, res, next) => {
       try {
         const secretKey = JWT_ALG.substring(0, 2) === 'RS' ? jwtCerts.cert : JWT_SECRET
         result = jwt.verify(token, secretKey, { algorithm: [JWT_ALG] }) // and options
-        if (!result.verified && !(req.baseUrl + req.path === '/api/auth/otp')) {
+        if (!result.verified && (req.baseUrl + req.path !== '/api/auth/otp')) {
           return res.status(401).json({ message: 'Token Verification Error' })
         }
       } catch (e) {

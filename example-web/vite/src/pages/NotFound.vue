@@ -8,12 +8,11 @@
 </template>
 
 <script>
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Home',
   setup(props, context) {
-    const route = useRoute()
     const router = useRouter()
 
     const signIn = async () => await router.push('/signin')

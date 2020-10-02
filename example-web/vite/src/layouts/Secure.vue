@@ -49,12 +49,10 @@
 // :key="$route.fullPath" // this is causing problems
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
-import { useXhr } from '/src/plugins/xhr.js'
 
 export default {
   setup(props, context) {
     const store = useStore()
-    const http = useXhr()
 
     const theDrawer = ref(null)
 

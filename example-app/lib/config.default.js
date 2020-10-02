@@ -1,5 +1,5 @@
-if (!global.APP_PATH) APP_PATH = ''
-if (!global.LIB_PATH) LIB_PATH = ''
+if (!global.APP_PATH) global.APP_PATH = ''
+if (!global.LIB_PATH) global.LIB_PATH = ''
 if (global.CONFIG.TEST_ENV) console.log('TEST_ENV =', global.CONFIG.TEST_ENV)
 
 global.CONFIG.API_PORT = process.env.API_PORT || 3000

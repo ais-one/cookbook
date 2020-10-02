@@ -26,7 +26,6 @@
 <script>
 import { ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
 
 import { useXhr } from '/src/plugins/xhr.js'
 import { useI18n } from '/src/plugins/i18n.js'
@@ -36,7 +35,6 @@ import { useWs } from '/src/plugins/ws.js'
 export default {
   setup(props, context) {
     const store = useStore()
-    const router = useRouter()
     const http = useXhr()
     const i18n = useI18n()
     const ws = useWs()

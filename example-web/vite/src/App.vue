@@ -7,7 +7,7 @@
 import layoutPublic from './layouts/Public.vue' // store.state.user determines if public or secure
 import layoutSecure from './layouts/Secure.vue'
 
-import { computed, onMounted, onBeforeUnmount } from 'vue'
+import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 import { provideXhr } from '/src/plugins/xhr.js'

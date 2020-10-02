@@ -6,7 +6,7 @@ const _createWs = (endpoint, reconnectMs) => ({
   instance: null, // web socket instance
   onmessage: ref(null), // attach message handler
   endpoint: ref(endpoint),
-  reconnectMS: 10000,
+  reconnectMS: reconnectMs,
 
   setMessage(onmessage) {
     this.onmessage.value = onmessage
@@ -44,7 +44,7 @@ const _createWs = (endpoint, reconnectMs) => ({
 })
 
 
-export function provideWs(endpoint = 'ws://127.0.0.1:3001', reconnectMs) {
+export function provideWs(endpoint = 'ws://127.0.0.1:3001', reconnectMs = 10000) {
   const ws = _createWs(endpoint, reconnectMs)
   console.log('provide ws', ws)
   provide(WsSymbol, ws)

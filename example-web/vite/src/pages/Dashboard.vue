@@ -31,7 +31,7 @@
 // provide, inject ??? 
 import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, provide, inject } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter, useRoute } from 'vue-router'
+// import { useRouter, useRoute } from 'vue-router'
 import { debounce } from '/src/lib/esm/util.js'
 import { useXhr } from '/src/plugins/xhr.js'
 
@@ -50,8 +50,8 @@ export default {
     // watchEffect(() => console.log(`theme set to: ${theme.value}`))
 
     const store = useStore()
-    const route = useRoute()
-    const router = useRouter()
+    // const route = useRoute()
+    // const router = useRouter()
 
     // const obj = reactive({ count: 0 })
     const count = ref(0)
