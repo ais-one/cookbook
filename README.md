@@ -2,7 +2,7 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, (REMOVED Nuxt SSR)
 
-Latest Version [0.4.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.0) - Released 2020 Oct 02 1445 +8GMT
+Latest Version [0.4.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.1) - Released 2020 Oct 15 1445 +8GMT
 
 # Features
 

@@ -29,9 +29,9 @@ module.exports = function(app) {
   let allowList = origin.split(',')
   if (allowList.length === 1) origin = allowList[0]
   else if (allowList.length > 1) {
-    origin = function (origin, callback) {
-      if(!origin) return callback(null, true) // allow requests with no origin (like mobile apps or curl requests)
-      if (allowList.indexOf(origin) !== -1) {
+    origin = function (_origin, callback) {
+      if(!_origin) return callback(null, true) // allow requests with no origin (like mobile apps or curl requests)
+      if (allowList.indexOf(_origin) !== -1) {
         return callback(null, true)
       } else {
         return callback(new Error('Not allowed by CORS'), false)

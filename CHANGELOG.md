@@ -1,3 +1,14 @@
+### Version 0.4.1
+- [chore] update packages & cleanup & work on improving documentation
+- [inprogress]
+  - Test Dockerfile
+  - Test deploy backend to GCP Cloud Run (script, CI)
+  - Test deploy SPA frontend to GCP Storage (script, CI)
+  - Test deploy backend to GCP VM (script, CI)
+  - styling for custom build mwc-*
+  - [chore] fix eslint & prettier
+  - [chore] circleci / github actions (consider for monorepo)
+
 ### Version 0.4.0
 - [chore] update packages & cleanup & work on improving documentation
 - [table] validation

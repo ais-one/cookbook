@@ -1,8 +1,16 @@
+## Issues
+
+List of urgent issues to take care of
+
+- CrudTable.vue
+  - select all (not working)
+  - header widths (to improve)
+  - csv upload (to implement)
+  - file upload column (to implement)
+  
 ## Backlog
 
 For future product improvement
-- [chore] fix eslint & prettier
-- [chore] circleci / github actions (consider for monorepo)
 - [backend-deployment] GKE, Kubernetes
 - [frontend-i18n] node-polyglot
 - [frontend-testing] cypress e2e testing
