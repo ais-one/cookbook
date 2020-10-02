@@ -1,7 +1,12 @@
 {
   "name": "example-web-vite",
-  "version": "0.0.0",
+  "version": "0.4.1",
   "description": "vue 3 SPA + vite example",
+  "author": "aaronjxz@gmail.com",
+  "license": "MIT",
+  "config": {
+    "env": "uat"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

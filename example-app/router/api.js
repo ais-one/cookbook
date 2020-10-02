@@ -86,7 +86,8 @@ module.exports = express.Router()
   .get('/healthcheck', (req, res) => { res.json({
     message: 'OK',
     app: APP_NAME,
-    environment: process.env.NODE_ENV
+    environment: process.env.NODE_ENV,
+    version: APP_VERSION
   }) }) // health check
   /**
    * @swagger
