@@ -2,61 +2,37 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vite Test</title>
   <!-- Your application must load the Roboto and Material Icons fonts. -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
+
+  <!-- PWA Stuff Start Uncomment To Run PWA -->
+  <!--
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/public/favicon.ico">
+  <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" href="/public/img/splash/iphonexsmax_splash.png"> 
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" href="/public/img/splash/iphonexr_splash.png"> 
+  <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" href="/public/img/splash/apple_splash_1125.png"> 
+  <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" href="/public/img/splash/apple_splash_1242.png"> 
+  <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" href="/public/img/splash/apple_splash_750.png">  
+  <link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" href="/public/img/splash/apple_splash_2048.png"> 
+  <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" href="/public/img/splash/apple_splash_1668.png"> 
+  <link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" href="/public/img/splash/ipadpro1_splash.png"> 
+  <link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" href="/public/img/splash/apple_splash_1536.png">
+  <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.21.1/firebase-messaging.js"></script>  
+  <script src="/firebase.config.js"></script>
+  <script src="/pwa-init.js" type="module"></script>
+  -->
+  <!-- PWA Stuff End -->
 </head>
 <body>
   <div id="app"></div>
-  <script type="module">
-
-  // MWC
-  import '@material/mwc-top-app-bar-fixed'
-  import '@material/mwc-icon-button'
-  import '@material/mwc-icon'
-  import '@material/mwc-drawer'
-  import '@material/mwc-list'
-  import '@material/mwc-list/mwc-list-item'
-  import '@material/mwc-list/mwc-check-list-item'
-  import '@material/mwc-menu'
-  import '@material/mwc-textfield'
-  import '@material/mwc-select'
-  import '@material/mwc-button'
-
-  // Vaadin
-  import '@vaadin/vaadin-grid'
-  import '@vaadin/vaadin-grid/vaadin-grid-selection-column'
-  import '@vaadin/vaadin-grid/vaadin-grid-sort-column'
-
-  // our own web components
-  import 'http://127.0.0.1:3000/js/loading-overlay.js'
-  import 'http://127.0.0.1:3000/js/web-cam.js'
-  import 'http://127.0.0.1:3000/js/sign-pad.js'
-
-  import './components/mwc-autocomplete.js' // in progress
-
-  import { createApp } from 'vue'
-  import App from './App.vue'
-  
-  import router from './router.js'
-  import store from './store.js'
-  
-  const app = createApp(App)
-
-  // Vue.config.ignoredElements = [/test-\w*/]
-  // app.config.isCustomElement = tag => {
-  //   console.log('tag', tag)
-  //   return tag === 'mwc-button' // https://zhuanlan.zhihu.com/p/135280049
-  // }
-  // app.config.isCustomElement = () => true
-  // console.log('app.config', app.config)
-
-  app.use(store)
-  app.use(router)
-  app.mount('#app')
-  </script>    
+  <script type="module" src="/src/main.js"></script>
 </body>
 </html>

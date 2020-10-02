@@ -1,12 +1,19 @@
 {
-  "name": "vite-eg",
+  "name": "example-web-vite",
   "version": "0.0.0",
+  "description": "vue 3 SPA + vite example",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "build-uat": "vite build --mode uat",
+    "build-production": "vite build --mode production",
+    "deploy": "deploy.sh %npm_package_config_env%",
+    "deploy:unix": "deploy.sh $npm_package_config_env"
   },
   "dependencies": {
+    "@apollo/client": "^3.2.2",
     "@material/mwc-button": "^0.18.0",
+    "@material/mwc-dialog": "^0.18.0",
     "@material/mwc-drawer": "^0.18.0",
     "@material/mwc-icon": "^0.18.0",
     "@material/mwc-icon-button": "^0.18.0",
@@ -15,15 +22,18 @@
     "@material/mwc-select": "^0.18.0",
     "@material/mwc-textfield": "^0.18.0",
     "@material/mwc-top-app-bar-fixed": "^0.18.0",
-    "@vaadin/vaadin-grid": "^5.7.1",
+    "@vaadin/vaadin-grid": "^5.7.4",
     "echarts": "^4.9.0",
+    "graphql": "^15.3.0",
+    "graphql-tag": "^2.11.0",
     "leaflet": "^1.7.1",
-    "vue": "^3.0.0-rc.10",
-    "vue-router": "^4.0.0-beta.9",
+    "subscriptions-transport-ws": "^0.9.18",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0-beta.12",
     "vuex": "^4.0.0-beta.4"
   },
   "devDependencies": {
-    "@vue/compiler-sfc": "^3.0.0-rc.10",
+    "@vue/compiler-sfc": "^3.0.0",
     "vite": "^1.0.0-rc.4"
   }
 }

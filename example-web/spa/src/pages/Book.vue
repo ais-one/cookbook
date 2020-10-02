@@ -72,7 +72,7 @@
 import { from } from 'rxjs'
 import { pluck, filter, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators' // map
 import { http } from '@/axios'
-import { downloadData } from 'ext-lib/esm/util'
+import { downloadData } from 'ext-esm/esm/util'
 
 export default {
   subscriptions () {

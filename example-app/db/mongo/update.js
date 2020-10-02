@@ -1,9 +1,6 @@
-require(require('path').join(process.cwd(), 'common-lib', 'setup')) // first thing to setup
-require(LIB_PATH + '/config') //  first thing to include from LIB_PATH
 const { MONGO_DB, MONGO_URL } = global.CONFIG
 const ObjectID = require('mongodb').ObjectID
 const bcrypt = require('bcryptjs')
-
 const WINDOW_SIZE = 100 // update batch window size
 
 let db

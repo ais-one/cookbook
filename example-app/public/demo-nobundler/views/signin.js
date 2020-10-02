@@ -39,8 +39,6 @@ const styles = /*html*/`
 }
 `
 
-import api from '/js/http.js'
-
 export default {
   template,
   data () {
@@ -73,36 +71,6 @@ export default {
       localStorage.setItem('ms', JSON.stringify({ user: data.user, token: data.token }))
       this.$router.push('/dashboard')
 
-      // try { 
-      //   let res = await fetch('/api/auth/login', {
-      //     method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      //     // mode: 'cors', // no-cors, *cors, same-origin
-      //     // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      //     // credentials: 'same-origin', // include, *same-origin, omit
-      //     headers: {
-      //       'Content-Type': 'application/json'
-      //       // 'Content-Type': 'application/x-www-form-urlencoded',
-      //     },
-      //     // redirect: 'follow', // manual, *follow, error
-      //     // referrer: 'no-referrer', // no-referrer, *client
-      //     body: JSON.stringify({ email: this.email, password: this.password }) // body data type must match "Content-Type" header
-      //   })
-      //   if (res.ok) {
-      //     let data = await res.json()
-      //     if (data) {
-      //       this.$store.commit('setUser', data.user)
-      //       this.$store.commit('setToken', data.token)
-      //       localStorage.setItem('ms', JSON.stringify({ user: data.user, token: data.token }))
-      //       this.$router.push('/dashboard')
-      //     }  
-      //   } else {
-      //     this.errorMsg = 'Fail to login'
-      //   }
-      //   // dispatch('autoSignIn', rv.data) // token, exchanges && pairs
-      // } catch (e) {
-      //   console.log(e.toString())
-      // }
-      // this.$store
       this.loading = false
     }
   }

@@ -11,6 +11,7 @@ module.exports = function (app) {
     router.use('/pages', require('./pages')),
     // require('./page'),
     router.use('/mongo-demo', require('./mongo-demo')),
-    router.use('/t4t', require('./t4t'))
+    router.use('/t4t', require('./t4t')),
+    router.use('/webpush', require('./webpush'))
   )
 }

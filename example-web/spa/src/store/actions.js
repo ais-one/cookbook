@@ -1,7 +1,7 @@
 import { http } from '@/axios'
 import router from '../router'
 
-import { USE_OTP } from '../config'
+const USE_OTP = false
 
 export default {
   async signUserUp ({ commit }, payload) {
@@ -30,7 +30,7 @@ export default {
       rv = await http.post('/api/auth/login', { email, password })
       const { data } = rv
       await dispatch('autoSignIn', data) // token
-      if (!USE_OTP) {
+      if (data.verified) {
         await router.push('/dashboard')
       }
     } catch (e) { }
@@ -49,7 +49,9 @@ export default {
       const { data } = rv
       await dispatch('autoVerify', data) // token
       await router.push('/dashboard')
-    } catch (e) { }
+    } catch (e) {
+      console.log('Currently Nothing To Handle Failures e.g. back to login / retries', e)
+    }
     if (!rv) {
       commit('setError', { message: 'Verify Error' })
     }
@@ -60,7 +62,7 @@ export default {
   // layout-secure, layout-public, setSecure payload is route instead of layout name..., setPublic
   autoSignIn ({ commit }, payload) { // payload.token only
     commit('setUser', payload)
-    if (!USE_OTP) {
+    if (payload.verified) {
       commit('setLayout', 'layout-admin')
     }
   },

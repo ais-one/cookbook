@@ -7,7 +7,7 @@ import Public from './layouts/public.js'
 import router from './router.js'
 import store from './store.js'
 
-import { foo } from '/js/datetime.js' // testing
+import { foo } from '/js/util.js' // testing
 console.log( 'Value from ES Module file...', foo )
 // const urlParams = new URLSearchParams(window.location.search)
 // const myParam = urlParams.get('myParam')

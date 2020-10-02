@@ -3,6 +3,8 @@ const express = require('express')
 const Model = require(LIB_PATH + '/services/db/objection').get()
 const knex = Model ? Model.knex() : null
 
+const { validate } = require('esm')(module)(LIB_PATH + '/esm/validate') // TBD validate on server side also
+
 const mongo = require(LIB_PATH + '/services/db/mongodb')
 const ObjectID = mongo.client ? require('mongodb').ObjectID : null
 
@@ -121,6 +123,7 @@ module.exports = express.Router()
         else if (op === '>=') exp = { [key]: { $gte: val } }
         else if (op === '<') exp = { [key]: { $lt: val } }
         else if (op === '<=') exp = { [key]: { $lte: val } }
+        // TBD empty string? null?
         // else if (op === 'in') exp = {[key]: { $in: val } } // convert val from string to array?
         if (filter.andOr === 'and') and.push(exp)
         else or.push(exp)
@@ -162,10 +165,9 @@ module.exports = express.Router()
   }))
 
   .get('/autocomplete', asyncWrapper(async (req, res) => {
-    let { db, tableName, limit = 20, key, text, search,
-      parentTableColName, parentTableColVal } = req.query
     let rows = {}
-    if (db === 'knex') {
+    let { dbName, tableName, limit = 20, key, text, search, parentTableColName, parentTableColVal } = req.query
+    if (dbName === 'knex') {
       const query = knex(tableName).where(key, 'like', `%${search}%`)
       if (parentTableColName !== undefined && parentTableColVal !== undefined) query.andWhere(parentTableColName, parentTableColVal)
       rows = await query.clone().limit(limit) // TBD orderBy
@@ -202,6 +204,12 @@ module.exports = express.Router()
     if (!where) return res.status(400).json() // bad request
 
     for (let key in table.cols) { // add in auto fields
+      const { rules, type } = table.cols[key]
+      if (rules) {
+        const invalid = validate(rules, type, key, body)
+        if (invalid) return res.status(400).json({ e: `Invalid ${key} - ${invalid}` })
+      }
+
       const col = table.cols[key]
       if (col.auto && col.auto === 'user') body[key] = 'TBD USER ID'
       if (col.auto && col.auto === 'ts') body[key] = new Date()
@@ -230,6 +238,12 @@ module.exports = express.Router()
   .post('/create/:table', generateTable, asyncWrapper(async (req, res) => {
     const { table, body } = req
     for (let key in table.cols) {
+      const { rules, type } = table.cols[key]
+      if (rules) {
+        const invalid = validate(rules, type, key, body)
+        if (invalid) return res.status(400).json({ e: `Invalid ${key} - ${invalid}` })
+      }
+
       const col = table.cols[key]
       if (col.auto && col.auto === 'user') body[key] = 'TBD USER ID'
       if (col.auto && col.auto === 'ts') body[key] = new Date()

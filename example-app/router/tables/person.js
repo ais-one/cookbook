@@ -28,7 +28,10 @@ module.exports = {
       add: '', // 'hide', ''  - empty string means can show and edit
       edit: '', // 'hide', 'readonly', '' - empty string means can show and edit
       default: '', // a default value (today? now?)
-      pattern: ''  // regex pattern
+      rules: {
+        min: 2,
+        regex: '^[A-Za-z]+$' // {10} // must be 10
+      }
     },
     lastName: {
       label: 'Last Name',
@@ -36,7 +39,7 @@ module.exports = {
       type: 'string',
       input: 'textfield',
       // type ? text, password, etc...
-      validation: {
+      rules: {
         min: 0, max: 20
       }
     },
@@ -94,6 +97,7 @@ module.exports = {
         parentCol: '', // use column to get parent value affecting a child
         parentTableColName: '', // the column name in the parent table
         childCol: 'state', // affect child column in this table
+        dbName: 'mongo',
         tableName: 'country',
         limit:8,
         strict: true, // cannot enter own values, must be selected
@@ -109,6 +113,7 @@ module.exports = {
         parentCol: 'country',
         parentTableColName: 'country_name',
         childCol: '',
+        dbName: 'mongo',
         tableName: 'state',
         limit:8,
         key: 'name',
