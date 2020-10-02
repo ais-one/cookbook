@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "config": {
-    "env": "uat"
+    "env": "development"
   },
   "scripts": {
     "mongo": "cross-env NODE_ENV=%npm_package_config_env% node db/mongo/index.js",

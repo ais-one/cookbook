@@ -1,19 +1,5 @@
-# npm
 node_modules
-
-# files not to be committed
-secret
-
-# database stores
-docker-devenv/mongodb/data
-
-# build folders
-dist
-build
-
-coverage
 package-lock.json
-*.tgz
 
 # Log files
 npm-debug.log*

@@ -4,9 +4,6 @@
   "description": "Fullstack JS Application Example",
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
-  "config": {
-    "env": "development"
-  },
   "scripts": {
     "install-libs": "npm i && cd example-web/spa && npm i",
     "mongo": "cd example-app&&npm run mongo",

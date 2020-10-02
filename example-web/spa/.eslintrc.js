@@ -8,6 +8,7 @@ module.exports = {
     'eslint:recommended'
   ],
   rules: {
+    'vue/no-unused-vars': 'off',
     'no-prototype-builtins': 'off',
     'no-empty': 'off',
     'no-unused-vars': 'off',
