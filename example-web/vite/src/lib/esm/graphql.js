@@ -8,9 +8,11 @@ import { getMainDefinition } from '@apollo/client/utilities'
 
 let apolloClient
 
-export default function createApollo (options) {
-  if (!options || !options.gql_uri || !options.gws_uri) return
+const get = () => apolloClient
+
+const init = (options) => {
   if (apolloClient) return apolloClient
+  if (!options || !options.gql_uri || !options.gws_uri) return
   try {
     const wsLink = new WebSocketLink({ // subscriptions-transport-ws package needs to be installed also
       uri: options.gws_uri,
@@ -78,5 +80,11 @@ export default function createApollo (options) {
     console.log(e.toString())
   }
   return apolloClient
-} // end createApollo
+} // end init
 
+const apollo = {
+  get,
+  init
+}
+
+export default apollo

@@ -14,10 +14,16 @@ import { provideXhr } from '/src/plugins/xhr.js'
 import * as http from '/src/lib/esm/http.js'
 import ws from '/src/lib/esm/ws.js'
 
-import { VITE_API_URL, VITE_WS_URL, VITE_WS_MS, VITE_WITH_CREDENTIALS } from '/config.js'
+import { VITE_API_URL, VITE_WS_URL, VITE_WS_MS, VITE_WITH_CREDENTIALS, VITE_GQL_URI, VITE_GWS_URI } from '/config.js'
 
 import { provideI18n } from '/src/plugins/i18n.js'
 import { provideWs } from '/src/plugins/ws.js'
+import apollo from '/src/lib/esm/graphql'
+
+apollo.init({
+  gws_uri: VITE_GWS_URI,
+  gql_uri: VITE_GQL_URI
+})
 
 export default {
   components: {

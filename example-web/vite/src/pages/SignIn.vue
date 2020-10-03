@@ -31,6 +31,18 @@ import { useXhr } from '/src/plugins/xhr.js'
 import { useI18n } from '/src/plugins/i18n.js'
 import { useWs } from '/src/plugins/ws.js'
 
+import apollo from '/src/lib/esm/graphql' // may not need to use provide/inject if no reactivity ?
+import { DO_HELLO } from '/src/queries'
+
+const apolloClient = apollo.get()
+if (apolloClient) { // test
+  apolloClient.query({
+    query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
+    variables: {
+      message: 'Meow'
+    }
+  }).then(data => console.log('graphql', data)).catch(error => console.error(error))
+}
 
 export default {
   setup(props, context) {
@@ -79,7 +91,7 @@ export default {
         } else {
           console.log('ws falsy')
         }
-      }, 2000)
+      }, 10000)
     })
 
     onBeforeUnmount(() => {
