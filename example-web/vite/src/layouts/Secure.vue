@@ -11,8 +11,8 @@
         <div v-for="item of menuItems" :key="item.name">
           <router-link v-if="item.to" :to="item.to">
             <mwc-list-item graphic="icon" @click="theDrawer.open = false">
-              <slot>{{ item.name }}</slot
-              ><mwc-icon slot="graphic">{{ item.icon }}</mwc-icon>
+              <slot>{{ item.name }}</slot>
+              <mwc-icon slot="graphic">{{ item.icon }}</mwc-icon>
             </mwc-list-item>
           </router-link>
           <div v-else>
@@ -23,8 +23,8 @@
             <div v-if="item.show">
               <router-link v-for="child of item.children" :key="child.to" :to="child.to">
                 <mwc-list-item graphic="icon" @click="theDrawer.open = false">
-                  <slot>{{ child.name }}</slot
-                  ><mwc-icon slot="graphic">{{ child.icon }}</mwc-icon>
+                  <slot>{{ child.name }}</slot>
+                  <mwc-icon slot="graphic">{{ child.icon }}</mwc-icon>
                 </mwc-list-item>
               </router-link>
             </div>

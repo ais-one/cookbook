@@ -132,12 +132,7 @@ class AutoComplete extends HTMLElement {
   blur(e) {
     // console.log('blur', e, e.relatedTarget, e.relatedTarget.innerHTML)
     // console.log('blur parents', e.target.parentNode, e.relatedTarget.parentNode, e.target.parentNode === e.relatedTarget.parentNode.parentNode.parentNode)
-    if (e.relatedTarget
-      && e.relatedTarget.parentNode
-      && e.relatedTarget.parentNode.parentNode
-      && e.relatedTarget.parentNode.parentNode.parentNode
-      && e.target.parentNode === e.relatedTarget.parentNode.parentNode.parentNode
-    ) {
+    if (e.relatedTarget && e.relatedTarget.parentNode && e.relatedTarget.parentNode.parentNode && e.relatedTarget.parentNode.parentNode.parentNode && e.target.parentNode === e.relatedTarget.parentNode.parentNode.parentNode) {
       // do nothing, let selected event take its course
     } else {
       this.showList(false)

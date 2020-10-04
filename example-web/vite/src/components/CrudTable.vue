@@ -82,59 +82,19 @@
                   ></mwc-textfield>
                 </template>
                 <template v-else-if="tableCfg.cols[col][showForm] === 'readonly'">
-                  <mwc-textfield
-                    disabled
-                    class="field-item"
-                    :key="col + index"
-                    :label="tableCfg.cols[col].label"
-                    outlined
-                    type="text"
-                    v-model="recordObj[showForm][col]"
-                  ></mwc-textfield>
+                  <mwc-textfield disabled class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>
                 <template v-else-if="tableCfg.cols[col].input === 'number'">
-                  <mwc-textfield
-                    :required="isRequired(col)"
-                    class="field-item"
-                    :key="col + index"
-                    :label="tableCfg.cols[col].label"
-                    outlined
-                    type="number"
-                    v-model="recordObj[showForm][col]"
-                  ></mwc-textfield>
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="number" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>
                 <template v-else-if="tableCfg.cols[col].input === 'datetime'">
-                  <mwc-textfield
-                    :required="isRequired(col)"
-                    class="field-item"
-                    :key="col + index"
-                    :label="tableCfg.cols[col].label"
-                    outlined
-                    type="datetime-local"
-                    v-model="recordObj[showForm][col]"
-                  ></mwc-textfield>
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="datetime-local" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>
                 <template v-else-if="tableCfg.cols[col].input === 'date'">
-                  <mwc-textfield
-                    :required="isRequired(col)"
-                    class="field-item"
-                    :key="col + index"
-                    :label="tableCfg.cols[col].label"
-                    outlined
-                    type="date"
-                    v-model="recordObj[showForm][col]"
-                  ></mwc-textfield>
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="date" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>
                 <template v-else-if="tableCfg.cols[col].input === 'time'">
-                  <mwc-textfield
-                    :required="isRequired(col)"
-                    class="field-item"
-                    :key="col + index"
-                    :label="tableCfg.cols[col].label"
-                    outlined
-                    type="time"
-                    v-model="recordObj[showForm][col]"
-                  ></mwc-textfield>
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="time" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>
                 <template v-else-if="tableCfg.cols[col].input === 'select'">
                   <mwc-select :key="col + index" :label="tableCfg.cols[col].label" :value="recordObj[showForm][col]" @change="(e) => (recordObj[showForm][col] = e.target.value)">
@@ -142,34 +102,13 @@
                   </mwc-select>
                 </template>
                 <template v-else-if="tableCfg.cols[col].input === 'multi-select'">
-                  <mwc-multiselect
-                    :required="isRequired(col)"
-                    :key="col + index"
-                    :label="tableCfg.cols[col].label"
-                    v-model="recordObj[showForm][col]"
-                    :options="JSON.stringify(tableCfg.cols[col].options)"
-                  ></mwc-multiselect>
+                  <mwc-multiselect :required="isRequired(col)" :key="col + index" :label="tableCfg.cols[col].label" v-model="recordObj[showForm][col]" :options="JSON.stringify(tableCfg.cols[col].options)"></mwc-multiselect>
                 </template>
                 <template v-else-if="tableCfg.cols[col].input === 'autocomplete'">
-                  <mwc-autocomplete
-                    :class="col"
-                    :required="isRequired(col)"
-                    :key="col + index"
-                    :label="tableCfg.cols[col].label"
-                    v-model="recordObj[showForm][col]"
-                    @search="(e) => autoComplete(e, col, showForm)"
-                  ></mwc-autocomplete>
+                  <mwc-autocomplete :class="col" :required="isRequired(col)" :key="col + index" :label="tableCfg.cols[col].label" v-model="recordObj[showForm][col]" @search="(e) => autoComplete(e, col, showForm)"></mwc-autocomplete>
                 </template>
                 <template v-else>
-                  <mwc-textfield
-                    :required="isRequired(col)"
-                    class="field-item"
-                    :key="col + index"
-                    :label="tableCfg.cols[col].label"
-                    outlined
-                    type="text"
-                    v-model="recordObj[showForm][col]"
-                  ></mwc-textfield>
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
                 </template>
               </template>
             </template>

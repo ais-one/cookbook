@@ -26,10 +26,9 @@ if (pnMode === 'FCM') {
   messaging.usePublicVapidKey(VAPID_KEY)
 
   const sendToken = (token) => {
-    const query = { reply: 'yes' } // yes=reply. no=no reply
-    const qs = query ? '?' + Object.keys(query).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&') : ''
     console.log('Sending Token', token)
-    fetch('http://127.0.0.1:3000/api/test-pn-token/' + token + qs).then((res) => {
+    // yes => reply. no => no reply (applicable to FCM)
+    fetch('http://127.0.0.1:3000/api/test-pn-token/' + token + '?reply=yes').then((res) => {
       res.json().then((data) => {
         console.log('send token response', data)
       })
@@ -76,6 +75,7 @@ if ('serviceWorker' in navigator) {
       // If we don't have a subscription we have to create and register it!
       if (!subscription) {
         subscription = await subscribe(registration)
+        console.log('Webpush PN subscription', subscription)
       }
       // TBD Implement... unsub
     }

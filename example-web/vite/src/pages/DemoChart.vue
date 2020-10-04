@@ -16,7 +16,12 @@ import echarts from 'echarts'
 console.log(echarts)
 
 export default {
-  name: 'SiteB',
+  name: 'DemoChart',
+  data() {
+    return {
+      def: null
+    }
+  },
   async mounted() {
     // await embed('#viz', 'https://vega.github.io/vega/examples/bar-chart.vg.json', {actions:false})
 
@@ -45,11 +50,6 @@ export default {
     }
     // use configuration item and data specified to show chart
     myChart.setOption(option)
-  },
-  data() {
-    return {
-      def: null
-    }
   },
   methods: {}
 }

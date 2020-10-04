@@ -53,7 +53,12 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     const signal = controller.signal
     if (timeoutMs > 0) setTimeout(() => controller.abort(), timeoutMs) // err.name === 'AbortError'
 
-    const qs = query ? '?' + Object.keys(query).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&') : ''
+    const qs = query
+      ? '?' +
+        Object.keys(query)
+          .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key]))
+          .join('&')
+      : ''
 
     if (!headers) {
       headers = {

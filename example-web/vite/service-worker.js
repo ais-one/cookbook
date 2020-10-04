@@ -201,3 +201,20 @@ self.addEventListener('push', function (e) {
 //   console.log('our user clicked on the notification!')
 //   // Send user data analytics 🔥 🔥 🔥
 // }, false);
+
+// PN change
+// self.addEventListener("pushsubscriptionchange", event => {
+//   event.waitUntil(swRegistration.pushManager.subscribe(event.oldSubscription.options)
+//     .then(subscription => {
+//       return fetch("register", {
+//         method: "post",
+//         headers: {
+//           "Content-type": "application/json"
+//         },
+//         body: JSON.stringify({
+//           endpoint: subscription.endpoint
+//         })
+//       })
+//     })
+//   )
+// }, false)
