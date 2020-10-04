@@ -1,6 +1,6 @@
 <template>
-  <crud-table tableName="grade" ref="myroot">
-    <template v-slot:filters="{ filters }">
+  <crud-table table-name="grade" ref="myroot">
+    <template #filters="{ filters }">
       <div>HELLO {{ filters.length }} {{ myroot.tableName }}</div>
     </template>
   </crud-table>

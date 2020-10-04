@@ -29,15 +29,15 @@ const cacheFilesStatic = [
 
 // SW install and cache static assets
 function addCaches(e) {
-  e.waitUntil(caches.open(CACHE_NAME_STATIC).then(cache => cache.addAll(cacheFilesStatic)))
+  e.waitUntil(caches.open(CACHE_NAME_STATIC).then((cache) => cache.addAll(cacheFilesStatic)))
 }
 self.addEventListener('install', addCaches)
 
 // SW activate and cache cleanup
 function clearCaches(e) {
   e.waitUntil(
-    caches.keys().then(cacheNames => {
-      cacheNames.forEach(cacheName => {
+    caches.keys().then((cacheNames) => {
+      cacheNames.forEach((cacheName) => {
         if (cacheName !== CACHE_NAME_STATIC && cacheName !== CACHE_NAME_DYNAMIC) return caches.delete(cacheName)
       })
     })
@@ -91,17 +91,15 @@ self.addEventListener('activate', clearCaches)
 //   )
 // });
 
-
 // Cache then network - resources that update frequently (but get resources quickly to screen first)
 function cacheThenNetwork(e) {
   e.respondWith(
-    caches.open(CACHE_NAME_DYNAMIC)
-      .then(function (cache) {
-        return fetch(e.request).then(function (res) {
-          cache.put(e.request, res.clone())
-          return res
-        })
+    caches.open(CACHE_NAME_DYNAMIC).then(function (cache) {
+      return fetch(e.request).then(function (res) {
+        cache.put(e.request, res.clone())
+        return res
       })
+    })
     // arrow function version
     // .then(cache => fetch(e.request)
     //   .then(res => {
@@ -111,7 +109,6 @@ function cacheThenNetwork(e) {
     // )
   )
 }
-
 
 // async function networkFirst(request) {
 //   const dynamicCache = await caches.open('news-dynamic');
@@ -136,19 +133,22 @@ function networkCacheFallback(e) {
 // Cache first / Cache fall back to network
 function cacheNetworkFallback(e) {
   e.respondWith(
-    caches.match(e.request).then(function (res) {
-      return res || fetch(e.request)
-      // .then(function(response) {
-      //   if (response.status === 404) return caches.match('pages/404.html')
-      //   return response
-      // })
-    }).catch(function () {
-      // If both fail, show a generic fallback:
-      return caches.match('/offline.html');
-      // However, in reality you'd have many different
-      // fallbacks, depending on URL & headers.
-      // Eg, a fallback silhouette image for avatars.
-    })
+    caches
+      .match(e.request)
+      .then(function (res) {
+        return res || fetch(e.request)
+        // .then(function(response) {
+        //   if (response.status === 404) return caches.match('pages/404.html')
+        //   return response
+        // })
+      })
+      .catch(function () {
+        // If both fail, show a generic fallback:
+        return caches.match('/offline.html')
+        // However, in reality you'd have many different
+        // fallbacks, depending on URL & headers.
+        // Eg, a fallback silhouette image for avatars.
+      })
   )
 }
 
@@ -156,7 +156,9 @@ function cacheNetworkFallback(e) {
 function cacheOnly(e) {
   e.respondWith(
     // caches.match(e.request) // ALL
-    caches.open(CACHE_NAME_STATIC).then(function (cache) { return cache.match(e.request) }) // .then(res => res) // named cache
+    caches.open(CACHE_NAME_STATIC).then(function (cache) {
+      return cache.match(e.request)
+    }) // .then(res => res) // named cache
   )
 }
 

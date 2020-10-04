@@ -52,7 +52,7 @@ if (pnMode === 'FCM') {
     console.log('Message received. ', payload)
     try {
       const { title, body } = JSON.parse(payload.data.notification)
-      console.log((new Date()).toISOString(), title, body)
+      console.log(new Date().toISOString(), title, body)
     } catch (e) {
       console.log('GCM msg error', e.toString())
     }
@@ -105,8 +105,7 @@ const subscribe = async (registration) => {
   })
 
   // Sending the subscription object to our Express server
-  await fetch('http://127.0.0.1:3000/api/webpush/sub?subId=test',
-  {
+  await fetch('http://127.0.0.1:3000/api/webpush/sub?subId=test', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(subscription.toJSON())
@@ -134,10 +133,11 @@ const unsubscribe = async () => {
 // here's one such source:
 // https://stackoverflow.com/questions/42362235/web-pushnotification-unauthorizedregistration-or-gone-or-unauthorized-sub
 const urlBase64ToUint8Array = (base64String) => {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4)
-  const base64 = (base64String + padding)
-    .replace(/\-/g, '+')
-    .replace(/_/g, '/')
+  // const padding = '='.repeat((4 - base64String.length % 4) % 4)
+  // const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/')
+  // https://stackoverflow.com/questions/52379865/eslint-replace-cant-read-method
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4)
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/')
 
   const rawData = window.atob(base64)
   const outputArray = new Uint8Array(rawData.length)
