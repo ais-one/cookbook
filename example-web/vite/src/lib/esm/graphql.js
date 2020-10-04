@@ -14,19 +14,23 @@ const init = (options) => {
   if (apolloClient) return apolloClient
   if (!options || !options.gql_uri || !options.gws_uri) return
   try {
-    const wsLink = new WebSocketLink({ // subscriptions-transport-ws package needs to be installed also
+    // subscriptions-transport-ws package needs to be installed also
+    const wsLink = new WebSocketLink({
       uri: options.gws_uri,
       options: {
         reconnect: true
       }
-    })    
-    const httpLink = new HttpLink({ // HTTP connexion to the API
-      // You should use an absolute URL here
-      // credentials: 'include', // UNCOMMENT FOR HTTPONLY_TOKEN
-      uri: options.gql_uri,
     })
 
-    const link = split( // split based on operation type
+    // HTTP connetion to the API
+    const httpLink = new HttpLink({
+      // You should use an absolute URL here
+      // credentials: 'include', // UNCOMMENT FOR HTTPONLY_TOKEN
+      uri: options.gql_uri
+    })
+
+    // split based on operation type
+    const link = split(
       ({ query }) => {
         const { kind, operation } = getMainDefinition(query)
         return kind === 'OperationDefinition' && operation === 'subscription'
@@ -51,10 +55,10 @@ const init = (options) => {
         }
       }
     })
-    
+
     const cache = new InMemoryCache() // Cache implementation
 
-    apolloClient= new ApolloClient({
+    apolloClient = new ApolloClient({
       link: authLink.concat(link), // REMOVE authLink FOR HTTPONLY_TOKEN
       cache,
       connectToDevTools: true,
@@ -66,7 +70,7 @@ const init = (options) => {
       onError: ({ graphQLErrors, networkError }) => {
         if (networkError) console.log('networkError', networkError)
         if (graphQLErrors) {
-          for (let err of graphQLErrors) {
+          for (const err of graphQLErrors) {
             if (err.name === 'AuthenticationError') {
               // store.commit('setAuthError', err)
               // store.dispatch('signoutUser')
@@ -74,7 +78,7 @@ const init = (options) => {
             console.dir('graphQLErrors', err)
           }
         }
-      }    
+      }
     })
   } catch (e) {
     console.log(e.toString())

@@ -27,7 +27,7 @@ template.innerHTML = `
 `
 
 class AutoComplete extends HTMLElement {
-  constructor () {
+  constructor() {
     super()
     this.root = this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
@@ -38,17 +38,17 @@ class AutoComplete extends HTMLElement {
     this.selected = this.selected.bind(this)
   }
 
-  showList (show) {
+  showList(show) {
     console.log('showList', show)
     this.show = show
     const dd = this.shadowRoot.querySelector('.drop-down-div')
     dd.style.display = this.show ? 'block' : 'none'
   }
 
-  connectedCallback () {
+  connectedCallback() {
     this.show = false
     this.list = []
- 
+
     if (!this.hasAttribute('value')) this.setAttribute('value', '')
     if (!this.hasAttribute('label')) this.setAttribute('label', '')
     // if (!this.hasAttribute('required')) this.setAttribute('required', '')
@@ -62,7 +62,7 @@ class AutoComplete extends HTMLElement {
     dd.addEventListener('selected', this.selected)
   }
 
-  disconnectedCallback() { // removed from the DOM
+  disconnectedCallback() {
     const el = this.shadowRoot.querySelector('mwc-textfield')
     el.removeEventListener('input', this.input)
     el.removeEventListener('blur', this.blur)
@@ -71,34 +71,56 @@ class AutoComplete extends HTMLElement {
     dd.removeEventListener('selected', this.selected)
   }
 
-  attributeChangedCallback(name, oldVal, newVal) { // attribute changed
+  attributeChangedCallback(name, oldVal, newVal) {
     const el = this.shadowRoot.querySelector('mwc-textfield')
     switch (name) {
-      case 'value':
+      case 'value': {
         el.value = newVal
         const event = new CustomEvent('input', { detail: newVal })
         this.dispatchEvent(event)
-        break;
+        break
+      }
       case 'label':
         el.setAttribute('label', newVal)
-        break;
+        break
       case 'required':
         console.log('required', newVal)
         el.setAttribute('required', newVal)
-        break;
+        break
     }
   }
-  static get observedAttributes() { return ['value', 'label', 'required'] }
-  get value() { return this.getAttribute('value') }
-  set value(val) { this.setAttribute('value', val) }
-  get label() { return this.getAttribute('label') }
-  set label(val) { this.setAttribute('label', val) }
-  get required() { return this.getAttribute('required') }
-  set required(val) { this.setAttribute('required', val) }
 
-  selected (e) {
+  static get observedAttributes() {
+    return ['value', 'label', 'required']
+  }
+
+  get value() {
+    return this.getAttribute('value')
+  }
+
+  set value(val) {
+    this.setAttribute('value', val)
+  }
+
+  get label() {
+    return this.getAttribute('label')
+  }
+
+  set label(val) {
+    this.setAttribute('label', val)
+  }
+
+  get required() {
+    return this.getAttribute('required')
+  }
+
+  set required(val) {
+    this.setAttribute('required', val)
+  }
+
+  selected(e) {
     console.log('selected', e)
-    if (e.detail.index == -1) return
+    if (e.detail.index === -1) return
 
     this.value = this.list[e.detail.index]
     this.showList(false)
@@ -106,7 +128,8 @@ class AutoComplete extends HTMLElement {
     const event = new CustomEvent('input', { detail: this.value })
     this.dispatchEvent(event)
   }
-  blur (e) {
+
+  blur(e) {
     // console.log('blur', e, e.relatedTarget, e.relatedTarget.innerHTML)
     // console.log('blur parents', e.target.parentNode, e.relatedTarget.parentNode, e.target.parentNode === e.relatedTarget.parentNode.parentNode.parentNode)
     if (e.relatedTarget
@@ -121,25 +144,29 @@ class AutoComplete extends HTMLElement {
     }
     // setTimeout(() => this.showList(false), 200); // dangerous, do not use
   }
-  input (e) {
+
+  input(e) {
     console.log('input', e)
     const el = this.shadowRoot.querySelector('mwc-textfield')
     this.value = el.value
     const event = new CustomEvent('search', { detail: this.value })
     this.dispatchEvent(event)
   }
-  focus (e) {
+
+  focus(e) {
     console.log('focus', e)
   }
-  hello () {
+
+  hello() {
     console.log('hello autocomplete', this.value)
   }
+
   setList(items) {
     console.log('setList', items.length)
     this.list = []
     const dd = this.shadowRoot.querySelector('.drop-down')
     dd.innerHTML = ''
-    items.forEach(item => {
+    items.forEach((item) => {
       const li = document.createElement('mwc-list-item')
       const val = typeof item === 'string' ? item : item.key
       li.innerHTML = val
@@ -151,4 +178,3 @@ class AutoComplete extends HTMLElement {
 }
 
 customElements.define('mwc-autocomplete', AutoComplete)
-  

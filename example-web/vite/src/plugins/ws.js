@@ -1,6 +1,6 @@
 import { provide, inject } from 'vue'
 
-const WsSymbol = Symbol()
+const WsSymbol = Symbol('WsSymbol')
 
 export function provideWs(ws) {
   console.log('provide ws', ws.endpoint)

@@ -28,7 +28,7 @@ template.innerHTML = `
 `
 
 class MultiSelect extends HTMLElement {
-  constructor () {
+  constructor() {
     super()
     this.root = this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
@@ -37,14 +37,14 @@ class MultiSelect extends HTMLElement {
     this.selected = this.selected.bind(this)
   }
 
-  connectedCallback () {
+  connectedCallback() {
     this.show = false
     this.list = []
- 
+
     if (!this.hasAttribute('value')) this.setAttribute('value', '')
     if (!this.hasAttribute('label')) this.setAttribute('label', '')
 
-    if (this.hasAttribute('options')) this.setList( JSON.parse(this.getAttribute('options')) || [] )
+    if (this.hasAttribute('options')) this.setList(JSON.parse(this.getAttribute('options')) || [])
 
     const el = this.shadowRoot.querySelector('mwc-textfield')
     el.addEventListener('click', this.click)
@@ -54,26 +54,42 @@ class MultiSelect extends HTMLElement {
     dd.addEventListener('selected', this.selected)
   }
 
-  attributeChangedCallback(name, oldVal, newVal) { // attribute changed
+  attributeChangedCallback(name, oldVal, newVal) {
     const el = this.shadowRoot.querySelector('mwc-textfield')
     switch (name) {
-      case 'value':
+      case 'value': {
         el.value = newVal
         const event = new CustomEvent('input', { detail: newVal })
         this.dispatchEvent(event)
-        break;
+        break
+      }
       case 'label':
         el.setAttribute('label', newVal)
-        break;
+        break
     }
   }
-  static get observedAttributes() { return ['value', 'label'] }
-  get value() { return this.getAttribute('value') }
-  set value(val) { this.setAttribute('value', val) }
-  get label() { return this.getAttribute('label') }
-  set label(val) { this.setAttribute('label', val) }
 
-  disconnectedCallback() { // removed from the DOM
+  static get observedAttributes() {
+    return ['value', 'label']
+  }
+
+  get value() {
+    return this.getAttribute('value')
+  }
+
+  set value(val) {
+    this.setAttribute('value', val)
+  }
+
+  get label() {
+    return this.getAttribute('label')
+  }
+
+  set label(val) {
+    this.setAttribute('label', val)
+  }
+
+  disconnectedCallback() {
     const el = this.shadowRoot.querySelector('mwc-textfield')
     el.removeEventListener('click', this.click)
     el.removeEventListener('input', this.input)
@@ -81,10 +97,10 @@ class MultiSelect extends HTMLElement {
     dd.removeEventListener('selected', this.selected)
   }
 
-  selected (e) {
+  selected(e) {
     console.log('selected', e.detail.index, e.detail.index.size)
     const selects = []
-    e.detail.index.forEach(item => {
+    e.detail.index.forEach((item) => {
       // console.log(this.list, item, this.list[item])
       selects.push(this.list[item]) // aa
     })
@@ -101,13 +117,14 @@ class MultiSelect extends HTMLElement {
     // this.dispatchEvent(event)
   }
 
-  showList (show) {
+  showList(show) {
     this.show = show
     const dd = this.shadowRoot.querySelector('.drop-down-div')
     dd.style.display = this.show ? 'block' : 'none'
   }
 
-  click (e) { // dropdown arrow
+  // dropdown arrow
+  click(e) {
     if (this.list.length) {
       console.log('click', !this.show)
       this.showList(!this.show)
@@ -116,7 +133,7 @@ class MultiSelect extends HTMLElement {
     }
   }
 
-  input (e) {
+  input(e) {
     // console.log('input', e)
   }
 
@@ -134,10 +151,10 @@ class MultiSelect extends HTMLElement {
     this.list = []
     const dd = this.shadowRoot.querySelector('.drop-down')
     dd.innerHTML = ''
-    items.forEach(item => {
+    items.forEach((item) => {
       const li = document.createElement('mwc-check-list-item')
       li.innerHTML = item.key
-      if ( this.value.includes(item.key) ) li.setAttribute('selected', '')
+      if (this.value.includes(item.key)) li.setAttribute('selected', '')
       dd.appendChild(li)
       this.list.push(item.key) // aa
     })

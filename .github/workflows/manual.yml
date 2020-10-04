@@ -1,4 +1,6 @@
 # This is a basic workflow that is manually triggered
+# good for testing
+# actions appear from default branch - https://github.community/t/workflow-files-only-picked-up-from-master/16129/2
 
 name: Manual workflow
 

@@ -1,4 +1,3 @@
-
 <template>
   <div class="container">
     <h1>Sign Pad Custom Element</h1>
@@ -19,7 +18,7 @@ export default {
     const signDataFn = (e) => {
       alert('see console log for signature data')
       console.log('imageDataUrl', imageDataUrl.value)
-    } 
+    }
 
     return {
       imageDataUrl,

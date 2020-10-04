@@ -1,8 +1,8 @@
 <template>
-    <div>
-      <h1>Leaflet Map - TBD</h1>
-      <div id="map" class="map"></div>
-    </div>
+  <div>
+    <h1>Leaflet Map - TBD</h1>
+    <div id="map" class="map"></div>
+  </div>
 </template>
 
 <script>
@@ -19,21 +19,17 @@ import 'leaflet/dist/leaflet.css'
 import { onMounted } from 'vue'
 
 export default {
-
   setup() {
     onMounted(async () => {
-      var map = L.map('map').setView([51.505, -0.09], 13);
+      var map = L.map('map').setView([51.505, -0.09], 13)
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map)
 
-      L.marker([51.5, -0.09]).addTo(map)
-          .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-          .openPopup();
+      L.marker([51.5, -0.09]).addTo(map).bindPopup('A pretty CSS3 popup.<br> Easily customizable.').openPopup()
     })
   }
-
 }
 </script>
 

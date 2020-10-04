@@ -2,7 +2,7 @@
   <div class="page-flex">
     <vcxwc-loading-overlay v-if="loading"></vcxwc-loading-overlay>
     <form class="form-box-flex">
-      <div v-show="mode==='login'">
+      <div v-show="mode === 'login'">
         <h1>{{ i18n.$t('sign_in') }}</h1>
         <mwc-textfield label="Username" outlined type="text" v-model="email"></mwc-textfield>
         <mwc-textfield label="Password" outlined type="password" v-model="password"></mwc-textfield>
@@ -11,7 +11,7 @@
         </div>
         <p><router-link to="/signup">Sign Up</router-link></p>
       </div>
-      <div v-show="mode==='otp'">
+      <div v-show="mode === 'otp'">
         <h1>Enter OTP</h1>
         <mwc-textfield label="OTP" outlined type="text" v-model="otp"></mwc-textfield>
         <div class="buttons-box-flex">
@@ -35,13 +35,16 @@ import apollo from '/src/lib/esm/graphql' // may not need to use provide/inject 
 import { DO_HELLO } from '/src/queries'
 
 const apolloClient = apollo.get()
-if (apolloClient) { // test
-  apolloClient.query({
-    query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
-    variables: {
-      message: 'Meow'
-    }
-  }).then(data => console.log('graphql', data)).catch(error => console.error(error))
+if (apolloClient) {
+  apolloClient // apollo test
+    .query({
+      query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
+      variables: {
+        message: 'Meow'
+      }
+    })
+    .then((data) => console.log('graphql', data))
+    .catch((error) => console.error(error))
 }
 
 export default {
@@ -66,7 +69,6 @@ export default {
       otp.value = ''
       // email.value = ''
       // password.value = ''
-
       otpCount = 0 // non-ui-reactive
     }
 
@@ -79,7 +81,7 @@ export default {
       loading.value = false
 
       ws.connect()
-      const wsHandler = e => console.log('ws onmessage', e.data)
+      const wsHandler = (e) => console.log('ws onmessage', e.data)
       ws.setMessage(wsHandler)
 
       timerId = setInterval(async () => {
@@ -114,13 +116,17 @@ export default {
       loading.value = true
       errorMessage.value = ''
       try {
-        const { data } = await http.post('/api/auth/login', { email: email.value, password: password.value })
+        const { data } = await http.post('/api/auth/login', {
+          email: email.value,
+          password: password.value
+        })
         const decoded = http.parseJwt(data.token)
         http.setToken(data.token)
         http.setRefreshToken(data.refresh_token)
         if (decoded.verified) {
           _setUser(data, decoded)
-        } else { // OTP
+        } else {
+          // OTP
           mode.value = 'otp'
           otpCount = 0
         }
@@ -173,7 +179,8 @@ export default {
 </script>
 
 <style scoped>
-.page-flex h1, .page-flex p {
+.page-flex h1,
+.page-flex p {
   text-align: center;
 }
 
@@ -185,21 +192,22 @@ export default {
   align-items: center;
 }
 
-.form-box-flex > div { 
+.form-box-flex > div {
   /* height: 320px; */
   width: 320px;
 
-  display: flex; 
-  flex-direction: column; 
-  flex: 0 0 auto; 
-  
-  border: 1px solid; 
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+
+  border: 1px solid;
   border-radius: 5px;
   padding: 15px;
   background: lightgray;
 }
 
-.form-box-flex > div > mwc-textfield, .form-box-flex > div > .buttons-box-flex {
+.form-box-flex > div > mwc-textfield,
+.form-box-flex > div > .buttons-box-flex {
   margin-top: 15px;
 }
 

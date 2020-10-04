@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from './store'
+import store from './store.js'
 
 /*
 import permissions from '@/permissions'
@@ -37,17 +37,19 @@ export default (to, from, next) => {
   }
 }
 */
+
 const authGuard = (to, from, next) => {
-  console.log('authGuard', store.state.user ? 'user':'anon', from.path, to.path)
+  console.log('authGuard', store.state.user ? 'user' : 'anon', from.path, to.path)
   const loggedIn = !!(store.state.user && store.state.user.verified)
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
   if (loggedIn === requiresAuth) {
-      next()
+    next()
   } else if (!loggedIn && requiresAuth) {
     next('/signin')
   } else if (loggedIn && !requiresAuth) {
     next('/dashboard')
-  } else { // should not get here
+  } else {
+    // should not get here
     console.log(loggedIn, requiresAuth)
   }
 }
@@ -70,10 +72,10 @@ const router = createRouter({
     { path: '/demo-sign-pad', name: 'Demo Sign Pad', component: () => import('./pages/DemoSignPad.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-chart', name: 'Demo Chart', component: () => import('./pages/DemoChart.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-map', name: 'Demo Map', component: () => import('./pages/DemoMap.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/table-grade-slot', props: route => ({ query: route.query }), name: 'TableGradeSlot', component: () => import('./pages/TableGradeSlot.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/table-person', props: route => ({ query: route.query, tableName: 'person' }), name: 'TablePerson', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/table-country', props: route => ({ query: route.query, tableName: 'country' }), name: 'TableCountry', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/demo-flex', name: 'DemoFlex', component: () => import('./pages/DemoFlex.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/table-grade-slot', props: (route) => ({ query: route.query }), name: 'TableGradeSlot', component: () => import('./pages/TableGradeSlot.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/table-person', props: (route) => ({ query: route.query, tableName: 'person' }), name: 'TablePerson', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/table-country', props: (route) => ({ query: route.query, tableName: 'country' }), name: 'TableCountry', component: () => import('./components/CrudTable.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-flex', name: 'DemoFlex', component: () => import('./pages/DemoFlex.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } }
   ]
 })
 

@@ -10,35 +10,32 @@
     <div class="container" v-show="!showForm">
       <nav class="navbar">
         <ul class="nav-left">
-          <li class="nav-item"><mwc-icon-button icon="search" @click="showFilter=!showFilter"></mwc-icon-button></li>
+          <li class="nav-item"><mwc-icon-button icon="search" @click="showFilter = !showFilter"></mwc-icon-button></li>
           <li class="nav-item"><mwc-icon-button icon="refresh" @click="refreshData" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item" v-if="tableCfg && tableCfg.create"><mwc-icon-button icon="add" @click="openAdd" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item" v-if="tableCfg && tableCfg.delete"><mwc-icon-button icon="delete" @click="remove" :disabled="loading"></mwc-icon-button></li>
           <li class="nav-item"><mwc-icon-button icon="post_add" @click="csvUpload" :disabled="loading"></mwc-icon-button></li>
-          <li class="nav-item"><mwc-icon-button icon="move_to_inbox"  @click="csvDownload" :disabled="loading"></mwc-icon-button></li>
-          <li v-if="keycol" class="nav-item"><mwc-icon-button icon="reply"  @click="goBack" :disabled="loading"></mwc-icon-button></li>
+          <li class="nav-item"><mwc-icon-button icon="move_to_inbox" @click="csvDownload" :disabled="loading"></mwc-icon-button></li>
+          <li v-if="keycol" class="nav-item"><mwc-icon-button icon="reply" @click="goBack" :disabled="loading"></mwc-icon-button></li>
         </ul>
         <ul class="nav-right">
           <li class="nav-item">
             <select class="nav-select-page-size" v-model="rowsPerPage">
-              <option v-for="val of rowsPerPageList" :key="val" :value="val" :selected="val === rowsPerPage" >{{ val }}</option>
+              <option v-for="val of pageSize" :key="val" :value="val" :selected="val === rowsPerPage">{{ val }}</option>
             </select>
           </li>
-          <li class="nav-item">
-            <input class="nav-select-page" type="number" v-model="page" min="1" :max="maxPage" /> / {{ maxPage }}
-          </li>
+          <li class="nav-item"><input class="nav-select-page" type="number" v-model="page" min="1" :max="maxPage" /> / {{ maxPage }}</li>
         </ul>
       </nav>
-
       <template v-if="showFilter">
         <slot name="filters" :filters="filters" :filterCols="filterCols" :filterOps="filterOps">
           <div v-if="filters.length">
             <div class="filter-row" v-for="(filter, index) of filters" :key="index">
               <select class="filter-col" v-model="filter.col">
-                <option v-for="(col, index1) of filterCols" :value="col" :key="'c'+index+'-'+index1">{{ col }}</option>
+                <option v-for="(col, index1) of filterCols" :value="col" :key="'c' + index + '-' + index1">{{ col }}</option>
               </select>
               <select class="filter-col" v-model="filter.op">
-                <option v-for="(col, index2) of filterOps" :value="col" :key="'o'+index+'-'+index2">{{ col }}</option>
+                <option v-for="(col, index2) of filterOps" :value="col" :key="'o' + index + '-' + index2">{{ col }}</option>
               </select>
               <input placeholder="Value" class="filter-col" v-model="filter.val" />
               <select class="filter-col" v-model="filter.andOr">
@@ -72,55 +69,112 @@
           <div class="field-set-flex">
             <template v-for="(val, col, index) of recordObj[showForm]">
               <template v-if="tableCfg.cols[col]">
-                <template v-if="tableCfg.cols[col].input==='link'">
-                  <mwc-textfield @click="router.push('/'+tableCfg.cols[col].options.to+'?keyval='+recordObj[showForm].key+'&keycol='+tableCfg.cols[col].options.relatedCol)" disabled class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
+                <template v-if="tableCfg.cols[col].input === 'link'">
+                  <mwc-textfield
+                    @click="router.push('/' + tableCfg.cols[col].options.to + '?keyval=' + recordObj[showForm].key + '&keycol=' + tableCfg.cols[col].options.relatedCol)"
+                    disabled
+                    class="field-item"
+                    :key="col + index"
+                    :label="tableCfg.cols[col].label"
+                    outlined
+                    type="text"
+                    v-model="recordObj[showForm][col]"
+                  ></mwc-textfield>
                 </template>
-                <template v-else-if="tableCfg.cols[col][showForm]==='readonly'">
-                  <mwc-textfield disabled class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
+                <template v-else-if="tableCfg.cols[col][showForm] === 'readonly'">
+                  <mwc-textfield
+                    disabled
+                    class="field-item"
+                    :key="col + index"
+                    :label="tableCfg.cols[col].label"
+                    outlined
+                    type="text"
+                    v-model="recordObj[showForm][col]"
+                  ></mwc-textfield>
                 </template>
-                <template v-else-if="tableCfg.cols[col].input==='number'">
-                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="number" v-model="recordObj[showForm][col]"></mwc-textfield>
-                </template>           
-                <template v-else-if="tableCfg.cols[col].input==='datetime'">
-                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="datetime-local" v-model="recordObj[showForm][col]"></mwc-textfield>
-                </template>           
-                <template v-else-if="tableCfg.cols[col].input==='date'">
-                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="date" v-model="recordObj[showForm][col]"></mwc-textfield>
-                </template>           
-                <template v-else-if="tableCfg.cols[col].input==='time'">
-                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="time" v-model="recordObj[showForm][col]"></mwc-textfield>
+                <template v-else-if="tableCfg.cols[col].input === 'number'">
+                  <mwc-textfield
+                    :required="isRequired(col)"
+                    class="field-item"
+                    :key="col + index"
+                    :label="tableCfg.cols[col].label"
+                    outlined
+                    type="number"
+                    v-model="recordObj[showForm][col]"
+                  ></mwc-textfield>
                 </template>
-                <template v-else-if="tableCfg.cols[col].input==='select'">
-                  <mwc-select :key="col+index" :label="tableCfg.cols[col].label" :value="recordObj[showForm][col]" @change="(e) => recordObj[showForm][col] = e.target.value">
-                    <mwc-list-item v-for="(option, index2) of tableCfg.cols[col].options" :value="option.key" :key="col+index+'-'+index2">{{ option.text }}</mwc-list-item>
+                <template v-else-if="tableCfg.cols[col].input === 'datetime'">
+                  <mwc-textfield
+                    :required="isRequired(col)"
+                    class="field-item"
+                    :key="col + index"
+                    :label="tableCfg.cols[col].label"
+                    outlined
+                    type="datetime-local"
+                    v-model="recordObj[showForm][col]"
+                  ></mwc-textfield>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input === 'date'">
+                  <mwc-textfield
+                    :required="isRequired(col)"
+                    class="field-item"
+                    :key="col + index"
+                    :label="tableCfg.cols[col].label"
+                    outlined
+                    type="date"
+                    v-model="recordObj[showForm][col]"
+                  ></mwc-textfield>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input === 'time'">
+                  <mwc-textfield
+                    :required="isRequired(col)"
+                    class="field-item"
+                    :key="col + index"
+                    :label="tableCfg.cols[col].label"
+                    outlined
+                    type="time"
+                    v-model="recordObj[showForm][col]"
+                  ></mwc-textfield>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input === 'select'">
+                  <mwc-select :key="col + index" :label="tableCfg.cols[col].label" :value="recordObj[showForm][col]" @change="(e) => (recordObj[showForm][col] = e.target.value)">
+                    <mwc-list-item v-for="(option, index2) of tableCfg.cols[col].options" :value="option.key" :key="col + index + '-' + index2">{{ option.text }}</mwc-list-item>
                   </mwc-select>
                 </template>
-                <template v-else-if="tableCfg.cols[col].input==='multi-select'">
+                <template v-else-if="tableCfg.cols[col].input === 'multi-select'">
                   <mwc-multiselect
                     :required="isRequired(col)"
-                    :key="col+index"
+                    :key="col + index"
                     :label="tableCfg.cols[col].label"
                     v-model="recordObj[showForm][col]"
                     :options="JSON.stringify(tableCfg.cols[col].options)"
                   ></mwc-multiselect>
                 </template>
-                <template v-else-if="tableCfg.cols[col].input==='autocomplete'">
+                <template v-else-if="tableCfg.cols[col].input === 'autocomplete'">
                   <mwc-autocomplete
                     :class="col"
                     :required="isRequired(col)"
-                    :key="col+index"
+                    :key="col + index"
                     :label="tableCfg.cols[col].label"
                     v-model="recordObj[showForm][col]"
                     @search="(e) => autoComplete(e, col, showForm)"
                   ></mwc-autocomplete>
-                </template>           
+                </template>
                 <template v-else>
-                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col+index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
-                </template>           
+                  <mwc-textfield
+                    :required="isRequired(col)"
+                    class="field-item"
+                    :key="col + index"
+                    :label="tableCfg.cols[col].label"
+                    outlined
+                    type="text"
+                    v-model="recordObj[showForm][col]"
+                  ></mwc-textfield>
+                </template>
               </template>
             </template>
           </div>
-          <mwc-button type="button" @click="showForm=''">Cancel</mwc-button>
+          <mwc-button type="button" @click="showForm = ''">Cancel</mwc-button>
           <mwc-button type="button" @click="doAddOrEdit" :disabled="loading">Confirm</mwc-button>
         </form>
       </slot>
@@ -146,12 +200,13 @@ import { useRouter, useRoute } from 'vue-router'
 export default {
   name: 'CrudTable',
   props: {
-    rowsPerPage: { type: [Number], default: 10 },
-    rowsPerPageList: { type: Array, default: [5, 10, 25, 50] },
+    pageSize: { type: [Number], default: 10 },
+    pageSizeList: { type: Array, default: () => [5, 10, 25, 50] },
     tableName: { type: String, required: true }
   },
   // do NOT destructure the props object, as it will lose reactivity
-  setup(props, ctx) { // ctx = attrs, slots, emit
+  setup(props, ctx) {
+    // ctx = attrs, slots, emit
     const http = useXhr()
     const router = useRouter()
     const route = useRoute()
@@ -161,7 +216,7 @@ export default {
     const page = ref(1)
     const records = ref([])
     const maxPage = ref(1)
-    const rowsPerPage = ref(props.rowsPerPage)
+    const rowsPerPage = ref(props.pageSize)
     const headerCols = reactive([])
     const filters = reactive([])
     const filterCols = reactive([])
@@ -171,10 +226,9 @@ export default {
     const loading = ref(false)
     const recordObj = reactive({
       add: {},
-      edit: {},
+      edit: {}
     })
 
-    const tableName = props.tableName
     let gridEl // grid element
     let sorter = []
 
@@ -196,12 +250,12 @@ export default {
       if (!item) return // do not continue if item is null
       try {
         console.log('item.key', item.key)
-        const { data } = await http.get('/api/t4t/find-one/' + tableName, { key: item.key })
-        recordObj['edit'].key = item.key
-        Object.entries(tableCfg.value.cols).forEach(kv => {
+        const { data } = await http.get('/api/t4t/find-one/' + props.tableName, { key: item.key })
+        recordObj.edit.key = item.key
+        Object.entries(tableCfg.value.cols).forEach((kv) => {
           const [key, val] = kv
           if (val.edit !== 'hide') {
-            recordObj['edit'][key] = data[key]
+            recordObj.edit[key] = data[key]
           }
         })
         showForm.value = 'edit'
@@ -225,16 +279,16 @@ export default {
       keyval.value = route.query.keyval
 
       if (!tableCfg.value) {
-        const { data } = await http.get('/api/t4t/config/' + tableName)
+        const { data } = await http.get('/api/t4t/config/' + props.tableName)
         tableCfg.value = data
       }
       if (tableCfg.value) {
-        for (let col in tableCfg.value.cols) {
+        for (const col in tableCfg.value.cols) {
           const obj = tableCfg.value.cols[col]
           if (obj.table !== 'hide') headerCols.push({ path: col, header: obj.label }) // process table columns
           if (obj.filter !== 'hide') filterCols.push(col) // process filters
         }
-        // Object.entries(tableCfg.value.cols) => [ [key, obj], ... ]        
+        // Object.entries(tableCfg.value.cols) => [ [key, obj], ... ]
       }
 
       gridEl = document.querySelector('vaadin-grid.table')
@@ -257,10 +311,10 @@ export default {
                 order: params.sortOrders[0].direction
               })
             }
-            const { data } = await http.get('/api/t4t/find/' + tableName, {
+            const { data } = await http.get('/api/t4t/find/' + props.tableName, {
               page: page.value,
               limit: rowsPerPage.value,
-              filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: "=", val: keyval.value, andOr: "and"}] : filters),
+              filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters),
               sorter: JSON.stringify(sorter)
             })
             const rv = data
@@ -279,7 +333,7 @@ export default {
         }
       }
     })
-    onUnmounted(()=> {
+    onUnmounted(() => {
       if (gridEl) {
         gridEl.removeEventListener('active-item-changed', _rowClick)
         // gridEl.removeEventListener('selected-items-changed', _selectClick)
@@ -294,10 +348,10 @@ export default {
     const refreshData = () => gridEl && gridEl.clearCache()
 
     const openAdd = async () => {
-      Object.entries(tableCfg.value.cols).forEach(item => {
+      Object.entries(tableCfg.value.cols).forEach((item) => {
         const [key, val] = item
         if (val.add !== 'hide') {
-          recordObj['add'][key] = val.default || (val.type === 'integer' || val.type === 'decimal' ? 0 : '')
+          recordObj.add[key] = val.default || (val.type === 'integer' || val.type === 'decimal' ? 0 : '')
         }
       })
       showForm.value = 'add'
@@ -310,15 +364,15 @@ export default {
         const { dbName, tableName, limit, key, text, parentTableColName, parentCol } = tableCfg.value.cols[col].options
         const query = { dbName, tableName, limit, key, text, search: e.target.value }
         if (parentTableColName) {
-          query['parentTableColName'] = parentTableColName
-          query['parentTableColVal'] = recordObj[_showForm][parentCol]
+          query.parentTableColName = parentTableColName
+          query.parentTableColVal = recordObj[_showForm][parentCol]
         }
         const { data } = await http.get('/api/t4t/autocomplete', query)
         res = data
       } catch (err) {
         console.log('autoComplete', err.message)
       }
-      const mwcAc = document.querySelector('mwc-autocomplete.'+col)
+      const mwcAc = document.querySelector('mwc-autocomplete.' + col)
       mwcAc.setList(res)
     }, 500)
 
@@ -339,14 +393,14 @@ export default {
       try {
         const { pk } = tableCfg.value
         if (pk) {
-          ids = items.map(item => item[pk])
+          ids = items.map((item) => item[pk])
         } else {
-          ids = items.map(item => item.key)
+          ids = items.map((item) => item.key)
         }
         // const rv =
-        await http.get('/api/t4t/remove/' + tableName, { ids })
+        await http.get('/api/t4t/remove/' + props.tableName, { ids })
       } catch (e) {
-        alert( `Error delete ${e.toString()}` )
+        alert(`Error delete ${e.toString()}`)
       }
       loading.value = false
       refreshData()
@@ -359,7 +413,7 @@ export default {
 
       // validate
       const rec = recordObj[showForm.value]
-      for (let col in rec) {
+      for (const col in rec) {
         if (tableCfg.value.cols[col]) {
           const { rules, type } = tableCfg.value.cols[col]
           if (rules) {
@@ -376,13 +430,13 @@ export default {
       loading.value = true
       try {
         if (showForm.value === 'add') {
-          await http.post(`/api/t4t/create/${tableName}`, recordObj['add'])
+          await http.post(`/api/t4t/create/${props.tableName}`, recordObj.add)
         } else {
-          const { key, ...data } = recordObj['edit']
-          await http.patch(`/api/t4t/update/${tableName}`, data, { key })
+          const { key, ...data } = recordObj.edit
+          await http.patch(`/api/t4t/update/${props.tableName}`, data, { key })
         }
       } catch (e) {
-        alert( `Error ${showForm.value} ${e.toString()}` )
+        alert(`Error ${showForm.value} ${e.toString()}`)
       }
       loading.value = false
       showForm.value = '' // close the form
@@ -390,10 +444,12 @@ export default {
     }
 
     const deleteFilter = (index) => filters.splice(index, 1) // console.log('remove filter', index)
-    const addFilter = (index) => filters.splice( index, 0, { col: filterCols[0], op: '=', val: '', andOr: 'and' } )
+    const addFilter = (index) => filters.splice(index, 0, { col: filterCols[0], op: '=', val: '', andOr: 'and' })
 
     const csvUpload = async () => {
-      try { document.querySelector('#upload-dialog').setAttribute('open', true) } catch (e) { }
+      try {
+        document.querySelector('#upload-dialog').setAttribute('open', true)
+      } catch (e) {}
     }
 
     const doUpload = async () => {
@@ -428,11 +484,11 @@ export default {
 
     const csvDownload = async () => {
       console.log('export', keycol.value, filters)
-      const { data } = await http.get('/api/t4t/find/' + tableName, {
+      const { data } = await http.get('/api/t4t/find/' + props.tableName, {
         page: 0,
         limit: 0,
         csv: 1, // it is a csv
-        filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: "=", val: keyval.value, andOr: "and"}] : filters),
+        filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters),
         sorter: JSON.stringify(sorter)
       })
       downloadData(data.csv, 'job.csv', 'text/csv;charset=utf-8;')
@@ -445,10 +501,7 @@ export default {
 
     const selectAllChanged = (e) => {
       if (!gridEl) return
-      console.log(gridEl)
-      const xxx = gridEl.querySelectorAll('vaadin-grid-selection-column')
-      // console.log('xxx', xxx)
-      .forEach(function(node) {
+      gridEl.querySelectorAll('vaadin-grid-selection-column').forEach(function (node) {
         console.log('node', node)
       })
       if (e.detail.value) {
@@ -528,7 +581,8 @@ nav {
   padding-right: 4px;
 }
 
-.nav-left, .nav-right {
+.nav-left,
+.nav-right {
   margin-top: 1px;
   margin-bottom: 1px;
   list-style: none;
@@ -560,7 +614,8 @@ nav {
   /* width: 1800px; */
 }
 
-.page-flex h1, .page-flex p {
+.page-flex h1,
+.page-flex p {
   text-align: center;
 }
 
@@ -572,22 +627,22 @@ nav {
   align-items: center;
 }
 
-.form-box-flex { 
+.form-box-flex {
   width: 50%;
 
-  display: flex; 
-  flex-direction: column; 
-  flex: 0 0 auto; 
-  
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+
   border-radius: 0px;
   padding: 15px;
   background: #eeeeee;
 }
 
-.field-set-flex { 
+.field-set-flex {
   height: calc(100vh - 300px);
-  display: flex; 
-  flex-direction: column; 
+  display: flex;
+  flex-direction: column;
   flex: 0 0 auto;
   overflow: auto;
 }
@@ -601,6 +656,7 @@ nav {
   height: 150px;
 }
 .drop-down {
-  height:150px;overflow-y:scroll;
+  height: 150px;
+  overflow-y: scroll;
 }
 </style>

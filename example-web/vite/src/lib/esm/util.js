@@ -1,8 +1,10 @@
-function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';', idName = 'id') { // TBD Make alphbetical order?
+function makeCsvRow(csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';', idName = 'id') {
+  // TBD Make alphbetical order?
   if (!csvContent) {
     csvContent += idName // set id as first columns
-    for (let k1 in tmp) {
-      if (tmp.hasOwnProperty(k1) && k1 !== idName) { // set id as first columns
+    for (const k1 in tmp) {
+      if (tmp.hasOwnProperty(k1) && k1 !== idName) {
+        // set id as first columns
         let text = k1.replace(/;/g, ' ')
         text = text.replace(/([A-Z])/g, ' $1')
         text = text.charAt(0).toUpperCase() + text.slice(1) // capitalize the first letter - as an example.
@@ -12,7 +14,7 @@ function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';
     csvContent += rowDelimiter
   }
   csvContent += `${tmp[idName]}`
-  for (let k2 in tmp) {
+  for (const k2 in tmp) {
     if (tmp.hasOwnProperty(k2) && k2 !== idName) {
       let value = ''
       if (typeof tmp[k2] === 'undefined' || !tmp[k2]) {
@@ -26,7 +28,7 @@ function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';
       } else {
         try {
           value = tmp[k2].toString()
-        } catch (e) { }
+        } catch (e) {}
       }
       csvContent += ';' + value.replace(/;/g, ' ')
     }
@@ -36,9 +38,9 @@ function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';
 }
 
 // to be removed
-function exportCsv (csvContent, filename) {
-  let encodedUri = encodeURI('data:text/csv;charset=utf-8,' + csvContent)
-  let link = document.createElement('a')
+function exportCsv(csvContent, filename) {
+  const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + csvContent)
+  const link = document.createElement('a')
   link.setAttribute('href', encodedUri)
   link.setAttribute('download', filename)
   document.body.appendChild(link) // Required for FF
@@ -46,10 +48,10 @@ function exportCsv (csvContent, filename) {
 }
 
 // to be removed
-function exportJson (jsonContent, filename) {
+function exportJson(jsonContent, filename) {
   if (typeof jsonContent !== 'string') jsonContent = JSON.stringify(jsonContent)
-  let encodedUri = encodeURI('data:text/json;charset=utf-8,' + jsonContent)
-  let link = document.createElement('a')
+  const encodedUri = encodeURI('data:text/json;charset=utf-8,' + jsonContent)
+  const link = document.createElement('a')
   link.setAttribute('href', encodedUri)
   link.setAttribute('download', filename)
   document.body.appendChild(link) // Required for FF
@@ -57,10 +59,11 @@ function exportJson (jsonContent, filename) {
 }
 
 // improved download function
-function downloadData (content, filename, type = 'text/csv;charset=utf-8;') {
+function downloadData(content, filename, type = 'text/csv;charset=utf-8;') {
   const blob = new Blob([content], { type })
   // IE11 & Edge
-  if (navigator.msSaveBlob) { // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+  if (navigator.msSaveBlob) {
+    // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
     navigator.msSaveBlob(blob, filename)
   } else {
     // In FF link must be added to DOM to be clicked
@@ -74,14 +77,14 @@ function downloadData (content, filename, type = 'text/csv;charset=utf-8;') {
 }
 
 // Usage debounce(<Your Function>, <debounce time in milliseconds>)
-// const debounce = (func, delayMs) => { 
-//   let debounceTimer 
-//   return function() { 
+// const debounce = (func, delayMs) =>
+//   let debounceTimer
+//   return function() {
 //     const context = this
-//     const args = arguments 
-//     clearTimeout(debounceTimer) 
-//     debounceTimer = setTimeout(() => func.apply(context, args), delayMs) 
-//   } 
+//     const args = arguments
+//     clearTimeout(debounceTimer)
+//     debounceTimer = setTimeout(() => func.apply(context, args), delayMs)
+//   }
 // }
 
 // call only after X ms has passed
@@ -93,9 +96,8 @@ function downloadData (content, filename, type = 'text/csv;charset=utf-8;') {
 const debounce = (callback, delay) => {
   let timeout = null
   return (...args) => {
-    const next = () => 
-    callback(...args);
-    clearTimeout(timeout);
+    const next = () => callback(...args)
+    clearTimeout(timeout)
     timeout = setTimeout(next, delay)
   }
 }
@@ -110,11 +112,11 @@ const debounce = (callback, delay) => {
 // - Throttling a button click so we can’t spam click.
 // - Throttling a touch/move mouse event handler.
 function throttle(callback, wait) {
-  var time = Date.now();
-  return function() {
-    if ((time + wait - Date.now()) < 0) {
-      callback();
-      time = Date.now();
+  var time = Date.now()
+  return function () {
+    if (time + wait - Date.now() < 0) {
+      callback()
+      time = Date.now()
     }
   }
 }

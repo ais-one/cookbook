@@ -1,4 +1,4 @@
-export default {
+const ws = {
   instance: null, // web socket instance
   onmessage: null, // attach message handler
   endpoint: null,
@@ -12,7 +12,7 @@ export default {
   },
   setMessage(onmessage) {
     this.onmessage = onmessage
-    if (this.instance) this.instance.onmessage = this.onmessage 
+    if (this.instance) this.instance.onmessage = this.onmessage
   },
   send(message) {
     if (this.instance) this.instance.send(message)
@@ -31,17 +31,27 @@ export default {
     try {
       this.instance = new WebSocket(this.endpoint)
       this.instance.onopen = () => console.log('ws open')
-      this.instance.onerror = (err) => ws.close() // err.message
+      this.instance.onerror = (err) => {
+        console.log(err.message)
+        ws.close()
+      }
       this.instance.onmessage = this.onmessage
       this.instance.onclose = (e) => {
         if (!e.wasClean && this.reconnectMs) {
-          setTimeout(() => { this.connect() }, this.reconnectMs > 1000 ? this.reconnectMs : 1000)
+          setTimeout(
+            () => {
+              this.connect()
+            },
+            this.reconnectMs > 1000 ? this.reconnectMs : 1000
+          )
         } else {
           console.log(`[close] Connection closed cleanly, code=${e.code} reason=${e.reason}`)
         }
-      }  
+      }
     } catch (e) {
       console.log('connect error', e.toString())
     }
   }
 }
+
+export default ws

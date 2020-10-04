@@ -32,8 +32,8 @@ const messaging = firebase.messaging()
 
 messaging.setBackgroundMessageHandler(function (payload) {
   // console.log('[firebase-messaging-sw.js] Received background message ', payload)
-  let notificationTitle = 'AHOP ALERT' + (new Date()).toLocaleDateString()
-  let notificationOptions = { body: 'Updates Please Refresh' }
+  let notificationTitle = 'AHOP ALERT' + new Date().toLocaleDateString()
+  const notificationOptions = { body: 'Updates Please Refresh' }
   try {
     // const { title = 'AHOP ALERT' + (new Date()).toLocaleDateString(), body = 'Updates. Please Refresh' } =
     const json = JSON.parse(payload.data.notification)
@@ -57,14 +57,15 @@ self.addEventListener('notificationclick', function (event) {
   const rootUrl = new URL('./', location).href
   event.notification.close()
   event.waitUntil(
-    clients.matchAll().then(matchedClients => {
-      for (let client of matchedClients) {
+    clients.matchAll().then((matchedClients) => {
+      for (const client of matchedClients) {
         if (client.url.indexOf(rootUrl) >= 0) {
           return client.focus()
         }
       }
-      return clients.openWindow(rootUrl).then(function (client) { client.focus() })
+      return clients.openWindow(rootUrl).then(function (client) {
+        client.focus()
+      })
     })
   )
 })
-

@@ -1,25 +1,22 @@
 import { createStore } from 'vuex'
-
 import router from './router.js'
-
 import * as http from '/src/lib/esm/http.js'
-
 // import aaa from 'https://unpkg.com/swrv@0.3.0/esm/index.js' - will error
 
 const state = {
   count: 99,
-  user: null,
+  user: null
 }
 
 const mutations = {
-  login (state, payload) {
+  login(state, payload) {
     console.log('login', payload)
     state.user = payload
   },
-  increment (state) {
+  increment(state) {
     state.count++
   },
-  decrement (state) {
+  decrement(state) {
     state.count--
   }
 }
@@ -30,15 +27,18 @@ const actions = {
   doLogin: async ({ commit, ...ctx }, payload) => {
     // console.log('doLogin', payload)
     if (payload) {
-      if (payload.forced) { //  forced - refresh token error
+      if (payload.forced) {
+        //  forced - refresh token error
         // console.log('payload forced === true')
         commit('login', null)
         await router.push('/signin')
-      } else { // sign in ok
+      } else {
+        // sign in ok
         commit('login', payload)
         await router.push('/dashboard')
       }
-    } else { // sign in failed
+    } else {
+      // sign in failed
       // console.log('payload forced === false')
       try {
         await http.get('/api/auth/logout')
@@ -54,12 +54,12 @@ const actions = {
   },
   increment: ({ commit }) => commit('increment'),
   decrement: ({ commit }) => commit('decrement'),
-  incrementIfOdd ({ commit, payload }) {
+  incrementIfOdd({ commit, payload }) {
     if ((payload.count + 1) % 2 === 0) {
       commit('increment')
     }
   },
-  incrementAsync ({ commit }) {
+  incrementAsync({ commit }) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         commit('increment')
@@ -71,7 +71,7 @@ const actions = {
 
 // getters are functions.
 const getters = {
-  evenOrOdd: payload => payload.count % 2 === 0 ? 'even' : 'odd'
+  evenOrOdd: (payload) => (payload.count % 2 === 0 ? 'even' : 'odd')
 }
 
 const store = createStore({

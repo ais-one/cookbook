@@ -36,7 +36,7 @@ template.innerHTML = `
 class LoadingOverlay extends HTMLElement {
   constructor() {
     super()
-    const shadowRoot = this.attachShadow({mode: 'open'})
+    const shadowRoot = this.attachShadow({ mode: 'open' })
     shadowRoot.appendChild(template.content.cloneNode(true))
   }
 
@@ -48,21 +48,18 @@ class LoadingOverlay extends HTMLElement {
   get show() {
     return this.hasAttribute('show')
   }
+
   set show(value) {
     value ? this.setAttribute('show', '') : this.removeAttribute('show')
   }
 
-  connectedCallback() { // added to the DOM
-  }
+  connectedCallback() {}
 
-  attributeChangedCallback(name, oldVal, newVal) { // attribute changed
-  }
+  attributeChangedCallback(name, oldVal, newVal) {}
 
-  adoptedCallback() { // moved into a new document
-  }
+  adoptedCallback() {}
 
-  disconnectedCallback() { // removed from the DOM
-  }
+  disconnectedCallback() {}
 }
 
 customElements.define('vcxwc-loading-overlay', LoadingOverlay)

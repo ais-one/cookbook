@@ -1,7 +1,7 @@
 <template>
   <crud-table tableName="grade" ref="myroot">
     <template v-slot:filters="{ filters }">
-      <div>HELLO {{ filters.length}} {{ myroot.tableName }}</div>
+      <div>HELLO {{ filters.length }} {{ myroot.tableName }}</div>
     </template>
   </crud-table>
 </template>
@@ -28,6 +28,5 @@ export default {
       myroot
     }
   }
-
 }
 </script>

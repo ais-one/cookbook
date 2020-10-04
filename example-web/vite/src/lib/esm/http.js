@@ -3,23 +3,23 @@ let token = ''
 let refreshToken = ''
 
 let baseUrl = '' // 'http://127.0.0.1:3000'
-let timeoutMs = 0
-let maxRetry = 0
+const timeoutMs = 0
+const maxRetry = 0
 let credentials = 'same-origin'
 let forceLogoutFn = () => {} // function to call when forcing a logout
 
-const setBaseUrl = (_baseUrl) => baseUrl = _baseUrl
-const setToken = (_token) => token = _token
-const setRefreshToken = (_refreshToken) => refreshToken = _refreshToken
-const setCredentials = (_credentials) => credentials = _credentials
-const setForceLogoutFn = (_forceLogoutFn) => forceLogoutFn = _forceLogoutFn
+const setBaseUrl = (_baseUrl) => (baseUrl = _baseUrl)
+const setToken = (_token) => (token = _token)
+const setRefreshToken = (_refreshToken) => (refreshToken = _refreshToken)
+const setCredentials = (_credentials) => (credentials = _credentials)
+const setForceLogoutFn = (_forceLogoutFn) => (forceLogoutFn = _forceLogoutFn)
 
 
-function parseJwt (_token) {
+function parseJwt(_token) {
   var base64Url = _token.split('.')[1]
   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
   }).join(''))
   return JSON.parse(jsonPayload)
 }
@@ -67,9 +67,9 @@ const http = async (method, url, body = null, query = null, headers = null) => {
       'Content-Type': 'application/json'
     }
     const options = { method, headers }
-    if (timeoutMs > 0)  options.signal = signal
-    if (token && credentials !== 'include') options.headers['Authorization'] = `Bearer ${token}` // include === HTTPONLY_TOKEN
-    if (urlPath === '/api/auth/logout') options.headers['refresh_token'] = refreshToken // add refresh token for logout
+    if (timeoutMs > 0) options.signal = signal
+    if (token && credentials !== 'include') options.headers.Authorization = `Bearer ${token}` // include === HTTPONLY_TOKEN
+    if (urlPath === '/api/auth/logout') options.headers.refresh_token = refreshToken // add refresh token for logout
     if (body) options.body = JSON.stringify(body)
     options.credentials = credentials
 
@@ -82,7 +82,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
         if (rv1.status === 200) {
           token = rv1.data.token
           refreshToken = rv1.data.refresh_token
-          if (token && credentials !== 'include') options.headers['Authorization'] = `Bearer ${token}` // include === HTTPONLY_TOKEN
+          if (token && credentials !== 'include') options.headers.Authorization = `Bearer ${token}` // include === HTTPONLY_TOKEN
           const rv2 = await fetch(urlFull + qs, options)
           rv2.data = await rv2.json()
           return rv2
@@ -96,7 +96,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
   } catch (e) {
     if (e && e.data && e.data.message !== 'Token Expired Error') forceLogoutFn()
     // console.log('aaaaaaaaaaaaaaaaaa', e)
-    throw e // some other error 
+    throw e // some other error
   }
 }
 
@@ -113,7 +113,7 @@ async function otp() {
     if (data.token) {
       token = data.token
       refreshToken = data.refresh_token
-      console.log('otp ok', token, refreshToken, data)      
+      console.log('otp ok', token, refreshToken, data)
     } else {
       console.log('otp error', data)
     }
@@ -145,32 +145,15 @@ async function logout() {
 
 const post = async (url, body = null, query = null, headers = null) => { try { return await http('POST', url, body, query, headers) } catch (e) { throw e } }
 
-const patch = async (url, body = null, query = null, headers = null) =>  { try { return await http('PATCH', url, body, query, headers) } catch (e) { throw e } } 
+const patch = async (url, body = null, query = null, headers = null) => { try { return await http('PATCH', url, body, query, headers) } catch (e) { throw e } }
 
 const del = async (url, query = null, headers = null) => { try { return await http('DELETE', url, null, query, headers) } catch (e) { throw e } }
 
 const get = async (url, query = null, headers = null) => { try { return await http('GET', url, null, query, headers) } catch (e) { throw e } }
 
-export {
-  http,
-  post,
-  get,
-  patch,
-  del,
-  test,
-  testAuth,
-  login,
-  otp,
-  logout,
-  setBaseUrl,
-  setToken,
-  setRefreshToken,
-  setCredentials,
-  setForceLogoutFn,
-  parseJwt
-}
+export { http, post, get, patch, del, test, testAuth, login, otp, logout, setBaseUrl, setToken, setRefreshToken, setCredentials, setForceLogoutFn, parseJwt }
 
-// try { 
+// try {
 //   let res = await fetch('/api/auth/login', {
 //     method: 'POST', // *GET, POST, PUT, DELETE, etc.
 //     // mode: 'cors', // no-cors, *cors, same-origin
@@ -191,7 +174,7 @@ export {
 //       this.$store.commit('setToken', data.token)
 //       localStorage.setItem('ms', JSON.stringify({ user: data.user, token: data.token }))
 //       this.$router.push('/dashboard')
-//     }  
+//     }
 //   } else {
 //     this.errorMsg = 'Fail to login'
 //   }

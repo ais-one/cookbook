@@ -1,6 +1,6 @@
 import { provide, inject } from 'vue'
 
-const XhrSymbol = Symbol()
+const XhrSymbol = Symbol('XhrSymbol')
 
 export function provideXhr(xhr) {
   provide(XhrSymbol, xhr)

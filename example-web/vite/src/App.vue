@@ -45,10 +45,10 @@ export default {
 
     // set i18n
     provideI18n({
-      locale: "en",
+      locale: 'en',
       messages: {
-        en: { sign_in: "Sign In (en)" },
-        id: { sign_in: "Masuk (id)" }
+        en: { sign_in: 'Sign In (en)' },
+        id: { sign_in: 'Masuk (id)' }
       }
     })
 
