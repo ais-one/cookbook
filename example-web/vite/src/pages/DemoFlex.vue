@@ -10,6 +10,7 @@
         }
       "
     >
+    <!-- <div v-for="(item, i) in list" :key="i" :ref="(el) => makeRef(el, i)"> -->
       {{ item }}
     </div>
     <div class="section">
@@ -37,7 +38,13 @@ export default {
     onBeforeUpdate(() => {
       divs.value = []
     })
+
+    const makeRef = (el, i) => {
+      divs[i] = el
+    }
+
     return {
+      makeRef,
       list,
       divs
     }
