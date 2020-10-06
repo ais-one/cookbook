@@ -42,7 +42,7 @@ module.exports = {
   plugins: ['vue', 'prettier'],
   overrides: [
     {
-      files: ['firebase-messaging-sw.js'],
+      files: ['firebase-messaging-sw.js', 'service-worker.js'],
       globals: {
         importScripts: 'readonly',
         firebase: 'readonly',
@@ -53,8 +53,8 @@ module.exports = {
       files: ['pwa-init.js'],
       globals: {
         firebase: 'readonly',
-        FIREBASE_CONFIG: 'readonly',
-        VAPID_KEY: 'readonly'
+        CONFIG_FIREBASE_CLIENT: 'readonly',
+        CONFIG_VAPID_KEY: 'readonly'
       }
     }
   ]

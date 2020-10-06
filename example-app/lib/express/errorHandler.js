@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function ({ unhandledRejection, uncaughtException, stackTraceLimit=1 }) {
+module.exports = function ({ unhandledRejection, uncaughtException, stackTraceLimit=10 }) {
   // set globals here
   // caution - avoid name clashes with native JS libraries, other libraries, other globals
 

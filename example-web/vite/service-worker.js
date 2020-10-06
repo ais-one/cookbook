@@ -205,29 +205,20 @@ self.addEventListener('push', function (e) {
 // }, false);
 
 // pushsubscriptionchange event
-async function handlePush(event) {
+async function handlePush(e) {
   // Exit early if we don't have access to the client.
   // Eg, if it's cross-origin.
-  if (!event.clientId) return
+  if (!e.clientId) return
 
   // Get the client.
-  const client = await clients.get(event.clientId)
+  const client = await clients.get(e.clientId)
   // Exit early if we don't get the client.
   // Eg, if it closed.
   if (!client) return
 
   // Send a message to the client.
-  client.postMessage({ msg: "PN Changed" })
-
-  // const req = new Request('/refreshpushsubscription', {
-  //   method: 'POST',
-  //   body: JSON.stringify({
-  //     oldSubscription: event.oldSubscription,
-  //     newSubscription: event.newSubscription
-  //   })
-  // })
-  // const res = await self.fetch(req)
+  client.postMessage({ msg: 'pushsubscriptionchange', sub: e.newSubscription })
 }
-self.addEventListener('pushsubscriptionchange', (event) => event.waitUntil(handlePush(event)))
+self.addEventListener('pushsubscriptionchange', (e) => e.waitUntil(handlePush(e)))
 
-self.addEventListener('fetch', (event) => event.waitUntil(handlePush(event)))
+// self.addEventListener('fetch', (event) => event.waitUntil(handlePush(event)))

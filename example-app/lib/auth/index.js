@@ -35,6 +35,17 @@ const findUser = async (where) => {
   return null
 }
 
+const updateUser = async (where, payload) => {
+  if (AUTH_USER_STORE === 'mongo') {     
+    if (where.id) where = { _id: new ObjectID(where.id) }
+    return await mongo.db.collection(AUTH_USER_STORE_NAME).updateOne(where, { $set: payload })
+  } else if (AUTH_USER_STORE === 'objection') {
+    console.log('xxx', where, payload)
+    return await knex(AUTH_USER_STORE_NAME).where(where).first().update(payload)
+  }
+  return null
+}
+
 const createToken = async (payload, options) => { // Create a token from a payload
   let token
   let refresh_token
@@ -144,7 +155,7 @@ const refresh = async (req, res) => {
   return res.status(401).json({ message: 'Error token revoked' })
 }
 
-const addPayloadFromUserData = (user) => { // local method
+const addPayloadFromUserData = (user) => { // obtain additional information from the payload...
   const keys = AUTH_USER_FIELDS_JWT_PAYLOAD.split(',')
   const payloadItems = {}
   if (keys && keys.length) {
@@ -212,7 +223,7 @@ const otp = async (req, res) => { // need to be authentication, body { pin: '123
   return res.status(401).json({ message: 'Error token revoked' })
 }
 
-module.exports = { findUser, createToken, revokeToken, authUser, logout, refresh, login, otp } // getToken, setToken,
+module.exports = { findUser, updateUser, createToken, revokeToken, authUser, logout, refresh, login, otp } // getToken, setToken,
 
 /*
 const crypto = require('crypto')

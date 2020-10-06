@@ -12,13 +12,13 @@
 // Note that you can only use Firebase Messaging here, other Firebase libraries
 // are not available in the service worker.
 var window = self // self is service worker - simulate it as window
-importScripts('firebase.config.js') // FIREBASE_CONFIG
-// console.log('FIREBASE_CONFIG self window', self)
+importScripts('firebase.config.js')
+// console.log('CONFIG_FIREBASE_CLIENT self window', self)
 importScripts('https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js')
 importScripts('https://www.gstatic.com/firebasejs/7.22.0/firebase-messaging.js')
 
 // Initialize the Firebase app in the service worker by passing in the messagingSenderId.
-firebase.initializeApp(self.FIREBASE_CONFIG)
+firebase.initializeApp(self.CONFIG_FIREBASE_CLIENT)
 
 // Retrieve an instance of Firebase Messaging so that it can handle background messages.
 const messaging = firebase.messaging()

@@ -19,6 +19,7 @@
     <p><button @click="doAc">see ac</button>&nbsp;<button @click="setAc">set ac</button></p>
     <mwc-multiselect required label="ms-test" v-model="ms" :options="msOptions"></mwc-multiselect>
     <p>Axios GET {{ msg }}</p>
+    <p><button @click="subPn">Sub PN</button>&nbsp;<button @click="unsubPn">Unsub PN</button>&nbsp;<button @click="testPn">Test PN</button></p>
     <ul>
       <li v-for="n in 50" :key="n">{{ n }}</li>
     </ul>
@@ -32,6 +33,7 @@ import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inje
 import { useStore } from 'vuex'
 // import { useRouter, useRoute } from 'vue-router'
 import { debounce } from '/src/lib/esm/util.js'
+import { webpushSubscribe, webpushUnsubscribe } from '/src/lib/esm/pwa.js'
 import { useXhr } from '/src/plugins/xhr.js'
 
 export default {
@@ -157,6 +159,30 @@ export default {
         console.log('testApi err', e)
       }
     }
+
+    const subPn = async () => {
+      const { data } = await http.get('/api/webpush/vapid-public-key')
+      try {
+        const subscription = await webpushSubscribe(data.publicKey)
+        if (subscription) await http.post('/api/webpush/sub', { subscription })
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    const unsubPn = async () => {
+      await webpushUnsubscribe()
+      await http.post('/api/webpush/unsub')
+    }
+
+    const testPn = async () => {
+      try {
+        await http.post('/api/webpush/send/1', { mode: 'Webpush', data: 'Hello ' + new Date().toLocaleString() })
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
     // // Watch prop value change and assign to value 'selected' Ref
     // watch(() => props.value, (newValue: Props['value']) => {
     //   selected.value = newValue;
@@ -177,7 +203,10 @@ export default {
       storeCount, // store
       storeUser,
       updateSelected, // method
-      testApi // test API
+      testApi, // test API
+      subPn, // push notifications
+      unsubPn,
+      testPn
     }
   }
 }

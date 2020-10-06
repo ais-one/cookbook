@@ -4,7 +4,6 @@ const express = require('express')
 
 const agenda = require(LIB_PATH + '/services/mq/agenda').get() // agenda message queue
 const bull = require(LIB_PATH + '/services/mq/bull').get() // bull message queue
-const fcmSend = require(LIB_PATH + '/comms/fcm')
 
 // const path = require('path')
 // path.extname('index.html')
@@ -121,22 +120,6 @@ module.exports = express.Router()
     res.json({ message: req.file.buffer.toString() })
     // req.files is array of `photos` files
     // req.body will contain the text fields, if there were any
-  })
-
-  // test FCM push notification when device registers... 
-  .get('/test-pn-token/:pnToken', async (req, res) => {
-    try {
-      console.log('PN token received: ' + req.params.pnToken, req.query)
-      if (req.query.reply === 'yes') {
-        const rv = await fcmSend(req.params.pnToken, 'FCM Message', 'Received from My Server ' + Date.now())
-        console.log('send rv', rv.status)
-        res.status(200).json({ status: rv.status })  
-      } else {
-        res.status(200).json({ pnToken: req.params.pnToken })  
-      }
-    } catch (e) {
-      res.status(500).json({ e: e.toString() })
-    }
   })
 
   // message queues
