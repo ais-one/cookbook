@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1>Site A - Test VueJS 3</h1>
-    <div
+    <!-- <div
       v-for="(item, i) in list"
       :key="i"
       :ref="
@@ -9,8 +9,9 @@
           divs[i] = el
         }
       "
-    >
+    > -->
     <!-- <div v-for="(item, i) in list" :key="i" :ref="(el) => makeRef(el, i)"> -->
+    <div v-for="(item, i) in list" :key="i" :ref="(el) => (divs[i] = el)">
       {{ item }}
     </div>
     <div class="section">

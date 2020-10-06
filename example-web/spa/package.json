@@ -38,9 +38,9 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "deepmerge": "^4.2.2",
     "eslint": "^7.10.0",
-    "eslint-plugin-vue": "^7.0.0",
+    "eslint-plugin-vue": "^7.0.1",
     "fibers": "^4.0.3",
-    "sass": "^1.26.11",
+    "sass": "^1.26.12",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.12",
     "vuetify-loader": "^1.6.0"

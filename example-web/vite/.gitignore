@@ -1,6 +1,11 @@
+# build files and packages
 dist
 node_modules
+
+# secrets & configs
 secrets
+config/uat.js
+config/production.js
 
 # Log files
 npm-debug.log*

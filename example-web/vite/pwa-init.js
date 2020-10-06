@@ -8,19 +8,19 @@
 //   const permission = await Notification.requestPermission();
 //   // If the permission is not granted the application won't work
 //   if (permission !== 'granted') {
-//     // I am a very sour developer so I replace all of my page with an error message
-//     // DON'T DO LIKE ME AND BE A FRIENDLY DEV INSTEAD!
-//     document.body.innerHTML = '<h1> This app can\'t work without notification bye </h1>';
-//     return;
 //   }
 // }
 // // Then you can continue with your notification driven code
+import { firebase } from '@firebase/app'
+import '@firebase/messaging'
+// FIREBASE_CONFIG, VAPID_KEY is global from firebase.config.js
 
-// import config from '/firebase.config.js'
+const { VITE_API_URL } = import.meta.env
+
 const pnMode = 'Webpush' // FCM, Webpush, empty string
+console.log('pnMode', pnMode)
 
 if (pnMode === 'FCM') {
-  console.log('pnMode', pnMode)
   firebase.initializeApp(FIREBASE_CONFIG)
   const messaging = firebase.messaging()
   messaging.usePublicVapidKey(VAPID_KEY)
@@ -28,17 +28,19 @@ if (pnMode === 'FCM') {
   const sendToken = (token) => {
     console.log('Sending Token', token)
     // yes => reply. no => no reply (applicable to FCM)
-    fetch('http://127.0.0.1:3000/api/test-pn-token/' + token + '?reply=yes').then((res) => {
+    fetch(VITE_API_URL + '/api/test-pn-token/' + token + '?reply=yes').then((res) => {
       res.json().then((data) => {
         console.log('send token response', data)
       })
     })
   }
 
-  messaging.requestPermission().then(() => {
-    messaging.getToken().then(async (token) => {
-      sendToken(token)
-    })
+  Notification.requestPermission().then(function (permission) {
+    if (permission === 'granted') {
+      messaging.getToken().then(async (token) => {
+        sendToken(token)
+      })
+    }
   })
 
   messaging.onTokenRefresh(() => {
@@ -61,7 +63,7 @@ if (pnMode === 'FCM') {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', async function () {
     navigator.serviceWorker
-      .register('/service-worker.js')
+      .register('/service-worker.js?params='+encodeURIComponent(JSON.stringify({ a: 1, b: 2 })))
       .then((res) => console.log('service worker registered'))
       .catch((err) => console.log(err))
 
@@ -78,7 +80,14 @@ if ('serviceWorker' in navigator) {
         console.log('Webpush PN subscription', subscription)
       }
       // TBD Implement... unsub
+    } else {
+      
     }
+
+    navigator.serviceWorker.addEventListener('message', event => {
+      // TBD Handle event from service worker
+      console.log(event.data.msg)
+    })
   })
 }
 
@@ -89,7 +98,7 @@ if ('serviceWorker' in navigator) {
 // Except if you clear your storage
 const subscribe = async (registration) => {
   // First get a public key from our Express server
-  const response = await fetch('http://127.0.0.1:3000/api/webpush/vapid-public-key')
+  const response = await fetch(VITE_API_URL + '/api/webpush/vapid-public-key')
   const body = await response.json()
   const publicKey = body.publicKey
 
@@ -104,12 +113,16 @@ const subscribe = async (registration) => {
     applicationServerKey: Uint8ArrayPublicKey
   })
 
+  // console.log('sub', subscription)
+
   // Sending the subscription object to our Express server
-  await fetch('http://127.0.0.1:3000/api/webpush/sub?subId=test', {
+  await fetch(VITE_API_URL + '/api/webpush/sub?subId=test', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(subscription.toJSON())
   })
+
+  return subscription
 }
 
 // Let's create an unsubscribe function as well
@@ -121,7 +134,7 @@ const unsubscribe = async () => {
   await subscription.unsubscribe()
 
   // This tells our Express server that we want to unsubscribe
-  await fetch('http://127.0.0.1:3000/api/webpush/unsub?subId=test', {
+  await fetch(VITE_API_URL + '/api/webpush/unsub?subId=test', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(subscription.toJSON())

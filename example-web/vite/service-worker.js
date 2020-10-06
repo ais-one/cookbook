@@ -29,6 +29,8 @@ const cacheFilesStatic = [
 
 // SW install and cache static assets
 function addCaches(e) {
+  const params = new URL(location).searchParams.get('params')
+  console.log('SW addChaches', params)
   e.waitUntil(caches.open(CACHE_NAME_STATIC).then((cache) => cache.addAll(cacheFilesStatic)))
 }
 self.addEventListener('install', addCaches)
@@ -202,19 +204,30 @@ self.addEventListener('push', function (e) {
 //   // Send user data analytics 🔥 🔥 🔥
 // }, false);
 
-// PN change
-// self.addEventListener("pushsubscriptionchange", event => {
-//   event.waitUntil(swRegistration.pushManager.subscribe(event.oldSubscription.options)
-//     .then(subscription => {
-//       return fetch("register", {
-//         method: "post",
-//         headers: {
-//           "Content-type": "application/json"
-//         },
-//         body: JSON.stringify({
-//           endpoint: subscription.endpoint
-//         })
-//       })
-//     })
-//   )
-// }, false)
+// pushsubscriptionchange event
+async function handlePush(event) {
+  // Exit early if we don't have access to the client.
+  // Eg, if it's cross-origin.
+  if (!event.clientId) return
+
+  // Get the client.
+  const client = await clients.get(event.clientId)
+  // Exit early if we don't get the client.
+  // Eg, if it closed.
+  if (!client) return
+
+  // Send a message to the client.
+  client.postMessage({ msg: "PN Changed" })
+
+  // const req = new Request('/refreshpushsubscription', {
+  //   method: 'POST',
+  //   body: JSON.stringify({
+  //     oldSubscription: event.oldSubscription,
+  //     newSubscription: event.newSubscription
+  //   })
+  // })
+  // const res = await self.fetch(req)
+}
+self.addEventListener('pushsubscriptionchange', (event) => event.waitUntil(handlePush(event)))
+
+self.addEventListener('fetch', (event) => event.waitUntil(handlePush(event)))

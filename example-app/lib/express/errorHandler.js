@@ -57,6 +57,34 @@ module.exports = function ({ unhandledRejection, uncaughtException, stackTraceLi
   // }
   // global.NotFoundError = NotFoundError
 
+  // format the JS Error Object
+  global.errorFormatHttp = (e, code) => { // code is http status code
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+    const errorMap = {
+      'Bad Request': 400,
+      'Unauthorized': 401,
+      'Forbidden': 403,
+      'Not Found': 404,
+      'Conflict': 409,
+      'Unprocessable Entity': 422,
+      'Internal Server Error': 500,
+    }
+    if (code === undefined) {
+      code = e.message ? errorMap[e.message] || 500 : 500
+    }
+
+    if (e instanceof Error) {
+      // console.log('Error Object', error.name, error.name, error.stack)
+      let message = (e.name || '') + (e.message || e.toString() || 'Unknown Error')
+      let body = { message, code }
+      if (process.env.NODE_ENV === 'development') {
+        body.message = e.stack || message
+      }
+      return body  
+    } 
+    return { message: e.toString() || 'Unknown Error', code } // fallback
+  }
+
   process.on('unhandledRejection',
     unhandledRejection ?
     unhandledRejection :

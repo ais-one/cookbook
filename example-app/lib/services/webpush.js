@@ -27,30 +27,27 @@ const send = (req, res) => { // POST /send
   }
 }
 
-const test = (req, res) => { // GET /test
-  try {
-    const subscription = allSubscriptions['test']
-    const payload = JSON.stringify({ payload: 'Testing ABCdef 1234'})
-    sendNotification(subscription, payload) // payload is string or node buffer  
-    res.json({ status: 'ok' })
-  } catch (e) {
-    res.status(400).json({ error: e.toString() })
-  }
-}
+const test = asyncWrapper(async (req, res) => { // GET /test
+  // try {
+  const subscription = allSubscriptions['test']
+  const payload = JSON.stringify({ payload: 'Testing ABCdef 1234'})
+  await sendNotification(subscription, payload) // payload is string or node buffer  
+  res.json({ status: 'ok' })
+  // } catch (e) {
+  //   const { message, code } = errorFormatHttp(e)
+  //   res.status(code).json({ message })
+  // }
+})
 
 // This function takes a subscription object and a payload as an argument. It will try to encrypt the payload
 // then attempt to send a notification via the subscription's endpoint
 const sendNotification = async (subscription, payload) => {
   // This means we won't resend a notification if the client is offline
   const options = { TTL: 60 } // what if TTL = 0 ?
-  if (!subscription.keys) { payload = payload || null }
   // web-push's sendNotification function does all the work for us
-  try {
-    const res = await webPush.sendNotification(subscription, payload, options);
-    console.log('sent!', res.statusCode, res.body)
-  } catch (e) {
-    console.log('error sending', e.toString())
-  }
+  if (!subscription.keys) { payload = payload || null }
+  const res = await webPush.sendNotification(subscription, payload, options);
+  // console.log('sent!', res.statusCode, res.body)
 }
 
 // GET /vapid-public-key - Send our public key to the client
@@ -59,7 +56,8 @@ const vapidPubKey = (req, res) => res.json({ publicKey: vapidKeys.publicKey })
 // POST /subscribe Allows our client to subscribe
 let sub =  (req, res) => {
   const { subId } = req.query
-  const subscription = req.body
+  const subscription = req.body // { endpoint, keys, expirationTime }
+  // TBD also have old subscription and delete it
   if (!allSubscriptions[subId]) allSubscriptions[subId] = subscription
   res.json({ status: 'subscribed'})
 }

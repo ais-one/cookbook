@@ -1,15 +1,10 @@
-/*
-const isIos = () => {
-  const userAgent = window.navigator.userAgent.toLowerCase();
-  return /iphone|ipad|ipod/.test( userAgent );
-}
-// Detects if device is in standalone mode
-const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
-
-// Checks if should display install popup notification:
-if (isIos() && !isInStandaloneMode()) {
-}
-*/
+// https://firebase.google.com/support/releases
+// const isIos = () => {
+//   const userAgent = window.navigator.userAgent.toLowerCase();
+//   return /iphone|ipad|ipod/.test( userAgent );
+// }
+// const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone); // Detects if device is in standalone mode
+// if (isIos() && !isInStandaloneMode()) {} // Checks if should display install popup notification:
 
 // console.log('FIREBASE SERVICE WORKER CODE START')
 // [START initialize_firebase_in_sw]
@@ -19,9 +14,8 @@ if (isIos() && !isInStandaloneMode()) {
 var window = self // self is service worker - simulate it as window
 importScripts('firebase.config.js') // FIREBASE_CONFIG
 // console.log('FIREBASE_CONFIG self window', self)
-// https://firebase.google.com/support/releases
-importScripts('https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js')
-importScripts('https://www.gstatic.com/firebasejs/7.21.1/firebase-messaging.js')
+importScripts('https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js')
+importScripts('https://www.gstatic.com/firebasejs/7.22.0/firebase-messaging.js')
 
 // Initialize the Firebase app in the service worker by passing in the messagingSenderId.
 firebase.initializeApp(self.FIREBASE_CONFIG)

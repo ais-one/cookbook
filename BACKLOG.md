@@ -11,16 +11,16 @@ List of urgent issues to take care of
 ## Backlog
 
 For future product improvement
+- [chore] circleci / github actions (consider for monorepo)
+- [frontend] styling for custom build mwc-*
 - [backend-deployment] GKE, Kubernetes
 - [frontend-i18n] node-polyglot
 - [frontend-testing] cypress e2e testing
 - [vite] migrate vue-crud-x table examples to vite
 - [frontend-graphql] try @octokit/graphql
-
 - [chore] apollo-client graphql security & performance review
 - [chore] use monorepo when npm 7 is released ?
 - [chore] git clone without git history
-
 - [chore] disable console.log in production / proper console logging
 - [backend-testing] research auto generated REST API and Testing (keep in view dredd.io)
 - [backend-testing] research websocket testing
