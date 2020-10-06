@@ -5,6 +5,7 @@ export const {
   VITE_WS_MS,
   VITE_GQL_URI,
   VITE_GWS_URI,
+  VITE_PWA_PN, // Webpush, FCM
   // NOT NEEDED... BACKEND DETERMINES VITE_USE_OTP, // GA, SMS, ''
   VITE_RECAPTCHA_KEY,
   VITE_HTTPONLY_TOKEN = false, // true, false use VITE_HTTPONLY_TOKEN for more security, but needs same domain

@@ -33,8 +33,9 @@ import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inje
 import { useStore } from 'vuex'
 // import { useRouter, useRoute } from 'vue-router'
 import { debounce } from '/src/lib/esm/util.js'
-import { webpushSubscribe, webpushUnsubscribe } from '/src/lib/esm/pwa.js'
+import { webpushSubscribe, webpushUnsubscribe, fcmSubscribe } from '/src/lib/esm/pwa.js'
 import { useXhr } from '/src/plugins/xhr.js'
+import { VITE_PWA_PN } from '/config.js'
 
 export default {
   name: 'Dashboard',
@@ -161,9 +162,14 @@ export default {
     }
 
     const subPn = async () => {
-      const { data } = await http.get('/api/webpush/vapid-public-key')
+      console.log(VITE_PWA_PN)
       try {
-        const subscription = await webpushSubscribe(data.publicKey)
+        let subscription
+        if (VITE_PWA_PN === 'FCM') subscription = await fcmSubscribe(async (token) => { await http.post('/api/webpush/sub', { subscription: token }) })
+        else if (VITE_PWA_PN === 'Webpush') {
+          const { data } = await http.get('/api/webpush/vapid-public-key')
+          subscription = await webpushSubscribe(data.publicKey)
+        }
         if (subscription) await http.post('/api/webpush/sub', { subscription })
       } catch (e) {
         console.log(e)
@@ -171,13 +177,17 @@ export default {
     }
 
     const unsubPn = async () => {
-      await webpushUnsubscribe()
+      // TBD FCM Unsub
+      if (VITE_PWA_PN === 'Webpush') await webpushUnsubscribe()
       await http.post('/api/webpush/unsub')
     }
 
     const testPn = async () => {
       try {
-        await http.post('/api/webpush/send/1', { mode: 'Webpush', data: 'Hello ' + new Date().toLocaleString() })
+        let data
+        if (VITE_PWA_PN === 'FCM') data = { title: 'Hello', body: new Date().toLocaleString() }
+        else if (VITE_PWA_PN === 'Webpush') data = 'Hello ' + new Date().toLocaleString()
+        await http.post('/api/webpush/send/1', { mode: VITE_PWA_PN, data })
       } catch (e) {
         console.log(e)
       }

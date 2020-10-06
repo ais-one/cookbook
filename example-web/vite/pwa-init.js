@@ -11,11 +11,7 @@
 //   }
 // }
 // // Then you can continue with your notification driven code
-import { firebase } from '@firebase/app'
-import '@firebase/messaging'
-// CONFIG_FIREBASE_CLIENT, CONFIG_VAPID_KEY is global from firebase.config.js
-
-const pnMode = 'Webpush' // FCM, Webpush, empty string
+// const { VITE_PWA_PN } = import.meta.env // No longer needed
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', async function () {
@@ -24,37 +20,9 @@ if ('serviceWorker' in navigator) {
       .then((res) => console.log('service worker registered'))
       .catch((err) => console.log(err))
 
-    // WebPush
-    // We first get the registration
-    console.log('pnMode', pnMode)
-
-    if (pnMode === 'Webpush') {
-    } else {
-      // FCM
-      firebase.initializeApp(CONFIG_FIREBASE_CLIENT)
-      const messaging = firebase.messaging()
-      messaging.usePublicVapidKey(CONFIG_VAPID_KEY)
-
-      const permission = await Notification.requestPermission()
-      if (permission === 'granted') window.GLOBAL_PN_TOKEN = await messaging.getToken()
-      
-      messaging.onTokenRefresh(async () => { window.GLOBAL_PN_TOKEN = await messaging.getToken() })
-
-      messaging.onMessage((payload) => {
-        console.log('Message received. ', payload)
-        try {
-          const { title, body } = JSON.parse(payload.data.notification)
-          console.log(new Date().toISOString(), title, body)
-        } catch (e) {
-          console.log('GCM msg error', e.toString())
-        }
-      })
-    }
-
     navigator.serviceWorker.addEventListener('message', (e) => {
       if (e && e.data && e.data.msg === 'pushsubscriptionchange') {
-        // console.log(e.data.msg)
-        window.GLOBAL_PN_TOKEN = JSON.stringify(e.data.sub)
+        // TBD Handle this - console.log(e.data.msg)
       }
     })
   })

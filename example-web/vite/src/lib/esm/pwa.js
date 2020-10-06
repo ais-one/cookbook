@@ -1,5 +1,36 @@
-// // First get a public key from our Express server
+// FCM
+import { firebase } from '@firebase/app'
+import '@firebase/messaging'
+// CONFIG_FIREBASE_CLIENT, CONFIG_VAPID_KEY is global from firebase.config.js
 
+firebase.initializeApp(CONFIG_FIREBASE_CLIENT)
+const messaging = firebase.messaging()
+messaging.usePublicVapidKey(CONFIG_VAPID_KEY)
+
+export const fcmSubscribe = async (refresh) => {
+  const permission = await Notification.requestPermission()
+  messaging.onTokenRefresh(async () => { 
+    const token = await messaging.getToken()
+    await refresh(token)
+  })
+  messaging.onMessage((payload) => {
+    console.log('Message received. ', payload)
+    try {
+      const { title, body } = JSON.parse(payload.data.notification)
+      console.log(new Date().toISOString(), title, body)
+    } catch (e) {
+      console.log('GCM msg error', e.toString())
+    }
+  })
+  if (permission === 'granted') return await messaging.getToken()
+  return null
+}
+
+export const fcmUnsubscribe = async () => {
+
+}
+
+// // First get a public key from our Express server
 // We use this function to subscribe to our push notifications
 // As soon as you run this code once, it shouldn't run again if the initial subscription went well
 // Except if you clear your storage
