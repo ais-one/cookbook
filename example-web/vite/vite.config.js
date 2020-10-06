@@ -18,7 +18,6 @@ module.exports = {
   //   }
   // },
   // base: '/',
-  // port: dev_port1,
   // sourcemap: isDev1,
   vueCompilerOptions: {
     isCustomElement: (tag) => tag.startsWith('vaadin-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-')

@@ -177,7 +177,7 @@ export default {
     }
 
     const unsubPn = async () => {
-      // TBD FCM Unsub
+      // No FCM Unsub
       if (VITE_PWA_PN === 'Webpush') await webpushUnsubscribe()
       await http.post('/api/webpush/unsub')
     }

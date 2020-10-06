@@ -2,8 +2,8 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [tested] Dockerfile, vite to GCP storage (script), backend to GCP Cloud Run (script)
 - [chore] eslint & prettier for vite
+- [chore] pwa service worker & backend improvements, communication between sw and window (e.g. pushsubscriptionchange)
 - [inprogress]
-  - [chore] pushsubscriptionchange, pwa service worker improvements
   - [test] Test deploy backend to GCP VM (script), PM2?
 
 ### Version 0.4.0

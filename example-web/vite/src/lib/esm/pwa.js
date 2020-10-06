@@ -3,31 +3,51 @@ import { firebase } from '@firebase/app'
 import '@firebase/messaging'
 // CONFIG_FIREBASE_CLIENT, CONFIG_VAPID_KEY is global from firebase.config.js
 
-firebase.initializeApp(CONFIG_FIREBASE_CLIENT)
-const messaging = firebase.messaging()
-messaging.usePublicVapidKey(CONFIG_VAPID_KEY)
+let firebaseApp
+let messaging
 
 export const fcmSubscribe = async (refresh) => {
-  const permission = await Notification.requestPermission()
-  messaging.onTokenRefresh(async () => { 
-    const token = await messaging.getToken()
-    await refresh(token)
-  })
-  messaging.onMessage((payload) => {
-    console.log('Message received. ', payload)
-    try {
-      const { title, body } = JSON.parse(payload.data.notification)
-      console.log(new Date().toISOString(), title, body)
-    } catch (e) {
-      console.log('GCM msg error', e.toString())
+  try {
+    const permission = await Notification.requestPermission()
+    if (permission !== 'granted') return null
+  
+    if (!firebaseApp) {
+      firebaseApp = firebase.initializeApp(CONFIG_FIREBASE_CLIENT)
     }
-  })
-  if (permission === 'granted') return await messaging.getToken()
+    if (!messaging) {
+      messaging = firebase.messaging()
+      messaging.usePublicVapidKey(CONFIG_VAPID_KEY)  
+      messaging.onTokenRefresh(async () => {
+        const token = await messaging.getToken()
+        await refresh(token)
+      })
+      messaging.onMessage((payload) => {
+        console.log('Message received. ', payload)
+        try {
+          const { title, body } = JSON.parse(payload.data.notification)
+          console.log(new Date().toISOString(), title, body)
+        } catch (e) {
+          console.log('GCM msg error', e.toString())
+        }
+      })  
+    }
+    if (permission === 'granted') return await messaging.getToken()  
+  } catch (e) {
+    console.log('Error initialise firebase app', e.String())
+  }
   return null
 }
 
 export const fcmUnsubscribe = async () => {
-
+  if (firebaseApp) {
+    try {
+      await firebaseApp.delete()
+      firebaseApp = null
+      messaging = null
+    } catch (e) {
+      console.log('Error deleting firebase app', e.String())
+    }
+  }
 }
 
 // // First get a public key from our Express server
@@ -86,3 +106,30 @@ const urlBase64ToUint8Array = (base64String) => {
   }
   return outputArray
 }
+
+const handleSwMessage = async (e) => {
+  console.log('handleSwMessage', e)
+  // if (e && e.data && e.data.msg === 'pushsubscriptionchange') { }
+ }
+ 
+export const addSwMessageEvent = (handler = handleSwMessage) => {
+  navigator.serviceWorker.addEventListener('message', handleSwMessage)
+}
+
+export const removeSwMessageEvent = (handler = handleSwMessage) => {
+  navigator.serviceWorker.removeEventListener('message', handleSwMessage)
+}
+
+// https://felixgerschau.com/how-to-communicate-with-service-workers/
+// app to sw
+// // app.js - Somewhere in your web app
+// navigator.serviceWorker.controller.postMessage({
+//   type: 'MESSAGE_IDENTIFIER',
+// })
+// service-worker.js
+// On the Service Worker side we have to listen to the message event
+// self.addEventListener('message', (e) => {
+//   if (e.data && e.data.type === 'MESSAGE_IDENTIFIER') {
+//     // do something
+//   }
+// })

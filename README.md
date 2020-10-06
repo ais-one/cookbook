@@ -7,7 +7,7 @@ Latest Version [0.4.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.1)
 # Features
 
 - Frontend Examples
-  - [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA (**NEW**), [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
+  - [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
   - [SPA & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-web/spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP
   - [Vanilla JS, ES Modules](https://github.com/ais-one/vue-crud-x/tree/master/example-app/public): No bundler, scalable VueJS Application , example codes (signed uploads, JWT refresh token, OTP)
 - [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/)
@@ -90,7 +90,14 @@ npm i
 npm run dev
 ```
 
-Navigate to http://127.0.0.1:8080 to view application. Just click login button
+Navigate to http://127.0.0.1:8080 to view application
+
+Login is same as SPA
+
+You can test PWA Push notifications using webpush on Dashboard page (need to be on 127.0.0.1). Click the following buttons in order (see their output in console.log and screen):
+- sub PN (subscribe)
+- Test PN (send a test message to user id 1 - on sqlite)
+- Unsub PN (unsubscribe)
 
 ### Why No SSR or SSG
 
