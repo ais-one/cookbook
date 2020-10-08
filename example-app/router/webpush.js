@@ -29,7 +29,8 @@ module.exports = express.Router()
         } else if (mode === 'Webpush') {
           // Use Webpush
           const subscription = JSON.parse(user.pnToken)
-          send(subscription, data)  
+          const rv = await send(subscription, data)
+          console.log('pn send', rv)
         }
         res.json({ status: 'sent '})
       } else {

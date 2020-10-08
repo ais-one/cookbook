@@ -1,10 +1,8 @@
 ### Version 0.4.1
 - [chore] update packages & cleanup & work on improving documentation
-- [tested] Dockerfile, vite to GCP storage (script), backend to GCP Cloud Run (script)
+- [tested] Dockerfile, vite to GCP storage (script), backend to GCP Cloud Run (script), Test deploy backend to GCP VM (script), PM2
 - [chore] eslint & prettier for vite
 - [chore] pwa service worker & backend improvements, communication between sw and window (e.g. pushsubscriptionchange)
-- [inprogress]
-  - [test] Test deploy backend to GCP VM (script), PM2?
 
 ### Version 0.4.0
 - [chore] update packages & cleanup & work on improving documentation

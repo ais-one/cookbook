@@ -21,10 +21,9 @@ echo Deploying $1
 baseDir=`pwd`
 
 PEM=./config/secret/$1.pem
-URL=`grep URL config/secret/$1.deploy | cut -d '=' -f2`
+URL=ubuntu@3.1.138.164
 
-# echo $URL
-# echo $PEM
+# echo $URL $PEM
 
 PS3="Please enter your choice: "
 options=(

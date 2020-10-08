@@ -37,6 +37,7 @@ self.addEventListener('install', addCaches)
 
 // SW activate and cache cleanup
 function clearCaches(e) {
+  console.log('SW clearChaches')
   e.waitUntil(
     caches.keys().then((cacheNames) => {
       cacheNames.forEach((cacheName) => {

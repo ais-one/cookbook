@@ -21,8 +21,8 @@ import { provideWs } from '/src/plugins/ws.js'
 import apollo from '/src/lib/esm/graphql'
 
 apollo.init({
-  gws_uri: VITE_GWS_URI,
-  gql_uri: VITE_GQL_URI
+  gwsUri: VITE_GWS_URI,
+  gqlUri: VITE_GQL_URI
 })
 
 export default {

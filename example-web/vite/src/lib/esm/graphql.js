@@ -12,32 +12,40 @@ const get = () => apolloClient
 
 const init = (options) => {
   if (apolloClient) return apolloClient
-  if (!options || !options.gql_uri || !options.gws_uri) return
   try {
+    const { gqlUri, gwsUri } = options
+    if (!gqlUri) return //  must have at least httpLink
+
     // subscriptions-transport-ws package needs to be installed also
-    const wsLink = new WebSocketLink({
-      uri: options.gws_uri,
-      options: {
-        reconnect: true
-      }
-    })
+    const wsLink = gwsUri
+      ? new WebSocketLink({
+          uri: gwsUri,
+          options: {
+            reconnect: true
+          }
+        })
+      : null
 
     // HTTP connetion to the API
     const httpLink = new HttpLink({
       // You should use an absolute URL here
       // credentials: 'include', // UNCOMMENT FOR HTTPONLY_TOKEN
-      uri: options.gql_uri
+      uri: gqlUri
     })
 
     // split based on operation type
-    const link = split(
-      ({ query }) => {
-        const { kind, operation } = getMainDefinition(query)
-        return kind === 'OperationDefinition' && operation === 'subscription'
-      },
-      wsLink,
-      httpLink
-    )
+    const link =
+      wsLink && httpLink
+        ? split(
+            ({ query }) => {
+              const { kind, operation } = getMainDefinition(query)
+              return kind === 'OperationDefinition' && operation === 'subscription'
+            },
+            wsLink,
+            httpLink
+          )
+        : httpLink
+
     // REMOVE authLink FOR HTTPONLY_TOKEN
     const authLink = setContext((_, { headers }) => {
       // get the authentication token from local storage if it exists
