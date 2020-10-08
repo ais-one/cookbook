@@ -165,31 +165,40 @@ export default {
       console.log(VITE_PWA_PN)
       try {
         let subscription
-        if (VITE_PWA_PN === 'FCM') subscription = await fcmSubscribe(async (token) => { await http.post('/api/webpush/sub', { subscription: token }) })
-        else if (VITE_PWA_PN === 'Webpush') {
+        if (VITE_PWA_PN === 'FCM') {
+          subscription = await fcmSubscribe(async (token) => {
+            await http.post('/api/webpush/sub', { subscription: token })
+          })
+        } else if (VITE_PWA_PN === 'Webpush') {
           const { data } = await http.get('/api/webpush/vapid-public-key')
           subscription = await webpushSubscribe(data.publicKey)
         }
         if (subscription) await http.post('/api/webpush/sub', { subscription })
       } catch (e) {
-        console.log(e)
+        console.log('subPn', e)
       }
     }
 
     const unsubPn = async () => {
       // No FCM Unsub
-      if (VITE_PWA_PN === 'Webpush') await webpushUnsubscribe()
-      await http.post('/api/webpush/unsub')
+      try {
+        if (VITE_PWA_PN === 'Webpush') await webpushUnsubscribe()
+        await http.post('/api/webpush/unsub')
+      } catch (e) {
+        console.log('unsubPn', e)
+      }
     }
 
     const testPn = async () => {
       try {
         let data
+        console.log('testPn VITE_PWA_PN', VITE_PWA_PN)
         if (VITE_PWA_PN === 'FCM') data = { title: 'Hello', body: new Date().toLocaleString() }
         else if (VITE_PWA_PN === 'Webpush') data = 'Hello ' + new Date().toLocaleString()
+        console.log('testPn data', data)
         await http.post('/api/webpush/send/1', { mode: VITE_PWA_PN, data })
       } catch (e) {
-        console.log(e)
+        console.log('testPn', e)
       }
     }
 

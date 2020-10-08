@@ -3,7 +3,7 @@ const template = document.createElement('template')
 template.innerHTML = `
 <style>
 body {
-   background-color: #F0F0F0;
+  background-color: #F0F0F0;
 }
 .container{
   position: relative;

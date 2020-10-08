@@ -10,13 +10,13 @@ export const fcmSubscribe = async (refresh) => {
   try {
     const permission = await Notification.requestPermission()
     if (permission !== 'granted') return null
-  
+
     if (!firebaseApp) {
-      firebaseApp = firebase.initializeApp(CONFIG_FIREBASE_CLIENT)
+      firebaseApp = firebase.initializeApp(window.CONFIG_FIREBASE_CLIENT)
     }
     if (!messaging) {
       messaging = firebase.messaging()
-      messaging.usePublicVapidKey(CONFIG_VAPID_KEY)  
+      messaging.usePublicVapidKey(window.CONFIG_VAPID_KEY)
       messaging.onTokenRefresh(async () => {
         const token = await messaging.getToken()
         await refresh(token)
@@ -29,9 +29,9 @@ export const fcmSubscribe = async (refresh) => {
         } catch (e) {
           console.log('GCM msg error', e.toString())
         }
-      })  
+      })
     }
-    if (permission === 'granted') return await messaging.getToken()  
+    if (permission === 'granted') return await messaging.getToken()
   } catch (e) {
     console.log('Error initialise firebase app', e.String())
   }
@@ -110,8 +110,8 @@ const urlBase64ToUint8Array = (base64String) => {
 const handleSwMessage = async (e) => {
   console.log('handleSwMessage', e)
   // if (e && e.data && e.data.msg === 'pushsubscriptionchange') { }
- }
- 
+}
+
 export const addSwMessageEvent = (handler = handleSwMessage) => {
   navigator.serviceWorker.addEventListener('message', handleSwMessage)
 }

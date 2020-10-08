@@ -94,8 +94,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     }
     throw rv0 // error
   } catch (e) {
-    if (e && e.data && e.data.message !== 'Token Expired Error') forceLogoutFn()
-    // console.log('aaaaaaaaaaaaaaaaaa', e)
+    if (e && e.data && e.data.message !== 'Token Expired Error' && (e.status === 401 || e.status === 403)) forceLogoutFn()
     throw e // some other error
   }
 }

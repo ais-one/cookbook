@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" href="/favicon.ico" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vite Test</title>
+  <meta name="description" content="Describe this page as a natural language paragraph of 155 characters or less">
+  <meta name="keywords" content="seven,or,eight,single,words,from,inside,body">
+
+  <link href="/favicon.ico" rel="icon">
   <!-- Your application must load the Roboto and Material Icons fonts. -->
-  <link rel="stylesheet" href="/style.css">
+  <link href="/style.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Material+Icons&display=block" rel="stylesheet">
 
   <!-- PWA Stuff Start Uncomment To Run PWA -->
-  <link rel="manifest" href="/manifest.json">
+  <link href="/manifest.json" rel="manifest">
   <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet" type="text/css">
   <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" href="/img/splash/iphonexsmax_splash.png"> 
   <link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" href="/img/splash/iphonexr_splash.png"> 
@@ -27,9 +28,11 @@
   <script src="/firebase.config.js"></script>
   <script src="/pwa-init.js" type="module"></script>
   <!-- PWA Stuff End -->
+
+  <title>Vite Test</title>
 </head>
 <body>
   <div id="app"></div>
-  <script type="module" src="/src/main.js"></script>
+  <script src="/src/main.js" type="module"></script>
 </body>
 </html>
