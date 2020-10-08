@@ -18,7 +18,7 @@ import { VITE_API_URL, VITE_WS_URL, VITE_WS_MS, VITE_WITH_CREDENTIALS, VITE_GQL_
 
 import { provideI18n } from '/src/plugins/i18n.js'
 import { provideWs } from '/src/plugins/ws.js'
-import apollo from '/src/lib/esm/graphql'
+import apollo from '/src/lib/esm/apollo'
 
 apollo.init({
   gwsUri: VITE_GWS_URI,
