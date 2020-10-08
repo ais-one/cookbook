@@ -1,38 +1,10 @@
-# npm
 node_modules
-#snowpack
-web_modules
-# files not to be committed
-secret
-
-# database stores
-docker-devenv/mongodb/data
-*.sqlite3
-
-# apple stuff
-.DS_Store
-
-# build folders
-dist
-build
-.nuxt
-
-coverage
 package-lock.json
-*.tgz
-.rnd
 
 # Log files
 npm-debug.log*
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
+# apple stuff
+.DS_Store
 # Editor directories and files
 .idea
 .vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw*

@@ -30,16 +30,6 @@ import App from './App.vue'
 import router from './router.js'
 import store from './store.js'
 
-// GraphQL
-import { apolloClient } from './graphql'
-import { DO_HELLO } from './queries'
-apolloClient.query({
-  query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
-  variables: {
-    message: 'Meow'
-  }
-}).then(data => console.log(data)).catch(error => console.error(error))
-
 const app = createApp(App)
 
 const theme = 'dark'

@@ -1,8 +1,9 @@
+// FRONTEND ONLY
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
 body {
-   background-color: #F0F0F0;
+  background-color: #F0F0F0;
 }
 .container{
   position: relative;
@@ -59,7 +60,7 @@ body {
 class WebCam extends HTMLElement {
   constructor() {
     super()
-    const shadowRoot = this.attachShadow({mode: 'open'})
+    const shadowRoot = this.attachShadow({ mode: 'open' })
     shadowRoot.appendChild(template.content.cloneNode(true))
 
     this.capture = this.capture.bind(this) // bind callback function
@@ -72,8 +73,8 @@ class WebCam extends HTMLElement {
 
     const slots = this.shadowRoot.querySelectorAll('slot')
     // console.log(slots)
-    const slotMap = { }
-    slots.forEach(slot => {
+    const slotMap = {}
+    slots.forEach((slot) => {
       slotMap[slot.name] = slot
       slot.addEventListener('slotchange', (e) => {
         if (this.slotNode[slot.name]) {
@@ -98,11 +99,13 @@ class WebCam extends HTMLElement {
   get show() {
     return this.hasAttribute('show')
   }
+
   set show(value) {
     value ? this.setAttribute('show', '') : this.removeAttribute('show')
   }
 
-  connectedCallback() { // added to the DOM
+  // added to the DOM
+  connectedCallback() {
     console.log('connected')
 
     console.log('width', this.getAttribute('width'))
@@ -121,7 +124,7 @@ class WebCam extends HTMLElement {
     const videoEl = this.shadowRoot.querySelector('#video')
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       // console.log('xxxx', window.URL.createObjectURL)
-      navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+      navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
         try {
           videoEl.srcObject = stream
         } catch (e) {
@@ -136,13 +139,10 @@ class WebCam extends HTMLElement {
     this.captureMode = true
   }
 
-  attributeChangedCallback(name, oldVal, newVal) { // attribute changed
-  }
-
-  adoptedCallback() { // moved into a new document
-  }
-
-  disconnectedCallback() { // removed from the DOM
+  attributeChangedCallback(name, oldVal, newVal) {} // attribute changed
+  adoptedCallback() {} // moved into a new document
+  // removed from the DOM
+  disconnectedCallback() {
     this.slotNode['button-snap'].removeEventListener('click', this.capture)
     this.slotNode['button-unsnap'].removeEventListener('click', this.capture)
   }
@@ -152,16 +152,16 @@ class WebCam extends HTMLElement {
     const videoEl = this.shadowRoot.querySelector('#video')
     if (this.captureMode) {
       const scale = 1
-      const canvas = document.createElement("canvas")
+      const canvas = document.createElement('canvas')
       canvas.width = videoEl.clientWidth * scale
       canvas.height = videoEl.clientHeight * scale
       canvas.getContext('2d').drawImage(videoEl, 0, 0, canvas.width, canvas.height)
       videoEl.pause()
-  
+
       // console.log('videoEl', canvas.toDataURL('image/png'))
       this.slotNode['button-snap'].style.display = 'none'
       this.slotNode['button-unsnap'].style.display = 'block'
-  
+
       const event = new CustomEvent('snap', {
         detail: canvas.toDataURL('image/png')
       })

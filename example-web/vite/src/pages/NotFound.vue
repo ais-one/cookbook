@@ -1,4 +1,3 @@
-
 <template>
   <div class="container">
     <h1>Hello Vite + Vue 3!</h1>
@@ -30,7 +29,8 @@ h1 {
   color: #4fc08d;
 }
 
-h1, p {
+h1,
+p {
   font-family: Arial, Helvetica, sans-serif;
 }
 </style>

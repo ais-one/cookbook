@@ -37,29 +37,48 @@ The UAT, production and (optional staging) environments are on the service provi
   - OPTION deploy to GKE **WIP**
 - Mongodb - Mongo Atlas
 - file uploads - Google object storage
-- sqlite - local file (should replace with SQL DB)
+- sqlite - local file (should replace with SQL DB) **might not work in containers**
 - user_session - mongodb
 
-**Current Manual Deployment Script**
+## Current Manual Deployment Script
+
+In GCP
+- setup service account in IAM with appropriate permissions
+- enable and setup a storage bucket to serve webpage
+  - you may need to have a domain name
+- enable Cloud Run and Container Registry
+
+In Mongo Atlas
+- create mongo atlas account
+
+### Bacekend - example-app
+
+In example-app folder
+
+1. set package.json "config.env" = "uat"
+2. place service account json file into secrets folder
+3. set the mongodb info in config/secrets/uat.env.js
+4. set the CORS to allow frontend origin from the frontend setup 
 
 ```bash
 npm run deploy # windows
 npm run deploy:unix # linux or mac
 ```
 
-- Frontend
-  - select ```deploy-fe``` to deploy frontend on object storage
-- Cloud Run backend
-  - select ```deploy-cr``` to deploy backend on cloud run
-    - need to set CORS on allowed frontend origin
-    - if using custom domain, requires domain name, point to CNAME
-- VM backend (Optional)
-  - select ```deploy-vm```
-  - you can use the following commands ```stop,start,list```
+Note the URL returned you can test it using <URL>/api/healthcheck, you may need to wait awhile for initial response or retry a few times
 
+### Frontend - example-web/vite
 
-> work needs to be done on the organise and reference the setup documentation in the docs folder
+In example-web/vite folder
 
+1. set package.json "config.env" = "uat"
+2. place service account json file into config/secrets folder
+3. setup the API URL in .env.uat from the URL returned in a successful backend setup
+
+```bash
+npm run deploy # windows
+npm run deploy:unix # linux or mac
+```
 
 ---
 

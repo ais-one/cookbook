@@ -1,0 +1,16 @@
+# build files and packages
+dist
+node_modules
+
+# secrets & configs
+secrets
+config/uat.js
+config/production.js
+
+# Log files
+npm-debug.log*
+# apple stuff
+.DS_Store
+# Editor directories and files
+.idea
+.vscode

@@ -1,4 +1,3 @@
-
 <template>
   <div class="container">
     <h1>Web Cam Custom Element</h1>
@@ -18,7 +17,7 @@ export default {
     const snappedFn = (e) => {
       alert('see console log for snapped picture data')
       console.log('snappedFn', e.detail)
-    } 
+    }
     return {
       snappedFn
     }

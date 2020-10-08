@@ -1,20 +1,34 @@
 ## Issues
 
-List of urgent issues to take care of
-- Test Dockerfile
-- Test deploy backend to GCP Cloud Run (script, CI)
-- Test deploy SPA frontend to GCP Storage (script, CI)
-- Test deploy backend to GCP VM (script, CI)
-- styling for custom build mwc-*
-- CrudTable.vue
-  - select all (not working)
-  - header widths (to improve)
-  - csv upload (to implement)
-  - file upload column (to implement)
+TOREMOVE THIS FILE
 
 Things Changed...
-- deploy.sh, Dockerfile, etc. moved into respective example folders
 - express/services -> express/shutdown
 - express/preroute -> express/preRoute
 - express/postroute -> express/postRoute
 - errorMiddleware
+
+
+
+# "scripts": {
+#   "start": "cross-env NODE_ENV=production node ./bin/www",
+#   "dev": "cross-env NODE_ENV=development PORT=3001 DEBUG=app:* nodemon --ignore '*.test.js' --watch src bin/www",
+#   "db:migrate:make": "knex migrate:make",
+#   "db:migrate": "knex migrate:latest",
+#   "db:migrate:rollback": "knex migrate:rollback",
+#   "db:seed:make": "knex seed:make",
+#   "db:seed": "knex seed:run"
+# },
+# "dependencies": {
+#   "debug": "~2.6.9",
+# },
+# "devDependencies": {
+#   "cross-env": "^6.0.3",
+#   "husky": "^4.2.5",
+#   "nodemon": "^1.19.4"
+# },
+# "husky": {
+#   "hooks": {
+#     "pre-commit": "npm run jsfmt && npm run jslint"
+#   }
+# }

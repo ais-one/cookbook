@@ -1,3 +1,5 @@
+'use strict'
+
 if (!global.APP_PATH) global.APP_PATH = ''
 if (!global.LIB_PATH) global.LIB_PATH = ''
 if (global.CONFIG.TEST_ENV) console.log('TEST_ENV =', global.CONFIG.TEST_ENV)

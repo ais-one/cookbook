@@ -1,12 +1,9 @@
 {
   "name": "vue-crud-x",
-  "version": "0.4.0",
-  "description": "Library for JS Application",
-  "author": "",
+  "version": "0.4.1",
+  "description": "Fullstack JS Application Example",
+  "author": "aaronjxz@gmail.com",
   "license": "MIT",
-  "config": {
-    "env": "development"
-  },
   "scripts": {
     "install-libs": "npm i && cd example-web/spa && npm i",
     "mongo": "cd example-app&&npm run mongo",

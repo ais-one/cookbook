@@ -1,3 +1,4 @@
+// FRONTEND ONLY
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
@@ -10,7 +11,7 @@ canvas {
 class SignPad extends HTMLElement {
   constructor() {
     super()
-    const shadowRoot = this.attachShadow({mode: 'open'})
+    const shadowRoot = this.attachShadow({ mode: 'open' })
     shadowRoot.appendChild(template.content.cloneNode(true))
 
     this.mouse = {
@@ -34,28 +35,31 @@ class SignPad extends HTMLElement {
   }
 
   // getter and setter for property - show
-  get value() { return this.getAttribute('value') }
+  get value() {
+    return this.getAttribute('value')
+  }
+
   set value(val) {
     // console.log('setting value', val)
     this.setAttribute('value', val || '')
   }
 
-  attributeChangedCallback(name, oldVal, newVal) { // attribute changed
+  attributeChangedCallback(name, oldVal, newVal) {
     const el = this.shadowRoot.querySelector('#canvas')
     switch (name) {
       case 'width': // set canvas width
         el.width = newVal
         // console.log(`width ${oldVal} to ${newVal}`);
-        break;
+        break
       case 'height': // set canvas height
         el.height = newVal
         // console.log(`height ${oldVal} to ${newVal}`);
-        break;
+        break
       // value no need to handle
     }
   }
 
-  connectedCallback() { // added to the DOM
+  connectedCallback() {
     // const styleSheetList = this.shadowRoot.styleSheets // do this here, not in constructor
     // const bg_rule = styleSheetList[0].cssRules[0]
     // const yyy = context_rule.style.getPropertyValue('--vcxwc-sign-pad-background-color')
@@ -80,7 +84,8 @@ class SignPad extends HTMLElement {
 
     const ctx2d = JSON.parse(this.getAttribute('context2d'))
     // console.log('ctx2d', ctx2d)
-    for (let k in ctx2d) { // strokeStyle, lineWidth
+    for (const k in ctx2d) {
+      // strokeStyle, lineWidth
       ctx[k] = ctx2d[k]
     }
     el.addEventListener('mousedown', this.handleMouseDown)
@@ -88,10 +93,9 @@ class SignPad extends HTMLElement {
     el.addEventListener('mousemove', this.handleMouseMove)
   }
 
-  adoptedCallback() { // moved into a new document
-  }
+  adoptedCallback() {}
 
-  disconnectedCallback() { // removed from the DOM
+  disconnectedCallback() {
     // console.log('disconnect sign')
     const el = this.shadowRoot.querySelector('#canvas')
     el.removeEventListener('mousedown', this.handleMouseDown)
@@ -99,11 +103,12 @@ class SignPad extends HTMLElement {
     el.removeEventListener('mousemove', this.handleMouseMove)
   }
 
-  handleMouseDown (event) {
+  handleMouseDown(event) {
     this.mouse.down = true
     this.mouse.move = false
     this.mouse.current = {
-      x: event.offsetX, y: event.offsetY
+      x: event.offsetX,
+      y: event.offsetY
     }
     const el = this.shadowRoot.querySelector('#canvas')
     const ctx = el.getContext('2d')
@@ -114,26 +119,29 @@ class SignPad extends HTMLElement {
     const { x, y } = this.currentMouse()
     ctx.moveTo(x, y)
   }
-  handleMouseUp () {
+
+  handleMouseUp() {
     const el = this.shadowRoot.querySelector('#canvas')
     if (this.mouse.move) this.value = el.toDataURL('image/png')
     else this.value = ''
 
     const event = new CustomEvent('input', { detail: this.value })
-    this.dispatchEvent(event)    
+    this.dispatchEvent(event)
 
     this.mouse.down = false
     this.mouse.move = false
   }
-  handleMouseMove (event) {
+
+  handleMouseMove(event) {
     this.mouse.move = true
     this.mouse.current = {
-      x: event.offsetX, y: event.offsetY
+      x: event.offsetX,
+      y: event.offsetY
     }
     this.draw(event)
   }
 
-  draw (event) {
+  draw(event) {
     // requestAnimationFrame(this.draw)
     if (this.mouse.down) {
       const el = this.shadowRoot.querySelector('#canvas')
@@ -147,7 +155,7 @@ class SignPad extends HTMLElement {
     }
   }
 
-  currentMouse () {
+  currentMouse() {
     return {
       x: this.mouse.current.x,
       y: this.mouse.current.y

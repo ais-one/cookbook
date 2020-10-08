@@ -1,15 +1,10 @@
-/*
-const isIos = () => {
-  const userAgent = window.navigator.userAgent.toLowerCase();
-  return /iphone|ipad|ipod/.test( userAgent );
-}
-// Detects if device is in standalone mode
-const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
-
-// Checks if should display install popup notification:
-if (isIos() && !isInStandaloneMode()) {
-}
-*/
+// https://firebase.google.com/support/releases
+// const isIos = () => {
+//   const userAgent = window.navigator.userAgent.toLowerCase();
+//   return /iphone|ipad|ipod/.test( userAgent );
+// }
+// const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone); // Detects if device is in standalone mode
+// if (isIos() && !isInStandaloneMode()) {} // Checks if should display install popup notification:
 
 // console.log('FIREBASE SERVICE WORKER CODE START')
 // [START initialize_firebase_in_sw]
@@ -17,14 +12,13 @@ if (isIos() && !isInStandaloneMode()) {
 // Note that you can only use Firebase Messaging here, other Firebase libraries
 // are not available in the service worker.
 var window = self // self is service worker - simulate it as window
-importScripts('firebase.config.js') // FIREBASE_CONFIG
-// console.log('FIREBASE_CONFIG self window', self)
-// https://firebase.google.com/support/releases
-importScripts('https://www.gstatic.com/firebasejs/7.21.1/firebase-app.js')
-importScripts('https://www.gstatic.com/firebasejs/7.21.1/firebase-messaging.js')
+importScripts('firebase.config.js')
+// console.log('CONFIG_FIREBASE_CLIENT self window', self)
+importScripts('https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js')
+importScripts('https://www.gstatic.com/firebasejs/7.22.0/firebase-messaging.js')
 
 // Initialize the Firebase app in the service worker by passing in the messagingSenderId.
-firebase.initializeApp(self.FIREBASE_CONFIG)
+firebase.initializeApp(self.CONFIG_FIREBASE_CLIENT)
 
 // Retrieve an instance of Firebase Messaging so that it can handle background messages.
 const messaging = firebase.messaging()
@@ -32,8 +26,8 @@ const messaging = firebase.messaging()
 
 messaging.setBackgroundMessageHandler(function (payload) {
   // console.log('[firebase-messaging-sw.js] Received background message ', payload)
-  let notificationTitle = 'AHOP ALERT' + (new Date()).toLocaleDateString()
-  let notificationOptions = { body: 'Updates Please Refresh' }
+  let notificationTitle = 'AHOP ALERT' + new Date().toLocaleDateString()
+  const notificationOptions = { body: 'Updates Please Refresh' }
   try {
     // const { title = 'AHOP ALERT' + (new Date()).toLocaleDateString(), body = 'Updates. Please Refresh' } =
     const json = JSON.parse(payload.data.notification)
@@ -57,14 +51,15 @@ self.addEventListener('notificationclick', function (event) {
   const rootUrl = new URL('./', location).href
   event.notification.close()
   event.waitUntil(
-    clients.matchAll().then(matchedClients => {
-      for (let client of matchedClients) {
+    clients.matchAll().then((matchedClients) => {
+      for (const client of matchedClients) {
         if (client.url.indexOf(rootUrl) >= 0) {
           return client.focus()
         }
       }
-      return clients.openWindow(rootUrl).then(function (client) { client.focus() })
+      return clients.openWindow(rootUrl).then(function (client) {
+        client.focus()
+      })
     })
   )
 })
-

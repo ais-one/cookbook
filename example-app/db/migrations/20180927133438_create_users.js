@@ -17,6 +17,12 @@ exports.up = async (knex) => {
     // authenticators
     table.string('gaKey', 32).comment('Google Authenticator Key')
 
+    // push notification
+    table.string('pnToken').defaultTo('')
+
+    table.string('revoked').defaultTo('')
+    table.string('refreshToken').defaultTo('')
+
     // SMS number
     table.string('sms')
     table.dateTime('smsLastSent')
@@ -27,9 +33,6 @@ exports.up = async (knex) => {
     table.string('telegramId')
     table.string('telegramUsername')
     // table.timestamps() // createdAt, updatedAt
-
-    table.string('revoked').defaultTo('')
-    table.string('refreshToken').defaultTo('')
   })
 }
 

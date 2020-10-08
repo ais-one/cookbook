@@ -23,6 +23,7 @@ var decrypt = ((encrypted) => {
 
 
 
-encrypted_key = encrypt(phrase);
-original_phrase = decrypt(encrypted_key);
+var encrypted_key = encrypt(phrase);
+var original_phrase = decrypt(encrypted_key);
+console.log(original_phrase)
 

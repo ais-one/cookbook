@@ -1,4 +1,4 @@
-const path = require('path')
+// const path = require('path')
 // const isDev1 = import.meta.env.MODE === 'development'
 // const dev_port1 = import.meta.env.VUE_DEVPORT
 module.exports = {
@@ -18,10 +18,9 @@ module.exports = {
   //   }
   // },
   // base: '/',
-  // port: dev_port1,
   // sourcemap: isDev1,
   vueCompilerOptions: {
-    isCustomElement: tag => tag.startsWith('vaadin-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-')
+    isCustomElement: (tag) => tag.startsWith('vaadin-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-')
   },
   optimizeDeps: {
     include: [
@@ -36,13 +35,12 @@ module.exports = {
       '@apollo/client/cache',
       '@apollo/client/link/ws',
       '@apollo/client/link/context',
-      '@apollo/client/utilities',
+      '@apollo/client/utilities'
     ]
   },
-  rollupInputOptions: { // ignore react stuff
-    external: [
-      'react'
-    ]
+  rollupInputOptions: {
+    // ignore react stuff
+    external: ['react']
   }
 }
 

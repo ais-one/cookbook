@@ -1,4 +1,3 @@
-
 <template>
   <div class="container">
     <h1>A Hello Vite + Vue 3!</h1>
@@ -7,7 +6,7 @@
       <span>Count is: {{ count }}</span>
       <button @click="count++">increment</button>
     </p>
-    <p><button @click="e => testApi('healthcheck')">Test API</button> <button @click="e => testApi('health-auth')">Test API Auth</button></p>
+    <p><button @click="(e) => testApi('healthcheck')">Test API</button> <button @click="(e) => testApi('health-auth')">Test API Auth</button></p>
     <mwc-select label="preselected" :value="selected" @change="updateSelected">
       <mwc-list-item value="0">Item 0</mwc-list-item>
       <mwc-list-item value="1">Item 1</mwc-list-item>
@@ -16,10 +15,11 @@
     <p>Non-Reactive Data: {{ nonReactiveData }}</p>
     <p>Reactive Data: {{ reactiveData }}</p>
     <p>Vuex Store {{ storeCount }} - {{ storeUser }}</p>
-    <mwc-autocomplete required label="ac-test" v-model="ac" @search="(e)=>autoComplete(e, 'my-col', 'add')"></mwc-autocomplete>
+    <mwc-autocomplete required label="ac-test" v-model="ac" @search="(e) => autoComplete(e, 'my-col', 'add')"></mwc-autocomplete>
     <p><button @click="doAc">see ac</button>&nbsp;<button @click="setAc">set ac</button></p>
     <mwc-multiselect required label="ms-test" v-model="ms" :options="msOptions"></mwc-multiselect>
     <p>Axios GET {{ msg }}</p>
+    <p><button @click="subPn">Sub PN</button>&nbsp;<button @click="unsubPn">Unsub PN</button>&nbsp;<button @click="testPn">Test PN</button></p>
     <ul>
       <li v-for="n in 50" :key="n">{{ n }}</li>
     </ul>
@@ -28,12 +28,14 @@
 
 <script>
 // defineComponent, getCurrentInstance, reactive, readonly, watch, watchEffect
-// provide, inject ??? 
-import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, provide, inject } from 'vue'
+// provide, inject ???
+import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inject } from 'vue'
 import { useStore } from 'vuex'
 // import { useRouter, useRoute } from 'vue-router'
 import { debounce } from '/src/lib/esm/util.js'
+import { webpushSubscribe, webpushUnsubscribe, fcmSubscribe } from '/src/lib/esm/pwa.js'
 import { useXhr } from '/src/plugins/xhr.js'
+import { VITE_PWA_PN } from '/config.js'
 
 export default {
   name: 'Dashboard',
@@ -62,7 +64,7 @@ export default {
 
     const selected = ref(String(2))
 
-    const updateSelected = (e) => selected.value = e.target.value
+    const updateSelected = (e) => (selected.value = e.target.value)
 
     // const plusOne = computed(() => count.value + 1)
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
@@ -95,20 +97,22 @@ export default {
     // })
 
     const ms = ref('bb,cc')
-    const msOptions = ref(JSON.stringify([
-      { key: 'aa', text: 'aa11'},
-      { key: 'bb', text: 'bb22'},
-      { key: 'cc', text: 'cc33'},
-      { key: 'dd', text: 'dd44'},
-      { key: 'ee', text: 'ee55'},
-    ]))
+    const msOptions = ref(
+      JSON.stringify([
+        { key: 'aa', text: 'aa11' },
+        { key: 'bb', text: 'bb22' },
+        { key: 'cc', text: 'cc33' },
+        { key: 'dd', text: 'dd44' },
+        { key: 'ee', text: 'ee55' }
+      ])
+    )
 
     const ac = ref('aaa0') // autocomplete
     const autoComplete = debounce(async (e, col, _showForm) => {
       console.log('search', e.detail, col, _showForm)
       const result = []
-      for (let i=0; i<e.detail.length; i++) {
-        result.push('aaa' + i)        
+      for (let i = 0; i < e.detail.length; i++) {
+        result.push('aaa' + i)
       }
       const mwcAc = document.querySelector('mwc-autocomplete')
       mwcAc.setList(result)
@@ -145,7 +149,7 @@ export default {
       if (timerId) clearInterval(timerId)
       // / console.log('dash before unmount!')
     })
-    // onUpdated(() => console.log('dash updated!'))
+    onUpdated(() => console.log('dash updated!'))
     onUnmounted(() => console.log('dashboard unmounted!'))
 
     const testApi = async (test) => {
@@ -156,6 +160,48 @@ export default {
         console.log('testApi err', e)
       }
     }
+
+    const subPn = async () => {
+      console.log(VITE_PWA_PN)
+      try {
+        let subscription
+        if (VITE_PWA_PN === 'FCM') {
+          subscription = await fcmSubscribe(async (token) => {
+            await http.post('/api/webpush/sub', { subscription: token })
+          })
+        } else if (VITE_PWA_PN === 'Webpush') {
+          const { data } = await http.get('/api/webpush/vapid-public-key')
+          subscription = await webpushSubscribe(data.publicKey)
+        }
+        if (subscription) await http.post('/api/webpush/sub', { subscription })
+      } catch (e) {
+        console.log('subPn', e)
+      }
+    }
+
+    const unsubPn = async () => {
+      // No FCM Unsub
+      try {
+        if (VITE_PWA_PN === 'Webpush') await webpushUnsubscribe()
+        await http.post('/api/webpush/unsub')
+      } catch (e) {
+        console.log('unsubPn', e)
+      }
+    }
+
+    const testPn = async () => {
+      try {
+        let data
+        console.log('testPn VITE_PWA_PN', VITE_PWA_PN)
+        if (VITE_PWA_PN === 'FCM') data = { title: 'Hello', body: new Date().toLocaleString() }
+        else if (VITE_PWA_PN === 'Webpush') data = 'Hello ' + new Date().toLocaleString()
+        console.log('testPn data', data)
+        await http.post('/api/webpush/send/1', { mode: VITE_PWA_PN, data })
+      } catch (e) {
+        console.log('testPn', e)
+      }
+    }
+
     // // Watch prop value change and assign to value 'selected' Ref
     // watch(() => props.value, (newValue: Props['value']) => {
     //   selected.value = newValue;
@@ -176,7 +222,10 @@ export default {
       storeCount, // store
       storeUser,
       updateSelected, // method
-      testApi // test API
+      testApi, // test API
+      subPn, // push notifications
+      unsubPn,
+      testPn
     }
   }
 }
@@ -187,7 +236,8 @@ h1 {
   color: #4fc08d;
 }
 
-h1, p {
+h1,
+p {
   font-family: Arial, Helvetica, sans-serif;
 }
 

@@ -1,13 +1,13 @@
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine) [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-> **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, (REMOVED Nuxt SSR)
+> **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
 
-Latest Version [0.4.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.0) - Released 2020 Oct 02 1445 +8GMT
+Latest Version [0.4.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.1) - Released 2020 Oct 08 1930 +8GMT
 
 # Features
 
 - Frontend Examples
-  - [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA (**NEW**), [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
+  - [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
   - [SPA & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-web/spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP
   - [Vanilla JS, ES Modules](https://github.com/ais-one/vue-crud-x/tree/master/example-app/public): No bundler, scalable VueJS Application , example codes (signed uploads, JWT refresh token, OTP)
 - [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/)
@@ -90,7 +90,14 @@ npm i
 npm run dev
 ```
 
-Navigate to http://127.0.0.1:8080 to view application. Just click login button
+Navigate to http://127.0.0.1:8080 to view application
+
+Login is same as SPA
+
+You can test PWA Push notifications using webpush on Dashboard page (need to be on 127.0.0.1). Click the following buttons in order (see their output in console.log and screen):
+- sub PN (subscribe)
+- Test PN (send a test message to user id 1 - on sqlite)
+- Unsub PN (unsubscribe)
 
 ### Why No SSR or SSG
 
@@ -131,17 +138,25 @@ npm run process-cron:unix # linux or mac
 From vue-crud-x folder
 
 ```bash
-cd example-app/web/spa
+cd example-web/spa
 npm run build
 ```
 
-Change the example-app/config/index.js file contents
+From vue-crud-x folder
+
+```bash
+cd example-web/spa
+npm run build
+mv dist ../../example-app/public/
+```
+
+Change or add (if property not present) to **example-app/config/secret/.development.env.js** file contents
 
 ```js
   //...
   WEB_STATIC: [
     //...
-    { folder: process.cwd() + '/spa/dist', url: '/' }, // UNCOMMENT this line
+    { folder: process.cwd() + '/dist', url: '/' }, // UNCOMMENT this line
     // { folder: APP_PATH + '/public/demo-express', url: '/' }, // COMMENT this line
     //...
   ]
@@ -231,6 +246,7 @@ vue-crud-x
 |  |  +- demo-express/ (127.0.0.1/)
 |  |  +- demo-nobundler/
 |  +- router/
+|  +- sandbox/ : Useful scripts
 |  +- tests/ : Jest tests
 |  +- uploads/ : for serving static files - files
 |  +- .dockerignore
@@ -257,7 +273,6 @@ vue-crud-x
 |  |  +- libs/ : common libs
 |  |  |  +- esm/ : JS that can be used by both front and backend
 |  +- <your other front end here>
-+- sandbox/ : Useful scripts
 +- .gitignore
 +- BACKLOG.md
 +- CHANGELOG.md
@@ -278,13 +293,14 @@ vue-crud-x
 - **vue-crud-x** library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
 - Deployment notes can be found in (docs/deployment/home.md)
 - Custom Element [docs/custom-element.md](docs/custom-element.md)
-- Kafka [docs/kafka.md](docs/kafka.md)
-- TCP Server [docs/tcp.md](docs/tcp.md)
+- Kafka [docs/kafka.md](docs/kafka.md) and code found in **example-app/sandbox**
+- TCP Server [docs/tcp.md](docs/tcp.md) and code found in **example-app/sandbox**
 
 
 ## VERSION CHANGE NOTES
 
-- **v0.3+**  Reorganize folders and structure, for ease of developing and maintaining multiple applications.
+- **v0.4+** Improve folders and structure organization, handle CI/CD better
+- **v0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
 - **v0.2+** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, CRUD component code was refactored to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and <a href="https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0" target="_blank">supprting article - VueJS+ExpressJS CRUD & Cookbook</a>
 - **v0.1** and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1). You can refer to the v1  <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Legacy Article (For Historical Reference)</a>
 

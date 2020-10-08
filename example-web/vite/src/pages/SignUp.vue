@@ -4,7 +4,7 @@
       <h1>Sign Up</h1>
       <p>Not Yet Ready</p>
       <p><router-link to="/signin">Sign In</router-link></p>
-    </form>  
+    </form>
   </div>
 </template>
 
@@ -12,14 +12,14 @@
 export default {
   name: 'SignUp',
   setup(props, context) {
-    return {
-    }
+    return {}
   }
 }
 </script>
 
 <style scoped>
-.page-flex h1, .page-flex p {
+.page-flex h1,
+.page-flex p {
   text-align: center;
 }
 
@@ -31,15 +31,15 @@ export default {
   align-items: center;
 }
 
-.form-box-flex { 
+.form-box-flex {
   /* height: 320px; */
   width: 320px;
 
-  display: flex; 
-  flex-direction: column; 
-  flex: 0 0 auto; 
-  
-  border: 1px solid; 
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 auto;
+
+  border: 1px solid;
   border-radius: 5px;
   padding: 15px;
   background: lightgray;

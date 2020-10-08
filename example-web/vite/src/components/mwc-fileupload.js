@@ -35,7 +35,7 @@ template.innerHTML = `
 `
 
 class FileUpload extends HTMLElement {
-  constructor () {
+  constructor() {
     super()
     this.root = this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
@@ -45,9 +45,9 @@ class FileUpload extends HTMLElement {
     // this.selected = this.selected.bind(this)
   }
 
-  connectedCallback () {
+  connectedCallback() {
     this.file = null
- 
+
     if (!this.hasAttribute('value')) this.setAttribute('value', '')
     if (!this.hasAttribute('label')) this.setAttribute('label', '')
 
@@ -57,32 +57,47 @@ class FileUpload extends HTMLElement {
     // el.value = this.getAttribute('value')
   }
 
-  disconnectedCallback() { // removed from the DOM
+  disconnectedCallback() {
     this.shadowRoot.querySelector('mwc-textfield').removeEventListener('click', this.click)
     this.shadowRoot.querySelector('#input-file').removeEventListener('change', this.change)
     // el.removeEventListener('input', this.input)
   }
 
-  attributeChangedCallback(name, oldVal, newVal) { // attribute changed
+  attributeChangedCallback(name, oldVal, newVal) {
     const el = this.shadowRoot.querySelector('mwc-textfield')
     switch (name) {
       case 'value':
         el.value = newVal
         // const event = new CustomEvent('input', { detail: newVal })
         // this.dispatchEvent(event)
-        break;
+        break
       case 'label':
         el.setAttribute('label', newVal)
-        break;
+        break
     }
   }
-  static get observedAttributes() { return ['value', 'label'] }
-  get value() { return this.getAttribute('value') }
-  set value(val) { this.setAttribute('value', val) }
-  get label() { return this.getAttribute('label') }
-  set label(val) { this.setAttribute('label', val) }
 
-  selected (e) {
+  static get observedAttributes() {
+    return ['value', 'label']
+  }
+
+  get value() {
+    return this.getAttribute('value')
+  }
+
+  set value(val) {
+    this.setAttribute('value', val)
+  }
+
+  get label() {
+    return this.getAttribute('label')
+  }
+
+  set label(val) {
+    this.setAttribute('label', val)
+  }
+
+  selected(e) {
     // console.log('selected', e.detail.index, e.detail.index.size)
     // const selects = []
     // e.detail.index.forEach(item => {
@@ -97,19 +112,18 @@ class FileUpload extends HTMLElement {
     // }
     // const el = this.shadowRoot.querySelector('mwc-textfield')
     // el.value = this.value
-
     // const event = new CustomEvent('input', { detail: this.value })
     // this.dispatchEvent(event)
   }
 
-  click (e) {
+  click(e) {
     console.log(e)
     const el = this.shadowRoot.querySelector('#input-file')
     // pickFile () { this.$refs.image.click() },
     el.click()
   }
 
-  change (e) {
+  change(e) {
     const files = e.target.files
     console.log(files)
 
@@ -139,7 +153,9 @@ class FileUpload extends HTMLElement {
     }
   }
 
-  getFile () { return this.file }
+  getFile() {
+    return this.file
+  }
 }
 
 customElements.define('mwc-fileupload', FileUpload)

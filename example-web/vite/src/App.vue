@@ -12,11 +12,18 @@ import { useStore } from 'vuex'
 
 import { provideXhr } from '/src/plugins/xhr.js'
 import * as http from '/src/lib/esm/http.js'
+import ws from '/src/lib/esm/ws.js'
 
-import { VITE_API_URL, VITE_WITH_CREDENTIALS } from '/config.js'
+import { VITE_API_URL, VITE_WS_URL, VITE_WS_MS, VITE_WITH_CREDENTIALS, VITE_GQL_URI, VITE_GWS_URI } from '/config.js'
 
 import { provideI18n } from '/src/plugins/i18n.js'
 import { provideWs } from '/src/plugins/ws.js'
+import apollo from '/src/lib/esm/apollo'
+
+apollo.init({
+  gwsUri: VITE_GWS_URI,
+  gqlUri: VITE_GQL_URI
+})
 
 export default {
   components: {
@@ -38,15 +45,17 @@ export default {
 
     // set i18n
     provideI18n({
-      locale: "en",
+      locale: 'en',
       messages: {
-        en: { sign_in: "Sign In (en)" },
-        id: { sign_in: "Masuk (id)" }
+        en: { sign_in: 'Sign In (en)' },
+        id: { sign_in: 'Masuk (id)' }
       }
     })
 
     // set ws
-    provideWs()
+    ws.endpoint = VITE_WS_URL
+    ws.reconnectMs = VITE_WS_MS
+    provideWs(ws)
 
     return {
       storeUser // computed

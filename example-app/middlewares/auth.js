@@ -1,4 +1,4 @@
-const { authUser } = require(LIB_PATH + '/auth')
+const { authUser, findUser, updateUser } = require(LIB_PATH + '/auth')
 
 const authIsAdmin = async (req, res, next) => {
   if (req.decoded.groups === 'admin') {
@@ -11,5 +11,7 @@ const authIsAdmin = async (req, res, next) => {
 
 module.exports = {
   authUser,
+  findUser,
+  updateUser,
   authIsAdmin
 }

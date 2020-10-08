@@ -5,6 +5,8 @@ const https = require('https')
 const express = require('express')
 const app = express()
 
+console.log('app starting...')
+
 const { USE_GRAPHQL, httpsCerts } = global.CONFIG
 const server = httpsCerts ? https.createServer(httpsCerts, app) : http.createServer(app)
 

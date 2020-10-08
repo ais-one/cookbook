@@ -1,15 +1,35 @@
 {
   "name": "example-app",
-  "version": "0.0.1",
+  "version": "0.4.1",
   "description": "example express application",
   "main": "index.js",
   "directories": {
     "test": "tests"
   },
+  "config": {
+    "env": "development"
+  },
+  "scripts": {
+    "mongo": "cross-env NODE_ENV=%npm_package_config_env% node db/mongo/index.js",
+    "mongo:unix": "cross-env NODE_ENV=$npm_package_config_env node db/mongo/index.js",
+    "knex": "cross-env NODE_ENV=%npm_package_config_env% npx knex migrate:latest --knexfile=knexfile.js && cross-env NODE_ENV=%npm_package_config_env% npx knex seed:run --knexfile=knexfile.js",
+    "knex:unix": "cross-env NODE_ENV=$npm_package_config_env npx knex migrate:latest --knexfile=knexfile.js && cross-env NODE_ENV=$npm_package_config_env npx knex seed:run --knexfile=knexfile.js",
+    "app": "cross-env NODE_ENV=%npm_package_config_env% npx nodemon index.js",
+    "app:unix": "cross-env NODE_ENV=$npm_package_config_env npx nodemon index.js",
+    "process-cron": "cross-env NODE_ENV=%npm_package_config_env% node process-cron.js",
+    "process-cron:unix": "cross-env NODE_ENV=$npm_package_config_env node process-cron.js",
+    "process-long": "cross-env NODE_ENV=%npm_package_config_env% node process-long.js",
+    "process-long:unix": "cross-env NODE_ENV=$npm_package_config_env node process-long.js",
+    "test": "cross-env NODE_ENV=%npm_package_config_env% jest --config=jest.config.js",
+    "test:unix": "cross-env NODE_ENV=$npm_package_config_env jest --config=jest.config.js",
+    "deploy": "deploy-gcr.sh %npm_package_config_env%",
+    "deploy:unix": "deploy.sh $npm_package_config_env",
+    "lint": "eslint ."
+  },
   "dependencies": {
     "@google-cloud/storage": "^5.3.0",
     "agenda": "^3.1.0",
-    "apollo-server-express": "^2.18.1",
+    "apollo-server-express": "^2.18.2",
     "axios": "^0.20.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -45,30 +65,10 @@
   "devDependencies": {
     "cross-env": "^7.0.2",
     "eslint": "^7.10.0",
-    "jest": "^26.4.2",
+    "jest": "^26.5.2",
     "node-mocks-http": "^1.9.0",
     "nodemon": "^2.0.4",
     "supertest": "^5.0.0"
-  },
-  "config": {
-    "env": "development"
-  },
-  "scripts": {
-    "mongo": "cross-env NODE_ENV=%npm_package_config_env% node db/mongo/index.js",
-    "mongo:unix": "cross-env NODE_ENV=$npm_package_config_env node db/mongo/index.js",
-    "knex": "cross-env NODE_ENV=%npm_package_config_env% npx knex migrate:latest --knexfile=knexfile.js && cross-env NODE_ENV=%npm_package_config_env% npx knex seed:run --knexfile=knexfile.js",
-    "knex:unix": "cross-env NODE_ENV=$npm_package_config_env npx knex migrate:latest --knexfile=knexfile.js && cross-env NODE_ENV=$npm_package_config_env npx knex seed:run --knexfile=knexfile.js",
-    "app": "cross-env NODE_ENV=%npm_package_config_env% npx nodemon index.js",
-    "app:unix": "cross-env NODE_ENV=$npm_package_config_env npx nodemon index.js",
-    "process-cron": "cross-env NODE_ENV=%npm_package_config_env% node process-cron.js",
-    "process-cron:unix": "cross-env NODE_ENV=$npm_package_config_env node process-cron.js",
-    "process-long": "cross-env NODE_ENV=%npm_package_config_env% node process-long.js",
-    "process-long:unix": "cross-env NODE_ENV=$npm_package_config_env node process-long.js",
-    "test": "cross-env NODE_ENV=%npm_package_config_env% jest --config=jest.config.js",
-    "test:unix": "cross-env NODE_ENV=$npm_package_config_env jest --config=jest.config.js",
-    "deploy": "deploy.sh %npm_package_config_env%",
-    "deploy:unix": "deploy.sh $npm_package_config_env",
-    "lint": "eslint ."
   },
   "repository": {
     "type": "git",

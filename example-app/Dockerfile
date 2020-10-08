@@ -41,8 +41,8 @@ COPY package*.json ./
 
 # Install dependecies here before other copy so you do not bust the cache
 # If you are building your code for production
-# RUN npm ci --only=production
-RUN npm install --only=production && npm cache clean --force
+RUN npm ci --only=production
+# RUN npm install --only=production && npm cache clean --force
 
 # Get all the code needed to run the app
 COPY . .
