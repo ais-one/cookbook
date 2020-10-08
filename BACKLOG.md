@@ -11,11 +11,7 @@ List of urgent issues to take care of
 ## Backlog
 
 For future product improvement
-- [chore] circleci / github actions (consider for monorepo)
-- [frontend] styling for custom build mwc-*
 - [backend-deployment] GKE, Kubernetes
-- [frontend-i18n] node-polyglot
-- [frontend-testing] cypress e2e testing
 - [vite] migrate vue-crud-x table examples to vite
 - [frontend-graphql] try @octokit/graphql
 - [chore] apollo-client graphql security & performance review

@@ -1,3 +1,11 @@
+### Version 0.4.2
+- [chore] update packages & cleanup & work on improving documentation
+- [inprogress]
+  - [chore] circleci / github actions (consider for monorepo)
+  - [frontend] styling for custom build mwc-*
+  - [frontend-i18n] node-polyglot
+  - [frontend-testing] cypress e2e testing, vue-test-util & vite
+
 ### Version 0.4.1
 - [chore] update packages & cleanup & work on improving documentation
 - [tested] Dockerfile, vite to GCP storage (script), backend to GCP Cloud Run (script), Test deploy backend to GCP VM (script), PM2
