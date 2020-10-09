@@ -29,7 +29,7 @@ jobs:
   greet:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    container: node:lts
+    # container: node:lts
 
     strategy:
       matrix:
@@ -47,6 +47,8 @@ jobs:
       #     node-version: '12'
       #     check-latest: true
 
+      - name: Make shell script executable
+        run: chmod +x ./${{ github.event.inputs.service }}/deploy-gcr.sh
       # Runs a single command using the runners shell
       - name: Send greeting
         run: |
@@ -54,6 +56,4 @@ jobs:
           echo "Branch: ${{ github.event.inputs.branch }}"
           echo "Environment: ${{ github.event.inputs.environment }}"
           cd ${{ github.event.inputs.service }}
-          pwd
-          ls
           ./deploy-gcr.sh ${{ github.event.inputs.environment }}
