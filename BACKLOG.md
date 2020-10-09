@@ -11,6 +11,9 @@ List of urgent issues to take care of
 ## Backlog
 
 For future product improvement
+- [frontend] styling for custom build mwc-*
+- [frontend-i18n] node-polyglot
+- [frontend-testing] cypress e2e testing, vue-test-util & vite
 - [backend-deployment] GKE, Kubernetes
 - [vite] migrate vue-crud-x table examples to vite
 - [frontend-graphql] try @octokit/graphql

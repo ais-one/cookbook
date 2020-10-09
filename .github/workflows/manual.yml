@@ -10,12 +10,17 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
-        # Default value if no value is explicitly provided
-        default: 'World'
-        # Input has to be provided for the workflow to run
+      service:
+        description: 'Service to deploy (folder to use)'
+        default: 'example-app'
+        required: true
+      environment:
+        description: 'The environment'
+        default: 'uat'
+        required: true
+      branch:
+        description: 'Branch To Use'
+        default: 'develop'
         required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -25,8 +30,27 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node: [ '12' ]
+    name: Node ${{ matrix.node }} used
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Runs a single command using the runners shell
-    - name: Send greeting
-      run: echo "Hello ${{ github.event.inputs.name }}"
+      - uses: actions/checkout@v2
+        with:
+          # set the checkout branch
+          ref: ${{ github.event.inputs.branch }}
+      # - uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '12'
+      #     check-latest: true
+
+      # Runs a single command using the runners shell
+      - name: Send greeting
+        run: |
+          echo "Service: ${{ github.event.inputs.service }}"
+          echo "Branch: ${{ github.event.inputs.branch }}"
+          echo "Environment: ${{ github.event.inputs.environment }}"
+          cd ${{ github.event.inputs.service }}
+          deploy.sh ${{ github.event.inputs.environment }}

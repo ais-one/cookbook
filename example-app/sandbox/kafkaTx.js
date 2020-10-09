@@ -9,15 +9,14 @@ const kafka = new Kafka({
 const producer = kafka.producer()
 let stop = false
 
-const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+// const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 const run = async () => {
   await producer.connect()
 
-  while (!stop) {
-    await sleep(2000)
+  setTimeout(async () => {
     await producer.send({ topic: 'test-topic', messages: [ { value: 'Hello Kafka ' + (new Date()).toISOString() } ] })
-  }
+  }, 2000)
   // process.exit(0)
 }
 

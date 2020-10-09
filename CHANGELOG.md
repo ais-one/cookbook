@@ -2,9 +2,8 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [inprogress]
   - [chore] circleci / github actions (consider for monorepo)
-  - [frontend] styling for custom build mwc-*
-  - [frontend-i18n] node-polyglot
-  - [frontend-testing] cypress e2e testing, vue-test-util & vite
+  - [backend] lint and prettier for express
+  - [frontend] migrate standalone to vue 3
 
 ### Version 0.4.1
 - [chore] update packages & cleanup & work on improving documentation
