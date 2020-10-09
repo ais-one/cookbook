@@ -16,7 +16,7 @@ on:
         required: true
       environment:
         description: 'The environment'
-        default: 'uat'
+        default: 'development'
         required: true
       branch:
         description: 'Branch To Use'
@@ -33,7 +33,7 @@ jobs:
     strategy:
       matrix:
         node: [ '12' ]
-    name: Node ${{ matrix.node }} used
+    name: Using Node ${{ matrix.node }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -53,4 +53,5 @@ jobs:
           echo "Branch: ${{ github.event.inputs.branch }}"
           echo "Environment: ${{ github.event.inputs.environment }}"
           cd ${{ github.event.inputs.service }}
+          pwd
           deploy.sh ${{ github.event.inputs.environment }}

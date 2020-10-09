@@ -24,5 +24,5 @@ For future product improvement
 - [backend-testing] research auto generated REST API and Testing (keep in view dredd.io)
 - [backend-testing] research websocket testing
 - [backend-testing] change out of jest? use native assert instead of chai
-- [vue3]VueCrudX (update to VueJS 3 and Vuetify 3)
+- [vue3] VueCrudX (update to VueJS 3 and Vuetify 3)
 - [vue3] https://github.com/vueComponent/ant-design-vue/issues/1913
