@@ -53,5 +53,5 @@ jobs:
           echo "Branch: ${{ github.event.inputs.branch }}"
           echo "Environment: ${{ github.event.inputs.environment }}"
           cd ${{ github.event.inputs.service }}
-          pwd
-          deploy.sh ${{ github.event.inputs.environment }}
+          # pwd
+          deploy-gcr.sh ${{ github.event.inputs.environment }}
