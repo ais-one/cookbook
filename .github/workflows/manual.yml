@@ -56,4 +56,4 @@ jobs:
           cd ${{ github.event.inputs.service }}
           pwd
           ls
-          deploy-gcr.sh ${{ github.event.inputs.environment }}
+          ./deploy-gcr.sh ${{ github.event.inputs.environment }}
