@@ -29,9 +29,9 @@ SITE=vite
 GS=gs://$1.mybot.live
 
 echo "build and deploy - site $SITE ($1)"
-npm ci --only=production
-echo "vvv"
-npm run vite --version
+# CANNOT because need vite to build  npm ci --only=production
+npm install && npm cache clean --force
+npm install
 npm run vite build --mode $1
 # npm run build-$1
 
