@@ -38,6 +38,12 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: 'latest'
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
       - uses: actions/checkout@v2
         with:
           # set the checkout branch
@@ -52,6 +58,8 @@ jobs:
       # Runs a single command using the runners shell
       - name: Send greeting
         run: |
+          gcloud info
+          echo "CI is $CI"
           export CI="true"
           echo "Service: ${{ github.event.inputs.service }}"
           echo "Branch: ${{ github.event.inputs.branch }}"
