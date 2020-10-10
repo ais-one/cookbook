@@ -8,7 +8,6 @@ secret
 *.sqlite3
 
 coverage
-package-lock.json
 *.tgz
 
 # Log files
