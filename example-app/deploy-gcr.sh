@@ -31,11 +31,11 @@ echo Deploying To Google Cloud Run $1
 # read && exit
 
 BUILD_TS=`date +"%Y%m%d%H%M"`
-PROJECT_ID=mybot-live
+CLOUD_FOLDER_NAME=mybot-live
 APP_NAME=example-app
 
 if [ "$CI" = "true" ]; then
-  echo "CI configured gcloud auth for $PROJECT_ID"
+  echo "CI configured gcloud auth for $CLOUD_FOLDER_NAME"
   echo "build_ts $BUILD_TS"
   # gcloud auth list
 else
