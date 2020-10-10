@@ -36,14 +36,11 @@ APP_NAME=example-app
 
 if [ "$CI" = "true" ]; then
   echo "CI configured gcloud auth"
-  gcloud info
 else
   gcloud auth activate-service-account --key-file=config/secret/$1.gcp.json
   gcloud config set project $GCP_PROJECT_ID
   gcloud auth configure-docker
 fi
-
-exit
 
 # deploy to cloud run etc...
 # get current timestamp...
@@ -54,6 +51,7 @@ gcloud run deploy $APP_NAME-$1-svc --image gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$
 # gcloud container images delete gcr.io/cloudrun/helloworld
 
 echo "Done... press any key to exit"
-read # pause exit in windows
 
-# # CircleCI TBD - [![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://circleci.com/gh/circleci/circleci-docs)
+if [ "$CI" = "true" ]; then
+  read # pause exit in windows
+fi
