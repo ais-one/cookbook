@@ -6,12 +6,24 @@
 # $@ Values of all the arguments.
 # $? Exit status id of last command.
 
+if [ "$CI" = "true" ]; then
+    echo "Has CI"
+else
+    echo "No CI"
+fi
+
+exit
+
 if [ ! $1 ]; then # environment eg. uat
-    echo "Missing project environment. Set at package.json. Press any key to continue..." # && read && exit
+    echo "Missing project environment. Set at package.json. Press any key to continue..."
+    read
+    exit
 fi
 
 if [ "$1" = "development" ]; then
-    echo "Cannot deploy using development environment. Press any key to continue..." # && read && exit
+    echo "Cannot deploy using development environment. Press any key to continue..."
+    read
+    exit
 fi
 
 echo Deploying To Google Cloud Run $1
