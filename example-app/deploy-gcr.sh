@@ -43,8 +43,6 @@ else
   gcloud config set project $GCP_PROJECT_ID
 fi
 
-exit
-
 # deploy to cloud run etc...
 # get current timestamp...
 gcloud auth configure-docker
