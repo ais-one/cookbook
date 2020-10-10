@@ -67,9 +67,9 @@ npm run deploy:unix # linux or mac
 
 Note the URL returned you can test it using <URL>/api/healthcheck, you may need to wait awhile for initial response or retry a few times
 
-### Frontend - example-web/vite
+### Frontend - example-vite
 
-In example-web/vite folder
+In example-vite folder
 
 1. set package.json "config.env" = "uat"
 2. place service account json file into config/secrets folder
@@ -149,9 +149,7 @@ Type in the app that you are building and the environment
 
 ```json
   "config": {
-    "env": "uat",
-    "app": "example-app", // no longer in use
-    "web": "example-web" // no longer in use
+    "env": "uat"
   },
 ```
 

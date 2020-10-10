@@ -10,6 +10,7 @@
 - [tested] Dockerfile, vite to GCP storage (script), backend to GCP Cloud Run (script), Test deploy backend to GCP VM (script), PM2
 - [chore] eslint & prettier for vite
 - [chore] pwa service worker & backend improvements, communication between sw and window (e.g. pushsubscriptionchange)
+- [chore] move example-web/spa to example-spa, move example-web/vite to example-vite - For CI/CD purpose
 
 ### Version 0.4.0
 - [chore] update packages & cleanup & work on improving documentation
