@@ -29,6 +29,7 @@ SITE=vite
 GS=gs://$1.mybot.live
 
 echo "build and deploy - site $SITE ($1)"
+npm ci --only=production
 npm run build-$1
 
 if [ "$CI" = "true" ]; then
