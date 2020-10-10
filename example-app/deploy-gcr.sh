@@ -30,14 +30,12 @@ echo Deploying To Google Cloud Run $1
 # done
 # read && exit
 
-echo "TEST $GCP_PROJECT_ID"
-
 BUILD_TS=`date +"%Y%m%d%H%M"`
 GCP_PROJECT_ID=mybot-live
 APP_NAME=example-app
 
 if [ "$CI" = "true" ]; then
-  echo "CI configured gcloud auth"
+  echo "CI configured gcloud auth for $GCP_PROJECT_ID"
   # gcloud auth list
 else
   gcloud auth activate-service-account --key-file=config/secret/$1.gcp.json
