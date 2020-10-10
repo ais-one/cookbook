@@ -32,8 +32,8 @@ echo "build and deploy - site $SITE ($1)"
 # CANNOT because need vite to build  npm ci --only=production
 # npm install && npm cache clean --force
 npm install
-npm run vite build --mode $1
-# npm run build-$1
+# npm run vite build --mode $1
+npm run build-$1
 
 if [ "$CI" = "true" ]; then
   echo "CI configured gcloud auth"
