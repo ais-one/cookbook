@@ -36,6 +36,7 @@ APP_NAME=example-app
 
 if [ "$CI" = "true" ]; then
   echo "CI configured gcloud auth for $PROJECT_ID"
+  echo "build_ts $BUILD_TS"
   # gcloud auth list
 else
   gcloud auth activate-service-account --key-file=config/secret/$1.gcp.json
