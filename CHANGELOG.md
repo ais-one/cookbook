@@ -1,7 +1,7 @@
 ### Version 0.4.2
 - [chore] update packages & cleanup & work on improving documentation
 - [inprogress]
-  - [chore] circleci / github actions (consider for monorepo)
+  - [chore] github actions, github dependabot
   - [backend] lint and prettier for express
   - [frontend] migrate standalone to vue 3
 

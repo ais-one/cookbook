@@ -36,11 +36,14 @@ APP_NAME=example-app
 
 if [ "$CI" = "true" ]; then
   echo "CI configured gcloud auth"
+  gcloud auth list
 else
   gcloud auth activate-service-account --key-file=config/secret/$1.gcp.json
   gcloud config set project $GCP_PROJECT_ID
   gcloud auth configure-docker
 fi
+
+exit
 
 # deploy to cloud run etc...
 # get current timestamp...
