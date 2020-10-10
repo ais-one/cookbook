@@ -49,7 +49,7 @@ echo "Done..."
 # # Sample command to clear cloudflare cache 
 # curl -X POST "https://api.cloudflare.com/client/v4/zones/YOUR-ZONE-ID/purge_cache" -H "X-Auth-Email: YOUR-CLOUDFLARE-EMAIL" -H "X-Auth-Key: YOUR-GLOBAL-API-KEY" -H "Content-Type: application/json" --data '{"purge_everything":true}'
 
-if [ "$CI" = "true" ]; then
+if [ "$CI" != "true" ]; then
   echo "press enter key to exit"
   read # pause exit in windows
 fi

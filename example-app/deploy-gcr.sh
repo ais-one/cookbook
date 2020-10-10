@@ -54,7 +54,7 @@ docker push gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS
 
 echo "Done..."
 
-if [ "$CI" = "true" ]; then
+if [ "$CI" != "true" ]; then
   echo "press enter key to exit"
   read # pause exit in windows
 fi
