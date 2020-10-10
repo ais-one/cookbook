@@ -38,6 +38,7 @@ if [ "$CI" = "true" ]; then
   echo "CI configured gcloud auth for $CLOUD_FOLDER_NAME"
   echo "build_ts $BUILD_TS"
   # gcloud auth list
+  gcloud auth configure-docker
 else
   gcloud auth activate-service-account --key-file=config/secret/$1.gcp.json
   gcloud config set project $NON_CI_GCP_PROJECT_ID
