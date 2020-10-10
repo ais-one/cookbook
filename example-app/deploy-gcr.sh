@@ -31,27 +31,26 @@ echo Deploying To Google Cloud Run $1
 # read && exit
 
 BUILD_TS=`date +"%Y%m%d%H%M"`
-CLOUD_FOLDER_NAME=mybot-live
+GCP_PROJECT_ID=mybot-live
 APP_NAME=example-app
 
 if [ "$CI" = "true" ]; then
-  echo "CI configured gcloud auth for $CLOUD_FOLDER_NAME"
+  echo "CI configured gcloud auth for $GCP_PROJECT_ID"
   echo "build_ts $BUILD_TS"
   # gcloud auth list
-  gcloud auth configure-docker
 else
   gcloud auth activate-service-account --key-file=config/secret/$1.gcp.json
-  gcloud config set project $NON_CI_GCP_PROJECT_ID
-  gcloud auth configure-docker
+  gcloud config set project $GCP_PROJECT_ID
 fi
 
 exit
 
 # deploy to cloud run etc...
 # get current timestamp...
-docker build -t gcr.io/$NON_CI_GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --build-arg ARG_NODE_ENV=$1 --build-arg ARG_API_PORT=3000 .
-docker push gcr.io/$NON_CI_GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS
-# gcloud run deploy $APP_NAME-$1-svc --image gcr.io/$NON_CI_GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --platform managed --region asia-southeast1 --allow-unauthenticated --port=3000
+gcloud auth configure-docker
+docker build -t gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --build-arg ARG_NODE_ENV=$1 --build-arg ARG_API_PORT=3000 .
+docker push gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS
+# gcloud run deploy $APP_NAME-$1-svc --image gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --platform managed --region asia-southeast1 --allow-unauthenticated --port=3000
 # gcloud run services delete $APP_NAME-$1-svc --platform managed --region asia-east1
 # gcloud container images delete gcr.io/cloudrun/helloworld
 
