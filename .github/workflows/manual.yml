@@ -58,12 +58,10 @@ jobs:
       # Runs a single command using the runners shell
       - name: Send greeting
         run: |
-          gcloud info
-          echo "CI is $CI"
-          export CI="true"
+          # gcloud info
+          echo "CI: $CI"
           echo "Service: ${{ github.event.inputs.service }}"
           echo "Branch: ${{ github.event.inputs.branch }}"
           echo "Environment: ${{ github.event.inputs.environment }}"
-          echo "CI: $CI"
           cd ${{ github.event.inputs.service }}
           ./deploy-gcr.sh ${{ github.event.inputs.environment }}

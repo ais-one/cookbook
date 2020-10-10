@@ -6,31 +6,23 @@
 # $@ Values of all the arguments.
 # $? Exit status id of last command.
 
-if [ "$CI" = "true" ]; then
-    echo "Has CI"
-else
-    echo "No CI"
-fi
-
 if [ ! $1 ]; then # environment eg. uat
-    echo "Missing project environment. Set at package.json. Press any key to continue..."
-    if [ "$CI" = "true" ]; then
-        read
-    fi
-    exit
+  echo "Missing project environment. Set at package.json. Press any key to continue..."
+  if [ "$CI" = "true" ]; then
+    read
+  fi
+  exit
 fi
 
 if [ "$1" = "development" ]; then
-    echo "Cannot deploy using development environment. Press any key to continue..."
-    if [ "$CI" = "true" ]; then
-        read
-    fi
-    exit
+  echo "Cannot deploy using development environment. Press any key to continue..."
+  if [ "$CI" = "true" ]; then
+    read
+  fi
+  exit
 fi
 
 echo Deploying To Google Cloud Run $1
-
-exit
 
 # OIFS=$IFS; IFS=","; sites=("site 1,site b,site aaa"); IFS=$OIFS
 # for site in "${sites[@]}"; do
@@ -41,11 +33,20 @@ exit
 BUILD_TS=`date +"%Y%m%d%H%M"`
 GCP_PROJECT_ID=mybot-live
 APP_NAME=example-app
+
+if [ "$CI" = "true" ]; then
+  echo "CI configured gcloud auth"
+  gcloud info
+else
+  gcloud auth activate-service-account --key-file=config/secret/$1.gcp.json
+  gcloud config set project $GCP_PROJECT_ID
+  gcloud auth configure-docker
+fi
+
+exit
+
 # deploy to cloud run etc...
 # get current timestamp...
-gcloud auth activate-service-account --key-file=config/secret/$1.gcp.json
-gcloud config set project $GCP_PROJECT_ID
-gcloud auth configure-docker
 docker build -t gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --build-arg ARG_NODE_ENV=$1 --build-arg ARG_API_PORT=3000 .
 docker push gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS
 gcloud run deploy $APP_NAME-$1-svc --image gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --platform managed --region asia-southeast1 --allow-unauthenticated --port=3000
