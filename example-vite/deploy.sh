@@ -30,8 +30,10 @@ GS=gs://$1.mybot.live
 
 echo "build and deploy - site $SITE ($1)"
 npm ci --only=production
+echo "vvv"
 npm run vite --version
-npm run build-$1
+npm run vite build --mode $1
+# npm run build-$1
 
 if [ "$CI" = "true" ]; then
   echo "CI configured gcloud auth"
