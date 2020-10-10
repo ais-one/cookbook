@@ -1,4 +1,5 @@
 
+/* eslint-disable */
 var net = require('net');
 
 // creates the server

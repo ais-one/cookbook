@@ -1,3 +1,4 @@
+/* eslint-disable */
 const { Kafka, logLevel } = require('kafkajs')
  
 const kafka = new Kafka({

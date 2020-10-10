@@ -1,3 +1,4 @@
+/* eslint-disable */
 // TCP server
 const net = require('net')
 const port = 7070
