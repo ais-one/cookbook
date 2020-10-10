@@ -252,7 +252,7 @@ vue-crud-x
 |  +- .dockerignore
 |  +- .eslintrc.js
 |  +- app.js : the express app boilerplate
-|  +- deploy-gcr.sh
+|  +- deploy.sh
 |  +- deploy-vm.sh
 |  +- docker-compose.yml
 |  +- Dockerfile

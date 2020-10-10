@@ -40,7 +40,7 @@ else
   echo "Fix by renaming with no space, also edit the PATH env, restart the command console."
   gsutil.cmd -m rsync -R dist $GS
 else
-    gsutil -m rsync -R dist $GS
+  gsutil -m rsync -R dist $GS
 fi
 
 echo "Done..."

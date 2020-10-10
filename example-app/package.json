@@ -30,8 +30,7 @@
     "process-long:unix": "cross-env NODE_ENV=$npm_package_config_env node process-long.js",
     "test": "cross-env NODE_ENV=%npm_package_config_env% jest --config=jest.config.js",
     "test:unix": "cross-env NODE_ENV=$npm_package_config_env jest --config=jest.config.js",
-    "deploy": "deploy-gcr.sh %npm_package_config_env%",
-    "deploy:unix": "deploy.sh $npm_package_config_env",
+    "deploy": "deploy.sh %npm_package_config_env%",
     "lint": "eslint .",
     "lint:fix": "eslint --fix --no-fix-warnings --no-report-warnings ."
   },
