@@ -31,17 +31,19 @@ echo Deploying To Google Cloud Run $1
 # read && exit
 
 BUILD_TS=`date +"%Y%m%d%H%M"`
-NON_CI_GCP_PROJECT_ID=mybot-live
+PROJECT_ID=mybot-live
 APP_NAME=example-app
 
 if [ "$CI" = "true" ]; then
-  echo "CI configured gcloud auth for $NON_CI_GCP_PROJECT_ID"
+  echo "CI configured gcloud auth for $PROJECT_ID"
   # gcloud auth list
 else
   gcloud auth activate-service-account --key-file=config/secret/$1.gcp.json
   gcloud config set project $NON_CI_GCP_PROJECT_ID
   gcloud auth configure-docker
 fi
+
+exit
 
 # deploy to cloud run etc...
 # get current timestamp...
