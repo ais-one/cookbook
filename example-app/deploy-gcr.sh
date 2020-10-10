@@ -12,21 +12,25 @@ else
     echo "No CI"
 fi
 
-exit
-
 if [ ! $1 ]; then # environment eg. uat
     echo "Missing project environment. Set at package.json. Press any key to continue..."
-    read
+    if [ "$CI" = "true" ]; then
+        read
+    fi
     exit
 fi
 
 if [ "$1" = "development" ]; then
     echo "Cannot deploy using development environment. Press any key to continue..."
-    read
+    if [ "$CI" = "true" ]; then
+        read
+    fi
     exit
 fi
 
 echo Deploying To Google Cloud Run $1
+
+exit
 
 # OIFS=$IFS; IFS=","; sites=("site 1,site b,site aaa"); IFS=$OIFS
 # for site in "${sites[@]}"; do
