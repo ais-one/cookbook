@@ -53,9 +53,9 @@ exports.find = async (req, res) => {
     if (search) qb.where('name', 'like', `%${search}%`)
     if (!sort) qb.orderBy('created_at', 'desc')
     else { // TBD need to improve on this...
-      sort_a = sort.split(';')
+      let sort_a = sort.split(';')
       for (let kv of sort_a) {
-        kv_a = kv.split(',')
+        let kv_a = kv.split(',')
         qb.orderBy(kv_a[0], kv_a[1])
       }
     }
@@ -68,7 +68,7 @@ exports.find = async (req, res) => {
 
 exports.remove = async (req, res) => {
   try {
-    trx = await transaction.start(knex)
+    let trx = await transaction.start(knex)
     const author = await Author.query(trx).findById(req.params.id)
     if (author) {
       await author.$relatedQuery('books', trx).unrelate()

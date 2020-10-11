@@ -1,3 +1,4 @@
+/* eslint-disable */
 var net = require('net');
 
 var interval

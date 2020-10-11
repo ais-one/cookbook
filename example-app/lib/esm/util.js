@@ -2,7 +2,7 @@ function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';
   if (!csvContent) {
     csvContent += idName // set id as first columns
     for (let k1 in tmp) {
-      if (tmp.hasOwnProperty(k1) && k1 !== idName) { // set id as first columns
+      if (tmp.prototype.hasOwnProperty.call(k1) && k1 !== idName) { // set id as first columns
         let text = k1.replace(/;/g, ' ')
         text = text.replace(/([A-Z])/g, ' $1')
         text = text.charAt(0).toUpperCase() + text.slice(1) // capitalize the first letter - as an example.
@@ -13,7 +13,7 @@ function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';
   }
   csvContent += `${tmp[idName]}`
   for (let k2 in tmp) {
-    if (tmp.hasOwnProperty(k2) && k2 !== idName) {
+    if (tmp.prototype.hasOwnProperty.call(k2) && k2 !== idName) {
       let value = ''
       if (typeof tmp[k2] === 'undefined' || !tmp[k2]) {
         // do nothing
@@ -113,8 +113,8 @@ function throttle(callback, wait) {
   var time = Date.now();
   return function() {
     if ((time + wait - Date.now()) < 0) {
-      callback();
       time = Date.now();
+      return callback();
     }
   }
 }

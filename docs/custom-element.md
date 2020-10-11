@@ -4,11 +4,11 @@
 
 A component for capturing signature using canvas (component name: vcxwc-sign-pad)
 
-Component file location [../common-lb/esm/sign-pad.js](../common-lb/esm/sign-pad.js)
+Component file location [../example-vite/src/lib/esm/sign-pad.js](../example-vite/src/lib/esm/sign-pad.js)
 
-Example can be found on example-weg/vite Dashboard page
+Example can be found on example-vite DemoSignPad page
 
-Example Usage file location [../example-web/vite/pages/Dashboard.vue](../example-web/vite/pages/Dashboard.vue)
+Example Usage file location [../example-vite/pages/Dashboard.vue](../example-vite/src/pages/DemoSignPad.vue)
 
 Features
 - handle attibutes and properties
@@ -35,11 +35,11 @@ Attributes
 
 A component for capturing image using webcam (component name: vcxwc-web-cam)
 
-Component file location [../common-lb/esm/sign-pad.js](../common-lb/esm/sign-pad.js)
+Component file location [../example-vite/src/lib/esm/web-cam.js](../example-vite/src/lib/esm/web-cam.js)
 
-Example can be found on example-weg/vite Dashboard page
+Example can be found on example-vite DemoWebCam page
 
-Example Usage file location [../example-web/vite/pages/Dashboard.vue](../example-web/vite/pages/Dashboard.vue)
+Example Usage file location [../example-vite/pages/Dashboard.vue](../example-vite/src/pages/DemoWebCam.vue)
 
 Features
 - slots

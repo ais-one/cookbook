@@ -1,8 +1,15 @@
+### Version 0.4.2
+- [chore] update packages & cleanup & work on improving documentation
+- [chore] github actions, github dependabot
+- [frontend] stripdown & migrate bundleless vue app in express to vue 3
+- [backend] lint and husky for express
+
 ### Version 0.4.1
 - [chore] update packages & cleanup & work on improving documentation
 - [tested] Dockerfile, vite to GCP storage (script), backend to GCP Cloud Run (script), Test deploy backend to GCP VM (script), PM2
 - [chore] eslint & prettier for vite
 - [chore] pwa service worker & backend improvements, communication between sw and window (e.g. pushsubscriptionchange)
+- [chore] move example-web/spa to example-spa, move example-web/vite to example-vite - For CI/CD purpose
 
 ### Version 0.4.0
 - [chore] update packages & cleanup & work on improving documentation

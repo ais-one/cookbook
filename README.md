@@ -2,13 +2,13 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
 
-Latest Version [0.4.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.1) - Released 2020 Oct 08 1930 +8GMT
+Latest Version [0.4.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.2) - Released 2020 Oct 11 1430 +8GMT
 
 # Features
 
 - Frontend Examples
-  - [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-web/vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
-  - [SPA & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-web/spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP
+  - [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
+  - [SPA & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP
   - [Vanilla JS, ES Modules](https://github.com/ais-one/vue-crud-x/tree/master/example-app/public): No bundler, scalable VueJS Application , example codes (signed uploads, JWT refresh token, OTP)
 - [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/)
   - Cors, proxy middleware, helmet, error handling, logging, OpenAPI
@@ -20,6 +20,7 @@ Latest Version [0.4.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.1)
   - JWT using RSA, JWT refresh token, Passwort SAML (WIP), token in HttpOnly cookies, GA OTP, role
   - Unit Test & Integration Test
 - Development & Deployment
+  - **NEW** [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
   - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) of mongodb with replica set
   - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
 
@@ -62,7 +63,7 @@ npm run app:unix # linux or mac
 ### SPA Setup & Run
 
 ```bash
-cd example-web/spa
+cd example-spa
 npm i
 npm run serve
 ```
@@ -85,7 +86,7 @@ For Push Notification
 - using self hosted webpush is also supported and available
 
 ```bash
-cd example-web/vite
+cd example-vite
 npm i
 npm run dev
 ```
@@ -138,16 +139,16 @@ npm run process-cron:unix # linux or mac
 From vue-crud-x folder
 
 ```bash
-cd example-web/spa
+cd example-spa
 npm run build
 ```
 
 From vue-crud-x folder
 
 ```bash
-cd example-web/spa
+cd example-spa
 npm run build
-mv dist ../../example-app/public/
+mv dist ../example-app/public/
 ```
 
 Change or add (if property not present) to **example-app/config/secret/.development.env.js** file contents
@@ -173,11 +174,11 @@ Change or add (if property not present) to **example-app/config/secret/.developm
 
 2. see **example-app/public** for vanillaJS frontend exxample
 
-3. see **example-web/vite** for Vite Vue3 frontend example
-  - **example-web/vite/lib/esm** for common codes to be used by Vite Vue 3 (should have same contents as **example-app/lib/esm**)
+3. see **example-vite** for Vite Vue3 frontend example
+  - **example-vite/lib/esm** for common codes to be used by Vite Vue 3 (should have same contents as **example-app/lib/esm**)
 
-4. see **example-web/spa** for Webpack Vue2 frontend example
-  - **example-web/spa/lib/webpacked** for common codes to be used by Webpacked Vue 2 applications
+4. see **example-spa** for Webpack Vue2 frontend example
+  - **example-spa/lib/webpacked** for common codes to be used by Webpacked Vue 2 applications
 
 
 ## Environment Settings
@@ -233,7 +234,7 @@ vue-crud-x
 |  +- libs/ : common libs
 |  |  +- auth/ : for express authentication
 |  |  +- comms/ : messaging
-|  |  +- esm/ : same as example-web/vite/lib
+|  |  +- esm/ : same as example-vite/lib
 |  |  +- express/ : express related
 |  |  +- services/ : nodejs libs
 |  |  +- dist/ : distribution folder for CRUD component
@@ -252,7 +253,7 @@ vue-crud-x
 |  +- .dockerignore
 |  +- .eslintrc.js
 |  +- app.js : the express app boilerplate
-|  +- deploy-gcr.sh
+|  +- deploy.sh
 |  +- deploy-vm.sh
 |  +- docker-compose.yml
 |  +- Dockerfile
@@ -265,12 +266,12 @@ vue-crud-x
 |  +- process-long.js: sample long running process
 |  +- README.md
 |  +- setup.js
-+- example-web/ : frontend associated to the application
-|  +- spa/
-|  |  +- libs/ : common libs
++- example-spa/ : frontend associated to the application
+|  +- lib/ : common libs
 |  |  |  +- webpacked/ : webpacked components for frontend (including vue-crud-x)
-|  +- vite/
-|  |  +- libs/ : common libs
++- example-vite/ : frontend associated to the application
+|  +- src/
+|  |  +- lib/ : common libs
 |  |  |  +- esm/ : JS that can be used by both front and backend
 |  +- <your other front end here>
 +- .gitignore

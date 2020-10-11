@@ -11,7 +11,7 @@ const httpMocks = require('node-mocks-http')
 const newAuthor = require('../mock-data/new-author.json')
 // const allAuthors = require('../mock-data/all-authors.json')
 
-let req, res
+let req, res, next
 beforeEach(() => {
   req = httpMocks.createRequest()
   res = httpMocks.createResponse()

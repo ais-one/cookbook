@@ -11,11 +11,11 @@ List of urgent issues to take care of
 ## Backlog
 
 For future product improvement
-- [chore] circleci / github actions (consider for monorepo)
+- [chore] secrets management, reduce duplication deploy e.g. GCP_PROJECT_ID, seperate config and secret
 - [frontend] styling for custom build mwc-*
-- [backend-deployment] GKE, Kubernetes
 - [frontend-i18n] node-polyglot
-- [frontend-testing] cypress e2e testing
+- [frontend-testing] cypress e2e testing, vue-test-util & vite
+- [backend-deployment] GKE, Kubernetes
 - [vite] migrate vue-crud-x table examples to vite
 - [frontend-graphql] try @octokit/graphql
 - [chore] apollo-client graphql security & performance review
@@ -25,5 +25,5 @@ For future product improvement
 - [backend-testing] research auto generated REST API and Testing (keep in view dredd.io)
 - [backend-testing] research websocket testing
 - [backend-testing] change out of jest? use native assert instead of chai
-- [vue3]VueCrudX (update to VueJS 3 and Vuetify 3)
+- [vue3] VueCrudX (update to VueJS 3 and Vuetify 3)
 - [vue3] https://github.com/vueComponent/ant-design-vue/issues/1913

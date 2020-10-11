@@ -1,5 +1,4 @@
 node_modules
-package-lock.json
 
 # Log files
 npm-debug.log*

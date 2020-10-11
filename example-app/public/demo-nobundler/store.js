@@ -1,21 +1,22 @@
-import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.esm.browser.min.js'
-import Vuex from 'https://cdn.jsdelivr.net/npm/vuex@3.1.1/dist/vuex.esm.browser.min.js'
+const { createStore } = Vuex
 
-Vue.use(Vuex)
+const mutations = {
+  setUser (state, payload) { state.user = payload }
+}
 
-export default new Vuex.Store({
-  state: {
-    user: null,
-    token: null
-  },
-  getters: {
-    user (state) { return state.user },
-    token (state) { return state.token }
-  },
-  mutations: {
-    setUser (state, payload) { state.user = payload },
-    setToken (state, payload) { state.token = payload }
-  },
-  actions: {
-  }
+const getters = {
+  user (state) { return state.user }
+}
+
+const state = { // state below the rest // https://stackoverflow.com/questions/43843180/eslint-state-already-declared-vuex
+  user: null
+}
+
+const store = createStore({
+  state,
+  getters,
+  actions: {},
+  mutations
 })
+
+export default store
