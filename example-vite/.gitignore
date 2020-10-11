@@ -3,7 +3,8 @@ dist
 node_modules
 
 # secrets & configs
-secret
+secret/*
+!secret/README.md
 
 # Log files
 npm-debug.log*
