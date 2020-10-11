@@ -1,10 +1,9 @@
 const express = require('express')
-
 const passport = require('passport')
 
 module.exports = express.Router()
   .get('/login',
-    function(req, res, next) {
+    (req, res, next) => {
       // return res.redirect('/' + token...) // for faking, bypass real callback
       // req.query.RelayState = req.query.redirect_to + ';' + req.query.groups + ';' + req.query.expiry
       next()
@@ -14,7 +13,7 @@ module.exports = express.Router()
   .post('/login/callback',
     // bodyParser.urlencoded({ extended: false }),
     passport.authenticate('saml', { failureRedirect: '/', failureFlash: true }),
-    function(req, res) {
+    (req, res) => {
       try {
         // const relayState = req.body.RelayState.split(';')
         // const TO = relayState[0]

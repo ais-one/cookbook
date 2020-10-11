@@ -7,7 +7,9 @@ exports.create = async (req, res) => {
   try {
     const author = await Author.query().insert(req.body)
     if (author) return res.status(201).json(author)  
-  } catch (e) { }
+  } catch (e) {
+    console.log(e.toString())
+  }
   return res.status(500).json()
 }
 
@@ -38,7 +40,9 @@ exports.findOne = async (req, res) => {
     const author = await Author.query().findById(req.params.id)
     if (author) return res.status(200).json(author)
     else return res.status(404).json()
-  } catch (e) { }
+  } catch (e) {
+    console.log(e.toString())
+  }
   return res.status(500).json()
 }
 

@@ -53,7 +53,7 @@ exports.open = function (server=null, app=null) {
           wss.clients.forEach((ws) => {
             if (!ws.isAlive) return ws.terminate() // force close
             ws.isAlive = false
-            ws.ping(() => {})
+            return ws.ping(() => {})
           })
         }, WS_KEEEPALIVE_MS)
       }

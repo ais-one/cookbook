@@ -106,6 +106,15 @@ You can test PWA Push notifications using webpush on Dashboard page (need to be 
 - https://github.com/nuxt/nuxt.js/issues/8102
 - prefer static sites and lazy loaded SPA
 
+### SAML
+
+Refer to link below on how to try out...
+- https://github.com/ais-one/vue-crud-x/blob/develop/docker-devenv/saml/docker-compose.yml
+
+Codes are use in...
+- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/app.js
+- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/lib/express/saml.js
+- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/router/saml.js
 
 ## Testing
 

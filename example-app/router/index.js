@@ -9,7 +9,6 @@ module.exports = function (app) {
     router.use('/books', require('./books')),
     router.use('/categories', require('./categories')),
     router.use('/pages', require('./pages')),
-    // require('./page'),
     router.use('/saml', require('./saml')),
     router.use('/mongo-demo', require('./mongo-demo')),
     router.use('/t4t', require('./t4t')),

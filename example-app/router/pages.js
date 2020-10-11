@@ -28,6 +28,8 @@ module.exports = express.Router()
       const page = await Page.query().findById(req.params.id)
       if (page) return res.status(200).json(page)
       else return res.status(404).json()
-    } catch (e) { }
+    } catch (e) {
+      console.log('error', e.toString())
+    }
     return res.status(500).json()
   })

@@ -26,7 +26,9 @@ function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';
       } else {
         try {
           value = tmp[k2].toString()
-        } catch (e) { }
+        } catch (e) {
+          console.log('error', e.toString())
+        }
       }
       csvContent += ';' + value.replace(/;/g, ' ')
     }
@@ -110,12 +112,13 @@ const debounce = (callback, delay) => {
 // - Throttling a button click so we can’t spam click.
 // - Throttling a touch/move mouse event handler.
 function throttle(callback, wait) {
-  var time = Date.now();
+  var time = Date.now()
   return function() {
     if ((time + wait - Date.now()) < 0) {
-      time = Date.now();
-      return callback();
+      time = Date.now()
+      return callback()
     }
+    return null
   }
 }
 

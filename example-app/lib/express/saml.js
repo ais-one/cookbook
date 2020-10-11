@@ -10,8 +10,8 @@ const SamlStrategy = require('passport-saml').Strategy
 module.exports = function(app) {
   app.use(passport.initialize())
 
-  passport.serializeUser(function(user, done) { done(null, user) })
-  passport.deserializeUser(function(user, done) { done(null, user) })
+  passport.serializeUser((user, done) => { done(null, user) })
+  passport.deserializeUser((user, done) => { done(null, user) })
   
   passport.use('saml', new SamlStrategy(
     {
@@ -31,7 +31,7 @@ module.exports = function(app) {
 
       validateInResponseTo: false
     },
-    function(profile, done) {
+    (profile, done) => {
       console.log('profile', profile)
       return done(null, { // map whatever claims/profile info you want here
         // upn: profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn'],

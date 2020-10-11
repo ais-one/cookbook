@@ -39,7 +39,7 @@ async function generateTable (req, res, next) { // TBD get config info from a ta
     // console.log(req.table)
     return next()
   } catch (e) {
-    res.status(500).json({ e: e.toString() })
+    return res.status(500).json({ e: e.toString() })
   }
 }
 
@@ -232,7 +232,7 @@ module.exports = express.Router()
         console.log(e.toString())
       }
     }
-    res.json({count})
+    return res.json({count})
   }))
 
   .post('/create/:table', generateTable, asyncWrapper(async (req, res) => {
@@ -261,7 +261,7 @@ module.exports = express.Router()
     } else { // mongodb
       await mongo.db.collection(table.name).insertOne(body) // rv.insertedId, rv.result.ok
     }
-    res.status(201).json(rv)
+    return res.status(201).json(rv)
   }))
 
   .post('/remove/:table', generateTable, asyncWrapper(async (req, res) => {
@@ -296,7 +296,7 @@ module.exports = express.Router()
         // result: dbRv.result
       }
     }
-    res.json()
+    return res.json()
   }))
 
   .post('/upload/:table', generateTable, upload.single('file'), asyncWrapper(async (req, res) => {
