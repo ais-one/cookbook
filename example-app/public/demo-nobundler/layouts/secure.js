@@ -2,8 +2,9 @@ import Navbar from '../components/navbar.js'
 
 const template = /*html*/`
 <section>
+  <h1>Secure Layout</h1>
   <ms-navbar></ms-navbar>
-  <router-view :key="$route.fullPath"></router-view>
+  <router-view></router-view>
 </section>
 `
 

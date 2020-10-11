@@ -20,6 +20,7 @@ Latest Version [0.4.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.2)
   - JWT using RSA, JWT refresh token, Passwort SAML (WIP), token in HttpOnly cookies, GA OTP, role
   - Unit Test & Integration Test
 - Development & Deployment
+  - **NEW** [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
   - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) of mongodb with replica set
   - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
 

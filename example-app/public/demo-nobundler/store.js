@@ -1,21 +1,22 @@
-import Vue from 'https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.esm.browser.min.js'
-import Vuex from 'https://cdn.jsdelivr.net/npm/vuex@3.1.1/dist/vuex.esm.browser.min.js'
+const { createStore } = Vuex
 
-Vue.use(Vuex)
+const state = {
+  user: null
+}
 
-export default new Vuex.Store({
-  state: {
-    user: null,
-    token: null
-  },
-  getters: {
-    user (state) { return state.user },
-    token (state) { return state.token }
-  },
-  mutations: {
-    setUser (state, payload) { state.user = payload },
-    setToken (state, payload) { state.token = payload }
-  },
-  actions: {
-  }
+const mutations = {
+  setUser (state, payload) { state.user = payload }
+}
+
+const getters = {
+  user (state) { return state.user }
+}
+
+const store = createStore({
+  state,
+  getters,
+  actions: {},
+  mutations
 })
+
+export default store

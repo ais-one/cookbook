@@ -1,9 +1,11 @@
 ### Version 0.4.2
 - [chore] update packages & cleanup & work on improving documentation
+- [chore] github actions, github dependabot
+- [frontend] stripdown & migrate bundleless vue app in express to vue 3
 - [inprogress]
-  - [chore] github actions, github dependabot
+  - [fix] url issue between express demo and no bundle demo
+  - [fix] reduce duplication deploy e.g. GCP_PROJECT_ID
   - [backend] lint and prettier for express
-  - [frontend] migrate standalone to vue 3
 
 ### Version 0.4.1
 - [chore] update packages & cleanup & work on improving documentation

@@ -1,14 +1,9 @@
-import Signin from '../views/signin.js'
-
 const template = /*html*/`
-<template>
-  <ms-signin />
-</template>
+<div>
+  <h1>Public Layout</h1>
+  <router-view></router-view>
+</div>
 `
-
 export default {
-  template,
-  components: {
-    'ms-signin': Signin
-  }
+  template
 }
