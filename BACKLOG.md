@@ -11,8 +11,8 @@ List of urgent issues to take care of
 ## Backlog
 
 For future product improvement
+- [chore] secrets management, reduce duplication deploy e.g. GCP_PROJECT_ID, seperate config and secret
 - [frontend] styling for custom build mwc-*
-- [backend] secrets management
 - [frontend-i18n] node-polyglot
 - [frontend-testing] cypress e2e testing, vue-test-util & vite
 - [backend-deployment] GKE, Kubernetes

@@ -17,7 +17,6 @@
     "db:migrate:rollback": "knex migrate:rollback",
     "db:seed:make": "knex seed:make",
     "db:seed": "knex seed:run",
-
     "mongo": "cross-env NODE_ENV=%npm_package_config_env% node db/mongo/index.js",
     "mongo:unix": "cross-env NODE_ENV=$npm_package_config_env node db/mongo/index.js",
     "knex": "cross-env NODE_ENV=%npm_package_config_env% npx knex migrate:latest --knexfile=knexfile.js && cross-env NODE_ENV=%npm_package_config_env% npx knex seed:run --knexfile=knexfile.js",
@@ -72,7 +71,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
-    "eslint": "^7.10.0",
+    "eslint": "^7.11.0",
     "husky": "^4.3.0",
     "jest": "^26.5.2",
     "node-mocks-http": "^1.9.0",
