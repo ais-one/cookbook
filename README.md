@@ -17,10 +17,10 @@ Latest Version [0.4.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.3)
   - AgendaJS message queue
   - File uploads, Signed URL file upload to GCP Storage
   - Websockets, graphql
-  - JWT using RSA, JWT refresh token, Passwort SAML (WIP), token in HttpOnly cookies, GA OTP, role
+  - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, **NEW** Passport SAML
   - Unit Test & Integration Test
 - Development & Deployment
-  - **NEW** [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
+  - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
   - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) of mongodb with replica set
   - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
 

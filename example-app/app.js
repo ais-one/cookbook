@@ -43,7 +43,9 @@ require(LIB_PATH + '/express/shutdown')(server, shutdown)
 // END SERVICES
 
 require(LIB_PATH + '/express/preRoute')(app)
-// samlRoute PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token
+
+require(LIB_PATH + '/express/saml')(app) // samlRoute PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token
+
 try {
   require(APP_PATH + '/router')(app)
   if (USE_GRAPHQL) require(APP_PATH + '/graphql')(app, server)  

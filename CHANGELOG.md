@@ -1,5 +1,6 @@
 ### Version 0.4.3
 - [chore] update packages & cleanup & work on improving documentation
+- [backend] simple SAML test
 - [inprogress]
   - [chore] secrets management, reduce duplication deploy e.g. GCP_PROJECT_ID, seperate config and secret
   - [frontend-testing] cypress e2e testing, vue-test-util & vite

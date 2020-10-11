@@ -1,0 +1,15 @@
+# https://medium.com/disney-streaming/setup-a-single-sign-on-saml-test-environment-with-docker-and-nodejs-c53fc1a984c9
+# Navigate to http://127.0.0.1:8081/simplesaml
+# user1 / user1pass
+# user2 / user2pass
+# to test SAML run this, then visit http://127.0.0.1:3000/api/saml/login
+version: '3.3'
+services:
+  testsamlidp:
+    ports:
+      - 8081:8080
+      - 8443:8443
+    environment:
+      - SIMPLESAMLPHP_SP_ENTITY_ID=saml-poc
+      - SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE=http://127.0.0.1:3000/api/saml/login/callback
+    image: kristophjunge/test-saml-idp
