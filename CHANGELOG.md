@@ -3,7 +3,6 @@
 - [chore] github actions, github dependabot
 - [frontend] stripdown & migrate bundleless vue app in express to vue 3
 - [inprogress]
-  - [fix] url issue between express demo and no bundle demo
   - [fix] reduce duplication deploy e.g. GCP_PROJECT_ID
   - [backend] lint and prettier for express
 

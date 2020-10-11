@@ -34,8 +34,8 @@ const router = createRouter({
       component: Admin, // () => import('./views/about.js') // TBD use lazy loading
       name: 'admin'
     },
-    { path: '/', name: 'signIn', component: SignIn }
-    // { path: '/:catchAll(.*)', name: 'SignIn', redirect: '{ name: 'SignIn' }' }, // should have 404 page
+    { path: '/', name: 'signIn', component: SignIn },
+    { path: '/:catchAll(.*)', name: 'catchAll', redirect: { name: 'signIn' } }, // should have 404 page
   ]
 })
 

@@ -19,7 +19,6 @@ module.exports = function (app, express) {
       const history = require('connect-history-api-fallback')
       app.use(history()) // causes problems when using postman - set header accept application/json in postman
       WEB_STATIC.forEach(item => {
-        console.log(item)
         app.use(item.url, express.static(item.folder, item.options)) // { extensions: ['html'], index: false }
       })
     }
