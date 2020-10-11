@@ -4,7 +4,7 @@ import Vuetify, {
   VTextField, VSelect, VAutocomplete, VCombobox, VTextarea
 } from 'vuetify/lib'
 import { Scroll } from 'vuetify/lib/directives'
-import i18n from '../lang'
+import i18n from '../i18n'
 
 // import '@mdi/font/css/materialdesignicons.css'
 

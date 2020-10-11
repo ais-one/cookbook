@@ -46,9 +46,6 @@
           <template v-slot:headerCell="props">
             <span v-html="props.header.text"></span>
           </template>
-          <!-- <template v-slot:item.data-table-select="{ on, props }">
-            <v-simple-checkbox color="green" v-bind="props" v-on="on"></v-simple-checkbox>
-          </template> -->
           <template v-slot:item="{ item }">
             <tr :key="item[idName]" :ref="`row-${item[idName]}`" @click.stop="onRowClick(item, $event, _self)">
               <slot name="td" :headers="vtable.headers" :item="item" :vcx="_self">
@@ -514,6 +511,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-</style>

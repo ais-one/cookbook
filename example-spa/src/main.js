@@ -2,7 +2,7 @@
 import Vue from 'vue'
 import VueRx from 'vue-rx'
 import VueNativeSock from 'vue-native-websocket'
-import i18n from './lang'
+import i18n from './i18n'
 import { store } from './store'
 import router from './router'
 import App from './App'
@@ -13,7 +13,6 @@ import VueCrudX from 'ext-lib/webpacked/VueCrudX' // Vuetify
 import TimePicker from 'ext-lib/webpacked/TimePicker.vue'
 import DatePicker from 'ext-lib/webpacked/DatePicker.vue'
 import FileUpload from 'ext-lib/webpacked/FileUpload.vue'
-
 
 import { apolloClient } from './graphql'
 import { DO_HELLO } from './queries'

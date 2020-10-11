@@ -9,7 +9,6 @@
         outlined
         dense
       ></v-file-input>
-      <!-- <v-img v-if="selectedImageFileName" :src="'https://storage.googleapis.com/mybot-live.appspot.com/mystore/' + encodeURIComponent(selectedImageFileName)"/> -->
     </v-flex>
 
   </v-container>
@@ -18,6 +17,7 @@
 <script>
 import { http } from '@/axios'
 
+ // <v-img v-if="selectedImageFileName" :src="'https://storage.googleapis.com/mybot-live.appspot.com/mystore/' + encodeURIComponent(selectedImageFileName)"/>
 export default {
   components: {
   },
@@ -43,7 +43,7 @@ export default {
           filename: fileObj.name,
           action: 'write'
         })
-        const rv = await http.put(data.url, fileObj, {
+        await http.put(data.url, fileObj, {
           // withCredentials: true,
           headers: { 'Content-Type': 'application/octet-stream' }
         })

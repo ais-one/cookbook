@@ -1,7 +1,7 @@
 // try to move knexfile into the example-app	
 const path = require('path')	
 
-dbConfigs = {	
+const dbConfigs = {	
   development: {	
     client: 'sqlite3',	
     connection: {	

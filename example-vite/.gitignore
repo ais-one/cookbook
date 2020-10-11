@@ -3,9 +3,7 @@ dist
 node_modules
 
 # secrets & configs
-secrets
-config/uat.js
-config/production.js
+secret
 
 # Log files
 npm-debug.log*

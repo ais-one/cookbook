@@ -17,8 +17,8 @@ module.exports = express.Router()
       console.log(req.body.authorIds)
       const { authorIds, ...data } = req.body
       console.log(data)
+      let trx = await transaction.start(knex)
       try {
-        trx = await transaction.start(knex)
         const book = await Book.query(trx).insert(data)
         await Promise.all(
           authorIds.map(async authorId => {
@@ -90,9 +90,9 @@ module.exports = express.Router()
       if (categoryId) qb.where('books.categoryId', '=', categoryId)
       if (!sort) qb.orderBy('created_at', 'desc')
       else { // TBD need to improve on this...
-        sort_a = sort.split(';')
+        let sort_a = sort.split(';')
         for (let kv of sort_a) {
-          kv_a = kv.split(',')
+          let kv_a = kv.split(',')
           qb.orderBy(kv_a[0], kv_a[1])
         }
       }

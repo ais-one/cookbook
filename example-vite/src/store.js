@@ -3,11 +3,6 @@ import router from './router.js'
 import * as http from '/src/lib/esm/http.js'
 // import aaa from 'https://unpkg.com/swrv@0.3.0/esm/index.js' - will error
 
-const state = {
-  count: 99,
-  user: null
-}
-
 const mutations = {
   login(state, payload) {
     console.log('login', payload)
@@ -72,6 +67,11 @@ const actions = {
 // getters are functions.
 const getters = {
   evenOrOdd: (payload) => (payload.count % 2 === 0 ? 'even' : 'odd')
+}
+
+const state = { // state below the rest // https://stackoverflow.com/questions/43843180/eslint-state-already-declared-vuex
+  count: 99,
+  user: null
 }
 
 const store = createStore({

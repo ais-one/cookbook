@@ -12,5 +12,6 @@ if (process.argv.length >= 3) {
     console.log('seeding')
     require('./seed')
   } else {
+    console.log('unknown', process.argv)
   }
 }

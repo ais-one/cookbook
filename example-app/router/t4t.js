@@ -85,8 +85,8 @@ module.exports = express.Router()
 
     if (table.db === 'knex') {
       query = knex(table.name).where({})
-      prevFilter = {}
-      if (filters && filters.length) for (filter of filters) {
+      let prevFilter = {}
+      if (filters && filters.length) for (let filter of filters) {
         const key = filter.col
         const op = filter.op
         const value = op === 'like' ? `%${filter.val}%` : filter.val
@@ -147,8 +147,8 @@ module.exports = express.Router()
     }
     if (csv) {
       const parser = new Parser({})
-      const csv = parser.parse(rows)
-      return res.json({csv})
+      const csvRows = parser.parse(rows)
+      return res.json({ csv: csvRows })
     } else {
       rv.results = rows.map(row => { // make column for UI to identify each row
         if (table.pk) {
@@ -276,7 +276,7 @@ module.exports = express.Router()
         await mongo.db.collection(table.name).deleteMany({ _id: { $in: ids.map(id => new ObjectID(id)) } })  
     } else { // delete using keys
       const keys = ids.map(id => {
-        id_a = id.split('|')
+        let id_a = id.split('|')
         const multiKey = {}
         for (let i=0; i<id_a.length; i++) {
           const keyName = table.multiKey[i]

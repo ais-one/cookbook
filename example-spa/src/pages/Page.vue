@@ -12,19 +12,6 @@
             <hr/>
             <div>{{ !!parentId }}</div>
           </template>
-          <!-- <template v-slot:table="{ records, totalRecs, pagination }">
-            <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['my-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
-            <div>{{ totalRecs }} {{ pagination }}</div>
-          </template> -->
-          <!-- <template v-slot:form="{ form, parentId }">
-            <div>
-              <div>{{ form }} {{ !!parentId }}</div>
-              <h1>Pages Form</h1>
-              <v-card-text>
-                <v-text-field label="Content" v-model="form.content.value"></v-text-field>
-              </v-card-text>
-            </div>
-          </template> -->
         </vue-crud-x>
       </v-flex>
     </v-layout>

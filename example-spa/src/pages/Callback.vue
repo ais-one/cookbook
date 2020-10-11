@@ -1,7 +1,5 @@
 <template>
   <div class="container">
-    <!-- <div v-if="!!error" :value="!!error">{{ error }}</div>
-    <div v-else>Logging in... Please Wait...</div> -->
     Logging In... Please Wait...
   </div>
 </template>

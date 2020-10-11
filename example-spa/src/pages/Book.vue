@@ -12,10 +12,6 @@
               </v-flex>
             </template>
           </template>
-          <!-- <template v-slot:table="{ records, totalRecords, pagination }">
-            <div v-for="record in records" :key="record.id"><p>{{ record.id }} {{ record.name }} <v-btn @click="$refs['book-table'].crudFormOpen(record.id)">Open</v-btn></p></div>
-            <div>{{ totalRecs }} {{ pagination }}</div>
-          </template> -->
           <template v-slot:form="{ form, parentId }">
             <div>
               <p>Custom Form Slot - Has Parent: {{ !!parentId }} {{ form }}</p>
@@ -48,7 +44,6 @@
                       close
                       @click:close="remove(item)"
                     >
-                    <!-- <v-chip :input-value="selected" click:close @input="remove(item)"> -->
                       <span v-text="item.name"></span>
                     </v-chip>
                   </template>

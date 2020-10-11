@@ -17,8 +17,6 @@ exports.seed = async (knex) => {
   await knex('state').del()
   await knex('grade').del()
 
-  var dt = new Date()
-
   await knex('authors').insert([
     {id: 1, name: 'author1', avatar: '', created_at: mkDt() },
     {id: 2, name: 'author2', avatar: '', created_at: mkDt() },
@@ -32,7 +30,6 @@ exports.seed = async (knex) => {
     {id: 3, name: 'cat3', created_at: mkDt() }
   ])
 
-  dt = new Date()
   await knex('books').insert([
     {id: 1, name: 'book1', categoryId: 1, rating: 5, yearPublished: '2004', created_at: mkDt() },
     {id: 2, name: 'book2', categoryId: 2, rating: 4, yearPublished: '2003', created_at: mkDt() },
