@@ -2,9 +2,9 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [chore] github actions, github dependabot
 - [frontend] stripdown & migrate bundleless vue app in express to vue 3
+- [backend] lint and husky for express
 - [inprogress]
-  - [fix] reduce duplication deploy e.g. GCP_PROJECT_ID
-  - [backend] lint and prettier for express
+  - [fix] reduce duplication deploy e.g. GCP_PROJECT_ID, seperate config and secret
 
 ### Version 0.4.1
 - [chore] update packages & cleanup & work on improving documentation

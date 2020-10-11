@@ -12,6 +12,7 @@ List of urgent issues to take care of
 
 For future product improvement
 - [frontend] styling for custom build mwc-*
+- [backend] secrets management
 - [frontend-i18n] node-polyglot
 - [frontend-testing] cypress e2e testing, vue-test-util & vite
 - [backend-deployment] GKE, Kubernetes

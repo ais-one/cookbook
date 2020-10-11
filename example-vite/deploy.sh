@@ -25,10 +25,9 @@ fi
 echo Deploying To Google Storage $1
 
 GCP_PROJECT_ID=mybot-live
-SITE=vite
 GS=gs://$1.mybot.live
 
-echo "build and deploy - site $SITE ($1)"
+echo "build and deploy ($1)"
 # CANNOT because need vite to build  npm ci --only=production
 # npm install && npm cache clean --force
 npm install
@@ -39,7 +38,7 @@ if [ "$CI" = "true" ]; then
   echo "CI configured gcloud auth"
   gsutil -m rsync -R dist $GS
 else
-  gcloud auth activate-service-account --key-file=config/secret/$1.gcp.json
+  gcloud auth activate-service-account --key-file=secret/$1.gcp.json
   gcloud config set project $GCP_PROJECT_ID
   echo "NOTE: gsutil.cmd in windows git bash. If cannot find command in Windows, it could be space in path (.../Google Cloud/...) to gsutil."
   echo "Fix by renaming with no space, also edit the PATH env, restart the command console."
