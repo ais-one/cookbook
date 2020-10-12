@@ -1,10 +1,11 @@
 ### Version 0.4.3
 - [chore] update packages & cleanup & work on improving documentation
-- [backend] simple SAML test
+- [example-app] simple SAML test
+- [example-vite] rename folder pages to views, to follow ```<router-view>``` term
 - [inprogress]
   - [chore] secrets management, reduce duplication deploy e.g. GCP_PROJECT_ID, seperate config and secret
-  - [frontend-testing] cypress e2e testing, vue-test-util & vite
-  - [frontend] styling for custom build mwc-*
+  - [example-vite] cypress e2e testing, vue-test-util & vite
+  - [example-vite] styling for custom build mwc-*
 
 ### Version 0.4.2
 - [chore] update packages & cleanup & work on improving documentation

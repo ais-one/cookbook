@@ -30,3 +30,5 @@ $ git init
 
 git clone --depth 1 <remote_repo_url>
 
+https://www.atlassian.com/git/tutorials/comparing-workflows
+

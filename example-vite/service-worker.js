@@ -144,7 +144,7 @@ function cacheNetworkFallback(e) {
       .then(function (res) {
         return res || fetch(e.request)
         // .then(function(response) {
-        //   if (response.status === 404) return caches.match('pages/404.html')
+        //   if (response.status === 404) return caches.match('views/404.html')
         //   return response
         // })
       })
