@@ -1,3 +1,5 @@
+'use strict'
+
 const fs = require('fs')
 const Author = require('../models/Author')
 const { transaction } = require('objection')

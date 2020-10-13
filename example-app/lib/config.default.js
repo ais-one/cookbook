@@ -47,8 +47,8 @@ global.CONFIG.JOB_MONGO_URL = 'mongo' // if mongo, use MONGO_URL
 global.CONFIG.JOB_COLLECTION = 'agendaJobs' // collection name
 global.CONFIG.JOB_TYPES = '' // 'email', // 'email,nexmo,telegram' //  agenda message queue job types, comma seperated , find the path to agenda job
 
-global.CONFIG.KNEXFILE = true
-global.CONFIG.GCP_KEY = true
+global.CONFIG.KNEXFILE = null // knexfile
+global.CONFIG.GCP_SERVICE_KEY = null // GCP SERVICE KEY { }
 global.CONFIG.GCP_DEFAULT_BUCKET = 'mybot-live.appspot.com'
 
 // CORS - SAME ORIGIN - PROXIED
@@ -97,14 +97,13 @@ global.CONFIG.WEB_STATIC = [  // serve website from folder, blank if do not serv
   { folder: APP_PATH + '/public/demo-express', url: '/' }
 ]
 
-global.CONFIG.UPLOAD_FOLDER = APP_PATH + '/uploads' // for server uploads - to remove
-global.CONFIG.UPLOAD_URL = '/uploads' // for server uploads - to remove
 global.CONFIG.UPLOAD_STATIC = [
+  { folder: APP_PATH + '/uploads', url: '/uploads' },
   { folder: '', url: '' }
 ]
 
-global.CONFIG.JWT_CERT = process.env.JWT_CERT || '' // path.join(__dirname, 'certs/jwt') // RS256
-global.CONFIG.HTTPS_CERT = process.env.HTTPS_CERT || ''
+global.CONFIG.JWT_CERTS = null // { key: '', cert: '' }
+global.CONFIG.HTTPS_CERTS = null // { key: '', cert: '' }
 
 // Role-based access control - not needed, implemented by middleware - e.g. isAdmin after user authentication
 
@@ -117,6 +116,14 @@ global.CONFIG.ENABLE_LOGGER = false
 // Github
 // global.CONFIG.GITHUB_CLIENT_ID = ''
 // global.CONFIG.GITHUB_CLIENT_SECRET = ''
+
+// Google
+// global.CONFIG.GOOGLE_CLIENT_ID = ''
+// global.CONFIG.GOOGLE_CLIENT_SECRET = ''
+
+// Microsoft
+// global.CONFIG.MS_CLIENT_ID = ''
+// global.CONFIG.MS_CLIENT_SECRET = ''
 
 // MQ - bullmq - requires redis - <lib>/services/mq/bull.js - currently not used
 global.CONFIG.JOB_BULL = null
@@ -137,6 +144,7 @@ global.CONFIG.SENDGRID_SENDER = ''
 // Communications - Firebase Messaging - <lib>/comms/fcm.js
 global.CONFIG.FCM_SERVER_KEY = ''
 
+// Communications - Firebase Messaging - <lib>/services/webpush.js
 global.CONFIG.WEBPUSH_VAPID_URL = process.env.WEBPUSH_VAPID_URL || 'http://127.0.0.1:3000'
 
 // Caching - refer to <lib>/services/redis.js

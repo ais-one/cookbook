@@ -1,3 +1,5 @@
+'use strict'
+
 const  { REDIS_CONFIG } = global.CONFIG
 // {
 //   port: 6379,

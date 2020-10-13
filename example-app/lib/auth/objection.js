@@ -1,3 +1,5 @@
+'use strict'
+
 const knex = require('../services/db/objection').get().knex()
 const { JWT_REFRESH_STORE_NAME } = global.CONFIG
 

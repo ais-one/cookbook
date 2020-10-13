@@ -7,8 +7,8 @@ const app = express()
 
 console.log('app starting...')
 
-const { USE_GRAPHQL, httpsCerts } = global.CONFIG
-const server = httpsCerts ? https.createServer(httpsCerts, app) : http.createServer(app)
+const { USE_GRAPHQL, HTTPS_CERTS } = global.CONFIG
+const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createServer(app)
 
 require(LIB_PATH + '/express/errorHandler')({ 
   unhandledRejection: null, // (reason, promise) => {}

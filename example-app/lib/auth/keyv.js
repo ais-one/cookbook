@@ -1,3 +1,5 @@
+'use strict'
+
 const keyv = require('../services/keyv')
 
 // set LRU and Expiry

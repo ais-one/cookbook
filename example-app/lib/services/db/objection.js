@@ -1,12 +1,14 @@
+'use strict'
+
 let Model
 
 exports.open = () => {
-  const { NODE_ENV, KNEXFILE } = global.CONFIG
+  const { KNEXFILE } = global.CONFIG
   if (!KNEXFILE) console.log('KNEXFILE property empty or undefined - knex not started')
   if (!Model && KNEXFILE) {
     try {
       const Knex = require('knex')
-      const config = KNEXFILE[NODE_ENV]
+      const config = KNEXFILE
       Model = require('objection').Model
       const knexConnection = Knex(config)
       Model.knex(knexConnection)

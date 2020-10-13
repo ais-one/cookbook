@@ -1,3 +1,5 @@
+'use strict'
+
 const axios = require('axios')
 const { SALT_ROUNDS, HTTPONLY_TOKEN, JWT_EXPIRY } = global.CONFIG
 const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = global.CONFIG

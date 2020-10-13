@@ -1,3 +1,5 @@
+'use strict'
+
 // const ObjectID = require('mongodb').ObjectID
 const DEFAULT_TRANSACTION_OPTIONS = {
   readConcern: { level: 'local' },

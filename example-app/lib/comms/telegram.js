@@ -1,3 +1,5 @@
+'use strict'
+
 const axios = require('axios')
 
 const { TELEGRAM_API_KEY, TELEGRAM_CHANNEL_ID } = global.CONFIG

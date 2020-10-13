@@ -1,3 +1,5 @@
+'use strict'
+
 const { authUser, findUser, updateUser } = require(LIB_PATH + '/auth')
 
 const authIsAdmin = async (req, res, next) => {

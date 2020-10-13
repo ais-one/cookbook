@@ -19,8 +19,8 @@
     "db:seed": "knex seed:run",
     "mongo": "cross-env NODE_ENV=%npm_package_config_env% node db/mongo/index.js",
     "mongo:unix": "cross-env NODE_ENV=$npm_package_config_env node db/mongo/index.js",
-    "knex": "cross-env NODE_ENV=%npm_package_config_env% npx knex migrate:latest --knexfile=knexfile.js && cross-env NODE_ENV=%npm_package_config_env% npx knex seed:run --knexfile=knexfile.js",
-    "knex:unix": "cross-env NODE_ENV=$npm_package_config_env npx knex migrate:latest --knexfile=knexfile.js && cross-env NODE_ENV=$npm_package_config_env npx knex seed:run --knexfile=knexfile.js",
+    "knex": "cross-env NODE_ENV=%npm_package_config_env% npx knex migrate:latest --knexfile=config/knexfile.js && cross-env NODE_ENV=%npm_package_config_env% npx knex seed:run --knexfile=config/knexfile.js",
+    "knex:unix": "cross-env NODE_ENV=$npm_package_config_env npx knex migrate:latest --knexfile=config/knexfile.js && cross-env NODE_ENV=$npm_package_config_env npx knex seed:run --knexfile=config/knexfile.js",
     "app": "cross-env NODE_ENV=%npm_package_config_env% nodemon index.js --exec \"npm run lint && node\"",
     "app:unix": "cross-env NODE_ENV=$npm_package_config_env nodemon index.js --exec \"npm run lint && node\"",
     "process-cron": "cross-env NODE_ENV=%npm_package_config_env% node process-cron.js",
@@ -30,7 +30,7 @@
     "test": "cross-env NODE_ENV=%npm_package_config_env% jest --config=jest.config.js",
     "test:unix": "cross-env NODE_ENV=$npm_package_config_env jest --config=jest.config.js",
     "deploy": "deploy.sh %npm_package_config_env%",
-    "lint": "eslint .",
+    "lint": "eslint . --ext .js",
     "lint:fix": "eslint --fix --no-fix-warnings --no-report-warnings ."
   },
   "dependencies": {
@@ -49,7 +49,7 @@
     "express": "^4.17.1",
     "graphql": "^15.3.0",
     "helmet": "^4.1.1",
-    "http-proxy-middleware": "^1.0.5",
+    "http-proxy-middleware": "^1.0.6",
     "json2csv": "^5.0.3",
     "jsonwebtoken": "^8.5.1",
     "kafkajs": "^1.14.0",
@@ -73,7 +73,7 @@
     "cross-env": "^7.0.2",
     "eslint": "^7.11.0",
     "husky": "^4.3.0",
-    "jest": "^26.5.2",
+    "jest": "^26.5.3",
     "node-mocks-http": "^1.9.0",
     "nodemon": "^2.0.4",
     "supertest": "^5.0.0"

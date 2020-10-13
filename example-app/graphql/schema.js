@@ -1,3 +1,5 @@
+'use strict'
+
 // for the resolvers
 const Author = require('../models/Author')
 const Category = require('../models/Category')

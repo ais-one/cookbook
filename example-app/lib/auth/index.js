@@ -1,3 +1,5 @@
+'use strict'
+
 const otplib = require('otplib')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -5,7 +7,7 @@ const jwt = require('jsonwebtoken')
 // const qrcode = require('qrcode')
 const { USE_OTP, OTP_EXPIRY, HTTPONLY_TOKEN, AUTH_USER_STORE, AUTH_USER_STORE_NAME } = global.CONFIG
 const { AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD = ''} = global.CONFIG
-const { JWT_ALG, JWT_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv', jwtCerts } = global.CONFIG
+const { JWT_ALG, JWT_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv', JWT_CERTS } = global.CONFIG
 
 const mongo = require('../services/db/mongodb')
 const ObjectID = require('mongodb').ObjectID
@@ -52,7 +54,7 @@ const createToken = async (payload, options) => { // Create a token from a paylo
   try {
     // console.log('createToken', payload, options)
     options.algorithm = JWT_ALG
-    const secretKey = JWT_ALG.substring(0,2) === 'RS' ? jwtCerts.key : JWT_SECRET
+    const secretKey = JWT_ALG.substring(0,2) === 'RS' ? JWT_CERTS.key : JWT_SECRET
     token = jwt.sign(payload, secretKey, options)
     // console.log(token)
     refresh_token = Date.now()
@@ -80,7 +82,7 @@ const authUser = async (req, res, next) => {
       // USE_OTP && req.path !== '/otp'
       let result = null
       try {
-        const secretKey = JWT_ALG.substring(0, 2) === 'RS' ? jwtCerts.cert : JWT_SECRET
+        const secretKey = JWT_ALG.substring(0, 2) === 'RS' ? JWT_CERTS.cert : JWT_SECRET
         result = jwt.verify(token, secretKey, { algorithm: [JWT_ALG] }) // and options
         if (!result.verified && (req.baseUrl + req.path !== '/api/auth/otp')) {
           return res.status(401).json({ message: 'Token Verification Error' })

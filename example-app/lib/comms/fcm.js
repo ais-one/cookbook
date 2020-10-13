@@ -1,3 +1,5 @@
+'use strict'
+
 const axios = require('axios')
 
 const { FCM_SERVER_KEY } = global.CONFIG
