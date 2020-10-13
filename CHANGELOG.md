@@ -4,7 +4,7 @@
 - [example-vite] rename folder pages to views, to follow ```<router-view>``` term
 - [docker-devenv] add mysql
 - [inprogress]
-  - [chore] secrets management, reduce duplication deploy e.g. GCP_PROJECT_ID, seperate config and secret, hashicorp vault?
+  - [chore] secrets management, reduce duplication deploy e.g. GCP_PROJECT_ID, seperate config (for services) and deploy (for deployments)
 
 ### Version 0.4.2
 - [chore] update packages & cleanup & work on improving documentation

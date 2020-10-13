@@ -20,7 +20,7 @@ echo Deploying $1
 
 baseDir=`pwd`
 
-PEM=./config/secret/$1.pem
+PEM=./deploy/$1.pem
 URL=ubuntu@3.1.138.164
 
 # echo $URL $PEM

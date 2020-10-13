@@ -6,9 +6,11 @@
 # $@ Values of all the arguments.
 # $? Exit status id of last command.
 
+echo $CI
+
 if [ ! $1 ]; then # environment eg. uat
   echo "Missing project environment. Set at package.json. Press any key to continue..."
-  if [ "$CI" = "true" ]; then
+  if [ "$CI" != "true" ]; then
     read
   fi
   exit
@@ -16,7 +18,7 @@ fi
 
 if [ "$1" = "development" ]; then
   echo "Cannot deploy using development environment. Press any key to continue..."
-  if [ "$CI" = "true" ]; then
+  if [ "$CI" != "true" ]; then
     read
   fi
   exit
@@ -39,7 +41,7 @@ if [ "$CI" = "true" ]; then
   echo "build_ts $BUILD_TS"
   # gcloud auth list
 else
-  gcloud auth activate-service-account --key-file=config/secret/$1.gcp.json
+  gcloud auth activate-service-account --key-file=deploy/$1.gcp.json
   gcloud config set project $GCP_PROJECT_ID
 fi
 

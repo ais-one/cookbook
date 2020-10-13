@@ -57,7 +57,7 @@ npm run app:unix # linux or mac
 
 **NOTES**
 - MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
-- The **example-app/config/secret** folder is missing so there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. To resolve, in **example-app/config** folder, rename **sample-secret** folder to **secret**. You can look at the readme inside **sample-secret** folder for more information
+- The **example-app/config** folder contents is missing so there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. Use the README.md to fill up
 
 
 ### SPA Setup & Run
@@ -160,7 +160,7 @@ npm run build
 mv dist ../example-app/public/
 ```
 
-Change or add (if property not present) to **example-app/config/secret/.development.env.js** file contents
+Change or add (if property not present) to **example-app/config/.development.env.js** file contents
 
 ```js
   //...
@@ -207,7 +207,7 @@ Change or add (if property not present) to **example-app/config/secret/.developm
 
 The **example-app/config/** folder contains the config information.
 
-You can override the configurations using <NODE_ENV>.env.js files, e.g. development.env.js or uat.env.js in **example-app/config/secret**
+You can override the configurations using <NODE_ENV>.env.js files, e.g. development.env.js or uat.env.js in **example-app/config**
 
 If too many config properties, split it to other more and files
 

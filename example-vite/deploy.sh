@@ -8,7 +8,7 @@
 
 if [ ! $1 ]; then # environment eg. uat
   echo "Missing project environment. Set at package.json. Press any key to continue..."
-  if [ "$CI" = "true" ]; then
+  if [ "$CI" != "true" ]; then
     read
   fi
   exit
@@ -16,7 +16,7 @@ fi
 
 if [ "$1" = "development" ]; then
   echo "Cannot deploy using development environment. Press any key to continue..."
-  if [ "$CI" = "true" ]; then
+  if [ "$CI" != "true" ]; then
     read
   fi
   exit
@@ -38,7 +38,7 @@ if [ "$CI" = "true" ]; then
   echo "CI configured gcloud auth"
   gsutil -m rsync -R dist $GS
 else
-  gcloud auth activate-service-account --key-file=secret/$1.gcp.json
+  gcloud auth activate-service-account --key-file=deploy/$1.gcp.json
   gcloud config set project $GCP_PROJECT_ID
   echo "NOTE: gsutil.cmd in windows git bash. If cannot find command in Windows, it could be space in path (.../Google Cloud/...) to gsutil."
   echo "Fix by renaming with no space, also edit the PATH env, restart the command console."

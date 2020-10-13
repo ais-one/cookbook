@@ -5,7 +5,7 @@
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
   "config": {
-    "env": "development"
+    "env": "uat"
   },
   "scripts": {
     "lint": "eslint . --ext .js,.vue",
