@@ -8,6 +8,7 @@ const app = express()
 console.log('app starting...')
 
 const { USE_GRAPHQL, HTTPS_CERTS } = global.CONFIG
+console.log(HTTPS_CERTS)
 const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createServer(app)
 
 require(LIB_PATH + '/express/errorHandler')({ 

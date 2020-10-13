@@ -2,10 +2,9 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [example-app] simple SAML test
 - [example-vite] rename folder pages to views, to follow ```<router-view>``` term
+- [docker-devenv] add mysql
 - [inprogress]
-  - [chore] secrets management, reduce duplication deploy e.g. GCP_PROJECT_ID, seperate config and secret
-  - [example-vite] cypress e2e testing, vue-test-util & vite
-  - [example-vite] styling for custom build mwc-*
+  - [chore] secrets management, reduce duplication deploy e.g. GCP_PROJECT_ID, seperate config and secret, hashicorp vault?
 
 ### Version 0.4.2
 - [chore] update packages & cleanup & work on improving documentation

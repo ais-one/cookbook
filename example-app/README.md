@@ -70,8 +70,6 @@ POST /api/uploads
 
 ```
 +- config/ : centralized config folder
-|  +- certs/ : certificates for HTTPS and JWT signing
-|  +- k8s/ : kubernetes YAML files (WIP)
 |  +- secret
 |  |  +- .env.<node_env>
 |  |  +- <node_env>.deploy

@@ -1,47 +1,40 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from './store.js'
 
-/*
-import permissions from '@/permissions'
-const routeGroups = {
-  // '/authors', '/categories', '/books', '/pages', '/books/:id/pages'
-  '/test': ['TestGroup'] //
-}
+// const permissions = {
+//   // g1 = route groups, g2 = user groups
+//   // go through each route group... check if group matches [list of groups in user]
+//   allowed: (g1, g2) => g1.find(x => g2.includes(x))
+// }
 
-export default (to, from, next) => {
-  // console.log('route', to.matched[0].path, store.state.user)
-  if (store.state.user && store.state.user.verified) { // has user && otp is verified
-    const { groups } = store.state.user
-
-    
-    if (routeGroups[to.matched[0].path]) {
-      let found = permissions.allowed(routeGroups[to.matched[0].path], groups.split(','))
-      if (!found) {
-        alert('Forbidden... Check Page Permissions')
-        return next('/')  
-      }
-    }
-    return next()
-  } else {
-    // TBD save / restore last path
-    const item = localStorage.getItem('session') // survive a refresh - POTENTIAL SECURITY RISK - TO REVIEW AND CHANGE USE HTTPONLY COOKIES
-    if (item) {
-      const user = JSON.parse(item)
-      if (user.verified) {
-        store.commit('setUser', user) // need user.token only
-        store.commit('setLayout', 'layout-admin')
-        return next()
-      }
-    }
-    return next('/')
-  }
-}
-*/
+// const routeGroups = {
+//   // '/authors', '/categories', '/books', '/pages', '/books/:id/pages'
+//   '/test': ['TestGroup'] //
+// }
 
 const authGuard = (to, from, next) => {
-  console.log('authGuard', store.state.user ? 'user' : 'anon', from.path, to.path)
+  // console.log('authGuard', store.state.user ? 'user' : 'anon', from.path, to.path)
+
+  // TBD find users from localStorage? // potential security leak
+  // const item = localStorage.getItem('session') // survive a refresh - POTENTIAL SECURITY RISK - TO REVIEW AND CHANGE USE HTTPONLY COOKIES
+  // if (item) {
+  //   const user = JSON.parse(item)
+  //   if (user.verified) {
+  //     store.commit('setUser', user) // need user.token only
+  //   }
+  // }
+
   const loggedIn = !!(store.state.user && store.state.user.verified)
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+
+  // const { groups } = store.state.user
+  // if (routeGroups[to.matched[0].path]) {
+  //   let found = permissions.allowed(routeGroups[to.matched[0].path], groups.split(','))
+  //   if (!found) {
+  //     alert('Forbidden... Check Page Permissions')
+  //     return next('/')
+  //   }
+  // }
   if (loggedIn === requiresAuth) {
     next()
   } else if (!loggedIn && requiresAuth) {

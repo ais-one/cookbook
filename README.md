@@ -21,7 +21,7 @@ Latest Version [0.4.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.3)
   - Unit Test & Integration Test
 - Development & Deployment
   - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
-  - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) of mongodb with replica set
+  - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) of mongodb with replica set, mysql, saml IDP, kafka
   - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
 
 
@@ -227,6 +227,7 @@ vue-crud-x
 |  |  |  +- webpacked/ : webpacked components for frontend (including vue-crud-x)
 +- example-vite/ : frontend associated to backend - See example-vite/README.md - Project Structure
 |  +- <your other front end here>
++- k8s/ : kubernetes YAML files (WIP)
 +- .editorconfig
 +- .gitignore
 +- BACKLOG.md
