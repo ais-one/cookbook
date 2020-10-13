@@ -65,7 +65,7 @@ rm package-lock.json
 |  +- static/ : 
 |  +- favicon.ico : 
 |  +- manifest.json : 
-+- secret/ :
++- deploy/ : contains deployment info & files see example-app/deploy/README.md
 +- src/ :
 |  +- components/ :
 |  +- layouts/ :

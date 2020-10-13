@@ -6,7 +6,7 @@
 # $@ Values of all the arguments.
 # $? Exit status id of last command.
 
-echo $CI
+echo "CI? [$CI]"
 
 if [ ! $1 ]; then # environment eg. uat
   echo "Missing project environment. Set at package.json. Press any key to continue..."

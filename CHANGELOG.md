@@ -2,9 +2,8 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [example-app] simple SAML test
 - [example-vite] rename folder pages to views, to follow ```<router-view>``` term
-- [docker-devenv] add mysql
-- [inprogress]
-  - [chore] secrets management, reduce duplication deploy e.g. GCP_PROJECT_ID, seperate config (for services) and deploy (for deployments)
+- [docker-devenv] add mysql, hashicorp vault, saml IDP
+- [chore] secrets management, reduce duplication deploy e.g. GCP_PROJECT_ID, seperate config (for services) and deploy (for deployments), hashicorp vault
 
 ### Version 0.4.2
 - [chore] update packages & cleanup & work on improving documentation

@@ -1,8 +1,20 @@
 ## Secrets Management
 
+### Considerations
+
+It is important to manage your secrets
+
+Need to take into consideration, the following:
+
+- CICD environment
+- Auto Scaling in Container Orchestration, bad practice to keep replicating
+- Need encryption at rest
+- Purpose, e.g. seperation of GCP Keys for deployment, GCP keys for service usage
+- Where to place them, side car, secret manager etc.
+
 ### Secret Managers
 
-- Hashicorp Vault
+- Hashicorp Vault [we use the docker version of this for our testing example-app on local machine]
   - self hosted, docker
   - k8s, helm, sidecar
   - vault + mongoatlas
@@ -22,13 +34,6 @@ BUCKET_NAME=needed?
 Cloud Provider (varies)
 GCP_PROJECT_ID=
 GCP_PROJECT_KEY=
-
-
-### Considerations
-
-- CICD environment
-- Auto Scaling in Container Orchestration
-- Need encryption?
 
 
 ### Use Of Files Or Not

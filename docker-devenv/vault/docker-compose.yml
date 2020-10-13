@@ -1,0 +1,11 @@
+# you can access ui on http://127.0.0.1:8200
+# https://learn.hashicorp.com/tutorials/vault/versioned-kv?in=vault/secrets-management
+version: '3.3'
+services:
+  vault-dev:
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=roottoken
+      - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
+    ports:
+      - 8200:8200
+    image: vault

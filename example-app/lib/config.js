@@ -28,7 +28,10 @@ if (!config) {
       console.log('missing environment specific configuration file(s)', e.toString())
     }
 
-    // TBD load from secret manager...
+    // For Your Implementation... load from secret manager... Hashicorp Vault
+    // Do it here or during deployment...
+    // set token & version during deployment 
+    // curl --header "X-Vault-Token: roottoken" http://127.0.0.1:8200/v1/secret/data/test?version=1
   } else {
     console.log('NODE_ENV and APP_PATH needs to be defined')
   }

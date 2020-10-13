@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "config": {
-    "env": "uat"
+    "env": "development"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./bin/www",
@@ -75,7 +75,7 @@
     "husky": "^4.3.0",
     "jest": "^26.5.3",
     "node-mocks-http": "^1.9.0",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.5",
     "supertest": "^5.0.0"
   },
   "husky": {
