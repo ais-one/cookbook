@@ -5,7 +5,7 @@ const https = require('https')
 const express = require('express')
 const app = express()
 
-console.log('app starting...')
+console.log('app starting... stackTraceLimit: 1' )
 
 const { USE_GRAPHQL, HTTPS_CERTS } = global.CONFIG
 const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createServer(app)
@@ -52,6 +52,7 @@ try {
 } catch (e) {
   console.log(e.toString())
 }
+
 require(LIB_PATH + '/express/postRoute')(app, express)
 
 require(LIB_PATH + '/express/errorMiddleware')(
