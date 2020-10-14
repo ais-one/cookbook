@@ -26,20 +26,7 @@ fi
 
 echo Deploying To Google Cloud Run $1
 
-# test from github secrets
-echo "NPM_TOKEN $NPM_TOKEN"
-echo "GCP_SA_KEY $GCP_SA_KEY"
-echo "BLAH $BLAH"
-exit
-
-# OIFS=$IFS; IFS=","; sites=("site 1,site b,site aaa"); IFS=$OIFS
-# for site in "${sites[@]}"; do
-#    echo $site
-# done
-# read && exit
-
 BUILD_TS=`date +"%Y%m%d%H%M"`
-GCP_PROJECT_ID=mybot-live
 APP_NAME=example-app
 
 if [ "$CI" = "true" ]; then
@@ -49,9 +36,9 @@ if [ "$CI" = "true" ]; then
   # gcloud auth list
 else
   echo "manual deploy"
+  GCP_PROJECT_ID=mybot-live
   # test vault
-  VAULT_TOKEN=
-  # roottoken
+  VAULT_TOKEN=unused
   VAULT_URL=http://127.0.0.1:8200/v1/secret/data/test?version=1
   gcloud auth activate-service-account --key-file=deploy/$1.gcp.json
   gcloud config set project $GCP_PROJECT_ID
@@ -59,7 +46,9 @@ fi
 
 # get vault data if any
 if [[ ! -z $VAULT_TOKEN && ! -z $VAULT_URL ]]; then
-  VAULT_RES=$(curl -s -H "X-Vault-Token: $VAULT_TOKEN" $VAULT_URL)
+  if [ "$VAULT_TOKEN" != "unused" ]; then
+    VAULT_RES=$(curl -s -H "X-Vault-Token: $VAULT_TOKEN" $VAULT_URL)
+  fi
 fi
 
 # if [[ ! -z $VAULT_RES ]]; then

@@ -59,7 +59,10 @@ jobs:
       - name: Initiate Deployment
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+          VAULT_URL: ${{ secrets.VAULT_URL }}
         run: |
           # gcloud info
           echo "CI: $CI"

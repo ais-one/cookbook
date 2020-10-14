@@ -20,8 +20,11 @@ Latest Version [0.4.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.3)
   - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, **NEW** Passport SAML
   - Unit Test & Integration Test
 - Development & Deployment
+  - **NEW** [Mysql](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/mysql)
+  - **NEW** [Saml IDP](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/saml
+  - **NEW** [hashicorp vault](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/vault) & [secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
   - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
-  - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) of mongodb with replica set, mysql, saml IDP, kafka
+  - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/mongodb) of mongodb with replica set, mysql, saml IDP, kafka
   - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
 
 
@@ -213,7 +216,7 @@ If too many config properties, split it to other more and files
 
 ---
 
-# Project Strcuture
+## Project Strcuture
 
 ```
 vue-crud-x
@@ -237,9 +240,24 @@ vue-crud-x
 +- README.md
 ```
 
----
+## CI/CD
 
-# DOCUMENTATION
+Using github actions
+
+Manually triggered deployment on .github/workflows/manual.yml
+
+selectable inputs
+- environment (uat for now, development does not deploy anything)
+- application (example-app, example-vite)
+- code branch
+
+current secrets
+- GCP_PROJECT_ID
+- GCP_SA_KEY
+- VAULT_TOKEN
+- VAULT_URL
+
+## DOCUMENTATION
 
 - Project roadmap at [BACKLOG.md](BACKLOG.md)
 - Release notes at [CHANGELOG.md](CHANGELOG.md)
