@@ -31,20 +31,23 @@ Environment to consider If $CI === true
 If non CI just
 
 ```bash
-# 
+
+# not used not for CI passed in as $1 in deploy.sh
 NODE_ENV=
 
-APP_NAME=needed?
-BUCKET_NAME=needed?
+APP_NAME=for backend only docker image name
+
+# GCP Storage Bucket Name for frontend deployment
+BUCKET_NAME=
 
 # Cloud Provider
 GCP_PROJECT_ID=
 # Service key (from deploy folder if local deploy, env cicd env otherwise)
 GCP_PROJECT_KEY=
 
-# Vault Info (use config files if no vault)
-VAULT_ADDRESS=
+# Vault Info (use config files if no vault) if VAULT_TOKEN=unused, do not call vault
 VAULT_TOKEN=
+VAULT_URL=
 ```
 
 ### Use Of Files Or Not
