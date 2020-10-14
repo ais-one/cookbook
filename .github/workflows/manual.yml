@@ -56,7 +56,10 @@ jobs:
       - name: Make shell script executable
         run: chmod +x ./${{ github.event.inputs.service }}/deploy.sh
       # Runs a single command using the runners shell
-      - name: Send greeting
+      - name: Initiate Deployment
+        env:
+          - NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          - GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
         run: |
           # gcloud info
           echo "CI: $CI"

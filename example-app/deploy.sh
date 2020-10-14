@@ -28,6 +28,7 @@ echo Deploying To Google Cloud Run $1
 
 # test from github secrets
 echo "NPM_TOKEN $NPM_TOKEN"
+echo "GCP_SA_KEY $GCP_SA_KEY"
 echo "BLAH $BLAH"
 exit
 
