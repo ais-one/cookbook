@@ -26,34 +26,26 @@
 - Canvas
 - WebGL
 
-## NodeJS
+## Documents
 
-[nodejs.md](nodejs.md)
-
-
-## Deployment And Scaling
-
-[deployment/home.md](deployment/home.md) - WORK IN PROGRESS
-
-## Mongo DB
-
-[mongodb/home.md](mongodb/home.md)
-
-## GCP
-
-[gcp/home.md](gcp/home.md)
-
-## VueCrudX
-
-[VueCrudX.md](VueCrudX.md)
-
-## Others
-
-- Udemy Courses [courses.md](courses.md)
-- E2E Testing **WIP** [cypress.md](cypress.md)
-- SQA Tools [sqa-tools.md](sqa-tools.md)
-- Team Guidance [team-guidance.md](team-guidance.md)
-
+- Techstack
+  - NodeJS [nodejs.md](nodejs.md)
+  - Mongo DB [mongodb/home.md](mongodb/home.md)
+  - Custom Elements [custom-element.md](custom-element.md)
+  - Kafka [kafka.md](kafka.md)
+  - TCP [tcp.md](tcp.md)
+  - VueCrudX [VueCrudX.md](VueCrudX.md)
+- DevOps
+  - Git [git.md](git.md)
+  - Deployment And Scaling [deployment/home.md](deployment/home.md) **WIP**
+  - GCP [gcp/home.md](gcp/home.md)
+  - Linting [lint.md](lint.md)
+  - Secrets Management [secrets.md](secrets.md)
+  - E2E Testing **WIP** [cypress.md](cypress.md)
+- Others
+  - SQA Tools [sqa-tools.md](sqa-tools.md)
+  - Team Guidance [team-guidance.md](team-guidance.md)
+  - Udemy Courses [courses.md](courses.md)
 
 
 

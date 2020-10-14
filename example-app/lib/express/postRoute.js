@@ -22,7 +22,7 @@ module.exports = function (app, express) {
         app.use(item.url, express.static(item.folder, item.options)) // { extensions: ['html'], index: false }
       })
     }
-    app.use("*", async (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
+    app.use("*", (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
   }
   // Upload URL, Should use Signed URL and get from cloud storage instead
   if (UPLOAD_STATIC && UPLOAD_STATIC.length) {

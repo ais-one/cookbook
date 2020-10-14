@@ -24,17 +24,28 @@ Need to take into consideration, the following:
 - DIY?
 
 
-### Environment
+### Deployment Environment Variables
 
+Environment to consider If $CI === true
+
+If non CI just
+
+```bash
+# 
 NODE_ENV=
 
 APP_NAME=needed?
 BUCKET_NAME=needed?
 
-Cloud Provider (varies)
+# Cloud Provider
 GCP_PROJECT_ID=
+# Service key (from deploy folder if local deploy, env cicd env otherwise)
 GCP_PROJECT_KEY=
 
+# Vault Info (use config files if no vault)
+VAULT_ADDRESS=
+VAULT_TOKEN=
+```
 
 ### Use Of Files Or Not
 

@@ -12,6 +12,7 @@ RUN apk update && apk add python make g++ && rm -rf /var/cache/apk/*
 # available in build time only
 ARG ARG_API_PORT=3000
 ARG ARG_NODE_ENV=development
+ARG ARG_VAULT_RES=
 
 # Expose the port the app runs in
 EXPOSE $ARG_API_PORT
@@ -25,10 +26,10 @@ EXPOSE 3001
 # Change directory so that our commands run inside this new directory
 WORKDIR /usr/src/app
 
-# Set Environment Variables Here - available in run time
-# or should be passed in ?
+# Set Environment Variables Here - available in run time or should be passed in ?
 ENV API_PORT $ARG_API_PORT
 ENV NODE_ENV $ARG_NODE_ENV
+ENV VAULT_RES $ARG_VAULT_RES
 
 # PORT for GCP Cloud Run
 ENV PORT $ARG_API_PORT
