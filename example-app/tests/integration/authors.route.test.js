@@ -1,10 +1,11 @@
+(async function() {
 console.log(process.env.NODE_ENV)
+await require(LIB_PATH + '/config')()
 
 const request = require('supertest')
 const express = require('express')
 const app = express()
 
-require(LIB_PATH + '/config')
 require(LIB_PATH + '/express/errorHandler')({ 
   unhandledRejection: null, // (reason, promise) => {}
   uncaughtException: null, // err => {}
@@ -122,3 +123,5 @@ describe('Integration Test', () => {
     expect(true).toBe(true)
   })
 })
+
+}())

@@ -1,6 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
+const { spawn } = require('child_process')
+
 
 const agenda = require(LIB_PATH + '/services/mq/agenda').get() // agenda message queue
 const bull = require(LIB_PATH + '/services/mq/bull').get() // bull message queue
@@ -55,6 +57,26 @@ const upload = multer({
 })
 
 module.exports = express.Router()
+  .get('/python', (req, res) => {
+    // long running python
+    const child = spawn('python', ['test.py'], {
+      detached: true,
+      stdio: 'ignore'
+    })    
+    // child.stdout.on('data', function (data) {
+    //   console.log('Pipe data from python script ...')
+    //   dataToSend = data.toString()
+    //   console.log('dataToSend', dataToSend)
+    // })
+    // // in close event we are sure that stream from child process is closed
+    // child.on('close', (code) => {
+    //   console.log(`child process close all stdio with code ${code}`)
+    // }) 
+    
+    child.unref()
+    res.json({})
+  })
+
   .get('/wrap-test', asyncWrapper(async (req, res) => {
     // return res.status(201).json({ aa: 'bb' }) // should not return...
     // next(new Error('Generated Wrapper Error - next')) // use throw instead

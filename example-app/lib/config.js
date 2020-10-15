@@ -1,7 +1,8 @@
 'use strict'
 
-let config
-if (!config) {
+// let config
+// if (!config) {
+module.exports = async function() {
   const path = require('path')
   const { NODE_ENV, VAULT_RES } = process.env
 
@@ -40,6 +41,10 @@ if (!config) {
         console.log('environment vault response error', e.toString())
       }
     }
+
+    const sleep = (milliseconds) => new Promise(resolve => setTimeout(resolve, milliseconds))
+    await sleep(2000)
+    console.log('CONFIGGGG DONE DONE DONE')
   } else {
     console.log('NODE_ENV and APP_PATH needs to be defined')
   }

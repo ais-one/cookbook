@@ -1,4 +1,6 @@
-require(LIB_PATH + '/config')
+(async function() {
+await require(LIB_PATH + '/config')()
+
 const objection = require(LIB_PATH + '/services/db/objection').open()
 const AuthorController = require(APP_PATH + '/controllers/author')
 // const AuthorModel = require('../../models/Author')
@@ -152,3 +154,5 @@ describe('app ws testing', () => {
 // https://www.npmjs.com/package/jest-websocket-mock
 // https://stackoverflow.com/questions/57804844/jest-with-websockets-ignores-messages-after-the-first-one
 // https://stackoverflow.com/questions/55963562/test-websockets-with-jest
+
+}())
