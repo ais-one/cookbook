@@ -8,6 +8,7 @@
         <mwc-textfield label="Password" outlined type="password" v-model="password"></mwc-textfield>
         <div class="buttons-box-flex">
           <mwc-button raised label="Login" type="button" @click="login"></mwc-button>
+          <o-button @click="login">Login Use Oruga UI</o-button>
         </div>
         <p><router-link to="/signup">Sign Up</router-link></p>
       </div>

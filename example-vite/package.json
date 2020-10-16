@@ -30,6 +30,7 @@
     "@material/mwc-select": "^0.19.1",
     "@material/mwc-textfield": "^0.19.1",
     "@material/mwc-top-app-bar-fixed": "^0.19.1",
+    "@oruga-ui/oruga-next": "^0.2.2",
     "@vaadin/vaadin-grid": "^5.7.4",
     "echarts": "^4.9.0",
     "graphql": "^15.3.0",

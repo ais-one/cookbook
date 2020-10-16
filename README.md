@@ -254,8 +254,7 @@ selectable inputs
 current secrets
 - GCP_PROJECT_ID
 - GCP_SA_KEY
-- VAULT_TOKEN
-- VAULT_URL
+- VAULT
 
 ## DOCUMENTATION
 

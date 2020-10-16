@@ -24,6 +24,10 @@ import './components/mwc-autocomplete.js'
 import './components/mwc-multiselect.js'
 import './components/mwc-fileupload.js'
 
+// oruga
+import { Button } from '@oruga-ui/oruga-next'
+import '@oruga-ui/oruga-next/dist/oruga.css'
+
 import { createApp } from 'vue'
 import App from './App.vue'
 
@@ -31,6 +35,8 @@ import router from './router.js'
 import store from './store.js'
 
 const app = createApp(App)
+
+app.use(Button)
 
 const theme = 'dark'
 // const ThemeSymbol = Symbol()

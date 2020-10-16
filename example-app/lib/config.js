@@ -1,10 +1,10 @@
 'use strict'
-
+const axios = require('axios')
 // let config
 // if (!config) {
 module.exports = async function() {
   const path = require('path')
-  const { NODE_ENV, VAULT_RES } = process.env
+  const { NODE_ENV, VAULT } = process.env
 
   if (NODE_ENV && APP_PATH) {
     global.CONFIG = { NODE_ENV: NODE_ENV }
@@ -16,27 +16,28 @@ module.exports = async function() {
       console.log('missing default configuration file(s)', e.toString())
     }
 
-    if (!VAULT_RES) {
-      // load from config file
-      // load common
+    // load common config from file
+    try {
+      const commonEnv = require(path.join(APP_PATH, 'config', 'common.env.js'))
+      global.CONFIG = { ...CONFIG, ...commonEnv }
+    } catch (e) {
+      console.log('missing common configuration file(s)', e.toString())
+    }
+    // load specific config from file
+    try {
+      const specificEnv = require(path.join(APP_PATH, 'config', process.env.NODE_ENV + '.env.js'))
+      global.CONFIG = { ...CONFIG, ...specificEnv }
+    } catch (e) {
+      console.log('missing environment specific configuration file(s)', e.toString())
+    }
+
+    if (VAULT && VAULT !== 'unused') { // Get from Hashicorp Vault, can replace with other secrets manager
       try {
-        const commonEnv = require(path.join(APP_PATH, 'config', 'common.env.js'))
-        global.CONFIG = { ...CONFIG, ...commonEnv }
-      } catch (e) {
-        console.log('missing common configuration file(s)', e.toString())
-      }
-      // load specific
-      try {
-        const specificEnv = require(path.join(APP_PATH, 'config', process.env.NODE_ENV + '.env.js'))
-        global.CONFIG = { ...CONFIG, ...specificEnv }
-      } catch (e) {
-        console.log('missing environment specific configuration file(s)', e.toString())
-      }
-    } else {
-      try {
-        const vaultRes = JSON.parse(VAULT_RES)
-        // console.log(vaultRes.data.data)
-        global.CONFIG = { ...CONFIG, ...vaultRes.data.data }
+        // curl -s -H "X-Vault-Token: $token" $url
+        const vault = JSON.parse(VAULT)
+        const vaultRes = await axios.get(vault.url, { headers: { 'X-Vault-Token': vault.token } })
+        const vaultConfig = vaultRes.data.data.data
+        global.CONFIG = { ...CONFIG, ...vaultConfig }
       } catch (e) {
         console.log('environment vault response error', e.toString())
       }

@@ -45,9 +45,8 @@ GCP_PROJECT_ID=
 # Service key (from deploy folder if local deploy, env cicd env otherwise)
 GCP_PROJECT_KEY=
 
-# Vault Info (use config files if no vault) if VAULT_TOKEN=unused, do not call vault
-VAULT_TOKEN=
-VAULT_URL=
+# Vault Info (use config files if no vault) if VAULT=unused, do not call vault
+VAULT=
 ```
 
 ### Use Of Files Or Not
