@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile
       args:
         ARG_API_PORT: 3000
+    # target: testing # stage as defined in Dockerfile
     image: nodejs # image name
     container_name: nodejs # container name
     restart: unless-stopped

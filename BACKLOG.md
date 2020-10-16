@@ -11,6 +11,7 @@ List of urgent issues to take care of
 ## Backlog
 
 For future product improvement
+- [backend-deployment] multi-stage dockerfile
 - [example-vite] cypress e2e testing, vue-test-util & vite
 - [example-vite] styling for custom build mwc-*
 - [frontend-i18n] node-polyglot

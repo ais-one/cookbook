@@ -1,20 +1,6 @@
-(async function() {
-console.log(process.env.NODE_ENV)
-await require(LIB_PATH + '/config')()
-
 const request = require('supertest')
 const express = require('express')
 const app = express()
-
-require(LIB_PATH + '/express/errorHandler')({ 
-  unhandledRejection: null, // (reason, promise) => {}
-  uncaughtException: null, // err => {}
-  stackTraceLimit: 1
-})
-// const objection =
-require(LIB_PATH + '/services/db/objection').open()
-require(LIB_PATH + '/express/preRoute')(app)
-require(APP_PATH + `/router`)(app)
 
 const endpointUrl = '/api/authors'
 
@@ -22,7 +8,6 @@ const newAuthor = require('../mock-data/new-author.json')
 
 let createdAuthorId
 let authObj = {}
-const { createToken } = require(LIB_PATH + '/auth')
 
 /*
 let firstTodo
@@ -34,6 +19,18 @@ const testData = {
 
 describe(endpointUrl, () => {
   beforeAll(async () => {
+    await require(LIB_PATH + '/config')()
+    require(LIB_PATH + '/express/errorHandler')({ 
+      unhandledRejection: null, // (reason, promise) => {}
+      uncaughtException: null, // err => {}
+      stackTraceLimit: 1
+    })
+    // const objection =
+    require(LIB_PATH + '/services/db/objection').open()
+    require(LIB_PATH + '/express/preRoute')(app)
+    require(APP_PATH + `/router`)(app)
+
+    const { createToken } = require(LIB_PATH + '/auth')
     const { token } = await createToken({ id: 100, verified: true, groups: 'TestGroup' }, { expiresIn: '1d' })
     authObj = {
       Authorization: 'Bearer ' + token
@@ -123,5 +120,3 @@ describe('Integration Test', () => {
     expect(true).toBe(true)
   })
 })
-
-}())

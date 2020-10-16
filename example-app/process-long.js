@@ -1,10 +1,12 @@
+(async function() {
+
 console.log('Long running process sample', __filename)
 console.log('this can be a Kafka producer... listen to incoming tcp messages and pushing to topic')
 console.log('Do take note limitations for Long running NodeJS process')
 console.log('Can also be for cronjobs (but better to use cronjob call an API)')
 
 require('./setup')
-require(LIB_PATH + '/config')() //  first thing to include from LIB_PATH
+await require(LIB_PATH + '/config')() //  first thing to include from LIB_PATH
 
 // mixing ES Modules into a CommonJS project
 // https://codewithhugo.com/use-es-modules-in-node-without-babel/webpack-using-esm/
@@ -45,3 +47,5 @@ signalTraps.map(type =>
     }
   })
 )
+
+}())

@@ -66,3 +66,13 @@ CMD node index.js
 # # Executed as powershell -command Write-Host hello
 # SHELL ["powershell", "-command"]
 # RUN Write-Host hello
+
+
+# FROM gcr.io/distroless/nodejs:debug
+# FROM gcr.io/distroless/nodejs
+# WORKDIR /user/src/app
+# COPY package*.json ./
+# RUN npm ci --only=production
+# COPY --from=stage1 /usr/src/app /usr/src/app
+# EXPOSE 3000
+# CMD index.js
