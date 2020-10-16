@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "config": {
-    "env": "uat"
+    "env": "development"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./bin/www",
