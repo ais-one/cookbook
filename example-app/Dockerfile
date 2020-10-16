@@ -26,7 +26,7 @@ ENV API_PORT $ARG_API_PORT
 ENV NODE_ENV $ARG_NODE_ENV
 ENV VAULT $ARG_VAULT
 ENV PORT $ARG_API_PORT
-CMD node index.js
+CMD ["index.js"]
 
 FROM build AS development
 WORKDIR /app
