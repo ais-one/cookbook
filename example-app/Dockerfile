@@ -38,6 +38,7 @@ ENV NODE_ENV=$ARG_NODE_ENV
 ENV API_PORT $ARG_API_PORT
 ENV VAULT $ARG_VAULT
 ENV PORT $ARG_API_PORT
+EXPOSE $ARG_API_PORT
 RUN npm install --only=development
 COPY --from=build /app .
 CMD ["node", "index.js"]

@@ -51,7 +51,9 @@ fi
 # deploy to cloud run etc...
 # get current timestamp...
 gcloud auth configure-docker
-docker build -t gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --build-arg ARG_NODE_ENV=$1 --build-arg ARG_API_PORT=3000 --build-arg ARG_VAULT=$VAULT .
+docker build -t gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --target $1 --build-arg ARG_NODE_ENV=$1 --build-arg ARG_API_PORT=3000 --build-arg ARG_VAULT=$VAULT .
+read
+exit
 docker push gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS
 gcloud run deploy $APP_NAME-$1-svc --image gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --platform managed --region asia-southeast1 --allow-unauthenticated --port=3000
 # gcloud run services delete $APP_NAME-$1-svc --platform managed --region asia-east1

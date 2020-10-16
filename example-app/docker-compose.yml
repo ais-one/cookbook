@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 
 services:
   vcx-app:
@@ -7,9 +7,9 @@ services:
       dockerfile: Dockerfile
       args:
         ARG_API_PORT: 3000
-    # target: testing # stage as defined in Dockerfile
-    image: nodejs # image name
-    container_name: nodejs # container name
+      target: development # stage as defined in Dockerfile
+    image: vuecrudx:latest # image name
+    container_name: vcx-app # container name
     restart: unless-stopped
     ports:
       - "3000:3000" # "host:container"
@@ -21,6 +21,15 @@ services:
     #   - .:/home/node/app # "host:container"
     #   - node_modules:/home/node/app/node_modules # "host:container"
     # command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon app.js
+    # links:
+    #   - mongo
+  # mongo:
+  #   container_name: mongo
+  #   image : mongo
+  #   volumes: 
+  #     - ./data:/data/db
+  #   ports: 
+  #     - "27017:27017"      
 networks:
   default:
     external:
