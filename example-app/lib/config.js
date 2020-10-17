@@ -60,7 +60,7 @@ module.exports = async function() {
         }
         global.CONFIG = { ...CONFIG, ...vaultConfig }
       } catch (e) {
-        console.log('environment vault response error', e.toString())
+        console.log('environment vault response error', e.toString(), VAULT)
       }
     }
 
