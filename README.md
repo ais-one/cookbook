@@ -2,7 +2,7 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
 
-Latest Version [0.4.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.3) - Released 2020 Oct 17 1330 +8GMT
+Latest Version [0.4.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.3) - Released 2020 Oct 18 0230 +8GMT
 
 # Features
 
@@ -263,17 +263,10 @@ current secrets
 VAULT="unused"
 
  # connect to a hashicorp vault and obtain secrets to merge
-VAULT={
-  url,
-  token
-}
+VAULT={ url, token } # base64 encoded
 
  # pass in secrets, this way is insecure and not a good way to send in secrets
-VAULT={
-  secrets: {
-    ... all your secrets here
-  }
-}
+VAULT={ secrets: { ... all your secrets here } } # base64 encoded
 ```
 
 ## DOCUMENTATION

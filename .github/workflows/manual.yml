@@ -61,7 +61,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
-          # VAULT: ${{ secrets.VAULT }}
+          # VAULT_<env> to VAULT
           VAULT: ${{ secrets[format('VAULT_{0}', github.event.inputs.environment)] }}
         run: |
           # gcloud info

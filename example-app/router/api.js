@@ -76,7 +76,7 @@ module.exports = express.Router()
     child.unref()
     res.json({})
   })
-  .get('/restart-mongb', (req, res) => {
+  .get('/restart-mongo', (req, res) => { // restart mongo that cannot initially connect
     require(LIB_PATH + '/services/db/mongodb').open()
     res.json({})
   })
