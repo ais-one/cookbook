@@ -66,7 +66,7 @@ module.exports = async function() {
 
     const sleep = (milliseconds) => new Promise(resolve => setTimeout(resolve, milliseconds))
     await sleep(2000)
-    console.log('CONFIGGGG DONE DONE DONE')
+    console.log('CONFIG DONE!')
   } else {
     console.log('NODE_ENV and APP_PATH needs to be defined')
   }

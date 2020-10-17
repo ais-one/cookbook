@@ -55,8 +55,8 @@ fi
 
 # deploy to cloud run etc...
 gcloud auth configure-docker
-docker build -t gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --target $1 --build-arg ARG_NODE_ENV=$1 --build-arg ARG_API_PORT=3000 --build-arg ARG_VAULT="'"$VAULT"'" .
-docker push gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS
+docker build -t gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --target $1 --build-arg ARG_NODE_ENV=$1 --build-arg ARG_API_PORT=3000 --build-arg ARG_VAULT=$VAULT . || exit "docker build fail"
+docker push gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS || exit "docker push fail"
 gcloud run deploy $APP_NAME-$1-svc --image gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --platform managed --region asia-southeast1 --allow-unauthenticated --port=3000
 
 # gcloud run services delete $APP_NAME-$1-svc --platform managed --region asia-east1
