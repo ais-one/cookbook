@@ -51,7 +51,9 @@ fi
 # deploy to cloud run etc...
 # get current timestamp...
 
+echo VAULT VALUE
 echo $VAULT
+exit
 # gcloud auth configure-docker
 # docker build -t gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --target $1 --build-arg ARG_NODE_ENV=$1 --build-arg ARG_API_PORT=3000 --build-arg ARG_VAULT=$VAULT .
 # docker push gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS
