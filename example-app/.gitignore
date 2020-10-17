@@ -4,8 +4,8 @@ node_modules
 # deploy & configs
 deploy/*
 !deploy/README.md
-config/*
-!config/README.md
+config/secret/*
+!config/secret/README.md
 
 # database stores
 *.sqlite3

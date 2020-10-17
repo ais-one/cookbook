@@ -251,6 +251,8 @@ selectable inputs
 - application (example-app, example-vite)
 - code branch
 
+**NOTE** config/secret contents will not be in repo for CI/CD (so you can get errors), those need to be put in VAULT (hashicorp), or github SECRETS_<env-small-caps> (this is unsecure)
+
 current secrets
 - GCP_PROJECT_ID
 - GCP_SA_KEY

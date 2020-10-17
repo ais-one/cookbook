@@ -13,9 +13,14 @@ global.CONFIG.USE_GRAPHQL = true // false
 global.CONFIG.SALT_ROUNDS = 12
 
 // HTTPONLY COOKIES
-global.CONFIG.HTTPONLY_TOKEN = false // true, false (also set the same on FE..., true means place token in HttpOnly cookie) - DO TAKE NOTE OF CORS
+// true = use HttpOnly cookie, false - do not use HttpOnly cookie (alternatively use localStorage / sessionStorage - be careful, has security implications)
+global.CONFIG.COOKIE_HTTPONLY = true // (also set on FE... credentials if cross origin, true means ) - DO TAKE NOTE OF CORS
+// must be true if COOKIE_SAMESITE=None 
+global.CONFIG.COOKIE_SECURE = false
+// Strict (CORS_OPTIONS == null)
+// Lax, None (None must use Secure also) - CORS_OPTIONS !== null, 
+global.CONFIG.COOKIE_SAMESITE = 'Lax'
 
-// global.CONFIG.HTTPONLY_TOKEN = true // Use localStorage / sessionStorage
 global.CONFIG.AUTH_USER_STORE = 'objection' // mongo, objection
 global.CONFIG.AUTH_USER_STORE_NAME = 'users'
 global.CONFIG.AUTH_USER_FIELD_ID_FOR_JWT = 'id' // mongo = _id, objection = id // can be NTID from SAML
@@ -41,6 +46,13 @@ global.CONFIG.OTP_EXPIRY = 30 // 8 // 30 // defined seconds to allow user to sub
 // MONGO_URL=mongodb://127.0.0.1:27017/mm?replicaSet=rs0
 global.CONFIG.MONGO_DB = 'testdb-' + process.env.NODE_ENV
 global.CONFIG.MONGO_URL = 'mongodb://127.0.0.1:27017/testdb-' + process.env.NODE_ENV
+// https://mongodb.github.io/node-mongodb-native/3.6/reference/connecting/connection-settings/
+global.CONFIG.MONGO_OPTIONS = {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+  connectTimeoutMS: 8000, // timeout can cause problems
+  serverSelectionTimeoutMS: 8000
+}
 
 // agendamq - requires mongodb
 global.CONFIG.JOB_MONGO_URL = 'mongo' // if mongo, use MONGO_URL

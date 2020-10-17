@@ -30,6 +30,20 @@ module.exports = async function() {
     } catch (e) {
       console.log('missing environment specific configuration file(s)', e.toString())
     }
+    // load secret common config from file
+    try {
+      const commonEnv = require(path.join(APP_PATH, 'config', 'secret', 'common.env.js'))
+      global.CONFIG = { ...CONFIG, ...commonEnv }
+    } catch (e) {
+      console.log('missing common configuration file(s)', e.toString())
+    }
+    // load secret specific config from file
+    try {
+      const specificEnv = require(path.join(APP_PATH, 'config', 'secret', process.env.NODE_ENV + '.env.js'))
+      global.CONFIG = { ...CONFIG, ...specificEnv }
+    } catch (e) {
+      console.log('missing environment specific configuration file(s)', e.toString())
+    }
 
     if (VAULT && VAULT !== 'unused') { // Get from Hashicorp Vault, can replace with other secrets manager
       try {

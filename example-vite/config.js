@@ -8,7 +8,7 @@ export const {
   VITE_PWA_PN, // Webpush, FCM
   // NOT NEEDED... BACKEND DETERMINES VITE_USE_OTP, // GA, SMS, ''
   VITE_RECAPTCHA_KEY,
-  VITE_HTTPONLY_TOKEN = false, // true, false use VITE_HTTPONLY_TOKEN for more security, but needs same domain
+  // VITE_HTTPONLY_TOKEN = false, // true, // NOTUSED... replaced by VITE_WITH_CREDENTIALS
   VITE_WITH_CREDENTIALS = 'same-origin' // same-origin, include = cors
 
   // VITE_GITHUB_CLIENT_ID

@@ -1,7 +1,7 @@
 'use strict'
 
 const axios = require('axios')
-const { SALT_ROUNDS, HTTPONLY_TOKEN, JWT_EXPIRY } = global.CONFIG
+const { SALT_ROUNDS, COOKIE_HTTPONLY, COOKIE_SECURE, COOKIE_SAMESITE, CORS_OPTIONS, JWT_EXPIRY } = global.CONFIG
 const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = global.CONFIG
 const { findUser, createToken, revokeToken, logout, refresh, login, otp } = require(LIB_PATH + '/auth')
 
@@ -26,7 +26,9 @@ const checkGithub = async (req, res) => {
     if (!user) return res.status(401).json({ message: 'Unauthorized' })
     const { id, groups } = user
     const tokens = await createToken({ id, verified: true, groups }, {expiresIn: JWT_EXPIRY}) // 5 minute expire for login
-    if (HTTPONLY_TOKEN) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/;`]); // may need to restart browser, TBD set Max-Age,  ALTERNATE use res.cookie, Signed?, Secure?, SameSite=true?
+    // SameSite=None; must use with Secure;
+    // may need to restart browser, TBD set Max-Age, ALTERNATE use res.cookie, Signed?
+    if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/; SameSite=${COOKIE_SAMESITE}; ${COOKIE_SECURE ? 'Secure;':''}`])
     return res.status(200).json(tokens)
   } catch (e) {
     console.log('github auth err', e.toString())
