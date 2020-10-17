@@ -50,8 +50,8 @@ global.CONFIG.MONGO_URL = 'mongodb://127.0.0.1:27017/testdb-' + process.env.NODE
 global.CONFIG.MONGO_OPTIONS = {
   useUnifiedTopology: true,
   useNewUrlParser: true,
-  connectTimeoutMS: 8000, // timeout can cause problems
-  serverSelectionTimeoutMS: 8000
+  connectTimeoutMS: 30000, // small value timedout on cloudrun
+  serverSelectionTimeoutMS: 30000
 }
 
 // agendamq - requires mongodb

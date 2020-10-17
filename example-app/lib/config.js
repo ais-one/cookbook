@@ -45,12 +45,19 @@ module.exports = async function() {
       console.log('missing environment specific configuration file(s)', e.toString())
     }
 
-    if (VAULT && VAULT !== 'unused') { // Get from Hashicorp Vault, can replace with other secrets manager
+    if (VAULT && VAULT !== 'unused') {
       try {
-        // curl -s -H "X-Vault-Token: $token" $url
         const vault = JSON.parse(VAULT)
-        const vaultRes = await axios.get(vault.url, { headers: { 'X-Vault-Token': vault.token } })
-        const vaultConfig = vaultRes.data.data.data
+        let vaultConfig = {} 
+        if (vault.secrets) {
+          // insecure and not a good way to get secrets
+          vaultConfig = vault.secrets 
+        } else {
+          // Get from Hashicorp Vault, can replace with other secrets manager
+          // curl -s -H "X-Vault-Token: $token" $url
+          const vaultRes = await axios.get(vault.url, { headers: { 'X-Vault-Token': vault.token } })
+          vaultConfig = vaultRes.data.data.data  
+        }
         global.CONFIG = { ...CONFIG, ...vaultConfig }
       } catch (e) {
         console.log('environment vault response error', e.toString())

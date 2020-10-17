@@ -2,7 +2,7 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
 
-Latest Version [0.4.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.3) - Released 2020 Oct 17 0830 +8GMT
+Latest Version [0.4.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.3) - Released 2020 Oct 17 1330 +8GMT
 
 # Features
 
@@ -251,12 +251,30 @@ selectable inputs
 - application (example-app, example-vite)
 - code branch
 
-**NOTE** config/secret contents will not be in repo for CI/CD (so you can get errors), those need to be put in VAULT (hashicorp), or github SECRETS_<env-small-caps> (this is unsecure)
+**NOTE** config/secret contents will not be in repo for CI/CD (so you can get errors), those need to be put in VAULT
 
 current secrets
 - GCP_PROJECT_ID
 - GCP_SA_KEY
-- VAULT
+- VAULT_uat, passed in as VAULT
+
+```
+# do not merge
+VAULT="unused"
+
+ # connect to a hashicorp vault and obtain secrets to merge
+VAULT={
+  url,
+  token
+}
+
+ # pass in secrets, this way is insecure and not a good way to send in secrets
+VAULT={
+  secrets: {
+    ... all your secrets here
+  }
+}
+```
 
 ## DOCUMENTATION
 
