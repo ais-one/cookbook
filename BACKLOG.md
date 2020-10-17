@@ -1,18 +1,10 @@
 ## Issues
 
-List of urgent issues to take care of
+In Progress
 
-- CrudTable.vue
-  - select all (not working)
-  - header widths (to improve)
-  - csv upload (to implement)
-  - file upload column (to implement)
-  
 ## Backlog
 
 For future product improvement
-- [chore] use monorepo when npm 7 is released ?
-- [example-vite] cypress e2e testing, vue-test-util & vite
 - [example-vite] styling for custom build mwc-*
 - [frontend-i18n] node-polyglot
 - [backend-deployment] GKE, Kubernetes

@@ -1,3 +1,14 @@
+### Version 0.4.4
+- [chore] update packages & cleanup & work on improving documentation
+- [inprogress]
+  - [chore] use monorepo when npm 7 is released ?
+  - [example-vite] cypress e2e testing, vue-test-util & vite
+  - CrudTable.vue
+    - select all (not working)
+    - header widths (to improve)
+    - csv upload (to implement)
+    - file upload column (to implement)
+
 ### Version 0.4.3
 - [chore] update packages & cleanup & work on improving documentation
 - [example-app] simple SAML test, fixed httponly cookie, mongo options
