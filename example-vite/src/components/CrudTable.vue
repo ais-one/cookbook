@@ -19,12 +19,12 @@
           <li v-if="keycol" class="nav-item"><mwc-icon-button icon="reply" @click="goBack" :disabled="loading"></mwc-icon-button></li>
         </ul>
         <ul class="nav-right">
-          <li class="nav-item">
+          <li class="nav-item">Rows Per Page
             <select class="nav-select-page-size" v-model="rowsPerPage">
-              <option v-for="val of pageSize" :key="val" :value="val" :selected="val === rowsPerPage">{{ val }}</option>
+              <option v-for="val of pageSizeList" :key="val" :value="val" :selected="val === rowsPerPage">{{ val }}</option>
             </select>
           </li>
-          <li class="nav-item"><input class="nav-select-page" type="number" v-model="page" min="1" :max="maxPage" /> / {{ maxPage }}</li>
+          <li class="nav-item">Page<input class="nav-select-page" type="number" v-model="page" min="1" :max="maxPage" /> / {{ maxPage }}</li>
         </ul>
       </nav>
       <template v-if="showFilter">
