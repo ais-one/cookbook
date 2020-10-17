@@ -49,11 +49,15 @@ fi
 # cross-env NODE_ENV=development VAULT="$VAULT" PORT=3001 DEBUG=app:* nodemon --ignore '*.test.js' --watch src bin/www
 # read && exit
 
+XXXX="docker build -t gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --target $1 --build-arg ARG_NODE_ENV=$1 --build-arg ARG_API_PORT=3000 --build-arg ARG_VAULT=$VAULT ."
+echo $XXXX
+exit
+
 # deploy to cloud run etc...
-gcloud auth configure-docker
-docker build -t gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --target $1 --build-arg ARG_NODE_ENV=$1 --build-arg ARG_API_PORT=3000 --build-arg ARG_VAULT=$VAULT .
-docker push gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS
-gcloud run deploy $APP_NAME-$1-svc --image gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --platform managed --region asia-southeast1 --allow-unauthenticated --port=3000
+# gcloud auth configure-docker
+# docker build -t gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --target $1 --build-arg ARG_NODE_ENV=$1 --build-arg ARG_API_PORT=3000 --build-arg ARG_VAULT=$VAULT .
+# docker push gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS
+# gcloud run deploy $APP_NAME-$1-svc --image gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$BUILD_TS --platform managed --region asia-southeast1 --allow-unauthenticated --port=3000
 
 # gcloud run services delete $APP_NAME-$1-svc --platform managed --region asia-east1
 # gcloud container images delete gcr.io/cloudrun/helloworld
