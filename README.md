@@ -2,7 +2,7 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
 
-Latest Version [0.4.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.3) - Released 2020 Oct 18 0230 +8GMT
+Latest Version [0.4.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.3) - Released 2020 Oct 18 0145 +8GMT
 
 # Features
 
@@ -21,7 +21,7 @@ Latest Version [0.4.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.3)
   - Unit Test & Integration Test
 - Development & Deployment
   - **NEW** [Mysql](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/mysql)
-  - **NEW** [Saml IDP](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/saml
+  - **NEW** [Saml IDP](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/saml)
   - **NEW** [hashicorp vault](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/vault) & [secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
   - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
   - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/mongodb) of mongodb with replica set, mysql, saml IDP, kafka
