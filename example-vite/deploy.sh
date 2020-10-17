@@ -37,6 +37,7 @@ npm run build-$1
 
 if [ "$CI" = "true" ]; then
   echo "CI configured gcloud auth"
+  gsutil -m rm $GS/**
   gsutil -m rsync -R dist $GS
 else
   GCP_PROJECT_ID=mybot-live
@@ -44,6 +45,7 @@ else
   gcloud config set project $GCP_PROJECT_ID
   echo "NOTE: gsutil.cmd in windows git bash. If cannot find command in Windows, it could be space in path (.../Google Cloud/...) to gsutil."
   echo "Fix by renaming with no space, also edit the PATH env, restart the command console."
+  gsutil.cmd -m rm $GS/**
   gsutil.cmd -m rsync -R dist $GS
 fi
 

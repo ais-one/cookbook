@@ -5,7 +5,7 @@
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
   "config": {
-    "env": "development"
+    "env": "uat"
   },
   "scripts": {
     "lint": "eslint . --ext .js,.vue",
@@ -37,14 +37,14 @@
     "graphql-tag": "^2.11.0",
     "leaflet": "^1.7.1",
     "subscriptions-transport-ws": "^0.9.18",
-    "vue": "^3.0.0",
+    "vue": "^3.0.1",
     "vue-router": "^4.0.0-beta.13",
     "vuex": "^4.0.0-beta.4"
   },
   "devDependencies": {
-    "@vue/compiler-sfc": "^3.0.0",
+    "@vue/compiler-sfc": "^3.0.1",
     "eslint": "^7.10.0",
-    "eslint-config-prettier": "^6.12.0",
+    "eslint-config-prettier": "^6.13.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
