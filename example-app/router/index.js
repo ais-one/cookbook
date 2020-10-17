@@ -5,13 +5,19 @@ module.exports = function (app) {
   app.use('/api',
     router.use('/', require('./api')),
     router.use('/auth', require('./auth')),
-    router.use('/authors', require('./authors')),
-    router.use('/books', require('./books')),
-    router.use('/categories', require('./categories')),
-    router.use('/pages', require('./pages')),
-    // require('./page'),
+    router.use('/saml', require('./saml')),
     router.use('/mongo-demo', require('./mongo-demo')),
     router.use('/t4t', require('./t4t')),
     router.use('/webpush', require('./webpush'))
   )
+
+  const { KNEXFILE } = global.CONFIG
+  if (KNEXFILE) {
+    app.use('/api',
+      router.use('/authors', require('./authors')),
+      router.use('/books', require('./books')),
+      router.use('/categories', require('./categories')),
+      router.use('/pages', require('./pages')),
+    )
+  }
 }

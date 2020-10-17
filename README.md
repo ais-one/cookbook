@@ -2,7 +2,7 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
 
-Latest Version [0.4.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.2) - Released 2020 Oct 11 1430 +8GMT
+Latest Version [0.4.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.3) - Released 2020 Oct 18 0145 +8GMT
 
 # Features
 
@@ -17,11 +17,14 @@ Latest Version [0.4.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.2)
   - AgendaJS message queue
   - File uploads, Signed URL file upload to GCP Storage
   - Websockets, graphql
-  - JWT using RSA, JWT refresh token, Passwort SAML (WIP), token in HttpOnly cookies, GA OTP, role
+  - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, **NEW** Passport SAML
   - Unit Test & Integration Test
 - Development & Deployment
-  - **NEW** [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
-  - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) of mongodb with replica set
+  - **NEW** [Mysql](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/mysql)
+  - **NEW** [Saml IDP](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/saml)
+  - **NEW** [hashicorp vault](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/vault) & [secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
+  - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
+  - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/mongodb) of mongodb with replica set, mysql, saml IDP, kafka
   - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
 
 
@@ -57,7 +60,7 @@ npm run app:unix # linux or mac
 
 **NOTES**
 - MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
-- The **example-app/config/secret** folder is missing so there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. To resolve, in **example-app/config** folder, rename **sample-secret** folder to **secret**. You can look at the readme inside **sample-secret** folder for more information
+- The **example-app/config** folder contents is missing so there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. Use the README.md to fill up
 
 
 ### SPA Setup & Run
@@ -106,6 +109,15 @@ You can test PWA Push notifications using webpush on Dashboard page (need to be 
 - https://github.com/nuxt/nuxt.js/issues/8102
 - prefer static sites and lazy loaded SPA
 
+### SAML
+
+Refer to link below on how to try out...
+- https://github.com/ais-one/vue-crud-x/blob/develop/docker-devenv/saml/docker-compose.yml
+
+Codes are use in...
+- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/app.js
+- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/lib/express/saml.js
+- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/router/saml.js
 
 ## Testing
 
@@ -151,14 +163,14 @@ npm run build
 mv dist ../example-app/public/
 ```
 
-Change or add (if property not present) to **example-app/config/secret/.development.env.js** file contents
+Change or add (if property not present) to **example-app/config/.development.env.js** file contents
 
 ```js
   //...
   WEB_STATIC: [
     //...
-    { folder: process.cwd() + '/dist', url: '/' }, // UNCOMMENT this line
-    // { folder: APP_PATH + '/public/demo-express', url: '/' }, // COMMENT this line
+    // REMOVE OR COMMENT THIS { folder: APP_PATH + '/public/demo-express', url: '/' },
+    { folder: APP_PATH + '/public/dist', url: '/' }, // ADD THIS
     //...
   ]
   //...
@@ -198,13 +210,13 @@ Change or add (if property not present) to **example-app/config/secret/.developm
 
 The **example-app/config/** folder contains the config information.
 
-You can override the configurations using <NODE_ENV>.env.js files, e.g. development.env.js or uat.env.js in **example-app/config/secret**
+You can override the configurations using <NODE_ENV>.env.js files, e.g. development.env.js or uat.env.js in **example-app/config**
 
 If too many config properties, split it to other more and files
 
 ---
 
-# Project Strcuture
+## Project Strcuture
 
 ```
 vue-crud-x
@@ -212,80 +224,52 @@ vue-crud-x
 +- docker-devenv/ : docker for development environment (e.g. run redis, mongodb from here)
 |  +- mongodb
 +- docs/ : documentation
-+- example-app : an example backend application **Use this example for your project**
-|  +- config/ : centralized config folder
-|  |  +- certs/ : certificates for HTTPS and JWT signing
-|  |  +- k8s/ : kubernetes YAML files (WIP)
-|  |  +- secret
-|  |  |  +- .env.<node_env>
-|  |  |  +- <node_env>.deploy
-|  |  |  +- <node_env>.pem
-|  |  |  +- <node_env>.gcp.json
-|  |  |  +- <node_env>.gcp.cors.json
-|  |  +- index.js : home to your configs, can scale by adding folders and files
-|  +- controllers/
-|  +- coverage/ (auto-generated by test runner)
-|  +- db/
-|  |  +- migrations/
-|  |  +- mongo/
-|  |  +- seeds/
-|  +- graphql/ : graphql stuff
-|  +- jobs/ : message queue jobs
-|  +- libs/ : common libs
-|  |  +- auth/ : for express authentication
-|  |  +- comms/ : messaging
-|  |  +- esm/ : same as example-vite/lib
-|  |  +- express/ : express related
-|  |  +- services/ : nodejs libs
-|  |  +- dist/ : distribution folder for CRUD component
-|  |  +- config.default.js: the base config
-|  |  +- config.js: the base config
-|  +- logs/
-|  +- middlewares/
-|  +- models/
-|  +- public/ : for serving static files - website
-|  |  +- demo-express/ (127.0.0.1/)
-|  |  +- demo-nobundler/
-|  +- router/
-|  +- sandbox/ : Useful scripts
-|  +- tests/ : Jest tests
-|  +- uploads/ : for serving static files - files
-|  +- .dockerignore
-|  +- .eslintrc.js
-|  +- app.js : the express app boilerplate
-|  +- deploy.sh
-|  +- deploy-vm.sh
-|  +- docker-compose.yml
-|  +- Dockerfile
-|  +- ecosystem.config.js
-|  +- index.js
-|  +- jest.config.js: JEST testing
-|  +- knexfile.js: Knex query builder
-|  +- package.json
-|  +- process-cron.js: sample cron triggered process
-|  +- process-long.js: sample long running process
-|  +- README.md
-|  +- setup.js
++- example-app : example backend - See example-app/README.md - Project Structure
 +- example-spa/ : frontend associated to the application
 |  +- lib/ : common libs
 |  |  |  +- webpacked/ : webpacked components for frontend (including vue-crud-x)
-+- example-vite/ : frontend associated to the application
-|  +- src/
-|  |  +- lib/ : common libs
-|  |  |  +- esm/ : JS that can be used by both front and backend
++- example-vite/ : frontend associated to backend - See example-vite/README.md - Project Structure
 |  +- <your other front end here>
++- k8s/ : kubernetes YAML files (WIP)
++- .editorconfig
 +- .gitignore
 +- BACKLOG.md
 +- CHANGELOG.md
-+- ISSUES.md
 +- LICENCE
 +- package.json
 +- README.md
 ```
 
----
+## CI/CD
 
-# DOCUMENTATION
+Using github actions
+
+Manually triggered deployment on .github/workflows/manual.yml
+
+selectable inputs
+- environment (uat for now, development does not deploy anything)
+- application (example-app, example-vite)
+- code branch
+
+**NOTE** config/secret contents will not be in repo for CI/CD (so you can get errors), those need to be put in VAULT
+
+current secrets
+- GCP_PROJECT_ID
+- GCP_SA_KEY
+- VAULT_uat, passed in as VAULT
+
+```
+# do not merge
+VAULT="unused"
+
+ # connect to a hashicorp vault and obtain secrets to merge
+VAULT={ url, token } # base64 encoded
+
+ # pass in secrets, this way is insecure and not a good way to send in secrets
+VAULT={ secrets: { ... all your secrets here } } # base64 encoded
+```
+
+## DOCUMENTATION
 
 - Project roadmap at [BACKLOG.md](BACKLOG.md)
 - Release notes at [CHANGELOG.md](CHANGELOG.md)

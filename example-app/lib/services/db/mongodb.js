@@ -1,3 +1,5 @@
+'use strict'
+
 // const ObjectID = require('mongodb').ObjectID
 const DEFAULT_TRANSACTION_OPTIONS = {
   readConcern: { level: 'local' },
@@ -17,20 +19,22 @@ const mongo = {
     console.log('MONGODB CLOSED')
   },
   open: () => {
-    const { MONGO_URL } = global.CONFIG
+    const { MONGO_URL, MONGO_OPTIONS } = global.CONFIG
     if (!mongo.db && MONGO_URL) {
       const { MongoClient } = require('mongodb')
       try {
-        const client = new MongoClient(MONGO_URL, { // mongodb://localhost:27017/?replicaSet=rs0
-          useUnifiedTopology: true,
-          useNewUrlParser: true // reconnectTries: Infinity, poolSize: 10, reconnectInterval
-          // auth: { user: 'test', password: 'test123' },
-          // authMechanism: authMechanism,
-          // uri_decode_auth: true
-          // reconnectTries: Infinity,
-          // poolSize: 10
-          // reconnectInterval
-        })
+        const client = new MongoClient(MONGO_URL, MONGO_OPTIONS)
+        // {
+        //   useUnifiedTopology: true,
+        //   useNewUrlParser: true,
+        //   auth: { user: 'test', password: 'test123' },
+        //   authMechanism: authMechanism,
+        //   uri_decode_auth: true
+        //   reconnectTries: 1000, // How To Set Infinity?
+        //   poolSize: 10,
+        //   reconnectInterval: 1000, // ms
+        //   autoReconnect: true
+        // }
         mongo.client = client
         // mongo.client.startSession({ defaultTransactionOptions })
         client.connect(err => {
@@ -43,9 +47,9 @@ const mongo = {
             //   // use websocket to listen to changes
             // })
           }
-          else console.log('MONGODB', err)
+          else console.log('MONGODB ERROR 1', MONGO_URL, err.toString())
         })
-      } catch (e) { console.log('MONGODB', e) }
+      } catch (e) { console.log('MONGODB ERROR 2', MONGO_URL, e.toString()) }
     }
     return mongo
   }

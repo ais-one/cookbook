@@ -1,3 +1,5 @@
+'use strict'
+
 // const KeyvRedis = require('@keyv/redis') // npm i @keyv/redis
 // const Redis = require('ioredis')
 

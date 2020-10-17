@@ -14,7 +14,9 @@ VS Code
    - gitlens, to view and compare repositories
    - es6-string-html, formatting html in JS
    - vetur, syntax highlighting for VueJS
-   - live share, collaborative development
+   - docker
+   - live server ???
+   - remote-WSL
 
 Jest?
 - Automated Testing

@@ -1,13 +1,7 @@
-require(LIB_PATH + '/config')
-const objection = require(LIB_PATH + '/services/db/objection').open()
-const AuthorController = require(APP_PATH + '/controllers/author')
-// const AuthorModel = require('../../models/Author')
 const httpMocks = require('node-mocks-http')
-
 // hard to mock the model... so only test the controller
 // AuthorModel.query().insert = jest.fn()
 // AuthorModel.query().findOne.mockReturnValue({...})
-
 const newAuthor = require('../mock-data/new-author.json')
 // const allAuthors = require('../mock-data/all-authors.json')
 
@@ -19,8 +13,16 @@ beforeEach(() => {
 })
 
 let createdAuthorId
+let AuthorController
 
 describe('AuthorController.create', () => {
+  beforeAll(async () => {
+    await require(LIB_PATH + '/config')()
+    const objection = require(LIB_PATH + '/services/db/objection').open()
+    console.log(objection)
+    AuthorController = require(APP_PATH + '/controllers/author')    
+  })
+
   beforeEach(() => {
     req.body = newAuthor
   })

@@ -8,6 +8,7 @@
         <mwc-textfield label="Password" outlined type="password" v-model="password"></mwc-textfield>
         <div class="buttons-box-flex">
           <mwc-button raised label="Login" type="button" @click="login"></mwc-button>
+          <!-- <o-button @click="login">Login Use Oruga UI</o-button> -->
         </div>
         <p><router-link to="/signup">Sign Up</router-link></p>
       </div>
@@ -112,6 +113,7 @@ export default {
     }
 
     const login = async () => {
+      console.log('login clicked')
       if (loading.value) return
       loading.value = true
       errorMessage.value = ''
@@ -131,6 +133,7 @@ export default {
           otpCount = 0
         }
       } catch (e) {
+        console.log('login error', e.toString())
         errorMessage.value = e.data ? e.data.message : JSON.stringify(e)
       }
       loading.value = false

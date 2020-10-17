@@ -2,9 +2,9 @@
 dist
 node_modules
 
-# secrets & configs
-secret/*
-!secret/README.md
+# deploy & configs
+deploy/*
+!deploy/README.md
 
 # Log files
 npm-debug.log*

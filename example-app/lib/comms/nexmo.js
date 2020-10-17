@@ -1,3 +1,5 @@
+'use strict'
+
 const axios = require('axios')
 
 const { NEXMO_KEY, NEXMO_SECRET, NEXMO_FROM = 'SMSnotice' } = global.CONFIG

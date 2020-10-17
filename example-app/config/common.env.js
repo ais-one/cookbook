@@ -3,11 +3,19 @@
 module.exports = {
   API_PORT: 3000,
   WS_PORT: 3001,
+
+  // in secret
+  // JWT_CERTS: null, // { key: '', cert: '' },
+  // HTTPS_CERTS: null,
+  // GCP_SERVICE_KEY: null, // {}
+  // KNEXFILE: null, // {}
+
   SWAGGER_DEFS: {
     // Swagger / OpenAPI definitions
+    openapi: '3.0.3',
     info: {
       title: 'example-app',
-      version: '1.0.0',
+      version: '0.0.0',
       description: 'A sample API',
     },
     host: '127.0.0.1:3000', // API host
@@ -16,22 +24,17 @@ module.exports = {
       { name: 'Auth', description: 'Authentication' },
       { name: 'Base', description: 'The Base API' },
     ],
-    schemes: [ 'http', 'https' ],
-    securityDefinitions: {
-      Bearer: {
-        type: 'apiKey',
-        name: 'Authorization',
-        in: 'header'
+    components: {
+      schemes: [ 'http', 'https' ],
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
       }
     },
     consumes: ['application/json'],
     produces: ['application/json']
-  },
-  TTT: {
-    aaa: 111,
-    bbb: 'aaa',
-    zzz: () => {
-      console.log('aaa')
-    }
   }
 }

@@ -36,6 +36,11 @@ gcloud run deploy helloworld --image gcr.io/cloudrun/hello --platform managed --
 gcloud run services delete helloworld --platform managed --region asia-east1
 ```
 
+## Environment Variables And Security Note
+
+https://cloud.google.com/run/docs/configuring/environment-variables#command-line
+
+
 ## Cloudflare
 
 1. Use Full SSL

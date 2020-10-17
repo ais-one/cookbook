@@ -1,3 +1,5 @@
+'use strict'
+
 // NOTE: if --forcedExit --detectOpenHandles in JEST test, will cause error
 // TBD: testing for websockets
 let wss
@@ -24,14 +26,14 @@ let onClientMessage = async (message, ws) => { // client incoming message
 }
 
 exports.open = function (server=null, app=null) {
-  const { WS_PORT, WS_KEEEPALIVE_MS, httpsCerts } = global.CONFIG
+  const { WS_PORT, WS_KEEEPALIVE_MS, HTTPS_CERTS } = global.CONFIG
   let err
   try {
     if (!wss && WS_PORT) {
       const WebSocket = require('ws')
       const https = require('https')
-      if (httpsCerts) {
-        if (!server) server = https.createServer(httpsCerts).listen(WS_PORT) // use same port
+      if (HTTPS_CERTS) {
+        if (!server) server = https.createServer(HTTPS_CERTS).listen(WS_PORT) // use same port
         wss = new WebSocket.Server({ server })
       } else {
         if (!server) wss = new WebSocket.Server({ port: WS_PORT }) // use seperate port
@@ -53,7 +55,7 @@ exports.open = function (server=null, app=null) {
           wss.clients.forEach((ws) => {
             if (!ws.isAlive) return ws.terminate() // force close
             ws.isAlive = false
-            ws.ping(() => {})
+            return ws.ping(() => {})
           })
         }, WS_KEEEPALIVE_MS)
       }

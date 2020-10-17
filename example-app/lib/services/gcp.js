@@ -1,20 +1,20 @@
 'use strict'
 
-const { GCP_KEY, GCP_DEFAULT_BUCKET = '' } = global.CONFIG
+const { GCP_SERVICE_KEY, GCP_DEFAULT_BUCKET = '' } = global.CONFIG
 let storage
 
-if (!storage && GCP_KEY && GCP_KEY.project_id) {
+if (!storage && GCP_SERVICE_KEY && GCP_SERVICE_KEY.project_id) {
   const { Storage } = require('@google-cloud/storage')
-  const { client_email, private_key } = GCP_KEY
+  const { client_email, private_key } = GCP_SERVICE_KEY
   storage = new Storage({ credentials: {
     client_email, private_key
   } })
 }
 
 // let firestore // use firestore like redis for user sessions
-// if (!firestore && GCP_KEY && GCP_KEY.project_id) {
+// if (!firestore && GCP_SERVICE_KEY && GCP_SERVICE_KEY.project_id) {
 //   const Firestore = require('@google-cloud/firestore')
-//   const { client_email, private_key } = GCP_KEY
+//   const { client_email, private_key } = GCP_SERVICE_KEY
 //   firestore = new Firestore({ credentials: {
 //     client_email, private_key
 //   } })  

@@ -124,16 +124,12 @@ You need these files and configure them (see example-app)
 
 ### Backend
 
-- vue-crud-x/<project>/config/secret/uat.pem
+- vue-crud-x/<project>/config/deploy/uat.pem
   - PEM of the VM
-- vue-crud-x/<project>/config/secret/uat.deploy
-  - user and location of the VM
 - vue-crud-x/<project>/config/uat.env.js
   - configs & settings for your environment 
-- vue-crud-x/<project>/config/uat.gcp.json
-  - GCP service key 
-- vue-crud-x/<project>/config/uat.gcp.cors.json
-  - GCP json for whitelisting access to GCP Storage hosting website 
+- vue-crud-x/<project>/deploy/uat.gcp.json
+  - GCP service key for deployment 
 - vue-crud-x/<project>/ecosystem.config.js (for pm2 deployments)
 - vue-crud-x/<project>/Dockerfile (for docker deployments)
 

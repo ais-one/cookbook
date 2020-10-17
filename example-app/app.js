@@ -5,10 +5,10 @@ const https = require('https')
 const express = require('express')
 const app = express()
 
-console.log('app starting...')
+console.log('app starting... stackTraceLimit: 1' )
 
-const { USE_GRAPHQL, httpsCerts } = global.CONFIG
-const server = httpsCerts ? https.createServer(httpsCerts, app) : http.createServer(app)
+const { USE_GRAPHQL, HTTPS_CERTS } = global.CONFIG
+const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createServer(app)
 
 require(LIB_PATH + '/express/errorHandler')({ 
   unhandledRejection: null, // (reason, promise) => {}
@@ -43,13 +43,16 @@ require(LIB_PATH + '/express/shutdown')(server, shutdown)
 // END SERVICES
 
 require(LIB_PATH + '/express/preRoute')(app)
-// samlRoute PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token
+
+require(LIB_PATH + '/express/saml')(app) // samlRoute PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token
+
 try {
   require(APP_PATH + '/router')(app)
   if (USE_GRAPHQL) require(APP_PATH + '/graphql')(app, server)  
 } catch (e) {
   console.log(e.toString())
 }
+
 require(LIB_PATH + '/express/postRoute')(app, express)
 
 require(LIB_PATH + '/express/errorMiddleware')(

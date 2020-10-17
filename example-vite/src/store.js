@@ -69,7 +69,8 @@ const getters = {
   evenOrOdd: (payload) => (payload.count % 2 === 0 ? 'even' : 'odd')
 }
 
-const state = { // state below the rest // https://stackoverflow.com/questions/43843180/eslint-state-already-declared-vuex
+// state below the rest // https://stackoverflow.com/questions/43843180/eslint-state-already-declared-vuex
+const state = {
   count: 99,
   user: null
 }

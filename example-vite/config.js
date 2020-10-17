@@ -8,12 +8,12 @@ export const {
   VITE_PWA_PN, // Webpush, FCM
   // NOT NEEDED... BACKEND DETERMINES VITE_USE_OTP, // GA, SMS, ''
   VITE_RECAPTCHA_KEY,
-  VITE_HTTPONLY_TOKEN = false, // true, false use VITE_HTTPONLY_TOKEN for more security, but needs same domain
-  VITE_WITH_CREDENTIALS = 'same-origin' // same-origin, includes = cors
+  // VITE_HTTPONLY_TOKEN = false, // true, // NOTUSED... replaced by VITE_WITH_CREDENTIALS
+  VITE_WITH_CREDENTIALS = 'same-origin' // same-origin, include = cors
 
   // VITE_GITHUB_CLIENT_ID
 } = import.meta.env
 
 // PAGESIZE: process.env.VUE_APP_PAGESIZE || 4,
 // PAGESIZE_OPTS: process.env.VUE_APP_PAGESIZE_OPTS && process.env.VUE_APP_PAGESIZE_OPTS.length ? JSON.parse(process.env.VUE_APP_PAGESIZE_OPTS) : [4, 8, 10],
-// APP_VERSION: '0.4.2',
+// APP_VERSION: '0.4.3',

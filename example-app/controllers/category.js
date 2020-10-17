@@ -1,10 +1,14 @@
+'use strict'
+
 const Category = require('../models/Category')
 
 exports.create = async (req, res, next) => {
   try {
     const category = await Category.query().insert(req.body)
     if (category) return res.status(201).json(category)
-  } catch (e) { }
+  } catch (e) {
+    console.log(e.toString())
+  }
   return res.status(500).json()
 }
 
@@ -13,7 +17,9 @@ exports.update = async (req, res, next) => {
     const category = await Category.query().patchAndFetchById(req.params.id, req.body)
     if (category) return res.status(200).json(category)
     else return res.status(404).json()
-  } catch (e) { }
+  } catch (e) {
+    console.log(e.toString())
+  }
   return res.status(500).json()
 }
 
@@ -22,7 +28,9 @@ exports.findOne = async (req, res, next) => {
     const category = await Category.query().findById(req.params.id)
     if (category) return res.status(200).json(category)
     else return res.status(404).json()
-  } catch (e) { }
+  } catch (e) {
+    console.log(e.toString())
+  }
   return res.status(500).json()
 }
 
@@ -34,6 +42,8 @@ exports.find = async (req, res, next) => {
       // .orderBy('created_at', 'desc')
       .page(page, limit)
     return res.status(200).json(categories)  
-  } catch (e) { }
+  } catch (e) {
+    console.log(e.toString())
+  }
   return res.status(500).json()
 }

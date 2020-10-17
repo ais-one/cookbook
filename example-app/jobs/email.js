@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = function (agenda) {
   agenda.define('registration email', async job => {
     const { email } = job.attrs.data

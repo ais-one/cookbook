@@ -144,7 +144,7 @@ function cacheNetworkFallback(e) {
       .then(function (res) {
         return res || fetch(e.request)
         // .then(function(response) {
-        //   if (response.status === 404) return caches.match('pages/404.html')
+        //   if (response.status === 404) return caches.match('views/404.html')
         //   return response
         // })
       })
@@ -225,4 +225,86 @@ async function handlePush(e) {
 }
 self.addEventListener('pushsubscriptionchange', (e) => e.waitUntil(handlePush(e)))
 
-// self.addEventListener('fetch', (event) => event.waitUntil(handlePush(event)))
+// self.addEventListener('fetch', (e) => e.waitUntil(handlePush(event)))
+
+// https://www.udemy.com/course/progressive-web-apps
+
+// Static cache strategy - Cache with Network Fallback
+// const staticCache = (req, cacheName = CACHE_NAME_STATIC) => {
+//   return caches.match(req).then((cachedRes) => {
+//     // return cache response if found
+//     if (cachedRes) return cachedRes
+
+//     // Fallback to network
+//     return fetch(req).then((networkRes) => {
+//       // update cache with new response
+//       caches.open(cacheName).then((cache) => cache.put(req, networkRes))
+
+//       // return clone of network response
+//       return networkRes.clone()
+//     })
+//   })
+// }
+
+// // Network with Cache Fallback
+// const fallbackCache = (req) => {
+//   return (
+//     fetch(req)
+//       .then((networkRes) => {
+//         // check is res ok else go cache
+//         if (!networkRes.ok) throw new Error('Fetch Error')
+
+//         // Update cache
+//         caches.open(CACHE_NAME_STATIC).then((cache) => cache.put(req, networkRes))
+
+//         return networkRes.clone()
+//       })
+//       // try cache
+//       .catch((err) => {
+//         console.log(err)
+//         return caches.match(req)
+//       })
+//   )
+// }
+
+// // Clean
+// const cleanGiphyCache = (giphys) => {
+//   caches.open('giphy.com/media').then((cache) => {
+//     // Get all cache entries
+//     cache.keys().then((keys) => {
+//       // loop entries
+//       keys.forEach((key) => {
+//         // if entry NOT part of current giphys, Delete
+//         if (!giphys.includes(key.url)) cache.delete(key)
+//       })
+//     })
+//   })
+// }
+
+// // SW Fetch
+// self.addEventListener('fetch', (e) => {
+//   if (e.request.url.match(location.origin)) {
+//     e.respondWith(staticCache(e.request))
+//   } else if (e.request.url.match('api.giphy.com/v1/gifs/trending')) {
+//     e.respondWith(fallbackCache(e.request))
+//   } else if (e.request.url.match('giphy.com/media')) {
+//     e.respondWith(staticCache(e.request, 'giphy-media-cache'))
+//   }
+// })
+
+// // listen to message from client
+// self.addEventListener('message', (e) => {
+//   if (e.data.action === 'cleanGiphyCache') cleanGiphyCache(e.data.giphys)
+// })
+
+// // on pwa-init.js
+// // also run this when you are registering service worker?
+// async function giphyCacheClean(giphys) {
+//   const reg = await navigator.serviceWorker.getRegistration()
+//   if (reg.active) {
+//     reg.active.postMessage({
+//       action: 'cleanGiphyCache',
+//       giphys
+//     })
+//   }
+// }

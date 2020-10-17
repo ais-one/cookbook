@@ -13,9 +13,16 @@ global.CONFIG.USE_GRAPHQL = true // false
 global.CONFIG.SALT_ROUNDS = 12
 
 // HTTPONLY COOKIES
-global.CONFIG.HTTPONLY_TOKEN = false // true, false (also set the same on FE..., true means place token in HttpOnly cookie) - DO TAKE NOTE OF CORS
+// https://web.dev/samesite-cookies-explained/
+// true = use HttpOnly cookie, false - do not use HttpOnly cookie (alternatively use localStorage / sessionStorage - be careful, has security implications)
+global.CONFIG.COOKIE_HTTPONLY = true // (also set on FE... credentials if cross origin, true means ) - DO TAKE NOTE OF CORS
+// must be true if COOKIE_SAMESITE=None 
+global.CONFIG.COOKIE_SECURE = false
+// Strict - CORS_OPTIONS == null
+// Lax, None (None must use Secure also) - CORS_OPTIONS !== null 
+global.CONFIG.COOKIE_SAMESITE = 'Lax'
+global.CONFIG.COOKIE_MAXAGE = ''
 
-// global.CONFIG.HTTPONLY_TOKEN = true // Use localStorage / sessionStorage
 global.CONFIG.AUTH_USER_STORE = 'objection' // mongo, objection
 global.CONFIG.AUTH_USER_STORE_NAME = 'users'
 global.CONFIG.AUTH_USER_FIELD_ID_FOR_JWT = 'id' // mongo = _id, objection = id // can be NTID from SAML
@@ -41,14 +48,22 @@ global.CONFIG.OTP_EXPIRY = 30 // 8 // 30 // defined seconds to allow user to sub
 // MONGO_URL=mongodb://127.0.0.1:27017/mm?replicaSet=rs0
 global.CONFIG.MONGO_DB = 'testdb-' + process.env.NODE_ENV
 global.CONFIG.MONGO_URL = 'mongodb://127.0.0.1:27017/testdb-' + process.env.NODE_ENV
+// https://mongodb.github.io/node-mongodb-native/3.6/reference/connecting/connection-settings/
+global.CONFIG.MONGO_OPTIONS = {
+  // https://github.com/Automattic/mongoose/issues/8180
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+  connectTimeoutMS: 30000, // small value timedout on cloudrun
+  serverSelectionTimeoutMS: 30000
+}
 
 // agendamq - requires mongodb
 global.CONFIG.JOB_MONGO_URL = 'mongo' // if mongo, use MONGO_URL
 global.CONFIG.JOB_COLLECTION = 'agendaJobs' // collection name
 global.CONFIG.JOB_TYPES = '' // 'email', // 'email,nexmo,telegram' //  agenda message queue job types, comma seperated , find the path to agenda job
 
-global.CONFIG.KNEXFILE = true
-global.CONFIG.GCP_KEY = true
+global.CONFIG.KNEXFILE = null // knexfile
+global.CONFIG.GCP_SERVICE_KEY = null // GCP SERVICE KEY { }
 global.CONFIG.GCP_DEFAULT_BUCKET = 'mybot-live.appspot.com'
 
 // CORS - SAME ORIGIN - PROXIED
@@ -97,14 +112,13 @@ global.CONFIG.WEB_STATIC = [  // serve website from folder, blank if do not serv
   { folder: APP_PATH + '/public/demo-express', url: '/' }
 ]
 
-global.CONFIG.UPLOAD_FOLDER = APP_PATH + '/uploads' // for server uploads - to remove
-global.CONFIG.UPLOAD_URL = '/uploads' // for server uploads - to remove
 global.CONFIG.UPLOAD_STATIC = [
+  { folder: APP_PATH + '/uploads', url: '/uploads' },
   { folder: '', url: '' }
 ]
 
-global.CONFIG.JWT_CERT = process.env.JWT_CERT || '' // path.join(__dirname, 'certs/jwt') // RS256
-global.CONFIG.HTTPS_CERT = process.env.HTTPS_CERT || ''
+global.CONFIG.JWT_CERTS = null // { key: '', cert: '' }
+global.CONFIG.HTTPS_CERTS = null // { key: '', cert: '' }
 
 // Role-based access control - not needed, implemented by middleware - e.g. isAdmin after user authentication
 
@@ -117,6 +131,14 @@ global.CONFIG.ENABLE_LOGGER = false
 // Github
 // global.CONFIG.GITHUB_CLIENT_ID = ''
 // global.CONFIG.GITHUB_CLIENT_SECRET = ''
+
+// Google
+// global.CONFIG.GOOGLE_CLIENT_ID = ''
+// global.CONFIG.GOOGLE_CLIENT_SECRET = ''
+
+// Microsoft
+// global.CONFIG.MS_CLIENT_ID = ''
+// global.CONFIG.MS_CLIENT_SECRET = ''
 
 // MQ - bullmq - requires redis - <lib>/services/mq/bull.js - currently not used
 global.CONFIG.JOB_BULL = null
@@ -137,6 +159,7 @@ global.CONFIG.SENDGRID_SENDER = ''
 // Communications - Firebase Messaging - <lib>/comms/fcm.js
 global.CONFIG.FCM_SERVER_KEY = ''
 
+// Communications - Firebase Messaging - <lib>/services/webpush.js
 global.CONFIG.WEBPUSH_VAPID_URL = process.env.WEBPUSH_VAPID_URL || 'http://127.0.0.1:3000'
 
 // Caching - refer to <lib>/services/redis.js

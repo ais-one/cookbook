@@ -1,8 +1,11 @@
 # npm
 node_modules
 
-# files not to be committed
-secret
+# deploy & configs
+deploy/*
+!deploy/README.md
+config/secret/*
+!config/secret/README.md
 
 # database stores
 *.sqlite3

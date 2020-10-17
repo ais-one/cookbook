@@ -53,3 +53,52 @@ npm cache clean --force
 rm -rf node_modules
 rm package-lock.json
 ```
+
+
+# Project Strcuture
+
+```
++- public/ :
+|  +- img/ :
+|  |  +- icons/ :
+|  |  +- splash/ :
+|  +- static/ : 
+|  +- favicon.ico : 
+|  +- manifest.json : 
++- deploy/ : contains deployment info & files see example-app/deploy/README.md
++- src/ :
+|  +- components/ :
+|  +- layouts/ :
+|  +- lib/ : common libs
+|  |  +- esm : JS that can be used by both front and backend
+|  +- plugins/ :
+|  +- views/ :
+|  +- App.vue :
+|  +- main.js :
+|  +- queries.js :
+|  +- router.js :
+|  +- store.js :
++- .env.development
++- .env.uat
++- .eslintignore
++- .eslintrc.js
++- .gitguardian.yml
++- .gitignore
++- .prettierrc.js
++- config.js
++- cypress.json
++- cypress.zip
++- deploy.sh
++- firebase-messaging-sw.js
++- firebase.config.js
++- index.html
++- package.json
++- package-lock.json
++- pwa-init.js
++- README.md
++- robots.txt
++- service-worker.js
++- sitemap.xml
++- style.css
++- vite.config.js
+```

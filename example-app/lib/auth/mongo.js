@@ -1,3 +1,5 @@
+'use strict'
+
 const mongo = require('../services/db/mongodb')
 const { JWT_REFRESH_STORE_NAME } = global.CONFIG
 
