@@ -46,8 +46,12 @@ module.exports = async function() {
     }
 
     if (VAULT && VAULT !== 'unused') {
+      // let bufferObj = Buffer.from(originalString, "utf8") // Create buffer object, specifying utf8 as encoding
+      // let base64String = bufferObj.toString("base64") // Encode the Buffer as a base64 string
+      let bufferObj = Buffer.from(VAULT, "base64") // Create a buffer from the string
+      let decodedString = bufferObj.toString("utf8") // Encode the Buffer as a utf8 string
       try {
-        const vault = JSON.parse(VAULT)
+        const vault = JSON.parse(decodedString)
         let vaultConfig = {} 
         if (vault.secrets) {
           // insecure and not a good way to get secrets
