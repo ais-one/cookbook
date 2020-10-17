@@ -52,11 +52,13 @@ module.exports = async function() {
         if (vault.secrets) {
           // insecure and not a good way to get secrets
           vaultConfig = vault.secrets 
-        } else {
+        } else if (vault.url) {
           // Get from Hashicorp Vault, can replace with other secrets manager
           // curl -s -H "X-Vault-Token: $token" $url
           const vaultRes = await axios.get(vault.url, { headers: { 'X-Vault-Token': vault.token } })
           vaultConfig = vaultRes.data.data.data  
+        } else {
+          console.log('environment unknown VAULT', VAULT)
         }
         global.CONFIG = { ...CONFIG, ...vaultConfig }
       } catch (e) {
