@@ -10,7 +10,7 @@ const signup = async (req, res) => {
   res.status(201).end()
 }
 
-const httpOnlyCookie = `HttpOnly;Path=/;SameSite=${COOKIE_SAMESITE};${COOKIE_SECURE ? 'Secure;':''}${COOKIE_MAXAGE ? `MaxAge=${COOKIE_MAXAGE};`:''}`
+const httpOnlyCookie = `HttpOnly;Path=/;SameSite=${COOKIE_SAMESITE};` + (COOKIE_SECURE ? 'Secure;':'') + (COOKIE_MAXAGE ? 'MaxAge='+COOKIE_MAXAGE+';':'')
 
 const checkGithub = async (req, res) => {
   try {

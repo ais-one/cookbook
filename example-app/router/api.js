@@ -76,6 +76,10 @@ module.exports = express.Router()
     child.unref()
     res.json({})
   })
+  .get('/restart-mongb', (req, res) => {
+    require(LIB_PATH + '/services/db/mongodb').open()
+    res.json({})
+  })
 
   .get('/wrap-test', asyncWrapper(async (req, res) => {
     // return res.status(201).json({ aa: 'bb' }) // should not return...

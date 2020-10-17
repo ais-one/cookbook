@@ -3,6 +3,8 @@ module.exports = {
   JWT_REFRESH_EXPIRY: 14400,
   OTP_EXPIRY: 60,
   CORS_ORIGINS: 'https://uat.mybot.live,http://uat.mybot.live',
+  COOKIE_SECURE: true,
+  COOKIE_SAMESITE: 'None',
 
   // in secret
   // JWT_REFRESH_STORE: '',

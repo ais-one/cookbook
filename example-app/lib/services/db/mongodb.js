@@ -47,9 +47,9 @@ const mongo = {
             //   // use websocket to listen to changes
             // })
           }
-          else console.log('MONGODB ERROR', MONGO_URL, err.toString())
+          else console.log('MONGODB ERROR 1', MONGO_URL, err.toString())
         })
-      } catch (e) { console.log('MONGODB ERROR', MONGO_URL, e.toString()) }
+      } catch (e) { console.log('MONGODB ERROR 2', MONGO_URL, e.toString()) }
     }
     return mongo
   }

@@ -13,6 +13,7 @@ global.CONFIG.USE_GRAPHQL = true // false
 global.CONFIG.SALT_ROUNDS = 12
 
 // HTTPONLY COOKIES
+// https://web.dev/samesite-cookies-explained/
 // true = use HttpOnly cookie, false - do not use HttpOnly cookie (alternatively use localStorage / sessionStorage - be careful, has security implications)
 global.CONFIG.COOKIE_HTTPONLY = true // (also set on FE... credentials if cross origin, true means ) - DO TAKE NOTE OF CORS
 // must be true if COOKIE_SAMESITE=None 
@@ -49,6 +50,7 @@ global.CONFIG.MONGO_DB = 'testdb-' + process.env.NODE_ENV
 global.CONFIG.MONGO_URL = 'mongodb://127.0.0.1:27017/testdb-' + process.env.NODE_ENV
 // https://mongodb.github.io/node-mongodb-native/3.6/reference/connecting/connection-settings/
 global.CONFIG.MONGO_OPTIONS = {
+  // https://github.com/Automattic/mongoose/issues/8180
   useUnifiedTopology: true,
   useNewUrlParser: true,
   connectTimeoutMS: 30000, // small value timedout on cloudrun
