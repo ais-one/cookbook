@@ -2,7 +2,6 @@ module.exports = {
   JWT_EXPIRY: 7200,
   JWT_REFRESH_EXPIRY: 14400,
   OTP_EXPIRY: 60,
-  COOKIE_HTTPONLY: 'Lax',
   CORS_ORIGINS: 'https://uat.mybot.live,http://uat.mybot.live',
 
   // in secret

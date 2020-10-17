@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 // const uuid = require('uuid/v4')
 // const qrcode = require('qrcode')
-const { USE_OTP, OTP_EXPIRY, COOKIE_HTTPONLY, COOKIE_SECURE, COOKIE_SAMESITE, CORS_OPTIONS, AUTH_USER_STORE, AUTH_USER_STORE_NAME } = global.CONFIG
+const { USE_OTP, OTP_EXPIRY, COOKIE_HTTPONLY, COOKIE_SECURE, COOKIE_SAMESITE, COOKIE_MAXAGE, CORS_OPTIONS, AUTH_USER_STORE, AUTH_USER_STORE_NAME, httpOnlyCookie } = global.CONFIG
 const { AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD = ''} = global.CONFIG
 const { JWT_ALG, JWT_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv', JWT_CERTS } = global.CONFIG
 
@@ -108,7 +108,7 @@ const authUser = async (req, res, next) => {
                       return next()
                     } else {
                       const tokens = await createToken({ id, verified: true, ...payload }, { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
-                      if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/; SameSite=${COOKIE_SAMESITE}; ${COOKIE_SECURE ? 'Secure;':''}`])
+                      if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token};`+ httpOnlyCookie])
                       return res.status(200).json(tokens)  
                     }
                   }
@@ -195,7 +195,7 @@ const login = async (req, res) => {
       // }
     }
     const tokens = await createToken({ id, verified, ...additionalPayload }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
-    if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/; SameSite=${COOKIE_SAMESITE}; ${COOKIE_SECURE ? 'Secure;':''}`])
+    if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token};`+ httpOnlyCookie])
     return res.status(200).json(tokens)
   } catch (e) {
     console.log('login err', e.toString())
@@ -215,7 +215,7 @@ const otp = async (req, res) => { // need to be authentication, body { pin: '123
         await revokeToken(id)
         const additionalPayload = addPayloadFromUserData(user)
         const tokens = await createToken({ id, verified: true, ...additionalPayload }, {expiresIn: JWT_EXPIRY})
-        if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token}; HttpOnly; Path=/; SameSite=${COOKIE_SAMESITE}; ${COOKIE_SECURE ? 'Secure;':''}`])
+        if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token};`+ httpOnlyCookie])
         return res.status(200).json(tokens)
       } else {
         return res.status(401).json({ message: 'Error token wrong pin' })

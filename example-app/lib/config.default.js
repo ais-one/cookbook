@@ -17,9 +17,10 @@ global.CONFIG.SALT_ROUNDS = 12
 global.CONFIG.COOKIE_HTTPONLY = true // (also set on FE... credentials if cross origin, true means ) - DO TAKE NOTE OF CORS
 // must be true if COOKIE_SAMESITE=None 
 global.CONFIG.COOKIE_SECURE = false
-// Strict (CORS_OPTIONS == null)
-// Lax, None (None must use Secure also) - CORS_OPTIONS !== null, 
+// Strict - CORS_OPTIONS == null
+// Lax, None (None must use Secure also) - CORS_OPTIONS !== null 
 global.CONFIG.COOKIE_SAMESITE = 'Lax'
+global.CONFIG.COOKIE_MAXAGE = ''
 
 global.CONFIG.AUTH_USER_STORE = 'objection' // mongo, objection
 global.CONFIG.AUTH_USER_STORE_NAME = 'users'
