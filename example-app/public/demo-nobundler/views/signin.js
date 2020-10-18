@@ -1,18 +1,59 @@
-const template = /*html*/`
-<div ref="topRef">
+/*
+<div ref="topRef" class="parent">
   <h1 >SignIn Page</h1>
   <input class="input" type="email" placeholder="Email" v-model="email">
   <input class="input" type="password" placeholder="Password" v-model="password">
   <button class="button is-primary is-medium is-fullwidth" @click="login">Login</button>
   <p class="test-bg"><a href="../index.html">Back To Demo</a></p>
 </div>
+*/
+const template = /*html*/`
+<section ref="topRef" class="hero is-primary is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+          <form action="" class="box">
+            <div style="text-align:center;display:block;">
+            <img src="https://via.placeholder.com/150" />
+            </div>
+            <div class="field">
+              <label for="" class="label">Email</label>
+              <div class="control has-icons-left">
+                <input type="email" placeholder="e.g. bobsmith@gmail.com" class="input" disabled>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-envelope"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="" class="label">Password</label>
+              <div class="control has-icons-left">
+                <input type="password" placeholder="*******" class="input" disabled>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-lock"></i>
+                </span>
+              </div>
+            </div>
+            <div class="field is-grouped">
+              <div class="control">
+                <button class="button is-success" disabled>Login</button>
+              </div>
+              <div class="control">
+                <button class="button is-success test-bg" @click.stop.prevent="login">SSO Login</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 `
 
 const styles = /*html*/`
 .test-bg {
-  background-color: pink;
-}
-#app {
+  background-color: darkblue !important;
 }
 `
 

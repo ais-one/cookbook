@@ -2,6 +2,7 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [inprogress]
   - [chore] use monorepo when npm 7 is released ?
+  - [example-app] improve vanilla app
   - [example-vite] cypress e2e testing, vue-test-util & vite
   - CrudTable.vue
     - select all (not working)

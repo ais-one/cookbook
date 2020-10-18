@@ -8,11 +8,20 @@ const { createRouter, createWebHistory } = VueRouter
 const routerHistory = createWebHistory()
 
 const AuthGuard = async (to, from, next) => {
-  console.log('AuthGuard', store)
-  if (store.getters.user) {
+  // console.log('AuthGuard', store)
+  const loggedIn = Boolean(store.state.user)
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+
+  if (loggedIn === requiresAuth) {
     return next()
+  } else if (!loggedIn && requiresAuth) {
+    return next('/signin')
+  } else if (loggedIn && !requiresAuth) {
+    return next('/dashboard')
   } else {
-    return next('/')
+    // should not get here
+    // console.log(loggedIn, requiresAuth)
+    return next('/signin')
   }
 }
 
@@ -20,6 +29,7 @@ const router = createRouter({
   history: routerHistory,
   routes: [
     {
+      meta: { requiresAuth: true, layout: 'layout-secure' },
       beforeEnter: AuthGuard,
       // props: (route) => {
       //   return { storeName: route.name, parentId: route.params.parentId || null }
@@ -29,13 +39,24 @@ const router = createRouter({
       name: 'dashboard'
     },
     {
+      meta: { requiresAuth: true, layout: 'layout-secure' },
       beforeEnter: AuthGuard,
       path: '/admin',
       component: Admin, // () => import('./views/about.js') // TBD use lazy loading
       name: 'admin'
     },
-    { path: '/', name: 'signIn', component: SignIn },
-    { path: '/:catchAll(.*)', name: 'catchAll', redirect: { name: 'signIn' } }, // should have 404 page
+    {
+      meta: { requiresAuth: false, layout: 'layout-public' },
+      path: '/',
+      name: 'signIn',
+      component: SignIn
+    },
+    {
+      meta: { requiresAuth: false, layout: 'layout-public' },
+      path: '/:catchAll(.*)',
+      name: 'catchAll',
+      redirect: { name: 'signIn' }
+    }, // should have 404 page
   ]
 })
 

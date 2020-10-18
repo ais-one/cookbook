@@ -19,7 +19,8 @@
           <li v-if="keycol" class="nav-item"><mwc-icon-button icon="reply" @click="goBack" :disabled="loading"></mwc-icon-button></li>
         </ul>
         <ul class="nav-right">
-          <li class="nav-item">Rows Per Page
+          <li class="nav-item">
+            Rows Per Page
             <select class="nav-select-page-size" v-model="rowsPerPage">
               <option v-for="val of pageSizeList" :key="val" :value="val" :selected="val === rowsPerPage">{{ val }}</option>
             </select>
