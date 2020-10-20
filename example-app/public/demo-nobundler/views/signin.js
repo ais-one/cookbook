@@ -38,8 +38,8 @@ const template = /*html*/`
 
             <div class="field">
               <div class="control">
-              <label for="" class="label">Email</label>
-              <bwc-autocomplete required :items="items" v-model="ac" @search="(e) => autoComplete(e)"></bwc-autocomplete>
+              <label for="" class="label">Test Autocomplete</label>
+              <bwc-autocomplete required :items="ac.items" v-model="ac.val" @search="(e) => autoComplete(e)"></bwc-autocomplete>
               </div>
             </div>
 
@@ -76,8 +76,10 @@ export default {
     const password = ref('1111')
     const store = useStore()
     const router = useRouter()
-    const ac = ref('a')
-    const items = ref('aa9,aa5')
+    const ac = reactive({
+      val: 'a',
+      items: 'aa9,aa5'
+    })
 
     const topRef = ref(null)
 
@@ -98,7 +100,7 @@ export default {
     const autoComplete = (e) => {
       const result = []
       for (let i = 0; i < e.detail.length + 10; i++) result.push('aa' + i)
-      items.value = result.join(',')
+      ac.items = result.join(',')
     }
 
     return {
@@ -107,7 +109,6 @@ export default {
       password,
       login,
       ac,
-      items,
       autoComplete
     }
   }
