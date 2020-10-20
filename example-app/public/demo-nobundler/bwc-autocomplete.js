@@ -71,6 +71,7 @@ class AutoComplete extends HTMLElement {
     return ['value', 'required', 'items']
   }
 
+
   get value() {
     return this.getAttribute('value')
   }

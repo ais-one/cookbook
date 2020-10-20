@@ -95,16 +95,12 @@ export default {
       router.push('/dashboard')
     }
 
-    const autoComplete = 
-      // debounce(async
-      (e, col, _showForm) => {
-      // console.log('search', e.detail, col, _showForm)
+    const autoComplete = (e) => {
       const result = []
       for (let i = 0; i < e.detail.length + 10; i++) result.push('aa' + i)
       items.value = result.join(',')
-      }
-      // , 500)
-    
+    }
+
     return {
       topRef,
       email,
