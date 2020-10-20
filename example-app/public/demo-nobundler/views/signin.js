@@ -20,7 +20,7 @@ const template = /*html*/`
             <div class="field">
               <label for="" class="label">Email</label>
               <div class="control has-icons-left">
-                <input type="email" placeholder="e.g. bobsmith@gmail.com" class="input" disabled>
+                <input type="email" placeholder="e.g. bobsmith@gmail.com" class="input" required>
                 <span class="icon is-small is-left">
                   <i class="fa fa-envelope"></i>
                 </span>
@@ -35,6 +35,14 @@ const template = /*html*/`
                 </span>
               </div>
             </div>
+
+            <div class="field">
+              <div class="control">
+              <label for="" class="label">Email</label>
+              <bwc-autocomplete required :items="items" v-model="ac" @search="(e) => autoComplete(e)"></bwc-autocomplete>
+              </div>
+            </div>
+
             <div class="field is-grouped">
               <div class="control">
                 <button class="button is-success" disabled>Login</button>
@@ -57,7 +65,7 @@ const styles = /*html*/`
 }
 `
 
-const { onMounted, ref } = Vue
+const { onMounted, ref, reactive } = Vue
 const { useStore } = Vuex
 const { useRouter } = VueRouter
 
@@ -68,13 +76,14 @@ export default {
     const password = ref('1111')
     const store = useStore()
     const router = useRouter()
+    const ac = ref('a')
+    const items = ref('aa9,aa5')
 
     const topRef = ref(null)
 
     onMounted(async () => {
-      console.log(topRef)
+      // console.log(topRef)
       console.log('SignIn mounted!')
-
       // thank you Arjay for this! https://plnkr.co/edit/tjhkcfNO15aTNhsU
       const style = document.createElement('style')
       style.innerHTML = styles
@@ -86,11 +95,24 @@ export default {
       router.push('/dashboard')
     }
 
+    const autoComplete = 
+      // debounce(async
+      (e, col, _showForm) => {
+      // console.log('search', e.detail, col, _showForm)
+      const result = []
+      for (let i = 0; i < e.detail.length + 10; i++) result.push('aa' + i)
+      items.value = result.join(',')
+      }
+      // , 500)
+    
     return {
       topRef,
       email,
       password,
-      login
+      login,
+      ac,
+      items,
+      autoComplete
     }
   }
 }

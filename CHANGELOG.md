@@ -1,5 +1,6 @@
 ### Version 0.4.4
 - [chore] update packages & cleanup & work on improving documentation
+- [nobundler-example] created initial bwc-autocomplete (based on bulma)
 - [inprogress]
   - [chore] use monorepo when npm 7 is released ?
   - [example-app] improve vanilla app

@@ -32,9 +32,7 @@ const router = createRouter({
     {
       meta: { requiresAuth: true, layout: 'layout-secure' },
       beforeEnter: AuthGuard,
-      // props: (route) => {
-      //   return { storeName: route.name, parentId: route.params.parentId || null }
-      // },
+      // props: (route) => ({ storeName: route.name, parentId: route.params.parentId || null }),
       path: '/dashboard',
       component: Dashboard, // () => import('./views/about.js') // TBD use lazy loading
       name: 'dashboard'
