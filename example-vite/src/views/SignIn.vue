@@ -30,7 +30,6 @@ import { ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
-
 import { useXhr } from '/src/plugins/xhr.js'
 import { useI18n } from '/src/plugins/i18n.js'
 import { useWs } from '/src/plugins/ws.js'

@@ -45,15 +45,13 @@ const parseUrl = (url) => {
   } catch (e) {
     // no need to throw anything here
   }
-  return {
-    urlOrigin, urlPath, urlFull
-  }
+  return { urlOrigin, urlPath, urlFull }
 }
 
 const http = async (method, url, body = null, query = null, headers = null) => {
   // settle the URL
   // http://example.com:3001/abc/ees, /abc/ees
-  let { urlOrigin, urlPath, urlFull } = parseUrl(url)
+  const { urlOrigin, urlPath, urlFull } = parseUrl(url)
 
   try {
     const controller = new AbortController()
