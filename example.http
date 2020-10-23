@@ -1,0 +1,9 @@
+# HTTP Testing
+
+https://randomuser.me/api/
+Accept: application/json 
+
+###
+
+POST https://httpbin.org/post
+Accept: application/json

@@ -149,7 +149,7 @@ const logout = async (req, res) => {
     if (COOKIE_HTTPONLY) res.clearCookie('token')
     return res.status(200).json({ message: 'Logged Out' })  
   } catch (e) {
-    console.log(e.toSting())
+    console.log(e.toString())
   }
   return res.status(500).json()  
 }

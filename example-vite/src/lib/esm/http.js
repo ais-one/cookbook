@@ -32,9 +32,7 @@ const fetch_retry = async (url, options, n) => {
 };
 */
 
-const http = async (method, url, body = null, query = null, headers = null) => {
-  // settle the URL
-  // http://example.com:3001/abc/ees, /abc/ees
+const parseUrl = (url) => {
   let urlPath = url
   let urlFull = baseUrl + urlPath
   let urlOrigin = baseUrl
@@ -47,6 +45,15 @@ const http = async (method, url, body = null, query = null, headers = null) => {
   } catch (e) {
     // no need to throw anything here
   }
+  return {
+    urlOrigin, urlPath, urlFull
+  }
+}
+
+const http = async (method, url, body = null, query = null, headers = null) => {
+  // settle the URL
+  // http://example.com:3001/abc/ees, /abc/ees
+  let { urlOrigin, urlPath, urlFull } = parseUrl(url)
 
   try {
     const controller = new AbortController()
@@ -178,7 +185,7 @@ const get = async (url, query = null, headers = null) => {
   // }
 }
 
-export { http, post, get, patch, del, test, testAuth, login, otp, logout, setBaseUrl, setToken, setRefreshToken, setCredentials, setForceLogoutFn, parseJwt }
+export { http, post, get, patch, del, test, testAuth, login, otp, logout, setBaseUrl, setToken, setRefreshToken, setCredentials, setForceLogoutFn, parseJwt, parseUrl }
 
 // try {
 //   let res = await fetch('/api/auth/login', {

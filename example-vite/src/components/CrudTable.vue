@@ -140,6 +140,8 @@ import { useRouter, useRoute } from 'vue-router'
 export default {
   name: 'CrudTable',
   props: {
+    infinite: { type: Boolean, default: false }, // infinite scroll?
+    pageStart: { type: String, default: '1' }, // starting page
     pageSize: { type: [Number], default: 10 },
     pageSizeList: { type: Array, default: () => [5, 10, 25, 50] },
     tableName: { type: String, required: true }
@@ -153,7 +155,7 @@ export default {
     const keycol = ref(null) // parent key/id name here
     const keyval = ref(null) // parent key/id value
     const tableCfg = ref(null) // table config
-    const page = ref(1)
+    const page = ref(props.infinite ? props.pageStart : Number(props.pageStart))
     const records = ref([])
     const maxPage = ref(1)
     const rowsPerPage = ref(props.pageSize)
@@ -264,6 +266,7 @@ export default {
               // gridEl.items = rv.results // do not use this, not scalable
               gridEl.size = rv.total
               records.value = rv.results
+              if (rv.cursor && props.infinite) page.value = rv.cursor // infinite scroll, set new cursor
               callback(rv.results)
             }
           } catch (e) {

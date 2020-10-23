@@ -1,11 +1,15 @@
 const express = require('express')
 const passport = require('passport')
+const { createToken } = require(LIB_PATH + '/auth')
+
+const { JWT_EXPIRY } = global.CONFIG
 
 module.exports = express.Router()
   .get('/login',
     (req, res, next) => {
       // return res.redirect('/' + token...) // for faking, bypass real callback
-      // req.query.RelayState = req.query.redirect_to + ';' + req.query.groups + ';' + req.query.expiry
+      req.query.RelayState = req.query.redirect_to + ';' + req.query.groups + ';' + req.query.expiry
+      console.log(req.query.RelayState)
       next()
     },
     passport.authenticate('saml') // , { failureRedirect: '/', failureFlash: true }),
@@ -13,29 +17,20 @@ module.exports = express.Router()
   .post('/login/callback',
     // bodyParser.urlencoded({ extended: false }),
     passport.authenticate('saml', { failureRedirect: '/', failureFlash: true }),
-    (req, res) => {
+    async (req, res) => {
       try {
-        // const relayState = req.body.RelayState.split(';')
-        // const TO = relayState[0]
-        // console.log(req)
+        const relayState = req.body.RelayState.split(';') // 0 = frontend callback, 1 = allowed groups, 2 = expiry
+        const TO = relayState[0]
         if (req.isAuthenticated()) {
-          // For SPA
-          // also settle/check the groups and expiry
-          // const token = CreateJWT()
-          // res.redirect(TO + '/#' + token)
-          res.json({
-            status: 'authenticated',
-            body: req.user
-          })
+          const tokens = await createToken({ ...req.user }, {expiresIn: JWT_EXPIRY})
+          const tokenStr = JSON.stringify(tokens) // .toString('base64')
+          res.redirect(TO + '#' + tokenStr) // use url fragment...
         } else {
-          res.json({
-            status: 'NOT authenticated',
-            body: req.body            
-          })
+          res.json({ status: 'NOT authenticated' })
           // res.redirect('/forbidden')
         }
       } catch (e) {
-        res.status(500).json({ error: 'EEE' + e.toString() })
+        res.status(500).json({ error: e.toString() })
       }
     }
   )

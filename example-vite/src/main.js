@@ -25,8 +25,8 @@ import './components/mwc-multiselect.js'
 import './components/mwc-fileupload.js'
 
 // oruga
-import { Button } from '@oruga-ui/oruga-next'
 import '@oruga-ui/oruga-next/dist/oruga.css'
+import { Button } from '@oruga-ui/oruga-next'
 
 import { createApp } from 'vue'
 import App from './App.vue'

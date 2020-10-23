@@ -9,8 +9,9 @@ export const {
   // NOT NEEDED... BACKEND DETERMINES VITE_USE_OTP, // GA, SMS, ''
   VITE_RECAPTCHA_KEY,
   // VITE_HTTPONLY_TOKEN = false, // true, // NOTUSED... replaced by VITE_WITH_CREDENTIALS
-  VITE_WITH_CREDENTIALS = 'same-origin' // same-origin, include = cors
+  VITE_WITH_CREDENTIALS = 'same-origin', // same-origin, include = cors
 
+  VITE_CALLBACK_URL
   // VITE_GITHUB_CLIENT_ID
 } = import.meta.env
 
