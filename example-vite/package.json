@@ -53,6 +53,6 @@
     "eslint-plugin-standard": "^4.0.2",
     "eslint-plugin-vue": "^7.1.0",
     "prettier": "^2.1.2",
-    "vite": "^1.0.0-rc.4"
+    "vite": "^1.0.0-rc.6"
   }
 }

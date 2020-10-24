@@ -3,8 +3,8 @@
 - [nobundler-example] created initial bwc-autocomplete (based on bulma)
 - [example-all] implement saml callback and configs
 - [inprogress]
-  - [chore] use monorepo when npm 7 is released ?
   - [example-app] improve vanilla app
+  - [chore] use monorepo when npm 7 is released ?
   - [example-vite] cypress e2e testing, vue-test-util & vite
   - CrudTable.vue
     - select all (not working)
