@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.2.5",
-    "@firebase/app": "^0.6.11",
-    "@firebase/messaging": "^0.7.1",
+    "@firebase/app": "^0.6.12",
+    "@firebase/messaging": "^0.7.2",
     "@material/mwc-button": "^0.19.1",
     "@material/mwc-dialog": "^0.19.1",
     "@material/mwc-drawer": "^0.19.1",
@@ -30,10 +30,9 @@
     "@material/mwc-select": "^0.19.1",
     "@material/mwc-textfield": "^0.19.1",
     "@material/mwc-top-app-bar-fixed": "^0.19.1",
-    "@oruga-ui/oruga-next": "^0.2.2",
-    "@vaadin/vaadin-grid": "^5.7.4",
+    "@vaadin/vaadin-grid": "^5.7.5",
     "echarts": "^4.9.0",
-    "graphql": "^15.3.0",
+    "graphql": "^15.4.0",
     "graphql-tag": "^2.11.0",
     "leaflet": "^1.7.1",
     "subscriptions-transport-ws": "^0.9.18",
@@ -43,7 +42,7 @@
   },
   "devDependencies": {
     "@vue/compiler-sfc": "^3.0.2",
-    "eslint": "^7.10.0",
+    "eslint": "^7.12.1",
     "eslint-config-prettier": "^6.14.0",
     "eslint-config-standard": "^15.0.0",
     "eslint-plugin-import": "^2.22.1",
@@ -53,6 +52,6 @@
     "eslint-plugin-standard": "^4.0.2",
     "eslint-plugin-vue": "^7.1.0",
     "prettier": "^2.1.2",
-    "vite": "^1.0.0-rc.6"
+    "vite": "^1.0.0-rc.8"
   }
 }

@@ -24,22 +24,29 @@ const authorName = book?.author?.firstName ?? 'Unknown'
 if undefined, then 'Unkonwn'
 
 Table Features
-1.Custom Cell Renderer
-2.Custom Column Header
-3.Option or pagination/infinite scrolling
-4.Always Virtualized
-5.Sticky Columns /rows(optional)
-6.Filtering as part of table (optional)
-7.Sorting
-8.Column/row Reordering (Drag and drop)
-9.expandled row and column
-10.Custom Row Sizes
-11.Show and Hide columns
-12. Export and import data
-13.Group by a column property
-14.Custom Footer Render
-15.Custom loading Indicator
-16.Action Buttons/icons (Delete,copy on select of a row)
-17.Row highlight
-18.themes
-19. Select All
+- data iteration (low)
+- Custom Cell Renderer (intermediate)
+- Custom Column Header (low)
+- Option or pagination/infinite scrolling (low medium)
+- Sticky Columns /rows(optional) (low)
+- Sorting (low intermediate)
+- Show and Hide columns (low)
+- Export and import data (low)
+- Custom Footer Render (low)
+- Row highlight (low)
+- events (row click, checkbox selected, cell clicked)
+- Select All (medium-high)
+18.themes (??)
+
+
+- Always Virtualized ----
+- Filtering as part of table (optional) ----
+
+(not doing) 8.Column/row Reordering (Drag and drop)
+(not doing) 9.expandled row and column
+(not doing) 10.Custom Row Sizes
+(not doing) 13.Group by a column property
+(not doing) 15.Custom loading Indicator
+(not doing) 16.Action Buttons/icons (Delete,copy on select of a row)
+
+

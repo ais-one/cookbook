@@ -14,8 +14,8 @@
 var window = self // self is service worker - simulate it as window
 importScripts('firebase.config.js')
 // console.log('CONFIG_FIREBASE_CLIENT self window', self)
-importScripts('https://www.gstatic.com/firebasejs/7.22.0/firebase-app.js')
-importScripts('https://www.gstatic.com/firebasejs/7.22.0/firebase-messaging.js')
+importScripts('https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js')
+importScripts('https://www.gstatic.com/firebasejs/7.24.0/firebase-messaging.js')
 
 // Initialize the Firebase app in the service worker by passing in the messagingSenderId.
 firebase.initializeApp(self.CONFIG_FIREBASE_CLIENT)

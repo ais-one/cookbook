@@ -2,6 +2,7 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [nobundler-example] created initial bwc-autocomplete (based on bulma)
 - [example-all] implement saml callback and configs
+- [example-vite] remove oruga (not ready for vue3+vite)
 - [inprogress]
   - [example-app] improve vanilla app
   - [chore] use monorepo when npm 7 is released ?
