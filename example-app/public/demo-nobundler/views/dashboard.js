@@ -6,7 +6,7 @@ const template = /*html*/`
 </div>
 `
 
-const { onMounted } = Vue
+const { onMounted, reactive } = Vue
 
 export default {
   template,

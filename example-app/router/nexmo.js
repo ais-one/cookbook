@@ -15,13 +15,13 @@ module.exports = express.Router()
 
 /*
   body {
-    msisdn: '6596935500',
+    msisdn: '6588888888',
     to: 'monumber',
     messageId: '170000028F5FBC1B',
     text: 'Hello\nWorld',
     type: 'text',
     keyword: 'HELLO\nWORLD',
-    'api-key': '6aa90ea3',
+    'api-key': '88888888',
     'message-timestamp': '2020-10-28 07:54:38'
   }
 */

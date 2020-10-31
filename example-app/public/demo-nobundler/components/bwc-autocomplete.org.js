@@ -16,45 +16,11 @@ const autoComplete = (e) => {
 
 const template = document.createElement('template')
 template.innerHTML = `
-<table class="table">
-  <thead>
-    <tr>
-      <th><abbr title="Position">Pos</abbr></th>
-      <th>Team</th>
-      <th><abbr title="Played">Pld</abbr></th>
-      <th><abbr title="Won">W</abbr></th>
-      <th><abbr title="Drawn">D</abbr></th>
-    </tr>
-  </thead>
-  <tfoot>
-    <tr>
-      <th><abbr title="Position">Pos</abbr></th>
-      <th>Team</th>
-      <th><abbr title="Played">Pld</abbr></th>
-      <th><abbr title="Won">W</abbr></th>
-      <th><abbr title="Drawn">D</abbr></th>
-    </tr>
-  </tfoot>
-  <tbody>
-    <tr>
-      <th>2</th>
-      <td><a href="https://en.wikipedia.org/wiki/Arsenal_F.C." title="Arsenal F.C.">Arsenal</a></td>
-      <td>38</td>
-      <td>20</td>
-      <td>11</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td><a href="https://en.wikipedia.org/wiki/Tottenham_Hotspur_F.C." title="Tottenham Hotspur F.C.">Tottenham Hotspur</a></td>
-      <td>38</td>
-      <td>19</td>
-      <td>13</td>
-    </tr>
-  </tbody>
-</table>
+<input class="input" type="text" id="ajax" list="json-datalist" placeholder="e.g. datalist">
+<datalist id="json-datalist"></datalist>
 `
 
-class Table extends HTMLElement {
+class AutoComplete extends HTMLElement {
   constructor() {
     super()
     this.input = this.input.bind(this)
@@ -66,17 +32,17 @@ class Table extends HTMLElement {
     this.appendChild(template.content.cloneNode(true))
 
     this.list = []
-    // const el = this.querySelector('input')
-    // el.addEventListener('input', this.input)
+    const el = this.querySelector('input')
+    el.addEventListener('input', this.input)
 
-    // el.value = this.value
-    // if (this.required !== null) el.setAttribute('required', '')
-    // this.setList(this.items)
+    el.value = this.value
+    if (this.required !== null) el.setAttribute('required', '')
+    this.setList(this.items)
   }
 
   disconnectedCallback() {
-    // const el = this.querySelector('input')
-    // el.removeEventListener('input', this.input)
+    const el = this.querySelector('input')
+    el.removeEventListener('input', this.input)
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
@@ -158,4 +124,4 @@ class Table extends HTMLElement {
   }
 }
 
-customElements.define('bwc-table', Table)
+customElements.define('bwc-autocomplete', AutoComplete)
