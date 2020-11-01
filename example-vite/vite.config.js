@@ -20,7 +20,7 @@ module.exports = {
   // base: '/',
   // sourcemap: isDev1,
   vueCompilerOptions: {
-    isCustomElement: (tag) => tag.startsWith('vaadin-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-')
+    isCustomElement: (tag) => tag.startsWith('vaadin-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-') || tag.startsWith('sl-')
   },
   optimizeDeps: {
     include: [

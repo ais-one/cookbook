@@ -4,6 +4,7 @@
       <h1>Sign Up</h1>
       <p>Not Yet Ready</p>
       <p><router-link to="/signin">Sign In</router-link></p>
+      <sl-button>SL Button</sl-button>
     </form>
   </div>
 </template>
