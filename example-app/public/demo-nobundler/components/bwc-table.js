@@ -55,6 +55,17 @@ template.innerHTML = `
 `
 
 class Table extends HTMLElement {
+  // properties
+  #items = []
+  #columns = []
+  #pageSize = 10
+  #page = 1 // one based index
+  #checks = [] // checkboxes
+
+  // methods
+
+  // events
+
   constructor() {
     super()
     this.input = this.input.bind(this)
@@ -65,7 +76,6 @@ class Table extends HTMLElement {
     // console.log(this.value, this.required, typeof this.required)
     this.appendChild(template.content.cloneNode(true))
 
-    this.list = []
     // const el = this.querySelector('input')
     // el.addEventListener('input', this.input)
 

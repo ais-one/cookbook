@@ -13,9 +13,8 @@ const autoComplete = (e) => {
   items.value = result.join(',')
 }
 
-
 attributes:
-- value
+- value (via v-model)
 - required
 
 properties:
@@ -25,8 +24,9 @@ methods:
 - setList
 
 events:
+- @input (via v-model)
 - @search
-- @input
+- @selected
 
 */
 const template = document.createElement('template')
@@ -36,13 +36,14 @@ template.innerHTML = `
 `
 
 class AutoComplete extends HTMLElement {
-  // properties
+  // local properties
   #items = [] // private
   selectedItem = null // public
 
   constructor() {
     super()
     this.inputFn = this.inputFn.bind(this)
+    // this.changeFn = this.changeFn.bind(this)
   }
 
   connectedCallback() {
@@ -51,6 +52,31 @@ class AutoComplete extends HTMLElement {
 
     const el = this.querySelector('input')
     el.addEventListener('input', this.inputFn)
+
+    el.onblur = (e) => {
+      console.log('blurblur')
+      const found = this.items.find(item => {
+        return typeof item === 'string' ?
+          item === this.value :
+          item.key === this.value || item.text === this.value
+      })
+      if (!found) { // not found
+        if (this.selectedItem) {
+          console.log('not found but is selected')
+          this.selectedItem = null
+          const evSelected = new CustomEvent('selected', { detail: this.selectedItem })
+          this.dispatchEvent(evSelected)
+        }
+      } else {
+        if (!this.selectedItem) {
+          console.log('found but not selected')
+          this.selectedItem = found
+          const evSelected = new CustomEvent('selected', { detail: this.selectedItem })
+          this.dispatchEvent(evSelected)
+        }
+      }
+    }
+
     el.value = this.value
     if (this.required !== null) el.setAttribute('required', '')
     this.setList(this.items)
@@ -62,7 +88,6 @@ class AutoComplete extends HTMLElement {
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
-    // console.log('attributeChangedCallback', name, oldVal, newVal, typeof newVal)
     const el = this.querySelector('input')
     switch (name) {
       case 'value': {
@@ -110,43 +135,39 @@ class AutoComplete extends HTMLElement {
   }
 
   inputFn(e) { // whether clicked or typed
-    console.log('inputFn', this.items.length)
+    console.log('inputFn', e.target.value, this.items.length, window.getComputedStyle(this.querySelector('datalist')).getPropertyValue('display'))
     const el = this.querySelector('input')
+    const prevItem = this.selectedItem
     this.value = el.value
-    const found = this.#items.find(item => {
+
+    const found = this.items.find(item => {
       return typeof item === 'string' ?
         item === this.value :
         item.key === this.value || item.text === this.value
     })
-    const evSearch = new CustomEvent('search', { detail: this.value })
-    this.dispatchEvent(evSearch)  
-
     if (!found) { // not found
-      console.log('not found')
-      // this.selectedItem = null
-    } else { // found match
-      console.log('found', this.value, this.items.length)
-      // this.selectedItem = found
+      console.log('emit search')
+      this.selectedItem = null
+      const evSearch = new CustomEvent('search', { detail: this.value })
+      this.dispatchEvent(evSearch)
+    } else {
+      this.selectedItem = found
     }
-    // const evSelected = new CustomEvent('selected', { detail: this.selectedItem })
-    // this.dispatchEvent(evSelected)
+    console.log('emit selected?', prevItem !== this.selectedItem, this.selectedItem)
+    if (prevItem !== this.selectedItem) {
+      const evSelected = new CustomEvent('selected', { detail: this.selectedItem })
+      this.dispatchEvent(evSelected)
+    }
   }
 
   setList(_items) { // public
     console.log('items', _items, this.value)
     const dd = this.querySelector('datalist')
     if (!dd) return
-
     while(dd.firstChild) {
       dd.removeChild(dd.lastChild)
     }
-
     if (typeof _items !== 'object') return
-
-    if (_items.length === 1) {
-      const val = typeof _items[0] === 'string' ? _items[0] : _items[0].key
-      if (val === this.value) return
-    }
 
     _items.forEach((item) => {
       const li = document.createElement('option')
@@ -155,43 +176,6 @@ class AutoComplete extends HTMLElement {
       li.value = val
       dd.appendChild(li)
     })
-
-    // custom
-    // JS
-    // const el = this.querySelector('input')
-    // if (!el) return
-    // el.onfocus = function () {
-    //   dd.style.display = 'block';
-    // }
-    // el.onblur = function () {
-    //   dd.style.display = 'block';
-    //   console.log('dd blur')
-    //   dd.style.display = 'none';
-    // }
-    // for (let option of dd.options) {
-    //   option.onclick = function () {
-    //     el.value = this.value;
-    //     dd.style.display = 'none';
-    //     console.log('aaaaaaaaaaaa')
-    //   }
-    // }
-    // dd.style.width = input.offsetWidth + 'px';
-    // dd.style.left = input.offsetLeft + 'px';
-    // dd.style.top = input.offsetTop + input.offsetHeight + 'px';
-    //
-    // CSS
-    // datalist {
-    //   position: absolute;
-    //   background-color: lightgrey;
-    //   font-family: sans-serif;
-    //   font-size: 0.8rem;
-    // }
-    // option {
-    //   background-color: #bbb;
-    //   padding: 4px;
-    //   margin-bottom: 1px;
-    //   cursor: pointer;
-    // }
   }
 }
 

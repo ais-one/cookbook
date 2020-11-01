@@ -107,7 +107,7 @@ export default {
     }
 
     const selected = (e) => {
-      console.log('seleced event', e.detail)
+      console.log('selected event', e.detail)
     }
 
     return {
