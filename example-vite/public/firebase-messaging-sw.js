@@ -11,7 +11,7 @@
 // Give the service worker access to Firebase Messaging.
 // Note that you can only use Firebase Messaging here, other Firebase libraries
 // are not available in the service worker.
-var window = self // self is service worker - simulate it as window
+const window = self // self is service worker - simulate it as window
 importScripts('firebase.config.js')
 // console.log('CONFIG_FIREBASE_CLIENT self window', self)
 importScripts('https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js')

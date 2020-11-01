@@ -1,32 +1,38 @@
 /*
-Usage with (VueJS):
-
-- :items: list items, string, comma seperated
-- @search: emitted event for parent to handle
-- v-model: text in box
-
-<bwc-autocomplete required :items="items" v-model="ac" @search="(e) => autoComplete(e)"></bwc-autocomplete>
-
-const autoComplete = (e) => {
-  const result = []
-  for (let i = 0; i < e.detail.length + 10; i++) result.push('aa' + i)
-  items.value = result.join(',')
-}
-
 attributes:
 - value (via v-model)
 - required
 
 properties:
-- items
+- items Array or String or Object
 
 methods:
-- setList
+- setList(items) // should be private, called when items property changes
 
-events:
-- @input (via v-model)
-- @search
-- @selected
+events emitted:
+- @input (via v-model) - e.target.value
+- @search - e.detail String
+- @selected - e.detail String or Object or null
+
+if selected data is null (no match found, else match found)
+
+Usage with (VueJS):
+
+<bwc-autocomplete required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected=></bwc-autocomplete>
+
+const ac = reactive({
+  value: 'a',
+  items: ['aa9','aa5']
+})
+
+const autoComplete = (e) => {
+  const list = ['aa1', 'aa15', 'aa16', 'aa17', 'aa18', 'aa19', 'aa20', 'aa21', 'aa22', 'aa23']
+  const result = []
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].includes(e.detail)) result.push(list[i])
+  }
+  ac.items = result
+}
 
 */
 const template = document.createElement('template')
@@ -43,33 +49,28 @@ class AutoComplete extends HTMLElement {
   constructor() {
     super()
     this.inputFn = this.inputFn.bind(this)
-    // this.changeFn = this.changeFn.bind(this)
   }
 
   connectedCallback() {
-    console.log('connected callback')
     this.appendChild(template.content.cloneNode(true))
 
     const el = this.querySelector('input')
     el.addEventListener('input', this.inputFn)
 
     el.onblur = (e) => {
-      console.log('blurblur')
       const found = this.items.find(item => {
-        return typeof item === 'string' ?
-          item === this.value :
-          item.key === this.value || item.text === this.value
+        return typeof item === 'string' ? item === this.value : item.key === this.value || item.text === this.value
       })
       if (!found) { // not found
         if (this.selectedItem) {
-          console.log('not found but is selected')
+          // console.log('not found but is selected')
           this.selectedItem = null
           const evSelected = new CustomEvent('selected', { detail: this.selectedItem })
           this.dispatchEvent(evSelected)
         }
       } else {
         if (!this.selectedItem) {
-          console.log('found but not selected')
+          // console.log('found but not selected')
           this.selectedItem = found
           const evSelected = new CustomEvent('selected', { detail: this.selectedItem })
           this.dispatchEvent(evSelected)
@@ -135,32 +136,30 @@ class AutoComplete extends HTMLElement {
   }
 
   inputFn(e) { // whether clicked or typed
-    console.log('inputFn', e.target.value, this.items.length, window.getComputedStyle(this.querySelector('datalist')).getPropertyValue('display'))
+    // console.log('inputFn', e.target.value, this.items.length)
     const el = this.querySelector('input')
     const prevItem = this.selectedItem
     this.value = el.value
 
     const found = this.items.find(item => {
-      return typeof item === 'string' ?
-        item === this.value :
-        item.key === this.value || item.text === this.value
+      return typeof item === 'string' ? item === this.value : item.key === this.value || item.text === this.value
     })
     if (!found) { // not found
-      console.log('emit search')
+      // console.log('emit search')
       this.selectedItem = null
       const evSearch = new CustomEvent('search', { detail: this.value })
       this.dispatchEvent(evSearch)
     } else {
       this.selectedItem = found
     }
-    console.log('emit selected?', prevItem !== this.selectedItem, this.selectedItem)
+    // console.log('emit selected?', prevItem !== this.selectedItem, this.selectedItem)
     if (prevItem !== this.selectedItem) {
       const evSelected = new CustomEvent('selected', { detail: this.selectedItem })
       this.dispatchEvent(evSelected)
     }
   }
 
-  setList(_items) { // public
+  setList(_items) {
     console.log('items', _items, this.value)
     const dd = this.querySelector('datalist')
     if (!dd) return
@@ -171,9 +170,8 @@ class AutoComplete extends HTMLElement {
 
     _items.forEach((item) => {
       const li = document.createElement('option')
-      const val = typeof item === 'string' ? item : item.key
-      li.innerHTML = typeof item === 'string' ? item : item.text
-      li.value = val
+      li.innerHTML = typeof item === 'string' ? item : item.key
+      li.value = typeof item === 'string' ? item : item.text
       dd.appendChild(li)
     })
   }

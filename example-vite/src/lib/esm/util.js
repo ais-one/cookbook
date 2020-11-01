@@ -93,10 +93,10 @@ function downloadData(content, filename, type = 'text/csv;charset=utf-8;') {
 // Application
 // - Debouncing an input type event handler. (like our search input example)
 // - Debouncing a scroll event handler.
-const debounce = (callback, delay) => {
+const debounce = (fn, delay) => {
   let timeout = null
   return (...args) => {
-    const next = () => callback(...args)
+    const next = () => fn(...args)
     clearTimeout(timeout)
     timeout = setTimeout(next, delay)
   }
@@ -111,11 +111,11 @@ const debounce = (callback, delay) => {
 // - Throttling an API call.
 // - Throttling a button click so we can’t spam click.
 // - Throttling a touch/move mouse event handler.
-function throttle(callback, wait) {
-  var time = Date.now()
+function throttle(fn, wait) {
+  let time = Date.now()
   return function () {
     if (time + wait - Date.now() < 0) {
-      callback()
+      fn()
       time = Date.now()
     }
   }
