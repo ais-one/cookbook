@@ -121,6 +121,10 @@ function throttle(fn, wait) {
   }
 }
 
+function isEmail(email) {
+  return /[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/.test(email);
+}
+
 const foo = Math.PI + Math.SQRT2
 
-export { foo, makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle }
+export { foo, makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle, isEmail }

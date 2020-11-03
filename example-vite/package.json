@@ -31,7 +31,7 @@
     "@material/mwc-textfield": "^0.19.1",
     "@material/mwc-top-app-bar-fixed": "^0.19.1",
     "@shoelace-style/shoelace": "^2.0.0-beta.22",
-    "@vaadin/vaadin-grid": "^5.7.5",
+    "@vaadin/vaadin-grid": "^5.7.6",
     "echarts": "^4.9.0",
     "graphql": "^15.4.0",
     "graphql-tag": "^2.11.0",
@@ -53,6 +53,6 @@
     "eslint-plugin-standard": "^4.0.2",
     "eslint-plugin-vue": "^7.1.0",
     "prettier": "^2.1.2",
-    "vite": "^1.0.0-rc.8"
+    "vite": "^1.0.0-rc.9"
   }
 }
