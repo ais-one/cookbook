@@ -1,57 +1,7 @@
-/*
-Usage with (VueJS):
-
-- :items: list items, string, comma seperated
-- @search: emitted event for parent to handle
-- v-model: text in box
-
-<bwc-autocomplete required :items="items" v-model="ac" @search="(e) => autoComplete(e)"></bwc-autocomplete>
-
-const autoComplete = (e) => {
-  const result = []
-  for (let i = 0; i < e.detail.length + 10; i++) result.push('aa' + i)
-  items.value = result.join(',')
-}
-*/
-
 const template = document.createElement('template')
 template.innerHTML = `
-<table class="table">
-  <thead>
-    <tr>
-      <th><abbr title="Position">Pos</abbr></th>
-      <th>Team</th>
-      <th><abbr title="Played">Pld</abbr></th>
-      <th><abbr title="Won">W</abbr></th>
-      <th><abbr title="Drawn">D</abbr></th>
-    </tr>
-  </thead>
-  <tfoot>
-    <tr>
-      <th><abbr title="Position">Pos</abbr></th>
-      <th>Team</th>
-      <th><abbr title="Played">Pld</abbr></th>
-      <th><abbr title="Won">W</abbr></th>
-      <th><abbr title="Drawn">D</abbr></th>
-    </tr>
-  </tfoot>
-  <tbody>
-    <tr>
-      <th>2</th>
-      <td><a href="https://en.wikipedia.org/wiki/Arsenal_F.C." title="Arsenal F.C.">Arsenal</a></td>
-      <td>38</td>
-      <td>20</td>
-      <td>11</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td><a href="https://en.wikipedia.org/wiki/Tottenham_Hotspur_F.C." title="Tottenham Hotspur F.C.">Tottenham Hotspur</a></td>
-      <td>38</td>
-      <td>19</td>
-      <td>13</td>
-    </tr>
-  </tbody>
-</table>
+<div id="table-wrapper">
+</div>
 `
 
 class Table extends HTMLElement {
@@ -62,9 +12,21 @@ class Table extends HTMLElement {
   #page = 1 // one based index
   #checks = [] // checkboxes
 
+  #sortKey = ''
+  #sortDir = '' // blank, asc, desc
+
+  #checkEnabled = true
+
+  // #sort
+
   // methods
 
   // events
+  onRowClick (e) {
+    console.log('onRowClick', e)
+  }
+  onCheck (e) {
+  }
 
   constructor() {
     super()
@@ -82,6 +44,10 @@ class Table extends HTMLElement {
     // el.value = this.value
     // if (this.required !== null) el.setAttribute('required', '')
     // this.setList(this.items)
+    console.log(this.columns)
+    console.log(this.items)
+    this.render()
+    // if ((this.#columns && this.#items)
   }
 
   disconnectedCallback() {
@@ -112,32 +78,147 @@ class Table extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['value', 'required', 'items']
+    return ['page', 'page-size', 'total']
   }
 
 
-  get value() {
-    return this.getAttribute('value')
+  get checkEnabled () {
+    return this.#checkEnabled
   }
 
-  set value(val) {
-    this.setAttribute('value', val)
+  set checkEnabled (val) {
+    this.#checkEnabled = val
   }
 
   get items() {
-    return this.getAttribute('items')
+    return this.#items
   }
 
   set items(val) {
-    this.setAttribute('items', val)
+    this.#items = val
+    // do something
   }
 
-  get required() {
-    return this.getAttribute('required')
+  get columns() {
+    return this.#columns
   }
 
-  set required(val) {
-    this.setAttribute('required', val)
+  set columns(val) {
+    this.#columns = val
+    // do something
+  }
+
+  render() {
+    try {
+      const el = document.querySelector('#table-wrapper')
+
+      //<tfoot><tr><th><abbr title="Position">Pos</abbr></th>
+
+      if (typeof this.columns === 'object') {
+        console.log('render column')
+        const table = document.createElement('table')
+        table.addEventListener('click', this.rowClick)
+        el.appendChild(table)
+        const thead = document.createElement('thead')
+        thead.onclick =  (e) => {
+          let target = e.target
+          if (this.#checkEnabled && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
+
+          } else { // sort
+            const offset = this.#checkEnabled ? 1 : 0 //  column offset
+            const col = target.cellIndex - offset // TD 0-index based column
+            const key = this.columns[col].key
+            if (key !== this.sortKey) {
+              this.sortKey = key
+              this.sortVal = 'asc'
+              // TBD update header?
+            } else {
+              if (this.sortVal === 'asc') {
+                this.sortVal = 'desc'
+                // TBD update header?
+              } else if (this.sortVal === 'desc') {
+                this.sortKey = ''
+                this.sortVal = ''
+                // TBD update header?
+              }
+            }
+            console.log('sort', col, this.columns[col].key, this.sortKey, this.sortVal)
+          }
+        }
+
+        table.appendChild(thead)
+        const tr = document.createElement('tr')
+        thead.appendChild(tr)
+
+        if (this.#checkEnabled) { // check all
+          const th = document.createElement('th')
+
+          const checkbox = document.createElement('input'); 
+          checkbox.type = 'checkbox' // value 
+
+          th.appendChild(checkbox)
+          tr.appendChild(th)
+        }
+        for (const col of this.columns) {
+          const th = document.createElement('th')
+          th.appendChild(document.createTextNode(col.label))
+          tr.appendChild(th)
+        }
+
+        // populate the data
+        if (typeof this.items === 'object' && this.items.length) {
+          const tbody = document.createElement('thead')
+          // TBD function to get checked rows...
+          tbody.onclick =  (e) => {
+            const data = {}
+            let target = e.target
+            if (this.#checkEnabled && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
+
+            } else {
+              const offset = this.#checkEnabled ? 1 : 0 //  column offset
+              const col = target.cellIndex - offset // TD 0-index based column
+
+              while (target && target.nodeName !== "TR") {
+                target = target.parentNode
+              }
+              const row = target.rowIndex - 1 // TR 1-index based row
+              if (target) {
+                const cells = target.getElementsByTagName("td")
+                for (let i = offset; i < cells.length; i++) {
+                  const key = this.columns[i - offset].key
+                  data[key] = cells[i].innerHTML
+                }
+              }
+              // TBD highlight selected row
+              // TBD when to unselect highlighted row
+              this.dispatchEvent(new CustomEvent('rowclick', { detail: { row, col, data } }))  
+            }
+          }
+ 
+          table.appendChild(tbody)
+          for (const row of this.items) {
+            const tr = document.createElement('tr')
+            tbody.appendChild(tr)
+
+            if (this.#checkEnabled) { // add checkbox
+              const td = document.createElement('td')
+              const checkbox = document.createElement('input')
+              checkbox.type = 'checkbox' // value 
+              td.appendChild(checkbox)
+              tr.appendChild(td)
+            }
+
+            for (const col in row) {
+              const td = document.createElement('td');
+              td.appendChild(document.createTextNode(row[col]))
+              tr.appendChild(td)
+            }   
+          }      
+        }
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   input(e) {

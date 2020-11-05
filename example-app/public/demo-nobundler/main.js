@@ -1,7 +1,7 @@
 // const urlParams = new URLSearchParams(window.location.search)
 // const myParam = urlParams.get('myParam')
 import './components/bwc-autocomplete.js'
-// import './components/bwc-table.js'
+import './components/bwc-table.js'
 
 import router from './router.js'
 import store from './store.js'
