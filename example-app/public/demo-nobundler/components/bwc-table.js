@@ -1,6 +1,48 @@
+// TBD add pagination
+// TBD custom render columns
+
+// search (show hide filter), refresh, add, delete, upload, download, goback (if parentKey != null), loading
 const template = document.createElement('template')
 template.innerHTML = `
 <div id="table-wrapper">
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a id="aa" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <div class="navbar-item">
+          <a class="button">o</a>
+          <a class="button">r</a>
+          <a class="button">+</a>
+          <a class="button">-</a>
+          <a class="button">^</a>
+          <a class="button">v</a>
+          <a class="button">↻</a>
+        </div>
+      </div>
+
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <a class="button is-primary">&larr;</a>
+          <div class="select"> 
+            <select>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </select>
+          </div>
+          <input class="input" type="number" min="1" max="10" style="width: auto;"/>
+          <a class="button is-light">&rarr;</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
 </div>
 `
 
@@ -10,7 +52,7 @@ class Table extends HTMLElement {
   #columns = []
   #page = 1 // one based index
   #pageSize = 10
-  #pageSizeList = []
+  #pageSizeList = [5, 10, 15]
   #checks = [] // checkboxes
 
   // #sortKey = ''
@@ -19,6 +61,7 @@ class Table extends HTMLElement {
 
   // internal
   #selectedIndex = -1
+  #selectedNode = null
   #selectedItem = null
   #checkedRows = []
 
@@ -42,6 +85,14 @@ class Table extends HTMLElement {
     // this.querySelector('input').addEventListener('input', this.input)
     // if (this.required !== null) el.setAttribute('required', '')
 
+    // Check for click events on the navbar burger icon
+    document.querySelector('.navbar-burger').onclick = () => {
+      console.log('ffff')
+      // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+      document.querySelector('#aa').classList.toggle('is-active') // navbar-burger
+      document.querySelector('#navbarBasicExample').classList.toggle('is-active') // navbar-menu
+      console.log('ggg')
+    }
     console.log('connectedCallback 0')
     this.render()
     console.log('connectedCallback 1')
@@ -110,16 +161,16 @@ class Table extends HTMLElement {
   render() {
     try {
       const el = document.querySelector('#table-wrapper')
-
       //<tfoot><tr><th><abbr title="Position">Pos</abbr></th>
+
+      // add pagination
 
       if (typeof this.columns === 'object') {
         console.log('render thead')
         const table = document.createElement('table')
-        table.addEventListener('click', this.rowClick)
         el.appendChild(table)
         const thead = document.createElement('thead')
-        thead.onclick =  (e) => {
+        thead.onclick = (e) => {
           let target = e.target
           if (this.#checkEnabled && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
             const tbody = document.querySelector('table tbody')
@@ -166,6 +217,7 @@ class Table extends HTMLElement {
         }
 
         table.appendChild(thead)
+        table.classList.add('table')
         const tr = document.createElement('tr')
         thead.appendChild(tr)
         if (this.#checkEnabled) { // check all
@@ -190,8 +242,7 @@ class Table extends HTMLElement {
           console.log('render tbody')
           const tbody = document.createElement('tbody')
           // TBD function to get checked rows...
-          tbody.onclick =  (e) => {
-            const data = {}
+          tbody.onclick = (e) => {
             let target = e.target
             if (this.#checkEnabled && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
 
@@ -203,16 +254,26 @@ class Table extends HTMLElement {
                 target = target.parentNode
               }
               const row = target.rowIndex - 1 // TR 1-index based row
+              let data = null
               if (target) {
-                const cells = target.getElementsByTagName("td")
-                for (let i = offset; i < cells.length; i++) {
-                  const key = this.columns[i - offset].key
-                  data[key] = cells[i].innerHTML
+                if (this.#selectedNode) { // clear class is-selected
+                  this.#selectedNode.classList.remove('is-selected')
+                }
+                if (this.#selectedIndex === row && this.#selectedIndex !== -1) { // unselect
+                  this.#selectedIndex = -1
+                } else {
+                  const cells = target.getElementsByTagName("td")
+                  data = {}
+                  for (let i = offset; i < cells.length; i++) {
+                    const key = this.columns[i - offset].key
+                    data[key] = cells[i].innerHTML
+                  }  
+                  this.#selectedNode = target // set selected
+                  this.#selectedIndex = row
+                  target.classList.add('is-selected')  
                 }
               }
-              // TBD highlight selected row
-              // TBD when to unselect highlighted row
-              this.dispatchEvent(new CustomEvent('rowclick', { detail: { row, col, data } }))  
+              this.dispatchEvent(new CustomEvent('rowclick', { detail: { row, col, data } }))
             }
           }
  
