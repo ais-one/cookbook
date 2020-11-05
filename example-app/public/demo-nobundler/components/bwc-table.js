@@ -8,29 +8,30 @@ class Table extends HTMLElement {
   // properties
   #items = []
   #columns = []
-  #pageSize = 10
   #page = 1 // one based index
+  #pageSize = 10
+  #pageSizeList = []
   #checks = [] // checkboxes
 
-  #sortKey = ''
-  #sortDir = '' // blank, asc, desc
-
+  // #sortKey = ''
+  // #sortDir = '' // blank, asc, desc
   #checkEnabled = true
 
-  // #sort
+  // internal
+  #selectedIndex = -1
+  #selectedItem = null
+  #checkedRows = []
 
   // methods
 
   // events
-  onRowClick (e) {
-    console.log('onRowClick', e)
-  }
-  onCheck (e) {
-  }
+  // rowclicked
+  // checked
+  // triggered = sort / page / pagesize / pageSizeList
 
   constructor() {
     super()
-    this.input = this.input.bind(this)
+    // this.input = this.input.bind(this)
   }
 
   connectedCallback() {
@@ -38,49 +39,31 @@ class Table extends HTMLElement {
     // console.log(this.value, this.required, typeof this.required)
     this.appendChild(template.content.cloneNode(true))
 
-    // const el = this.querySelector('input')
-    // el.addEventListener('input', this.input)
-
-    // el.value = this.value
+    // this.querySelector('input').addEventListener('input', this.input)
     // if (this.required !== null) el.setAttribute('required', '')
-    // this.setList(this.items)
-    console.log(this.columns)
-    console.log(this.items)
+
+    console.log('connectedCallback 0')
     this.render()
-    // if ((this.#columns && this.#items)
+    console.log('connectedCallback 1')
   }
 
   disconnectedCallback() {
-    // const el = this.querySelector('input')
-    // el.removeEventListener('input', this.input)
+    // this.querySelector('input').removeEventListener('input', this.input)
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
-    // console.log('attributeChangedCallback', name, oldVal, newVal, typeof newVal)
-    const el = this.querySelector('input')
-    const dd = this.querySelector('datalist')
     switch (name) {
-      case 'value': {
-        if (el) el.value = newVal
-        const event = new CustomEvent('input', { detail: newVal })
-        this.dispatchEvent(event)
+      case 'page': {
+        // const event = new CustomEvent('input', { detail: newVal })
+        // this.dispatchEvent(event)
         break
       }
-      case 'items': {
-        if (!dd) return
-        this.setList(newVal)
-        break
-      }
-      case 'required':
-        if (el) el.setAttribute('required', newVal)
-        break
     }
   }
 
   static get observedAttributes() {
     return ['page', 'page-size', 'total']
   }
-
 
   get checkEnabled () {
     return this.#checkEnabled
@@ -95,8 +78,10 @@ class Table extends HTMLElement {
   }
 
   set items(val) {
+    console.log('set items 0', this.columns && this.columns.length)
     this.#items = val
-    // do something
+    console.log('set items 1')
+    // if columns do something
   }
 
   get columns() {
@@ -104,8 +89,22 @@ class Table extends HTMLElement {
   }
 
   set columns(val) {
+    console.log('set columns 0')
     this.#columns = val
+    console.log('set columns 1')
     // do something
+  }
+
+  _trigger () {
+    this.dispatchEvent(new CustomEvent('triggered', {
+      detail: {
+        sortKey: this.sortKey,
+        sortDir: this.sortDir,
+        page: this.page || 0,
+        pageSize: this.pageSize || 0
+      }
+    }))  
+    // console.log('sort', col, this.columns[col].key, this.sortKey, this.sortDir)
   }
 
   render() {
@@ -115,7 +114,7 @@ class Table extends HTMLElement {
       //<tfoot><tr><th><abbr title="Position">Pos</abbr></th>
 
       if (typeof this.columns === 'object') {
-        console.log('render column')
+        console.log('render thead')
         const table = document.createElement('table')
         table.addEventListener('click', this.rowClick)
         el.appendChild(table)
@@ -123,51 +122,73 @@ class Table extends HTMLElement {
         thead.onclick =  (e) => {
           let target = e.target
           if (this.#checkEnabled && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
-
+            const tbody = document.querySelector('table tbody')
+            for (let i = 0; i < tbody.children.length; i++) {
+              const tr = tbody.children[i]
+              const td = tr.firstChild
+              if (td) {
+                const checkbox = td.firstChild
+                if (checkbox.type === 'checkbox') {
+                  checkbox.checked = target.checked
+                }
+              }
+            }
           } else { // sort
             const offset = this.#checkEnabled ? 1 : 0 //  column offset
             const col = target.cellIndex - offset // TD 0-index based column
             const key = this.columns[col].key
+
             if (key !== this.sortKey) {
               this.sortKey = key
-              this.sortVal = 'asc'
-              // TBD update header?
+              this.sortDir = 'asc'
             } else {
-              if (this.sortVal === 'asc') {
-                this.sortVal = 'desc'
-                // TBD update header?
-              } else if (this.sortVal === 'desc') {
+              if (this.sortDir === 'asc') {
+                this.sortDir = 'desc'
+              } else if (this.sortDir === 'desc') {
                 this.sortKey = ''
-                this.sortVal = ''
-                // TBD update header?
+                this.sortDir = ''
               }
             }
-            console.log('sort', col, this.columns[col].key, this.sortKey, this.sortVal)
+
+            // update header
+            const theadTr = document.querySelector('table thead tr')
+            for (let i = offset; i < theadTr.children.length; i++) {
+              const th = theadTr.children[i]
+              let label = this.columns[i - offset].label
+              if (this.columns[i - offset].key === this.sortKey && this.sortDir) {
+                label = label + (this.sortDir === 'asc' ? '&and;': '&or;')
+              }
+              th.innerHTML = label
+            }
+
+            this._trigger()
           }
         }
 
         table.appendChild(thead)
         const tr = document.createElement('tr')
         thead.appendChild(tr)
-
         if (this.#checkEnabled) { // check all
           const th = document.createElement('th')
-
-          const checkbox = document.createElement('input'); 
-          checkbox.type = 'checkbox' // value 
+          th.style.width = '50px' // TBD do not hardcode
+          const checkbox = document.createElement('input')
+          checkbox.type = 'checkbox' // value
 
           th.appendChild(checkbox)
           tr.appendChild(th)
         }
         for (const col of this.columns) {
           const th = document.createElement('th')
-          th.appendChild(document.createTextNode(col.label))
+          const label = col.label + ((this.sortKey) ? (this.sortDir === 'asc' ? '&and;': '&or') : '') // &and; (up) & &or; (down)
+          if (col.width) th.style.width = `${col.width}px`
+          th.appendChild(document.createTextNode(label))
           tr.appendChild(th)
         }
 
         // populate the data
         if (typeof this.items === 'object' && this.items.length) {
-          const tbody = document.createElement('thead')
+          console.log('render tbody')
+          const tbody = document.createElement('tbody')
           // TBD function to get checked rows...
           tbody.onclick =  (e) => {
             const data = {}
@@ -219,33 +240,6 @@ class Table extends HTMLElement {
     } catch (e) {
       console.log(e)
     }
-  }
-
-  input(e) {
-    const el = this.querySelector('input')
-    this.value = el.value
-    if (!this.list.includes(this.value)) {
-      const event = new CustomEvent('search', { detail: this.value })
-      this.dispatchEvent(event)  
-    }
-  }
-
-  setList(items) { // private
-    const itema = items && items.split(',')
-    if (!itema || !itema.length) return
-    // console.log('setList', items.length, items)
-    const dd = this.querySelector('datalist')
-    this.list = []
-    while(dd.firstChild) {
-      dd.removeChild(dd.lastChild)
-    }
-    itema.forEach((item) => {
-      const li = document.createElement('option')
-      const val = typeof item === 'string' ? item : item.key
-      li.innerHTML = val
-      dd.appendChild(li)
-      this.list.push(val)
-    })
   }
 }
 

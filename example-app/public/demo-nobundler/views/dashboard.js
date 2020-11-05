@@ -2,7 +2,7 @@ const template = /*html*/`
 <div>
   <h1>Dashboard</h1>
   <!-- h1 v-for="n of 20">Test</h1 -->
-  <bwc-table :columns="columns" :items="items" @rowclick="rowCLick"></bwc-table>
+  <bwc-table :columns="columns" :items="items" @rowClick="rowClick" @triggered="triggered"></bwc-table>
 </div>
 `
 
@@ -37,8 +37,11 @@ export default {
       { id: 9, name: 'ii', age: 90 }
     ])
 
-    const rowCLick = (e) => {
-      console.log('rowCLick', e.detail)
+    const rowClick = (e) => {
+      console.log('rowClick', e.detail)
+    }
+    const triggered = (e) => {
+      console.log('triggered', e.detail)
     }
 
     onMounted(async () => {
@@ -47,7 +50,8 @@ export default {
     return {
       columns,
       items,
-      rowCLick
+      rowClick,
+      triggered
     }
   }
 }
