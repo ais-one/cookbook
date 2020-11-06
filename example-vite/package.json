@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.2.5",
-    "@firebase/app": "^0.6.12",
-    "@firebase/messaging": "^0.7.2",
+    "@firebase/app": "^0.6.13",
+    "@firebase/messaging": "^0.7.3",
     "@material/mwc-button": "^0.19.1",
     "@material/mwc-dialog": "^0.19.1",
     "@material/mwc-drawer": "^0.19.1",

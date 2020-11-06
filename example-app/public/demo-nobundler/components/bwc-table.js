@@ -1,19 +1,27 @@
-// TBD sticky column
-// TBD make sticky header optional
-// TBD custom render columns
-// TBD do cmd buttons
-// TBD checkbox events
+// TBD
+// set table-wrapper height...
+// make sticky header optional
+// sticky column (make optional)
+// custom render columns
+// cmd buttons (add, delete, upload, download, goback)
+// checkbox events & collect checked items...
 
 // FEATURES
+// handle columns and items
 // row select
 // pagination (optional)
 // filters (optional)
+// sorters (optional)
 // checkbox (optional)
 // sticky header
+
+// NOT NEEDED
+// loading state and loading spinner
+
 // filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters),
 // sorter: JSON.stringify(sorter)
 
-// search (show hide filter), reload, add, delete, upload, download, goback (if parentKey != null), loading
+// show hide filter, reload, add, delete, upload, download, goback (if parentKey != null), loading
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
@@ -109,6 +117,7 @@ class Table extends HTMLElement {
   #total = 0
 
   // sorting
+  #sort = true
   #sortKey = ''
   #sortDir = '' // blank, asc, desc
 
@@ -264,6 +273,14 @@ class Table extends HTMLElement {
 
   set commands (val) {
     this.#commands = val
+  }
+
+  get sort () {
+    return this.#sort
+  }
+
+  set sort (val) {
+    this.#sort = val
   }
 
   get page () {
@@ -429,14 +446,17 @@ class Table extends HTMLElement {
   _trigger (name) {
     const filters = []
     const el = document.querySelector('#filters')
+    console.log(el)
     for (let i=0; i<el.children.length; i++) {
       const div = el.children[i]
-      filters.push({
-        key: div.children[0].value,
-        op: div.children[1].value,
-        val: div.children[2].value,
-        andOr: div.children[3].value
-      })
+      if (div.children.length >= 4) {
+        filters.push({
+          key: div.children[0].value,
+          op: div.children[1].value,
+          val: div.children[2].value,
+          andOr: div.children[3].value
+        })
+      }
     }
     this.dispatchEvent(new CustomEvent('triggered', {
       // get filter information
@@ -487,6 +507,7 @@ class Table extends HTMLElement {
               }
             }
           } else { // sort
+            if (!this.sort) return
             const offset = this.#checkboxes ? 1 : 0 //  column offset
             const col = target.cellIndex - offset // TD 0-index based column
             const key = this.columns[col].key

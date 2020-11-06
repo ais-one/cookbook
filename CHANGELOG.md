@@ -5,13 +5,7 @@
 - [example-vite] remove oruga (not ready for vue3+vite)
 - [inprogress]
   - [example-app] improve vanilla app
-  - [chore] use monorepo when npm 7 is released ?
-  - [example-vite] cypress e2e testing, vue-test-util & vite
-  - CrudTable.vue
-    - select all (not working)
-    - header widths (to improve)
-    - csv upload (to implement)
-    - file upload column (to implement)
+  - [bulma-web-components] bwc-autocomplete, bwc-table
 
 ### Version 0.4.3
 - [chore] update packages & cleanup & work on improving documentation

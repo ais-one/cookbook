@@ -5,6 +5,7 @@ const template = /*html*/`
   <bwc-table
     :commands="true"
     :pagination="true"
+    :sort="true"
     :page="page"
     :pageSize="pageSize"
     :pageSizeList="pageSizeList"

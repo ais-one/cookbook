@@ -16,6 +16,10 @@ importScripts('firebase.config.js')
 // console.log('CONFIG_FIREBASE_CLIENT self window', self)
 importScripts('https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js')
 importScripts('https://www.gstatic.com/firebasejs/7.24.0/firebase-messaging.js')
+// 8.0.0 may have problem with import scripts?
+// import 'https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js'
+// import 'https://www.gstatic.com/firebasejs/8.0.0/firebase-messaging.js'
+// console.log(firebase)
 
 // Initialize the Firebase app in the service worker by passing in the messagingSenderId.
 firebase.initializeApp(self.CONFIG_FIREBASE_CLIENT)

@@ -61,7 +61,7 @@
     "objection": "^2.2.3",
     "otplib": "^12.0.1",
     "passport": "^0.4.1",
-    "passport-saml": "^2.0.1",
+    "passport-saml": "^2.0.2",
     "selfsigned": "^1.10.8",
     "swagger-jsdoc": "^5.0.0",
     "swagger-ui-express": "^4.1.4",
