@@ -1,9 +1,15 @@
-// TBD hide pagination
+// TBD sticky column
+// TBD make sticky header optional
 // TBD custom render columns
-// TBD sticky header, sticky column
-// TBD fix action buttons
-// TBD fix filtering col.key / col.label ...
+// TBD do cmd buttons
+// TBD checkbox events
 
+// FEATURES
+// row select
+// pagination (optional)
+// filters (optional)
+// checkbox (optional)
+// sticky header
 // filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters),
 // sorter: JSON.stringify(sorter)
 
@@ -13,20 +19,40 @@ template.innerHTML = `
 <style>
 #table-wrapper {
   overflow: auto;
+  height: calc(100vh - 250px);
 }
-nav {
-  background-color: green !important;
-}
-th {
+#table-wrapper > nav {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
   z-index: 2;
+  background-color: green !important;
+}
+#table-wrapper #filters {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 56px;
+  z-index: 2;
+  background-color: cyan;
+}
+#table-wrapper th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 56px; /* nav height - TBD filter height*/
+  z-index: 2;
   background-color: red;
 }
+/*
+th:not([scope=row]) {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+*/
 </style>
 <div id="table-wrapper">
-  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <nav id="table-navbar" class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a id="table-navbar-burger" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="table-navbar-menu">
         <span aria-hidden="true"></span>
@@ -65,10 +91,7 @@ th {
       </div>
     </div>
   </nav>
-
-  <div id="filters">
-    BOO
-  </div>
+  <div id="filters"></div>
 </div>
 `
 
@@ -146,6 +169,18 @@ class Table extends HTMLElement {
       this.#filterShow = !this.#filterShow
       document.querySelector('#filters').style.display = this.#filterShow ? 'block': 'none'
     }
+    const resizeObserver = new ResizeObserver(entries => {
+      const filterHeight = entries[0].target.clientHeight
+      console.log('height changed:', entries[0].target.clientHeight, this.style, filterHeight)
+      const nodes = document.querySelectorAll('#table-wrapper th') // .style.top = `${56 + filterHeight}px;`
+      for (let i = 0; i<nodes.length; i++) {
+        console.log('nodes', nodes[i])
+        nodes[i].style.top = `${56 + filterHeight}px`
+      }
+    })
+    // start observing a DOM node
+    resizeObserver.observe(document.querySelector('#filters'))
+
     document.querySelector('#cmd-reload').onclick = () => this._trigger('reload') 
     document.querySelector('#page-dec').onclick = (e) => {
       if (this.page > 1) {
@@ -341,11 +376,11 @@ class Table extends HTMLElement {
         const filterCol = document.createElement('select')
         this.#filterCols.forEach(item => {
           const option = document.createElement('option')
-          option.textContent = item.key
+          option.textContent = item.label
           option.value = item.key
           filterCol.appendChild(option)
         })
-        filterCol.value = filter.col.key
+        filterCol.value = filter.key
         div.appendChild(filterCol)
 
         const filterOp = document.createElement('select')
@@ -392,14 +427,26 @@ class Table extends HTMLElement {
   }
 
   _trigger (name) {
+    const filters = []
+    const el = document.querySelector('#filters')
+    for (let i=0; i<el.children.length; i++) {
+      const div = el.children[i]
+      filters.push({
+        key: div.children[0].value,
+        op: div.children[1].value,
+        val: div.children[2].value,
+        andOr: div.children[3].value
+      })
+    }
     this.dispatchEvent(new CustomEvent('triggered', {
+      // get filter information
       detail: {
         name, // page, sort
         sortKey: this.#sortKey,
         sortDir: this.#sortDir,
         page: this.page || 0,
         pageSize: this.pageSize || 0,
-        filters: this.#filters
+        filters
       }
     }))  
     // console.log('sort', col, this.columns[col].key, this.#sortKey, this.#sortDir)
@@ -411,7 +458,7 @@ class Table extends HTMLElement {
     this._renderFilters()
   }
   _addFilter (index) {
-    this.#filters.splice(index, 0, { col: this.#filterCols[0], op: '=', val: '88', andOr: 'and' })
+    this.#filters.splice(index, 0, { key: this.#filterCols[0].key, label: this.#filterCols[0].label, op: '=', val: '88', andOr: 'and' })
     this._renderFilters()
   }
   
@@ -492,7 +539,10 @@ class Table extends HTMLElement {
           tr.appendChild(th)
 
           // set filters...
-          if (col.filter) this.#filterCols.push(col) // process filters (col is key)
+          if (col.filter) this.#filterCols.push({
+            key: col.key,
+            label: col.label
+          }) // process filters (col is key)
         }
 
         // populate the data

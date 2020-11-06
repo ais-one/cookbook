@@ -14,7 +14,7 @@ const template = /*html*/`
     @rowClick="rowClick"
     @triggered="triggered"
     @cmd="cmd"
-    :style="height: calc(100vh - 250px);"
+    style="height: calc(100vh - 250px);"
   ></bwc-table>
 </div>
 `
@@ -44,7 +44,7 @@ export default {
       }
     ])
     const items = reactive([])
-    for (let i=1; i<80; i++) {
+    for (let i=1; i<=80; i++) {
       items.push({
         id: i,
         name: 'name' + 1,
