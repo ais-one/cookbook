@@ -7,9 +7,24 @@
 // filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters),
 // sorter: JSON.stringify(sorter)
 
-// search (show hide filter), refresh, add, delete, upload, download, goback (if parentKey != null), loading
+// search (show hide filter), reload, add, delete, upload, download, goback (if parentKey != null), loading
 const template = document.createElement('template')
 template.innerHTML = `
+<style>
+#table-wrapper {
+  overflow: auto;
+}
+nav {
+  background-color: green !important;
+}
+th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: red;
+}
+</style>
 <div id="table-wrapper">
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
@@ -21,7 +36,7 @@ template.innerHTML = `
     </div>
     <div id="table-navbar-menu" class="navbar-menu">
       <div class="navbar-start">
-        <div class="navbar-item">
+        <div id="commands" class="navbar-item">
           <a id="cmd-filter" class="button">o</a>
           <!--
           <a class="button">r</a>
@@ -35,7 +50,7 @@ template.innerHTML = `
       </div>
 
       <div class="navbar-end">
-        <div class="navbar-item">
+        <div id="pagination" class="navbar-item">
           <a id="page-dec" class="button is-light">&lt;</a>
           <div class="select">
             <select id="page-select">
@@ -58,26 +73,33 @@ template.innerHTML = `
 `
 
 class Table extends HTMLElement {
-  // properties
+  // basic
+  #columns = []
+  #items = []
+
+  // pagination
+  #pagination = true
   #page = 1 // one based index
   #pageSize = 10
   #pageSizeList = [5, 10, 15]
-  #columns = []
-  #items = []
-  #total = 0
   #pages = 0 // computed Math.ceil(total / pageSize)
+  #total = 0
 
+  // sorting
   #sortKey = ''
   #sortDir = '' // blank, asc, desc
 
   // checkbox
-  #checkEnabled = true
+  #checkboxes = true
   #checkedRows = []
 
   // selected
   #selectedIndex = -1
   #selectedNode = null
   #selectedItem = null
+
+  // commands menu
+  #commands = true
 
   // filters
   #filters = []
@@ -155,8 +177,9 @@ class Table extends HTMLElement {
     if (!this.#sortDir) this.#sortDir = ''
 
     document.querySelector('#filters').style.display = this.#filterShow ? 'block': 'none'
-
-    this.show
+    if (!this.#pagination) document.querySelector('#pagination').style.display = 'none'
+    if (!this.#commands) document.querySelector('#commands').style.display = 'none'
+    
     this.render()
     this._renderPageSelect()
     this._renderPageInput()
@@ -184,12 +207,28 @@ class Table extends HTMLElement {
   //   return ['page', 'page-size', 'total']
   // }
 
-  get checkEnabled () {
-    return this.#checkEnabled
+  get checkboxes () {
+    return this.#checkboxes
   }
 
-  set checkEnabled (val) {
-    this.#checkEnabled = val
+  set checkboxes (val) {
+    this.#checkboxes = val
+  }
+
+  get pagination () {
+    return this.#pagination
+  }
+
+  set pagination (val) {
+    this.#pagination = val
+  }
+
+  get commands () {
+    return this.#commands
+  }
+
+  set commands (val) {
+    this.#commands = val
   }
 
   get page () {
@@ -381,8 +420,6 @@ class Table extends HTMLElement {
       const el = document.querySelector('#table-wrapper')
       //<tfoot><tr><th><abbr title="Position">Pos</abbr></th>
 
-      // add pagination
-
       if (typeof this.columns === 'object') {
         console.log('render thead')
         const table = document.createElement('table')
@@ -390,7 +427,7 @@ class Table extends HTMLElement {
         const thead = document.createElement('thead')
         thead.onclick = (e) => {
           let target = e.target
-          if (this.#checkEnabled && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
+          if (this.#checkboxes && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
             const tbody = document.querySelector('table tbody')
             for (let i = 0; i < tbody.children.length; i++) {
               const tr = tbody.children[i]
@@ -403,7 +440,7 @@ class Table extends HTMLElement {
               }
             }
           } else { // sort
-            const offset = this.#checkEnabled ? 1 : 0 //  column offset
+            const offset = this.#checkboxes ? 1 : 0 //  column offset
             const col = target.cellIndex - offset // TD 0-index based column
             const key = this.columns[col].key
 
@@ -438,7 +475,7 @@ class Table extends HTMLElement {
         table.classList.add('table')
         const tr = document.createElement('tr')
         thead.appendChild(tr)
-        if (this.#checkEnabled) { // check all
+        if (this.#checkboxes) { // check all
           const th = document.createElement('th')
           th.style.width = '50px' // TBD do not hardcode
           const checkbox = document.createElement('input')
@@ -465,10 +502,10 @@ class Table extends HTMLElement {
           // TBD function to get checked rows...
           tbody.onclick = (e) => {
             let target = e.target
-            if (this.#checkEnabled && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
+            if (this.#checkboxes && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
 
             } else {
-              const offset = this.#checkEnabled ? 1 : 0 //  column offset
+              const offset = this.#checkboxes ? 1 : 0 //  column offset
               const col = target.cellIndex - offset // TD 0-index based column
 
               while (target && target.nodeName !== "TR") {
@@ -505,7 +542,7 @@ class Table extends HTMLElement {
             const tr = document.createElement('tr')
             tbody.appendChild(tr)
 
-            if (this.#checkEnabled) { // add checkbox
+            if (this.#checkboxes) { // add checkbox
               const td = document.createElement('td')
               const checkbox = document.createElement('input')
               checkbox.type = 'checkbox' // value 
