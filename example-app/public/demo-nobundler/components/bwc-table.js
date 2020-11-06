@@ -1,5 +1,7 @@
-// TBD add pagination
 // TBD custom render columns
+// TBD sticky header, sticky column
+// TBD action buttons
+// TBD filtering
 
 // search (show hide filter), refresh, add, delete, upload, download, goback (if parentKey != null), loading
 const template = document.createElement('template')
@@ -7,13 +9,13 @@ template.innerHTML = `
 <div id="table-wrapper">
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-      <a id="aa" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <a id="table-navbar-burger" role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="table-navbar-menu">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
-    <div id="navbarBasicExample" class="navbar-menu">
+    <div id="table-navbar-menu" class="navbar-menu">
       <div class="navbar-start">
         <div class="navbar-item">
           <a class="button">o</a>
@@ -28,16 +30,16 @@ template.innerHTML = `
 
       <div class="navbar-end">
         <div class="navbar-item">
-          <a class="button is-primary">&larr;</a>
-          <div class="select"> 
-            <select>
+          <a id="page-dec" class="button is-primary">&larr;</a>
+          <div class="select">
+            <select id="page-select">
               <option value="5">5</option>
               <option value="10">10</option>
               <option value="15">15</option>
             </select>
           </div>
-          <input class="input" type="number" min="1" max="10" style="width: auto;"/>
-          <a class="button is-light">&rarr;</a>
+          <input id="page-input" class="input" type="number" min="1" max="10" style="width: auto;"/>
+          <a id="page-inc" class="button is-light">&rarr;</a>
         </div>
       </div>
     </div>
@@ -48,16 +50,18 @@ template.innerHTML = `
 
 class Table extends HTMLElement {
   // properties
-  #items = []
-  #columns = []
   #page = 1 // one based index
   #pageSize = 10
   #pageSizeList = [5, 10, 15]
-  #checks = [] // checkboxes
+  #columns = []
+  #items = []
+  #total = 0
+  #pages = 0 // computed Math.ceil(total / pageSize)
 
   // #sortKey = ''
   // #sortDir = '' // blank, asc, desc
   #checkEnabled = true
+  #checks = [] // checkboxes
 
   // internal
   #selectedIndex = -1
@@ -87,14 +91,51 @@ class Table extends HTMLElement {
 
     // Check for click events on the navbar burger icon
     document.querySelector('.navbar-burger').onclick = () => {
-      console.log('ffff')
       // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-      document.querySelector('#aa').classList.toggle('is-active') // navbar-burger
-      document.querySelector('#navbarBasicExample').classList.toggle('is-active') // navbar-menu
-      console.log('ggg')
+      document.querySelector('#table-navbar-burger').classList.toggle('is-active') // navbar-burger
+      document.querySelector('#table-navbar-menu').classList.toggle('is-active') // navbar-menu
     }
+    document.querySelector('#page-input').onblur = (e) => {
+      const page = e.target.value
+      if (page >= 1 && page <= this.#pages && Number(page) !== Number(this.page)) {
+        this.page = page
+        this._trigger('page')
+      } else {
+        this._setPageInput()
+      }
+    }
+    document.querySelector('#page-dec').onclick = (e) => {
+      if (this.page > 1) {
+        this.page -= 1
+        this._setPageInput()
+        this._trigger('page')
+      }
+    }
+    document.querySelector('#page-inc').onclick = (e) => {
+      console.log('inc page', this.page, this.#pages)
+      if (this.page < this.#pages) {
+        this.page += 1
+        this._setPageInput()
+        this._trigger('page')
+      }
+    }
+    document.querySelector('#page-select').onchange = (e) => {
+      console.log('page select', e.target.value)
+      // recompute #pages
+      // reset page?
+      this.pageSize = e.target.value
+      this._trigger('page-size')
+    }
+
     console.log('connectedCallback 0')
+
+    // initialize non-required properties that are undefined
+    if (!this.sortKey) this.sortKey = ''
+    if (!this.sortDir) this.sortDir = ''
+
     this.render()
+    this._setPageSelect()
+    this._setPageInput()
     console.log('connectedCallback 1')
   }
 
@@ -124,6 +165,41 @@ class Table extends HTMLElement {
     this.#checkEnabled = val
   }
 
+  get page () {
+    console.log('get page', this.#page)
+    return this.#page
+  }
+
+  set page (val) {
+    console.log('set page')
+    this.#page = val
+    // DONE ELSEWHERE emit event
+  }
+
+  get pageSize () {
+    console.log('get pageSize')
+    return this.#pageSize
+  }
+
+  set pageSize (val) {
+    console.log('set pageSize', this.total , this.pageSize)
+    this.#pageSize = val
+
+    this.#pages = Math.ceil(this.total / this.pageSize)
+    // DONE ELSEWHERE emit event
+  }
+
+  get pageSizeList () {
+    console.log('get pageSizeList')
+    return this.#pageSizeList
+  }
+
+  set pageSizeList (val) {
+    console.log('set pageSizeList')
+    this.#pageSizeList = val
+    // TBD emit event
+  }
+
   get items() {
     return this.#items
   }
@@ -133,6 +209,19 @@ class Table extends HTMLElement {
     this.#items = val
     console.log('set items 1')
     // if columns do something
+  }
+
+  get total () {
+    console.log('get total')
+    return this.#total
+  }
+
+  set total (val) {
+    console.log('set total xx', val, this.total , this.pageSize)
+    this.#total = val
+
+    this.#pages = Math.ceil(this.total / this.pageSize)
+    // emit event
   }
 
   get columns() {
@@ -146,9 +235,27 @@ class Table extends HTMLElement {
     // do something
   }
 
-  _trigger () {
+  _setPageSelect () {
+    const el = document.querySelector('#page-select')
+    el.textContent = '' // remove all children
+    this.pageSizeList.forEach(item => {
+      const option = document.createElement('option')
+      option.value = item
+      option.innerHTML = item
+      if (Number(item) === Number(this.pageSize)) option.selected = true
+      el.appendChild(option)
+    })
+  }
+
+  _setPageInput () {
+    const el = document.querySelector('#page-input')
+    el.value = this.page
+  }
+
+  _trigger (name) {
     this.dispatchEvent(new CustomEvent('triggered', {
       detail: {
+        name, // page, sort
         sortKey: this.sortKey,
         sortDir: this.sortDir,
         page: this.page || 0,
@@ -212,7 +319,7 @@ class Table extends HTMLElement {
               th.innerHTML = label
             }
 
-            this._trigger()
+            this._trigger('sort')
           }
         }
 

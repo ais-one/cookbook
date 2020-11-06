@@ -2,15 +2,27 @@ const template = /*html*/`
 <div>
   <h1>Dashboard</h1>
   <!-- h1 v-for="n of 20">Test</h1 -->
-  <bwc-table :columns="columns" :items="items" @rowClick="rowClick" @triggered="triggered"></bwc-table>
+  <bwc-table
+    :page="page"
+    :pageSize="pageSize"
+    :pageSizeList="pageSizeList"
+    :columns="columns"
+    :items="items"
+    :total="total"
+    @rowClick="rowClick"
+    @triggered="triggered"
+  ></bwc-table>
 </div>
 `
 
-const { onMounted, reactive } = Vue
+const { onMounted, ref, reactive } = Vue
 
 export default {
   template,
   setup() {
+    const page = ref(1)
+    const pageSize = ref(10)
+    const pageSizeList = [5, 10, 15]
     const columns = reactive([
       {
         label: 'ID',
@@ -36,6 +48,7 @@ export default {
       { id: 8, name: 'hh', age: 80 },
       { id: 9, name: 'ii', age: 90 }
     ])
+    const total = ref(80)
 
     const rowClick = (e) => {
       console.log('rowClick', e.detail)
@@ -48,8 +61,12 @@ export default {
       console.log('Dashboard mounted!')
     })
     return {
+      page,
+      pageSize,
+      pageSizeList,
       columns,
       items,
+      total,
       rowClick,
       triggered
     }
