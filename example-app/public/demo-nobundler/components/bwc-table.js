@@ -1,7 +1,11 @@
+// TBD hide pagination
 // TBD custom render columns
 // TBD sticky header, sticky column
-// TBD action buttons
-// TBD filtering
+// TBD fix action buttons
+// TBD fix filtering col.key / col.label ...
+
+// filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters),
+// sorter: JSON.stringify(sorter)
 
 // search (show hide filter), refresh, add, delete, upload, download, goback (if parentKey != null), loading
 const template = document.createElement('template')
@@ -18,19 +22,21 @@ template.innerHTML = `
     <div id="table-navbar-menu" class="navbar-menu">
       <div class="navbar-start">
         <div class="navbar-item">
-          <a class="button">o</a>
+          <a id="cmd-filter" class="button">o</a>
+          <!--
           <a class="button">r</a>
           <a class="button">+</a>
           <a class="button">-</a>
           <a class="button">^</a>
           <a class="button">v</a>
-          <a class="button">↻</a>
+          -->
+          <a id="cmd-reload" class="button">↻</a>
         </div>
       </div>
 
       <div class="navbar-end">
         <div class="navbar-item">
-          <a id="page-dec" class="button is-primary">&larr;</a>
+          <a id="page-dec" class="button is-light">&lt;</a>
           <div class="select">
             <select id="page-select">
               <option value="5">5</option>
@@ -38,13 +44,16 @@ template.innerHTML = `
               <option value="15">15</option>
             </select>
           </div>
-          <input id="page-input" class="input" type="number" min="1" max="10" style="width: auto;"/>
-          <a id="page-inc" class="button is-light">&rarr;</a>
+          <input id="page-input" class="input" type="number" min="1" max="10" style="width: auto;"/>&nbsp;/&nbsp;<span id="pages-span"></span>
+          <a id="page-inc" class="button is-light">&gt;</a>
         </div>
       </div>
     </div>
   </nav>
 
+  <div id="filters">
+    BOO
+  </div>
 </div>
 `
 
@@ -58,23 +67,29 @@ class Table extends HTMLElement {
   #total = 0
   #pages = 0 // computed Math.ceil(total / pageSize)
 
-  // #sortKey = ''
-  // #sortDir = '' // blank, asc, desc
-  #checkEnabled = true
-  #checks = [] // checkboxes
+  #sortKey = ''
+  #sortDir = '' // blank, asc, desc
 
-  // internal
+  // checkbox
+  #checkEnabled = true
+  #checkedRows = []
+
+  // selected
   #selectedIndex = -1
   #selectedNode = null
   #selectedItem = null
-  #checkedRows = []
 
-  // methods
+  // filters
+  #filters = []
+  #filterCols = []
+  #filterOps = ['=', 'like', '!=', '>=', '>', '<=', '<']
+  #filterShow = false
 
   // events
   // rowclicked
   // checked
   // triggered = sort / page / pagesize / pageSizeList
+  // cmd (reload)
 
   constructor() {
     super()
@@ -101,13 +116,19 @@ class Table extends HTMLElement {
         this.page = page
         this._trigger('page')
       } else {
-        this._setPageInput()
+        this._renderPageInput()
       }
     }
+
+    document.querySelector('#cmd-filter').onclick = () => {
+      this.#filterShow = !this.#filterShow
+      document.querySelector('#filters').style.display = this.#filterShow ? 'block': 'none'
+    }
+    document.querySelector('#cmd-reload').onclick = () => this._trigger('reload') 
     document.querySelector('#page-dec').onclick = (e) => {
       if (this.page > 1) {
         this.page -= 1
-        this._setPageInput()
+        this._renderPageInput()
         this._trigger('page')
       }
     }
@@ -115,7 +136,7 @@ class Table extends HTMLElement {
       console.log('inc page', this.page, this.#pages)
       if (this.page < this.#pages) {
         this.page += 1
-        this._setPageInput()
+        this._renderPageInput()
         this._trigger('page')
       }
     }
@@ -130,12 +151,18 @@ class Table extends HTMLElement {
     console.log('connectedCallback 0')
 
     // initialize non-required properties that are undefined
-    if (!this.sortKey) this.sortKey = ''
-    if (!this.sortDir) this.sortDir = ''
+    if (!this.#sortKey) this.#sortKey = ''
+    if (!this.#sortDir) this.#sortDir = ''
 
+    document.querySelector('#filters').style.display = this.#filterShow ? 'block': 'none'
+
+    this.show
     this.render()
-    this._setPageSelect()
-    this._setPageInput()
+    this._renderPageSelect()
+    this._renderPageInput()
+    this._renderPages()
+    this._renderFilters()
+
     console.log('connectedCallback 1')
   }
 
@@ -143,19 +170,19 @@ class Table extends HTMLElement {
     // this.querySelector('input').removeEventListener('input', this.input)
   }
 
-  attributeChangedCallback(name, oldVal, newVal) {
-    switch (name) {
-      case 'page': {
-        // const event = new CustomEvent('input', { detail: newVal })
-        // this.dispatchEvent(event)
-        break
-      }
-    }
-  }
+  // attributeChangedCallback(name, oldVal, newVal) {
+  //   switch (name) {
+  //     case 'page': {
+  //       // const event = new CustomEvent('input', { detail: newVal })
+  //       // this.dispatchEvent(event)
+  //       break
+  //     }
+  //   }
+  // }
 
-  static get observedAttributes() {
-    return ['page', 'page-size', 'total']
-  }
+  // static get observedAttributes() {
+  //   return ['page', 'page-size', 'total']
+  // }
 
   get checkEnabled () {
     return this.#checkEnabled
@@ -184,8 +211,7 @@ class Table extends HTMLElement {
   set pageSize (val) {
     console.log('set pageSize', this.total , this.pageSize)
     this.#pageSize = val
-
-    this.#pages = Math.ceil(this.total / this.pageSize)
+    this._renderPages()
     // DONE ELSEWHERE emit event
   }
 
@@ -220,8 +246,16 @@ class Table extends HTMLElement {
     console.log('set total xx', val, this.total , this.pageSize)
     this.#total = val
 
-    this.#pages = Math.ceil(this.total / this.pageSize)
-    // emit event
+    this._renderPages()
+    // emit event ?
+  }
+
+  get selectedItem () {
+    return this.#selectedItem    
+  }
+
+  set selectedItem (val) {
+    this.#selectedItem = val
   }
 
   get columns() {
@@ -235,36 +269,113 @@ class Table extends HTMLElement {
     // do something
   }
 
-  _setPageSelect () {
+  _renderPages () {
+    this.#pages = Math.ceil(this.total / this.pageSize)
+    const el = document.querySelector('#pages-span')
+    if (el) el.textContent = this.#pages
+  }
+
+  _renderPageSelect () {
     const el = document.querySelector('#page-select')
     el.textContent = '' // remove all children
     this.pageSizeList.forEach(item => {
       const option = document.createElement('option')
       option.value = item
-      option.innerHTML = item
+      option.textContent = item
       if (Number(item) === Number(this.pageSize)) option.selected = true
       el.appendChild(option)
     })
   }
 
-  _setPageInput () {
+  _renderPageInput () {
     const el = document.querySelector('#page-input')
     el.value = this.page
+  }
+
+  _renderFilters () {
+    const el = document.querySelector('#filters')
+    el.textContent = ''
+    if (this.#filters.length) {
+      for (let i=0; i < this.#filters.length; i++) {
+        const filter = this.#filters[i]
+        const div = document.createElement('div')
+        const filterCol = document.createElement('select')
+        this.#filterCols.forEach(item => {
+          const option = document.createElement('option')
+          option.textContent = item.key
+          option.value = item.key
+          filterCol.appendChild(option)
+        })
+        filterCol.value = filter.col.key
+        div.appendChild(filterCol)
+
+        const filterOp = document.createElement('select')
+        this.#filterOps.forEach(item => {
+          const option = document.createElement('option')
+          option.textContent = item
+          option.value = item
+          filterOp.appendChild(option)
+        })
+        filterOp.value = filter.op
+        div.appendChild(filterOp)
+
+        const filterInput = document.createElement('input')
+        filterInput.value = filter.val
+        div.appendChild(filterInput)
+
+        const filterAndOr = new DOMParser().parseFromString(
+          `<select id="filter-and-or">
+            <option value="and">And</option>
+            <option value="or">Or</option>
+          </select>`, "text/html")
+        const filterAndOrNode = filterAndOr.body.childNodes[0]
+        filterAndOrNode.value = filter.andOr
+        div.appendChild(filterAndOrNode)
+
+        const delBtn = document.createElement('button')
+        delBtn.textContent = '-'
+        delBtn.onclick = () => this._delFilter(i)
+        div.appendChild(delBtn)
+
+        const addBtn = document.createElement('button')
+        addBtn.textContent = '+'
+        addBtn.onclick = () => this._addFilter(i + 1)
+        div.appendChild(addBtn)
+  
+        el.appendChild(div)  
+      }
+    } else {
+      const btn = document.createElement('button')
+      btn.textContent = '+'
+      btn.onclick = () => this._addFilter(0)
+      el.appendChild(btn)
+    }
   }
 
   _trigger (name) {
     this.dispatchEvent(new CustomEvent('triggered', {
       detail: {
         name, // page, sort
-        sortKey: this.sortKey,
-        sortDir: this.sortDir,
+        sortKey: this.#sortKey,
+        sortDir: this.#sortDir,
         page: this.page || 0,
-        pageSize: this.pageSize || 0
+        pageSize: this.pageSize || 0,
+        filters: this.#filters
       }
     }))  
-    // console.log('sort', col, this.columns[col].key, this.sortKey, this.sortDir)
+    // console.log('sort', col, this.columns[col].key, this.#sortKey, this.#sortDir)
   }
 
+  // filters
+  _delFilter (index) {
+    this.#filters.splice(index, 1) // console.log('remove filter', index)
+    this._renderFilters()
+  }
+  _addFilter (index) {
+    this.#filters.splice(index, 0, { col: this.#filterCols[0], op: '=', val: '88', andOr: 'and' })
+    this._renderFilters()
+  }
+  
   render() {
     try {
       const el = document.querySelector('#table-wrapper')
@@ -296,15 +407,15 @@ class Table extends HTMLElement {
             const col = target.cellIndex - offset // TD 0-index based column
             const key = this.columns[col].key
 
-            if (key !== this.sortKey) {
-              this.sortKey = key
-              this.sortDir = 'asc'
+            if (key !== this.#sortKey) {
+              this.#sortKey = key
+              this.#sortDir = 'asc'
             } else {
-              if (this.sortDir === 'asc') {
-                this.sortDir = 'desc'
-              } else if (this.sortDir === 'desc') {
-                this.sortKey = ''
-                this.sortDir = ''
+              if (this.#sortDir === 'asc') {
+                this.#sortDir = 'desc'
+              } else if (this.#sortDir === 'desc') {
+                this.#sortKey = ''
+                this.#sortDir = ''
               }
             }
 
@@ -313,10 +424,10 @@ class Table extends HTMLElement {
             for (let i = offset; i < theadTr.children.length; i++) {
               const th = theadTr.children[i]
               let label = this.columns[i - offset].label
-              if (this.columns[i - offset].key === this.sortKey && this.sortDir) {
-                label = label + (this.sortDir === 'asc' ? '&and;': '&or;')
+              if (this.columns[i - offset].key === this.#sortKey && this.#sortDir) {
+                label = label + (this.#sortDir === 'asc' ? '&and;': '&or;')
               }
-              th.innerHTML = label
+              th.innerHTML = label // cannot textContent (need to parse the HTML)
             }
 
             this._trigger('sort')
@@ -338,10 +449,13 @@ class Table extends HTMLElement {
         }
         for (const col of this.columns) {
           const th = document.createElement('th')
-          const label = col.label + ((this.sortKey) ? (this.sortDir === 'asc' ? '&and;': '&or') : '') // &and; (up) & &or; (down)
+          const label = col.label + ((this.#sortKey) ? (this.#sortDir === 'asc' ? '&and;': '&or') : '') // &and; (up) & &or; (down)
           if (col.width) th.style.width = `${col.width}px`
           th.appendChild(document.createTextNode(label))
           tr.appendChild(th)
+
+          // set filters...
+          if (col.filter) this.#filterCols.push(col) // process filters (col is key)
         }
 
         // populate the data
@@ -368,15 +482,17 @@ class Table extends HTMLElement {
                 }
                 if (this.#selectedIndex === row && this.#selectedIndex !== -1) { // unselect
                   this.#selectedIndex = -1
+                  this.selectedItem = null
                 } else {
                   const cells = target.getElementsByTagName("td")
                   data = {}
                   for (let i = offset; i < cells.length; i++) {
                     const key = this.columns[i - offset].key
-                    data[key] = cells[i].innerHTML
+                    data[key] = cells[i].textContent // no need innerHTML
                   }  
                   this.#selectedNode = target // set selected
                   this.#selectedIndex = row
+                  this.selectedItem = { row, col, data }
                   target.classList.add('is-selected')  
                 }
               }
@@ -412,3 +528,61 @@ class Table extends HTMLElement {
 }
 
 customElements.define('bwc-table', Table)
+
+/* FORM
+      <slot name="form" :tableCfg="tableCfg" :recordObj="recordObj" :showForm="showForm">
+        <form class="form-box-flex">
+          <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p>
+          <div class="field-set-flex">
+            <template v-for="(val, col, index) of recordObj[showForm]">
+              <template v-if="tableCfg.cols[col]">
+                <template v-if="tableCfg.cols[col].input === 'link'">
+                  <mwc-textfield
+                    @click="router.push('/' + tableCfg.cols[col].options.to + '?keyval=' + recordObj[showForm].key + '&keycol=' + tableCfg.cols[col].options.relatedCol)"
+                    disabled
+                    class="field-item"
+                    :key="col + index"
+                    :label="tableCfg.cols[col].label"
+                    outlined
+                    type="text"
+                    v-model="recordObj[showForm][col]"
+                  ></mwc-textfield>
+                </template>
+                <template v-else-if="tableCfg.cols[col][showForm] === 'readonly'">
+                  <mwc-textfield disabled class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input === 'number'">
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="number" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input === 'datetime'">
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="datetime-local" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input === 'date'">
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="date" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input === 'time'">
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="time" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input === 'select'">
+                  <mwc-select :key="col + index" :label="tableCfg.cols[col].label" :value="recordObj[showForm][col]" @change="(e) => (recordObj[showForm][col] = e.target.value)">
+                    <mwc-list-item v-for="(option, index2) of tableCfg.cols[col].options" :value="option.key" :key="col + index + '-' + index2">{{ option.text }}</mwc-list-item>
+                  </mwc-select>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input === 'multi-select'">
+                  <mwc-multiselect :required="isRequired(col)" :key="col + index" :label="tableCfg.cols[col].label" v-model="recordObj[showForm][col]" :options="JSON.stringify(tableCfg.cols[col].options)"></mwc-multiselect>
+                </template>
+                <template v-else-if="tableCfg.cols[col].input === 'autocomplete'">
+                  <mwc-autocomplete :class="col" :required="isRequired(col)" :key="col + index" :label="tableCfg.cols[col].label" v-model="recordObj[showForm][col]" @search="(e) => autoComplete(e, col, showForm)"></mwc-autocomplete>
+                </template>
+                <template v-else>
+                  <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
+                </template>
+              </template>
+            </template>
+          </div>
+          <mwc-button type="button" @click="showForm = ''">Cancel</mwc-button>
+          <mwc-button type="button" @click="doAddOrEdit" :disabled="loading">Confirm</mwc-button>
+        </form>
+      </slot>
+
+*/

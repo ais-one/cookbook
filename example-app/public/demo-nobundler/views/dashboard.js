@@ -11,6 +11,7 @@ const template = /*html*/`
     :total="total"
     @rowClick="rowClick"
     @triggered="triggered"
+    @cmd="cmd"
   ></bwc-table>
 </div>
 `
@@ -26,15 +27,17 @@ export default {
     const columns = reactive([
       {
         label: 'ID',
-        key: 'id'
+        key: 'id',
       },     
       {
         label: 'Name',
-        key: 'name'
+        key: 'name',
+        filter: true
       },     
       {
         label: 'Age',
-        key: 'age'
+        key: 'age',
+        filter: true
       }
     ])
     const items = reactive([
@@ -56,6 +59,9 @@ export default {
     const triggered = (e) => {
       console.log('triggered', e.detail)
     }
+    const cmd = (e) => {
+      console.log('cmd', e.detail)
+    }
 
     onMounted(async () => {
       console.log('Dashboard mounted!')
@@ -68,7 +74,8 @@ export default {
       items,
       total,
       rowClick,
-      triggered
+      triggered,
+      cmd
     }
   }
 }
