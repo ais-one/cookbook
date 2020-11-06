@@ -2,9 +2,10 @@
 // set table-wrapper height...
 // make sticky header optional
 // sticky column (make optional)
-// custom render columns
+// custom render columns (inline edit?)
 // cmd buttons (add, delete, upload, download, goback)
 // checkbox events & collect checked items...
+// STYLING...
 
 // FEATURES
 // handle columns and items
@@ -33,31 +34,31 @@ template.innerHTML = `
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  z-index: 2;
-  background-color: green !important;
+  z-index: 3;
+  background-color: lightgray !important;
 }
 #table-wrapper #filters {
   position: -webkit-sticky;
   position: sticky;
   top: 56px;
-  z-index: 2;
+  z-index: 3;
   background-color: cyan;
 }
 #table-wrapper th {
   position: -webkit-sticky;
   position: sticky;
   top: 56px; /* nav height - TBD filter height*/
-  z-index: 2;
+  z-index: 3;
   background-color: red;
 }
-/*
-th:not([scope=row]) {
+#table-wrapper th[scope=row] {
   position: -webkit-sticky;
   position: sticky;
-  top: 0;
-  z-index: 2;
+  left: 0;
+  z-index: 3;
 }
-*/
+#table-wrapper th:not([scope=row]) {
+}
 </style>
 <div id="table-wrapper">
   <nav id="table-navbar" class="navbar" role="navigation" aria-label="main navigation">
@@ -548,7 +549,7 @@ class Table extends HTMLElement {
           th.style.width = '50px' // TBD do not hardcode
           const checkbox = document.createElement('input')
           checkbox.type = 'checkbox' // value
-
+          th.setAttribute('scope', 'row')
           th.appendChild(checkbox)
           tr.appendChild(th)
         }
@@ -556,6 +557,8 @@ class Table extends HTMLElement {
           const th = document.createElement('th')
           const label = col.label + ((this.#sortKey) ? (this.#sortDir === 'asc' ? '&and;': '&or') : '') // &and; (up) & &or; (down)
           if (col.width) th.style.width = `${col.width}px`
+          if (col.sticky) th.setAttribute('scope', 'row')
+
           th.appendChild(document.createTextNode(label))
           tr.appendChild(th)
 
@@ -617,12 +620,16 @@ class Table extends HTMLElement {
               const td = document.createElement('td')
               const checkbox = document.createElement('input')
               checkbox.type = 'checkbox' // value 
+              td.setAttribute('scope', 'row')
               td.appendChild(checkbox)
               tr.appendChild(td)
             }
 
+            let i = 0
             for (const col in row) {
-              const td = document.createElement('td');
+              const td = document.createElement('td')
+              if (this.columns[i].sticky) td.setAttribute('scope', 'row')
+              i++
               td.appendChild(document.createTextNode(row[col]))
               tr.appendChild(td)
             }   

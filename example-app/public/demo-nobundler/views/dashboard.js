@@ -32,11 +32,13 @@ export default {
       {
         label: 'ID',
         key: 'id',
+        sticky: true
       },     
       {
         label: 'Name',
         key: 'name',
-        filter: true
+        filter: true,
+        sticky: true
       },     
       {
         label: 'Age',
@@ -44,13 +46,24 @@ export default {
         filter: true
       }
     ])
+    for (let i=1; i<=15; i++) {
+      columns.push({
+        label: 'label' + i,
+        key: 'key' + 1
+      })
+    }
+
     const items = reactive([])
     for (let i=1; i<=80; i++) {
-      items.push({
+      const data = {
         id: i,
         name: 'name' + 1,
         age: i
-      })
+      }
+      for (let j=1; j<=15; j++) {
+        data['key' + j] = 'val-'+i+'-'+j
+      }
+      items.push(data)
     }
     const total = ref(80)
 
