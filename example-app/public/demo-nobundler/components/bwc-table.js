@@ -10,21 +10,23 @@
 // row select
 // pagination (optional)
 // filters (optional)
-// sorters (optional)
+// sorter single column (optional)
 // checkbox (optional)
 // sticky header
 
 // NOT NEEDED
 // loading state and loading spinner
 
-// filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters),
-// sorter: JSON.stringify(sorter)
-
 // STYLING...
 // --bwc-table-height
 // --bwc-table-overflow
 
-// show hide filter, reload, add, delete, upload, download, goback (if parentKey != null), loading
+// EVENTS
+// rowclick { detail: { row, col, data }
+// triggered = sort / page / page-size / reload { detail: { name, sortKey, sortDir, page, pageSize, filters: [ { key, op, val, andOr } ] } }
+// cmd = show/hide filter, reload, add, delete, upload, download, goback (if parentKey != null)
+// checked TBD
+
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
@@ -121,7 +123,7 @@ class Table extends HTMLElement {
   #columns = []
   #items = []
 
-  // pagination
+  // enable pagination
   #pagination = true
   #page = 1 // one based index
   #pageSize = 10
@@ -129,7 +131,7 @@ class Table extends HTMLElement {
   #pages = 0 // computed Math.ceil(total / pageSize)
   #total = 0
 
-  // sorting
+  // enable sorting
   #sort = true
   #sortKey = ''
   #sortDir = '' // blank, asc, desc
@@ -143,7 +145,7 @@ class Table extends HTMLElement {
   #selectedNode = null
   #selectedItem = null
 
-  // commands menu
+  // enable commands menu
   #commands = true
 
   // filters
@@ -156,17 +158,16 @@ class Table extends HTMLElement {
   #navbarHeight = 56 // #table-navbar
   #filterHeight = 0 // #filters
 
-  // events
-  // rowclicked, triggered = sort / page / pagesize / pageSizeList, cmd (reload), checked
-
   constructor() {
     super()
     // this.input = this.input.bind(this)
   }
 
   _setHeights () {
-    console.log(this.#navbarHeight, this.#filterHeight)
-    document.querySelector('#filters').style.top = `${this.#navbarHeight}px`
+    // console.log(this.#navbarHeight, this.#filterHeight)
+    const el = document.querySelector('#filters')
+    if (!el) return
+    el.style.top = `${this.#navbarHeight}px`
     const nodes = document.querySelectorAll('.sticky-header #table-wrapper th')
     for (let i = 0; i<nodes.length; i++) {
       // console.log('nodes', nodes[i])
@@ -263,16 +264,11 @@ class Table extends HTMLElement {
 
   // attributeChangedCallback(name, oldVal, newVal) {
   //   switch (name) {
-  //     case 'page': {
-  //       // const event = new CustomEvent('input', { detail: newVal })
-  //       // this.dispatchEvent(event)
-  //       break
-  //     }
+  //     case 'page': { break }
   //   }
   // }
-
   // static get observedAttributes() {
-  //   return ['page', 'page-size', 'total']
+  //   return ['page']
   // }
 
   get checkboxes () {
@@ -493,7 +489,6 @@ class Table extends HTMLElement {
         filters
       }
     }))  
-    // console.log('sort', col, this.columns[col].key, this.#sortKey, this.#sortDir)
   }
 
   // filters
@@ -502,7 +497,7 @@ class Table extends HTMLElement {
     this._renderFilters()
   }
   _addFilter (index) {
-    this.#filters.splice(index, 0, { key: this.#filterCols[0].key, label: this.#filterCols[0].label, op: '=', val: '88', andOr: 'and' })
+    this.#filters.splice(index, 0, { key: this.#filterCols[0].key, label: this.#filterCols[0].label, op: '=', val: '', andOr: 'and' })
     this._renderFilters()
   }
   
@@ -554,7 +549,7 @@ class Table extends HTMLElement {
               const th = theadTr.children[i]
               let label = this.columns[i - offset].label
               if (this.columns[i - offset].key === this.#sortKey && this.#sortDir) {
-                label = label + (this.#sortDir === 'asc' ? '&and;': '&or;')
+                label = label + (this.#sortDir === 'asc' ? '&uarr;': '&darr;')
               }
               th.innerHTML = label // cannot textContent (need to parse the HTML)
             }

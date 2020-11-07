@@ -48,7 +48,7 @@ export default {
     for (let i=1; i<=15; i++) {
       columns.push({
         label: 'label' + i,
-        key: 'key' + 1
+        key: 'key' + i
       })
     }
 
@@ -56,7 +56,7 @@ export default {
     for (let i=1; i<=80; i++) {
       const data = {
         id: i,
-        name: 'name' + 1,
+        name: 'name' + i,
         age: i
       }
       for (let j=1; j<=15; j++) {
