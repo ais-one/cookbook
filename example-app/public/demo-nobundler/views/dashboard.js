@@ -15,7 +15,8 @@ const template = /*html*/`
     @rowClick="rowClick"
     @triggered="triggered"
     @cmd="cmd"
-    style="height: calc(100vh - 250px);"
+    style="--bwc-table-height: calc(100vh - 360px);"
+    class="sticky-header sticky-column"
   ></bwc-table>
 </div>
 `
@@ -31,14 +32,12 @@ export default {
     const columns = reactive([
       {
         label: 'ID',
-        key: 'id',
-        sticky: true
+        key: 'id'
       },     
       {
         label: 'Name',
         key: 'name',
-        filter: true,
-        sticky: true
+        filter: true
       },     
       {
         label: 'Age',

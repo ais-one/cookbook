@@ -1,11 +1,9 @@
 // TBD
-// set table-wrapper height...
 // make sticky header optional
 // sticky column (make optional)
 // custom render columns (inline edit?)
 // cmd buttons (add, delete, upload, download, goback)
 // checkbox events & collect checked items...
-// STYLING...
 
 // FEATURES
 // handle columns and items
@@ -22,42 +20,53 @@
 // filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters),
 // sorter: JSON.stringify(sorter)
 
+// STYLING...
+// --bwc-table-height
+// --bwc-table-overflow
+
 // show hide filter, reload, add, delete, upload, download, goback (if parentKey != null), loading
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
 #table-wrapper {
-  overflow: auto;
-  height: calc(100vh - 250px);
+  overflow: var(--bwc-table-overflow, auto);
+  height: var(--bwc-table-height, calc(100vh - 250px));
 }
 #table-wrapper > nav {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  z-index: 3;
+  z-index: 2;
   background-color: lightgray !important;
 }
 #table-wrapper #filters {
   position: -webkit-sticky;
   position: sticky;
   top: 56px;
-  z-index: 3;
+  z-index: 2;
   background-color: cyan;
 }
-#table-wrapper th {
+.sticky-header #table-wrapper th {
   position: -webkit-sticky;
   position: sticky;
   top: 56px; /* nav height - TBD filter height*/
-  z-index: 3;
+  z-index: 2;
   background-color: red;
 }
-#table-wrapper th[scope=row] {
+.sticky-column #table-wrapper th[scope=row] {
   position: -webkit-sticky;
   position: sticky;
   left: 0;
   z-index: 3;
 }
-#table-wrapper th:not([scope=row]) {
+.sticky-column #table-wrapper th:not([scope=row]) {
+}
+.sticky-column #table-wrapper td[scope=row] {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background-color: yellow;
 }
 </style>
 <div id="table-wrapper">
@@ -73,29 +82,32 @@ template.innerHTML = `
       <div class="navbar-start">
         <div id="commands" class="navbar-item">
           <a id="cmd-filter" class="button">o</a>
-          <!--
-          <a class="button">r</a>
+          <a id="cmd-reload" class="button">↻</a>
           <a class="button">+</a>
           <a class="button">-</a>
-          <a class="button">^</a>
-          <a class="button">v</a>
-          -->
-          <a id="cmd-reload" class="button">↻</a>
+          <a class="button">&uarr;</a>
+          <a class="button">&darr;</a>
         </div>
       </div>
-
-      <div class="navbar-end">
-        <div id="pagination" class="navbar-item">
-          <a id="page-dec" class="button is-light">&lt;</a>
-          <div class="select">
-            <select id="page-select">
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-            </select>
-          </div>
-          <input id="page-input" class="input" type="number" min="1" max="10" style="width: auto;"/>&nbsp;/&nbsp;<span id="pages-span"></span>
-          <a id="page-inc" class="button is-light">&gt;</a>
+    
+      <div class="navbar-end pagination">
+        <div class="navbar-item">
+          <a id="page-dec" class="button">&lt;</a>
+          <a><input id="page-input" class="input" type="number" min="1" style="width: auto;"/></a>
+          <a class="button is-static">&nbsp;/&nbsp;<span id="pages-span"></span></a>
+          <a id="page-inc" class="button">&gt;</a>
+        </div>
+        <div class="navbar-item">
+          <a>
+            <span class="select">
+              <select id="page-select">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+              </select>
+            </span>
+          </a>
+          <a class="button is-static">Rows/Page</a>
         </div>
       </div>
     </div>
@@ -140,19 +152,31 @@ class Table extends HTMLElement {
   #filterOps = ['=', 'like', '!=', '>=', '>', '<=', '<']
   #filterShow = false
 
+  // heights
+  #navbarHeight = 56 // #table-navbar
+  #filterHeight = 0 // #filters
+
   // events
-  // rowclicked
-  // checked
-  // triggered = sort / page / pagesize / pageSizeList
-  // cmd (reload)
+  // rowclicked, triggered = sort / page / pagesize / pageSizeList, cmd (reload), checked
 
   constructor() {
     super()
     // this.input = this.input.bind(this)
   }
 
+  _setHeights () {
+    console.log(this.#navbarHeight, this.#filterHeight)
+    document.querySelector('#filters').style.top = `${this.#navbarHeight}px`
+    const nodes = document.querySelectorAll('.sticky-header #table-wrapper th')
+    for (let i = 0; i<nodes.length; i++) {
+      // console.log('nodes', nodes[i])
+      nodes[i].style.top = `${this.#navbarHeight + this.#filterHeight}px`
+    }
+  }
+
   connectedCallback() {
     console.log('connected callback')
+
     // console.log(this.value, this.required, typeof this.required)
     this.appendChild(template.content.cloneNode(true))
 
@@ -179,17 +203,16 @@ class Table extends HTMLElement {
       this.#filterShow = !this.#filterShow
       document.querySelector('#filters').style.display = this.#filterShow ? 'block': 'none'
     }
-    const resizeObserver = new ResizeObserver(entries => {
-      const filterHeight = entries[0].target.clientHeight
-      console.log('height changed:', entries[0].target.clientHeight, this.style, filterHeight)
-      const nodes = document.querySelectorAll('#table-wrapper th') // .style.top = `${56 + filterHeight}px;`
-      for (let i = 0; i<nodes.length; i++) {
-        console.log('nodes', nodes[i])
-        nodes[i].style.top = `${56 + filterHeight}px`
-      }
-    })
-    // start observing a DOM node
-    resizeObserver.observe(document.querySelector('#filters'))
+
+    new ResizeObserver(entries => {
+      this.#navbarHeight = entries[0].target.clientHeight
+      this._setHeights()
+    }).observe(document.querySelector('#table-navbar'))
+
+    new ResizeObserver(entries => {
+      this.#filterHeight = entries[0].target.clientHeight
+      this._setHeights()
+    }).observe(document.querySelector('#filters')) // start observing a DOM node
 
     document.querySelector('#cmd-reload').onclick = () => this._trigger('reload') 
     document.querySelector('#page-dec').onclick = (e) => {
@@ -222,7 +245,7 @@ class Table extends HTMLElement {
     if (!this.#sortDir) this.#sortDir = ''
 
     document.querySelector('#filters').style.display = this.#filterShow ? 'block': 'none'
-    if (!this.#pagination) document.querySelector('#pagination').style.display = 'none'
+    if (!this.#pagination) document.querySelector('.pagination').style.display = 'none'
     if (!this.#commands) document.querySelector('#commands').style.display = 'none'
     
     this.render()
