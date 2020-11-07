@@ -55,7 +55,7 @@
     "kafkajs": "^1.14.0",
     "keyv": "^4.0.3",
     "knex": "^0.21.12",
-    "mongodb": "^3.6.2",
+    "mongodb": "^3.6.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "objection": "^2.2.3",
@@ -71,7 +71,7 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.2",
-    "eslint": "^7.12.1",
+    "eslint": "^7.13.0",
     "husky": "^4.3.0",
     "jest": "^26.6.3",
     "node-mocks-http": "^1.9.0",

@@ -3,9 +3,8 @@
 - [nobundler-example] created initial bwc-autocomplete (based on bulma)
 - [example-all] implement saml callback and configs
 - [example-vite] remove oruga (not ready for vue3+vite)
-- [inprogress]
-  - [example-app] improve vanilla app
-  - [bulma-web-components] bwc-autocomplete, bwc-table
+- [example-app] improve vanilla app
+- [bulma-web-components] bwc-autocomplete, bwc-table
 
 ### Version 0.4.3
 - [chore] update packages & cleanup & work on improving documentation
