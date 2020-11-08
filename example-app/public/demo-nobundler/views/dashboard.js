@@ -10,7 +10,7 @@ const template = /*html*/`
     :pageSize="pageSize"
     :pageSizeList="pageSizeList"
     :columns="columns"
-    :items="items"
+    :items="table.items"
     :total="total"
     @rowClick="rowClick"
     @triggered="triggered"
@@ -56,8 +56,8 @@ export default {
       })
     }
 
-    const items = reactive([])
-    for (let i=1; i<=80; i++) {
+    const itemList = []
+    for (let i=1; i<=30; i++) {
       const data = {
         id: i,
         name: 'name' + i,
@@ -66,15 +66,34 @@ export default {
       for (let j=1; j<=15; j++) {
         data['key' + j] = 'val-'+i+'-'+j
       }
-      items.push(data)
+      itemList.push(data)
     }
-    const total = ref(80)
+
+    const table = reactive({
+      items: []
+    })
+    const total = ref(30)
+
+    const setItems = () => {
+      const items = []
+      const offset = (page.value - 1) * pageSize.value
+      for (let i = 0; i<pageSize.value; i++) {
+        if (!itemList[offset + i]) break
+        items.push( itemList[offset + i] )
+      }
+      console.log(items)
+      table.items = items
+    }
 
     const rowClick = (e) => {
       console.log('rowClick', e.detail)
     }
     const triggered = (e) => {
       console.log('triggered', e.detail)
+      page.value = e.detail.page
+      pageSize.value = e.detail.pageSize
+      console.log(page.value, pageSize.value)
+      setItems()
     }
     const cmd = (e) => {
       console.log('cmd', e.detail)
@@ -82,13 +101,14 @@ export default {
 
     onMounted(async () => {
       console.log('Dashboard mounted!')
+      setItems()
     })
     return {
       page,
       pageSize,
       pageSizeList,
       columns,
-      items,
+      table,
       total,
       rowClick,
       triggered,

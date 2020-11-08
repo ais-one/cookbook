@@ -32,8 +32,8 @@ const template = document.createElement('template')
 template.innerHTML = `
 <style>
 #table-wrapper {
-  overflow: var(--bwc-table-overflow, auto)
-  height: var(--bwc-table-height, calc(100vh - 250px))
+  overflow: var(--bwc-table-overflow, auto);
+  height: var(--bwc-table-height, calc(100vh - 250px));
 }
 #table-wrapper table {
   table-layout: initial;
@@ -110,9 +110,6 @@ template.innerHTML = `
           <a>
             <span class="select">
               <select id="page-select">
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
               </select>
             </span>
           </a>
@@ -256,7 +253,7 @@ class Table extends HTMLElement {
     if (!this.#pagination) document.querySelector('.pagination').style.display = 'none'
     if (!this.#commands) document.querySelector('#commands').style.display = 'none'
     
-    this.render()
+    this._render()
     this._renderPageSelect()
     this._renderPageInput()
     this._renderPages()
@@ -278,114 +275,48 @@ class Table extends HTMLElement {
   //   return ['page']
   // }
 
-  get checkboxes () {
-    return this.#checkboxes
-  }
+  get checkboxes () { return this.#checkboxes }
+  set checkboxes (val) { this.#checkboxes = val }
+  get pagination () { return this.#pagination }
+  set pagination (val) { this.#pagination = val }
+  get commands () { return this.#commands }
+  set commands (val) { this.#commands = val }
+  get sort () { return this.#sort }
+  set sort (val) { this.#sort = val }
 
-  set checkboxes (val) {
-    this.#checkboxes = val
-  }
+  get page () { return this.#page }
+  set page (val) { this.#page = val } // DONE ELSEWHERE emit event
 
-  get pagination () {
-    return this.#pagination
-  }
-
-  set pagination (val) {
-    this.#pagination = val
-  }
-
-  get commands () {
-    return this.#commands
-  }
-
-  set commands (val) {
-    this.#commands = val
-  }
-
-  get sort () {
-    return this.#sort
-  }
-
-  set sort (val) {
-    this.#sort = val
-  }
-
-  get page () {
-    console.log('get page', this.#page)
-    return this.#page
-  }
-
-  set page (val) {
-    console.log('set page')
-    this.#page = val
-    // DONE ELSEWHERE emit event
-  }
-
-  get pageSize () {
-    console.log('get pageSize')
-    return this.#pageSize
-  }
-
+  get pageSize () { return this.#pageSize }
   set pageSize (val) {
     console.log('set pageSize', this.total , this.pageSize)
     this.#pageSize = val
     this._renderPages()
-    // DONE ELSEWHERE emit event
-  }
+  } // DONE ELSEWHERE emit event
 
-  get pageSizeList () {
-    console.log('get pageSizeList')
-    return this.#pageSizeList
-  }
-
-  set pageSizeList (val) {
-    console.log('set pageSizeList')
-    this.#pageSizeList = val
-    // TBD emit event
-  }
-
-  get items() {
-    return this.#items
-  }
-
+  get pageSizeList () { return this.#pageSizeList }
+  set pageSizeList (val) { this.#pageSizeList = val } // TBD emit event
+  get items() { return this.#items }
   set items(val) {
-    console.log('set items 0', this.columns && this.columns.length)
+    console.log('SET items.........', val)
     this.#items = val
-    console.log('set items 1')
-    // if columns do something
-  }
 
-  get total () {
-    console.log('get total')
-    return this.#total
-  }
-
-  set total (val) {
-    console.log('set total xx', val, this.total , this.pageSize)
-    this.#total = val
-
+    this._render()
+    this._renderPageSelect()
+    this._renderPageInput()
     this._renderPages()
-    // emit event ?
-  }
+  } // if columns do something
 
-  get selectedItem () {
-    return this.#selectedItem    
-  }
+  get total () { return this.#total }
+  set total (val) {
+    this.#total = val
+    this._renderPages()
+  } // emit event ?
 
-  set selectedItem (val) {
-    this.#selectedItem = val
-  }
-
-  get columns() {
-    return this.#columns
-  }
-
-  set columns(val) {
-    console.log('set columns 0')
-    this.#columns = val
-    console.log('set columns 1')
-    // do something
-  }
+  get selectedItem () { return this.#selectedItem }
+  set selectedItem (val) { this.#selectedItem = val }
+  get columns() { return this.#columns }
+  set columns(val) { this.#columns = val } // do something
 
   _renderPages () {
     this.#pages = Math.ceil(this.total / this.pageSize)
@@ -395,6 +326,7 @@ class Table extends HTMLElement {
 
   _renderPageSelect () {
     const el = document.querySelector('#page-select')
+    if (!el) return
     el.textContent = '' // remove all children
     this.pageSizeList.forEach(item => {
       const option = document.createElement('option')
@@ -407,6 +339,7 @@ class Table extends HTMLElement {
 
   _renderPageInput () {
     const el = document.querySelector('#page-input')
+    if (!el) return
     el.value = this.page
   }
 
@@ -505,7 +438,6 @@ class Table extends HTMLElement {
   _trigger (name) {
     const filters = []
     const el = document.querySelector('#filters')
-    console.log(el)
     for (let i=0; i<el.children.length; i++) {
       const div = el.children[i]
       if (div.children.length >= 4) {
@@ -540,14 +472,28 @@ class Table extends HTMLElement {
     this._renderFilters()
   }
   
-  render() {
+  _render() {
     try {
       const el = document.querySelector('#table-wrapper')
+      if (!el) return
       //<tfoot><tr><th><abbr title="Position">Pos</abbr></th>
 
-      if (typeof this.columns === 'object') {
+      let table = el.querySelector('table')
+      if (table) {
+        // const cNode = table.cloneNode(false)
+        // table.parentNode.replaceChild(cNode, table)
+        // table.innerHTML = ''
+        const parent = el.querySelector('table') // WORKS!
+        while (parent.firstChild) {
+            parent.firstChild.remove()
+        }
+        parent.remove()
+      }
+
+      if (typeof this.#columns === 'object') {
         console.log('render thead')
-        const table = document.createElement('table')
+        table = document.createElement('table')
+        table.setAttribute('id', 'table')
         el.appendChild(table)
         const thead = document.createElement('thead')
         thead.onclick = (e) => {
@@ -568,7 +514,7 @@ class Table extends HTMLElement {
             if (!this.sort) return
             const offset = this.#checkboxes ? 1 : 0 //  column offset
             const col = target.cellIndex - offset // TD 0-index based column
-            const key = this.columns[col].key
+            const key = this.#columns[col].key
 
             if (key !== this.#sortKey) {
               this.#sortKey = key
@@ -586,8 +532,8 @@ class Table extends HTMLElement {
             const theadTr = document.querySelector('table thead tr')
             for (let i = offset; i < theadTr.children.length; i++) {
               const th = theadTr.children[i]
-              let label = this.columns[i - offset].label
-              if (this.columns[i - offset].key === this.#sortKey && this.#sortDir) {
+              let label = this.#columns[i - offset].label
+              if (this.#columns[i - offset].key === this.#sortKey && this.#sortDir) {
                 label = label + (this.#sortDir === 'asc' ? '&uarr;': '&darr;')
               }
               th.innerHTML = label // cannot textContent (need to parse the HTML)
@@ -610,7 +556,7 @@ class Table extends HTMLElement {
           th.appendChild(checkbox)
           tr.appendChild(th)
         }
-        for (const col of this.columns) {
+        for (const col of this.#columns) {
           const th = document.createElement('th')
           const label = col.label + ((this.#sortKey) ? (this.#sortDir === 'asc' ? '&and;': '&or') : '') // &and; (up) & &or; (down)
           if (col.width) th.style.width = `${col.width}px`
@@ -627,7 +573,7 @@ class Table extends HTMLElement {
         }
 
         // populate the data
-        if (typeof this.items === 'object' && this.items.length) {
+        if (typeof this.#items === 'object' && this.#items.length) {
           console.log('render tbody')
           const tbody = document.createElement('tbody')
           // TBD function to get checked rows...
@@ -655,7 +601,7 @@ class Table extends HTMLElement {
                   const cells = target.getElementsByTagName("td")
                   data = {}
                   for (let i = offset; i < cells.length; i++) {
-                    const key = this.columns[i - offset].key
+                    const key = this.#columns[i - offset].key
                     data[key] = cells[i].textContent // no need innerHTML
                   }  
                   this.#selectedNode = target // set selected
@@ -669,7 +615,7 @@ class Table extends HTMLElement {
           }
  
           table.appendChild(tbody)
-          for (const row of this.items) {
+          for (const row of this.#items) {
             const tr = document.createElement('tr')
             tbody.appendChild(tr)
 
@@ -685,8 +631,8 @@ class Table extends HTMLElement {
             let i = 0
             for (const col in row) {
               const td = document.createElement('td')
-              if (this.columns[i].sticky) td.setAttribute('scope', 'row')
-              if (this.columns[i].width) td.style.width = `${this.columns[i].width}px`
+              if (this.#columns[i].sticky) td.setAttribute('scope', 'row')
+              if (this.#columns[i].width) td.style.width = `${this.#columns[i].width}px`
 
               i++
               td.appendChild(document.createTextNode(row[col]))
