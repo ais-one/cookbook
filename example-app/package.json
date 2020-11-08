@@ -63,10 +63,10 @@
     "passport": "^0.4.1",
     "passport-saml": "^2.0.2",
     "selfsigned": "^1.10.8",
-    "swagger-jsdoc": "^5.0.0",
+    "swagger-jsdoc": "^5.0.1",
     "swagger-ui-express": "^4.1.4",
     "web-push": "^3.4.4",
-    "ws": "^7.3.1"
+    "ws": "^7.4.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

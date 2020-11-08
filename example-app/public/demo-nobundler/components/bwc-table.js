@@ -649,7 +649,7 @@ class Table extends HTMLElement {
 
 customElements.define('bwc-table', Table)
 
-/* FORM
+/* FORM - This should be a seperate component I think...
       <slot name="form" :tableCfg="tableCfg" :recordObj="recordObj" :showForm="showForm">
         <form class="form-box-flex">
           <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p>
