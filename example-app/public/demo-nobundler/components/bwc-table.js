@@ -18,8 +18,9 @@
 // loading state and loading spinner
 
 // STYLING...
-// --bwc-table-height
-// --bwc-table-overflow
+// --bwc-table-height: ?
+// --bwc-table-overflow: auto
+// --bwc-table-height: 100%
 
 // EVENTS
 // rowclick { detail: { row, col, data }
@@ -31,13 +32,18 @@ const template = document.createElement('template')
 template.innerHTML = `
 <style>
 #table-wrapper {
-  overflow: var(--bwc-table-overflow, auto);
-  height: var(--bwc-table-height, calc(100vh - 250px));
+  overflow: var(--bwc-table-overflow, auto)
+  height: var(--bwc-table-height, calc(100vh - 250px))
+}
+#table-wrapper table {
+  table-layout: initial;
+  width: var(--bwc-table-width, 100%);
 }
 #table-wrapper > nav {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
+  left: 0px;
   z-index: 2;
   background-color: lightgray !important;
 }
@@ -45,6 +51,7 @@ template.innerHTML = `
   position: -webkit-sticky;
   position: sticky;
   top: 56px;
+  left: 0px;
   z-index: 2;
   background-color: cyan;
 }
@@ -403,6 +410,29 @@ class Table extends HTMLElement {
     el.value = this.page
   }
 
+  _createSelect (items, value) {
+    const p = document.createElement('p')
+    p.classList.add('control')
+    const span = document.createElement('span')
+    span.classList.add('select')
+    const select = document.createElement('select')
+    items.forEach(item => {
+      const option = document.createElement('option')
+      if (item.key) {
+        option.textContent = item.label
+        option.value = item.key
+      } else {
+        option.textContent = item
+        option.value = item
+      }
+      select.appendChild(option)
+    })
+    select.value = value
+    span.appendChild(select)
+    p.appendChild(span)
+    return p
+  }
+
   _renderFilters () {
     const el = document.querySelector('#filters')
     el.textContent = ''
@@ -410,56 +440,65 @@ class Table extends HTMLElement {
       for (let i=0; i < this.#filters.length; i++) {
         const filter = this.#filters[i]
         const div = document.createElement('div')
-        const filterCol = document.createElement('select')
-        this.#filterCols.forEach(item => {
-          const option = document.createElement('option')
-          option.textContent = item.label
-          option.value = item.key
-          filterCol.appendChild(option)
-        })
-        filterCol.value = filter.key
-        div.appendChild(filterCol)
+        div.classList.add('field')
+        div.classList.add('has-addons')
 
-        const filterOp = document.createElement('select')
-        this.#filterOps.forEach(item => {
-          const option = document.createElement('option')
-          option.textContent = item
-          option.value = item
-          filterOp.appendChild(option)
-        })
-        filterOp.value = filter.op
-        div.appendChild(filterOp)
+        div.appendChild( this._createSelect (this.#filterCols, filter.key) )
+        div.appendChild( this._createSelect (this.#filterOps, filter.op) )
 
+        const p = document.createElement('p')
+        p.classList.add('control')
         const filterInput = document.createElement('input')
+        filterInput.classList.add('input')
         filterInput.value = filter.val
-        div.appendChild(filterInput)
+        p.appendChild(filterInput)
+        div.appendChild(p)
 
         const filterAndOr = new DOMParser().parseFromString(
-          `<select id="filter-and-or">
+          `<p class="control">
+          <span class="select">
+          <select id="filter-and-or">
             <option value="and">And</option>
             <option value="or">Or</option>
-          </select>`, "text/html")
+          </select>
+          </span>
+          </p>`, 'text/html')
         const filterAndOrNode = filterAndOr.body.childNodes[0]
         filterAndOrNode.value = filter.andOr
         div.appendChild(filterAndOrNode)
 
+        const p1 = document.createElement('p')
+        p1.classList.add('control')
         const delBtn = document.createElement('button')
+        delBtn.classList.add('button')
         delBtn.textContent = '-'
         delBtn.onclick = () => this._delFilter(i)
-        div.appendChild(delBtn)
+        p1.appendChild(delBtn)
+        div.appendChild(p1)
 
+        const p2 = document.createElement('p')
+        p2.classList.add('control')
         const addBtn = document.createElement('button')
+        addBtn.classList.add('button')
         addBtn.textContent = '+'
         addBtn.onclick = () => this._addFilter(i + 1)
-        div.appendChild(addBtn)
+        p2.appendChild(addBtn)
+        div.appendChild(p2)
   
         el.appendChild(div)  
       }
     } else {
+      const div = document.createElement('div')
+      div.classList.add('field')
+      const p = document.createElement('p')
+      p.classList.add('control')
       const btn = document.createElement('button')
+      btn.classList.add('button')
       btn.textContent = '+'
       btn.onclick = () => this._addFilter(0)
-      el.appendChild(btn)
+      p.appendChild(btn)
+      div.appendChild(p)
+      el.appendChild(div)
     }
   }
 
@@ -647,6 +686,8 @@ class Table extends HTMLElement {
             for (const col in row) {
               const td = document.createElement('td')
               if (this.columns[i].sticky) td.setAttribute('scope', 'row')
+              if (this.columns[i].width) td.style.width = `${this.columns[i].width}px`
+
               i++
               td.appendChild(document.createTextNode(row[col]))
               tr.appendChild(td)

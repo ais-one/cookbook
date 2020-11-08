@@ -48,7 +48,11 @@ export default {
     for (let i=1; i<=15; i++) {
       columns.push({
         label: 'label' + i,
-        key: 'key' + i
+        key: 'key' + i,
+        width: 120
+        // overflow: hidden;
+        // text-overflow: ellipsis;
+        // white-space: nowrap;
       })
     }
 

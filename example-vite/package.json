@@ -9,6 +9,8 @@
   },
   "scripts": {
     "lint": "eslint . --ext .js,.vue",
+    "prettier:check": "prettier --check src/**/*.{js,jsx,json}",
+    "prettier:write": "prettier --write src/**/*.{js,jsx,json}",
     "dev": "vite",
     "build": "vite build",
     "build-uat": "vite build --mode uat",
