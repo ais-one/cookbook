@@ -386,6 +386,18 @@ class Table extends HTMLElement {
         p.appendChild(filterInput)
         div.appendChild(p)
 
+        const pf = document.createElement('p')
+        pf.classList.add('control', 'm-0')
+        pf.innerHTML = `<span class="select">
+        <select id="filter-and-or">
+          <option value="and">And</option>
+          <option value="or">Or</option>
+        </select>
+        </span>`
+        pf.querySelector('#filter-and-or').value = filter.andOr
+        div.appendChild(pf)
+
+        /*
         const filterAndOr = new DOMParser().parseFromString(
           `<p class="control m-0">
           <span class="select">
@@ -398,6 +410,7 @@ class Table extends HTMLElement {
         const filterAndOrNode = filterAndOr.body.childNodes[0]
         filterAndOrNode.value = filter.andOr
         div.appendChild(filterAndOrNode)
+        */
 
         const p1 = document.createElement('p')
         p1.classList.add('control', 'm-0')
