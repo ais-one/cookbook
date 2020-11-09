@@ -52,16 +52,13 @@ const template = /*html*/`
       <li><router-link :to="{ path: '/admin' }">Admin</router-link></li>
     </ul>
     <ul class="menu-list">
-      <li>
-        <a class="button is-light" @click="logout">Logout</a>
-      </li>
+      <li><a class="button is-light" @click="logout">Logout</a></li>
     </ul>
-    <!--
     <p class="menu-label">Administration</p>
     <ul class="menu-list">
       <li><a>Team Settings</a></li>
       <li>
-        <a class="is-active">Manage Your Team</a>
+        <a>Manage Your Team</a>
         <ul>
           <li><a>Managers</a></li>
           <li><a>Members</a></li>
@@ -70,7 +67,6 @@ const template = /*html*/`
       <li><a>Authentication</a></li>
       <li v-for="n of 30"><a>Testing</a></li>
     </ul>
-    -->
   </aside>
   <div class="column content nice-scroll">
     <router-view></router-view>

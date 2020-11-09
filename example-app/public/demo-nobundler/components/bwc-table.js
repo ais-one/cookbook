@@ -345,7 +345,7 @@ class Table extends HTMLElement {
 
   _createSelect (items, value) {
     const p = document.createElement('p')
-    p.classList.add('control')
+    p.classList.add('control', 'm-0')
     const span = document.createElement('span')
     span.classList.add('select')
     const select = document.createElement('select')
@@ -373,14 +373,13 @@ class Table extends HTMLElement {
       for (let i=0; i < this.#filters.length; i++) {
         const filter = this.#filters[i]
         const div = document.createElement('div')
-        div.classList.add('field')
-        div.classList.add('has-addons')
+        div.classList.add('field', 'has-addons', 'm-0', 'p-1')
 
         div.appendChild( this._createSelect (this.#filterCols, filter.key) )
         div.appendChild( this._createSelect (this.#filterOps, filter.op) )
 
         const p = document.createElement('p')
-        p.classList.add('control')
+        p.classList.add('control', 'm-0')
         const filterInput = document.createElement('input')
         filterInput.classList.add('input')
         filterInput.value = filter.val
@@ -388,7 +387,7 @@ class Table extends HTMLElement {
         div.appendChild(p)
 
         const filterAndOr = new DOMParser().parseFromString(
-          `<p class="control">
+          `<p class="control m-0">
           <span class="select">
           <select id="filter-and-or">
             <option value="and">And</option>
@@ -401,7 +400,7 @@ class Table extends HTMLElement {
         div.appendChild(filterAndOrNode)
 
         const p1 = document.createElement('p')
-        p1.classList.add('control')
+        p1.classList.add('control', 'm-0')
         const delBtn = document.createElement('button')
         delBtn.classList.add('button')
         delBtn.textContent = '-'
@@ -410,7 +409,7 @@ class Table extends HTMLElement {
         div.appendChild(p1)
 
         const p2 = document.createElement('p')
-        p2.classList.add('control')
+        p2.classList.add('control', 'm-0')
         const addBtn = document.createElement('button')
         addBtn.classList.add('button')
         addBtn.textContent = '+'
@@ -422,7 +421,7 @@ class Table extends HTMLElement {
       }
     } else {
       const div = document.createElement('div')
-      div.classList.add('field')
+      div.classList.add('field', 'p-1')
       const p = document.createElement('p')
       p.classList.add('control')
       const btn = document.createElement('button')

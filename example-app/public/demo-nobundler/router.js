@@ -27,7 +27,7 @@ const AuthGuard = async (to, from, next) => {
 
 const router = createRouter({
   history: routerHistory,
-  // linkActiveClass: '' // set class of active links <a tags> etc.
+  linkActiveClass: 'is-active', // set class of active links <a tags> etc. Bulma uses is-active
   routes: [
     {
       meta: { requiresAuth: true, layout: 'layout-secure' },
