@@ -3,7 +3,7 @@ const template = /*html*/`
   <h1>Dashboard</h1>
   <!-- h1 v-for="n of 20">Test</h1 -->
   <bwc-table
-    :commands="true"
+    commands="reload,filter"
     :pagination="true"
     :sort="true"
     :page="page"
@@ -15,7 +15,7 @@ const template = /*html*/`
     @rowClick="rowClick"
     @triggered="triggered"
     @cmd="cmd"
-    style="--bwc-table-height: calc(100vh - 360px);"
+    style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;"
     class="sticky-header sticky-column"
   ></bwc-table>
 </div>

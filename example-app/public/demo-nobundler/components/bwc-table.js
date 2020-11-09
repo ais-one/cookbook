@@ -18,7 +18,7 @@
 // loading state and loading spinner
 
 // STYLING...
-// --bwc-table-height: ?
+// --bwc-table-width: ?
 // --bwc-table-overflow: auto
 // --bwc-table-height: 100%
 
@@ -92,10 +92,10 @@ template.innerHTML = `
         <div id="commands" class="navbar-item">
           <a id="cmd-filter" class="button">o</a>
           <a id="cmd-reload" class="button">↻</a>
-          <a class="button">+</a>
-          <a class="button">-</a>
-          <a class="button">&uarr;</a>
-          <a class="button">&darr;</a>
+          <a id="cmd-add" class="button">+</a>
+          <a id="cmd-del" class="button">-</a>
+          <a id="cmd-import" class="button">&uarr;</a>
+          <a id="cmd-export" class="button">&darr;</a>
         </div>
       </div>
     
@@ -150,7 +150,7 @@ class Table extends HTMLElement {
   #selectedItem = null
 
   // enable commands menu
-  #commands = true
+  #commands = ''
 
   // filters
   #filters = []
@@ -220,6 +220,10 @@ class Table extends HTMLElement {
     }).observe(document.querySelector('#filters')) // start observing a DOM node
 
     document.querySelector('#cmd-reload').onclick = () => this._trigger('reload') 
+    document.querySelector('#cmd-add').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { cmd: 'add' }))
+    document.querySelector('#cmd-del').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { cmd: 'del', detail: [] }))
+    document.querySelector('#cmd-import').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { cmd: 'import' }))
+    document.querySelector('#cmd-export').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { cmd: 'export', detail: [] }))
     document.querySelector('#page-dec').onclick = (e) => {
       if (this.page > 1) {
         this.page -= 1
@@ -251,7 +255,17 @@ class Table extends HTMLElement {
 
     document.querySelector('#filters').style.display = this.#filterShow ? 'block': 'none'
     if (!this.#pagination) document.querySelector('.pagination').style.display = 'none'
-    if (!this.#commands) document.querySelector('#commands').style.display = 'none'
+    if (!this.#commands || typeof this.#commands !== 'string') {
+      document.querySelector('#commands').style.display = 'none'
+    }
+    else {
+      document.querySelector('#cmd-reload').style.display = this.#commands.includes('reload') ? 'block' : 'none'
+      document.querySelector('#cmd-filter').style.display = this.#commands.includes('filter') ? 'block' : 'none'
+      document.querySelector('#cmd-add').style.display = this.#commands.includes('add') ? 'block' : 'none'
+      document.querySelector('#cmd-del').style.display = this.#commands.includes('del') ? 'block' : 'none'
+      document.querySelector('#cmd-import').style.display = this.#commands.includes('import') ? 'block' : 'none'
+      document.querySelector('#cmd-export').style.display = this.#commands.includes('export') ? 'block' : 'none'
+    }
     
     this._render()
     this._renderPageSelect()
@@ -298,9 +312,7 @@ class Table extends HTMLElement {
   set pageSizeList (val) { this.#pageSizeList = val } // TBD emit event
   get items() { return this.#items }
   set items(val) {
-    console.log('SET items.........', val)
     this.#items = val
-
     this._render()
     this._renderPageSelect()
     this._renderPageInput()
