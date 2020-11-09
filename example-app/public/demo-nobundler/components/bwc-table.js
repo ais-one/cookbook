@@ -1,9 +1,5 @@
 // TBD
-// make sticky header optional
-// sticky column (make optional)
-// custom render columns (inline edit?)
-// cmd buttons (add, delete, upload, download, goback)
-// checkbox events & collect checked items...
+// inline edit?
 
 // FEATURES
 // handle columns and items
@@ -12,28 +8,44 @@
 // filters (optional)
 // sorter single column (optional)
 // checkbox (optional)
-// sticky header
+// sticky header (optional)
+// sticky coloumn (optional - currently only for 1st column)
+// checkbox & check all (optional)
+// custom render columns
+
+// STYLING...
+// --bwc-table-width: 100%
+// --bwc-table-overflow: auto
+// --bwc-table-height: 100%
 
 // NOT NEEDED
 // loading state and loading spinner
 
-// STYLING...
-// --bwc-table-width: ?
-// --bwc-table-overflow: auto
-// --bwc-table-height: 100%
+// PROPERTIES
+// commands="reload,filter"
+// :pagination="true"
+// :sort="true"
+// :page="page"
+// :pageSize="pageSize"
+// :pageSizeList="pageSizeList"
+// :columns="columns"
+// :items="table.items"
+// :total="total"
+// style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;"
+// class="sticky-header sticky-column"
 
 // EVENTS
 // rowclick { detail: { row, col, data }
 // triggered = sort / page / page-size / reload { detail: { name, sortKey, sortDir, page, pageSize, filters: [ { key, op, val, andOr } ] } }
 // cmd = show/hide filter, reload, add, delete, upload, download, goback (if parentKey != null)
-// checked TBD
+// checked = [indexes checked...]
 
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
 #table-wrapper {
   overflow: var(--bwc-table-overflow, auto);
-  height: var(--bwc-table-height, calc(100vh - 250px));
+  height: var(--bwc-table-height, 100%);
 }
 #table-wrapper table {
   table-layout: initial;
@@ -523,6 +535,7 @@ class Table extends HTMLElement {
         thead.onclick = (e) => {
           let target = e.target
           if (this.#checkboxes && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
+            this.#checkedRows = [] //  clear first
             const tbody = document.querySelector('table tbody')
             for (let i = 0; i < tbody.children.length; i++) {
               const tr = tbody.children[i]
@@ -531,9 +544,11 @@ class Table extends HTMLElement {
                 const checkbox = td.firstChild
                 if (checkbox.type === 'checkbox') {
                   checkbox.checked = target.checked
+                  if (target.checked) this.#checkedRows.push(i)
                 }
               }
             }
+            this.dispatchEvent(new CustomEvent('checked', { detail: this.#checkedRows }))
           } else { // sort
             if (!this.sort) return
             const offset = this.#checkboxes ? 1 : 0 //  column offset
@@ -562,7 +577,6 @@ class Table extends HTMLElement {
               }
               th.innerHTML = label // cannot textContent (need to parse the HTML)
             }
-
             this._trigger('sort')
           }
         }
@@ -604,7 +618,20 @@ class Table extends HTMLElement {
           tbody.onclick = (e) => {
             let target = e.target
             if (this.#checkboxes && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
-
+              if (target.type === 'checkbox') {
+                this.#checkedRows = [] //  clear first
+                for (let i = 0; i < tbody.children.length; i++) {
+                  const tr = tbody.children[i]
+                  const td = tr.firstChild
+                  if (td) {
+                    const checkbox = td.firstChild
+                    if (checkbox.type === 'checkbox' && checkbox.checked) {
+                      this.#checkedRows.push(i)
+                    }
+                  }
+                }
+                this.dispatchEvent(new CustomEvent('checked', { detail: this.#checkedRows }))
+              }
             } else {
               const offset = this.#checkboxes ? 1 : 0 //  column offset
               const col = target.cellIndex - offset // TD 0-index based column
@@ -622,12 +649,7 @@ class Table extends HTMLElement {
                   this.#selectedIndex = -1
                   this.selectedItem = null
                 } else {
-                  const cells = target.getElementsByTagName("td")
-                  data = {}
-                  for (let i = offset; i < cells.length; i++) {
-                    const key = this.#columns[i - offset].key
-                    data[key] = cells[i].textContent // no need innerHTML
-                  }  
+                  data = { ...this.#items[row] }
                   this.#selectedNode = target // set selected
                   this.#selectedIndex = row
                   this.selectedItem = { row, col, data }
@@ -655,11 +677,16 @@ class Table extends HTMLElement {
             let i = 0
             for (const col in row) {
               const td = document.createElement('td')
-              if (this.#columns[i].sticky) td.setAttribute('scope', 'row')
-              if (this.#columns[i].width) td.style.width = `${this.#columns[i].width}px`
-
+              const { sticky, width, render } = this.#columns[i]
+              if (sticky) td.setAttribute('scope', 'row')
+              if (width) td.style.width = `${this.#columns[i].width}px`
               i++
-              td.appendChild(document.createTextNode(row[col]))
+              // create the column content...
+              if (render) {
+                td.innerHTML = render(row[col])
+              } else {
+                td.appendChild(document.createTextNode(row[col]))
+              }
               tr.appendChild(td)
             }   
           }      

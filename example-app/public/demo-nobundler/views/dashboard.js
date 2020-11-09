@@ -13,6 +13,7 @@ const template = /*html*/`
     :items="table.items"
     :total="total"
     @rowClick="rowClick"
+    @checked="checked"
     @triggered="triggered"
     @cmd="cmd"
     style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;"
@@ -32,8 +33,10 @@ export default {
     const columns = reactive([
       {
         label: 'ID',
-        key: 'id'
-      },     
+        key: 'id',
+        render: (val) => '<a class="button" onclick="alert('+val+')">'+val+'<a>'
+        // can also fire off event
+      },
       {
         label: 'Name',
         key: 'name',
@@ -88,6 +91,9 @@ export default {
     const rowClick = (e) => {
       console.log('rowClick', e.detail)
     }
+    const checked = (e) => {
+      console.log('checked', e.detail)
+    }
     const triggered = (e) => {
       console.log('triggered', e.detail)
       page.value = e.detail.page
@@ -111,6 +117,7 @@ export default {
       table,
       total,
       rowClick,
+      checked,
       triggered,
       cmd
     }
