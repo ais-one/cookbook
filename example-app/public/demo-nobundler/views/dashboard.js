@@ -19,6 +19,17 @@ const template = /*html*/`
     style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;--bwc-navbar-bgcolor: lightgray;--bwc-filter-bgcolor: cyan;--bwc-th-bgcolor: pink;--bwc-td-bgcolor: white;"
     class="sticky-header sticky-column"
   ></bwc-table>
+  <hr/>
+  <bwc-table
+    commands="reload"
+    :pagination="false"
+    :sort="false"
+    :columns="columns"
+    :items="table.items"
+    :total="total"
+    style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;--bwc-navbar-bgcolor: lightgray;--bwc-filter-bgcolor: cyan;--bwc-th-bgcolor: pink;--bwc-td-bgcolor: white;"
+    class="sticky-header sticky-column"
+  ></bwc-table>
 </div>
 `
 

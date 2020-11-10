@@ -201,10 +201,10 @@ class Table extends HTMLElement {
 
   _setHeights () {
     // console.log(this.#navbarHeight, this.#filterHeight)
-    const el = document.querySelector('#filters')
+    const el = this.querySelector('#filters')
     if (!el) return
     el.style.top = `${this.#navbarHeight}px`
-    const nodes = document.querySelectorAll('.sticky-header #table-wrapper th')
+    const nodes = this.querySelectorAll('.sticky-header #table-wrapper th')
     for (let i = 0; i<nodes.length; i++) {
       // console.log('nodes', nodes[i])
       nodes[i].style.top = `${this.#navbarHeight + this.#filterHeight}px`
@@ -221,12 +221,12 @@ class Table extends HTMLElement {
     // if (this.required !== null) el.setAttribute('required', '')
 
     // Check for click events on the navbar burger icon
-    document.querySelector('.navbar-burger').onclick = () => {
+    this.querySelector('.navbar-burger').onclick = () => {
       // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-      document.querySelector('#table-navbar-burger').classList.toggle('is-active') // navbar-burger
-      document.querySelector('#table-navbar-menu').classList.toggle('is-active') // navbar-menu
+      this.querySelector('#table-navbar-burger').classList.toggle('is-active') // navbar-burger
+      this.querySelector('#table-navbar-menu').classList.toggle('is-active') // navbar-menu
     }
-    document.querySelector('#page-input').onblur = (e) => {
+    this.querySelector('#page-input').onblur = (e) => {
       const page = e.target.value
       if (page >= 1 && page <= this.#pages && Number(page) !== Number(this.page)) {
         this.page = page
@@ -236,34 +236,34 @@ class Table extends HTMLElement {
       }
     }
 
-    document.querySelector('#cmd-filter').onclick = () => {
+    this.querySelector('#cmd-filter').onclick = () => {
       this.#filterShow = !this.#filterShow
-      document.querySelector('#filters').style.display = this.#filterShow ? 'block': 'none'
+      this.querySelector('#filters').style.display = this.#filterShow ? 'block': 'none'
     }
 
     new ResizeObserver(entries => {
       this.#navbarHeight = entries[0].target.clientHeight
       this._setHeights()
-    }).observe(document.querySelector('#table-navbar'))
+    }).observe(this.querySelector('#table-navbar'))
 
     new ResizeObserver(entries => {
       this.#filterHeight = entries[0].target.clientHeight
       this._setHeights()
-    }).observe(document.querySelector('#filters')) // start observing a DOM node
+    }).observe(this.querySelector('#filters')) // start observing a DOM node
 
-    document.querySelector('#cmd-reload').onclick = () => this._trigger('reload') 
-    document.querySelector('#cmd-add').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'add' } }))
-    document.querySelector('#cmd-del').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'del', items: this.#checkedRows } }))
-    document.querySelector('#cmd-import').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'import' } }))
-    document.querySelector('#cmd-export').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'export', items: this.#checkedRows } }))
-    document.querySelector('#page-dec').onclick = (e) => {
+    this.querySelector('#cmd-reload').onclick = () => this._trigger('reload') 
+    this.querySelector('#cmd-add').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'add' } }))
+    this.querySelector('#cmd-del').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'del', items: this.#checkedRows } }))
+    this.querySelector('#cmd-import').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'import' } }))
+    this.querySelector('#cmd-export').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'export', items: this.#checkedRows } }))
+    this.querySelector('#page-dec').onclick = (e) => {
       if (this.page > 1) {
         this.page -= 1
         this._renderPageInput()
         this._trigger('page')
       }
     }
-    document.querySelector('#page-inc').onclick = (e) => {
+    this.querySelector('#page-inc').onclick = (e) => {
       console.log('inc page', this.page, this.#pages)
       if (this.page < this.#pages) {
         this.page += 1
@@ -271,7 +271,7 @@ class Table extends HTMLElement {
         this._trigger('page')
       }
     }
-    document.querySelector('#page-select').onchange = (e) => {
+    this.querySelector('#page-select').onchange = (e) => {
       console.log('page select', e.target.value)
       // recompute #pages
       // reset page?
@@ -285,18 +285,18 @@ class Table extends HTMLElement {
     if (!this.#sortKey) this.#sortKey = ''
     if (!this.#sortDir) this.#sortDir = ''
 
-    document.querySelector('#filters').style.display = this.#filterShow ? 'block': 'none'
-    if (!this.#pagination) document.querySelector('.pagination').style.display = 'none'
+    this.querySelector('#filters').style.display = this.#filterShow ? 'block': 'none'
+    if (!this.#pagination) this.querySelector('.pagination').style.display = 'none'
     if (!this.#commands || typeof this.#commands !== 'string') {
-      document.querySelector('#commands').style.display = 'none'
+      this.querySelector('#commands').style.display = 'none'
     }
     else {
-      document.querySelector('#cmd-reload').style.display = this.#commands.includes('reload') ? 'block' : 'none'
-      document.querySelector('#cmd-filter').style.display = this.#commands.includes('filter') ? 'block' : 'none'
-      document.querySelector('#cmd-add').style.display = this.#commands.includes('add') ? 'block' : 'none'
-      document.querySelector('#cmd-del').style.display = this.#commands.includes('del') ? 'block' : 'none'
-      document.querySelector('#cmd-import').style.display = this.#commands.includes('import') ? 'block' : 'none'
-      document.querySelector('#cmd-export').style.display = this.#commands.includes('export') ? 'block' : 'none'
+      this.querySelector('#cmd-reload').style.display = this.#commands.includes('reload') ? 'block' : 'none'
+      this.querySelector('#cmd-filter').style.display = this.#commands.includes('filter') ? 'block' : 'none'
+      this.querySelector('#cmd-add').style.display = this.#commands.includes('add') ? 'block' : 'none'
+      this.querySelector('#cmd-del').style.display = this.#commands.includes('del') ? 'block' : 'none'
+      this.querySelector('#cmd-import').style.display = this.#commands.includes('import') ? 'block' : 'none'
+      this.querySelector('#cmd-export').style.display = this.#commands.includes('export') ? 'block' : 'none'
     }
     
     this._render()
@@ -344,6 +344,7 @@ class Table extends HTMLElement {
   set pageSizeList (val) { this.#pageSizeList = val } // TBD emit event
   get items() { return this.#items }
   set items(val) {
+    console.log('set items')
     this.#items = val
     this._render()
     this._renderPageSelect()
@@ -364,12 +365,12 @@ class Table extends HTMLElement {
 
   _renderPages () {
     this.#pages = Math.ceil(this.total / this.pageSize)
-    const el = document.querySelector('#pages-span')
+    const el = this.querySelector('#pages-span')
     if (el) el.textContent = this.#pages
   }
 
   _renderPageSelect () {
-    const el = document.querySelector('#page-select')
+    const el = this.querySelector('#page-select')
     if (!el) return
     el.textContent = '' // remove all children
     this.pageSizeList.forEach(item => {
@@ -382,7 +383,7 @@ class Table extends HTMLElement {
   }
 
   _renderPageInput () {
-    const el = document.querySelector('#page-input')
+    const el = this.querySelector('#page-input')
     if (!el) return
     el.value = this.page
   }
@@ -411,7 +412,7 @@ class Table extends HTMLElement {
   }
 
   _renderFilters () {
-    const el = document.querySelector('#filters')
+    const el = this.querySelector('#filters')
     el.textContent = ''
     if (this.#filters.length) {
       for (let i=0; i < this.#filters.length; i++) {
@@ -493,7 +494,7 @@ class Table extends HTMLElement {
 
   _trigger (name) {
     const filters = []
-    const el = document.querySelector('#filters')
+    const el = this.querySelector('#filters')
     for (let i=0; i<el.children.length; i++) {
       const div = el.children[i]
       if (div.children.length >= 4) {
@@ -530,7 +531,7 @@ class Table extends HTMLElement {
   
   _render() {
     try {
-      const el = document.querySelector('#table-wrapper')
+      const el = this.querySelector('#table-wrapper')
       if (!el) return
       //<tfoot><tr><th><abbr title="Position">Pos</abbr></th>
 
@@ -556,7 +557,7 @@ class Table extends HTMLElement {
           let target = e.target
           if (this.#checkboxes && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
             this.#checkedRows = [] //  clear first
-            const tbody = document.querySelector('table tbody')
+            const tbody = this.querySelector('table tbody')
             for (let i = 0; i < tbody.children.length; i++) {
               const tr = tbody.children[i]
               const td = tr.firstChild
@@ -588,7 +589,7 @@ class Table extends HTMLElement {
             }
 
             // update header
-            const theadTr = document.querySelector('table thead tr')
+            const theadTr = this.querySelector('table thead tr')
             for (let i = offset; i < theadTr.children.length; i++) {
               const th = theadTr.children[i]
               let label = this.#columns[i - offset].label
