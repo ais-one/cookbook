@@ -16,7 +16,7 @@ const template = /*html*/`
     @checked="checked"
     @triggered="triggered"
     @cmd="cmd"
-    style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;"
+    style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;--bwc-navbar-bgcolor: lightgray;--bwc-filter-bgcolor: cyan;--bwc-th-bgcolor: pink;--bwc-td-bgcolor: white;"
     class="sticky-header sticky-column"
   ></bwc-table>
 </div>

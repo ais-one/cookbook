@@ -64,8 +64,12 @@ const template = /*html*/`
           <li><a>Members</a></li>
         </ul>
       </li>
-      <li><a>Authentication</a></li>
-      <li v-for="n of 30"><a>Testing</a></li>
+      <li>
+        <a @click="menu1 = !menu1">{{ menu1 ? '+' : '-' }} Tests</a>
+        <ul v-show="menu1">
+          <li v-for="n of 30"><a>Testing</a></li>
+        </ul>
+      </li>
     </ul>
   </aside>
   <div class="column content nice-scroll">
@@ -87,6 +91,7 @@ export default {
     const store = useStore()
     const router = useRouter()
     const showSide = ref(true)
+    const menu1 = ref(false)
 
     onMounted(async () => {
       console.log('Secure mounted!')
@@ -125,6 +130,7 @@ export default {
       clickLogo,
       clickBurger,
       showSide,
+      menu1,
       logout
     }
   }

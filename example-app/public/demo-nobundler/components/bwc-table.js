@@ -17,6 +17,10 @@
 // --bwc-table-width: 100%
 // --bwc-table-overflow: auto
 // --bwc-table-height: 100%
+// --bwc-navbar-bgcolor: white
+// --bwc-filter-bgcolor: white
+// --bwc-th-bgcolor: white
+// --bwc-td-bgcolor: white
 
 // NOT NEEDED
 // loading state and loading spinner
@@ -57,7 +61,7 @@ template.innerHTML = `
   top: 0;
   left: 0px;
   z-index: 2;
-  background-color: lightgray !important;
+  background-color: var(--bwc-navbar-bgcolor, lightgray) !important;
 }
 #table-wrapper #filters {
   position: -webkit-sticky;
@@ -65,14 +69,19 @@ template.innerHTML = `
   top: 56px;
   left: 0px;
   z-index: 2;
-  background-color: cyan;
+  background-color: var(--bwc-filter-bgcolor, white);
+}
+#table-wrapper th {
+  background-color:  var(--bwc-th-bgcolor, white);
+}
+#table-wrapper td {
+  background-color:  var(--bwc-td-bgcolor, white);
 }
 .sticky-header #table-wrapper th {
   position: -webkit-sticky;
   position: sticky;
   top: 56px; /* nav height - TBD filter height*/
   z-index: 2;
-  background-color: red;
 }
 .sticky-column #table-wrapper th[scope=row] {
   position: -webkit-sticky;
@@ -87,7 +96,6 @@ template.innerHTML = `
   position: sticky;
   left: 0;
   z-index: 1;
-  background-color: yellow;
 }
 </style>
 <div id="table-wrapper">
