@@ -58,8 +58,8 @@ const template = /*html*/`
     <ul class="menu-list">
       <li><a>Team Settings</a></li>
       <li>
-        <a>Manage Your Team</a>
-        <ul>
+        <a @click="menu0 = !menu0">{{ menu0 ? '+' : '-' }} Manage Your Team</a>
+        <ul v-show="menu0">
           <li><a>Managers</a></li>
           <li><a>Members</a></li>
         </ul>
@@ -91,7 +91,8 @@ export default {
     const store = useStore()
     const router = useRouter()
     const showSide = ref(true)
-    const menu1 = ref(false)
+    const menu0 = ref(false)
+    const menu1 = ref(true)
 
     onMounted(async () => {
       console.log('Secure mounted!')
@@ -130,6 +131,7 @@ export default {
       clickLogo,
       clickBurger,
       showSide,
+      menu0,
       menu1,
       logout
     }
