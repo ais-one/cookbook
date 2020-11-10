@@ -19,8 +19,13 @@
 // --bwc-table-height: 100%
 // --bwc-navbar-bgcolor: white
 // --bwc-filter-bgcolor: white
+// --bwc-filter-color: black
 // --bwc-th-bgcolor: white
-// --bwc-td-bgcolor: white
+// --bwc-th-color: black
+// --bwc-td-bgcolor: transparent
+// --bwc-td-color: black
+// --bwc-td--select-bgcolor: lightgret
+// --bwc-td-select-color: black
 
 // PROPERTIES
 // commands="reload,filter"
@@ -61,7 +66,7 @@ template.innerHTML = `
   top: 0;
   left: 0px;
   z-index: 2;
-  background-color: var(--bwc-navbar-bgcolor, lightgray) !important;
+  background-color: var(--bwc-navbar-bgcolor, lightslategray) !important;
 }
 #table-wrapper #filters {
   position: -webkit-sticky;
@@ -70,12 +75,19 @@ template.innerHTML = `
   left: 0px;
   z-index: 2;
   background-color: var(--bwc-filter-bgcolor, white);
+  color: var(--bwc-filter-color, black);
 }
 #table-wrapper th {
   background-color:  var(--bwc-th-bgcolor, white);
+  color: var(--bwc-th-color, black);
 }
-#table-wrapper td {
-  background-color:  var(--bwc-td-bgcolor, white);
+#table-wrapper tr td {
+  background-color:  var(--bwc-td-bgcolor, transparent);
+  color: var(--bwc-td-color, black);
+}
+#table-wrapper tr.is-selected td {
+  background-color:  var(--bwc-td-select-bgcolor, lightgrey);
+  color: var(--bwc-td-select-color, black);
 }
 .sticky-header #table-wrapper th {
   position: -webkit-sticky;
