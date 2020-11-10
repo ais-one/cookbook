@@ -22,9 +22,6 @@
 // --bwc-th-bgcolor: white
 // --bwc-td-bgcolor: white
 
-// NOT NEEDED
-// loading state and loading spinner
-
 // PROPERTIES
 // commands="reload,filter"
 // :pagination="true"
@@ -43,6 +40,9 @@
 // triggered = sort / page / page-size / reload { detail: { name, sortKey, sortDir, page, pageSize, filters: [ { key, op, val, andOr } ] } }
 // cmd = show/hide filter, reload, add, delete, upload, download, goback (if parentKey != null)
 // checked = [indexes checked...]
+
+// NOT NEEDED
+// loading state and loading spinner
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -240,10 +240,10 @@ class Table extends HTMLElement {
     }).observe(document.querySelector('#filters')) // start observing a DOM node
 
     document.querySelector('#cmd-reload').onclick = () => this._trigger('reload') 
-    document.querySelector('#cmd-add').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { cmd: 'add' }))
-    document.querySelector('#cmd-del').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { cmd: 'del', detail: [] }))
-    document.querySelector('#cmd-import').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { cmd: 'import' }))
-    document.querySelector('#cmd-export').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { cmd: 'export', detail: [] }))
+    document.querySelector('#cmd-add').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'add' } }))
+    document.querySelector('#cmd-del').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'del', items: this.#checkedRows } }))
+    document.querySelector('#cmd-import').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'import' } }))
+    document.querySelector('#cmd-export').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'export', items: this.#checkedRows } }))
     document.querySelector('#page-dec').onclick = (e) => {
       if (this.page > 1) {
         this.page -= 1
