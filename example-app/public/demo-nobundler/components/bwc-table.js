@@ -49,6 +49,9 @@
 // NOT NEEDED
 // loading state and loading spinner
 
+// NOTES
+// do not use document.querySelector, use this.querySelector
+
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
@@ -695,21 +698,18 @@ class Table extends HTMLElement {
               tr.appendChild(td)
             }
 
-            let i = 0
-            for (const col in row) {
+            for (let col of this.#columns) {
+              const { key, sticky, width, render } = col
               const td = document.createElement('td')
-              const { sticky, width, render } = this.#columns[i]
-              if (sticky) td.setAttribute('scope', 'row')
-              if (width) td.style.width = `${this.#columns[i].width}px`
-              i++
-              // create the column content...
+              // if (sticky) td.setAttribute('scope', 'row') // not used yet, need to calculate left property value
+              if (width) td.style.width = `${width}px`
               if (render) {
-                td.innerHTML = render(row[col])
+                td.innerHTML = render(row[key])
               } else {
-                td.appendChild(document.createTextNode(row[col]))
+                td.appendChild(document.createTextNode(row[key]))
               }
               tr.appendChild(td)
-            }   
+            }
           }      
         }
       }

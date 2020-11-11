@@ -34,7 +34,7 @@
     "lint:fix": "eslint --fix --no-fix-warnings --no-report-warnings ."
   },
   "dependencies": {
-    "@google-cloud/storage": "^5.4.0",
+    "@google-cloud/storage": "^5.5.0",
     "agenda": "^3.1.0",
     "apollo-server-express": "^2.19.0",
     "axios": "^0.21.0",
@@ -50,7 +50,7 @@
     "graphql": "^15.4.0",
     "helmet": "^4.2.0",
     "http-proxy-middleware": "^1.0.6",
-    "json2csv": "^5.0.3",
+    "json2csv": "^5.0.4",
     "jsonwebtoken": "^8.5.1",
     "kafkajs": "^1.14.0",
     "keyv": "^4.0.3",
