@@ -125,6 +125,9 @@ function isEmail(email) {
   return /[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/.test(email);
 }
 
+// universal end-of-line splitter
+// .split(/\r?\n/)
+
 const foo = Math.PI + Math.SQRT2
 
 export { foo, makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle, isEmail }

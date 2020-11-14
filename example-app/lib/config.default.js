@@ -113,7 +113,7 @@ global.CONFIG.PROXY_WWW_ORIGIN = '' // 'http://127.0.0.1:8080', // used by proxy
 global.CONFIG.WEB_STATIC = [  // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
   // options does not seem to work
   // check - https://expressjs.com/en/4x/api.html#express.static
-  { folder: APP_PATH + '/public/demo-nobundler', url: '/demo-nobundler', options: { extensions: ['html'], index: false } },
+  { folder: '../demo-nobundler', url: '/demo-nobundler', options: { extensions: ['html'], index: false } },
   { folder: APP_PATH + '/lib/esm', url: '/js' },
   { folder: APP_PATH + '/public/demo-express', url: '/' }
 ]
