@@ -172,7 +172,6 @@ const addPayloadFromUserData = (user) => { // obtain additional information from
 
 const login = async (req, res) => {
   try {
-    // console.log(AUTH_USER_FIELD_LOGIN, req.body)
     const user = await findUser({
       [AUTH_USER_FIELD_LOGIN]: req.body[AUTH_USER_FIELD_LOGIN]
     })

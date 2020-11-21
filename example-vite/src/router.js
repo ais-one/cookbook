@@ -47,7 +47,8 @@ const authGuard = (to, from, next) => {
   }
 }
 
-const routerHistory = createWebHistory()
+// const routerHistory = createWebHistory()
+const routerHistory = createWebHistory('/vite/')
 
 const router = createRouter({
   history: routerHistory,

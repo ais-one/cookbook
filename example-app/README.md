@@ -93,7 +93,6 @@ POST /api/uploads
 +- models/
 +- public/ : for serving static files - website
 |  +- demo-express/ (127.0.0.1/)
-|  +- demo-nobundler/
 +- router/
 +- sandbox/ : Useful scripts
 +- tests/ : Jest tests

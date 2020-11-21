@@ -114,10 +114,10 @@ global.CONFIG.WEB_STATIC = [  // serve website from folder, blank if do not serv
   // options does not seem to work
   // check - https://expressjs.com/en/4x/api.html#express.static
   { folder: '../common-lib/esm', url: '/esm' },
-  { folder: '../demo-nobundler', url: '/demo-nobundler', options: { extensions: ['html'], index: false } },
-  { folder: '../example-vite/dist', url: '/', options: { extensions: ['html'], index: false } },
+  { folder: '../example-nobundle', url: '/nobundle', options: { extensions: ['html'], index: false } },
+  { folder: '../example-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
   { folder: APP_PATH + '/lib/esm', url: '/js' },
-  // { folder: APP_PATH + '/public/demo-express', url: '/' }
+  { folder: APP_PATH + '/public/demo-express', url: '/' }
 ]
 
 global.CONFIG.UPLOAD_STATIC = [
