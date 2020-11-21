@@ -1,10 +1,9 @@
 ### Version 0.4.4
 - [chore] update packages & cleanup & work on improving documentation
-- [example-nobundle] from demo-nobundler
-- [example-all] implement saml callback and configs
-- [example-vite] remove oruga (not ready for vue3+vite)
-- [example-app] improve vanilla app
+- [example-nobundle] from demo-nobundler, add bulma and improve visuals
+- [example-vite] remove oruga (not ready for vue3+vite), implement saml callback and configs
 - [bulma-web-components] created bwc-autocomplete and bwc-table (based on bulma) in example-nobundle
+- [example-app] clean up backend
 
 ### Version 0.4.3
 - [chore] update packages & cleanup & work on improving documentation

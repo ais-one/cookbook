@@ -15,16 +15,11 @@ const CACHE_NAME_DYNAMIC = 'example-app-vite-cache-dynamic-v1.0.0'
 
 const cacheFilesStatic = [
   './',
-  './index.html',
-  './manifest.json'
-  // '/css/style.css',
-  // '/js/app.js',
-  // '/images/recipe1.jpg',
-  // '/images/recipe2.jpg',
-  // '/images/recipe3.jpg',
-  // '/images/recipe4.jpg',
-  // '/images/recipe5.jpg',
-  // '/images/recipe6.jpg',
+  'index.html',
+  'manifest.json'
+  // 'css/style.css',
+  // 'js/app.js',
+  // 'images/recipe1.jpg',
 ]
 
 // SW install and cache static assets
@@ -184,7 +179,7 @@ self.addEventListener('push', function (e) {
   const notificationOptions = {
     body: `Time is the message: ${message}`,
     // we use the images from the PWA generator we made
-    icon: '/images/icons/icon-512x512.png',
+    // icon: '/img/icons/icon-512x512.png',
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),

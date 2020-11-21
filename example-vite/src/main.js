@@ -18,6 +18,10 @@ import '@vaadin/vaadin-grid'
 import '@vaadin/vaadin-grid/vaadin-grid-selection-column'
 import '@vaadin/vaadin-grid/vaadin-grid-sort-column'
 
+// pwa
+import '../firebase.config.js'
+import '../pwa-init.js'
+
 // our own web components
 import '../../common-lib/esm/loading-overlay.js' // served from express /esm static route - Why is it not displaying in build?
 import './components/mwc-autocomplete.js'

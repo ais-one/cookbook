@@ -35,7 +35,7 @@ import { useI18n } from '/src/plugins/i18n.js'
 import { useWs } from '/src/plugins/ws.js'
 
 import { samlLogin } from '../../../common-lib/esm/saml.js' // served from express /esm static route
-import apollo from '/src/lib/esm-toremove/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
+import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
 import { DO_HELLO } from '/src/queries.js'
 
 import { VITE_CALLBACK_URL } from '/config.js'

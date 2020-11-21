@@ -227,17 +227,19 @@ If too many config properties, split it to other more and files
 
 ```
 vue-crud-x
-+- common-lib/ : contains document to indicate which are the common libraries
++- common-lib/ : common libraries
+|  +- esm/ : es modules
 +- docker-devenv/ : docker for development environment (e.g. run redis, mongodb from here)
 |  +- mongodb
 +- docs/ : documentation
 +- example-app : example backend - See example-app/README.md - Project Structure
 +- example-spa/ : frontend associated to the application
-|  +- lib/ : common libs
-|  |  |  +- webpacked/ : webpacked components for frontend (including vue-crud-x)
+|  +- lib/
+|  |  +- webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
 +- example-nobundle/ : frontend associated to backend - no bundle
 +- example-vite/ : frontend associated to backend - See example-vite/README.md - Project Structure
-|  +- <your other front end here>
+|  +- lib/
+|  |  +- esm-rollup/ : rolled up components for frontend (e.g. apollo.js)
 +- k8s/ : kubernetes YAML files (WIP)
 +- .editorconfig
 +- .gitignore
