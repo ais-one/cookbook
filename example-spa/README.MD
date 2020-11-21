@@ -33,8 +33,3 @@ above not needed, just use "npm run build -- --report"
 ## Remove console.log in production build
 
 https://forum.vuejs.org/t/remove-console-logs-from-production-buils/39327
-
-fibers         4.0.3   4.0.3   5.0.0  example-spa
-jwt-decode     2.2.0   2.2.0   3.1.2  example-spa
-sass-loader    8.0.2   8.0.2  10.1.0  example-spa
-vuetify 2.3.16

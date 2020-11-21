@@ -14,6 +14,7 @@ We will find a better way of updating to have correct CI the following folders s
 - example-app
 - example-vite
 - example-spa
+- example-nobundle
 
 
 

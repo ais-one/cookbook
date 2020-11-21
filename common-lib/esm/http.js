@@ -33,7 +33,6 @@ const fetch_retry = async (url, options, n) => {
 */
 
 const parseUrl = (url) => {
-  console.log('parseUrl', url, baseUrl)
   let urlPath = url
   let urlOrigin = baseUrl
   let urlFull = baseUrl + urlPath

@@ -13,7 +13,7 @@ module.exports = {
     '/common-lib/esm': {
       target: 'http://127.0.0.1:3000',
       changeOrigin: true,
-      rewrite: path => path.replace(/^\/common-lib\/esm/, '/esm')
+      rewrite: (path) => path.replace(/^\/common-lib\/esm/, '/esm')
     }
   },
   base: '/vite',
@@ -39,7 +39,7 @@ module.exports = {
   },
   rollupInputOptions: {
     external: [
-      'react', // ignore react stuff
+      'react' // ignore react stuff
     ]
   }
 }

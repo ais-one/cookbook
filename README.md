@@ -2,14 +2,14 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
 
-Latest Version [0.4.4](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.4) - Released 2020 Oct 25 0145 +8GMT
+Latest Version [0.4.4](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.4) - Released 2020 Nov 25 0145 +8GMT
 
 # Features
 
 - Frontend Examples
   - [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
   - [SPA & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP
-  - [Vanilla JS, ES Modules](https://github.com/ais-one/vue-crud-x/tree/master/example-app/public): No bundler, scalable VueJS Application , example codes (signed uploads, JWT refresh token, OTP)
+  - [Vanilla JS, ES Modules](https://github.com/ais-one/vue-crud-x/tree/master/example-nobundle): No bundler, scalable VueJS Application, example codes (signed uploads, JWT refresh token, OTP)
 - [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/)
   - Cors, proxy middleware, helmet, error handling, logging, OpenAPI
   - Objection ORM, Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis
@@ -20,15 +20,22 @@ Latest Version [0.4.4](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.4)
   - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, **NEW** Passport SAML
   - Unit Test & Integration Test
 - Development & Deployment
-  - **NEW** [Mysql](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/mysql)
-  - **NEW** [Saml IDP](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/saml)
-  - **NEW** [hashicorp vault](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/vault) & [secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
   - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
   - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/mongodb) of mongodb with replica set, mysql, saml IDP, kafka
+    - [MongoDB](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/mongodb) of mongodb with replica set, mysql, saml IDP, kafka
+    - [Mysql](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/mysql)
+    - [Saml IDP](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/saml)
+    - [hashicorp vault](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/vault) & [secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
   - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
 
 
 # QUICK START - ON YOUR LOCAL MACHINE
+
+Docker is required to test
+- mongodb
+- saml
+- hashicorp vault
+- kafka
 
 ## Backend & SPA or Vite
 
@@ -56,7 +63,7 @@ npm run app:unix # linux or mac
 **Visit the following URLs**
 - http://127.0.0.1:3000/api/healthcheck - app is running normally
 - http://127.0.0.1:3000/api-docs - OpenAPI UI 
-- http://127.0.0.1:3000 - Website served by Express with functional samples and demos at 
+- http://127.0.0.1:3000 - Website served by Express with functional samples and demos (click on link to view **nobundle** app or link to view **vite production build** app)
 
 **NOTES**
 - MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
@@ -228,6 +235,7 @@ vue-crud-x
 +- example-spa/ : frontend associated to the application
 |  +- lib/ : common libs
 |  |  |  +- webpacked/ : webpacked components for frontend (including vue-crud-x)
++- example-nobundle/ : frontend associated to backend - no bundle
 +- example-vite/ : frontend associated to backend - See example-vite/README.md - Project Structure
 |  +- <your other front end here>
 +- k8s/ : kubernetes YAML files (WIP)

@@ -18,8 +18,7 @@ export default {
       console.log('Callback mounted!', route.hash, route) // deal with hashes here if necessary
     })
 
-    return {
-    }
+    return {}
   }
 }
 </script>
