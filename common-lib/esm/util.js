@@ -122,12 +122,21 @@ function throttle(fn, wait) {
 }
 
 function isEmail(email) {
-  return /[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/.test(email);
+  // return /[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/.test(email)
+  return /[\w\d-]+@[\w\d-]+\.[\w\d-]+/.test(email)
 }
 
 // universal end-of-line splitter
 // .split(/\r?\n/)
 
+const obj2Qs = (obj) =>
+  Object.keys(obj)
+    .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
+    .join('&')
+
+const utf8toBase64 = (str) => Buffer.from(str, 'utf8').toString('base64')
+const base64toUtf8 = (str) => Buffer.from(str, 'base64').toString('utf8')
+
 const foo = Math.PI + Math.SQRT2
 
-export { foo, makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle, isEmail }
+export { foo, makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle, isEmail, obj2Qs }

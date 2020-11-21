@@ -1,7 +1,5 @@
 import { parseUrl } from './http.js'
 
-import { VITE_CALLBACK_URL } from '/config.js'
-
 const val = () => {
   // try catch
   // let token = window.location.hash.substring(1) // (new URL(window.location.href)).searchParams.get('token')
@@ -10,14 +8,15 @@ const val = () => {
   // else thi.setToken(token)
 }
 
-export const samlLogin = () => {
+export const samlLogin = (callbackUrl) => {
+  // alert(callbackUrl)
   const port = window.location.port === 443 || window.location.port === 80 ? '' : ':' + window.location.port
-  const redirect = window.location.protocol + '//' + window.location.hostname + port + VITE_CALLBACK_URL
+  const redirect = window.location.protocol + '//' + window.location.hostname + port + callbackUrl // + VITE_CALLBACK_URL
   const { urlFull } = parseUrl(`/api/saml/login?redirect_to=${redirect}&groups=&expiry=`)
   window.location.assign(urlFull)
 }
-// logout - cleartoken - window.location.replace('https://adfc.test.com/adfs/ls/?wa=wsignout1.0&wreply='+ encodeURIComponent(LOGOUT_URL))
 
+// logout - cleartoken - window.location.replace('https://adfc.test.com/adfs/ls/?wa=wsignout1.0&wreply='+ encodeURIComponent(LOGOUT_URL))
 // mounted
 //   import Abc from './asdasd.js'
 //   let abc = new Abc(conf)

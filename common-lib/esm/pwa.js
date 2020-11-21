@@ -1,6 +1,8 @@
 // FCM
-import { firebase } from '@firebase/app'
-import '@firebase/messaging'
+// import firebase from 'https://www.gstatic.com/firebasejs/8.1.0/firebase-app.js'
+// import 'https://www.gstatic.com/firebasejs/8.1.0/firebase-messaging.js'
+// import { firebase } from '@firebase/app'
+// import '@firebase/messaging'
 // CONFIG_FIREBASE_CLIENT, CONFIG_VAPID_KEY is global from firebase.config.js
 
 let firebaseApp

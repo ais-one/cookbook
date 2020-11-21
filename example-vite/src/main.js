@@ -19,7 +19,7 @@ import '@vaadin/vaadin-grid/vaadin-grid-selection-column'
 import '@vaadin/vaadin-grid/vaadin-grid-sort-column'
 
 // our own web components
-import './lib/esm/loading-overlay.js' // global import
+import '../../common-lib/esm/loading-overlay.js' // served from express /esm static route - Why is it not displaying in build?
 import './components/mwc-autocomplete.js'
 import './components/mwc-multiselect.js'
 import './components/mwc-fileupload.js'

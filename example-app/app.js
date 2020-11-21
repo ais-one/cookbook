@@ -24,6 +24,7 @@ const mongodb = require(LIB_PATH + '/services/db/mongodb').open()
 const websocket = require(LIB_PATH + '/services/websocket').open(null, null) // or set to null
 const agenda = require(LIB_PATH + '/services/mq/agenda').open()
 const bull = require(LIB_PATH + '/services/mq/bull').open()
+// const hazelcast = require(LIB_PATH + '/services/db/hazelcast').open()
 
 const shutdown = async () => {
   try {
@@ -32,6 +33,7 @@ const shutdown = async () => {
     await bull.close()
     await mongodb.close()
     await objection.close()
+    // await hazelcast.close()
     // TBD does apollo graphql have a shutdown?
     await sleep(10) // wait awhile more for things to settle
     console.log('Server close done')
@@ -44,7 +46,8 @@ require(LIB_PATH + '/express/shutdown')(server, shutdown)
 
 require(LIB_PATH + '/express/preRoute')(app)
 
-require(LIB_PATH + '/express/saml')(app) // samlRoute PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token
+const { SAML_ISSUER } = global.CONFIG
+if (SAML_ISSUER) require(LIB_PATH + '/express/saml')(app) // samlRoute PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token
 
 try {
   require(APP_PATH + '/router')(app)

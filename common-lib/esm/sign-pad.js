@@ -14,6 +14,7 @@ class SignPad extends HTMLElement {
     const shadowRoot = this.attachShadow({ mode: 'open' })
     shadowRoot.appendChild(template.content.cloneNode(true))
 
+    console.log('SIGNPAD SIGNPAD SIGNPAD SIGNPAD SIGNPAD SIGNPAD')
     this.mouse = {
       current: { x: 0, y: 0 },
       previous: { x: 0, y: 0 },
@@ -64,6 +65,7 @@ class SignPad extends HTMLElement {
     // const bg_rule = styleSheetList[0].cssRules[0]
     // const yyy = context_rule.style.getPropertyValue('--vcxwc-sign-pad-background-color')
     // console.log('bg', bg_rule.style.backgroundColor, yyy)
+    console.log('SIGNPAD SIGNPAD SIGNPAD SIGNPAD SIGNPAD SIGNPAD 222222222222222222222222')
 
     // console.log('connect sign')
     this.mouse = {

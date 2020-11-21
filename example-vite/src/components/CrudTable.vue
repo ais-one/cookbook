@@ -130,8 +130,8 @@
 // TBD show all...
 // TBD inline edits
 // TBD table columns with joined values, virtual columns...
-import { debounce, downloadData } from '/src/lib/esm/util.js'
-import { validate } from '/src/lib/esm/validate.js'
+import { debounce, downloadData } from '../../../common-lib/esm/util.js' // served from express /esm static route
+import { validate } from '../../../common-lib/esm/validate.js' // served from express /esm static route
 import { useXhr } from '/src/plugins/xhr.js'
 
 import { onMounted, ref, reactive, onUnmounted } from 'vue'

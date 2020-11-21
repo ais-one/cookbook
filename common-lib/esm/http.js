@@ -33,17 +33,17 @@ const fetch_retry = async (url, options, n) => {
 */
 
 const parseUrl = (url) => {
+  console.log('parseUrl', url, baseUrl)
   let urlPath = url
-  let urlFull = baseUrl + urlPath
   let urlOrigin = baseUrl
+  let urlFull = baseUrl + urlPath
   try {
     // need try here
-    const { origin, pathname } = new URL(url) // http://example.com:3001/abc/ees
+    const { origin = '', pathname = '' } = new URL(url) // http://example.com:3001/abc/ees
     urlOrigin = origin
     urlPath = pathname
     urlFull = origin + pathname
   } catch (e) {
-    // no need to throw anything here
   }
   return { urlOrigin, urlPath, urlFull }
 }
@@ -52,6 +52,8 @@ const http = async (method, url, body = null, query = null, headers = null) => {
   // settle the URL
   // http://example.com:3001/abc/ees, /abc/ees
   const { urlOrigin, urlPath, urlFull } = parseUrl(url)
+
+  console.log('http', url, urlOrigin, urlPath, urlFull)
 
   try {
     const controller = new AbortController()

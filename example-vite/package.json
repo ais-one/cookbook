@@ -19,9 +19,7 @@
     "deploy:unix": "deploy.sh $npm_package_config_env"
   },
   "dependencies": {
-    "@apollo/client": "^3.2.5",
-    "@firebase/app": "^0.6.13",
-    "@firebase/messaging": "^0.7.3",
+    "@apollo/client": "^3.2.7",
     "@material/mwc-button": "^0.19.1",
     "@material/mwc-dialog": "^0.19.1",
     "@material/mwc-drawer": "^0.19.1",
@@ -32,8 +30,7 @@
     "@material/mwc-select": "^0.19.1",
     "@material/mwc-textfield": "^0.19.1",
     "@material/mwc-top-app-bar-fixed": "^0.19.1",
-    "@shoelace-style/shoelace": "^2.0.0-beta.22",
-    "@vaadin/vaadin-grid": "^5.7.6",
+    "@vaadin/vaadin-grid": "^5.7.7",
     "echarts": "^4.9.0",
     "graphql": "^15.4.0",
     "graphql-tag": "^2.11.0",
@@ -47,14 +44,14 @@
     "@vue/compiler-sfc": "^3.0.2",
     "eslint": "^7.13.0",
     "eslint-config-prettier": "^6.15.0",
-    "eslint-config-standard": "^16.0.1",
+    "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.1.0",
     "eslint-plugin-vue": "^7.1.0",
-    "prettier": "^2.1.2",
+    "prettier": "^2.2.0",
     "vite": "^1.0.0-rc.9"
   }
 }

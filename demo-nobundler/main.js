@@ -7,6 +7,9 @@ import router from './router.js'
 import store from './store.js'
 import App from './app.js'
 
+// import * as sleep from '/esm/sleep.js' // served from express /esm static route
+// console.log(sleep)
+
 const { createApp } = Vue
 
 const app = createApp(App)
