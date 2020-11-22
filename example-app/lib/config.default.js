@@ -116,6 +116,7 @@ global.CONFIG.WEB_STATIC = [  // serve website from folder, blank if do not serv
   { folder: '../common-lib/esm', url: '/esm' },
   { folder: '../example-nobundle', url: '/nobundle', options: { extensions: ['html'], index: false } },
   { folder: '../example-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
+  { folder: '../example-spa/dist', url: '/spa', options: { extensions: ['html'], index: false } },
   { folder: APP_PATH + '/lib/esm', url: '/js' },
   { folder: APP_PATH + '/public/demo-express', url: '/' }
 ]

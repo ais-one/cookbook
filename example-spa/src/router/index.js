@@ -5,6 +5,7 @@ import AuthGuard from './auth-guard'
 Vue.use(Router)
 
 export default new Router({
+  base: '/spa/',
   routes: [
     // route level code splitting, components are lazy loaded using import
     { path: '/callback', name: 'callback', component: () => import('@/pages/Callback') },

@@ -37,7 +37,7 @@ Docker is required to test
 - hashicorp vault
 - kafka
 
-## Backend & SPA or Vite
+## Backend, SPA, Vite, No Bundler
 
 ### Backend Setup & Run
 
@@ -60,17 +60,22 @@ npm run app # windows
 npm run app:unix # linux or mac
 ```
 
+**NOTES**
+- MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
+- The **example-app/config/secret/*.inv,js** files not present. So there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. Use the README.md to fill up
+
 **Visit the following URLs**
 - http://127.0.0.1:3000/api/healthcheck - app is running normally
 - http://127.0.0.1:3000/api-docs - OpenAPI UI 
 - http://127.0.0.1:3000 - Website served by Express with functional samples and demos (click on link to view **nobundle** app or link to view **vite production build** app)
 
-**NOTES**
-- MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
-- The **example-app/config** folder contents is missing so there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. Use the README.md to fill up
+
+### Nobundler
+
+Navigate to http://127.0.0.1:8080/nobundle to view application
 
 
-### SPA Setup & Run
+### Webpack SPA Setup & Run - development environment
 
 ```bash
 cd example-spa
@@ -78,14 +83,14 @@ npm i
 npm run serve
 ```
 
-Navigate to http://127.0.0.1:8080 to view application with VueCrudX demo 
+Navigate to http://127.0.0.1:8080/spa to view application with VueCrudX demo 
 
 Login using the following:
 - User: test
 - Password: test
 - OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin
 
-### Vite Setup & Run
+### Vite SPA Setup & Run - development environment
 
 [Why Use Vite](https://indepth.dev/a-note-on-vite-a-very-fast-dev-build-tool/)
 
@@ -101,30 +106,60 @@ npm i
 npm run dev
 ```
 
-Navigate to http://127.0.0.1:8080 to view application
+Navigate to http://127.0.0.1:8080/vite to view application
 
 Login is same as SPA
 
-You can test PWA Push notifications using webpush on Dashboard page (need to be on 127.0.0.1). Click the following buttons in order (see their output in console.log and screen):
+You can test PWA Push notifications using Webpush or FCM () on Dashboard page depending on **.env.<environment>** file configuration (need to be on 127.0.0.1).
+
+Click the following buttons in order (see their output in console.log and screen):
 - sub PN (subscribe)
 - Test PN (send a test message to user id 1 - on sqlite)
 - Unsub PN (unsubscribe)
 
-### Why No SSR or SSG
+### Vite SPA Production Build
+
+```bash
+cd example-vite
+npm run build
+```
+
+**example-app** should be running
+
+Navigate to http://127.0.0.1:3000/vite/
+
+### Webpack SPA production build
+
+From vue-crud-x folder
+
+```bash
+cd example-spa
+npm run build
+```
+
+**example-app** should be running
+
+Navigate to http://127.0.0.1:3000/spa/
+
+---
+
+## Why No SSR or SSG
 
 - potential slow rendering by server app, added complexity in code, rehydration errors, added complexity in server
 - https://github.com/nuxt/nuxt.js/issues/8102
 - prefer static sites and lazy loaded SPA
 
-### SAML
+## SAML
 
 Refer to link below on how to try out...
 - https://github.com/ais-one/vue-crud-x/blob/develop/docker-devenv/saml/docker-compose.yml
+- You can test out on the **example-vite** Signin UI, clicking on SAML button to see redirect callback
 
 Codes are use in...
 - https://github.com/ais-one/vue-crud-x/blob/develop/example-app/app.js
 - https://github.com/ais-one/vue-crud-x/blob/develop/example-app/lib/express/saml.js
 - https://github.com/ais-one/vue-crud-x/blob/develop/example-app/router/saml.js
+
 
 ## Testing
 
@@ -153,51 +188,23 @@ npm run process-cron # windows
 npm run process-cron:unix # linux or mac
 ```
 
-## To serve the VueJS SPA production build
-
-From vue-crud-x folder
-
-```bash
-cd example-spa
-npm run build
-```
-
-From vue-crud-x folder
-
-```bash
-cd example-spa
-npm run build
-mv dist ../example-app/public/
-```
-
-Change or add (if property not present) to **example-app/config/.development.env.js** file contents
-
-```js
-  //...
-  WEB_STATIC: [
-    //...
-    // REMOVE OR COMMENT THIS { folder: APP_PATH + '/public/demo-express', url: '/' },
-    { folder: APP_PATH + '/public/dist', url: '/' }, // ADD THIS
-    //...
-  ]
-  //...
-```
-
 ---
 
 ## Using The Common Libraries In Your Own Application
 
-1. see example-app for backend example
+1. **example-app** for backend example
   - **example-app/lib/esm** for common ESM codes to be used by express applications
   - **example-app/lib/<all_others>** for common CJS codes to be used by express applications
 
-2. see **example-app/public** for vanillaJS frontend exxample
+2. **example-nobundler** for vanillaJS frontend example
 
-3. see **example-vite** for Vite Vue3 frontend example
-  - **example-vite/lib/esm** for common codes to be used by Vite Vue 3 (should have same contents as **example-app/lib/esm**)
+3. **example-vite** for Vite Vue3 frontend example
+  - **example-vite/lib/rollup** for common codes to be used by Vite Vue 3 (should have same contents as **example-app/lib/esm**)
 
-4. see **example-spa** for Webpack Vue2 frontend example
+4. **example-spa** for Webpack Vue2 frontend example
   - **example-spa/lib/webpacked** for common codes to be used by Webpacked Vue 2 applications
+
+5. **common-lib/esm** for common javascript libraries using ES Modules
 
 
 ## Environment Settings
