@@ -166,7 +166,7 @@ export default {
       try {
         let subscription
         if (VITE_PWA_PN === 'FCM') {
-          subscription = await fcmSubscribe(async (token) => {
+          subscription = await fcmSubscribe(window.SW_REG, async (token) => {
             await http.post('/api/webpush/sub', { subscription: token })
           })
         } else if (VITE_PWA_PN === 'Webpush') {

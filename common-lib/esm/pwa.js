@@ -8,7 +8,7 @@
 let firebaseApp
 let messaging
 
-export const fcmSubscribe = async (refresh) => {
+export const fcmSubscribe = async (registration, refreshFn) => {
   try {
     const permission = await Notification.requestPermission()
     if (permission !== 'granted') return null
@@ -18,10 +18,12 @@ export const fcmSubscribe = async (refresh) => {
     }
     if (!messaging) {
       messaging = firebase.messaging()
+      messaging.useServiceWorker(registration)
+
       messaging.usePublicVapidKey(window.CONFIG_VAPID_KEY)
       messaging.onTokenRefresh(async () => {
         const token = await messaging.getToken()
-        await refresh(token)
+        await refreshFn(token)
       })
       messaging.onMessage((payload) => {
         console.log('Message received. ', payload)
@@ -35,7 +37,7 @@ export const fcmSubscribe = async (refresh) => {
     }
     if (permission === 'granted') return await messaging.getToken()
   } catch (e) {
-    console.log('Error initialise firebase app', e.String())
+    console.log('Error initialise firebase app', e.toString())
   }
   return null
 }
