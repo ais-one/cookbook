@@ -24,24 +24,38 @@ const cacheFilesStatic = [
 
 // SW install and cache static assets
 function addCaches(e) {
-  const params = new URL(location).searchParams.get('params')
-  console.log('SW addChaches', params)
-  e.waitUntil(caches.open(CACHE_NAME_STATIC).then((cache) => cache.addAll(cacheFilesStatic)))
+  console.log('SW location', location)
+  try {
+    const params = new URL(location).searchParams.get('params')
+    console.log('SW addCaches params', typeof params, params)
+  } catch (err) {
+    console.log('SW addCaches error', err.toString())
+  }
+  e.waitUntil(caches.open(CACHE_NAME_STATIC).then((cache) => cache.addAll(cacheFilesStatic)).catch((err) => console.log('SW addCaches Error', err)))
 }
 self.addEventListener('install', addCaches)
 
 // SW activate and cache cleanup
 function clearCaches(e) {
-  console.log('SW clearChaches')
+  console.log('SW clearCaches')
   e.waitUntil(
-    caches.keys().then((cacheNames) => {
-      cacheNames.forEach((cacheName) => {
-        if (!(cacheName === CACHE_NAME_STATIC || cacheName === CACHE_NAME_DYNAMIC)) {
-          console.log('sw delete cache = ', cacheName)
-          return caches.delete(cacheName)
-        }
+    caches.keys()
+      .then((cacheNames) => {
+        // return Promise.all(
+        //   cacheNames.filter((cacheName) =>
+        //     !(cacheName === CACHE_NAME_STATIC || cacheName === CACHE_NAME_DYNAMIC)
+        //   ).map((cacheName) => {
+        //     return caches.delete(cacheName)
+        //   })
+        // )
+        cacheNames.forEach((cacheName) => {
+          if (!(cacheName === CACHE_NAME_STATIC || cacheName === CACHE_NAME_DYNAMIC)) {
+            console.log('sw delete cache = ', cacheName)
+            return caches.delete(cacheName)
+          }
+        })
       })
-    })
+      .catch((err) => console.log('SW clearCaches Error', err))
   )
 }
 self.addEventListener('activate', clearCaches)

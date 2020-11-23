@@ -131,7 +131,7 @@
 // TBD inline edits
 // TBD table columns with joined values, virtual columns...
 import { debounce, downloadData } from '../../../common-lib/esm/util.js' // served from express /esm static route
-import { validate } from '../../../common-lib/esm/validate.js' // served from express /esm static route
+import * as t4t from '../../../common-lib/esm/t4t-fe.js' // served from express /esm static route
 import { useXhr } from '/src/plugins/xhr.js'
 
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
@@ -192,21 +192,19 @@ export default {
       if (!item) return // do not continue if item is null
       try {
         console.log('item.key', item.key)
-        const { data } = await http.get('/api/t4t/find-one/' + props.tableName, { key: item.key })
-        recordObj.edit.key = item.key
-        Object.entries(tableCfg.value.cols).forEach((kv) => {
-          const [key, val] = kv
-          if (val.edit !== 'hide') {
-            recordObj.edit[key] = data[key]
-          }
-        })
-        showForm.value = 'edit'
+        const data = await t4t.findOne(item.key)
+        if (data) {
+          recordObj.edit = data
+          showForm.value = 'edit'
+        }
       } catch (err) {
         console.log(err.toString())
       }
     }
 
-    // const _selectClick = async (e) => console.log('click on checkbox', e.detail.value)
+    const _selectClick = async (e) => {
+      console.log('click on checkbox', e, gridEl)
+    }
 
     // gridEl.addEventListener('dblclick', _dblClick)
     // const _dblClick = (e) => {
@@ -220,9 +218,10 @@ export default {
       keycol.value = route.query.keycol
       keyval.value = route.query.keyval
 
+      t4t.setTableName(props.tableName)
+
       if (!tableCfg.value) {
-        const { data } = await http.get('/api/t4t/config/' + props.tableName)
-        tableCfg.value = data
+        tableCfg.value = await t4t.getConfig()
       }
       if (tableCfg.value) {
         for (const col in tableCfg.value.cols) {
@@ -236,7 +235,7 @@ export default {
       gridEl = document.querySelector('vaadin-grid.table')
       if (gridEl) {
         gridEl.addEventListener('active-item-changed', _rowClick)
-        // gridEl.addEventListener('selected-items-changed', _selectClick)
+        gridEl.addEventListener('selected-items-changed', _selectClick)
 
         // https://vaadin.com/forum/thread/17445015/updating-grid-data-directly-when-using-dataprovider
         gridEl.dataProvider = async function (params, callback) {
@@ -253,13 +252,7 @@ export default {
                 order: params.sortOrders[0].direction
               })
             }
-            const { data } = await http.get('/api/t4t/find/' + props.tableName, {
-              page: page.value,
-              limit: rowsPerPage.value,
-              filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters),
-              sorter: JSON.stringify(sorter)
-            })
-            const rv = data
+            const rv = await t4t.find(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters, sorter, page.value, rowsPerPage.value)
             if (rv.results) {
               // console.log('rv.total', rv.total, rv.results)
               maxPage.value = Math.ceil(rv.total / rowsPerPage.value)
@@ -279,7 +272,7 @@ export default {
     onUnmounted(() => {
       if (gridEl) {
         gridEl.removeEventListener('active-item-changed', _rowClick)
-        // gridEl.removeEventListener('selected-items-changed', _selectClick)
+        gridEl.removeEventListener('selected-items-changed', _selectClick)
       }
     })
 
@@ -332,16 +325,8 @@ export default {
       if (loading.value) return
       loading.value = true
       const items = gridEl.selectedItems
-      let ids = []
       try {
-        const { pk } = tableCfg.value
-        if (pk) {
-          ids = items.map((item) => item[pk])
-        } else {
-          ids = items.map((item) => item.key)
-        }
-        // const rv =
-        await http.get('/api/t4t/remove/' + props.tableName, { ids })
+        await t4t.remove(items)
       } catch (e) {
         alert(`Error delete ${e.toString()}`)
       }
@@ -360,7 +345,7 @@ export default {
         if (tableCfg.value.cols[col]) {
           const { rules, type } = tableCfg.value.cols[col]
           if (rules) {
-            const invalid = validate(rules, type, col, rec)
+            const invalid = t4t.validate(rules, type, col, rec)
             if (invalid) {
               showForm.value = ''
               return alert(`Invalid ${col} - ${invalid}`)
@@ -427,14 +412,12 @@ export default {
 
     const csvDownload = async () => {
       console.log('export', keycol.value, filters)
-      const { data } = await http.get('/api/t4t/find/' + props.tableName, {
-        page: 0,
-        limit: 0,
-        csv: 1, // it is a csv
-        filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters),
-        sorter: JSON.stringify(sorter)
-      })
-      downloadData(data.csv, 'job.csv', 'text/csv;charset=utf-8;')
+      try {
+        const data = await t4t.download(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters, sorter)
+        if (data) downloadData(data.csv, props.tableName+'.csv', 'text/csv;charset=utf-8;')
+      } catch (e) {
+        console.log('csvDownload', e.toString())
+      }
     }
 
     // watch(() => props.selected, (selection, prevSelection) => { }) // watching value of a reactive object (watching a getter)

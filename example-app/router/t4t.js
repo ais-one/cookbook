@@ -71,7 +71,7 @@ module.exports = express.Router()
   .get('/find/:table', generateTable, asyncWrapper(async (req, res) => { // page is 1 based
     const { table } = req
     let { page = 1, limit = 25, filters = null, sorter = null, csv = '' } = req.query
-    page = parseInt(page)
+    page = parseInt(page) // 1-based
     limit = parseInt(limit)
     // console.log('t4t filters and sort', filters, sorter, table.name, page, limit)
     filters = JSON.parse(filters) // ignore where col === null, sort it 'or' first then 'and' // [ { col, op, val, andOr } ]

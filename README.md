@@ -2,7 +2,7 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
 
-Latest Version [0.4.4](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.4) - Released 2020 Nov 25 0145 +8GMT
+Latest Version [0.4.4](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.4) - Released 2020 Nov 22 1700 +8GMT
 
 # Features
 
@@ -234,19 +234,18 @@ If too many config properties, split it to other more and files
 
 ```
 vue-crud-x
++- .circleci/ : not used
++- .github/ : github related CICD and automations
 +- common-lib/ : common libraries
 |  +- esm/ : es modules
-+- docker-devenv/ : docker for development environment (e.g. run redis, mongodb from here)
-|  +- mongodb
++- docker-devenv/ : docker for development environment
 +- docs/ : documentation
 +- example-app : example backend - See example-app/README.md - Project Structure
 +- example-spa/ : frontend associated to the application
-|  +- lib/
-|  |  +- webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
+|  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
 +- example-nobundle/ : frontend associated to backend - no bundle
 +- example-vite/ : frontend associated to backend - See example-vite/README.md - Project Structure
-|  +- lib/
-|  |  +- esm-rollup/ : rolled up components for frontend (e.g. apollo.js)
+|  +- lib/esm-rollup/ : rolled up components for frontend (e.g. apollo.js)
 +- k8s/ : kubernetes YAML files (WIP)
 +- .editorconfig
 +- .gitignore
@@ -255,6 +254,7 @@ vue-crud-x
 +- LICENCE
 +- package.json
 +- README.md
++- rest-cmd.http : rest commands for testing
 ```
 
 ## CI/CD
@@ -268,7 +268,7 @@ selectable inputs
 - application (example-app, example-vite)
 - code branch
 
-**NOTE** config/secret contents will not be in repo for CI/CD (so you can get errors), those need to be put in VAULT
+**NOTE** config/secret contents will not be in repo for CI/CD (so you can get errors), those should be put in VAULT
 
 current secrets
 - GCP_PROJECT_ID
@@ -279,7 +279,7 @@ current secrets
 # do not merge
 VAULT="unused"
 
- # connect to a hashicorp vault and obtain secrets to merge
+# connect to a hashicorp vault and obtain secrets to merge
 VAULT={ url, token } # base64 encoded
 
  # pass in secrets, this way is insecure and not a good way to send in secrets
