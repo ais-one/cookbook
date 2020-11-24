@@ -1,5 +1,11 @@
 import * as http from './http.js'
 
+let tableName = ''
+let config = null
+
+function setTableName(name) {
+  tableName = name
+}
 
 // type: string, date, datetime, time, integer, float
 // {
@@ -15,11 +21,26 @@ import * as http from './http.js'
 //   ]
 // }
 
+function validate(record) {
+  for (const col in record) {
+    if (config.cols[col]) {
+      const { rules, type } = config.cols[col]
+      if (rules) {
+        const msg = validateOne(rules, type, col, record)
+        if (msg) {
+          return { col, msg }
+        }
+      }
+    }
+  }
+  return null
+}
+
 // TBD i18n
 // for use with
 // - example-app/router/t4t.js
 // - example-vite/src/components/CrudTable.vue
-function validate(rules, type, col, record) {
+function validateOne(rules, type, col, record) {
   let invalid = ''
   for (const rule in rules) {
     if (type === 'string') {
@@ -39,13 +60,6 @@ function validate(rules, type, col, record) {
     if (invalid) break
   }
   return invalid
-}
-
-let tableName = ''
-let config = null
-
-function setTableName(name) {
-  tableName = name
 }
 
 async function getConfig() {
@@ -87,51 +101,6 @@ async function find(filters, sorter, page, limit) {
   return rv
 }
 
-async function remove(items) {
-  try {
-    let ids = []
-    const { pk } = config
-    if (pk) {
-      ids = items.map((item) => item[pk])
-    } else {
-      ids = items.map((item) => item.key)
-    }
-    // const rv =
-    await http.post('/api/t4t/remove/' + tableName, { ids })  
-  } catch (e) {
-  }
-}
-
-async function upload() {
-  const file = document.querySelector('mwc-fileupload').getFile()
-  console.log('doUpload', file)
-  // const formData = new FormData()
-  // formData.append('filedata', files[0])
-  // formData.append('textdata', JSON.stringify({ name: 'name', age: 25 }))
-  // const res = await fetch('/api/upload', {
-  //   method: 'POST',
-  //   body: formData
-  // })
-
-  // const { id, name, avatar } = record
-  // const json = JSON.stringify({ name })
-  // // const blob = new Blob([json], { type: 'application/json' })
-  // // console.log('json', blob)
-  // const formData = new FormData()
-  // formData.append('filex', avatar.imageFile) // const { name, size, type } = avatar.imageFile
-  // formData.append('docx', json)
-  // const { data } = await http.patch(`/api/authors/${id}`, formData,
-  //   {
-  //     // onUploadProgress: progressEvent => {
-  //     //   console.log(Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
-  //     // },
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data'
-  //     }
-  //   }
-  // )
-}
-
 async function download(filters, sorter) {
   try {
     const { data } = await http.get('/api/t4t/find/' + tableName, {
@@ -165,22 +134,74 @@ async function findOne(key) {
   }
 }
 
-async function create(data) {
-  try {
-    await http.post(`/api/t4t/create/${tableName}`, data)
-  } catch (e) {
-  }
+async function create(record) {
+  await http.post(`/api/t4t/create/${tableName}`, record)
 }
 
-async function update(data) {
-  try {
-    const { key, ...noKeyData } = data
-    await http.patch(`/api/t4t/update/${tableName}`, noKeyData, { key })
-  } catch (e) {
-  }
+async function update(key, record) {
+  await http.patch(`/api/t4t/update/${tableName}`, record, { key })
 }
 
-export { setTableName, getConfig, validate, find, findOne, create, update, remove, upload, download }
+async function remove(items) {
+  let ids = []
+  const { pk } = config
+  if (pk) {
+    ids = items.map((item) => item[pk])
+  } else {
+    ids = items.map((item) => item.key)
+  }
+  // const rv =
+  await http.post('/api/t4t/remove/' + tableName, { ids })  
+}
+
+async function upload() {
+  const file = document.querySelector('mwc-fileupload').getFile()
+  console.log('doUpload', file)
+  // const formData = new FormData()
+  // formData.append('filedata', files[0])
+  // formData.append('textdata', JSON.stringify({ name: 'name', age: 25 }))
+  // const res = await fetch('/api/upload', {
+  //   method: 'POST',
+  //   body: formData
+  // })
+
+  // const { id, name, avatar } = record
+  // const json = JSON.stringify({ name })
+  // // const blob = new Blob([json], { type: 'application/json' })
+  // // console.log('json', blob)
+  // const formData = new FormData()
+  // formData.append('filex', avatar.imageFile) // const { name, size, type } = avatar.imageFile
+  // formData.append('docx', json)
+  // const { data } = await http.patch(`/api/authors/${id}`, formData,
+  //   {
+  //     // onUploadProgress: progressEvent => {
+  //     //   console.log(Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
+  //     // },
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data'
+  //     }
+  //   }
+  // )
+}
+
+async function autocomplete (search, col, record) {
+  let res = []
+  try {
+    const { dbName, tableName, limit, key, text, parentTableColName, parentCol } = config.cols[col].options
+    const query = { dbName, tableName, limit, key, text, search }
+    if (parentTableColName) {
+      query.parentTableColName = parentTableColName
+      query.parentTableColVal = record[parentCol]
+    }
+    const { data } = await http.get('/api/t4t/autocomplete', query)
+    res = data
+  } catch (err) {
+    console.log('autocomplete', err.message)
+  }
+  return res
+}
+
+export { setTableName, getConfig, validate, find, findOne, create, update, remove, upload, download, autocomplete }
 
 /*
     const autoComplete = debounce(async (e, col, _showForm) => {

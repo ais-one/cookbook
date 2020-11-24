@@ -3,7 +3,8 @@ function makeCsvRow(csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';'
   if (!csvContent) {
     csvContent += idName // set id as first columns
     for (const k1 in tmp) {
-      if (tmp.hasOwnProperty(k1) && k1 !== idName) {
+      // TOREMOVE if (tmp.prototype.hasOwnProperty(k1) && k1 !== idName) {
+      if (tmp[k1] && k1 !== idName) {
         // set id as first columns
         let text = k1.replace(/;/g, ' ')
         text = text.replace(/([A-Z])/g, ' $1')
@@ -15,7 +16,8 @@ function makeCsvRow(csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';'
   }
   csvContent += `${tmp[idName]}`
   for (const k2 in tmp) {
-    if (tmp.hasOwnProperty(k2) && k2 !== idName) {
+    // TOREMOVE if (tmp.prototype.hasOwnProperty(k2) && k2 !== idName) {
+    if (tmp[k2] && k2 !== idName) {
       let value = ''
       if (typeof tmp[k2] === 'undefined' || !tmp[k2]) {
         // do nothing
@@ -28,7 +30,9 @@ function makeCsvRow(csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';'
       } else {
         try {
           value = tmp[k2].toString()
-        } catch (e) {}
+        } catch (e) {
+          console.log('error', e.toString())
+        }
       }
       csvContent += ';' + value.replace(/;/g, ' ')
     }

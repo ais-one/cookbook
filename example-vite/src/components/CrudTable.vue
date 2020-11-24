@@ -57,7 +57,7 @@
 
       <slot name="table" :tableCfg="tableCfg" :headerCols="headerCols" :page="page" :records="records" :rowsPerPage="rowsPerPage" :maxPage="maxPage">
         <vaadin-grid class="table">
-          <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect" @select-all-changed="selectAllChanged"></vaadin-grid-selection-column>
+          <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect" auto-select></vaadin-grid-selection-column>
           <vaadin-grid-sort-column v-for="(headerCol, index) in headerCols" :key="index" :path="headerCol.path" :header="headerCol.header"></vaadin-grid-sort-column>
         </vaadin-grid>
       </slot>
@@ -174,6 +174,8 @@ export default {
     let gridEl // grid element
     let sorter = []
 
+    // let inverted = false, indeterminate = false; // AAA
+
     const _rowClick = async (e) => {
       // console.log('click not on checkbox 1', e.detail.value)
       const item = e.detail.value
@@ -203,7 +205,7 @@ export default {
     }
 
     const _selectClick = async (e) => {
-      console.log('click on checkbox', e, gridEl)
+      // console.log(e, gridEl.selectedItems)
     }
 
     // gridEl.addEventListener('dblclick', _dblClick)
@@ -234,8 +236,8 @@ export default {
 
       gridEl = document.querySelector('vaadin-grid.table')
       if (gridEl) {
-        gridEl.addEventListener('active-item-changed', _rowClick)
-        gridEl.addEventListener('selected-items-changed', _selectClick)
+        // gridEl.addEventListener('active-item-changed', _rowClick)
+        // gridEl.addEventListener('selected-items-changed', _selectClick)
 
         // https://vaadin.com/forum/thread/17445015/updating-grid-data-directly-when-using-dataprovider
         gridEl.dataProvider = async function (params, callback) {
@@ -265,14 +267,67 @@ export default {
           } catch (e) {
             console.log(e.toString())
           }
+
+          //! AAA
+          const sel = gridEl.querySelector('vaadin-grid-selection-column')
+          if (sel) {
+            sel.removeEventListener('select-all-changed', selectAllChanged)
+            sel.addEventListener('select-all-changed', selectAllChanged)
+          } else {
+            console.log('vaadin-grid-selection-column Mount ERROR')
+          }
+          // AAA
+          // const column = gridEl.querySelector('vaadin-grid-sort-column')
+          // console.log('column', column)
+          // column.headerRenderer = function(cell) {
+          //   console.log('cell', cell, cell.firstElementChild)
+          //   var checkbox = cell.firstElementChild;
+          //   if (!checkbox) {
+          //     console.log('aaaaaaaaaaaaaaaaa')
+          //     checkbox = window.document.createElement('vaadin-checkbox');
+          //     checkbox.setAttribute('aria-label', 'Select All');
+          //     checkbox.setAttribute('style', 'font-size: var(--lumo-font-size-m)');
+          //     checkbox.addEventListener('change', function(e) {
+          //       grid.selectedItems = [];
+          //       inverted = !inverted;
+          //       indeterminate = false;
+          //       grid.render();
+          //     });
+          //     cell.appendChild(checkbox);
+          //   } else {
+          //     console.log('aaaaaaa', cell)
+          //   }
+          //   checkbox.checked = indeterminate || inverted;
+          //   checkbox.indeterminate = indeterminate;
+          // }
+          // column.renderer = function(cell, column, rowData) {
+          //   var checkbox = cell.firstElementChild;
+          //   if (!checkbox) {
+          //     checkbox = window.document.createElement('vaadin-checkbox');
+          //     checkbox.setAttribute('aria-label', 'Select Row');
+          //     checkbox.addEventListener('change', function(e) {
+          //       if (e.target.checked === inverted) {
+          //         grid.deselectItem(checkbox.__item);
+          //       } else {
+          //         grid.selectItem(checkbox.__item);
+          //       }
+          //       indeterminate = grid.selectedItems.length > 0;
+          //       grid.render();
+          //     });
+          //     cell.appendChild(checkbox);
+          //   }
+          //   checkbox.__item = rowData.item;
+          //   checkbox.checked = inverted !== rowData.selected;
+          // };
+
           loading.value = false
         }
       }
     })
     onUnmounted(() => {
       if (gridEl) {
-        gridEl.removeEventListener('active-item-changed', _rowClick)
-        gridEl.removeEventListener('selected-items-changed', _selectClick)
+        // gridEl.removeEventListener('active-item-changed', _rowClick)
+        // gridEl.removeEventListener('selected-items-changed', _selectClick)
       }
     })
 
@@ -294,20 +349,7 @@ export default {
     }
 
     const autoComplete = debounce(async (e, col, _showForm) => {
-      let res = []
-      recordObj[_showForm][col] = e.target.value
-      try {
-        const { dbName, tableName, limit, key, text, parentTableColName, parentCol } = tableCfg.value.cols[col].options
-        const query = { dbName, tableName, limit, key, text, search: e.target.value }
-        if (parentTableColName) {
-          query.parentTableColName = parentTableColName
-          query.parentTableColVal = recordObj[_showForm][parentCol]
-        }
-        const { data } = await http.get('/api/t4t/autocomplete', query)
-        res = data
-      } catch (err) {
-        console.log('autoComplete', err.message)
-      }
+      const res = await t4t.autocomplete(e.target.value, col, recordObj[_showForm])
       const mwcAc = document.querySelector('mwc-autocomplete.' + col)
       mwcAc.setList(res)
     }, 500)
@@ -339,29 +381,20 @@ export default {
       // const items = gridEl.selectedItems
       // console.log('add ajax call', items)
 
-      // validate
-      const rec = recordObj[showForm.value]
-      for (const col in rec) {
-        if (tableCfg.value.cols[col]) {
-          const { rules, type } = tableCfg.value.cols[col]
-          if (rules) {
-            const invalid = t4t.validate(rules, type, col, rec)
-            if (invalid) {
-              showForm.value = ''
-              return alert(`Invalid ${col} - ${invalid}`)
-            }
-          }
-        }
+      const invalid = t4t.validate(recordObj[showForm.value])
+      if (invalid) {
+        showForm.value = ''
+        return alert(`Invalid ${invalid.col} - ${invalid.msg}`)
       }
 
       if (loading.value) return
       loading.value = true
       try {
         if (showForm.value === 'add') {
-          await http.post(`/api/t4t/create/${props.tableName}`, recordObj.add)
+          await t4t.create(recordObj.add)
         } else {
           const { key, ...data } = recordObj.edit
-          await http.patch(`/api/t4t/update/${props.tableName}`, data, { key })
+          await t4t.update(key, data)
         }
       } catch (e) {
         alert(`Error ${showForm.value} ${e.toString()}`)
@@ -427,16 +460,29 @@ export default {
 
     const selectAllChanged = (e) => {
       if (!gridEl) return
-      gridEl.querySelectorAll('vaadin-grid-selection-column').forEach(function (node) {
-        console.log('node', node)
-      })
-      if (e.detail.value) {
-        console.log('select all', e)
+      const sel = gridEl.querySelector('vaadin-grid-selection-column')
+      console.log('selAll', sel.selectAll)
+      if (sel.selectAll) {
         // gridEl.selectedItems = [ ...gridEl.items ]
+        const aa = []
+        records.value.forEach(item => {
+          const vv = {}
+          for (let k in item) vv[k] = item[k]
+          console.log(vv)
+          aa.push(vv)
+        })
+        console.log(gridEl.items, gridEl.pageSize, aa)
+        gridEl.selectedItems = [...aa]
       } else {
-        console.log('unselect all')
-        // gridEl.selectedItems = []
+        gridEl.selectedItems = []
       }
+      // if (e.detail.value) {
+      //   console.log('select all', e)
+      //   // gridEl.selectedItems = [ ...gridEl.items ]
+      // } else {
+      //   console.log('unselect all')
+      //   // gridEl.selectedItems = []
+      // }
       // if (gridEl) gridEl.selectedItems = []
       // e.detail.value
       // set all checkboxes

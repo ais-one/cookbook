@@ -47,6 +47,9 @@ git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
 npm run install
 
+# install the required common-lib JS scripts
+npm run update
+
 # create and seed relational db on SQLite
 npm run knex # windows
 npm run knex:unix # linux or mac
@@ -240,11 +243,11 @@ vue-crud-x
 |  +- esm/ : es modules
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
-+- example-app : example backend - See example-app/README.md - Project Structure
-+- example-spa/ : frontend associated to the application
++- example-app/ : example backend - See example-app/README.md for Project Structure
++- example-nobundle/ : frontend associated to backend (Vue3 no bundle) - See example-nobundle/README.md for Project Structure
++- example-spa/ : frontend associated to the backend (Vue2 webpack) - See example-spa/README.md for Project Structure
 |  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
-+- example-nobundle/ : frontend associated to backend - no bundle
-+- example-vite/ : frontend associated to backend - See example-vite/README.md - Project Structure
++- example-vite/ : frontend associated to backend - (Vue3 rollup) - See example-vite/README.md for Project Structure
 |  +- lib/esm-rollup/ : rolled up components for frontend (e.g. apollo.js)
 +- k8s/ : kubernetes YAML files (WIP)
 +- .editorconfig
