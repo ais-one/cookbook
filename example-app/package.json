@@ -30,6 +30,7 @@
     "test": "cross-env NODE_ENV=%npm_package_config_env% jest --config=jest.config.js",
     "test:unix": "cross-env NODE_ENV=$npm_package_config_env jest --config=jest.config.js",
     "deploy": "deploy.sh %npm_package_config_env%",
+    "update": "update.sh",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint --fix --no-fix-warnings --no-report-warnings ."
   },

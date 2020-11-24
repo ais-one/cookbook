@@ -16,6 +16,8 @@ module.exports = {
   ],
   extends: 'eslint:recommended',
   rules: {
+    'no-prototype-builtins': 'warn',
+
     // disallow empty block statements (no-empty)
     'no-empty': 'warn',
 

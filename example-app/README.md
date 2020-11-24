@@ -101,8 +101,8 @@ POST /api/uploads
 +- .eslintrc.js
 +- .gitignore
 +- app.js : the express app boilerplate
-+- deploy.sh
-+- deploy-vm.sh
++- deploy.sh: GCP deployment script
++- deploy-vm.sh: VM deployment script
 +- docker-compose.yml
 +- Dockerfile
 +- ecosystem.config.js
@@ -114,4 +114,7 @@ POST /api/uploads
 +- process-long.js: sample long running process
 +- README.md
 +- setup.js
++- test.py: run python from express
++- update.sh: update project library script
+
 ```
