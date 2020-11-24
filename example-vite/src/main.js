@@ -23,7 +23,9 @@ import '../firebase.config.js'
 import '../pwa-init.js'
 
 // our own web components
-import '../../common-lib/esm/loading-overlay.js' // served from express /esm static route - Why is it not displaying in build?
+import '../../common-lib/esm/loading-overlay.js'
+import '../../common-lib/esm/bwc-table.js'
+
 import './components/mwc-autocomplete.js'
 import './components/mwc-multiselect.js'
 import './components/mwc-fileupload.js'

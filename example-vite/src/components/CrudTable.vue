@@ -579,12 +579,12 @@ nav {
   margin: 4px;
 }
 
+/* TBD height and width should be configurable...
 .table {
-  /* TBD height and width should be configurable...
-    height: 800px;
-  */
-  /* width: 1800px; */
+  height: 800px;
+  width: 1800px;
 }
+*/
 
 .page-flex h1,
 .page-flex p {

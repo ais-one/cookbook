@@ -37,7 +37,7 @@ const autoComplete = (e) => {
 */
 const template = document.createElement('template')
 template.innerHTML = `
-<input class="input" type="text" id="ajax" list="json-datalist" placeholder="e.g. datalist" autocomplete="off">
+<input class="input" type="text" list="json-datalist" placeholder="search..." autocomplete="off">
 <datalist id="json-datalist"></datalist>
 `
 
@@ -53,6 +53,10 @@ class AutoComplete extends HTMLElement {
 
   connectedCallback() {
     this.appendChild(template.content.cloneNode(true))
+
+    // console.log('listid', this.listid)
+    this.querySelector('datalist').id = this.listid
+    this.querySelector('input').setAttribute('list', this.listid)
 
     const el = this.querySelector('input')
     el.addEventListener('input', this.inputFn)
@@ -105,7 +109,7 @@ class AutoComplete extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['value', 'required']
+    return ['value', 'required', 'listid']
   }
 
   get value() {
@@ -124,13 +128,21 @@ class AutoComplete extends HTMLElement {
     this.setAttribute('required', val)
   }
 
+  get listid() {
+    return this.getAttribute('listid')
+  }
+
+  set listid(val) {
+    this.setAttribute('listid', val)
+  }
+
   // properties
   get items() {
     return this.#items
   }
 
   set items(val) {
-    console.log('set items', val.length)
+    // console.log('set items', val.length)
     this.#items = val
     this.setList(val)
   }
@@ -160,7 +172,7 @@ class AutoComplete extends HTMLElement {
   }
 
   setList(_items) {
-    console.log('items', _items, this.value)
+    // console.log('items', _items, this.value)
     const dd = this.querySelector('datalist')
     if (!dd) return
     while(dd.firstChild) {

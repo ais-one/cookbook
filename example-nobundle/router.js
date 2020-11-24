@@ -38,6 +38,9 @@ const router = createRouter({
       name: 'dashboard'
     },
     {
+      meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/ui1', component: () => import('./views/ui1.js'), name: 'ui1'
+    },
+    {
       meta: { requiresAuth: true, layout: 'layout-secure' },
       beforeEnter: AuthGuard,
       path: '/admin',

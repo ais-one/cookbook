@@ -82,7 +82,7 @@ POST /api/uploads
 +- libs/ : common libs
 |  +- auth/ : for express authentication
 |  +- comms/ : messaging
-|  +- esm/ : same as example-vite/lib
+|  +- esm/ : copied from common-lib/esm
 |  +- express/ : express related
 |  +- services/ : nodejs libs
 |  +- dist/ : distribution folder for CRUD component
