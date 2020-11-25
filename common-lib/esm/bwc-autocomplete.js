@@ -2,6 +2,7 @@
 attributes:
 - value (via v-model)
 - required
+- listid (needed if using more than 2 components on the same page)
 
 properties:
 - items Array or String or Object

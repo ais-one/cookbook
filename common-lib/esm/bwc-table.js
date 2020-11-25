@@ -129,8 +129,8 @@ template.innerHTML = `
           <a id="cmd-reload" class="button">↻</a>
           <a id="cmd-add" class="button">+</a>
           <a id="cmd-del" class="button">-</a>
-          <a id="cmd-import" class="button">&uarr;</a>
-          <a id="cmd-export" class="button">&darr;</a>
+          <a id="cmd-import" class="button">↑</a>
+          <a id="cmd-export" class="button">↓</a>
         </div>
       </div>
     
@@ -282,7 +282,7 @@ class Table extends HTMLElement {
       this._trigger('page-size')
     }
 
-    console.log('connectedCallback 0')
+    // console.log('connectedCallback 0')
 
     // initialize non-required properties that are undefined
     if (!this.#sortKey) this.#sortKey = ''
@@ -308,7 +308,7 @@ class Table extends HTMLElement {
     this._renderPages()
     this._renderFilters()
 
-    console.log('connectedCallback 1')
+    // console.log('connectedCallback 1')
   }
 
   disconnectedCallback() {
@@ -347,7 +347,7 @@ class Table extends HTMLElement {
   set pageSizeList (val) { this.#pageSizeList = val } // TBD emit event
   get items() { return this.#items }
   set items(val) {
-    console.log('set items')
+    // console.log('set items')
     this.#items = val
     this._render()
     this._renderPageSelect()
@@ -445,21 +445,6 @@ class Table extends HTMLElement {
         pf.querySelector('#filter-and-or').value = filter.andOr
         div.appendChild(pf)
 
-        /*
-        const filterAndOr = new DOMParser().parseFromString(
-          `<p class="control m-0">
-          <span class="select">
-          <select id="filter-and-or">
-            <option value="and">And</option>
-            <option value="or">Or</option>
-          </select>
-          </span>
-          </p>`, 'text/html')
-        const filterAndOrNode = filterAndOr.body.childNodes[0]
-        filterAndOrNode.value = filter.andOr
-        div.appendChild(filterAndOrNode)
-        */
-
         const p1 = document.createElement('p')
         p1.classList.add('control', 'm-0')
         const delBtn = document.createElement('button')
@@ -551,7 +536,7 @@ class Table extends HTMLElement {
       }
 
       if (typeof this.#columns === 'object') {
-        console.log('render thead')
+        // console.log('render thead')
         table = document.createElement('table')
         table.setAttribute('id', 'table')
         el.appendChild(table)
@@ -597,11 +582,11 @@ class Table extends HTMLElement {
               const th = theadTr.children[i]
               let label = this.#columns[i - offset].label
               if (this.#columns[i - offset].key === this.#sortKey && this.#sortDir) {
-                label = label + (this.#sortDir === 'asc' ? '&uarr;': '&darr;')
+                label = label + (this.#sortDir === 'asc' ? '↑': '↓')
               }
               th.innerHTML = label // cannot textContent (need to parse the HTML)
             }
-            this._trigger('sort')
+            this._trigger('sort') // checkboxes are also cleared...
           }
         }
 
@@ -620,7 +605,7 @@ class Table extends HTMLElement {
         }
         for (const col of this.#columns) {
           const th = document.createElement('th')
-          const label = col.label + ((this.#sortKey) ? (this.#sortDir === 'asc' ? '&and;': '&or') : '') // &and; (up) & &or; (down)
+          const label = col.label + ((this.#sortKey) ? (this.#sortDir === 'asc' ? '↑': '↓') : '') // &and; (up) & &or; (down)
           if (col.width) th.style.width = `${col.width}px`
           if (col.sticky) th.setAttribute('scope', 'row')
 
@@ -636,7 +621,7 @@ class Table extends HTMLElement {
 
         // populate the data
         if (typeof this.#items === 'object' && this.#items.length) {
-          console.log('render tbody')
+          // console.log('render tbody')
           const tbody = document.createElement('tbody')
           // TBD function to get checked rows...
           tbody.onclick = (e) => {

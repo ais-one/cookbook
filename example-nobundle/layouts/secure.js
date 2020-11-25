@@ -49,7 +49,8 @@ const template = /*html*/`
     <p class="menu-label">General</p>
     <ul class="menu-list">
       <li><router-link :to="{ path: '/dashboard' }">Dashboard</router-link></li>
-      <li><router-link :to="{ path: '/ui1' }">ui1</router-link></li>
+      <li><router-link :to="{ path: '/ui1' }">UI1 - Autocomplete</router-link></li>
+      <li><router-link :to="{ path: '/ui2' }">UI2 - Form</router-link></li>
       <li><router-link :to="{ path: '/admin' }">Admin</router-link></li>
     </ul>
     <ul class="menu-list">

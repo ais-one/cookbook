@@ -95,7 +95,7 @@ export default {
         if (!itemList[offset + i]) break
         items.push( itemList[offset + i] )
       }
-      console.log(items)
+      // console.log(items)
       table.items = items
     }
 

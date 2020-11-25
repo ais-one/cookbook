@@ -37,9 +37,8 @@ const router = createRouter({
       component: Dashboard, // () => import('./views/about.js') // TBD use lazy loading
       name: 'dashboard'
     },
-    {
-      meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/ui1', component: () => import('./views/ui1.js'), name: 'ui1'
-    },
+    { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/ui1', component: () => import('./views/ui1.js'), name: 'ui1' },
+    { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/ui2', component: () => import('./views/ui2.js'), name: 'ui2' },
     {
       meta: { requiresAuth: true, layout: 'layout-secure' },
       beforeEnter: AuthGuard,

@@ -468,7 +468,6 @@ export default {
         records.value.forEach(item => {
           const vv = {}
           for (let k in item) vv[k] = item[k]
-          console.log(vv)
           aa.push(vv)
         })
         console.log(gridEl.items, gridEl.pageSize, aa)

@@ -1,9 +1,91 @@
+// attributes
+// - mode: add, edit
+//
+// properties
+// - record
+// - config (t4t config)
+//
+// methods
+//
+// events
+//
+
+
 
 const template = document.createElement('template')
 template.innerHTML = `
-<div class="page-flex" v-if="showForm && tableCfg">
-<slot name="form" :tableCfg="tableCfg" :recordObj="recordObj" :showForm="showForm">
-  <form class="form-box-flex">
+<div>
+  <form id="form-wrapper">
+    <div class="field">
+      <p class="control">
+        <input class="input" type="email" placeholder="Email">
+      </p>
+    </div>
+  </form>
+</div>
+`
+
+class Form extends HTMLElement {
+  constructor() {
+    super()
+  }
+
+  #config = []
+  #record = []
+  get config () { return this.#config }
+  set config (val) {
+    // console.log('vvvv config', val)
+    this.#config = val
+  }
+  get record () { return this.#record }
+  set record (val) { 
+    this.#record = val
+    if (this.#config && this.#record) {
+      // console.log('do render', val, this.#config)
+      this._render()
+    }
+  }
+
+  connectedCallback() {
+    this.appendChild(template.content.cloneNode(true))
+
+    console.log('t4t-form', this.#config)
+    this._render()
+  }
+
+  static get observedAttributes() {
+    return ['mode']
+  }
+
+  get mode() {
+    return this.getAttribute('mode')
+  }
+
+  set mode(val) {
+    this.setAttribute('mode', val)
+  }
+
+  _render() {
+    try {
+      const el = this.querySelector('#form-wrapper')
+      if (!el) return
+      const { cols, auto, pk, required, multiKey } = this.#config
+      for (let col in cols) {
+        if (!auto.includes(col)) {
+          const val = cols[col]
+        } else {
+          console.log('auto', col)
+        }
+      }
+
+    } catch (e) {
+    }
+  }
+}
+
+customElements.define('bwc-t4t-form', Form) // or bwc-form-t4t
+
+/*
     <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p>
     <div class="field-set-flex">
       <template v-for="(val, col, index) of recordObj[showForm]">
@@ -54,19 +136,4 @@ template.innerHTML = `
     </div>
     <mwc-button type="button" @click="showForm = ''">Cancel</mwc-button>
     <mwc-button type="button" @click="doAddOrEdit" :disabled="loading">Confirm</mwc-button>
-  </form>
-</slot>
-</div>
-`
-
-class Form extends HTMLElement {
-  constructor() {
-    super()
-  }
-
-  connectedCallback() {
-    this.appendChild(template.content.cloneNode(true))
-  }
-}
-
-customElements.define('bwc-t4t-form', Table) // or bwc-form-t4t
+*/

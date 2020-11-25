@@ -2,8 +2,10 @@
 // const myParam = urlParams.get('myParam')
 
 // TBD fix this for production deployments (copy common-lib/esm --> to <example-app>/lib/esm, route <example-app>/lib/esm to /esm)
+import '/esm/http.js'
 import '/esm/bwc-autocomplete.js' // served from express /esm static route
 import '/esm/bwc-table.js'
+import '/esm/bwc-t4t-form.js'
 // import * as sleep from '/esm/sleep.js'
 // console.log(sleep)
 

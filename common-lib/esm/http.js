@@ -52,8 +52,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
   // http://example.com:3001/abc/ees, /abc/ees
   const { urlOrigin, urlPath, urlFull } = parseUrl(url)
 
-  console.log('http', url, urlOrigin, urlPath, urlFull)
-
+  // console.log('http', url, urlOrigin, urlPath, urlFull)
   try {
     const controller = new AbortController()
     const signal = controller.signal
