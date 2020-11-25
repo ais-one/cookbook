@@ -57,7 +57,7 @@
 
       <slot name="table" :tableCfg="tableCfg" :headerCols="headerCols" :page="page" :records="records" :rowsPerPage="rowsPerPage" :maxPage="maxPage">
         <vaadin-grid class="table">
-          <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect" auto-select></vaadin-grid-selection-column>
+          <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect"></vaadin-grid-selection-column>
           <vaadin-grid-sort-column v-for="(headerCol, index) in headerCols" :key="index" :path="headerCol.path" :header="headerCol.header"></vaadin-grid-sort-column>
         </vaadin-grid>
       </slot>
@@ -271,6 +271,7 @@ export default {
             sel.removeEventListener('select-all-changed', selectAllChanged)
             sel.addEventListener('select-all-changed', selectAllChanged)
             sel.selectAll = false
+            gridEl.selectedItems = []
           } else {
             console.log('vaadin-grid-selection-column Mount ERROR')
           }
@@ -369,6 +370,7 @@ export default {
     }
 
     const doUpload = async () => {
+      console.log('gridEl.selectedItems', gridEl.selectedItems)
       const file = document.querySelector('mwc-fileupload').getFile()
       console.log('doUpload', file)
       // const formData = new FormData()
@@ -426,8 +428,9 @@ export default {
           }
           index++
         }
-      } else {
       }
+      gridEl.selectedItems = gridEl.selectedItems.filter(item => !!item)
+      console.log(gridEl.selectedItems)
     }
 
     return {
