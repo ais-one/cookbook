@@ -1,11 +1,6 @@
 // import Navbar from '../components/navbar.js'
 
 const template = /*html*/`
-<!-- section>
-  <h1>Secure Layout</h1>
-  <ms-navbar></ms-navbar>
-  <router-view></router-view>
-</section -->
 <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item">
@@ -75,7 +70,7 @@ const template = /*html*/`
     </ul>
   </aside>
   <div class="column content nice-scroll">
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
   </div>
 </div>
 `

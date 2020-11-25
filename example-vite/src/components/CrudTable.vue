@@ -142,7 +142,7 @@ export default {
   props: {
     infinite: { type: Boolean, default: false }, // infinite scroll?
     pageStart: { type: String, default: '1' }, // starting page
-    pageSize: { type: [Number], default: 10 },
+    pageSize: { type: Number, default: 10 },
     pageSizeList: { type: Array, default: () => [5, 10, 25, 50] },
     tableName: { type: String, required: true }
   },
@@ -173,8 +173,6 @@ export default {
 
     let gridEl // grid element
     let sorter = []
-
-    // let inverted = false, indeterminate = false; // AAA
 
     const _rowClick = async (e) => {
       // console.log('click not on checkbox 1', e.detail.value)
@@ -236,7 +234,7 @@ export default {
 
       gridEl = document.querySelector('vaadin-grid.table')
       if (gridEl) {
-        // gridEl.addEventListener('active-item-changed', _rowClick)
+        gridEl.addEventListener('active-item-changed', _rowClick)
         // gridEl.addEventListener('selected-items-changed', _selectClick)
 
         // https://vaadin.com/forum/thread/17445015/updating-grid-data-directly-when-using-dataprovider
@@ -256,10 +254,10 @@ export default {
             }
             const rv = await t4t.find(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters, sorter, page.value, rowsPerPage.value)
             if (rv.results) {
-              // console.log('rv.total', rv.total, rv.results)
               maxPage.value = Math.ceil(rv.total / rowsPerPage.value)
+              console.log('rv.total', rv.total, rowsPerPage.value, maxPage.value)
               // gridEl.items = rv.results // do not use this, not scalable
-              gridEl.size = rv.total
+              gridEl.size = rv.results.length
               records.value = rv.results
               if (rv.cursor && props.infinite) page.value = rv.cursor // infinite scroll, set new cursor
               callback(rv.results)
@@ -268,57 +266,14 @@ export default {
             console.log(e.toString())
           }
 
-          //! AAA
           const sel = gridEl.querySelector('vaadin-grid-selection-column')
           if (sel) {
             sel.removeEventListener('select-all-changed', selectAllChanged)
             sel.addEventListener('select-all-changed', selectAllChanged)
+            sel.selectAll = false
           } else {
             console.log('vaadin-grid-selection-column Mount ERROR')
           }
-          // AAA
-          // const column = gridEl.querySelector('vaadin-grid-sort-column')
-          // console.log('column', column)
-          // column.headerRenderer = function(cell) {
-          //   console.log('cell', cell, cell.firstElementChild)
-          //   var checkbox = cell.firstElementChild;
-          //   if (!checkbox) {
-          //     console.log('aaaaaaaaaaaaaaaaa')
-          //     checkbox = window.document.createElement('vaadin-checkbox');
-          //     checkbox.setAttribute('aria-label', 'Select All');
-          //     checkbox.setAttribute('style', 'font-size: var(--lumo-font-size-m)');
-          //     checkbox.addEventListener('change', function(e) {
-          //       grid.selectedItems = [];
-          //       inverted = !inverted;
-          //       indeterminate = false;
-          //       grid.render();
-          //     });
-          //     cell.appendChild(checkbox);
-          //   } else {
-          //     console.log('aaaaaaa', cell)
-          //   }
-          //   checkbox.checked = indeterminate || inverted;
-          //   checkbox.indeterminate = indeterminate;
-          // }
-          // column.renderer = function(cell, column, rowData) {
-          //   var checkbox = cell.firstElementChild;
-          //   if (!checkbox) {
-          //     checkbox = window.document.createElement('vaadin-checkbox');
-          //     checkbox.setAttribute('aria-label', 'Select Row');
-          //     checkbox.addEventListener('change', function(e) {
-          //       if (e.target.checked === inverted) {
-          //         grid.deselectItem(checkbox.__item);
-          //       } else {
-          //         grid.selectItem(checkbox.__item);
-          //       }
-          //       indeterminate = grid.selectedItems.length > 0;
-          //       grid.render();
-          //     });
-          //     cell.appendChild(checkbox);
-          //   }
-          //   checkbox.__item = rowData.item;
-          //   checkbox.checked = inverted !== rowData.selected;
-          // };
 
           loading.value = false
         }
@@ -326,7 +281,7 @@ export default {
     })
     onUnmounted(() => {
       if (gridEl) {
-        // gridEl.removeEventListener('active-item-changed', _rowClick)
+        gridEl.removeEventListener('active-item-changed', _rowClick)
         // gridEl.removeEventListener('selected-items-changed', _selectClick)
       }
     })
@@ -463,30 +418,16 @@ export default {
       const sel = gridEl.querySelector('vaadin-grid-selection-column')
       console.log('selAll', sel.selectAll)
       if (sel.selectAll) {
-        // gridEl.selectedItems = [ ...gridEl.items ]
-        const aa = []
-        records.value.forEach(item => {
-          const vv = {}
-          for (let k in item) vv[k] = item[k]
-          aa.push(vv)
-        })
-        console.log(gridEl.items, gridEl.pageSize, aa)
-        gridEl.selectedItems = [...aa]
+        const cbs = gridEl.querySelectorAll('vaadin-checkbox')
+        let index = 0
+        for (const cb of cbs) {
+          if (index !== 0) {
+            cb.checked = sel.selectAll
+          }
+          index++
+        }
       } else {
-        gridEl.selectedItems = []
       }
-      // if (e.detail.value) {
-      //   console.log('select all', e)
-      //   // gridEl.selectedItems = [ ...gridEl.items ]
-      // } else {
-      //   console.log('unselect all')
-      //   // gridEl.selectedItems = []
-      // }
-      // if (gridEl) gridEl.selectedItems = []
-      // e.detail.value
-      // set all checkboxes
-      // clear all checkboxes
-      // console.log('selectAllChanged', e.detail.value, e.target.selectAll)
     }
 
     return {

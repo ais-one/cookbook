@@ -16,6 +16,8 @@ export default {
       record: null
     })
 
+    const test = reactive({})
+
     onMounted(async () => {
       console.log('ui2 mounted!')
 
@@ -23,7 +25,12 @@ export default {
 
       form.config = await t4t.getConfig()
       form.record = await t4t.findOne('5f3a35197dc9e61b64e0dea9')
-      console.log(form)
+      Object.assign(test, form.config)
+      console.log(test)
+      // for (var key in test) delete test[key]
+      // Object.assign(test, {})
+      console.log(test.length)
+      // console.log(form)
     })
 
     return {

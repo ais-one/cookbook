@@ -19,7 +19,7 @@
     "deploy:unix": "deploy.sh $npm_package_config_env"
   },
   "dependencies": {
-    "@apollo/client": "^3.2.7",
+    "@apollo/client": "^3.2.9",
     "@material/mwc-button": "^0.19.1",
     "@material/mwc-dialog": "^0.19.1",
     "@material/mwc-drawer": "^0.19.1",
@@ -36,9 +36,9 @@
     "graphql-tag": "^2.11.0",
     "leaflet": "^1.7.1",
     "subscriptions-transport-ws": "^0.9.18",
-    "vue": "^3.0.2",
+    "vue": "^3.0.3",
     "vue-router": "^4.0.0-rc.3",
-    "vuex": "^4.0.0-rc.1"
+    "vuex": "^4.0.0-rc.2"
   },
   "devDependencies": {
     "@vue/compiler-sfc": "^3.0.2",
@@ -52,6 +52,6 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.1.0",
     "prettier": "^2.2.0",
-    "vite": "^1.0.0-rc.9"
+    "vite": "^1.0.0-rc.13"
   }
 }
