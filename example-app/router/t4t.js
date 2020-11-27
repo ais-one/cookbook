@@ -187,7 +187,7 @@ module.exports = express.Router()
   .get('/find-one/:table', generateTable, asyncWrapper(async (req, res) => {
     const { table } = req
     const where = formUniqueKey(table, req.query.key)
-    if (!where) return res.status(400).json() // bad request
+    if (!where) return res.status(400).json({}) // bad request
     let rv = {}
     if (table.db === 'knex') {
       rv = await knex(table.name).where(where).first()
@@ -201,7 +201,7 @@ module.exports = express.Router()
     const { body, table } = req
     const where = formUniqueKey(table, req.query.key)
     let count = 0
-    if (!where) return res.status(400).json() // bad request
+    if (!where) return res.status(400).json({}) // bad request
 
     for (let key in table.cols) { // add in auto fields
       const { rules, type } = table.cols[key]
@@ -296,7 +296,7 @@ module.exports = express.Router()
         // result: dbRv.result
       }
     }
-    return res.json()
+    return res.json() // TBD fix common-lib/esm/http.js
   }))
 
   .post('/upload/:table', generateTable, upload.single('file'), asyncWrapper(async (req, res) => {

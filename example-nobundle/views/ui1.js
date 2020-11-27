@@ -3,7 +3,7 @@ const template = /*html*/`
   <h1>UI 1</h1>
   <p>Testing UI </p>
 
-  <h3>single autocomplete example</h3>
+  <h3>single autocomplete && string search example</h3>
   <div class="field">
     <div class="control">
       <label for="" class="label">Find Something</label>
@@ -13,7 +13,7 @@ const template = /*html*/`
 
   <hr/>
 
-  <h3>dependent autocomplete example</h3>
+  <h3>dependent autocomplete && object search example</h3>
 
   <div class="field">
     <div class="control">
@@ -39,11 +39,7 @@ export default {
   setup() {
     const ac = reactive({
       value: 'a',
-      // items: ['aa9','aa5']
-      items: [
-        { key: 'id_9',  text: 'aa9'  },
-        { key: 'id_5',  text: 'aa5'  },
-      ]
+      items: ['aa9','aa5']
     })
     const country = reactive({
       value: '',
@@ -54,21 +50,7 @@ export default {
       items: []
     })
 
-    // const list = ['aa1', 'aa15', 'aa16', 'aa17', 'aa18', 'aa19', 'aa20', 'aa21', 'aa22', 'aa23', 'aa24', 'aa25']
-    const list = [
-      { key: 'id_1',  text: 'aa1'  },
-      { key: 'id_15', text: 'aa15' },
-      { key: 'id_16', text: 'aa16' },
-      { key: 'id_17', text: 'aa17' },
-      { key: 'id_18', text: 'aa18' },
-      { key: 'id_19', text: 'aa19' },
-      { key: 'id_20', text: 'aa20' },
-      { key: 'id_21', text: 'aa21' },
-      { key: 'id_22', text: 'aa22' },
-      { key: 'id_23', text: 'aa23' },
-      { key: 'id_24', text: 'aa24' },
-      { key: 'id_25', text: 'aa25' },
-    ]
+    const list = ['aa1', 'aa15', 'aa16', 'aa17', 'aa18', 'aa19', 'aa20', 'aa21', 'aa22', 'aa23', 'aa24', 'aa25']
 
     const countryList = [
       { key: 'ae',  text: 'United Arab Emirates'  },
@@ -94,7 +76,8 @@ export default {
 
     const autoComplete = (e) => {
       const result = []
-      for (let i = 0; i < list.length; i++) {
+      const len = list.length < 8 ? list.length : 8
+      for (let i = 0; i < len; i++) {
         if (typeof list[i] === 'string') {
           if (list[i].includes(e.detail)) result.push(list[i])
         } else {

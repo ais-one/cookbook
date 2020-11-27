@@ -58,7 +58,7 @@
       <slot name="table" :tableCfg="tableCfg" :headerCols="headerCols" :page="page" :records="records" :rowsPerPage="rowsPerPage" :maxPage="maxPage">
         <vaadin-grid class="table">
           <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect"></vaadin-grid-selection-column>
-          <vaadin-grid-sort-column v-for="(headerCol, index) in headerCols" :key="index" :path="headerCol.path" :header="headerCol.header"></vaadin-grid-sort-column>
+          <vaadin-grid-sort-column v-for="(headerCol, index) in headerCols" :key="index" :path="headerCol.path" :header="headerCol.header" :width="headerCol.width" :autoWidth="!headerCol.width"></vaadin-grid-sort-column>
         </vaadin-grid>
       </slot>
     </div>
@@ -226,10 +226,11 @@ export default {
       if (tableCfg.value) {
         for (const col in tableCfg.value.cols) {
           const obj = tableCfg.value.cols[col]
-          if (obj.table !== 'hide') headerCols.push({ path: col, header: obj.label }) // process table columns
+          if (obj.table !== 'hide') headerCols.push({ path: col, header: obj.label, width: obj.width ? obj.width + 'px' : null }) // process table columns
           if (obj.filter !== 'hide') filterCols.push(col) // process filters
         }
         // Object.entries(tableCfg.value.cols) => [ [key, obj], ... ]
+        console.log('xxx', headerCols)
       }
 
       gridEl = document.querySelector('vaadin-grid.table')

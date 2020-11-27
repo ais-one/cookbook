@@ -41,7 +41,8 @@ module.exports = {
       // type ? text, password, etc...
       rules: {
         min: 0, max: 20
-      }
+      },
+      width: 250
     },
     sex: { // single select
       label: 'Sex',

@@ -79,7 +79,9 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     options.credentials = credentials
 
     const rv0 = await fetch(urlFull + qs, options)
-    rv0.data = await rv0.json()
+    // rv0.data = await rv0.json() // replaced by below to handle empty body
+    const txt0 = await rv0.text()
+    rv0.data = txt0.length ? JSON.parse(txt0) : {}
     if (rv0.status >= 200 && rv0.status < 400) return rv0
     else if (rv0.status === 401 && urlPath !== '/api/auth/logout' && urlPath !== '/api/auth/otp' && urlPath !== '/api/auth/refresh') {
       if (rv0.data.message === 'Token Expired Error') {
@@ -89,7 +91,9 @@ const http = async (method, url, body = null, query = null, headers = null) => {
           refreshToken = rv1.data.refresh_token
           if (token && credentials !== 'include') options.headers.Authorization = `Bearer ${token}` // include === HTTPONLY_TOKEN
           const rv2 = await fetch(urlFull + qs, options)
-          rv2.data = await rv2.json()
+          // rv2.data = await rv2.json() // replaced by below to handle empty body
+          const txt2 = await rv2.text()
+          rv2.data = txt2.length ? JSON.parse(txt2) : {}
           return rv2
         } else {
           // console.log('refresh failed')
@@ -99,6 +103,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     }
     throw rv0 // error
   } catch (e) {
+    // some errors are due to res.json(), should be res.json({})
     if (e && e.data && e.data.message !== 'Token Expired Error' && (e.status === 401 || e.status === 403)) forceLogoutFn()
     throw e // some other error
   }

@@ -6,7 +6,6 @@ In Progress
 
 For future product improvement
 - CrudTable.vue
-  - header widths (to improve)
   - csv upload (to implement)
   - file upload column (to implement)
 - [example-vite & example-nobundler] http call

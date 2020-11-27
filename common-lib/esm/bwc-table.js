@@ -66,7 +66,7 @@ template.innerHTML = `
 #table-wrapper > nav {
   position: -webkit-sticky;
   position: sticky;
-  top: 0;
+  top: 0px;
   left: 0px;
   z-index: 2;
   background-color: var(--bwc-table-navbar-bgcolor, lightslategray) !important;
