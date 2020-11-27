@@ -43,6 +43,12 @@ global.CONFIG.JWT_REFRESH_STORE_NAME = 'user_session' // collection or table nam
 global.CONFIG.USE_OTP = 'TEST' // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
 global.CONFIG.OTP_EXPIRY = 30 // 8 // 30 // defined seconds to allow user to submit OTP
 
+// SAML
+global.CONFIG.SAML_ISSUER = 'saml-poc'
+global.CONFIG.SAML_ENTRYPOINT = 'http://127.0.0.1:8081/simplesaml/saml2/idp/SSOService.php'
+global.CONFIG.SAML_CALLBACK_URL = 'http://127.0.0.1:3000/api/saml/login/callback'
+global.CONFIG.SAML_AUTH_REDIRECT_URL = '' // should use relayState
+
 // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
 // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}
 // MONGO_URL=mongodb://127.0.0.1:27017/mm?replicaSet=rs0
@@ -107,7 +113,10 @@ global.CONFIG.PROXY_WWW_ORIGIN = '' // 'http://127.0.0.1:8080', // used by proxy
 global.CONFIG.WEB_STATIC = [  // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
   // options does not seem to work
   // check - https://expressjs.com/en/4x/api.html#express.static
-  { folder: APP_PATH + '/public/demo-nobundler', url: '/demo-nobundler', options: { extensions: ['html'], index: false } },
+  { folder: '../common-lib/esm', url: '/esm' },
+  { folder: '../example-nobundle', url: '/nobundle', options: { extensions: ['html'], index: false } },
+  { folder: '../example-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
+  { folder: '../example-spa/dist', url: '/spa', options: { extensions: ['html'], index: false } },
   { folder: APP_PATH + '/lib/esm', url: '/js' },
   { folder: APP_PATH + '/public/demo-express', url: '/' }
 ]

@@ -7,20 +7,19 @@ module.exports = {
   //   '/@/': path.resolve(__dirname, './lib/') // import aa from '/@/esm/aaa.js'
   // },
   port: 8080,
-  // proxy: {
-  //   // string shorthand
-  //   '/foo': 'http://localhost:4567/foo',
-  //   // with options
-  //   '/api': {
-  //     target: 'http://jsonplaceholder.typicode.com',
-  //     changeOrigin: true,
-  //     rewrite: path => path.replace(/^\/api/, '')
-  //   }
-  // },
-  // base: '/',
+  proxy: {
+    // string shorthand
+    // '/esm': 'http://127.0.0.1:3000/esm',
+    '/common-lib/esm': {
+      target: 'http://127.0.0.1:3000',
+      changeOrigin: true,
+      rewrite: (path) => path.replace(/^\/common-lib\/esm/, '/esm')
+    }
+  },
+  base: '/vite',
   // sourcemap: isDev1,
   vueCompilerOptions: {
-    isCustomElement: (tag) => tag.startsWith('vaadin-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-')
+    isCustomElement: (tag) => tag.startsWith('vaadin-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-') || tag.startsWith('sl-')
   },
   optimizeDeps: {
     include: [
@@ -39,8 +38,9 @@ module.exports = {
     ]
   },
   rollupInputOptions: {
-    // ignore react stuff
-    external: ['react']
+    external: [
+      'react' // ignore react stuff
+    ]
   }
 }
 

@@ -2,7 +2,7 @@
 Hello and thank you for your interest in helping make VueCrudX better. Please take a few moments to review the following guidelines:
 
 ## IMPORTANT INFORMATION
-* For general questions, please join [our Discord Community](https://community.TBD.com/).
+* For general questions, please join [TBD - our Discord Community](https://community.TBD.com/).
 
 ## Reporting Issues
 * The issue list of this repo is **exclusively** for Bug Reports and Feature Requests.

@@ -2,9 +2,10 @@ module.exports = {
   root: true,
   parserOptions: {
     // Required for certain syntax usages
-    ecmaVersion: 2018,
+    ecmaVersion: 2019,
     sourceType: 'module'
   },
+  parser: 'babel-eslint', // https://stackoverflow.com/questions/57385125/eslint-does-not-recognize-private-field-declaration-using-nodejs-12
   env : {
     browser : true,
     node : true,
@@ -15,6 +16,8 @@ module.exports = {
   ],
   extends: 'eslint:recommended',
   rules: {
+    'no-prototype-builtins': 'warn',
+
     // disallow empty block statements (no-empty)
     'no-empty': 'warn',
 

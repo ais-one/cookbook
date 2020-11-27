@@ -32,22 +32,27 @@ const fetch_retry = async (url, options, n) => {
 };
 */
 
-const http = async (method, url, body = null, query = null, headers = null) => {
-  // settle the URL
-  // http://example.com:3001/abc/ees, /abc/ees
+const parseUrl = (url) => {
   let urlPath = url
-  let urlFull = baseUrl + urlPath
   let urlOrigin = baseUrl
+  let urlFull = baseUrl + urlPath
   try {
     // need try here
-    const { origin, pathname } = new URL(url) // http://example.com:3001/abc/ees
+    const { origin = '', pathname = '' } = new URL(url) // http://example.com:3001/abc/ees
     urlOrigin = origin
     urlPath = pathname
     urlFull = origin + pathname
   } catch (e) {
-    // no need to throw anything here
   }
+  return { urlOrigin, urlPath, urlFull }
+}
 
+const http = async (method, url, body = null, query = null, headers = null) => {
+  // settle the URL
+  // http://example.com:3001/abc/ees, /abc/ees
+  const { urlOrigin, urlPath, urlFull } = parseUrl(url)
+
+  // console.log('http', url, urlOrigin, urlPath, urlFull)
   try {
     const controller = new AbortController()
     const signal = controller.signal
@@ -62,19 +67,26 @@ const http = async (method, url, body = null, query = null, headers = null) => {
 
     if (!headers) {
       headers = {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json'
       }
     }
     const options = { method, headers }
     if (timeoutMs > 0) options.signal = signal
     if (token && credentials !== 'include') options.headers.Authorization = `Bearer ${token}` // include === HTTPONLY_TOKEN
     if (urlPath === '/api/auth/logout') options.headers.refresh_token = refreshToken // add refresh token for logout
-    if (body) options.body = JSON.stringify(body)
+    if (body) {
+      if (body instanceof FormData) {
+        options.body = body
+      } else {
+        headers['Content-Type'] = 'application/json'
+        options.body = JSON.stringify(body)
+      }
+    }
     options.credentials = credentials
-
     const rv0 = await fetch(urlFull + qs, options)
-    rv0.data = await rv0.json()
+    // rv0.data = await rv0.json() // replaced by below to handle empty body
+    const txt0 = await rv0.text()
+    rv0.data = txt0.length ? JSON.parse(txt0) : {}
     if (rv0.status >= 200 && rv0.status < 400) return rv0
     else if (rv0.status === 401 && urlPath !== '/api/auth/logout' && urlPath !== '/api/auth/otp' && urlPath !== '/api/auth/refresh') {
       if (rv0.data.message === 'Token Expired Error') {
@@ -84,7 +96,9 @@ const http = async (method, url, body = null, query = null, headers = null) => {
           refreshToken = rv1.data.refresh_token
           if (token && credentials !== 'include') options.headers.Authorization = `Bearer ${token}` // include === HTTPONLY_TOKEN
           const rv2 = await fetch(urlFull + qs, options)
-          rv2.data = await rv2.json()
+          // rv2.data = await rv2.json() // replaced by below to handle empty body
+          const txt2 = await rv2.text()
+          rv2.data = txt2.length ? JSON.parse(txt2) : {}
           return rv2
         } else {
           // console.log('refresh failed')
@@ -94,6 +108,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     }
     throw rv0 // error
   } catch (e) {
+    // some errors are due to res.json(), should be res.json({})
     if (e && e.data && e.data.message !== 'Token Expired Error' && (e.status === 401 || e.status === 403)) forceLogoutFn()
     throw e // some other error
   }
@@ -178,7 +193,7 @@ const get = async (url, query = null, headers = null) => {
   // }
 }
 
-export { http, post, get, patch, del, test, testAuth, login, otp, logout, setBaseUrl, setToken, setRefreshToken, setCredentials, setForceLogoutFn, parseJwt }
+export { http, post, get, patch, del, test, testAuth, login, otp, logout, setBaseUrl, setToken, setRefreshToken, setCredentials, setForceLogoutFn, parseJwt, parseUrl }
 
 // try {
 //   let res = await fetch('/api/auth/login', {

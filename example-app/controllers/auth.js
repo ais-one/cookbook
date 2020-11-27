@@ -44,7 +44,7 @@ const me = async (req, res) => {
     // you can also get more user information from here from a datastore
     return res.status(200).json({ user: id, ts: Date.now() })
   } catch (e) {
-    console.log(e.toSting())
+    console.log(e.toString())
   }
   return res.status(401).json({ message: 'Error token revoked' })
 }

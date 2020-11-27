@@ -8,6 +8,7 @@
         <mwc-textfield label="Password" outlined type="password" v-model="password"></mwc-textfield>
         <div class="buttons-box-flex">
           <mwc-button raised label="Login" type="button" @click="login"></mwc-button>
+          <mwc-button raised label="SAML" type="button" @click="() => samlLogin(callbackUrl)"></mwc-button>
           <!-- <o-button @click="login">Login Use Oruga UI</o-button> -->
         </div>
         <p><router-link to="/signup">Sign Up</router-link></p>
@@ -27,13 +28,17 @@
 <script>
 import { ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 
 import { useXhr } from '/src/plugins/xhr.js'
 import { useI18n } from '/src/plugins/i18n.js'
 import { useWs } from '/src/plugins/ws.js'
 
-import apollo from '/src/lib/esm/apollo' // may not need to use provide/inject if no reactivity ?
-import { DO_HELLO } from '/src/queries'
+import { samlLogin } from '../../../common-lib/esm/saml.js' // served from express /esm static route
+import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
+import { DO_HELLO } from '/src/queries.js'
+
+import { VITE_CALLBACK_URL } from '/config.js'
 
 const apolloClient = apollo.get()
 if (apolloClient) {
@@ -51,6 +56,8 @@ if (apolloClient) {
 export default {
   setup(props, context) {
     const store = useStore()
+    const route = useRoute()
+
     const http = useXhr()
     const i18n = useI18n()
     const ws = useWs()
@@ -61,6 +68,8 @@ export default {
     const errorMessage = ref('')
     const mode = ref('login') // login, otp
     const otp = ref('')
+
+    const callbackUrl = VITE_CALLBACK_URL
 
     let otpCount = 0
     let timerId = null
@@ -75,9 +84,10 @@ export default {
 
     onUnmounted(() => console.log('signIn unmounted'))
     onMounted(async () => {
-      console.log('signIn mounted!')
+      console.log('signIn mounted!', route.hash) // deal with hashes here if necessary
 
       setToLogin()
+      otp.value = '111111'
       errorMessage.value = ''
       loading.value = false
 
@@ -167,6 +177,7 @@ export default {
     }
 
     return {
+      samlLogin,
       email, // data
       password,
       errorMessage,
@@ -175,7 +186,8 @@ export default {
       otp,
       login, // method
       otpLogin,
-      i18n
+      i18n,
+      callbackUrl
     }
   }
 }

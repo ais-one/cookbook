@@ -32,8 +32,8 @@
 import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inject } from 'vue'
 import { useStore } from 'vuex'
 // import { useRouter, useRoute } from 'vue-router'
-import { debounce } from '/src/lib/esm/util.js'
-import { webpushSubscribe, webpushUnsubscribe, fcmSubscribe } from '/src/lib/esm/pwa.js'
+import { debounce } from '../../../common-lib/esm/util.js' // served from express /esm static route
+import { webpushSubscribe, webpushUnsubscribe, fcmSubscribe } from '../../../common-lib/esm/pwa.js' // served from express /esm static route
 import { useXhr } from '/src/plugins/xhr.js'
 import { VITE_PWA_PN } from '/config.js'
 
@@ -166,7 +166,7 @@ export default {
       try {
         let subscription
         if (VITE_PWA_PN === 'FCM') {
-          subscription = await fcmSubscribe(async (token) => {
+          subscription = await fcmSubscribe(window.SW_REG, async (token) => {
             await http.post('/api/webpush/sub', { subscription: token })
           })
         } else if (VITE_PWA_PN === 'Webpush') {

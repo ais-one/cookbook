@@ -3,7 +3,7 @@ const express = require('express')
 const Model = require(LIB_PATH + '/services/db/objection').get()
 const knex = Model ? Model.knex() : null
 
-const { validate } = require('esm')(module)(LIB_PATH + '/esm/validate') // TBD validate on server side also
+const { validate } = require('esm')(module)(LIB_PATH + '/esm/t4t-validate') // TBD validate on server side also
 
 const mongo = require(LIB_PATH + '/services/db/mongodb')
 const ObjectID = mongo.client ? require('mongodb').ObjectID : null
@@ -12,7 +12,14 @@ const ObjectID = mongo.client ? require('mongodb').ObjectID : null
 const csvParse = require('csv-parse')
 const multer = require('multer')
 const { Parser } = require('json2csv')
-const upload = multer({ storage: multer.memoryStorage() })
+const memoryUpload = multer({
+  // limits: {
+  //   files : 1,
+  //   fileSize: 5000 // size in bytes
+  // },
+  // fileFilter,
+  storage: multer.memoryStorage()
+})
 
 // key is reserved property for identifying row in a multiKey table
 // | is reserved for seperating columns that make the multiKey
@@ -71,7 +78,7 @@ module.exports = express.Router()
   .get('/find/:table', generateTable, asyncWrapper(async (req, res) => { // page is 1 based
     const { table } = req
     let { page = 1, limit = 25, filters = null, sorter = null, csv = '' } = req.query
-    page = parseInt(page)
+    page = parseInt(page) // 1-based
     limit = parseInt(limit)
     // console.log('t4t filters and sort', filters, sorter, table.name, page, limit)
     filters = JSON.parse(filters) // ignore where col === null, sort it 'or' first then 'and' // [ { col, op, val, andOr } ]
@@ -187,7 +194,7 @@ module.exports = express.Router()
   .get('/find-one/:table', generateTable, asyncWrapper(async (req, res) => {
     const { table } = req
     const where = formUniqueKey(table, req.query.key)
-    if (!where) return res.status(400).json() // bad request
+    if (!where) return res.status(400).json({}) // bad request
     let rv = {}
     if (table.db === 'knex') {
       rv = await knex(table.name).where(where).first()
@@ -201,7 +208,7 @@ module.exports = express.Router()
     const { body, table } = req
     const where = formUniqueKey(table, req.query.key)
     let count = 0
-    if (!where) return res.status(400).json() // bad request
+    if (!where) return res.status(400).json({}) // bad request
 
     for (let key in table.cols) { // add in auto fields
       const { rules, type } = table.cols[key]
@@ -296,24 +303,32 @@ module.exports = express.Router()
         // result: dbRv.result
       }
     }
-    return res.json()
+    return res.json() // TBD fix common-lib/esm/http.js
   }))
 
-  .post('/upload/:table', generateTable, upload.single('file'), asyncWrapper(async (req, res) => {
+// Test country collection upload using a csv file with following contents
+// code,name
+// zzz,1234
+// ddd,5678
+  .post('/upload/:table', generateTable, memoryUpload.single('csv-file'), async (req, res) => { // do not use asyncWrapper
     const { table } = req
     const csv = req.file.buffer.toString('utf-8')
     const output = []
     let errors = []
+    let keys = []
     let currLine = 0
     csvParse(csv)
       .on('error', (e) => {
         console.log(e.message)
       })
-      .on('readable', () => {
+      .on('readable', function () {
         let record
         while ( (record = this.read()) ) {
           currLine++
-          if (currLine === 1) continue // ignore first line
+          if (currLine === 1) {
+            keys = [...record]
+            continue // ignore first line
+          }
           if (record.length === table.nonAuto.length) { // ok
             if (record.join('')) {
               // if (permissionOk) {
@@ -329,18 +344,28 @@ module.exports = express.Router()
           }
         }
       })
-      .on('end', () => {
+      .on('end', async () => {
         let line = 0
+        const writes = []
         for (let row of output) {
           line++
           try {
-            // TBD insert to table
-            // also take care of auto populating fields
-            console.log(output)
+            // also take care of auto populating fields?
+            const obj = {}
+            for (let i=0; i<keys.length; i++) {
+              obj[ keys[i] ] = row[i]
+            }
+            if (table.db === 'knex') {
+              writes.push(knex(table.name).insert(obj))
+            } else {
+              writes.push(mongo.db.collection(table.name).insertOne(obj))
+            }
+            // console.log(obj)
           } catch (e) {
             errors.push({ line, data: row.join(','), msg: 'Caught exception: ' + e.toString() })
-            res.status(200).json({ errorCount: errors.length })
           }
         }
+        await Promise.allSettled(writes)
+        return res.status(200).json({ errorCount: errors.length })
       })
-  }))
+  })

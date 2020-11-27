@@ -20,11 +20,12 @@
         </ul>
         <ul class="nav-right">
           <li class="nav-item">
+            Rows Per Page
             <select class="nav-select-page-size" v-model="rowsPerPage">
-              <option v-for="val of pageSize" :key="val" :value="val" :selected="val === rowsPerPage">{{ val }}</option>
+              <option v-for="val of pageSizeList" :key="val" :value="val" :selected="val === rowsPerPage">{{ val }}</option>
             </select>
           </li>
-          <li class="nav-item"><input class="nav-select-page" type="number" v-model="page" min="1" :max="maxPage" /> / {{ maxPage }}</li>
+          <li class="nav-item">Page<input class="nav-select-page" type="number" v-model="page" min="1" :max="maxPage" /> / {{ maxPage }}</li>
         </ul>
       </nav>
       <template v-if="showFilter">
@@ -56,8 +57,8 @@
 
       <slot name="table" :tableCfg="tableCfg" :headerCols="headerCols" :page="page" :records="records" :rowsPerPage="rowsPerPage" :maxPage="maxPage">
         <vaadin-grid class="table">
-          <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect" @select-all-changed="selectAllChanged"></vaadin-grid-selection-column>
-          <vaadin-grid-sort-column v-for="(headerCol, index) in headerCols" :key="index" :path="headerCol.path" :header="headerCol.header"></vaadin-grid-sort-column>
+          <vaadin-grid-selection-column v-if="tableCfg && tableCfg.multiSelect"></vaadin-grid-selection-column>
+          <vaadin-grid-sort-column v-for="(headerCol, index) in headerCols" :key="index" :path="headerCol.path" :header="headerCol.header" :width="headerCol.width" :autoWidth="!headerCol.width"></vaadin-grid-sort-column>
         </vaadin-grid>
       </slot>
     </div>
@@ -129,8 +130,8 @@
 // TBD show all...
 // TBD inline edits
 // TBD table columns with joined values, virtual columns...
-import { debounce, downloadData } from '/src/lib/esm/util.js'
-import { validate } from '/src/lib/esm/validate.js'
+import { debounce, downloadData } from '../../../common-lib/esm/util.js' // served from express /esm static route
+import * as t4t from '../../../common-lib/esm/t4t-fe.js' // served from express /esm static route
 import { useXhr } from '/src/plugins/xhr.js'
 
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
@@ -139,7 +140,9 @@ import { useRouter, useRoute } from 'vue-router'
 export default {
   name: 'CrudTable',
   props: {
-    pageSize: { type: [Number], default: 10 },
+    infinite: { type: Boolean, default: false }, // infinite scroll?
+    pageStart: { type: String, default: '1' }, // starting page
+    pageSize: { type: Number, default: 10 },
     pageSizeList: { type: Array, default: () => [5, 10, 25, 50] },
     tableName: { type: String, required: true }
   },
@@ -152,7 +155,7 @@ export default {
     const keycol = ref(null) // parent key/id name here
     const keyval = ref(null) // parent key/id value
     const tableCfg = ref(null) // table config
-    const page = ref(1)
+    const page = ref(props.infinite ? props.pageStart : Number(props.pageStart))
     const records = ref([])
     const maxPage = ref(1)
     const rowsPerPage = ref(props.pageSize)
@@ -189,21 +192,19 @@ export default {
       if (!item) return // do not continue if item is null
       try {
         console.log('item.key', item.key)
-        const { data } = await http.get('/api/t4t/find-one/' + props.tableName, { key: item.key })
-        recordObj.edit.key = item.key
-        Object.entries(tableCfg.value.cols).forEach((kv) => {
-          const [key, val] = kv
-          if (val.edit !== 'hide') {
-            recordObj.edit[key] = data[key]
-          }
-        })
-        showForm.value = 'edit'
+        const data = await t4t.findOne(item.key)
+        if (data) {
+          recordObj.edit = data
+          showForm.value = 'edit'
+        }
       } catch (err) {
         console.log(err.toString())
       }
     }
 
-    // const _selectClick = async (e) => console.log('click on checkbox', e.detail.value)
+    const _selectClick = async (e) => {
+      // console.log(e, gridEl.selectedItems)
+    }
 
     // gridEl.addEventListener('dblclick', _dblClick)
     // const _dblClick = (e) => {
@@ -217,14 +218,15 @@ export default {
       keycol.value = route.query.keycol
       keyval.value = route.query.keyval
 
+      t4t.setTableName(props.tableName)
+
       if (!tableCfg.value) {
-        const { data } = await http.get('/api/t4t/config/' + props.tableName)
-        tableCfg.value = data
+        tableCfg.value = await t4t.getConfig()
       }
       if (tableCfg.value) {
         for (const col in tableCfg.value.cols) {
           const obj = tableCfg.value.cols[col]
-          if (obj.table !== 'hide') headerCols.push({ path: col, header: obj.label }) // process table columns
+          if (obj.table !== 'hide') headerCols.push({ path: col, header: obj.label, width: obj.width ? obj.width + 'px' : null }) // process table columns
           if (obj.filter !== 'hide') filterCols.push(col) // process filters
         }
         // Object.entries(tableCfg.value.cols) => [ [key, obj], ... ]
@@ -233,7 +235,7 @@ export default {
       gridEl = document.querySelector('vaadin-grid.table')
       if (gridEl) {
         gridEl.addEventListener('active-item-changed', _rowClick)
-        // gridEl.addEventListener('selected-items-changed', _selectClick)
+        // gridEl.addEventListener('selected-items-changed', _selectClick) // no need to use
 
         // https://vaadin.com/forum/thread/17445015/updating-grid-data-directly-when-using-dataprovider
         gridEl.dataProvider = async function (params, callback) {
@@ -250,24 +252,30 @@ export default {
                 order: params.sortOrders[0].direction
               })
             }
-            const { data } = await http.get('/api/t4t/find/' + props.tableName, {
-              page: page.value,
-              limit: rowsPerPage.value,
-              filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters),
-              sorter: JSON.stringify(sorter)
-            })
-            const rv = data
+            const rv = await t4t.find(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters, sorter, page.value, rowsPerPage.value)
             if (rv.results) {
-              // console.log('rv.total', rv.total, rv.results)
               maxPage.value = Math.ceil(rv.total / rowsPerPage.value)
+              console.log('rv.total', rv.total, rowsPerPage.value, maxPage.value)
               // gridEl.items = rv.results // do not use this, not scalable
-              gridEl.size = rv.total
+              gridEl.size = rv.results.length
               records.value = rv.results
+              if (rv.cursor && props.infinite) page.value = rv.cursor // infinite scroll, set new cursor
               callback(rv.results)
             }
           } catch (e) {
             console.log(e.toString())
           }
+
+          const sel = gridEl.querySelector('vaadin-grid-selection-column')
+          if (sel) {
+            sel.removeEventListener('select-all-changed', selectAllChanged)
+            sel.addEventListener('select-all-changed', selectAllChanged)
+            sel.selectAll = false
+            gridEl.selectedItems = []
+          } else {
+            console.log('vaadin-grid-selection-column Mount ERROR')
+          }
+
           loading.value = false
         }
       }
@@ -275,7 +283,7 @@ export default {
     onUnmounted(() => {
       if (gridEl) {
         gridEl.removeEventListener('active-item-changed', _rowClick)
-        // gridEl.removeEventListener('selected-items-changed', _selectClick)
+        // gridEl.removeEventListener('selected-items-changed', _selectClick) // no need to use
       }
     })
 
@@ -297,20 +305,7 @@ export default {
     }
 
     const autoComplete = debounce(async (e, col, _showForm) => {
-      let res = []
-      recordObj[_showForm][col] = e.target.value
-      try {
-        const { dbName, tableName, limit, key, text, parentTableColName, parentCol } = tableCfg.value.cols[col].options
-        const query = { dbName, tableName, limit, key, text, search: e.target.value }
-        if (parentTableColName) {
-          query.parentTableColName = parentTableColName
-          query.parentTableColVal = recordObj[_showForm][parentCol]
-        }
-        const { data } = await http.get('/api/t4t/autocomplete', query)
-        res = data
-      } catch (err) {
-        console.log('autoComplete', err.message)
-      }
+      const res = await t4t.autocomplete(e.target.value, col, recordObj[_showForm])
       const mwcAc = document.querySelector('mwc-autocomplete.' + col)
       mwcAc.setList(res)
     }, 500)
@@ -328,16 +323,8 @@ export default {
       if (loading.value) return
       loading.value = true
       const items = gridEl.selectedItems
-      let ids = []
       try {
-        const { pk } = tableCfg.value
-        if (pk) {
-          ids = items.map((item) => item[pk])
-        } else {
-          ids = items.map((item) => item.key)
-        }
-        // const rv =
-        await http.get('/api/t4t/remove/' + props.tableName, { ids })
+        await t4t.remove(items)
       } catch (e) {
         alert(`Error delete ${e.toString()}`)
       }
@@ -350,29 +337,20 @@ export default {
       // const items = gridEl.selectedItems
       // console.log('add ajax call', items)
 
-      // validate
-      const rec = recordObj[showForm.value]
-      for (const col in rec) {
-        if (tableCfg.value.cols[col]) {
-          const { rules, type } = tableCfg.value.cols[col]
-          if (rules) {
-            const invalid = validate(rules, type, col, rec)
-            if (invalid) {
-              showForm.value = ''
-              return alert(`Invalid ${col} - ${invalid}`)
-            }
-          }
-        }
+      const invalid = t4t.validate(recordObj[showForm.value])
+      if (invalid) {
+        showForm.value = ''
+        return alert(`Invalid ${invalid.col} - ${invalid.msg}`)
       }
 
       if (loading.value) return
       loading.value = true
       try {
         if (showForm.value === 'add') {
-          await http.post(`/api/t4t/create/${props.tableName}`, recordObj.add)
+          await t4t.create(recordObj.add)
         } else {
           const { key, ...data } = recordObj.edit
-          await http.patch(`/api/t4t/update/${props.tableName}`, data, { key })
+          await t4t.update(key, data)
         }
       } catch (e) {
         alert(`Error ${showForm.value} ${e.toString()}`)
@@ -392,45 +370,19 @@ export default {
     }
 
     const doUpload = async () => {
+      console.log('gridEl.selectedItems', gridEl.selectedItems)
       const file = document.querySelector('mwc-fileupload').getFile()
-      console.log('doUpload', file)
-      // const formData = new FormData()
-      // formData.append('filedata', files[0])
-      // formData.append('textdata', JSON.stringify({ name: 'name', age: 25 }))
-      // const res = await fetch('/api/upload', {
-      //   method: 'POST',
-      //   body: formData
-      // })
-
-      // const { id, name, avatar } = record
-      // const json = JSON.stringify({ name })
-      // // const blob = new Blob([json], { type: 'application/json' })
-      // // console.log('json', blob)
-      // const formData = new FormData()
-      // formData.append('filex', avatar.imageFile) // const { name, size, type } = avatar.imageFile
-      // formData.append('docx', json)
-      // const { data } = await http.patch(`/api/authors/${id}`, formData,
-      //   {
-      //     // onUploadProgress: progressEvent => {
-      //     //   console.log(Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
-      //     // },
-      //     headers: {
-      //       'Content-Type': 'multipart/form-data'
-      //     }
-      //   }
-      // )
+      t4t.upload(file)
     }
 
     const csvDownload = async () => {
       console.log('export', keycol.value, filters)
-      const { data } = await http.get('/api/t4t/find/' + props.tableName, {
-        page: 0,
-        limit: 0,
-        csv: 1, // it is a csv
-        filters: JSON.stringify(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters),
-        sorter: JSON.stringify(sorter)
-      })
-      downloadData(data.csv, 'job.csv', 'text/csv;charset=utf-8;')
+      try {
+        const data = await t4t.download(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters, sorter)
+        if (data) downloadData(data.csv, props.tableName+'.csv', 'text/csv;charset=utf-8;')
+      } catch (e) {
+        console.log('csvDownload', e.toString())
+      }
     }
 
     // watch(() => props.selected, (selection, prevSelection) => { }) // watching value of a reactive object (watching a getter)
@@ -440,21 +392,20 @@ export default {
 
     const selectAllChanged = (e) => {
       if (!gridEl) return
-      gridEl.querySelectorAll('vaadin-grid-selection-column').forEach(function (node) {
-        console.log('node', node)
-      })
-      if (e.detail.value) {
-        console.log('select all', e)
-        // gridEl.selectedItems = [ ...gridEl.items ]
-      } else {
-        console.log('unselect all')
-        // gridEl.selectedItems = []
+      const sel = gridEl.querySelector('vaadin-grid-selection-column')
+      console.log('selAll', sel.selectAll)
+      if (sel.selectAll) {
+        const cbs = gridEl.querySelectorAll('vaadin-checkbox')
+        let index = 0
+        for (const cb of cbs) {
+          if (index !== 0) {
+            cb.checked = sel.selectAll
+          }
+          index++
+        }
       }
-      // if (gridEl) gridEl.selectedItems = []
-      // e.detail.value
-      // set all checkboxes
-      // clear all checkboxes
-      // console.log('selectAllChanged', e.detail.value, e.target.selectAll)
+      gridEl.selectedItems = gridEl.selectedItems.filter(item => !!item)
+      console.log(gridEl.selectedItems)
     }
 
     return {
@@ -546,12 +497,12 @@ nav {
   margin: 4px;
 }
 
+/* TBD height and width should be configurable...
 .table {
-  /* TBD height and width should be configurable...
-    height: 800px;
-  */
-  /* width: 1800px; */
+  height: 800px;
+  width: 1800px;
 }
+*/
 
 .page-flex h1,
 .page-flex p {

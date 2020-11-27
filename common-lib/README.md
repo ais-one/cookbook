@@ -2,7 +2,7 @@
 
 Libs are now found within the example projects.
 
-1. vite (no webpack) - example-vite/src/lib/esm
+1. vite (rollup) - example-vite/src/lib/esm-rollup
 
 2. vue (wepback) - example-vite/lib/webpacked
 
@@ -14,6 +14,7 @@ We will find a better way of updating to have correct CI the following folders s
 - example-app
 - example-vite
 - example-spa
+- example-nobundle
 
 
 

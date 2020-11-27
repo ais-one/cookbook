@@ -1,3 +1,3 @@
 ## Note
 
-The source for files in this folder is from exmple-web/vite/src/lib/esm
+The source for files in this folder is populated from common-lib/esm using example-app/update.sh

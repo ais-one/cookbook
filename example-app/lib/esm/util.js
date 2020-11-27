@@ -1,8 +1,11 @@
-function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';', idName = 'id') { // TBD Make alphbetical order?
+function makeCsvRow(csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';', idName = 'id') {
+  // TBD Make alphbetical order?
   if (!csvContent) {
     csvContent += idName // set id as first columns
-    for (let k1 in tmp) {
-      if (tmp.prototype.hasOwnProperty.call(k1) && k1 !== idName) { // set id as first columns
+    for (const k1 in tmp) {
+      // TOREMOVE if (tmp.prototype.hasOwnProperty(k1) && k1 !== idName) {
+      if (tmp[k1] && k1 !== idName) {
+        // set id as first columns
         let text = k1.replace(/;/g, ' ')
         text = text.replace(/([A-Z])/g, ' $1')
         text = text.charAt(0).toUpperCase() + text.slice(1) // capitalize the first letter - as an example.
@@ -12,8 +15,9 @@ function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';
     csvContent += rowDelimiter
   }
   csvContent += `${tmp[idName]}`
-  for (let k2 in tmp) {
-    if (tmp.prototype.hasOwnProperty.call(k2) && k2 !== idName) {
+  for (const k2 in tmp) {
+    // TOREMOVE if (tmp.prototype.hasOwnProperty(k2) && k2 !== idName) {
+    if (tmp[k2] && k2 !== idName) {
       let value = ''
       if (typeof tmp[k2] === 'undefined' || !tmp[k2]) {
         // do nothing
@@ -38,9 +42,9 @@ function makeCsvRow (csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';
 }
 
 // to be removed
-function exportCsv (csvContent, filename) {
-  let encodedUri = encodeURI('data:text/csv;charset=utf-8,' + csvContent)
-  let link = document.createElement('a')
+function exportCsv(csvContent, filename) {
+  const encodedUri = encodeURI('data:text/csv;charset=utf-8,' + csvContent)
+  const link = document.createElement('a')
   link.setAttribute('href', encodedUri)
   link.setAttribute('download', filename)
   document.body.appendChild(link) // Required for FF
@@ -48,10 +52,10 @@ function exportCsv (csvContent, filename) {
 }
 
 // to be removed
-function exportJson (jsonContent, filename) {
+function exportJson(jsonContent, filename) {
   if (typeof jsonContent !== 'string') jsonContent = JSON.stringify(jsonContent)
-  let encodedUri = encodeURI('data:text/json;charset=utf-8,' + jsonContent)
-  let link = document.createElement('a')
+  const encodedUri = encodeURI('data:text/json;charset=utf-8,' + jsonContent)
+  const link = document.createElement('a')
   link.setAttribute('href', encodedUri)
   link.setAttribute('download', filename)
   document.body.appendChild(link) // Required for FF
@@ -59,10 +63,11 @@ function exportJson (jsonContent, filename) {
 }
 
 // improved download function
-function downloadData (content, filename, type = 'text/csv;charset=utf-8;') {
+function downloadData(content, filename, type = 'text/csv;charset=utf-8;') {
   const blob = new Blob([content], { type })
   // IE11 & Edge
-  if (navigator.msSaveBlob) { // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
+  if (navigator.msSaveBlob) {
+    // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx
     navigator.msSaveBlob(blob, filename)
   } else {
     // In FF link must be added to DOM to be clicked
@@ -76,14 +81,14 @@ function downloadData (content, filename, type = 'text/csv;charset=utf-8;') {
 }
 
 // Usage debounce(<Your Function>, <debounce time in milliseconds>)
-// const debounce = (func, delayMs) => { 
-//   let debounceTimer 
-//   return function() { 
+// const debounce = (func, delayMs) =>
+//   let debounceTimer
+//   return function() {
 //     const context = this
-//     const args = arguments 
-//     clearTimeout(debounceTimer) 
-//     debounceTimer = setTimeout(() => func.apply(context, args), delayMs) 
-//   } 
+//     const args = arguments
+//     clearTimeout(debounceTimer)
+//     debounceTimer = setTimeout(() => func.apply(context, args), delayMs)
+//   }
 // }
 
 // call only after X ms has passed
@@ -92,12 +97,11 @@ function downloadData (content, filename, type = 'text/csv;charset=utf-8;') {
 // Application
 // - Debouncing an input type event handler. (like our search input example)
 // - Debouncing a scroll event handler.
-const debounce = (callback, delay) => {
+const debounce = (fn, delay) => {
   let timeout = null
   return (...args) => {
-    const next = () => 
-    callback(...args);
-    clearTimeout(timeout);
+    const next = () => fn(...args)
+    clearTimeout(timeout)
     timeout = setTimeout(next, delay)
   }
 }
@@ -111,17 +115,32 @@ const debounce = (callback, delay) => {
 // - Throttling an API call.
 // - Throttling a button click so we can’t spam click.
 // - Throttling a touch/move mouse event handler.
-function throttle(callback, wait) {
-  var time = Date.now()
-  return function() {
-    if ((time + wait - Date.now()) < 0) {
+function throttle(fn, wait) {
+  let time = Date.now()
+  return function () {
+    if (time + wait - Date.now() < 0) {
+      fn()
       time = Date.now()
-      return callback()
     }
-    return null
   }
 }
 
+function isEmail(email) {
+  // return /[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/.test(email)
+  return /[\w\d-]+@[\w\d-]+\.[\w\d-]+/.test(email)
+}
+
+// universal end-of-line splitter
+// .split(/\r?\n/)
+
+const obj2Qs = (obj) =>
+  Object.keys(obj)
+    .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
+    .join('&')
+
+const utf8toBase64 = (str) => Buffer.from(str, 'utf8').toString('base64')
+const base64toUtf8 = (str) => Buffer.from(str, 'base64').toString('utf8')
+
 const foo = Math.PI + Math.SQRT2
 
-export { foo, makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle }
+export { foo, makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle, isEmail, obj2Qs }

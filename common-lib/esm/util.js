@@ -3,7 +3,8 @@ function makeCsvRow(csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';'
   if (!csvContent) {
     csvContent += idName // set id as first columns
     for (const k1 in tmp) {
-      if (tmp.hasOwnProperty(k1) && k1 !== idName) {
+      // TOREMOVE if (tmp.prototype.hasOwnProperty(k1) && k1 !== idName) {
+      if (tmp[k1] && k1 !== idName) {
         // set id as first columns
         let text = k1.replace(/;/g, ' ')
         text = text.replace(/([A-Z])/g, ' $1')
@@ -15,7 +16,8 @@ function makeCsvRow(csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';'
   }
   csvContent += `${tmp[idName]}`
   for (const k2 in tmp) {
-    if (tmp.hasOwnProperty(k2) && k2 !== idName) {
+    // TOREMOVE if (tmp.prototype.hasOwnProperty(k2) && k2 !== idName) {
+    if (tmp[k2] && k2 !== idName) {
       let value = ''
       if (typeof tmp[k2] === 'undefined' || !tmp[k2]) {
         // do nothing
@@ -28,7 +30,9 @@ function makeCsvRow(csvContent, tmp, rowDelimiter = `\r\n`, fieldSeperator = ';'
       } else {
         try {
           value = tmp[k2].toString()
-        } catch (e) {}
+        } catch (e) {
+          console.log('error', e.toString())
+        }
       }
       csvContent += ';' + value.replace(/;/g, ' ')
     }
@@ -93,10 +97,10 @@ function downloadData(content, filename, type = 'text/csv;charset=utf-8;') {
 // Application
 // - Debouncing an input type event handler. (like our search input example)
 // - Debouncing a scroll event handler.
-const debounce = (callback, delay) => {
+const debounce = (fn, delay) => {
   let timeout = null
   return (...args) => {
-    const next = () => callback(...args)
+    const next = () => fn(...args)
     clearTimeout(timeout)
     timeout = setTimeout(next, delay)
   }
@@ -111,16 +115,32 @@ const debounce = (callback, delay) => {
 // - Throttling an API call.
 // - Throttling a button click so we can’t spam click.
 // - Throttling a touch/move mouse event handler.
-function throttle(callback, wait) {
-  var time = Date.now()
+function throttle(fn, wait) {
+  let time = Date.now()
   return function () {
     if (time + wait - Date.now() < 0) {
-      callback()
+      fn()
       time = Date.now()
     }
   }
 }
 
+function isEmail(email) {
+  // return /[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/.test(email)
+  return /[\w\d-]+@[\w\d-]+\.[\w\d-]+/.test(email)
+}
+
+// universal end-of-line splitter
+// .split(/\r?\n/)
+
+const obj2Qs = (obj) =>
+  Object.keys(obj)
+    .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
+    .join('&')
+
+const utf8toBase64 = (str) => Buffer.from(str, 'utf8').toString('base64')
+const base64toUtf8 = (str) => Buffer.from(str, 'base64').toString('utf8')
+
 const foo = Math.PI + Math.SQRT2
 
-export { foo, makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle }
+export { foo, makeCsvRow, exportCsv, exportJson, downloadData, debounce, throttle, isEmail, obj2Qs }

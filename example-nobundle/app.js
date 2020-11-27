@@ -11,7 +11,7 @@ export default {
   },
   template: /*html*/`
     <div>
-      <h1>App</h1><a href="/index.html">Back To Express Demo</a>
+      <!-- h1>App<a href="/index.html">Back To Express Demo</a></h1 -->
       <ms-public v-if="!storeUser" />
       <ms-secure v-else />
     </div>

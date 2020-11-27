@@ -1,0 +1,35 @@
+# HTTP Testing
+
+https://randomuser.me/api/
+Accept: application/json 
+
+###
+
+POST https://httpbin.org/post
+Accept: application/json
+
+###
+GET http://127.0.0.1:3000/api/healthcheck
+Accept: application/json
+
+###
+
+# Login
+POST http://127.0.0.1:3000/api/auth/login
+content-type: application/json
+
+{
+  "email": "test",
+  "password": "test"
+}
+
+###
+
+# OTP
+POST http://127.0.0.1:3000/api/auth/otp
+Authorization: Bearer 
+content-type: application/json
+
+{
+  "pin": "111111"
+}

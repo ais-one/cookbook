@@ -7,13 +7,17 @@
 </template>
 
 <script>
-import '../lib/esm/sign-pad.js'
-import { ref } from 'vue'
+import '../../../common-lib/esm/sign-pad.js'
+import { ref, onMounted } from 'vue'
 
 export default {
   name: 'SignPad',
   setup() {
     const imageDataUrl = ref('')
+
+    onMounted(async () => {
+      console.log('Demo Signpad')
+    })
 
     const signDataFn = (e) => {
       alert('see console log for signature data')

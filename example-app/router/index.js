@@ -8,7 +8,8 @@ module.exports = function (app) {
     router.use('/saml', require('./saml')),
     router.use('/mongo-demo', require('./mongo-demo')),
     router.use('/t4t', require('./t4t')),
-    router.use('/webpush', require('./webpush'))
+    router.use('/webpush', require('./webpush')),
+    router.use('/nexmo', require('./nexmo'))
   )
 
   const { KNEXFILE } = global.CONFIG

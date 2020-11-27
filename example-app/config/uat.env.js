@@ -21,6 +21,11 @@ module.exports = {
   WS_PORT: 0,
   USE_GRAPHQL: 0,
   WEB_STATIC: null,
+  // WEB_STATIC: [
+  //   { folder: '/public/example-nobundle', url: '/nobundle', options: { extensions: ['html'], index: false } },
+  //   { folder: '/lib/esm', url: '/esm' },
+  //   { folder: '/public/demo-express', url: '/' }
+  // ],
   CORS_OPTIONS: {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,

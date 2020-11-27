@@ -15,38 +15,47 @@ const CACHE_NAME_DYNAMIC = 'example-app-vite-cache-dynamic-v1.0.0'
 
 const cacheFilesStatic = [
   './',
-  './index.html',
-  './manifest.json'
-  // '/css/style.css',
-  // '/js/app.js',
-  // '/images/recipe1.jpg',
-  // '/images/recipe2.jpg',
-  // '/images/recipe3.jpg',
-  // '/images/recipe4.jpg',
-  // '/images/recipe5.jpg',
-  // '/images/recipe6.jpg',
+  'index.html',
+  'manifest.json'
+  // 'css/style.css',
+  // 'js/app.js',
+  // 'images/recipe1.jpg',
 ]
 
 // SW install and cache static assets
 function addCaches(e) {
-  const params = new URL(location).searchParams.get('params')
-  console.log('SW addChaches', params)
-  e.waitUntil(caches.open(CACHE_NAME_STATIC).then((cache) => cache.addAll(cacheFilesStatic)))
+  console.log('SW location', location)
+  try {
+    const params = new URL(location).searchParams.get('params')
+    console.log('SW addCaches params', typeof params, params)
+  } catch (err) {
+    console.log('SW addCaches error', err.toString())
+  }
+  e.waitUntil(caches.open(CACHE_NAME_STATIC).then((cache) => cache.addAll(cacheFilesStatic)).catch((err) => console.log('SW addCaches Error', err)))
 }
 self.addEventListener('install', addCaches)
 
 // SW activate and cache cleanup
 function clearCaches(e) {
-  console.log('SW clearChaches')
+  console.log('SW clearCaches')
   e.waitUntil(
-    caches.keys().then((cacheNames) => {
-      cacheNames.forEach((cacheName) => {
-        if (!(cacheName === CACHE_NAME_STATIC || cacheName === CACHE_NAME_DYNAMIC)) {
-          console.log('sw delete cache = ', cacheName)
-          return caches.delete(cacheName)
-        }
+    caches.keys()
+      .then((cacheNames) => {
+        // return Promise.all(
+        //   cacheNames.filter((cacheName) =>
+        //     !(cacheName === CACHE_NAME_STATIC || cacheName === CACHE_NAME_DYNAMIC)
+        //   ).map((cacheName) => {
+        //     return caches.delete(cacheName)
+        //   })
+        // )
+        cacheNames.forEach((cacheName) => {
+          if (!(cacheName === CACHE_NAME_STATIC || cacheName === CACHE_NAME_DYNAMIC)) {
+            console.log('sw delete cache = ', cacheName)
+            return caches.delete(cacheName)
+          }
+        })
       })
-    })
+      .catch((err) => console.log('SW clearCaches Error', err))
   )
 }
 self.addEventListener('activate', clearCaches)
@@ -184,7 +193,7 @@ self.addEventListener('push', function (e) {
   const notificationOptions = {
     body: `Time is the message: ${message}`,
     // we use the images from the PWA generator we made
-    icon: '/images/icons/icon-512x512.png',
+    // icon: '/img/icons/icon-512x512.png',
     vibrate: [100, 50, 100],
     data: {
       dateOfArrival: Date.now(),
