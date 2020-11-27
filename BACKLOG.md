@@ -3,18 +3,18 @@
 In Progress
 
 ## Backlog
+- [example-vite & example-nobundler] http call (t4t-fe), form (bwc-t4t-form)
+- [vite] migrate vue-crud-x table examples to vite
+- [chore] disable console.log in production / proper console logging
+- [chore] apollo-client graphql security & performance review
+- [chore] use monorepo when npm 7 is released ?
 
 For future product improvement
-- [example-vite & example-nobundler] http call
-- [chore] use monorepo when npm 7 is released ?
 - [example-vite] cypress e2e testing, vue-test-util & vite
 - [example-vite] styling for custom build mwc-*
 - [frontend-i18n] node-polyglot
 - [backend-deployment] GKE, Kubernetes
-- [vite] migrate vue-crud-x table examples to vite
 - [frontend-graphql] try @octokit/graphql
-- [chore] apollo-client graphql security & performance review
-- [chore] disable console.log in production / proper console logging
 - [backend-testing] research auto generated REST API and Testing (keep in view dredd.io)
 - [backend-testing] research websocket testing
 - [backend-testing] change out of jest? use native assert instead of chai
