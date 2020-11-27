@@ -1,8 +1,10 @@
 ### Version 0.4.4
 - [chore] update packages & cleanup & work on improving documentation
+- [refactor] use common-lib for JS files used in the the frontend or backend 
+- [refactor] move no bundler frontend app to own folder outside example-app (example-nobundle)
 - [example-nobundle] from demo-nobundler, add bulma and improve visuals
 - [example-vite] remove oruga (not ready for vue3+vite), implement saml callback and configs, make it work in production build
-- [bulma-web-components] created bwc-autocomplete and bwc-table (based on bulma) in example-nobundle
+- [bulma-web-components] created bwc-autocomplete and bwc-table (based on bulma) in common-lib/esm
 - [example-app] clean up backend, table csv upload
 - [common-lib/esm] https.js handle application/json & multipart/form-data, handle allow empty json() from response
 

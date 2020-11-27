@@ -2,14 +2,14 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
 
-Latest Version [0.4.4](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.4) - Released 2020 Nov 22 1700 +8GMT
+Latest Version [0.4.4](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.4) - Released 2020 Nov 27 2200 +8GMT
 
 # Features
 
 - Frontend Examples
-  - [Vite & Vue3](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
-  - [SPA & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP
-  - [Vanilla JS, ES Modules](https://github.com/ais-one/vue-crud-x/tree/master/example-nobundle): No bundler, scalable VueJS Application, example codes (signed uploads, JWT refresh token, OTP)
+  - [Vite, Vue3 & mwc, vaadin](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
+  - [SPA, Vue2 & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP
+  - [Vanilla JS, ES Modules, Vue3 & bulma](https://github.com/ais-one/vue-crud-x/tree/master/example-nobundle): No bundler, scalable VueJS Application, example codes (signed uploads, JWT refresh token, OTP)
 - [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/)
   - Cors, proxy middleware, helmet, error handling, logging, OpenAPI
   - Objection ORM, Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis
@@ -75,7 +75,7 @@ npm run app:unix # linux or mac
 
 ### Nobundler
 
-Navigate to http://127.0.0.1:8080/nobundle to view application
+See above
 
 
 ### Webpack SPA Setup & Run - development environment
