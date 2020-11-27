@@ -138,6 +138,7 @@ async function create(record) {
   await http.post(`/api/t4t/create/${tableName}`, record)
 }
 
+// TBD may need to handle file upload also...
 async function update(key, record) {
   await http.patch(`/api/t4t/update/${tableName}`, record, { key })
 }
@@ -150,15 +151,18 @@ async function remove(items) {
   } else {
     ids = items.map((item) => item.key)
   }
-  // const rv =
   await http.post('/api/t4t/remove/' + tableName, { ids })  
 }
 
-async function upload() {
-  const file = document.querySelector('mwc-fileupload').getFile()
-  console.log('doUpload', file)
-  // const formData = new FormData()
-  // formData.append('filedata', files[0])
+// uploads a single for csv processing
+async function upload(file) { // the file object - e.g. const file = document.querySelector('mwc-fileupload').getFile()
+  if (file === null) return false
+  const formData = new FormData()
+  formData.append('csv-file', file) // call it file
+  // console.log('zzz', formData instanceof FormData)
+  // for(const pair of formData.entries()) console.log(pair[0], pair[1])
+  await http.post('/api/t4t/upload/' + tableName, formData)
+
   // formData.append('textdata', JSON.stringify({ name: 'name', age: 25 }))
   // const res = await fetch('/api/upload', {
   //   method: 'POST',
@@ -169,7 +173,6 @@ async function upload() {
   // const json = JSON.stringify({ name })
   // // const blob = new Blob([json], { type: 'application/json' })
   // // console.log('json', blob)
-  // const formData = new FormData()
   // formData.append('filex', avatar.imageFile) // const { name, size, type } = avatar.imageFile
   // formData.append('docx', json)
   // const { data } = await http.patch(`/api/authors/${id}`, formData,

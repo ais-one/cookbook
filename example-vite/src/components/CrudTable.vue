@@ -230,13 +230,12 @@ export default {
           if (obj.filter !== 'hide') filterCols.push(col) // process filters
         }
         // Object.entries(tableCfg.value.cols) => [ [key, obj], ... ]
-        console.log('xxx', headerCols)
       }
 
       gridEl = document.querySelector('vaadin-grid.table')
       if (gridEl) {
         gridEl.addEventListener('active-item-changed', _rowClick)
-        // gridEl.addEventListener('selected-items-changed', _selectClick)
+        // gridEl.addEventListener('selected-items-changed', _selectClick) // no need to use
 
         // https://vaadin.com/forum/thread/17445015/updating-grid-data-directly-when-using-dataprovider
         gridEl.dataProvider = async function (params, callback) {
@@ -284,7 +283,7 @@ export default {
     onUnmounted(() => {
       if (gridEl) {
         gridEl.removeEventListener('active-item-changed', _rowClick)
-        // gridEl.removeEventListener('selected-items-changed', _selectClick)
+        // gridEl.removeEventListener('selected-items-changed', _selectClick) // no need to use
       }
     })
 
@@ -373,32 +372,7 @@ export default {
     const doUpload = async () => {
       console.log('gridEl.selectedItems', gridEl.selectedItems)
       const file = document.querySelector('mwc-fileupload').getFile()
-      console.log('doUpload', file)
-      // const formData = new FormData()
-      // formData.append('filedata', files[0])
-      // formData.append('textdata', JSON.stringify({ name: 'name', age: 25 }))
-      // const res = await fetch('/api/upload', {
-      //   method: 'POST',
-      //   body: formData
-      // })
-
-      // const { id, name, avatar } = record
-      // const json = JSON.stringify({ name })
-      // // const blob = new Blob([json], { type: 'application/json' })
-      // // console.log('json', blob)
-      // const formData = new FormData()
-      // formData.append('filex', avatar.imageFile) // const { name, size, type } = avatar.imageFile
-      // formData.append('docx', json)
-      // const { data } = await http.patch(`/api/authors/${id}`, formData,
-      //   {
-      //     // onUploadProgress: progressEvent => {
-      //     //   console.log(Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
-      //     // },
-      //     headers: {
-      //       'Content-Type': 'multipart/form-data'
-      //     }
-      //   }
-      // )
+      t4t.upload(file)
     }
 
     const csvDownload = async () => {

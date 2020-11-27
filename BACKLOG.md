@@ -5,9 +5,6 @@ In Progress
 ## Backlog
 
 For future product improvement
-- CrudTable.vue
-  - csv upload (to implement)
-  - file upload column (to implement)
 - [example-vite & example-nobundler] http call
 - [chore] use monorepo when npm 7 is released ?
 - [example-vite] cypress e2e testing, vue-test-util & vite

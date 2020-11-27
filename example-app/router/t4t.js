@@ -12,7 +12,14 @@ const ObjectID = mongo.client ? require('mongodb').ObjectID : null
 const csvParse = require('csv-parse')
 const multer = require('multer')
 const { Parser } = require('json2csv')
-const upload = multer({ storage: multer.memoryStorage() })
+const memoryUpload = multer({
+  // limits: {
+  //   files : 1,
+  //   fileSize: 5000 // size in bytes
+  // },
+  // fileFilter,
+  storage: multer.memoryStorage()
+})
 
 // key is reserved property for identifying row in a multiKey table
 // | is reserved for seperating columns that make the multiKey
@@ -299,21 +306,29 @@ module.exports = express.Router()
     return res.json() // TBD fix common-lib/esm/http.js
   }))
 
-  .post('/upload/:table', generateTable, upload.single('file'), asyncWrapper(async (req, res) => {
+// Test country collection upload using a csv file with following contents
+// code,name
+// zzz,1234
+// ddd,5678
+  .post('/upload/:table', generateTable, memoryUpload.single('csv-file'), async (req, res) => { // do not use asyncWrapper
     const { table } = req
     const csv = req.file.buffer.toString('utf-8')
     const output = []
     let errors = []
+    let keys = []
     let currLine = 0
     csvParse(csv)
       .on('error', (e) => {
         console.log(e.message)
       })
-      .on('readable', () => {
+      .on('readable', function () {
         let record
         while ( (record = this.read()) ) {
           currLine++
-          if (currLine === 1) continue // ignore first line
+          if (currLine === 1) {
+            keys = [...record]
+            continue // ignore first line
+          }
           if (record.length === table.nonAuto.length) { // ok
             if (record.join('')) {
               // if (permissionOk) {
@@ -329,18 +344,28 @@ module.exports = express.Router()
           }
         }
       })
-      .on('end', () => {
+      .on('end', async () => {
         let line = 0
+        const writes = []
         for (let row of output) {
           line++
           try {
-            // TBD insert to table
-            // also take care of auto populating fields
-            console.log(output)
+            // also take care of auto populating fields?
+            const obj = {}
+            for (let i=0; i<keys.length; i++) {
+              obj[ keys[i] ] = row[i]
+            }
+            if (table.db === 'knex') {
+              writes.push(knex(table.name).insert(obj))
+            } else {
+              writes.push(mongo.db.collection(table.name).insertOne(obj))
+            }
+            // console.log(obj)
           } catch (e) {
             errors.push({ line, data: row.join(','), msg: 'Caught exception: ' + e.toString() })
-            res.status(200).json({ errorCount: errors.length })
           }
         }
+        await Promise.allSettled(writes)
+        return res.status(200).json({ errorCount: errors.length })
       })
-  }))
+  })

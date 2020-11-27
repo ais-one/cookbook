@@ -3,7 +3,8 @@
 - [example-nobundle] from demo-nobundler, add bulma and improve visuals
 - [example-vite] remove oruga (not ready for vue3+vite), implement saml callback and configs, make it work in production build
 - [bulma-web-components] created bwc-autocomplete and bwc-table (based on bulma) in example-nobundle
-- [example-app] clean up backend
+- [example-app] clean up backend, table csv upload
+- [common-lib/esm] https.js handle application/json & multipart/form-data, handle allow empty json() from response
 
 ### Version 0.4.3
 - [chore] update packages & cleanup & work on improving documentation
