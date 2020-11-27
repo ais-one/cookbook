@@ -1,3 +1,6 @@
+### Version 0.4.5
+- [chore] update packages & cleanup & work on improving documentation
+
 ### Version 0.4.4
 - [chore] update packages & cleanup & work on improving documentation
 - [refactor] use common-lib for JS files used in the the frontend or backend 

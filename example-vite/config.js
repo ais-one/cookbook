@@ -17,4 +17,4 @@ export const {
 
 // PAGESIZE: process.env.VUE_APP_PAGESIZE || 4,
 // PAGESIZE_OPTS: process.env.VUE_APP_PAGESIZE_OPTS && process.env.VUE_APP_PAGESIZE_OPTS.length ? JSON.parse(process.env.VUE_APP_PAGESIZE_OPTS) : [4, 8, 10],
-// APP_VERSION: '0.4.4',
+// APP_VERSION: '0.4.5',
