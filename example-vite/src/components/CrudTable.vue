@@ -132,7 +132,6 @@
 // TBD table columns with joined values, virtual columns...
 import { debounce, downloadData } from '../../../common-lib/esm/util.js' // served from express /esm static route
 import * as t4t from '../../../common-lib/esm/t4t-fe.js' // served from express /esm static route
-import { useXhr } from '/src/plugins/xhr.js'
 
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -149,7 +148,6 @@ export default {
   // do NOT destructure the props object, as it will lose reactivity
   setup(props, ctx) {
     // ctx = attrs, slots, emit
-    const http = useXhr()
     const router = useRouter()
     const route = useRoute()
     const keycol = ref(null) // parent key/id name here
@@ -202,10 +200,9 @@ export default {
       }
     }
 
-    const _selectClick = async (e) => {
-      // console.log(e, gridEl.selectedItems)
-    }
-
+    // const _selectClick = async (e) => {
+    //   console.log(e, gridEl.selectedItems)
+    // }
     // gridEl.addEventListener('dblclick', _dblClick)
     // const _dblClick = (e) => {
     //   const item = gridEl.getEventContext(e).item

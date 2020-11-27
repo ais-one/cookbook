@@ -10,7 +10,7 @@ const val = () => {
 
 export const samlLogin = (callbackUrl) => {
   // alert(callbackUrl)
-  const port = window.location.port === 443 || window.location.port === 80 ? '' : ':' + window.location.port
+  const port = window.location.port === '443' || window.location.port === '80' ? '' : ':' + window.location.port
   const redirect = window.location.protocol + '//' + window.location.hostname + port + callbackUrl // + VITE_CALLBACK_URL
   const { urlFull } = parseUrl(`/api/saml/login?redirect_to=${redirect}&groups=&expiry=`)
   window.location.assign(urlFull)
