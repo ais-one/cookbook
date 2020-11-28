@@ -689,7 +689,7 @@ class Table extends HTMLElement {
               // if (sticky) td.setAttribute('scope', 'row') // not used yet, need to calculate left property value
               if (width) td.style.width = `${width}px`
               if (render) {
-                td.innerHTML = render(row[key])
+                td.innerHTML = render(row[key], key, row) // value, key, row
               } else {
                 td.appendChild(document.createTextNode(row[key]))
               }

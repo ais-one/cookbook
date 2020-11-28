@@ -16,13 +16,8 @@ on:
         required: true
       environment:
         description: 'The environment'
-        default: 'development'
+        default: 'uat'
         required: true
-      # TOREMOVE
-      # branch:
-      #   description: 'Branch To Use'
-      #   default: 'develop'
-      #   required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -46,11 +41,9 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
       - uses: actions/checkout@v2
-        # TOREMOVE
         # with:
-        #   ref: ${{ github.event.inputs.branch }}
+        #   ref: if_you_need_to_specify_a_branch
       - name: Show checkout branch name
-        # UNVERIFIED also can try $(echo $GITHUB_REF | cut -d'/' -f 3)
         run: echo checking out on branch ${GITHUB_REF##*/}
       - uses: actions/setup-node@v1
         with:

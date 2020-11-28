@@ -45,7 +45,7 @@ export default {
       {
         label: 'ID',
         key: 'id',
-        render: (val) => '<a class="button" onclick="alert('+val+')">'+val+'<a>'
+        render: (val, key, row) => '<a class="button" onclick="alert('+val+')">'+val+'<a>'
         // can also fire off event
       },
       {
