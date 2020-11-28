@@ -33,9 +33,9 @@ jobs:
 
     strategy:
       matrix:
-        node: [ '12' ]
+        node: [ '14' ]
 
-    name: Using Node ${{ matrix.node }}
+    name: Deploying ${{ github.event.inputs.service }} - ${{ github.event.inputs.environment }}... Using Node ${{ matrix.node }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
