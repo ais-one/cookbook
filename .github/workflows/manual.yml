@@ -18,10 +18,11 @@ on:
         description: 'The environment'
         default: 'development'
         required: true
-      branch:
-        description: 'Branch To Use'
-        default: 'develop'
-        required: true
+      # TOREMOVE
+      # branch:
+      #   description: 'Branch To Use'
+      #   default: 'develop'
+      #   required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -45,10 +46,10 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
       - uses: actions/checkout@v2
-        with:
-          # set the checkout branch
-          ref: ${{ github.event.inputs.branch }}
-      - name: Branch name
+        # TOREMOVE
+        # with:
+        #   ref: ${{ github.event.inputs.branch }}
+      - name: Show checkout branch name
         # UNVERIFIED also can try $(echo $GITHUB_REF | cut -d'/' -f 3)
         run: echo checking out on branch ${GITHUB_REF##*/}
       - uses: actions/setup-node@v1
@@ -71,7 +72,7 @@ jobs:
           # gcloud info
           echo "CI: $CI"
           echo "Service: ${{ github.event.inputs.service }}"
-          echo "Branch: ${{ github.event.inputs.branch }}"
+          echo "Branch: ${GITHUB_REF##*/}"
           echo "Environment: ${{ github.event.inputs.environment }}"
           cd ${{ github.event.inputs.service }}
           ./update.sh
