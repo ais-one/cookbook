@@ -34,8 +34,8 @@ jobs:
     strategy:
       matrix:
         node: [ '12' ]
-    name: Using Node ${{ matrix.node }}
 
+    name: Using Node ${{ matrix.node }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
@@ -48,10 +48,10 @@ jobs:
         with:
           # set the checkout branch
           ref: ${{ github.event.inputs.branch }}
-      # - uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '12'
-      #     check-latest: true
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: true
 
       - name: Make shell script executable
         run: chmod +x ./${{ github.event.inputs.service }}/deploy.sh
@@ -70,4 +70,5 @@ jobs:
           echo "Branch: ${{ github.event.inputs.branch }}"
           echo "Environment: ${{ github.event.inputs.environment }}"
           cd ${{ github.event.inputs.service }}
+          ./update.sh
           ./deploy.sh ${{ github.event.inputs.environment }}

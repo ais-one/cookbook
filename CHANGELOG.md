@@ -1,5 +1,6 @@
 ### Version 0.4.5
 - [chore] update packages & cleanup & work on improving documentation
+- [github-actions] add github pages workflow, update manual workflow
 
 ### Version 0.4.4
 - [chore] update packages & cleanup & work on improving documentation

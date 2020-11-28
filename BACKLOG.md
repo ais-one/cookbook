@@ -1,15 +1,15 @@
 ## Issues
 
-In Progress
-
-## Backlog
+### In Progress
 - [example-vite & example-nobundler] http call (t4t-fe), form (bwc-t4t-form)
 - [vite] migrate vue-crud-x table examples to vite
-- [chore] disable console.log in production / proper console logging
 - [chore] apollo-client graphql security & performance review
+
+### Backlog
+- [chore] disable console.log in production / proper console logging
 - [chore] use monorepo when npm 7 is released ?
 
-For future product improvement
+### For future product improvement
 - [example-vite] cypress e2e testing, vue-test-util & vite
 - [example-vite] styling for custom build mwc-*
 - [frontend-i18n] node-polyglot
