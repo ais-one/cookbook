@@ -19,6 +19,8 @@ git remote set-url origin git@hostname:USERNAME/REPOSITORY.git
 git remote set-url httpsorigin https://hostname:USERNAME/REPOSITORY.git
 git remote add neworigin https://github.com/user/repo.git
 git remote rm someorigin
+git reset --hard
+git commit -am "some message"
 ```
 
 ### clone git repo without history

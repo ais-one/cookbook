@@ -12,8 +12,9 @@
 
 # CI/CD
 
-- circleCI
-- jenkins
+- Github Actions
+- CircleCI
+- Jenkins
 
 ---
 
@@ -36,13 +37,12 @@ Analyze user behavior across your sites and apps
 - Google Analytics
 
 
-
 # Wiki Sidebar Example
 
 * [Home](../wiki/Home)
   * [Page A](../wiki/Page-A)
   * [Page B](../wiki/Page-B)
-* Pellar
+* Another
   * [Page C](../wiki/Page-C)
   * [Page D](../wiki/Page-D)
 * [Page E](../wiki/Page-E)
