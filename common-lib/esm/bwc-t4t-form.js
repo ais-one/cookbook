@@ -10,17 +10,10 @@
 // events
 //
 
-
-
 const template = document.createElement('template')
 template.innerHTML = `
 <div>
   <form id="form-wrapper">
-    <div class="field">
-      <p class="control">
-        <input class="input" type="email" placeholder="Email">
-      </p>
-    </div>
   </form>
 </div>
 `
@@ -31,7 +24,7 @@ class Form extends HTMLElement {
   }
 
   #config = []
-  #record = []
+  #record = {}
   get config () { return this.#config }
   set config (val) {
     // console.log('vvvv config', val)
@@ -48,7 +41,6 @@ class Form extends HTMLElement {
 
   connectedCallback() {
     this.appendChild(template.content.cloneNode(true))
-
     console.log('t4t-form', this.#config)
     this._render()
   }
@@ -69,14 +61,73 @@ class Form extends HTMLElement {
     try {
       const el = this.querySelector('#form-wrapper')
       if (!el) return
+      el.innerHTML = ''
       const { cols, auto, pk, required, multiKey } = this.#config
+      console.log('this.#record', this.#record)
       for (let col in cols) {
         if (!auto.includes(col)) {
-          const val = cols[col]
+          const c = cols[col]
+          // console.log('nonauto', c, this.mode)
+          if ((this.mode === 'add' && c.add !== 'hide') || (this.mode === 'edit' && c.edit !== 'hide')) {
+            //   <div class="field">
+            //   <p class="control"><input class="input" type="text" placeholder="Name"></p>
+            // </div>
+            const div = document.createElement('div')
+            div.classList.add('field')
+            const p = document.createElement('p')
+            p.classList.add('control')
+
+            // input..., autocomplete, select/multiselect, upload, link?, textarea
+
+            const input = document.createElement('input')
+            input.classList.add('input')
+            input.setAttribute('type', 'text')
+            input.setAttribute('placeholder', c.label)
+            if (this.mode === 'add') {
+              if (c.add === 'readonly') input.setAttribute('readonly', true)
+              input.value = c.default || ''
+            } else if (this.mode === 'edit') {
+              if (c.edit === 'readonly') input.setAttribute('readonly', true)
+              // input.value = this.#record[col] || ''
+            }
+            // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime, upload, link - to child table
+            if (c.input === 'datetime') input.setAttribute('type', 'datetime-local')
+            else if (c.input === 'date') input.setAttribute('type', 'date')
+            else if (c.input === 'time') input.setAttribute('type', 'time')
+            else if (c.input === 'number') {
+              input.setAttribute('type', 'number')
+              if (c.type === 'integer') input.setAttribute('step', 1)
+              // c.type === 'decimal'
+            }
+            if (c.required) input.setAttribute('required', true)
+
+            p.appendChild(input)
+            div.appendChild(p)
+            el.appendChild(div)
+          }
         } else {
           console.log('auto', col)
         }
       }
+      this.btnSubmit = document.createElement('button')
+      this.btnSubmit.classList.add('button')
+      this.btnSubmit.textContent = 'Submit'
+      this.btnSubmit.onclick = (e) => {
+        console.log('submit clicked')
+        e.stopPropagation()
+        this.dispatchEvent(new CustomEvent('submit', { detail: this.#record })) // TBD populate this.#record for add
+      }
+      el.appendChild(this.btnSubmit)
+  
+      this.btnCancel = document.createElement('button')
+      this.btnCancel.classList.add('button')
+      this.btnCancel.textContent = 'Cancel'
+      this.btnCancel.onclick = (e) => {
+        console.log('cancel clicked')
+        e.preventDefault()
+        this.dispatchEvent(new CustomEvent('cancel'))
+      }
+      el.appendChild(this.btnCancel)
 
     } catch (e) {
     }

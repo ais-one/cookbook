@@ -22,7 +22,7 @@ module.exports = {
       label: 'First Name',
       multiKey: true, // part of composite unique key - required!
       type: 'string', // string, integer, decimal, datetime, date, time, boolean
-      input: 'textfield', // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime, upload, link - to child table
+      input: 'textfield', // textfield, textarea, autocomplete, number, select, multi-select, date, time, datetime, upload, link - to child table
       table: '', // truthy means hide column on table,
       filter: '', // truthy means hide column on filter,
       add: '', // 'hide', ''  - empty string means can show and edit

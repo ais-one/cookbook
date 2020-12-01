@@ -1,9 +1,6 @@
 ## Issues
 
 ### In Progress
-- [example-vite & example-nobundler] http call (t4t-fe), form (bwc-t4t-form)
-- [vite] migrate vue-crud-x table examples to vite
-- [chore] apollo-client graphql security & performance review
 
 ### Backlog
 - [chore] disable console.log in production / proper console logging

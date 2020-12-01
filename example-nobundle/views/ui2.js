@@ -1,7 +1,7 @@
 const template = /*html*/`
 <div>
   <h1>UI 2</h1>
-  <bwc-t4t-form :config="form.config" :record="form.record"></bwc-t4t-form>
+  <bwc-t4t-form :config="form.config" :record="form.record" mode="add"></bwc-t4t-form>
 </div>
 `
 
@@ -29,7 +29,7 @@ export default {
       console.log(test)
       // for (var key in test) delete test[key]
       // Object.assign(test, {})
-      console.log(test.length)
+      // console.log(test.length)
       // console.log(form)
     })
 

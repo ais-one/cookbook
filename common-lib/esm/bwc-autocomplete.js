@@ -70,15 +70,13 @@ class AutoComplete extends HTMLElement {
         if (this.selectedItem) {
           // console.log('not found but is selected')
           this.selectedItem = null
-          const evSelected = new CustomEvent('selected', { detail: this.selectedItem })
-          this.dispatchEvent(evSelected)
+          this.dispatchEvent(new CustomEvent('selected', { detail: this.selectedItem }))
         }
       } else {
         if (!this.selectedItem) {
           // console.log('found but not selected')
           this.selectedItem = found
-          const evSelected = new CustomEvent('selected', { detail: this.selectedItem })
-          this.dispatchEvent(evSelected)
+          this.dispatchEvent(new CustomEvent('selected', { detail: this.selectedItem }))
         }
       }
     }
@@ -98,8 +96,7 @@ class AutoComplete extends HTMLElement {
     switch (name) {
       case 'value': {
         if (el) el.value = newVal
-        const event = new CustomEvent('input', { detail: newVal })
-        this.dispatchEvent(event)
+        this.dispatchEvent(new CustomEvent('input', { detail: newVal }))
         break
       }
       case 'required': {
@@ -160,15 +157,13 @@ class AutoComplete extends HTMLElement {
     if (!found) { // not found
       // console.log('emit search')
       this.selectedItem = null
-      const evSearch = new CustomEvent('search', { detail: this.value })
-      this.dispatchEvent(evSearch)
+      this.dispatchEvent(new CustomEvent('search', { detail: this.value }))
     } else {
       this.selectedItem = found
     }
     // console.log('emit selected?', prevItem !== this.selectedItem, this.selectedItem)
     if (prevItem !== this.selectedItem) {
-      const evSelected = new CustomEvent('selected', { detail: this.selectedItem })
-      this.dispatchEvent(evSelected)
+      this.dispatchEvent(new CustomEvent('selected', { detail: this.selectedItem }))
     }
   }
 

@@ -113,7 +113,7 @@ export default {
       for (let i = 0; i < stateList.length; i++) {
         if (typeof stateList[i] === 'string') { // can only work on objects
         } else {
-          if (stateList[i].parentKey === e.detail.key) {
+          if (e.detail && (stateList[i].parentKey === e.detail.key)) {
             countryStateList.push(stateList[i])
           }
         }

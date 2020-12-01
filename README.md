@@ -1,12 +1,11 @@
-
-
-[![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x)
+![develop commit](https://badgen.net/github/last-commit/ais-one/vue-crud-x/develop)
+![master commit](https://badgen.net/github/last-commit/ais-one/vue-crud-x/master)
 ![release](https://img.shields.io/github/v/release/ais-one/vue-crud-x)
+[![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x)
 [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine)
 [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x)
 [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
-[![last commit](https://badgen.net/github/last-commit/ais-one/vue-crud-x/develop)](https://badgen.net/github/last-commit/ais-one/vue-crud-x/develop)
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
 

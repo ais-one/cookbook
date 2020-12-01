@@ -1,6 +1,9 @@
 ### Version 0.4.5
 - [chore] update packages & cleanup & work on improving documentation
 - [github-actions] add github pages workflow, update manual workflow
+- [wip]
+  - [common-lib/esm] http call (t4t-fe), form (bwc-t4t-form)
+  - [example-vite] migrate vue-crud-x table examples to vite
 
 ### Version 0.4.4
 - [chore] update packages & cleanup & work on improving documentation
