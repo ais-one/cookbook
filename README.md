@@ -1,4 +1,4 @@
-![develop commit](https://badgen.net/github/last-commit/ais-one/vue-crud-x/develop)
+[![develop commit](https://badgen.net/github/last-commit/ais-one/vue-crud-x/develop)](https://badgen.net/github/last-commit/ais-one/vue-crud-x/develop)
 ![master commit](https://badgen.net/github/last-commit/ais-one/vue-crud-x/master)
 ![release](https://img.shields.io/github/v/release/ais-one/vue-crud-x)
 [![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x)
