@@ -24,8 +24,8 @@ module.exports = {
   optimizeDeps: {
     include: [
       // '@material/mwc-icon/mwc-icon-font',
-      '@material/mwc-list/mwc-list-item',
-      '@material/mwc-list/mwc-check-list-item',
+      // '@material/mwc-list/mwc-list-item',
+      // '@material/mwc-list/mwc-check-list-item',
       '@vaadin/vaadin-grid/vaadin-grid-selection-column',
       '@vaadin/vaadin-grid/vaadin-grid-sort-column',
       'echarts',

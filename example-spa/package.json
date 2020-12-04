@@ -12,7 +12,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@apollo/client": "^3.2.9",
+    "@apollo/client": "^3.3.3",
     "axios": "^0.21.0",
     "core-js": "^3.8.0",
     "graphql": "^15.4.0",

@@ -12,8 +12,8 @@
 <script>
 // https://vega.github.io/vega/usage/
 
-import echarts from 'echarts'
-console.log(echarts)
+import * as echarts from 'echarts' // echarts version 5 onwards, es module
+// console.log(echarts)
 
 export default {
   name: 'DemoChart',

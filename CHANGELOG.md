@@ -1,6 +1,7 @@
 ### Version 0.4.5
 - [chore] update packages & cleanup & work on improving documentation
 - [github-actions] add github pages workflow, update manual workflow
+- [example-vite] echarts v4 to v5 (ESM), mwc to 0.20.0
 - [wip]
   - [common-lib/esm] http call (t4t-fe), form (bwc-t4t-form)
   - [example-vite] migrate vue-crud-x table examples to vite
