@@ -12,7 +12,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.3",
+    "@apollo/client": "^3.3.4",
     "axios": "^0.21.0",
     "core-js": "^3.8.0",
     "graphql": "^15.4.0",
@@ -37,10 +37,10 @@
     "babel-eslint": "^10.1.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "deepmerge": "^4.2.2",
-    "eslint": "^7.14.0",
-    "eslint-plugin-vue": "^7.1.0",
+    "eslint": "^7.15.0",
+    "eslint-plugin-vue": "^7.2.0",
     "fibers": "^5.0.0",
-    "sass": "^1.29.0",
+    "sass": "^1.30.0",
     "sass-loader": "^10.1.0",
     "vue-template-compiler": "^2.6.12",
     "vuetify-loader": "^1.6.0"

@@ -45,8 +45,9 @@ export default {
       {
         label: 'ID',
         key: 'id',
-        render: (val, key, row) => '<a class="button" onclick="alert('+val+')">'+val+'<a>'
-        // can also fire off event - this.dispatchEvent(new CustomEvent('something', { detail: { val, row, key } }))
+        render: (val, key, row) => `<a class='button' onclick='dispatchEvent(new CustomEvent("testevent", { detail: ${JSON.stringify({ val, key, row })} }))'>${val}</a>`
+        // render: (val, key, row) => `<a class="button" onclick="dispatchEvent(new CustomEvent('testevent', { detail: { key: '${key}', val: '${val}' } }))">${val}</a>`
+        // can also fire off event - document.dispatchEvent(new CustomEvent('something', { detail: { val, row, key } }))
       },
       {
         label: 'Name',
@@ -118,6 +119,7 @@ export default {
 
     onMounted(async () => {
       console.log('Dashboard mounted!')
+      addEventListener('testevent', (e) => console.log('testevent', e), true)
       setItems()
     })
     return {

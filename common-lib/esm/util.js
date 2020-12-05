@@ -80,23 +80,10 @@ function downloadData(content, filename, type = 'text/csv;charset=utf-8;') {
   }
 }
 
-// Usage debounce(<Your Function>, <debounce time in milliseconds>)
-// const debounce = (func, delayMs) =>
-//   let debounceTimer
-//   return function() {
-//     const context = this
-//     const args = arguments
-//     clearTimeout(debounceTimer)
-//     debounceTimer = setTimeout(() => func.apply(context, args), delayMs)
-//   }
-// }
-
 // call only after X ms has passed
-// Usage debounce(<Your Function>, <debounce time in milliseconds>)
-// searchIdDom.addEventListener('input', () => { debounce(makeApiFetch(), 1000); }
-// Application
-// - Debouncing an input type event handler. (like our search input example)
-// - Debouncing a scroll event handler.
+// Sample Usage
+// searchIdDom.addEventListener('input', debounce(makeApiFetch, 1000))
+// Application - Debouncing an input type event handler. (like our search input example), a scroll event handler.
 const debounce = (fn, delay) => {
   let timeout = null
   return (...args) => {
@@ -107,14 +94,10 @@ const debounce = (fn, delay) => {
 }
 
 // call only X times in Y ms
-// Usage throttle(<Your Function>, <debounce time in milliseconds>)
+// Sample Usage
 // const myHandler = (event) => {...do some stuf...}
-// const myThrottleHandler = throttle(myHandler, 1000);
-// myMouseDomElement.addEventListener("mousemove", myThrottleHandler);
-// Application
-// - Throttling an API call.
-// - Throttling a button click so we can’t spam click.
-// - Throttling a touch/move mouse event handler.
+// myMouseDomElement.addEventListener("mousemove", throttle(myHandler, 1000));
+// Application - Throttling an API call, button click so we can’t spam click, touch/move mouse event handler.
 function throttle(fn, wait) {
   let time = Date.now()
   return function () {
