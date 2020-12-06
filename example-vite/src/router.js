@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from './store.js'
+import { BASE_URL } from '../config.js'
 
 // const permissions = {
 //   // g1 = route groups, g2 = user groups
@@ -47,8 +48,7 @@ const authGuard = (to, from, next) => {
   }
 }
 
-// const routerHistory = createWebHistory()
-const routerHistory = createWebHistory('/vite/')
+const routerHistory = createWebHistory(BASE_URL)
 
 const router = createRouter({
   history: routerHistory,
@@ -60,7 +60,6 @@ const router = createRouter({
     { path: '/callback', name: 'Callback', component: () => import('./views/Callback.vue'), beforeEnter: authGuard, meta: { requiresAuth: false, layout: 'layout-public' } },
     // catchall
     { path: '/:catchAll(.*)', name: 'catchAll', redirect: { name: 'SignIn' }, meta: { requiresAuth: false, layout: 'layout-public' } },
-
     // private
     { path: '/dashboard', name: 'Dashboard', component: async () => await import('./views/Dashboard.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-web-cam', name: 'Demo Web Cam', component: () => import('./views/DemoWebCam.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },

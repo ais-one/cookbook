@@ -48,8 +48,8 @@ export default {
     provideI18n({
       locale: 'en',
       messages: {
-        en: { sign_in: 'Sign In (en)' },
-        id: { sign_in: 'Masuk (id)' }
+        en: { sign_in: 'Sign In (en) v0.0.1a' },
+        id: { sign_in: 'Masuk (id) v0.0.1a' }
       }
     })
 

@@ -7,11 +7,13 @@
 - [example-native] add google recaptcha
 - [common-lib/esm/bwc-table.js] fix sort (was showing arrows on all columns)
 - [common-lib/esm/util.js] clarify debounce usage
+- [example-vite] fix build path (dev / production), note need proper SSL cert for SW to work on non-localhost domain
 - [wip]
-  - [example-vite] add i18n
-  - [example-vite] fix build path (dev / production)
-  - [common-lib/esm] http call (t4t-fe), form (bwc-t4t-form)
+  - [common-lib/esm/bwc-t4t-form.js] - created
+  - [common-lib/esm/t4t-fe.js] - created (also includes validation...)
+  - [common-lib/esm/t4t-validate.js] - created... for backend use
   - [example-vite] migrate vue-crud-x table examples to vite
+  - [example-vite] add i18n
 
 ### Version 0.4.4
 - [chore] update packages & cleanup & work on improving documentation

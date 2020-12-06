@@ -1,7 +1,5 @@
-// const path = require('path')
 // const isDev1 = import.meta.env.MODE === 'development'
-// const dev_port1 = import.meta.env.VUE_DEVPORT
-// console.log('xxxxx', process.env.MODE)
+// import.meta is undefined, process.env is not populated with custom values
 module.exports = {
   // alias useless... https://github.com/vitejs/vite/issues/279#issuecomment-636110354
   // alias: {
@@ -17,7 +15,7 @@ module.exports = {
       rewrite: (path) => path.replace(/^\/common-lib\/esm/, '/esm')
     }
   },
-  base: '/vite',
+  base: process.env.BASE_PATH || '/', // set to '/vite' for dev:build, '/' otherwise
   // sourcemap: isDev1,
   vueCompilerOptions: {
     isCustomElement: (tag) => tag.startsWith('vaadin-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-') || tag.startsWith('sl-')

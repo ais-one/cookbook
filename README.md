@@ -43,7 +43,7 @@ Docker is required to test
 - hashicorp vault
 - kafka
 
-## Backend, SPA, Vite, No Bundler
+## Backend, Native (no bundler), Vite, Webpacked
 
 ### Backend Setup & Run
 
@@ -84,21 +84,6 @@ npm run app:unix # linux or mac
 See above
 
 
-### Webpack SPA Setup & Run - development environment
-
-```bash
-cd example-webpack
-npm i
-npm run serve
-```
-
-Navigate to http://127.0.0.1:8080/spa to view application with VueCrudX demo 
-
-Login using the following:
-- User: test
-- Password: test
-- OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin
-
 ### Vite SPA Setup & Run - development environment
 
 [Why Use Vite](https://indepth.dev/a-note-on-vite-a-very-fast-dev-build-tool/)
@@ -115,9 +100,12 @@ npm i
 npm run dev
 ```
 
-Navigate to http://127.0.0.1:8080/vite to view application
+Navigate to http://127.0.0.1:8080/ to view application
 
-Login is same as SPA
+Login using the following:
+- User: test
+- Password: test
+- OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin
 
 You can test PWA Push notifications using Webpush or FCM () on Dashboard page depending on **.env.<environment>** file configuration (need to be on 127.0.0.1).
 
@@ -126,18 +114,30 @@ Click the following buttons in order (see their output in console.log and screen
 - Test PN (send a test message to user id 1 - on sqlite)
 - Unsub PN (unsubscribe)
 
-### Vite SPA Production Build
+### Webpack SPA Setup & Run - development environment
+
+```bash
+cd example-webpack
+npm i
+npm run serve
+```
+
+Navigate to http://127.0.0.1:8080/webpack to view application with VueCrudX demo 
+
+Login is same as Vite SPA
+
+### Vite SPA - static build
 
 ```bash
 cd example-vite
-npm run build
+npm run dev:build
 ```
 
 **example-app** should be running
 
 Navigate to http://127.0.0.1:3000/vite/
 
-### Webpack SPA production build
+### Webpack SPA - static build
 
 From vue-crud-x folder
 
@@ -148,7 +148,7 @@ npm run build
 
 **example-app** should be running
 
-Navigate to http://127.0.0.1:3000/spa/
+Navigate to http://127.0.0.1:3000/webpack/
 
 ---
 

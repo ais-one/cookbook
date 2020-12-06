@@ -4,7 +4,7 @@ const EXT_LIB_PATH = require('path').join(__dirname, 'lib') // C:\Users\user\tes
 const EXT_ESM_PATH = require('path').join(__dirname, '..', 'common-lib', 'esm') // C:\Users\user\test\vue-crud-x\common-lib\esm
 
 module.exports = {
-  publicPath: '/spa/',
+  publicPath: '/webpack/',
   configureWebpack: {
     plugins: [
       new VuetifyLoaderPlugin()

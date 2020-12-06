@@ -11,7 +11,8 @@ export const {
   // VITE_HTTPONLY_TOKEN = false, // true, // NOTUSED... replaced by VITE_WITH_CREDENTIALS
   VITE_WITH_CREDENTIALS = 'same-origin', // same-origin, include = cors
 
-  VITE_CALLBACK_URL
+  VITE_CALLBACK_URL,
+  BASE_URL, // vite.config.js base property
   // VITE_GITHUB_CLIENT_ID
 } = import.meta.env
 

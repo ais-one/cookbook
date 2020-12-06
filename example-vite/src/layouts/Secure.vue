@@ -1,7 +1,7 @@
 <template>
   <mwc-drawer hasHeader type="modal">
     <span slot="title" class="h-center"><img class="text-center" src="https://via.placeholder.com/150x50" alt="My Dashboard" /></span>
-    <span slot="subtitle" class="h-center"><p>v0.0.1</p></span>
+    <span slot="subtitle" class="h-center"><p>Something</p></span>
     <div class="drawer-content">
       <mwc-list>
         <mwc-list-item graphic="icon" @click="logout">
