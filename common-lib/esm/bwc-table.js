@@ -46,6 +46,14 @@
 // cmd = show/hide filter, reload, add, delete, upload, download, goback (if parentKey != null)
 // checked = [indexes checked...]
 
+// COLUMN PROPERTIES
+// for hidden table columns, please remove before passing it to component
+// label: 'ID',
+// key: 'id',
+// filter: false,
+// sort: false,
+// render: (val, key, row) => `<a class='button' onclick='this.dispatchEvent(new CustomEvent("testevent", { detail: ${JSON.stringify({ val, key, row })} }))'>${val}</a>`
+
 // NOT NEEDED
 // loading state and loading spinner
 

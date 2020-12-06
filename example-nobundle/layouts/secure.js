@@ -45,11 +45,12 @@ const template = /*html*/`
     <ul class="menu-list">
       <li><router-link :to="{ path: '/dashboard' }">Dashboard</router-link></li>
       <li><router-link :to="{ path: '/ui1' }">UI1 - Autocomplete</router-link></li>
-      <li><router-link :to="{ path: '/ui2' }">UI2 - Form</router-link></li>
+      <li><router-link :to="{ path: '/ui2' }">UI2 - T4T Table</router-link></li>
+      <li><router-link :to="{ path: '/ui3' }">UI3 - T4T Form</router-link></li>
       <li><router-link :to="{ path: '/admin' }">Admin</router-link></li>
     </ul>
     <ul class="menu-list">
-      <li><a class="button is-light" @click="logout">Logout</a></li>
+      <li><a class="button is-light has-text-left" @click="logout">Logout</a></li>
     </ul>
     <p class="menu-label">Administration</p>
     <ul class="menu-list">
@@ -89,7 +90,7 @@ export default {
     const router = useRouter()
     const showSide = ref(true)
     const menu0 = ref(false)
-    const menu1 = ref(true)
+    const menu1 = ref(false)
 
     onMounted(async () => {
       console.log('Secure mounted!')

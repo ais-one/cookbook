@@ -39,6 +39,7 @@ const router = createRouter({
     },
     { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/ui1', component: () => import('./views/ui1.js'), name: 'ui1' },
     { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/ui2', component: () => import('./views/ui2.js'), name: 'ui2' },
+    { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/ui3', component: () => import('./views/ui3.js'), name: 'ui3' },
     {
       meta: { requiresAuth: true, layout: 'layout-secure' },
       beforeEnter: AuthGuard,
