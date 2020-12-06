@@ -1,7 +1,6 @@
 'use strict'
 import Vue from 'vue'
 import VueRx from 'vue-rx'
-import VueNativeSock from 'vue-native-websocket'
 import i18n from './i18n'
 import { store } from './store'
 import router from './router'
@@ -29,20 +28,6 @@ Vue.config.productionTip = false
 Vue.use(VueRx)
 
 // Vue.prototype.$http = base
-import { WS_URL } from '@/config'
-if (WS_URL) {
-  Vue.use(VueNativeSock, WS_URL, {
-    // connectManually: true,
-    protocol: '', // default is empty string
-    reconnection: true, // (Boolean) whether to reconnect automatically (false)
-    // reconnectionAttempts: 5, // (Number) number of reconnection attempts before giving up (Infinity),
-    reconnectionDelay: 5000, // (Number) how long to initially wait before attempting a new (1000)
-    // store: store, // VUEX Store
-    format: 'json'
-  })
-} else {
-  console.log('NO WS...')
-}
 
 Vue.component('app-date-picker', DatePicker)
 Vue.component('app-time-picker', TimePicker)

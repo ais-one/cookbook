@@ -13,7 +13,6 @@
                     <v-text-field label="Username" v-model="email" type="text" required></v-text-field>
                     <v-text-field label="Password" v-model="password" type="password" required></v-text-field>
                     <v-btn class="ma-1" type="submit" :disabled="loading" :loading="loading">Sign in</v-btn>
-                    <v-btn class="ma-1" type="button" :disabled="loading" :loading="loading" @click="onGithubSignin">Github</v-btn>
                     <p v-if="!!error">{{ error.message }}</p>
                   </v-flex>
                 </v-layout>
@@ -40,7 +39,7 @@
 <script>
 import { mapState } from 'vuex'
 import 'ext-lib/webpacked/vcx-loading-blocker.js'
-import { GITHUB_CLIENT_ID, APP_VERSION } from '@/config'
+import { APP_VERSION } from '@/config'
 
 export default {
   data () {
@@ -74,9 +73,6 @@ export default {
     onVerifyOtp () {
       this.$store.dispatch('clearError')
       this.$store.dispatch('verifyOtp', { pin: this.pin })
-    },
-    onGithubSignin () {
-      window.location.replace('https://github.com/login/oauth/authorize?scope=user:email&client_id=' + GITHUB_CLIENT_ID)
     }
   }
 }

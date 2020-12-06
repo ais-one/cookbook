@@ -43,6 +43,9 @@ const template = /*html*/`
               <div class="control">
                 <button class="button is-success test-bg" @click.stop.prevent="login">SSO Login</button>
               </div>
+              <div class="control">
+                <button class="button is-success" @click.stop.prevent="githubLogin">Github</button>
+              </div>
             </div>
           </form>
         </div>
@@ -60,7 +63,7 @@ const styles = /*html*/`
 
 const { onMounted, ref } = Vue
 const { useStore } = Vuex
-const { useRouter } = VueRouter
+const { useRouter, useRoute } = VueRouter
 
 export default {
   template,
@@ -69,13 +72,18 @@ export default {
     const password = ref('1111')
     const store = useStore()
     const router = useRouter()
+    const route = useRoute()
 
     const topRef = ref(null)
     const recaptchaSiteKey = ref('6LcjlzkUAAAAAOwP26tCRCivcYyAu3hQ7AlMPLh3')
 
     onMounted(async () => {
       // console.log(topRef)
-      console.log('SignIn mounted!')
+      // TBD loading spinner...
+      console.log('SignIn mounted!', route, window.location.hash)
+      if (window.location.hash) {
+        alert('Github OAuth2 Success! Remember to remove hash from front of token', window.location.hash) // TBD refresh token
+      }
 
       // set google recaptcha callbacks
       // https://www.google.com/recaptcha/about/
@@ -100,12 +108,17 @@ export default {
       router.push('/dashboard')
     }
 
+    const githubLogin = () => {
+      window.location.replace('https://github.com/login/oauth/authorize?scope=user:email&client_id=' + 'a355948a635c2a2066e2')
+    }
+
     return {
       topRef,
       email,
       password,
       recaptchaSiteKey,
-      login
+      login,
+      githubLogin
     }
   }
 }

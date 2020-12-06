@@ -12,8 +12,8 @@ export const {
   VITE_WITH_CREDENTIALS = 'same-origin', // same-origin, include = cors
 
   VITE_CALLBACK_URL,
+
   BASE_URL, // vite.config.js base property
-  // VITE_GITHUB_CLIENT_ID
 } = import.meta.env
 
 // PAGESIZE: process.env.VUE_APP_PAGESIZE || 4,

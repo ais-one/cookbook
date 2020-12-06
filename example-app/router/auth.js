@@ -5,7 +5,7 @@ const authController = require('../controllers/auth')
 
 module.exports = express.Router()
   .post('/signup', authController.signup)
-  .post('/check-github', authController.checkGithub)
+  .get('/check-github', authController.checkGithub)
   .get('/logout', authUser, authController.logout)
   /**
    * @swagger
