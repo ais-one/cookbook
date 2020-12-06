@@ -16,7 +16,8 @@ const template = /*html*/`
     @checked="checked"
     @triggered="triggered"
     @cmd="cmd"
-    style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;--bwc-navbar-bgcolor: lightgray;--bwc-filter-bgcolor: cyan;--bwc-th-bgcolor: pink;--bwc-td-bgcolor: white;"
+    @testevent.capture="testevent"
+    style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;--bwc-table-navbar-bgcolor: lightgray;--bwc-table-filter-bgcolor: cyan;--bwc-table-th-bgcolor: pink;--bwc-table-td-bgcolor: white;"
     class="sticky-header sticky-column"
   ></bwc-table>
   <hr/>
@@ -27,7 +28,7 @@ const template = /*html*/`
     :columns="columns"
     :items="table.items"
     :total="total"
-    style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;--bwc-navbar-bgcolor: lightgray;--bwc-filter-bgcolor: cyan;--bwc-th-bgcolor: pink;--bwc-td-bgcolor: white;"
+    style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;"
     class="sticky-header sticky-column"
   ></bwc-table>
 </div>
@@ -45,19 +46,22 @@ export default {
       {
         label: 'ID',
         key: 'id',
-        render: (val, key, row) => `<a class='button' onclick='dispatchEvent(new CustomEvent("testevent", { detail: ${JSON.stringify({ val, key, row })} }))'>${val}</a>`
-        // render: (val, key, row) => `<a class="button" onclick="dispatchEvent(new CustomEvent('testevent', { detail: { key: '${key}', val: '${val}' } }))">${val}</a>`
+        filter: false,
+        render: (val, key, row) => `<a class='button' onclick='this.dispatchEvent(new CustomEvent("testevent", { detail: ${JSON.stringify({ val, key, row })} }))'>${val}</a>`
+        // render: (val, key, row) => `<a class="button" onclick="this.dispatchEvent(new CustomEvent('testevent', { detail: { key: '${key}', val: '${val}' } }))">${val}</a>`
         // can also fire off event - document.dispatchEvent(new CustomEvent('something', { detail: { val, row, key } }))
       },
       {
         label: 'Name',
         key: 'name',
-        filter: true
+        filter: true,
+        sort: true
       },     
       {
         label: 'Age',
         key: 'age',
-        filter: true
+        filter: true,
+        sort: true
       }
     ])
     for (let i=1; i<=15; i++) {
@@ -116,10 +120,13 @@ export default {
     const cmd = (e) => {
       console.log('cmd', e.detail)
     }
-
+    const testevent = (e) => {
+      console.log('testevent', e.detail, e.target)
+    }
+    
     onMounted(async () => {
       console.log('Dashboard mounted!')
-      addEventListener('testevent', (e) => console.log('testevent', e), true)
+      // addEventListener('testevent', (e) => console.log('testevent', e), true)
       setItems()
     })
     return {
@@ -132,7 +139,8 @@ export default {
       rowClick,
       checked,
       triggered,
-      cmd
+      cmd,
+      testevent
     }
   }
 }

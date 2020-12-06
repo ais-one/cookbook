@@ -1,6 +1,7 @@
 // const path = require('path')
 // const isDev1 = import.meta.env.MODE === 'development'
 // const dev_port1 = import.meta.env.VUE_DEVPORT
+// console.log('xxxxx', process.env.MODE)
 module.exports = {
   // alias useless... https://github.com/vitejs/vite/issues/279#issuecomment-636110354
   // alias: {

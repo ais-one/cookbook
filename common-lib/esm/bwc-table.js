@@ -562,6 +562,7 @@ class Table extends HTMLElement {
             if (!this.sort) return
             const offset = this.#checkboxes ? 1 : 0 //  column offset
             const col = target.cellIndex - offset // TD 0-index based column
+            if (!this.#columns[col].sort) return
             const key = this.#columns[col].key
 
             if (key !== this.#sortKey) {
@@ -576,17 +577,7 @@ class Table extends HTMLElement {
               }
             }
 
-            // update header
-            const theadTr = this.querySelector('table thead tr')
-            for (let i = offset; i < theadTr.children.length; i++) {
-              const th = theadTr.children[i]
-              let label = this.#columns[i - offset].label
-              if (this.#columns[i - offset].key === this.#sortKey && this.#sortDir) {
-                label = label + (this.#sortDir === 'asc' ? '↑': '↓')
-              }
-              th.innerHTML = label // cannot textContent (need to parse the HTML)
-            }
-            this._trigger('sort') // checkboxes are also cleared...
+            this._trigger('sort') // header is re-rendered,  checkboxes are also cleared...
           }
         }
 
@@ -605,7 +596,16 @@ class Table extends HTMLElement {
         }
         for (const col of this.#columns) {
           const th = document.createElement('th')
-          const label = col.label + ((this.#sortKey) ? (this.#sortDir === 'asc' ? '↑': '↓') : '') // &and; (up) & &or; (down)
+          if (col.sort) th.style.cursor = 'pointer'
+          let label = col.label
+          if (col.sort) {
+            if (this.#sortKey === col.key) {
+              // &and; (up) & &or; (down)
+              label += this.#sortDir === 'asc' ? '↑' : (this.#sortDir === 'desc' ? '↓' : '↕')
+            } else {
+              label += '↕'
+            }  
+          }
           if (col.width) th.style.width = `${col.width}px`
           if (col.sticky) th.setAttribute('scope', 'row')
 
