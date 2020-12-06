@@ -1,10 +1,15 @@
 ### Version 0.4.5
 - [chore] update packages & cleanup & work on improving documentation
 - [github-actions] add github pages workflow, update manual workflow
+- [example-nobundle] rename to example-native, /native
+- [example-spa] rename to example-webpack (to be kept for legacy purpose)
 - [example-vite] echarts v4 to v5 (ESM), mwc to 0.20.0
+- [example-native] add google recaptcha
 - [common-lib/esm/bwc-table.js] fix sort (was showing arrows on all columns)
 - [common-lib/esm/util.js] clarify debounce usage
 - [wip]
+  - [example-vite] add i18n
+  - [example-vite] fix build path (dev / production)
   - [common-lib/esm] http call (t4t-fe), form (bwc-t4t-form)
   - [example-vite] migrate vue-crud-x table examples to vite
 
@@ -104,7 +109,7 @@
 - example-app/web/pwa
   - add a pwa sample app
   - add Firebase Cloud Messaging (FCM) push notification
-- example-app/public/demo-nobundler
+- example-app/public/demo-nobundle
   - add no bundler implementation of Vue SPA using ES Modules
 - common-app
   - add telegram - send to group or channel via bot

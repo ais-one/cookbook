@@ -5,7 +5,7 @@ import SignIn from './views/signin.js'
 
 const { createRouter, createWebHistory } = VueRouter
 
-const routerHistory = createWebHistory('/example-nobundle/')
+const routerHistory = createWebHistory('/example-native/')
 
 const AuthGuard = async (to, from, next) => {
   // console.log('AuthGuard', store)

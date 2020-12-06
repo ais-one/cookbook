@@ -35,7 +35,7 @@ const template = /*html*/`
                 </span>
               </div>
             </div>
-
+            <div v-if="recaptchaSiteKey" class="g-recaptcha" :data-sitekey="recaptchaSiteKey"></div>
             <div class="field is-grouped">
               <div class="control">
                 <button class="button is-success" disabled>Login</button>
@@ -71,10 +71,24 @@ export default {
     const router = useRouter()
 
     const topRef = ref(null)
+    const recaptchaSiteKey = ref('6LcjlzkUAAAAAOwP26tCRCivcYyAu3hQ7AlMPLh3')
 
     onMounted(async () => {
       // console.log(topRef)
       console.log('SignIn mounted!')
+
+      // set google recaptcha callbacks
+      // https://www.google.com/recaptcha/about/
+      const recaptchaEl = document.querySelector('.g-recaptcha')
+      if (recaptchaEl) {
+        window.onRecaptchaSuccess = (token) => console.log('recaptcha token', token) // use this to enable button
+        window.onRecaptchaExpired = () => console.log('recaptcha expired')
+        window.onRecaptchaError = (e) => console.log('recaptcha error', e)
+        recaptchaEl.setAttribute('data-callback', 'onRecaptchaSuccess')
+        recaptchaEl.setAttribute('data-expired-callback', 'onRecaptchaExpired')
+        recaptchaEl.setAttribute('data-error-callback', 'onRecaptchaError')  
+      }
+
       // thank you Arjay for this! https://plnkr.co/edit/tjhkcfNO15aTNhsU
       const style = document.createElement('style')
       style.innerHTML = styles
@@ -90,6 +104,7 @@ export default {
       topRef,
       email,
       password,
+      recaptchaSiteKey,
       login
     }
   }

@@ -12,9 +12,6 @@ Libs are now found within the example projects.
 
 We will find a better way of updating to have correct CI the following folders should have their own repo
 - example-app
+- example-native
 - example-vite
-- example-spa
-- example-nobundle
-
-
-
+- example-webpack

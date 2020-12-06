@@ -22,7 +22,7 @@ module.exports = {
   USE_GRAPHQL: 0,
   WEB_STATIC: null,
   // WEB_STATIC: [
-  //   { folder: '/public/example-nobundle', url: '/nobundle', options: { extensions: ['html'], index: false } },
+  //   { folder: '/public/example-native', url: '/native', options: { extensions: ['html'], index: false } },
   //   { folder: '/lib/esm', url: '/esm' },
   //   { folder: '/public/demo-express', url: '/' }
   // ],
