@@ -82,6 +82,11 @@ https://github.com/nfriedly/express-slow-down
 - http://self-issued.info/docs/draft-ietf-oauth-v2-bearer.html#ExAccTokResp
 - https://stackoverflow.com/questions/42917170/setting-the-httponly-attribute-for-the-nodejs-cookie-header
 
+### OAuth2/OAuth Setups
+- http://thecodebarbarian.com/github-oauth-login-with-node-js.html
+- https://dev.to/aidanlovelace/how-to-setup-google-oauth2-login-with-express-2d30
+- https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js
+- https://www.loginradius.com/blog/async/oAuth-implemenation-using-node
 
 ### Express Libraries For Security
 - helmet (to configure), csurf

@@ -2,7 +2,7 @@
 
 const axios = require('axios')
 const { SALT_ROUNDS, COOKIE_HTTPONLY, COOKIE_SECURE, COOKIE_SAMESITE, COOKIE_MAXAGE, CORS_OPTIONS, JWT_EXPIRY } = global.CONFIG
-const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } = global.CONFIG
+const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_CALLBACK } = global.CONFIG
 const { findUser, createToken, revokeToken, logout, refresh, login, otp } = require(LIB_PATH + '/auth')
 
 const signup = async (req, res) => {
@@ -32,7 +32,7 @@ const checkGithub = async (req, res) => {
     // may need to restart browser, TBD set Max-Age, ALTERNATE use res.cookie, Signed?
     if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token};`+ httpOnlyCookie])
     // return res.status(200).json(tokens)
-    return res.redirect('http://127.0.0.1:3000/native/index.html' + '#' + tokens.token) // use url fragment... // TBD make callback URL configurable
+    return res.redirect(GITHUB_CALLBACK + '#' + tokens.token + '-' + tokens.refresh_token) // use url fragment... // TBD make callback URL configurable
   } catch (e) {
     console.log('github auth err', e.toString())
   }

@@ -8,9 +8,9 @@
 - [common-lib/esm/bwc-table.js] fix sort (was showing arrows on all columns)
 - [common-lib/esm/util.js] clarify debounce usage
 - [example-vite] fix build path (dev / production), note need proper SSL cert for SW to work on non-localhost domain
+- [example-app] controllers/auth.js/checkGithub - make callback URL configurable, improve github login, callback hash to include tokens instead of just token
+- [example-native] moved github login here & improve on github config instructions
 - [wip]
-  - [example-native] moved github login here (improve on github config instructions)
-  - [example-app] controllers/auth.js/checkGithub - make callback URL configurable, improve github login
   - [common-lib/esm/bwc-t4t-form.js] - created
   - [common-lib/esm/t4t-fe.js] - created (also includes validation...)
   - [common-lib/esm/t4t-validate.js] - created... for backend use

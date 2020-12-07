@@ -14,8 +14,8 @@ Latest Version [0.4.5](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.5)
 
 - Frontend Examples
   - [Vanilla JS, ES Modules, Vue3 & bulma](https://github.com/ais-one/vue-crud-x/tree/master/example-native): No bundler, scalable VueJS Application, example codes (signed uploads, JWT refresh token, OTP), recaptcha, Github OAuth2 login
-  - [Vite, Vue3 & mwc, vaadin](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js), JWT refresh token, 2FA GA OTP, SAML
-  - [SPA, Vue2 & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-webpack): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS
+  - [Vite, Vue3 & mwc, vaadin](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js), JWT refresh token, 2FA GA OTP, SAML, Websockets
+  - [SPA, Vue2 & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-webpack): Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS
 - [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/)
   - Cors, proxy middleware, helmet, error handling, logging, OpenAPI
   - Objection ORM, Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis
@@ -24,6 +24,7 @@ Latest Version [0.4.5](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.5)
   - File uploads, Signed URL file upload to GCP Storage
   - Websockets, graphql
   - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML
+    - Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
   - Unit Test & Integration Test
 - Development & Deployment
   - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger

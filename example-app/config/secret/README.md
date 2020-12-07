@@ -28,8 +28,9 @@ module.exports = {
     useNullAsDefault: true  
   },
   GCP_SERVICE_KEY: {},
-  GITHUB_CLIENT_ID: '',
-  GITHUB_CLIENT_SECRET: '',
+  GITHUB_CLIENT_ID: '', // OAuth2 Client ID // used by example-native frontend
+  GITHUB_CLIENT_SECRET: '', // OAuth2 Client SECRET
+  GITHUB_CALLBACK: '', // OAuth2 callback URL
   FCM_SERVER_KEY: '',
 }
 

@@ -63,7 +63,7 @@ const styles = /*html*/`
 
 const { onMounted, ref } = Vue
 const { useStore } = Vuex
-const { useRouter, useRoute } = VueRouter
+const { useRouter } = VueRouter
 
 export default {
   template,
@@ -72,7 +72,6 @@ export default {
     const password = ref('1111')
     const store = useStore()
     const router = useRouter()
-    const route = useRoute()
 
     const topRef = ref(null)
     const recaptchaSiteKey = ref('6LcjlzkUAAAAAOwP26tCRCivcYyAu3hQ7AlMPLh3')
@@ -80,9 +79,9 @@ export default {
     onMounted(async () => {
       // console.log(topRef)
       // TBD loading spinner...
-      console.log('SignIn mounted!', route, window.location.hash)
+      console.log('SignIn mounted!')
       if (window.location.hash) {
-        alert('Github OAuth2 Success! Remember to remove hash from front of token', window.location.hash) // TBD refresh token
+        alert('Github OAuth2 Success! Remember to remove hash from front of token', window.location.hash) // token-refresh_token, - character is seperator
       }
 
       // set google recaptcha callbacks

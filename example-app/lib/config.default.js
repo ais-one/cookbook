@@ -137,15 +137,16 @@ global.CONFIG.HTTPS_CERTS = null // { key: '', cert: '' }
 global.CONFIG.SWAGGER_DEFS = null
 global.CONFIG.ENABLE_LOGGER = false
 
-// Github
+// Github OAuth2
 // global.CONFIG.GITHUB_CLIENT_ID = ''
 // global.CONFIG.GITHUB_CLIENT_SECRET = ''
+// global.GITHUB_CALLBACK = ''
 
-// Google
+// Google - TBD
 // global.CONFIG.GOOGLE_CLIENT_ID = ''
 // global.CONFIG.GOOGLE_CLIENT_SECRET = ''
 
-// Microsoft
+// Microsoft - TBD
 // global.CONFIG.MS_CLIENT_ID = ''
 // global.CONFIG.MS_CLIENT_SECRET = ''
 
