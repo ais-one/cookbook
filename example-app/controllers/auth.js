@@ -22,7 +22,7 @@ const checkGithub = async (req, res) => {
         Accept: 'application/json'
       }
     })
-    const rv = await axios.get('https://api.github.com/user?access_token=' + data.access_token)
+    const rv = await axios.get('https://api.github.com/user', { headers: { 'Authorization': `token ${data.access_token}` } })
     const githubId = rv.data.id // github id, email
     const user = await findUser({ githubId }) // match github id (or email?) with our user in our application
     if (!user) return res.status(401).json({ message: 'Unauthorized' })

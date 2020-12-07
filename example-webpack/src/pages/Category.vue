@@ -82,12 +82,7 @@ export default {
             }
             // REST
             // try {
-            //   const { data: { results, total } } = await http.get('/api/categories', {
-            //     params: {
-            //       page: page > 0 ? page - 1 : 0,
-            //       limit: itemsPerPage
-            //     }
-            //   })
+            //   const { data: { results, total } } = await http.get('/api/categories', { params: { page: page > 0 ? page - 1 : 0, limit: itemsPerPage } })
             //   // console.log(results)
             //   records = results
             //   totalRecords = total

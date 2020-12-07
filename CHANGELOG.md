@@ -11,10 +11,11 @@
 - [example-app] controllers/auth.js/checkGithub - make callback URL configurable, improve github login, callback hash to include tokens instead of just token
 - [example-native] moved github login here & improve on github config instructions
 - [wip]
-  - [common-lib/esm/bwc-t4t-form.js] - created
+  - [example-webpack] what to do with apollo graphql client???
+  - [common-lib/esm/bwc-t4t-form.js] - created (example in progress, improve on form properties)
   - [common-lib/esm/t4t-fe.js] - created (also includes validation...)
   - [common-lib/esm/t4t-validate.js] - created... for backend use
-  - [example-vite] migrate vue-crud-x table examples to vite
+  - [example-vite] migrate example-webpack vue-crud-x table examples to vite
   - [example-vite] add i18n
 
 ### Version 0.4.4
