@@ -1,20 +1,20 @@
 // const isDev1 = import.meta.env.MODE === 'development'
 // import.meta is undefined, process.env is not populated with custom values
+const EXT_ESM_PATH = require('path').join(__dirname, '..', 'common-lib', 'esm')
 module.exports = {
-  // alias useless... https://github.com/vitejs/vite/issues/279#issuecomment-636110354
-  // alias: {
-  //   '/@/': path.resolve(__dirname, './lib/') // import aa from '/@/esm/aaa.js'
-  // },
   port: 8080,
-  proxy: {
-    // string shorthand
-    // '/esm': 'http://127.0.0.1:3000/esm',
-    '/common-lib/esm': {
-      target: 'http://127.0.0.1:3000',
-      changeOrigin: true,
-      rewrite: (path) => path.replace(/^\/common-lib\/esm/, '/esm')
-    }
+  alias: { // https://github.com/vitejs/vite/issues/279#issuecomment-636110354
+    // '/@/': path.resolve(__dirname, './lib/') // import aa from '/@/esm/aaa.js'
+    '/common-lib/esm/': EXT_ESM_PATH
   },
+  // proxy: { // use alias instead
+  //   // '/esm': 'http://127.0.0.1:3000/esm', // does not seem to work
+  //   '/common-lib/esm': {
+  //     target: 'http://127.0.0.1:3000',
+  //     changeOrigin: true,
+  //     rewrite: (path) => path.replace(/^\/common-lib\/esm/, '/esm')
+  //   }
+  // },
   base: process.env.BASE_PATH || '/', // set to '/vite' for dev:build, '/' otherwise
   // sourcemap: isDev1,
   vueCompilerOptions: {
