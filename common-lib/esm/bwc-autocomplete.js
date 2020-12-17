@@ -1,4 +1,7 @@
 /*
+Autocomplete component using input and datalist.
+Only able to handle single selection due to nature of datalist not able to have click event
+
 attributes:
 - value (via v-model)
 - required

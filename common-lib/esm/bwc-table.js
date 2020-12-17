@@ -40,6 +40,8 @@
 // style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;"
 // class="sticky-header sticky-column"
 
+// TBD change some properties to attributes?
+
 // EVENTS
 // rowclick { detail: { row, col, data }
 // triggered = sort / page / page-size / reload { detail: { name, sortKey, sortDir, page, pageSize, filters: [ { key, op, val, andOr } ] } }

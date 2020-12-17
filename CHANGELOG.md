@@ -11,7 +11,7 @@
 - [example-app] controllers/auth.js/checkGithub - make callback URL configurable, improve github login, callback hash to include tokens instead of just token
 - [example-native] moved github login here & improve on github config instructions
 - [wip]
-  - [example-vite] mwc-multiselect is broken  
+  - [example-vite] mwc-multiselect.js is broken  
   - [common-lib/esm/bwc-t4t-form.js] - created (example in progress, improve on form properties)
   - [common-lib/esm/t4t-fe.js] - created (also includes validation...)
   - [common-lib/esm/t4t-validate.js] - created... for backend use

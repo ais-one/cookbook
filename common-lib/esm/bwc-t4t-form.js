@@ -8,7 +8,6 @@
 // methods
 //
 // events
-//
 
 const template = document.createElement('template')
 template.innerHTML = `
