@@ -40,71 +40,32 @@ label: <label> innerText, additional classes
 input: <input> attrs: type, pattern, placeholder, additional classes
 helper: <p>
 
-```js
-// Bulma
-const template = {}
 
-template['bulma'] = {
-  input: `
-    <div class="field">
-      <label class="label"></label>
-      <div class="control">
-      <input class="input" type="text"></div>
-      <p class="help is-danger"></p>
-    </div>
-  `,
-  // <textarea class="textarea is-primary" placeholder="Primary textarea"></textarea>
-  // ugly multiple
-  select: `
-    <div class="field">
-      <div class="control">
-        <label class="label"></label>
-        <div class="select">
-          <select></select>
-        </div>
-      </div>
-    </div>
-  `
+{
+  tag:
+  attrs: []
+  // event:
+  children: [
+  ]
 }
 
-// Bootstrap
-template['bootstrap'] = {
-  input: `
-    <div">
-      <label class="form-label"></label>
-      <input class="form-control" type="text">
-      <div class="form-text"></div>
-    </div>
-  `,
-  // <textarea class="form-control" rows="3"></textarea>
-  // ugly multiple
-  select: `
-    <div>
-      <select class="form-select" aria-label=""></select>
-    </div>
-  `
+function formEl (node) {
+  const { tag, className, attrs, children } = node
+  const el = document.createElement(tag)
+  if (className) {
+    el.className = className
+  }
+  if (attrs) {
+    for (let key in attrs) {
+      el.setAttirbutes(key, attrs[key])
+    }
+  }
+  if (children) {
+    children.forEach(child => {
+      childEl = formEl(child)
+      el.appendChild(childEl)
+    })
+  }
+  return el
 }
-
-// Mui CSS
-template['muicss'] = {
-  input: `
-    <div class="mui-textfield">
-      <label></label>
-      <input type="text">
-    </div>
-  `,
-  // <textarea placeholder="Textarea"></textarea>
-  // no multiple
-  select: `
-    <div class="mui-select">
-      <label></label>
-      <select></select>
-    </div>
-  `
-}
-
-
-
-```
-
 

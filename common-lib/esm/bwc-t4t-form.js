@@ -8,6 +8,91 @@
 // methods
 //
 // events
+const bulma = {
+  input: {
+    tag: 'div',
+    className: 'field',
+    children: [
+      { tag: 'label', className: 'field' },
+      { tag: 'div', className: 'control', children: [
+        { tag: 'input', className: 'input', attrs: { type: 'text' } },
+      ] },
+      { tag: 'p', className: 'help is-danger' }
+    ]
+  }, // end input
+  // <textarea class="textarea is-primary" placeholder="Primary textarea"></textarea>
+  // ugly multiple
+  select: {
+    tag: 'div',
+    className: 'field',
+    children: [
+      {
+        tag: 'div',
+        className: 'control',
+        children: [
+          { tag: 'label', className: 'label' },
+          {
+            tag: 'div',
+            className: 'select',
+            children: [
+              { tag: 'select' },
+            ]
+          }
+        ]
+      }
+    ]
+  } // end select
+} // end bulma
+
+// Bootstrap
+const bootstrap = {
+  input: {
+    tag: 'div',
+    children: [
+      { tag: 'label', className: 'form-label' },
+      { tag: 'input', className: 'form-control', attrs: { type: 'text' } },
+      { tag: 'div', className: 'form-text' }
+    ]
+  },
+  // <textarea class="form-control" rows="3"></textarea>
+  // ugly multiple
+  select: {
+    tag: 'div',
+    children: [
+      { tag: 'label', className: 'form-label' },
+      { tag: 'select', className: 'form-select' },
+    ]
+  },
+}
+
+// Mui CSS
+const muicss = {
+  input: {
+    tag: 'div',
+    className: 'mui-textfield',
+    children: [
+      { tag: 'label' },
+      { tag: 'input', attrs: { type: 'text' } },
+    ]
+  },
+  // <textarea placeholder="Textarea"></textarea>
+  // no multiple
+  select: {
+    tag: 'div',
+    className: 'mui-select',
+    children: [
+      { tag: 'label' },
+      { tag: 'select' },
+    ]
+  },
+}
+
+const template = {
+  bulma,
+  bootstrap,
+  muicss
+}
+
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -56,6 +141,26 @@ class Form extends HTMLElement {
     this.setAttribute('mode', val)
   }
 
+  formEl (node) {
+    const { tag, className, attrs, children } = node
+    const el = document.createElement(tag)
+    if (className) {
+      el.className = className
+    }
+    if (attrs) {
+      for (let key in attrs) {
+        el.setAttirbutes(key, attrs[key])
+      }
+    }
+    if (children) {
+      children.forEach(child => {
+        childEl = formEl(child)
+        el.appendChild(childEl)
+      })
+    }
+    return el
+  }
+    
   _render() {
     try {
       const el = this.querySelector('#form-wrapper')
@@ -68,16 +173,12 @@ class Form extends HTMLElement {
           const c = cols[col]
           // console.log('nonauto', c, this.mode)
           if ((this.mode === 'add' && c.add !== 'hide') || (this.mode === 'edit' && c.edit !== 'hide')) {
-            //   <div class="field">
-            //   <p class="control"><input class="input" type="text" placeholder="Name"></p>
-            // </div>
             const div = document.createElement('div')
             div.classList.add('field')
             const p = document.createElement('p')
             p.classList.add('control')
 
             // input..., autocomplete, select/multiselect, upload, link?, textarea
-
             const input = document.createElement('input')
             input.classList.add('input')
             input.setAttribute('type', 'text')
@@ -89,6 +190,7 @@ class Form extends HTMLElement {
               if (c.edit === 'readonly') input.setAttribute('readonly', true)
               // input.value = this.#record[col] || ''
             }
+
             // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime, upload, link - to child table
             if (c.input === 'datetime') input.setAttribute('type', 'datetime-local')
             else if (c.input === 'date') input.setAttribute('type', 'date')
