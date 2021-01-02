@@ -1,32 +1,26 @@
 const { HAZELCAST } = global.CONFIG
-const { Client, Config, Predicates } = require('hazelcast-client')
+const { Client, Predicates } = require('hazelcast-client')
 
 let hazelcast = {
   client: null
 }
 
-exports.open = () => {
+// Hazelcast 4
+exports.open = async () => {
   if (!hazelcast.client) {
-    // Customize the client configuration
-    const clientConfig = new Config.ClientConfig()
     if (HAZELCAST.type === 'cloud') {
-      clientConfig.networkConfig.cloudConfig.enabled = true
-      clientConfig.networkConfig.cloudConfig.discoveryToken = HAZELCAST.discoveryToken // 'Hv1bIZiMPTbCLxYteVavbDQS2crOu9fFoOuJIfwL4XigmTftt2 '
-      clientConfig.networkConfig.redoOperation = true
-      clientConfig.networkConfig.connectionAttemptLimit = 10
-      clientConfig.groupConfig.name = HAZELCAST.name // 'datasense-dev2a'
-      clientConfig.groupConfig.password = HAZELCAST.password // '7bfcad7e2f654189a9b2b8f81c03b762'
-      clientConfig.properties['hazelcast.client.cloud.url'] = 'https://coordinator.hazelcast.cloud'
-      clientConfig.properties['hazelcast.client.statistics.enabled'] = true
-      clientConfig.properties['hazelcast.client.statistics.period.seconds'] = 1
+      // not yet supported
     } else {
-      clientConfig.groupConfig.name = HAZELCAST.name // 'dev';
-      clientConfig.networkConfig.addresses.push(HAZELCAST.url); // 'hazelcast-svc.datasense-dev1.svc.cluster.local:5701'
+      hazelcast.client = await Client.newHazelcastClient(
+        {
+          clusterName: HAZELCAST.name,
+          network: {
+            clusterMembers: [ HAZELCAST.url ]
+          },
+          lifecycleListeners: [ (state) => console.log('Lifecycle Event >>> ' + state) ]
+        }
+      )    
     }
-    Client.newHazelcastClient(clientConfig).then(client => {
-      hazelcast.client = client
-      console.log('hazelcast.client connected', hazelcast.client.instanceName)
-    })
   }
   return this
 }

@@ -22,8 +22,10 @@ module.exports = {
       label: 'First Name',
       multiKey: true, // part of composite unique key - required!
       type: 'string', // string, integer, decimal, datetime, date, time, boolean (follows the DB datatype)
-      input: 'textfield', // textfield, textarea, autocomplete, number, select, multi-select, date, time, datetime, upload, link - to child table
+
+      input: 'textfield', // textfield, textarea, number, date, time, datetime, upload, autocomplete, select, multi-select, link - to child table
       // TBD input attributes?, should input follow the html tag? or should we map to html tag?
+
       table: '', // truthy means hide column on table,
       filter: '', // truthy means hide column on filter,
       add: '', // 'hide', '' - empty string means can show and edit
