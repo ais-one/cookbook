@@ -13,7 +13,7 @@ export const {
 
   VITE_CALLBACK_URL,
 
-  BASE_URL, // vite.config.js base property
+  BASE_URL // vite.config.js base property
 } = import.meta.env
 
 // PAGESIZE: process.env.VUE_APP_PAGESIZE || 4,

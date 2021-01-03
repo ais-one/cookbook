@@ -16,13 +16,13 @@ const bulma = {
       { tag: 'label', className: 'field' },
       { tag: 'div', className: 'control', children: [
         { tag: 'input', className: 'input', attrs: { type: 'text' } },
+        // { tag: 'textarea', className: 'textarea is-primary' }
+        // { tag: 'bwc-autocomplete', className: '' }
       ] },
-      { tag: 'p', className: 'help is-danger' }
+      { tag: 'p', className: 'help is-danger', errorLabel: true }
     ]
   }, // end input
-  // <textarea class="textarea is-primary" placeholder="Primary textarea"></textarea>
-  // ugly multiple
-  select: {
+  select: { // ugly multiple
     tag: 'div',
     className: 'field',
     children: [
@@ -87,12 +87,7 @@ const muicss = {
   },
 }
 
-const template = {
-  bulma,
-  bootstrap,
-  muicss
-}
-
+const framework = bulma // set as bulma first
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -102,18 +97,19 @@ template.innerHTML = `
 </div>
 `
 
-class Form extends HTMLElement {
+class T4tForm extends HTMLElement {
   constructor() {
     super()
   }
 
-  #config = []
-  #record = {}
+  #mode = '' // either add or edit - blank means read only
+  #config = [] // from table config property passed in
+  #record = {} // from record property passed in
+  #xcols = {} // extended column information - info on input element, event, etc...
+
   get config () { return this.#config }
-  set config (val) {
-    // console.log('vvvv config', val)
-    this.#config = val
-  }
+  set config (val) { this.#config = val }
+
   get record () { return this.#record }
   set record (val) { 
     this.#record = val
@@ -125,36 +121,62 @@ class Form extends HTMLElement {
 
   connectedCallback() {
     this.appendChild(template.content.cloneNode(true))
-    console.log('t4t-form', this.#config)
-    this._render()
+    console.log('bwc-t4t-form', this.#config)
+    // this._render()
   }
 
-  static get observedAttributes() {
-    return ['mode']
-  }
+  static get observedAttributes() { return ['mode'] }
 
-  get mode() {
-    return this.getAttribute('mode')
-  }
+  get mode() { return this.getAttribute('mode') }
+  set mode(val) { this.setAttribute('mode', val) }
 
-  set mode(val) {
-    this.setAttribute('mode', val)
-  }
-
-  formEl (node) {
-    const { tag, className, attrs, children } = node
+  formEl (node, k, c) {
+    // console.log(node)
+    const { tag, className, attrs, children, errorLabel } = node
     const el = document.createElement(tag)
-    if (className) {
-      el.className = className
+
+    if (!this.#xcols[k]) this.#xcols[k] = { }
+
+    if (tag === 'label') el.innerText = c.label // set the label
+
+    if (errorLabel) {
+      this.#xcols[k].errorEl = el
     }
+
+    if (tag === 'input') { // set the value
+      // if (this.mode === 'add') {
+      //   if (c.add === 'readonly') input.setAttribute('readonly', true)
+      //   input.value = c.default || ''
+      // } else if (this.mode === 'edit') {
+      //   if (c.edit === 'readonly') input.setAttribute('readonly', true)
+      //   // input.value = this.#record[col] || ''
+      // }
+
+      // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime, upload, link - to child table
+      // if (c.input === 'datetime') input.setAttribute('type', 'datetime-local')
+      // else if (c.input === 'date') input.setAttribute('type', 'date')
+      // else if (c.input === 'time') input.setAttribute('type', 'time')
+      // else if (c.input === 'number') {
+      //   input.setAttribute('type', 'number')
+      //   if (c.type === 'integer') input.setAttribute('step', 1)
+      //   // c.type === 'decimal'
+      // }
+      if (c.required) el.setAttribute('required', true)
+
+      el.value = this.#record[k]
+      el.type = 'text'
+      this.#xcols[k].el = el
+    }
+
+    if (className) el.className = className // set classes
     if (attrs) {
       for (let key in attrs) {
-        el.setAttirbutes(key, attrs[key])
+        el.setAttribute(key, attrs[key])
       }
     }
     if (children) {
       children.forEach(child => {
-        childEl = formEl(child)
+        const childEl = this.formEl(child, k, c)
         el.appendChild(childEl)
       })
     }
@@ -167,56 +189,46 @@ class Form extends HTMLElement {
       if (!el) return
       el.innerHTML = ''
       const { cols, auto, pk, required, multiKey } = this.#config
-      console.log('this.#record', this.#record)
+      // console.log('this.#record', this.#record)
       for (let col in cols) {
         if (!auto.includes(col)) {
           const c = cols[col]
           // console.log('nonauto', c, this.mode)
           if ((this.mode === 'add' && c.add !== 'hide') || (this.mode === 'edit' && c.edit !== 'hide')) {
-            const div = document.createElement('div')
-            div.classList.add('field')
-            const p = document.createElement('p')
-            p.classList.add('control')
-
-            // input..., autocomplete, select/multiselect, upload, link?, textarea
-            const input = document.createElement('input')
-            input.classList.add('input')
-            input.setAttribute('type', 'text')
-            input.setAttribute('placeholder', c.label)
-            if (this.mode === 'add') {
-              if (c.add === 'readonly') input.setAttribute('readonly', true)
-              input.value = c.default || ''
-            } else if (this.mode === 'edit') {
-              if (c.edit === 'readonly') input.setAttribute('readonly', true)
-              // input.value = this.#record[col] || ''
-            }
-
-            // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime, upload, link - to child table
-            if (c.input === 'datetime') input.setAttribute('type', 'datetime-local')
-            else if (c.input === 'date') input.setAttribute('type', 'date')
-            else if (c.input === 'time') input.setAttribute('type', 'time')
-            else if (c.input === 'number') {
-              input.setAttribute('type', 'number')
-              if (c.type === 'integer') input.setAttribute('step', 1)
-              // c.type === 'decimal'
-            }
-            if (c.required) input.setAttribute('required', true)
-
-            p.appendChild(input)
-            div.appendChild(p)
-            el.appendChild(div)
+            const fieldEl = this.formEl(framework['input'], col, c)
+            el.appendChild(fieldEl)
           }
         } else {
           console.log('auto', col)
         }
       }
+
       this.btnSubmit = document.createElement('button')
       this.btnSubmit.classList.add('button')
       this.btnSubmit.textContent = 'Submit'
       this.btnSubmit.onclick = (e) => {
+        let error = false
         console.log('submit clicked')
-        e.stopPropagation()
-        this.dispatchEvent(new CustomEvent('submit', { detail: this.#record })) // TBD populate this.#record for add
+        // e.stopPropagation()
+        e.preventDefault()
+        for (let col in this.#xcols) {
+          if (this.#xcols[col].el) {
+            const valid = this.#xcols[col].el.checkValidity()
+            if (!valid) error = true
+            if (this.#xcols[col].errorEl) this.#xcols[col].errorEl.innerText = valid ? '' : this.#xcols[col].el.validationMessage
+          }
+        }
+        // console.log(this.#record)
+        if (!error) {
+          for (let col in this.#xcols) {
+            if (this.#xcols[col].el) {
+              this.#record[col] = this.#xcols[col].el.value
+            }
+          }
+          this.dispatchEvent(new CustomEvent('submit', { detail: this.#record }))
+        } else {
+          // there is an error in validation
+        }
       }
       el.appendChild(this.btnSubmit)
   
@@ -231,11 +243,12 @@ class Form extends HTMLElement {
       el.appendChild(this.btnCancel)
 
     } catch (e) {
+      console.log('bwc-t4t-form', e)
     }
   }
 }
 
-customElements.define('bwc-t4t-form', Form) // or bwc-form-t4t
+customElements.define('bwc-t4t-form', T4tForm) // or bwc-form-t4t
 
 /*
     <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p>

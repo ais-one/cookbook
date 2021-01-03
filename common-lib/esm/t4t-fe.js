@@ -187,7 +187,11 @@ async function upload(file) { // the file object - e.g. const file = document.qu
   // )
 }
 
-async function autocomplete (search, col, record) {
+
+// const autoComplete = debounce(async (e, col, _showForm) => {
+  // let res = []
+// recordObj[_showForm][col] = e.target.value
+async function autocomplete (search, col, record) { // wrap in debounce
   let res = []
   try {
     const { dbName, tableName, limit, key, text, parentTableColName, parentCol } = config.cols[col].options
@@ -203,27 +207,10 @@ async function autocomplete (search, col, record) {
   }
   return res
 }
+// const mwcAc = document.querySelector('mwc-autocomplete.' + col) // el.setList()
+// mwcAc.setList(res)
+// }, 500)
 
 export { setTableName, getConfig, validate, find, findOne, create, update, remove, upload, download, autocomplete }
 
-/*
-    const autoComplete = debounce(async (e, col, _showForm) => {
-      let res = []
-      recordObj[_showForm][col] = e.target.value
-      try {
-        const { dbName, tableName, limit, key, text, parentTableColName, parentCol } = tableCfg.value.cols[col].options
-        const query = { dbName, tableName, limit, key, text, search: e.target.value }
-        if (parentTableColName) {
-          query.parentTableColName = parentTableColName
-          query.parentTableColVal = recordObj[_showForm][parentCol]
-        }
-        const { data } = await http.get('/api/t4t/autocomplete', query)
-        res = data
-      } catch (err) {
-        console.log('autoComplete', err.message)
-      }
-      const mwcAc = document.querySelector('mwc-autocomplete.' + col)
-      mwcAc.setList(res)
-    }, 500)
 
-*/

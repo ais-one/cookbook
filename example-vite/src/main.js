@@ -23,24 +23,26 @@ import '../pwa-init.js'
 import '../../common-lib/esm/loading-overlay.js'
 import '../../common-lib/esm/bwc-table.js'
 
-// import '../../common-lib/esm/mwc-autocomplete.js'
-// import '../../common-lib/esm/mwc-multiselect.js'
+import '../../common-lib/esm/mwc-autocomplete.js'
+import '../../common-lib/esm/mwc-multiselect.js'
 // import '../../common-lib/esm/mwc-fileupload.js'
 
 import { createApp } from 'vue'
-import App from './App.vue'
-
 import router from './router.js'
 import store from './store.js'
+import App from './App.vue'
 
 const app = createApp(App)
+// console.log('app.config', app.config)
+app.config.isCustomElement = (tag) => {
+  console.log(tag)
+  return tag.startsWith('bwc-') || tag.startsWith('vaadin-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-') || tag.startsWith('sl-')
+}
+// app.config.isCustomElement = tag => tag.startsWith('mwc-') // https://zhuanlan.zhihu.com/p/135280049
+
 const theme = 'dark'
 // const ThemeSymbol = Symbol()
 app.provide('MyTheme', theme) // provide & inject
-// Vue.config.ignoredElements = [/test-\w*/]
-// app.config.isCustomElement = tag => tag.startsWith('mwc-') // https://zhuanlan.zhihu.com/p/135280049
-// console.log('app.config', app.config)
 app.use(store)
 app.use(router)
-
 app.mount('#app')

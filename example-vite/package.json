@@ -38,13 +38,14 @@
     "graphql-tag": "^2.11.0",
     "leaflet": "^1.7.1",
     "subscriptions-transport-ws": "^0.9.18",
-    "vue": "^3.0.4",
-    "vue-router": "^4.0.1",
+    "vue": "^3.0.5",
+    "vue-router": "^4.0.2",
     "vuex": "^4.0.0-rc.2"
   },
   "devDependencies": {
-    "@vue/compiler-sfc": "^3.0.4",
-    "eslint": "^7.16.0",
+    "@vitejs/plugin-vue": "^1.0.3",
+    "@vue/compiler-sfc": "^3.0.5",
+    "eslint": "^7.17.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
@@ -52,8 +53,8 @@
     "eslint-plugin-prettier": "^3.2.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^5.0.0",
-    "eslint-plugin-vue": "^7.3.0",
+    "eslint-plugin-vue": "^7.4.0",
     "prettier": "^2.2.1",
-    "vite": "^1.0.0-rc.13"
+    "vite": "^2.0.0-beta.3"
   }
 }

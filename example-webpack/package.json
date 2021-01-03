@@ -37,10 +37,10 @@
     "babel-eslint": "^10.1.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "deepmerge": "^4.2.2",
-    "eslint": "^7.16.0",
-    "eslint-plugin-vue": "^7.3.0",
+    "eslint": "^7.17.0",
+    "eslint-plugin-vue": "^7.4.0",
     "fibers": "^5.0.0",
-    "sass": "^1.30.0",
+    "sass": "^1.32.0",
     "sass-loader": "^10.1.0",
     "vue-template-compiler": "^2.6.12",
     "vuetify-loader": "^1.6.0"

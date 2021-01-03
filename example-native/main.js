@@ -13,7 +13,6 @@ import router from './router.js'
 import store from './store.js'
 import App from './app.js'
 
-
 const { createApp } = Vue
 
 const app = createApp(App)

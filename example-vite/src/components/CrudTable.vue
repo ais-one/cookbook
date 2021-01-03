@@ -376,7 +376,7 @@ export default {
       console.log('export', keycol.value, filters)
       try {
         const data = await t4t.download(keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters, sorter)
-        if (data) downloadData(data.csv, props.tableName+'.csv', 'text/csv;charset=utf-8;')
+        if (data) downloadData(data.csv, props.tableName + '.csv', 'text/csv;charset=utf-8;')
       } catch (e) {
         console.log('csvDownload', e.toString())
       }
@@ -401,7 +401,7 @@ export default {
           index++
         }
       }
-      gridEl.selectedItems = gridEl.selectedItems.filter(item => !!item)
+      gridEl.selectedItems = gridEl.selectedItems.filter((item) => !!item)
       console.log(gridEl.selectedItems)
     }
 

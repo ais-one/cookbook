@@ -113,21 +113,11 @@ class AutoComplete extends HTMLElement {
     return ['value', 'required', 'listid']
   }
 
-  get value() {
-    return this.getAttribute('value')
-  }
+  get value() { return this.getAttribute('value') }
+  set value(val) { this.setAttribute('value', val) }
 
-  set value(val) {
-    this.setAttribute('value', val)
-  }
-
-  get required() {
-    return this.getAttribute('required')
-  }
-
-  set required(val) {
-    this.setAttribute('required', val)
-  }
+  get required() { return this.getAttribute('required') }
+  set required(val) { this.setAttribute('required', val) }
 
   get listid() {
     return this.getAttribute('listid')
