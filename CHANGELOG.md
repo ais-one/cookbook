@@ -10,6 +10,7 @@
 - [example-vite] fix build path (dev / production), note need proper SSL cert for SW to work on non-localhost domain
 - [example-app] controllers/auth.js/checkGithub - make callback URL configurable, improve github login, callback hash to include tokens instead of just token
 - [example-native] moved github login here & improve on github config instructions
+- [example-vite] update vite from v1 to v2
 - [wip]
   - [example-vite] mwc-multiselect.js is broken  
   - [common-lib/esm/bwc-t4t-form.js] - created (example in progress, improve on form properties)

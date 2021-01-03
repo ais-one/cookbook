@@ -15,7 +15,7 @@ const bulma = {
     children: [
       { tag: 'label', className: 'field' },
       { tag: 'div', className: 'control', children: [
-        { tag: 'input', className: 'input', attrs: { type: 'text' } },
+        { tag: 'input', className: 'input' },
         // { tag: 'textarea', className: 'textarea is-primary' }
         // { tag: 'bwc-autocomplete', className: '' }
       ] },
@@ -50,8 +50,8 @@ const bootstrap = {
     tag: 'div',
     children: [
       { tag: 'label', className: 'form-label' },
-      { tag: 'input', className: 'form-control', attrs: { type: 'text' } },
-      { tag: 'div', className: 'form-text' }
+      { tag: 'input', className: 'form-control' },
+      { tag: 'div', className: 'form-text', errorLabel: true }
     ]
   },
   // <textarea class="form-control" rows="3"></textarea>
@@ -71,8 +71,8 @@ const muicss = {
     tag: 'div',
     className: 'mui-textfield',
     children: [
-      { tag: 'label' },
-      { tag: 'input', attrs: { type: 'text' } },
+      { tag: 'label', children: [ { tag: 'span', className: 'mui--text-danger', errorLabel: true } ] },
+      { tag: 'input' },
     ]
   },
   // <textarea placeholder="Textarea"></textarea>
@@ -92,7 +92,7 @@ const framework = bulma // set as bulma first
 const template = document.createElement('template')
 template.innerHTML = `
 <div>
-  <form id="form-wrapper">
+  <form id="form-wrapper" autocomplete="off">
   </form>
 </div>
 `
@@ -102,7 +102,6 @@ class T4tForm extends HTMLElement {
     super()
   }
 
-  #mode = '' // either add or edit - blank means read only
   #config = [] // from table config property passed in
   #record = {} // from record property passed in
   #xcols = {} // extended column information - info on input element, event, etc...
@@ -126,11 +125,23 @@ class T4tForm extends HTMLElement {
   }
 
   static get observedAttributes() { return ['mode'] }
+  
+  attributeChangedCallback(name, oldVal, newVal) {
+    switch (name) {
+      case 'mode':
+        break
+      default:
+        break
+    }
+  }
 
   get mode() { return this.getAttribute('mode') }
   set mode(val) { this.setAttribute('mode', val) }
 
   formEl (node, k, c) {
+    const mode = this.mode
+    if (c[mode] === 'hide') return null
+
     // console.log(node)
     const { tag, className, attrs, children, errorLabel } = node
     const el = document.createElement(tag)
@@ -144,27 +155,18 @@ class T4tForm extends HTMLElement {
     }
 
     if (tag === 'input') { // set the value
-      // if (this.mode === 'add') {
-      //   if (c.add === 'readonly') input.setAttribute('readonly', true)
-      //   input.value = c.default || ''
-      // } else if (this.mode === 'edit') {
-      //   if (c.edit === 'readonly') input.setAttribute('readonly', true)
-      //   // input.value = this.#record[col] || ''
-      // }
+      if (c[mode] === 'readonly') el.setAttribute('readonly', true)
 
-      // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime, upload, link - to child table
-      // if (c.input === 'datetime') input.setAttribute('type', 'datetime-local')
-      // else if (c.input === 'date') input.setAttribute('type', 'date')
-      // else if (c.input === 'time') input.setAttribute('type', 'time')
-      // else if (c.input === 'number') {
-      //   input.setAttribute('type', 'number')
-      //   if (c.type === 'integer') input.setAttribute('step', 1)
-      //   // c.type === 'decimal'
-      // }
       if (c.required) el.setAttribute('required', true)
 
-      el.value = this.#record[k]
-      el.type = 'text'
+      if (this.mode === 'add') {
+        el.value = c.default || ''
+      } else if (this.mode === 'edit') {
+        el.value = this.#record[k] || ''
+      }
+
+      // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime, upload, link - to child table
+      el.setAttribute('type', c?.ui?.attrs?.type || 'text')
       this.#xcols[k].el = el
     }
 
@@ -177,7 +179,7 @@ class T4tForm extends HTMLElement {
     if (children) {
       children.forEach(child => {
         const childEl = this.formEl(child, k, c)
-        el.appendChild(childEl)
+        if (childEl) el.appendChild(childEl)
       })
     }
     return el

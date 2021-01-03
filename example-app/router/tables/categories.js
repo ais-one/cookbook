@@ -20,13 +20,18 @@ module.exports = {
     name: {
       label: 'Name',
       type: 'string', // string, integer, decimal, datetime, date, time, boolean (follows the DB datatype)
-      input: 'textfield', // textfield, textarea, autocomplete, number, select, multi-select, date, time, datetime, upload, link - to child table
-      // TBD input attributes?, should input follow the html tag? or should we map to html tag?
       table: '', // truthy means hide column on table,
       filter: '', // truthy means hide column on filter,
       add: '', // 'hide', '' - empty string means can show and edit
       edit: '', // 'hide', 'readonly', '' - empty string means can show and edit
       default: '', // a default value (today? now?)
+
+      // OLD
+      input: 'textfield', // textfield, textarea, autocomplete, number, select, multi-select, date, time, datetime, upload, link - to child table
+      // NEW
+      ui: {
+        tag: 'input'
+      },
     }
   },
 

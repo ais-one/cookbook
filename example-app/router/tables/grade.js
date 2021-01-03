@@ -24,12 +24,22 @@ module.exports = {
       subject: {
         label: 'Subject',
         type: 'string',
+        // OLD
         input: '',
+        // NEW
+        ui: {
+          tag: 'input'
+        },
       },
       grade: {
         label: 'Grade',
         type: 'string',
+        // OLD
         input: '',
+        // NEW
+        ui: {
+          tag: 'input'
+        },
       },
     },
     pk: '',

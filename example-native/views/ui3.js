@@ -1,7 +1,7 @@
 const template = /*html*/`
 <div>
   <h1>UI 3 - Form</h1>
-  <bwc-t4t-form :config="form.config" :record="form.record" mode="add"></bwc-t4t-form>
+  <bwc-t4t-form :config="form.config" :record="form.record" mode="edit"></bwc-t4t-form>
 </div>
 `
 

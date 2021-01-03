@@ -19,12 +19,22 @@ module.exports = {
     code: {
       label: 'Code',
       type: 'string',
+      // OLD
       input: '',
+      // NEW
+      ui: {
+        tag: 'input'
+      }
     },
     name: {
       label: 'Name',
       type: 'string',
+      // OLD
       input: '',
+      // NEW
+      ui: {
+        tag: 'input'
+      }
     }
   },
   pk: '',

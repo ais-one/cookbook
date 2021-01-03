@@ -29,11 +29,6 @@ export default {
       ]
     }  
   },
-  // rollupInputOptions: { // vite 1.0.0-rc.13
-  //   external: [
-  //     'react' // ignore react stuff
-  //   ]
-  // },
   server: {
     port: 8080,
     // proxy: { // use alias instead
