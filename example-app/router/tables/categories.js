@@ -11,23 +11,21 @@ module.exports = {
   cols: {
     id: { // primary key column, _id for mongodb (can cause error in mongodb)
       label: 'ID',
-      auto: 'pk', // should override multiKey
-      table: 'hide',
-      filter: 'hide',
+      auto: 'pk',
+      hide: true,
       add: 'hide',
       edit: 'readonly'
     },
     name: {
       label: 'Name',
-      type: 'string', // string, integer, decimal, datetime, date, time, boolean (follows the DB datatype)
-      table: '', // truthy means hide column on table,
-      filter: '', // truthy means hide column on filter,
-      add: '', // 'hide', '' - empty string means can show and edit
-      edit: '', // 'hide', 'readonly', '' - empty string means can show and edit
-      default: '', // a default value (today? now?)
+      type: 'string',
+      filter: true,
+      add: '',
+      edit: '',
+      default: '',
 
       // OLD
-      input: 'textfield', // textfield, textarea, autocomplete, number, select, multi-select, date, time, datetime, upload, link - to child table
+      input: 'textfield',
       // NEW
       ui: {
         tag: 'input'
@@ -36,7 +34,7 @@ module.exports = {
   },
 
   // generated values
-  pk: '', // either pk column, or multikey if blank
+  pk: '',
   multiKey: [],
   required: [],
   auto: [],

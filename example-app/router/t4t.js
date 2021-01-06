@@ -1,3 +1,4 @@
+// TBD use __key instead of key
 // table for tables
 const express = require('express')
 const Model = require(LIB_PATH + '/services/db/objection').get()
@@ -159,11 +160,11 @@ module.exports = express.Router()
     } else {
       rv.results = rows.map(row => { // make column for UI to identify each row
         if (table.pk) {
-          row.key = row[table.pk]
+          row.__key = row[table.pk]
         } else {
           const val = []
           for (let k of table.multiKey) val.push(row[k])
-          row.key = val.join('|')
+          row.__key = val.join('|')
         }
         return row
       })
@@ -193,7 +194,7 @@ module.exports = express.Router()
 
   .get('/find-one/:table', generateTable, asyncWrapper(async (req, res) => {
     const { table } = req
-    const where = formUniqueKey(table, req.query.key)
+    const where = formUniqueKey(table, req.query.__key)
     if (!where) return res.status(400).json({}) // bad request
     let rv = {}
     if (table.db === 'knex') {
@@ -206,7 +207,7 @@ module.exports = express.Router()
 
   .patch('/update/:table/:id?', generateTable, asyncWrapper(async (req, res) => {
     const { body, table } = req
-    const where = formUniqueKey(table, req.query.key)
+    const where = formUniqueKey(table, req.query.__key)
     let count = 0
     if (!where) return res.status(400).json({}) // bad request
 

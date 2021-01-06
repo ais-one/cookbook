@@ -20,9 +20,7 @@ export default {
 
     onMounted(async () => {
       console.log('ui3 mounted!')
-
       t4t.setTableName('person')
-
       form.config = await t4t.getConfig()
       form.record = await t4t.findOne('5f3a35197dc9e61b64e0dea9')
       Object.assign(test, form.config)

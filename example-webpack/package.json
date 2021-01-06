@@ -14,7 +14,7 @@
   "dependencies": {
     "@apollo/client": "^3.3.6",
     "axios": "^0.21.1",
-    "core-js": "^3.8.1",
+    "core-js": "^3.8.2",
     "eslint-config-prettier": "^7.1.0",
     "graphql": "^15.4.0",
     "graphql-tag": "^2.11.0",
@@ -38,7 +38,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "deepmerge": "^4.2.2",
     "eslint": "^7.17.0",
-    "eslint-plugin-vue": "^7.4.0",
+    "eslint-plugin-vue": "^7.4.1",
     "fibers": "^5.0.0",
     "sass": "^1.32.0",
     "sass-loader": "^10.1.0",

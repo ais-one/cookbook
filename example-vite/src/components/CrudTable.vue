@@ -72,7 +72,7 @@
               <template v-if="tableCfg.cols[col]">
                 <template v-if="tableCfg.cols[col].input === 'link'">
                   <mwc-textfield
-                    @click="router.push('/' + tableCfg.cols[col].options.to + '?keyval=' + recordObj[showForm].key + '&keycol=' + tableCfg.cols[col].options.relatedCol)"
+                    @click="router.push('/' + tableCfg.cols[col].options.to + '?keyval=' + recordObj[showForm].__key + '&keycol=' + tableCfg.cols[col].options.relatedCol)"
                     disabled
                     class="field-item"
                     :key="col + index"
@@ -189,8 +189,8 @@ export default {
       }
       if (!item) return // do not continue if item is null
       try {
-        console.log('item.key', item.key)
-        const data = await t4t.findOne(item.key)
+        // console.log('item.__key', item.__key)
+        const data = await t4t.findOne(item.__key)
         if (data) {
           recordObj.edit = data
           showForm.value = 'edit'
@@ -223,8 +223,8 @@ export default {
       if (tableCfg.value) {
         for (const col in tableCfg.value.cols) {
           const obj = tableCfg.value.cols[col]
-          if (obj.table !== 'hide') headerCols.push({ path: col, header: obj.label, width: obj.width ? obj.width + 'px' : null }) // process table columns
-          if (obj.filter !== 'hide') filterCols.push(col) // process filters
+          if (!obj.hide) headerCols.push({ path: col, header: obj.label, width: obj.width ? obj.width + 'px' : null }) // process table columns
+          if (obj.filter) filterCols.push(col) // process filters
         }
         // Object.entries(tableCfg.value.cols) => [ [key, obj], ... ]
       }
@@ -346,8 +346,8 @@ export default {
         if (showForm.value === 'add') {
           await t4t.create(recordObj.add)
         } else {
-          const { key, ...data } = recordObj.edit
-          await t4t.update(key, data)
+          const { __key, ...data } = recordObj.edit
+          await t4t.update(__key, data)
         }
       } catch (e) {
         alert(`Error ${showForm.value} ${e.toString()}`)

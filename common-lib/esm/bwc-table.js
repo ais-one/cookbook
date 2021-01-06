@@ -374,8 +374,11 @@ class Table extends HTMLElement {
   get selectedItem () { return this.#selectedItem }
   set selectedItem (val) { this.#selectedItem = val }
   get columns() { return this.#columns }
-  set columns(val) { this.#columns = val } // do something
-
+  set columns(val) {
+    this.#columns = val
+    this._render()
+  }
+  
   _renderPages () {
     this.#pages = Math.ceil(this.total / this.pageSize)
     const el = this.querySelector('#pages-span')
@@ -528,6 +531,7 @@ class Table extends HTMLElement {
   }
   
   _render() {
+    // console.log('bwc-table render fired')
     try {
       const el = this.querySelector('#table-wrapper')
       if (!el) return
@@ -540,7 +544,7 @@ class Table extends HTMLElement {
         // table.innerHTML = ''
         const parent = el.querySelector('table') // WORKS!
         while (parent.firstChild) {
-            parent.firstChild.remove()
+          parent.firstChild.remove()
         }
         parent.remove()
       }
@@ -556,16 +560,18 @@ class Table extends HTMLElement {
           if (this.#checkboxes && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
             this.#checkedRows = [] //  clear first
             const tbody = this.querySelector('table tbody')
-            for (let i = 0; i < tbody.children.length; i++) {
-              const tr = tbody.children[i]
-              const td = tr.firstChild
-              if (td) {
-                const checkbox = td.firstChild
-                if (checkbox.type === 'checkbox') {
-                  checkbox.checked = target.checked
-                  if (target.checked) this.#checkedRows.push(i)
+            if (tbody && tbody.children) {
+              for (let i = 0; i < tbody.children.length; i++) {
+                const tr = tbody.children[i]
+                const td = tr.firstChild
+                if (td) {
+                  const checkbox = td.firstChild
+                  if (checkbox.type === 'checkbox') {
+                    checkbox.checked = target.checked
+                    if (target.checked) this.#checkedRows.push(i)
+                  }
                 }
-              }
+              }  
             }
             this.dispatchEvent(new CustomEvent('checked', { detail: this.#checkedRows }))
           } else { // sort
@@ -590,7 +596,6 @@ class Table extends HTMLElement {
             this._trigger('sort') // header is re-rendered,  checkboxes are also cleared...
           }
         }
-
         table.appendChild(thead)
         table.classList.add('table')
         const tr = document.createElement('tr')

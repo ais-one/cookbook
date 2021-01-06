@@ -32,20 +32,87 @@ compose(inc, x2)(5) // return value should be (5 * 2) + 1 = 11
 
 
 ### ES2020
+
 ```js
 // BigInt
 1n + 2n // typeof "bigint"
+
 // nullish coalensce ?? (if null or undefined)
 aa?.bb.?cc ?? 'is empty string'
+
+const authorName = book?.author?.firstName ?? 'Unknown'
+if undefined, then 'Unkonwn'
+
+
 // optional chaining ?.
 aa?.bb?.cc -> undefined
+
 // Promise.allSettled
+
 // globalThis
 ```
 
-### apply / bind...
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
+
+
+### call / apply / bind...
+
+
+#### Function.prototype.call()
+
+The method Call invokes the function and allows you to pass in arguments one by one using commas.
+
+```js
+let customer1 = { name: 'Leo', email: 'leo@gmail.com' };
+let customer2 = { name: 'Nat', email: 'nat@hotmail.com' };
+
+function greeting(text) {
+    console.log(`${text} ${this.name}`);
+}
+
+greeting.call(customer1, 'Hello'); // Hello Leo
+greeting.call(customer2, 'Hello'); // Hello Nat
+```
+
+#### Function.prototype.apply()
+
+The method Apply invokes the function and allows you to pass in arguments as an array.
+
+```js
+let customer1 = { name: 'Leo', email: 'leo@gmail.com' };
+let customer2 = { name: 'Nat', email: 'nat@hotmail.com' };
+function greeting(text, text2) {
+   console.log(`${text} ${this.name}, ${text2}`);
+}
+greeting.apply(customer1, ['Hello', 'How are you?']); // output Hello Leo, How are you?
+greeting.apply(customer2, ['Hello', 'How are you?']); // output Hello Natm How are you?
+```
+
+#### Function.prototype.bind()
+
+The Bind method returns a new function, allowing you to pass in a this array and any number of arguments. Use it when you want that function to later be called with a certain context like events.
+
+```js
+let customer1 = { name: 'Leo', email: 'leo@gmail.com' };
+let customer2 = { name: 'Nat', email: 'nat@hotmail.com' };
+function greeting(text) {
+   console.log(`${text} ${this.name}`);
+}
+let helloLeo = greeting.bind(customer1);
+let helloNat = greeting.bind(customer2);
+helloLeo('Hello'); // Hello Leo
+helloNat('Hello'); // Hello Nat
+```
+
+
+Call and Apply are interchangeable. You can decide whether it’s easier to send in an array or a comma separated list of arguments.
+
+Bind is different. It always returns a new function. We can use Bind to curry functions like in the example. We can take a simple hello function and turn it into a helloJon or helloKelly. You can use it for events where we don’t know when they’ll be fired but know what context is.
 
 ### Classes / Prototypes
+
+TBD
 
 ## Scope
 

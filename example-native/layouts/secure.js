@@ -47,6 +47,7 @@ const template = /*html*/`
       <li><router-link :to="{ path: '/ui1' }">UI1 - Autocomplete</router-link></li>
       <li><router-link :to="{ path: '/ui2' }">UI2 - T4T Table</router-link></li>
       <li><router-link :to="{ path: '/ui3' }">UI3 - T4T Form</router-link></li>
+      <li><router-link :to="{ path: '/ui4' }">UI4 - T4T Table & Form</router-link></li>
       <li><router-link :to="{ path: '/admin' }">Admin</router-link></li>
     </ul>
     <ul class="menu-list">

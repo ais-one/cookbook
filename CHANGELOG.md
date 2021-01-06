@@ -11,13 +11,15 @@
 - [example-app] controllers/auth.js/checkGithub - make callback URL configurable, improve github login, callback hash to include tokens instead of just token
 - [example-native] moved github login here & improve on github config instructions
 - [example-vite] update vite from v1 to v2
+- changes to config
+  - set our internal usage key to __key, to avoid collisions
+  - hide = hide table
+  - filter & sort is not enabled by default, need to set as true
 - [wip]
-  - [example-vite] mwc-multiselect.js is broken  
   - [common-lib/esm/bwc-t4t-form.js] - created (example in progress, improve on form properties)
   - [common-lib/esm/t4t-fe.js] - created (also includes validation...)
   - [common-lib/esm/t4t-validate.js] - created... for backend use
-  - [example-webpack] what to do with apollo graphql client???
-  - [example-vite] migrate example-webpack vue-crud-x table examples to vite
+  - [example-vite] mwc-multiselect.js is broken
   - [example-vite] add i18n
 
 ### Version 0.4.4

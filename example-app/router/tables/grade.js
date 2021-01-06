@@ -8,11 +8,10 @@ module.exports = {
     export: false,
     multiSelect: false,
     cols: {
-      _id: { // primary key column, _id for mongodb
+      _id: {
         label: 'ID',
         auto: 'pk',
-        table: 'hide',
-        filter: 'hide',
+        hide: true,
         add: 'hide',
         edit: 'readonly'
       },

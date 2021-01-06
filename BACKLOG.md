@@ -7,6 +7,8 @@
 - [chore] use monorepo when npm 7 is released ?
 
 ### For future product improvement
+- [example-webpack] what to do with apollo graphql client???
+- [example-vite] migrate example-webpack vue-crud-x table examples to vite
 - [example-vite] cypress e2e testing, vue-test-util & vite
 - [example-vite] styling for custom build mwc-*
 - [frontend-i18n] node-polyglot
@@ -17,10 +19,6 @@
 - [backend-testing] change out of jest? use native assert instead of chai
 - [vue3] VueCrudX (update to VueJS 3 and Vuetify 3)
 - [vue3] https://github.com/vueComponent/ant-design-vue/issues/1913
-
-
-const authorName = book?.author?.firstName ?? 'Unknown'
-if undefined, then 'Unkonwn'
 
 ---
 

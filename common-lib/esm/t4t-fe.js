@@ -117,11 +117,11 @@ async function download(filters, sorter) {
   }
 }
 
-async function findOne(key) {
+async function findOne(__key) {
   let rv = {}
   try {
-    const { data } = await http.get('/api/t4t/find-one/' + tableName, { key })
-    rv.key = key
+    const { data } = await http.get('/api/t4t/find-one/' + tableName, { __key }) // if multiKey, then seperate values by |, column is implied by order  
+    rv.__key = __key
     Object.entries(config.cols).forEach((kv) => {
       const [key, val] = kv
       if (val.edit !== 'hide') {
@@ -139,8 +139,8 @@ async function create(record) {
 }
 
 // TBD may need to handle file upload also...
-async function update(key, record) {
-  await http.patch(`/api/t4t/update/${tableName}`, record, { key })
+async function update(__key, record) {
+  await http.patch(`/api/t4t/update/${tableName}`, record, { __key })
 }
 
 async function remove(items) {
@@ -149,7 +149,7 @@ async function remove(items) {
   if (pk) {
     ids = items.map((item) => item[pk])
   } else {
-    ids = items.map((item) => item.key)
+    ids = items.map((item) => item.__key)
   }
   await http.post('/api/t4t/remove/' + tableName, { ids })  
 }
