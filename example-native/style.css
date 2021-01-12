@@ -98,6 +98,10 @@ scrollbar-width: none;  /* Firefox */
   background: lightslategrey; 
 }
 
+nav.navbar {
+  background-color: #eeeeee;
+}
+
 /* .navbar-brand.left-burger {
 	align-items: flex-start;
 }

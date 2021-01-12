@@ -39,11 +39,11 @@
     "leaflet": "^1.7.1",
     "subscriptions-transport-ws": "^0.9.18",
     "vue": "^3.0.5",
-    "vue-router": "^4.0.2",
+    "vue-router": "^4.0.3",
     "vuex": "^4.0.0-rc.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.0.4",
+    "@vitejs/plugin-vue": "^1.0.5",
     "@vue/compiler-sfc": "^3.0.5",
     "eslint": "^7.17.0",
     "eslint-config-prettier": "^7.1.0",
@@ -55,6 +55,6 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.4.1",
     "prettier": "^2.2.1",
-    "vite": "^2.0.0-beta.8"
+    "vite": "^2.0.0-beta.22"
   }
 }

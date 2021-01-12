@@ -90,10 +90,62 @@ const muicss = {
 const framework = bulma // set as bulma first
 
 const template = document.createElement('template')
-template.innerHTML = `
-<div>
-  <form id="form-wrapper" autocomplete="off">
-  </form>
+
+template.innerHTML = /*html*/`
+<style>
+.input-widget {
+  /* background-color: red; */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 100px);
+}
+.form-area {
+  align-self: center;
+  /* background-color: lightgray; */
+  overflow: auto;
+  height: 96%;
+  width: 80%;
+}
+.top-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  padding: 8px;
+  position: sticky;
+  top: 0px;
+  background-color: lightgray;
+  z-index: 1;
+}
+.bottom-area {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  padding: 8px;
+  position: sticky;
+  bottom: 0px;
+  background-color: lightgray;
+  z-index: 1;
+}
+</style>
+<div class="input-widget">
+  <form class="form-area" onsubmit="return false;">
+    <div class="top-area"><h1>Hello</h1></div>
+    <div class="content-area">
+    </div>
+    <div class="bottom-area">
+      <div class="button-group">
+        <!-- create buttons here -->
+        <button type="submit" class="btn-submit button is-link">Submit</button>
+        <button type="button" class="btn-cancel button is-link is-light">Cancel</button>
+      </div>
+    </div>
+  <form>
 </div>
 `
 
@@ -187,7 +239,8 @@ class T4tForm extends HTMLElement {
     
   _render() {
     try {
-      const el = this.querySelector('#form-wrapper')
+      // const el = this.querySelector('#form-wrapper')
+      const el = this.querySelector('.content-area')
       if (!el) return
       el.innerHTML = ''
       const { cols, auto, pk, required, multiKey } = this.#config
@@ -205,12 +258,11 @@ class T4tForm extends HTMLElement {
         }
       }
 
-      this.btnSubmit = document.createElement('button')
-      this.btnSubmit.classList.add('button')
-      this.btnSubmit.textContent = 'Submit'
-      this.btnSubmit.onclick = (e) => {
+      const btnSubmit = this.querySelector('.btn-submit')
+      // btnSubmit.classList.add('button')
+      btnSubmit.onclick = (e) => {
         let error = false
-        console.log('submit clicked')
+        // console.log('submit clicked')
         // e.stopPropagation()
         e.preventDefault()
         for (let col in this.#xcols) {
@@ -227,23 +279,19 @@ class T4tForm extends HTMLElement {
               this.#record[col] = this.#xcols[col].el.value
             }
           }
-          this.dispatchEvent(new CustomEvent('submit', { detail: this.#record }))
+          this.dispatchEvent(new CustomEvent('submit', { detail: { data: this.#record } }))
         } else {
-          // there is an error in validation
+          this.dispatchEvent(new CustomEvent('submit', { detail: { error } }))
         }
       }
-      el.appendChild(this.btnSubmit)
   
-      this.btnCancel = document.createElement('button')
-      this.btnCancel.classList.add('button')
-      this.btnCancel.textContent = 'Cancel'
-      this.btnCancel.onclick = (e) => {
-        console.log('cancel clicked')
+      const btnCancel = this.querySelector('.btn-cancel')
+      // btnCancel.classList.add('button')
+      btnCancel.onclick = (e) => {
+        // console.log('cancel clicked')
         e.preventDefault()
         this.dispatchEvent(new CustomEvent('cancel'))
       }
-      el.appendChild(this.btnCancel)
-
     } catch (e) {
       console.log('bwc-t4t-form', e)
     }

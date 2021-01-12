@@ -63,7 +63,7 @@
 // do not use document.querySelector, use this.querySelector
 
 const template = document.createElement('template')
-template.innerHTML = `
+template.innerHTML = /*html*/`
 <style>
 #table-wrapper {
   overflow: var(--bwc-table-overflow, auto);

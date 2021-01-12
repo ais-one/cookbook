@@ -40,7 +40,7 @@ const autoComplete = (e) => {
 
 */
 const template = document.createElement('template')
-template.innerHTML = `
+template.innerHTML = /*html*/`
 <input class="input" type="text" list="json-datalist" placeholder="search..." autocomplete="off">
 <datalist id="json-datalist"></datalist>
 `

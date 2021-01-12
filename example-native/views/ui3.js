@@ -1,7 +1,6 @@
 const template = /*html*/`
 <div>
-  <h1>UI 3 - Form</h1>
-  <bwc-t4t-form :config="form.config" :record="form.record" mode="edit"></bwc-t4t-form>
+  <bwc-t4t-form :config="form.config" :record="form.record" mode="edit" @submit="submit"></bwc-t4t-form>
 </div>
 `
 
@@ -18,6 +17,8 @@ export default {
 
     const test = reactive({})
 
+    const submit = (e) => console.log('submit', e.detail)
+
     onMounted(async () => {
       console.log('ui3 mounted!')
       t4t.setTableName('person')
@@ -33,6 +34,7 @@ export default {
 
     return {
       form,
+      submit
     }
   }
 }

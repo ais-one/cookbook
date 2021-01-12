@@ -23,23 +23,26 @@ module.exports = function(app) {
   // Access-Control-Allow-Headers=Content-Type
   const cors = require('cors')
   const  { CORS_OPTIONS, CORS_ORIGINS } = global.CONFIG
-  let { origin } = CORS_OPTIONS  // origin = ['http://example1.com', 'http://example2.com']
-  if (CORS_ORIGINS) origin = CORS_ORIGINS
+  let corsOptions = CORS_OPTIONS
 
-  let allowList = origin.split(',')
-  if (allowList.length === 1) origin = allowList[0]
-  else if (allowList.length > 1) {
-    origin = function (_origin, callback) {
-      if(!_origin) return callback(null, true) // allow requests with no origin (like mobile apps or curl requests)
-      if (allowList.indexOf(_origin) !== -1) {
-        return callback(null, true)
-      } else {
-        return callback(new Error('Not allowed by CORS'), false)
+  if (CORS_OPTIONS) {
+    let { origin } = CORS_OPTIONS  // origin = ['http://example1.com', 'http://example2.com']
+    if (CORS_ORIGINS) origin = CORS_ORIGINS
+  
+    let allowList = origin.split(',')
+    if (allowList.length === 1) origin = allowList[0]
+    else if (allowList.length > 1) {
+      origin = function (_origin, callback) {
+        if(!_origin) return callback(null, true) // allow requests with no origin (like mobile apps or curl requests)
+        if (allowList.indexOf(_origin) !== -1) {
+          return callback(null, true)
+        } else {
+          return callback(new Error('Not allowed by CORS'), false)
+        }
       }
     }
+    if (origin) corsOptions.origin = origin  
   }
-  const corsOptions = CORS_OPTIONS
-  if (origin) corsOptions.origin = origin
   app.use(CORS_OPTIONS ? cors(corsOptions) : cors())
 
   // RATE-LIMIT
@@ -71,7 +74,7 @@ module.exports = function(app) {
   app.use(cookieParser('some_secret'))
 
   // ------ SWAGGER ------
-  const  { SWAGGER_DEFS } = global.CONFIG
+  const { SWAGGER_DEFS } = global.CONFIG
   if (SWAGGER_DEFS) {
     const swaggerUi = require('swagger-ui-express')
     const swaggerJSDoc = require('swagger-jsdoc')
