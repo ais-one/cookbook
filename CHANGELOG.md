@@ -5,22 +5,21 @@
 - [example-spa] rename to example-webpack (to be kept for legacy purpose)
 - [example-vite] echarts v4 to v5 (ESM), mwc to 0.20.0
 - [example-native] add google recaptcha
-- [common-lib/esm/bwc-table.js] fix sort (was showing arrows on all columns)
 - [common-lib/esm/util.js] clarify debounce usage
 - [example-vite] fix build path (dev / production), note need proper SSL cert for SW to work on non-localhost domain
 - [example-app] controllers/auth.js/checkGithub - make callback URL configurable, improve github login, callback hash to include tokens instead of just token
 - [example-native] moved github login here & improve on github config instructions
 - [example-vite] update vite from v1 to v2
-- changes to config
+- [common-lib/esm/bwc-table.js] fix sort (was showing arrows on all columns), add new CSS variables for top value
+- [example-app/router/tables/*.*] (generic crud) config changes
   - set our internal usage key to __key, to avoid collisions
   - hide = hide table
   - filter & sort is not enabled by default, need to set as true
-- [wip]
-  - [common-lib/esm/bwc-t4t-form.js] - created (example in progress, improve on form properties)
-  - [common-lib/esm/t4t-fe.js] - created (also includes validation...)
-  - [common-lib/esm/t4t-validate.js] - created... for backend use
-  - [example-vite] mwc-multiselect.js is broken
-  - [example-vite] add i18n
+- [common-lib/esm/bwc-t4t-form.js] - (generic crud) create form using web components - currently only input tag handled (TBD add select tag, and other custom tags, handle file inputs)
+- [common-lib/esm/t4t-fe.js] - (generic crud) created utilities also includes validation...
+- [common-lib/esm/t4t-validate.js] - (generic crud) created validation for backend use
+- [example-vite] NOTE: mwc-multiselect.js is broken
+- [example-vite] add initial i18n support
 
 ### Version 0.4.4
 - [chore] update packages & cleanup & work on improving documentation

@@ -3,22 +3,21 @@
 ### In Progress
 
 ### Backlog
-- [chore] disable console.log in production / proper console logging
-- [chore] use monorepo when npm 7 is released ?
+- [common-lib/esm/bwc-t4t-form.js] - add select tag, and other custom tags, handle file inputs
+- [example-vite] cypress e2e testing
 
 ### For future product improvement
+- [chore] disable console.log in production / proper console logging
+- [chore] use monorepo when npm 7 is released ?
 - [example-webpack] what to do with apollo graphql client???
 - [example-vite] migrate example-webpack vue-crud-x table examples to vite
-- [example-vite] cypress e2e testing, vue-test-util & vite
-- [example-vite] styling for custom build mwc-*
 - [frontend-i18n] node-polyglot
 - [backend-deployment] GKE, Kubernetes
 - [frontend-graphql] try @octokit/graphql
 - [backend-testing] research auto generated REST API and Testing (keep in view dredd.io)
 - [backend-testing] research websocket testing
 - [backend-testing] change out of jest? use native assert instead of chai
-- [vue3] VueCrudX (update to VueJS 3 and Vuetify 3)
-- [vue3] https://github.com/vueComponent/ant-design-vue/issues/1913
+- [vue3] VueCrudX (update to VueJS 3 and Vuetify 3), check on Element UI and Ant Design
 
 ---
 

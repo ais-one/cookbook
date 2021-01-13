@@ -99,7 +99,7 @@ template.innerHTML = /*html*/`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 100px);
+  height: var(--bwc-t4t-form-height, calc(100vh - 100px));
 }
 .form-area {
   align-self: center;
@@ -165,15 +165,18 @@ class T4tForm extends HTMLElement {
   set record (val) { 
     this.#record = val
     if (this.#config && this.#record) {
-      // console.log('do render', val, this.#config)
+      // console.log('do render - val (this.#record)', val)
+      // console.log('do render - config', this.#config)
       this._render()
     }
   }
 
   connectedCallback() {
+    // console.log('bwc-t4t-form', this.#config, this.#record)
     this.appendChild(template.content.cloneNode(true))
-    console.log('bwc-t4t-form', this.#config)
-    // this._render()
+    if (this.#config && this.#record) {
+      this._render()
+    }
   }
 
   static get observedAttributes() { return ['mode'] }
@@ -241,7 +244,12 @@ class T4tForm extends HTMLElement {
     try {
       // const el = this.querySelector('#form-wrapper')
       const el = this.querySelector('.content-area')
-      if (!el) return
+      if (!el) {
+        console.log('no content-area')
+        return
+      } else {
+        console.log('content-area found')
+      }
       el.innerHTML = ''
       const { cols, auto, pk, required, multiKey } = this.#config
       // console.log('this.#record', this.#record)

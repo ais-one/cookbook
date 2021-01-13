@@ -20,12 +20,14 @@
 // --bwc-table-navbar-bgcolor: white
 // --bwc-table-filter-bgcolor: white
 // --bwc-table-filter-color: black
+// --bwc-table-filter-top: 56px
 // --bwc-table-th-bgcolor: white
 // --bwc-table-th-color: black
 // --bwc-table-td-bgcolor: transparent
 // --bwc-table-td-color: black
 // --bwc-table-td-select-bgcolor: black
 // --bwc-table-td-select-color: black
+// --bwc-table-sticky-header-top: 56px
 
 // PROPERTIES
 // commands="reload,filter"
@@ -84,7 +86,7 @@ template.innerHTML = /*html*/`
 #table-wrapper #filters {
   position: -webkit-sticky;
   position: sticky;
-  top: 56px;
+  top: var(--bwc-table-filter-top, 56px);
   left: 0px;
   z-index: 2;
   background-color: var(--bwc-table-filter-bgcolor, white);
@@ -105,7 +107,7 @@ template.innerHTML = /*html*/`
 .sticky-header #table-wrapper th {
   position: -webkit-sticky;
   position: sticky;
-  top: 56px; /* nav height - TBD filter height*/
+  top: var(--bwc-table-sticky-header-top, 56px); /* nav height - TBD filter height*/
   z-index: 2;
 }
 .sticky-column #table-wrapper th[scope=row] {

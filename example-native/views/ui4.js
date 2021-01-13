@@ -1,7 +1,16 @@
 const template = /*html*/`
 <div>
-  <h1>Table + Form</h1>
+  <bwc-t4t-form
+    v-if="mode"
+    :config="table.config"
+    :record="form.record"
+    :mode="mode"
+    @submit="submitForm"
+    @cancel="cancelForm"
+    style="--bwc-t4t-form-height: calc(100vh - 300px);"
+  ></bwc-t4t-form>
   <bwc-table
+    v-else
     commands="reload,filter,add,del"
     :pagination="true"
     :sort="true"
@@ -20,7 +29,6 @@ const template = /*html*/`
   ></bwc-table>
 </div>
 `
-// <bwc-t4t-form v-if="mode" :config="table.config" :record="form.record" :mode="mode" @submit="submitForm"></bwc-t4t-form>
 
 import * as t4t from '/esm/t4t-fe.js'
 const { onMounted, ref, reactive } = Vue
@@ -47,13 +55,22 @@ export default {
     const rowClick = async (e) => {
       console.log('rowClick', e.detail) // row, cod, data
       form.record = await t4t.findOne(e.detail.data._id) // either use e.detail.data, or fetch from API
-      console.log(form.record)
-      // mode.value = 'edit'
+      mode.value = 'edit'
       // Object.assign(test, form.config)
     }
+
     const submitForm = async (e) => {
       console.log('submitForm', e.detail)
+      // do update here and display error message?
+      if (e.detail.error) return alert('Validation Error')
+
+      if (mode.value === 'edit') {
+      } else {
+      }
+      mode.value = ''
     }
+
+    const cancelForm = async (e) => mode.value = ''
 
     const checked = (e) => {
       console.log('checked', e.detail)
@@ -71,11 +88,17 @@ export default {
     }
     const cmd = (e) => {
       console.log('cmd', e.detail)
+      if (e.detail.cmd === 'add') {
+        form.record = t4t.newItem()
+        mode.value = 'add'
+      } else if (e.detail.cmd === 'del') {
+        // e.detail.items
+      }
     }
     
     onMounted(async () => {
       console.log('ui4 mounted!')
-      t4t.setTableName('country')
+      t4t.setTableName('person') // country
       table.config = await t4t.getConfig()
 
       // get initial data...
@@ -108,7 +131,8 @@ export default {
       checked,
       triggered,
       cmd,
-      submitForm
+      submitForm,
+      cancelForm
     }
   }
 }

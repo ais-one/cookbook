@@ -1,6 +1,12 @@
 const template = /*html*/`
 <div>
-  <bwc-t4t-form :config="form.config" :record="form.record" mode="edit" @submit="submit"></bwc-t4t-form>
+  <bwc-t4t-form
+    :config="form.config"
+    :record="form.record"
+    mode="edit"
+    @submit="submit"
+    style="--bwc-t4t-form-height: calc(100vh - 300px);"
+  ></bwc-t4t-form>
 </div>
 `
 

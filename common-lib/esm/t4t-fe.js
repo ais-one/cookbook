@@ -134,6 +134,21 @@ async function findOne(__key) {
   }
 }
 
+function newItem() {
+  let rv = {}
+  try {
+    Object.entries(config.cols).forEach((kv) => {
+      const [key, val] = kv
+      if (val.edit !== 'hide') {
+        rv[key] = val.default || ''
+      }
+    })
+    return rv  
+  } catch (e) {
+    return null
+  }
+}
+
 async function create(record) {
   await http.post(`/api/t4t/create/${tableName}`, record)
 }
@@ -211,6 +226,6 @@ async function autocomplete (search, col, record) { // wrap in debounce
 // mwcAc.setList(res)
 // }, 500)
 
-export { setTableName, getConfig, validate, find, findOne, create, update, remove, upload, download, autocomplete }
+export { setTableName, getConfig, validate, find, findOne, newItem, create, update, remove, upload, download, autocomplete }
 
 
