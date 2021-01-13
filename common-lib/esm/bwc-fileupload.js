@@ -69,7 +69,6 @@ class FileUpload extends HTMLElement {
     if (files[0] !== undefined) {
       this.value = files[0].name
       this.file = files[0]
-    } else {
     }
   }
 

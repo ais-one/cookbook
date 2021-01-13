@@ -8,7 +8,7 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
 
-Latest Version [0.4.5](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.5) - Released 2021 Jan 14 0030 +8GMT
+Latest Version [0.4.5](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.5) - Released 2021 Jan 14 0035 +8GMT
 
 # Features
 

@@ -181,14 +181,14 @@ class T4tForm extends HTMLElement {
 
   static get observedAttributes() { return ['mode'] }
   
-  attributeChangedCallback(name, oldVal, newVal) {
-    switch (name) {
-      case 'mode':
-        break
-      default:
-        break
-    }
-  }
+  // attributeChangedCallback(name, oldVal, newVal) {
+  //   switch (name) {
+  //     case 'mode':
+  //       break
+  //     default:
+  //       break
+  //   }
+  // }
 
   get mode() { return this.getAttribute('mode') }
   set mode(val) { this.setAttribute('mode', val) }

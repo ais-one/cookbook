@@ -64,9 +64,9 @@ export default {
       // do update here and display error message?
       if (e.detail.error) return alert('Validation Error')
 
-      if (mode.value === 'edit') {
-      } else {
-      }
+      // if (mode.value === 'edit') {
+      // } else {
+      // }
       mode.value = ''
     }
 
@@ -78,7 +78,7 @@ export default {
     const triggered = async (e) => {
       // TBD if (name === 'page-size') ...
       console.log('triggered', e.detail)
-      const { name, filters, sortDir, sortKey } = e.detail
+      const { filters, sortDir, sortKey } = e.detail // name
       page.value = e.detail.page
       pageSize.value = e.detail.pageSize
       const sorter = sortKey ? [{ column: sortKey, order: sortDir}] : []
