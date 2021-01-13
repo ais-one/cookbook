@@ -1,6 +1,6 @@
 {
   "name": "example-app",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "example express application",
   "main": "index.js",
   "directories": {

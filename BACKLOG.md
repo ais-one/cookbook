@@ -3,14 +3,10 @@
 ### In Progress
 
 ### Backlog
-- [common-lib/esm/bwc-t4t-form.js] - add select tag, and other custom tags, handle file inputs
-- [example-vite] cypress e2e testing
 
 ### For future product improvement
-- [chore] disable console.log in production / proper console logging
 - [chore] use monorepo when npm 7 is released ?
 - [example-webpack] what to do with apollo graphql client???
-- [example-vite] migrate example-webpack vue-crud-x table examples to vite
 - [frontend-i18n] node-polyglot
 - [backend-deployment] GKE, Kubernetes
 - [frontend-graphql] try @octokit/graphql

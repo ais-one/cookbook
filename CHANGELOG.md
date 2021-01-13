@@ -1,3 +1,12 @@
+### Version 0.4.6
+- [chore] update packages & cleanup & work on improving documentation
+- [inprogress]
+  - [common-lib/esm/bwc-t4t-form.js] - add select tag, and other custom tags, handle file inputs, make API in example-native
+  - [example-vite] cypress e2e testing
+  - [example-vite] migrate example-webpack vue-crud-x table examples to vite
+  - [example-vite] remove CrudTable.vue, use bwc-table in example-native
+  - [chore] disable console.log in production / proper console logging
+
 ### Version 0.4.5
 - [chore] update packages & cleanup & work on improving documentation
 - [github-actions] add github pages workflow, update manual workflow
