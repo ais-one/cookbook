@@ -367,7 +367,7 @@ export default {
     }
 
     const doUpload = async () => {
-      console.log('gridEl.selectedItems', gridEl.selectedItems)
+      // console.log('gridEl.selectedItems', gridEl.selectedItems)
       const file = document.querySelector('mwc-fileupload').getFile()
       t4t.upload(file)
     }
