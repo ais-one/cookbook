@@ -1,0 +1,67 @@
+{
+  "_from": "vue-crud-x",
+  "_id": "vue-crud-x@0.4.5",
+  "_inBundle": false,
+  "_integrity": "sha512-q9g7ER3wWEoOmM8GnPtJdOiaa6vX1pS/Pywh1B1Eqj0KKTRoc6RDqe5b1ulXcBk80Tnt4oGjoJc5BA/cw3WijA==",
+  "_location": "/vue-crud-x",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "vue-crud-x",
+    "name": "vue-crud-x",
+    "escapedName": "vue-crud-x",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/vue-crud-x/-/vue-crud-x-0.4.5.tgz",
+  "_shasum": "fda705ef0188e0118d00ab53d16f300e7c3f523e",
+  "_spec": "vue-crud-x",
+  "_where": "/Users/aaron/test/xxx",
+  "author": {
+    "name": "Aaron Gong",
+    "email": "aaronjxz@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/ais-one/vue-crud-x/issues"
+  },
+  "bundleDependencies": [],
+  "dependencies": {},
+  "deprecated": false,
+  "description": "A VueJS CRUD component which is customisable and extensible to suit more complex situations such as Nested CRUD, custom filters, using GraphQL or REST to access various datastores. Uses Vuetify for layout components but can be changed to alternatives such as ElementUI (by changing components in the VueCrudX source code from Vuetify to ElementUI)",
+  "devDependencies": {
+    "@vue/cli-service": "^4.5.4",
+    "vue-template-compiler": "^2.6.12"
+  },
+  "homepage": "https://github.com/ais-one/vue-crud-x#readme",
+  "keywords": [
+    "vue",
+    "vuejs",
+    "vuetify",
+    "crud",
+    "pagination",
+    "sort",
+    "filter",
+    "graphql"
+  ],
+  "license": "MIT",
+  "main": "dist/VueCrudX.js",
+  "name": "vue-crud-x",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ais-one/vue-crud-x.git"
+  },
+  "scripts": {
+    "build": "vue-cli-service build --mode production --target lib --name VueCrudX --formats commonjs ./VueCrudX.vue&&mv ./dist/VueCrudX.common.js ./dist/VueCrudX.js",
+    "clean": "rm package-lock.json && rm node_modules"
+  },
+  "files": [
+    "dist/*"
+  ],
+  "version": "0.4.5"
+}

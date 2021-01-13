@@ -1,0 +1,56 @@
+{
+  "name": "example-webpack",
+  "version": "0.0.0",
+  "private": true,
+  "description": "VueJS 2 SPA + Webpack example",
+  "author": "Aaron Gong <aaronjxz@gmail.com>",
+  "scripts": {
+    "serve": "vue-cli-service serve --port 8080",
+    "build": "vue-cli-service build",
+    "build-uat": "vue-cli-service build --mode uat",
+    "build-report": "npm run build --report",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.3.6",
+    "axios": "^0.21.1",
+    "core-js": "^3.8.2",
+    "eslint-config-prettier": "^7.1.0",
+    "graphql": "^15.4.0",
+    "graphql-tag": "^2.11.0",
+    "jwt-decode": "^3.1.2",
+    "lit-element": "^2.4.0",
+    "rxjs": "^6.6.3",
+    "subscriptions-transport-ws": "^0.9.18",
+    "vue": "^2.6.12",
+    "vue-i18n": "^8.22.3",
+    "vue-native-websocket": "^2.0.14",
+    "vue-router": "^3.4.9",
+    "vue-rx": "^6.2.0",
+    "vuetify": "^2.4.2",
+    "vuex": "^3.6.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.5.10",
+    "@vue/cli-plugin-eslint": "^4.5.10",
+    "@vue/cli-service": "^4.5.10",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
+    "deepmerge": "^4.2.2",
+    "eslint": "^7.17.0",
+    "eslint-plugin-vue": "^7.4.1",
+    "fibers": "^5.0.0",
+    "sass": "^1.32.4",
+    "sass-loader": "^10.1.1",
+    "vue-template-compiler": "^2.6.12",
+    "vuetify-loader": "^1.6.0"
+  },
+  "browserslist": [
+    "last 1 Chrome versions"
+  ],
+  "ignored-browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

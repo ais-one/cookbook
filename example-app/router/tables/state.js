@@ -8,28 +8,42 @@ module.exports = {
   export: true,
   multiSelect: true,
   cols: {
-    _id: { // primary key column, _id for mongodb
-      // label: 'ID',
+    _id: {
+      label: 'ID',
       auto: 'pk',
-      table: 'hide',
-      filter: 'hide',
+      hide: true,
       add: 'hide',
       edit: 'readonly'
     },
     country_name: {
       label: 'Code',
       type: 'string',
+      // OLD
       input: '',
+      // NEW
+      ui: {
+        tag: 'input'
+      },
     },
     code: {
       label: 'Code',
       type: 'string',
+      // OLD
       input: '',
+      // NEW
+      ui: {
+        tag: 'input'
+      },
     },
     name: {
       label: 'Name',
       type: 'string',
+      // OLD
       input: '',
+      // NEW
+      ui: {
+        tag: 'input'
+      },
     }
   },
   pk: '',

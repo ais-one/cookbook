@@ -2,7 +2,7 @@ const ws = {
   instance: null, // web socket instance
   onmessage: null, // attach message handler
   endpoint: null,
-  reconnectMS: 0,
+  reconnectMS: 0, // number of retries? not implemented
 
   setEndpoint(endpoint) {
     this.endpoint = endpoint

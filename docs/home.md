@@ -35,6 +35,7 @@
   - Kafka [kafka.md](kafka.md)
   - TCP [tcp.md](tcp.md)
   - VueCrudX [VueCrudX.md](VueCrudX.md)
+  - GraphQL [graphql.md](graphql.md)
 - DevOps
   - Git [git.md](git.md)
   - Deployment And Scaling [deployment/home.md](deployment/home.md) **WIP**

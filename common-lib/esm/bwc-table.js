@@ -20,12 +20,14 @@
 // --bwc-table-navbar-bgcolor: white
 // --bwc-table-filter-bgcolor: white
 // --bwc-table-filter-color: black
+// --bwc-table-filter-top: 56px
 // --bwc-table-th-bgcolor: white
 // --bwc-table-th-color: black
 // --bwc-table-td-bgcolor: transparent
 // --bwc-table-td-color: black
 // --bwc-table-td-select-bgcolor: black
 // --bwc-table-td-select-color: black
+// --bwc-table-sticky-header-top: 56px
 
 // PROPERTIES
 // commands="reload,filter"
@@ -40,11 +42,21 @@
 // style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;"
 // class="sticky-header sticky-column"
 
+// TBD change some properties to attributes?
+
 // EVENTS
 // rowclick { detail: { row, col, data }
 // triggered = sort / page / page-size / reload { detail: { name, sortKey, sortDir, page, pageSize, filters: [ { key, op, val, andOr } ] } }
 // cmd = show/hide filter, reload, add, delete, upload, download, goback (if parentKey != null)
 // checked = [indexes checked...]
+
+// COLUMN PROPERTIES
+// for hidden table columns, please remove before passing it to component
+// label: 'ID',
+// key: 'id',
+// filter: false,
+// sort: false,
+// render: (val, key, row) => `<a class='button' onclick='this.dispatchEvent(new CustomEvent("testevent", { detail: ${JSON.stringify({ val, key, row })} }))'>${val}</a>`
 
 // NOT NEEDED
 // loading state and loading spinner
@@ -53,7 +65,7 @@
 // do not use document.querySelector, use this.querySelector
 
 const template = document.createElement('template')
-template.innerHTML = `
+template.innerHTML = /*html*/`
 <style>
 #table-wrapper {
   overflow: var(--bwc-table-overflow, auto);
@@ -74,7 +86,7 @@ template.innerHTML = `
 #table-wrapper #filters {
   position: -webkit-sticky;
   position: sticky;
-  top: 56px;
+  top: var(--bwc-table-filter-top, 56px);
   left: 0px;
   z-index: 2;
   background-color: var(--bwc-table-filter-bgcolor, white);
@@ -95,7 +107,7 @@ template.innerHTML = `
 .sticky-header #table-wrapper th {
   position: -webkit-sticky;
   position: sticky;
-  top: 56px; /* nav height - TBD filter height*/
+  top: var(--bwc-table-sticky-header-top, 56px); /* nav height - TBD filter height*/
   z-index: 2;
 }
 .sticky-column #table-wrapper th[scope=row] {
@@ -364,8 +376,11 @@ class Table extends HTMLElement {
   get selectedItem () { return this.#selectedItem }
   set selectedItem (val) { this.#selectedItem = val }
   get columns() { return this.#columns }
-  set columns(val) { this.#columns = val } // do something
-
+  set columns(val) {
+    this.#columns = val
+    this._render()
+  }
+  
   _renderPages () {
     this.#pages = Math.ceil(this.total / this.pageSize)
     const el = this.querySelector('#pages-span')
@@ -518,6 +533,7 @@ class Table extends HTMLElement {
   }
   
   _render() {
+    // console.log('bwc-table render fired')
     try {
       const el = this.querySelector('#table-wrapper')
       if (!el) return
@@ -530,7 +546,7 @@ class Table extends HTMLElement {
         // table.innerHTML = ''
         const parent = el.querySelector('table') // WORKS!
         while (parent.firstChild) {
-            parent.firstChild.remove()
+          parent.firstChild.remove()
         }
         parent.remove()
       }
@@ -546,22 +562,25 @@ class Table extends HTMLElement {
           if (this.#checkboxes && !target.cellIndex) { // checkbox clicked - target.type === 'checkbox' // e.stopPropagation()?
             this.#checkedRows = [] //  clear first
             const tbody = this.querySelector('table tbody')
-            for (let i = 0; i < tbody.children.length; i++) {
-              const tr = tbody.children[i]
-              const td = tr.firstChild
-              if (td) {
-                const checkbox = td.firstChild
-                if (checkbox.type === 'checkbox') {
-                  checkbox.checked = target.checked
-                  if (target.checked) this.#checkedRows.push(i)
+            if (tbody && tbody.children) {
+              for (let i = 0; i < tbody.children.length; i++) {
+                const tr = tbody.children[i]
+                const td = tr.firstChild
+                if (td) {
+                  const checkbox = td.firstChild
+                  if (checkbox.type === 'checkbox') {
+                    checkbox.checked = target.checked
+                    if (target.checked) this.#checkedRows.push(i)
+                  }
                 }
-              }
+              }  
             }
             this.dispatchEvent(new CustomEvent('checked', { detail: this.#checkedRows }))
           } else { // sort
             if (!this.sort) return
             const offset = this.#checkboxes ? 1 : 0 //  column offset
             const col = target.cellIndex - offset // TD 0-index based column
+            if (!this.#columns[col].sort) return
             const key = this.#columns[col].key
 
             if (key !== this.#sortKey) {
@@ -576,20 +595,9 @@ class Table extends HTMLElement {
               }
             }
 
-            // update header
-            const theadTr = this.querySelector('table thead tr')
-            for (let i = offset; i < theadTr.children.length; i++) {
-              const th = theadTr.children[i]
-              let label = this.#columns[i - offset].label
-              if (this.#columns[i - offset].key === this.#sortKey && this.#sortDir) {
-                label = label + (this.#sortDir === 'asc' ? '↑': '↓')
-              }
-              th.innerHTML = label // cannot textContent (need to parse the HTML)
-            }
-            this._trigger('sort') // checkboxes are also cleared...
+            this._trigger('sort') // header is re-rendered,  checkboxes are also cleared...
           }
         }
-
         table.appendChild(thead)
         table.classList.add('table')
         const tr = document.createElement('tr')
@@ -605,7 +613,16 @@ class Table extends HTMLElement {
         }
         for (const col of this.#columns) {
           const th = document.createElement('th')
-          const label = col.label + ((this.#sortKey) ? (this.#sortDir === 'asc' ? '↑': '↓') : '') // &and; (up) & &or; (down)
+          if (col.sort) th.style.cursor = 'pointer'
+          let label = col.label
+          if (col.sort) {
+            if (this.#sortKey === col.key) {
+              // &and; (up) & &or; (down)
+              label += this.#sortDir === 'asc' ? '↑' : (this.#sortDir === 'desc' ? '↓' : '↕')
+            } else {
+              label += '↕'
+            }  
+          }
           if (col.width) th.style.width = `${col.width}px`
           if (col.sticky) th.setAttribute('scope', 'row')
 
@@ -689,7 +706,7 @@ class Table extends HTMLElement {
               // if (sticky) td.setAttribute('scope', 'row') // not used yet, need to calculate left property value
               if (width) td.style.width = `${width}px`
               if (render) {
-                td.innerHTML = render(row[key])
+                td.innerHTML = render(row[key], key, row) // value, key, row
               } else {
                 td.appendChild(document.createTextNode(row[key]))
               }

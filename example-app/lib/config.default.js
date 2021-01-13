@@ -114,9 +114,9 @@ global.CONFIG.WEB_STATIC = [  // serve website from folder, blank if do not serv
   // options does not seem to work
   // check - https://expressjs.com/en/4x/api.html#express.static
   { folder: '../common-lib/esm', url: '/esm' },
-  { folder: '../example-nobundle', url: '/nobundle', options: { extensions: ['html'], index: false } },
+  { folder: '../example-native', url: '/native', options: { extensions: ['html'], index: false } },
   { folder: '../example-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
-  { folder: '../example-spa/dist', url: '/spa', options: { extensions: ['html'], index: false } },
+  { folder: '../example-webpack/dist', url: '/webpack', options: { extensions: ['html'], index: false } },
   { folder: APP_PATH + '/lib/esm', url: '/js' },
   { folder: APP_PATH + '/public/demo-express', url: '/' }
 ]
@@ -137,15 +137,16 @@ global.CONFIG.HTTPS_CERTS = null // { key: '', cert: '' }
 global.CONFIG.SWAGGER_DEFS = null
 global.CONFIG.ENABLE_LOGGER = false
 
-// Github
+// Github OAuth2
 // global.CONFIG.GITHUB_CLIENT_ID = ''
 // global.CONFIG.GITHUB_CLIENT_SECRET = ''
+// global.GITHUB_CALLBACK = ''
 
-// Google
+// Google - TBD
 // global.CONFIG.GOOGLE_CLIENT_ID = ''
 // global.CONFIG.GOOGLE_CLIENT_SECRET = ''
 
-// Microsoft
+// Microsoft - TBD
 // global.CONFIG.MS_CLIENT_ID = ''
 // global.CONFIG.MS_CLIENT_SECRET = ''
 

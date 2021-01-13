@@ -64,13 +64,13 @@ client.connect(async err => {
         birthDate: '',
         birthTime: '',
         country: 'SG',
+        state: '',
         birthDateTimeTz: null,
         website: '',
         remarks: '',
         updated_by: 'someone',
         updated_at: new Date()  
       })
-
       // rv.insertedId, rv.result.ok
       const personIdStr = rv.insertedId
 

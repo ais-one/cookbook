@@ -117,11 +117,11 @@ async function download(filters, sorter) {
   }
 }
 
-async function findOne(key) {
+async function findOne(__key) {
   let rv = {}
   try {
-    const { data } = await http.get('/api/t4t/find-one/' + tableName, { key })
-    rv.key = key
+    const { data } = await http.get('/api/t4t/find-one/' + tableName, { __key }) // if multiKey, then seperate values by |, column is implied by order  
+    rv.__key = __key
     Object.entries(config.cols).forEach((kv) => {
       const [key, val] = kv
       if (val.edit !== 'hide') {
@@ -134,13 +134,28 @@ async function findOne(key) {
   }
 }
 
+function newItem() {
+  let rv = {}
+  try {
+    Object.entries(config.cols).forEach((kv) => {
+      const [key, val] = kv
+      if (val.edit !== 'hide') {
+        rv[key] = val.default || ''
+      }
+    })
+    return rv  
+  } catch (e) {
+    return null
+  }
+}
+
 async function create(record) {
   await http.post(`/api/t4t/create/${tableName}`, record)
 }
 
 // TBD may need to handle file upload also...
-async function update(key, record) {
-  await http.patch(`/api/t4t/update/${tableName}`, record, { key })
+async function update(__key, record) {
+  await http.patch(`/api/t4t/update/${tableName}`, record, { __key })
 }
 
 async function remove(items) {
@@ -149,7 +164,7 @@ async function remove(items) {
   if (pk) {
     ids = items.map((item) => item[pk])
   } else {
-    ids = items.map((item) => item.key)
+    ids = items.map((item) => item.__key)
   }
   await http.post('/api/t4t/remove/' + tableName, { ids })  
 }
@@ -187,7 +202,11 @@ async function upload(file) { // the file object - e.g. const file = document.qu
   // )
 }
 
-async function autocomplete (search, col, record) {
+
+// const autoComplete = debounce(async (e, col, _showForm) => {
+  // let res = []
+// recordObj[_showForm][col] = e.target.value
+async function autocomplete (search, col, record) { // wrap in debounce
   let res = []
   try {
     const { dbName, tableName, limit, key, text, parentTableColName, parentCol } = config.cols[col].options
@@ -203,27 +222,10 @@ async function autocomplete (search, col, record) {
   }
   return res
 }
+// const mwcAc = document.querySelector('mwc-autocomplete.' + col) // el.setList()
+// mwcAc.setList(res)
+// }, 500)
 
-export { setTableName, getConfig, validate, find, findOne, create, update, remove, upload, download, autocomplete }
+export { setTableName, getConfig, validate, find, findOne, newItem, create, update, remove, upload, download, autocomplete }
 
-/*
-    const autoComplete = debounce(async (e, col, _showForm) => {
-      let res = []
-      recordObj[_showForm][col] = e.target.value
-      try {
-        const { dbName, tableName, limit, key, text, parentTableColName, parentCol } = tableCfg.value.cols[col].options
-        const query = { dbName, tableName, limit, key, text, search: e.target.value }
-        if (parentTableColName) {
-          query.parentTableColName = parentTableColName
-          query.parentTableColVal = recordObj[_showForm][parentCol]
-        }
-        const { data } = await http.get('/api/t4t/autocomplete', query)
-        res = data
-      } catch (err) {
-        console.log('autoComplete', err.message)
-      }
-      const mwcAc = document.querySelector('mwc-autocomplete.' + col)
-      mwcAc.setList(res)
-    }, 500)
 
-*/

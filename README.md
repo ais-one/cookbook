@@ -1,15 +1,21 @@
-[![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x) [![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x) [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine) [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x) [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
+![master commit](https://badgen.net/github/last-commit/ais-one/vue-crud-x/master)
+![release](https://img.shields.io/github/v/release/ais-one/vue-crud-x)
+[![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x)
+[![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x)
+[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine)
+[![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x)
+[![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
 
-Latest Version [0.4.4](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.4) - Released 2020 Nov 27 2230 +8GMT
+Latest Version [0.4.5](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.5) - Released 2021 Jan 14 0035 +8GMT
 
 # Features
 
 - Frontend Examples
-  - [Vite, Vue3 & mwc, vaadin](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
-  - [SPA, Vue2 & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-spa): Websockets, Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS, 2FA login, Github social login, recaptcha, JWT refresh token, GA OTP
-  - [Vanilla JS, ES Modules, Vue3 & bulma](https://github.com/ais-one/vue-crud-x/tree/master/example-nobundle): No bundler, scalable VueJS Application, example codes (signed uploads, JWT refresh token, OTP)
+  - [Vanilla JS, ES Modules, Vue3 & bulma](https://github.com/ais-one/vue-crud-x/tree/master/example-native): No bundler, scalable VueJS Application, example codes (signed uploads, JWT refresh token, OTP), recaptcha, Github OAuth2 login, web component table and form
+  - [Vite, Vue3 & mwc, vaadin](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js), JWT refresh token, 2FA GA OTP, SAML, Websockets
+  - [SPA, Vue2 & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-webpack): Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS
 - [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/)
   - Cors, proxy middleware, helmet, error handling, logging, OpenAPI
   - Objection ORM, Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis
@@ -18,6 +24,7 @@ Latest Version [0.4.4](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.4)
   - File uploads, Signed URL file upload to GCP Storage
   - Websockets, graphql
   - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML
+    - Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
   - Unit Test & Integration Test
 - Development & Deployment
   - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
@@ -37,7 +44,7 @@ Docker is required to test
 - hashicorp vault
 - kafka
 
-## Backend, SPA, Vite, No Bundler
+## Backend, Native (no bundler), Vite, Webpacked
 
 ### Backend Setup & Run
 
@@ -70,28 +77,13 @@ npm run app:unix # linux or mac
 **Visit the following URLs**
 - http://127.0.0.1:3000/api/healthcheck - app is running normally
 - http://127.0.0.1:3000/api-docs - OpenAPI UI 
-- http://127.0.0.1:3000 - Website served by Express with functional samples and demos (click on link to view **nobundle** app or link to view **vite production build** app)
+- http://127.0.0.1:3000 - Website served by Express with functional samples and demos (click on link to view **native** app or link to view **vite production build** app)
 
 
 ### Nobundler
 
 See above
 
-
-### Webpack SPA Setup & Run - development environment
-
-```bash
-cd example-spa
-npm i
-npm run serve
-```
-
-Navigate to http://127.0.0.1:8080/spa to view application with VueCrudX demo 
-
-Login using the following:
-- User: test
-- Password: test
-- OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin
 
 ### Vite SPA Setup & Run - development environment
 
@@ -109,9 +101,12 @@ npm i
 npm run dev
 ```
 
-Navigate to http://127.0.0.1:8080/vite to view application
+Navigate to http://127.0.0.1:8080/ to view application
 
-Login is same as SPA
+Login using the following:
+- User: test
+- Password: test
+- OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin
 
 You can test PWA Push notifications using Webpush or FCM () on Dashboard page depending on **.env.<environment>** file configuration (need to be on 127.0.0.1).
 
@@ -120,29 +115,42 @@ Click the following buttons in order (see their output in console.log and screen
 - Test PN (send a test message to user id 1 - on sqlite)
 - Unsub PN (unsubscribe)
 
-### Vite SPA Production Build
+### Webpack SPA Setup & Run - development environment
+
+```bash
+cd example-webpack
+npm i
+npm run serve
+```
+
+Navigate to http://127.0.0.1:8080/webpack to view application with VueCrudX demo 
+
+Login is same as Vite SPA
+
+### Vite SPA - static build
 
 ```bash
 cd example-vite
-npm run build
+npm run dev:build # windows
+npm run dev:build:unix # linux or mac
 ```
 
 **example-app** should be running
 
 Navigate to http://127.0.0.1:3000/vite/
 
-### Webpack SPA production build
+### Webpack SPA - static build
 
 From vue-crud-x folder
 
 ```bash
-cd example-spa
+cd example-webpack
 npm run build
 ```
 
 **example-app** should be running
 
-Navigate to http://127.0.0.1:3000/spa/
+Navigate to http://127.0.0.1:3000/webpack/
 
 ---
 
@@ -199,13 +207,13 @@ npm run process-cron:unix # linux or mac
   - **example-app/lib/esm** for common ESM codes to be used by express applications
   - **example-app/lib/<all_others>** for common CJS codes to be used by express applications
 
-2. **example-nobundler** for vanillaJS frontend example
+2. **example-native** for vanillaJS frontend example
 
 3. **example-vite** for Vite Vue3 frontend example
   - **example-vite/lib/rollup** for common codes to be used by Vite Vue 3 (should have same contents as **example-app/lib/esm**)
 
-4. **example-spa** for Webpack Vue2 frontend example
-  - **example-spa/lib/webpacked** for common codes to be used by Webpacked Vue 2 applications
+4. **example-webpack** for Webpack Vue2 frontend example
+  - **example-webpack/lib/webpacked** for common codes to be used by Webpacked Vue 2 applications
 
 5. **common-lib/esm** for common javascript libraries using ES Modules
 
@@ -244,11 +252,11 @@ vue-crud-x
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
 +- example-app/ : example backend - See example-app/README.md for Project Structure
-+- example-nobundle/ : frontend associated to backend (Vue3 no bundle) - See example-nobundle/README.md for Project Structure
-+- example-spa/ : frontend associated to the backend (Vue2 webpack) - See example-spa/README.md for Project Structure
-|  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
++- example-native/ : frontend associated to backend (Vue3 no bundle) - See example-native/README.md for Project Structure
 +- example-vite/ : frontend associated to backend - (Vue3 rollup) - See example-vite/README.md for Project Structure
 |  +- lib/esm-rollup/ : rolled up components for frontend (e.g. apollo.js)
++- example-webpack/ : frontend associated to the backend (Vue2 webpack) - See example-webpack/README.md for Project Structure
+|  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
 +- k8s/ : kubernetes YAML files (WIP)
 +- .editorconfig
 +- .gitignore

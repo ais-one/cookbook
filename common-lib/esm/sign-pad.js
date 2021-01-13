@@ -13,8 +13,7 @@ class SignPad extends HTMLElement {
     super()
     const shadowRoot = this.attachShadow({ mode: 'open' })
     shadowRoot.appendChild(template.content.cloneNode(true))
-
-    console.log('SIGNPAD SIGNPAD SIGNPAD SIGNPAD SIGNPAD SIGNPAD')
+    console.log('SignPad()')
     this.mouse = {
       current: { x: 0, y: 0 },
       previous: { x: 0, y: 0 },

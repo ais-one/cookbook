@@ -62,9 +62,8 @@ gcloud run deploy $APP_NAME-$1-svc --image gcr.io/$GCP_PROJECT_ID/$APP_NAME-$1:$
 # gcloud run services delete $APP_NAME-$1-svc --platform managed --region asia-east1
 # gcloud container images delete gcr.io/cloudrun/helloworld
 
-echo "Done..."
-
+echo Done...
 if [ "$CI" != "true" ]; then
-  echo "press enter key to exit"
+  echo press enter key to exit
   read # pause exit in windows
 fi

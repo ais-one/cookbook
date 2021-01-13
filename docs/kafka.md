@@ -47,7 +47,7 @@ node kafkaRx.js
 
 You will see message from a running producer every 2 seconds on the console
 
-Kafka Consumer Example Usage file location [../sandbox/kafkaRx.js](../sandbox/kafkaRx.js)
+Kafka Consumer Example Usage file location [../example-app/sandbox/kafkaRx.js](../example-app/sandbox/kafkaRx.js)
 
 ### Kafka Producer
 
@@ -60,5 +60,4 @@ node kafkaTx.js
 
 The producer will send a message every 2 seconds
 
-Kafka Producer Example Usage file location [../sandbox/kafkaTx.js](../sandbox/kafkaTx.js)
-
+Kafka Producer Example Usage file location [../example-app/sandbox/kafkaTx.js](../example-app/sandbox/kafkaTx.js)

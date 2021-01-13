@@ -16,11 +16,7 @@ on:
         required: true
       environment:
         description: 'The environment'
-        default: 'development'
-        required: true
-      branch:
-        description: 'Branch To Use'
-        default: 'develop'
+        default: 'uat'
         required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -33,9 +29,9 @@ jobs:
 
     strategy:
       matrix:
-        node: [ '12' ]
-    name: Using Node ${{ matrix.node }}
+        node: [ '14' ]
 
+    name: Deploying ${{ github.event.inputs.service }} - ${{ github.event.inputs.environment }}... Using Node ${{ matrix.node }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
@@ -45,16 +41,18 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
       - uses: actions/checkout@v2
+        # with:
+        #   ref: if_you_need_to_specify_a_branch
+      - name: Show checkout branch name
+        run: echo checking out on branch ${GITHUB_REF##*/}
+      - uses: actions/setup-node@v1
         with:
-          # set the checkout branch
-          ref: ${{ github.event.inputs.branch }}
-      # - uses: actions/setup-node@v2
-      #   with:
-      #     node-version: '12'
-      #     check-latest: true
-
+          node-version: ${{ matrix.node }}
+          check-latest: true
       - name: Make shell script executable
-        run: chmod +x ./${{ github.event.inputs.service }}/deploy.sh
+        run: |
+          chmod +x ./${{ github.event.inputs.service }}/update.sh
+          chmod +x ./${{ github.event.inputs.service }}/deploy.sh
       # Runs a single command using the runners shell
       - name: Initiate Deployment
         env:
@@ -67,7 +65,8 @@ jobs:
           # gcloud info
           echo "CI: $CI"
           echo "Service: ${{ github.event.inputs.service }}"
-          echo "Branch: ${{ github.event.inputs.branch }}"
+          echo "Branch: ${GITHUB_REF##*/}"
           echo "Environment: ${{ github.event.inputs.environment }}"
           cd ${{ github.event.inputs.service }}
+          ./update.sh
           ./deploy.sh ${{ github.event.inputs.environment }}

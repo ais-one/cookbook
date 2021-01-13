@@ -1,0 +1,120 @@
+/* global style */
+
+/*
+html, body {
+  height: 100%;
+  margin: 0;
+}
+*/
+
+/*
+.parent {
+  display: grid;
+  place-items: center;
+}
+*/
+
+/*
+.test-bg {
+  background-color: pink;
+}
+*/
+
+/*
+html, body, #app {
+  height: 100%;
+}
+#app {
+  min-height: 100%;
+}
+.main-content {
+}
+.footer {
+  margin-top: -12px;
+}
+@media screen and (max-width: 768px) {
+  #menu-toggle:checked + .nav-menu {
+    display: block;
+  }
+}
+*/
+
+.main {
+  position: absolute;
+  top: 56px;
+  margin: 0 !important;
+  bottom: 0px;
+  height: calc(100vh - 56px);
+}
+
+.main > .menu {
+  position: sticky;
+  display: inline-block;
+  vertical-align: top;
+  overflow-y: auto;
+  width: 200px;
+  top: 0;
+  bottom: 0;
+  padding: 30px;
+}
+
+.main > .content {
+  display: inline-block;
+  overflow-y: auto;
+  width: calc(100vw - 218px);
+  /* overflow-y: hidden; */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scroll {
+-ms-overflow-style: none;  /* IE and Edge */
+scrollbar-width: none;  /* Firefox */
+}
+
+/* width */
+.nice-scroll::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.nice-scroll::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 3px grey; 
+  border-radius: 5px;
+}
+ 
+/* Handle */
+.nice-scroll::-webkit-scrollbar-thumb {
+  background: lightgrey; 
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+.nice-scroll::-webkit-scrollbar-thumb:hover {
+  background: lightslategrey; 
+}
+
+nav.navbar {
+  background-color: #eeeeee;
+}
+
+/* .navbar-brand.left-burger {
+	align-items: flex-start;
+}
+
+.navbar-brand.left-burger .navbar-burger {
+	margin-left: 0;
+	margin-right: 0;
+} */
+
+/*
+@media screen and (max-width: 450px) {
+  #rc-imageselect, .g-recaptcha {
+    transform:scale(0.77);-webkit-transform:scale(0.77);transform-origin:0 0;-webkit-transform-origin:0 0;
+  }
+}
+*/

@@ -11,10 +11,11 @@ export const {
   // VITE_HTTPONLY_TOKEN = false, // true, // NOTUSED... replaced by VITE_WITH_CREDENTIALS
   VITE_WITH_CREDENTIALS = 'same-origin', // same-origin, include = cors
 
-  VITE_CALLBACK_URL
-  // VITE_GITHUB_CLIENT_ID
+  VITE_CALLBACK_URL,
+
+  BASE_URL // vite.config.js base property
 } = import.meta.env
 
 // PAGESIZE: process.env.VUE_APP_PAGESIZE || 4,
 // PAGESIZE_OPTS: process.env.VUE_APP_PAGESIZE_OPTS && process.env.VUE_APP_PAGESIZE_OPTS.length ? JSON.parse(process.env.VUE_APP_PAGESIZE_OPTS) : [4, 8, 10],
-// APP_VERSION: '0.4.4',
+// APP_VERSION: '0.4.5',

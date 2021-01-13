@@ -11,8 +11,9 @@ module.exports = {
     _id: { // primary key column, _id for mongodb (can cause error in mongodb)
       label: 'ID',
       auto: 'pk', // should override multiKey
-      table: 'hide',
-      filter: 'hide',
+      hide: true, // default is show column
+      filter: false, // default is exclude from filter
+      sort: false, // default is exclude from sort
       add: 'hide',
       input: 'link',
       options: { from: 'table-person', to: 'table-grade-slot', relatedCol: 'personId' }, // router link
@@ -21,13 +22,21 @@ module.exports = {
     firstName: {
       label: 'First Name',
       multiKey: true, // part of composite unique key - required!
-      type: 'string', // string, integer, decimal, datetime, date, time, boolean
-      input: 'textfield', // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime, upload, link - to child table
-      table: '', // truthy means hide column on table,
-      filter: '', // truthy means hide column on filter,
-      add: '', // 'hide', ''  - empty string means can show and edit
+
+      filter: true, // truthy means hide column on filter,
+      add: '', // 'hide', '' - empty string means can show and edit
       edit: '', // 'hide', 'readonly', '' - empty string means can show and edit
       default: '', // a default value (today? now?)
+
+      type: 'string', // string, integer, decimal, datetime, date, time, boolean (follows the DB datatype)
+      // OLD
+      input: 'textfield', // textfield, textarea, number, date, time, datetime, upload, autocomplete, select, multi-select, link - to child table
+      // NEW
+      ui: {
+        tag: 'input',
+        attrs: { pattern: '^[A-Za-z]+$', min: 2, maxlength: 20 } // pattern, min, max, step
+      },
+
       rules: {
         min: 2,
         regex: '^[A-Za-z]+$' // {10} // must be 10
@@ -37,8 +46,16 @@ module.exports = {
       label: 'Last Name',
       multiKey: true,
       type: 'string',
+      filter: true,
+
+      // OLD
       input: 'textfield',
-      // type ? text, password, etc...
+      // NEW
+      ui: {
+        tag: 'input',
+        attrs: { type: 'text', min: 0, max: 20 }
+      },
+
       rules: {
         min: 0, max: 20
       },
@@ -47,16 +64,29 @@ module.exports = {
     sex: { // single select
       label: 'Sex',
       type: 'string',
+      filter: true,
+      // OLD
       input: 'select',
       options: [
         { key: '', text: '' },
         { key: 'M', text: 'Male' },
         { key: 'F', text: 'Female' }
-      ]
+      ],
+      // NEW
+      ui: {
+        tag: 'input',
+        // input: 'select',
+        // options: [
+        //   { key: '', text: '' },
+        //   { key: 'M', text: 'Male' },
+        //   { key: 'F', text: 'Female' }
+        // ]  
+      }
     },
     subjects: { // multi select
       label: 'Subjects',
       type: 'string',
+      // OLD
       input: 'multi-select',
       options: [
         { key: 'EL1', text: 'English' },
@@ -64,12 +94,33 @@ module.exports = {
         { key: 'AM', text: 'A Maths' },
         { key: 'PHY', text: 'Chemistry' },
         { key: 'CHEM', text: 'Physics' }
-      ]
+      ],
+      // NEW
+      ui: {
+        tag: 'input',
+        // input: 'multi-select',
+        // options: [
+        //   { key: 'EL1', text: 'English' },
+        //   { key: 'EM', text: 'E Maths' },
+        //   { key: 'AM', text: 'A Maths' },
+        //   { key: 'PHY', text: 'Chemistry' },
+        //   { key: 'CHEM', text: 'Physics' }
+        // ]
+      }
     },
     age: { // integer
       label: 'Age',
       type: 'integer',
+      filter: true,
+
+      // OLD
       input: 'number',
+      // NEW
+      ui: {
+        tag: 'input',
+        attrs: { type: 'number', min: 10, max: 90, step: 1 }
+      },
+
       validation: {
         min: 10, max: 90
       }
@@ -77,22 +128,57 @@ module.exports = {
     gpa: { // decimal
       label: 'GPA',
       type: 'decimal',
+      filter: true,
+      // OLD
       input: 'number',
+      // NEW
+      ui: {
+        tag: 'input',
+        attrs: { type: 'number' }
+      },
       required: true
     },
     birthDate: { // date of birth - YYYY-MM-dd (no timezone - assume local - store as string)
       label: 'Brith date',
       type: 'string', // date
-      input: 'date'
+      filter: true,
+      // OLD
+      input: 'date',
+      // NEW
+      ui: {
+        tag: 'input',
+        attrs: { type: 'date' }
+      },
     },
     birthTime: { // HHmm (no timezone - assume local - store as string)
       label: 'Birth time',
       type: 'string', // time
-      input: 'time'
+      filter: true,
+      // OLD
+      input: 'time',
+      // NEW
+      ui: {
+        tag: 'input',
+        attrs: { type: 'time' }
+      }
+    },
+    birthDateTimeTz: { // date with time info
+      label: 'Datetime with TZ',
+      type: 'datetime',
+      filter: true,
+      // OLD
+      input: 'datetime',
+      // NEW
+      ui: {
+        tag: 'input',
+        attrs: { type: 'datetime-local' }
+      }
     },
     country: {
       label: 'Country', // key text...
       type: 'string',
+      filter: true,
+      // OLD
       input: 'autocomplete', // single select
       options: {
         parentCol: '', // use column to get parent value affecting a child
@@ -104,11 +190,17 @@ module.exports = {
         strict: true, // cannot enter own values, must be selected
         key: 'name',
         text: ''
+      },
+      // NEW
+      ui: {
+        tag: 'input'
       }
     },
     state: {
       label: 'State', // key text...
       type: 'string',
+      filter: true,
+      // OLD
       input: 'autocomplete',
       options: {
         parentCol: 'country',
@@ -119,36 +211,43 @@ module.exports = {
         limit:8,
         key: 'name',
         text: ''
+      },
+      // NEW
+      ui: {
+        tag: 'input'
       }
-    },
-    birthDateTimeTz: { // date with time info
-      label: 'Datetime with TZ',
-      type: 'datetime',
-      input: 'datetime'
     },
     website: { // test formatter?
       label: 'URL',
       type: 'string',
-      input: 'textfield'
+      // OLD
+      input: 'textfield',
+      // NEW
+      ui: {
+        tag: 'input'
+      }
     },
     remarks: { // text area
       label: 'Remarks',
       type: 'string',
-      input: 'textarea'
+      // OLD
+      input: 'textarea',
+      // NEW
+      ui: {
+        tag: 'textarea'
+      }
     },
     updated_by: {
       label: 'Updated By',
       auto: 'user', // autogenerated field... user = user id, ts = timestamp, pk = autogenerated primary key
-      table: 'hide',
-      filter: 'hide',
+      hide: true,
       add: 'hide',
       edit: 'readonly'
     },
     updated_at: {
       label: 'Updated At',
       auto: 'ts',
-      table: 'hide',
-      filter: 'hide',
+      hide: true,
       add: 'hide',
       edit: 'readonly'
     }

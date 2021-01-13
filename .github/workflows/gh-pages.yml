@@ -1,0 +1,80 @@
+# https://dev.to/rolanddoda/deploy-to-github-pages-like-a-pro-with-github-actions-4hdg
+# notes:
+# set package.json "homepage": "/name-of-your-project/",
+# set vite.config.js base: "/name-of-your-project",
+# set src/router.js: const routerHistory = createWebHistory('/name-of-your-project/')
+# on Github, select the branch of the Github pages site from project settings
+name: Deploy example-vite to github pages
+on:
+  push:
+    branches:
+      - master
+    # 'abc/def/**'
+    paths:
+      - 'example-vite/**'
+  # workflow_dispatch:
+  #   inputs:
+  #     branch:
+  #       description: 'Branch To Use'
+  #       default: 'develop'
+  #       required: true
+
+defaults:
+  run:
+    # abc/def
+    working-directory: example-vite
+
+jobs:
+  gh-pages-deploy:
+    name: Deploying to gh-pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js for use with actions
+        uses: actions/setup-node@v1
+        with:
+          version:  14.x
+      - name: Checkout branch
+        uses: actions/checkout@v2
+      - name: Clean install dependencies
+        run: npm ci
+      - name: Run deploy script
+        # remember to change user.name and user.email
+        run: |
+          git config user.name "Your username" && git config user.email "your email"
+          git checkout --orphan gh-pages
+          npm run build
+          git --work-tree dist add --all
+          git --work-tree dist commit -m 'Deploy'
+          git push origin HEAD:gh-pages --force
+          rm -r dist
+          git checkout -f master
+          git branch -D gh-pages
+
+
+# # https://cli.vuejs.org/guide/deployment.html#github-pages
+
+# #!/usr/bin/env sh
+
+# # abort on errors
+# set -e
+
+# # build
+# npm run build
+
+# # navigate into the build output directory
+# cd dist
+
+# # if you are deploying to a custom domain
+# # echo 'www.example.com' > CNAME
+
+# git init
+# git add -A
+# git commit -m 'deploy'
+
+# # if you are deploying to https://<USERNAME>.github.io
+# # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
+
+# # if you are deploying to https://<USERNAME>.github.io/<REPO>
+# # git push -f git@github.com:<USERNAME>/<REPO>.git master:gh-pages
+
+# cd -

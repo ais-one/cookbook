@@ -77,7 +77,7 @@
 
   async function uploadGoogle (files) {
     try {
-      const file = files[0]
+      const file = files[0] // later need to use file.name?
       const res = await fetch(`/api/gcp-sign`, {
         method: 'POST',
         headers,

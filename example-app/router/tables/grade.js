@@ -8,11 +8,10 @@ module.exports = {
     export: false,
     multiSelect: false,
     cols: {
-      _id: { // primary key column, _id for mongodb
+      _id: {
         label: 'ID',
         auto: 'pk',
-        table: 'hide',
-        filter: 'hide',
+        hide: true,
         add: 'hide',
         edit: 'readonly'
       },
@@ -24,12 +23,22 @@ module.exports = {
       subject: {
         label: 'Subject',
         type: 'string',
+        // OLD
         input: '',
+        // NEW
+        ui: {
+          tag: 'input'
+        },
       },
       grade: {
         label: 'Grade',
         type: 'string',
+        // OLD
         input: '',
+        // NEW
+        ui: {
+          tag: 'input'
+        },
       },
     },
     pk: '',
