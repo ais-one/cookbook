@@ -319,6 +319,7 @@ module.exports = express.Router()
     let errors = []
     let keys = []
     let currLine = 0
+    // console.log('up0', csv)
     csvParse(csv)
       .on('error', (e) => {
         console.log(e.message)
@@ -326,11 +327,13 @@ module.exports = express.Router()
       .on('readable', function () {
         let record
         while ( (record = this.read()) ) {
+          console.log('record', record)
           currLine++
           if (currLine === 1) {
             keys = [...record]
             continue // ignore first line
           }
+          // console.log('up1',record.length, table.nonAuto.length)
           if (record.length === table.nonAuto.length) { // ok
             if (record.join('')) {
               // if (permissionOk) {
@@ -342,7 +345,7 @@ module.exports = express.Router()
               errors.push({ currLine, data: record.join(','), msg: 'Empty Row' })
             }
           } else {
-            errors.push({ currLine, data: record.join(','), msg: 'Incorrenct Column Count' })
+            errors.push({ currLine, data: record.join(','), msg: 'Column Count Mismatch' })
           }
         }
       })
@@ -353,10 +356,12 @@ module.exports = express.Router()
           line++
           try {
             // also take care of auto populating fields?
+            // should add validation here
             const obj = {}
             for (let i=0; i<keys.length; i++) {
               obj[ keys[i] ] = row[i]
             }
+            // console.log(obj)
             if (table.db === 'knex') {
               writes.push(knex(table.name).insert(obj))
             } else {
@@ -368,6 +373,20 @@ module.exports = express.Router()
           }
         }
         await Promise.allSettled(writes)
-        return res.status(200).json({ errorCount: errors.length })
+        return res.status(200).json({ errorCount: errors.length, errors })
       })
   })
+
+/*
+const trx = await knex.transaction()
+for {
+  let err = false
+  try {
+    await knex(tableName).insert(data).transacting(trx)
+  } catch (e) {
+    err = true
+  }
+  if (err) await trx.rollback()
+  else await trx.commit()
+}
+*/

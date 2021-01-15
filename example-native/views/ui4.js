@@ -101,20 +101,28 @@ export default {
       table.items = rv.results
     }
 
-    const doUpload = (e) => {
+    const doUpload = async (e) => {
       console.log('doUpload', e.target.files)
-      /* one file...
-      lastModified: 1610553661046
-      lastModifiedDate: Thu Jan 14 2021 00:01:01 GMT+0800 (Singapore Standard Time) {}
-      name: "notes.txt"
-      size: 4326
-      type: "text/plain"
-      webkitRelativePath: ""
-      */
-      // document.querySelector('#upload').click()
-      // TBD file upload
-      // const file = document.querySelector('#mwc-fileupload').getFile()
-      // await t4t.upload(file)
+      try {
+        const { files } = e.target
+        if (files && files.length) {
+          const rv = await t4t.upload(files[0])
+          console.log(rv)
+          if (rv.data.errorCount) alert('Error: ' + JSON.stringify(rv.data.errors))
+          else alert('Upload OK')
+          await refreshTable()
+        }
+        /* one file...
+        lastModified: 1610553661046
+        lastModifiedDate: Thu Jan 14 2021 00:01:01 GMT+0800 (Singapore Standard Time) {}
+        name: "notes.txt"
+        size: 4326
+        type: "text/plain"
+        webkitRelativePath: ""
+        */
+      } catch (e) {
+        console.log('doUpload', e.toString())
+      }
     }
 
     // events

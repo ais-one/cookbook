@@ -170,13 +170,14 @@ async function remove(items) {
 }
 
 // uploads a single for csv processing
-async function upload(file) { // the file object - e.g. const file = document.querySelector('mwc-fileupload').getFile()
+async function upload(file) { // the file object
+  // TBD add exception handling
   if (file === null) return false
   const formData = new FormData()
   formData.append('csv-file', file) // call it file
   // console.log('zzz', formData instanceof FormData)
   // for(const pair of formData.entries()) console.log(pair[0], pair[1])
-  await http.post('/api/t4t/upload/' + tableName, formData)
+  return await http.post('/api/t4t/upload/' + tableName, formData)
 
   // formData.append('textdata', JSON.stringify({ name: 'name', age: 25 }))
   // const res = await fetch('/api/upload', {

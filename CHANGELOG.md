@@ -1,7 +1,7 @@
 ### Version 0.4.6
 - [chore] update packages & cleanup & work on improving documentation
+- [example-native] make create, update, delete, upload API work in example-native
 - [inprogress]
-  - [example-native] make create, update, delete API work in example-native (upload - tbd)
   - [common-lib/esm/bwc-t4t-form.js] - add select tag, and other custom tags, handle file inputs
   - [example-vite] remove CrudTable.vue, use bwc-table in example-native
   - [example-vite] cypress e2e testing
