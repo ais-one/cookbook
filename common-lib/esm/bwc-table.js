@@ -47,7 +47,7 @@
 // EVENTS
 // rowclick { detail: { row, col, data }
 // triggered = sort / page / page-size / reload { detail: { name, sortKey, sortDir, page, pageSize, filters: [ { key, op, val, andOr } ] } }
-// cmd = show/hide filter, reload, add, delete, upload, download, goback (if parentKey != null)
+// cmd = show/hide filter, reload, add, del, import, export, goback (if parentKey != null)
 // checked = [indexes checked...]
 
 // COLUMN PROPERTIES
@@ -268,9 +268,9 @@ class Table extends HTMLElement {
 
     this.querySelector('#cmd-reload').onclick = () => this._trigger('reload') 
     this.querySelector('#cmd-add').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'add' } }))
-    this.querySelector('#cmd-del').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'del', items: this.#checkedRows } }))
+    this.querySelector('#cmd-del').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'del', checkedRows: this.#checkedRows } }))
     this.querySelector('#cmd-import').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'import' } }))
-    this.querySelector('#cmd-export').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'export', items: this.#checkedRows } }))
+    this.querySelector('#cmd-export').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'export', checkedRows: this.#checkedRows } }))
     this.querySelector('#page-dec').onclick = (e) => {
       if (this.page > 1) {
         this.page -= 1

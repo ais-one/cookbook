@@ -21,7 +21,7 @@
     "deploy:unix": "deploy.sh $npm_package_config_env"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.6",
+    "@apollo/client": "^3.3.7",
     "@material/mwc-button": "^0.20.0",
     "@material/mwc-dialog": "^0.20.0",
     "@material/mwc-drawer": "^0.20.0",
@@ -45,6 +45,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.0.5",
     "@vue/compiler-sfc": "^3.0.5",
+    "cypress": "^6.2.1",
     "eslint": "^7.17.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-config-standard": "^16.0.2",
@@ -55,6 +56,6 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.4.1",
     "prettier": "^2.2.1",
-    "vite": "^2.0.0-beta.26"
+    "vite": "^2.0.0-beta.29"
   }
 }
