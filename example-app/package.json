@@ -37,7 +37,7 @@
   "dependencies": {
     "@google-cloud/storage": "^5.7.2",
     "agenda": "^3.1.0",
-    "apollo-server-express": "^2.19.1",
+    "apollo-server-express": "^2.19.2",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -60,12 +60,12 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
-    "objection": "^2.2.6",
+    "objection": "^2.2.7",
     "otplib": "^12.0.1",
     "passport": "^0.4.1",
     "passport-saml": "^2.0.2",
     "selfsigned": "^1.10.8",
-    "swagger-jsdoc": "^5.0.1",
+    "swagger-jsdoc": "^6.0.1",
     "swagger-ui-express": "^4.1.6",
     "web-push": "^3.4.4",
     "ws": "^7.4.2"

@@ -255,6 +255,7 @@ module.exports = express.Router()
       const col = table.cols[key]
       if (col.auto && col.auto === 'user') body[key] = 'TBD USER ID'
       if (col.auto && col.auto === 'ts') body[key] = new Date()
+      if (col.auto && col.auto === 'pk' && key in body) delete body[key]
       // TRANSFORM INPUT
       body[key] = table.cols[key].type === 'integer' || table.cols[key].type === 'number' ? Number(body[key])
       : table.cols[key].type === 'datetime' || table.cols[key].type === 'date' || table.cols[key].type === 'time' ? (body[key] ? new Date(body[key]) : null)
