@@ -234,7 +234,7 @@ module.exports = {
       input: 'textarea',
       // NEW
       ui: {
-        tag: 'input' // textarea
+        tag: 'textarea' // textarea
       }
     },
     updated_by: {

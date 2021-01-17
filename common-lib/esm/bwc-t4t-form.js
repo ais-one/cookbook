@@ -23,6 +23,17 @@ const bulma = {
       { tag: 'p', className: 'help is-danger', errorLabel: true }
     ]
   }, // end input
+  textarea: {
+    tag: 'div',
+    className: 'field',
+    children: [
+      { tag: 'label', className: 'field' },
+      { tag: 'div', className: 'control', children: [
+        { tag: 'textarea', className: 'textarea' },
+      ] },
+      { tag: 'p', className: 'help is-danger', errorLabel: true }
+    ]
+  },
   select: { // ugly multiple
     tag: 'div',
     className: 'field',
@@ -55,8 +66,14 @@ const bootstrap = {
       { tag: 'div', className: 'form-text', errorLabel: true }
     ]
   },
-  // <textarea class="form-control" rows="3"></textarea>
-  // ugly multiple
+  textarea: {
+    tag: 'div',
+    children: [
+      { tag: 'label', className: 'form-label' },
+      { tag: 'textarea', className: 'form-control' },
+      { tag: 'div', className: 'form-text', errorLabel: true }
+    ]
+  },
   select: {
     tag: 'div',
     children: [
@@ -76,7 +93,14 @@ const muicss = {
       { tag: 'input' },
     ]
   },
-  // <textarea placeholder="Textarea"></textarea>
+  textarea: {
+    tag: 'div',
+    className: 'mui-textfield',
+    children: [
+      { tag: 'label', children: [ { tag: 'span', className: 'mui--text-danger', errorLabel: true } ] },
+      { tag: 'textarea' },
+    ]
+  },
   // no multiple
   select: {
     tag: 'div',
@@ -184,10 +208,8 @@ class T4tForm extends HTMLElement {
   
   // attributeChangedCallback(name, oldVal, newVal) {
   //   switch (name) {
-  //     case 'mode':
-  //       break
-  //     default:
-  //       break
+  //     case 'mode': break
+  //     default: break
   //   }
   // }
 
@@ -203,6 +225,7 @@ class T4tForm extends HTMLElement {
 
     // console.log(k, c)
     const { tag, className, attrs, children, errorLabel } = node
+    // console.log(tag, className, attrs)
     const elementTag = (tag === 'input') ? c.ui.tag : tag
     const el = document.createElement(elementTag)
 
@@ -213,22 +236,32 @@ class T4tForm extends HTMLElement {
     if (errorLabel) {
       this.#xcols[k].errorEl = el
     }
-
     
-    if (tag === 'input') { // its an input
+    if (['input', 'textarea', 'select', 'autocomplete'].includes(elementTag)) { // its an input
       if (c[mode] === 'readonly') el.setAttribute('disabled', true) // select is disabled, as it applies to more html tags
-
-      // set the value
       if (c.required) el.setAttribute('required', true)
   
-      if (this.mode === 'add') {
+      if (this.mode === 'add') { // set the value
         el.value = c.default || ''
       } else if (this.mode === 'edit') {
         el.value = this.#record[k] || ''
       }
   
-      // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime, upload, link - to child table
-      el.setAttribute('type', c?.ui?.attrs?.type || 'text')
+      // input - text, integer, decimal, date, time, datetime, file(upload), TBD textarea...
+      // select
+      // textarea
+      // textfield, textarea, autocomplete, select, multi-select, link - to child table
+      if (elementTag === 'select') {
+
+      }
+
+      const inputAttrs = c?.ui?.attrs // set col specific attributes for the input
+      if (inputAttrs) {
+        for (let key in inputAttrs) {
+          el.setAttribute(key, inputAttrs[key])
+        }
+      }
+      // el.setAttribute('type', c?.ui?.attrs?.type || 'text')
       this.#xcols[k].el = el
     }  
 

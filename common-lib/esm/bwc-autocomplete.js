@@ -86,14 +86,16 @@ class AutoComplete extends HTMLElement {
       }
     }
 
+    // console.log('setup stuff', this.required, this.disabled, this.inputClass)
+
     el.value = this.value
     el.className = this.inputClass || 'input' // default to bulma?
 
-    console.log('setup stuff', this.required, this.disabled, this.inputClass)
     if (this.required) el.setAttribute('required', '')
     else el.removeAttribute('required')
     if (this.disabled) el.setAttribute('disabled', '')
     else el.removeAttribute('disabled')
+
     this.setList(this.items)
   }
 
