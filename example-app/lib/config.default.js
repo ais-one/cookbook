@@ -64,9 +64,9 @@ global.CONFIG.MONGO_OPTIONS = {
 }
 
 // agendamq - requires mongodb
-global.CONFIG.JOB_MONGO_URL = 'mongo' // if mongo, use MONGO_URL
+global.CONFIG.JOB_MONGO_URL = '' // if falsy, use MONGO_URL
 global.CONFIG.JOB_COLLECTION = 'agendaJobs' // collection name
-global.CONFIG.JOB_TYPES = '' // 'email', // 'email,nexmo,telegram' //  agenda message queue job types, comma seperated , find the path to agenda job
+global.CONFIG.JOB_TYPES = 'email' // 'email', // 'email,nexmo,telegram' //  agenda message queue job types, comma seperated , find the path to agenda job
 
 global.CONFIG.KNEXFILE = null // knexfile
 global.CONFIG.GCP_SERVICE_KEY = null // GCP SERVICE KEY { }
@@ -114,6 +114,7 @@ global.CONFIG.WEB_STATIC = [  // serve website from folder, blank if do not serv
   // options does not seem to work
   // check - https://expressjs.com/en/4x/api.html#express.static
   { folder: '../common-lib/esm', url: '/esm' },
+  { folder: '../example-amp', url: '/amp', options: { extensions: ['html'], index: false } },
   { folder: '../example-native', url: '/native', options: { extensions: ['html'], index: false } },
   { folder: '../example-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
   { folder: '../example-webpack/dist', url: '/webpack', options: { extensions: ['html'], index: false } },

@@ -9,6 +9,7 @@
 //
 // events
 const bulma = {
+  // the keys are from t4t cols.<col>.ui.tag
   input: {
     tag: 'div',
     className: 'field',
@@ -193,13 +194,17 @@ class T4tForm extends HTMLElement {
   get mode() { return this.getAttribute('mode') }
   set mode(val) { this.setAttribute('mode', val) }
 
+  // k = column key
+  // c = column object
+  // node is 
   formEl (node, k, c) {
     const mode = this.mode
     if (c[mode] === 'hide') return null
 
-    // console.log(node)
+    // console.log(k, c)
     const { tag, className, attrs, children, errorLabel } = node
-    const el = document.createElement(tag)
+    const elementTag = (tag === 'input') ? c.ui.tag : tag
+    const el = document.createElement(elementTag)
 
     if (!this.#xcols[k]) this.#xcols[k] = { }
 
@@ -209,21 +214,23 @@ class T4tForm extends HTMLElement {
       this.#xcols[k].errorEl = el
     }
 
-    if (tag === 'input') { // set the value
-      if (c[mode] === 'readonly') el.setAttribute('readonly', true)
+    
+    if (tag === 'input') { // its an input
+      if (c[mode] === 'readonly') el.setAttribute('disabled', true) // select is disabled, as it applies to more html tags
 
+      // set the value
       if (c.required) el.setAttribute('required', true)
-
+  
       if (this.mode === 'add') {
         el.value = c.default || ''
       } else if (this.mode === 'edit') {
         el.value = this.#record[k] || ''
       }
-
+  
       // textfield, textarea, autocomplete, integer, decimal, select, multi-select, date, time, datetime, upload, link - to child table
       el.setAttribute('type', c?.ui?.attrs?.type || 'text')
       this.#xcols[k].el = el
-    }
+    }  
 
     if (className) el.className = className // set classes
     if (attrs) {
@@ -258,8 +265,11 @@ class T4tForm extends HTMLElement {
           const c = cols[col]
           // console.log('nonauto', c, this.mode)
           if ((this.mode === 'add' && c.add !== 'hide') || (this.mode === 'edit' && c.edit !== 'hide')) {
-            const fieldEl = this.formEl(framework['input'], col, c)
-            el.appendChild(fieldEl)
+            const tagKey = c?.ui?.tag
+            if (tagKey) {
+              const fieldEl = this.formEl(framework[tagKey], col, c)
+              el.appendChild(fieldEl)
+            }
           }
         } else {
           console.log('auto', col)
@@ -324,21 +334,6 @@ customElements.define('bwc-t4t-form', T4tForm) // or bwc-form-t4t
               type="text"
               v-model="recordObj[showForm][col]"
             ></mwc-textfield>
-          </template>
-          <template v-else-if="tableCfg.cols[col][showForm] === 'readonly'">
-            <mwc-textfield disabled class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
-          </template>
-          <template v-else-if="tableCfg.cols[col].input === 'number'">
-            <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="number" v-model="recordObj[showForm][col]"></mwc-textfield>
-          </template>
-          <template v-else-if="tableCfg.cols[col].input === 'datetime'">
-            <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="datetime-local" v-model="recordObj[showForm][col]"></mwc-textfield>
-          </template>
-          <template v-else-if="tableCfg.cols[col].input === 'date'">
-            <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="date" v-model="recordObj[showForm][col]"></mwc-textfield>
-          </template>
-          <template v-else-if="tableCfg.cols[col].input === 'time'">
-            <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="time" v-model="recordObj[showForm][col]"></mwc-textfield>
           </template>
           <template v-else-if="tableCfg.cols[col].input === 'select'">
             <mwc-select :key="col + index" :label="tableCfg.cols[col].label" :value="recordObj[showForm][col]" @change="(e) => (recordObj[showForm][col] = e.target.value)">

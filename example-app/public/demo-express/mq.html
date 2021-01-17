@@ -20,7 +20,7 @@
 <script>
 async function mq() {
   try {
-    const res = await fetch('/api/mq', { method: 'GET' })
+    const res = await fetch('/api/mq-agenda', { method: 'GET' })
     const rv = await res.json()
     console.log(rv)
   } catch (e) {

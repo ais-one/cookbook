@@ -6,13 +6,14 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x)
 [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-> **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
+> **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite, AMP
 
 Latest Version [0.4.6](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.6) - Released 2021 Jan 31 0035 +8GMT
 
 # Features
 
 - Frontend Examples
+  - [AMP](https://github.com/ais-one/vue-crud-x/tree/master/example-amp): AMP (Accelerated Mobile Page) application sample
   - [Vanilla JS, ES Modules, Vue3 & bulma](https://github.com/ais-one/vue-crud-x/tree/master/example-native): No bundler, scalable VueJS Application, example codes (signed uploads, JWT refresh token, OTP), recaptcha, Github OAuth2 login, web component table and form
   - [Vite, Vue3 & mwc, vaadin](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js), JWT refresh token, 2FA GA OTP, SAML, Websockets
   - [SPA, Vue2 & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-webpack): Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS

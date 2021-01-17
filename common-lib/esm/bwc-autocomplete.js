@@ -5,7 +5,9 @@ Only able to handle single selection due to nature of datalist not able to have 
 attributes:
 - value (via v-model)
 - required
+- disabled
 - listid (needed if using more than 2 components on the same page)
+- input-class (style the input)
 
 properties:
 - items Array or String or Object
@@ -41,7 +43,7 @@ const autoComplete = (e) => {
 */
 const template = document.createElement('template')
 template.innerHTML = /*html*/`
-<input class="input" type="text" list="json-datalist" placeholder="search..." autocomplete="off">
+<input type="text" list="json-datalist" placeholder="search..." autocomplete="off">
 <datalist id="json-datalist"></datalist>
 `
 
@@ -85,7 +87,13 @@ class AutoComplete extends HTMLElement {
     }
 
     el.value = this.value
-    if (this.required !== null) el.setAttribute('required', '')
+    el.className = this.inputClass || 'input' // default to bulma?
+
+    console.log('setup stuff', this.required, this.disabled, this.inputClass)
+    if (this.required) el.setAttribute('required', '')
+    else el.removeAttribute('required')
+    if (this.disabled) el.setAttribute('disabled', '')
+    else el.removeAttribute('disabled')
     this.setList(this.items)
   }
 
@@ -103,35 +111,57 @@ class AutoComplete extends HTMLElement {
         break
       }
       case 'required': {
-        if (el) el.setAttribute('required', newVal)
+        if (el) el.setAttribute('required', '')
         break
       }
+      case 'disabled': {
+        if (el) el.setAttribute('disabled', '')
+        break
+      }
+      case 'input-class': {
+        if (el) el.className = newVal
+        break
+      }
+      default:
+        break
     }
   }
 
   static get observedAttributes() {
-    return ['value', 'required', 'listid']
+    return ['value', 'required', 'listid', 'disabled', 'input-class']
   }
 
   get value() { return this.getAttribute('value') }
   set value(val) { this.setAttribute('value', val) }
 
-  get required() { return this.getAttribute('required') }
-  set required(val) { this.setAttribute('required', val) }
-
-  get listid() {
-    return this.getAttribute('listid')
+  get required() { return this.hasAttribute('required') }
+  set required(val) {
+    if (val) {
+      this.setAttribute('required', '')
+    } else {
+      this.removeAttribute('required')
+    }
   }
 
-  set listid(val) {
-    this.setAttribute('listid', val)
+  get listid() { return this.getAttribute('listid') }
+  set listid(val) { this.setAttribute('listid', val) }
+
+  get disabled() { return this.hasAttribute('disabled') }
+  set disabled(val) {
+    if (val) {
+      this.setAttribute('disabled', '')
+    } else {
+      this.removeAttribute('disabled')
+    }
   }
+
+  get inputClass() { return this.getAttribute('input-class') }
+  set inputClass(val) { this.setAttribute('input-class', val) }
 
   // properties
   get items() {
     return this.#items
   }
-
   set items(val) {
     // console.log('set items', val.length)
     this.#items = val

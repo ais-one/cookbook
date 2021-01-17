@@ -33,7 +33,7 @@
     "@material/mwc-textfield": "^0.20.0",
     "@material/mwc-top-app-bar-fixed": "^0.20.0",
     "@vaadin/vaadin-grid": "^5.7.7",
-    "echarts": "^5.0.0",
+    "echarts": "^5.0.1",
     "graphql": "^15.4.0",
     "graphql-tag": "^2.11.0",
     "leaflet": "^1.7.1",
@@ -43,10 +43,10 @@
     "vuex": "^4.0.0-rc.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.0.5",
+    "@vitejs/plugin-vue": "^1.0.6",
     "@vue/compiler-sfc": "^3.0.5",
     "cypress": "^6.2.1",
-    "eslint": "^7.17.0",
+    "eslint": "^7.18.0",
     "eslint-config-prettier": "^7.1.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
@@ -56,6 +56,6 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.4.1",
     "prettier": "^2.2.1",
-    "vite": "^2.0.0-beta.29"
+    "vite": "^2.0.0-beta.30"
   }
 }

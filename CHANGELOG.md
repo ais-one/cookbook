@@ -1,6 +1,8 @@
 ### Version 0.4.6
 - [chore] update packages & cleanup & work on improving documentation
 - [example-native] make create, update, delete, upload API work in example-native
+- [common-lib/esm/bwc-autocomplete.js] add disabled attribute and input-class (for styling to bulma, bootstrap, muicss) attribute
+- [example-amp] add sample AMP application
 - [inprogress]
   - [common-lib/esm/bwc-t4t-form.js] - add select tag, and other custom tags, handle file inputs
   - [example-vite] remove CrudTable.vue, use bwc-table in example-native

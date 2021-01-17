@@ -7,7 +7,13 @@ const template = /*html*/`
   <div class="field">
     <div class="control">
       <label for="" class="label">Find Something</label>
-      <bwc-autocomplete listid="single" required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete>
+      <bwc-autocomplete input-class="input" listid="single" required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete>
+    </div>
+  </div>
+  <div class="field">
+    <div class="control">
+      <label for="" class="label">Find Something - Disabled</label>
+      <bwc-autocomplete disabled listid="single-disabled" required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete>
     </div>
   </div>
 

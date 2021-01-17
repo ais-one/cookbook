@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^5.7.2",
-    "agenda": "^3.1.0",
+    "agenda": "^4.0.1",
     "apollo-server-express": "^2.19.2",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
@@ -73,13 +73,13 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.3",
-    "eslint": "^7.17.0",
-    "husky": "^4.3.7",
+    "eslint": "^7.18.0",
+    "husky": "^4.3.8",
     "jest": "^26.6.3",
     "node-mocks-http": "^1.10.0",
     "nodemon": "^2.0.7",
     "sqlite3": "^5.0.1",
-    "supertest": "^6.0.1"
+    "supertest": "^6.1.1"
   },
   "husky": {
     "hooks": {
