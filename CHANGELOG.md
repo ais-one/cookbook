@@ -2,9 +2,10 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [example-native] make create, update, delete, upload API work in example-native
 - [common-lib/esm/bwc-autocomplete.js] add disabled attribute and input-class (for styling to bulma, bootstrap, muicss) attribute
+- [common-lib/esm/bwc-t4t-form.js] - handle select & textarea tag
 - [example-amp] add sample AMP application
 - [inprogress]
-  - [common-lib/esm/bwc-t4t-form.js] - add select tag, and other custom tags, handle file inputs
+  - [common-lib/esm/bwc-t4t-form.js] - autocomplete, and add (file input functionlity on submit...)
   - [example-vite] remove CrudTable.vue, use bwc-table in example-native
   - [example-vite] cypress e2e testing
   - [example-vite] migrate example-webpack vue-crud-x table examples to vite

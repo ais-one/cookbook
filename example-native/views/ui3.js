@@ -5,7 +5,7 @@ const template = /*html*/`
     :record="form.record"
     mode="edit"
     @submit="submit"
-    style="--bwc-t4t-form-height: calc(100vh - 300px);"
+    style="--bwc-t4t-form-height: calc(100vh - 150px);"
   ></bwc-t4t-form>
 </div>
 `
@@ -31,7 +31,7 @@ export default {
       form.config = await t4t.getConfig()
       form.record = await t4t.findOne('5f3a35197dc9e61b64e0dea9')
       Object.assign(test, form.config)
-      console.log(test)
+      console.log(test, form.record)
       // for (var key in test) delete test[key]
       // Object.assign(test, {})
       // console.log(test.length)

@@ -1,3 +1,7 @@
+// TBD fix
+// onsubmit --> multi select
+// error messages on submit
+
 // attributes
 // - mode: add, edit
 //
@@ -14,7 +18,7 @@ const bulma = {
     tag: 'div',
     className: 'field',
     children: [
-      { tag: 'label', className: 'field' },
+      { tag: 'label', className: 'label' },
       { tag: 'div', className: 'control', children: [
         { tag: 'input', className: 'input' },
         // { tag: 'textarea', className: 'textarea is-primary' }
@@ -27,7 +31,7 @@ const bulma = {
     tag: 'div',
     className: 'field',
     children: [
-      { tag: 'label', className: 'field' },
+      { tag: 'label', className: 'label' },
       { tag: 'div', className: 'control', children: [
         { tag: 'textarea', className: 'textarea' },
       ] },
@@ -45,7 +49,7 @@ const bulma = {
           { tag: 'label', className: 'label' },
           {
             tag: 'div',
-            className: 'select',
+            className: 'select', // need to add is-multiple for bulma
             children: [
               { tag: 'select' },
             ]
@@ -101,7 +105,6 @@ const muicss = {
       { tag: 'textarea' },
     ]
   },
-  // no multiple
   select: {
     tag: 'div',
     className: 'mui-select',
@@ -233,39 +236,62 @@ class T4tForm extends HTMLElement {
 
     if (tag === 'label') el.innerText = c.label // set the label
 
-    if (errorLabel) {
-      this.#xcols[k].errorEl = el
+    const inputAttrs = c?.ui?.attrs // set col specific attributes for the input
+    if (inputAttrs) {
+      for (let key in inputAttrs) {
+        el.setAttribute(key, inputAttrs[key])
+      }
     }
-    
+  
+    // DONE: input - text, integer, decimal, date, time, datetime, file(upload)
+    // DONE: select (single and multiple, limited options)
+    // DONE: textarea
+    // TODO: input - file(upload) functionality
+    // TODO: autocomplete (multiple with tags)
+
     if (['input', 'textarea', 'select', 'autocomplete'].includes(elementTag)) { // its an input
       if (c[mode] === 'readonly') el.setAttribute('disabled', true) // select is disabled, as it applies to more html tags
       if (c.required) el.setAttribute('required', true)
-  
-      if (this.mode === 'add') { // set the value
-        el.value = c.default || ''
-      } else if (this.mode === 'edit') {
-        el.value = this.#record[k] || ''
-      }
-  
-      // input - text, integer, decimal, date, time, datetime, file(upload), TBD textarea...
-      // select
-      // textarea
-      // textfield, textarea, autocomplete, select, multi-select, link - to child table
-      if (elementTag === 'select') {
 
-      }
-
-      const inputAttrs = c?.ui?.attrs // set col specific attributes for the input
-      if (inputAttrs) {
-        for (let key in inputAttrs) {
-          el.setAttribute(key, inputAttrs[key])
+      if (elementTag === 'select') { // set the options
+        // console.log('select', el.value, k, this.#record[k], this.mode)
+        const selectString = (this.mode === 'add') ? c.default || '' : this.#record[k] || ''
+        const selected = !selectString ? [] : (c?.ui?.attrs?.multiple) ? selectString.split(',') : [selectString]
+        console.log('selected', selected)
+        const options = c?.ui?.options
+        for (let option of options) {
+          const optEl = document.createElement('option')
+          optEl.value = option.key
+          optEl.innerText = option.text
+          if (selected.includes(option.key)) {
+            optEl.selected = true // set selected
+          }
+          el.appendChild(optEl)
         }
+      } else { // other input
+        if (this.mode === 'add') { // set the value
+          el.value = c.default || ''
+        } else if (this.mode === 'edit') {
+          el.value = this.#record[k] || ''
+        }  
       }
-      // el.setAttribute('type', c?.ui?.attrs?.type || 'text')
-      this.#xcols[k].el = el
+  
+      this.#xcols[k].el = el // set input element
     }  
 
+    if (errorLabel) {
+      this.#xcols[k].errorEl = el
+    }
+
     if (className) el.className = className // set classes
+
+    // Bulma Specific Note (TBD tmprove this): if className has 'select' - it is bulma need to set is-multiple here if is multi select
+    if (node?.className && node.className.includes('select')) {
+      if (c?.ui?.attrs?.multiple) {
+        el.classList.add('is-multiple')
+      }
+    }
+
     if (attrs) {
       for (let key in attrs) {
         el.setAttribute(key, attrs[key])
@@ -285,10 +311,10 @@ class T4tForm extends HTMLElement {
       // const el = this.querySelector('#form-wrapper')
       const el = this.querySelector('.content-area')
       if (!el) {
-        console.log('no content-area')
+        // console.log('no content-area')
         return
       } else {
-        console.log('content-area found')
+        // console.log('content-area found')
       }
       el.innerHTML = ''
       const { cols, auto, pk, required, multiKey } = this.#config
@@ -305,7 +331,7 @@ class T4tForm extends HTMLElement {
             }
           }
         } else {
-          console.log('auto', col)
+          // console.log('auto', col)
         }
       }
 
@@ -326,8 +352,18 @@ class T4tForm extends HTMLElement {
         // console.log(this.#record)
         if (!error) {
           for (let col in this.#xcols) {
-            if (this.#xcols[col].el) {
-              this.#record[col] = this.#xcols[col].el.value
+            console.log('this.#xcols', this.#xcols[col].el.tagName)
+            const inputEl = this.#xcols[col].el
+            if (inputEl) {
+              if (inputEl.tagName.toLowerCase() === 'select') { // select
+                const selected = []
+                for (let opt of inputEl.selectedOptions) {
+                  selected.push(opt.value)
+                }
+                this.#record[col] = selected.join(',')
+              } else { // input
+                this.#record[col] = inputEl.value
+              }
             }
           }
           this.dispatchEvent(new CustomEvent('submit', { detail: { data: this.#record } }))
@@ -368,11 +404,6 @@ customElements.define('bwc-t4t-form', T4tForm) // or bwc-form-t4t
               v-model="recordObj[showForm][col]"
             ></mwc-textfield>
           </template>
-          <template v-else-if="tableCfg.cols[col].input === 'select'">
-            <mwc-select :key="col + index" :label="tableCfg.cols[col].label" :value="recordObj[showForm][col]" @change="(e) => (recordObj[showForm][col] = e.target.value)">
-              <mwc-list-item v-for="(option, index2) of tableCfg.cols[col].options" :value="option.key" :key="col + index + '-' + index2">{{ option.text }}</mwc-list-item>
-            </mwc-select>
-          </template>
           <template v-else-if="tableCfg.cols[col].input === 'multi-select'">
             <mwc-multiselect :required="isRequired(col)" :key="col + index" :label="tableCfg.cols[col].label" v-model="recordObj[showForm][col]" :options="JSON.stringify(tableCfg.cols[col].options)"></mwc-multiselect>
           </template>
@@ -385,6 +416,4 @@ customElements.define('bwc-t4t-form', T4tForm) // or bwc-form-t4t
         </template>
       </template>
     </div>
-    <mwc-button type="button" @click="showForm = ''">Cancel</mwc-button>
-    <mwc-button type="button" @click="doAddOrEdit" :disabled="loading">Confirm</mwc-button>
 */
