@@ -56,7 +56,8 @@
 // key: 'id',
 // filter: false,
 // sort: false,
-// render: (val, key, row) => `<a class='button' onclick='this.dispatchEvent(new CustomEvent("testevent", { detail: ${JSON.stringify({ val, key, row })} }))'>${val}</a>`
+// render: (val, key, row, el) => `<a class='button' onclick='this.dispatchEvent(new CustomEvent("testevent", { detail: ${JSON.stringify({ val, key, row })} }))'>${val}</a>`
+// cell value, column key, row data, td element
 
 // NOT NEEDED
 // loading state and loading spinner
@@ -706,7 +707,7 @@ class Table extends HTMLElement {
               // if (sticky) td.setAttribute('scope', 'row') // not used yet, need to calculate left property value
               if (width) td.style.width = `${width}px`
               if (render) {
-                td.innerHTML = render(row[key], key, row) // value, key, row
+                td.innerHTML = render(row[key], key, row, td) // value, key, row - need to sanitize, el (the td element)
               } else {
                 td.appendChild(document.createTextNode(row[key]))
               }

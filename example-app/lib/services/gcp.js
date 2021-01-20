@@ -37,23 +37,29 @@ if (!storage && GCP_SERVICE_KEY && GCP_SERVICE_KEY.project_id) {
 exports.gcpGetSignedUrl = async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
   // action "read" (HTTP: GET), "write" (HTTP: PUT), or "delete" (HTTP: DELETE),
   const bucket = storage.bucket(req.body.bucket || GCP_DEFAULT_BUCKET)
-  const action = req.body.action || 'write'
-  const fileName = req.body.filename || 'my-file.txt'
-  const options = {
-    version: 'v4',
-    action,
-    expires: Date.now() + (120 * 60 * 1000) // 120 minutes
+  const action = req.body.action || '' // 'read' or 'write'
+  const fileName = req.body.filename || ''
+  if (!action || !fileName) return res.status(400).json({ error: 'filename and action required'})
+  try {
+    const options = {
+      version: 'v4',
+      action,
+      expires: Date.now() + (120 * 60 * 1000) // 120 minutes
+    }
+    // The option below will allow temporary uploading of the file with outgoing Content-Type: application/octet-stream header.
+    if (action === 'write') options.contentType = 'application/octet-stream'
+  
+    // Get a v4 signed URL for uploading file
+    const [url] = await bucket.file(fileName).getSignedUrl(options)
+    // console.log(url)
+    // // curl command for uploading using signed URL
+    // console.log("curl -X PUT -H 'Content-Type: application/octet-stream' " + `--upload-file my-file '${url}'`)
+    // curl -X PUT -H 'Content-Type: application/octet-stream' --upload-file my-file 'http://www.test.com'  
+    return res.status(200).json({ url })
+  } catch (e) {
+    // console.log('Error', 'gcpGetSignedUrl', e.toString())
+    return res.status(500).json({ error: e.toString() })
   }
-  // The option below will allow temporary uploading of the file with outgoing Content-Type: application/octet-stream header.
-  if (action === 'write') options.contentType = 'application/octet-stream'
-
-  // Get a v4 signed URL for uploading file
-  const [url] = await bucket.file(fileName).getSignedUrl(options)
-  // console.log(url)
-  // // curl command for uploading using signed URL
-  // console.log("curl -X PUT -H 'Content-Type: application/octet-stream' " + `--upload-file my-file '${url}'`)
-  // curl -X PUT -H 'Content-Type: application/octet-stream' --upload-file my-file 'http://www.test.com'
-  res.status(200).json({ url })
 }
 
 /*

@@ -109,23 +109,9 @@ global.CONFIG.CORS_OPTIONS = { // set withCredentials === true at Frontend
 
 global.CONFIG.PROXY_WWW_ORIGIN = '' // 'http://127.0.0.1:8080', // used by proxy middleware
 
-// serve static content - folder is relative to calling package.json
-global.CONFIG.WEB_STATIC = [  // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
-  // options does not seem to work
-  // check - https://expressjs.com/en/4x/api.html#express.static
-  { folder: '../common-lib/esm', url: '/esm' },
-  { folder: '../example-amp', url: '/amp', options: { extensions: ['html'], index: false } },
-  { folder: '../example-native', url: '/native', options: { extensions: ['html'], index: false } },
-  { folder: '../example-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
-  { folder: '../example-webpack/dist', url: '/webpack', options: { extensions: ['html'], index: false } },
-  { folder: APP_PATH + '/lib/esm', url: '/js' },
-  { folder: APP_PATH + '/public/demo-express', url: '/' }
-]
-
-global.CONFIG.UPLOAD_STATIC = [
-  { folder: APP_PATH + '/uploads', url: '/uploads' },
-  { folder: '', url: '' }
-]
+// serve static content - folder is relative to calling package.json - https://expressjs.com/en/4x/api.html#express.static
+global.CONFIG.WEB_STATIC = null
+global.CONFIG.UPLOAD_STATIC = null
 
 global.CONFIG.JWT_CERTS = null // { key: '', cert: '' }
 global.CONFIG.HTTPS_CERTS = null // { key: '', cert: '' }
@@ -141,15 +127,17 @@ global.CONFIG.ENABLE_LOGGER = false
 // Github OAuth2
 // global.CONFIG.GITHUB_CLIENT_ID = ''
 // global.CONFIG.GITHUB_CLIENT_SECRET = ''
-// global.GITHUB_CALLBACK = ''
+// global.CONFIG.GITHUB_CALLBACK = ''
 
 // Google - TBD
 // global.CONFIG.GOOGLE_CLIENT_ID = ''
 // global.CONFIG.GOOGLE_CLIENT_SECRET = ''
+// global.CONFIG.GOOGLE_CALLBACK = ''
 
 // Microsoft - TBD
 // global.CONFIG.MS_CLIENT_ID = ''
 // global.CONFIG.MS_CLIENT_SECRET = ''
+// global.CONFIG.MS_CLIENT_CALLBACK = ''
 
 // MQ - bullmq - requires redis - <lib>/services/mq/bull.js - currently not used
 global.CONFIG.JOB_BULL = null

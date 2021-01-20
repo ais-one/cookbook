@@ -16,10 +16,10 @@
   Upload Memory <input type="file" onchange="uploadMemory(this.files)"></br>
   Upload Single (+ body JSON) <input type="file" onchange="uploadSingle(this.files)"></br>
   Upload Multiple <input type="file" onchange="uploadMultiple(this.files)" multiple></br>
-  Upload Google <input type="file" onchange="uploadGoogle(this.files)"></br>
+  Upload Google (filename must be test.txt) <input type="file" onchange="uploadGoogle(this.files)"></br>
   <button onclick="enableCorsGoogle()">Enable Cors Google</button>
-  <button onclick="readGoogle()">Read Google</button>
-  <button onclick="deleteGoogle()">Delete Google</button><br/>
+  <button onclick="readGoogle('test.txt')">Read Google</button>
+  <button onclick="deleteGoogle('test.txt')">Delete Google</button><br/>
   <button onclick="clear()">Clear Inputs</button>
 </body>
 
@@ -36,11 +36,16 @@
     alert('USE: gsutil cors set [JSON_FILE_NAME].json gs://[BUCKET_NAME]')
   }
 
-  async function readGoogle (files) {
+  async function readGoogle (filename) {
+    try {
+
+    } catch (e) {
+
+    }
     const res = await fetch('/api/gcp-sign', {
         method: 'POST',
         headers,
-        body: JSON.stringify({ filename: 'test.txt', action: 'read' })
+        body: JSON.stringify({ filename, action: 'read' })
     })
     const rv = await res.json()
     const res2 = await fetch(rv.url, { method: 'GET' })
@@ -59,16 +64,16 @@
     // alert('Google Read: ' + (res2.ok) ? 'OK' : 'FAIL') 
   }
 
-  async function deleteGoogle (files) {
+  async function deleteGoogle (filename) {
     try {
       const res = await fetch(`/api/gcp-sign`, {
         method: 'POST',
         headers,
-        body: JSON.stringify({ filename: 'test.txt', action: 'delete' })
+        body: JSON.stringify({ filename, action: 'delete' })
       })
       const rv = await res.json()
       const res2 = await fetch(rv.url, { method: 'DELETE' })
-      console.log(res2)
+      // console.log(res2)
       alert('Google Delete: ' + (res2.ok) ? 'OK' : 'FAIL') 
     } catch (e) {
       alert('Google Delete: ' + e.toString())
@@ -78,10 +83,11 @@
   async function uploadGoogle (files) {
     try {
       const file = files[0] // later need to use file.name?
+      const filename = file.name || 'test.txt'
       const res = await fetch(`/api/gcp-sign`, {
         method: 'POST',
         headers,
-        body: JSON.stringify({ filename: 'test.txt', action: 'write' })
+        body: JSON.stringify({ filename, action: 'write' })
       })
       const rv = await res.json()
       const res2 = await fetch(rv.url, { 

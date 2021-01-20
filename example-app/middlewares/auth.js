@@ -7,7 +7,7 @@ const authIsAdmin = async (req, res, next) => {
     return next()
   }
   else {
-    return res.status(401).json({ e: 'Not Allowed' })
+    return res.status(401).json({ error: 'Not Allowed' })
   }
 }
 

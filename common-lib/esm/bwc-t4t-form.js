@@ -49,7 +49,7 @@ const bulma = {
           { tag: 'label', className: 'label' },
           {
             tag: 'div',
-            className: 'select', // need to add is-multiple for bulma
+            className: 'select is-fullwidth', // need to add is-multiple for bulma
             children: [
               { tag: 'select' },
             ]
@@ -57,10 +57,12 @@ const bulma = {
         ]
       }
     ]
-  } // end select
+  }, // end select
+  autocomplete: {
+  }
 } // end bulma
 
-// Bootstrap
+// Bootstrap - TBD VERIFY
 const bootstrap = {
   input: {
     tag: 'div',
@@ -85,9 +87,11 @@ const bootstrap = {
       { tag: 'select', className: 'form-select' },
     ]
   },
+  autocomplete: {
+  }
 }
 
-// Mui CSS
+// Mui CSS - TBD VERIFY
 const muicss = {
   input: {
     tag: 'div',
@@ -113,6 +117,8 @@ const muicss = {
       { tag: 'select' },
     ]
   },
+  autocomplete: {
+  }
 }
 
 const framework = bulma // set as bulma first
@@ -257,7 +263,6 @@ class T4tForm extends HTMLElement {
         // console.log('select', el.value, k, this.#record[k], this.mode)
         const selectString = (this.mode === 'add') ? c.default || '' : this.#record[k] || ''
         const selected = !selectString ? [] : (c?.ui?.attrs?.multiple) ? selectString.split(',') : [selectString]
-        console.log('selected', selected)
         const options = c?.ui?.options
         for (let option of options) {
           const optEl = document.createElement('option')
@@ -352,7 +357,7 @@ class T4tForm extends HTMLElement {
         // console.log(this.#record)
         if (!error) {
           for (let col in this.#xcols) {
-            console.log('this.#xcols', this.#xcols[col].el.tagName)
+            // console.log('this.#xcols', this.#xcols[col].el.tagName)
             const inputEl = this.#xcols[col].el
             if (inputEl) {
               if (inputEl.tagName.toLowerCase() === 'select') { // select
@@ -363,6 +368,10 @@ class T4tForm extends HTMLElement {
                 this.#record[col] = selected.join(',')
               } else { // input
                 this.#record[col] = inputEl.value
+                if (inputEl.files) {
+                  // console.log(inputEl.files instanceof FileList)
+                  this.#record[col] = inputEl.files
+                }
               }
             }
           }

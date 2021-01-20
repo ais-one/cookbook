@@ -227,7 +227,8 @@ module.exports = {
       input: 'textfield',
       // NEW
       ui: {
-        tag: 'input'
+        tag: 'input',
+        // attrs: { type: 'file' } // TBD implement on API side also
       }
     },
     remarks: { // text area

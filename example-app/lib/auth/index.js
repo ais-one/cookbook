@@ -140,7 +140,7 @@ const authUser = async (req, res, next) => {
   } catch (e) {
     console.log('authUser', e.toString())
   }
-  return res.status(401).json({ e: 'Error in token' })
+  return res.status(401).json({error: 'Error in token' })
 }
 
 const logout = async (req, res) => {

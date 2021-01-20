@@ -10,3 +10,4 @@ global.APP_VERSION = version
 global.APP_NAME = name
 global.LIB_PATH = path.join(process.cwd(), 'lib') // Set Common Paths
 global.APP_PATH = path.join(process.cwd())
+global.IS_PRODUCTION = process.env.NODE_ENV === 'production' ? true : false

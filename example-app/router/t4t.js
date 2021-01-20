@@ -47,7 +47,7 @@ async function generateTable (req, res, next) { // TBD get config info from a ta
     // console.log(req.table)
     return next()
   } catch (e) {
-    return res.status(500).json({ e: e.toString() })
+    return res.status(500).json({ error: e.toString() })
   }
 }
 
@@ -215,7 +215,7 @@ module.exports = express.Router()
       const { rules, type } = table.cols[key]
       if (rules) {
         const invalid = validate(rules, type, key, body)
-        if (invalid) return res.status(400).json({ e: `Invalid ${key} - ${invalid}` })
+        if (invalid) return res.status(400).json({ error: `Invalid ${key} - ${invalid}` })
       }
 
       const col = table.cols[key]
@@ -249,7 +249,7 @@ module.exports = express.Router()
       const { rules, type } = table.cols[key]
       if (rules) {
         const invalid = validate(rules, type, key, body)
-        if (invalid) return res.status(400).json({ e: `Invalid ${key} - ${invalid}` })
+        if (invalid) return res.status(400).json({ error: `Invalid ${key} - ${invalid}` })
       }
 
       const col = table.cols[key]
