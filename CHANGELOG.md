@@ -4,8 +4,10 @@
 - [common-lib/esm/bwc-autocomplete.js] add disabled attribute and input-class (for styling to bulma, bootstrap, muicss) attribute
 - [common-lib/esm/bwc-t4t-form.js] - handle select & textarea tag
 - [example-amp] add sample AMP application
+- [common-lib/esm/bwc-table.js] - BREAKING CHANGE: use object instead or multiple variables for cell render(), see example-native/views/ui2.js for reference
 - [inprogress]
-  - [common-lib/esm/bwc-t4t-form.js] - autocomplete, and add (file input functionlity on submit...)
+  - [common-lib/esm/bwc-t4t-form.js] - add file input functionlity on submit..., 
+  - [common-lib/esm/bwc-t4t-form.js] - add autocomplete
   - [example-vite] remove CrudTable.vue, use bwc-table in example-native
   - [example-vite] cypress e2e testing
   - [example-vite] migrate example-webpack vue-crud-x table examples to vite

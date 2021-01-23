@@ -6,39 +6,20 @@ const EXT_ESM_PATH = require('path').join(__dirname, '..', 'common-lib', 'esm')
 
 // module.exports = {
 export default {
-  plugins: [
-    vue({
-      template: {
-        compilerOptions: {
-          isCustomElement: tag => tag.startsWith('bwc-') || tag.startsWith('vaadin-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-') || tag.startsWith('sl-')
-        }
-      }
-    })
-  ],
   alias: {
     // https://github.com/vitejs/vite/issues/279#issuecomment-636110354
     // '/@/': path.resolve(__dirname, './lib/') // import aa from '/@/esm/aaa.js'
     '/common-lib/esm/': EXT_ESM_PATH
   },
+  base: process.env.BASE_PATH || '/', // set to '/vite' for dev:build, '/' otherwise
   build: {
-    base: process.env.BASE_PATH || '/', // set to '/vite' for dev:build, '/' otherwise
+    base: process.env.BASE_PATH || '/', // TO BE DEPRECATED
     // sourcemap: isDev1,
     rollupOptions: { // vite 2
       external: [
         'react' // ignore react stuff
       ]
     }  
-  },
-  server: {
-    port: 8080,
-    // proxy: { // use alias instead
-    //   // '/esm': 'http://127.0.0.1:3000/esm', // does not seem to work
-    //   '/common-lib/esm': {
-    //     target: 'http://127.0.0.1:3000',
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/common-lib\/esm/, '/esm')
-    //   }
-    // },
   },
   optimizeDeps: {
     include: [
@@ -55,5 +36,25 @@ export default {
       '@apollo/client/link/context',
       '@apollo/client/utilities'
     ]
+  },
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          isCustomElement: tag => tag.startsWith('bwc-') || tag.startsWith('vaadin-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-') || tag.startsWith('sl-')
+        }
+      }
+    })
+  ],
+  server: {
+    port: 8080,
+    // proxy: { // use alias instead
+    //   // '/esm': 'http://127.0.0.1:3000/esm', // does not seem to work
+    //   '/common-lib/esm': {
+    //     target: 'http://127.0.0.1:3000',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/common-lib\/esm/, '/esm')
+    //   }
+    // },
   }
 }

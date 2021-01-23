@@ -56,8 +56,9 @@
 // key: 'id',
 // filter: false,
 // sort: false,
-// render: (val, key, row, el) => `<a class='button' onclick='this.dispatchEvent(new CustomEvent("testevent", { detail: ${JSON.stringify({ val, key, row })} }))'>${val}</a>`
-// cell value, column key, row data, td element
+// render: ({val, key, row, idx}) => `<a class='button' onclick='this.dispatchEvent(new CustomEvent("testevent", { detail: ${JSON.stringify({ val, key, row, idx })} }))'>${val}</a>`
+//   cell value, column key, row data, row index (0-based)
+//   try not to include row property in event detail... can be too much data
 
 // NOT NEEDED
 // loading state and loading spinner
@@ -688,7 +689,7 @@ class Table extends HTMLElement {
           }
  
           table.appendChild(tbody)
-          for (const row of this.#items) {
+          for (const [idx, row] of this.#items.entries()) {
             const tr = document.createElement('tr')
             tbody.appendChild(tr)
 
@@ -701,13 +702,18 @@ class Table extends HTMLElement {
               tr.appendChild(td)
             }
 
-            for (let col of this.#columns) {
+            for (const col of this.#columns) {
               const { key, sticky, width, render } = col
               const td = document.createElement('td')
               // if (sticky) td.setAttribute('scope', 'row') // not used yet, need to calculate left property value
               if (width) td.style.width = `${width}px`
               if (render) {
-                td.innerHTML = render(row[key], key, row, td) // value, key, row - need to sanitize, el (the td element)
+                td.innerHTML = render({
+                  val: row[key],
+                  key,
+                  row,
+                  idx
+                }) // value, key, row - need to sanitize, el (the td element)
               } else {
                 td.appendChild(document.createTextNode(row[key]))
               }
