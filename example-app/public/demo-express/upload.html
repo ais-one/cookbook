@@ -13,9 +13,9 @@
   <p>
     check console for logs
   </p>
-  Upload Memory <input type="file" onchange="uploadMemory(this.files)"></br>
-  Upload Single (+ body JSON) <input type="file" onchange="uploadSingle(this.files)"></br>
-  Upload Multiple <input type="file" onchange="uploadMultiple(this.files)" multiple></br>
+  Upload Memory <input id="btn-upload-memory" type="file"></br>
+  Upload Single (+ body JSON) <input id="btn-upload-single" type="file" onchange="uploadSingle(this.files)"></br>
+  Upload Multiple <input id="btn-upload-multiple" type="file" onchange="uploadMultiple(this.files)" multiple></br>
   <hr/>
   <h2>Upload to GCP using signed URL</h2>
   Upload Google (filename must be test.txt) <input id="input-gcp-upload" type="file"></br>
@@ -25,69 +25,20 @@
   <button id="btn-clear">Clear Inputs</button>
 </body>
 
-<!-- <script type="module" src="/esm/gcp-upload.js"></script> -->
 <script type="module">
-import * as mod from '/esm/gcp-upload.js'
+import * as mod from '/esm/upload-fe.js'
 const testFilename = 'test.txt'
+
+document.querySelector('#btn-upload-memory').onchange = (e) => mod.uploadMemory(e.target.files)
+document.querySelector('#btn-upload-single').onchange = (e) => mod.uploadSingle(e.target.files)
+document.querySelector('#btn-upload-multiple').onchange = (e) => mod.uploadMultiple(e.target.files)
+
 document.querySelector('#btn-clear').onclick = (e) => mod.clear(testFilename)
 document.querySelector('#input-gcp-upload').onchange = (e) => mod.uploadGoogle(e.target.files)
 document.querySelector('#btn-gcp-cors').onclick = mod.enableCorsGoogle
 document.querySelector('#btn-gcp-read').onclick = () => mod.readGoogle(testFilename)
 document.querySelector('#btn-gcp-delete').onclick = () => mod.deleteGoogle(testFilename)
 
-  async function uploadMemory(files) {
-    // console.log(files)
-    try {
-      const formData = new FormData()
-      formData.append('memory', files[0])
-      const res = await fetch('/api/upload-memory', {
-        method: 'POST', body: formData
-      })
-      const rv = await res.json()
-      console.log(rv)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  async function uploadSingle(files) {
-    // console.log(files)
-    try {
-      const formData = new FormData()
-      formData.append('filedata', files[0])
-      formData.append('textdata', JSON.stringify({ name: 'name', age: 25 }))
-      const res = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      })
-      const rv = await res.json()
-      console.log(rv)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  async function uploadMultiple(files) {
-    console.log(files)
-    // send in one request
-    try {
-      const formData = new FormData()
-      for (const file of files) {
-        formData.append('photos', file, file.name);
-      }
-      const res = await fetch('/api/uploads', {
-        method: 'POST', body: formData
-      })
-      const rv = await res.json()
-      console.log(rv)
-    } catch (e) {
-      console.log(e)
-    }
-    // send in multiple request
-    // files.forEach...
-    // Promise.all
-  }
-  
 </script>
 
 </html>

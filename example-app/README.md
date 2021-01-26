@@ -32,7 +32,7 @@
  2, 2
 
 
-### Routes
+### CRUD Routes
 [* === COMPLETED, ** === TESTED]
 * POST /auth/signup
 * POST /auth/login
@@ -60,11 +60,6 @@
 
 * POST /books/:id/authors/:authorId - relate author to book
 * DELETE /books/:id/authors/:authorId - unrelate author to book
-
-GET /api/test
-POST /api/upload
-POST /api/uploads
-
 
 # Project Strcuture
 

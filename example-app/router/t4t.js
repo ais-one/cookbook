@@ -11,18 +11,13 @@ const ObjectID = mongo.client ? require('mongodb').ObjectID : null
 
 // const { authUser } = require('../middlewares/auth')
 const csvParse = require('csv-parse')
-const multer = require('multer')
 const { Parser } = require('json2csv')
-const memoryUpload = multer({
-  // limits: {
-  //   files : 1,
-  //   fileSize: 5000 // size in bytes
-  // },
-  // fileFilter,
-  storage: multer.memoryStorage()
-})
 
-// key is reserved property for identifying row in a multiKey table
+const { gcpGetSignedUrl } = require(LIB_PATH + '/services/gcp')
+const { memoryUpload } = require(LIB_PATH + '/express/upload')
+
+
+// __key is reserved property for identifying row in a multiKey table
 // | is reserved for seperating columns that make the multiKey
 
 async function generateTable (req, res, next) { // TBD get config info from a table
@@ -308,6 +303,20 @@ module.exports = express.Router()
     return res.json() // TBD fix common-lib/esm/http.js
   }))
 
+/*
+const trx = await knex.transaction()
+for {
+  let err = false
+  try {
+    await knex(tableName).insert(data).transacting(trx)
+  } catch (e) {
+    err = true
+  }
+  if (err) await trx.rollback()
+  else await trx.commit()
+}
+*/
+
 // Test country collection upload using a csv file with following contents
 // code,name
 // zzz,1234
@@ -336,10 +345,7 @@ module.exports = express.Router()
           // console.log('up1',record.length, table.nonAuto.length)
           if (record.length === table.nonAuto.length) { // ok
             if (record.join('')) {
-              // if (permissionOk) {
-              // } else {
-              // }
-              // format before push?
+              // TBD format before push?
               output.push(record)
             } else {
               errors.push({ currLine, data: record.join(','), msg: 'Empty Row' })
@@ -355,8 +361,8 @@ module.exports = express.Router()
         for (let row of output) {
           line++
           try {
-            // also take care of auto populating fields?
-            // should add validation here
+            // TBD: also take care of auto populating fields?
+            // TBD: should add validation here
             const obj = {}
             for (let i=0; i<keys.length; i++) {
               obj[ keys[i] ] = row[i]
@@ -376,17 +382,3 @@ module.exports = express.Router()
         return res.status(200).json({ errorCount: errors.length, errors })
       })
   })
-
-/*
-const trx = await knex.transaction()
-for {
-  let err = false
-  try {
-    await knex(tableName).insert(data).transacting(trx)
-  } catch (e) {
-    err = true
-  }
-  if (err) await trx.rollback()
-  else await trx.commit()
-}
-*/

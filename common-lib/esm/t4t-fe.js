@@ -149,6 +149,7 @@ function newItem() {
   }
 }
 
+// TBD handle file uploads
 async function create(record) {
   await http.post(`/api/t4t/create/${tableName}`, record)
 }
@@ -158,6 +159,7 @@ async function update(__key, record) {
   await http.patch(`/api/t4t/update/${tableName}`, record, { __key })
 }
 
+// TBD handle file removals
 async function remove(items) {
   let ids = []
   const { pk } = config
@@ -169,7 +171,7 @@ async function remove(items) {
   await http.post('/api/t4t/remove/' + tableName, { ids })  
 }
 
-// uploads a single for csv processing
+// uploads a single csv for batch processing
 async function upload(file) { // the file object
   // TBD add exception handling
   if (file === null) return false
@@ -178,13 +180,11 @@ async function upload(file) { // the file object
   // console.log('zzz', formData instanceof FormData)
   // for(const pair of formData.entries()) console.log(pair[0], pair[1])
   return await http.post('/api/t4t/upload/' + tableName, formData)
-
   // formData.append('textdata', JSON.stringify({ name: 'name', age: 25 }))
   // const res = await fetch('/api/upload', {
   //   method: 'POST',
   //   body: formData
   // })
-
   // const { id, name, avatar } = record
   // const json = JSON.stringify({ name })
   // // const blob = new Blob([json], { type: 'application/json' })

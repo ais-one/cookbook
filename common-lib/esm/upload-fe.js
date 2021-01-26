@@ -4,7 +4,7 @@ const headers = {
 }
 
 export function clear (hello) {
-  console.log('gcp-upload:' + hello)
+  console.log('upload-fe:' + hello)
 }
 
 export async function enableCorsGoogle () {
@@ -62,17 +62,9 @@ export async function uploadGoogle (files) {
   try {
     const file = files[0] // TBD handle multiple files
     const filename = file.name
-    const res = await fetch(`/api/gcp-sign`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({ filename, action: 'write' })
-    })
+    const res = await fetch(`/api/gcp-sign`, { method: 'POST', headers, body: JSON.stringify({ filename, action: 'write' }) })
     const rv = await res.json()
-    const res2 = await fetch(rv.url, { 
-      method: 'PUT',
-      body: files[0], // formData,
-      headers: { 'Content-Type': 'application/octet-stream' }
-    })
+    const res2 = await fetch(rv.url, { method: 'PUT', body: files[0],  headers: { 'Content-Type': 'application/octet-stream' } })
     alert('Google Upload: ' + (res2.ok) ? 'OK' : 'FAIL') 
   } catch (e) {
     alert('Google Upload: ' + e.toString())
@@ -100,10 +92,7 @@ export async function uploadSingle(files) {
     const formData = new FormData()
     formData.append('filedata', files[0])
     formData.append('textdata', JSON.stringify({ name: 'name', age: 25 }))
-    const res = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData
-    })
+    const res = await fetch('/api/upload-single', { method: 'POST', body: formData })
     const rv = await res.json()
     console.log(rv)
   } catch (e) {
@@ -112,7 +101,7 @@ export async function uploadSingle(files) {
 }
 
 export async function uploadMultiple(files) {
-  console.log(files)
+  // console.log(files)
   // send in one request
   // not multiple request - files.forEach..., Promise.all
   try {
@@ -120,9 +109,7 @@ export async function uploadMultiple(files) {
     for (const file of files) {
       formData.append('photos', file, file.name);
     }
-    const res = await fetch('/api/uploads', {
-      method: 'POST', body: formData
-    })
+    const res = await fetch('/api/upload-multiple', { method: 'POST', body: formData })
     const rv = await res.json()
     console.log(rv)
   } catch (e) {

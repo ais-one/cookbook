@@ -42,7 +42,6 @@ module.exports = function (app) {
   )
 }
 
- 
 /*
 How to log Redis errors?
 client.on('error', console.error)

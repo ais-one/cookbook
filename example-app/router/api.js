@@ -1,60 +1,13 @@
 const fs = require('fs')
-const path = require('path')
 const express = require('express')
 const { spawn } = require('child_process')
 
-
 const agenda = require(LIB_PATH + '/services/mq/agenda').get() // agenda message queue
 const bull = require(LIB_PATH + '/services/mq/bull').get() // bull message queue
-
-// const path = require('path')
-// path.extname('index.html')
-// returns '.html'
-
-// req.file / req.files[index]
-// {
-//   fieldname: 'kycfile',
-//   originalname: 'tbd.txt',
-//   encoding: '7bit',
-//   mimetype: 'text/plain',
-//   destination: 'uploads/',
-//   filename: 'kycfile-1582238409067',
-//   path: 'uploads\\kycfile-1582238409067',
-//   size: 110
-// }
-
-const { UPLOAD_FOLDER } = global.CONFIG
 const { gcpGetSignedUrl } = require(LIB_PATH + '/services/gcp')
+const { memoryUpload, storageUpload } = require(LIB_PATH + '/express/upload')
+
 const { authUser } = require('../middlewares/auth')
-const multer = require('multer')
-
-const memoryUpload = multer({ 
-  limits: {
-    files : 1,
-    fileSize: 5000 // size in bytes
-  },
-  // fileFilter,
-  storage: multer.memoryStorage()
-})
-
-const upload = multer({
-  // limits: {
-  //   files : 1,
-  //   fileSize: 1000000 // size in bytes
-  // },
-  // fileFilter: (req, file, cb) => {
-  //   if (
-  //     !file.mimetype.includes("jpeg") && !file.mimetype.includes("jpg") && !file.mimetype.includes("png")
-  //   ) {
-  //     return cb(null, false, new Error("Only jpeg, png or pdf are allowed"));
-  //   }
-  //   cb(null, true);
-  // },
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) { cb(null, UPLOAD_FOLDER) },
-    filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname) }
-  })
-})
 
 module.exports = express.Router()
   .get('/python', (req, res) => {
@@ -72,8 +25,7 @@ module.exports = express.Router()
     // child.on('close', (code) => {
     //   console.log(`child process close all stdio with code ${code}`)
     // }) 
-    
-    child.unref()
+        child.unref()
     res.json({})
   })
   .get('/restart-mongo', (req, res) => { // restart mongo that cannot initially connect
@@ -130,12 +82,12 @@ module.exports = express.Router()
   // body action: 'read' | 'write', filename: 'my-file.txt', bucket: 'bucket name'
   .post('/gcp-sign', asyncWrapper(gcpGetSignedUrl))
 
-  .post('/upload', upload.single('filedata'), (req,res) => { // avatar is form input name
+  .post('/upload-single', storageUpload.single('filedata'), (req,res) => { // avatar is form input name
     console.log('file original name', req.file.originalname)
     console.log('text data', req.body.textdata)
     res.json({ message: 'Uploaded' })
   })
-  .post('/uploads', upload.array('photos', 3), (req, res) => { // multiple
+  .post('/upload-multiple', storageUpload.array('photos', 3), (req, res) => { // multiple
     console.log(req.files.length)
     res.json({ message: 'Uploaded' })
     // req.files is array of `photos` files
