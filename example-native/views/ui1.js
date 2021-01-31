@@ -1,7 +1,7 @@
 const template = /*html*/`
 <div>
   <h1>UI 1</h1>
-  <p>Testing UI </p>
+  <p>Testing BWC UI </p>
 
   <h3>single autocomplete && string search example</h3>
   <div class="field">
@@ -35,7 +35,25 @@ const template = /*html*/`
     </div>
   </div>
 
-</div>
+  <hr/>
+
+  <h3>File upload</h3>
+
+  <div class="field">
+    <label for="" class="label">File Upload 1</label>
+    <div class="control">
+      <bwc-fileupload input-class="input"></bwc-fileupload>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="" class="label">File Upload 2</label>
+    <div class="control">
+      <bwc-fileupload input-class="input"></bwc-fileupload>
+    </div>
+  </div>
+
+  </div>
 `
 
 const { onMounted, reactive } = Vue

@@ -183,7 +183,7 @@ template.innerHTML = /*html*/`
 </div>
 `
 
-class T4tForm extends HTMLElement {
+class BwcT4tForm extends HTMLElement {
   constructor() {
     super()
   }
@@ -277,7 +277,9 @@ class T4tForm extends HTMLElement {
         if (this.mode === 'add') { // set the value
           el.value = c.default || ''
         } else if (this.mode === 'edit') {
-          el.value = this.#record[k] || ''
+          // console.log('is FileList',this.#record[k] instanceof FileList, k, el.type === 'file')
+          // TBD... if (el.type === 'file') // list the filenames on the label
+          el.value = el.type === 'file' ? '' : (this.#record[k] || '')
         }  
       }
   
@@ -347,6 +349,8 @@ class T4tForm extends HTMLElement {
         // console.log('submit clicked')
         // e.stopPropagation()
         e.preventDefault()
+
+        // check validity
         for (let col in this.#xcols) {
           if (this.#xcols[col].el) {
             const valid = this.#xcols[col].el.checkValidity()
@@ -354,6 +358,7 @@ class T4tForm extends HTMLElement {
             if (this.#xcols[col].errorEl) this.#xcols[col].errorEl.innerText = valid ? '' : this.#xcols[col].el.validationMessage
           }
         }
+
         // console.log(this.#record)
         if (!error) {
           for (let col in this.#xcols) {
@@ -361,6 +366,9 @@ class T4tForm extends HTMLElement {
             const inputEl = this.#xcols[col].el
             if (inputEl) {
               if (inputEl.tagName.toLowerCase() === 'select') { // select
+                // select options
+                // [string] - done
+                // [{ key, text }] - next
                 const selected = []
                 for (let opt of inputEl.selectedOptions) {
                   selected.push(opt.value)
@@ -394,7 +402,7 @@ class T4tForm extends HTMLElement {
   }
 }
 
-customElements.define('bwc-t4t-form', T4tForm) // or bwc-form-t4t
+customElements.define('bwc-t4t-form', BwcT4tForm) // or bwc-form-t4t
 
 /*
     <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p>

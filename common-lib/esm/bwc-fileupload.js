@@ -1,80 +1,89 @@
-// props: {
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file
+// attributes: {
 //   accept: { type: String, default: '*/*' },
 //   value: { type: Object, required: true }
 // },
-const template = document.createElement('template')
-template.innerHTML = `
-<div>
-  <input id="input-file" type="file" style="display: none" accept="text/csv" onclick="event.stopPropagation()" />
-</div>
+
+// attributes
+// accept: One or more unique file type specifiers describing file types to allow
+// capture:	What source to use for capturing image or video data
+// files:	A FileList listing the chosen files
+// multiple: A Boolean which, if present, indicates that the user may choose more than one file
+// required
+// value
+
+// Events	change and input
+const html = /*html*/`
+  <input type="text" readonly />
+  <input type="file" style="display: none" accept="text/csv" onclick="event.stopPropagation()" />
 `
 
-class FileUpload extends HTMLElement {
+class BwcFileupload extends HTMLElement {
+  files = null
+
   constructor() {
     super()
-    this.root = this.attachShadow({ mode: 'open' })
-    this.shadowRoot.appendChild(template.content.cloneNode(true))
     this.click = this.click.bind(this)
     this.change = this.change.bind(this)
+    // const shadowRoot = this.attachShadow({ mode: 'open' })
+    // const template = document.createElement('template')
+    // template.innerHTML = html
+    // // this.shadowRoot.appendChild(template.content.cloneNode(true))
+    // shadowRoot.innerHTML = html
   }
 
   connectedCallback() {
-    this.file = null
+    // this.appendChild(template.content.cloneNode(true))
+    this.innerHTML = html
+    this.files = null
 
+    // console.log('attrs', this.attributes)
     if (!this.hasAttribute('value')) this.setAttribute('value', '')
-    if (!this.hasAttribute('label')) this.setAttribute('label', '')
 
-    this.shadowRoot.querySelector('div').addEventListener('click', this.click)
-    this.shadowRoot.querySelector('#input-file').addEventListener('change', this.change)
+    if (this.hasAttribute('input-class')) this.querySelector('input[type=text]').setAttribute('class', this.getAttribute('input-class'))
+
+    if (this.hasAttribute('accept')) this.querySelector('input[type=file]').setAttribute('accept', this.getAttribute('accept'))
+    if (this.hasAttribute('capture')) this.querySelector('input[type=file]').setAttribute('capture', this.getAttribute('capture'))
+    if (this.hasAttribute('multiple')) this.querySelector('input[type=file]').setAttribute('multiple', '')
+    if (this.hasAttribute('required')) this.querySelector('input[type=file]').setAttribute('required', '')
+
+    this.querySelector('input[type=text]').addEventListener('click', this.click)
+    this.querySelector('input[type=file]').addEventListener('change', this.change)
   }
 
   disconnectedCallback() {
-    this.shadowRoot.querySelector('div').removeEventListener('click', this.click)
-    this.shadowRoot.querySelector('#input-file').removeEventListener('change', this.change)
+    this.querySelector('input[type=text]').removeEventListener('click', this.click)
+    this.querySelector('input[type=file]').removeEventListener('change', this.change)
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
-    const el = this.shadowRoot.querySelector('div')
+    const el = this.querySelector('input[type=text]')
     switch (name) {
       case 'value':
-        el.value = newVal
+        if (el) el.value = newVal
+        console.log('bwc-fileupload', newVal)
         // const event = new CustomEvent('input', { detail: newVal })
         // this.dispatchEvent(event)
         break
-      case 'label':
-        el.setAttribute('label', newVal)
-        break
+      default: break
     }
   }
 
-  static get observedAttributes() { return ['value', 'label'] }
-
+  static get observedAttributes() { return ['value', 'class'] }
   get value() { return this.getAttribute('value') }
   set value(val) { this.setAttribute('value', val) }
 
-  get label() { return this.getAttribute('label') }
-  set label(val) { this.setAttribute('label', val) }
-
-  selected(e) { }
-
   click(e) {
-    console.log(e)
-    const el = this.shadowRoot.querySelector('#input-file')
-    el.click()
+    // console.log('fasd', this.attributes)
+    this.querySelector('input[type=file]').click()
   }
 
   change(e) {
-    const files = e.target.files
-    console.log(files)
-    if (files[0] !== undefined) {
-      this.value = files[0].name
-      this.file = files[0]
-    }
-  }
-
-  getFile() {
-    return this.file
+    this.files = e.target.files
+    this.value = (this.files && this.files.length) ? this.files[0].name : ''
+    this.dispatchEvent(new CustomEvent('input', { detail: this.files }))
+    this.dispatchEvent(new CustomEvent('change', { detail: this.files }))
   }
 }
 
-customElements.define('bwc-fileupload', FileUpload)
+customElements.define('bwc-fileupload', BwcFileupload)

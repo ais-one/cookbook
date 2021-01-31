@@ -228,7 +228,7 @@ module.exports = {
       // NEW
       ui: {
         tag: 'input',
-        // attrs: { type: 'file' } // TBD implement on API side also
+        attrs: { type: 'file' } // TBD implement on API side also
       }
     },
     remarks: { // text area
