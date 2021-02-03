@@ -504,10 +504,10 @@ class Table extends HTMLElement {
       const div = el.children[i]
       if (div.children.length >= 4) {
         filters.push({
-          key: div.children[0].value,
-          op: div.children[1].value,
-          val: div.children[2].value,
-          andOr: div.children[3].value
+          key: div.children[0].querySelector('select').value,
+          op: div.children[1].querySelector('select').value,
+          val: div.children[2].querySelector('input').value,
+          andOr: div.children[3].querySelector('select').value
         })
       }
     }
@@ -613,6 +613,7 @@ class Table extends HTMLElement {
           th.appendChild(checkbox)
           tr.appendChild(th)
         }
+        this.#filterCols = [] // clear this first
         for (const col of this.#columns) {
           const th = document.createElement('th')
           if (col.sort) th.style.cursor = 'pointer'

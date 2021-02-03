@@ -21,7 +21,7 @@ const bulma = {
       { tag: 'label', className: 'label' },
       { tag: 'div', className: 'control', children: [
         { tag: 'input', className: 'input' },
-        // { tag: 'textarea', className: 'textarea is-primary' }
+        // { tag: 'bwc-fileupload', className: '' }
         // { tag: 'bwc-autocomplete', className: '' }
       ] },
       { tag: 'p', className: 'help is-danger', errorLabel: true }
@@ -278,9 +278,8 @@ class BwcT4tForm extends HTMLElement {
           el.value = c.default || ''
         } else if (this.mode === 'edit') {
           // console.log('is FileList',this.#record[k] instanceof FileList, k, el.type === 'file')
-          // TBD... if (el.type === 'file') // list the filenames on the label
           el.value = el.type === 'file' ? '' : (this.#record[k] || '')
-        }  
+        }
       }
   
       this.#xcols[k].el = el // set input element
@@ -334,6 +333,12 @@ class BwcT4tForm extends HTMLElement {
             const tagKey = c?.ui?.tag
             if (tagKey) {
               const fieldEl = this.formEl(framework[tagKey], col, c)
+
+              if (c?.ui?.attrs?.type === 'file' && this.mode === 'edit') { // field is file...
+                console.log('asdasdnaksdj')
+                this.#xcols[col].errorEl.innerText = 'aaaa.csv' // this.#record[col] || ''
+                // console.log(fieldEl, col)
+              }
               el.appendChild(fieldEl)
             }
           }

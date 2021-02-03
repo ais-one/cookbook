@@ -47,9 +47,9 @@ const template = /*html*/`
   </div>
 
   <div class="field">
-    <label for="" class="label">File Upload 2</label>
+    <label for="" class="label">File Upload 2 (multiple)</label>
     <div class="control">
-      <bwc-fileupload input-class="input"></bwc-fileupload>
+      <bwc-fileupload input-class="input" multiple></bwc-fileupload>
     </div>
   </div>
 

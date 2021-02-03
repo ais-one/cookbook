@@ -143,7 +143,7 @@ export default {
       console.log('cmd', e.detail)
       try {
         if (e.detail.cmd === 'add') {
-          form.record = t4t.newItem()
+          form.record = t4t.initItem()
           mode.value = 'add'
         } else if (e.detail.cmd === 'del') {
           const items = e.detail.checkedRows.map(idx => table.items[idx])

@@ -134,7 +134,7 @@ async function findOne(__key) {
   }
 }
 
-function newItem() {
+function initItem() {
   let rv = {}
   try {
     Object.entries(config.cols).forEach((kv) => {
@@ -151,6 +151,33 @@ function newItem() {
 
 // TBD handle file uploads
 async function create(record) {
+
+  // console.log('is FileList',this.#record[k] instanceof FileList, k, el.type === 'file')
+  // const formData = new FormData()
+  // formData.append('csv-file', file) // call it file
+  // const json = JSON.stringify({ name })
+  // formData.append('docx', json)
+  // const { data } = await http.patch(`/api/authors/${id}`, formData,
+  //   {
+  //     // onUploadProgress: progressEvent => console.log(Math.round(progressEvent.loaded / progressEvent.total * 100) + '%') // axios
+  //     headers: { 'Content-Type': 'multipart/form-data' }
+  //   }
+  // )
+
+
+  // WIP
+  let formData = null
+  for (const [k, v] of Object.entries(record)) {
+    if (v instanceof FileList) {
+      if (!formData) formData = new FormData()
+      for (const file of v) {
+        formData.append(k, file) // can handle multiple files ?
+        record[k] = '' // indicator for file 
+      }
+    }
+  }
+  if (formData) formData.append('__json-data__', JSON.stringify(record)) // set the JSON
+
   await http.post(`/api/t4t/create/${tableName}`, record)
 }
 
@@ -227,6 +254,6 @@ async function autocomplete (search, col, record) { // wrap in debounce
 // mwcAc.setList(res)
 // }, 500)
 
-export { setTableName, getConfig, validate, find, findOne, newItem, create, update, remove, upload, download, autocomplete }
+export { setTableName, getConfig, validate, find, findOne, initItem, create, update, remove, upload, download, autocomplete }
 
 

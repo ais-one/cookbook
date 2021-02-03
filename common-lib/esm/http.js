@@ -76,6 +76,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     if (urlPath === '/api/auth/logout') options.headers.refresh_token = refreshToken // add refresh token for logout
     if (body) {
       if (body instanceof FormData) {
+        headers['Content-Type'] = 'multipart/form-data'
         options.body = body
       } else {
         headers['Content-Type'] = 'application/json'
@@ -158,6 +159,8 @@ async function logout() {
 }
 
 const post = async (url, body = null, query = null, headers = null) => {
+
+
   return await http('POST', url, body, query, headers)
   // try {
   //   return await http('POST', url, body, query, headers)
