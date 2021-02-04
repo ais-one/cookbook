@@ -51,7 +51,7 @@
     "graphql": "^15.5.0",
     "helmet": "^4.4.1",
     "http-proxy-middleware": "^1.0.6",
-    "json2csv": "^5.0.5",
+    "json2csv": "^5.0.6",
     "jsonwebtoken": "^8.5.1",
     "kafkajs": "^1.15.0",
     "keyv": "^4.0.3",

@@ -1,164 +1,437 @@
-// import '@material/mwc-textfield'
+/*
+<bwc-multiselect id="queues" placeholder="Select Queue">
+  <li value="1">Queue One</li>
+  <li value="2">Queue Two</li>
+</bwc-multiselect>
+
+<bwc-multiselect id="queues" placeholder="Select Queue" :items="queueItems"></bwc-multiselect>
+
+Attributes
+Properties
+Methods
+*/
+
 const template = document.createElement('template')
-template.innerHTML = `
+template.innerHTML = /*html*/`
 <style>
-.field-item {
-  padding-top: 8px;
-  padding-bottom: 8px;
+.caret {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  /*margin-left: 2px;*/
+  margin-left: 0;
+  vertical-align: middle;
+  border-top-color: #000 !important;
+  border-top: 4px dashed;
+  border-top: 4px solid;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+
+  /* Position to right of container */
+  position: absolute;
+  top: .75em;
+  right: .5em;
 }
-.drop-down-div {
-  height: 150px;
+
+.multiselect {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-block;
+  width: 20em;
+}
+
+.multiselect-field {
+  overflow: hidden;
+  padding: .2em .2em 0 .2em;
+  border: 1px solid #adadad;
+  border-radius: .2em;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.multiselect-field-placeholder {
+  padding: .25em .5em;
+  margin-bottom: .2em;
+  color: #888;
+  line-height: 1;
+}
+
+.multiselect-tag {
+  position: relative;
+  display: inline-block;
+  padding: .25em 1.5em .25em .5em;
+  border: 1px solid #bdbdbd;
+  border-radius: .2em;
+  margin: 0 .2em .2em 0;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.multiselect-tag:last-child {
+  margin-right: 0;
+}
+
+.multiselect-tag:hover {
+  background: #efefef;
+}
+
+.multiselect-tag-text {
+  min-height: 1em;
+}
+
+.multiselect-tag-remove-button {
+  position: absolute;
+  top: .25em;
+  right: .25em;
+  width: 1em;
+  height: 1em;
+  opacity: 0.3;
+}
+
+.multiselect-tag-remove-button:hover {
+  opacity: 1;
+}
+
+.multiselect-tag-remove-button:before,
+.multiselect-tag-remove-button:after {
+  content: ' ';
+  position: absolute;
+  left: .5em;
+  width: 2px;
+  height: 1em;
+  background-color: #333;
+}
+
+.multiselect-tag-remove-button:before {
+  transform: rotate(45deg);
+}
+
+.multiselect-tag-remove-button:after {
+  transform: rotate(-45deg);
+}
+
+.multiselect-popup {
+  position: absolute;
+  z-index: 1000;
   display: none;
+  overflow-y: auto;
+  width: 100%;
+  max-height: 300px;
+  box-sizing: border-box;
+  border: 1px solid #bdbdbd;
+  border-radius: .2em;
+  background: white;
 }
-.drop-down {
-  height:150px;overflow-y:scroll;
+
+.multiselect-list {
+  padding: 0;
+  margin: 0;
+}
+
+::content li {
+  padding: .5em 1em;
+  min-height: 1em;
+  list-style: none;
+  cursor: pointer;
+}
+
+::content li[selected] {
+  background: #f3f3f3;
+}
+
+::content li:focus {
+  outline: dotted 1px #333;
+  background: #e9e9e9;
+}
+
+::content li:hover {
+    background: #e9e9e9;
 }
 </style>
-<mwc-textfield
-  class="field-item"
-  outlined
-  type="text"
-  disabled
-  iconTrailing="keyboard_arrow_down"
-></mwc-textfield>
-<div class="drop-down-div">
-  <mwc-list class="drop-down" multi>
-  </mwc-list>
+
+<div class="multiselect" role="combobox">
+  <div class="multiselect-field" tabindex="0"></div>
+  <div class="multiselect-popup">
+    <ul class="multiselect-list" role="listbox" aria-multiselectable="true">
+      <content class="content" select="li"></content>
+    </ul>
+  </div>
 </div>
 `
 
-class MultiSelect extends HTMLElement {
+class BwcMultiselect extends HTMLElement {
+  _options = {}
+  _root = null
+  _control = null
+  _field = null
+  _popup = null
+  _list = null
+
   constructor() {
     super()
-    this.root = this.attachShadow({ mode: 'open' })
+    this._root = this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
-    this.click = this.click.bind(this)
-    this.selected = this.selected.bind(this)
+    this.fieldClickHandler = this.fieldClickHandler.bind(this)
+    this.keyDownHandler = this.keyDownHandler.bind(this)
+    this.listClickHandler = this.listClickHandler.bind(this)
   }
 
   connectedCallback() {
-    this.show = false
-    this.list = []
+    this._options = {
+      placeholder: this.getAttribute("placeholder") || 'Select'
+    }
+    this._control = this.shadowRoot.querySelector('.multiselect')
+    this._field = this.shadowRoot.querySelector('.multiselect-field')
+    this._popup = this.shadowRoot.querySelector('.multiselect-popup')
+    this._list = this.shadowRoot.querySelector('.multiselect-list')
 
-    if (!this.hasAttribute('value')) this.setAttribute('value', '')
-    if (!this.hasAttribute('label')) this.setAttribute('label', '')
-
-    if (this.hasAttribute('options')) this.setList(JSON.parse(this.getAttribute('options')) || [])
-
-    const el = this.shadowRoot.querySelector('mwc-textfield')
-    el.addEventListener('click', this.click)
-    el.addEventListener('input', this.input)
-    el.value = this.getAttribute('value')
-    const dd = this.shadowRoot.querySelector('.drop-down')
-    dd.addEventListener('selected', this.selected)
+    this.render()
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
-    const el = this.shadowRoot.querySelector('mwc-textfield')
     switch (name) {
-      case 'value': {
-        el.value = newVal
-        const event = new CustomEvent('input', { detail: newVal })
-        this.dispatchEvent(event)
+      case 'items': {
+        console.log('items changed', newVal)
+        this.addItems(newVal)
         break
       }
-      case 'label':
-        el.setAttribute('label', newVal)
+      default:
         break
     }
   }
 
   static get observedAttributes() {
-    return ['value', 'label']
+    return ['items']
   }
 
-  get value() {
-    return this.getAttribute('value')
+  get items() {
+    return this.getAttribute('items')
   }
 
-  set value(val) {
-    this.setAttribute('value', val)
+  set items(val) {
+    this.setAttribute('items', val)
+    this.addItems(val)
   }
 
-  get label() {
-    return this.getAttribute('label')
+  addItems(_items) {
+    const fragment = document.createDocumentFragment()
+    _items.forEach(function (item) {
+      const li = document.createElement('li')
+      li.textContent = item.text
+      li.setAttribute('value', item.value || item.text) // Set value attribute if it exists
+      fragment.appendChild(li)
+    })
+    // this.appendChild(fragment)
+    this._list.appendChild(fragment)
+    
   }
 
-  set label(val) {
-    this.setAttribute('label', val)
+  fieldClickHandler() {
+    this._isOpened ? this.close() : this.open();
   }
+
+  refreshFocusedItem () {
+    if (this._focusedItemIndex && this._focusedItemIndex > -1) this.itemElements()[this._focusedItemIndex].focus()
+  }
+
+  keyDownHandler(event) {
+    switch (event.which) {
+      case 8: // backspace
+        const selectedItemElements = this.shadowRoot.querySelectorAll('li[selected]')
+        if (selectedItemElements.length) {
+            this.unselectItem(selectedItemElements[selectedItemElements.length - 1])
+        }
+        break
+      case 13: // enter
+        if(this._isOpened) {
+          const focusedItem = this.itemElements()[this._focusedItemIndex];
+          this.selectItem(focusedItem);
+        }
+        break
+      case 27: // escape
+        this.close()
+        break
+      case 38: // uparrow
+        if (event.altKey) {
+          this.close();
+        } else {
+          this._focusedItemIndex = (this._focusedItemIndex > 0)
+          ? this._focusedItemIndex - 1
+          : this.itemElements().length - 1;
+          this.refreshFocusedItem()
+        }
+        break
+      case 40: // dowm arrow
+        if (event.altKey) {
+          this.open();
+        } else {
+          this._focusedItemIndex = (this._focusedItemIndex < this.itemElements().length - 1)
+          ? this._focusedItemIndex + 1
+          : 0;
+          this.refreshFocusedItem()
+        }
+        break
+      default:
+        return
+    }
+    event.preventDefault()
+  }
+
+  listClickHandler(event) {
+    let item = event.target
+    while(item && item.tagName !== 'LI') {
+      item = item.parentNode
+    }
+    this.selectItem(item)
+  }
+
+  selectItem (item) {
+    if(!item.hasAttribute('selected')) {
+      item.setAttribute('selected', 'selected')
+      item.setAttribute('aria-selected', true)
+      this.fireChangeEvent()
+      this.refreshField()
+    }
+    this.close()
+  }
+
+  fireChangeEvent () {
+    this.dispatchEvent(new CustomEvent("change"))
+  }
+  togglePopup (show) {
+    this._isOpened = show
+    this._popup.style.display = show ? 'block' : 'none'
+    this._control.setAttribute("aria-expanded", show)
+  }
+
+  createPlaceholder () {
+    const placeholder = document.createElement('div')
+    placeholder.className = 'multiselect-field-placeholder'
+    placeholder.textContent = this._options.placeholder
+    return placeholder
+  }
+  // * Create caret icon to indicate this is a dropdown select menu
+  createCaret () {
+    const caret = document.createElement('span')
+    caret.className = 'caret'
+    return caret
+  }
+
+  itemElements () {
+    return this.shadowRoot.querySelectorAll('li')
+  }
+
+  createTag (item) {
+    const tag = document.createElement('div')
+    tag.className = 'multiselect-tag'
+
+    const content = document.createElement('div')
+    content.className = 'multiselect-tag-text'
+    content.textContent = item.textContent
+
+    const removeButton = document.createElement('div')
+    removeButton.className = 'multiselect-tag-remove-button'
+    removeButton.addEventListener('click', this.removeTag.bind(this, tag, item))
+
+    tag.appendChild(content)
+    tag.appendChild(removeButton)
+
+    return tag
+  }
+
+  removeTag (tag, item, event) {
+    this.unselectItem(item)
+    event.stopPropagation()
+  }
+
+  refreshField () {
+    this._field.innerHTML = ''
+    const selectedItems = this.shadowRoot.querySelectorAll('li[selected]')
+
+    // No items have been selected, show placeholder text
+    if(!selectedItems.length) {
+        const placeholder = this.createPlaceholder()
+        // Create and append caret to placeholder
+        const caret = this.createCaret()
+        placeholder.appendChild(caret)
+        this._field.appendChild(placeholder)
+    } else { // Display selected item tags
+        for(let i = 0; i < selectedItems.length; i++) {
+            this._field.appendChild(this.createTag(selectedItems[i]))
+        }
+        // Append caret
+        this._field.appendChild(this.createCaret())
+    }
+  }
+
+  refreshItems () {
+    const itemElements = this.itemElements()
+    for(let i = 0; i < itemElements.length; i++) {
+      const itemElement = itemElements[i]
+      itemElement.setAttribute("role", "option")
+      itemElement.setAttribute("aria-selected", itemElement.hasAttribute("selected"))
+      itemElement.setAttribute("tabindex", -1)
+    }
+    this._focusedItemIndex = 0
+  }
+
+  unselectItem (item) {
+    item.removeAttribute('selected')
+    item.setAttribute('aria-selected', false)
+    this.fireChangeEvent()
+    this.refreshField()
+  }
+
+  attributeChangedCallback = function(optionName, oldValue, newValue) {
+    this._options[optionName] = newValue
+    this.refreshField()
+  }
+
+  open () {
+    this.togglePopup(true)
+    this.refreshFocusedItem()
+  }
+
+  close = function() {
+    this.togglePopup(false)
+    this._field.focus()
+  }
+
+  selectedItems () {
+    const result = [];
+    const selectedItems = this.shadowRoot.querySelectorAll('li[selected]')
+
+    for (let i = 0; i < selectedItems.length; i++) {
+      const selectedItem = selectedItems[i]
+
+      const item = { value: "", text: ""}
+      item.value = selectedItem.hasAttribute('value') ? selectedItem.getAttribute('value') : selectedItem.textContent
+      item.text = selectedItem.textContent
+      result.push(item)
+    }
+    return result
+  }
+
+  attachHandlers() {
+    this._field.addEventListener('click', this.fieldClickHandler)
+    this._control.addEventListener('keydown', this.keyDownHandler)
+    this._list.addEventListener('click', this.listClickHandler)
+  }
+
+  render() {
+    this.attachHandlers()
+    this.refreshField()
+    this.refreshItems()
+  }
+
 
   disconnectedCallback() {
-    const el = this.shadowRoot.querySelector('mwc-textfield')
-    el.removeEventListener('click', this.click)
-    el.removeEventListener('input', this.input)
-    const dd = this.shadowRoot.querySelector('.drop-down')
-    dd.removeEventListener('selected', this.selected)
-  }
-
-  selected(e) {
-    console.log('selected', e.detail.index, e.detail.index.size)
-    const selects = []
-    e.detail.index.forEach((item) => {
-      // console.log(this.list, item, this.list[item])
-      selects.push(this.list[item]) // aa
-    })
-    console.log(selects)
-    if (selects.length) {
-      this.value = selects.join(',')
-    } else {
-      this.value = ''
-    }
-    const el = this.shadowRoot.querySelector('mwc-textfield')
-    el.value = this.value
-
-    // const event = new CustomEvent('input', { detail: this.value })
-    // this.dispatchEvent(event)
-  }
-
-  showList(show) {
-    this.show = show
-    const dd = this.shadowRoot.querySelector('.drop-down-div')
-    dd.style.display = this.show ? 'block' : 'none'
-  }
-
-  // dropdown arrow
-  click(e) {
-    if (this.list.length) {
-      console.log('click', !this.show)
-      this.showList(!this.show)
-      const el = this.shadowRoot.querySelector('mwc-textfield')
-      el.setAttribute('iconTrailing', this.show ? 'keyboard_arrow_up' : 'keyboard_arrow_down')
-    }
-  }
-
-  input(e) {
-    // console.log('input', e)
-  }
-
-  setList(items) {
-    // items = [ { key: 'aa', text: 'aa11'}, { key: 'bb', text: 'bb22'}, { key: 'cc', text: 'cc33'}, { key: 'dd', text: 'dd44'}, { key: 'ee', text: 'ee55'}, ]
-    // console.log('setList', items.length)
-    const el = this.shadowRoot.querySelector('mwc-textfield')
-    if (!items.length) {
-      el.removeAttribute('iconTrailing')
-    } else {
-      el.setAttribute('iconTrailing', 'keyboard_arrow_down')
-    }
-    this.show = false
-
-    this.list = []
-    const dd = this.shadowRoot.querySelector('.drop-down')
-    dd.innerHTML = ''
-    items.forEach((item) => {
-      const li = document.createElement('mwc-check-list-item')
-      li.innerHTML = item.key
-      if (this.value.includes(item.key)) li.setAttribute('selected', '')
-      dd.appendChild(li)
-      this.list.push(item.key) // aa
-    })
+    this._field.removeEventListener('click', this.fieldClickHandler)
+    this._control.removeEventListener('keydown', this.keyDownHandler)
+    this._list.removeEventListener('click', this.listClickHandler)
   }
 }
 
-customElements.define('mwc-multiselect', MultiSelect)
+customElements.define('bwc-multiselect', BwcMultiselect)

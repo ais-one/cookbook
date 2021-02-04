@@ -4,9 +4,11 @@
 // TBD fix this for production deployments (copy common-lib/esm --> to <example-app>/lib/esm, route <example-app>/lib/esm to /esm)
 import '/esm/http.js' // served from express /esm static route
 import '/esm/bwc-autocomplete.js'
+import '/esm/bwc-autocomplete2.js'
 import '/esm/bwc-fileupload.js'
 import '/esm/bwc-table.js'
 import '/esm/bwc-t4t-form.js'
+import '/esm/bwc-multiselect.js'
 // import * as sleep from '/esm/sleep.js'
 // console.log(sleep)
 

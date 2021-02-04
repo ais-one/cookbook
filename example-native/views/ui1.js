@@ -3,11 +3,17 @@ const template = /*html*/`
   <h1>UI 1</h1>
   <p>Testing BWC UI </p>
 
+  <h3>Multi Select</h3>
+  <bwc-multiselect id="xxx" placeholder="Select Queue">
+    <!-- li value="1">Queue One</li>
+    <li value="2">Queue Two</li -->
+  </bwc-multiselect>
+
   <h3>single autocomplete && string search example</h3>
   <div class="field">
     <div class="control">
-      <label for="" class="label">Find Something</label>
-      <bwc-autocomplete input-class="input" listid="single" required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete>
+      <label for="" class="label">Find Something (bwc-autocomplete2)</label>
+      <bwc-autocomplete2 multiple input-class="input" listid="single" required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete2>
     </div>
   </div>
   <div class="field">
@@ -19,7 +25,7 @@ const template = /*html*/`
 
   <hr/>
 
-  <h3>dependent autocomplete && object search example</h3>
+  <h3>dependent autocomplete & object search example</h3>
 
   <div class="field">
     <div class="control">
@@ -53,7 +59,7 @@ const template = /*html*/`
     </div>
   </div>
 
-  </div>
+</div>
 `
 
 const { onMounted, reactive } = Vue
@@ -62,8 +68,8 @@ export default {
   template,
   setup() {
     const ac = reactive({
-      value: 'a',
-      items: ['aa9','aa5']
+      value: 'aa5',
+      items: [] // ['aa9','aa5']
     })
     const country = reactive({
       value: '',
@@ -164,6 +170,7 @@ export default {
 
     onMounted(async () => {
       console.log('ui1 mounted!')
+      document.querySelector('#xxx').addItems( [{value: 1, text: "Queue One"}, {value: 2, text: "Queue Two"}, {value: 3, text: "Queue Three"}] )
     })
 
     return {
