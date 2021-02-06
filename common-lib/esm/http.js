@@ -74,16 +74,19 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     if (timeoutMs > 0) options.signal = signal
     if (token && credentials !== 'include') options.headers.Authorization = `Bearer ${token}` // include === HTTPONLY_TOKEN
     if (urlPath === '/api/auth/logout') options.headers.refresh_token = refreshToken // add refresh token for logout
+    options.credentials = credentials
+
     if (['POST', 'PATCH', 'PUT'].includes(method)) { // check if HTTP method has req body (DELETE is maybe)
       if (body && body instanceof FormData) {
-        options.headers['Content-Type'] = 'multipart/form-data'
+        // options.headers['Content-Type'] = 'multipart/form-data' // NOT NEEDED!!!
         options.body = body
       } else {
-        options.headers['Content-Type'] = 'application/json'
+        options.headers['Content-Type'] = 'application/json' // NEEDED!!!
         options.body = JSON.stringify(body)
       }  
     }
-    options.credentials = credentials
+
+    await fetch(urlFull + qs, options)
     const rv0 = await fetch(urlFull + qs, options)
     // rv0.data = await rv0.json() // replaced by below to handle empty body
     const txt0 = await rv0.text()

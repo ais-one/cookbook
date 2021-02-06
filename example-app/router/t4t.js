@@ -23,11 +23,8 @@ const processJson = async (req, res, next) => {
     obj = {}
     for (let key in req.body) {
       const part = req.body[key]
-      // console.log(key, part) // text parts
       obj = JSON.parse(part)
     }
-
-    console.log('processJson', obj)
     req.body = obj
   }
   next()
@@ -218,7 +215,6 @@ module.exports = express.Router()
 
   .patch('/update/:table/:id?', generateTable, storageUpload.any(), processJson, asyncWrapper(async (req, res) => {
     const { body, table } = req
-
     const where = formUniqueKey(table, req.query.__key)
     let count = 0
     if (!where) return res.status(400).json({}) // bad request

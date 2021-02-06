@@ -78,11 +78,15 @@ export default {
       // loading.value = true
       try {
         if (mode.value === 'add') {
-          await t4t.create(data)
+          const rv = t4t.processData(data, { signedUrl: false })
+          await t4t.create(data, rv.form ? rv.form : rv.json)
+          if (rv.files) { } // TBD send to signed URL
           page.value = 1 // for reload
         } else {
           const { __key, ...noKeyData } = data
-          await t4t.update(__key, noKeyData)
+          const rv = t4t.processData(noKeyData, { signedUrl: false })
+          await t4t.update(__key, rv.form ? rv.form : rv.json)
+          if (rv.files) { } // TBD send to signed URL
         }
       } catch (e) {
         alert(`Error ${mode.value} ${e.toString()}`)

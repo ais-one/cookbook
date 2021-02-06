@@ -33,7 +33,7 @@
     "@material/mwc-textfield": "^0.20.0",
     "@material/mwc-top-app-bar-fixed": "^0.20.0",
     "@vaadin/vaadin-grid": "^5.7.7",
-    "echarts": "^5.0.1",
+    "echarts": "^5.0.2",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.11.0",
     "leaflet": "^1.7.1",

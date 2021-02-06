@@ -149,52 +149,46 @@ function initItem() {
   }
 }
 
-function _processForm(record, form) {
-  // TBD upload to server or use signed url...
-  // let formData = null
-  let hasForm = false
-  const obj = {}
+// process data for use with
+// JSON only,  multi-part form, JSON & filelist (signed URL upload)
+function processData(record, { signedUrl = false } = { }) {
+  const rv = {
+    json: { }
+  }
   for (const [k, v] of Object.entries(record)) {
     if (v instanceof FileList) {
-      // if (!formData) formData = new FormData()
-      // console.log('new formData', formData)
       const fileNameArray = []
       for (const file of v) {
-        hasForm = true
-        console.log('adding', file)
-        form.append('file-data', file) // add
+        if (signedUrl) {
+          if (!rv.files) rv.files = []
+          rv.files.push(file)
+        } else {
+          if (!rv.form) rv.form = new FormData()
+          rv.form.append('file-data', file) // add
+        }
         fileNameArray.push(file.name)
       }
-      obj[k] = fileNameArray.join(',') // array
+      rv.json[k] = fileNameArray.join(',') // array
     } else {
-      obj[k] = v
+      rv.json[k] = v
     }
   }
-  if (hasForm) form.append('json-data', JSON.stringify(obj)) // set the JSON
-  return hasForm ? form : record
+  if (rv.form) rv.form.append('json-data', JSON.stringify(rv.json)) // set the JSON
+  return rv
 }
 
-// TBD handle file uploads
 async function create(record) {
   // const { data } = await http.patch(`/api/authors/${id}`, formData,
-  //   {
-  //     // onUploadProgress: progressEvent => console.log(Math.round(progressEvent.loaded / progressEvent.total * 100) + '%') // axios only
-  //     headers: { 'Content-Type': 'multipart/form-data' }
-  //   }
+  //   { onUploadProgress: progressEvent => console.log(Math.round(progressEvent.loaded / progressEvent.total * 100) + '%') } // axios only
   // )
-  await http.post(`/api/t4t/create/${tableName}`, _processForm(record))
+  await http.post(`/api/t4t/create/${tableName}`, record)
 }
 
-// TBD may need to handle file upload also... - WHY IS FormData empty object still ???
 async function update(__key, record) {
-  console.log('update update', __key, record)
-  const form = new FormData()
-  const xxx =  _processForm(record, form)
-  console.log('update 2222', __key, xxx)
   await http.patch(`/api/t4t/update/${tableName}`, record, { __key })
 }
 
-// TBD handle file removals
+// Handle file removals seperately
 async function remove(items) {
   let ids = []
   const { pk } = config
@@ -216,26 +210,11 @@ async function upload(file) { // the file object
   // for(const pair of formData.entries()) console.log(pair[0], pair[1])
   return await http.post('/api/t4t/upload/' + tableName, formData)
   // formData.append('textdata', JSON.stringify({ name: 'name', age: 25 }))
-  // const res = await fetch('/api/upload', {
-  //   method: 'POST',
-  //   body: formData
-  // })
+  // const res = await fetch('/api/upload', { method: 'POST', body: formData })
   // const { id, name, avatar } = record
   // const json = JSON.stringify({ name })
   // // const blob = new Blob([json], { type: 'application/json' })
   // // console.log('json', blob)
-  // formData.append('filex', avatar.imageFile) // const { name, size, type } = avatar.imageFile
-  // formData.append('docx', json)
-  // const { data } = await http.patch(`/api/authors/${id}`, formData,
-  //   {
-  //     // onUploadProgress: progressEvent => {
-  //     //   console.log(Math.round(progressEvent.loaded / progressEvent.total * 100) + '%')
-  //     // },
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data'
-  //     }
-  //   }
-  // )
 }
 
 
@@ -262,6 +241,6 @@ async function autocomplete (search, col, record) { // wrap in debounce
 // mwcAc.setList(res)
 // }, 500)
 
-export { setTableName, getConfig, validate, find, findOne, initItem, create, update, remove, upload, download, autocomplete }
+export { setTableName, getConfig, validate, find, findOne, initItem, create, update, remove, upload, download, autocomplete, processData }
 
 

@@ -335,7 +335,6 @@ class BwcT4tForm extends HTMLElement {
               const fieldEl = this.formEl(framework[tagKey], col, c)
 
               if (c?.ui?.attrs?.type === 'file' && this.mode === 'edit') { // field is file...
-                console.log('asdasdnaksdj')
                 this.#xcols[col].errorEl.innerText = 'aaaa.csv' // this.#record[col] || ''
                 // console.log(fieldEl, col)
               }
