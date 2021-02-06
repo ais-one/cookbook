@@ -17,7 +17,7 @@ module.exports = function(app) {
   // const helmet = require('helmet')
   // app.use(helmet.noCache())
 
-  // Set CORS headers so that the React SPA is able to communicate with this server
+  // Set CORS headers so client is able to communicate with this server
   // Access-Control-Allow-Origin=*
   // Access-Control-Allow-Methods=GET,POST,PUT,PATCH,DELETE,OPTIONS
   // Access-Control-Allow-Headers=Content-Type

@@ -1,8 +1,8 @@
 ## Issues
-### For next sprint
-  - [example-vite] cypress e2e testing
-  - [example-vite] migrate example-webpack vue-crud-x table examples to vite
-  - [chore] disable console.log in production / proper console logging
+### For next sprint / version
+- [example-vite] cypress e2e testing
+- [example-vite] migrate example-webpack vue-crud-x table examples to vite
+- [chore] disable console.log in production / proper console logging
 
 ### Backlog
 - [example-webpack] what to do with apollo graphql client???

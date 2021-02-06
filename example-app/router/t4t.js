@@ -14,8 +14,24 @@ const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
 const { gcpGetSignedUrl } = require(LIB_PATH + '/services/gcp')
-const { memoryUpload } = require(LIB_PATH + '/express/upload')
+const { memoryUpload, storageUpload } = require(LIB_PATH + '/express/upload')
 
+const authUser = async (req, res, next) => next()
+
+const processJson = async (req, res, next) => {
+  if (req.files) { // it is formdata
+    obj = {}
+    for (let key in req.body) {
+      const part = req.body[key]
+      // console.log(key, part) // text parts
+      obj = JSON.parse(part)
+    }
+
+    console.log('processJson', obj)
+    req.body = obj
+  }
+  next()
+}
 
 // __key is reserved property for identifying row in a multiKey table
 // | is reserved for seperating columns that make the multiKey
@@ -200,8 +216,9 @@ module.exports = express.Router()
     return res.json(rv)
   }))
 
-  .patch('/update/:table/:id?', generateTable, asyncWrapper(async (req, res) => {
+  .patch('/update/:table/:id?', generateTable, storageUpload.any(), processJson, asyncWrapper(async (req, res) => {
     const { body, table } = req
+
     const where = formUniqueKey(table, req.query.__key)
     let count = 0
     if (!where) return res.status(400).json({}) // bad request
@@ -238,7 +255,7 @@ module.exports = express.Router()
     return res.json({count})
   }))
 
-  .post('/create/:table', generateTable, asyncWrapper(async (req, res) => {
+  .post('/create/:table', generateTable, storageUpload.any(), processJson, asyncWrapper(async (req, res) => {
     const { table, body } = req
     for (let key in table.cols) {
       const { rules, type } = table.cols[key]

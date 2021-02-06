@@ -13,7 +13,9 @@
 //   size: 110
 // }
 
-const { UPLOAD_FOLDER } = global.CONFIG
+const { UPLOAD_STATIC } = global.CONFIG
+// console.log('UPLOAD_FOLDER', UPLOAD_STATIC)
+
 const multer = require('multer')
 
 const memoryUpload = multer({ 
@@ -39,7 +41,7 @@ const storageUpload = multer({
   //   cb(null, true);
   // },
   storage: multer.diskStorage({
-    destination: function (req, file, cb) { cb(null, UPLOAD_FOLDER) },
+    destination: function (req, file, cb) { cb(null, UPLOAD_STATIC[0].folder) },
     filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname) }
   })
 })

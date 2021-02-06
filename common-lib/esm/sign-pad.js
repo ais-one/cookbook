@@ -49,11 +49,9 @@ class SignPad extends HTMLElement {
     switch (name) {
       case 'width': // set canvas width
         el.width = newVal
-        // console.log(`width ${oldVal} to ${newVal}`);
         break
       case 'height': // set canvas height
         el.height = newVal
-        // console.log(`height ${oldVal} to ${newVal}`);
         break
       // value no need to handle
     }
@@ -64,7 +62,6 @@ class SignPad extends HTMLElement {
     // const bg_rule = styleSheetList[0].cssRules[0]
     // const yyy = context_rule.style.getPropertyValue('--vcxwc-sign-pad-background-color')
     // console.log('bg', bg_rule.style.backgroundColor, yyy)
-    console.log('SIGNPAD SIGNPAD SIGNPAD SIGNPAD SIGNPAD SIGNPAD 222222222222222222222222')
 
     // console.log('connect sign')
     this.mouse = {

@@ -82,17 +82,22 @@ module.exports = express.Router()
   // body action: 'read' | 'write', filename: 'my-file.txt', bucket: 'bucket name'
   .post('/gcp-sign', asyncWrapper(gcpGetSignedUrl))
 
-  .post('/upload-single', storageUpload.single('filedata'), (req,res) => { // avatar is form input name
-    console.log('file original name', req.file.originalname)
-    console.log('text data', req.body.textdata)
-    res.json({ message: 'Uploaded' })
+  .post('/upload-disk', storageUpload.any(), (req,res) => { // avatar is form input name // single('filedata')
+    try {
+      console.log('files', req.files)
+      for (let key in req.body) {
+        const part = req.body[key]
+        console.log(key, part) // text parts
+      }
+      res.json({
+        message: 'Uploaded',
+        body: req.body
+      })
+    } catch (e) {
+      res.json({ error: e.message })
+    }
   })
-  .post('/upload-multiple', storageUpload.array('photos', 3), (req, res) => { // multiple
-    console.log(req.files.length)
-    res.json({ message: 'Uploaded' })
-    // req.files is array of `photos` files
-    // req.body will contain the text fields, if there were any
-  })
+
   .post('/upload-memory', memoryUpload.single('memory'), (req, res) => {
     console.log(req.file.originalname, req.body)
     res.json({ message: req.file.buffer.toString() })

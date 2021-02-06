@@ -1,5 +1,6 @@
 ### Version 0.4.6
 - [chore] update packages & cleanup & work on improving documentation
+- [update] remove circle-ci
 - [example-native] make create, update, delete, upload API work in example-native
 - [common-lib/esm/bwc-autocomplete.js] add disabled attribute and input-class (for styling to bulma, bootstrap, muicss) attribute
 - [common-lib/esm/bwc-t4t-form.js] - handle select & textarea tag
@@ -7,8 +8,8 @@
 - [common-lib/esm/bwc-table.js] - BREAKING CHANGE: use object instead or multiple variables for cell render(), see example-native/views/ui2.js for reference
 - [common-lib/esm/bwc-fileupload.js] - created file input component
 - [inprogress]
-  - [common-lib/esm/bwc-combobox.js] - new componente: multi-select tags, autocomplete, optional to create new
   - [common-lib/esm/bwc-t4t-form.js] - integrate to form... add file input functionlity on submit..., 
+  - [common-lib/esm/bwc-combobox.js] - new componente: multi-select tags, autocomplete, optional to create new
   - [common-lib/esm/bwc-t4t-form.js] - add autocomplete
   - [example-vite] remove CrudTable.vue, use bwc-table in example-native
 

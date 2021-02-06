@@ -72,13 +72,10 @@ export async function uploadGoogle (files) {
 }
 
 export async function uploadMemory(files) {
-  // console.log(files)
   try {
     const formData = new FormData()
     formData.append('memory', files[0])
-    const res = await fetch('/api/upload-memory', {
-      method: 'POST', body: formData
-    })
+    const res = await fetch('/api/upload-memory', { method: 'POST', body: formData })
     const rv = await res.json()
     console.log(rv)
   } catch (e) {
@@ -86,33 +83,32 @@ export async function uploadMemory(files) {
   }
 }
 
-export async function uploadSingle(files) {
-  // console.log(files)
-  try {
-    const formData = new FormData()
-    formData.append('filedata', files[0])
-    formData.append('textdata', JSON.stringify({ name: 'name', age: 25 }))
-    const res = await fetch('/api/upload-single', { method: 'POST', body: formData })
-    const rv = await res.json()
-    console.log(rv)
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-export async function uploadMultiple(files) {
-  // console.log(files)
-  // send in one request
-  // not multiple request - files.forEach..., Promise.all
+export async function uploadFiles(files) {
   try {
     const formData = new FormData()
     for (const file of files) {
-      formData.append('photos', file, file.name);
+      const ext = file.name.split('.').pop()
+      console.log(ext, typeof file, file)
+      formData.append(ext, file, file.name)
     }
-    const res = await fetch('/api/upload-multiple', { method: 'POST', body: formData })
+    // console.log(files)
+    formData.append('json-data1', JSON.stringify({ name: 'name', age: 25 }))
+    formData.append('json-data2', JSON.stringify({ name: 'name2', age: 35 }))
+    const res = await fetch('/api/upload-disk', { method: 'POST', body: formData })
     const rv = await res.json()
     console.log(rv)
   } catch (e) {
     console.log(e)
   }
+}
+
+export async function jsonOnly() {
+  await fetch('/api/upload-disk', {
+    method: 'POST',
+    headers: {
+      // 'Accept': 'application/json, text/plain, */*',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ jsonName: 'aa', jsonAge: 5 }) 
+  })
 }

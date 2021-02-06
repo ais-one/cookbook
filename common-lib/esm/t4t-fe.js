@@ -149,40 +149,48 @@ function initItem() {
   }
 }
 
+function _processForm(record, form) {
+  // TBD upload to server or use signed url...
+  // let formData = null
+  let hasForm = false
+  const obj = {}
+  for (const [k, v] of Object.entries(record)) {
+    if (v instanceof FileList) {
+      // if (!formData) formData = new FormData()
+      // console.log('new formData', formData)
+      const fileNameArray = []
+      for (const file of v) {
+        hasForm = true
+        console.log('adding', file)
+        form.append('file-data', file) // add
+        fileNameArray.push(file.name)
+      }
+      obj[k] = fileNameArray.join(',') // array
+    } else {
+      obj[k] = v
+    }
+  }
+  if (hasForm) form.append('json-data', JSON.stringify(obj)) // set the JSON
+  return hasForm ? form : record
+}
+
 // TBD handle file uploads
 async function create(record) {
-
-  // console.log('is FileList',this.#record[k] instanceof FileList, k, el.type === 'file')
-  // const formData = new FormData()
-  // formData.append('csv-file', file) // call it file
-  // const json = JSON.stringify({ name })
-  // formData.append('docx', json)
   // const { data } = await http.patch(`/api/authors/${id}`, formData,
   //   {
-  //     // onUploadProgress: progressEvent => console.log(Math.round(progressEvent.loaded / progressEvent.total * 100) + '%') // axios
+  //     // onUploadProgress: progressEvent => console.log(Math.round(progressEvent.loaded / progressEvent.total * 100) + '%') // axios only
   //     headers: { 'Content-Type': 'multipart/form-data' }
   //   }
   // )
-
-
-  // WIP
-  let formData = null
-  for (const [k, v] of Object.entries(record)) {
-    if (v instanceof FileList) {
-      if (!formData) formData = new FormData()
-      for (const file of v) {
-        formData.append(k, file) // can handle multiple files ?
-        record[k] = '' // indicator for file 
-      }
-    }
-  }
-  if (formData) formData.append('__json-data__', JSON.stringify(record)) // set the JSON
-
-  await http.post(`/api/t4t/create/${tableName}`, record)
+  await http.post(`/api/t4t/create/${tableName}`, _processForm(record))
 }
 
-// TBD may need to handle file upload also...
+// TBD may need to handle file upload also... - WHY IS FormData empty object still ???
 async function update(__key, record) {
+  console.log('update update', __key, record)
+  const form = new FormData()
+  const xxx =  _processForm(record, form)
+  console.log('update 2222', __key, xxx)
   await http.patch(`/api/t4t/update/${tableName}`, record, { __key })
 }
 

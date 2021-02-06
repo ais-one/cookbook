@@ -21,7 +21,7 @@
     "deploy:unix": "deploy.sh $npm_package_config_env"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.7",
+    "@apollo/client": "^3.3.8",
     "@material/mwc-button": "^0.20.0",
     "@material/mwc-dialog": "^0.20.0",
     "@material/mwc-drawer": "^0.20.0",
@@ -56,6 +56,6 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.5.0",
     "prettier": "^2.2.1",
-    "vite": "^2.0.0-beta.64"
+    "vite": "^2.0.0-beta.65"
   }
 }

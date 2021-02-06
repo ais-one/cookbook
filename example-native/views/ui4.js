@@ -36,7 +36,7 @@ import { debounce, downloadData } from '/esm/util.js'
 
 const { onMounted, ref, reactive } = Vue
 
-const tableName = 'country' // country, person
+const tableName = 'person' // country, person
 
 export default {
   template,
@@ -71,7 +71,6 @@ export default {
       // do update here and display error message?
       const { data, error } = e.detail
       if (error) return alert('Validation Error')
-
       const invalid = t4t.validate(data)
       if (invalid) return alert(`Invalid ${invalid.col} - ${invalid.msg}`)
 
