@@ -241,6 +241,69 @@ async function autocomplete (search, col, record) { // wrap in debounce
 // mwcAc.setList(res)
 // }, 500)
 
-export { setTableName, getConfig, validate, find, findOne, initItem, create, update, remove, upload, download, autocomplete, processData }
+
+const gcpHeaders = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json',
+}
+
+export async function deleteGoogle (filename) {
+  try {
+    const rv = await http.post('/api/gcp-sign', { filename, action: 'delete' }, null, gcpHeaders)
+    const res2 = await http.del(rv.url)
+    // console.log(res2)
+    alert('Google Delete: ' + (res2.ok) ? 'OK' : 'FAIL') 
+  } catch (e) {
+    alert('Google Delete: ' + e.toString())
+  }
+}
+
+export async function uploadGoogle (files) {
+  // TBD limit upload size
+  if (files && files.length) {
+  }
+
+  try {
+    const file = files[0] // TBD handle multiple files
+    const filename = file.name
+    const rv = await http.post('/api/gcp-sign', { filename, action: 'write' }, null, gcpHeaders)
+    const res2 = await http.put(rv.url, files[0], null,  { 'Content-Type': 'application/octet-stream' })
+    alert('Google Upload: ' + (res2.ok) ? 'OK' : 'FAIL') 
+  } catch (e) {
+    alert('Google Upload: ' + e.toString())
+  }
+}
+
+export async function readGoogle (filename) {
+  try {
+    const rv = await http.post('/api/gcp-sign', { filename, action: 'read' }, null, gcpHeaders)
+
+    const decoder = new TextDecoder('utf-8')
+    fetch(rv.url, { method: 'GET' }).then(response => {
+      response.body
+        .getReader()
+        .read()
+        .then(({value, done}) => {
+          console.log(done, "boo", decoder.decode(value))
+        })
+    })
+    // const xxx = await res2.body.getReader().read()
+    // console.log(xxx)
+    // alert('Google Read: ' + (res2.ok) ? 'OK' : 'FAIL')   
+  } catch (e) {
+    console.log('readGoogle', e.toString())
+  }
+}
+
+/*
+  export async function enableCorsGoogle () {
+    alert('USE: gsutil cors set [JSON_FILE_NAME].json gs://[BUCKET_NAME]')
+  }
+  
+*/
+export {
+  setTableName, getConfig, validate, find, findOne, initItem, create, update, remove, upload, download, autocomplete, processData,
+  uploadGoogle, deleteGoogle, readGoogle
+}
 
 

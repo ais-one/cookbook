@@ -3,6 +3,7 @@
 const express = require('express')
 const Model = require(LIB_PATH + '/services/db/objection').get()
 const knex = Model ? Model.knex() : null
+const fs = require('fs')
 
 const { validate } = require('esm')(module)(LIB_PATH + '/esm/t4t-validate') // TBD validate on server side also
 
@@ -395,3 +396,12 @@ for {
         return res.status(200).json({ errorCount: errors.length, errors })
       })
   })
+
+
+  // delete file
+  // export async function deleteFile(filePath) {
+  //   fs.unlink(filePath, e => {
+  //     if (e) console.log(e)
+  //     else console.log(filePath +' deleted!')
+  //   })  
+  // }
