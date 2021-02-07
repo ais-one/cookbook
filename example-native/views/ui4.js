@@ -76,11 +76,12 @@ export default {
 
       // if (loading.value) return
       // loading.value = true
+      const signedUrl = false
       try {
         if (mode.value === 'add') {
-          const rv = t4t.processData(data, { signedUrl: true })
+          const rv = t4t.processData(data, { signedUrl })
           await t4t.create(data, rv.form ? rv.form : rv.json)
-          if (rv.files) { // TBD send to signed URL
+          if (rv.files) { // upload using signed URL
             for (const file of rv.files) {
               await t4t.uploadGoogle(file) // tbd use... promise.allSettled
               // await t4t.deleteGoogle(file.name) // tbd use... promise.allSettled
@@ -89,10 +90,9 @@ export default {
           page.value = 1 // for reload
         } else {
           const { __key, ...noKeyData } = data
-          const rv = t4t.processData(noKeyData, { signedUrl: true })
-          console.log(rv)
+          const rv = t4t.processData(noKeyData, { signedUrl })
           await t4t.update(__key, rv.form ? rv.form : rv.json)
-          if (rv.files) { // TBD send to signed URL
+          if (rv.files) { // upload using signed URL
             for (const file of rv.files) {
               await t4t.uploadGoogle(file) // tbd use... promise.allSettled
               // await t4t.deleteGoogle(file.name) // tbd use... promise.allSettled

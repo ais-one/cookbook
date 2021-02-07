@@ -6,10 +6,11 @@
 - [common-lib/esm/bwc-t4t-form.js] - handle select & textarea tag
 - [example-amp] add sample AMP application
 - [common-lib/esm/bwc-table.js] - BREAKING CHANGE: use object instead or multiple variables for cell render(), see example-native/views/ui2.js for reference
+- [common-lib/esm/bwc-table.js] - BUG FIX: filter was not working
 - [common-lib/esm/bwc-fileupload.js] - created file input component
 - [common-lib/esm/bwc-t4t-form.js] - integrate to form... add file input functionlity on submit... (upload to server or signedUrl)
 - [inprogress]
-  - [common-lib/esm/bwc-combobox.js] - new componente: multi-select tags, autocomplete, optional to create new
+  - [common-lib/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new
   - [common-lib/esm/bwc-t4t-form.js] - add autocomplete
   - [example-vite] remove CrudTable.vue, use bwc-table in example-native
 
