@@ -14,7 +14,7 @@ const ObjectID = mongo.client ? require('mongodb').ObjectID : null
 const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
-const { gcpGetSignedUrl } = require(LIB_PATH + '/services/gcp')
+// const { gcpGetSignedUrl } = require(LIB_PATH + '/services/gcp')
 const { memoryUpload, storageUpload } = require(LIB_PATH + '/express/upload')
 
 const authUser = async (req, res, next) => next()

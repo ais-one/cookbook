@@ -193,7 +193,7 @@ class BwcMultiselect extends HTMLElement {
   attributeChangedCallback(name, oldVal, newVal) {
     switch (name) {
       case 'items': {
-        console.log('items changed', newVal)
+        // console.log('items changed', newVal)
         this.addItems(newVal)
         break
       }

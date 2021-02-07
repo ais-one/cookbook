@@ -78,15 +78,26 @@ export default {
       // loading.value = true
       try {
         if (mode.value === 'add') {
-          const rv = t4t.processData(data, { signedUrl: false })
+          const rv = t4t.processData(data, { signedUrl: true })
           await t4t.create(data, rv.form ? rv.form : rv.json)
-          if (rv.files) { } // TBD send to signed URL
+          if (rv.files) { // TBD send to signed URL
+            for (const file of rv.files) {
+              await t4t.uploadGoogle(file) // tbd use... promise.allSettled
+              // await t4t.deleteGoogle(file.name) // tbd use... promise.allSettled
+            }
+          }
           page.value = 1 // for reload
         } else {
           const { __key, ...noKeyData } = data
-          const rv = t4t.processData(noKeyData, { signedUrl: false })
+          const rv = t4t.processData(noKeyData, { signedUrl: true })
+          console.log(rv)
           await t4t.update(__key, rv.form ? rv.form : rv.json)
-          if (rv.files) { } // TBD send to signed URL
+          if (rv.files) { // TBD send to signed URL
+            for (const file of rv.files) {
+              await t4t.uploadGoogle(file) // tbd use... promise.allSettled
+              // await t4t.deleteGoogle(file.name) // tbd use... promise.allSettled
+            }
+          }
         }
       } catch (e) {
         alert(`Error ${mode.value} ${e.toString()}`)

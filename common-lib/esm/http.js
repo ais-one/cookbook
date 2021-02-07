@@ -36,34 +36,37 @@ const parseUrl = (url) => {
   let urlPath = url
   let urlOrigin = baseUrl
   let urlFull = baseUrl + urlPath
+  let urlSearch = ''
   try {
-    // need try here
-    const { origin = '', pathname = '' } = new URL(url) // http://example.com:3001/abc/ees
+    urlSearch = (url.lastIndexOf('?') !== -1) ? url.split('?').pop() : '' // handle /abc/def?aa=1&bb=2
+    if (urlSearch) urlSearch = '?' + urlSearch // prepend ?
+    const { origin = '', pathname = '', search = '' } = new URL(url) // http://example.com:3001/abc/ees?aa=1&bb=2
     urlOrigin = origin
     urlPath = pathname
     urlFull = origin + pathname
+    urlSearch = search
   } catch (e) {
   }
-  return { urlOrigin, urlPath, urlFull }
+  return { urlOrigin, urlPath, urlFull, urlSearch }
 }
 
 const http = async (method, url, body = null, query = null, headers = null) => {
   // settle the URL
   // http://example.com:3001/abc/ees, /abc/ees
-  const { urlOrigin, urlPath, urlFull } = parseUrl(url)
-
-  // console.log('http', url, urlOrigin, urlPath, urlFull)
+  const { urlOrigin, urlPath, urlFull, urlSearch } = parseUrl(url)
   try {
     const controller = new AbortController()
     const signal = controller.signal
     if (timeoutMs > 0) setTimeout(() => controller.abort(), timeoutMs) // err.name === 'AbortError'
 
-    const qs = query
+    let qs = (query && typeof query === 'object') // null is also an object
       ? '?' +
         Object.keys(query)
           .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key]))
           .join('&')
-      : ''
+      : (query || '')
+    qs = qs ? qs + urlSearch.substring(1) // remove the question mark
+      : urlSearch
 
     if (!headers) {
       headers = {
@@ -80,13 +83,15 @@ const http = async (method, url, body = null, query = null, headers = null) => {
       if (body && body instanceof FormData) {
         // options.headers['Content-Type'] = 'multipart/form-data' // NOT NEEDED!!!
         options.body = body
+      } else if (options.headers['Content-Type'] && options.headers['Content-Type'] === 'application/octet-stream') {
+        // handling stream...
+        options.body = body
       } else {
         options.headers['Content-Type'] = 'application/json' // NEEDED!!!
         options.body = JSON.stringify(body)
       }  
     }
 
-    await fetch(urlFull + qs, options)
     const rv0 = await fetch(urlFull + qs, options)
     // rv0.data = await rv0.json() // replaced by below to handle empty body
     const txt0 = await rv0.text()
@@ -118,58 +123,19 @@ const http = async (method, url, body = null, query = null, headers = null) => {
   }
 }
 
-async function login() {
-  const { data } = await http('POST', '/api/auth/login', { email: 'test', password: 'test' })
-  token = data.token
-  refreshToken = data.refresh_token
-  console.log('logged in', token, refreshToken, data, parseJwt(token))
-}
-
-async function otp() {
-  try {
-    const { data } = await http('POST', '/api/auth/otp', { pin: '111111' })
-    if (data.token) {
-      token = data.token
-      refreshToken = data.refresh_token
-      console.log('otp ok', token, refreshToken, data)
-    } else {
-      console.log('otp error', data)
-    }
-  } catch (e) {
-    console.log('otp', e.toString())
-  }
-}
-
 const test = () => console.log('https test')
 
-async function testAuth() {
-  try {
-    const { data } = await http('GET', '/api/health-auth')
-    if (data) console.log('/api/health-auth', data)
-    else console.log('get no data', data)
-  } catch (e) {
-    console.log('get', e)
-  }
-}
-
-async function logout() {
-  try {
-    const { data } = await http('GET', '/api/auth/logout')
-    console.log('logout done', data)
-  } catch (e) {
-    console.log('logout error', e)
-  }
-}
-
 const post = async (url, body = null, query = null, headers = null) => {
-
-
   return await http('POST', url, body, query, headers)
   // try {
   //   return await http('POST', url, body, query, headers)
   // } catch (e) {
   //   throw e
   // }
+}
+
+const put = async (url, body = null, query = null, headers = null) => {
+  return await http('PUT', url, body, query, headers)
 }
 
 const patch = async (url, body = null, query = null, headers = null) => {
@@ -199,7 +165,51 @@ const get = async (url, query = null, headers = null) => {
   // }
 }
 
-export { http, post, get, patch, del, test, testAuth, login, otp, logout, setBaseUrl, setToken, setRefreshToken, setCredentials, setForceLogoutFn, parseJwt, parseUrl }
+
+// TESTING PURPOSES ONLY - TO MOVE TO SEPERATE FILE
+async function login() {
+  const { data } = await http('POST', '/api/auth/login', { email: 'test', password: 'test' })
+  token = data.token
+  refreshToken = data.refresh_token
+  console.log('logged in', token, refreshToken, data, parseJwt(token))
+}
+
+async function otp() {
+  try {
+    const { data } = await http('POST', '/api/auth/otp', { pin: '111111' })
+    if (data.token) {
+      token = data.token
+      refreshToken = data.refresh_token
+      console.log('otp ok', token, refreshToken, data)
+    } else {
+      console.log('otp error', data)
+    }
+  } catch (e) {
+    console.log('otp', e.toString())
+  }
+}
+
+async function testAuth() {
+  try {
+    const { data } = await http('GET', '/api/health-auth')
+    if (data) console.log('/api/health-auth', data)
+    else console.log('get no data', data)
+  } catch (e) {
+    console.log('get', e)
+  }
+}
+
+async function logout() {
+  try {
+    const { data } = await http('GET', '/api/auth/logout')
+    console.log('logout done', data)
+  } catch (e) {
+    console.log('logout error', e)
+  }
+}
+
+
+export { http, post, get, put, patch, del, test, testAuth, login, otp, logout, setBaseUrl, setToken, setRefreshToken, setCredentials, setForceLogoutFn, parseJwt, parseUrl }
 
 // try {
 //   let res = await fetch('/api/auth/login', {

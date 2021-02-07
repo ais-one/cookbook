@@ -247,39 +247,34 @@ const gcpHeaders = {
   'Content-Type': 'application/json',
 }
 
-export async function deleteGoogle (filename) {
+async function deleteGoogle (filename) {
   try {
     const rv = await http.post('/api/gcp-sign', { filename, action: 'delete' }, null, gcpHeaders)
-    const res2 = await http.del(rv.url)
+    const res2 = await http.del(rv.data.url)
     // console.log(res2)
-    alert('Google Delete: ' + (res2.ok) ? 'OK' : 'FAIL') 
+    console.log('Google Delete: ' + (res2.ok) ? 'OK' : 'FAIL') 
   } catch (e) {
-    alert('Google Delete: ' + e.toString())
+    console.log('Google Delete: ' + e.toString())
   }
 }
 
-export async function uploadGoogle (files) {
-  // TBD limit upload size
-  if (files && files.length) {
-  }
-
+async function uploadGoogle (file) { // only 1 file at a time, use for loop for multiples
   try {
-    const file = files[0] // TBD handle multiple files
     const filename = file.name
     const rv = await http.post('/api/gcp-sign', { filename, action: 'write' }, null, gcpHeaders)
-    const res2 = await http.put(rv.url, files[0], null,  { 'Content-Type': 'application/octet-stream' })
-    alert('Google Upload: ' + (res2.ok) ? 'OK' : 'FAIL') 
+    console.log(rv.data.url)
+    const res2 = await http.put(rv.data.url, file, null,  { 'Content-Type': 'application/octet-stream' })
+    console.log('Google Upload: ' + (res2.ok) ? 'OK' : 'FAIL') 
   } catch (e) {
-    alert('Google Upload: ' + e.toString())
+    console.log('Google Upload: ' + e.toString())
   }
 }
 
-export async function readGoogle (filename) {
+async function readGoogle (filename) {
   try {
     const rv = await http.post('/api/gcp-sign', { filename, action: 'read' }, null, gcpHeaders)
-
     const decoder = new TextDecoder('utf-8')
-    fetch(rv.url, { method: 'GET' }).then(response => {
+    fetch(rv.data.url, { method: 'GET' }).then(response => {
       response.body
         .getReader()
         .read()
