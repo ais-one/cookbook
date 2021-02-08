@@ -75,6 +75,8 @@ class BwcAutocomplete extends HTMLElement {
   #multiple = false // hold readonly attributes
   #strict = false
 
+  #tt = null // to be new value property
+
   constructor() {
     super()
     this.inputFn = this.inputFn.bind(this)
@@ -135,6 +137,7 @@ class BwcAutocomplete extends HTMLElement {
           this.selectedItem = null
           this.dispatchEvent(new CustomEvent('selected', { detail: this.selectedItem }))
         }
+        console.log('onblur not found')
       } else {
         if (!this.selectedItem) {
           // console.log('found but not selected')
@@ -145,8 +148,8 @@ class BwcAutocomplete extends HTMLElement {
     }
 
     // console.log('setup stuff', this.required, this.disabled, this.inputClass)
-
     this.#elInput.value = this.value
+
     this.#elInput.className = this.inputClass || 'input' // default to bulma?
 
     if (this.required) this.#elInput.setAttribute('required', '')
@@ -165,6 +168,7 @@ class BwcAutocomplete extends HTMLElement {
     const el = this.#elInput
     switch (name) {
       case 'value': {
+        // if (!this.#multiple && el) el.value = newVal
         if (el) el.value = newVal
         this.dispatchEvent(new CustomEvent('input', { detail: newVal }))
         break
@@ -227,6 +231,15 @@ class BwcAutocomplete extends HTMLElement {
     this.setList(val)
   }
 
+  get tt() {
+    console.log('get tt', this.#tt)
+    return this.#tt
+  }
+  set tt(val) {
+    console.log('set tt', val)
+    this.#tt = val
+  }
+
   inputFn(e) { // whether clicked or typed
     // console.log('inputFn', e.target.value, this.items.length)
     const prevItem = this.selectedItem
@@ -260,6 +273,7 @@ class BwcAutocomplete extends HTMLElement {
       const li = document.createElement('option')
       li.innerHTML = typeof item === 'string' ? item : item.key
       li.value = typeof item === 'string' ? item : item.text
+      li.onmousedown = (e) => console.log('clickeeeeee')
       dd.appendChild(li)
     })
   }

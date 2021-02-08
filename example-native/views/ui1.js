@@ -12,13 +12,20 @@ const template = /*html*/`
   <h3>single autocomplete && string search example</h3>
   <div class="field">
     <div class="control">
-      <label for="" class="label">Find Something (bwc-autocomplete2)</label>
-      <bwc-autocomplete2 multiple input-class="input" listid="single" required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete2>
+      <label for="" class="label">bwc-autocomplete2 - multiple</label>
+      <bwc-autocomplete2 :tt="{ aa: 1, bb: 'c' }" multiple input-class="input" listid="multiple-ac" required :items="ac.items" v-model="ac.multipleValue" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete2>
     </div>
   </div>
   <div class="field">
     <div class="control">
-      <label for="" class="label">Find Something - Disabled</label>
+      <label for="" class="label">bwc-autocomplete2 - single</label>
+      <bwc-autocomplete2 listid="single-ac" required :items="ac.items" v-model="ac.singleValue" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete2>
+    </div>
+  </div>
+
+  <div class="field">
+    <div class="control">
+      <label for="" class="label">bwc-autocomplete - Disabled</label>
       <bwc-autocomplete disabled listid="single-disabled" required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete>
     </div>
   </div>
@@ -68,9 +75,13 @@ export default {
   template,
   setup() {
     const ac = reactive({
-      value: 'aa5',
-      items: [] // ['aa9','aa5']
+      value: 'aa1',
+      items: [], // ['aa9','aa5']
+
+      multipleValue: [],
+      singleValue: 'aa5'
     })
+
     const country = reactive({
       value: '',
       items: []

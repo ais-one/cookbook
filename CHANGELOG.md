@@ -10,7 +10,8 @@
 - [common-lib/esm/bwc-fileupload.js] - created file input component
 - [common-lib/esm/bwc-t4t-form.js] - integrate to form... add file input functionlity on submit... (upload to server or signedUrl)
 - [inprogress]
-  - [common-lib/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new
+  - [fix] - ==='object' - handle null object
+  - [common-lib/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new, pass in string or object as value?
   - [common-lib/esm/bwc-t4t-form.js] - add autocomplete
   - [example-vite] remove CrudTable.vue, use bwc-table in example-native
 
