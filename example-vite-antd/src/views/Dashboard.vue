@@ -91,6 +91,8 @@
           <a-page-header title="Faked Quality" />
           <MultiChart />
         </a-col>
+        <a-col class="ds-stat" :span="24">
+        </a-col>
       </a-row>
 
       </a-col>
@@ -98,6 +100,12 @@
       <a-col class="ds-stat" :lg="24" :xl="8">
         <a-row :gutter="8">
           <a-col class="ds-stat" :span="24">
+            <a-page-header title="Pie Quality" sub-title="Some other random description here. Does not have to be too long a text..." />
+            <PieChart />
+          </a-col>
+          <a-col class="ds-stat" :span="24">
+            <a-page-header title="Useful Links" />
+            <a-skeleton :paragraph="{ rows: 3 }" />
           </a-col>
         </a-row>
       </a-col>
@@ -122,7 +130,8 @@
 
 <script>
 import { LikeOutlined, ArrowUpOutlined, ArrowDownOutlined, UserOutlined } from '@ant-design/icons-vue'
-import MultiChart from '../components/MultiChart.vue'
+import MultiChart from '../components/Dashboard/MultiChart.vue'
+import PieChart from '../components/Dashboard/PieChart.vue'
 
 const data = [
   {
@@ -150,6 +159,7 @@ export default {
     ArrowDownOutlined,
     UserOutlined,
 
+    PieChart,
     MultiChart
   },
   setup() {

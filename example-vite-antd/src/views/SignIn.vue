@@ -1,6 +1,21 @@
 <template>
   <div class="super-center-parent" >
-    <a-button type="primary" html-type="button" @click="login">Log in</a-button>
+    <a-result
+      title="Welcome To DS Dashboard"
+      sub-title="Your one-stop web portal for all things data"
+    >
+      <template #icon>
+        <!-- <smile-twoTone /> -->
+        <a-image
+          :width="200"
+          src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Dell_logo.svg"
+        />
+      </template>
+      <template #extra>
+        <a-button type="primary" html-type="button" @click="login">Log in</a-button>
+      </template>
+    </a-result>
+
   </div>
 </template>
 
@@ -9,11 +24,16 @@ import { ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 
+import { SmileTwoTone } from '@ant-design/icons-vue';
+
 // import { samlLogin } from '../../../common-lib/esm/saml.js' // served from express /esm static route
 
 import { VITE_CALLBACK_URL } from '/config.js'
 
 export default {
+  components: {
+    SmileTwoTone
+  },
   setup(props, context) {
     const store = useStore()
     const route = useRoute()
