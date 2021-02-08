@@ -1,7 +1,12 @@
 <template>
-  <div>
+  <div style="text-align: center;">
+    <h2>Plot of circular stuff</h2>
     <div id="c1"></div>
-    <a-empty />
+    <a-divider />
+    <h2>Show Nothing Here</h2>
+    <a-empty :image-style="{ height: '400px' }" description="Not Enough Data To Generate Chart" />
+    <a-divider />
+    <h2>Some Bars</h2>
     <div id="c2"></div>
   </div>
 </template>

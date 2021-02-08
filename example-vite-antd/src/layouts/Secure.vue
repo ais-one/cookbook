@@ -17,6 +17,7 @@
           </template>
           <a-menu-item key="21" @click="$router.push('/demo-chart1')">Chart 1</a-menu-item>
           <a-menu-item key="22" @click="$router.push('/demo-chart2')">Chart 2</a-menu-item>
+          <a-menu-item key="23" @click="$router.push('/demo-map')">Map</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="sub2">
           <template #title>
@@ -55,6 +56,7 @@
         </a-breadcrumb>
         <router-view :key="$route.fullPath"></router-view>
       </a-layout-content>
+      <!-- <a-layout-footer style="text-align: center">Ant Design ©2018 Created by Ant UED</a-layout-footer> -->
     </a-layout>
   </a-layout>
 </template>
