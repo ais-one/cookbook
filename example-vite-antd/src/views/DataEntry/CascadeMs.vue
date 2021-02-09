@@ -7,6 +7,7 @@
         v-model:value="formState.regions"
         style="width: 300px;"
         @blur="blurRegion"
+        @deselect="blurRegion"
       >
         <a-select-option v-for="region in formState.regionList" :key="region">{{ region }}</a-select-option>
       </a-select>
@@ -32,6 +33,8 @@
 import { ref, reactive, toRaw, watch, onMounted } from 'vue';
 export default {
   setup() {
+    // a-select - allowClear (handle event)
+    // TBD select / clear all
 
     onMounted(() => {
     });
@@ -39,6 +42,7 @@ export default {
     const formState = reactive({ // form
       regions: [],
       regionList: ['Asia', 'Europe', 'NA', 'SA', 'Africa', 'ME'],
+
       countries: [],
       countriesList: [],
       countriesMasterList: {
@@ -59,17 +63,22 @@ export default {
       console.log('blurRegion!', toRaw(formState));
       const keys = {}
       const list = []
+      const newCountries = []
 
       for (let region of formState.regions) {
         for (let country of formState.countriesMasterList[region]) {
           if (!keys[country]) {
             list.push(country)
             keys[country] = true
+            const item = formState.countries.find(item => item === country)
+            if (item) {
+              newCountries.push(item)
+            }
           }
         }
       }
+      formState.countries = [...newCountries]
       formState.countriesList = [...list]
-      // TBD fix countries
     }
 
     return {

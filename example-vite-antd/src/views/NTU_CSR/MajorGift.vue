@@ -13,7 +13,7 @@
           </a-radio-group>
         </a-form-item>
 
-        <a-form-item label="Period In Years (ignored for Single type)">
+        <a-form-item label="Period In Years" extra="(ignored for Single type)">
           <a-radio-group v-model:value="formState.period" :disabled="formState.type === 'single'">
             <a-radio value="3">3</a-radio>
             <a-radio value="5">5</a-radio>
@@ -62,30 +62,53 @@
           />
         </a-form-item>
 
-        <a-form-item label="Max Target Sample Size">
+        <a-form-item label="Database">
+          <a-select
+            placeholder="Please select"
+            v-model:value="formState.db"
+          >
+            <a-select-option value="NTUPortal.db">NTUPortal.db</a-select-option>
+            <a-select-option value="Test.db">Test.db</a-select-option>
+          </a-select>
+        </a-form-item>
+
+        <a-form-item label="Max Sample" extra="Target sample size (1 - 30)">
           <a-input-number
-            :min="1" :max="1" :precision="0" :step="1"
+            :min="1" :max="30" :precision="0" :step="1"
             v-model:value="formState.targetSampleSizeMax"
           />
         </a-form-item>
 
-        <a-form-item :label="`Target Balancing`">
+        <a-form-item :label="`Target Balancing`" :extra="'Value: ' + formState.targetSampleBalancing">
           <a-slider v-model:value="formState.targetSampleBalancing" :min="0.0" :max="0.5" :step="0.01" tooltipPlacement="top" />
-          Balancing Value: {{formState.targetSampleBalancing}}
         </a-form-item>
 
-        <a-transfer
-          :titles="['Force Include', 'Force Exclude']"
-          :data-source="mockData"
-          show-search
-          :filter-option="filterOption"
-          :target-keys="targetKeys"
-          :render="item => item.title"
-          @change="handleChange"
-          @search="handleSearch"
-        />
+        <a-form-item label="Force Include">
+          <a-select
+            mode="multiple"
+            placeholder="Please select"
+            v-model:value="formState.forceIncludes"
+            style="width: 300px;"
+          >
+            <a-select-option v-for="item in forceListFiltered" :key="item" :value="item">
+              {{ item }}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item label="Force Exclude">
+          <a-select
+            mode="multiple"
+            placeholder="Please select"
+            v-model:value="formState.forceExcludes"
+            style="width: 300px;"
+          >
+            <a-select-option v-for="item in forceListFiltered" :key="item" :value="item">
+              {{ item }}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
 
-        <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
+        <a-form-item>
           <a-button type="primary" @click="onSubmit">Run</a-button>
         </a-form-item>
       </a-form>
@@ -96,75 +119,44 @@
 
 </template>
 <script>
-import { ref, reactive, toRaw, watch, onMounted } from 'vue';
+import { ref, reactive, toRaw, watch, onMounted, computed } from 'vue';
 export default {
   setup() {
-    const mockData = ref([]);
-    const targetKeys = ref([]);
     onMounted(() => {
-      getMock();
-    });
-
-    const getMock = () => {      const keys = [];
-      const mData = [];
-      for (let i = 0; i < 20; i++) {
-        const data = {
-          key: i.toString(),
-          title: `content${i + 1}`,
-          description: `description of content${i + 1}`,
-          chosen: Math.random() * 2 > 1,
-        };
-
-        if (data.chosen) {
-          keys.push(data.key);
-        }
-
-        mData.push(data);
-      }
-
-      mockData.value = mData;
-      targetKeys.value = keys;
-    };
-
-    const filterOption = (inputValue, option) => {
-      return option.description.indexOf(inputValue) > -1;
-    };
-
-    const handleChange = (keys, direction, moveKeys) => {
-      console.log(keys, direction, moveKeys);
-      targetKeys.value = keys;
-    };
-
-    const handleSearch = (dir, value) => {
-      console.log('search:', dir, value);
-    };
-
-
+    })
 
     const activeKey = ref(['1']) // accordian
     watch(activeKey, val => { })
-
 
     const formState = reactive({ // form
       jobName: '',
       type: 'single',
       period: '',
       amount: 0,
-      activityDate: undefined,
+      activityDate: null,
+      db: 'NTUPortal.db',
       alumni: '',
       staff: '',
       donor: '',
       targetSampleSizeMax: 1,
       targetSampleBalancing: 0.0,
 
-      type: []
+      forceIncludes: [],
+      forceExcludes: [],
     })
 
+    const forceListFiltered = computed(
+      () => forceList.filter(o => !formState.forceIncludes.includes(o) && !formState.forceExcludes.includes(o))
+    )
+    const forceList = ['aa1', 'aa22', 'aa23', 'aa4', 'aa5', 'bb1', 'bb22', 'bb23', 'bb4', 'bb5']
+
     const onSubmit = () => {
-      console.log('submit!', toRaw(formState));
-    };
+      console.log('submit!', toRaw(formState))
+    }
 
     return {
+      forceListFiltered,
+
       activeKey, // collapse
 
       labelCol: { // form
@@ -180,12 +172,6 @@ export default {
       // const formatter = value => {
       //   return `${value}%`;
       // }
-
-      mockData, //  transfer
-      targetKeys,
-      filterOption,
-      handleChange,
-      handleSearch,
     }
   },
 }

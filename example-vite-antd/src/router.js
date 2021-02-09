@@ -37,7 +37,7 @@ const authGuard = (to, from, next) => {
   //   }
   // }
   if (loggedIn === requiresAuth) {
-    console.log('logged in', loggedIn, requiresAuth)
+    // console.log('logged in', loggedIn, requiresAuth)
     next()
   } else if (!loggedIn && requiresAuth) {
     next('/signin')
@@ -45,7 +45,7 @@ const authGuard = (to, from, next) => {
     next('/dashboard')
   } else {
     // should not get here
-    console.log(loggedIn, requiresAuth)
+    console.log('router should not get here', loggedIn, requiresAuth)
   }
 }
 
@@ -72,7 +72,8 @@ const router = createRouter({
     { path: '/demo-card', name: 'DemoCard', component: async () => await import('./views/DataEntry/DemoCard.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-map', name: 'DemoMap', component: async () => await import('./views/Visuals/DemoMap.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
 
-    { path: '/major-gift', name: 'MajorGift', component: async () => await import('./views/MajorGift.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/major-gift', name: 'MajorGift', component: async () => await import('./views/NTU_CSR/MajorGift.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/appeal-m', name: 'AppealM', component: async () => await import('./views/NTU_CSR/AppealM.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
   ]
 })
 

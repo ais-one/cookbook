@@ -38,6 +38,10 @@
           <upload-outlined />
           <span>Major Gift</span>
         </a-menu-item>
+        <a-menu-item key="6" @click="$router.push('/appeal-m')">
+          <upload-outlined />
+          <span>Appeal M</span>
+        </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>
