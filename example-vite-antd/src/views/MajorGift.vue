@@ -74,6 +74,17 @@
           Balancing Value: {{formState.targetSampleBalancing}}
         </a-form-item>
 
+        <a-transfer
+          :titles="['Force Include', 'Force Exclude']"
+          :data-source="mockData"
+          show-search
+          :filter-option="filterOption"
+          :target-keys="targetKeys"
+          :render="item => item.title"
+          @change="handleChange"
+          @search="handleSearch"
+        />
+
         <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
           <a-button type="primary" @click="onSubmit">Run</a-button>
         </a-form-item>
@@ -88,8 +99,47 @@
 import { ref, reactive, toRaw, watch, onMounted } from 'vue';
 export default {
   setup() {
+    const mockData = ref([]);
+    const targetKeys = ref([]);
     onMounted(() => {
+      getMock();
     });
+
+    const getMock = () => {      const keys = [];
+      const mData = [];
+      for (let i = 0; i < 20; i++) {
+        const data = {
+          key: i.toString(),
+          title: `content${i + 1}`,
+          description: `description of content${i + 1}`,
+          chosen: Math.random() * 2 > 1,
+        };
+
+        if (data.chosen) {
+          keys.push(data.key);
+        }
+
+        mData.push(data);
+      }
+
+      mockData.value = mData;
+      targetKeys.value = keys;
+    };
+
+    const filterOption = (inputValue, option) => {
+      return option.description.indexOf(inputValue) > -1;
+    };
+
+    const handleChange = (keys, direction, moveKeys) => {
+      console.log(keys, direction, moveKeys);
+      targetKeys.value = keys;
+    };
+
+    const handleSearch = (dir, value) => {
+      console.log('search:', dir, value);
+    };
+
+
 
     const activeKey = ref(['1']) // accordian
     watch(activeKey, val => { })
@@ -130,6 +180,12 @@ export default {
       // const formatter = value => {
       //   return `${value}%`;
       // }
+
+      mockData, //  transfer
+      targetKeys,
+      filterOption,
+      handleChange,
+      handleSearch,
     }
   },
 }
