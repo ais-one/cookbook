@@ -28,14 +28,15 @@
           </template>
           <a-menu-item key="31" @click="$router.push('/demo-form')">Forms</a-menu-item>
           <a-menu-item key="32" @click="$router.push('/demo-card')">Cards</a-menu-item>
+          <a-menu-item key="33" @click="$router.push('/cascade-ms')">Combobox</a-menu-item>
         </a-sub-menu>
         <a-menu-item key="4" @click="$router.push('/demo-table')">
           <video-camera-outlined />
           <span>Tables</span>
         </a-menu-item>
-        <a-menu-item key="5">
+        <a-menu-item key="5" @click="$router.push('/major-gift')">
           <upload-outlined />
-          <span>Filters</span>
+          <span>Major Gift</span>
         </a-menu-item>
       </a-menu>
     </a-layout-sider>

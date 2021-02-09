@@ -67,10 +67,12 @@ const router = createRouter({
     { path: '/demo-chart1', name: 'DemoChart1', component: async () => await import('./views/Visuals/DemoChart1.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-chart2', name: 'DemoChart2', component: async () => await import('./views/Visuals/DemoChart2.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-table', name: 'DemoTable', component: async () => await import('./views/DemoTable.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/cascade-ms', name: 'CascadeMs', component: async () => await import('./views/DataEntry/CascadeMs.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-form', name: 'DemoForm', component: async () => await import('./views/DataEntry/DemoForm.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/demo-card', name: 'DemoCard', component: async () => await import('./views/DemoCard.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-card', name: 'DemoCard', component: async () => await import('./views/DataEntry/DemoCard.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-map', name: 'DemoMap', component: async () => await import('./views/Visuals/DemoMap.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
 
+    { path: '/major-gift', name: 'MajorGift', component: async () => await import('./views/MajorGift.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
   ]
 })
 
