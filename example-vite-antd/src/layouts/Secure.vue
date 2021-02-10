@@ -34,15 +34,18 @@
           <video-camera-outlined />
           <span>Tables</span>
         </a-menu-item>
-        <a-menu-item key="5" @click="$router.push('/major-gift')">
-          <upload-outlined />
-          <span>Major Gift</span>
-        </a-menu-item>
-        <a-menu-item key="6" @click="$router.push('/appeal-m')">
-          <upload-outlined />
-          <span>Appeal M</span>
-        </a-menu-item>
-        <a-menu-item key="7" @click="logout">Logout</a-menu-item>
+        <a-sub-menu key="sub5">
+          <template #title>
+            <span>
+              <upload-outlined />
+              <span>NTU CSR</span>
+            </span>
+          </template>
+          <a-menu-item key="51" @click="$router.push('/major-gift')">Major Gift</a-menu-item>
+          <a-menu-item key="52" @click="$router.push('/appeal-m')">Appeal M</a-menu-item>
+          <a-menu-item key="53" @click="$router.push('/update-db')">UpdateDB</a-menu-item>
+        </a-sub-menu>
+        <a-menu-item key="6" @click="logout">Logout</a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>

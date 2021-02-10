@@ -74,6 +74,7 @@ const router = createRouter({
 
     { path: '/major-gift', name: 'MajorGift', component: async () => await import('./views/NTU_CSR/MajorGift.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/appeal-m', name: 'AppealM', component: async () => await import('./views/NTU_CSR/AppealM.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/update-db', name: 'UpdateDb', component: async () => await import('./views/NTU_CSR/UpdateDb.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
   ]
 })
 
