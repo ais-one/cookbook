@@ -7,7 +7,12 @@
         </a-form-item>
 
         <a-form-item label="Theme">
+          <a-checkbox @change="onCheckAllChange">Select all</a-checkbox>
+          <!-- v-model:checked="checkAll" -->
           <a-select mode="multiple" placeholder="Please select" v-model:value="formState.themes" @blur="blurSelect" @deselect="blurSelect">
+            <template #clearIcon>
+              <setting-outlined />
+            </template>
             <a-select-option v-for="item in formState.themesList" :key="item">{{ item }}</a-select-option>
           </a-select>
         </a-form-item>
@@ -93,7 +98,12 @@
 </template>
 <script>
 import { ref, reactive, toRaw, watch, onMounted, computed } from 'vue';
+import { SettingOutlined } from '@ant-design/icons-vue';
+
 export default {
+  components: {
+    SettingOutlined,
+  },
   setup() {
     onMounted(() => {
     })
@@ -165,6 +175,18 @@ export default {
       },
 
     })
+
+    const onCheckAllChange = e => {
+      if (e.target.checked === true) {
+        formState.themes = [...formState.themesList]
+        // select all subs
+        blurSelect()
+      } else {
+        formState.themes = []
+        // clear all subs
+        blurSelect()
+      }
+    }
 
     const blurSelect = () => {
       // console.log('blurSelect!', toRaw(formState));
@@ -272,6 +294,7 @@ export default {
 
       blurSelect,
       blurSelect2,
+      onCheckAllChange,
 
       // :tip-formatter="formatter"
       // const formatter = value => {

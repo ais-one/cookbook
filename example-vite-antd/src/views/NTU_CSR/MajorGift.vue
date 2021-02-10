@@ -84,11 +84,11 @@
         </a-form-item>
 
         <a-form-item label="Force Include">
+          <a-checkbox @change="onCheckAllChangeIncludes">Select all</a-checkbox>
           <a-select
             mode="multiple"
             placeholder="Please select"
             v-model:value="formState.forceIncludes"
-            style="width: 300px;"
           >
             <a-select-option v-for="item in forceListFiltered" :key="item" :value="item">
               {{ item }}
@@ -96,11 +96,11 @@
           </a-select>
         </a-form-item>
         <a-form-item label="Force Exclude">
+          <a-checkbox @change="onCheckAllChangeExcludes">Select all</a-checkbox>
           <a-select
             mode="multiple"
             placeholder="Please select"
             v-model:value="formState.forceExcludes"
-            style="width: 300px;"
           >
             <a-select-option v-for="item in forceListFiltered" :key="item" :value="item">
               {{ item }}
@@ -150,6 +150,21 @@ export default {
     )
     const forceList = ['aa1', 'aa22', 'aa23', 'aa4', 'aa5', 'bb1', 'bb22', 'bb23', 'bb4', 'bb5']
 
+    const onCheckAllChangeIncludes = e => {
+      if (e.target.checked) {
+        formState.forceIncludes = [...formState.forceIncludes, ...forceList.filter(o => !formState.forceIncludes.includes(o) && !formState.forceExcludes.includes(o))]
+      } else {
+        formState.forceIncludes = []
+      }
+    }
+    const onCheckAllChangeExcludes = e => {
+      if (e.target.checked) {
+
+      } else {
+        
+      }      
+    }
+
     const onSubmit = () => {
       console.log('submit!', toRaw(formState))
     }
@@ -168,6 +183,8 @@ export default {
       formState,
       onSubmit,
 
+      onCheckAllChangeIncludes,
+      onCheckAllChangeExcludes,
       // :tip-formatter="formatter"
       // const formatter = value => {
       //   return `${value}%`;
