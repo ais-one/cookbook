@@ -42,6 +42,7 @@
           <upload-outlined />
           <span>Appeal M</span>
         </a-menu-item>
+        <a-menu-item key="7" @click="logout">Logout</a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>
