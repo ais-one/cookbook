@@ -4,7 +4,7 @@
 
 A component for capturing signature using canvas (component name: vcxwc-sign-pad)
 
-Component file location [../common-lib/esm/sign-pad.js](../common-lib/esm/sign-pad.js)
+Component file location [../lib/esm/sign-pad.js](../lib/esm/sign-pad.js)
 
 Example can be found on example-vite DemoSignPad page
 
@@ -35,20 +35,23 @@ Attributes
 
 A component for capturing image using webcam (component name: vcxwc-web-cam)
 
-Component file location [../common-lib/esm/web-cam.js](../common-lib/esm/web-cam.js)
+Component file location [../lib/esm/web-cam.js](../lib/esm/web-cam.js)
 
 Example can be found on example-vite DemoWebCam page
 
 Example Usage file location [../example-vite/pages/DemoWebCam.vue](../example-vite/src/pages/DemoWebCam.vue)
 
 Features
-- slots
-- slotted css and slot styles
-- slot events
-- css variables
-- interactive with vuejs v-on
+- shadowDOM and litDOM
+  - css variables
+- shadowDOM
+  - slots
+  - slotted css and slot styles
+  - slot events
+  - use <link> to include other css files e.g. bulma, bootstrap
+  - interactive with vuejs v-on
 
-Customizable Styles
+CSS Variables
 
 ```css
 vcxwc-web-cam {
@@ -68,6 +71,5 @@ Slots
 Event Emitted
 - snap
 
-### mwc-autocomplete - TBD
 
-TBO - Using web component inside a web component
+TBD - Using web component inside a web component

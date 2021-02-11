@@ -55,7 +55,7 @@ git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
 npm run install
 
-# install the required common-lib JS scripts
+# install the required lib JS scripts
 npm run update
 
 # create and seed relational db on SQLite
@@ -205,8 +205,8 @@ npm run process-cron:unix # linux or mac
 ## Using The Common Libraries In Your Own Application
 
 1. **example-app** for backend example
-  - **example-app/lib/esm** for common ESM codes to be used by express applications
-  - **example-app/lib/<all_others>** for common CJS codes to be used by express applications
+  - **example-app/lib/esm** for common ESM codes to be used by express applications - TOREMOVE
+  - **example-app/lib/<all_others>** for common CJS codes to be used by express applications - TOREMOVE
 
 2. **example-native** for vanillaJS frontend example
 
@@ -216,7 +216,7 @@ npm run process-cron:unix # linux or mac
 4. **example-webpack** for Webpack Vue2 frontend example
   - **example-webpack/lib/webpacked** for common codes to be used by Webpacked Vue 2 applications
 
-5. **common-lib/esm** for common javascript libraries using ES Modules
+5. **lib/esm** for common javascript libraries using ES Modules
 
 
 ## Environment Settings
@@ -248,8 +248,6 @@ If too many config properties, split it to other more and files
 vue-crud-x
 +- .circleci/ : not used
 +- .github/ : github related CICD and automations
-+- common-lib/ : common libraries
-|  +- esm/ : es modules
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
 +- example-app/ : example backend - See example-app/README.md for Project Structure
@@ -259,6 +257,8 @@ vue-crud-x
 +- example-webpack/ : frontend associated to the backend (Vue2 webpack) - See example-webpack/README.md for Project Structure
 |  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
 +- k8s/ : kubernetes YAML files (WIP)
++- lib/ : shared libraries
+|  +- esm/ : es modules
 +- .editorconfig
 +- .gitignore
 +- BACKLOG.md

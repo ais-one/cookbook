@@ -2,18 +2,15 @@
 // import.meta is undefined, process.env is not populated with custom values
 import vue from '@vitejs/plugin-vue'
 
-const EXT_ESM_PATH = require('path').join(__dirname, '..', 'common-lib', 'esm')
-
 // module.exports = {
 export default {
   alias: {
     // https://github.com/vitejs/vite/issues/279#issuecomment-636110354
     // '/@/': path.resolve(__dirname, './lib/') // import aa from '/@/esm/aaa.js'
-    '/common-lib/esm/': EXT_ESM_PATH
+    '/lib/esm/': require('path').join(__dirname, '..', 'lib', 'esm')
   },
   base: process.env.BASE_PATH || '/', // set to '/vite' for dev:build, '/' otherwise
   build: {
-    base: process.env.BASE_PATH || '/', // TO BE DEPRECATED
     // sourcemap: isDev1,
     rollupOptions: { // vite 2
       external: [
@@ -23,9 +20,6 @@ export default {
   },
   optimizeDeps: {
     include: [
-      // '@material/mwc-icon/mwc-icon-font',
-      // '@material/mwc-list/mwc-list-item',
-      // '@material/mwc-list/mwc-check-list-item',
       '@vaadin/vaadin-grid/vaadin-grid-selection-column',
       '@vaadin/vaadin-grid/vaadin-grid-sort-column',
       'echarts',
@@ -50,10 +44,10 @@ export default {
     port: 8080,
     // proxy: { // use alias instead
     //   // '/esm': 'http://127.0.0.1:3000/esm', // does not seem to work
-    //   '/common-lib/esm': {
+    //   '/lib/esm': {
     //     target: 'http://127.0.0.1:3000',
     //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/common-lib\/esm/, '/esm')
+    //     rewrite: (path) => path.replace(/^\/lib\/esm/, '/esm')
     //   }
     // },
   }

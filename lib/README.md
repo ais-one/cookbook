@@ -15,3 +15,13 @@ We will find a better way of updating to have correct CI the following folders s
 - example-native
 - example-vite
 - example-webpack
+
+
+
+## Usage (Improved Modularity - WIP)
+
+npm install <path-to-this-foder-from-where-you-want-to-install-this>
+
+e.g.
+
+npm install ../lib

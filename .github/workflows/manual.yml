@@ -52,7 +52,6 @@ jobs:
           check-latest: true
       - name: Make shell script executable
         run: |
-          chmod +x ./${{ github.event.inputs.service }}/update.sh
           chmod +x ./${{ github.event.inputs.service }}/deploy.sh
       # Runs a single command using the runners shell
       - name: Initiate Deployment
@@ -69,5 +68,4 @@ jobs:
           echo "Branch: ${GITHUB_REF##*/}"
           echo "Environment: ${{ github.event.inputs.environment }}"
           cd ${{ github.event.inputs.service }}
-          ./update.sh
           ./deploy.sh ${{ github.event.inputs.environment }}

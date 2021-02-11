@@ -74,7 +74,7 @@
 +- deploy/ : deployment folder (see README.md within the deploy folder)
 +- graphql/ : graphql stuff
 +- jobs/ : message queue jobs
-+- libs/ : common libs
++- libs/ : common libs - TOREMOVE
 |  +- auth/ : for express authentication
 |  +- comms/ : messaging
 |  +- esm/ : copied from common-lib/esm

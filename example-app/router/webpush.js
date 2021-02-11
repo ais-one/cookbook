@@ -38,6 +38,6 @@ module.exports = express.Router()
       }
     } catch (e) {
       console.log(e.toString())
-      res.status(500).json({ error: IS_PRODUCTION ? 'Send Error: contact admin' : e.toString() })
+      res.status(500).json({ error: process.env.NODE_ENV === 'production' ? 'Send Error: contact admin' : e.toString() })
     }
   })

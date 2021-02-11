@@ -26,8 +26,6 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { SmileTwoTone } from '@ant-design/icons-vue';
 
-// import { samlLogin } from '../../../common-lib/esm/saml.js' // served from express /esm static route
-
 import { VITE_CALLBACK_URL } from '/config.js'
 
 export default {

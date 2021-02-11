@@ -1,7 +1,7 @@
 // const urlParams = new URLSearchParams(window.location.search)
 // const myParam = urlParams.get('myParam')
 
-// TBD fix this for production deployments (copy common-lib/esm --> to <example-app>/lib/esm, route <example-app>/lib/esm to /esm)
+// TBD fix this for production deployments (copy lib/esm --> to <example-app>/lib/esm, route <example-app>/lib/esm to /esm)
 import '/esm/http.js' // served from express /esm static route
 import '/esm/bwc-autocomplete.js'
 import '/esm/bwc-autocomplete2.js'

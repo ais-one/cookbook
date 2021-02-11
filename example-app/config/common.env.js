@@ -6,7 +6,7 @@ module.exports = {
 
   WEB_STATIC: [ // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
     // options does not seem to work
-    { folder: '../common-lib/esm', url: '/esm' },
+    { folder: '../lib/esm', url: '/esm' },
     { folder: '../example-amp', url: '/amp', options: { extensions: ['html'], index: false } },
     { folder: '../example-native', url: '/native', options: { extensions: ['html'], index: false } },
     { folder: '../example-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },

@@ -1,6 +1,5 @@
 (async function() {
-  require('./setup') // setup first
-  await require(LIB_PATH + '/config')() //  first thing to include from LIB_PATH
+  await require('lib/node/config')( __dirname, process.cwd() )
   console.log('Globals setup and config done. Starting app... ')
 
   const { server } = require('./app')

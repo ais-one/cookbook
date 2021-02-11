@@ -19,7 +19,7 @@ const testData = {
 
 describe(endpointUrl, () => {
   beforeAll(async () => {
-    await require(LIB_PATH + '/config')()
+    await require('lib/node/config')(process.cwd())
     require(LIB_PATH + '/express/errorHandler')({ 
       unhandledRejection: null, // (reason, promise) => {}
       uncaughtException: null, // err => {}

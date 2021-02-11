@@ -130,8 +130,8 @@
 // TBD show all...
 // TBD inline edits
 // TBD table columns with joined values, virtual columns...
-import { debounce, downloadData } from '../../../common-lib/esm/util.js' // served from express /esm static route
-import * as t4t from '../../../common-lib/esm/t4t-fe.js' // served from express /esm static route
+import { debounce, downloadData } from '../../../lib/esm/util.js' // served from express /esm static route
+import * as t4t from '../../../lib/esm/t4t-fe.js' // served from express /esm static route
 
 import { onMounted, ref, reactive, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'

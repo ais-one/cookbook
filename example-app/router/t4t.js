@@ -5,7 +5,7 @@ const Model = require(LIB_PATH + '/services/db/objection').get()
 const knex = Model ? Model.knex() : null
 const fs = require('fs')
 
-const { validate } = require('esm')(module)(LIB_PATH + '/esm/t4t-validate') // TBD validate on server side also
+const { validate } = require('esm')(module)('lib/esm/t4t-validate') // TBD validate on server side also
 
 const mongo = require(LIB_PATH + '/services/db/mongodb')
 const ObjectID = mongo.client ? require('mongodb').ObjectID : null
@@ -314,7 +314,7 @@ module.exports = express.Router()
         // result: dbRv.result
       }
     }
-    return res.json() // TBD fix common-lib/esm/http.js
+    return res.json() // TBD fix lib/esm/http.js
   }))
 
 /*

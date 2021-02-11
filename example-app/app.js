@@ -17,7 +17,7 @@ require(LIB_PATH + '/express/errorHandler')({
 })
 
 // START SERVICES
-const { sleep } = require('esm')(module)(LIB_PATH + '/esm/sleep')
+const { sleep } = require('esm')(module)('lib/esm/sleep')
 
 const objection = require(LIB_PATH + '/services/db/objection').open()
 const mongodb = require(LIB_PATH + '/services/db/mongodb').open()
@@ -42,8 +42,6 @@ const shutdown = async () => {
   }
 } 
 require(LIB_PATH + '/express/shutdown')(server, shutdown)
-// END SERVICES
-
 require(LIB_PATH + '/express/preRoute')(app)
 
 const { SAML_ISSUER } = global.CONFIG
@@ -57,21 +55,9 @@ try {
 }
 
 require(LIB_PATH + '/express/postRoute')(app, express)
-
 require(LIB_PATH + '/express/errorMiddleware')(
   app
   //, (error, req, res, next) => {}
 )
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-// for Firebase Functions
-// const functions = require('firebase-functions')
-// exports.api = functions.https.onRequest(async (req, res) => {
-//   // if (!req.path) {
-//   //   req.url = `/${req.url}` // prepend '/' to keep query params if any
-//   // }
-//   return app(req, res)
-//   // return res.send("Hello from Firebase!")
-// })
 
 module.exports = { server }
