@@ -74,15 +74,6 @@
 +- deploy/ : deployment folder (see README.md within the deploy folder)
 +- graphql/ : graphql stuff
 +- jobs/ : message queue jobs
-+- libs/ : common libs - TOREMOVE
-|  +- auth/ : for express authentication
-|  +- comms/ : messaging
-|  +- esm/ : copied from common-lib/esm
-|  +- express/ : express related
-|  +- services/ : nodejs libs
-|  +- dist/ : distribution folder for CRUD component
-|  +- config.default.js: the base config
-|  +- config.js: the base config
 +- logs/
 +- middlewares/
 +- models/

@@ -1,6 +1,6 @@
 'use strict'
 
-const { authUser, findUser, updateUser } = require(LIB_PATH + '/auth')
+const { authUser, findUser, updateUser } = require('lib/node/auth')
 
 const authIsAdmin = async (req, res, next) => {
   if (req.decoded.groups === 'admin') {

@@ -9,6 +9,21 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.1"
+    "@google-cloud/storage": "^5.7.4",
+    "agenda": "^4.0.1",
+    "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "bull": "^3.20.1",
+    "hazelcast-client": "^4.1.0",
+    "ioredis": "^4.22.0",
+    "jsonwebtoken": "^8.5.1",
+    "keyv": "^4.0.3",
+    "knex": "^0.21.17",
+    "mongodb": "^3.6.4",
+    "objection": "^2.2.14",
+    "otplib": "^12.0.1",
+    "sqlite3": "^5.0.1",
+    "web-push": "^3.4.4",
+    "ws": "^7.4.3"
   }
 }

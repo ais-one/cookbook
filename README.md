@@ -258,7 +258,15 @@ vue-crud-x
 |  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
 +- k8s/ : kubernetes YAML files (WIP)
 +- lib/ : shared libraries
+|  +- auth/ : for express authentication
+|  +- comms/ : messaging
 |  +- esm/ : es modules
+|  +- express/ : express related
+|  +- services/ : nodejs libs
+|  +- config.default.js: the base config
+|  +- config.js: the base config
+
+
 +- .editorconfig
 +- .gitignore
 +- BACKLOG.md

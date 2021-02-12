@@ -1,6 +1,6 @@
 // cookbook for mongoDB
 const express = require('express')
-const mongo = require(LIB_PATH + '/services/db/mongodb')
+const mongo = require('lib/node/services/db/mongodb')
 
 module.exports = express.Router()
   .get('/test', async (req,res) => {

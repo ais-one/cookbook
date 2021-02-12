@@ -1,6 +1,6 @@
 const express = require('express')
 const passport = require('passport')
-const { createToken } = require(LIB_PATH + '/auth')
+const { createToken } = require('lib/node/auth')
 
 const { JWT_EXPIRY } = global.CONFIG
 

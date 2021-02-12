@@ -2,9 +2,9 @@ const fs = require('fs')
 const express = require('express')
 const { spawn } = require('child_process')
 
-const agenda = require(LIB_PATH + '/services/mq/agenda').get() // agenda message queue
-const bull = require(LIB_PATH + '/services/mq/bull').get() // bull message queue
-const { gcpGetSignedUrl } = require(LIB_PATH + '/services/gcp')
+const agenda = require('lib/node/services/mq/agenda').get() // agenda message queue
+const bull = require('lib/node/services/mq/bull').get() // bull message queue
+const { gcpGetSignedUrl } = require('lib/node/services/gcp')
 const { memoryUpload, storageUpload } = require(LIB_PATH + '/express/upload')
 
 const { authUser } = require('../middlewares/auth')
@@ -29,7 +29,7 @@ module.exports = express.Router()
     res.json({})
   })
   .get('/restart-mongo', (req, res) => { // restart mongo that cannot initially connect
-    require(LIB_PATH + '/services/db/mongodb').open()
+    require('lib/node/services/db/mongodb').open()
     res.json({})
   })
 

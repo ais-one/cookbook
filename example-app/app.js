@@ -19,12 +19,12 @@ require(LIB_PATH + '/express/errorHandler')({
 // START SERVICES
 const { sleep } = require('esm')(module)('lib/esm/sleep')
 
-const objection = require(LIB_PATH + '/services/db/objection').open()
-const mongodb = require(LIB_PATH + '/services/db/mongodb').open()
-const websocket = require(LIB_PATH + '/services/websocket').open(null, null) // or set to null
-const agenda = require(LIB_PATH + '/services/mq/agenda').open()
-const bull = require(LIB_PATH + '/services/mq/bull').open()
-// const hazelcast = require(LIB_PATH + '/services/db/hazelcast').open()
+const objection = require('lib/node/services/db/objection').open()
+const mongodb = require('lib/node/services/db/mongodb').open()
+const websocket = require('lib/node/services/websocket').open(null, null) // or set to null
+const agenda = require('lib/node/services/mq/agenda').open()
+const bull = require('lib/node/services/mq/bull').open()
+// const hazelcast = require('lib/node/services/db/hazelcast').open()
 
 const shutdown = async () => {
   try {

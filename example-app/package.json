@@ -21,7 +21,7 @@
     "mongo:unix": "cross-env NODE_ENV=$npm_package_config_env node db/mongo/index.js",
     "knex": "cross-env NODE_ENV=%npm_package_config_env% npx knex migrate:latest --knexfile=deploy/knexfile.js && cross-env NODE_ENV=%npm_package_config_env% npx knex seed:run --knexfile=deploy/knexfile.js",
     "knex:unix": "cross-env NODE_ENV=$npm_package_config_env npx knex migrate:latest --knexfile=deploy/knexfile.js && cross-env NODE_ENV=$npm_package_config_env npx knex seed:run --knexfile=deploy/knexfile.js",
-    "app": "cross-env NODE_ENV=%npm_package_config_env% nodemon index.js",
+    "app": "cross-env NODE_ENV=%npm_package_config_env% nodemon --trace-warnings index.js",
     "app:lint": "cross-env NODE_ENV=%npm_package_config_env% nodemon index.js --ignore tests/ --ignore public/ --exec \"npm run lint && node\"",
     "app:unix": "cross-env NODE_ENV=$npm_package_config_env nodemon index.js  --ignore tests/ --ignore public/ --exec \"npm run lint && node\"",
     "process-cron": "cross-env NODE_ENV=%npm_package_config_env% node process-cron.js",
@@ -36,11 +36,8 @@
     "lint:fix": "eslint --fix --no-fix-warnings --no-report-warnings ."
   },
   "dependencies": {
-    "@google-cloud/storage": "^5.7.4",
-    "agenda": "^4.0.1",
     "apollo-server-express": "^2.20.0",
     "axios": "^0.21.1",
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "connect-history-api-fallback": "^1.6.0",
     "cookie-parser": "^1.4.5",
@@ -53,9 +50,7 @@
     "helmet": "^4.4.1",
     "http-proxy-middleware": "^1.0.6",
     "json2csv": "^5.0.6",
-    "jsonwebtoken": "^8.5.1",
     "kafkajs": "^1.15.0",
-    "keyv": "^4.0.3",
     "knex": "^0.21.17",
     "lib": "file:../lib",
     "mongodb": "^3.6.4",
@@ -63,14 +58,11 @@
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
     "objection": "^2.2.14",
-    "otplib": "^12.0.1",
     "passport": "^0.4.1",
     "passport-saml": "^2.0.5",
     "selfsigned": "^1.10.8",
     "swagger-jsdoc": "^6.0.2",
-    "swagger-ui-express": "^4.1.6",
-    "web-push": "^3.4.4",
-    "ws": "^7.4.3"
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",

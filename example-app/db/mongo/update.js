@@ -1,6 +1,6 @@
 const { MONGO_DB, MONGO_URL } = global.CONFIG
 const ObjectID = require('mongodb').ObjectID
-const bcrypt = require('bcryptjs')
+const { bcrypt } = require('lib/node/auth')
 const WINDOW_SIZE = 100 // update batch window size
 
 let db

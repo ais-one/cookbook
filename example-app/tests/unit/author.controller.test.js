@@ -18,7 +18,7 @@ let AuthorController
 describe('AuthorController.create', () => {
   beforeAll(async () => {
     await require('lib/node/config')(process.cwd())
-    const objection = require(LIB_PATH + '/services/db/objection').open()
+    const objection = require('lib/node/services/db/objection').open()
     console.log(objection)
     AuthorController = require(APP_PATH + '/controllers/author')    
   })

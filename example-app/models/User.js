@@ -1,5 +1,5 @@
 'use strict'
-const Model = require(LIB_PATH + '/services/db/objection').get()
+const Model = require('lib/node/services/db/objection').get()
 
 class User extends Model {
   static get tableName () {

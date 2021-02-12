@@ -1,20 +1,20 @@
 // TBD use __key instead of key
 // table for tables
 const express = require('express')
-const Model = require(LIB_PATH + '/services/db/objection').get()
+const Model = require('lib/node/services/db/objection').get()
 const knex = Model ? Model.knex() : null
 const fs = require('fs')
 
 const { validate } = require('esm')(module)('lib/esm/t4t-validate') // TBD validate on server side also
 
-const mongo = require(LIB_PATH + '/services/db/mongodb')
+const mongo = require('lib/node/services/db/mongodb')
 const ObjectID = mongo.client ? require('mongodb').ObjectID : null
 
 // const { authUser } = require('../middlewares/auth')
 const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
-// const { gcpGetSignedUrl } = require(LIB_PATH + '/services/gcp')
+// const { gcpGetSignedUrl } = require('lib/node/services/gcp')
 const { memoryUpload, storageUpload } = require(LIB_PATH + '/express/upload')
 
 const authUser = async (req, res, next) => next()

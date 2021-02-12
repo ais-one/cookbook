@@ -26,11 +26,11 @@ describe(endpointUrl, () => {
       stackTraceLimit: 1
     })
     // const objection =
-    require(LIB_PATH + '/services/db/objection').open()
+    require('lib/node/services/db/objection').open()
     require(LIB_PATH + '/express/preRoute')(app)
     require(APP_PATH + `/router`)(app)
 
-    const { createToken } = require(LIB_PATH + '/auth')
+    const { createToken } = require('lib/node/auth')
     const { token } = await createToken({ id: 100, verified: true, groups: 'TestGroup' }, { expiresIn: '1d' })
     authObj = {
       Authorization: 'Bearer ' + token

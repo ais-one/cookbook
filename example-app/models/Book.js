@@ -1,5 +1,5 @@
 'use strict'
-const Model = require(LIB_PATH + '/services/db/objection').get()
+const Model = require('lib/node/services/db/objection').get()
 
 // export default 
 class Book extends Model {
