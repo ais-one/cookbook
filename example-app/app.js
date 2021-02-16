@@ -5,27 +5,21 @@ const https = require('https')
 const express = require('express')
 const app = express()
 
-console.log('app starting... stackTraceLimit: 1' )
-
-const { USE_GRAPHQL, HTTPS_CERTS } = global.CONFIG
+const { HTTPS_CERTS } = global.CONFIG
 const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createServer(app)
 
-require(LIB_PATH + '/express/errorHandler')({ 
-  unhandledRejection: null, // (reason, promise) => {}
-  uncaughtException: null, // err => {}
-  stackTraceLimit: 1
-})
+// const expressOasGenerator = require('express-oas-generator')
+// expressOasGenerator.handleResponses(app, {})
+require('@eslab/express/preRoute')(app)
 
 // START SERVICES
-const { sleep } = require('esm')(module)('lib/esm/sleep')
-
-const objection = require('lib/node/services/db/objection').open()
-const mongodb = require('lib/node/services/db/mongodb').open()
-const websocket = require('lib/node/services/websocket').open(null, null) // or set to null
-const agenda = require('lib/node/services/mq/agenda').open()
-const bull = require('lib/node/services/mq/bull').open()
-// const hazelcast = require('lib/node/services/db/hazelcast').open()
-
+const { sleep } = require('esm')(module)('@eslab/esm/sleep')
+const objection = require('@eslab/node/services/db/objection').open()
+const mongodb = require('@eslab/node/services/db/mongodb').open()
+const websocket = require('@eslab/node/services/websocket').open(null, null) // or set to null
+const agenda = require('@eslab/node/services/mq/agenda').open()
+const bull = require('@eslab/node/services/mq/bull').open()
+// const hazelcast = require('@eslab/node/services/db/hazelcast').open()
 const shutdown = async () => {
   try {
     websocket.close() // websockets
@@ -41,23 +35,35 @@ const shutdown = async () => {
     console.log(e)
   }
 } 
-require(LIB_PATH + '/express/shutdown')(server, shutdown)
-require(LIB_PATH + '/express/preRoute')(app)
 
-const { SAML_ISSUER } = global.CONFIG
-if (SAML_ISSUER) require(LIB_PATH + '/express/saml')(app) // samlRoute PASSPORT - we do not need passport except if for doing things like getting SAML token and converting it to JWT token
+const handleExit = async (signal) => {
+  console.log(`Received ${signal}. Close my server properly. (nodemon causes problems here)`)
+  server.close(async () => {
+    // close your other stuff...
+    try {
+      await shutdown()
+      console.log('Server close done')
+    } catch (e) {
+      console.log(e)
+    }
+    process.exit(0)
+  })  
+}
+['SIGINT', 'SIGQUIT', 'SIGTERM'].forEach(signal => process.on(signal, handleExit))
+// END SERVICES
 
+// START ROUTES
 try {
-  require(APP_PATH + '/router')(app)
-  if (USE_GRAPHQL) require(APP_PATH + '/graphql')(app, server)  
+  require('./router')(app)
+  require('./graphql')(app, server)  
 } catch (e) {
   console.log(e.toString())
 }
+// END ROUTES
 
-require(LIB_PATH + '/express/postRoute')(app, express)
-require(LIB_PATH + '/express/errorMiddleware')(
-  app
-  //, (error, req, res, next) => {}
-)
+// https://github.com/mpashkovskiy/express-oas-generator/issues/24#issuecomment-764469904
+// expressOasGenerator.handleRequests()
+
+require('@eslab/express/postRoute')(app, express)
 
 module.exports = { server }

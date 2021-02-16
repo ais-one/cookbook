@@ -1,6 +1,6 @@
 const express = require('express')
-const { vapidPubKey, send } = require('lib/node/services/webpush')
-const fcmSend = require('lib/node/comms/fcm')
+const { vapidPubKey, send } = require('@eslab/node/services/webpush')
+const fcmSend = require('@eslab/node/comms/fcm')
 const { authUser, findUser, updateUser } = require('../middlewares/auth')
 
 module.exports = express.Router()

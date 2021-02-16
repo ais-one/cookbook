@@ -1,11 +1,12 @@
 const fs = require('fs')
 const express = require('express')
 const { spawn } = require('child_process')
+const axios = require('axios')
 
-const agenda = require('lib/node/services/mq/agenda').get() // agenda message queue
-const bull = require('lib/node/services/mq/bull').get() // bull message queue
-const { gcpGetSignedUrl } = require('lib/node/services/gcp')
-const { memoryUpload, storageUpload } = require(LIB_PATH + '/express/upload')
+const agenda = require('@eslab/node/services/mq/agenda').get() // agenda message queue
+const bull = require('@eslab/node/services/mq/bull').get() // bull message queue
+const { gcpGetSignedUrl } = require('@eslab/node/services/gcp')
+const { memoryUpload, storageUpload } = require('@eslab/express/upload')
 
 const { authUser } = require('../middlewares/auth')
 
@@ -25,11 +26,12 @@ module.exports = express.Router()
     // child.on('close', (code) => {
     //   console.log(`child process close all stdio with code ${code}`)
     // }) 
-        child.unref()
+    child.unref()
     res.json({})
   })
+
   .get('/restart-mongo', (req, res) => { // restart mongo that cannot initially connect
-    require('lib/node/services/db/mongodb').open()
+    require('@eslab/node/services/db/mongodb').open()
     res.json({})
   })
 
@@ -50,6 +52,11 @@ module.exports = express.Router()
       console.log(data)
     })
     res.json({ message: 'Crash initiated check express server logs' })
+  }))
+
+  .get('/error-unhandled-promise-rejection', asyncWrapper(async (req, res, next) => { // catching error in unhandled exception
+    // Promise.reject(new Error('woops')).catch(e => next(e)) //  handled
+    Promise.reject(new Error('woops')) // unhandled
   }))
 
   /**

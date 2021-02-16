@@ -1,5 +1,5 @@
 'use strict'
-const Model = require('lib/node/services/db/objection').get()
+const Model = require('@eslab/node/services/db/objection').get()
 
 class Page extends Model {
   // Table name is the only required property.

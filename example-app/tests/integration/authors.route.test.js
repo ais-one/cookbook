@@ -19,18 +19,18 @@ const testData = {
 
 describe(endpointUrl, () => {
   beforeAll(async () => {
-    await require('lib/node/config')(process.cwd())
-    require(LIB_PATH + '/express/errorHandler')({ 
+    await require('@eslab/node/config')(process.cwd())
+    require('@eslab/express/errorHandler')({ 
       unhandledRejection: null, // (reason, promise) => {}
       uncaughtException: null, // err => {}
       stackTraceLimit: 1
     })
     // const objection =
-    require('lib/node/services/db/objection').open()
-    require(LIB_PATH + '/express/preRoute')(app)
+    require('@eslab/node/services/db/objection').open()
+    require('@eslab/express/preRoute')(app)
     require(APP_PATH + `/router`)(app)
 
-    const { createToken } = require('lib/node/auth')
+    const { createToken } = require('@eslab/node/auth')
     const { token } = await createToken({ id: 100, verified: true, groups: 'TestGroup' }, { expiresIn: '1d' })
     authObj = {
       Authorization: 'Bearer ' + token
