@@ -1,6 +1,6 @@
 const { MONGO_DB, MONGO_URL } = global.CONFIG
 const ObjectID = require('mongodb').ObjectID
-const { bcrypt } = require('@eslab/node/auth')
+const { bcrypt } = require('@es-labs/node/auth')
 const WINDOW_SIZE = 100 // update batch window size
 
 let db

@@ -1,4 +1,4 @@
-const { bcrypt } = require('@eslab/node/auth')
+const { bcrypt } = require('@es-labs/node/auth')
 
 // // Generate Password
 // let password = bcrypt.hashSync('tech@!@#', 12)

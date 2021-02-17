@@ -33,8 +33,8 @@ import { useXhr } from '/src/plugins/xhr.js'
 import { useI18n } from '/src/plugins/i18n.js'
 import { useWs } from '/src/plugins/ws.js'
 
-import parseJwt from '../../../lib/esm/parse-jwt.js' // served from express /esm static route
-import { samlLogin } from '../../../lib/esm/saml.js'
+import parseJwt from '../../../@es-labs/esm/parse-jwt.js' // served from express /esm static route
+import { samlLogin } from '../../../@es-labs/esm/saml.js'
 import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
 import { DO_HELLO } from '/src/queries.js'
 

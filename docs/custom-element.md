@@ -4,7 +4,7 @@
 
 A component for capturing signature using canvas (component name: vcxwc-sign-pad)
 
-Component file location [../lib/esm/sign-pad.js](../lib/esm/sign-pad.js)
+Component file location [../@es-labs/esm/sign-pad.js](../@es-labs/esm/sign-pad.js)
 
 Example can be found on example-vite DemoSignPad page
 
@@ -35,7 +35,7 @@ Attributes
 
 A component for capturing image using webcam (component name: vcxwc-web-cam)
 
-Component file location [../lib/esm/web-cam.js](../lib/esm/web-cam.js)
+Component file location [../@es-labs/esm/web-cam.js](../@es-labs/esm/web-cam.js)
 
 Example can be found on example-vite DemoWebCam page
 

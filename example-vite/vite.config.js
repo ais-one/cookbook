@@ -4,11 +4,6 @@ import vue from '@vitejs/plugin-vue'
 
 // module.exports = {
 export default {
-  alias: {
-    // https://github.com/vitejs/vite/issues/279#issuecomment-636110354
-    // '/@/': path.resolve(__dirname, './lib/') // import aa from '/@/esm/aaa.js'
-    '/lib/esm/': require('path').join(__dirname, '..', 'lib', 'esm')
-  },
   base: process.env.BASE_PATH || '/', // set to '/vite' for dev:build, '/' otherwise
   build: {
     // sourcemap: isDev1,
@@ -40,14 +35,21 @@ export default {
       }
     })
   ],
+  resolve: {
+    alias: {
+      // https://github.com/vitejs/vite/issues/279#issuecomment-636110354
+      // '/@/': path.resolve(__dirname, './lib/') // import aa from '/@/esm/aaa.js'
+      '/@es-labs/esm/': require('path').join(__dirname, '..', '@es-labs', 'esm')
+    }
+  },
   server: {
     port: 8080,
     // proxy: { // use alias instead
     //   // '/esm': 'http://127.0.0.1:3000/esm', // does not seem to work
-    //   '/lib/esm': {
+    //   '/@es-labs/esm': {
     //     target: 'http://127.0.0.1:3000',
     //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/lib\/esm/, '/esm')
+    //     rewrite: (path) => path.replace(/^\/@es-labs\/esm/, '/esm')
     //   }
     // },
   }

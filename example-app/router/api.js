@@ -3,10 +3,10 @@ const express = require('express')
 const { spawn } = require('child_process')
 const axios = require('axios')
 
-const agenda = require('@eslab/node/services/mq/agenda').get() // agenda message queue
-const bull = require('@eslab/node/services/mq/bull').get() // bull message queue
-const { gcpGetSignedUrl } = require('@eslab/node/services/gcp')
-const { memoryUpload, storageUpload } = require('@eslab/express/upload')
+const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
+const bull = require('@es-labs/node/services/mq/bull').get() // bull message queue
+const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
+const { memoryUpload, storageUpload } = require('../express/upload')
 
 const { authUser } = require('../middlewares/auth')
 
@@ -31,7 +31,7 @@ module.exports = express.Router()
   })
 
   .get('/restart-mongo', (req, res) => { // restart mongo that cannot initially connect
-    require('@eslab/node/services/db/mongodb').open()
+    require('@es-labs/node/services/db/mongodb').open()
     res.json({})
   })
 

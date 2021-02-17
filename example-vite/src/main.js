@@ -20,12 +20,12 @@ import '../firebase.config.js'
 import '../pwa-init.js'
 
 // our own web components
-import '../../lib/esm/loading-overlay.js'
-import '../../lib/esm/bwc-table.js'
+import '../../@es-labs/esm/loading-overlay.js'
+import '../../@es-labs/esm/bwc-table.js'
 
-import '../../lib/esm/mwc-autocomplete.js'
-import '../../lib/esm/mwc-multiselect.js'
-// import '../../lib/esm/mwc-fileupload.js'
+import '../../@es-labs/esm/mwc-autocomplete.js'
+import '../../@es-labs/esm/mwc-multiselect.js'
+// import '../../@es-labs/esm/mwc-fileupload.js'
 
 import { createApp } from 'vue'
 import router from './router.js'

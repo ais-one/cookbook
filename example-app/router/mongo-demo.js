@@ -1,6 +1,6 @@
 // cookbook for mongoDB
 const express = require('express')
-const mongo = require('@eslab/node/services/db/mongodb').get()
+const mongo = require('@es-labs/node/services/db/mongodb').get()
 
 module.exports = express.Router()
   .get('/test', async (req,res) => {

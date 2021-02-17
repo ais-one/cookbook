@@ -53,10 +53,16 @@ Docker is required to test
 # clone repo and install backend
 git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
-npm run install
+```
 
-# install the required lib JS scripts
-npm run update
+### ExpressJS Backend Setup & Run - development environment
+
+```bash
+# install
+cd example-app
+npm i
+npm i ../@es-labs/esm
+npm i ../@es-labs/node
 
 # create and seed relational db on SQLite
 npm run knex # windows
@@ -166,10 +172,7 @@ Navigate to http://127.0.0.1:3000/webpack/
 Refer to link below on how to try out...
 - https://github.com/ais-one/vue-crud-x/blob/develop/docker-devenv/saml/docker-compose.yml
 - You can test out on the **example-vite** Signin UI, clicking on SAML button to see redirect callback
-
-Codes are use in...
-- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/app.js
-- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/lib/express/saml.js
+- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/express/preRoute.js
 - https://github.com/ais-one/vue-crud-x/blob/develop/example-app/router/saml.js
 
 
@@ -205,19 +208,19 @@ npm run process-cron:unix # linux or mac
 ## Using The Common Libraries In Your Own Application
 
 1. **example-app** for backend example
-  - **example-app/lib/esm** for common ESM codes to be used by express applications - TOREMOVE
-  - **example-app/lib/<all_others>** for common CJS codes to be used by express applications - TOREMOVE
+  - **example-app/express** for common codes used in express
 
 2. **example-native** for vanillaJS frontend example
 
 3. **example-vite** for Vite Vue3 frontend example
-  - **example-vite/lib/rollup** for common codes to be used by Vite Vue 3 (should have same contents as **example-app/lib/esm**)
+  - **example-vite/lib/rollup** for common codes to be used by Vite Vue 3
 
 4. **example-webpack** for Webpack Vue2 frontend example
   - **example-webpack/lib/webpacked** for common codes to be used by Webpacked Vue 2 applications
 
-5. **lib/esm** for common javascript libraries using ES Modules
-
+5. **lib**
+  - **/esm** for common javascript libraries using ES Modules
+  - **/node** for common NodeJS libraries
 
 ## Environment Settings
 
@@ -248,25 +251,27 @@ If too many config properties, split it to other more and files
 vue-crud-x
 +- .circleci/ : not used
 +- .github/ : github related CICD and automations
++- @es-labs/ : shared libraries
+|  +- esm/ : es modules
+|     +- package.json
+|  +- node/ : nodejs libraries
+|     +- auth/ : authentication
+|     +- comms/ : messaging
+|     +- services/ : db
+|     +- config.default.js: the base config
+|     +- config.js: the base config
+|     +- package.json
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
++- example-amp/ : AMP example (TBD)
 +- example-app/ : example backend - See example-app/README.md for Project Structure
 +- example-native/ : frontend associated to backend (Vue3 no bundle) - See example-native/README.md for Project Structure
 +- example-vite/ : frontend associated to backend - (Vue3 rollup) - See example-vite/README.md for Project Structure
 |  +- lib/esm-rollup/ : rolled up components for frontend (e.g. apollo.js)
++- example-vite-antd/ : incorporate antdesign vue for rapid dashboard prototyping
 +- example-webpack/ : frontend associated to the backend (Vue2 webpack) - See example-webpack/README.md for Project Structure
 |  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
 +- k8s/ : kubernetes YAML files (WIP)
-+- lib/ : shared libraries
-|  +- auth/ : for express authentication
-|  +- comms/ : messaging
-|  +- esm/ : es modules
-|  +- express/ : express related
-|  +- services/ : nodejs libs
-|  +- config.default.js: the base config
-|  +- config.js: the base config
-
-
 +- .editorconfig
 +- .gitignore
 +- BACKLOG.md

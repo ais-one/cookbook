@@ -1,5 +1,5 @@
 'use strict'
-const Model = require('@eslab/node/services/db/objection').get()
+const Model = require('@es-labs/node/services/db/objection').get()
 
 class Author extends Model {
   // Table name is the only required property.

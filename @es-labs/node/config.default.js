@@ -142,23 +142,23 @@ global.CONFIG.ENABLE_LOGGER = false
 // MQ - bullmq - requires redis - currently not used
 global.CONFIG.JOB_BULL = null
 
-// Communications - Nexmo - @eslab/nodecomms/nexmo.js
+// Communications - Nexmo - @es-labs/nodecomms/nexmo.js
 global.CONFIG.NEXMO_FROM = ''
 global.CONFIG.NEXMO_KEY = ''
 global.CONFIG.NEXMO_SECRET = ''
 
-// Communications - Telegram - @eslab/node/comms/telegram.js
+// Communications - Telegram - @es-labs/node/comms/telegram.js
 global.CONFIG.TELEGRAM_CHANNEL_ID = ''
 global.CONFIG.TELEGRAM_API_KEY = ''
 
-// Communications - Sendgrid - @eslab/node/comms/email.js
+// Communications - Sendgrid - @es-labs/node/comms/email.js
 global.CONFIG.SENDGRID_KEY = ''
 global.CONFIG.SENDGRID_SENDER = ''
 
-// Communications - Firebase Messaging - @eslab/node/comms/fcm.js
+// Communications - Firebase Messaging - @es-labs/node/comms/fcm.js
 global.CONFIG.FCM_SERVER_KEY = ''
 
-// Communications - Firebase Messaging (@eslab/node/services/webpush.js)
+// Communications - Firebase Messaging (@es-labs/node/services/webpush.js)
 global.CONFIG.WEBPUSH_VAPID_URL = process.env.WEBPUSH_VAPID_URL || 'http://127.0.0.1:3000'
 
 // Caching Redis

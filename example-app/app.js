@@ -10,16 +10,16 @@ const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createS
 
 // const expressOasGenerator = require('express-oas-generator')
 // expressOasGenerator.handleResponses(app, {})
-require('@eslab/express/preRoute')(app)
+require('./express/preRoute')(app)
 
 // START SERVICES
-const { sleep } = require('esm')(module)('@eslab/esm/sleep')
-const objection = require('@eslab/node/services/db/objection').open()
-const mongodb = require('@eslab/node/services/db/mongodb').open()
-const websocket = require('@eslab/node/services/websocket').open(null, null) // or set to null
-const agenda = require('@eslab/node/services/mq/agenda').open()
-const bull = require('@eslab/node/services/mq/bull').open()
-// const hazelcast = require('@eslab/node/services/db/hazelcast').open()
+const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
+const objection = require('@es-labs/node/services/db/objection').open()
+const mongodb = require('@es-labs/node/services/db/mongodb').open()
+const websocket = require('@es-labs/node/services/websocket').open(null, null) // or set to null
+const agenda = require('@es-labs/node/services/mq/agenda').open()
+const bull = require('@es-labs/node/services/mq/bull').open()
+// const hazelcast = require('@es-labs/node/services/db/hazelcast').open()
 const shutdown = async () => {
   try {
     websocket.close() // websockets
@@ -64,6 +64,6 @@ try {
 // https://github.com/mpashkovskiy/express-oas-generator/issues/24#issuecomment-764469904
 // expressOasGenerator.handleRequests()
 
-require('@eslab/express/postRoute')(app, express)
+require('./express/postRoute')(app, express)
 
 module.exports = { server }

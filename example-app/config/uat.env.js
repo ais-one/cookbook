@@ -20,12 +20,7 @@ module.exports = {
 
   WS_PORT: 0,
   USE_GRAPHQL: 0,
-  WEB_STATIC: null,
-  // WEB_STATIC: [
-  //   { folder: '/public/example-native', url: '/native', options: { extensions: ['html'], index: false } },
-  //   { folder: '/lib/esm', url: '/esm' },
-  //   { folder: '/public/demo-express', url: '/' }
-  // ],
+  WEB_STATIC: null, // no static resources served
   CORS_OPTIONS: {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,

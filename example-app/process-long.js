@@ -5,11 +5,11 @@ console.log('this can be a Kafka producer... listen to incoming tcp messages and
 console.log('Do take note limitations for Long running NodeJS process')
 console.log('Can also be for cronjobs (but better to use cronjob call an API)')
 
-await require('@eslab/node/config')(process.cwd()) //  first thing to run
+await require('@es-labs/node/config')(process.cwd()) //  first thing to run
 
 // mixing ES Modules into a CommonJS project
 // https://codewithhugo.com/use-es-modules-in-node-without-babel/webpack-using-esm/
-const { sleep } = require('esm')(module)('@eslab/esm/sleep')
+const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 
 const run = async () => {
   // eslint-disable-next-line no-constant-condition

@@ -72,6 +72,7 @@
 |  +- mongo/
 |  +- seeds/
 +- deploy/ : deployment folder (see README.md within the deploy folder)
++- express/ : common setup
 +- graphql/ : graphql stuff
 +- jobs/ : message queue jobs
 +- logs/

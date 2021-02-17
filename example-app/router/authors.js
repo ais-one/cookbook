@@ -1,6 +1,6 @@
 const express = require('express')
 const { authUser } = require('../middlewares/auth')
-const { storageUpload } = require('@eslab/express/upload')
+const { storageUpload } = require('../express/upload')
 
 // const Category = require('../models/Category')
 // const Author = require('../models/Author')

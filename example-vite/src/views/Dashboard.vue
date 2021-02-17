@@ -32,8 +32,8 @@
 import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inject } from 'vue'
 import { useStore } from 'vuex'
 // import { useRouter, useRoute } from 'vue-router'
-import { debounce } from '../../../lib/esm/util.js' // served from express /esm static route
-import { webpushSubscribe, webpushUnsubscribe, fcmSubscribe } from '../../../lib/esm/pwa.js' // served from express /esm static route
+import { debounce } from '../../../@es-labs/esm/util.js' // served from express /esm static route
+import { webpushSubscribe, webpushUnsubscribe, fcmSubscribe } from '../../../@es-labs/esm/pwa.js' // served from express /esm static route
 import { useXhr } from '/src/plugins/xhr.js'
 import { VITE_PWA_PN } from '/config.js'
 

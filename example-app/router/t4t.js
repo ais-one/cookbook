@@ -1,13 +1,13 @@
 // TBD use __key instead of key
 // table for tables
 const express = require('express')
-const Model = require('@eslab/node/services/db/objection').get()
+const Model = require('@es-labs/node/services/db/objection').get()
 const knex = Model ? Model.knex() : null
 const fs = require('fs')
 
-const { validate } = require('esm')(module)('@eslab/esm/t4t-validate') // TBD validate on server side also
+const { validate } = require('esm')(module)('@es-labs/esm/t4t-validate') // TBD validate on server side also
 
-const mongo = require('@eslab/node/services/db/mongodb').get()
+const mongo = require('@es-labs/node/services/db/mongodb').get()
 const ObjectID = mongo.ObjectID
 
 // const { authUser } = require('../middlewares/auth')
@@ -16,8 +16,8 @@ const authUser = async (req, res, next) => next()
 const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
-// const { gcpGetSignedUrl } = require('@eslab/node/services/gcp')
-const { memoryUpload, storageUpload } = require('@eslab/express/upload')
+// const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
+const { memoryUpload, storageUpload } = require('../express/upload')
 
 const processJson = async (req, res, next) => {
   if (req.files) { // it is formdata
@@ -314,7 +314,7 @@ module.exports = express.Router()
         // result: dbRv.result
       }
     }
-    return res.json() // TBD fix lib/esm/http.js
+    return res.json() // TBD fix @es-labs/esm/http.js
   }))
 
 /*
