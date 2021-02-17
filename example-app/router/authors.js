@@ -2,11 +2,6 @@ const express = require('express')
 const { authUser } = require('../middlewares/auth')
 const { storageUpload } = require('../common-express/upload')
 
-// const Category = require('../models/Category')
-// const Author = require('../models/Author')
-// const { transaction } = require('objection')
-// const knex = Author.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
-
 const authorController = require('../controllers/author') // use controller
 
 module.exports = express.Router()

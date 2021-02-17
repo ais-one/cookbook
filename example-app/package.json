@@ -14,8 +14,8 @@
     "dev": "cross-env NODE_ENV=development PORT=3001 DEBUG=app:* nodemon --ignore tests/ --ignore public/ --watch src bin/www",
     "knex": "cross-env NODE_ENV=%npm_package_config_env% node deploy/db/migrations/index.js&&cross-env NODE_ENV=%npm_package_config_env% node deploy/db/seeds/index.js",
     "knex:unix": "cross-env NODE_ENV=$npm_package_config_env node deploy/db/migrations/index.js&&cross-env NODE_ENV=$npm_package_config_env node deploy/db/seeds/index.js",
-    "mongo": "cross-env NODE_ENV=%npm_package_config_env% node db/mongo/index.js",
-    "mongo:unix": "cross-env NODE_ENV=$npm_package_config_env node db/mongo/index.js",
+    "mongo": "cross-env NODE_ENV=%npm_package_config_env% node deploy/db/mongo/index.js",
+    "mongo:unix": "cross-env NODE_ENV=$npm_package_config_env node deploy/db/mongo/index.js",
     "app": "cross-env NODE_ENV=%npm_package_config_env% nodemon --trace-warnings index.js",
     "app:lint": "cross-env NODE_ENV=%npm_package_config_env% nodemon index.js --ignore tests/ --ignore public/ --exec \"npm run lint && node\"",
     "app:unix": "cross-env NODE_ENV=$npm_package_config_env nodemon index.js  --ignore tests/ --ignore public/ --exec \"npm run lint && node\"",
@@ -48,12 +48,8 @@
     "http-proxy-middleware": "^1.0.6",
     "json2csv": "^5.0.6",
     "kafkajs": "^1.15.0",
-    "knex": "^0.21.17",
-    "mongodb": "^3.6.4",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
-    "mysql": "^2.18.1",
-    "objection": "^2.2.14",
     "passport": "^0.4.1",
     "passport-saml": "^2.0.5",
     "selfsigned": "^1.10.8"
@@ -66,7 +62,6 @@
     "jest": "^26.6.3",
     "node-mocks-http": "^1.10.1",
     "nodemon": "^2.0.7",
-    "sqlite3": "^5.0.2",
     "supertest": "^6.1.3"
   },
   "husky": {

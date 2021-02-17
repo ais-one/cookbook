@@ -2,8 +2,9 @@
 
 const fs = require('fs')
 const Author = require('../models/Author')
-const { transaction } = require('objection')
+// TOREMOVE const { transaction } = require('objection')
 const knex = Author.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
+const { transaction } = knex
 
 exports.create = async (req, res) => {
   try {
