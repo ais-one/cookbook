@@ -62,7 +62,7 @@ npm i
 npm i ../@es-labs/esm
 npm i ../@es-labs/node
 
-# create and seed relational db on SQLite
+# create and seed relational db on SQLite, (delete the dev.sqlite file each time before you run this)
 npm run knex # windows
 npm run knex:unix # linux or mac
 

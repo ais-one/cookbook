@@ -2,7 +2,7 @@
 
 let Model
 
-exports.open = () => {
+exports.open = async () => {
   const { KNEXFILE } = global.CONFIG
   if (!KNEXFILE) console.log('KNEXFILE property empty or undefined - knex not started')
   if (!Model && KNEXFILE) {
@@ -12,6 +12,8 @@ exports.open = () => {
       Model = require('objection').Model
       const knexConnection = Knex(config)
       Model.knex(knexConnection)
+      // const knex = Model.knex()
+      // const data = await knex.raw('SELECT * FROM users')
       console.log('db open ok')
     } catch (e) {
       console.log('db open err', e.toString())

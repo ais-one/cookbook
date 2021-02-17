@@ -4,6 +4,7 @@ node_modules
 # deploy & configs
 deploy/*
 !deploy/README.md
+!deploy/db
 config/secret/*
 !config/secret/README.md
 

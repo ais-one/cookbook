@@ -1,8 +1,6 @@
 console.log('Usage - windows: npm run mongo update, npm run mongo seed')
 console.log('Usage - unix: npm run mongo:unix update, npm run mongo:unix seed')
 
-require('lib/node/config')() //  first thing to include
-
 if (process.argv.length >= 3) {
   if (process.argv[2] === 'update') {
     console.log('updating')
