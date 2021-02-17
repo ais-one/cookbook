@@ -6,7 +6,7 @@ const axios = require('axios')
 const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
 const bull = require('@es-labs/node/services/mq/bull').get() // bull message queue
 const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
-const { memoryUpload, storageUpload } = require('../express/upload')
+const { memoryUpload, storageUpload } = require('../common-express/upload')
 
 const { authUser } = require('../middlewares/auth')
 

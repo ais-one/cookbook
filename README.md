@@ -45,9 +45,7 @@ Docker is required to test
 - hashicorp vault
 - kafka
 
-## Backend, Native (no bundler), Vite, Webpacked
-
-### Backend Setup & Run
+## Backend, Native (no bundler), Vite, Webpacked (deprecated)
 
 ```bash
 # clone repo and install backend
@@ -86,11 +84,38 @@ npm run app:unix # linux or mac
 - http://127.0.0.1:3000/api-docs - OpenAPI UI 
 - http://127.0.0.1:3000 - Website served by Express with functional samples and demos (click on link to view **native** app or link to view **vite production build** app)
 
+#### No bundler frontend
 
-### Nobundler
+See **native** app above
 
-See above
+#### Testing
 
+To run unit & integration test on /api/authors. E2E testing is **Work In Progress**
+
+TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in example-app/tests
+
+```bash
+npm run test # windows
+npm run test:unix # linux or mac
+```
+
+#### Long Running Processes and Cron Triggered Process
+
+Command to run long process (do take note of caveats, for production need a monitor to handle restart strategy)
+
+```bash
+npm run process-long # windows
+npm run process-long:unix # linux or mac
+```
+
+Command to simulate process triggered by cron (**NOTE:** may be better to use cron to call API than trigger a process)
+
+```bash
+npm run process-cron # windows
+npm run process-cron:unix # linux or mac
+```
+
+---
 
 ### Vite SPA Setup & Run - development environment
 
@@ -172,36 +197,9 @@ Navigate to http://127.0.0.1:3000/webpack/
 Refer to link below on how to try out...
 - https://github.com/ais-one/vue-crud-x/blob/develop/docker-devenv/saml/docker-compose.yml
 - You can test out on the **example-vite** Signin UI, clicking on SAML button to see redirect callback
-- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/express/preRoute.js
+- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/common-express/preRoute.js
 - https://github.com/ais-one/vue-crud-x/blob/develop/example-app/router/saml.js
 
-
-## Testing
-
-To run unit & integration test on /api/authors. E2E testing is **Work In Progress**
-
-TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in example-app/tests
-
-```bash
-npm run test # windows
-npm run test:unix # linux or mac
-```
-
-## Long Running Processes and Cron Triggered Process
-
-Command to run long process (do take note of caveats, for production need a monitor to handle restart strategy)
-
-```bash
-npm run process-long # windows
-npm run process-long:unix # linux or mac
-```
-
-Command to simulate process triggered by cron (**NOTE:** may be better to use cron to call API than trigger a process)
-
-```bash
-npm run process-cron # windows
-npm run process-cron:unix # linux or mac
-```
 
 ---
 

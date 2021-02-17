@@ -21,7 +21,7 @@ describe(endpointUrl, () => {
   beforeAll(async () => {
     await require('@es-labs/node/config')(process.cwd())
     require('@es-labs/node/services/db/objection').open()
-    require('../../express/preRoute')(app)
+    require('../../common-express/preRoute')(app)
     require('../../router')(app)
 
     const { createToken } = require('@es-labs/node/auth')

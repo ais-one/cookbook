@@ -17,7 +17,7 @@ const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
 // const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
-const { memoryUpload, storageUpload } = require('../express/upload')
+const { memoryUpload, storageUpload } = require('../common-express/upload')
 
 const processJson = async (req, res, next) => {
   if (req.files) { // it is formdata
