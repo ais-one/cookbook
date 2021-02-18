@@ -69,9 +69,10 @@
 +- controllers/
 +- deploy/ : deployment folder (see README.md within the deploy folder)
 |  +- db/ : for seeding and migrating data
-|     +- migrations/
+|     +- knex/
+|     |  +- migrations/
+|     |  +- seeds/
 |     +- mongo/
-|     +- seeds/
 +- graphql/ : graphql stuff
 +- jobs/ : message queue jobs
 +- logs/

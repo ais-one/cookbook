@@ -12,8 +12,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./bin/www",
     "dev": "cross-env NODE_ENV=development PORT=3001 DEBUG=app:* nodemon --ignore tests/ --ignore public/ --watch src bin/www",
-    "knex": "cross-env NODE_ENV=%npm_package_config_env% node deploy/db/migrations/index.js&&cross-env NODE_ENV=%npm_package_config_env% node deploy/db/seeds/index.js",
-    "knex:unix": "cross-env NODE_ENV=$npm_package_config_env node deploy/db/migrations/index.js&&cross-env NODE_ENV=$npm_package_config_env node deploy/db/seeds/index.js",
+    "knex": "cross-env NODE_ENV=%npm_package_config_env% node deploy/db/knex/migrations/index.js&&cross-env NODE_ENV=%npm_package_config_env% node deploy/db/knex/seeds/index.js",
+    "knex:unix": "cross-env NODE_ENV=$npm_package_config_env node deploy/db/knex/migrations/index.js&&cross-env NODE_ENV=$npm_package_config_env node deploy/db/knex/seeds/index.js",
     "mongo": "cross-env NODE_ENV=%npm_package_config_env% node deploy/db/mongo/index.js",
     "mongo:unix": "cross-env NODE_ENV=$npm_package_config_env node deploy/db/mongo/index.js",
     "app": "cross-env NODE_ENV=%npm_package_config_env% nodemon --trace-warnings index.js",

@@ -55,13 +55,23 @@ cd vue-crud-x
 
 ### ExpressJS Backend Setup & Run - development environment
 
+#### Install
+
 ```bash
 # install
 cd example-app
 npm i
 npm i ../@es-labs/esm
 npm i ../@es-labs/node
+```
 
+**NOTES**
+- MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
+- The **example-app/config/secret/*.inv,js** files not present. So there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. Use the README.md to fill up
+
+#### Run migration & app
+
+```bash
 # create and seed relational db on SQLite, (delete the dev.sqlite file each time before you run this)
 npm run knex # windows
 npm run knex:unix # linux or mac
@@ -74,10 +84,6 @@ npm run mongo:unix # linux or mac
 npm run app # windows
 npm run app:unix # linux or mac
 ```
-
-**NOTES**
-- MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
-- The **example-app/config/secret/*.inv,js** files not present. So there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. Use the README.md to fill up
 
 **Visit the following URLs**
 - http://127.0.0.1:3000/api/healthcheck - app is running normally
