@@ -44,19 +44,19 @@ server.on('close',function(){
 const errorTypes = ['unhandledRejection', 'uncaughtException']
 const signalTraps = ['SIGTERM', 'SIGINT', 'SIGUSR2']
 
-errorTypes.map(type => {
+errorTypes.forEach(type => {
   process.on(type, async e => {
     try {
       console.log(`process.on ${type}`)
       console.error(e)
-      process.exit(0)
+      return process.exit(0)
     } catch (_) {
-      process.exit(1)
+      return process.exit(1)
     }
   })
 })
 
-signalTraps.map(type => {
+signalTraps.forEach(type => {
   process.once(type, async () => {
     try {
       console.log('Signal Trap', type)
@@ -72,6 +72,7 @@ signalTraps.map(type => {
       // Do not call this as need time to close the server...
       // process.kill(process.pid, type)
     }
+    return
   })
 })
 
