@@ -1,32 +1,7 @@
 const express = require('express')
-const { UPLOAD_FOLDER } = global.CONFIG
 const { authUser } = require('../middlewares/auth')
-
-// const Category = require('../models/Category')
-// const Author = require('../models/Author')
-// const { transaction } = require('objection')
-// const knex = Author.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
-
-const multer = require('multer')
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) { cb(null, UPLOAD_FOLDER) },
-  filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now()) }
-})
-const upload = multer({
-  // limits: {
-  //   files : 1,
-  //   fileSize: 1000000 // size in bytes
-  // },
-  // fileFilter: (req, file, cb) => {
-  //   if (
-  //     !file.mimetype.includes("jpeg") && !file.mimetype.includes("jpg") && !file.mimetype.includes("png")
-  //   ) {
-  //     return cb(null, false, new Error("Only jpeg, png or pdf are allowed"));
-  //   }
-  //   cb(null, true);
-  // },
-  storage: storage
-})
+const { storageUpload } = require('../common-express/upload')
+const { UPLOAD_STATIC } = global.CONFIG
 
 const authorController = require('../controllers/author') // use controller
 
@@ -80,7 +55,7 @@ module.exports = express.Router()
    *            $ref: '#/definitions/AuthorObject'
 
    */
-  .patch('/:id', authUser, upload.single('filex'), authorController.update)
+  .patch('/:id', authUser, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).single('filex'), authorController.update)
   /**
    * @swagger
    * /api/authors/{id}:

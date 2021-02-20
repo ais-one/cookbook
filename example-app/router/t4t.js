@@ -1,28 +1,38 @@
 // TBD use __key instead of key
 // table for tables
 const express = require('express')
-const Model = require(LIB_PATH + '/services/db/objection').get()
+const Model = require('@es-labs/node/services/db/objection').get()
 const knex = Model ? Model.knex() : null
+const fs = require('fs')
 
-const { validate } = require('esm')(module)(LIB_PATH + '/esm/t4t-validate') // TBD validate on server side also
+const { validateColumn } = require('esm')(module)('@es-labs/esm/t4t-validate') // TBD validateColumn on server side also
 
-const mongo = require(LIB_PATH + '/services/db/mongodb')
-const ObjectID = mongo.client ? require('mongodb').ObjectID : null
+const mongo = require('@es-labs/node/services/db/mongodb').get()
+const ObjectID = mongo.ObjectID
 
 // const { authUser } = require('../middlewares/auth')
-const csvParse = require('csv-parse')
-const multer = require('multer')
-const { Parser } = require('json2csv')
-const memoryUpload = multer({
-  // limits: {
-  //   files : 1,
-  //   fileSize: 5000 // size in bytes
-  // },
-  // fileFilter,
-  storage: multer.memoryStorage()
-})
+const authUser = async (req, res, next) => next()
 
-// key is reserved property for identifying row in a multiKey table
+const csvParse = require('csv-parse')
+const { Parser } = require('json2csv')
+
+// const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
+const { memoryUpload, storageUpload } = require('../common-express/upload')
+const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
+
+const processJson = async (req, res, next) => {
+  if (req.files) { // it is formdata
+    obj = {}
+    for (let key in req.body) {
+      const part = req.body[key]
+      obj = JSON.parse(part)
+    }
+    req.body = obj
+  }
+  next()
+}
+
+// __key is reserved property for identifying row in a multiKey table
 // | is reserved for seperating columns that make the multiKey
 
 async function generateTable (req, res, next) { // TBD get config info from a table
@@ -47,7 +57,7 @@ async function generateTable (req, res, next) { // TBD get config info from a ta
     // console.log(req.table)
     return next()
   } catch (e) {
-    return res.status(500).json({ e: e.toString() })
+    return res.status(500).json({ error: e.toString() })
   }
 }
 
@@ -205,7 +215,7 @@ module.exports = express.Router()
     return res.json(rv)
   }))
 
-  .patch('/update/:table/:id?', generateTable, asyncWrapper(async (req, res) => {
+  .patch('/update/:table/:id?', generateTable, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), processJson, asyncWrapper(async (req, res) => {
     const { body, table } = req
     const where = formUniqueKey(table, req.query.__key)
     let count = 0
@@ -214,8 +224,8 @@ module.exports = express.Router()
     for (let key in table.cols) { // add in auto fields
       const { rules, type } = table.cols[key]
       if (rules) {
-        const invalid = validate(rules, type, key, body)
-        if (invalid) return res.status(400).json({ e: `Invalid ${key} - ${invalid}` })
+        const invalid = validateColumn(rules, type, key, body)
+        if (invalid) return res.status(400).json({ error: `Invalid ${key} - ${invalid}` })
       }
 
       const col = table.cols[key]
@@ -243,18 +253,19 @@ module.exports = express.Router()
     return res.json({count})
   }))
 
-  .post('/create/:table', generateTable, asyncWrapper(async (req, res) => {
+  .post('/create/:table', generateTable, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), processJson, asyncWrapper(async (req, res) => {
     const { table, body } = req
     for (let key in table.cols) {
       const { rules, type } = table.cols[key]
       if (rules) {
-        const invalid = validate(rules, type, key, body)
-        if (invalid) return res.status(400).json({ e: `Invalid ${key} - ${invalid}` })
+        const invalid = validateColumn(rules, type, key, body)
+        if (invalid) return res.status(400).json({ error: `Invalid ${key} - ${invalid}` })
       }
 
       const col = table.cols[key]
       if (col.auto && col.auto === 'user') body[key] = 'TBD USER ID'
       if (col.auto && col.auto === 'ts') body[key] = new Date()
+      if (col.auto && col.auto === 'pk' && key in body) delete body[key]
       // TRANSFORM INPUT
       body[key] = table.cols[key].type === 'integer' || table.cols[key].type === 'number' ? Number(body[key])
       : table.cols[key].type === 'datetime' || table.cols[key].type === 'date' || table.cols[key].type === 'time' ? (body[key] ? new Date(body[key]) : null)
@@ -304,20 +315,35 @@ module.exports = express.Router()
         // result: dbRv.result
       }
     }
-    return res.json() // TBD fix common-lib/esm/http.js
+    return res.json() // TBD fix @es-labs/esm/http.js
   }))
+
+/*
+const trx = await knex.transaction()
+for {
+  let err = false
+  try {
+    await knex(tableName).insert(data).transacting(trx)
+  } catch (e) {
+    err = true
+  }
+  if (err) await trx.rollback()
+  else await trx.commit()
+}
+*/
 
 // Test country collection upload using a csv file with following contents
 // code,name
 // zzz,1234
 // ddd,5678
-  .post('/upload/:table', generateTable, memoryUpload.single('csv-file'), async (req, res) => { // do not use asyncWrapper
+  .post('/upload/:table', generateTable, memoryUpload(UPLOAD_MEMORY).single('csv-file'), async (req, res) => { // do not use asyncWrapper
     const { table } = req
     const csv = req.file.buffer.toString('utf-8')
     const output = []
     let errors = []
     let keys = []
     let currLine = 0
+    // console.log('up0', csv)
     csvParse(csv)
       .on('error', (e) => {
         console.log(e.message)
@@ -325,23 +351,22 @@ module.exports = express.Router()
       .on('readable', function () {
         let record
         while ( (record = this.read()) ) {
+          console.log('record', record)
           currLine++
           if (currLine === 1) {
             keys = [...record]
             continue // ignore first line
           }
+          // console.log('up1',record.length, table.nonAuto.length)
           if (record.length === table.nonAuto.length) { // ok
             if (record.join('')) {
-              // if (permissionOk) {
-              // } else {
-              // }
-              // format before push?
+              // TBD format before push?
               output.push(record)
             } else {
               errors.push({ currLine, data: record.join(','), msg: 'Empty Row' })
             }
           } else {
-            errors.push({ currLine, data: record.join(','), msg: 'Incorrenct Column Count' })
+            errors.push({ currLine, data: record.join(','), msg: 'Column Count Mismatch' })
           }
         }
       })
@@ -351,11 +376,13 @@ module.exports = express.Router()
         for (let row of output) {
           line++
           try {
-            // also take care of auto populating fields?
+            // TBD: also take care of auto populating fields?
+            // TBD: should add validation here
             const obj = {}
             for (let i=0; i<keys.length; i++) {
               obj[ keys[i] ] = row[i]
             }
+            // console.log(obj)
             if (table.db === 'knex') {
               writes.push(knex(table.name).insert(obj))
             } else {
@@ -367,6 +394,15 @@ module.exports = express.Router()
           }
         }
         await Promise.allSettled(writes)
-        return res.status(200).json({ errorCount: errors.length })
+        return res.status(200).json({ errorCount: errors.length, errors })
       })
   })
+
+
+  // delete file
+  // export async function deleteFile(filePath) {
+  //   fs.unlink(filePath, e => {
+  //     if (e) console.log(e)
+  //     else console.log(filePath +' deleted!')
+  //   })  
+  // }

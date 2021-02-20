@@ -1,6 +1,6 @@
 {
   "_from": "vue-crud-x",
-  "_id": "vue-crud-x@0.4.5",
+  "_id": "vue-crud-x@0.4.6",
   "_inBundle": false,
   "_integrity": "sha512-q9g7ER3wWEoOmM8GnPtJdOiaa6vX1pS/Pywh1B1Eqj0KKTRoc6RDqe5b1ulXcBk80Tnt4oGjoJc5BA/cw3WijA==",
   "_location": "/vue-crud-x",
@@ -19,7 +19,7 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/vue-crud-x/-/vue-crud-x-0.4.5.tgz",
+  "_resolved": "https://registry.npmjs.org/vue-crud-x/-/vue-crud-x-0.4.6.tgz",
   "_shasum": "fda705ef0188e0118d00ab53d16f300e7c3f523e",
   "_spec": "vue-crud-x",
   "_where": "/Users/aaron/test/xxx",
@@ -63,5 +63,5 @@
   "files": [
     "dist/*"
   ],
-  "version": "0.4.5"
+  "version": "0.4.6"
 }

@@ -8,8 +8,9 @@ const Book = require('../models/Book')
 // const Author = require('../models/Author')
 const Page = require('../models/Page')
 
-const { transaction } = require('objection')
+// TOREMOVE const { transaction } = require('objection')
 const knex = Book.knex() // You can access `knex` instance anywhere you want.  One way is to get it through any model.
+const { transaction } = knex
 
 module.exports = express.Router()
   .post('/', authUser, async (req,res) => {

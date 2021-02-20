@@ -21,6 +21,14 @@
   <script src="https://unpkg.com/vuex@4.0.0-rc.1"></script>
   <script type="module" src="main.js"></script>
   <script>
+    window.addEventListener('unhandledrejection', function (event) {
+      // ...your code here to handle the unhandled rejection...
+      console.log('event', event, event.reason)
+
+      // Prevent the default handling (such as outputting the
+      // error to the console)
+      event.preventDefault()
+    })
     async function hello() {
       const aa = await import('./views/vanilla.js')
       console.log('hellossss', aa.default.template)

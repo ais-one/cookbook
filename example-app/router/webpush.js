@@ -1,6 +1,6 @@
 const express = require('express')
-const { vapidPubKey, send } = require(LIB_PATH + '/services/webpush')
-const fcmSend = require(LIB_PATH + '/comms/fcm')
+const { vapidPubKey, send } = require('@es-labs/node/services/webpush')
+const fcmSend = require('@es-labs/node/comms/fcm')
 const { authUser, findUser, updateUser } = require('../middlewares/auth')
 
 module.exports = express.Router()
@@ -37,24 +37,7 @@ module.exports = express.Router()
         res.status(404).json({ status: 'no user or token'})
       }
     } catch (e) {
-      console.log(e)
+      console.log(e.toString())
+      res.status(500).json({ error: process.env.NODE_ENV === 'production' ? 'Send Error: contact admin' : e.toString() })
     }
-
   })
-
-  // TOREMOVE
-  // test FCM push notification when device registers... 
-  // .post('/send-fcm/:id', async (req, res) => {
-  //   try {
-  //     console.log('PN token received: ' + req.params.pnToken, req.query)
-  //     if (req.query.reply === 'yes') {
-  //       const rv = await fcmSend(req.params.pnToken, 'FCM Message', 'Received from My Server ' + Date.now())
-  //       console.log('send rv', rv.status)
-  //       res.status(200).json({ status: rv.status })  
-  //     } else {
-  //       res.status(200).json({ pnToken: req.params.pnToken })  
-  //     }
-  //   } catch (e) {
-  //     res.status(500).json({ e: e.toString() })
-  //   }
-  // })

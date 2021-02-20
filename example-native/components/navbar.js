@@ -1,3 +1,4 @@
+// NOT USED AT THE MOMENT
 const template = /*html*/`
 <div>
   <h1>Navbar</h1>

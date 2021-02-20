@@ -1,5 +1,5 @@
 'use strict'
-const Model = require(LIB_PATH + '/services/db/objection').get()
+const Model = require('@es-labs/node/services/db/objection').get()
 
 // export default
 class Category extends Model {

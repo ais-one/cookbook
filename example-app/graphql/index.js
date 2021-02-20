@@ -4,14 +4,14 @@
 // https://github.com/apollographql/federation-demo
 // does not support subscriptions yet...
 
-const { ApolloServer, PubSub } = require('apollo-server-express')
-
 let pubsub
 let apollo
 
 module.exports = function (app, server) {
   const { USE_GRAPHQL } = global.CONFIG
   if (!apollo && USE_GRAPHQL) {
+    const { ApolloServer, PubSub } = require('apollo-server-express')
+
     const { typeDefs, resolvers } = require('./schema')
     pubsub = new PubSub()
     apollo = new ApolloServer({

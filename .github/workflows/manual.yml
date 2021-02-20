@@ -1,5 +1,6 @@
 # This is a basic workflow that is manually triggered
 # good for testing
+# try to use as much shell scripting a possible
 # actions appear from default branch - https://github.community/t/workflow-files-only-picked-up-from-master/16129/2
 
 name: Manual workflow
@@ -51,7 +52,6 @@ jobs:
           check-latest: true
       - name: Make shell script executable
         run: |
-          chmod +x ./${{ github.event.inputs.service }}/update.sh
           chmod +x ./${{ github.event.inputs.service }}/deploy.sh
       # Runs a single command using the runners shell
       - name: Initiate Deployment
@@ -68,5 +68,4 @@ jobs:
           echo "Branch: ${GITHUB_REF##*/}"
           echo "Environment: ${{ github.event.inputs.environment }}"
           cd ${{ github.event.inputs.service }}
-          ./update.sh
           ./deploy.sh ${{ github.event.inputs.environment }}

@@ -20,6 +20,7 @@ const template = /*html*/`
     class="sticky-header sticky-column"
   ></bwc-table>
   <hr/>
+  <!--
   <bwc-table
     commands="reload"
     :pagination="false"
@@ -30,6 +31,7 @@ const template = /*html*/`
     style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;"
     class="sticky-header sticky-column"
   ></bwc-table>
+  -->
 </div>
 `
 
@@ -47,9 +49,14 @@ export default {
         label: 'ID',
         key: 'id',
         filter: false,
-        render: (val, key, row) => `<a class='button' onclick='this.dispatchEvent(new CustomEvent("testevent", { detail: ${JSON.stringify({ val, key, row })} }))'>${val}</a>`
-        // render: (val, key, row) => `<a class="button" onclick="this.dispatchEvent(new CustomEvent('testevent', { detail: { key: '${key}', val: '${val}' } }))">${val}</a>`
-        // can also fire off event - document.dispatchEvent(new CustomEvent('something', { detail: { val, row, key } }))
+        render: ({val, key, row, idx}) => {
+          const cell = val + ' is ' + (row['age'] > 5 ? '>5' : '<=5')
+          const output =
+            // do not include row as there can be too much data
+            // `<a class='button' onclick='this.dispatchEvent(new CustomEvent("testevent", { detail: ${JSON.stringify({ val, key, row, idx })} }))'>${val}</a>` // too much data if row included
+            `<a class="button" onclick="this.dispatchEvent(new CustomEvent('testevent', { detail: { key: '${key}', val: '${val}', idx: ${idx} } }))">${cell}</a>`
+          return output
+        }
       },
       {
         label: 'Name',
@@ -83,7 +90,7 @@ export default {
         age: i
       }
       for (let j=1; j<=15; j++) {
-        data['key' + j] = 'val-'+i+'-'+j
+        data['key' + j] = `r${i}-c${j}`
       }
       itemList.push(data)
     }
@@ -122,6 +129,10 @@ export default {
     }
     const testevent = (e) => {
       console.log('testevent', e.detail, e.target)
+      const { key, val, idx } = e.detail
+      console.log('ev2', table.items[idx]['age'])
+      table.items[idx]['age'] += 1
+      setItems()
     }
     
     onMounted(async () => {

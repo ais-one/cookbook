@@ -12,40 +12,24 @@
   <h1>Basic Express <a href="index.html">Back</a></h1>
   <p>check console for logs</p>
   <ul>
-    <li><a href="#" onclick="health()">Express Server Health Check</a></li>
-    <li><a href="#" onclick="makeError()">Test Express Server Error Handler</a></li>
-    <li><a href="#" onclick="makeCrash()">Crash Express Server</a></li>  
+    <li><a href="#" onclick="testAPI('/api/healthcheck')">Express Server Health Check</a></li>
+    <li><a href="#" onclick="testAPI('/api/crash')">Test Express - Unhandled Exception</a></li>
+    <li><a href="#" onclick="testAPI('/api/error')">Test Express - Error Middleware</a></li>
+    <li><a href="#" onclick="testAPI('/api/error-not-found')">Test Express - Not Found Error</a></li>
+    <li><a href="#" onclick="testAPI('/api/error-unhandled-promise-rejection')">Test Express - Unhandled Promise Rejection</a></li>
   </ul>
 </body>
 
 <script>
-  async function health() {
+  async function testAPI(url) {
     try {
-      const res = await fetch('/api/healthcheck', { method: 'GET' })
+      const res = await fetch(url, { method: 'GET' })
       const rv = await res.json()
       console.log(rv)
     } catch (e) {
       console.log(e)
     }
-  }
-  async function makeError() {
-    try {
-      const res = await fetch('/api/error', { method: 'GET' })
-      const rv = await res.json()
-      console.log(rv)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-  async function makeCrash() {
-    try {
-      const res = await fetch('/api/crash', { method: 'GET' })
-      const rv = await res.json()
-      console.log(rv)
-    } catch (e) {
-      console.log(e)
-    }
-  }
+  }  
 </script>
 
 </html>

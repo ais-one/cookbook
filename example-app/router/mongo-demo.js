@@ -1,14 +1,14 @@
 // cookbook for mongoDB
 const express = require('express')
-const mongo = require(LIB_PATH + '/services/db/mongodb')
+const mongo = require('@es-labs/node/services/db/mongodb').get()
 
 module.exports = express.Router()
   .get('/test', async (req,res) => {
-    let results = { e: 'no mongo' }
+    let results = { error: 'no mongo' }
     try {
       if (mongo && mongo.db) results = await mongo.db.collection('mongo-test').find({}).toArray()
     } catch (e) {
-      results = { e: e.toString() }
+      results = { error: e.toString() }
     }
     res.status(200).json(results)
   })
@@ -28,7 +28,7 @@ module.exports = express.Router()
       res.status(200).json() // success
     } catch (e) {
       await session.abortTransaction()
-      res.status(500).json({ e: e.toString() })
+      res.status(500).json({ error: e.toString() })
     } finally {
       session.endSession()
     }

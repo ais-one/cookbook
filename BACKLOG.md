@@ -1,19 +1,21 @@
 ## Issues
-
-### In Progress
+### For next sprint / version
+- [@es-labs/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new, pass in string or object as value?
+- [@es-labs/esm/bwc-t4t-form.js] - add autocomplete
+- [example-app] jsonschema & openapi 3.1
+- [fix] - ==='object' - handle null object
+- [example-vite] cypress e2e testing
+- [example-native] migrate example-webpack vue-crud-x table examples to example-native
+- [chore] disable console.log in production / proper console logging
 
 ### Backlog
-- [common-lib/esm/bwc-t4t-form.js] - add select tag, and other custom tags, handle file inputs
-- [example-vite] cypress e2e testing
-
-### For future product improvement
-- [chore] disable console.log in production / proper console logging
-- [chore] use monorepo when npm 7 is released ?
 - [example-webpack] what to do with apollo graphql client???
-- [example-vite] migrate example-webpack vue-crud-x table examples to vite
-- [frontend-i18n] node-polyglot
 - [backend-deployment] GKE, Kubernetes
 - [frontend-graphql] try @octokit/graphql
+
+### For future product improvement
+- [chore] use monorepo when npm 7 is released ?
+- [frontend-i18n] node-polyglot
 - [backend-testing] research auto generated REST API and Testing (keep in view dredd.io)
 - [backend-testing] research websocket testing
 - [backend-testing] change out of jest? use native assert instead of chai

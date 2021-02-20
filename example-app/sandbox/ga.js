@@ -1,14 +1,13 @@
+const { bcrypt } = require('@es-labs/node/auth')
 
 // // Generate Password
-const bcrypt = require('bcryptjs')
 // let password = bcrypt.hashSync('tech@!@#', 12)
-let password = bcrypt.hashSync('ahop8888', 12)
+let password = bcrypt.hashSync(password, 12)
 console.log(password)
-process.exit(0)
+// process.exit(0)
 // Generate GA OTP Password
-const otplib = require('otplib')
-const secret = otplib.authenticator.generateSecret() // base 32 encoded hex secret key
-console.log('secret', secret) // save for the user
+// const secret = otplib.authenticator.generateSecret() // base 32 encoded hex secret key
+// console.log('secret', secret) // save for the user
 // const xx = otplib.authenticator.check('111', '12123123123')
 // console.log('xx', xx)
 

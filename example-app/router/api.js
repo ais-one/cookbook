@@ -1,60 +1,16 @@
 const fs = require('fs')
-const path = require('path')
 const express = require('express')
 const { spawn } = require('child_process')
+const axios = require('axios')
 
+const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
+const bull = require('@es-labs/node/services/mq/bull').get() // bull message queue
+const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
+const { memoryUpload, storageUpload } = require('../common-express/upload')
 
-const agenda = require(LIB_PATH + '/services/mq/agenda').get() // agenda message queue
-const bull = require(LIB_PATH + '/services/mq/bull').get() // bull message queue
+const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 
-// const path = require('path')
-// path.extname('index.html')
-// returns '.html'
-
-// req.file / req.files[index]
-// {
-//   fieldname: 'kycfile',
-//   originalname: 'tbd.txt',
-//   encoding: '7bit',
-//   mimetype: 'text/plain',
-//   destination: 'uploads/',
-//   filename: 'kycfile-1582238409067',
-//   path: 'uploads\\kycfile-1582238409067',
-//   size: 110
-// }
-
-const { UPLOAD_FOLDER } = global.CONFIG
-const { gcpGetSignedUrl } = require(LIB_PATH + '/services/gcp')
 const { authUser } = require('../middlewares/auth')
-const multer = require('multer')
-
-const memoryUpload = multer({ 
-  limits: {
-    files : 1,
-    fileSize: 5000 // size in bytes
-  },
-  // fileFilter,
-  storage: multer.memoryStorage()
-})
-
-const upload = multer({
-  // limits: {
-  //   files : 1,
-  //   fileSize: 1000000 // size in bytes
-  // },
-  // fileFilter: (req, file, cb) => {
-  //   if (
-  //     !file.mimetype.includes("jpeg") && !file.mimetype.includes("jpg") && !file.mimetype.includes("png")
-  //   ) {
-  //     return cb(null, false, new Error("Only jpeg, png or pdf are allowed"));
-  //   }
-  //   cb(null, true);
-  // },
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) { cb(null, UPLOAD_FOLDER) },
-    filename: function (req, file, cb) { cb(null, file.fieldname + '-' + Date.now() + '-' + file.originalname) }
-  })
-})
 
 module.exports = express.Router()
   .get('/python', (req, res) => {
@@ -72,12 +28,12 @@ module.exports = express.Router()
     // child.on('close', (code) => {
     //   console.log(`child process close all stdio with code ${code}`)
     // }) 
-    
     child.unref()
     res.json({})
   })
-  .get('/restart-mongo', (req, res) => { // restart mongo that cannot initially connect
-    require(LIB_PATH + '/services/db/mongodb').open()
+
+  .get('/restart-mongo', async (req, res) => { // restart mongo that cannot initially connect
+    await require('@es-labs/node/services/db/mongodb').open()
     res.json({})
   })
 
@@ -98,6 +54,11 @@ module.exports = express.Router()
       console.log(data)
     })
     res.json({ message: 'Crash initiated check express server logs' })
+  }))
+
+  .get('/error-unhandled-promise-rejection', asyncWrapper(async (req, res, next) => { // catching error in unhandled exception
+    // Promise.reject(new Error('woops')).catch(e => next(e)) //  handled
+    Promise.reject(new Error('woops')) // unhandled
   }))
 
   /**
@@ -130,18 +91,23 @@ module.exports = express.Router()
   // body action: 'read' | 'write', filename: 'my-file.txt', bucket: 'bucket name'
   .post('/gcp-sign', asyncWrapper(gcpGetSignedUrl))
 
-  .post('/upload', upload.single('filedata'), (req,res) => { // avatar is form input name
-    console.log('file original name', req.file.originalname)
-    console.log('text data', req.body.textdata)
-    res.json({ message: 'Uploaded' })
+  .post('/upload-disk', storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), (req,res) => { // avatar is form input name // single('filedata')
+    try {
+      // console.log('files', req, req.files)
+      for (let key in req.body) {
+        const part = req.body[key]
+        console.log(key, part) // text parts
+      }
+      res.json({
+        message: 'Uploaded',
+        body: req.body
+      })
+    } catch (e) {
+      res.json({ error: e.message })
+    }
   })
-  .post('/uploads', upload.array('photos', 3), (req, res) => { // multiple
-    console.log(req.files.length)
-    res.json({ message: 'Uploaded' })
-    // req.files is array of `photos` files
-    // req.body will contain the text fields, if there were any
-  })
-  .post('/upload-memory', memoryUpload.single('memory'), (req, res) => {
+
+  .post('/upload-memory', memoryUpload(UPLOAD_MEMORY).single('memory'), (req, res) => {
     console.log(req.file.originalname, req.body)
     res.json({ message: req.file.buffer.toString() })
     // req.files is array of `photos` files

@@ -65,6 +65,7 @@ module.exports = {
       label: 'Sex',
       type: 'string',
       filter: true,
+      default: 'M',
       // OLD
       input: 'select',
       options: [
@@ -74,13 +75,12 @@ module.exports = {
       ],
       // NEW
       ui: {
-        tag: 'input',
-        // input: 'select',
-        // options: [
-        //   { key: '', text: '' },
-        //   { key: 'M', text: 'Male' },
-        //   { key: 'F', text: 'Female' }
-        // ]  
+        tag: 'select',
+        options: [
+          { key: '', text: '' },
+          { key: 'M', text: 'Male' },
+          { key: 'F', text: 'Female' }
+        ]  
       }
     },
     subjects: { // multi select
@@ -97,15 +97,18 @@ module.exports = {
       ],
       // NEW
       ui: {
-        tag: 'input',
-        // input: 'multi-select',
-        // options: [
-        //   { key: 'EL1', text: 'English' },
-        //   { key: 'EM', text: 'E Maths' },
-        //   { key: 'AM', text: 'A Maths' },
-        //   { key: 'PHY', text: 'Chemistry' },
-        //   { key: 'CHEM', text: 'Physics' }
-        // ]
+        tag: 'select',
+        attrs: {
+          multiple: true,
+          size : 3,
+        },
+        options: [
+          { key: 'EL1', text: 'English' },
+          { key: 'EM', text: 'E Maths' },
+          { key: 'AM', text: 'A Maths' },
+          { key: 'PHY', text: 'Physics' },
+          { key: 'CHEM', text: 'Chemistry' }
+        ]
       }
     },
     age: { // integer
@@ -224,7 +227,8 @@ module.exports = {
       input: 'textfield',
       // NEW
       ui: {
-        tag: 'input'
+        tag: 'input',
+        attrs: { type: 'file' } // TBD implement on API side also
       }
     },
     remarks: { // text area
@@ -234,7 +238,7 @@ module.exports = {
       input: 'textarea',
       // NEW
       ui: {
-        tag: 'textarea'
+        tag: 'textarea' // textarea
       }
     },
     updated_by: {

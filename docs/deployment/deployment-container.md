@@ -29,6 +29,12 @@ docker exec -it <container id> /bin/bash
 # Example should be Running on http://localhost:3000
 ```
 
+```bash
+# to save an image
+docker save image:tag | gzip > image-tag.tar.gz
+
+# TBD load an image from tar.gz
+```
 
 
 ## Docker Commands

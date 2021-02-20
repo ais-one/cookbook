@@ -6,15 +6,15 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x)
 [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
 
-> **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite
+> **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules, Vite, AMP
 
-Latest Version [0.4.5](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.5) - Released 2021 Jan 14 0035 +8GMT
+Latest Version [0.4.6](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.6) - Released 2021 Feb 21 0430 +8GMT
 
 # Features
 
 - Frontend Examples
-  - [Vanilla JS, ES Modules, Vue3 & bulma](https://github.com/ais-one/vue-crud-x/tree/master/example-native): No bundler, scalable VueJS Application, example codes (signed uploads, JWT refresh token, OTP), recaptcha, Github OAuth2 login, web component table and form
-  - [Vite, Vue3 & mwc, vaadin](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, [CRUD frontend](https://github.com/ais-one/vue-crud-x/tree/master/example-vite/components/CrudTable.vue) for [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js), JWT refresh token, 2FA GA OTP, SAML, Websockets
+  - [Vanilla JS, ES Modules, Vue3 & bulma](https://github.com/ais-one/vue-crud-x/tree/master/example-native): No bundler, scalable VueJS Application, example codes (signed uploads, JWT refresh token, OTP), recaptcha, Github OAuth2 login, web component table and form, [CRUD backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/router/t4t.js)
+  - [Vite, Vue3 & mwc, vaadin](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, , JWT refresh token, 2FA GA OTP, SAML, Websockets
   - [SPA, Vue2 & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-webpack): Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS
 - [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/)
   - Cors, proxy middleware, helmet, error handling, logging, OpenAPI
@@ -26,6 +26,7 @@ Latest Version [0.4.5](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.5)
   - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML
     - Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
   - Unit Test & Integration Test
+- [AMP](https://github.com/ais-one/vue-crud-x/tree/master/example-amp): AMP (Accelerated Mobile Page) application sample (Work In Progress)
 - Development & Deployment
   - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
   - [Docker setup](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/mongodb) of mongodb with replica set, mysql, saml IDP, kafka
@@ -44,20 +45,34 @@ Docker is required to test
 - hashicorp vault
 - kafka
 
-## Backend, Native (no bundler), Vite, Webpacked
-
-### Backend Setup & Run
+## Backend, Native (no bundler), Vite, Webpacked (deprecated)
 
 ```bash
 # clone repo and install backend
 git clone https://github.com/ais-one/vue-crud-x.git
 cd vue-crud-x
-npm run install
+```
 
-# install the required common-lib JS scripts
-npm run update
+### ExpressJS Backend Setup & Run - development environment
 
-# create and seed relational db on SQLite
+#### Install
+
+```bash
+# install
+cd example-app
+npm i
+npm i ../@es-labs/esm
+npm i ../@es-labs/node
+```
+
+**NOTES**
+- MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
+- The **example-app/config/secret/*.inv,js** files not present. So there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. Use the README.md to fill up
+
+#### Run migration & app
+
+```bash
+# create and seed relational db on SQLite, (delete the dev.sqlite file each time before you run this)
 npm run knex # windows
 npm run knex:unix # linux or mac
 
@@ -70,20 +85,43 @@ npm run app # windows
 npm run app:unix # linux or mac
 ```
 
-**NOTES**
-- MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
-- The **example-app/config/secret/*.inv,js** files not present. So there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. Use the README.md to fill up
-
 **Visit the following URLs**
 - http://127.0.0.1:3000/api/healthcheck - app is running normally
 - http://127.0.0.1:3000/api-docs - OpenAPI UI 
 - http://127.0.0.1:3000 - Website served by Express with functional samples and demos (click on link to view **native** app or link to view **vite production build** app)
 
+#### No bundler frontend
 
-### Nobundler
+See **native** app above
 
-See above
+#### Testing
 
+To run unit & integration test on /api/authors. E2E testing is **Work In Progress**
+
+TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in example-app/tests
+
+```bash
+npm run test # windows
+npm run test:unix # linux or mac
+```
+
+#### Long Running Processes and Cron Triggered Process
+
+Command to run long process (do take note of caveats, for production need a monitor to handle restart strategy)
+
+```bash
+npm run process-long # windows
+npm run process-long:unix # linux or mac
+```
+
+Command to simulate process triggered by cron (**NOTE:** may be better to use cron to call API than trigger a process)
+
+```bash
+npm run process-cron # windows
+npm run process-cron:unix # linux or mac
+```
+
+---
 
 ### Vite SPA Setup & Run - development environment
 
@@ -165,58 +203,28 @@ Navigate to http://127.0.0.1:3000/webpack/
 Refer to link below on how to try out...
 - https://github.com/ais-one/vue-crud-x/blob/develop/docker-devenv/saml/docker-compose.yml
 - You can test out on the **example-vite** Signin UI, clicking on SAML button to see redirect callback
-
-Codes are use in...
-- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/app.js
-- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/lib/express/saml.js
+- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/common-express/preRoute.js
 - https://github.com/ais-one/vue-crud-x/blob/develop/example-app/router/saml.js
 
-
-## Testing
-
-To run unit & integration test on /api/authors. E2E testing is **Work In Progress**
-
-TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in example-app/tests
-
-```bash
-npm run test # windows
-npm run test:unix # linux or mac
-```
-
-## Long Running Processes and Cron Triggered Process
-
-Command to run long process (do take note of caveats, for production need a monitor to handle restart strategy)
-
-```bash
-npm run process-long # windows
-npm run process-long:unix # linux or mac
-```
-
-Command to simulate process triggered by cron (**NOTE:** may be better to use cron to call API than trigger a process)
-
-```bash
-npm run process-cron # windows
-npm run process-cron:unix # linux or mac
-```
 
 ---
 
 ## Using The Common Libraries In Your Own Application
 
 1. **example-app** for backend example
-  - **example-app/lib/esm** for common ESM codes to be used by express applications
-  - **example-app/lib/<all_others>** for common CJS codes to be used by express applications
+  - **example-app/express** for common codes used in express
 
 2. **example-native** for vanillaJS frontend example
 
 3. **example-vite** for Vite Vue3 frontend example
-  - **example-vite/lib/rollup** for common codes to be used by Vite Vue 3 (should have same contents as **example-app/lib/esm**)
+  - **example-vite/lib/rollup** for common codes to be used by Vite Vue 3
 
 4. **example-webpack** for Webpack Vue2 frontend example
   - **example-webpack/lib/webpacked** for common codes to be used by Webpacked Vue 2 applications
 
-5. **common-lib/esm** for common javascript libraries using ES Modules
-
+5. **lib**
+  - **/esm** for common javascript libraries using ES Modules
+  - **/node** for common NodeJS libraries
 
 ## Environment Settings
 
@@ -247,14 +255,24 @@ If too many config properties, split it to other more and files
 vue-crud-x
 +- .circleci/ : not used
 +- .github/ : github related CICD and automations
-+- common-lib/ : common libraries
++- @es-labs/ : shared libraries
 |  +- esm/ : es modules
+|     +- package.json
+|  +- node/ : nodejs libraries
+|     +- auth/ : authentication
+|     +- comms/ : messaging
+|     +- services/ : db
+|     +- config.default.js: the base config
+|     +- config.js: the base config
+|     +- package.json
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
++- example-amp/ : AMP example (TBD)
 +- example-app/ : example backend - See example-app/README.md for Project Structure
 +- example-native/ : frontend associated to backend (Vue3 no bundle) - See example-native/README.md for Project Structure
 +- example-vite/ : frontend associated to backend - (Vue3 rollup) - See example-vite/README.md for Project Structure
 |  +- lib/esm-rollup/ : rolled up components for frontend (e.g. apollo.js)
++- example-vite-antd/ : incorporate antdesign vue for rapid dashboard prototyping
 +- example-webpack/ : frontend associated to the backend (Vue2 webpack) - See example-webpack/README.md for Project Structure
 |  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
 +- k8s/ : kubernetes YAML files (WIP)

@@ -79,9 +79,6 @@ export default {
         icon1: 'keyboard_arrow_down',
         children: [
           { to: '/demo-flex', name: 'Demo Flex', icon: '' },
-          { to: '/table-person?k=123', name: 'Person Table', icon: '' },
-          { to: '/table-country', name: 'Country Table', icon: '' },
-          { to: '/table-grade-slot', name: 'Grade Table (Slot)', icon: '' },
           { to: '/demo-map', name: 'Demo Map', icon: '' },
           { to: '/demo-chart', name: 'Demo Chart', icon: 'bar_chart' },
           { to: '/demo-web-cam', name: 'Demo Web Cam', icon: '' },
