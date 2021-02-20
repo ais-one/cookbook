@@ -39,7 +39,7 @@
     "leaflet": "^1.7.1",
     "subscriptions-transport-ws": "^0.9.18",
     "vue": "^3.0.5",
-    "vue-router": "^4.0.3",
+    "vue-router": "^4.0.4",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

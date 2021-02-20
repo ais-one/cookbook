@@ -3,6 +3,7 @@
 - [update] remove circle-ci
 - [update] rename common-lib to @es-labs, improve project structure
 - [example-native] make create, update, delete, upload API work in example-native
+- [update] create @es-labs folder for common nodejs and esm items
 - [@es-labs/esm/bwc-autocomplete.js] add disabled attribute and input-class (for styling to bulma, bootstrap, muicss) attribute
 - [@es-labs/esm/bwc-t4t-form.js] - handle select & textarea tag
 - [example-amp] add sample AMP application
@@ -10,6 +11,7 @@
 - [@es-labs/esm/bwc-table.js] - BUG FIX: filter was not working
 - [@es-labs/esm/bwc-fileupload.js] - created file input component
 - [@es-labs/esm/bwc-t4t-form.js] - integrate to form... add file input functionlity on submit... (upload to server or signedUrl)
+- [example-app] - improve multer configs
 - [inprogress]
   - [fix] - ==='object' - handle null object
   - [@es-labs/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new, pass in string or object as value?

@@ -19,7 +19,7 @@
     "@antv/g2plot": "^2.3.11",
     "ant-design-vue": "^2.0.0",
     "vue": "^3.0.5",
-    "vue-router": "^4.0.3",
+    "vue-router": "^4.0.4",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
