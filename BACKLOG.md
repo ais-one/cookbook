@@ -1,11 +1,7 @@
 ## Issues
 ### For next sprint / version
-- [@es-labs/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new, pass in string or object as value?
-- [@es-labs/esm/bwc-t4t-form.js] - add autocomplete
-- [example-app] jsonschema & openapi 3.1
 - [fix] - ==='object' - handle null object
 - [example-vite] cypress e2e testing
-- [example-native] migrate example-webpack vue-crud-x table examples to example-native
 - [chore] disable console.log in production / proper console logging
 
 ### Backlog

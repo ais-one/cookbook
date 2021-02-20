@@ -1,3 +1,11 @@
+### Version 0.4.7
+- [chore] update packages & cleanup & work on improving documentation
+- [TBD]
+  - [@es-labs/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new, pass in string or object as value?
+  - [@es-labs/esm/bwc-t4t-form.js] - add autocomplete
+  - [example-app] jsonschema & openapi 3.1
+  - [example-native] migrate example-webpack vue-crud-x table examples to example-native
+
 ### Version 0.4.6
 - [chore] update packages & cleanup & work on improving documentation
 - [update] remove circle-ci
