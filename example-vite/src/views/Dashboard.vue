@@ -7,17 +7,11 @@
       <button @click="count++">increment</button>
     </p>
     <p><button @click="(e) => testApi('healthcheck')">Test API</button> <button @click="(e) => testApi('health-auth')">Test API Auth</button></p>
-    <mwc-select label="preselected" :value="selected" @change="updateSelected">
-      <mwc-list-item value="0">Item 0</mwc-list-item>
-      <mwc-list-item value="1">Item 1</mwc-list-item>
-      <mwc-list-item value="2">Item 2</mwc-list-item>
-    </mwc-select>
     <p>Non-Reactive Data: {{ nonReactiveData }}</p>
     <p>Reactive Data: {{ reactiveData }}</p>
     <p>Vuex Store {{ storeCount }} - {{ storeUser }}</p>
     <mwc-autocomplete required label="ac-test" v-model="ac" @search="(e) => autoComplete(e, 'my-col', 'add')"></mwc-autocomplete>
     <p><button @click="doAc">see ac</button>&nbsp;<button @click="setAc">set ac</button></p>
-    <mwc-multiselect required label="ms-test" v-model="ms" :options="msOptions"></mwc-multiselect>
     <p>Axios GET {{ msg }}</p>
     <p><button @click="subPn">Sub PN</button>&nbsp;<button @click="unsubPn">Unsub PN</button>&nbsp;<button @click="testPn">Test PN</button></p>
     <ul>
@@ -62,10 +56,6 @@ export default {
     let nonReactiveData = 10
     const reactiveData = ref(20)
 
-    const selected = ref(String(2))
-
-    const updateSelected = (e) => (selected.value = e.target.value)
-
     // const plusOne = computed(() => count.value + 1)
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
     const storeUser = computed(() => store.state.user)
@@ -96,17 +86,6 @@ export default {
     // watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
     // })
 
-    const ms = ref('bb,cc')
-    const msOptions = ref(
-      JSON.stringify([
-        { key: 'aa', text: 'aa11' },
-        { key: 'bb', text: 'bb22' },
-        { key: 'cc', text: 'cc33' },
-        { key: 'dd', text: 'dd44' },
-        { key: 'ee', text: 'ee55' }
-      ])
-    )
-
     const ac = ref('aaa0') // autocomplete
     const autoComplete = debounce(async (e, col, _showForm) => {
       console.log('search', e.detail, col, _showForm)
@@ -135,9 +114,6 @@ export default {
       // console.log('useRouter', router)
       // console.log('useRoute', route)
       // console.log("template ref titleRef", titleRef.value)
-
-      // const mwcMs = document.querySelector('mwc-multiselect')
-      // mwcMs.setList([])
 
       timerId = setInterval(() => {
         console.log('timer fired', String(selected.value))
@@ -207,8 +183,6 @@ export default {
     //   selected.value = newValue;
     // });
     return {
-      ms, // multiselect
-      msOptions,
       ac, // autocomplete
       doAc,
       setAc,
@@ -217,11 +191,9 @@ export default {
       reactiveData, // ref reactive
       count, // ref
       msg,
-      selected,
       titleRef,
       storeCount, // store
       storeUser,
-      updateSelected, // method
       testApi, // test API
       subPn, // push notifications
       unsubPn,

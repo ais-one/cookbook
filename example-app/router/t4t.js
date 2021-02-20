@@ -5,7 +5,7 @@ const Model = require('@es-labs/node/services/db/objection').get()
 const knex = Model ? Model.knex() : null
 const fs = require('fs')
 
-const { validate } = require('esm')(module)('@es-labs/esm/t4t-validate') // TBD validate on server side also
+const { validateColumn } = require('esm')(module)('@es-labs/esm/t4t-validate') // TBD validateColumn on server side also
 
 const mongo = require('@es-labs/node/services/db/mongodb').get()
 const ObjectID = mongo.ObjectID
@@ -224,7 +224,7 @@ module.exports = express.Router()
     for (let key in table.cols) { // add in auto fields
       const { rules, type } = table.cols[key]
       if (rules) {
-        const invalid = validate(rules, type, key, body)
+        const invalid = validateColumn(rules, type, key, body)
         if (invalid) return res.status(400).json({ error: `Invalid ${key} - ${invalid}` })
       }
 
@@ -258,7 +258,7 @@ module.exports = express.Router()
     for (let key in table.cols) {
       const { rules, type } = table.cols[key]
       if (rules) {
-        const invalid = validate(rules, type, key, body)
+        const invalid = validateColumn(rules, type, key, body)
         if (invalid) return res.status(400).json({ error: `Invalid ${key} - ${invalid}` })
       }
 

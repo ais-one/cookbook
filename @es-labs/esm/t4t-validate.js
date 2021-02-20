@@ -1,4 +1,3 @@
-
 // type: string, date, datetime, time, integer, float
 // {
 //   rules: {
@@ -16,8 +15,7 @@
 // TBD i18n
 // for use with
 // - example-app/router/t4t.js
-// - example-vite/src/components/CrudTable.vue
-function validate (rules, type, col, record) {
+function validateColumn (rules, type, col, record) {
   let invalid = ''
   try {
     for (let rule in rules) {
@@ -38,9 +36,9 @@ function validate (rules, type, col, record) {
       if (invalid) break
     }  
   } catch (e) {
-    console.log('FE validate', col, e.toString())
+    console.log('validateColumn', col, e.toString())
   }
   return invalid
 }
 
-export { validate }
+export { validateColumn }

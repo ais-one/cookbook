@@ -1,7 +1,9 @@
 import * as http from './http.js'
-
+import { validateColumn } from './t4t-validate.js'
 let tableName = ''
 let config = null
+
+// TBD i18n
 
 function setTableName(name) {
   tableName = name
@@ -26,7 +28,7 @@ function validate(record) {
     if (config.cols[col]) {
       const { rules, type } = config.cols[col]
       if (rules) {
-        const msg = validateOne(rules, type, col, record)
+        const msg = validateColumn(rules, type, col, record)
         if (msg) {
           return { col, msg }
         }
@@ -34,32 +36,6 @@ function validate(record) {
     }
   }
   return null
-}
-
-// TBD i18n
-// for use with
-// - example-app/router/t4t.js
-// - example-vite/src/components/CrudTable.vue
-function validateOne(rules, type, col, record) {
-  let invalid = ''
-  for (const rule in rules) {
-    if (type === 'string') {
-      if (rule === 'min' && record[col].length < rules[rule]) invalid = `need at least ${rules[rule]} characters`
-      else if (rule === 'max' && record[col].length > rules[rule]) invalid = `maximum ${rules[rule]} characters`
-      else if (rule === 'regex' && !RegExp(rules[rule]).test(record[col])) invalid = `regex ${rules[rule]} failed`
-    } else if (['integer', 'decimal', 'datetime', 'date', 'time'].includes(type)) {
-      if (rule === 'min' && record[col] < rules[rule]) invalid = `cannot be less than ${rules[rule]}`
-      else if (rule === 'max' && record[col] > rules[rule]) invalid = `cannot be more than ${rules[rule]}`
-      else if (rule === 'gt' && record[rules[rule]] && !(record[col] > record[rules[rule]])) invalid = `${col} must be > ${rules[rule]}`
-      else if (rule === 'gte' && record[rules[rule]] && !(record[col] >= record[rules[rule]])) invalid = `${col} must be >= ${rules[rule]}`
-      else if (rule === 'lt' && record[rules[rule]] && !(record[col] < record[rules[rule]])) invalid = `${col} must be < ${rules[rule]}`
-      else if (rule === 'lte' && record[rules[rule]] && !(record[col] <= record[rules[rule]])) invalid = `${col} must be <= ${rules[rule]}`
-    } else {
-      // nothing here...
-    }
-    if (invalid) break
-  }
-  return invalid
 }
 
 async function getConfig() {
@@ -297,7 +273,8 @@ async function readGoogle (filename) {
   
 */
 export {
-  setTableName, getConfig, validate, find, findOne, initItem, create, update, remove, upload, download, autocomplete, processData,
+  setTableName, getConfig, validate, validateColumn,
+  find, findOne, initItem, create, update, remove, upload, download, autocomplete, processData,
   uploadGoogle, deleteGoogle, readGoogle
 }
 

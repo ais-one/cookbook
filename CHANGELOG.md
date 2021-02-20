@@ -11,12 +11,8 @@
 - [@es-labs/esm/bwc-table.js] - BUG FIX: filter was not working
 - [@es-labs/esm/bwc-fileupload.js] - created file input component
 - [@es-labs/esm/bwc-t4t-form.js] - integrate to form... add file input functionlity on submit... (upload to server or signedUrl)
-- [example-app] - improve multer configs
-- [inprogress]
-  - [fix] - ==='object' - handle null object
-  - [@es-labs/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new, pass in string or object as value?
-  - [@es-labs/esm/bwc-t4t-form.js] - add autocomplete
-  - [example-vite] remove CrudTable.vue, use bwc-table in example-native
+- [example-app] - improve multer & express preRoute, postRoute configs
+- [example-vite] removed CrudTable.vue, use bwc-table in example-native, read env file in vite.config.js
 
 ### Version 0.4.5
 - [chore] update packages & cleanup & work on improving documentation
