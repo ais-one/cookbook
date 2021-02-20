@@ -3,7 +3,7 @@
 const axios = require('axios')
 const { SALT_ROUNDS, COOKIE_HTTPONLY, COOKIE_SECURE, COOKIE_SAMESITE, COOKIE_MAXAGE, CORS_OPTIONS, JWT_EXPIRY } = global.CONFIG
 const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_CALLBACK } = global.CONFIG
-const { findUser, createToken, revokeToken, logout, refresh, login, otp } = require('lib/node/auth')
+const { findUser, createToken, revokeToken, logout, refresh, login, otp } = require('@es-labs/node/auth')
 
 const signup = async (req, res) => {
   // let encryptedPassword = bcrypt.hashSync(clearPassword, SALT_ROUNDS)

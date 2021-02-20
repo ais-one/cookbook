@@ -7,9 +7,7 @@ module.exports = express.Router()
     console.log('params', req.params)
     const { body, query, params} = req
     res.json({
-      body,
-      query,
-      params
+      body, query, params
     })
   }))
 

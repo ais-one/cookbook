@@ -1,23 +1,24 @@
 // TBD use __key instead of key
 // table for tables
 const express = require('express')
-const Model = require('lib/node/services/db/objection').get()
+const Model = require('@es-labs/node/services/db/objection').get()
 const knex = Model ? Model.knex() : null
 const fs = require('fs')
 
-const { validate } = require('esm')(module)('lib/esm/t4t-validate') // TBD validate on server side also
+const { validateColumn } = require('esm')(module)('@es-labs/esm/t4t-validate') // TBD validateColumn on server side also
 
-const mongo = require('lib/node/services/db/mongodb')
-const ObjectID = mongo.client ? require('mongodb').ObjectID : null
+const mongo = require('@es-labs/node/services/db/mongodb').get()
+const ObjectID = mongo.ObjectID
 
 // const { authUser } = require('../middlewares/auth')
+const authUser = async (req, res, next) => next()
+
 const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
-// const { gcpGetSignedUrl } = require('lib/node/services/gcp')
-const { memoryUpload, storageUpload } = require(LIB_PATH + '/express/upload')
-
-const authUser = async (req, res, next) => next()
+// const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
+const { memoryUpload, storageUpload } = require('../common-express/upload')
+const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 
 const processJson = async (req, res, next) => {
   if (req.files) { // it is formdata
@@ -214,7 +215,7 @@ module.exports = express.Router()
     return res.json(rv)
   }))
 
-  .patch('/update/:table/:id?', generateTable, storageUpload.any(), processJson, asyncWrapper(async (req, res) => {
+  .patch('/update/:table/:id?', generateTable, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), processJson, asyncWrapper(async (req, res) => {
     const { body, table } = req
     const where = formUniqueKey(table, req.query.__key)
     let count = 0
@@ -223,7 +224,7 @@ module.exports = express.Router()
     for (let key in table.cols) { // add in auto fields
       const { rules, type } = table.cols[key]
       if (rules) {
-        const invalid = validate(rules, type, key, body)
+        const invalid = validateColumn(rules, type, key, body)
         if (invalid) return res.status(400).json({ error: `Invalid ${key} - ${invalid}` })
       }
 
@@ -252,12 +253,12 @@ module.exports = express.Router()
     return res.json({count})
   }))
 
-  .post('/create/:table', generateTable, storageUpload.any(), processJson, asyncWrapper(async (req, res) => {
+  .post('/create/:table', generateTable, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), processJson, asyncWrapper(async (req, res) => {
     const { table, body } = req
     for (let key in table.cols) {
       const { rules, type } = table.cols[key]
       if (rules) {
-        const invalid = validate(rules, type, key, body)
+        const invalid = validateColumn(rules, type, key, body)
         if (invalid) return res.status(400).json({ error: `Invalid ${key} - ${invalid}` })
       }
 
@@ -314,7 +315,7 @@ module.exports = express.Router()
         // result: dbRv.result
       }
     }
-    return res.json() // TBD fix lib/esm/http.js
+    return res.json() // TBD fix @es-labs/esm/http.js
   }))
 
 /*
@@ -335,7 +336,7 @@ for {
 // code,name
 // zzz,1234
 // ddd,5678
-  .post('/upload/:table', generateTable, memoryUpload.single('csv-file'), async (req, res) => { // do not use asyncWrapper
+  .post('/upload/:table', generateTable, memoryUpload(UPLOAD_MEMORY).single('csv-file'), async (req, res) => { // do not use asyncWrapper
     const { table } = req
     const csv = req.file.buffer.toString('utf-8')
     const output = []

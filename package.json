@@ -1,35 +1,19 @@
 {
   "name": "vue-crud-x",
   "version": "0.4.6",
-  "description": "Fullstack JS Application Example",
+  "description": "Fullstack JS Application Examples",
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
   "scripts": {
-    "install-libs": "npm i && cd example-webpack && npm i && cd ../example-vite && npm i",
-    "update": "cd example-app&&npm run update",
-    "mongo": "cd example-app&&npm run mongo",
-    "mongo:unix": "cd example-app&&npm run mongo:unix",
-    "knex": "cd example-app&&npm run knex",
-    "knex:unix": "cd example-app&&npm run knex:unix",
     "spa": "cd example-webpack && npm run serve",
     "vite": "cd example-vite && npm run dev",
     "app": "cd example-app&&npm run app",
-    "app:unix": "cd example-app&&npm run app:unix",
-    "process-cron": "cd example-app&&npm run process-cron",
-    "process-cron:unix": "cd example-app&&npm run process-cron:unix",
-    "process-long": "cd example-app&&npm run process-long",
-    "process-long:unix": "cd example-app&&npm run process-long:unix",
-    "app:spa": "concurrently \"npm run app\" \"npm run spa\"",
-    "app:spa:unix": "concurrently \"npm run app:unix\" \"npm run spa\"",
-    "test": "cd example-app&&npm run test",
-    "test:unix": "cd example-app&&npm run test:unix"
+    "app:unix": "cd example-app&&npm run app:unix"
   },
   "engines": {
-    "node": "12"
+    "node": "14"
   },
   "dependencies": {},
-  "devDependencies": {
-    "concurrently": "^5.3.0"
-  },
+  "devDependencies": {},
   "private": true
 }

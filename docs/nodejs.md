@@ -1,5 +1,9 @@
 # NodeJS Notes
 
+- https://github.com/goldbergyoni/nodebestpractices
+- https://github.com/thedaviddias/Front-End-Checklist
+- https://frontendchecklist.io/
+
 ## Node Modules Singleton
 
 ### Method 1
@@ -127,3 +131,29 @@ busboy, formidable
 1. delete node_modules
 2. delete package-lock.json ???
 3. npm cache clean --force
+
+## NPM wierdness
+
+1. pre and post on package.json scipts
+
+package.json
+{
+  "scripts": {
+    "abc:xyz": "echo 1",
+    "preabc:xyz": "echo 2",
+    "postabc:xyz": "echo 3",
+    "qweabc:xyz": "echo 4"
+  }
+}
+
+What is the output for
+
+npm run abc:xyz
+
+2. editing on library file on vs-code
+
+  "dependencies": {
+    "@es-labs/esm": "file:../@es-labs/esm",
+    "@es-labs/node": "file:../@es-labs/node",
+
+If you edit the file in ../@eslabs/..., it will also be changed the installed node_modules

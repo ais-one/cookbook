@@ -1,11 +1,14 @@
 const fs = require('fs')
 const express = require('express')
 const { spawn } = require('child_process')
+const axios = require('axios')
 
-const agenda = require('lib/node/services/mq/agenda').get() // agenda message queue
-const bull = require('lib/node/services/mq/bull').get() // bull message queue
-const { gcpGetSignedUrl } = require('lib/node/services/gcp')
-const { memoryUpload, storageUpload } = require(LIB_PATH + '/express/upload')
+const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
+const bull = require('@es-labs/node/services/mq/bull').get() // bull message queue
+const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
+const { memoryUpload, storageUpload } = require('../common-express/upload')
+
+const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 
 const { authUser } = require('../middlewares/auth')
 
@@ -25,11 +28,12 @@ module.exports = express.Router()
     // child.on('close', (code) => {
     //   console.log(`child process close all stdio with code ${code}`)
     // }) 
-        child.unref()
+    child.unref()
     res.json({})
   })
-  .get('/restart-mongo', (req, res) => { // restart mongo that cannot initially connect
-    require('lib/node/services/db/mongodb').open()
+
+  .get('/restart-mongo', async (req, res) => { // restart mongo that cannot initially connect
+    await require('@es-labs/node/services/db/mongodb').open()
     res.json({})
   })
 
@@ -50,6 +54,11 @@ module.exports = express.Router()
       console.log(data)
     })
     res.json({ message: 'Crash initiated check express server logs' })
+  }))
+
+  .get('/error-unhandled-promise-rejection', asyncWrapper(async (req, res, next) => { // catching error in unhandled exception
+    // Promise.reject(new Error('woops')).catch(e => next(e)) //  handled
+    Promise.reject(new Error('woops')) // unhandled
   }))
 
   /**
@@ -82,9 +91,9 @@ module.exports = express.Router()
   // body action: 'read' | 'write', filename: 'my-file.txt', bucket: 'bucket name'
   .post('/gcp-sign', asyncWrapper(gcpGetSignedUrl))
 
-  .post('/upload-disk', storageUpload.any(), (req,res) => { // avatar is form input name // single('filedata')
+  .post('/upload-disk', storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), (req,res) => { // avatar is form input name // single('filedata')
     try {
-      console.log('files', req.files)
+      // console.log('files', req, req.files)
       for (let key in req.body) {
         const part = req.body[key]
         console.log(key, part) // text parts
@@ -98,7 +107,7 @@ module.exports = express.Router()
     }
   })
 
-  .post('/upload-memory', memoryUpload.single('memory'), (req, res) => {
+  .post('/upload-memory', memoryUpload(UPLOAD_MEMORY).single('memory'), (req, res) => {
     console.log(req.file.originalname, req.body)
     res.json({ message: req.file.buffer.toString() })
     // req.files is array of `photos` files

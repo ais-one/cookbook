@@ -1,20 +1,18 @@
 ### Version 0.4.6
 - [chore] update packages & cleanup & work on improving documentation
 - [update] remove circle-ci
-- [update] rename common-lib to lib, improve project structure
+- [update] rename common-lib to @es-labs, improve project structure
 - [example-native] make create, update, delete, upload API work in example-native
-- [lib/esm/bwc-autocomplete.js] add disabled attribute and input-class (for styling to bulma, bootstrap, muicss) attribute
-- [lib/esm/bwc-t4t-form.js] - handle select & textarea tag
+- [update] create @es-labs folder for common nodejs and esm items
+- [@es-labs/esm/bwc-autocomplete.js] add disabled attribute and input-class (for styling to bulma, bootstrap, muicss) attribute
+- [@es-labs/esm/bwc-t4t-form.js] - handle select & textarea tag
 - [example-amp] add sample AMP application
-- [lib/esm/bwc-table.js] - BREAKING CHANGE: use object instead or multiple variables for cell render(), see example-native/views/ui2.js for reference
-- [lib/esm/bwc-table.js] - BUG FIX: filter was not working
-- [lib/esm/bwc-fileupload.js] - created file input component
-- [lib/esm/bwc-t4t-form.js] - integrate to form... add file input functionlity on submit... (upload to server or signedUrl)
-- [inprogress]
-  - [fix] - ==='object' - handle null object
-  - [lib/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new, pass in string or object as value?
-  - [lib/esm/bwc-t4t-form.js] - add autocomplete
-  - [example-vite] remove CrudTable.vue, use bwc-table in example-native
+- [@es-labs/esm/bwc-table.js] - BREAKING CHANGE: use object instead or multiple variables for cell render(), see example-native/views/ui2.js for reference
+- [@es-labs/esm/bwc-table.js] - BUG FIX: filter was not working
+- [@es-labs/esm/bwc-fileupload.js] - created file input component
+- [@es-labs/esm/bwc-t4t-form.js] - integrate to form... add file input functionlity on submit... (upload to server or signedUrl)
+- [example-app] - improve multer & express preRoute, postRoute configs
+- [example-vite] removed CrudTable.vue, use bwc-table in example-native, read env file in vite.config.js
 
 ### Version 0.4.5
 - [chore] update packages & cleanup & work on improving documentation

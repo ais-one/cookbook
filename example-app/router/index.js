@@ -21,4 +21,6 @@ module.exports = function (app) {
       router.use('/pages', require('./pages')),
     )
   }
+
+  app.use('/api/**', (req, res) => res.status(404).json({error: 'Not Found'}))
 }

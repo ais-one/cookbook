@@ -11,8 +11,8 @@ import { computed } from 'vue'
 import { useStore } from 'vuex'
 
 import { provideXhr } from '/src/plugins/xhr.js'
-import * as http from '../../lib/esm/http.js' // served from express /esm static route
-import ws from '../../lib/esm/ws.js' // served from express /esm static route
+import * as http from '../../@es-labs/esm/http.js' // served from express /esm static route
+import ws from '../../@es-labs/esm/ws.js' // served from express /esm static route
 
 import { VITE_API_URL, VITE_WS_URL, VITE_WS_MS, VITE_WITH_CREDENTIALS, VITE_GQL_URI, VITE_GWS_URI } from '/config.js'
 

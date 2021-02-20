@@ -6,26 +6,15 @@ import '@material/mwc-drawer'
 import '@material/mwc-list'
 import '@material/mwc-menu'
 import '@material/mwc-textfield'
-import '@material/mwc-select'
 import '@material/mwc-button'
-import '@material/mwc-dialog'
-
-// Vaadin
-import '@vaadin/vaadin-grid'
-import '@vaadin/vaadin-grid/vaadin-grid-selection-column'
-import '@vaadin/vaadin-grid/vaadin-grid-sort-column'
 
 // pwa
 import '../firebase.config.js'
 import '../pwa-init.js'
 
 // our own web components
-import '../../lib/esm/loading-overlay.js'
-import '../../lib/esm/bwc-table.js'
-
-import '../../lib/esm/mwc-autocomplete.js'
-import '../../lib/esm/mwc-multiselect.js'
-// import '../../lib/esm/mwc-fileupload.js'
+import '../../@es-labs/esm/loading-overlay.js'
+import '../../@es-labs/esm/mwc-autocomplete.js'
 
 import { createApp } from 'vue'
 import router from './router.js'
