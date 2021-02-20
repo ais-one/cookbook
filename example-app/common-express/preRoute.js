@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(app) {
+module.exports = function(app, options) {
   // set globals here
   // caution - avoid name clashes with native JS libraries, other libraries, other globals
 
@@ -59,12 +59,17 @@ module.exports = function(app) {
     }
   )
 
-  const { STACK_TRACE_LIMIT = 1 } = global.CONFIG
+  const { STACK_TRACE_LIMIT = 1 } = options
+  const { ENABLE_LOGGER } = options
+  const  { CORS_OPTIONS, CORS_ORIGINS } = options
+  const { COOKIE_SECRET = (parseInt(Date.now() / 28800000) * 28800000).toString() } = options
+  // const { SWAGGER_DEFS } = options
+  const { SAML_ISSUER, SAML_ENTRYPOINT, SAML_CALLBACK_URL } = options
+
   Error.stackTraceLimit = STACK_TRACE_LIMIT // limit error stack trace to 1 level
   console.log('stackTraceLimit: ', STACK_TRACE_LIMIT)
 
   // ------ LOGGING ------
-  const { ENABLE_LOGGER } = global.CONFIG
   if (ENABLE_LOGGER) {
     const morgan = require('morgan')
     app.use(morgan('combined', { stream: process.stdout, skip: (req, res) => res.statusCode < 400 })) // errors
@@ -80,7 +85,6 @@ module.exports = function(app) {
   // Access-Control-Allow-Methods=GET,POST,PUT,PATCH,DELETE,OPTIONS
   // Access-Control-Allow-Headers=Content-Type
   const cors = require('cors')
-  const  { CORS_OPTIONS, CORS_ORIGINS } = global.CONFIG
   let corsOptions = CORS_OPTIONS
 
   if (CORS_OPTIONS) {
@@ -114,12 +118,10 @@ module.exports = function(app) {
   app.use(bodyParser.urlencoded({ extended: true }))
 
   const cookieParser = require('cookie-parser')
-  const { COOKIE_SECRET = (parseInt(Date.now() / 28800000) * 28800000).toString() } = global.CONFIG
   app.use(cookieParser(COOKIE_SECRET))
 
   // ------ SWAGGER ------
   // use express-oas-generator instead?
-  // const { SWAGGER_DEFS } = global.CONFIG
   // if (SWAGGER_DEFS) {
   //   const swaggerUi = require('swagger-ui-express')
   //   const swaggerJSDoc = require('swagger-jsdoc')
@@ -133,7 +135,6 @@ module.exports = function(app) {
   // working SAML ADFS example
   // https://github.com/bergie/passport-saml/blob/master/docs/adfs/README.md
   // const fs = require('fs')
-  const { SAML_ISSUER, SAML_ENTRYPOINT, SAML_CALLBACK_URL } = global.CONFIG
   if (SAML_ISSUER) {
     const passport = require('passport')
     const SamlStrategy = require('passport-saml').Strategy
@@ -172,5 +173,6 @@ module.exports = function(app) {
       }
     ))  
   }
+
   return this // this is undefined...
 }

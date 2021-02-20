@@ -10,7 +10,7 @@ const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createS
 
 // const expressOasGenerator = require('express-oas-generator')
 // expressOasGenerator.handleResponses(app, {})
-require('./common-express/preRoute')(app)
+require('./common-express/preRoute')(app, global.CONFIG)
 
 // START SERVICES
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
@@ -64,6 +64,6 @@ try {
 // https://github.com/mpashkovskiy/express-oas-generator/issues/24#issuecomment-764469904
 // expressOasGenerator.handleRequests()
 
-require('./common-express/postRoute')(app, express)
+require('./common-express/postRoute')(app, express, global.CONFIG)
 
 module.exports = { server }

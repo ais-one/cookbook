@@ -18,6 +18,7 @@ const { Parser } = require('json2csv')
 
 // const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
 const { memoryUpload, storageUpload } = require('../common-express/upload')
+const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 
 const processJson = async (req, res, next) => {
   if (req.files) { // it is formdata
@@ -214,7 +215,7 @@ module.exports = express.Router()
     return res.json(rv)
   }))
 
-  .patch('/update/:table/:id?', generateTable, storageUpload.any(), processJson, asyncWrapper(async (req, res) => {
+  .patch('/update/:table/:id?', generateTable, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), processJson, asyncWrapper(async (req, res) => {
     const { body, table } = req
     const where = formUniqueKey(table, req.query.__key)
     let count = 0
@@ -252,7 +253,7 @@ module.exports = express.Router()
     return res.json({count})
   }))
 
-  .post('/create/:table', generateTable, storageUpload.any(), processJson, asyncWrapper(async (req, res) => {
+  .post('/create/:table', generateTable, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), processJson, asyncWrapper(async (req, res) => {
     const { table, body } = req
     for (let key in table.cols) {
       const { rules, type } = table.cols[key]
@@ -335,7 +336,7 @@ for {
 // code,name
 // zzz,1234
 // ddd,5678
-  .post('/upload/:table', generateTable, memoryUpload.single('csv-file'), async (req, res) => { // do not use asyncWrapper
+  .post('/upload/:table', generateTable, memoryUpload(UPLOAD_MEMORY).single('csv-file'), async (req, res) => { // do not use asyncWrapper
     const { table } = req
     const csv = req.file.buffer.toString('utf-8')
     const output = []

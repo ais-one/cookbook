@@ -1,6 +1,7 @@
 const express = require('express')
 const { authUser } = require('../middlewares/auth')
 const { storageUpload } = require('../common-express/upload')
+const { UPLOAD_STATIC } = global.CONFIG
 
 const authorController = require('../controllers/author') // use controller
 
@@ -54,7 +55,7 @@ module.exports = express.Router()
    *            $ref: '#/definitions/AuthorObject'
 
    */
-  .patch('/:id', authUser, storageUpload.single('filex'), authorController.update)
+  .patch('/:id', authUser, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).single('filex'), authorController.update)
   /**
    * @swagger
    * /api/authors/{id}:

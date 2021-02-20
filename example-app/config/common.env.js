@@ -13,10 +13,30 @@ module.exports = {
     { folder: '../example-webpack/dist', url: '/webpack', options: { extensions: ['html'], index: false } },
     { folder: 'public/demo-express', url: '/' }
   ],
-  UPLOAD_STATIC: [
-    { folder: APP_PATH + '/uploads', url: '/uploads' },
-    { folder: '', url: '' }
-  ],
+
+  // for file uploads
+  UPLOAD_STATIC: {
+    folder: APP_PATH + '/uploads',
+    url: '/uploads',
+    options: {
+      fileFilter: (req, file, cb) => { // better to also filter at frontend
+        // console.log('fileFilter', file)
+        if ( ['text', 'image'].find(item => file.mimetype.includes(item)) ) cb(null, true) // accept image or text
+        return cb(null, false, new Error("Only text/plain are allowed"))
+      },
+      limits: {
+        files: 1,
+        fileSize: 10000 // size in bytes
+      },
+    }
+  },
+  UPLOAD_MEMORY: {
+    limits: {
+      files : 1,
+      fileSize: 500000 // size in bytes
+    },
+    // fileFilter,
+  },
 
   // in secret
   // JWT_CERTS: null, // { key: '', cert: '' },

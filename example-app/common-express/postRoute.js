@@ -1,7 +1,7 @@
 'use strict'
 
-module.exports = function (app, express) {
-  const  { UPLOAD_STATIC, PROXY_WWW_ORIGIN, WEB_STATIC } = global.CONFIG
+module.exports = function (app, express, options) {
+  const  { UPLOAD_STATIC, PROXY_WWW_ORIGIN, WEB_STATIC } = options
 
   // app.set('case sensitive routing', true)
   const hasWebStatic = WEB_STATIC && WEB_STATIC.length
@@ -25,11 +25,10 @@ module.exports = function (app, express) {
     app.use("*", (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
   }
   // Upload URL, Should use Signed URL and get from cloud storage instead
-  if (UPLOAD_STATIC && UPLOAD_STATIC.length) {
-    UPLOAD_STATIC.forEach(item => {
-      if (item.url && item.folder) app.use(item.url, express.static(item.folder))
-      else console.log('blank upload details', item)
-    })
+  if (UPLOAD_STATIC) {
+    const { url, folder } = UPLOAD_STATIC
+    if (url && folder) app.use(url, express.static(folder))
+    else console.log('blank upload details', UPLOAD_STATIC)
   }
 
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
