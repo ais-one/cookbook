@@ -13,7 +13,7 @@ const template = /*html*/`
   <div class="field">
     <div class="control">
       <label for="" class="label">bwc-autocomplete2 - multiple</label>
-      <bwc-autocomplete2 :tt="{ aa: 1, bb: 'c' }" multiple input-class="input" listid="multiple-ac" required :items="ac.items" v-model="ac.multipleValue" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete2>
+      <bwc-autocomplete2 ref="mul" :tags="mc.tags" multiple input-class="input" listid="multiple-ac" required :items="ac.items" v-model="ac.multipleValue" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete2>
     </div>
   </div>
   <div class="field">
@@ -69,11 +69,15 @@ const template = /*html*/`
 </div>
 `
 
-const { onMounted, reactive } = Vue
+const { onMounted, reactive, ref } = Vue
 
 export default {
   template,
   setup() {
+    const mul = ref(null)
+    const mc = reactive({
+      tags: []
+    })
     const ac = reactive({
       value: 'aa1',
       items: [], // ['aa9','aa5']
@@ -181,10 +185,16 @@ export default {
 
     onMounted(async () => {
       console.log('ui1 mounted!')
+      console.log('mul', mul)
+      mc.tags = ['aa1', 'aa2']
+      // mul.value.test()
       document.querySelector('#xxx').addItems( [{value: 1, text: "Queue One"}, {value: 2, text: "Queue Two"}, {value: 3, text: "Queue Three"}] )
     })
 
     return {
+      mul,
+      mc,
+
       ac,
       autoComplete,
       selected,

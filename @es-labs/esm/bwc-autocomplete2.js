@@ -3,7 +3,7 @@ Autocomplete component using input and datalist.
 Only able to handle single selection due to nature of datalist not able to have click event
 
 V2 Improvements
-- multiple selects
+- multiple selects (repeat, or allow same items to be selected)
 - act as fixed select...?
 - strict or relaxed input (all adding own tags)
 
@@ -14,6 +14,7 @@ attributes:
 - listid (needed if using more than 2 components on the same page)
 - input-class (style the input)
 - multiple (v2)
+- repeat (v2) for multiple selects allow same time to be selected many times
 - allow-custom-tag (v2) - accept user defined tags
 
 properties:
@@ -73,9 +74,10 @@ class BwcAutocomplete extends HTMLElement {
   #elList = null // datalist element
 
   #multiple = false // hold readonly attributes
-  #strict = false
+  #repeat = false // for multiselect, tag can be added multiple times
+  #strict = false // can add new items
 
-  #tt = null // to be new value property
+  #tags = null // to be new value property
 
   constructor() {
     super()
@@ -83,20 +85,28 @@ class BwcAutocomplete extends HTMLElement {
   }
 
   addTag(item) {
+    if (!this.#repeat) {
+      // TBD check for duplicates, return if there is any... return
+    }
     const _item = typeof item === 'string' ? { key: item, text: item } : item
     const span = document.createElement('span')
     span.className = 'tag is-black'
     span.innerText = _item.text
     span.value = _item.key
-    span.onclick = (e) => {
+    span.onclick = (e) => { // e.target.innerText, e.target.value
       this.removeTag(span)
-      // console.log('tag clicked', e.target.innerText, e.target.value)
+      this.updateTags()
     }
     this.#elTags.appendChild(span)
+    this.updateTags()
+  }
+
+  updateTags() {
+    let tags = [...this.#elTags.children]
+    this.#tags = tags.map(tag => ({ key: tag.value, text: tag.innerText }))
   }
 
   removeTag(span) {
-    console.log('removeTag', span)
     this.#elTags.removeChild(span)
   }
 
@@ -115,35 +125,50 @@ class BwcAutocomplete extends HTMLElement {
 
     this.#strict = this.hasAttribute('allow-custom-tag')
     this.#multiple = this.hasAttribute('multiple')
+    this.#repeat = this.hasAttribute('repeat')
 
     if (this.#multiple) { // TBD if multiple... create tags here
       this.#elTags = document.createElement('div')
       this.#elTags.className = 'field'
       this.prepend(this.#elTags)
-
-      // sample tag
-      this.addTag('Hello')
     }
 
     // TBD if multiple, show tags, else show in input box
 
     this.#elInput.onblur = (e) => {
+      console.log('onblur', e)
       const found = this.items.find(item => {
         return typeof item === 'string' ? item === this.value : item.key === this.value || item.text === this.value
       })
+      // single
+      // if (!found) { // not found
+      //   if (this.selectedItem) {
+      //     // console.log('not found but is selected')
+      //     this.selectedItem = null
+      //     this.dispatchEvent(new CustomEvent('selected', { detail: this.selectedItem }))
+      //   }
+      //   console.log('onblur not found')
+      // } else {
+      //   if (!this.selectedItem) {
+      //     // console.log('found but not selected')
+      //     this.selectedItem = found
+      //     this.dispatchEvent(new CustomEvent('selected', { detail: this.selectedItem }))
+      //   }
+      // }
+      // multiple
       if (!found) { // not found
-        if (this.selectedItem) {
-          // console.log('not found but is selected')
-          this.selectedItem = null
-          this.dispatchEvent(new CustomEvent('selected', { detail: this.selectedItem }))
+        if (!this.#strict) { // can add new
+          this.addTag({
+            key: this.value,
+            text: this.value
+          })
         }
-        console.log('onblur not found')
+        this.value = ''
       } else {
-        if (!this.selectedItem) {
-          // console.log('found but not selected')
-          this.selectedItem = found
-          this.dispatchEvent(new CustomEvent('selected', { detail: this.selectedItem }))
-        }
+        // if repeatable?
+        // set tags list if not there already
+        this.addTag(found)
+        this.value = ''
       }
     }
 
@@ -231,13 +256,12 @@ class BwcAutocomplete extends HTMLElement {
     this.setList(val)
   }
 
-  get tt() {
-    console.log('get tt', this.#tt)
-    return this.#tt
+  get tags() {
+    return this.#tags
   }
-  set tt(val) {
-    console.log('set tt', val)
-    this.#tt = val
+  set tags(val) {
+    this.#tags = val
+    this.setTags(val)
   }
 
   inputFn(e) { // whether clicked or typed
@@ -260,7 +284,11 @@ class BwcAutocomplete extends HTMLElement {
     }
   }
 
-  setList(_items) {
+  setTags(_tags) {
+    _tags.forEach(tag => this.addTag(tag))
+  }
+
+  setList(_items) { // set list items
     // console.log('items', _items, this.value)
     const dd = this.#elList
     if (!dd) return
@@ -273,7 +301,7 @@ class BwcAutocomplete extends HTMLElement {
       const li = document.createElement('option')
       li.innerHTML = typeof item === 'string' ? item : item.key
       li.value = typeof item === 'string' ? item : item.text
-      li.onmousedown = (e) => console.log('clickeeeeee')
+      // li.onmousedown // useless with datalist & listid...
       dd.appendChild(li)
     })
   }
