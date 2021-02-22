@@ -1,7 +1,8 @@
 ### Version 0.4.7
 - [chore] update packages & cleanup & work on improving documentation
+- [@es-labs/esm/bwc-autocomplete.js] - new component: multi-select tags, autocomplete, optional to create new, use string or object
 - [TBD]
-  - [@es-labs/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new, pass in string or object as value?
+  - [@es-labs/esm/bwc-autocomplete.js] - enhancement: clear text button, replace datalist (so can check multiple times on dropdown instead of closing after each check)
   - [@es-labs/esm/bwc-t4t-form.js] - add autocomplete
   - [example-app] jsonschema & openapi 3.1
   - [example-native] migrate example-webpack vue-crud-x table examples to example-native

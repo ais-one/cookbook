@@ -33,7 +33,7 @@ const template = /*html*/`
 
   <div class="field">
   <div class="control">
-    <label for="" class="label">bwc-autocomplete2 - Search State</label>
+    <label for="" class="label">bwc-autocomplete2 - Search State (dependent on country)</label>
     <bwc-autocomplete2 multiple object-key="key" object-text="text" listid="state2" required :items="state.items" :tags="state.tags" @search="(e) => stateSearch(e)" @selected="stateSelected"></bwc-autocomplete2>
   </div>
 </div>

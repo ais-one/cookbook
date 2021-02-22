@@ -7,7 +7,7 @@ V2 Improvements
 - act as fixed select...?
 
 attributes:
-- value (via v-model)
+- value (via v-model), at the text input
 - required
 - disabled
 - listid (needed if using more than 2 components on the same page)
@@ -38,10 +38,7 @@ Usage with (VueJS):
 <bwc-autocomplete2 required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected=></bwc-autocomplete2>
 
 // string version
-const ac = reactive({
-  value: 'a',
-  items: ['aa9','aa5']
-})
+const ac = reactive({ value: 'a', items: ['aa9','aa5'] })
 
 const autoComplete = (e) => {
   const list = ['aa1', 'aa15', 'aa16', 'aa17', 'aa18', 'aa19', 'aa20', 'aa21', 'aa22', 'aa23']
@@ -54,12 +51,14 @@ const autoComplete = (e) => {
 
 // object version
 [
-  {
-    key: 'unique',
-    text: 'longer description'
-  }
+  { key: 'unique', text: 'longer description' }
 ]
+
 */
+// TBD Initially if no data for the list, please fetch some
+// TBD allow configurable classnames for tag and tag wrapper
+// TBD single select clear value if not found and custom tags not allowed
+// TBD use ul/li instead of datalist (big change)
 
 const template = document.createElement('template')
 template.innerHTML = /*html*/`
@@ -140,7 +139,7 @@ class BwcAutocomplete extends HTMLElement {
     if (this.hasAttribute('object-text')) this.#text = this.getAttribute('object-text')
     if (this.#multiple) { // if multiple... use tags
       this.#elTags = document.createElement('div')
-      this.#elTags.className = 'field'
+      this.#elTags.className = 'tags'
       this.prepend(this.#elTags)
     }
 

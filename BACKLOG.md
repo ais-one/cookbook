@@ -8,6 +8,8 @@
 - [example-webpack] what to do with apollo graphql client???
 - [backend-deployment] GKE, Kubernetes
 - [frontend-graphql] try @octokit/graphql
+- [frontend] aria
+- [frontend] AMP
 
 ### For future product improvement
 - [chore] use monorepo when npm 7 is released ?
