@@ -1,4 +1,5 @@
 // FRONTEND ONLY
+// TBD make this such that can use default instance or create new instance
 let token = ''
 let refreshToken = ''
 

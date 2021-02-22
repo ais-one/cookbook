@@ -14,7 +14,6 @@ import '../pwa-init.js'
 
 // our own web components
 import '../../@es-labs/esm/loading-overlay.js'
-import '../../@es-labs/esm/mwc-autocomplete.js'
 
 import { createApp } from 'vue'
 import router from './router.js'

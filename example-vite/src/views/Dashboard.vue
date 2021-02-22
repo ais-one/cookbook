@@ -10,8 +10,6 @@
     <p>Non-Reactive Data: {{ nonReactiveData }}</p>
     <p>Reactive Data: {{ reactiveData }}</p>
     <p>Vuex Store {{ storeCount }} - {{ storeUser }}</p>
-    <mwc-autocomplete required label="ac-test" v-model="ac" @search="(e) => autoComplete(e, 'my-col', 'add')"></mwc-autocomplete>
-    <p><button @click="doAc">see ac</button>&nbsp;<button @click="setAc">set ac</button></p>
     <p>Axios GET {{ msg }}</p>
     <p><button @click="subPn">Sub PN</button>&nbsp;<button @click="unsubPn">Unsub PN</button>&nbsp;<button @click="testPn">Test PN</button></p>
     <ul>
@@ -85,25 +83,6 @@ export default {
 
     // watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
     // })
-
-    const ac = ref('aaa0') // autocomplete
-    const autoComplete = debounce(async (e, col, _showForm) => {
-      console.log('search', e.detail, col, _showForm)
-      const result = []
-      for (let i = 0; i < e.detail.length; i++) {
-        result.push('aaa' + i)
-      }
-      const mwcAc = document.querySelector('mwc-autocomplete')
-      mwcAc.setList(result)
-    }, 500)
-    const setAc = () => {
-      const mwcAc = document.querySelector('mwc-autocomplete')
-      mwcAc.value = 'edcba'
-      mwcAc.hello()
-    }
-    const doAc = () => {
-      console.log('ac', ac.value)
-    }
 
     let timerId
     onMounted(async () => {
@@ -183,10 +162,6 @@ export default {
     //   selected.value = newValue;
     // });
     return {
-      ac, // autocomplete
-      doAc,
-      setAc,
-      autoComplete,
       nonReactiveData, // non reactive
       reactiveData, // ref reactive
       count, // ref

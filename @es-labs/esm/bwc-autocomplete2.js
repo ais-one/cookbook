@@ -5,7 +5,6 @@ Only able to handle single selection due to nature of datalist not able to have 
 V2 Improvements
 - multiple selects (repeat, or allow same items to be selected)
 - act as fixed select...?
-- strict or relaxed input (all adding own tags)
 
 attributes:
 - value (via v-model)
@@ -16,12 +15,16 @@ attributes:
 - multiple (v2)
 - repeat (v2) for multiple selects allow same time to be selected many times
 - allow-custom-tag (v2) - accept user defined tags
+- object-key
+- object-text
 
 properties:
-- items Array or String or Object
+- items [string] or [{ key, text }]
+- tags [string] or [{ key, text }]
 
 methods:
 - setList(items) // should be private, called when items property changes
+- setTags(tags) // should be private, called with tags property changes
 
 events emitted:
 - @input (via v-model) - e.target.value
@@ -66,8 +69,11 @@ template.innerHTML = /*html*/`
 
 class BwcAutocomplete extends HTMLElement {
   // local properties
-  #items = [] // private
-  selectedItem = null // public
+  #items = [] // list of items
+  #tags = [] // multiple selected
+  #selectedItem = null // single selected
+  #key = '' // must have both, other wise string is assumed?
+  #text = ''
 
   #elTags = null // div.tags element
   #elInput = null // input element
@@ -75,24 +81,26 @@ class BwcAutocomplete extends HTMLElement {
 
   #multiple = false // hold readonly attributes
   #repeat = false // for multiselect, tag can be added multiple times
-  #strict = false // can add new items
-
-  #tags = null // to be new value property
+  #allowCustomTag = false // can add new items
 
   constructor() {
     super()
     this.inputFn = this.inputFn.bind(this)
   }
 
+  isStringType() { // is list item and selected values string ?
+    // console.log('isStringType', !(this.#key && this.#text))
+    return !(this.#key && this.#text)
+  }
+
   addTag(item) {
-    if (!this.#repeat) {
-      // TBD check for duplicates, return if there is any... return
-    }
-    const _item = typeof item === 'string' ? { key: item, text: item } : item
+    const itemExists = this.#tags.find(tag => this.isStringType() ? tag === item : (tag[this.#key] === item[this.#key] && tag[this.#text] === item[this.#text]))
+    if (!this.#repeat && itemExists) return // duplicates not allowed
+
     const span = document.createElement('span')
     span.className = 'tag is-black'
-    span.innerText = _item.text
-    span.value = _item.key
+    span.innerText = this.isStringType() ? item : item[this.#text]
+    span.value = this.isStringType() ? item : item[this.#key]
     span.onclick = (e) => { // e.target.innerText, e.target.value
       this.removeTag(span)
       this.updateTags()
@@ -103,7 +111,8 @@ class BwcAutocomplete extends HTMLElement {
 
   updateTags() {
     let tags = [...this.#elTags.children]
-    this.#tags = tags.map(tag => ({ key: tag.value, text: tag.innerText }))
+    this.#tags = tags.map(tag => this.isStringType() ? tag.innerText : ({ [this.#key]: tag.value, [this.#text]: tag.innerText }))
+    this.dispatchEvent(new CustomEvent('selected', { detail: this.#tags }))
   }
 
   removeTag(span) {
@@ -123,52 +132,50 @@ class BwcAutocomplete extends HTMLElement {
     this.#elInput.addEventListener('input', this.inputFn)
     // if (this.hasAttribute('input-class')) el.setAttribute('class', this.getAttribute('input-class'))
 
-    this.#strict = this.hasAttribute('allow-custom-tag')
+    this.#allowCustomTag = this.hasAttribute('allow-custom-tag')
     this.#multiple = this.hasAttribute('multiple')
     this.#repeat = this.hasAttribute('repeat')
 
-    if (this.#multiple) { // TBD if multiple... create tags here
+    if (this.hasAttribute('object-key')) this.#key = this.getAttribute('object-key')
+    if (this.hasAttribute('object-text')) this.#text = this.getAttribute('object-text')
+    if (this.#multiple) { // if multiple... use tags
       this.#elTags = document.createElement('div')
       this.#elTags.className = 'field'
       this.prepend(this.#elTags)
     }
 
-    // TBD if multiple, show tags, else show in input box
-
     this.#elInput.onblur = (e) => {
-      console.log('onblur', e)
-      const found = this.items.find(item => {
-        return typeof item === 'string' ? item === this.value : item.key === this.value || item.text === this.value
-      })
-      // single
-      // if (!found) { // not found
-      //   if (this.selectedItem) {
-      //     // console.log('not found but is selected')
-      //     this.selectedItem = null
-      //     this.dispatchEvent(new CustomEvent('selected', { detail: this.selectedItem }))
-      //   }
-      //   console.log('onblur not found')
-      // } else {
-      //   if (!this.selectedItem) {
-      //     // console.log('found but not selected')
-      //     this.selectedItem = found
-      //     this.dispatchEvent(new CustomEvent('selected', { detail: this.selectedItem }))
-      //   }
-      // }
-      // multiple
-      if (!found) { // not found
-        if (!this.#strict) { // can add new
-          this.addTag({
-            key: this.value,
-            text: this.value
-          })
+      // console.log('onblur', e)
+      const found = this.items.find(item => this.isStringType() ? item === this.value : item[this.#key] === this.value || item[this.#text] === this.value)
+      if (this.#multiple) {
+        // multiple
+        if (!found) { // not found
+          if (this.#allowCustomTag) { // can add new
+            // TBD if all spaces only... return
+            this.addTag(this.isStringType() ? this.value : { [this.#key]: this.value, [this.#text]: this.value })
+          }
+          this.value = ''
+        } else {
+          // if repeatable?
+          // set tags list if not there already
+          this.addTag(found)
+          this.value = ''
         }
-        this.value = ''
       } else {
-        // if repeatable?
-        // set tags list if not there already
-        this.addTag(found)
-        this.value = ''
+        // single
+        if (!found) { // not found
+          if (this.#selectedItem) {
+            // console.log('not found but is selected')
+            this.#selectedItem = null
+            this.dispatchEvent(new CustomEvent('selected', { detail: this.#selectedItem }))
+          }
+        } else {
+          if (!this.#selectedItem) {
+            // console.log('found but not selected')
+            this.#selectedItem = found
+            this.dispatchEvent(new CustomEvent('selected', { detail: this.#selectedItem }))
+          }
+        }
       }
     }
 
@@ -260,27 +267,28 @@ class BwcAutocomplete extends HTMLElement {
     return this.#tags
   }
   set tags(val) {
-    this.#tags = val
-    this.setTags(val)
+    // console.log('set tags', val)
+    this.#elTags.innerHTML = ''
+    this.setTags(val) // this.#tags will be set in setTags()
   }
 
   inputFn(e) { // whether clicked or typed
     // console.log('inputFn', e.target.value, this.items.length)
-    const prevItem = this.selectedItem
+    const prevItem = this.#selectedItem
     this.value = this.#elInput.value
 
     const found = this.items.find(item => {
       return typeof item === 'string' ? item === this.value : item.key === this.value || item.text === this.value
     })
     if (!found) { // not found
-      this.selectedItem = null
+      this.#selectedItem = null
       this.dispatchEvent(new CustomEvent('search', { detail: this.value }))
     } else {
-      this.selectedItem = found
+      this.#selectedItem = found
     }
-    // console.log('emit selected?', prevItem !== this.selectedItem, this.selectedItem)
-    if (prevItem !== this.selectedItem) {
-      this.dispatchEvent(new CustomEvent('selected', { detail: this.selectedItem }))
+    // console.log('emit selected?', prevItem !== this.#selectedItem, this.#selectedItem)
+    if (prevItem !== this.#selectedItem) {
+      this.dispatchEvent(new CustomEvent('selected', { detail: this.#selectedItem }))
     }
   }
 
@@ -299,8 +307,8 @@ class BwcAutocomplete extends HTMLElement {
 
     _items.forEach((item) => {
       const li = document.createElement('option')
-      li.innerHTML = typeof item === 'string' ? item : item.key
-      li.value = typeof item === 'string' ? item : item.text
+      li.innerHTML = typeof item === 'string' ? item : item[this.#key]
+      li.value = typeof item === 'string' ? item : item[this.#text]
       // li.onmousedown // useless with datalist & listid...
       dd.appendChild(li)
     })

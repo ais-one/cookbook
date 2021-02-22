@@ -3,17 +3,11 @@ const template = /*html*/`
   <h1>UI 1</h1>
   <p>Testing BWC UI </p>
 
-  <h3>Multi Select</h3>
-  <bwc-multiselect id="xxx" placeholder="Select Queue">
-    <!-- li value="1">Queue One</li>
-    <li value="2">Queue Two</li -->
-  </bwc-multiselect>
-
   <h3>single autocomplete && string search example</h3>
   <div class="field">
     <div class="control">
       <label for="" class="label">bwc-autocomplete2 - multiple</label>
-      <bwc-autocomplete2 ref="mul" :tags="mc.tags" multiple input-class="input" listid="multiple-ac" required :items="ac.items" v-model="ac.multipleValue" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete2>
+      <bwc-autocomplete2 ref="mcRef" :tags="mc.tags" multiple input-class="input" listid="multiple-ac" required :items="ac.items" v-model="ac.multipleValue" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete2>
     </div>
   </div>
   <div class="field">
@@ -30,10 +24,25 @@ const template = /*html*/`
     </div>
   </div>
 
+  <div class="field">
+    <div class="control">
+      <label for="" class="label">bwc-autocomplete2 - Search Country</label>
+      <bwc-autocomplete2 object-key="key" object-text="text" listid="country2" required :items="country.items" v-model="country.value" @search="(e) => countrySearch(e)" @selected="countrySelected"></bwc-autocomplete2>
+    </div>
+  </div>
+
+  <div class="field">
+  <div class="control">
+    <label for="" class="label">bwc-autocomplete2 - Search State</label>
+    <bwc-autocomplete2 multiple object-key="key" object-text="text" listid="state2" required :items="state.items" :tags="state.tags" @search="(e) => stateSearch(e)" @selected="stateSelected"></bwc-autocomplete2>
+  </div>
+</div>
+
   <hr/>
 
   <h3>dependent autocomplete & object search example</h3>
 
+  <!-- TOREMOVE
   <div class="field">
     <div class="control">
       <label for="" class="label">Search Country</label>
@@ -47,6 +56,7 @@ const template = /*html*/`
       <bwc-autocomplete listid="state" required :items="state.items" v-model="state.value" @search="(e) => stateSearch(e)" @selected="stateSelected"></bwc-autocomplete>
     </div>
   </div>
+  -->
 
   <hr/>
 
@@ -74,7 +84,7 @@ const { onMounted, reactive, ref } = Vue
 export default {
   template,
   setup() {
-    const mul = ref(null)
+    const mcRef = ref(null)
     const mc = reactive({
       tags: []
     })
@@ -92,6 +102,7 @@ export default {
     })
     const state = reactive({
       value: '',
+      tags: [],
       items: []
     })
 
@@ -153,6 +164,7 @@ export default {
       // reset state
       state.value = ''
       state.items = []
+      state.tags = []
 
       countryStateList.length = 0
       for (let i = 0; i < stateList.length; i++) {
@@ -182,17 +194,14 @@ export default {
       console.log('state selected event', e.detail, state.value)
     }
 
-
     onMounted(async () => {
       console.log('ui1 mounted!')
-      console.log('mul', mul)
-      mc.tags = ['aa1', 'aa2']
-      // mul.value.test()
-      document.querySelector('#xxx').addItems( [{value: 1, text: "Queue One"}, {value: 2, text: "Queue Two"}, {value: 3, text: "Queue Three"}] )
+      console.log('mcRef', mcRef)
+      mc.tags = ['aa1', 'aa2', 'aa1']
     })
 
     return {
-      mul,
+      mcRef, // multiSelect
       mc,
 
       ac,

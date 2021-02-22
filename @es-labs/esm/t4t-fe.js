@@ -213,10 +213,6 @@ async function autocomplete (search, col, record) { // wrap in debounce
   }
   return res
 }
-// const mwcAc = document.querySelector('mwc-autocomplete.' + col) // el.setList()
-// mwcAc.setList(res)
-// }, 500)
-
 
 const gcpHeaders = {
   'Accept': 'application/json',

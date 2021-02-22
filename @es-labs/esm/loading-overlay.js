@@ -43,22 +43,16 @@ class LoadingOverlay extends HTMLElement {
   static get observedAttributes() {
     return ['show']
   }
-
-  // getter and setter for property - show
   get show() {
     return this.hasAttribute('show')
   }
-
   set show(value) {
     value ? this.setAttribute('show', '') : this.removeAttribute('show')
   }
 
   connectedCallback() {}
-
   attributeChangedCallback(name, oldVal, newVal) {}
-
   adoptedCallback() {}
-
   disconnectedCallback() {}
 }
 
