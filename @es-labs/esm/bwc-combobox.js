@@ -110,6 +110,7 @@ class BwcCombobox extends HTMLElement {
   updateTags() {
     let tags = [...this.#elTags.children]
     this.#tags = tags.map(tag => this.isStringType() ? tag.innerText : ({ [this.#key]: tag.value, [this.#text]: tag.innerText }))
+    console.log('updateTags - selected')
     this.dispatchEvent(new CustomEvent('selected', { detail: this.#tags }))
   }
 
@@ -168,12 +169,14 @@ class BwcCombobox extends HTMLElement {
         // single
         if (!found) { // not found
           if (this.#selectedItem) {
+            console.log('onBlur - selected')
             // console.log('not found but is selected')
             this.#selectedItem = null
             this.dispatchEvent(new CustomEvent('selected', { detail: this.#selectedItem }))
           }
         } else {
           if (!this.#selectedItem) {
+            console.log('onBlur - selected')
             // console.log('found but not selected')
             this.#selectedItem = found
             this.dispatchEvent(new CustomEvent('selected', { detail: this.#selectedItem }))
@@ -292,6 +295,7 @@ class BwcCombobox extends HTMLElement {
     }
     // console.log('emit selected?', prevItem !== this.#selectedItem, this.#selectedItem)
     if (prevItem !== this.#selectedItem) {
+      console.log('onInput - selected')
       this.dispatchEvent(new CustomEvent('selected', { detail: this.#selectedItem }))
     }
   }
@@ -309,11 +313,24 @@ class BwcCombobox extends HTMLElement {
     }
     if (typeof _items !== 'object') return
 
+    // EVENT TEST START
+    // dd.style.pointerEvents = 'all'
+    // dd.style.cursor = 'pointer'
+    // dd.onclick = (e) => console.log('whwhwhwh22a')
+    // dd.onmousedown = (e) => console.log('whwhwhwh22b')
+    // EVENT TEST END
     _items.forEach((item) => {
       const li = document.createElement('option')
       li.innerHTML = typeof item === 'string' ? item : item[this.#key]
       li.value = typeof item === 'string' ? item : item[this.#text]
-      // li.onmousedown // useless with datalist & listid...
+      // EVENT TEST START
+      // li.style.pointerEvents = 'all'
+      // li.style.cursor = 'pointer'
+      // li.onclick = (e) => console.log('whwhwhwha')
+      // li.onmousedown = (e) => console.log('whwhwhwhb')
+      // li.addEventListener('click', (e) => console.log('whwhwhwh'), true)
+      // li.onmousedown // useless on a datalist with listid...
+      // EVENT TEST END
       dd.appendChild(li)
     })
   }

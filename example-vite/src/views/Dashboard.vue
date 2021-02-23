@@ -84,6 +84,19 @@ export default {
     // watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
     // })
 
+    // watch(
+    //   () => object_or_primitive_being_watched,
+    //   (state, prevState) => {
+    //     console.log(
+    //       "deep ",
+    //       state.attributes.name,
+    //       prevState.attributes.name
+    //     );
+    //   },
+    //   { deep: true }
+    // )
+    // watchEffect ... ?
+
     let timerId
     onMounted(async () => {
       console.log('dashboard mounted!')
