@@ -1,11 +1,11 @@
+// Combobox with autocomplete component using input, datalist and tags
+// TBD Initially if no data for the list, please fetch some
+// TBD allow configurable classnames for tag and tag wrapper
+// TBD single select clear value if not found and custom tags not allowed
+// TBD use ul/li instead of datalist (big change)
+// OR https://stackoverflow.com/questions/30022728/perform-action-when-clicking-html5-datalist-option
+
 /*
-Autocomplete component using input and datalist.
-Only able to handle single selection due to nature of datalist not able to have click event
-
-V2 Improvements
-- multiple selects (repeat, or allow same items to be selected)
-- act as fixed select...?
-
 attributes:
 - value (via v-model), at the text input
 - required
@@ -13,8 +13,8 @@ attributes:
 - listid (needed if using more than 2 components on the same page)
 - input-class (style the input)
 - multiple (v2)
-- repeat (v2) for multiple selects allow same time to be selected many times
-- allow-custom-tag (v2) - accept user defined tags
+- repeat (v2) for multiple selects allow same item to be selected many times
+- allow-custom-tag (v2) - allow user defined tags
 - object-key
 - object-text
 
@@ -35,7 +35,7 @@ if selected data is null (no match found, else match found)
 
 Usage with (VueJS):
 
-<bwc-autocomplete2 required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected=></bwc-autocomplete2>
+<bwc-combobox required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected=></bwc-combobox>
 
 // string version
 const ac = reactive({ value: 'a', items: ['aa9','aa5'] })
@@ -53,20 +53,18 @@ const autoComplete = (e) => {
 [
   { key: 'unique', text: 'longer description' }
 ]
-
 */
-// TBD Initially if no data for the list, please fetch some
-// TBD allow configurable classnames for tag and tag wrapper
-// TBD single select clear value if not found and custom tags not allowed
-// TBD use ul/li instead of datalist (big change)
 
 const template = document.createElement('template')
 template.innerHTML = /*html*/`
 <input type="text" list="json-datalist" placeholder="search..." autocomplete="off">
+<span class="icon is-small is-left clear-btn" style="pointer-events: all; cursor:pointer;">
+  <i class="fas fa-times"></i>
+</span>
 <datalist id="json-datalist"></datalist>
 `
 
-class BwcAutocomplete extends HTMLElement {
+class BwcCombobox extends HTMLElement {
   // local properties
   #items = [] // list of items
   #tags = [] // multiple selected
@@ -77,6 +75,7 @@ class BwcAutocomplete extends HTMLElement {
   #elTags = null // div.tags element
   #elInput = null // input element
   #elList = null // datalist element
+  #elClearBtn = null // clear button
 
   #multiple = false // hold readonly attributes
   #repeat = false // for multiselect, tag can be added multiple times
@@ -123,6 +122,8 @@ class BwcAutocomplete extends HTMLElement {
 
     this.#elInput = this.querySelector('input')
     this.#elList = this.querySelector('datalist')
+    this.#elClearBtn = this.querySelector('.clear-btn')
+
 
     // console.log('listid', this.listid)
     this.#elList.id = this.listid
@@ -140,8 +141,11 @@ class BwcAutocomplete extends HTMLElement {
     if (this.#multiple) { // if multiple... use tags
       this.#elTags = document.createElement('div')
       this.#elTags.className = 'tags'
-      this.prepend(this.#elTags)
+      // this.prepend(this.#elTags)
+      this.append(this.#elTags)
     }
+
+    this.#elClearBtn.onclick = (e) => this.#elInput.value = ''
 
     this.#elInput.onblur = (e) => {
       // console.log('onblur', e)
@@ -267,6 +271,7 @@ class BwcAutocomplete extends HTMLElement {
   }
   set tags(val) {
     // console.log('set tags', val)
+    if (!this.#elTags) return
     this.#elTags.innerHTML = ''
     this.setTags(val) // this.#tags will be set in setTags()
   }
@@ -314,4 +319,4 @@ class BwcAutocomplete extends HTMLElement {
   }
 }
 
-customElements.define('bwc-autocomplete2', BwcAutocomplete)
+customElements.define('bwc-combobox', BwcCombobox)

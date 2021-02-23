@@ -33,7 +33,7 @@ export default ({ command, mode }) => {
       vue({
         template: {
           compilerOptions: {
-            isCustomElement: tag => tag.startsWith('bwc-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-') || tag.startsWith('sl-')
+            isCustomElement: tag => tag.startsWith('bwc-') || tag.startsWith('mwc-')
           }
         }
       })

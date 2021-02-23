@@ -1,6 +1,6 @@
 <template>
   <div class="page-flex">
-    <vcxwc-loading-overlay v-if="loading"></vcxwc-loading-overlay>
+    <bwc-loading-overlay v-if="loading"></bwc-loading-overlay>
     <form class="form-box-flex">
       <div v-show="mode === 'login'">
         <h1>{{ i18n.$t('sign_in') }}</h1>

@@ -13,7 +13,7 @@ import '../firebase.config.js'
 import '../pwa-init.js'
 
 // our own web components
-import '../../@es-labs/esm/loading-overlay.js'
+import '../../@es-labs/esm/bwc-loading-overlay.js'
 
 import { createApp } from 'vue'
 import router from './router.js'
@@ -24,7 +24,7 @@ const app = createApp(App)
 // console.log('app.config', app.config)
 app.config.isCustomElement = (tag) => {
   console.log(tag)
-  return tag.startsWith('bwc-') || tag.startsWith('vaadin-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-') || tag.startsWith('sl-')
+  return tag.startsWith('bwc-') || tag.startsWith('mwc-')
 }
 // app.config.isCustomElement = tag => tag.startsWith('mwc-') // https://zhuanlan.zhihu.com/p/135280049
 

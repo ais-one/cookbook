@@ -19,7 +19,7 @@ export default {
     vue({
       template: {
         compilerOptions: {
-          isCustomElement: tag => tag.startsWith('bwc-') || tag.startsWith('vcxwc-')
+          isCustomElement: tag => tag.startsWith('bwc-')
         }
       }
     })

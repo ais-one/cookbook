@@ -56,4 +56,4 @@ class LoadingOverlay extends HTMLElement {
   disconnectedCallback() {}
 }
 
-customElements.define('vcxwc-loading-overlay', LoadingOverlay)
+customElements.define('bwc-loading-overlay', LoadingOverlay)

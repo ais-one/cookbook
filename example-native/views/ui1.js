@@ -5,38 +5,38 @@ const template = /*html*/`
 
   <h3>single autocomplete && string search example</h3>
   <div class="field">
-    <div class="control">
-      <label for="" class="label">bwc-autocomplete2 - multiple</label>
-      <bwc-autocomplete2 ref="mcRef" :tags="mc.tags" multiple input-class="input" listid="multiple-ac" required :items="ac.items" v-model="ac.multipleValue" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete2>
+    <label for="" class="label">bwc-combobox - multiple</label>
+    <div class="control has-icons-left">
+      <bwc-combobox ref="mcRef" :tags="mc.tags" multiple input-class="input" listid="multiple-ac" required :items="ac.items" v-model="ac.multipleValue" @search="(e) => autoComplete(e)" @selected="selected"></bwc-combobox>
     </div>
   </div>
   <div class="field">
-    <div class="control">
-      <label for="" class="label">bwc-autocomplete2 - single</label>
-      <bwc-autocomplete2 listid="single-ac" required :items="ac.items" v-model="ac.singleValue" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete2>
+    <label for="" class="label">bwc-combobox - single</label>
+    <div class="control has-icons-left">
+      <bwc-combobox listid="single-ac" required :items="ac.items" v-model="ac.singleValue" @search="(e) => autoComplete(e)" @selected="selected"></bwc-combobox>
     </div>
   </div>
 
   <div class="field">
-    <div class="control">
-      <label for="" class="label">bwc-autocomplete - Disabled</label>
+    <label for="" class="label">bwc-autocomplete - Disabled</label>
+    <div class="control has-icons-left">
       <bwc-autocomplete disabled listid="single-disabled" required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected="selected"></bwc-autocomplete>
     </div>
   </div>
 
   <div class="field">
-    <div class="control">
-      <label for="" class="label">bwc-autocomplete2 - Search Country</label>
-      <bwc-autocomplete2 object-key="key" object-text="text" listid="country2" required :items="country.items" v-model="country.value" @search="(e) => countrySearch(e)" @selected="countrySelected"></bwc-autocomplete2>
+    <label for="" class="label">bwc-combobox - Search Country</label>
+    <div class="control has-icons-left">
+      <bwc-combobox object-key="key" object-text="text" listid="country2" required :items="country.items" v-model="country.value" @search="(e) => countrySearch(e)" @selected="countrySelected"></bwc-combobox>
     </div>
   </div>
 
   <div class="field">
-  <div class="control">
-    <label for="" class="label">bwc-autocomplete2 - Search State (dependent on country)</label>
-    <bwc-autocomplete2 multiple object-key="key" object-text="text" listid="state2" required :items="state.items" :tags="state.tags" @search="(e) => stateSearch(e)" @selected="stateSelected"></bwc-autocomplete2>
+    <label for="" class="label">bwc-combobox - Search State (dependent on country)</label>
+    <div class="control has-icons-left">
+      <bwc-combobox multiple object-key="key" object-text="text" listid="state2" required :items="state.items" :tags="state.tags" @search="(e) => stateSearch(e)" @selected="stateSelected"></bwc-combobox>
+    </div>
   </div>
-</div>
 
   <hr/>
 
