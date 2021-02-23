@@ -1,6 +1,6 @@
 // Combobox with autocomplete component using input, datalist and tags
 // TBD Initially if no data for the list, please fetch some
-// TBD allow configurable classnames for tag and tag wrapper
+// TBD allow configurable classnames for tag and tag wrapper, clear icons (for bootstrap, muicss)
 // TBD single select clear value if not found and custom tags not allowed
 // TBD use ul/li instead of datalist (big change)
 // OR https://stackoverflow.com/questions/30022728/perform-action-when-clicking-html5-datalist-option
