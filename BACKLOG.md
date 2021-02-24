@@ -1,5 +1,7 @@
 ## Issues
 ### For next sprint / version
+- [example-app] jsonschema & openapi 3.1
+- [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)
 - [fix] - ==='object' - handle null object
 - [example-vite] cypress e2e testing
 - [chore] disable console.log in production / proper console logging

@@ -5,9 +5,7 @@
 - [TBD]
   - [@es-labs/esm/bwc-t4t-form.js] - add autocomplete
   - [example-native] migrate example-webpack vue-crud-x table examples to example-native
-  - [example-app] jsonschema & openapi 3.1
-  - [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)
-
+  
 ### Version 0.4.6
 - [chore] update packages & cleanup & work on improving documentation
 - [update] remove circle-ci
