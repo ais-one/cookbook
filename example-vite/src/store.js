@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import router from './router.js'
-import * as http from '../../@es-labs/esm/http.js' // served from express /esm static route
+import * as http from '/@es-labs/esm/http.js' // served from express /esm static route
 // import aaa from 'https://unpkg.com/swrv@0.3.0/esm/index.js' - will error
 
 const mutations = {
@@ -72,7 +72,7 @@ const getters = {
 // state below the rest // https://stackoverflow.com/questions/43843180/eslint-state-already-declared-vuex
 const state = {
   count: 99,
-  user: null
+  user: null // id, verified, groups
 }
 
 const store = createStore({

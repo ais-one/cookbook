@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import '../../../@es-labs/esm/sign-pad.js'
+import '/@es-labs/esm/sign-pad.js'
 import { ref, onMounted } from 'vue'
 
 export default {

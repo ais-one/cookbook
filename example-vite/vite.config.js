@@ -6,12 +6,11 @@ export default ({ command, mode }) => {
   // console.log(command, mode)
   const path = require('path')
   const env = require('dotenv').config({ path: path.join(__dirname, '.env.' + mode) }).parsed
-  console.log('env.BASE_PATH', env.BASE_PATH)
 
   return {
     base: env.BASE_PATH || '/', // set to '/vite' for dev:build, '/' otherwise
     build: {
-      // sourcemap: isDev1,
+      // sourcemap: true,
       rollupOptions: { // vite 2
         external: [
           'react' // ignore react stuff
@@ -33,7 +32,7 @@ export default ({ command, mode }) => {
       vue({
         template: {
           compilerOptions: {
-            isCustomElement: tag => tag.startsWith('bwc-') || tag.startsWith('mwc-')
+            isCustomElement: tag => tag.startsWith('bwc-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-')
           }
         }
       })
@@ -42,7 +41,7 @@ export default ({ command, mode }) => {
       alias: {
         // https://github.com/vitejs/vite/issues/279#issuecomment-636110354
         // '@': path.resolve(__dirname, 'src') // import aa from '@/esm/aaa.js',
-        '/@es-labs/esm/': require('path').join(__dirname, '..', '@es-labs', 'esm')
+        '/@es-labs/esm': require('path').join(__dirname, '..', '@es-labs', 'esm')
       }
     },
     server: {

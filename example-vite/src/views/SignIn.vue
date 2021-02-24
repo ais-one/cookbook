@@ -4,19 +4,20 @@
     <form class="form-box-flex">
       <div v-show="mode === 'login'">
         <h1>{{ i18n.$t('sign_in') }}</h1>
-        <mwc-textfield label="Username" outlined type="text" v-model="email"></mwc-textfield>
-        <mwc-textfield label="Password" outlined type="password" v-model="password"></mwc-textfield>
+        <a-input label="Username" type="text" v-model:value="email"></a-input>
+        <a-input label="Password" type="password" v-model:value="password"></a-input>
         <div class="buttons-box-flex">
-          <mwc-button raised label="Login" type="button" @click="login"></mwc-button>
-          <mwc-button raised label="SAML" type="button" @click="() => samlLogin(callbackUrl)"></mwc-button>
+          <a-button @click="login">Login</a-button>
+          <a-button @click="() => samlLogin(callbackUrl)">SAML</a-button>
+          <a-button @click="$router.push('/signin-fast')">Fast</a-button>
         </div>
         <p><router-link to="/signup">Sign Up</router-link></p>
       </div>
       <div v-show="mode === 'otp'">
         <h1>Enter OTP</h1>
-        <mwc-textfield label="OTP" outlined type="text" v-model="otp"></mwc-textfield>
+        <a-input label="OTP" type="text" v-model:value="otp"></a-input>
         <div class="buttons-box-flex">
-          <mwc-button raised label="OTP" type="button" @click="otpLogin"></mwc-button>
+          <a-button @click="otpLogin">OTP</a-button>
         </div>
       </div>
       <p v-if="errorMessage">{{ errorMessage }}</p>
@@ -29,17 +30,18 @@ import { ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
-import { useXhr } from '/src/plugins/xhr.js'
+import * as http from '/@es-labs/esm/http.js' // aliased in vite.config.js
+import parseJwt from '/@es-labs/esm/parse-jwt.js'
+import { samlLogin } from '/@es-labs/esm/saml.js'
+import ws from '/@es-labs/esm/ws.js'
+
 import { useI18n } from '/src/plugins/i18n.js'
-import { useWs } from '/src/plugins/ws.js'
-
-import parseJwt from '../../../@es-labs/esm/parse-jwt.js' // served from express /esm static route
-import { samlLogin } from '../../../@es-labs/esm/saml.js'
-import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
-import { DO_HELLO } from '/src/queries.js'
-
 import { VITE_CALLBACK_URL } from '/config.js'
 
+import { VITE_GQL_URI, VITE_GWS_URI } from '/config.js'
+import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
+import { DO_HELLO } from '/src/queries.js'
+apollo.init({ gwsUri: VITE_GWS_URI, gqlUri: VITE_GQL_URI })
 const apolloClient = apollo.get()
 if (apolloClient) {
   apolloClient // apollo test
@@ -58,9 +60,7 @@ export default {
     const store = useStore()
     const route = useRoute()
 
-    const http = useXhr()
     const i18n = useI18n()
-    const ws = useWs()
 
     const loading = ref(false)
     const email = ref('test')

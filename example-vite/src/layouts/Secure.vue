@@ -1,57 +1,110 @@
 <template>
-  <mwc-drawer hasHeader type="modal">
-    <span slot="title" class="h-center"><img class="text-center" src="https://via.placeholder.com/150x50" alt="My Dashboard" /></span>
-    <span slot="subtitle" class="h-center"><p>Something</p></span>
-    <div class="drawer-content">
-      <mwc-list>
-        <mwc-list-item graphic="icon" @click="logout">
-          <slot>Sign out</slot>
-          <mwc-icon slot="graphic">exit_to_app</mwc-icon>
-        </mwc-list-item>
-        <div v-for="item of menuItems" :key="item.name">
-          <router-link v-if="item.to" :to="item.to">
-            <mwc-list-item graphic="icon" @click="theDrawer.open = false">
-              <slot>{{ item.name }}</slot>
-              <mwc-icon slot="graphic">{{ item.icon }}</mwc-icon>
-            </mwc-list-item>
-          </router-link>
-          <div v-else>
-            <mwc-list-item hasMeta @click="item.show = !item.show">
-              <span>{{ item.name }}</span>
-              <mwc-icon slot="meta">{{ item.show ? item.icon0 : item.icon1 }}</mwc-icon>
-            </mwc-list-item>
-            <div v-if="item.show">
-              <router-link v-for="child of item.children" :key="child.to" :to="child.to">
-                <mwc-list-item graphic="icon" @click="theDrawer.open = false">
-                  <slot>{{ child.name }}</slot>
-                  <mwc-icon slot="graphic">{{ child.icon }}</mwc-icon>
-                </mwc-list-item>
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </mwc-list>
-    </div>
-    <div slot="appContent">
-      <mwc-top-app-bar-fixed>
-        <mwc-icon-button slot="navigationIcon" icon="menu"></mwc-icon-button>
-        <div slot="title">Title</div>
-        <mwc-icon-button slot="actionItems" icon="cast"></mwc-icon-button>
-        <mwc-icon-button slot="actionItems" icon="fingerprint"></mwc-icon-button>
-      </mwc-top-app-bar-fixed>
-      <div class="main-content">
-        <router-view :key="$route.fullPath"></router-view>
-      </div>
-    </div>
-  </mwc-drawer>
-</template>
+  <a-layout>
+    <a-back-top />
+    <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
+      <div class="logo" />
+      <a-menu theme="dark" mode="inline" v-model:selectedKeys="selectedKeys">
+        <a-menu-item key="1" @click="$router.push('/dashboard')">
+          <user-outlined />
+          <span>Dashboard</span>
+        </a-menu-item>
+        <a-sub-menu key="sub1">
+          <template #title>
+            <span>
+              <user-outlined />
+              <span>Visuals</span>
+            </span>
+          </template>
+          <a-menu-item key="21" @click="$router.push('/demo-chart1')">Chart 1</a-menu-item>
+          <a-menu-item key="22" @click="$router.push('/demo-chart2')">Chart 2</a-menu-item>
+          <a-menu-item key="23" @click="$router.push('/demo-map')">Map</a-menu-item>
+        </a-sub-menu>
+        <a-sub-menu key="sub2">
+          <template #title>
+            <span>
+              <user-outlined />
+              <span>Data Entry</span>
+            </span>
+          </template>
+          <a-menu-item key="31" @click="$router.push('/demo-form')">Forms</a-menu-item>
+          <a-menu-item key="32" @click="$router.push('/demo-card')">Cards</a-menu-item>
+          <a-menu-item key="33" @click="$router.push('/cascade-ms')">Combobox</a-menu-item>
+        </a-sub-menu>
+        <a-menu-item key="4" @click="$router.push('/demo-table')">
+          <video-camera-outlined />
+          <span>Tables</span>
+        </a-menu-item>
+        <a-sub-menu key="sub5">
+          <template #title>
+            <span>
+              <upload-outlined />
+              <span>NTU CSR</span>
+            </span>
+          </template>
+          <a-menu-item key="51" @click="$router.push('/major-gift')">Major Gift</a-menu-item>
+          <a-menu-item key="52" @click="$router.push('/appeal-m')">Appeal M</a-menu-item>
+          <a-menu-item key="53" @click="$router.push('/update-db')">UpdateDB</a-menu-item>
+        </a-sub-menu>
 
+        <a-sub-menu key="sub6">
+          <template #title>
+            <span>
+              <upload-outlined />
+              <span>Demo</span>
+            </span>
+          </template>
+          <a-menu-item key="61" @click="$router.push('/demo-main')">Demo Main</a-menu-item>
+          <a-menu-item key="62" @click="$router.push('/demo-map')">Demo Map</a-menu-item>
+          <a-menu-item key="63" @click="$router.push('/demo-chart')">Demo Chart</a-menu-item>
+          <a-menu-item key="64" @click="$router.push('/demo-web-cam')">Web Cam</a-menu-item>
+          <a-menu-item key="65" @click="$router.push('/demo-sign-pad')">SIgn Pad</a-menu-item>
+        </a-sub-menu>
+        <a-menu-item key="7" @click="logout">Logout</a-menu-item>
+      </a-menu>
+    </a-layout-sider>
+    <a-layout>
+      <a-layout-header style="background: #fff; padding: 0">
+        <menu-unfold-outlined
+          v-if="collapsed"
+          class="trigger"
+          @click="() => (collapsed = !collapsed)"
+        />
+        <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
+        <span>Data Science Dashboard</span>
+      </a-layout-header>
+      <a-layout-content :style="{ margin: '16px 12px', padding: '16px', background: '#fff', minHeight: 'calc(100vh - 96px)' }">
+        <a-breadcrumb style="margin: 8px 0">
+          <a-breadcrumb-item>Home</a-breadcrumb-item>
+          <a-breadcrumb-item>Dashboard</a-breadcrumb-item>
+        </a-breadcrumb>
+        <router-view :key="$route.fullPath"></router-view>
+      </a-layout-content>
+      <!-- <a-layout-footer style="text-align: center">Ant Design ©2018 Created by Ant UED</a-layout-footer> -->
+    </a-layout>
+  </a-layout>
+</template>
 <script>
+
 // :key="$route.fullPath" // this is causing problems
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 
+import {
+  UserOutlined,
+  VideoCameraOutlined,
+  UploadOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+} from '@ant-design/icons-vue'
+
 export default {
+  components: {
+    UserOutlined,
+    VideoCameraOutlined,
+    UploadOutlined,
+    MenuUnfoldOutlined,
+    MenuFoldOutlined,
+  },
   setup(props, context) {
     const store = useStore()
 
@@ -59,53 +112,39 @@ export default {
 
     onMounted(async () => {
       console.log('SECURE mounted!')
-      // addEventListener('load', () => { document.body.classList.remove('unresolved'); });
-      const drawer = document.getElementsByTagName('mwc-drawer')[0]
-      if (drawer) {
-        const container = drawer.parentNode
-        container.addEventListener('MDCTopAppBar:nav', () => {
-          drawer.open = !drawer.open
-        })
-        theDrawer.value = drawer
-      }
     })
     onUnmounted(() => console.log('SECURE unmounted'))
-    const menuItems = ref([
-      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
-      {
-        show: true,
-        name: 'Sites',
-        icon0: 'keyboard_arrow_up',
-        icon1: 'keyboard_arrow_down',
-        children: [
-          { to: '/demo-flex', name: 'Demo Flex', icon: '' },
-          { to: '/demo-map', name: 'Demo Map', icon: '' },
-          { to: '/demo-chart', name: 'Demo Chart', icon: 'bar_chart' },
-          { to: '/demo-web-cam', name: 'Demo Web Cam', icon: '' },
-          { to: '/demo-sign-pad', name: 'Demo Sign Pad', icon: '' }
-        ]
-      },
-      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
-      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
-      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
-      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
-      { to: '/dashboard', name: 'Dashboard', icon: 'home' },
-      { to: '/dashboard', name: 'Dashboard', icon: 'home' }
-    ])
     const logout = async () => await store.dispatch('doLogin', null)
 
     return {
-      menuItems, // ref,
-      theDrawer,
-      logout // method
+      logout,
+      selectedKeys: ref(['1']),
+      collapsed: ref(false),
     }
   }
 }
 </script>
 
-<style scoped>
-mwc-drawer {
-  --mdc-theme-primary: green;
-  z-index: 10000;
+<style>
+.trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+.logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.3);
+  margin: 16px;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
 }
 </style>

@@ -23,8 +23,6 @@ export default {
     }
   },
   async mounted() {
-    // await embed('#viz', 'https://vega.github.io/vega/examples/bar-chart.vg.json', {actions:false})
-
     // echarts
     const myChart = echarts.init(document.getElementById('main'))
     // specify chart configuration item and data

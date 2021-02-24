@@ -1,6 +1,7 @@
 ### Version 0.4.7
 - [chore] update packages & cleanup & work on improving documentation
 - [@es-labs/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new, use string or object, clear text button
+- [refactor] merge example-vite and example-vite-antd, remove unnecessary plugins, removed mwc
 - [TBD]
   - [@es-labs/esm/bwc-t4t-form.js] - add autocomplete
   - [example-native] migrate example-webpack vue-crud-x table examples to example-native

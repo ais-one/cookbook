@@ -20,56 +20,42 @@
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
+import { onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
-
 import { SmileTwoTone } from '@ant-design/icons-vue';
-
-import { VITE_CALLBACK_URL } from '/config.js'
 
 export default {
   components: {
     SmileTwoTone
   },
-  setup(props, context) {
+  setup() {
     const store = useStore()
     const route = useRoute()
     const router = useRouter()
 
-    const loading = ref(false)
-    const errorMessage = ref('')
-    const mode = ref('login') // login, otp
-
-    const callbackUrl = VITE_CALLBACK_URL
-
-    onUnmounted(() => console.log('signIn unmounted'))
+    onUnmounted(() => console.log('signInFast unmounted'))
     onMounted(async () => {
-      console.log('signIn mounted!', route.hash) // deal with hashes here if necessary
-      errorMessage.value = ''
-      loading.value = false
+      console.log('signInFast mounted!', route.hash) // deal with hashes here if necessary
     })
-
     onBeforeUnmount(() => {
     })
 
     const _setUser = async () => {
-      await store.dispatch('doLogin', 'Demu User') // store user
+      const decoded = {
+        id: 'Aaa',
+        groups: [],
+        verified: true
+      }
+      await store.dispatch('doLogin', decoded) // store user
     }
-
     const login = async () => {
       _setUser()
-      loading.value = false
       router.push('/dashboard')
     }
 
     return {
-      // samlLogin,
-      login,
-      errorMessage,
-      loading,
-      mode,
-      callbackUrl
+      login
     }
   }
 }
