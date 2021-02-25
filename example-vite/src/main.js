@@ -15,11 +15,11 @@ import '/@es-labs/esm/bwc-loading-overlay.js'
 
 const app = createApp(App)
 // console.log('app.config', app.config)
+// https://zhuanlan.zhihu.com/p/135280049
 // app.config.isCustomElement = (tag) => {
 //   console.log(tag)
-//   return tag.startsWith('bwc-') || tag.startsWith('mwc-') || tag.startsWith('vcxwc-')
+//   return tag.startsWith('bwc-') || tag.startsWith('vcxwc-')
 // }
-// app.config.isCustomElement = tag => tag.startsWith('mwc-') // https://zhuanlan.zhihu.com/p/135280049
 const theme = 'dark'
 // const ThemeSymbol = Symbol()
 app.provide('MyTheme', theme) // provide & inject

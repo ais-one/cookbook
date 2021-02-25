@@ -8,7 +8,7 @@ let onClientClose = (ws) => {
   // console.log('client disconnected')
 } // client disconnected
 
-let onClientMessage = async (message, ws) => { // client incoming message
+let onClientMessage = async (message, ws, wss) => { // client incoming message
   // console.log('message', message)
   try { // try-catch only detect immediate error, cannot detect if write failure    
     if (wss) { // send to other clients except self
@@ -48,7 +48,7 @@ exports.open = function (server=null, app=null) {
           ws.isAlive = true
           ws.on('pong', () => { ws.isAlive = true })
           ws.on('close', () => onClientClose(ws))
-          ws.on('message', message => onClientMessage(message, ws))
+          ws.on('message', message => onClientMessage(message, ws, wss))
         })
         setInterval(() => { // set keep-alive
           // console.log('WS Clients: ', wss.clients.size)

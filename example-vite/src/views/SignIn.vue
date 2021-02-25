@@ -221,12 +221,12 @@ export default {
   background: lightgray;
 }
 
-.form-box-flex > div > mwc-textfield,
+.form-box-flex > div > a-input,
 .form-box-flex > div > .buttons-box-flex {
   margin-top: 15px;
 }
 
-.form-box-flex > div > mwc-textfield {
+.form-box-flex > div > a-input {
   flex: 1 1 auto;
   font-size: 20px;
 }
@@ -237,7 +237,7 @@ export default {
   justify-content: space-around;
 }
 
-.buttons-box-flex > div > mwc-button {
+.buttons-box-flex > div > a-button {
   flex: 0 1 95px;
   font-size: 20px;
 }

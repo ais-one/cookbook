@@ -167,7 +167,6 @@ class WebCam extends HTMLElement {
       })
       this.dispatchEvent(event)
 
-      // TBD use mwc-button
       this.captureMode = false
     } else {
       videoEl.play()
