@@ -186,12 +186,17 @@ module.exports = express.Router()
     let rows = {}
     let { dbName, tableName, limit = 20, key, text, search, parentTableColName, parentTableColVal } = req.query
     if (dbName === 'knex') {
-      const query = knex(tableName).where(key, 'like', `%${search}%`)
-      if (parentTableColName !== undefined && parentTableColVal !== undefined) query.andWhere(parentTableColName, parentTableColVal)
+      const query = knex(tableName).where(key, 'like', `%${search}%`).orWhere(text, 'like', `%${search}%`)
+      if (parentTableColName !== undefined && parentTableColVal !== undefined) query.andWhere(parentTableColName, parentTableColVal) // AND filter - OK
       rows = await query.clone().limit(limit) // TBD orderBy
     } else { // mongo
-      const filter = { [key]: { $regex: search, $options: 'i' } }
-      if (parentTableColName !== undefined && parentTableColVal !== undefined) filter[parentTableColName] = parentTableColVal
+      const filter = {
+        $or: [
+          { [key]: { $regex: search, $options: 'i' } },
+          { [text]: { $regex: search, $options: 'i' } }  
+        ]
+      }
+      if (parentTableColName !== undefined && parentTableColVal !== undefined) filter[parentTableColName] = parentTableColVal // AND filter - OK
       rows = await mongo.db.collection(tableName).find(filter)
         .limit(Number(limit)).toArray() // TBD sort
     }

@@ -1,4 +1,5 @@
 ## Issues
+
 ### For next sprint / version
 - [example-app] jsonschema & openapi 3.1
 - [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)

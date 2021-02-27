@@ -4,7 +4,7 @@
 - [refactor] merge example-vite and example-vite-antd, remove unnecessary plugins, removed mwc
 - [TBD]
   - [@es-labs/esm/bwc-t4t-form.js] - add autocomplete
-  - [example-native] migrate example-webpack vue-crud-x table examples to example-native
+  - [example-native] migrate example-webpack vue-crud-x table examples to example-native (child table, join tables), (category, author, book - has 1 category, page - belongs to 1 book, book_author)
   
 ### Version 0.4.6
 - [chore] update packages & cleanup & work on improving documentation

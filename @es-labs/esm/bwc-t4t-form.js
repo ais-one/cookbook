@@ -296,12 +296,17 @@ class BwcT4tForm extends HTMLElement {
         if (elementTag === 'bwc-combobox') { // TBD TBD TBD
           // console.log('bwc-combobox', this.#record)
           // el.onsearch = (e) => console.log(e.target.value, k, this.#record)
-          el.onselected = (e) => console.log(e.target.value)
+          el.setAttribute('object-key', 'key')
+          el.setAttribute('object-text', 'text')
+          el.onselected = (e) => { // TBD FIX THIS!!!!!!!!!!!!!
+            console.log('selected combobox', e.target.value)
+          }
           el.onsearch = debounce(async (e) => {
             // this.#xcols['state'].el.value // use this.#xcols to get latest values
-            console.log(e.target.value, k, this.#record) // this.#record does not change until validated and submit
-            // const res = await t4t.autocomplete(e.target.value, col, record)
-            // el.setList(res)
+            // console.log(e.target.value, k, this.#record) // this.#record does not change until validated and submit
+            const res = await autocomplete(e.target.value, k, this.#record)
+            console.log('res', res)
+            el.items = res
           }, 500)
         }
       }

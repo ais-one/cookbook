@@ -127,6 +127,7 @@ template.innerHTML = /*html*/`
   z-index: 1;
 }
 </style>
+<!-- TBD - To handle multiple UI frameworks -->
 <div id="table-wrapper">
   <nav id="table-navbar" class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
@@ -670,7 +671,7 @@ class Table extends HTMLElement {
               }
               const row = target.rowIndex - 1 // TR 1-index based row
               let data = null
-              if (target) {
+              if (target) { // TBD - To handle multiple UI frameworks
                 if (this.#selectedNode) { // clear class is-selected
                   this.#selectedNode.classList.remove('is-selected')
                 }

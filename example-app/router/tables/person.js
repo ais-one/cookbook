@@ -140,7 +140,6 @@ module.exports = {
       label: 'Country', // key text...
       type: 'string',
       filter: true,
-      // OLD
       options: {
         parentCol: '', // use column to get parent value affecting a child
         parentTableColName: '', // the column name in the parent table
@@ -149,8 +148,8 @@ module.exports = {
         tableName: 'country',
         limit:8,
         strict: true, // cannot enter own values, must be selected
-        key: 'name',
-        text: ''
+        key: 'code',
+        text: 'name'
       },
       // NEW
       ui: {
@@ -171,8 +170,8 @@ module.exports = {
         dbName: 'mongo',
         tableName: 'state',
         limit:8,
-        key: 'name',
-        text: ''
+        key: 'code',
+        text: 'name'
       },
       // NEW
       ui: {

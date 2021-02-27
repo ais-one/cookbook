@@ -11,7 +11,7 @@ const template = /*html*/`
     :columns="columns"
     :items="table.items"
     :total="total"
-    @rowClick="rowClick"
+    @rowclick="rowClick"
     @checked="checked"
     @triggered="triggered"
     @cmd="cmd"
@@ -20,7 +20,6 @@ const template = /*html*/`
     class="sticky-header sticky-column"
   ></bwc-table>
   <hr/>
-  <!--
   <bwc-table
     commands="reload"
     :pagination="false"
@@ -31,7 +30,6 @@ const template = /*html*/`
     style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;"
     class="sticky-header sticky-column"
   ></bwc-table>
-  -->
 </div>
 `
 

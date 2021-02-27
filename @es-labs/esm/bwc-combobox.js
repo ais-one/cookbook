@@ -23,8 +23,8 @@ properties:
 - tags [string] or [{ key, text }]
 
 methods:
-- setList(items) // should be private, called when items property changes
-- setTags(tags) // should be private, called with tags property changes
+- _setList(items) // should be private, called when items property changes
+- _setTags(tags) // should be private, called with tags property changes
 
 events emitted:
 - @input (via v-model) - e.target.value
@@ -83,39 +83,7 @@ class BwcCombobox extends HTMLElement {
 
   constructor() {
     super()
-    this.inputFn = this.inputFn.bind(this)
-  }
-
-  isStringType() { // is list item and selected values string ?
-    // console.log('isStringType', !(this.#key && this.#text))
-    return !(this.#key && this.#text)
-  }
-
-  addTag(item) {
-    const itemExists = this.#tags.find(tag => this.isStringType() ? tag === item : (tag[this.#key] === item[this.#key] && tag[this.#text] === item[this.#text]))
-    if (!this.#repeat && itemExists) return // duplicates not allowed
-
-    const span = document.createElement('span')
-    span.className = 'tag is-black'
-    span.innerText = this.isStringType() ? item : item[this.#text]
-    span.value = this.isStringType() ? item : item[this.#key]
-    span.onclick = (e) => { // e.target.innerText, e.target.value
-      this.removeTag(span)
-      this.updateTags()
-    }
-    this.#elTags.appendChild(span)
-    this.updateTags()
-  }
-
-  updateTags() {
-    let tags = [...this.#elTags.children]
-    this.#tags = tags.map(tag => this.isStringType() ? tag.innerText : ({ [this.#key]: tag.value, [this.#text]: tag.innerText }))
-    console.log('updateTags - selected')
-    this.dispatchEvent(new CustomEvent('selected', { detail: this.#tags }))
-  }
-
-  removeTag(span) {
-    this.#elTags.removeChild(span)
+    this._onInput = this._onInput.bind(this)
   }
 
   connectedCallback() {
@@ -130,7 +98,7 @@ class BwcCombobox extends HTMLElement {
     this.#elList.id = this.listid
     this.#elInput.setAttribute('list', this.listid)
 
-    this.#elInput.addEventListener('input', this.inputFn)
+    this.#elInput.addEventListener('input', this._onInput)
     // if (this.hasAttribute('input-class')) el.setAttribute('class', this.getAttribute('input-class'))
 
     this.#allowCustomTag = this.hasAttribute('allow-custom-tag')
@@ -150,19 +118,19 @@ class BwcCombobox extends HTMLElement {
 
     this.#elInput.onblur = (e) => {
       // console.log('onblur', e)
-      const found = this.items.find(item => this.isStringType() ? item === this.value : item[this.#key] === this.value || item[this.#text] === this.value)
+      const found = this.items.find(item => this._isStringType() ? item === this.value : item[this.#key] === this.value || item[this.#text] === this.value)
       if (this.#multiple) {
         // multiple
         if (!found) { // not found
           if (this.#allowCustomTag) { // can add new
             // TBD if all spaces only... return
-            this.addTag(this.isStringType() ? this.value : { [this.#key]: this.value, [this.#text]: this.value })
+            this._addTag(this._isStringType() ? this.value : { [this.#key]: this.value, [this.#text]: this.value })
           }
           this.value = ''
         } else {
           // if repeatable?
           // set tags list if not there already
-          this.addTag(found)
+          this._addTag(found)
           this.value = ''
         }
       } else {
@@ -195,11 +163,11 @@ class BwcCombobox extends HTMLElement {
     if (this.disabled) this.#elInput.setAttribute('disabled', '')
     else this.#elInput.removeAttribute('disabled')
 
-    this.setList(this.items)
+    this._setList(this.items)
   }
 
   disconnectedCallback() {
-    this.#elInput.removeEventListener('input', this.inputFn)
+    this.#elInput.removeEventListener('input', this._onInput)
   }
 
   attributeChangedCallback(name, oldVal, newVal) {
@@ -266,7 +234,7 @@ class BwcCombobox extends HTMLElement {
   set items(val) {
     // console.log('set items', val.length)
     this.#items = val
-    this.setList(val)
+    this._setList(val)
   }
 
   get tags() {
@@ -276,11 +244,42 @@ class BwcCombobox extends HTMLElement {
     // console.log('set tags', val)
     if (!this.#elTags) return
     this.#elTags.innerHTML = ''
-    this.setTags(val) // this.#tags will be set in setTags()
+    this._setTags(val) // this.#tags will be set in _setTags()
   }
 
-  inputFn(e) { // whether clicked or typed
-    // console.log('inputFn', e.target.value, this.items.length)
+  _isStringType() { // is list item and selected values string ?
+    return !(this.#key && this.#text) // console.log('_isStringType', !(this.#key && this.#text))
+  }
+
+  _addTag(item) {
+    const itemExists = this.#tags.find(tag => this._isStringType() ? tag === item : (tag[this.#key] === item[this.#key] && tag[this.#text] === item[this.#text]))
+    if (!this.#repeat && itemExists) return // duplicates not allowed
+
+    const span = document.createElement('span')
+    span.className = 'tag is-black'
+    span.innerText = this._isStringType() ? item : item[this.#text]
+    span.value = this._isStringType() ? item : item[this.#key]
+    span.onclick = (e) => { // e.target.innerText, e.target.value
+      this._removeTag(span)
+      this._updateTags()
+    }
+    this.#elTags.appendChild(span)
+    this._updateTags()
+  }
+
+  _updateTags() {
+    let tags = [...this.#elTags.children]
+    this.#tags = tags.map(tag => this._isStringType() ? tag.innerText : ({ [this.#key]: tag.value, [this.#text]: tag.innerText }))
+    console.log('_updateTags - selected')
+    this.dispatchEvent(new CustomEvent('selected', { detail: this.#tags }))
+  }
+
+  _removeTag(span) {
+    this.#elTags.removeChild(span)
+  }
+
+  _onInput(e) { // whether clicked or typed
+    // console.log('_onInput', e.target.value, this.items.length)
     const prevItem = this.#selectedItem
     this.value = this.#elInput.value
 
@@ -300,11 +299,11 @@ class BwcCombobox extends HTMLElement {
     }
   }
 
-  setTags(_tags) {
-    _tags.forEach(tag => this.addTag(tag))
+  _setTags(_tags) {
+    _tags.forEach(tag => this._addTag(tag))
   }
 
-  setList(_items) { // set list items
+  _setList(_items) { // set list items
     // console.log('items', _items, this.value)
     const dd = this.#elList
     if (!dd) return
