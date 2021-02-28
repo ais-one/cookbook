@@ -54,6 +54,47 @@ module.exports = {
       },
       width: 250
     },
+    country: {
+      label: 'Country', // key text...
+      type: 'string',
+      filter: true,
+      options: {
+        parentCol: '', // use column to get parent value affecting a child
+        parentTableColName: '', // the column name in the parent table
+        childCol: 'state', // affect child column in this table
+        dbName: 'mongo',
+        tableName: 'country',
+        limit: 8,
+        strict: true, // cannot enter own values, must be selected
+        key: 'code',
+        text: 'name'
+      },
+      ui: {
+        tag: 'bwc-combobox', // input
+      }
+    },
+    state: {
+      label: 'State', // key text...
+      type: 'string',
+      filter: true,
+      options: {
+        parentCol: 'country',
+        parentTableColName: 'country_name',
+        childCol: '',
+        dbName: 'mongo',
+        tableName: 'state',
+        limit: 8,
+        key: 'code',
+        text: 'name'
+      },
+      ui: {
+        tag: 'bwc-combobox',
+        attrs: {
+          multiple: true,
+          tagLimit: 3
+        }
+      }
+    },
     sex: { // single select
       label: 'Sex',
       type: 'string',
@@ -134,48 +175,6 @@ module.exports = {
       ui: {
         tag: 'input',
         attrs: { type: 'datetime-local' }
-      }
-    },
-    country: {
-      label: 'Country', // key text...
-      type: 'string',
-      filter: true,
-      options: {
-        parentCol: '', // use column to get parent value affecting a child
-        parentTableColName: '', // the column name in the parent table
-        childCol: 'state', // affect child column in this table
-        dbName: 'mongo',
-        tableName: 'country',
-        limit:8,
-        strict: true, // cannot enter own values, must be selected
-        key: 'code',
-        text: 'name'
-      },
-      // NEW
-      ui: {
-        tag: 'bwc-combobox',
-        // tag: 'input'
-      }
-    },
-    state: {
-      label: 'State', // key text...
-      type: 'string',
-      filter: true,
-      // OLD
-      input: 'autocomplete',
-      options: {
-        parentCol: 'country',
-        parentTableColName: 'country_name',
-        childCol: '',
-        dbName: 'mongo',
-        tableName: 'state',
-        limit:8,
-        key: 'code',
-        text: 'name'
-      },
-      // NEW
-      ui: {
-        tag: 'input'
       }
     },
     website: { // test formatter?
