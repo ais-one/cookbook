@@ -17,6 +17,7 @@ attributes:
 - allow-custom-tag (v2) - allow user defined tags
 - object-key
 - object-text
+- tag-limit - maximum allowed tags
 
 properties:
 - items [string] or [{ key, text }]
@@ -80,6 +81,7 @@ class BwcCombobox extends HTMLElement {
   #multiple = false // hold readonly attributes
   #repeat = false // for multiselect, tag can be added multiple times
   #allowCustomTag = false // can add new items
+  #tagLimit = 0 // unlimited tags
 
   constructor() {
     super()
@@ -93,7 +95,6 @@ class BwcCombobox extends HTMLElement {
     this.#elList = this.querySelector('datalist')
     this.#elClearBtn = this.querySelector('.clear-btn')
 
-
     // console.log('listid', this.listid)
     this.#elList.id = this.listid
     this.#elInput.setAttribute('list', this.listid)
@@ -105,6 +106,7 @@ class BwcCombobox extends HTMLElement {
     this.#multiple = this.hasAttribute('multiple')
     this.#repeat = this.hasAttribute('repeat')
 
+    if (this.hasAttribute('tag-limit')) this.#tagLimit = Number(this.getAttribute('tag-limit'))
     if (this.hasAttribute('object-key')) this.#key = this.getAttribute('object-key')
     if (this.hasAttribute('object-text')) this.#text = this.getAttribute('object-text')
     if (this.#multiple) { // if multiple... use tags
@@ -114,25 +116,28 @@ class BwcCombobox extends HTMLElement {
       this.append(this.#elTags)
     }
 
-    this.#elClearBtn.onclick = (e) => this.#elInput.value = ''
-
+    this.#elClearBtn.onclick = (e) => {
+      this.#elInput.value = ''
+      if (!this.#multiple) {
+        console.log('clear button click')
+        this.#selectedItem = null
+        this.dispatchEvent(new CustomEvent('select', { detail: this.#selectedItem }))
+      }
+    }
     this.#elInput.onblur = (e) => {
       // console.log('onblur', e)
-      const found = this.items.find(item => this._isStringType() ? item === this.value : item[this.#key] === this.value || item[this.#text] === this.value)
+      const found = this.items.find(item => this._itemMatchInput(item))
       if (this.#multiple) {
         // multiple
         if (!found) { // not found
           if (this.#allowCustomTag) { // can add new
-            // TBD if all spaces only... return
-            this._addTag(this._isStringType() ? this.value : { [this.#key]: this.value, [this.#text]: this.value })
+            this._addTag(this._makeItemFromValue())
           }
-          this.value = ''
         } else {
-          // if repeatable?
-          // set tags list if not there already
+          // if repeatable? set tags list if not there already
           this._addTag(found)
-          this.value = ''
         }
+        this.value = ''
       } else {
         // single
         if (!found) { // not found
@@ -140,14 +145,14 @@ class BwcCombobox extends HTMLElement {
             console.log('onBlur - selected')
             // console.log('not found but is selected')
             this.#selectedItem = null
-            this.dispatchEvent(new CustomEvent('selected', { detail: this.#selectedItem }))
+            this.dispatchEvent(new CustomEvent('select', { detail: this.#selectedItem }))
           }
         } else {
           if (!this.#selectedItem) {
             console.log('onBlur - selected')
             // console.log('found but not selected')
             this.#selectedItem = found
-            this.dispatchEvent(new CustomEvent('selected', { detail: this.#selectedItem }))
+            this.dispatchEvent(new CustomEvent('select', { detail: this.#selectedItem }))
           }
         }
       }
@@ -156,7 +161,7 @@ class BwcCombobox extends HTMLElement {
     // console.log('setup stuff', this.required, this.disabled, this.inputClass)
     this.#elInput.value = this.value
 
-    this.#elInput.className = this.inputClass || 'input' // default to bulma?
+    this.#elInput.className = this.inputClass || 'input' // default to bulma
 
     if (this.required) this.#elInput.setAttribute('required', '')
     else this.#elInput.removeAttribute('required')
@@ -241,7 +246,6 @@ class BwcCombobox extends HTMLElement {
     return this.#tags
   }
   set tags(val) {
-    // console.log('set tags', val)
     if (!this.#elTags) return
     this.#elTags.innerHTML = ''
     this._setTags(val) // this.#tags will be set in _setTags()
@@ -250,8 +254,25 @@ class BwcCombobox extends HTMLElement {
   _isStringType() { // is list item and selected values string ?
     return !(this.#key && this.#text) // console.log('_isStringType', !(this.#key && this.#text))
   }
+  _tagLimitReached() {
+    return this.#tagLimit && this.#tags.length >= this.#tagLimit
+  }
+  _itemMatchInput(item) {
+    return this._isStringType() ? item === this.value : item[this.#key] === this.value || item[this.#text] === this.value
+  }
+  _matchItems(item1, item2) {
+    if (item1 === null && item2 === null) return true
+    else if (item1 === null) return false
+    else if (item2 === null) return false
+    return this._isStringType() ? item1 === item2 : item1[this.#key] === item2[this.#key] || item1[this.#text] === item2[this.#text]
+  }
+  _makeItemFromValue () {
+    // TBD if all spaces only... return? trim white spaces?
+    return this._isStringType() ? this.value : { [this.#key]: this.value, [this.#text]: this.value }    
+  }
 
   _addTag(item) {
+    if (this._tagLimitReached()) return
     const itemExists = this.#tags.find(tag => this._isStringType() ? tag === item : (tag[this.#key] === item[this.#key] && tag[this.#text] === item[this.#text]))
     if (!this.#repeat && itemExists) return // duplicates not allowed
 
@@ -261,21 +282,26 @@ class BwcCombobox extends HTMLElement {
     span.value = this._isStringType() ? item : item[this.#key]
     span.onclick = (e) => { // e.target.innerText, e.target.value
       this._removeTag(span)
-      this._updateTags()
     }
     this.#elTags.appendChild(span)
     this._updateTags()
+    if (this._tagLimitReached()) {
+      const el  = this.#elInput
+      el.setAttribute('disabled', '')
+    }
   }
 
   _updateTags() {
     let tags = [...this.#elTags.children]
     this.#tags = tags.map(tag => this._isStringType() ? tag.innerText : ({ [this.#key]: tag.value, [this.#text]: tag.innerText }))
     console.log('_updateTags - selected')
-    this.dispatchEvent(new CustomEvent('selected', { detail: this.#tags }))
+    this.dispatchEvent(new CustomEvent('select', { detail: this.#tags }))
   }
 
   _removeTag(span) {
     this.#elTags.removeChild(span)
+    this._updateTags()
+    if (!this._tagLimitReached() && !this.disabled) this.#elInput.removeAttribute('disabled')    
   }
 
   _onInput(e) { // whether clicked or typed
@@ -283,9 +309,7 @@ class BwcCombobox extends HTMLElement {
     const prevItem = this.#selectedItem
     this.value = this.#elInput.value
 
-    const found = this.items.find(item => {
-      return typeof item === 'string' ? item === this.value : item.key === this.value || item.text === this.value
-    })
+    const found = this.items.find(item => this._itemMatchInput(item))
     if (!found) { // not found
       this.#selectedItem = null
       this.dispatchEvent(new CustomEvent('search', { detail: this.value }))
@@ -293,9 +317,12 @@ class BwcCombobox extends HTMLElement {
       this.#selectedItem = found
     }
     // console.log('emit selected?', prevItem !== this.#selectedItem, this.#selectedItem)
-    if (prevItem !== this.#selectedItem) {
+    if (!this._matchItems(prevItem, this.#selectedItem)) {
       console.log('onInput - selected')
-      this.dispatchEvent(new CustomEvent('selected', { detail: this.#selectedItem }))
+      if (!this.#selectedItem && this.allowCustomTag) {
+        this.#selectedItem = this._makeItemFromValue()
+      }
+      this.dispatchEvent(new CustomEvent('select', { detail: this.#selectedItem }))
     }
   }
 

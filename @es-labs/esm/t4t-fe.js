@@ -195,16 +195,18 @@ async function upload(file) { // the file object
 
 
 // const autoComplete = debounce(async (e, col, _showForm) => {
-  // let res = []
 // recordObj[_showForm][col] = e.target.value
-async function autocomplete (search, col, record) { // wrap in debounce
+
+// wrap in debounce
+// parentColVal in use-cases where parent table column changes
+async function autocomplete (search, col, record, parentColVal) {
   let res = []
   try {
     const { dbName, tableName, limit, key, text, parentTableColName, parentCol } = config.cols[col].options
     const query = { dbName, tableName, limit, key, text, search }
     if (parentTableColName) {
       query.parentTableColName = parentTableColName
-      query.parentTableColVal = record[parentCol]
+      query.parentTableColVal = parentColVal || record[parentCol]
     }
     const { data } = await http.get('/api/t4t/autocomplete', query)
     res = data
