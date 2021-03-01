@@ -10,6 +10,8 @@ const template = /*html*/`
       <bwc-combobox ref="mcRef" :tags="mc.tags" tag-limit="3" multiple input-class="input" listid="multiple-ac" required :items="ac.items" v-model="ac.multipleValue" @search="(e) => autoComplete(e)" @select="selected"></bwc-combobox>
     </div>
   </div>
+  <button class="button" @click="setMcTags">setMcTags</button>
+
   <div class="field">
     <label for="" class="label">bwc-combobox - single</label>
     <div class="control has-icons-left">
@@ -72,7 +74,7 @@ export default {
       value: 'aa1',
       items: [], // ['aa9','aa5']
 
-      multipleValue: [],
+      multipleValue: ['aa1', 'aa2', 'aa1', 'aa3', 'aa4'], // this one becomes a string in v-mode... wrong way to set...
       singleValue: 'aa5'
     })
 
@@ -177,12 +179,15 @@ export default {
     onMounted(async () => {
       console.log('ui1 mounted!')
       console.log('mcRef', mcRef)
-      mc.tags = ['aa1', 'aa2', 'aa1', 'aa3', 'aa4']
+      // mc.tags = ['aa1', 'aa2', 'aa1', 'aa3', 'aa4']
     })
+
+    const setMcTags = () => mc.tags = ['aa1', 'aa2', 'aa1', 'aa3', 'aa4']
 
     return {
       mcRef, // multiSelect
       mc,
+      setMcTags,
 
       ac,
       autoComplete,

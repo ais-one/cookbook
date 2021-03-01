@@ -31,7 +31,7 @@
     })
     async function hello() {
       const aa = await import('./views/vanilla.js')
-      console.log('hellossss', aa.default.template)
+      console.log('add in a hello component...', aa.default.template)
       document.querySelector('#vanilla').innerHTML = aa.default.template
     }
   </script>

@@ -1,4 +1,5 @@
 // Combobox with autocomplete component using input, datalist and tags
+// TBD fix multi select init in bwc-t4t-form.js
 // TBD Initially if no data for the list, please fetch some
 // TBD allow configurable classnames for tag and tag wrapper, clear icons (for bootstrap, muicss)
 // TBD single select clear value if not found and custom tags not allowed
@@ -30,13 +31,13 @@ methods:
 events emitted:
 - @input (via v-model) - e.target.value
 - @search - e.detail String
-- @selected - e.detail String or Object or null
+- @select - e.detail String or Object or null
 
 if selected data is null (no match found, else match found)
 
 Usage with (VueJS):
 
-<bwc-combobox required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @selected=></bwc-combobox>
+<bwc-combobox required :items="ac.items" v-model="ac.value" @search="(e) => autoComplete(e)" @select="(e) => selectItem"></bwc-combobox>
 
 // string version
 const ac = reactive({ value: 'a', items: ['aa9','aa5'] })
@@ -68,8 +69,8 @@ template.innerHTML = /*html*/`
 class BwcCombobox extends HTMLElement {
   // local properties
   #items = [] // list of items
-  #tags = [] // multiple selected
-  #selectedItem = null // single selected
+  #tags = [] // multi-select
+  #selected = null // single-select
   #key = '' // must have both, other wise string is assumed?
   #text = ''
 
@@ -94,13 +95,10 @@ class BwcCombobox extends HTMLElement {
     this.#elInput = this.querySelector('input')
     this.#elList = this.querySelector('datalist')
     this.#elClearBtn = this.querySelector('.clear-btn')
-
-    // console.log('listid', this.listid)
-    this.#elList.id = this.listid
+    
+    this.#elList.id = this.listid // console.log('listid', this.listid)
     this.#elInput.setAttribute('list', this.listid)
-
     this.#elInput.addEventListener('input', this._onInput)
-    // if (this.hasAttribute('input-class')) el.setAttribute('class', this.getAttribute('input-class'))
 
     this.#allowCustomTag = this.hasAttribute('allow-custom-tag')
     this.#multiple = this.hasAttribute('multiple')
@@ -109,6 +107,7 @@ class BwcCombobox extends HTMLElement {
     if (this.hasAttribute('tag-limit')) this.#tagLimit = Number(this.getAttribute('tag-limit'))
     if (this.hasAttribute('object-key')) this.#key = this.getAttribute('object-key')
     if (this.hasAttribute('object-text')) this.#text = this.getAttribute('object-text')
+
     if (this.#multiple) { // if multiple... use tags
       this.#elTags = document.createElement('div')
       this.#elTags.className = 'tags'
@@ -120,8 +119,8 @@ class BwcCombobox extends HTMLElement {
       this.#elInput.value = ''
       if (!this.#multiple) {
         console.log('clear button click')
-        this.#selectedItem = null
-        this.dispatchEvent(new CustomEvent('select', { detail: this.#selectedItem }))
+        this.#selected = null
+        this.dispatchEvent(new CustomEvent('select', { detail: this.#selected }))
       }
     }
     this.#elInput.onblur = (e) => {
@@ -132,27 +131,27 @@ class BwcCombobox extends HTMLElement {
         if (!found) { // not found
           if (this.#allowCustomTag) { // can add new
             this._addTag(this._makeItemFromValue())
+            this.dispatchEvent(new CustomEvent('select', { detail: this.#tags }))
           }
         } else {
           // if repeatable? set tags list if not there already
           this._addTag(found)
+          this.dispatchEvent(new CustomEvent('select', { detail: this.#tags }))
         }
         this.value = ''
       } else {
         // single
         if (!found) { // not found
-          if (this.#selectedItem) {
-            console.log('onBlur - selected')
-            // console.log('not found but is selected')
-            this.#selectedItem = null
-            this.dispatchEvent(new CustomEvent('select', { detail: this.#selectedItem }))
+          if (this.#selected) {
+            console.log('onBlur - single select - not found and this.#selected truthy')
+            this.#selected = null
+            this.dispatchEvent(new CustomEvent('select', { detail: this.#selected }))
           }
         } else {
-          if (!this.#selectedItem) {
-            console.log('onBlur - selected')
-            // console.log('found but not selected')
-            this.#selectedItem = found
-            this.dispatchEvent(new CustomEvent('select', { detail: this.#selectedItem }))
+          if (!this.#selected) {
+            console.log('onBlur - single select - found and this.#selected falsy')
+            this.#selected = found
+            this.dispatchEvent(new CustomEvent('select', { detail: this.#selected }))
           }
         }
       }
@@ -160,14 +159,9 @@ class BwcCombobox extends HTMLElement {
 
     // console.log('setup stuff', this.required, this.disabled, this.inputClass)
     this.#elInput.value = this.value
-
-    this.#elInput.className = this.inputClass || 'input' // default to bulma
-
-    if (this.required) this.#elInput.setAttribute('required', '')
-    else this.#elInput.removeAttribute('required')
-    if (this.disabled) this.#elInput.setAttribute('disabled', '')
-    else this.#elInput.removeAttribute('disabled')
-
+    this.#elInput.className = this.inputClass || 'input' // default to bulma - // if (this.hasAttribute('input-class')) el.setAttribute('class', this.getAttribute('input-class'))
+    this.required ? this.#elInput.setAttribute('required', '') : this.#elInput.removeAttribute('required')
+    this.disabled ? this.#elInput.setAttribute('disabled', '') : this.#elInput.removeAttribute('disabled')
     this._setList(this.items)
   }
 
@@ -179,8 +173,7 @@ class BwcCombobox extends HTMLElement {
     const el = this.#elInput
     switch (name) {
       case 'value': {
-        // if (!this.#multiple && el) el.value = newVal
-        if (el) el.value = newVal
+        if (el) el.value = newVal // v-model affects this
         this.dispatchEvent(new CustomEvent('input', { detail: newVal }))
         break
       }
@@ -209,58 +202,40 @@ class BwcCombobox extends HTMLElement {
   set value(val) { this.setAttribute('value', val) }
 
   get required() { return this.hasAttribute('required') }
-  set required(val) {
-    if (val) {
-      this.setAttribute('required', '')
-    } else {
-      this.removeAttribute('required')
-    }
-  }
+  set required(val) { val ? this.setAttribute('required', '') : this.removeAttribute('required') }
 
   get listid() { return this.getAttribute('listid') }
   set listid(val) { this.setAttribute('listid', val) }
 
   get disabled() { return this.hasAttribute('disabled') }
-  set disabled(val) {
-    if (val) {
-      this.setAttribute('disabled', '')
-    } else {
-      this.removeAttribute('disabled')
-    }
-  }
+  set disabled(val) { val ? this.setAttribute('disabled', '') : this.removeAttribute('disabled') }
 
   get inputClass() { return this.getAttribute('input-class') }
   set inputClass(val) { this.setAttribute('input-class', val) }
 
   // properties
-  get items() {
-    return this.#items
-  }
+  get items() { return this.#items }
   set items(val) {
     // console.log('set items', val.length)
     this.#items = val
     this._setList(val)
   }
 
-  get tags() {
-    return this.#tags
-  }
-  set tags(val) {
-    if (!this.#elTags) return
-    this.#elTags.innerHTML = ''
-    this._setTags(val) // this.#tags will be set in _setTags()
-  }
+  // multi-select
+  get tags() { return this.#tags }
+  set tags(val) { this._setTags(val) } // this.#tags will be set in _setTags()
+
+  // single-select
+  get selected() { return this.#selected }
+  set selected(val) { this.#selected = val } // TBD set it correctly
 
   _isStringType() { // is list item and selected values string ?
     return !(this.#key && this.#text) // console.log('_isStringType', !(this.#key && this.#text))
   }
-  _tagLimitReached() {
-    return this.#tagLimit && this.#tags.length >= this.#tagLimit
-  }
-  _itemMatchInput(item) {
+  _itemMatchInput(item) { // item match to text input
     return this._isStringType() ? item === this.value : item[this.#key] === this.value || item[this.#text] === this.value
   }
-  _matchItems(item1, item2) {
+  _matchItems(item1, item2) { //  item match to another item
     if (item1 === null && item2 === null) return true
     else if (item1 === null) return false
     else if (item2 === null) return false
@@ -271,33 +246,30 @@ class BwcCombobox extends HTMLElement {
     return this._isStringType() ? this.value : { [this.#key]: this.value, [this.#text]: this.value }    
   }
 
+  _tagLimitReached() {
+    return this.#tagLimit && this.#elTags.children.length >= this.#tagLimit
+  }
   _addTag(item) {
     if (this._tagLimitReached()) return
     const itemExists = this.#tags.find(tag => this._isStringType() ? tag === item : (tag[this.#key] === item[this.#key] && tag[this.#text] === item[this.#text]))
     if (!this.#repeat && itemExists) return // duplicates not allowed
-
     const span = document.createElement('span')
     span.className = 'tag is-black'
     span.innerText = this._isStringType() ? item : item[this.#text]
     span.value = this._isStringType() ? item : item[this.#key]
     span.onclick = (e) => { // e.target.innerText, e.target.value
       this._removeTag(span)
+      this.dispatchEvent(new CustomEvent('select', { detail: this.#tags }))
     }
     this.#elTags.appendChild(span)
     this._updateTags()
-    if (this._tagLimitReached()) {
-      const el  = this.#elInput
-      el.setAttribute('disabled', '')
-    }
+    if (this._tagLimitReached()) this.#elInput.setAttribute('disabled', '')
   }
-
   _updateTags() {
     let tags = [...this.#elTags.children]
     this.#tags = tags.map(tag => this._isStringType() ? tag.innerText : ({ [this.#key]: tag.value, [this.#text]: tag.innerText }))
-    console.log('_updateTags - selected')
-    this.dispatchEvent(new CustomEvent('select', { detail: this.#tags }))
+    // console.log('_updateTags', this.#tags)
   }
-
   _removeTag(span) {
     this.#elTags.removeChild(span)
     this._updateTags()
@@ -306,28 +278,32 @@ class BwcCombobox extends HTMLElement {
 
   _onInput(e) { // whether clicked or typed
     // console.log('_onInput', e.target.value, this.items.length)
-    const prevItem = this.#selectedItem
+    const prevItem = this.#selected
     this.value = this.#elInput.value
 
     const found = this.items.find(item => this._itemMatchInput(item))
     if (!found) { // not found
-      this.#selectedItem = null
+      this.#selected = null
       this.dispatchEvent(new CustomEvent('search', { detail: this.value }))
     } else {
-      this.#selectedItem = found
+      this.#selected = found
     }
-    // console.log('emit selected?', prevItem !== this.#selectedItem, this.#selectedItem)
-    if (!this._matchItems(prevItem, this.#selectedItem)) {
-      console.log('onInput - selected')
-      if (!this.#selectedItem && this.allowCustomTag) {
-        this.#selectedItem = this._makeItemFromValue()
+    if (!this._matchItems(prevItem, this.#selected) && !this.#multiple) {
+      console.log('_onInput - selected && provItem not match this.#selected')
+      if (!this.#selected && this.allowCustomTag) {
+        this.#selected = this._makeItemFromValue()
       }
-      this.dispatchEvent(new CustomEvent('select', { detail: this.#selectedItem }))
+      this.dispatchEvent(new CustomEvent('select', { detail: this.#selected }))
     }
   }
 
   _setTags(_tags) {
+    // console.log('_setTags', _tags, this.#elTags.children.length)
+    if (!this.#elTags) return
+    this.#elTags.innerHTML = ''
+    this.#tags = []
     _tags.forEach(tag => this._addTag(tag))
+    this.dispatchEvent(new CustomEvent('select', { detail: this.#tags }))
   }
 
   _setList(_items) { // set list items

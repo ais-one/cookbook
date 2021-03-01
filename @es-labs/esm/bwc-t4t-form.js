@@ -297,6 +297,20 @@ class BwcT4tForm extends HTMLElement {
           // disbled and required already set
           // TBD set input class
 
+          const valueType = c?.ui?.valueType // TBD
+          if (c?.ui?.attrs?.multiple) {
+            if (valueType === 'string') {
+
+            } else { // object
+
+            }
+          } else { // single
+            if (valueType === 'string') {
+
+            } else { // object
+
+            }
+          }
           if (this.mode === 'add') { // TBD set the value
             el.value = c.default || ''
           } else if (this.mode === 'edit') {
