@@ -1,14 +1,14 @@
 <template>
   <div class="super-center-parent" >
     <a-result
-      title="Welcome To DS Dashboard"
-      sub-title="Your one-stop web portal for all things data"
+      title="Welcome To JS Dashboard"
+      sub-title="Your one-stop web portal for all things web"
     >
       <template #icon>
         <!-- <smile-twoTone /> -->
         <a-image
           :width="200"
-          src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Dell_logo.svg"
+          src="https://upload.wikimedia.org/wikipedia/commons/archive/6/6a/20120221235432%21JavaScript-logo.png"
         />
       </template>
       <template #extra>

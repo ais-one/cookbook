@@ -32,7 +32,7 @@ const template = /*html*/`
 `
 
 import * as t4t from '/esm/t4t-fe.js'
-import { debounce, downloadData } from '/esm/util.js'
+import { downloadData } from '/esm/util.js'
 
 const { onMounted, ref, reactive } = Vue
 

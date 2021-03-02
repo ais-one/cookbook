@@ -11,7 +11,7 @@
 Latest Version [0.4.7](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.7) - Released 2021 Mar 21 0430 +8GMT
 
 - Replaced mwc with Ant Design Vue in example-vite
-- Added bwc-combobox (an extension of bwc-autocomplete, supports multi-select and tags)
+- Added bwc-combobox (an extension of bwc-autocomplete, supports multi-select and tags), and integrate it to bwc-t4t-form.js
 
 # Features
 
@@ -288,6 +288,20 @@ vue-crud-x
 +- README.md
 +- rest-cmd.http : rest commands for testing
 ```
+
+## File to note
+
+- example-app/router/tables/*.* - table configurations
+- example-app/router/t4t.js - handle backend CRUD API
+- @es-labs/esm/t4t-fe.js - frontend operations to interact with t4t.js
+- @es-labs/esm/t4t-validate.js - validation used by both front and backend
+- @es-labs/esm/bwc-table - used to display table
+- @es-labs/esm/bwc-t4t-form.js - form generated from table configurations
+- example-native/views/ui1.js - autcomplete, combobox, file upload example
+- example-native/views/ui2.js - table example
+- example-native/views/ui3.js - form example (with connection to backend)
+- example-native/views/ui4.js - table and form example (with connection to backend)
+
 
 ## CI/CD
 

@@ -23,7 +23,7 @@
     "@ant-design/icons-vue": "^6.0.1",
     "@antv/data-set": "^0.11.8",
     "@antv/g2": "^4.1.12",
-    "@antv/g2plot": "^2.3.12",
+    "@antv/g2plot": "^2.3.13",
     "@apollo/client": "^3.3.11",
     "ant-design-vue": "^2.0.1",
     "echarts": "^5.0.2",
@@ -48,7 +48,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-standard": "^5.0.0",
-    "eslint-plugin-vue": "^7.6.0",
+    "eslint-plugin-vue": "^7.7.0",
     "prettier": "^2.2.1",
     "vite": "^2.0.4"
   }

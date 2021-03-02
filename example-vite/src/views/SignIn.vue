@@ -61,7 +61,6 @@ export default {
     const route = useRoute()
 
     const i18n = useI18n()
-
     const loading = ref(false)
     const email = ref('test')
     const password = ref('test')
@@ -98,9 +97,7 @@ export default {
       timerId = setInterval(async () => {
         if (ws) {
           console.log('ws interval - send')
-          ws.send('Hello ' + new Date())
-          // if (navigator.onLine) this.updateNetworkError(false)
-          // else this.updateNetworkError(true)
+          ws.send('Hello ' + new Date()) // navigator.onLine
         } else {
           console.log('ws falsy')
         }
