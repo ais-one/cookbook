@@ -285,7 +285,7 @@ class BwcT4tForm extends HTMLElement {
           el.appendChild(optEl)
         }
       } else { // other input
-        if (elementTag === 'bwc-combobox') { // TBD TBD TBD
+        if (elementTag === 'bwc-combobox') {
           // console.log('bwc-combobox', this.#record)
           el.setAttribute('listid', 'list-'+k)
           el.setAttribute('object-key', 'key')
@@ -297,27 +297,28 @@ class BwcT4tForm extends HTMLElement {
           // disbled and required already set
           // TBD set input class
 
-          const valueType = c?.ui?.valueType // TBD
-          if (c?.ui?.attrs?.multiple) {
-            if (valueType === 'string') {
-
-            } else { // object
-
+          el.onload = (e) => { // need to wait for component to load before setting the values
+            // console.log('bwc loaded')
+            const valueType = c?.ui?.valueType // TBD transform value
+            if (c?.ui?.attrs?.multiple) { // can be array in column or join table
+              const val = this.mode === 'add' ? c.default : this.#record[k]
+              if (valueType === 'string') {
+                el.tags = val.split(',').map(item => ({ key: item, text: item })) || []
+              } else { // object
+                el.tags = val || []
+              }
+            } else { // single
+              const val = this.mode === 'add' ? c.default : this.#record[k]  
+              if (valueType === 'string') {
+                el.value = val || ''
+                el.selected = val ? { key: val, text: val } : null
+              } else { // object
+                el.value = val.text || '' // key and text should be same
+                el.selected = val || null
+              }
             }
-          } else { // single
-            if (valueType === 'string') {
+          } // onload end
 
-            } else { // object
-
-            }
-          }
-          if (this.mode === 'add') { // TBD set the value
-            el.value = c.default || ''
-          } else if (this.mode === 'edit') {
-            // console.log('is FileList',this.#record[k] instanceof FileList, k, el.type === 'file')
-            el.value = el.type === 'file' ? '' : (this.#record[k] || '')
-          }
-  
           el.onsearch = debounce(async (e) => {
             // this.#xcols['state'].el.value // use this.#xcols to get latest values
             // console.log(e.target.value, k, this.#record) // this.#record does not change until validated and submit
@@ -331,20 +332,22 @@ class BwcT4tForm extends HTMLElement {
           }, 500)
           el.onselect = (e) => { // onselect works (events handled by DOM), onselected need to use addEventListener
             // TBD reset child value - may cascade down further
-            const childCol = c?.options?.childCol
-            if (childCol) {
-              const col = this.#xcols[childCol]
+            const childColName = c?.options?.childCol
+            if (childColName) {
+              const col = this.#xcols[childColName]
+              const childColObj = this.#config.cols[childColName]
               if (col && col.el) {
-                if (c?.ui?.attrs?.multiple) { // multiple
+                if (childColObj?.ui?.attrs?.multiple) { // multiple
                   col.el.tags = []
                 } else {
-                  col.el.value = '' 
+                  col.el.value = ''
+                  col.el.selected = null
                 }
               }
             }
-            console.log('bbbb', e.detail)
+            console.log('t4t combobox onselect', e.detail)
           }
-        } else {
+        } else { // input, textarea
           if (this.mode === 'add') { // set the value
             el.value = c.default || ''
           } else if (this.mode === 'edit') {
@@ -353,7 +356,6 @@ class BwcT4tForm extends HTMLElement {
           }  
         }
       }
-  
       this.#xcols[k].el = el // set input element
     }  
 
@@ -423,9 +425,11 @@ class BwcT4tForm extends HTMLElement {
         // check validity
         for (let col in this.#xcols) {
           if (this.#xcols[col].el) {
-            const valid = this.#xcols[col].el.checkValidity()
-            if (!valid) error = true
-            if (this.#xcols[col].errorEl) this.#xcols[col].errorEl.innerText = valid ? '' : this.#xcols[col].el.validationMessage
+            if (this.#xcols[col]?.el?.checkValidity) {
+              const valid = this.#xcols[col].el.checkValidity()
+              if (!valid) error = true
+              if (this.#xcols[col].errorEl) this.#xcols[col].errorEl.innerText = valid ? '' : this.#xcols[col].el.validationMessage  
+            }
           }
         }
 
@@ -444,6 +448,23 @@ class BwcT4tForm extends HTMLElement {
                 this.#record[col] = selected.join(',')
               } else if (inputEl.tagName.toLowerCase() === 'bwc-combobox') {
                 // TBD set the value
+                const c = this.#config.cols[col]
+                const val = c?.ui?.attrs?.multiple ? inputEl.tags : inputEl.selected
+                const valueType = c?.ui?.valueType
+
+                if (c?.ui?.attrs?.multiple) { // can be array in column or join table
+                  if (valueType === 'string') {
+                    this.#record[col] = val.map(item => item.text).join(',')
+                  } else { // object
+                    this.#record[col] = val
+                  }
+                } else { // single
+                  if (valueType === 'string') {
+                    this.#record[col] = val.text
+                  } else { // object
+                    this.#record[col] = val
+                  }
+                }
               } else { // input, textarea
                 this.#record[col] = inputEl.value
                 if (inputEl.files) {
@@ -453,7 +474,8 @@ class BwcT4tForm extends HTMLElement {
               }
             }
           }
-          this.dispatchEvent(new CustomEvent('submit', { detail: { data: this.#record } }))
+          console.log('test submit', this.#record)
+          // this.dispatchEvent(new CustomEvent('submit', { detail: { data: this.#record } }))
         } else {
           this.dispatchEvent(new CustomEvent('submit', { detail: { error } }))
         }

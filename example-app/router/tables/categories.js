@@ -23,10 +23,6 @@ module.exports = {
       add: '',
       edit: '',
       default: '',
-
-      // OLD
-      input: 'textfield',
-      // NEW
       ui: {
         tag: 'input'
       },

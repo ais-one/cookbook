@@ -118,7 +118,7 @@ class BwcCombobox extends HTMLElement {
     this.#elClearBtn.onclick = (e) => {
       this.#elInput.value = ''
       if (!this.#multiple) {
-        console.log('clear button click')
+        // console.log('clear button click')
         this.#selected = null
         this.dispatchEvent(new CustomEvent('select', { detail: this.#selected }))
       }
@@ -157,12 +157,14 @@ class BwcCombobox extends HTMLElement {
       }
     }
 
-    // console.log('setup stuff', this.required, this.disabled, this.inputClass)
+    console.log('combo box connected', this.required, this.disabled, this.inputClass)
     this.#elInput.value = this.value
     this.#elInput.className = this.inputClass || 'input' // default to bulma - // if (this.hasAttribute('input-class')) el.setAttribute('class', this.getAttribute('input-class'))
     this.required ? this.#elInput.setAttribute('required', '') : this.#elInput.removeAttribute('required')
     this.disabled ? this.#elInput.setAttribute('disabled', '') : this.#elInput.removeAttribute('disabled')
     this._setList(this.items)
+
+    this.dispatchEvent(new CustomEvent('load'))
   }
 
   disconnectedCallback() {
@@ -298,7 +300,7 @@ class BwcCombobox extends HTMLElement {
   }
 
   _setTags(_tags) {
-    // console.log('_setTags', _tags, this.#elTags.children.length)
+    // console.log('_setTags', _tags, this.#elTags)
     if (!this.#elTags) return
     this.#elTags.innerHTML = ''
     this.#tags = []

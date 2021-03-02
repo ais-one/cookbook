@@ -1,6 +1,7 @@
 ## Issues
 
 ### For next sprint / version
+- [example-native] migrate example-webpack vue-crud-x table examples to example-native (child table, join tables), (category, author, book - has 1 category, page - belongs to 1 book, book_author)
 - [example-app] jsonschema & openapi 3.1
 - [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)
 - [fix] - ==='object' - handle null object

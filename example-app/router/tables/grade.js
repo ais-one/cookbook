@@ -23,9 +23,6 @@ module.exports = {
       subject: {
         label: 'Subject',
         type: 'string',
-        // OLD
-        input: '',
-        // NEW
         ui: {
           tag: 'input'
         },
@@ -33,9 +30,6 @@ module.exports = {
       grade: {
         label: 'Grade',
         type: 'string',
-        // OLD
-        input: '',
-        // NEW
         ui: {
           tag: 'input'
         },
