@@ -10,7 +10,6 @@ module.exports = {
     { folder: '../example-amp', url: '/amp', options: { extensions: ['html'], index: false } },
     { folder: '../example-native', url: '/native', options: { extensions: ['html'], index: false } },
     { folder: '../example-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
-    { folder: '../example-webpack/dist', url: '/webpack', options: { extensions: ['html'], index: false } },
     { folder: 'public/demo-express', url: '/' }
   ],
 
@@ -21,7 +20,7 @@ module.exports = {
     options: {
       fileFilter: (req, file, cb) => { // better to also filter at frontend
         // console.log('fileFilter', file)
-        if ( ['text', 'image'].find(item => file.mimetype.includes(item)) ) cb(null, true) // accept image or text
+        if ( ['text', 'image'].find(item => file.mimetype.includes(item)) ) return cb(null, true) // accept image or text
         return cb(null, false, new Error("Only text/plain are allowed"))
       },
       limits: {

@@ -16,6 +16,9 @@ import router from './router.js'
 import store from './store.js'
 import App from './app.js'
 
+// set baseurl here - need config
+// set cors settings - need config
+// set/unset token during login/logout, if token in auth header 
 const { createApp } = Vue
 
 const app = createApp(App)

@@ -4,9 +4,6 @@
   "description": "vue 3 SPA + vite example",
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
-  "config": {
-    "env": "uat"
-  },
   "scripts": {
     "lint": "eslint . --ext .js,.vue",
     "prettier:check": "prettier --check src/**/*.{js,jsx,json}",
@@ -15,9 +12,7 @@
     "dev:build": "vite build --mode development",
     "build": "vite build",
     "build-uat": "vite build --mode uat",
-    "build-production": "vite build --mode production",
-    "deploy": "deploy.sh %npm_package_config_env%",
-    "deploy:unix": "deploy.sh $npm_package_config_env"
+    "build-production": "vite build --mode production"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
@@ -50,6 +45,6 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.7.0",
     "prettier": "^2.2.1",
-    "vite": "^2.0.4"
+    "vite": "^2.0.5"
   }
 }

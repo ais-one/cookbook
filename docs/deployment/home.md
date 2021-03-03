@@ -37,7 +37,7 @@ The UAT, production and (optional staging) environments are on the service provi
   - OPTION deploy to GKE **WIP**
 - Mongodb - Mongo Atlas
 - file uploads - Google object storage
-- sqlite - local file (should replace with SQL DB) **might not work in containers**
+- sqlite - local file (should replace with SQL DB) **might not work well in containers**
 - user_session - mongodb
 
 ## Current Manual Deployment Script
@@ -61,8 +61,8 @@ In example-app folder
 4. set the CORS to allow frontend origin from the frontend setup 
 
 ```bash
-npm run deploy # windows
-npm run deploy:unix # linux or mac
+# on windows, need to use bash shell
+deploy.sh uat
 ```
 
 Note the URL returned you can test it using <URL>/api/healthcheck, you may need to wait awhile for initial response or retry a few times
@@ -71,20 +71,19 @@ Note the URL returned you can test it using <URL>/api/healthcheck, you may need 
 
 In example-vite folder
 
-1. set package.json "config.env" = "uat"
-2. place service account json file into config/secrets folder
-3. setup the API URL in .env.uat from the URL returned in a successful backend setup
+1. place service account json file into **deploy** folder
+2. setup the API URL in **.env.uat** file from the URL returned in a successful backend setup
 
 ```bash
-npm run deploy # windows
-npm run deploy:unix # linux or mac
+# on windows, need to use bash shell
+deploy.sh uat
 ```
 
 ---
 
-## CircleCI Deployment (Work In Progress)
+## Github Actions Deploymen
 
-TBD
+See **.github/workflows/manual.yml**
 
 ---
 
@@ -105,10 +104,9 @@ This is for local development purpose and tries to replicate as much of the real
   - called by external site - ngrok
 - NodeJS
   - with self signed cert
-- MongoDB
 - WSL Ubuntu
 - Docker
-- Redis
+  - MongoDB, SAML, Kafka, MySQL, Vault docker compose files can be found in **docker-devenv** folder
 
 ## Backend Application Container Build
 
@@ -120,51 +118,22 @@ And [../example-app/Dockerfile](../example-app/Dockerfile)
 
 ## Deployment Preparation
 
-You need these files and configure them (see example-app)
+View files, folders and readme.md below, and configure them
 
 ### Backend
 
-- vue-crud-x/<project>/config/deploy/uat.pem
-  - PEM of the VM
-- vue-crud-x/<project>/config/uat.env.js
-  - configs & settings for your environment 
-- vue-crud-x/<project>/deploy/uat.gcp.json
-  - GCP service key for deployment 
-- vue-crud-x/<project>/ecosystem.config.js (for pm2 deployments)
-- vue-crud-x/<project>/Dockerfile (for docker deployments)
+- example-app/config/
+- example-app/deploy/
+- example-app/ecosystem.config.js (for pm2 deployments)
+- example-app/Dockerfile (for docker deployments)
+- example-app/deploy.sh
+- example-app/deploy-vm.sh
 
 ### Frontend
 
-- vue-crud-x/<project>/web/spa/.env.uat
-  - configs & settings for your environment 
-- vue-crud-x/<project>/web/{some other app}/.env.uat
-
-### vue-crud-x/package.json settings
-
-Type in the app that you are building and the environment
-
-```json
-  "config": {
-    "env": "uat"
-  },
-```
-
-
-### Deploy
-
-Script to run on the machine doing the deployment
-
-**Windows**
-
-```
-npm run deploy
-```
-
-**Linux / Mac**
-
-```
-npm run deploy:unix
-```
+- example-vite/.env.*
+- example-vite/deploy/
+- example-app/deploy.sh
 
 ---
 
@@ -205,16 +174,9 @@ Requires
 
 ## Scalable Deployment On Cloud (GCP)
 
-### Frontend
-
-**Frontend**
+### Frontend & File/Object Storage
 
 GCS / S3 / Azure Storage
-
-**File/Object Storage**
-
-GCS / S3 / Azure Storage
-
 
 ### Backend
 
@@ -262,22 +224,15 @@ CloudFlare should be used for all deployments
 We do not use https://cloud.google.com/load-balancing/docs/ssl-certificates
 
 SSL Strategies 
-
 - Flexible: SSL User --> SSL --> CF --> GCP
-
 - Full: SSL User --> SSL --> CF --> SSL --> GCP
 
 Redirect
-
 - always redirect http to https
-
 
 ## CORS
 
 CORS Origin settings will follow frontend name - e.g. https://app.mybot.live
-
-
-
 
 ## Pricings
 

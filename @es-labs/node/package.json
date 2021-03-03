@@ -17,7 +17,7 @@
     "ioredis": "^4.23.0",
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.0.3",
-    "knex": "^0.21.18",
+    "knex": "^0.21.19",
     "mongodb": "^3.6.4",
     "mysql": "^2.18.1",
     "objection": "^2.2.14",

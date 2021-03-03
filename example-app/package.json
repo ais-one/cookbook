@@ -6,26 +6,15 @@
   "directories": {
     "test": "tests"
   },
-  "config": {
-    "env": "development"
-  },
   "scripts": {
-    "start": "cross-env NODE_ENV=production node ./bin/www",
     "dev": "cross-env NODE_ENV=development PORT=3001 DEBUG=app:* nodemon --ignore tests/ --ignore public/ --watch src bin/www",
-    "knex": "cross-env NODE_ENV=%npm_package_config_env% node deploy/db/knex/migrations/index.js&&cross-env NODE_ENV=%npm_package_config_env% node deploy/db/knex/seeds/index.js",
-    "knex:unix": "cross-env NODE_ENV=$npm_package_config_env node deploy/db/knex/migrations/index.js&&cross-env NODE_ENV=$npm_package_config_env node deploy/db/knex/seeds/index.js",
-    "mongo": "cross-env NODE_ENV=%npm_package_config_env% node deploy/db/mongo/index.js",
-    "mongo:unix": "cross-env NODE_ENV=$npm_package_config_env node deploy/db/mongo/index.js",
-    "app": "cross-env NODE_ENV=%npm_package_config_env% nodemon --trace-warnings index.js",
-    "app:lint": "cross-env NODE_ENV=%npm_package_config_env% nodemon index.js --ignore tests/ --ignore public/ --exec \"npm run lint && node\"",
-    "app:unix": "cross-env NODE_ENV=$npm_package_config_env nodemon index.js  --ignore tests/ --ignore public/ --exec \"npm run lint && node\"",
-    "process-cron": "cross-env NODE_ENV=%npm_package_config_env% node process-cron.js",
-    "process-cron:unix": "cross-env NODE_ENV=$npm_package_config_env node process-cron.js",
-    "process-long": "cross-env NODE_ENV=%npm_package_config_env% node process-long.js",
-    "process-long:unix": "cross-env NODE_ENV=$npm_package_config_env node process-long.js",
-    "test": "cross-env NODE_ENV=%npm_package_config_env% jest --config=jest.config.js",
-    "test:unix": "cross-env NODE_ENV=$npm_package_config_env jest --config=jest.config.js",
-    "deploy": "deploy.sh %npm_package_config_env%",
+    "knex": "node deploy/db/knex/index.js",
+    "mongo": "node deploy/db/mongo/index.js",
+    "app": "nodemon --trace-warnings index.js",
+    "app:lint": "nodemon --ignore tests/ --ignore public/ --exec \"npm run lint && node\" index.js",
+    "process-cron": "node process-cron.js",
+    "process-long": "node process-long.js",
+    "test": "cross-env NODE_ENV=development jest --config=jest.config.js",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint --fix --no-fix-warnings --no-report-warnings ."
   },
@@ -39,7 +28,6 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "csv-parse": "^4.15.3",
-    "dotenv": "^8.2.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-json-validator-middleware": "^2.1.1",

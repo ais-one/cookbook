@@ -16,7 +16,7 @@ module.exports = {
   ENABLE_LOGGER: false,
   TTT: {
     aaa: 222,
-    ccc: 'cdcd',
+    cccxx: 'cdcd',
     zzz: () => console.log('ffff') //  DO NOT USE FUNCTIONS!!!
   }
 }
