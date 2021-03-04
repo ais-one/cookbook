@@ -75,6 +75,9 @@ module.exports = express.Router()
     environment: process.env.NODE_ENV,
     version: APP_VERSION
   }) }) // health check
+
+  .post('/test-cors-post', (req, res) => { res.send('Cors Done') }) // check CORS
+
   /**
    * @swagger
    * /api/health-auth:
@@ -86,7 +89,7 @@ module.exports = express.Router()
    *      description: Health check with authorization
    */
   .get('/health-auth', authUser, (req, res) => { res.json({ message: 'OK' }) }) // health check auth
-
+ 
   // test uploads
   // body action: 'read' | 'write', filename: 'my-file.txt', bucket: 'bucket name'
   .post('/gcp-sign', asyncWrapper(gcpGetSignedUrl))

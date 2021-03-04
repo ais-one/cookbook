@@ -266,7 +266,6 @@ VAULT={ secrets: { ... all your secrets here } } # base64 encoded
 - Main documentation starts at [docs/home.md](docs/home.md)
 - **vue-crud-x** library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
 - Deployment notes can be found in (docs/deployment/home.md)
-- Custom Element [docs/custom-element.md](docs/custom-element.md)
 - Kafka [docs/kafka.md](docs/kafka.md) and code found in **example-app/sandbox**
 - TCP Server [docs/tcp.md](docs/tcp.md) and code found in **example-app/sandbox**
 
