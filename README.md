@@ -8,7 +8,7 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.4.7](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.7) - Released 2021 Mar 21 0430 +8GMT
+Latest Version [0.4.7](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.7) - Released 2021 Mar 05 0800 +8GMT
 
 - Replaced mwc with Ant Design Vue in example-vite
 - Added bwc-combobox (an extension of bwc-autocomplete, supports multi-select and tags), and integrate it to bwc-t4t-form.js
@@ -80,19 +80,26 @@ npm i ../@es-labs/node
 
 ```bash
 # create and seed relational db on SQLite, (delete the dev.sqlite file each time before you run this)
-npm run knex -- <development / uat / production> <seed / migrate>
+# command: npm run knex -- <development / uat / production> <seed / migrate>
+npm run knex -- development migrate
+npm run knex -- development seed
 
 # create and seed MongoDB requires MongoDB - you can skip this but MongoDB examples will not work
-npm run mongo -- <development / uat / production> <seed / update>
+# command: npm run mongo -- <development / uat / production> <seed / update>
+npm run mongo -- development seed
 
 # run the backend
-npm run app -- <development / uat / production>
+# command: npm run app -- <development / uat / production>
+npm run app -- development
+
 # or npm run app:lint to include eslint checks
 
 # Command to simulate long running process (do take note of caveats, for production need a monitor to handle restart strategy)
+# command: npm run process-long -- development
 npm run process-long
 
 # Command to simulate process triggered by cron (**NOTE:** may be better to use cron to call API than trigger a process)
+# command: npm run process-cron -- development
 npm run process-cron
 ```
 
