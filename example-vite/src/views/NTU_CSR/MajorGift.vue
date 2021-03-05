@@ -155,10 +155,10 @@ export default {
       }
     }
     const onCheckAllChangeExcludes = e => {
-      if (!e.target.checked) {
-        console.log('tbd')
+      if (e.target.checked) {
+        console.log('checked all')
       } else {
-        console.log('tbd')        
+        console.log('uncheck all')
       }      
     }
 
