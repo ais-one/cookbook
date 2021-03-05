@@ -185,34 +185,16 @@ export default {
     }
 
     const blurSelect = () => {
-      // console.log('blurSelect!', toRaw(formState));
       const key = 'themes'
       const subs = [
-        {
-          subKey: 'subThemes', 
-          subKeyMasterList: 'subThemesMasterList', 
-          subKeyList: 'subThemesList'
-        },
-        {
-          subKey: 'token', 
-          subKeyMasterList: 'tokenMasterList', 
-          subKeyList: 'tokenList'
-        },
-        {
-          subKey: 'channel', 
-          subKeyMasterList: 'channelMasterList', 
-          subKeyList: 'channelList'
-        },
-        {
-          subKey: 'timeSensitive', 
-          subKeyMasterList: 'timeSensitiveMasterList', 
-          subKeyList: 'timeSensitiveList'
-        },
+        { subKey: 'subThemes', subKeyMasterList: 'subThemesMasterList', subKeyList: 'subThemesList' },
+        { subKey: 'token', subKeyMasterList: 'tokenMasterList', subKeyList: 'tokenList' },
+        { subKey: 'channel', subKeyMasterList: 'channelMasterList', subKeyList: 'channelList' },
+        { subKey: 'timeSensitive', subKeyMasterList: 'timeSensitiveMasterList', subKeyList: 'timeSensitiveList' },
       ]
 
       for (let sub of subs) { // all dropdowns affected
         const { subKey, subKeyMasterList, subKeyList } = sub
-
         const keys = {}
         const list = []
         const newSelected = []
@@ -233,19 +215,13 @@ export default {
     }
 
     const blurSelect2 = () => {
-      // console.log('blurSelect2!', toRaw(formState));
       const key = 'timeSensitive'
       const subs = [
-        {
-          subKey: 'subTimeSensitive', 
-          subKeyMasterList: 'subTimeSensitiveMasterList', 
-          subKeyList: 'subTimeSensitiveList'
-        },
+        { subKey: 'subTimeSensitive', subKeyMasterList: 'subTimeSensitiveMasterList', subKeyList: 'subTimeSensitiveList' },
       ]
 
       for (let sub of subs) { // all dropdowns affected
         const { subKey, subKeyMasterList, subKeyList } = sub
-
         const keys = {}
         const list = []
         const newSelected = []
