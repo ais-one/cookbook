@@ -49,11 +49,6 @@ class LoadingOverlay extends HTMLElement {
   set show(value) {
     value ? this.setAttribute('show', '') : this.removeAttribute('show')
   }
-
-  connectedCallback() {}
-  attributeChangedCallback(name, oldVal, newVal) {}
-  adoptedCallback() {}
-  disconnectedCallback() {}
 }
 
 customElements.define('bwc-loading-overlay', LoadingOverlay)

@@ -36,9 +36,8 @@ import { samlLogin } from '/@es-labs/esm/saml.js'
 import ws from '/@es-labs/esm/ws.js'
 
 import { useI18n } from '/src/plugins/i18n.js'
-import { VITE_CALLBACK_URL } from '/config.js'
+import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL } from '/config.js'
 
-import { VITE_GQL_URI, VITE_GWS_URI } from '/config.js'
 import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
 import { DO_HELLO } from '/src/queries.js'
 apollo.init({ gwsUri: VITE_GWS_URI, gqlUri: VITE_GQL_URI })

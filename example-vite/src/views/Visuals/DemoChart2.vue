@@ -53,8 +53,6 @@ import { onMounted } from 'vue';
 export default {
   name: 'DemoChart2',
   setup() {
-    let scatterPlot = null
-    let area = null
     onMounted(() => {
       // scatterPlot
       fetch('https://gw.alipayobjects.com/os/bmw-prod/f950b2f1-038b-47c2-afcc-63001bc8d07c.json')

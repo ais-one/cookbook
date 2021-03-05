@@ -8,7 +8,6 @@
 
         <a-form-item label="Theme">
           <a-checkbox @change="onCheckAllChange">Select all</a-checkbox>
-          <!-- v-model:checked="checkAll" -->
           <a-select mode="multiple" placeholder="Please select" v-model:value="formState.themes" @blur="blurSelect" @deselect="blurSelect">
             <template #clearIcon>
               <setting-outlined />
@@ -97,7 +96,7 @@
 
 </template>
 <script>
-import { ref, reactive, toRaw, watch, onMounted, computed } from 'vue';
+import { ref, reactive, toRaw, watch, computed } from 'vue';
 import { SettingOutlined } from '@ant-design/icons-vue';
 
 export default {
@@ -105,11 +104,8 @@ export default {
     SettingOutlined,
   },
   setup() {
-    onMounted(() => {
-    })
-
     const activeKey = ref(['1']) // accordian
-    watch(activeKey, val => { })
+    watch(activeKey, val => console.log('watch activeKey', val))
 
     const formState = reactive({ // form
       jobName: '',
@@ -237,7 +233,7 @@ export default {
     }
 
     const blurSelect2 = () => {
-      // console.log('blurSelect!', toRaw(formState));
+      // console.log('blurSelect2!', toRaw(formState));
       const key = 'timeSensitive'
       const subs = [
         {

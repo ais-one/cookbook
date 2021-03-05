@@ -83,7 +83,7 @@
   </div>
 </template>
 <script>
-import { ref, reactive, toRaw, watch, onMounted, computed } from 'vue';
+import { ref, reactive, toRaw } from 'vue';
 import { SettingOutlined } from '@ant-design/icons-vue';
 
 export default {
@@ -91,9 +91,6 @@ export default {
     SettingOutlined,
   },
   setup() {
-    onMounted(() => {
-    })
-
     const activeKey = ref(['1'])
 
     const formState = reactive({ // form

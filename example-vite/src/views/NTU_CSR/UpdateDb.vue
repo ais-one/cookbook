@@ -11,7 +11,7 @@
 
 </template>
 <script>
-import { ref, reactive, toRaw, watch, onMounted, computed } from 'vue';
+import { ref, reactive, toRaw } from 'vue';
 import FileUpload from './UpdateDb/FileUpload.vue';
 import JobList from './UpdateDb/JobList.vue';
 
@@ -21,9 +21,6 @@ export default {
     JobList,
   },
   setup() {
-    onMounted(() => {
-    })
-
     const activeKey = ref('1')
 
     const formState = reactive({ // form

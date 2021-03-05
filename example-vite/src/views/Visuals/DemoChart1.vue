@@ -15,7 +15,7 @@
 import DataSet from '@antv/data-set'
 import { Chart } from '@antv/g2'
 
-const data = [
+const example_data = [
   { genre: 'Sports', sold: 275 },
   { genre: 'Strategy', sold: 115 },
   { genre: 'Action', sold: 120 },
@@ -34,7 +34,7 @@ export default {
         width: 600, // specify the chart width
         height: 300, // specify the chart height
       })
-      chart2.data(data)
+      chart2.data(example_data)
       chart2.interval().position('genre*sold')
       chart2.render()
 
@@ -105,10 +105,6 @@ export default {
 
           chart.render();
         });
-
-
-
-
 
     })
     return {

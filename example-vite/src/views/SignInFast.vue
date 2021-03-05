@@ -5,7 +5,6 @@
       sub-title="Your one-stop web portal for all things web"
     >
       <template #icon>
-        <!-- <smile-twoTone /> -->
         <a-image
           :width="200"
           src="https://upload.wikimedia.org/wikipedia/commons/archive/6/6a/20120221235432%21JavaScript-logo.png"
@@ -20,7 +19,7 @@
 </template>
 
 <script>
-import { onMounted, onBeforeUnmount, onUnmounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { SmileTwoTone } from '@ant-design/icons-vue';
@@ -37,8 +36,6 @@ export default {
     onUnmounted(() => console.log('signInFast unmounted'))
     onMounted(async () => {
       console.log('signInFast mounted!', route.hash) // deal with hashes here if necessary
-    })
-    onBeforeUnmount(() => {
     })
 
     const _setUser = async () => {

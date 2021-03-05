@@ -107,15 +107,11 @@ export default {
   },
   setup(props, context) {
     const store = useStore()
-
-    const theDrawer = ref(null)
-
     onMounted(async () => {
       console.log('SECURE mounted!')
     })
     onUnmounted(() => console.log('SECURE unmounted'))
     const logout = async () => await store.dispatch('doLogin', null)
-
     return {
       logout,
       selectedKeys: ref(['1']),

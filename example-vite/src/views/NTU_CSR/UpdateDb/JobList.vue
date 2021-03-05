@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import { ref, reactive, toRaw, watch, onMounted, computed } from 'vue';
+import { ref, reactive, toRaw } from 'vue';
 
 export default {
   setup() {
@@ -41,8 +41,6 @@ export default {
       },
     ]
 
-onMounted(() => {
-    })
     const activeKey = ref(['1'])
 
     const formState = reactive({ // form

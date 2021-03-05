@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
 import { SettingOutlined, EditOutlined, EllipsisOutlined } from '@ant-design/icons-vue';
 
 export default {

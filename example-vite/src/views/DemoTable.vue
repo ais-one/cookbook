@@ -142,7 +142,7 @@ export default {
     const editableData = reactive({})
 
     const activeKey = ref(['1']) // collapse
-    watch(activeKey, val => { })
+    watch(activeKey, val => console.log('watch activeKey', val))
 
     const formState = reactive({ // form
       name: '',

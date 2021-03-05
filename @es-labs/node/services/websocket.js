@@ -6,13 +6,13 @@ let wss
 
 let onClientClose = (ws) => {
   // console.log('client disconnected')
-} // client disconnected
+}
 
-let onClientMessage = async (message, ws, wss) => { // client incoming message
+let onClientMessage = async (message, ws, _wss) => { // client incoming message
   // console.log('message', message)
   try { // try-catch only detect immediate error, cannot detect if write failure    
-    if (wss) { // send to other clients except self
-      wss.clients.forEach((client) => {
+    if (_wss) { // send to other clients except self
+      _wss.clients.forEach((client) => {
         if (client !== ws && client.readyState === WebSocket.OPEN) {
           client.send(message) // send message to others 
         }

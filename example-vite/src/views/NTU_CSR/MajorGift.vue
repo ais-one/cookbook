@@ -119,14 +119,11 @@
 
 </template>
 <script>
-import { ref, reactive, toRaw, watch, onMounted, computed } from 'vue';
+import { ref, reactive, toRaw, watch, computed } from 'vue';
 export default {
   setup() {
-    onMounted(() => {
-    })
-
     const activeKey = ref(['1']) // accordian
-    watch(activeKey, val => { })
+    watch(activeKey, val => console.log('watch activeKey', val))
 
     const formState = reactive({ // form
       jobName: '',
@@ -158,10 +155,10 @@ export default {
       }
     }
     const onCheckAllChangeExcludes = e => {
-      if (e.target.checked) {
-
+      if (!e.target.checked) {
+        console.log('tbd')
       } else {
-        
+        console.log('tbd')        
       }      
     }
 

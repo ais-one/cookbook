@@ -264,7 +264,7 @@ class BwcT4tForm extends HTMLElement {
     // DONE: input - text, integer, decimal, date, time, datetime, file(upload)
     // DONE: select (single and multiple, limited options)
     // DONE: textarea
-    // TODO: bwc-combobox (multiple with tags)
+    // DONE: bwc-combobox (multiple with tags), TBD: need to test more
 
     if (['input', 'textarea', 'select', 'bwc-combobox'].includes(elementTag)) { // its an input
       if (c.mode === 'readonly') el.setAttribute('disabled', true) // select is disabled, as it applies to more html tags

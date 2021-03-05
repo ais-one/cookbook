@@ -30,14 +30,11 @@
   </a-form>
 </template>
 <script>
-import { ref, reactive, toRaw, watch, onMounted } from 'vue';
+import { reactive, toRaw, watch } from 'vue';
 export default {
   setup() {
     // a-select - allowClear (handle event)
     // TBD select / clear all
-
-    onMounted(() => {
-    });
 
     const formState = reactive({ // form
       regions: [],
@@ -70,9 +67,9 @@ export default {
           if (!keys[country]) {
             list.push(country)
             keys[country] = true
-            const item = formState.countries.find(item => item === country)
-            if (item) {
-              newCountries.push(item)
+            const found = formState.countries.find(item => item === country)
+            if (found) {
+              newCountries.push(found)
             }
           }
         }

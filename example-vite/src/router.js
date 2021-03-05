@@ -62,26 +62,26 @@ const router = createRouter({
     // catchall
     { path: '/:catchAll(.*)', name: 'catchAll', redirect: { name: 'SignIn' }, meta: { requiresAuth: false, layout: 'layout-public' } },
     // demo
-    { path: '/dashboard', name: 'Dashboard', component: async () => await import('./views/Dashboard.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/dashboard', name: 'Dashboard', component: async () => import('./views/Dashboard.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-web-cam', name: 'Demo Web Cam', component: () => import('./views/demo/DemoWebCam.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/demo-sign-pad', name: 'Demo Sign Pad', component: async () => await import('./views/demo/DemoSignPad.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-sign-pad', name: 'Demo Sign Pad', component: async () => import('./views/demo/DemoSignPad.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-chart', name: 'Demo Chart', component: () => import('./views/demo/DemoChart.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-map', name: 'Demo Map', component: () => import('./views/demo/DemoMap.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-main', name: 'DemoMain', component: () => import('./views/demo/DemoMain.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
 
     // more demo
-    { path: '/demo-chart1', name: 'DemoChart1', component: async () => await import('./views/Visuals/DemoChart1.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/demo-chart2', name: 'DemoChart2', component: async () => await import('./views/Visuals/DemoChart2.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/demo-table', name: 'DemoTable', component: async () => await import('./views/DemoTable.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/cascade-ms', name: 'CascadeMs', component: async () => await import('./views/DataEntry/CascadeMs.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/demo-form', name: 'DemoForm', component: async () => await import('./views/DataEntry/DemoForm.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/demo-card', name: 'DemoCard', component: async () => await import('./views/DataEntry/DemoCard.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/demo-map', name: 'DemoMap', component: async () => await import('./views/Visuals/DemoMap.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-chart1', name: 'DemoChart1', component: async () => import('./views/Visuals/DemoChart1.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-chart2', name: 'DemoChart2', component: async () => import('./views/Visuals/DemoChart2.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-table', name: 'DemoTable', component: async () => import('./views/DemoTable.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/cascade-ms', name: 'CascadeMs', component: async () => import('./views/DataEntry/CascadeMs.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-form', name: 'DemoForm', component: async () => import('./views/DataEntry/DemoForm.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-card', name: 'DemoCard', component: async () => import('./views/DataEntry/DemoCard.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-map', name: 'DemoMap', component: async () => import('./views/Visuals/DemoMap.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
 
     // items
-    { path: '/major-gift', name: 'MajorGift', component: async () => await import('./views/NTU_CSR/MajorGift.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/appeal-m', name: 'AppealM', component: async () => await import('./views/NTU_CSR/AppealM.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/update-db', name: 'UpdateDb', component: async () => await import('./views/NTU_CSR/UpdateDb.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/major-gift', name: 'MajorGift', component: async () => import('./views/NTU_CSR/MajorGift.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/appeal-m', name: 'AppealM', component: async () => import('./views/NTU_CSR/AppealM.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/update-db', name: 'UpdateDb', component: async () => import('./views/NTU_CSR/UpdateDb.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
 
   ]
 })
