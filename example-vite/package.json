@@ -25,6 +25,7 @@
     "graphql": "^15.5.0",
     "graphql-tag": "^2.11.0",
     "leaflet": "^1.7.1",
+    "rxjs": "^6.6.6",
     "subscriptions-transport-ws": "^0.9.18",
     "vue": "^3.0.7",
     "vue-router": "^4.0.4",

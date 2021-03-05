@@ -33,8 +33,9 @@
     <p>Non-Reactive Data: {{ nonReactiveData }}</p>
     <p>Reactive Data: {{ reactiveData }}</p>
     <p>Vuex Store {{ storeCount }} - {{ storeUser }}</p>
-    <p>Axios GET {{ msg }}</p>
     <p><button @click="subPn">Sub PN</button>&nbsp;<button @click="unsubPn">Unsub PN</button>&nbsp;<button @click="testPn">Test PN</button></p>
+    <a-input ref="searchRef" placeholder="rxjs search swapi"></a-input>
+    {{ searchResult || 'No Result' }}
     <ul>
       <li v-for="n in 10" :key="n">{{ n }}</li>
     </ul>
@@ -44,11 +45,14 @@
 <script>
 // unref, toRef, toRefs, isRef, isProxy, isReactive, isReadonly
 // defineComponent, getCurrentInstance, reactive, readonly, watch, watchEffect, provide, inject
-import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inject, reactive, onBeforeUpdate } from 'vue'
+import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inject, reactive, onBeforeUpdate, watch } from 'vue'
 import { useStore } from 'vuex'
 import { webpushSubscribe, webpushUnsubscribe, fcmSubscribe } from '/@es-labs/esm/pwa.js' // served from express /esm static route
 import * as http from '/@es-labs/esm/http.js' // served from express /esm static route
 import { VITE_PWA_PN } from '/config.js'
+
+import { fromEvent } from 'rxjs'
+import { switchMap, debounceTime, distinctUntilChanged, map } from 'rxjs/operators'
 
 export default {
   name: 'DemoMain',
@@ -72,10 +76,13 @@ export default {
 
     // const obj = reactive({ count: 0 })
     const count = ref(0)
-    const msg = ref('')
     const titleRef = ref(null)
     let nonReactiveData = 10
     const reactiveData = ref(20)
+
+    const searchRef = ref(null)
+    const searchVal = ref('')
+    const searchResult = ref('')
 
     // const plusOne = computed(() => count.value + 1)
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
@@ -101,8 +108,14 @@ export default {
 
     // // directly watching a ref
     // const count = ref(0)
-    // watch(count, (count, prevCount) => {
+    // watch(search, (newVal, prevVal) => {
+    //   console.log('watch search', newVal)
     // })
+
+    // // Watch prop value change and assign to value 'selected' Ref
+    // watch(() => props.value, (newValue: Props['value']) => {
+    //   selected.value = newValue;
+    // });
 
     // watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
     // })
@@ -127,7 +140,7 @@ export default {
 
     let timerId
     onMounted(async () => {
-      console.log('demoflex mounted!')
+      console.log('demomain mounted!')
       // console.log('props', props)
       // console.log('context', context)
       // console.log('useStore', store)
@@ -136,17 +149,33 @@ export default {
       // console.log("template ref titleRef", titleRef.value)
 
       timerId = setInterval(() => {
-        console.log('timer fired', String(selected.value))
+        console.log('timer fired')
         nonReactiveData += 1
         reactiveData.value += 1
       }, 200000)
+
+      const input$ = fromEvent(searchRef.value.$el, 'input').pipe(
+          debounceTime(1000),
+          map(e => e.target.value),
+          // .filter(value => value.length >= 2)
+          distinctUntilChanged(),
+          switchMap(
+            search => fetch('https://swapi.dev/api/people/?search='+search+'&format=json').then(res => res.json()).then(data => data)          
+          )
+          // catchError(handleErrorByReturningObservable)
+        )
+        .subscribe(e => {
+          searchResult.value = JSON.stringify(e)
+          console.log(e)
+        })
+
     })
     onBeforeUnmount(() => {
       if (timerId) clearInterval(timerId)
-      // / console.log('demoflex before unmount!')
+      // / console.log('demomain before unmount!')
     })
-    onUpdated(() => console.log('demoflex updated!'))
-    onUnmounted(() => console.log('demoflex unmounted!'))
+    onUpdated(() => console.log('demomain updated!'))
+    onUnmounted(() => console.log('demomain unmounted!'))
 
     const testApi = async (test) => {
       try {
@@ -198,11 +227,6 @@ export default {
       }
     }
 
-    // // Watch prop value change and assign to value 'selected' Ref
-    // watch(() => props.value, (newValue: Props['value']) => {
-    //   selected.value = newValue;
-    // });
-
     return {
       makeRef,
       list,
@@ -211,14 +235,18 @@ export default {
       nonReactiveData, // non reactive
       reactiveData, // ref reactive
       count, // ref
-      msg,
+
       titleRef,
       storeCount, // store
       storeUser,
       testApi, // test API
       subPn, // push notifications
       unsubPn,
-      testPn
+      testPn,
+
+      searchRef, // rxjs search value
+      searchVal,
+      searchResult
     }
   }
 }
