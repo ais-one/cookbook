@@ -29,11 +29,8 @@ module.exports = {
       default: '', // a default value (today? now?)
 
       type: 'string', // string, integer, decimal, datetime, date, time, boolean (follows the DB datatype)
-      // OLD
-      input: 'textfield', // textfield, textarea, number, date, time, datetime, upload, autocomplete, select, multi-select, link - to child table
-      // NEW
       ui: {
-        tag: 'input',
+        tag: 'input', // input (number, date, time, datetime, file, pattern), select, textarea, combobox, link to child table?
         attrs: { pattern: '^[A-Za-z]+$', min: 2, maxlength: 20 } // pattern, min, max, step
       },
 
@@ -47,10 +44,6 @@ module.exports = {
       multiKey: true,
       type: 'string',
       filter: true,
-
-      // OLD
-      input: 'textfield',
-      // NEW
       ui: {
         tag: 'input',
         attrs: { type: 'text', min: 0, max: 20 }
@@ -61,19 +54,54 @@ module.exports = {
       },
       width: 250
     },
+    country: {
+      label: 'Country', // key text...
+      type: 'string',
+      filter: true,
+      options: {
+        parentCol: '', // use column to get parent value affecting a child
+        parentTableColName: '', // the column name in the parent table
+        childCol: 'state', // affect child column in this table
+        dbName: 'mongo',
+        tableName: 'country',
+        limit: 8,
+        strict: true, // cannot enter own values, must be selected
+        key: 'code',
+        text: 'name'
+      },
+      ui: {
+        tag: 'bwc-combobox', // input
+        valueType: 'string', // string or object, if object then no conversion needed
+      }
+    },
+    state: {
+      label: 'State', // key text...
+      type: 'string',
+      filter: true,
+      options: {
+        parentCol: 'country',
+        parentTableColName: 'country_name',
+        childCol: '',
+        dbName: 'mongo',
+        tableName: 'state',
+        limit: 8,
+        key: 'code',
+        text: 'name'
+      },
+      ui: {
+        tag: 'bwc-combobox',
+        valueType: 'string',
+        attrs: {
+          multiple: true,
+          tagLimit: 3
+        }
+      }
+    },
     sex: { // single select
       label: 'Sex',
       type: 'string',
       filter: true,
       default: 'M',
-      // OLD
-      input: 'select',
-      options: [
-        { key: '', text: '' },
-        { key: 'M', text: 'Male' },
-        { key: 'F', text: 'Female' }
-      ],
-      // NEW
       ui: {
         tag: 'select',
         options: [
@@ -86,16 +114,6 @@ module.exports = {
     subjects: { // multi select
       label: 'Subjects',
       type: 'string',
-      // OLD
-      input: 'multi-select',
-      options: [
-        { key: 'EL1', text: 'English' },
-        { key: 'EM', text: 'E Maths' },
-        { key: 'AM', text: 'A Maths' },
-        { key: 'PHY', text: 'Chemistry' },
-        { key: 'CHEM', text: 'Physics' }
-      ],
-      // NEW
       ui: {
         tag: 'select',
         attrs: {
@@ -115,10 +133,6 @@ module.exports = {
       label: 'Age',
       type: 'integer',
       filter: true,
-
-      // OLD
-      input: 'number',
-      // NEW
       ui: {
         tag: 'input',
         attrs: { type: 'number', min: 10, max: 90, step: 1 }
@@ -132,9 +146,6 @@ module.exports = {
       label: 'GPA',
       type: 'decimal',
       filter: true,
-      // OLD
-      input: 'number',
-      // NEW
       ui: {
         tag: 'input',
         attrs: { type: 'number' }
@@ -145,9 +156,6 @@ module.exports = {
       label: 'Brith date',
       type: 'string', // date
       filter: true,
-      // OLD
-      input: 'date',
-      // NEW
       ui: {
         tag: 'input',
         attrs: { type: 'date' }
@@ -157,9 +165,6 @@ module.exports = {
       label: 'Birth time',
       type: 'string', // time
       filter: true,
-      // OLD
-      input: 'time',
-      // NEW
       ui: {
         tag: 'input',
         attrs: { type: 'time' }
@@ -169,63 +174,14 @@ module.exports = {
       label: 'Datetime with TZ',
       type: 'datetime',
       filter: true,
-      // OLD
-      input: 'datetime',
-      // NEW
       ui: {
         tag: 'input',
         attrs: { type: 'datetime-local' }
       }
     },
-    country: {
-      label: 'Country', // key text...
-      type: 'string',
-      filter: true,
-      // OLD
-      input: 'autocomplete', // single select
-      options: {
-        parentCol: '', // use column to get parent value affecting a child
-        parentTableColName: '', // the column name in the parent table
-        childCol: 'state', // affect child column in this table
-        dbName: 'mongo',
-        tableName: 'country',
-        limit:8,
-        strict: true, // cannot enter own values, must be selected
-        key: 'name',
-        text: ''
-      },
-      // NEW
-      ui: {
-        tag: 'input'
-      }
-    },
-    state: {
-      label: 'State', // key text...
-      type: 'string',
-      filter: true,
-      // OLD
-      input: 'autocomplete',
-      options: {
-        parentCol: 'country',
-        parentTableColName: 'country_name',
-        childCol: '',
-        dbName: 'mongo',
-        tableName: 'state',
-        limit:8,
-        key: 'name',
-        text: ''
-      },
-      // NEW
-      ui: {
-        tag: 'input'
-      }
-    },
     website: { // test formatter?
       label: 'URL',
       type: 'string',
-      // OLD
-      input: 'textfield',
-      // NEW
       ui: {
         tag: 'input',
         attrs: { type: 'file' } // TBD implement on API side also
@@ -234,9 +190,6 @@ module.exports = {
     remarks: { // text area
       label: 'Remarks',
       type: 'string',
-      // OLD
-      input: 'textarea',
-      // NEW
       ui: {
         tag: 'textarea' // textarea
       }

@@ -10,20 +10,12 @@ import layoutSecure from './layouts/Secure.vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 
-import { provideXhr } from '/src/plugins/xhr.js'
-import * as http from '../../@es-labs/esm/http.js' // served from express /esm static route
-import ws from '../../@es-labs/esm/ws.js' // served from express /esm static route
+import * as http from '/@es-labs/esm/http.js'  // aliased in vite.config.js
+import ws from '/@es-labs/esm/ws.js'
 
-import { VITE_API_URL, VITE_WS_URL, VITE_WS_MS, VITE_WITH_CREDENTIALS, VITE_GQL_URI, VITE_GWS_URI } from '/config.js'
+import { VITE_API_URL, VITE_WS_URL, VITE_WS_MS, VITE_WITH_CREDENTIALS } from '/config.js'
 
 import { provideI18n } from '/src/plugins/i18n.js'
-import { provideWs } from '/src/plugins/ws.js'
-import apollo from '/lib/esm-rollup/apollo.js' // served from express /esm static route
-
-apollo.init({
-  gwsUri: VITE_GWS_URI,
-  gqlUri: VITE_GQL_URI
-})
 
 export default {
   components: {
@@ -42,7 +34,6 @@ export default {
     http.setBaseUrl(VITE_API_URL)
     http.setCredentials(VITE_WITH_CREDENTIALS || 'same-origin')
     http.setForceLogoutFn(logout)
-    provideXhr(http)
 
     // set i18n
     provideI18n({
@@ -56,7 +47,6 @@ export default {
     // set ws
     ws.endpoint = VITE_WS_URL
     ws.reconnectMs = VITE_WS_MS
-    provideWs(ws)
 
     return {
       storeUser // computed

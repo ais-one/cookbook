@@ -18,9 +18,6 @@ module.exports = {
     country_name: {
       label: 'Code',
       type: 'string',
-      // OLD
-      input: '',
-      // NEW
       ui: {
         tag: 'input'
       },
@@ -28,9 +25,6 @@ module.exports = {
     code: {
       label: 'Code',
       type: 'string',
-      // OLD
-      input: '',
-      // NEW
       ui: {
         tag: 'input'
       },
@@ -38,9 +32,6 @@ module.exports = {
     name: {
       label: 'Name',
       type: 'string',
-      // OLD
-      input: '',
-      // NEW
       ui: {
         tag: 'input'
       },

@@ -12,6 +12,13 @@
 // methods
 //
 // events
+
+//
+// requires bwc-combobox, debounce, autocomplete
+import './bwc-combobox.js'
+import { debounce } from './util.js'
+import { autocomplete } from './t4t-fe.js'
+
 const bulma = {
   // the keys are from t4t cols.<col>.ui.tag
   input: {
@@ -20,9 +27,7 @@ const bulma = {
     children: [
       { tag: 'label', className: 'label' },
       { tag: 'div', className: 'control', children: [
-        { tag: 'input', className: 'input' },
-        // { tag: 'bwc-fileupload', className: '' }
-        // { tag: 'bwc-autocomplete', className: '' }
+        { tag: 'input-placeholder', className: 'input' },
       ] },
       { tag: 'p', className: 'help is-danger', errorLabel: true }
     ]
@@ -33,7 +38,7 @@ const bulma = {
     children: [
       { tag: 'label', className: 'label' },
       { tag: 'div', className: 'control', children: [
-        { tag: 'textarea', className: 'textarea' },
+        { tag: 'input-placeholder', className: 'textarea' },
       ] },
       { tag: 'p', className: 'help is-danger', errorLabel: true }
     ]
@@ -51,14 +56,23 @@ const bulma = {
             tag: 'div',
             className: 'select is-fullwidth', // need to add is-multiple for bulma
             children: [
-              { tag: 'select' },
+              { tag: 'input-placeholder' },
             ]
           }
         ]
       }
     ]
   }, // end select
-  autocomplete: {
+  'bwc-combobox': {
+    tag: 'div',
+    className: 'field',
+    children: [
+      { tag: 'label', className: 'label' },
+      { tag: 'div', className: 'control has-icons-left', children: [
+        { tag: 'input-placeholder' }, // tbd className = 'input'
+      ] },
+      { tag: 'p', className: 'help is-danger', errorLabel: true }
+    ]
   }
 } // end bulma
 
@@ -68,7 +82,7 @@ const bootstrap = {
     tag: 'div',
     children: [
       { tag: 'label', className: 'form-label' },
-      { tag: 'input', className: 'form-control' },
+      { tag: 'input-placeholder', className: 'form-control' },
       { tag: 'div', className: 'form-text', errorLabel: true }
     ]
   },
@@ -76,7 +90,7 @@ const bootstrap = {
     tag: 'div',
     children: [
       { tag: 'label', className: 'form-label' },
-      { tag: 'textarea', className: 'form-control' },
+      { tag: 'input-placeholder', className: 'form-control' },
       { tag: 'div', className: 'form-text', errorLabel: true }
     ]
   },
@@ -84,10 +98,10 @@ const bootstrap = {
     tag: 'div',
     children: [
       { tag: 'label', className: 'form-label' },
-      { tag: 'select', className: 'form-select' },
+      { tag: 'input-placeholder', className: 'form-select' },
     ]
   },
-  autocomplete: {
+  'bwc-combobox': {
   }
 }
 
@@ -98,7 +112,7 @@ const muicss = {
     className: 'mui-textfield',
     children: [
       { tag: 'label', children: [ { tag: 'span', className: 'mui--text-danger', errorLabel: true } ] },
-      { tag: 'input' },
+      { tag: 'input-placeholder' },
     ]
   },
   textarea: {
@@ -106,7 +120,7 @@ const muicss = {
     className: 'mui-textfield',
     children: [
       { tag: 'label', children: [ { tag: 'span', className: 'mui--text-danger', errorLabel: true } ] },
-      { tag: 'textarea' },
+      { tag: 'input-placeholder' },
     ]
   },
   select: {
@@ -114,10 +128,10 @@ const muicss = {
     className: 'mui-select',
     children: [
       { tag: 'label' },
-      { tag: 'select' },
+      { tag: 'input-placeholder' },
     ]
   },
-  autocomplete: {
+  'bwc-combobox': {
   }
 }
 
@@ -225,9 +239,7 @@ class BwcT4tForm extends HTMLElement {
   get mode() { return this.getAttribute('mode') }
   set mode(val) { this.setAttribute('mode', val) }
 
-  // k = column key
-  // c = column object
-  // node is 
+  // node is current node in tree, k = column key, c = column object
   formEl (node, k, c) {
     const mode = this.mode
     if (c[mode] === 'hide') return null
@@ -235,7 +247,7 @@ class BwcT4tForm extends HTMLElement {
     // console.log(k, c)
     const { tag, className, attrs, children, errorLabel } = node
     // console.log(tag, className, attrs)
-    const elementTag = (tag === 'input') ? c.ui.tag : tag
+    const elementTag = (tag === 'input-placeholder') ? c.ui.tag : tag // replace for this
     const el = document.createElement(elementTag)
 
     if (!this.#xcols[k]) this.#xcols[k] = { }
@@ -252,11 +264,10 @@ class BwcT4tForm extends HTMLElement {
     // DONE: input - text, integer, decimal, date, time, datetime, file(upload)
     // DONE: select (single and multiple, limited options)
     // DONE: textarea
-    // TODO: input - file(upload) functionality
-    // TODO: autocomplete (multiple with tags)
+    // DONE: bwc-combobox (multiple with tags), TBD: need to test more
 
-    if (['input', 'textarea', 'select', 'autocomplete'].includes(elementTag)) { // its an input
-      if (c[mode] === 'readonly') el.setAttribute('disabled', true) // select is disabled, as it applies to more html tags
+    if (['input', 'textarea', 'select', 'bwc-combobox'].includes(elementTag)) { // its an input
+      if (c.mode === 'readonly') el.setAttribute('disabled', true) // select is disabled, as it applies to more html tags
       if (c.required) el.setAttribute('required', true)
 
       if (elementTag === 'select') { // set the options
@@ -274,14 +285,77 @@ class BwcT4tForm extends HTMLElement {
           el.appendChild(optEl)
         }
       } else { // other input
-        if (this.mode === 'add') { // set the value
-          el.value = c.default || ''
-        } else if (this.mode === 'edit') {
-          // console.log('is FileList',this.#record[k] instanceof FileList, k, el.type === 'file')
-          el.value = el.type === 'file' ? '' : (this.#record[k] || '')
+        if (elementTag === 'bwc-combobox') {
+          // console.log('bwc-combobox', this.#record)
+          el.setAttribute('listid', 'list-'+k)
+          el.setAttribute('object-key', 'key')
+          el.setAttribute('object-text', 'text')
+          if (c?.ui?.attrs?.multiple) el.setAttribute('multiple', '')
+          if (c?.ui?.attrs?.repeat) el.setAttribute('repeat', '')
+          if (c?.ui?.attrs?.allowCustomTag) el.setAttribute('allow-custom-tag', '')
+          if (c?.ui?.attrs?.tagLimit) el.setAttribute('tag-limit', c.ui.attrs.tagLimit)
+          // disbled and required already set
+          // TBD set input class
+
+          el.onload = (e) => { // need to wait for component to load before setting the values
+            // console.log('bwc loaded')
+            const valueType = c?.ui?.valueType // TBD transform value
+            if (c?.ui?.attrs?.multiple) { // can be array in column or join table
+              const val = this.mode === 'add' ? c.default : this.#record[k]
+              if (valueType === 'string') {
+                el.tags = val.split(',').map(item => ({ key: item, text: item })) || []
+              } else { // object
+                el.tags = val || []
+              }
+            } else { // single
+              const val = this.mode === 'add' ? c.default : this.#record[k]  
+              if (valueType === 'string') {
+                el.value = val || ''
+                el.selected = val ? { key: val, text: val } : null
+              } else { // object
+                el.value = val.text || '' // key and text should be same
+                el.selected = val || null
+              }
+            }
+          } // onload end
+
+          el.onsearch = debounce(async (e) => {
+            // this.#xcols['state'].el.value // use this.#xcols to get latest values
+            // console.log(e.target.value, k, this.#record) // this.#record does not change until validated and submit
+            let parentVal = null
+            if (c?.options?.parentCol) {
+              const col = this.#xcols[c?.options?.parentCol]
+              if (col && col.el) parentVal = col.el.value
+            }
+            const res = await autocomplete(e.target.value, k, this.#record, parentVal)
+            el.items = res
+          }, 500)
+          el.onselect = (e) => { // onselect works (events handled by DOM), onselected need to use addEventListener
+            // TBD reset child value - may cascade down further
+            const childColName = c?.options?.childCol
+            if (childColName) {
+              const col = this.#xcols[childColName]
+              const childColObj = this.#config.cols[childColName]
+              if (col && col.el) {
+                if (childColObj?.ui?.attrs?.multiple) { // multiple
+                  col.el.tags = []
+                } else {
+                  col.el.value = ''
+                  col.el.selected = null
+                }
+              }
+            }
+            console.log('t4t combobox onselect', e.detail)
+          }
+        } else { // input, textarea
+          if (this.mode === 'add') { // set the value
+            el.value = c.default || ''
+          } else if (this.mode === 'edit') {
+            // console.log('is FileList',this.#record[k] instanceof FileList, k, el.type === 'file')
+            el.value = el.type === 'file' ? '' : (this.#record[k] || '')
+          }  
         }
       }
-  
       this.#xcols[k].el = el // set input element
     }  
 
@@ -316,12 +390,7 @@ class BwcT4tForm extends HTMLElement {
     try {
       // const el = this.querySelector('#form-wrapper')
       const el = this.querySelector('.content-area')
-      if (!el) {
-        // console.log('no content-area')
-        return
-      } else {
-        // console.log('content-area found')
-      }
+      if (!el) return // .content-area not found
       el.innerHTML = ''
       const { cols, auto, pk, required, multiKey } = this.#config
       // console.log('this.#record', this.#record)
@@ -351,15 +420,16 @@ class BwcT4tForm extends HTMLElement {
       btnSubmit.onclick = (e) => {
         let error = false
         // console.log('submit clicked')
-        // e.stopPropagation()
-        e.preventDefault()
+        e.preventDefault() // e.stopPropagation()
 
         // check validity
         for (let col in this.#xcols) {
           if (this.#xcols[col].el) {
-            const valid = this.#xcols[col].el.checkValidity()
-            if (!valid) error = true
-            if (this.#xcols[col].errorEl) this.#xcols[col].errorEl.innerText = valid ? '' : this.#xcols[col].el.validationMessage
+            if (this.#xcols[col]?.el?.checkValidity) {
+              const valid = this.#xcols[col].el.checkValidity()
+              if (!valid) error = true
+              if (this.#xcols[col].errorEl) this.#xcols[col].errorEl.innerText = valid ? '' : this.#xcols[col].el.validationMessage  
+            }
           }
         }
 
@@ -369,16 +439,33 @@ class BwcT4tForm extends HTMLElement {
             // console.log('this.#xcols', this.#xcols[col].el.tagName)
             const inputEl = this.#xcols[col].el
             if (inputEl) {
-              if (inputEl.tagName.toLowerCase() === 'select') { // select
-                // select options
-                // [string] - done
-                // [{ key, text }] - next
+              if (inputEl.tagName.toLowerCase() === 'select') {
+                // select options, [string] - done, [{ key, text }] - next
                 const selected = []
                 for (let opt of inputEl.selectedOptions) {
                   selected.push(opt.value)
                 }
                 this.#record[col] = selected.join(',')
-              } else { // input
+              } else if (inputEl.tagName.toLowerCase() === 'bwc-combobox') {
+                // TBD set the value
+                const c = this.#config.cols[col]
+                const val = c?.ui?.attrs?.multiple ? inputEl.tags : inputEl.selected
+                const valueType = c?.ui?.valueType
+
+                if (c?.ui?.attrs?.multiple) { // can be array in column or join table
+                  if (valueType === 'string') {
+                    this.#record[col] = val.map(item => item.text).join(',')
+                  } else { // object
+                    this.#record[col] = val
+                  }
+                } else { // single
+                  if (valueType === 'string') {
+                    this.#record[col] = val.text
+                  } else { // object
+                    this.#record[col] = val
+                  }
+                }
+              } else { // input, textarea
                 this.#record[col] = inputEl.value
                 if (inputEl.files) {
                   // console.log(inputEl.files instanceof FileList)
@@ -387,7 +474,8 @@ class BwcT4tForm extends HTMLElement {
               }
             }
           }
-          this.dispatchEvent(new CustomEvent('submit', { detail: { data: this.#record } }))
+          console.log('test submit', this.#record)
+          // this.dispatchEvent(new CustomEvent('submit', { detail: { data: this.#record } }))
         } else {
           this.dispatchEvent(new CustomEvent('submit', { detail: { error } }))
         }
@@ -396,7 +484,6 @@ class BwcT4tForm extends HTMLElement {
       const btnCancel = this.querySelector('.btn-cancel')
       // btnCancel.classList.add('button')
       btnCancel.onclick = (e) => {
-        // console.log('cancel clicked')
         e.preventDefault()
         this.dispatchEvent(new CustomEvent('cancel'))
       }
@@ -409,32 +496,16 @@ class BwcT4tForm extends HTMLElement {
 customElements.define('bwc-t4t-form', BwcT4tForm) // or bwc-form-t4t
 
 /*
-    <p>{{ showForm !== 'add' ? 'Edit' : 'Add' }}</p>
-    <div class="field-set-flex">
-      <template v-for="(val, col, index) of recordObj[showForm]">
-        <template v-if="tableCfg.cols[col]">
-          <template v-if="tableCfg.cols[col].input === 'link'">
-            <mwc-textfield
-              @click="router.push('/' + tableCfg.cols[col].options.to + '?keyval=' + recordObj[showForm].key + '&keycol=' + tableCfg.cols[col].options.relatedCol)"
-              disabled
-              class="field-item"
-              :key="col + index"
-              :label="tableCfg.cols[col].label"
-              outlined
-              type="text"
-              v-model="recordObj[showForm][col]"
-            ></mwc-textfield>
-          </template>
-          <template v-else-if="tableCfg.cols[col].input === 'multi-select'">
-            <mwc-multiselect :required="isRequired(col)" :key="col + index" :label="tableCfg.cols[col].label" v-model="recordObj[showForm][col]" :options="JSON.stringify(tableCfg.cols[col].options)"></mwc-multiselect>
-          </template>
-          <template v-else-if="tableCfg.cols[col].input === 'autocomplete'">
-            <mwc-autocomplete :class="col" :required="isRequired(col)" :key="col + index" :label="tableCfg.cols[col].label" v-model="recordObj[showForm][col]" @search="(e) => autoComplete(e, col, showForm)"></mwc-autocomplete>
-          </template>
-          <template v-else>
-            <mwc-textfield :required="isRequired(col)" class="field-item" :key="col + index" :label="tableCfg.cols[col].label" outlined type="text" v-model="recordObj[showForm][col]"></mwc-textfield>
-          </template>
-        </template>
-      </template>
-    </div>
+<template v-if="tableCfg.cols[col].input === 'link'">
+  <mwc-textfield
+    @click="router.push('/' + tableCfg.cols[col].options.to + '?keyval=' + recordObj[showForm].key + '&keycol=' + tableCfg.cols[col].options.relatedCol)"
+    disabled
+    class="field-item"
+    :key="col + index"
+    :label="tableCfg.cols[col].label"
+    outlined
+    type="text"
+    v-model="recordObj[showForm][col]"
+  ></mwc-textfield>
+</template>
 */

@@ -6,13 +6,13 @@ let wss
 
 let onClientClose = (ws) => {
   // console.log('client disconnected')
-} // client disconnected
+}
 
-let onClientMessage = async (message, ws) => { // client incoming message
+let onClientMessage = async (message, ws, _wss) => { // client incoming message
   // console.log('message', message)
   try { // try-catch only detect immediate error, cannot detect if write failure    
-    if (wss) { // send to other clients except self
-      wss.clients.forEach((client) => {
+    if (_wss) { // send to other clients except self
+      _wss.clients.forEach((client) => {
         if (client !== ws && client.readyState === WebSocket.OPEN) {
           client.send(message) // send message to others 
         }
@@ -48,7 +48,7 @@ exports.open = function (server=null, app=null) {
           ws.isAlive = true
           ws.on('pong', () => { ws.isAlive = true })
           ws.on('close', () => onClientClose(ws))
-          ws.on('message', message => onClientMessage(message, ws))
+          ws.on('message', message => onClientMessage(message, ws, wss))
         })
         setInterval(() => { // set keep-alive
           // console.log('WS Clients: ', wss.clients.size)

@@ -18,12 +18,6 @@ We should have the following
 
 [https://github.com/vuejs/vite](https://github.com/vuejs/vite)
 
-
-## Vitepress 
-
-[https://github.com/vuejs/vitepress](https://github.com/vuejs/vitepress)
-
-
 # Setup
 
 1. Install packages
@@ -58,26 +52,31 @@ rm package-lock.json
 # Project Strcuture
 
 ```
-+- public/ :
-|  +- img/ :
-|  |  +- icons/ :
-|  |  +- splash/ :
-|  +- static/ : 
-|  +- favicon.ico : 
-|  +- manifest.json : 
++- public/
+|  +- img/
+|  |  +- icons/
+|  |  +- splash/
+|  +- static/
+|  +- favicon.ico
+|  +- firebase-messaging-sw.js
+|  +- manifest.json
+|  +- robots.txt
+|  +- service-worker.js
+|  +- sitemap.xml
+|  +- style.css
 +- deploy/ : contains deployment info & files see example-app/deploy/README.md
-+- src/ :
-|  +- components/ :
-|  +- layouts/ :
++- src/
+|  +- components/
+|  +- layouts/
 |  +- lib/ : common libs
 |  |  +- esm : JS that can be used by both front and backend
-|  +- plugins/ :
-|  +- views/ :
-|  +- App.vue :
-|  +- main.js :
-|  +- queries.js :
-|  +- router.js :
-|  +- store.js :
+|  +- plugins/
+|  +- views/
+|  +- App.vue
+|  +- main.js
+|  +- queries.js
+|  +- router.js
+|  +- store.js
 +- .env.development
 +- .env.uat
 +- .eslintignore
@@ -89,16 +88,11 @@ rm package-lock.json
 +- cypress.json
 +- cypress.zip
 +- deploy.sh
-+- firebase-messaging-sw.js
 +- firebase.config.js
 +- index.html
 +- package.json
 +- package-lock.json
 +- pwa-init.js
 +- README.md
-+- robots.txt
-+- service-worker.js
-+- sitemap.xml
-+- style.css
 +- vite.config.js
 ```

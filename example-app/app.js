@@ -6,6 +6,13 @@ const express = require('express')
 const app = express()
 
 const { HTTPS_CERTS } = global.CONFIG
+// TLS 1.2
+// const { constants } = require('crypto')
+// const opts = {
+//   secureOptions: constants.SSL_OP_NO_SSLv2 | constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_TLSv1 | constants.SSL_OP_NO_TLSv1_1,
+//   ciphers: 'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256:TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384',
+//   honorCipher: true
+// }
 const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createServer(app)
 
 // const expressOasGenerator = require('express-oas-generator')

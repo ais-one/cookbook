@@ -9,10 +9,17 @@ const { USE_OTP, OTP_EXPIRY, COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, CO
 const { AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD = ''} = global.CONFIG
 const { JWT_ALG, JWT_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv', JWT_CERTS } = global.CONFIG
 
-const mongo = require('../services/db/mongodb').get()
-const ObjectID = mongo.ObjectID
-const Model = require('../services/db/objection').get()
-const knex = Model ? Model.knex() : null
+let mongo, ObjectID
+if (AUTH_USER_STORE === 'mongo') {
+  mongo = require('../services/db/mongodb').get()
+  ObjectID = mongo.ObjectID
+}
+
+let Model, knex
+if (AUTH_USER_STORE === 'objection') {
+  Model = require('../services/db/objection').get()
+  knex = Model ? Model.knex() : null  
+}
 
 // TBD getToken - check for revoked token? such token should not be available in Key-Value storage already
 

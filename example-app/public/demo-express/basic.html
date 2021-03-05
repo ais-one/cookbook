@@ -17,10 +17,25 @@
     <li><a href="#" onclick="testAPI('/api/error')">Test Express - Error Middleware</a></li>
     <li><a href="#" onclick="testAPI('/api/error-not-found')">Test Express - Not Found Error</a></li>
     <li><a href="#" onclick="testAPI('/api/error-unhandled-promise-rejection')">Test Express - Unhandled Promise Rejection</a></li>
+    <li><a href="#" onclick="testCors()">Test XHR</a></li>
   </ul>
 </body>
 
 <script>
+  function testCors() {
+    let requestBody = JSON.stringify({"aa": "a1", "bb": "b2"})
+    var requestString = '${serviceSettings.authURL}auth';
+    var request = new XMLHttpRequest();
+    request.open('POST', 'http://127.0.0.1:3000/api/test-cors-post');
+    request.setRequestHeader('Access-Control-Allow-Origin', '<origin> | *');
+    request.setRequestHeader("Content-Type", "application/json");
+    request.responseType = 'text';
+    request.onload = function() {
+      console.log(request.response)
+    }; 
+    request.send(requestBody)
+  }
+
   async function testAPI(url) {
     try {
       const res = await fetch(url, { method: 'GET' })

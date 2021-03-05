@@ -1,0 +1,68 @@
+<template>
+  <div class="super-center-parent" >
+    <a-result
+      title="Welcome To JS Dashboard"
+      sub-title="Your one-stop web portal for all things web"
+    >
+      <template #icon>
+        <a-image
+          :width="200"
+          src="https://upload.wikimedia.org/wikipedia/commons/archive/6/6a/20120221235432%21JavaScript-logo.png"
+        />
+      </template>
+      <template #extra>
+        <a-button type="primary" html-type="button" @click="login">Log in</a-button>
+      </template>
+    </a-result>
+
+  </div>
+</template>
+
+<script>
+import { onMounted, onUnmounted } from 'vue'
+import { useStore } from 'vuex'
+import { useRoute, useRouter } from 'vue-router'
+import { SmileTwoTone } from '@ant-design/icons-vue';
+
+export default {
+  components: {
+    SmileTwoTone
+  },
+  setup() {
+    const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
+
+    onUnmounted(() => console.log('signInFast unmounted'))
+    onMounted(async () => {
+      console.log('signInFast mounted!', route.hash) // deal with hashes here if necessary
+    })
+
+    const _setUser = async () => {
+      const decoded = {
+        id: 'Aaa',
+        groups: [],
+        verified: true
+      }
+      await store.dispatch('doLogin', decoded) // store user
+    }
+    const login = async () => {
+      _setUser()
+      router.push('/dashboard')
+    }
+
+    return {
+      login
+    }
+  }
+}
+</script>
+
+<style>
+.super-center-parent {
+  display: grid;
+  place-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+</style>

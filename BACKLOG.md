@@ -1,17 +1,20 @@
 ## Issues
+
 ### For next sprint / version
-- [@es-labs/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new, pass in string or object as value?
-- [@es-labs/esm/bwc-t4t-form.js] - add autocomplete
+- [example-native] migrate example-webpack vue-crud-x table examples to example-native (child table, join tables), (category, author, book - has 1 category, page - belongs to 1 book, book_author)... t4t.js to save to column or to join table
 - [example-app] jsonschema & openapi 3.1
+- [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)
+- [@es-labs/esm/bwc-t4t-form.js] - handle multiple parent values use case of combobox..., handle reset of multiple child columns
 - [fix] - ==='object' - handle null object
 - [example-vite] cypress e2e testing
-- [example-native] migrate example-webpack vue-crud-x table examples to example-native
 - [chore] disable console.log in production / proper console logging
 
 ### Backlog
 - [example-webpack] what to do with apollo graphql client???
 - [backend-deployment] GKE, Kubernetes
 - [frontend-graphql] try @octokit/graphql
+- [frontend] aria
+- [frontend] AMP
 
 ### For future product improvement
 - [chore] use monorepo when npm 7 is released ?

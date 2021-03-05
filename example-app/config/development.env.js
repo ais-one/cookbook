@@ -4,6 +4,7 @@ module.exports = {
   OTP_EXPIRY: 30, // 8 // 30 // defined seconds to allow user to submit OTP
   JWT_REFRESH_STORE: 'keyv',
   USE_GRAPHQL: true,
+  CORS_ORIGINS: 'http://127.0.0.1:8080,http://127.0.0.1:5500',
 
   // in secret
   // KNEXFILE: null,
@@ -16,7 +17,7 @@ module.exports = {
   ENABLE_LOGGER: false,
   TTT: {
     aaa: 222,
-    ccc: 'cdcd',
+    cccxx: 'cdcd',
     zzz: () => console.log('ffff') //  DO NOT USE FUNCTIONS!!!
   }
 }

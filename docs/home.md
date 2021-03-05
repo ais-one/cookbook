@@ -28,15 +28,14 @@
 
 ## Documents
 
+- VueCrudX [VueCrudX.md](VueCrudX.md)
 - Techstack
-  - Custom Elements [custom-element.md](custom-element.md)
-  - Fetch API [fetch.md](fetch.md)
   - GraphQL [graphql.md](graphql.md)
   - Kafka [kafka.md](kafka.md)
   - Mongo DB [mongodb/home.md](mongodb/home.md)
   - NodeJS [nodejs.md](nodejs.md)
   - TCP [tcp.md](tcp.md)
-  - VueCrudX [VueCrudX.md](VueCrudX.md)
+  - MicroServices [micro-services.md](micro-services.md)
 - DevOps
   - Git [git.md](git.md)
   - Deployment And Scaling [deployment/home.md](deployment/home.md) **WIP**
@@ -48,6 +47,8 @@
   - SQA Tools [sqa-tools.md](sqa-tools.md)
   - Team Guidance [team-guidance.md](team-guidance.md)
   - Udemy Courses [courses.md](courses.md)
-
-
-
+- Web
+  - Custom Elements [web/custom-element.md](custom-element.md)
+  - Fetch API [web/fetch.md](fetch.md)
+  - JS [web/js.md](js.md)
+  - Performance [web/web-performance.md](js.md)
