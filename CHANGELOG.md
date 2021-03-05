@@ -1,3 +1,6 @@
+### Version 0.4.8
+- [chore] update packages & cleanup & work on improving documentation
+
 ### Version 0.4.7
 - [chore] update packages & cleanup & work on improving documentation
 - [@es-labs/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new, use string or object, clear text button

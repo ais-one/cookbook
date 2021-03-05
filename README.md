@@ -8,7 +8,7 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.4.7](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.7) - Released 2021 Mar 05 0830 +8GMT
+Latest Version [0.4.8](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.8) - Released 2021 Mar 21 0830 +8GMT
 
 - Replaced mwc with Ant Design Vue in example-vite (https://github.com/material-components/material-components-web-components/issues/1940#issuecomment-724054652)
 - Added bwc-combobox (an extension of bwc-autocomplete, supports multi-select and tags), and integrate it to bwc-t4t-form.js
