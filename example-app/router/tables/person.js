@@ -137,8 +137,7 @@ module.exports = {
         tag: 'input',
         attrs: { type: 'number', min: 10, max: 90, step: 1 }
       },
-
-      validation: {
+      rules: {
         min: 10, max: 90
       }
     },
@@ -179,12 +178,12 @@ module.exports = {
         attrs: { type: 'datetime-local' }
       }
     },
-    website: { // test formatter?
+    website: { // test file upload
       label: 'URL',
       type: 'string',
       ui: {
         tag: 'input',
-        attrs: { type: 'file' } // TBD implement on API side also
+        attrs: { type: 'file' }
       }
     },
     remarks: { // text area
