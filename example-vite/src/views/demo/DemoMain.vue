@@ -24,7 +24,6 @@
       <div class="box" style="background-color: brown">G</div>
     </div>
 
-    <p ref="titleRef">Edit ./App.vue to test hot module replacement (HMR).</p>
     <p>
       <span>Count is: {{ count }}</span>
       <button @click="count++">increment</button>
@@ -33,9 +32,17 @@
     <p>Non-Reactive Data: {{ nonReactiveData }}</p>
     <p>Reactive Data: {{ reactiveData }}</p>
     <p>Vuex Store {{ storeCount }} - {{ storeUser }}</p>
+    <h2>Test Push Notifications</h2>
     <p><button @click="subPn">Sub PN</button>&nbsp;<button @click="unsubPn">Unsub PN</button>&nbsp;<button @click="testPn">Test PN</button></p>
+    <h2>Test Search and rxjs</h2>
     <a-input ref="searchRef" placeholder="rxjs search swapi"></a-input>
-    {{ searchResult || 'No Result' }}
+    {{ searchResult || 'No Search Result' }}
+    <h2>Test Reactivity In Object</h2>
+    <p>
+      Click to see increment. Also check console.log if onUpdated is called
+      <button @click="() => testObjectRef.a++">Test Object Ref = {{ testObjectRef.a }}</button>
+      <button @click="() => testObjectReactive.a.xx++">Test Object Reactive = {{ testObjectReactive.a.xx }}</button>
+    </p>
     <ul>
       <li v-for="n in 10" :key="n">{{ n }}</li>
     </ul>
@@ -76,13 +83,15 @@ export default {
 
     // const obj = reactive({ count: 0 })
     const count = ref(0)
-    const titleRef = ref(null)
     let nonReactiveData = 10
     const reactiveData = ref(20)
 
     const searchRef = ref(null)
     const searchVal = ref('')
     const searchResult = ref('')
+
+    const testObjectRef = ref({ a: 10, b: 20, c: 30 })
+    const testObjectReactive = reactive({ a: { xx: 40}, b: 50, c: 60 })
 
     // const plusOne = computed(() => count.value + 1)
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
@@ -146,7 +155,6 @@ export default {
       // console.log('useStore', store)
       // console.log('useRouter', router)
       // console.log('useRoute', route)
-      // console.log("template ref titleRef", titleRef.value)
 
       timerId = setInterval(() => {
         console.log('timer fired')
@@ -228,6 +236,9 @@ export default {
     }
 
     return {
+      testObjectReactive,
+      testObjectRef,
+
       makeRef,
       list,
       divs,
@@ -236,7 +247,6 @@ export default {
       reactiveData, // ref reactive
       count, // ref
 
-      titleRef,
       storeCount, // store
       storeUser,
       testApi, // test API
