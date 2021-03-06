@@ -13,7 +13,7 @@ module.exports = {
       label: 'ID',
       auto: 'pk',
       hide: true,
-      add: 'hide',
+      add: 'readonly',
       edit: 'readonly'
     },
     name: {

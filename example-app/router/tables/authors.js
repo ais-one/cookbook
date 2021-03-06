@@ -13,7 +13,7 @@ module.exports = {
       label: 'ID',
       auto: 'pk',
       hide: true,
-      add: 'hide',
+      add: 'readonly',
       edit: 'readonly'
     },
     name: {
@@ -26,7 +26,7 @@ module.exports = {
       },
     },
     avatar: {
-      label: 'Name',
+      label: 'Avatar',
       type: 'string',
       filter: true,
       default: '',
