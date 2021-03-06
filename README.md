@@ -8,7 +8,7 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.4.8](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.8) - Released 2021 Mar 06 1220 +8GMT
+Latest Version [0.5.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.0) - Released 2021 Mar 13 1220 +8GMT
 
 - urgent fix for **example-native**, add rxjs to **example-vite**
 
