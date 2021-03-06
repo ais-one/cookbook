@@ -1,3 +1,8 @@
+### Version 0.4.8
+- [chore] update packages & cleanup & work on improving documentation
+- [example-vite] add rxjs example in demo (debounce, switchMap, etc)
+- [example-native] urgent fix resolve CORS issue which stops js from loading
+
 ### Version 0.4.7
 - [chore] update packages & cleanup & work on improving documentation
 - [@es-labs/esm/bwc-combobox.js] - new component: multi-select tags, autocomplete, optional to create new, use string or object, clear text button

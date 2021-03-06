@@ -11,20 +11,20 @@
     <strong>JavaScript required. Please enable it to continue.</strong>
   </noscript>
   <div id="app"></div>
+  <h1>FOO</h1>
   <div id="vanilla">
     <button onclick="hello()">TEST</button>
   </div>
-  <!-- Recaptcha V2 -->
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <script src="https://unpkg.com/vue@3.0.6"></script>
+  <script src="https://unpkg.com/vue@3.0.4"></script>
   <script src="https://unpkg.com/vue-router@4.0.4"></script>
-  <script src="https://unpkg.com/vuex@4.0.0"></script>
+  <script src="https://unpkg.com/vuex@4.0.0"></script> 
   <script type="module" src="main.js"></script>
   <script>
+    console.log('main.js 500 errors could be due to CORS origin of http server serving the page')
     window.addEventListener('unhandledrejection', function (event) {
       // ...your code here to handle the unhandled rejection...
       console.log('event', event, event.reason)
-
       // Prevent the default handling (such as outputting the
       // error to the console)
       event.preventDefault()

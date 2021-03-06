@@ -42,18 +42,13 @@ const router = createRouter({
     { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/ui3', component: () => import('./views/ui3.js'), name: 'ui3' },
     { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/ui4', component: () => import('./views/ui4.js'), name: 'ui4' },
     { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/admin', component: Admin, name: 'admin' },
-    {
-      meta: { requiresAuth: false, layout: 'layout-public' },
-      path: '/',
-      name: 'signIn',
-      component: SignIn
-    },
-    {
-      meta: { requiresAuth: false, layout: 'layout-public' },
-      path: '/:catchAll(.*)',
-      name: 'catchAll',
-      redirect: { name: 'signIn' }
-    }, // should have 404 page
+
+    { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/sql-crud/authors', component: () => import('./views/sqlCrud/authors.js'), name: 'sql-crud_authors' },
+    { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/sql-crud/categories', component: () => import('./views/sqlCrud/categories.js'), name: 'sql-crud_categories' },
+
+    // public
+    { meta: { requiresAuth: false, layout: 'layout-public' }, path: '/', name: 'signIn', component: SignIn },
+    { meta: { requiresAuth: false, layout: 'layout-public' }, path: '/:catchAll(.*)', name: 'catchAll', redirect: { name: 'signIn' } }, // should have 404 page
   ]
 })
 

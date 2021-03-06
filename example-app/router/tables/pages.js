@@ -1,7 +1,7 @@
 // for UI usage only...
 module.exports = {
   db: 'knex',
-  name: 'categories',
+  name: 'pages',
   create: true,
   update: true,
   delete: true,
@@ -13,19 +13,38 @@ module.exports = {
       label: 'ID',
       auto: 'pk',
       hide: true,
-      add: 'readonly',
+      add: 'hide',
       edit: 'readonly'
     },
-    name: {
-      label: 'Name',
+    content: {
+      label: 'Content',
       type: 'string',
       filter: true,
-      add: '',
-      edit: '',
       default: '',
       ui: {
         tag: 'input'
       },
+    },
+    bookId: {
+      label: 'Book', // need to check on auto complete
+      type: 'integer', // string
+      filter: true,
+      options: {
+        parentCol: '', // use column to get parent value affecting a child
+        parentTableColName: '', // the column name in the parent table
+        childCol: '', // affect child column in this table
+        dbName: 'knex',
+        tableName: 'books',
+        limit: 8,
+        strict: true, // cannot enter own values, must be selected
+        key: 'id',
+        text: 'name'
+      },
+      ui: {
+        tag: 'bwc-combobox', // input
+        valueType: 'object', // string or object, if object then no conversion needed
+        valueKey: 'id'
+      }
     },
     created_at: {
       label: 'Created At',
@@ -42,6 +61,7 @@ module.exports = {
       edit: 'readonly'
     }
   },
+
   // generated values
   pk: '',
   multiKey: [],

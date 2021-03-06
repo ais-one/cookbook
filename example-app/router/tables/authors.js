@@ -1,7 +1,7 @@
 // for UI usage only...
 module.exports = {
   db: 'knex',
-  name: 'categories',
+  name: 'authors',
   create: true,
   update: true,
   delete: true,
@@ -20,11 +20,19 @@ module.exports = {
       label: 'Name',
       type: 'string',
       filter: true,
-      add: '',
-      edit: '',
       default: '',
       ui: {
         tag: 'input'
+      },
+    },
+    avatar: {
+      label: 'Avatar',
+      type: 'string',
+      filter: true,
+      default: '',
+      ui: {
+        tag: 'input',
+        // attrs: { type: 'file' }
       },
     },
     created_at: {
@@ -42,6 +50,7 @@ module.exports = {
       edit: 'readonly'
     }
   },
+
   // generated values
   pk: '',
   multiKey: [],

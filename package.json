@@ -1,14 +1,13 @@
 {
   "name": "vue-crud-x",
-  "version": "0.4.7",
-  "description": "Fullstack JS Application Examples",
+  "version": "0.4.8",
+  "description": "Fullstack JS Application Cookbook",
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
   "scripts": {
     "spa": "cd example-webpack && npm run serve",
     "vite": "cd example-vite && npm run dev",
-    "app": "cd example-app&&npm run app",
-    "app:unix": "cd example-app&&npm run app:unix"
+    "app": "cd example-app&&npm run app -- development"
   },
   "engines": {
     "node": "14"

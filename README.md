@@ -8,15 +8,13 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.4.7](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.7) - Released 2021 Mar 05 0830 +8GMT
+Latest Version [0.4.8](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.8) - Released 2021 Mar 06 1220 +8GMT
 
-- Replaced mwc with Ant Design Vue in example-vite (https://github.com/material-components/material-components-web-components/issues/1940#issuecomment-724054652)
-- Added bwc-combobox (an extension of bwc-autocomplete, supports multi-select and tags), and integrate it to bwc-t4t-form.js
-- Improve documentation
+- urgent fix for **example-native**, add rxjs to **example-vite**
 
 # Features
 
-- [SPA, ES Modules, Vue3 & Bulma](https://github.com/ais-one/vue-crud-x/tree/master/example-native): No bundler, scalable VueJS Application, example codes (signed uploads, JWT refresh token, OTP), recaptcha, Github OAuth2 login, **web component table, form & CRUD backend** (files to note)
+- [SPA, ES Modules, Vue3 & Bulma](https://github.com/ais-one/vue-crud-x/tree/master/example-native): No bundler, scalable VueJS Application, example codes (signed uploads, JWT refresh token, OTP), recaptcha, Github OAuth2 login, **Web component table, form & CRUD backend** (files to note)
   - example-app/router/tables/*.* - table configurations
   - example-app/router/t4t.js - handle backend CRUD API
   - @es-labs/esm/t4t-fe.js - frontend operations to interact with t4t.js
@@ -27,7 +25,7 @@ Latest Version [0.4.7](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.7)
   - example-native/views/ui2.js - table example
   - example-native/views/ui3.js - form example (with connection to backend)
   - example-native/views/ui4.js - table and form example (with connection to backend)
-- [SPA, Vite, Vue3 & Ant Design Vue](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, JWT refresh token, 2FA GA OTP, SAML, Websockets, Ant Design Vue, GraphQL
+- [SPA, Vite, Vue3 & Ant Design Vue](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, JWT refresh token, 2FA GA OTP, SAML, Websockets, GraphQL, rxjs
 - [SPA, Vue-cli, Vue2 & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-webpack): Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS
 - [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/)
   - Cors, proxy middleware, helmet, error handling, logging, OpenAPI
