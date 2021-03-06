@@ -55,13 +55,15 @@ const template = /*html*/`
     <p class="menu-label">Administration</p>
     <ul class="menu-list">
       <li><a>Team Settings</a></li>
+      <!--
       <li>
-        <a @click="menu0 = !menu0">{{ menu0 ? '+' : '-' }} Manage Your Team</a>
+        <a @click="menu0 = !menu0">{{ menu0 ? '+' : '-' }} SQL CRUD</a>
         <ul v-show="menu0">
-          <li><a>Managers</a></li>
-          <li><a>Members</a></li>
+          <li><router-link :to="{ path: '/sql-crud/authors' }">Authors</router-link></li>
+          <li><router-link :to="{ path: '/sql-crud/categories' }">Categories</router-link></li>
         </ul>
       </li>
+      -->
       <li>
         <a @click="menu1 = !menu1">{{ menu1 ? '+' : '-' }} Tests</a>
         <ul v-show="menu1">

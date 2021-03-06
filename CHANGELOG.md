@@ -1,6 +1,6 @@
 ### Version 0.4.8
 - [chore] update packages & cleanup & work on improving documentation
-- [example-vite] add rxjs example in demo
+- [example-vite] add rxjs example in demo (debounce, switchMap, etc)
 - [TODO]
   - [example-native] migrate example-webpack vue-crud-x table examples to example-native (child table, join tables), (category, author, book - has 1 category, page - belongs to 1 book, book_author)... t4t.js to save to column or to join table
   - [example-app] jsonschema & openapi 3.1
