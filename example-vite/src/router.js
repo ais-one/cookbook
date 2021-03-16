@@ -77,12 +77,6 @@ const router = createRouter({
     { path: '/demo-form', name: 'DemoForm', component: async () => import('./views/DataEntry/DemoForm.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-card', name: 'DemoCard', component: async () => import('./views/DataEntry/DemoCard.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-map', name: 'DemoMap', component: async () => import('./views/Visuals/DemoMap.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-
-    // items
-    { path: '/major-gift', name: 'MajorGift', component: async () => import('./views/NTU_CSR/MajorGift.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/appeal-m', name: 'AppealM', component: async () => import('./views/NTU_CSR/AppealM.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/update-db', name: 'UpdateDb', component: async () => import('./views/NTU_CSR/UpdateDb.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-
   ]
 })
 

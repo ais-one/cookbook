@@ -67,9 +67,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
 
     let qs = (query && typeof query === 'object') // null is also an object
       ? '?' +
-        Object.keys(query)
-          .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key]))
-          .join('&')
+        Object.keys(query).map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(query[key])).join('&')
       : (query || '')
     qs = qs ? qs + urlSearch.substring(1) // remove the question mark
       : urlSearch
@@ -81,7 +79,10 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     }
     const options = { method, headers }
     if (timeoutMs > 0) options.signal = signal
-    if (token && credentials !== 'include') options.headers.Authorization = `Bearer ${token}` // include === HTTPONLY_TOKEN
+    if (credentials !== 'include') { // include === HTTPONLY_TOKEN
+      if (token) options.headers.Authorization = `Bearer ${token}`
+      if (refreshToken) options.headers.refresh_token = `Bearer ${refreshToken}`
+    }
     if (urlPath === '/api/auth/logout') options.headers.refresh_token = refreshToken // add refresh token for logout
     options.credentials = credentials
 
@@ -109,7 +110,10 @@ const http = async (method, url, body = null, query = null, headers = null) => {
         if (rv1.status === 200) {
           token = rv1.data.token
           refreshToken = rv1.data.refresh_token
-          if (token && credentials !== 'include') options.headers.Authorization = `Bearer ${token}` // include === HTTPONLY_TOKEN
+          if (credentials !== 'include') { // include === HTTPONLY_TOKEN
+            if (token) options.headers.Authorization = `Bearer ${token}`
+            if (refreshToken) options.headers.refresh_token = `Bearer ${refreshToken}`
+          }
           const rv2 = await fetch(urlFull + qs, options)
           // rv2.data = await rv2.json() // replaced by below to handle empty body
           const txt2 = await rv2.text()
@@ -124,7 +128,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     throw rv0 // error
   } catch (e) {
     // some errors are due to res.json(), should be res.json({})
-    if (e && e.data && e.data.message !== 'Token Expired Error' && (e.status === 401 || e.status === 403)) forceLogoutFn()
+    if (e?.data?.message !== 'Token Expired Error' && (e.status === 401 || e.status === 403)) forceLogoutFn()
     throw e // some other error
   }
 }

@@ -203,7 +203,12 @@ const login = async (req, res) => {
       // }
     }
     const tokens = await createToken({ id, verified, ...additionalPayload }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
-    if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token};`+ httpOnlyCookie])
+    if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [
+      `token=${tokens.token};`+ httpOnlyCookie,
+      `refresh_token=${tokens.refresh_token};`+ httpOnlyCookie
+    ])
+    res.setHeader('token', `Bearer ${tokens.token}`)
+    res.setHeader('refresh_token', `Bearer ${tokens.refresh_token}`)
     return res.status(200).json(tokens)
   } catch (e) {
     console.log('login err', e.toString())
@@ -223,7 +228,12 @@ const otp = async (req, res) => { // need to be authentication, body { pin: '123
         await revokeToken(id)
         const additionalPayload = addPayloadFromUserData(user)
         const tokens = await createToken({ id, verified: true, ...additionalPayload }, {expiresIn: JWT_EXPIRY})
-        if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token};`+ httpOnlyCookie])
+        if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [
+          `token=${tokens.token};`+ httpOnlyCookie,
+          `refresh_token=${tokens.refresh_token};`+ httpOnlyCookie
+        ])
+        res.setHeader('token', `Bearer ${tokens.token}`)
+        res.setHeader('refresh_token', `Bearer ${tokens.refresh_token}`)
         return res.status(200).json(tokens)
       } else {
         return res.status(401).json({ message: 'Error token wrong pin' })
@@ -303,3 +313,127 @@ console.log('Decrypted: ' + decText);
 // const final = decrypt.finalize()
 // const plain = proc.toString(crypto.enc.Utf8) + final.toString(crypto.enc.Utf8)
 // console.log(plain)
+
+
+// do refresh token check from backend?
+
+/*
+
+Signout across tabs
+
+window.addEventListener('storage', this.syncLogout) 
+
+//....
+
+
+syncLogout (event) {
+  if (event.key === 'logout') {
+    console.log('logged out from storage!')
+    Router.push('/login')
+  }
+}
+
+async function logout () {
+  inMemoryToken = null;
+  const url = 'http://localhost:3010/auth/logout'
+  const response = await fetch(url, {
+    method: 'POST',
+    credentials: 'include',
+  })
+  // to support logging out from all windows
+  window.localStorage.setItem('logout', Date.now())
+}
+
+*/
+
+
+/*
+The user logs in with a login API call.
+Server generates JWT Token and refresh_token
+Server sets a HttpOnly cookie with refresh_token. jwt_token and jwt_token_expiry are returned back to the client as a JSON payload.
+The jwt_token is stored in memory.
+A countdown to a future silent refresh is started based on jwt_token_expiry
+*/
+
+// https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/
+
+const authUser2 = async (req, res, next) => {
+  // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
+  let token
+  try {
+    // if (COOKIE_HTTPONLY) token = req.cookies.token
+    // else token = req.headers.authorization.split(' ')[1]
+    // console.log(req.path, req.cookies)
+    if (req.cookies.token) {
+      token = req.cookies.token
+    } else if (req.headers.authorization) {
+      if (req.headers.authorization.split(' ')[0] === 'Bearer') token = req.headers.authorization.split(' ')[1]
+    }
+    if (token) { // matchingToken
+      // console.log('token', token)
+      // USE_OTP && req.path !== '/otp'
+      let result = null
+      try {
+        const secretKey = JWT_ALG.substring(0, 2) === 'RS' ? JWT_CERTS.cert : JWT_SECRET
+        result = jwt.verify(token, secretKey, { algorithm: [JWT_ALG] }) // and options
+        if (!result.verified && (req.baseUrl + req.path !== '/api/auth/otp')) {
+          return res.status(401).json({ message: 'Token Verification Error' })
+        }
+      } catch (e) {
+        // const aa = jwt.decode(token)
+        // console.log( e.name, aa, (new Date(aa.iat * 1000)).toISOString(), (new Date(aa.exp * 1000)).toISOString(), (new Date(Date.now())).toISOString() )
+        if (e.name === 'TokenExpiredError') {
+          // check for refresh token
+          try {
+            if (req.cookies.refresh_token) {
+              token = req.cookies.token
+            } else if (req.headers.refresh_token) {
+              if (req.headers.refresh_token.split(' ')[0] === 'Bearer') token = req.headers.authorization.split(' ')[1]
+            }  
+            // check refresh token & user - always stateful
+            result = jwt.decode(token)
+            const { id, exp, iat, verified, ...payload } = result
+            let refreshToken = await getToken(id)
+            if (refreshToken) {
+              if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
+                if (String(refreshToken) === String(token)) { // ok... generate new access token & refresh token?
+                  if (req.baseUrl + req.path === '/api/auth/logout') {
+                    req.decoded = result
+                    return next()
+                  } else {
+                    const tokens = await createToken({ id, verified: true, ...payload }, { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
+                    if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [
+                      `token=${tokens.token};`+ httpOnlyCookie
+                      `token=${tokens.refresh_token};`+ httpOnlyCookie
+                    ])
+                    res.setHeader('token', `Bearer ${tokens.token}`)
+                    res.setHeader('refresh_token', `Bearer ${tokens.refresh_token}`)
+                    return next()
+                  }
+                }
+              } else { // refresh_token expired
+                return res.status(401).json({ message: 'Refresh Token Error: Expired Or Invalid' })
+              }
+            } else {
+              return res.status(401).json({ message: 'Refresh Token Error: Invalid Or Expired' })
+            }
+          } catch (err) { // use err instead of e (fix no-catch-shahow issue)
+            // console.log('refreshing auth err', err.toString())
+            return res.status(401).json({ message: 'Refresh Token Error: Unknown' })
+          }
+          return res.status(401).json({ message: 'Refresh Token Error: Uncaught' })
+        } else {
+          console.log('auth err', e.name)
+        }
+      }
+      if (result) {
+        req.decoded = result
+        return next()
+      }
+    }
+  } catch (e) {
+    console.log('authUser', e.toString())
+  }
+  return res.status(401).json({error: 'Error in token' })
+}
+

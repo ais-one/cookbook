@@ -5,16 +5,12 @@
       sub-title="Your one-stop web portal for all things web"
     >
       <template #icon>
-        <a-image
-          :width="200"
-          src="https://upload.wikimedia.org/wikipedia/commons/archive/6/6a/20120221235432%21JavaScript-logo.png"
-        />
+        <a-image :width="150" src="https://via.placeholder.com/150x150.png?text=A+Logo" />
       </template>
       <template #extra>
         <a-button type="primary" html-type="button" @click="login">Log in</a-button>
       </template>
     </a-result>
-
   </div>
 </template>
 

@@ -157,3 +157,12 @@ npm run abc:xyz
     "@es-labs/node": "file:../@es-labs/node",
 
 If you edit the file in ../@eslabs/..., it will also be changed the installed node_modules
+
+
+## Shutdown
+
+- https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
+- signals: http://man7.org/linux/man-pages/man7/signal.7.html
+- node signal events: https://nodejs.org/dist/latest-v11.x/docs/api/processhtml#process_signal_events
+- kubernetes shutdown: https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-terminating-with-grace
+

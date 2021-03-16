@@ -18,8 +18,8 @@
     "@ant-design/icons-vue": "^6.0.1",
     "@antv/data-set": "^0.11.8",
     "@antv/g2": "^4.1.12",
-    "@antv/g2plot": "^2.3.13",
-    "@apollo/client": "^3.3.11",
+    "@antv/g2plot": "^2.3.15",
+    "@apollo/client": "^3.3.12",
     "ant-design-vue": "^2.0.1",
     "echarts": "^5.0.2",
     "graphql": "^15.5.0",
@@ -28,15 +28,15 @@
     "rxjs": "^6.6.6",
     "subscriptions-transport-ws": "^0.9.18",
     "vue": "^3.0.7",
-    "vue-router": "^4.0.4",
+    "vue-router": "^4.0.5",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.1.5",
     "@vue/compiler-sfc": "^3.0.7",
-    "cypress": "^6.6.0",
+    "cypress": "^6.7.0",
     "dotenv": "^8.2.0",
-    "eslint": "^7.21.0",
+    "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
@@ -46,6 +46,6 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.7.0",
     "prettier": "^2.2.1",
-    "vite": "^2.0.5"
+    "vite": "^2.1.0"
   }
 }
