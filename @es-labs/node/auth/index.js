@@ -22,9 +22,7 @@ if (AUTH_USER_STORE === 'objection') {
 }
 
 // TBD getToken - check for revoked token? such token should not be available in Key-Value storage already
-
 const { setToken, getToken, revokeToken } = require('./' + JWT_REFRESH_STORE)
-
 const httpOnlyCookie = `HttpOnly;Path=/;SameSite=${COOKIE_SAMESITE};` + (COOKIE_SECURE ? 'Secure;':'') + (COOKIE_MAXAGE ? 'MaxAge='+COOKIE_MAXAGE+';':'')
 
 // algorithm
@@ -51,73 +49,101 @@ const updateUser = async (where, payload) => {
     if (where.id) where = { _id: new ObjectID(where.id) }
     return await mongo.db.collection(AUTH_USER_STORE_NAME).updateOne(where, { $set: payload })
   } else if (AUTH_USER_STORE === 'objection') {
-    console.log('xxx', where, payload)
     return await knex(AUTH_USER_STORE_NAME).where(where).first().update(payload)
   }
   return null
 }
 
-const createToken = async (payload, options) => { // Create a token from a payload
-  let token
-  let refresh_token
-  try {
-    // console.log('createToken', payload, options)
-    options.algorithm = JWT_ALG
-    const secretKey = JWT_ALG.substring(0,2) === 'RS' ? JWT_CERTS.key : JWT_SECRET
-    token = jwt.sign(payload, secretKey, options)
-    // console.log(token)
-    refresh_token = Date.now()
-    await setToken(payload.id, refresh_token) // TBD set in DB instead...
-  } catch (e) {
-    console.log('createToken', e.toString())
+// mode: sign, verify
+// type: access, refresh
+const getSecret = (mode, type) => {
+  if (JWT_ALG.substring(0,2) === 'RS') {
+    if (mode === 'sign') {
+      return type === 'refresh' ? JWT_CERTS.key : JWT_CERTS.key
+    } else {
+      return type === 'refresh' ? JWT_CERTS.cert : JWT_CERTS.cert
+    }
+  } else {
+    return type === 'refresh' ? JWT_SECRET : JWT_SECRET
   }
-  return { token, refresh_token }          
+}
+
+const createToken = async (payload) => { // Create a token from a payload
+  let access_token
+  let refresh_token
+  const options = { }
+  try {
+    options.algorithm = JWT_ALG
+
+    options.expiresIn = JWT_EXPIRY
+    access_token = jwt.sign(payload, getSecret('sign', 'access'), options)
+
+    options.expiresIn = JWT_REFRESH_EXPIRY
+    refresh_token = jwt.sign({ id: payload.id }, getSecret('sign', 'refresh'), options)
+
+    await setToken(payload.id, refresh_token) // store in DB or Cache
+  } catch (e) {
+  }
+  return {
+    token,
+    refresh_token
+  }
+}
+
+const setTokensToHeader = (res, access_token, refresh_token) => {
+  if (COOKIE_HTTPONLY) {
+    res.setHeader('Set-Cookie', [
+      `access_token=${access_token};`+ httpOnlyCookie,
+      `refresh_token=${refresh_token};`+ httpOnlyCookie
+    ])
+  } else {
+    res.setHeader('access_token', `${access_token}`)
+    res.setHeader('refresh_token', `${refresh_token}`)
+  }
 }
 
 const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
   let token
   try {
-    // if (COOKIE_HTTPONLY) token = req.cookies.token
     // else token = req.headers.authorization.split(' ')[1]
-    // console.log(req.path, req.cookies)
     if (req.cookies.token) {
       token = req.cookies.token
     } else if (req.headers.authorization) {
       if (req.headers.authorization.split(' ')[0] === 'Bearer') token = req.headers.authorization.split(' ')[1]
     }
-    if (token) { // matchingToken
-      // console.log('token', token)
-      // USE_OTP && req.path !== '/otp'
+    if (token) {
       let result = null
       try {
-        const secretKey = JWT_ALG.substring(0, 2) === 'RS' ? JWT_CERTS.cert : JWT_SECRET
-        result = jwt.verify(token, secretKey, { algorithm: [JWT_ALG] }) // and options
+        result = jwt.verify(token, getSecret('verify', 'access'), { algorithm: [JWT_ALG] }) // and options
         if (!result.verified && (req.baseUrl + req.path !== '/api/auth/otp')) {
           return res.status(401).json({ message: 'Token Verification Error' })
         }
       } catch (e) {
-        // const aa = jwt.decode(token)
-        // console.log( e.name, aa, (new Date(aa.iat * 1000)).toISOString(), (new Date(aa.exp * 1000)).toISOString(), (new Date(Date.now())).toISOString() )
         if (e.name === 'TokenExpiredError') {
           // console.log('req.path', req.baseUrl + req.path)
           if (req.baseUrl + req.path === '/api/auth/refresh' || req.baseUrl + req.path === '/api/auth/logout') {
             try {
               // check refresh token & user - always stateful
-              result = jwt.decode(token)
-              const { id, exp, iat, verified, ...payload } = result
-
+              if (req.cookies.refresh_token) {
+                token = req.cookies.refresh_token
+              } else if (req.headers.authorization) {
+                if (req.headers.authorization.split(' ')[0] === 'Bearer') token = req.headers.authorization.split(' ')[1]
+              }
+          
+              refreshDecoded = jwt.verify(token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // can throw token expired error
+              // result = jwt.decode(token)
+              const { id } = refreshDecoded
               let refreshToken = await getToken(id)
               if (refreshToken) {
-                // console.log('ggg', req.baseUrl, req.path, parseInt(Date.now() / 1000) - exp, JWT_REFRESH_EXPIRY, e.toString(), parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY, token)
                 if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
                   if (String(refreshToken) === String(req.body.refresh_token) || String(refreshToken) === String(req.headers.refresh_token)) { // ok... generate new access token & refresh token?
                     if (req.baseUrl + req.path === '/api/auth/logout') {
                       req.decoded = result
                       return next()
                     } else {
-                      const tokens = await createToken({ id, verified: true, ...payload }, { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
-                      if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token};`+ httpOnlyCookie])
+                      const tokens = await createToken({ id, verified: true, ...payload }) // 5 minute expire for login
+                      setTokensToHeader(res, tokens.access_token, tokens.refresh_token)
                       return res.status(200).json(tokens)  
                     }
                   }
@@ -203,12 +229,7 @@ const login = async (req, res) => {
       // }
     }
     const tokens = await createToken({ id, verified, ...additionalPayload }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
-    if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [
-      `token=${tokens.token};`+ httpOnlyCookie,
-      `refresh_token=${tokens.refresh_token};`+ httpOnlyCookie
-    ])
-    res.setHeader('token', `Bearer ${tokens.token}`)
-    res.setHeader('refresh_token', `Bearer ${tokens.refresh_token}`)
+    setTokensToHeader(res, tokens.access_token, tokens.refresh_token)
     return res.status(200).json(tokens)
   } catch (e) {
     console.log('login err', e.toString())
@@ -227,13 +248,8 @@ const otp = async (req, res) => { // need to be authentication, body { pin: '123
       if (isValid) {
         await revokeToken(id)
         const additionalPayload = addPayloadFromUserData(user)
-        const tokens = await createToken({ id, verified: true, ...additionalPayload }, {expiresIn: JWT_EXPIRY})
-        if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [
-          `token=${tokens.token};`+ httpOnlyCookie,
-          `refresh_token=${tokens.refresh_token};`+ httpOnlyCookie
-        ])
-        res.setHeader('token', `Bearer ${tokens.token}`)
-        res.setHeader('refresh_token', `Bearer ${tokens.refresh_token}`)
+        const tokens = await createToken({ id, verified: true, ...additionalPayload })
+        setTokensToHeader(res, tokens.access_token, tokens.refresh_token)
         return res.status(200).json(tokens)
       } else {
         return res.status(401).json({ message: 'Error token wrong pin' })
@@ -243,7 +259,7 @@ const otp = async (req, res) => { // need to be authentication, body { pin: '123
   return res.status(401).json({ message: 'Error token revoked' })
 }
 
-module.exports = { findUser, updateUser, createToken, revokeToken, authUser, logout, refresh, login, otp, bcrypt, otplib } // getToken, setToken,
+module.exports = { findUser, updateUser, createToken, setTokensToHeader, revokeToken, authUser, logout, refresh, login, otp, bcrypt, otplib } // getToken, setToken,
 
 /*
 const crypto = require('crypto')
@@ -356,84 +372,3 @@ A countdown to a future silent refresh is started based on jwt_token_expiry
 */
 
 // https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/
-
-const authUser2 = async (req, res, next) => {
-  // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
-  let token
-  try {
-    // if (COOKIE_HTTPONLY) token = req.cookies.token
-    // else token = req.headers.authorization.split(' ')[1]
-    // console.log(req.path, req.cookies)
-    if (req.cookies.token) {
-      token = req.cookies.token
-    } else if (req.headers.authorization) {
-      if (req.headers.authorization.split(' ')[0] === 'Bearer') token = req.headers.authorization.split(' ')[1]
-    }
-    if (token) { // matchingToken
-      // console.log('token', token)
-      // USE_OTP && req.path !== '/otp'
-      let result = null
-      try {
-        const secretKey = JWT_ALG.substring(0, 2) === 'RS' ? JWT_CERTS.cert : JWT_SECRET
-        result = jwt.verify(token, secretKey, { algorithm: [JWT_ALG] }) // and options
-        if (!result.verified && (req.baseUrl + req.path !== '/api/auth/otp')) {
-          return res.status(401).json({ message: 'Token Verification Error' })
-        }
-      } catch (e) {
-        // const aa = jwt.decode(token)
-        // console.log( e.name, aa, (new Date(aa.iat * 1000)).toISOString(), (new Date(aa.exp * 1000)).toISOString(), (new Date(Date.now())).toISOString() )
-        if (e.name === 'TokenExpiredError') {
-          // check for refresh token
-          try {
-            if (req.cookies.refresh_token) {
-              token = req.cookies.token
-            } else if (req.headers.refresh_token) {
-              if (req.headers.refresh_token.split(' ')[0] === 'Bearer') token = req.headers.authorization.split(' ')[1]
-            }  
-            // check refresh token & user - always stateful
-            result = jwt.decode(token)
-            const { id, exp, iat, verified, ...payload } = result
-            let refreshToken = await getToken(id)
-            if (refreshToken) {
-              if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
-                if (String(refreshToken) === String(token)) { // ok... generate new access token & refresh token?
-                  if (req.baseUrl + req.path === '/api/auth/logout') {
-                    req.decoded = result
-                    return next()
-                  } else {
-                    const tokens = await createToken({ id, verified: true, ...payload }, { expiresIn: JWT_EXPIRY }) // 5 minute expire for login
-                    if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [
-                      `token=${tokens.token};`+ httpOnlyCookie
-                      `token=${tokens.refresh_token};`+ httpOnlyCookie
-                    ])
-                    res.setHeader('token', `Bearer ${tokens.token}`)
-                    res.setHeader('refresh_token', `Bearer ${tokens.refresh_token}`)
-                    return next()
-                  }
-                }
-              } else { // refresh_token expired
-                return res.status(401).json({ message: 'Refresh Token Error: Expired Or Invalid' })
-              }
-            } else {
-              return res.status(401).json({ message: 'Refresh Token Error: Invalid Or Expired' })
-            }
-          } catch (err) { // use err instead of e (fix no-catch-shahow issue)
-            // console.log('refreshing auth err', err.toString())
-            return res.status(401).json({ message: 'Refresh Token Error: Unknown' })
-          }
-          return res.status(401).json({ message: 'Refresh Token Error: Uncaught' })
-        } else {
-          console.log('auth err', e.name)
-        }
-      }
-      if (result) {
-        req.decoded = result
-        return next()
-      }
-    }
-  } catch (e) {
-    console.log('authUser', e.toString())
-  }
-  return res.status(401).json({error: 'Error in token' })
-}
-

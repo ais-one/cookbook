@@ -22,7 +22,7 @@ module.exports = express.Router()
         const relayState = req.body.RelayState.split(';') // 0 = frontend callback, 1 = allowed groups, 2 = expiry
         const TO = relayState[0]
         if (req.isAuthenticated()) {
-          const tokens = await createToken({ ...req.user }, {expiresIn: JWT_EXPIRY})
+          const tokens = await createToken({ ...req.user })
           const tokenStr = JSON.stringify(tokens) // .toString('base64')
           res.redirect(TO + '#' + tokenStr) // use url fragment...
         } else {

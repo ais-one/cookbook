@@ -119,22 +119,10 @@ import MultiChart from '../components/Dashboard/MultiChart.vue'
 import PieChart from '../components/Dashboard/PieChart.vue'
 
 const data = [
-  {
-    name: 'Aaron',
-    title: 'Fullstack Dev',
-  },
-  {
-    name: 'Jermyn',
-    title: 'Data Scientist',
-  },
-  {
-    name: 'Valerie',
-    title: 'Data Scientist',
-  },
-  {
-    name: 'Heping',
-    title: 'Data Scientist',
-  },
+  { name: 'Anthony', title: 'Fullstack Dev', },
+  { name: 'Joseph', title: 'QA Tester', },
+  { name: 'Valerian', title: 'UX Expert', },
+  { name: 'Hera', title: 'Data Scientist', },
 ];
 
 export default {

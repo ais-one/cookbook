@@ -76,7 +76,7 @@ const router = createRouter({
     { path: '/cascade-ms', name: 'CascadeMs', component: async () => import('./views/DataEntry/CascadeMs.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-form', name: 'DemoForm', component: async () => import('./views/DataEntry/DemoForm.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-card', name: 'DemoCard', component: async () => import('./views/DataEntry/DemoCard.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/demo-map', name: 'DemoMap', component: async () => import('./views/Visuals/DemoMap.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-antd-map', name: 'DemoMap', component: async () => import('./views/Visuals/DemoMap.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
   ]
 })
 
