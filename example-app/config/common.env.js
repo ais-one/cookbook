@@ -59,7 +59,7 @@ module.exports = {
     ],
     components: {
       schemes: [ 'http', 'https' ],
-      securitySchemes: {
+      securitySchemes: { // need to fix this for access & refresh token
         bearerAuth: {
           type: 'http',
           scheme: 'bearer',

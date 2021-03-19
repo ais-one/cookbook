@@ -4,10 +4,11 @@
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <div class="logo" />
       <a-menu theme="dark" mode="inline" v-model:selectedKeys="selectedKeys">
-        <a-menu-item key="1" @click="$router.push('/dashboard')">
+        <a-menu-item key="1" @click="$router.push(VITE_INITAL_SECURE_PATH)">
           <user-outlined />
           <span>Dashboard</span>
         </a-menu-item>
+        <a-menu-item key="main" @click="$router.push('/demo-main')">Main</a-menu-item>
         <a-sub-menu key="sub1">
           <template #title>
             <span>
@@ -42,11 +43,10 @@
               <span>Demo</span>
             </span>
           </template>
-          <a-menu-item key="51" @click="$router.push('/demo-main')">Demo Main</a-menu-item>
-          <a-menu-item key="52" @click="$router.push('/demo-map')">Demo Map</a-menu-item>
-          <a-menu-item key="53" @click="$router.push('/demo-chart')">Demo Chart</a-menu-item>
-          <a-menu-item key="54" @click="$router.push('/demo-web-cam')">Web Cam</a-menu-item>
-          <a-menu-item key="55" @click="$router.push('/demo-sign-pad')">SIgn Pad</a-menu-item>
+          <a-menu-item key="51" @click="$router.push('/demo-map')">Demo Map</a-menu-item>
+          <a-menu-item key="52" @click="$router.push('/demo-chart')">Demo Chart</a-menu-item>
+          <a-menu-item key="53" @click="$router.push('/demo-web-cam')">Web Cam</a-menu-item>
+          <a-menu-item key="54" @click="$router.push('/demo-sign-pad')">SIgn Pad</a-menu-item>
         </a-sub-menu>
         <a-menu-item key="6" @click="logout">Logout</a-menu-item>
       </a-menu>
@@ -77,6 +77,7 @@
 // :key="$route.fullPath" // this is causing problems
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
+import { VITE_INITAL_SECURE_PATH } from '/config.js'
 
 import {
   UserOutlined,
@@ -105,6 +106,7 @@ export default {
       logout,
       selectedKeys: ref(['1']),
       collapsed: ref(false),
+      VITE_INITAL_SECURE_PATH,
     }
   }
 }

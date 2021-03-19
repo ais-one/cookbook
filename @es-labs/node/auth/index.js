@@ -23,6 +23,9 @@ if (AUTH_USER_STORE === 'objection') {
 
 // TBD getToken - check for revoked token? such token should not be available in Key-Value storage already
 const { setToken, getToken, revokeToken } = require('./' + JWT_REFRESH_STORE)
+
+// SameSite=None; must use with Secure;
+// may need to restart browser, TBD set Max-Age, ALTERNATE use res.cookie, Signed?
 const httpOnlyCookie = `HttpOnly;Path=/;SameSite=${COOKIE_SAMESITE};` + (COOKIE_SECURE ? 'Secure;':'') + (COOKIE_MAXAGE ? 'MaxAge='+COOKIE_MAXAGE+';':'')
 
 // algorithm
@@ -68,7 +71,7 @@ const getSecret = (mode, type) => {
   }
 }
 
-const createToken = async (payload) => { // Create a token from a payload
+const createToken = async (payload) => { // Create a tokens from a payload
   let access_token
   let refresh_token
   const options = { }
@@ -85,12 +88,12 @@ const createToken = async (payload) => { // Create a token from a payload
   } catch (e) {
   }
   return {
-    token,
+    access_token,
     refresh_token
   }
 }
 
-const setTokensToHeader = (res, access_token, refresh_token) => {
+const setTokensToHeader = (res, {access_token, refresh_token}) => {
   if (COOKIE_HTTPONLY) {
     res.setHeader('Set-Cookie', [
       `access_token=${access_token};`+ httpOnlyCookie,
@@ -104,57 +107,34 @@ const setTokensToHeader = (res, access_token, refresh_token) => {
 
 const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
-  let token
+  let access_result = null
+  let refresh_result = null
   try {
-    // else token = req.headers.authorization.split(' ')[1]
-    if (req.cookies.token) {
-      token = req.cookies.token
-    } else if (req.headers.authorization) {
-      if (req.headers.authorization.split(' ')[0] === 'Bearer') token = req.headers.authorization.split(' ')[1]
-    }
-    if (token) {
-      let result = null
+    let access_token = req?.cookies?.access_token || req?.headers?.access_token
+    if (access_token) {
       try {
-        result = jwt.verify(token, getSecret('verify', 'access'), { algorithm: [JWT_ALG] }) // and options
-        if (!result.verified && (req.baseUrl + req.path !== '/api/auth/otp')) {
+        access_result = jwt.verify(access_token, getSecret('verify', 'access'), { algorithm: [JWT_ALG] }) // and options
+        if (!access_result.verified && (req.baseUrl + req.path !== '/api/auth/otp')) {
           return res.status(401).json({ message: 'Token Verification Error' })
         }
       } catch (e) {
         if (e.name === 'TokenExpiredError') {
+          console.log('TOKEN EXPIRED')
           // console.log('req.path', req.baseUrl + req.path)
-          if (req.baseUrl + req.path === '/api/auth/refresh' || req.baseUrl + req.path === '/api/auth/logout') {
+          if (req.baseUrl + req.path === '/api/auth/refresh') {
             try {
-              // check refresh token & user - always stateful
-              if (req.cookies.refresh_token) {
-                token = req.cookies.refresh_token
-              } else if (req.headers.authorization) {
-                if (req.headers.authorization.split(' ')[0] === 'Bearer') token = req.headers.authorization.split(' ')[1]
-              }
-          
-              refreshDecoded = jwt.verify(token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // can throw token expired error
-              // result = jwt.decode(token)
-              const { id } = refreshDecoded
+              refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token // check refresh token & user - always stateful          
+              refresh_result = jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
+              const { id } = refresh_result
               let refreshToken = await getToken(id)
-              if (refreshToken) {
-                if (parseInt(Date.now() / 1000) < exp + JWT_REFRESH_EXPIRY) { // not too expired... exp is in seconds, iat is not used
-                  if (String(refreshToken) === String(req.body.refresh_token) || String(refreshToken) === String(req.headers.refresh_token)) { // ok... generate new access token & refresh token?
-                    if (req.baseUrl + req.path === '/api/auth/logout') {
-                      req.decoded = result
-                      return next()
-                    } else {
-                      const tokens = await createToken({ id, verified: true, ...payload }) // 5 minute expire for login
-                      setTokensToHeader(res, tokens.access_token, tokens.refresh_token)
-                      return res.status(200).json(tokens)  
-                    }
-                  }
-                } else { // refresh_token expired
-                  return res.status(401).json({ message: 'Refresh Token Error: Expired Or Invalid' })
-                }
-              } else {
-                return res.status(401).json({ message: 'Refresh Token Error: Invalid Or Expired' })
+              if (String(refreshToken) === String(refresh_token)) { // ok... generate new access token & refresh token?
+                access_result = jwt.decode(access_token)
+                const tokens = await createToken({ id, verified: true, ...access_result }) // 5 minute expire for login
+                setTokensToHeader(res, tokens)
+                console.log('REFRESH SUCCESS')
+                return res.status(200).json(tokens)
               }
-            } catch (err) { // use err instead of e (fix no-catch-shahow issue)
-              // console.log('refreshing auth err', err.toString())
+            } catch (err) { // use err instead of e (fix no-catch-shadow issue)
               return res.status(401).json({ message: 'Refresh Token Error: Unknown' })
             }
             return res.status(401).json({ message: 'Refresh Token Error: Uncaught' })
@@ -165,8 +145,8 @@ const authUser = async (req, res, next) => {
           console.log('auth err', e.name)
         }
       }
-      if (result) {
-        req.decoded = result
+      if (access_result) {
+        req.decoded = access_result
         return next()
       }
     }
@@ -177,13 +157,25 @@ const authUser = async (req, res, next) => {
 }
 
 const logout = async (req, res) => {
+  let id = null
   try {
-    await revokeToken(req.decoded.id) // clear
-    if (COOKIE_HTTPONLY) res.clearCookie('token')
-    return res.status(200).json({ message: 'Logged Out' })  
+    let refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token // check refresh token & user - always stateful          
+    const result = jwt.decode(refresh_token)
+    id = result.id
+    jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
   } catch (e) {
-    console.log(e.toString())
+    if (e.name !== 'TokenExpiredError') id = null
   }
+  try {
+    if (id) {
+      await revokeToken(id) // clear
+      if (COOKIE_HTTPONLY) {
+        res.clearCookie('refresh_token')
+        res.clearCookie('access_token')
+      }  
+      return res.status(200).json({ message: 'Logged Out' })  
+    }
+  } catch (e) { }
   return res.status(500).json()  
 }
 
@@ -229,7 +221,7 @@ const login = async (req, res) => {
       // }
     }
     const tokens = await createToken({ id, verified, ...additionalPayload }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
-    setTokensToHeader(res, tokens.access_token, tokens.refresh_token)
+    setTokensToHeader(res, tokens)
     return res.status(200).json(tokens)
   } catch (e) {
     console.log('login err', e.toString())
@@ -249,7 +241,7 @@ const otp = async (req, res) => { // need to be authentication, body { pin: '123
         await revokeToken(id)
         const additionalPayload = addPayloadFromUserData(user)
         const tokens = await createToken({ id, verified: true, ...additionalPayload })
-        setTokensToHeader(res, tokens.access_token, tokens.refresh_token)
+        setTokensToHeader(res, tokens)
         return res.status(200).json(tokens)
       } else {
         return res.status(401).json({ message: 'Error token wrong pin' })
@@ -336,11 +328,9 @@ console.log('Decrypted: ' + decText);
 /*
 
 Signout across tabs
-
 window.addEventListener('storage', this.syncLogout) 
 
 //....
-
 
 syncLogout (event) {
   if (event.key === 'logout') {

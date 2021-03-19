@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from './store.js'
-import { BASE_URL } from '../config.js'
+import { BASE_URL, VITE_INITAL_SECURE_PATH } from '/config.js'
 
 // const permissions = {
 //   // g1 = route groups, g2 = user groups
@@ -41,7 +41,7 @@ const authGuard = (to, from, next) => {
   } else if (!loggedIn && requiresAuth) {
     next('/signin')
   } else if (loggedIn && !requiresAuth) {
-    next('/dashboard')
+    next(VITE_INITAL_SECURE_PATH)
   } else {
     // should not get here
     console.log('router should not get here', loggedIn, requiresAuth)

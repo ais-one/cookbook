@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 import router from './router.js'
 import * as http from '/@es-labs/esm/http.js' // served from express /esm static route
 // import aaa from 'https://unpkg.com/swrv@0.3.0/esm/index.js' - will error
+import { VITE_INITAL_SECURE_PATH } from '/config.js'
 
 const mutations = {
   login(state, payload) {
@@ -30,7 +31,7 @@ const actions = {
       } else {
         // sign in ok
         commit('login', payload)
-        await router.push('/dashboard')
+        await router.push(VITE_INITAL_SECURE_PATH)
       }
     } else {
       // sign in failed

@@ -19,6 +19,7 @@ import { onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { SmileTwoTone } from '@ant-design/icons-vue';
+import { VITE_INITAL_SECURE_PATH } from '/config.js'
 
 export default {
   components: {
@@ -44,7 +45,7 @@ export default {
     }
     const login = async () => {
       _setUser()
-      router.push('/dashboard')
+      router.push(VITE_INITAL_SECURE_PATH)
     }
 
     return {

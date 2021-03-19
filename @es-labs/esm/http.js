@@ -1,6 +1,6 @@
 // FRONTEND ONLY
 // TBD make this such that can use default instance or create new instance
-let token = ''
+let accessToken = ''
 let refreshToken = ''
 
 let baseUrl = '' // 'http://127.0.0.1:3000'
@@ -10,7 +10,7 @@ let credentials = 'same-origin'
 let forceLogoutFn = () => {} // function to call when forcing a logout
 
 const setBaseUrl = (_baseUrl) => (baseUrl = _baseUrl)
-const setToken = (_token) => (token = _token)
+const setAccessToken = (_token) => (accessToken = _token)
 const setRefreshToken = (_refreshToken) => (refreshToken = _refreshToken)
 const setCredentials = (_credentials) => (credentials = _credentials)
 const setForceLogoutFn = (_forceLogoutFn) => (forceLogoutFn = _forceLogoutFn)
@@ -80,8 +80,8 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     const options = { method, headers }
     if (timeoutMs > 0) options.signal = signal
     if (credentials !== 'include') { // include === HTTPONLY_TOKEN
-      if (token) options.headers.Authorization = `Bearer ${token}`
-      if (refreshToken) options.headers.refresh_token = `Bearer ${refreshToken}`
+      if (accessToken) options.headers.access_token = accessToken
+      if (refreshToken) options.headers.refresh_token = refreshToken
     }
     if (urlPath === '/api/auth/logout') options.headers.refresh_token = refreshToken // add refresh token for logout
     options.credentials = credentials
@@ -108,11 +108,11 @@ const http = async (method, url, body = null, query = null, headers = null) => {
       if (rv0.data.message === 'Token Expired Error') {
         const rv1 = await http('POST', urlOrigin + '/api/auth/refresh', { refresh_token: refreshToken }) // rv1 JSON already processed
         if (rv1.status === 200) {
-          token = rv1.data.token
+          accessToken = rv1.data.access_token
           refreshToken = rv1.data.refresh_token
           if (credentials !== 'include') { // include === HTTPONLY_TOKEN
-            if (token) options.headers.Authorization = `Bearer ${token}`
-            if (refreshToken) options.headers.refresh_token = `Bearer ${refreshToken}`
+            if (accessToken) options.headers.access_token = accessToken
+            if (refreshToken) options.headers.refresh_token = refreshToken
           }
           const rv2 = await fetch(urlFull + qs, options)
           // rv2.data = await rv2.json() // replaced by below to handle empty body
@@ -139,7 +139,7 @@ const patch = async (url, body = null, query = null, headers = null) => await ht
 const del = async (url, query = null, headers = null) => await http('DELETE', url, null, query, headers)
 const get = async (url, query = null, headers = null) => await http('GET', url, null, query, headers)
 
-export { http, post, get, put, patch, del, setBaseUrl, setToken, setRefreshToken, setCredentials, setForceLogoutFn, parseUrl }
+export { http, post, get, put, patch, del, setBaseUrl, setAccessToken, setRefreshToken, setCredentials, setForceLogoutFn, parseUrl }
 
 // var global = window || global
 // global.Validator = Validator

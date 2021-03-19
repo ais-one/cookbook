@@ -25,9 +25,10 @@ describe(endpointUrl, () => {
     require('../../router')(app)
 
     const { createToken } = require('@es-labs/node/auth')
-    const { token } = await createToken({ id: 100, verified: true, groups: 'TestGroup' })
+    const tokens = await createToken({ id: 100, verified: true, groups: 'TestGroup' })
     authObj = {
-      Authorization: 'Bearer ' + token
+      access_token: tokens.access_token,
+      refresh_token: tokens.refresh_token
     }
   })
   // afterAll(() => {

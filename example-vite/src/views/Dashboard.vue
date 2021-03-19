@@ -1,166 +1,284 @@
 <template>
-  <div class="ds-stat-container">
-    <a-row :gutter="8">
-      <a-col class="ds-stat" :sm="24" :md="12" :xl="6">
-        <a-card>
-          <a-statistic
-            title="Feedback"
-            :value="11.28"
-            :precision="2"
-            suffix="%"
-            :value-style="{ color: '#3f8600' }"
-          >
-            <template #prefix>
-              <arrow-up-outlined />
-            </template>
-          </a-statistic>
-        </a-card>
-      </a-col>
-      <a-col class="ds-stat" :sm="24" :md="12" :xl="6">
-        <a-card>
-          <a-statistic
-            title="Idle"
-            :value="9.3"
-            :precision="2"
-            suffix="%"
-            class="demo-class"
-            :value-style="{ color: '#cf1322' }"
-          >
-            <template #prefix>
-              <arrow-down-outlined />
-            </template>
-          </a-statistic>
-        </a-card>
-      </a-col>
+  <div class="container">
+    <h1>Site A - Test VueJS 3</h1>
+    <!-- <div
+      v-for="(item, i) in list"
+      :key="i"
+      :ref="
+        (el) => {
+          divs[i] = el
+        }
+      "
+    > -->
+    <!-- <div v-for="(item, i) in list" :key="i" :ref="(el) => makeRef(el, i)"> -->
+    <div v-for="(item, i) in list" :key="i" :ref="(el) => (divs[i] = el)">
+      {{ item }}
+    </div>
+    <div class="section">
+      <div class="box" style="background-color: red">A</div>
+      <div class="box" style="background-color: lightblue">B</div>
+      <div class="box" style="background-color: yellow">C</div>
+      <div class="box" style="background-color: brown">D</div>
+      <div class="box" style="background-color: lightgreen">E</div>
+      <div class="box" style="background-color: red">A</div>
+      <div class="box" style="background-color: brown">G</div>
+    </div>
 
-      <a-col class="ds-stat" :sm="24" :md="12" :xl="6">
-        <a-card>
-          <a-statistic title="Active Users" :value="112893" />
-        </a-card>
-      </a-col>
-      <a-col class="ds-stat" :sm="24" :md="12" :xl="6">
-        <a-card>
-          <a-statistic title="Account Balance (CNY)" :precision="2" :value="112893" />
-        </a-card>
-      </a-col>
-    </a-row>
-
-    <a-row :gutter="8">
-      <a-col class="ds-stat" :lg="24" :xl="16">
-
-      <a-row :gutter="8">
-        <a-col class="ds-stat" :span="12">
-          <a-page-header title="Team Members" />
-          <a-list :grid="{ gutter: 16, xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 3 }" :data-source="data">
-            <template #renderItem="{ item }">
-              <a-list-item>
-                <a-card :bordered="false">
-                  <a-avatar :size="64">
-                    <template #icon><UserOutlined /></template>
-                  </a-avatar>
-                  <a-card-meta>
-                    <template #title><span>{{ item.name }}</span></template>
-                    <template #description><span style="font-size: 0.8em;">{{ item.title }}</span></template>
-                  </a-card-meta>
-                </a-card>
-              </a-list-item>
-            </template>
-          </a-list>
-        </a-col>
-        <a-col class="ds-stat" :span="12">
-          <a-page-header title="Comments" />
-          <a-list item-layout="horizontal" :data-source="data">
-            <template #renderItem="{ item }">
-              <a-list-item>
-                <a-list-item-meta
-                  description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                >
-                  <template #title>
-                    <a href="https://www.antdv.com/">{{ item.title }}</a>
-                  </template>
-                  <template #avatar>
-                    <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                  </template>
-                </a-list-item-meta>
-              </a-list-item>
-            </template>
-          </a-list>
-        </a-col>
-
-        <a-col class="ds-stat" :span="24">
-          <a-page-header title="Faked Quality" />
-          <MultiChart />
-        </a-col>
-        <a-col class="ds-stat" :span="24">
-        </a-col>
-      </a-row>
-
-      </a-col>
-
-      <a-col class="ds-stat" :lg="24" :xl="8">
-        <a-row :gutter="8">
-          <a-col class="ds-stat" :span="24">
-            <a-page-header title="Pie Quality" sub-title="Some other random description here. Does not have to be too long a text..." />
-            <PieChart />
-          </a-col>
-          <a-col class="ds-stat" :span="24">
-            <a-page-header title="Useful Links" />
-            <a-skeleton :paragraph="{ rows: 3 }" />
-          </a-col>
-        </a-row>
-      </a-col>
-    </a-row>
+    <p>
+      <span>Count is: {{ count }}</span>
+      <button @click="count++">increment</button>
+    </p>
+    <p><button @click="(e) => testApi('healthcheck')">Test API</button> <button @click="(e) => testApi('health-auth')">Test API Auth</button></p>
+    <p>Non-Reactive Data: {{ nonReactiveData }}</p>
+    <p>Reactive Data: {{ reactiveData }}</p>
+    <p>Vuex Store {{ storeCount }} - {{ storeUser }}</p>
+    <h2>Test Push Notifications</h2>
+    <p><button @click="subPn">Sub PN</button>&nbsp;<button @click="unsubPn">Unsub PN</button>&nbsp;<button @click="testPn">Test PN</button></p>
+    <h2>Test Search and rxjs</h2>
+    <a-input ref="searchRef" placeholder="rxjs search swapi"></a-input>
+    {{ searchResult || 'No Search Result' }}
+    <h2>Test Reactivity In Object</h2>
+    <p>
+      Click to see increment. Also check console.log if onUpdated is called
+      <button @click="() => testObjectRef.a++">Test Object Ref = {{ testObjectRef.a }}</button>
+      <button @click="() => testObjectReactive.a.xx++">Test Object Reactive = {{ testObjectReactive.a.xx }}</button>
+    </p>
+    <ul>
+      <li v-for="n in 10" :key="n">{{ n }}</li>
+    </ul>
   </div>
 </template>
 
 <script>
-import { LikeOutlined, ArrowUpOutlined, ArrowDownOutlined, UserOutlined } from '@ant-design/icons-vue'
-import MultiChart from '../components/Dashboard/MultiChart.vue'
-import PieChart from '../components/Dashboard/PieChart.vue'
+// unref, toRef, toRefs, isRef, isProxy, isReactive, isReadonly
+// defineComponent, getCurrentInstance, reactive, readonly, watch, watchEffect, provide, inject
+import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inject, reactive, onBeforeUpdate, watch } from 'vue'
+import { useStore } from 'vuex'
+import { webpushSubscribe, webpushUnsubscribe, fcmSubscribe } from '/@es-labs/esm/pwa.js' // served from express /esm static route
+import * as http from '/@es-labs/esm/http.js' // served from express /esm static route
+import { VITE_PWA_PN } from '/config.js'
 
-const data = [
-  { name: 'Anthony', title: 'Fullstack Dev', },
-  { name: 'Joseph', title: 'QA Tester', },
-  { name: 'Valerian', title: 'UX Expert', },
-  { name: 'Hera', title: 'Data Scientist', },
-];
+import { fromEvent } from 'rxjs'
+import { switchMap, debounceTime, distinctUntilChanged, map } from 'rxjs/operators'
 
 export default {
-  components: {
-    LikeOutlined,
-    ArrowUpOutlined,
-    ArrowDownOutlined,
-    UserOutlined,
+  name: 'DemoMain',
+  setup(props, context) {
+    const list = reactive([1, 2, 3])
+    const divs = ref([])
 
-    PieChart,
-    MultiChart
-  },
-  setup() {
+    console.log('provide-inject MyTheme', inject('MyTheme'))
+
+    // reactivity
+    // // in provider
+    // const themeRef = ref('dark')
+    // provide(SubThemeSymbol, themeRef)
+    // // in consumer
+    // const theme = inject(SubThemeSymbol, ref('light'))
+    // watchEffect(() => console.log(`theme set to: ${theme.value}`))
+
+    const store = useStore()
+    // const route = useRoute()
+    // const router = useRouter()
+
+    // const obj = reactive({ count: 0 })
+    const count = ref(0)
+    let nonReactiveData = 10
+    const reactiveData = ref(20)
+
+    const searchRef = ref(null)
+    const searchVal = ref('')
+    const searchResult = ref('')
+
+    const testObjectRef = ref({ a: 10, b: 20, c: 30 })
+    const testObjectReactive = reactive({ a: { xx: 40}, b: 50, c: 60 })
+
+    // const plusOne = computed(() => count.value + 1)
+    const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
+    const storeUser = computed(() => store.state.user)
+
+    // const stop = watchEffect(() => console.log(count.value))
+    // // -> logs 0
+    // setTimeout(() => {
+    //   count.value++
+    //   // -> logs 1
+    // }, 100)
+    // // stop()
+
+    // put watchEffect inside onMounted to have access to DOM
+
+    // // watching a getter
+    // const state = reactive({ count: 0 })
+    // watch(
+    //   () => state.count,
+    //   (count, prevCount) => {
+    //   }
+    // )
+
+    // // directly watching a ref
+    // const count = ref(0)
+    // watch(search, (newVal, prevVal) => {
+    //   console.log('watch search', newVal)
+    // })
+
+    // // Watch prop value change and assign to value 'selected' Ref
+    // watch(() => props.value, (newValue: Props['value']) => {
+    //   selected.value = newValue;
+    // });
+
+    // watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
+    // })
+
+    // watch(
+    //   () => object_or_primitive_being_watched,
+    //   (state, prevState) => {
+    //     console.log(
+    //       "deep ",
+    //       state.attributes.name,
+    //       prevState.attributes.name
+    //     );
+    //   },
+    //   { deep: true }
+    // )
+    // watchEffect ... ?
+
+
+    // make sure to reset the refs before each update
+    onBeforeUpdate(() => { divs.value = [] })
+    const makeRef = (el, i) => { divs[i] = el }
+
+    let timerId
+    onMounted(async () => {
+      console.log('demomain mounted!')
+      // console.log('props', props)
+      // console.log('context', context)
+      // console.log('useStore', store)
+      // console.log('useRouter', router)
+      // console.log('useRoute', route)
+
+      timerId = setInterval(() => {
+        console.log('timer fired')
+        nonReactiveData += 1
+        reactiveData.value += 1
+      }, 200000)
+
+      const input$ = fromEvent(searchRef.value.$el, 'input').pipe(
+          debounceTime(1000),
+          map(e => e.target.value),
+          // .filter(value => value.length >= 2)
+          distinctUntilChanged(),
+          switchMap(
+            search => fetch('https://swapi.dev/api/people/?search='+search+'&format=json').then(res => res.json()).then(data => data)          
+          )
+          // catchError(handleErrorByReturningObservable)
+        )
+        .subscribe(e => {
+          searchResult.value = JSON.stringify(e)
+          console.log(e)
+        })
+
+    })
+    onBeforeUnmount(() => {
+      if (timerId) clearInterval(timerId)
+      // / console.log('demomain before unmount!')
+    })
+    onUpdated(() => console.log('demomain updated!'))
+    onUnmounted(() => console.log('demomain unmounted!'))
+
+    const testApi = async (test) => {
+      try {
+        const { data } = await http.get('/api/' + test)
+        console.log('testApi', data)
+      } catch (e) {
+        console.log('testApi err', e)
+      }
+    }
+
+    const subPn = async () => {
+      console.log(VITE_PWA_PN)
+      try {
+        let subscription
+        if (VITE_PWA_PN === 'FCM') {
+          subscription = await fcmSubscribe(window.SW_REG, async (token) => {
+            await http.post('/api/webpush/sub', { subscription: token })
+          })
+        } else if (VITE_PWA_PN === 'Webpush') {
+          const { data } = await http.get('/api/webpush/vapid-public-key')
+          subscription = await webpushSubscribe(data.publicKey)
+        }
+        if (subscription) await http.post('/api/webpush/sub', { subscription })
+      } catch (e) {
+        console.log('subPn', e)
+      }
+    }
+
+    const unsubPn = async () => {
+      // No FCM Unsub
+      try {
+        if (VITE_PWA_PN === 'Webpush') await webpushUnsubscribe()
+        await http.post('/api/webpush/unsub')
+      } catch (e) {
+        console.log('unsubPn', e)
+      }
+    }
+
+    const testPn = async () => {
+      try {
+        let data
+        console.log('testPn VITE_PWA_PN', VITE_PWA_PN)
+        if (VITE_PWA_PN === 'FCM') data = { title: 'Hello', body: new Date().toLocaleString() }
+        else if (VITE_PWA_PN === 'Webpush') data = 'Hello ' + new Date().toLocaleString()
+        console.log('testPn data', data)
+        await http.post('/api/webpush/send/1', { mode: VITE_PWA_PN, data })
+      } catch (e) {
+        console.log('testPn', e)
+      }
+    }
+
     return {
-      data,
+      testObjectReactive,
+      testObjectRef,
+
+      makeRef,
+      list,
+      divs,
+
+      nonReactiveData, // non reactive
+      reactiveData, // ref reactive
+      count, // ref
+
+      storeCount, // store
+      storeUser,
+      testApi, // test API
+      subPn, // push notifications
+      unsubPn,
+      testPn,
+
+      searchRef, // rxjs search value
+      searchVal,
+      searchResult
     }
   }
 }
 </script>
 
-<style>
-.ds-stat {
-  margin-top: 0px;
-  padding-top: 0px;
-  /* background-color: lightslategray; */
+<style lang="css" scoped>
+.section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: space-around;
 }
 
-.ds-stat-container {
-  /* background: #ececec; */
-  padding: 0;
-}
-
-.ant-card-meta-title {
-  margin-bottom: 0 !important;
-}
-
-.ant-card-body {
-  /* justify-content: center !important; */
-  text-align: center;
+.box {
+  width: 200px;
+  /* border: 3px solid rgba(0,0,0,.2); */
+  /* flex: 1 0 21%; */
+  /* width: 25%; */
+  margin: 5px;
+  height: 100px;
+  background-color: blue;
 }
 </style>

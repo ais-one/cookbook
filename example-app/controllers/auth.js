@@ -29,11 +29,7 @@ const checkGithub = async (req, res) => {
     const { id, groups } = user
     const tokens = await createToken({ id, verified: true, groups }) // 5 minute expire for login
     setTokensToHeader(res, tokens)
-    // SameSite=None; must use with Secure;
-    // may need to restart browser, TBD set Max-Age, ALTERNATE use res.cookie, Signed?
-    if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token};`+ httpOnlyCookie])
-    // return res.status(200).json(tokens)
-    return res.redirect(GITHUB_CALLBACK + '#' + tokens.token + '-' + tokens.refresh_token) // use url fragment... // TBD make callback URL configurable
+    return res.redirect(GITHUB_CALLBACK + '#' + tokens.access_token + '-' + tokens.refresh_token) // use url fragment... // TBD make callback URL configurable
   } catch (e) {
     console.log('github auth err', e.toString())
   }
