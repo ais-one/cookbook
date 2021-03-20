@@ -71,14 +71,16 @@ const getSecret = (mode, type) => {
   }
 }
 
-const createToken = async (payload) => { // Create a tokens from a payload
+const createToken = async (payload, otp) => { // Create a tokens from a payload
   let access_token
   let refresh_token
   const options = { }
   try {
+    delete payload.exp
+    delete payload.iat
     options.algorithm = JWT_ALG
 
-    options.expiresIn = JWT_EXPIRY
+    options.expiresIn = USE_OTP && otp ? OTP_EXPIRY : JWT_EXPIRY
     access_token = jwt.sign(payload, getSecret('sign', 'access'), options)
 
     options.expiresIn = JWT_REFRESH_EXPIRY
@@ -86,6 +88,7 @@ const createToken = async (payload) => { // Create a tokens from a payload
 
     await setToken(payload.id, refresh_token) // store in DB or Cache
   } catch (e) {
+    console.log('createToken error', e.toString())
   }
   return {
     access_token,
@@ -120,10 +123,10 @@ const authUser = async (req, res, next) => {
       } catch (e) {
         if (e.name === 'TokenExpiredError') {
           console.log('TOKEN EXPIRED')
-          // console.log('req.path', req.baseUrl + req.path)
+          console.log('req.path', req.baseUrl + req.path)
           if (req.baseUrl + req.path === '/api/auth/refresh') {
             try {
-              refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token // check refresh token & user - always stateful          
+              let refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token // check refresh token & user - always stateful          
               refresh_result = jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
               const { id } = refresh_result
               let refreshToken = await getToken(id)
@@ -135,6 +138,7 @@ const authUser = async (req, res, next) => {
                 return res.status(200).json(tokens)
               }
             } catch (err) { // use err instead of e (fix no-catch-shadow issue)
+              console.log(err)
               return res.status(401).json({ message: 'Refresh Token Error: Unknown' })
             }
             return res.status(401).json({ message: 'Refresh Token Error: Uncaught' })
@@ -220,7 +224,7 @@ const login = async (req, res) => {
       //   // set user SMS & send it
       // }
     }
-    const tokens = await createToken({ id, verified, ...additionalPayload }, { expiresIn: USE_OTP ? OTP_EXPIRY : JWT_EXPIRY }) // 5 minute expire for login
+    const tokens = await createToken({ id, verified, ...additionalPayload }, 'otp') // 5 minute expire for login
     setTokensToHeader(res, tokens)
     return res.status(200).json(tokens)
   } catch (e) {
