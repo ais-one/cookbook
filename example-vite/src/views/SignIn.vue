@@ -139,8 +139,10 @@ export default {
           otpCount = 0
         }
       } catch (e) {
-        console.log('login error', e.toString())
-        errorMessage.value = e.data ? e.data.message : JSON.stringify(e)
+        // fetch failed
+        // auth failed
+        console.log('login error', e.toString(), e)
+        errorMessage.value = e?.data?.message || e.toString()
       }
       loading.value = false
     }

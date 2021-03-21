@@ -72,24 +72,34 @@ const getSecret = (mode, type) => {
   }
 }
 
-const createToken = async (payload, otp) => { // Create a tokens from a payload
+const createToken = async (payload, refreshPayload, otp) => { // Create a tokens from a payload
   let access_token
   let refresh_token
   const options = { }
   try {
     delete payload.exp
     delete payload.iat
+    if (refreshPayload) {
+      delete refreshPayload.exp
+      delete refreshPayload.iat
+    } else {
+      refreshPayload = { ...payload }
+    }
+
+    if (!refreshPayload.id || !payload.id) throw Error('id not found') // need to have at least id property
+    // how about groups? how about verified? (verified & groups actually only needed for access token)
+
     options.algorithm = JWT_ALG
 
     options.expiresIn = USE_OTP && otp ? OTP_EXPIRY : JWT_EXPIRY
     access_token = jwt.sign(payload, getSecret('sign', 'access'), options)
 
     options.expiresIn = JWT_REFRESH_EXPIRY
-    refresh_token = jwt.sign({ id: payload.id }, getSecret('sign', 'refresh'), options)
+    refresh_token = jwt.sign(refreshPayload, getSecret('sign', 'refresh'), options) // store only ID in refresh token?
 
     await setToken(payload.id, refresh_token) // store in DB or Cache
   } catch (e) {
-    console.log('createToken error', e.toString())
+    console.log('createToken error', e.toString()) 
   }
   return {
     access_token,
@@ -131,7 +141,7 @@ const authUser = async (req, res, next) => {
               let refreshToken = await getToken(id)
               if (String(refreshToken) === String(refresh_token)) { // ok... generate new access token & refresh token?
                 access_result = jwt.decode(access_token)
-                const tokens = await createToken({ id, verified: true, ...access_result }) // 5 minute expire for login
+                const tokens = await createToken({ id, verified: true, ...access_result }, null) // 5 minute expire for login
                 setTokensToHeader(res, tokens)
                 return res.status(200).json(tokens)
               }
@@ -222,7 +232,7 @@ const login = async (req, res) => {
       //   // set user SMS & send it
       // }
     }
-    const tokens = await createToken({ id, verified, ...additionalPayload }, 'otp') // 5 minute expire for login
+    const tokens = await createToken({ id, verified, ...additionalPayload }, null, 'otp') // 5 minute expire for login
     setTokensToHeader(res, tokens)
     return res.status(200).json(tokens)
   } catch (e) {
@@ -242,7 +252,7 @@ const otp = async (req, res) => { // need to be authentication, body { pin: '123
       if (isValid) {
         await revokeToken(id)
         const additionalPayload = addPayloadFromUserData(user)
-        const tokens = await createToken({ id, verified: true, ...additionalPayload })
+        const tokens = await createToken({ id, verified: true, ...additionalPayload }, null)
         setTokensToHeader(res, tokens)
         return res.status(200).json(tokens)
       } else {
