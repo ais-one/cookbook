@@ -123,47 +123,43 @@ const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
   let access_result = null
   let refresh_result = null
-  try {
-    let access_token = req?.cookies?.access_token || req?.headers?.access_token
-    if (access_token) {
-      try {
-        access_result = jwt.verify(access_token, getSecret('verify', 'access'), { algorithm: [JWT_ALG] }) // and options
-        if (!access_result.verified && (req.baseUrl + req.path !== '/api/auth/otp')) {
-          return res.status(401).json({ message: 'Token Verification Error' })
-        }
-      } catch (e) {
-        if (e.name === 'TokenExpiredError') {
-          if (req.baseUrl + req.path === '/api/auth/refresh') {
-            try {
-              let refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token // check refresh token & user - always stateful          
-              refresh_result = jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
-              const { id } = refresh_result
-              let refreshToken = await getToken(id)
-              if (String(refreshToken) === String(refresh_token)) { // ok... generate new access token & refresh token?
-                access_result = jwt.decode(access_token)
-                const tokens = await createToken({ id, verified: true, ...access_result }, null) // 5 minute expire for login
-                setTokensToHeader(res, tokens)
-                return res.status(200).json(tokens)
-              }
-            } catch (err) { // use err instead of e (fix no-catch-shadow issue)
-              console.log(err)
-              return res.status(401).json({ message: 'Refresh Token Error: Unknown' })
-            }
-            return res.status(401).json({ message: 'Refresh Token Error: Uncaught' })
-          } else {
-            return res.status(401).json({ message: 'Token Expired Error' })
-          }
-        } else {
-          console.log('auth err', e.name)
-        }
+  let access_token = req?.cookies?.access_token || req?.headers?.access_token
+  if (access_token) {
+    try {
+      access_result = jwt.verify(access_token, getSecret('verify', 'access'), { algorithm: [JWT_ALG] }) // and options
+      if (!access_result.verified && (req.baseUrl + req.path !== '/api/auth/otp')) {
+        return res.status(401).json({ message: 'Token Verification Error' })
       }
-      if (access_result) {
-        req.decoded = access_result
-        return next()
+    } catch (e) {
+      if (e.name === 'TokenExpiredError') {
+        if (req.baseUrl + req.path === '/api/auth/refresh') {
+          try {
+            let refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token // check refresh token & user - always stateful          
+            refresh_result = jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
+            const { id } = refresh_result
+            let refreshToken = await getToken(id)
+            if (String(refreshToken) === String(refresh_token)) { // ok... generate new access token & refresh token?
+              access_result = jwt.decode(access_token)
+              const tokens = await createToken({ id, verified: true, ...access_result }, null) // 5 minute expire for login
+              setTokensToHeader(res, tokens)
+              return res.status(200).json(tokens)
+            }
+          } catch (err) { // use err instead of e (fix no-catch-shadow issue)
+            console.log(err)
+            return res.status(401).json({ message: 'Refresh Token Error' })
+          }
+          return res.status(401).json({ message: 'Refresh Token Error: Uncaught' })
+        } else {
+          return res.status(401).json({ message: 'Token Expired Error' })
+        }
+      } else {
+        console.log('auth err', e.name)
       }
     }
-  } catch (e) {
-    console.log('authUser', e.toString())
+    if (access_result) {
+      req.decoded = access_result
+      return next()
+    }
   }
   return res.status(401).json({error: 'Error in token' })
 }
