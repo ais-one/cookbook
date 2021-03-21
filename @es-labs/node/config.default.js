@@ -34,6 +34,7 @@ global.CONFIG.AUTH_USER_FIELD_GAKEY = 'gaKey'
 // AUTH JWT - secret key
 global.CONFIG.JWT_ALG = 'HS256' // 'RS256' (use SSL certs), 'HS256' (use secret string)
 global.CONFIG.JWT_SECRET = '123456789' // HS256
+global.CONFIG.JWT_REFRESH_SECRET = '123456789' // HS256
 global.CONFIG.JWT_EXPIRY = 1800 // 5 // 1800 // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism, numeric is seconds
 global.CONFIG.JWT_REFRESH_EXPIRY = 3600 // 10 // 3600 // do not allow refresh handling after defined seconds
 global.CONFIG.JWT_REFRESH_STORE = 'keyv' // mongo, objection, redis, keyv (default)
@@ -114,6 +115,7 @@ global.CONFIG.WEB_STATIC = null
 global.CONFIG.UPLOAD_STATIC = null
 
 global.CONFIG.JWT_CERTS = null // { key: '', cert: '' }
+global.CONFIG.JWT_REFRESH_CERTS = null // { key: '', cert: '' }
 global.CONFIG.HTTPS_CERTS = null // { key: '', cert: '' }
 
 // Role-based access control - not needed, implemented by middleware - e.g. isAdmin after user authentication

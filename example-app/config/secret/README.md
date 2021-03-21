@@ -10,7 +10,6 @@ The files are not committed To Github
 
 ```
 module.exports = {
-  JWT_CERTS: { key: '', cert: '' },
   HTTPS_CERTS: { key: '', cert: '' },
   GCP_SERVICE_KEY: {},
   KNEXFILE: {}

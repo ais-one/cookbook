@@ -3,11 +3,12 @@
 const otplib = require('otplib')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+
 // const uuid = require('uuid/v4')
 // const qrcode = require('qrcode')
 const { USE_OTP, OTP_EXPIRY, COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, COOKIE_MAXAGE, CORS_OPTIONS, AUTH_USER_STORE, AUTH_USER_STORE_NAME } = global.CONFIG
 const { AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD = ''} = global.CONFIG
-const { JWT_ALG, JWT_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv', JWT_CERTS } = global.CONFIG
+const { JWT_ALG, JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv', JWT_CERTS, JWT_REFRESH_CERTS } = global.CONFIG
 
 let mongo, ObjectID
 if (AUTH_USER_STORE === 'mongo') {
@@ -62,12 +63,12 @@ const updateUser = async (where, payload) => {
 const getSecret = (mode, type) => {
   if (JWT_ALG.substring(0,2) === 'RS') {
     if (mode === 'sign') {
-      return type === 'refresh' ? JWT_CERTS.key : JWT_CERTS.key
+      return type === 'refresh' ? JWT_REFRESH_CERTS.key : JWT_CERTS.key
     } else {
-      return type === 'refresh' ? JWT_CERTS.cert : JWT_CERTS.cert
+      return type === 'refresh' ? JWT_REFRESH_CERTS.cert : JWT_CERTS.cert
     }
   } else {
-    return type === 'refresh' ? JWT_SECRET : JWT_SECRET
+    return type === 'refresh' ? JWT_REFRESH_SECRET : JWT_SECRET
   }
 }
 
@@ -122,8 +123,6 @@ const authUser = async (req, res, next) => {
         }
       } catch (e) {
         if (e.name === 'TokenExpiredError') {
-          console.log('TOKEN EXPIRED')
-          console.log('req.path', req.baseUrl + req.path)
           if (req.baseUrl + req.path === '/api/auth/refresh') {
             try {
               let refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token // check refresh token & user - always stateful          
@@ -134,7 +133,6 @@ const authUser = async (req, res, next) => {
                 access_result = jwt.decode(access_token)
                 const tokens = await createToken({ id, verified: true, ...access_result }) // 5 minute expire for login
                 setTokensToHeader(res, tokens)
-                console.log('REFRESH SUCCESS')
                 return res.status(200).json(tokens)
               }
             } catch (err) { // use err instead of e (fix no-catch-shadow issue)
