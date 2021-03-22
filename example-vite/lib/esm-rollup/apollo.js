@@ -50,16 +50,19 @@ const init = (options) => {
     const authLink = setContext((_, { headers }) => {
       // get the authentication token from local storage if it exists
       // return the headers to the context so httpLink can read them
-      let token = ''
+      let access_token = ''
+      let refresh_token = ''
       const item = localStorage.getItem('session') // survive a refresh
       if (item) {
         const user = JSON.parse(item)
-        token = user.token
+        access_token = user.access_token
+        refresh_token = user.refresh_token
       }
       return {
         headers: {
           ...headers,
-          authorization: token ? `Bearer ${token}` : '' // TBD - GraphQL not taking into account refresh token and revocation
+          access_token: access_token || '',
+          refresh_token: refresh_token || '' // TBD - GraphQL not taking into account refresh token and revocation yet
         }
       }
     })

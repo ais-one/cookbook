@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from './store.js'
-import { BASE_URL } from '../config.js'
+import { BASE_URL, VITE_INITAL_SECURE_PATH } from '/config.js'
 
 // const permissions = {
 //   // g1 = route groups, g2 = user groups
@@ -20,12 +20,10 @@ const authGuard = (to, from, next) => {
   // const item = localStorage.getItem('session') // survive a refresh - POTENTIAL SECURITY RISK - TO REVIEW AND CHANGE USE HTTPONLY COOKIES
   // if (item) {
   //   const user = JSON.parse(item)
-  //   if (user.verified) {
-  //     store.commit('setUser', user) // need user.token only
-  //   }
+  //   store.commit('setUser', user) // need user.token only
   // }
 
-  const loggedIn = !!(store.state.user && store.state.user.verified)
+  const loggedIn = !!store.state.user
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
 
   // const { groups } = store.state.user
@@ -41,7 +39,7 @@ const authGuard = (to, from, next) => {
   } else if (!loggedIn && requiresAuth) {
     next('/signin')
   } else if (loggedIn && !requiresAuth) {
-    next('/dashboard')
+    next(VITE_INITAL_SECURE_PATH)
   } else {
     // should not get here
     console.log('router should not get here', loggedIn, requiresAuth)
@@ -76,7 +74,7 @@ const router = createRouter({
     { path: '/cascade-ms', name: 'CascadeMs', component: async () => import('./views/DataEntry/CascadeMs.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-form', name: 'DemoForm', component: async () => import('./views/DataEntry/DemoForm.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
     { path: '/demo-card', name: 'DemoCard', component: async () => import('./views/DataEntry/DemoCard.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
-    { path: '/demo-map', name: 'DemoMap', component: async () => import('./views/Visuals/DemoMap.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
+    { path: '/demo-antd-map', name: 'DemoMap', component: async () => import('./views/Visuals/DemoMap.vue'), beforeEnter: authGuard, meta: { requiresAuth: true, layout: 'layout-secure' } },
   ]
 })
 

@@ -3,7 +3,7 @@
 const axios = require('axios')
 const { SALT_ROUNDS, COOKIE_HTTPONLY, COOKIE_SECURE, COOKIE_SAMESITE, COOKIE_MAXAGE, CORS_OPTIONS, JWT_EXPIRY } = global.CONFIG
 const { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_CALLBACK } = global.CONFIG
-const { findUser, createToken, revokeToken, logout, refresh, login, otp } = require('@es-labs/node/auth')
+const { findUser, createToken, setTokensToHeader, revokeToken, logout, refresh, login, otp } = require('@es-labs/node/auth')
 
 const signup = async (req, res) => {
   // let encryptedPassword = bcrypt.hashSync(clearPassword, SALT_ROUNDS)
@@ -27,12 +27,9 @@ const checkGithub = async (req, res) => {
     const user = await findUser({ githubId }) // match github id (or email?) with our user in our application
     if (!user) return res.status(401).json({ message: 'Unauthorized' })
     const { id, groups } = user
-    const tokens = await createToken({ id, verified: true, groups }, {expiresIn: JWT_EXPIRY}) // 5 minute expire for login
-    // SameSite=None; must use with Secure;
-    // may need to restart browser, TBD set Max-Age, ALTERNATE use res.cookie, Signed?
-    if (COOKIE_HTTPONLY) res.setHeader('Set-Cookie', [`token=${tokens.token};`+ httpOnlyCookie])
-    // return res.status(200).json(tokens)
-    return res.redirect(GITHUB_CALLBACK + '#' + tokens.token + '-' + tokens.refresh_token) // use url fragment... // TBD make callback URL configurable
+    const tokens = await createToken({ id, groups }) // 5 minute expire for login
+    setTokensToHeader(res, tokens)
+    return res.redirect(GITHUB_CALLBACK + '#' + tokens.access_token + '-' + tokens.refresh_token + '-' + JSON.stringify(tokens.user_meta)) // use url fragment...
   } catch (e) {
     console.log('github auth err', e.toString())
   }

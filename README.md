@@ -220,7 +220,6 @@ vue-crud-x
 |  +- common-express/ : common codes used in express apps
 +- example-native/ : frontend (Vue3 no bundle) - See example-native/README.md for Project Structure
 +- example-vite/ : frontend (Vue3 rollup) - See example-vite/README.md for Project Structure
-|  +- lib/esm-rollup/ : rolled up components for frontend (e.g. apollo.js)
 +- example-webpack/ : frontend associated to the backend (Vue2 webpack) - See example-webpack/README.md for Project Structure
 |  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
 +- k8s/ : kubernetes YAML files (WIP)

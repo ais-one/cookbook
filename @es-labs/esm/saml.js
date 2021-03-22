@@ -5,7 +5,7 @@ const val = () => {
   // let token = window.location.hash.substring(1) // (new URL(window.location.href)).searchParams.get('token')
   // if (!token) this.getFromLocalStorage()
   // if (!token) this.login()
-  // else thi.setToken(token)
+  // else this.setToken(token)
 }
 
 export const samlLogin = (callbackUrl) => {

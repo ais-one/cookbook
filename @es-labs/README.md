@@ -2,11 +2,9 @@
 
 Libs are now found within the example projects.
 
-1. vite (rollup) - example-vite/src/lib/esm-rollup
+1. vue (wepback) - example-vite/lib/webpacked (to deprecate and remove)
 
-2. vue (wepback) - example-vite/lib/webpacked
-
-3. nodejs and express - example-app/lib/[all others not listed above]
+2. nodejs and express - example-app/lib/[all others not listed above]
 
 ## Projects and Repo
 

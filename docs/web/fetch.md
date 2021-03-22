@@ -20,6 +20,25 @@ while (true) {
 }
 ```
 
+## Credentials
+
+1. ES6 fetch()
+
+```
+credentials: 'include'
+```
+
+3. axios
+
+```
+withCredentials: true
+```
+
+3. jQuery 1.5.1
+
+```
+xhrFields: { withCredentials: true }
+```
 
 ## Streams
 

@@ -23,7 +23,8 @@
 import { http } from '/esm/http.js'
 import parseJwt from '/esm/parse-jwt.js'
 
-let token = ''
+let otpId = ''
+let accessToken = ''
 let refreshToken = ''
   
 const test = () => console.log('https test')
@@ -32,18 +33,25 @@ document.querySelector("#test-ed").onclick = test
 
 async function login() {
   const { data } = await http('POST', '/api/auth/login', { email: 'test', password: 'test' })
-  token = data.token
-  refreshToken = data.refresh_token
-  console.log('logged in', token, refreshToken, data, parseJwt(token))
+  if (data.otp) {
+    otpId = data.otp
+    console.log('need otp', data)
+  } else {
+    accessToken = data.access_token
+    refreshToken = data.refresh_token
+    console.log('logged in - tokens', accessToken, refreshToken)
+    console.log('logged in - parsed', parseJwt(accessToken), parseJwt(refreshToken))
+  }
 }
 
 async function otp() {
   try {
-    const { data } = await http('POST', '/api/auth/otp', { pin: '111111' })
-    if (data.token) {
-      token = data.token
-      refreshToken = data.refresh_token
-      console.log('otp ok', token, refreshToken, data)
+    const { data } = await http('POST', '/api/auth/otp', { id: otpId, pin: '111111' })
+    if (data.access_token) {
+      accessToken = data.access_token
+      // refreshToken = data.refresh_token
+      console.log('otp ok - access token', accessToken)
+      console.log('otp ok - refresh token', refreshToken)
     } else {
       console.log('otp error', data)
     }

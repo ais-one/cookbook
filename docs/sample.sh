@@ -124,5 +124,3 @@ done
 
 echo "Done... press enter to exit"
 read # pause exit in windows
-
-# # CircleCI TBD - [![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://circleci.com/gh/circleci/circleci-docs)

@@ -9,14 +9,14 @@ const IV = "5183666c72eec9e4"; // set random initialisation vector
 const phrase = "who let the dogs out";
 
 var encrypt = ((val) => {
-  let cipher = crypto.createCipheriv('aes-256-cbc', ENC_KEY, IV);
+  let cipher = crypto.createCipheriv('AES-256-GCM', ENC_KEY, IV); // no more aes-256-cbc or aes-256-ecb
   let encrypted = cipher.update(val, 'utf8', 'base64');
   encrypted += cipher.final('base64');
   return encrypted;
 });
 
 var decrypt = ((encrypted) => {
-  let decipher = crypto.createDecipheriv('aes-256-cbc', ENC_KEY, IV);
+  let decipher = crypto.createDecipheriv('AES-256-GCM', ENC_KEY, IV);
   let decrypted = decipher.update(encrypted, 'base64', 'utf8');
   return (decrypted + decipher.final('utf8'));
 });

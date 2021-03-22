@@ -6,7 +6,6 @@ const authController = require('../controllers/auth')
 module.exports = express.Router()
   .post('/signup', authController.signup)
   .get('/check-github', authController.checkGithub)
-  .get('/logout', authUser, authController.logout)
   /**
    * @swagger
    * /api/auth/login:
@@ -21,12 +20,12 @@ module.exports = express.Router()
    *            application/json:
    *              schema:
    *                properties:
-   *                  token:
+   *                  access_token:
    *                    type: string
    *                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ._l3MQQAq4Py1q9eWoaLomaX8wvSkYNiztEK_OZ1qlFA"
    *                  refresh_token:
-   *                    type: integer
-   *                    example: 1234567890123
+   *                    type: string
+   *                    example: "ey...."
    *        '401':
    *          description: Unauthorized
    *        '403':
@@ -35,6 +34,7 @@ module.exports = express.Router()
    *          description: Unexpected error
    */
   .post('/login', authController.login)
+  .post('/otp', authController.otp)
   .post('/refresh', authUser, authController.refresh)
-  .post('/otp', authUser, authController.otp)
+  .get('/logout', authController.logout)
   .get('/me', authUser, authController.me)
