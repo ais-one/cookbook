@@ -86,11 +86,9 @@ const http = async (method, url, body = null, query = null, headers = null) => {
 
     if (['POST', 'PATCH', 'PUT'].includes(method)) { // check if HTTP method has req body (DELETE is maybe)
       if (body && body instanceof FormData) {
-        // options.headers['Content-Type'] = 'multipart/form-data' // NOT NEEDED!!!
-        options.body = body
+        options.body = body // options.headers['Content-Type'] = 'multipart/form-data' // NOT NEEDED!!!
       } else if (options.headers['Content-Type'] && options.headers['Content-Type'] === 'application/octet-stream') {
-        // handling stream...
-        options.body = body
+        options.body = body // handling stream...
       } else {
         options.headers['Content-Type'] = 'application/json' // NEEDED!!!
         options.body = JSON.stringify(body)
@@ -98,8 +96,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     }
 
     const rv0 = await fetch(urlFull + qs, options)
-    // rv0.data = await rv0.json() // replaced by below to handle empty body
-    const txt0 = await rv0.text()
+    const txt0 = await rv0.text() // handle empty body as xxx.json() cannot
     rv0.data = txt0.length ? JSON.parse(txt0) : {}
     if (rv0.status >= 200 && rv0.status < 400) return rv0
     else if (rv0.status === 401) { // no longer needed urlPath !== '/api/auth/refresh'
@@ -113,19 +110,16 @@ const http = async (method, url, body = null, query = null, headers = null) => {
             if (tokens.refresh) options.headers.refresh_token = tokens.refresh
           }
           const rv2 = await fetch(urlFull + qs, options)
-          // rv2.data = await rv2.json() // replaced by below to handle empty body
           const txt2 = await rv2.text()
           rv2.data = txt2.length ? JSON.parse(txt2) : {}
           return rv2
         } else {
-          // console.log('refresh failed')
           throw rv1 // error
         }
       }
     }
     throw rv0 // error
   } catch (e) {
-    // some errors are due to res.json(), should be res.json({})
     if (e?.data?.message !== 'Token Expired Error' && (e.status === 401 || e.status === 403)) opts.forceLogoutFn()
     throw e // some other error
   }
