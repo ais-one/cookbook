@@ -69,8 +69,8 @@ module.exports = {
     // fileFilter,
   },
 
-  JWT_EXPIRY: 5, // 5 // 1800 // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism, numeric is seconds
-  JWT_REFRESH_EXPIRY: 10, // 10 // 3600 // do not allow refresh handling after defined seconds
+  JWT_EXPIRY: 1800, // 5 // 1800 // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism, numeric is seconds
+  JWT_REFRESH_EXPIRY: 3600, // 10 // 3600 // do not allow refresh handling after defined seconds
   OTP_EXPIRY: 30, // 8 // 30 // defined seconds to allow user to submit OTP
   JWT_ALG: 'HS256', // HS256, RS256
   // JWT_CERTS: null, // { key: '', cert: '' }, // in secret if plaintext
