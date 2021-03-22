@@ -22,7 +22,6 @@ if (AUTH_USER_STORE === 'objection') {
   knex = Model ? Model.knex() : null  
 }
 
-// TBD getToken - check for revoked token? such token should not be available in Key-Value storage already
 const { setToken, getToken, revokeToken } = require('./' + JWT_REFRESH_STORE)
 
 // SameSite=None; must use with Secure;
@@ -77,36 +76,36 @@ const getSecret = (mode, type) => {
 // all other user related information sent on initial login and stored using local storage
 // do not catch exception here, let functions above handle
 const createToken = async (user) => { // Create a tokens & data from user
-  let access_token
-  let refresh_token
-  let userMeta = { }
+  const user_meta = { }
   const options = { }
 
   const id = user[AUTH_USER_FIELD_ID_FOR_JWT]
-  if (!id) throw Error('id not found')
+
+  if (!id) throw Error('User ID Not Found')
+  if (user.revoked) throw Error('User Revoked')
 
   const groups = user.groups
 
   const keys = AUTH_USER_FIELDS_JWT_PAYLOAD.split(',')
   if (keys && keys.length) {
     for (const key of keys) {
-      if (key && user[key] !== undefined) userMeta[key] = user[key]
+      if (key && user[key] !== undefined) user_meta[key] = user[key]
     }
   }
 
   options.algorithm = JWT_ALG
 
   options.expiresIn = JWT_EXPIRY
-  access_token = jwt.sign({ id, groups }, getSecret('sign', 'access'), options)
+  const access_token = jwt.sign({ id, groups }, getSecret('sign', 'access'), options)
 
   options.expiresIn = JWT_REFRESH_EXPIRY
-  refresh_token = jwt.sign({ id }, getSecret('sign', 'refresh'), options) // store only ID in refresh token?
+  const refresh_token = jwt.sign({ id }, getSecret('sign', 'refresh'), options) // store only ID in refresh token?
 
   await setToken(id, refresh_token) // store in DB or Cache
   return {
     access_token,
     refresh_token,
-    userMeta
+    user_meta
   }  
 }
 
@@ -128,17 +127,16 @@ const setTokensToHeader = (res, {access_token, refresh_token}) => {
 const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
   let access_result = null
-  let refresh_result = null
   let access_token = req?.cookies?.access_token || req?.headers?.access_token
   if (access_token) {
     try {
       access_result = jwt.verify(access_token, getSecret('verify', 'access'), { algorithm: [JWT_ALG] }) // and options
     } catch (e) {
       if (e.name === 'TokenExpiredError') {
-        if (AUTH_REFRESH_URL && (req.baseUrl + req.path === AUTH_REFRESH_URL)) {
-          try {
-            let refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token // check refresh token & user - always stateful          
-            refresh_result = jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
+        try {
+          if (AUTH_REFRESH_URL && (req.baseUrl + req.path === AUTH_REFRESH_URL)) {
+            const refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token // check refresh token & user - always stateful          
+            const refresh_result = jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
             const { id } = refresh_result
             let refreshToken = await getToken(id)
             if (String(refreshToken) === String(refresh_token)) { // ok... generate new access token & refresh token?
@@ -149,12 +147,12 @@ const authUser = async (req, res, next) => {
             } else {
               return res.status(401).json({ message: 'Refresh Token Error: Uncaught' })              
             }
-          } catch (err) { // use err instead of e (fix no-catch-shadow issue)
-            console.log(err)
-            return res.status(401).json({ message: 'Refresh Token Error' })
+          } else {
+            return res.status(401).json({ message: 'Token Expired Error' })
           }
-        } else {
-          return res.status(401).json({ message: 'Token Expired Error' })
+        } catch (err) { // use err instead of e (fix no-catch-shadow issue)
+          console.log(err)
+          return res.status(401).json({ message: 'Refresh Token Error' })
         }
       } else {
         console.log('auth err', e.name)
@@ -165,7 +163,7 @@ const authUser = async (req, res, next) => {
       return next()
     }
   }
-  return res.status(401).json({error: 'Error in token' })
+  return res.status(401).json({error: 'Token Error' })
 }
 
 const logout = async (req, res) => {

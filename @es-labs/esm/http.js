@@ -1,21 +1,5 @@
 // FRONTEND ONLY
 // TBD make this such that can use default instance or create new instance
-// refresh API URL
-
-let opts = {
-  baseUrl: '',
-  credentials: 'same-origin',
-  forceLogoutFn: () => {}, // function to call when forcing a logout
-  refreshUrl: '',
-  timeoutMs: 0,
-  maxRetry: 0
-}
-
-let tokens = { access: '', refresh: '' }
-
-const setOptions = (_options) => Object.assign(opts, _options)
-const setTokens = (_tokens) => Object.assign(tokens, _tokens)
-
 // TBD add retry
 // https://dev.to/ycmjason/javascript-fetch-retry-upon-failure-3p6g
 /*
@@ -31,6 +15,20 @@ const fetch_retry = async (url, options, n) => {
     throw error;
 };
 */
+
+let opts = {
+  baseUrl: '',
+  credentials: 'same-origin',
+  forceLogoutFn: () => {}, // function to call when forcing a logout
+  refreshUrl: '',
+  timeoutMs: 0,
+  maxRetry: 0
+}
+
+let tokens = { access: '', refresh: '' }
+
+const setOptions = (_options) => Object.assign(opts, _options)
+const setTokens = (_tokens) => Object.assign(tokens, _tokens)
 
 const parseUrl = (url) => {
   let urlPath = url
@@ -105,7 +103,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     rv0.data = txt0.length ? JSON.parse(txt0) : {}
     if (rv0.status >= 200 && rv0.status < 400) return rv0
     else if (rv0.status === 401) { // no longer needed urlPath !== '/api/auth/refresh'
-      if (rv0.data.message === 'Token Expired Error') {
+      if (rv0.data.message === 'Token Expired Error' && opts.refreshUrl) {
         const rv1 = await http('POST', urlOrigin + opts.refreshUrl, { refresh_token: tokens.refresh }) // rv1 JSON already processed
         if (rv1.status === 200) {
           tokens.access = rv1.data.access_token

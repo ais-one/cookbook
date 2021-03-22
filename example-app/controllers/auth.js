@@ -29,7 +29,7 @@ const checkGithub = async (req, res) => {
     const { id, groups } = user
     const tokens = await createToken({ id, groups }) // 5 minute expire for login
     setTokensToHeader(res, tokens)
-    return res.redirect(GITHUB_CALLBACK + '#' + tokens.access_token + '-' + tokens.refresh_token) // use url fragment... // TBD make callback URL configurable
+    return res.redirect(GITHUB_CALLBACK + '#' + tokens.access_token + '-' + tokens.refresh_token + '-' + JSON.stringify(tokens.user_meta)) // use url fragment...
   } catch (e) {
     console.log('github auth err', e.toString())
   }
