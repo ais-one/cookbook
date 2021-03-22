@@ -1,8 +1,6 @@
 import { http } from '@/axios'
 import router from '../router'
 
-const USE_OTP = false
-
 export default {
   async signUserUp ({ commit }, payload) {
     commit('setLoading', true)

@@ -26,7 +26,7 @@
     "vue-native-websocket": "^2.0.14",
     "vue-router": "^3.5.1",
     "vue-rx": "^6.2.0",
-    "vuetify": "^2.4.7",
+    "vuetify": "^2.4.3",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
@@ -39,8 +39,8 @@
     "eslint": "^7.22.0",
     "eslint-plugin-vue": "^7.7.0",
     "fibers": "^5.0.0",
-    "sass": "^1.32.8",
-    "sass-loader": "^10.1.1",
+    "sass": "^1.32.6",
+    "sass-loader": "^10.0.1",
     "vue-template-compiler": "^2.6.12",
     "vuetify-loader": "^1.7.2"
   },
