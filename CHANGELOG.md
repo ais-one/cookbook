@@ -2,6 +2,7 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [TODO]
   - [update] clean up auth codes... use access_token & refresh_token
+  - [frontend] able to create and use multiple http & ws instances
   - [example-native] migrate example-webpack vue-crud-x table examples to example-native (child table, join tables), (category, author, book - has 1 category, page - belongs to 1 book, book_author)... t4t.js to save to column or to join table
 
 ### Version 0.4.8
