@@ -1,7 +1,7 @@
 ### Version 0.5.0
 - [chore] update packages & cleanup & work on improving documentation
+- [update] clean up auth codes..., breaking change on return values of /api/auth/login and /api/auth/otp, SAML configuration, additional AUTH_ and JWT_ configurations, @es-labs/esm/http.js, @es-labs/node/auth/index.js, example-app auth controller and auth route
 - [TODO]
-  - [update] clean up auth codes... use access_token & refresh_token
   - [frontend] able to create and use multiple http & ws instances
   - [example-native] migrate example-webpack vue-crud-x table examples to example-native (child table, join tables), (category, author, book - has 1 category, page - belongs to 1 book, book_author)... t4t.js to save to column or to join table
 

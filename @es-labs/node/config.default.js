@@ -46,10 +46,7 @@ global.CONFIG.USE_OTP = 'TEST' // GA, SMS, '' (also on FE) set to TEST for testi
 global.CONFIG.OTP_EXPIRY = 30 // 8 // 30 // defined seconds to allow user to submit OTP
 
 // SAML
-global.CONFIG.SAML_ISSUER = 'saml-poc'
-global.CONFIG.SAML_ENTRYPOINT = 'http://127.0.0.1:8081/simplesaml/saml2/idp/SSOService.php'
-global.CONFIG.SAML_CALLBACK_URL = 'http://127.0.0.1:3000/api/saml/login/callback'
-global.CONFIG.SAML_AUTH_REDIRECT_URL = '' // should use relayState
+global.CONFIG.SAML_OPTIONS = null // https://github.com/node-saml/passport-saml#config-parameter-details
 
 // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
 // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}
