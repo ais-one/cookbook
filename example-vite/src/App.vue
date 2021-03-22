@@ -31,9 +31,15 @@ export default {
 
     // set http
     console.log('VITE_API_URL', VITE_API_URL)
-    http.setBaseUrl(VITE_API_URL)
-    http.setCredentials(VITE_WITH_CREDENTIALS || 'same-origin')
-    http.setForceLogoutFn(logout)
+    http.setOptions({
+      baseUrl: VITE_API_URL,
+      credentials: VITE_WITH_CREDENTIALS || 'same-origin',
+      forceLogoutFn: logout
+    })
+    // TOREMOVE
+    // http.setBaseUrl(VITE_API_URL)
+    // http.setCredentials(VITE_WITH_CREDENTIALS || 'same-origin')
+    // http.setForceLogoutFn(logout)
 
     // set i18n
     provideI18n({

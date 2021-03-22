@@ -26,7 +26,7 @@ export default {
   // Common Logout
   async logout ({ commit }, payload) {
     commit('setLoading', true)
-    console.log('logging out', payload)
+    // console.log('logging out', payload)
     if (payload.forced) { // auth failure detected
     } else { // logout button clicked
       try {

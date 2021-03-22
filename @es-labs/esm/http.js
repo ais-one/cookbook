@@ -1,19 +1,20 @@
 // FRONTEND ONLY
 // TBD make this such that can use default instance or create new instance
-let accessToken = ''
-let refreshToken = ''
+// refresh API URL
 
-let baseUrl = '' // 'http://127.0.0.1:3000'
-const timeoutMs = 0
-const maxRetry = 0
-let credentials = 'same-origin'
-let forceLogoutFn = () => {} // function to call when forcing a logout
+let opts = {
+  baseUrl: '',
+  credentials: 'same-origin',
+  forceLogoutFn: () => {}, // function to call when forcing a logout
+  refreshUrl: '',
+  timeoutMs: 0,
+  maxRetry: 0
+}
 
-const setBaseUrl = (_baseUrl) => (baseUrl = _baseUrl)
-const setAccessToken = (_token) => (accessToken = _token)
-const setRefreshToken = (_refreshToken) => (refreshToken = _refreshToken)
-const setCredentials = (_credentials) => (credentials = _credentials)
-const setForceLogoutFn = (_forceLogoutFn) => (forceLogoutFn = _forceLogoutFn)
+let tokens = { access: '', refresh: '' }
+
+const setOptions = (_options) => Object.assign(opts, _options)
+const setTokens = (_tokens) => Object.assign(tokens, _tokens)
 
 // TBD add retry
 // https://dev.to/ycmjason/javascript-fetch-retry-upon-failure-3p6g
@@ -33,8 +34,8 @@ const fetch_retry = async (url, options, n) => {
 
 const parseUrl = (url) => {
   let urlPath = url
-  let urlOrigin = baseUrl
-  let urlFull = baseUrl + urlPath
+  let urlOrigin = opts.baseUrl
+  let urlFull = opts.baseUrl + urlPath
   let urlSearch = ''
   try {
     urlSearch = (url.lastIndexOf('?') !== -1) ? url.split('?').pop() : '' // handle /abc/def?aa=1&bb=2
@@ -63,7 +64,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
   try {
     const controller = new AbortController()
     const signal = controller.signal
-    if (timeoutMs > 0) setTimeout(() => controller.abort(), timeoutMs) // err.name === 'AbortError'
+    if (opts.timeoutMs > 0) setTimeout(() => controller.abort(), opts.timeoutMs) // err.name === 'AbortError'
 
     let qs = (query && typeof query === 'object') // null is also an object
       ? '?' +
@@ -78,13 +79,12 @@ const http = async (method, url, body = null, query = null, headers = null) => {
       }
     }
     const options = { method, headers }
-    if (timeoutMs > 0) options.signal = signal
-    if (credentials !== 'include') { // include === HTTPONLY_TOKEN
-      if (accessToken) options.headers.access_token = accessToken
-      if (refreshToken) options.headers.refresh_token = refreshToken
+    if (opts.timeoutMs > 0) options.signal = signal
+    if (opts.credentials !== 'include') { // include === HTTPONLY_TOKEN
+      if (tokens.access) options.headers.access_token = tokens.access
+      if (tokens.refresh) options.headers.refresh_token = tokens.refresh
     }
-    if (urlPath === '/api/auth/logout') options.headers.refresh_token = refreshToken // add refresh token for logout
-    options.credentials = credentials
+    options.credentials = opts.credentials
 
     if (['POST', 'PATCH', 'PUT'].includes(method)) { // check if HTTP method has req body (DELETE is maybe)
       if (body && body instanceof FormData) {
@@ -104,15 +104,15 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     const txt0 = await rv0.text()
     rv0.data = txt0.length ? JSON.parse(txt0) : {}
     if (rv0.status >= 200 && rv0.status < 400) return rv0
-    else if (rv0.status === 401 && urlPath !== '/api/auth/logout' && urlPath !== '/api/auth/refresh') { // do not handle expired token for logout & refresh routes
+    else if (rv0.status === 401) { // no longer needed urlPath !== '/api/auth/refresh'
       if (rv0.data.message === 'Token Expired Error') {
-        const rv1 = await http('POST', urlOrigin + '/api/auth/refresh', { refresh_token: refreshToken }) // rv1 JSON already processed
+        const rv1 = await http('POST', urlOrigin + '/api/auth/refresh', { refresh_token: tokens.refresh }) // rv1 JSON already processed
         if (rv1.status === 200) {
-          accessToken = rv1.data.access_token
-          refreshToken = rv1.data.refresh_token
-          if (credentials !== 'include') { // include === HTTPONLY_TOKEN
-            if (accessToken) options.headers.access_token = accessToken
-            if (refreshToken) options.headers.refresh_token = refreshToken
+          tokens.access = rv1.data.access_token
+          tokens.refresh = rv1.data.refresh_token
+          if (options.credentials !== 'include') { // include === HTTPONLY_TOKEN
+            if (tokens.access) options.headers.access_token = tokens.access
+            if (tokens.refresh) options.headers.refresh_token = tokens.refresh
           }
           const rv2 = await fetch(urlFull + qs, options)
           // rv2.data = await rv2.json() // replaced by below to handle empty body
@@ -128,7 +128,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     throw rv0 // error
   } catch (e) {
     // some errors are due to res.json(), should be res.json({})
-    if (e?.data?.message !== 'Token Expired Error' && (e.status === 401 || e.status === 403)) forceLogoutFn()
+    if (e?.data?.message !== 'Token Expired Error' && (e.status === 401 || e.status === 403)) opts.forceLogoutFn()
     throw e // some other error
   }
 }
@@ -139,7 +139,17 @@ const patch = async (url, body = null, query = null, headers = null) => await ht
 const del = async (url, query = null, headers = null) => await http('DELETE', url, null, query, headers)
 const get = async (url, query = null, headers = null) => await http('GET', url, null, query, headers)
 
-export { http, post, get, put, patch, del, setBaseUrl, setAccessToken, setRefreshToken, setCredentials, setForceLogoutFn, parseUrl }
+export {
+  http,
+  post,
+  get,
+  put,
+  patch,
+  del,
+  parseUrl,
+  setOptions,
+  setTokens
+}
 
 // var global = window || global
 // global.Validator = Validator

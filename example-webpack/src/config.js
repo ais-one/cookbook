@@ -9,6 +9,7 @@
   // HTTPONLY_TOKEN
   // HTTPONLY_TOKEN: true
   // WITH_CREDENTIALS: true
+  API_REFRESH_URL: '/api/auth/refresh',
 
   PAGESIZE: process.env.VUE_APP_PAGESIZE || 4,
   PAGESIZE_OPTS: process.env.VUE_APP_PAGESIZE_OPTS && process.env.VUE_APP_PAGESIZE_OPTS.length ? JSON.parse(process.env.VUE_APP_PAGESIZE_OPTS) : [4, 8, 10],

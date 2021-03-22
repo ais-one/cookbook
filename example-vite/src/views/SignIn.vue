@@ -136,8 +136,7 @@ export default {
           otpCount = 0
         } else {
           const decoded = parseJwt(data.access_token)
-          http.setAccessToken(data.access_token)
-          http.setRefreshToken(data.refresh_token)
+          http.setTokens({ access: data.access_token, refresh: data.refresh_token })
           _setUser(data, decoded)
         }
       } catch (e) {
@@ -156,8 +155,7 @@ export default {
       try {
         const { data } = await http.post('/api/auth/otp', { id: otpId, pin: otp.value })
         const decoded = parseJwt(data.access_token)
-        http.setAccessToken(data.access_token)
-        http.setRefreshToken(data.refresh_token)
+        http.setTokens({ access: data.access_token, refresh: data.refresh_token })
         _setUser(data, decoded)
       } catch (e) {
         if (e.data.message === 'Token Expired Error') {
