@@ -20,12 +20,10 @@ const authGuard = (to, from, next) => {
   // const item = localStorage.getItem('session') // survive a refresh - POTENTIAL SECURITY RISK - TO REVIEW AND CHANGE USE HTTPONLY COOKIES
   // if (item) {
   //   const user = JSON.parse(item)
-  //   if (user.verified) {
-  //     store.commit('setUser', user) // need user.token only
-  //   }
+  //   store.commit('setUser', user) // need user.token only
   // }
 
-  const loggedIn = !!(store.state.user && store.state.user.verified)
+  const loggedIn = !!store.state.user
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
 
   // const { groups } = store.state.user

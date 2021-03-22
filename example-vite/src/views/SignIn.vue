@@ -70,6 +70,7 @@ export default {
     const callbackUrl = VITE_CALLBACK_URL
 
     let otpCount = 0
+    let otpId = ''
     let timerId = null
 
     const setToLogin = () => {
@@ -115,7 +116,7 @@ export default {
 
     const _setUser = async (data, decoded) => {
       await store.dispatch('doLogin', decoded) // store user
-      // id, verified, groups, access_token, refresh_token
+      // id, groups, access_token, refresh_token
     }
 
     const login = async () => {
@@ -128,15 +129,16 @@ export default {
           email: email.value,
           password: password.value
         })
-        const decoded = parseJwt(data.access_token)
-        http.setAccessToken(data.access_token)
-        http.setRefreshToken(data.refresh_token)
-        if (decoded.verified) {
-          _setUser(data, decoded)
-        } else {
+        if (data.otp) {
           // OTP
           mode.value = 'otp'
+          otpId = data.otp
           otpCount = 0
+        } else {
+          const decoded = parseJwt(data.access_token)
+          http.setAccessToken(data.access_token)
+          http.setRefreshToken(data.refresh_token)
+          _setUser(data, decoded)
         }
       } catch (e) {
         // fetch failed
@@ -152,13 +154,11 @@ export default {
       loading.value = true
       errorMessage.value = ''
       try {
-        const { data } = await http.post('/api/auth/otp', { pin: otp.value })
+        const { data } = await http.post('/api/auth/otp', { id: otpId, pin: otp.value })
         const decoded = parseJwt(data.access_token)
         http.setAccessToken(data.access_token)
         http.setRefreshToken(data.refresh_token)
-        if (decoded.verified) {
-          _setUser(data, decoded)
-        }
+        _setUser(data, decoded)
       } catch (e) {
         if (e.data.message === 'Token Expired Error') {
           errorMessage.value = 'OTP Expired'

@@ -6,7 +6,6 @@ const authController = require('../controllers/auth')
 module.exports = express.Router()
   .post('/signup', authController.signup)
   .get('/check-github', authController.checkGithub)
-  .get('/logout', authController.logout)
   /**
    * @swagger
    * /api/auth/login:
@@ -35,6 +34,7 @@ module.exports = express.Router()
    *          description: Unexpected error
    */
   .post('/login', authController.login)
+  .post('/otp', authController.otp)
   .post('/refresh', authUser, authController.refresh)
-  .post('/otp', authUser, authController.otp)
+  .get('/logout', authController.logout)
   .get('/me', authUser, authController.me)

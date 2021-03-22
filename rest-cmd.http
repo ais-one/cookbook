@@ -32,5 +32,6 @@ refresh_token:
 content-type: application/json
 
 {
+  "id": 1,
   "pin": "111111"
 }

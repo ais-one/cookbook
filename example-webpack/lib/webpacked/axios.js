@@ -22,7 +22,10 @@ export const http = axios.create({
 http.interceptors.request.use((config) => {
   // Do something before request is sent if needed
   const myURL = new URL(config.baseURL + config.url)
-  if (myURL.pathname === '/api/auth/logout') config.headers['refresh_token'] = store.state.user.refresh_token // add refresh token for logout
+  if (myURL.pathname === '/api/auth/logout') {
+    config.headers['refresh_token'] = store.state.user.refresh_token // add tokens for logout
+    config.headers['access_token'] = store.state.user.access_token
+  }
   return config
 }, (error) => {
   // Do something with request error if needed
@@ -36,14 +39,17 @@ http.interceptors.response.use(
     // console.log('intercept', error.config.url, JSON.stringify(error))
     const myURL = new URL(error.config.baseURL + error.config.url)
     if (error.response && error.response.status === 401) { // auth failed
-      if (myURL.pathname !== '/api/auth/logout' && myURL.pathname !== '/api/auth/otp') {
+      if (myURL.pathname !== '/api/auth/logout') {
         if (error.response.data.message === 'Token Expired Error') {
           // console.log('token expired, store', store)
           return http.post('/api/auth/refresh', { refresh_token: store.state.user.refresh_token }).then(res => {
             // console.log('new token', res.data.token)
-            const { token } = res.data
+            const { access_token, refresh_token } = res.data
             store.commit('setUser', res.data)
-            if (!HTTPONLY_TOKEN) error.config.headers['Authorization'] = 'Bearer ' + token // need to set this also...
+            if (!HTTPONLY_TOKEN) {
+              error.config.headers.access_token = access_token
+              error.config.headers.refresh_token = refresh_token
+            }
             if (myURL.pathname === '/api/authors' || myURL.pathname === '/api/auth/me') { // For Testing Refresh Token
               // console.log('retrying...', error.config, error.config.headers.Authorization)
             }

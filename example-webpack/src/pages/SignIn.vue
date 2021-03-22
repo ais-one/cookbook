@@ -6,7 +6,7 @@
         <h2 class="text-center">Sign In (V{{ version }})</h2>
         <v-card>
           <v-card-text>
-            <v-container v-if="!(user && !user.verified)">
+            <v-container v-if="!otpId">
               <form @submit.prevent="onSignin">
                 <v-layout row wrap >
                   <v-flex xs12>
@@ -40,6 +40,7 @@
 import { mapState } from 'vuex'
 import 'ext-lib/webpacked/vcx-loading-blocker.js'
 import { APP_VERSION } from '@/config'
+import { http } from '@/axios'
 
 export default {
   data () {
@@ -47,32 +48,54 @@ export default {
       version: APP_VERSION,
       email: '',
       password: '',
+      otpId: '',
       pin: '' // OTP
     }
-  },
-  created () {
   },
   computed: {
     ...mapState([ 'user', 'error', 'loading' ])
   },
-  // watch: {
-  //   user (value) {
-  //     if (value !== null && value !== undefined) {
-  //       // this.$router.push('/notes')
-  //     } else {
-  //       // this.$router.push('/')
-  //     }
-  //   }
-  // },
   methods: {
     // REST
-    onSignin () {
+    async onSignin () {
       this.$store.dispatch('clearError')
-      this.$store.dispatch('signUserIn', { email: this.email, password: this.password })
+      this.$store.commit('setLoading', true)
+      this.$store.commit('setError', null)
+      let rv = null
+      try {
+        rv = await http.post('/api/auth/login', { email: this.email, password: this.password })
+        const { data } = rv
+        if (data.otp) {
+          this.otpId = data.otp
+        } else {
+          this.$store.commit('setUser', data)
+          this.$store.commit('setLayout', 'layout-admin')
+          await this.$router.push('/dashboard')
+        }
+      } catch (e) { }
+      if (!rv) {
+        this.$store.commit('setError', { message: 'Sign In Error' })
+      }
+      this.$store.commit('setLoading', false)
     },
-    onVerifyOtp () {
+    async onVerifyOtp () {
       this.$store.dispatch('clearError')
-      this.$store.dispatch('verifyOtp', { pin: this.pin })
+      this.$store.commit('setLoading', true)
+      this.$store.commit('setError', null)
+      let rv = null
+      try {
+        rv = await http.post('/api/auth/otp', { id: this.otpId, pin: this.pin })
+        const { data } = rv
+        this.$store.commit('setUser', data)
+        this.$store.commit('setLayout', 'layout-admin')
+        await this.$router.push('/dashboard')
+      } catch (e) {
+        console.log('Currently Nothing To Handle Failures e.g. back to login / retries', e)
+      }
+      if (!rv) {
+        this.$store.commit('setError', { message: 'Verify Error' })
+      }
+      this.$store.commit('setLoading', false)
     }
   }
 }

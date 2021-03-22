@@ -38,8 +38,7 @@ export default {
     const _setUser = async () => {
       const decoded = {
         id: 'Aaa',
-        groups: [],
-        verified: true
+        groups: []
       }
       await store.dispatch('doLogin', decoded) // store user
     }

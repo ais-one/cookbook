@@ -73,7 +73,7 @@ const getters = {
 // state below the rest // https://stackoverflow.com/questions/43843180/eslint-state-already-declared-vuex
 const state = {
   count: 99,
-  user: null // id, verified, groups
+  user: null // id, groups
 }
 
 const store = createStore({

@@ -27,7 +27,7 @@ const checkGithub = async (req, res) => {
     const user = await findUser({ githubId }) // match github id (or email?) with our user in our application
     if (!user) return res.status(401).json({ message: 'Unauthorized' })
     const { id, groups } = user
-    const tokens = await createToken({ id, verified: true, groups }, null) // 5 minute expire for login
+    const tokens = await createToken({ id, groups }, null) // 5 minute expire for login
     setTokensToHeader(res, tokens)
     return res.redirect(GITHUB_CALLBACK + '#' + tokens.access_token + '-' + tokens.refresh_token) // use url fragment... // TBD make callback URL configurable
   } catch (e) {

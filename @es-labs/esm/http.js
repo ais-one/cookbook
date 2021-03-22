@@ -104,7 +104,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     const txt0 = await rv0.text()
     rv0.data = txt0.length ? JSON.parse(txt0) : {}
     if (rv0.status >= 200 && rv0.status < 400) return rv0
-    else if (rv0.status === 401 && urlPath !== '/api/auth/logout' && urlPath !== '/api/auth/otp' && urlPath !== '/api/auth/refresh') {
+    else if (rv0.status === 401 && urlPath !== '/api/auth/logout' && urlPath !== '/api/auth/refresh') { // do not handle expired token for logout & refresh routes
       if (rv0.data.message === 'Token Expired Error') {
         const rv1 = await http('POST', urlOrigin + '/api/auth/refresh', { refresh_token: refreshToken }) // rv1 JSON already processed
         if (rv1.status === 200) {

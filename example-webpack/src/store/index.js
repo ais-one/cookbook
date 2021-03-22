@@ -12,7 +12,7 @@ export const store = new Vuex.Store({
   },
   state: {
     layout: 'layout-default',
-    user: null, // { id: user ID, verified: user has been verified (2FA), groups: for AD groups / roles }
+    user: null, // { id: user ID, groups: for AD groups / roles }
     loading: false,
     error: null,
     networkError: false
@@ -27,18 +27,23 @@ export const store = new Vuex.Store({
         const decoded = jwtDecode(payload.token)
         if (decoded) {
           payload.id = decoded.id
-          payload.verified = decoded.verified
           payload.groups = decoded.groups || ''
         }
       }
       state.user = payload
       if (payload) {
-        if (!HTTPONLY_TOKEN) http.defaults.headers.common['Authorization'] = 'Bearer ' + payload.token
-        const { token, refresh_token, ...noTokens } = payload
+        if (!HTTPONLY_TOKEN) {
+          http.defaults.headers.common['access_token'] = payload.access_token
+          http.defaults.headers.common['refresh_token'] = payload.refresh_token
+        }
+        const { access_token, refresh_token, ...noTokens } = payload
         localStorage.setItem('session', JSON.stringify(HTTPONLY_TOKEN ? noTokens : payload))
       } else {
         localStorage.removeItem('session')
-        if (!HTTPONLY_TOKEN) delete http.defaults.headers.common['Authorization']
+        if (!HTTPONLY_TOKEN) {
+          delete http.defaults.headers.common.access_token
+          delete http.defaults.headers.common.refresh_token
+        }
       }
     },
     setLoading (state, payload) { state.loading = payload },

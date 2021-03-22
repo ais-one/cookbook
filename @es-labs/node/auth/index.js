@@ -87,7 +87,7 @@ const createToken = async (payload, refreshPayload, otp) => { // Create a tokens
     }
 
     if (!refreshPayload.id || !payload.id) throw Error('id not found') // need to have at least id property
-    // how about groups? how about verified? (verified & groups actually only needed for access token)
+    // how about groups? (groups actually only needed for access token)
 
     options.algorithm = JWT_ALG
 
@@ -127,9 +127,6 @@ const authUser = async (req, res, next) => {
   if (access_token) {
     try {
       access_result = jwt.verify(access_token, getSecret('verify', 'access'), { algorithm: [JWT_ALG] }) // and options
-      if (!access_result.verified && (req.baseUrl + req.path !== '/api/auth/otp')) {
-        return res.status(401).json({ message: 'Token Verification Error' })
-      }
     } catch (e) {
       if (e.name === 'TokenExpiredError') {
         if (req.baseUrl + req.path === '/api/auth/refresh') {
@@ -140,15 +137,16 @@ const authUser = async (req, res, next) => {
             let refreshToken = await getToken(id)
             if (String(refreshToken) === String(refresh_token)) { // ok... generate new access token & refresh token?
               access_result = jwt.decode(access_token)
-              const tokens = await createToken({ id, verified: true, ...access_result }, null) // 5 minute expire for login
+              const tokens = await createToken({ id, ...access_result }, null) // 5 minute expire for login
               setTokensToHeader(res, tokens)
               return res.status(200).json(tokens)
+            } else {
+              return res.status(401).json({ message: 'Refresh Token Error: Uncaught' })              
             }
           } catch (err) { // use err instead of e (fix no-catch-shadow issue)
             console.log(err)
             return res.status(401).json({ message: 'Refresh Token Error' })
           }
-          return res.status(401).json({ message: 'Refresh Token Error: Uncaught' })
         } else {
           return res.status(401).json({ message: 'Token Expired Error' })
         }
@@ -213,13 +211,11 @@ const login = async (req, res) => {
     if (!user) return res.status(401).json({ message: 'Incorrect credentials...' })
     if (!bcrypt.compareSync(password, user[AUTH_USER_FIELD_PASSWORD])) return res.status(401).json({ message: 'Incorrect credentials' })
     if (user.revoked) return res.status(401).json({ message: 'Authorization Revoked' })
-    let verified = true
     const id = user[AUTH_USER_FIELD_ID_FOR_JWT] || ''
     const additionalPayload = addPayloadFromUserData(user)
 
     if (!id) return res.status(401).json({ message: 'Authorization Format Error' })
     if (USE_OTP) {
-      verified = false
       // if (USE_OTP === 'SMS') {
       //   // Generate PIN
       //   const pin = (Math.floor(Math.random() * (999999 - 0 + 1)) + 0).toString().padStart(6, "0")
@@ -227,8 +223,9 @@ const login = async (req, res) => {
       //   // update pin where ts > ?
       //   // set user SMS & send it
       // }
+      return res.status(200).json({ otp: id })
     }
-    const tokens = await createToken({ id, verified, ...additionalPayload }, null, 'otp') // 5 minute expire for login
+    const tokens = await createToken({ id, ...additionalPayload }, null, 'otp') // 5 minute expire for login
     setTokensToHeader(res, tokens)
     return res.status(200).json(tokens)
   } catch (e) {
@@ -237,18 +234,18 @@ const login = async (req, res) => {
   return res.status(500).json()  
 }
 
-const otp = async (req, res) => { // need to be authentication, body { pin: '123456' }
+const otp = async (req, res) => { // need to be authentication, body { id: '', pin: '123456' }
   try {
-    const { id } = req.decoded
+    const { id } = req.body
     const user = await findUser({ id })
     if (user) {
       const { pin } = req.body
       const gaKey = user[AUTH_USER_FIELD_GAKEY]
-      const isValid = USE_OTP !== 'TEST' ? otplib.authenticator.check(pin, gaKey) : String(pin) === '111111'
+      const isValid = USE_OTP !== 'TEST' ? otplib.authenticator.check(pin, gaKey) : String(pin) === '111111' // NOTE: expiry will be determined by authenticator itself
       if (isValid) {
         await revokeToken(id)
         const additionalPayload = addPayloadFromUserData(user)
-        const tokens = await createToken({ id, verified: true, ...additionalPayload }, null)
+        const tokens = await createToken({ id, ...additionalPayload }, null)
         setTokensToHeader(res, tokens)
         return res.status(200).json(tokens)
       } else {
