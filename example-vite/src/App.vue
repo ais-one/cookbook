@@ -13,7 +13,7 @@ import { useStore } from 'vuex'
 import * as http from '/@es-labs/esm/http.js'  // aliased in vite.config.js
 import ws from '/@es-labs/esm/ws.js'
 
-import { VITE_API_URL, VITE_WS_URL, VITE_WS_MS, VITE_WITH_CREDENTIALS } from '/config.js'
+import { VITE_API_URL, VITE_WS_URL, VITE_WS_MS, VITE_WITH_CREDENTIALS, VITE_REFRESH_URL } from '/config.js'
 
 import { provideI18n } from '/src/plugins/i18n.js'
 
@@ -30,9 +30,11 @@ export default {
     }
 
     // set http
-    console.log('VITE_API_URL', VITE_API_URL)
+    // console.log('VITE_API_URL', VITE_API_URL)
+    // console.log('VITE_REFRESH_URL', VITE_REFRESH_URL)
     http.setOptions({
       baseUrl: VITE_API_URL,
+      refreshUrl: VITE_REFRESH_URL,
       credentials: VITE_WITH_CREDENTIALS || 'same-origin',
       forceLogoutFn: logout
     })

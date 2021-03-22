@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 // const uuid = require('uuid/v4')
 // const qrcode = require('qrcode')
 const { USE_OTP, OTP_EXPIRY, COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, COOKIE_MAXAGE, CORS_OPTIONS, AUTH_USER_STORE, AUTH_USER_STORE_NAME } = global.CONFIG
-const { AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD = ''} = global.CONFIG
+const { AUTH_REFRESH_URL, AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD = ''} = global.CONFIG
 const { JWT_ALG, JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv', JWT_CERTS, JWT_REFRESH_CERTS } = global.CONFIG
 
 let mongo, ObjectID
@@ -67,44 +67,47 @@ const getSecret = (mode, type) => {
     } else {
       return type === 'refresh' ? JWT_REFRESH_CERTS.cert : JWT_CERTS.cert
     }
-  } else {
-    return type === 'refresh' ? JWT_REFRESH_SECRET : JWT_SECRET
   }
+  return type === 'refresh' ? JWT_REFRESH_SECRET : JWT_SECRET
 }
 
-const createToken = async (payload, refreshPayload, otp) => { // Create a tokens from a payload
+// should use:
+// sub - for user id (access_token & refresh_token)
+// groups - for user groups (access_token only)
+// all other user related information sent on initial login and stored using local storage
+// do not catch exception here, let functions above handle
+const createToken = async (user) => { // Create a tokens & data from user
   let access_token
   let refresh_token
+  let userMeta = { }
   const options = { }
-  try {
-    delete payload.exp
-    delete payload.iat
-    if (refreshPayload) {
-      delete refreshPayload.exp
-      delete refreshPayload.iat
-    } else {
-      refreshPayload = { ...payload }
+
+  const id = user[AUTH_USER_FIELD_ID_FOR_JWT]
+  if (!id) throw Error('id not found')
+
+  const groups = user.groups
+
+  const keys = AUTH_USER_FIELDS_JWT_PAYLOAD.split(',')
+  if (keys && keys.length) {
+    for (const key of keys) {
+      if (key && user[key] !== undefined) userMeta[key] = user[key]
     }
-
-    if (!refreshPayload.id || !payload.id) throw Error('id not found') // need to have at least id property
-    // how about groups? (groups actually only needed for access token)
-
-    options.algorithm = JWT_ALG
-
-    options.expiresIn = USE_OTP && otp ? OTP_EXPIRY : JWT_EXPIRY
-    access_token = jwt.sign(payload, getSecret('sign', 'access'), options)
-
-    options.expiresIn = JWT_REFRESH_EXPIRY
-    refresh_token = jwt.sign(refreshPayload, getSecret('sign', 'refresh'), options) // store only ID in refresh token?
-
-    await setToken(payload.id, refresh_token) // store in DB or Cache
-  } catch (e) {
-    console.log('createToken error', e.toString()) 
   }
+
+  options.algorithm = JWT_ALG
+
+  options.expiresIn = JWT_EXPIRY
+  access_token = jwt.sign({ id, groups }, getSecret('sign', 'access'), options)
+
+  options.expiresIn = JWT_REFRESH_EXPIRY
+  refresh_token = jwt.sign({ id }, getSecret('sign', 'refresh'), options) // store only ID in refresh token?
+
+  await setToken(id, refresh_token) // store in DB or Cache
   return {
     access_token,
-    refresh_token
-  }
+    refresh_token,
+    userMeta
+  }  
 }
 
 const setTokensToHeader = (res, {access_token, refresh_token}) => {
@@ -119,6 +122,9 @@ const setTokensToHeader = (res, {access_token, refresh_token}) => {
   }
 }
 
+// const authRefresh = async (req, res, next) => {
+// }
+
 const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
   let access_result = null
@@ -129,15 +135,15 @@ const authUser = async (req, res, next) => {
       access_result = jwt.verify(access_token, getSecret('verify', 'access'), { algorithm: [JWT_ALG] }) // and options
     } catch (e) {
       if (e.name === 'TokenExpiredError') {
-        if (req.baseUrl + req.path === '/api/auth/refresh') {
+        if (AUTH_REFRESH_URL && (req.baseUrl + req.path === AUTH_REFRESH_URL)) {
           try {
             let refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token // check refresh token & user - always stateful          
             refresh_result = jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
             const { id } = refresh_result
             let refreshToken = await getToken(id)
             if (String(refreshToken) === String(refresh_token)) { // ok... generate new access token & refresh token?
-              access_result = jwt.decode(access_token)
-              const tokens = await createToken({ id, ...access_result }, null) // 5 minute expire for login
+              const user = await findUser({ id })
+              const tokens = await createToken(user) // 5 minute expire for login
               setTokensToHeader(res, tokens)
               return res.status(200).json(tokens)
             } else {
@@ -190,30 +196,16 @@ const refresh = async (req, res) => {
   return res.status(401).json({ message: 'Error token revoked' })
 }
 
-const addPayloadFromUserData = (user) => { // obtain additional information from the payload...
-  const keys = AUTH_USER_FIELDS_JWT_PAYLOAD.split(',')
-  const payloadItems = {}
-  if (keys && keys.length) {
-    for (const key of keys) {
-      if (key && user[key] !== undefined) payloadItems[key] = user[key]
-    }
-  }
-  return payloadItems
-}
-
 const login = async (req, res) => {
   try {
     const user = await findUser({
       [AUTH_USER_FIELD_LOGIN]: req.body[AUTH_USER_FIELD_LOGIN]
     })
     const password = req.body[AUTH_USER_FIELD_PASSWORD]
-
     if (!user) return res.status(401).json({ message: 'Incorrect credentials...' })
     if (!bcrypt.compareSync(password, user[AUTH_USER_FIELD_PASSWORD])) return res.status(401).json({ message: 'Incorrect credentials' })
-    if (user.revoked) return res.status(401).json({ message: 'Authorization Revoked' })
-    const id = user[AUTH_USER_FIELD_ID_FOR_JWT] || ''
-    const additionalPayload = addPayloadFromUserData(user)
-
+    if (user.revoked) return res.status(401).json({ message: 'Revoked credentials' })
+    const id = user[AUTH_USER_FIELD_ID_FOR_JWT]
     if (!id) return res.status(401).json({ message: 'Authorization Format Error' })
     if (USE_OTP) {
       // if (USE_OTP === 'SMS') {
@@ -225,7 +217,7 @@ const login = async (req, res) => {
       // }
       return res.status(200).json({ otp: id })
     }
-    const tokens = await createToken({ id, ...additionalPayload }, null, 'otp') // 5 minute expire for login
+    const tokens = await createToken(user) // 5 minute expire for login
     setTokensToHeader(res, tokens)
     return res.status(200).json(tokens)
   } catch (e) {
@@ -236,16 +228,12 @@ const login = async (req, res) => {
 
 const otp = async (req, res) => { // need to be authentication, body { id: '', pin: '123456' }
   try {
-    const { id } = req.body
+    const { id, pin } = req.body
     const user = await findUser({ id })
     if (user) {
-      const { pin } = req.body
       const gaKey = user[AUTH_USER_FIELD_GAKEY]
-      const isValid = USE_OTP !== 'TEST' ? otplib.authenticator.check(pin, gaKey) : String(pin) === '111111' // NOTE: expiry will be determined by authenticator itself
-      if (isValid) {
-        await revokeToken(id)
-        const additionalPayload = addPayloadFromUserData(user)
-        const tokens = await createToken({ id, ...additionalPayload }, null)
+      if (USE_OTP !== 'TEST' ? otplib.authenticator.check(pin, gaKey) : String(pin) === '111111') { // NOTE: expiry will be determined by authenticator itself
+        const tokens = await createToken(user)
         setTokensToHeader(res, tokens)
         return res.status(200).json(tokens)
       } else {

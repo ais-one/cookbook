@@ -1,6 +1,8 @@
 // console.log('fffff', process.env.NODE_ENV, import.meta.env)
 export const {
   VITE_API_URL,
+  VITE_REFRESH_URL,
+
   VITE_WS_URL, // ws://127.0.0.1:3001, wss://127.0.0.1:3001
   VITE_WS_MS,
   VITE_GQL_URI,

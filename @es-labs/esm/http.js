@@ -106,7 +106,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     if (rv0.status >= 200 && rv0.status < 400) return rv0
     else if (rv0.status === 401) { // no longer needed urlPath !== '/api/auth/refresh'
       if (rv0.data.message === 'Token Expired Error') {
-        const rv1 = await http('POST', urlOrigin + '/api/auth/refresh', { refresh_token: tokens.refresh }) // rv1 JSON already processed
+        const rv1 = await http('POST', urlOrigin + opts.refreshUrl, { refresh_token: tokens.refresh }) // rv1 JSON already processed
         if (rv1.status === 200) {
           tokens.access = rv1.data.access_token
           tokens.refresh = rv1.data.refresh_token

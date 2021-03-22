@@ -38,7 +38,7 @@ export default {
     const _setUser = async () => {
       const decoded = {
         id: 'Aaa',
-        groups: []
+        groups: 'MyGroup,AnotherGroup'
       }
       await store.dispatch('doLogin', decoded) // store user
     }

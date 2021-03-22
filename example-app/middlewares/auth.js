@@ -3,7 +3,7 @@
 const { authUser, findUser, updateUser } = require('@es-labs/node/auth')
 
 const authIsAdmin = async (req, res, next) => {
-  if (req.decoded.groups === 'admin') {
+  if (req.decoded.groups.includes('admin')) {
     return next()
   }
   else {

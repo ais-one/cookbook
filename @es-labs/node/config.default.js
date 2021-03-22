@@ -23,6 +23,7 @@ global.CONFIG.COOKIE_SAMESITE = 'Lax'
 global.CONFIG.COOKIE_MAXAGE = ''
 global.CONFIG.COOKIE_SECRET = '' // for use by cookie-parser
 
+global.CONFIG.AUTH_REFRESH_URL = '/api/auth/refresh'
 global.CONFIG.AUTH_USER_STORE = 'objection' // mongo, objection
 global.CONFIG.AUTH_USER_STORE_NAME = 'users'
 global.CONFIG.AUTH_USER_FIELD_ID_FOR_JWT = 'id' // mongo = _id, objection = id // can be NTID from SAML
