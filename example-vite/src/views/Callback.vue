@@ -7,13 +7,12 @@
 
 <script>
 import { onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 export default {
   name: 'Callback',
   setup(props, context) {
     const route = useRoute()
-    const router = useRouter()
 
     onMounted(async () => {
       console.log('Callback mounted!', route.hash, route) // deal with hashes here if necessary

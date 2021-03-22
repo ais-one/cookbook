@@ -121,9 +121,6 @@ const setTokensToHeader = (res, {access_token, refresh_token}) => {
   }
 }
 
-// const authRefresh = async (req, res, next) => {
-// }
-
 const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
   let access_result = null
