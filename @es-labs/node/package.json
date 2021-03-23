@@ -8,7 +8,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@google-cloud/storage": "^5.8.1",
+    "@google-cloud/storage": "^5.8.2",
     "agenda": "^4.1.0",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",

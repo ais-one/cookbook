@@ -24,9 +24,9 @@ const ws = {
     }
   },
   connect() {
-    console.log('connect', 'endpoint=', this.endpoint, 'reconnectMs=', this.reconnectMS)
-    if (!this.endpoint) return console.log('ws no endpoint')
-    if (this.instance) return console.log('ws already connected')
+    console.log(`ws connecting... endpoint=${this.endpoint} reconnectMs=${this.reconnectMS}`)
+    if (!this.endpoint) return console.log('ws connect failed - no endpoint')
+    if (this.instance) return console.log('ws connect failed - already connected')
 
     try {
       this.instance = new WebSocket(this.endpoint)
@@ -45,11 +45,11 @@ const ws = {
             this.reconnectMs > 1000 ? this.reconnectMs : 1000
           )
         } else {
-          console.log(`[close] Connection closed cleanly, code=${e.code} reason=${e.reason}`)
+          console.log(`ws connection closed cleanly, code=${e.code} reason=${e.reason}`)
         }
       }
     } catch (e) {
-      console.log('connect error', e.toString())
+      console.log('ws connect error', e.toString())
     }
   }
 }
