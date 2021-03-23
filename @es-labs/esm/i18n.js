@@ -1,3 +1,5 @@
+// https://phrase.com/blog/posts/detecting-a-users-locale/
+// https://gist.github.com/ashour/5f169a6dd9b6293691629ee0d06cae6f
 // get languages / locales from browser
 // sample output: ['en-US', 'en-GB']
 

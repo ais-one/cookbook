@@ -33,8 +33,7 @@ import { useRoute } from 'vue-router'
 
 import parseJwt from '/@es-labs/esm/parse-jwt.js'
 import { samlLogin } from '/@es-labs/esm/saml.js'
-// import ws from '/@es-labs/esm/ws.js'
-import Ws from '/@es-labs/esm/wsc.js'
+import Ws from '/@es-labs/esm/ws.js'
 
 import { http } from '/src/services.js'
 import { useI18n } from '/src/plugins/i18n.js'
@@ -96,12 +95,7 @@ export default {
       loading.value = false
 
       // set ws
-      // ws.endpoint = VITE_WS_URL
-      // ws.reconnectMs = VITE_WS_MS
-      ws.setOptions({
-        endpoint: VITE_WS_URL,
-        reconnectMs: VITE_WS_MS
-      })
+      ws.setOptions({ endpoint: VITE_WS_URL, reconnectMs: VITE_WS_MS })
       ws.connect()
       ws.setMessage((e) => console.log('ws onmessage', e.data))
 

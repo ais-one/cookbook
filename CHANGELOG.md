@@ -3,8 +3,8 @@
 - [update] clean up auth codes..., breaking change on return values of /api/auth/login and /api/auth/otp, SAML configuration, additional AUTH_ and JWT_ configurations, @es-labs/esm/http.js, @es-labs/node/auth/index.js, example-app auth controller and auth route
 - [frontend] able to create and use multiple
   - http requests (also stop using @es-labs/esm/http.js, change to @es-labs/esm/fetch.js)
-  - i18n (keep as single)
-  - ws (make as class also [TOCLEANUP-wsc.js])
+  - ws
+  - i18n (do not need to make multiple, keep as single)
 - [TODO]
   - [example-native] migrate example-webpack vue-crud-x table examples to example-native (child table, join tables), (category, author, book - has 1 category, page - belongs to 1 book, book_author)... t4t.js to save to column or to join table
 
