@@ -33,11 +33,12 @@ import { useRoute } from 'vue-router'
 
 import parseJwt from '/@es-labs/esm/parse-jwt.js'
 import { samlLogin } from '/@es-labs/esm/saml.js'
-import ws from '/@es-labs/esm/ws.js'
+// import ws from '/@es-labs/esm/ws.js'
+import Ws from '/@es-labs/esm/wsc.js'
 
 import { http } from '/src/services.js'
 import { useI18n } from '/src/plugins/i18n.js'
-import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL, VITE_SAML_URL } from '/config.js'
+import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL, VITE_SAML_URL, VITE_WS_URL, VITE_WS_MS } from '/config.js'
 
 import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
 import { DO_HELLO } from '/src/queries.js'
@@ -54,6 +55,8 @@ if (apolloClient) {
     .then((data) => console.log('graphql', data))
     .catch((error) => console.error(error))
 }
+
+const ws = new Ws()
 
 export default {
   setup(props, context) {
@@ -92,9 +95,15 @@ export default {
       errorMessage.value = ''
       loading.value = false
 
+      // set ws
+      // ws.endpoint = VITE_WS_URL
+      // ws.reconnectMs = VITE_WS_MS
+      ws.setOptions({
+        endpoint: VITE_WS_URL,
+        reconnectMs: VITE_WS_MS
+      })
       ws.connect()
-      const wsHandler = (e) => console.log('ws onmessage', e.data)
-      ws.setMessage(wsHandler)
+      ws.setMessage((e) => console.log('ws onmessage', e.data))
 
       timerId = setInterval(async () => {
         if (ws) {

@@ -10,9 +10,6 @@ import layoutSecure from './layouts/Secure.vue'
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 
-import ws from '/@es-labs/esm/ws.js'
-import { VITE_WS_URL, VITE_WS_MS } from '/config.js'
-
 import { http } from '/src/services.js'
 import { provideI18n } from '/src/plugins/i18n.js'
 
@@ -45,10 +42,6 @@ export default {
         id: { sign_in: 'Masuk (id)' }
       }
     })
-
-    // set ws
-    ws.endpoint = VITE_WS_URL
-    ws.reconnectMs = VITE_WS_MS
 
     return {
       storeUser // computed
