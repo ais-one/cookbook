@@ -1,6 +1,7 @@
 ## Issues
 
 ### For next sprint / version
+- [example-native] migrate example-webpack vue-crud-x table examples to example-native (child table, join tables), (category, author, book - has 1 category, page - belongs to 1 book, book_author)... t4t.js to save to column or to join table
 - [example-app] jsonschema & openapi 3.1
 - [deprecate] remove v1 branch and put in wiki archive page
 - [deprecate] remove v0.4.8 branch and put in wiki archive page

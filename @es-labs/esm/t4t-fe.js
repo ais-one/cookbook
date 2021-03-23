@@ -1,8 +1,8 @@
-import * as http from './http.js'
+import Fetch from './fetch.js'
 import { validateColumn } from './t4t-validate.js'
 let tableName = ''
 let config = null
-
+const http = new Fetch()
 // TBD i18n
 
 function setTableName(name) {
@@ -271,6 +271,7 @@ async function readGoogle (filename) {
   
 */
 export {
+  http,
   setTableName, getConfig, validate, validateColumn,
   find, findOne, initItem, create, update, remove, upload, download, autocomplete, processData,
   uploadGoogle, deleteGoogle, readGoogle

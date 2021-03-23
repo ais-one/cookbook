@@ -55,8 +55,8 @@
 import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inject, reactive, onBeforeUpdate, watch } from 'vue'
 import { useStore } from 'vuex'
 import { webpushSubscribe, webpushUnsubscribe, fcmSubscribe } from '/@es-labs/esm/pwa.js' // served from express /esm static route
-import * as http from '/@es-labs/esm/http.js' // served from express /esm static route
 import { VITE_PWA_PN } from '/config.js'
+import { http } from '/src/services.js'
 
 import { fromEvent } from 'rxjs'
 import { switchMap, debounceTime, distinctUntilChanged, map } from 'rxjs/operators'

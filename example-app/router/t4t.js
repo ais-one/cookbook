@@ -320,7 +320,7 @@ module.exports = express.Router()
         // result: dbRv.result
       }
     }
-    return res.json() // TBD fix @es-labs/esm/http.js
+    return res.json()
   }))
 
 /*

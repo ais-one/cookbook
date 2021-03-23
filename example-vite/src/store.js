@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 import router from './router.js'
-import * as http from '/@es-labs/esm/http.js' // served from express /esm static route
+import { http } from '/src/services.js'
 // import aaa from 'https://unpkg.com/swrv@0.3.0/esm/index.js' - will error
 import { VITE_INITAL_SECURE_PATH } from '/config.js'
 

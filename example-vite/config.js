@@ -13,10 +13,11 @@ export const {
   // VITE_HTTPONLY_TOKEN = false, // true, // NOTUSED... replaced by VITE_WITH_CREDENTIALS
   VITE_WITH_CREDENTIALS = 'same-origin', // same-origin, include = cors
 
+  VITE_SAML_URL,
   VITE_CALLBACK_URL,
 
+  VITE_INITAL_SECURE_PATH,
   BASE_URL, // from vite.config.js base property
-  VITE_INITAL_SECURE_PATH
 } = import.meta.env
 
 // APP_VERSION: '0.0.0' // TBD Use package.json version

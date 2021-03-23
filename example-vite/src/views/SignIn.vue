@@ -8,7 +8,7 @@
         <a-input label="Password" type="password" v-model:value="password"></a-input>
         <div class="buttons-box-flex">
           <a-button @click="login">Login</a-button>
-          <a-button @click="() => samlLogin(callbackUrl)">SAML</a-button>
+          <a-button @click="() => samlLogin(VITE_SAML_URL, VITE_CALLBACK_URL)">SAML</a-button>
           <a-button @click="$router.push('/signin-fast')">Fast</a-button>
         </div>
         <p><router-link to="/signup">Sign Up</router-link></p>
@@ -30,14 +30,14 @@ import { ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
-import * as http from '/@es-labs/esm/http.js' // aliased in vite.config.js
+
 import parseJwt from '/@es-labs/esm/parse-jwt.js'
 import { samlLogin } from '/@es-labs/esm/saml.js'
 import ws from '/@es-labs/esm/ws.js'
 
+import { http } from '/src/services.js'
 import { useI18n } from '/src/plugins/i18n.js'
-import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL } from '/config.js'
-import  { g1, g2 } from '/src/services.js'
+import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL, VITE_SAML_URL } from '/config.js'
 
 import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
 import { DO_HELLO } from '/src/queries.js'
@@ -69,6 +69,7 @@ export default {
     const otp = ref('')
 
     const callbackUrl = VITE_CALLBACK_URL
+    const samlUrl = VITE_SAML_URL
 
     let otpCount = 0
     let otpId = ''
@@ -85,8 +86,6 @@ export default {
     onUnmounted(() => console.log('signIn unmounted'))
     onMounted(async () => {
       console.log('signIn mounted!', route.hash) // deal with hashes here if necessary
-      g1.greet()
-      g2.greet()
 
       setToLogin()
       otp.value = '111111'
@@ -186,7 +185,8 @@ export default {
       login, // method
       otpLogin,
       i18n,
-      callbackUrl
+      VITE_CALLBACK_URL,
+      VITE_SAML_URL,
     }
   }
 }

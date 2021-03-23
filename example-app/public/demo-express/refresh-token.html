@@ -20,19 +20,21 @@
   <button id="test-ed">test</button><br/>
 </body>
 <script type="module">
-import { http } from '/esm/http.js'
+import Fetch from '/esm/fetch.js'
 import parseJwt from '/esm/parse-jwt.js'
 
 let otpId = ''
 let accessToken = ''
 let refreshToken = ''
-  
+
+const http = new Fetch()
+
 const test = () => console.log('https test')
 
 document.querySelector("#test-ed").onclick = test
 
 async function login() {
-  const { data } = await http('POST', '/api/auth/login', { email: 'test', password: 'test' })
+  const { data } = await http.post('/api/auth/login', { email: 'test', password: 'test' })
   if (data.otp) {
     otpId = data.otp
     console.log('need otp', data)
@@ -46,7 +48,7 @@ async function login() {
 
 async function otp() {
   try {
-    const { data } = await http('POST', '/api/auth/otp', { id: otpId, pin: '111111' })
+    const { data } = await http.post('/api/auth/otp', { id: otpId, pin: '111111' })
     if (data.access_token) {
       accessToken = data.access_token
       // refreshToken = data.refresh_token
@@ -62,7 +64,7 @@ async function otp() {
 
 async function testAuth() {
   try {
-    const { data } = await http('GET', '/api/health-auth')
+    const { data } = await http.get('/api/health-auth')
     if (data) console.log('/api/health-auth', data)
     else console.log('get no data', data)
   } catch (e) {
@@ -72,7 +74,7 @@ async function testAuth() {
 
 async function logout() {
   try {
-    const { data } = await http('GET', '/api/auth/logout')
+    const { data } = await http.get('/api/auth/logout')
     console.log('logout done', data)
   } catch (e) {
     console.log('logout error', e)
