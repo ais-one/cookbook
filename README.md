@@ -8,9 +8,9 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.5.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.0) - Released 2021 Mar 13 1220 +8GMT
+Latest Version [0.5.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.0) - Released 2021 Mar 31 1220 +8GMT
 
-- urgent fix for **example-native**, add rxjs to **example-vite**
+- improvements on auth
 
 # Features
 
@@ -38,7 +38,7 @@ Latest Version [0.5.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.0)
     - Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
   - Unit Test & Integration Test
 - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
-- [Docker setups](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) for Mongodb, Mysql, SAML IDP, Kafka, Hashicorp Vault
+- [Docker setups](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) for Mongodb, Mysql, SAML IDP, Kafka, Hashicorp Vault, Redis
 - [Secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
 - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
 - [AMP Website](https://github.com/ais-one/vue-crud-x/tree/master/example-amp): AMP (Accelerated Mobile Page) application sample (TBD)

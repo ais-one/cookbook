@@ -37,6 +37,7 @@ import ws from '/@es-labs/esm/ws.js'
 
 import { useI18n } from '/src/plugins/i18n.js'
 import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL } from '/config.js'
+import  { g1, g2 } from '/src/services.js'
 
 import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
 import { DO_HELLO } from '/src/queries.js'
@@ -84,6 +85,8 @@ export default {
     onUnmounted(() => console.log('signIn unmounted'))
     onMounted(async () => {
       console.log('signIn mounted!', route.hash) // deal with hashes here if necessary
+      g1.greet()
+      g2.greet()
 
       setToLogin()
       otp.value = '111111'
