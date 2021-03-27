@@ -41,7 +41,7 @@ const actions = {
         commit('login', null)
         await router.push('/signin')
       } catch (e) {
-        if (e && e.data && e.data.message !== 'Token Expired Error') {
+        if (e.toString() === 'TypeError: Failed to fetch'  || (e.data && e.data.message !== 'Token Expired Error')) {
           commit('login', null)
           await router.push('/signin')
         }

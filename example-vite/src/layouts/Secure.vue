@@ -79,6 +79,8 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
 import { VITE_INITAL_SECURE_PATH } from '/config.js'
 
+import idleTimer from '/@es-labs/esm/idle.js'
+
 import {
   UserOutlined,
   VideoCameraOutlined,
@@ -99,8 +101,21 @@ export default {
     const store = useStore()
     onMounted(async () => {
       console.log('SECURE mounted!')
+      idleTimer.timeouts.push(
+        { // timme in seconds and ascending value
+          time: 5,
+          fn: () => {
+            alert('Timeout')
+          },
+          stop: true
+        }
+      )
+      idleTimer.start()
     })
-    onUnmounted(() => console.log('SECURE unmounted'))
+    onUnmounted(() => {
+      console.log('SECURE unmounted')
+      idleTimer.stop()
+    })
     const logout = async () => await store.dispatch('doLogin', null)
     return {
       logout,
