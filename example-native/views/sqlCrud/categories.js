@@ -61,7 +61,7 @@ export default {
 
     const rowClick = async (e) => {
       console.log('rowClick', e.detail) // row, cod, data
-      form.record = await t4t.findOne(e.detail.data._id) // either use e.detail.data, or fetch from API
+      form.record = await t4t.findOne(e.detail.data.__key) // either use e.detail.data, or fetch from API
       mode.value = 'edit'
       // Object.assign(test, form.config)
     }

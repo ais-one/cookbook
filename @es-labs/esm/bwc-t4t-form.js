@@ -474,8 +474,8 @@ class BwcT4tForm extends HTMLElement {
               }
             }
           }
-          console.log('test submit', this.#record)
-          // this.dispatchEvent(new CustomEvent('submit', { detail: { data: this.#record } }))
+          // console.log('test submit', this.#record)
+          this.dispatchEvent(new CustomEvent('submit', { detail: { data: this.#record } }))
         } else {
           this.dispatchEvent(new CustomEvent('submit', { detail: { error } }))
         }

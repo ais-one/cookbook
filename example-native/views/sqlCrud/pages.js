@@ -35,12 +35,14 @@ import * as t4t from '/esm/t4t-fe.js'
 import { downloadData } from '/esm/util.js'
 
 const { onMounted, ref, reactive } = Vue
+const { useRoute } = VueRouter
 
 const tableName = 'pages'
 
 export default {
   template,
-  setup() {
+  setup(props) {
+    const route = useRoute()
     // reactive
     const mode = ref('')
     const page = ref(1)
@@ -176,10 +178,10 @@ export default {
       }
     }
 
-    // lifecycle
     onMounted(async () => {
-      console.log('ui4 mounted!')
-      t4t.setTableName(tableName) // country
+      console.log('pages mounted!')
+      t4t.setTableName(tableName)
+      if (route.query) t4t.setParentFilter(route.query)
       table.config = await t4t.getConfig()
 
       // create the columns

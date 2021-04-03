@@ -1,3 +1,4 @@
+// TBD goto pages
 const template = /*html*/`
 <div>
   <input type="file" id="upload" style="display:none" @change="doUpload">
@@ -24,6 +25,7 @@ const template = /*html*/`
     @rowclick="rowClick"
     @checked="checked"
     @triggered="triggered"
+    @bookslinkevent.capture="linkEvent"
     @cmd="cmd"
     style="--bwc-table-height: calc(100vh - 160px);--bwc-table-width: 100%;"
     class="sticky-header sticky-column"
@@ -35,12 +37,14 @@ import * as t4t from '/esm/t4t-fe.js'
 import { downloadData } from '/esm/util.js'
 
 const { onMounted, ref, reactive } = Vue
+const { useRouter } = VueRouter
 
-const tableName = 'authors'
+const tableName = 'books'
 
 export default {
   template,
   setup() {
+    const router = useRouter()
     // reactive
     const mode = ref('')
     const page = ref(1)
@@ -70,7 +74,12 @@ export default {
       console.log('submitForm', e.detail)
       // do update here and display error message?
       const { data, error } = e.detail
-      if (error) return alert('Validation Error')
+      if (error) {
+        console.log(error)
+        return alert('Validation Error')
+      } else if (data) {
+        console.log(data)       
+      }
       const invalid = t4t.validate(data)
       if (invalid) return alert(`Invalid ${invalid.col} - ${invalid.msg}`)
 
@@ -176,6 +185,12 @@ export default {
       }
     }
 
+    const linkEvent = async (e) => {
+      const to = `/sql-crud/${e.detail.table}`
+      router.push({ path: to, query: { col: e.detail.tableId, id: e.detail.id } })
+      // console.log('linkEvent', e.detail)
+    }
+
     // lifecycle
     onMounted(async () => {
       console.log('ui4 mounted!')
@@ -186,7 +201,7 @@ export default {
       table.columns = Object.entries(table.config.cols)
         .filter(([k,v]) => !v.hide)
         .map(([k,v]) => {
-          return {
+          const _col = {
             key: k,
             label: v.label,
             filter: v.filter || false,
@@ -194,6 +209,18 @@ export default {
             // width
             // How to handle render function?
           }
+          if (v.link) {
+            _col.render = ({val, key, row, idx}) => {
+              const payload = {
+                table: v.link.table,
+                tableId: v.link.tableId,
+                id: row[v.link.linkId]
+              }
+              const output = `<a class='button' onclick='this.dispatchEvent(new CustomEvent("bookslinkevent", { detail: ${JSON.stringify(payload)} }))'>${val}</a>`
+              return output
+            }
+          }
+          return _col
         })
 
       // get initial data...
@@ -216,6 +243,7 @@ export default {
       checked,
       triggered,
       cmd,
+      linkEvent,
     }
   }
 }

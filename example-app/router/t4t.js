@@ -105,7 +105,7 @@ module.exports = express.Router()
       query = knex(table.name).where({})
       let prevFilter = {}
       if (filters && filters.length) for (let filter of filters) {
-        const key = filter.col
+        const key = filter.key
         const op = filter.op
         const value = op === 'like' ? `%${filter.val}%` : filter.val
         if (prevFilter.andOr || prevFilter.andOr === 'and') query = query.andWhere(key, op, value)
@@ -127,7 +127,7 @@ module.exports = express.Router()
       const or = [] // { "$or" : [] }
       const and = [] // { "$and" : [] }
       for (filter of filters) {
-        const key = filter.col
+        const key = filter.key
         const op = filter.op
         // TRANSFORM INPUT
         const val = table.cols[key].type === 'integer' || table.cols[key].type === 'number' ? Number(filter.val)

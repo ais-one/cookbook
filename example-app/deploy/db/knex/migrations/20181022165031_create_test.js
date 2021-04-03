@@ -2,7 +2,7 @@ exports.up = async (knex) => {
   await knex.schema
     .createTable('categories', (table) => {
       table.increments('id').primary()
-      table.string('name')
+      table.string('name').unique()
       table.timestamps(true, true)
     })
     await knex.schema

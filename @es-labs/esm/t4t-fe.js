@@ -1,12 +1,18 @@
 import Fetch from './fetch.js'
 import { validateColumn } from './t4t-validate.js'
 let tableName = ''
+let parentFilter = null
 let config = null
 const http = new Fetch()
 // TBD i18n
 
 function setTableName(name) {
   tableName = name
+  parentFilter = null // TBD find a more sustainable way using prototype
+}
+
+function setParentFilter(filter) {
+  parentFilter = filter
 }
 
 // type: string, date, datetime, time, integer, float
@@ -61,6 +67,9 @@ async function find(filters, sorter, page, limit) {
     results: [],
     total: 0
     // cursor: '' // props.infinite
+  }
+  if (parentFilter) {
+    filters.push({key: parentFilter.col, op: "=", val: parentFilter.id, andOr: "and"})
   }
   try {
     const { data } = await http.get('/api/t4t/find/' + tableName, {
@@ -272,7 +281,9 @@ async function readGoogle (filename) {
 */
 export {
   http,
-  setTableName, getConfig, validate, validateColumn,
+  setTableName,
+  setParentFilter,
+  getConfig, validate, validateColumn,
   find, findOne, initItem, create, update, remove, upload, download, autocomplete, processData,
   uploadGoogle, deleteGoogle, readGoogle
 }
