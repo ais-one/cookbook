@@ -219,8 +219,8 @@ export default {
               const output = `<a class='button is-small' onclick='this.dispatchEvent(new CustomEvent("bookslinkevent", { detail: ${JSON.stringify(payload)} }))'>${val}</a>`
               return output
             }
-          } else if (v?.ui?.refVal) {
-            _col.render = ({val, key, row, idx}) => row[v.ui.refVal]
+          } else if (v?.ui?.valueType) {
+            _col.render = ({val, key, row, idx}) => val[v.ui.valueType]
           }
           return _col
         })

@@ -42,8 +42,7 @@ module.exports = {
       },
       ui: {
         tag: 'bwc-combobox', // input
-        valueType: 'object', // string or object, if object then no conversion needed
-        valueKey: 'id'
+        valueType: 'text',
       }
     },
     created_at: {

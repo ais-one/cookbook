@@ -77,29 +77,27 @@ function formUniqueKey(table, args) {
 
 function mapRelation (key, col) {
   if (col?.ui?.tag !== 'bwc-combobox') return null
-  if (col?.ui?.attrs?.multiple) return null // temp do not handle for now 
-  if (col?.ui?.tag) {
-    if (col?.ui?.attrs?.multiple) {
-    } else {
-      const table2 = col?.options?.tableName
-      const table2Id = col?.options?.key
-      const table1Id = key
-      const table2Text = col?.options?.text  
-      if (table2 && table2Id && table2Text && table1Id) return { table2, table2Id, table2Text, table1Id }
-    }
+  if (col.ui.tag?.valueType === '') return null // no need mapping
+  if (col?.ui?.attrs?.multiple) {
+    return null // temp do not handle for now。we will handle this later
   } else {
-
+    const table2 = col?.options?.tableName
+    const table2Id = col?.options?.key
+    const table1Id = key
+    const table2Text = col?.options?.text  
+    if (table2 && table2Id && table2Text && table1Id) return { table2, table2Id, table2Text, table1Id }
   }
   return null
 }
 
-function kvCol2Db (key, col) { // a key value column to DB
+function kvDb2Col (row) { // a key value from DB to column
 
 }
 
-function kvDb2Col (key, col) { // a key value DB to column
+function kvCol2Db (key, col) { // a key value from column to DB
 
 }
+
 
 module.exports = express.Router()
   .get('/test', (req, res) => res.send('t4t ok'))
@@ -152,17 +150,27 @@ module.exports = express.Router()
         // create & update use Id
         // findOne needs join also
         // handle mapping tables only in findOne
+        const joinCols = {}
         for (let key in table.cols) {
           const rel = mapRelation(key, table.cols[key])
-          if (rel) { // if has relation
+          if (rel) { // if has relation and is key-value
             const { table2, table2Id, table2Text, table1Id } = rel
             query = query.join(table2, table.name + '.' + table1Id, '=', table2 + '.' + table2Id) // handles joins...
-            columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id + '_' + table2Text]
+            const joinCol = table1Id + '_' + table2Text
+            joinCols[table1Id] = joinCol
+            columns = [...columns, table2 + '.' + table2Text + ' as ' + joinCol] // add a join colomn
             // columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id]
           }
         }
         rows = await query.clone().column(...columns).orderBy(sorter).limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
-        // console.log('rows', rows)
+        rows = rows.map(row => {
+          for (let k in joinCols) {
+            const v = joinCols[k]
+            row[k] = { key: row[k], text: row[v] }
+            delete row[v]
+          }
+          return row
+        })
       }
     } else { // mongo
       // TBD Joins for MongoDB

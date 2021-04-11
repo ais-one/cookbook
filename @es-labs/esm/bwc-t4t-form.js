@@ -302,14 +302,14 @@ class BwcT4tForm extends HTMLElement {
             const valueType = c?.ui?.valueType // TBD transform value
             if (c?.ui?.attrs?.multiple) { // can be array in column or join table
               const val = this.mode === 'add' ? c.default : this.#record[k]
-              if (valueType === 'string') {
+              if (valueType === '') {
                 el.tags = val.split(',').map(item => ({ key: item, text: item })) || []
               } else { // object
                 el.tags = val || []
               }
             } else { // single
               const val = this.mode === 'add' ? c.default : this.#record[k]  
-              if (valueType === 'string') {
+              if (valueType === '') {
                 el.value = val || ''
                 el.selected = val ? { key: val, text: val } : null
               } else { // object
@@ -453,13 +453,13 @@ class BwcT4tForm extends HTMLElement {
                 const valueType = c?.ui?.valueType
 
                 if (c?.ui?.attrs?.multiple) { // can be array in column or join table
-                  if (valueType === 'string') {
+                  if (valueType === '') {
                     this.#record[col] = val.map(item => item.text).join(',')
                   } else { // object
                     this.#record[col] = val
                   }
                 } else { // single
-                  if (valueType === 'string') {
+                  if (valueType === '') {
                     this.#record[col] = val.text
                   } else { // object
                     this.#record[col] = val
