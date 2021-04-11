@@ -5,8 +5,13 @@
   - http requests (also stop using @es-labs/esm/http.js, change to @es-labs/esm/fetch.js)
   - ws
   - i18n (do not need to make multiple, keep as single)
-- [TODO]
-  - [example-native] migrate example-webpack vue-crud-x table examples to example-native (child table, join tables), (category, author, book - has 1 category, page - belongs to 1 book, book_author)... t4t.js to save to column or to join table
+- [example-native] migrate example-webpack vue-crud-x table examples to example-native
+  - category, author, book - has 1 category & has book_author, page - belongs to 1 book
+  - child table
+  - handle one-to-one/one-to-many relation
+  - back button at child table
+  - handle reference tables (many to many) [TODO]
+  - clean up repeated table code [TODO]
 
 ### Version 0.4.8
 - [chore] update packages & cleanup & work on improving documentation

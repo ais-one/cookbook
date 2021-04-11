@@ -12,7 +12,7 @@ const template = /*html*/`
   ></bwc-t4t-form>
   <bwc-table
     v-else
-    commands="reload,filter,add,del,import,export"
+    commands="reload,filter,add,del,import,export,goback"
     :pagination="true"
     :sort="true"
     :page="page"
@@ -35,7 +35,7 @@ import * as t4t from '/esm/t4t-fe.js'
 import { downloadData } from '/esm/util.js'
 
 const { onMounted, ref, reactive } = Vue
-const { useRoute } = VueRouter
+const { useRoute, useRouter } = VueRouter
 
 const tableName = 'pages'
 
@@ -43,6 +43,8 @@ export default {
   template,
   setup(props) {
     const route = useRoute()
+    const router = useRouter()
+
     // reactive
     const mode = ref('')
     const page = ref(1)
@@ -172,6 +174,8 @@ export default {
           // TBD const _filters = keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters
           const data = await t4t.download(filters, sorter)
           if (data) downloadData(data.csv, tableName + '.csv', 'text/csv;charset=utf-8;')
+        } else if (e.detail.cmd === 'goback') {
+          router.back()
         }
       } catch (e) {        
         console.log('error cmd', e.toString())
