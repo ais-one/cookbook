@@ -78,13 +78,15 @@ function mapRelation (key, col) {
   if (col?.ui?.tag !== 'bwc-combobox') return null
   if (col.ui.tag?.valueType === '') return null // no need mapping
   if (col?.ui?.attrs?.multiple) {
-    return null // temp do not handle for now。we will handle this later
+    return {
+      type: 'manyToMany',      
+    }
   } else {
     const table2 = col?.options?.tableName
     const table2Id = col?.options?.key
     const table1Id = key
     const table2Text = col?.options?.text  
-    if (table2 && table2Id && table2Text && table1Id) return { table2, table2Id, table2Text, table1Id }
+    if (table2 && table2Id && table2Text && table1Id) return { type: '1_n', table2, table2Id, table2Text, table1Id }
   }
   return null
 }
@@ -160,16 +162,26 @@ module.exports = express.Router()
 
         const joinCols = {}
         for (let key in table.cols) {
-          const rel = mapRelation(key, table.cols[key])
-          if (rel) { // if has relation and is key-value
-            const { table2, table2Id, table2Text, table1Id } = rel
-            query = query.join(table2, table.name + '.' + table1Id, '=', table2 + '.' + table2Id) // handles joins...
-            const joinCol = table1Id + '_' + table2Text
-            joinCols[table1Id] = joinCol
-            columns = [...columns, table2 + '.' + table2Text + ' as ' + joinCol] // add a join colomn
-            // columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id]
+          const col = table.cols[key]
+          if (col?.ui?.reference) { // many to many
+            // do nothing here 
+          } else { // 1 to many, 1 to 1
+            const rel = mapRelation(key, table.cols[key])
+            if (rel) { // if has relation and is key-value
+              if (rel.type === 'manyToMany') {
+                // https://stackoverflow.com/questions/14869041/sql-query-on-multiple-tables-one-being-a-junction-table
+              } else {
+                const { table2, table2Id, table2Text, table1Id } = rel
+                query = query.join(table2, table.name + '.' + table1Id, '=', table2 + '.' + table2Id) // handles joins...
+                const joinCol = table1Id + '_' + table2Text
+                joinCols[table1Id] = joinCol
+                columns = [...columns, table2 + '.' + table2Text + ' as ' + joinCol] // add a join colomn
+                // columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id]  
+              }
+            }
           }
         }
+  
         rows = await query.clone().column(...columns).orderBy(sorter).limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
         rows = rows.map((row) => kvDb2Col(row, joinCols))
       }
@@ -288,14 +300,39 @@ module.exports = express.Router()
   
       const joinCols = {}
       for (let key in table.cols) {
-        const rel = mapRelation(key, table.cols[key])
-        if (rel) { // if has relation and is key-value
-          const { table2, table2Id, table2Text, table1Id } = rel
-          query = query.join(table2, table.name + '.' + table1Id, '=', table2 + '.' + table2Id) // handles joins...
-          const joinCol = table1Id + '_' + table2Text
-          joinCols[table1Id] = joinCol
-          columns = [...columns, table2 + '.' + table2Text + ' as ' + joinCol] // add a join colomn
-          // columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id]
+        const col = table.cols[key]
+        if (col?.ui?.reference) { // many to many
+          // TBD
+          const rel = col?.ui?.reference
+          const { link, t1, t2, t1id, r2id, refT1id, refT2id } = rel
+          const sql = `SELECT DISTINCT ${t2}.${t2id},${t2}.${t2txt} FROM ${link} JOIN ${t2} ON ${link}.${refT2id} = ${t2}.${t2id} AND ${refT1id}.${refT2id} = 4`
+          // SELECT DISTINCT authors.id,authors.name FROM books_authors JOIN authors on books_authors.authorId = authors.id AND books_authors.bookId = 4
+          // const reference = {
+          //   link: 'books_authors',
+          //   t1: 'books',
+          //   t2: 'authors',
+          //   t1id: 'id',
+          //   t2id: 'id',
+          //   t1txt: 'name',
+          //   t2txt: 'name',
+          //   refT1id: 'bookId',
+          //   refT2id: 'authorId',  
+          // }
+        } else { // 1 to many, 1 to 1
+          const rel = mapRelation(key, table.cols[key])
+          if (rel) { // if has relation and is key-value
+            if (rel.type === 'manyToMany') {
+      
+              // https://stackoverflow.com/questions/14869041/sql-query-on-multiple-tables-one-being-a-junction-table
+            } else {
+              const { table2, table2Id, table2Text, table1Id } = rel
+              query = query.join(table2, table.name + '.' + table1Id, '=', table2 + '.' + table2Id) // handles joins...
+              const joinCol = table1Id + '_' + table2Text
+              joinCols[table1Id] = joinCol
+              columns = [...columns, table2 + '.' + table2Text + ' as ' + joinCol] // add a join colomn
+              // columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id]  
+            }
+          }
         }
       }
 

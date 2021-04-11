@@ -199,7 +199,7 @@ export default {
 
       // create the columns
       table.columns = Object.entries(table.config.cols)
-        .filter(([k,v]) => !v.hide)
+        .filter(([k,v]) => !v.hide && !v?.ui?.reference) // do not include col of reference table, computationally intensive to list out, use when zooming in 1 record
         .map(([k,v]) => {
           const _col = {
             key: k,
