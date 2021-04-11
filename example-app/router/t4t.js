@@ -35,7 +35,6 @@ const processJson = async (req, res, next) => {
 
 // __key is reserved property for identifying row in a multiKey table
 // | is reserved for seperating columns that make the multiKey
-
 async function generateTable (req, res, next) { // TBD get config info from a table
   try {
     const tableKey = req.params.table // 'books' // its the table name also
@@ -90,7 +89,7 @@ function mapRelation (key, col) {
   return null
 }
 
-function kvDb2Col (row) { // a key value from DB to column
+function kvDb2Col (row, joinCols) { // a key value from DB to column
   for (let k in joinCols) {
     const v = joinCols[k]
     row[k] = { key: row[k], text: row[v] }
@@ -99,8 +98,15 @@ function kvDb2Col (row) { // a key value from DB to column
   return row
 }
 
-function kvCol2Db (key, col) { // a key value from column to DB
-
+function kvCol2Db (table, data) { // a key value from column to DB
+  for (let key in data) {
+    const col = table.cols[key]
+    if (col?.ui?.writeType) {
+      data[key] = data[key][col.ui.writeType]
+    }
+  }
+  // categoryId: {key: 3, text: "cat3"}
+  return data
 }
 
 
@@ -152,9 +158,6 @@ module.exports = express.Router()
         const maxPage = Math.ceil(rv.total / limit)
         if (page > maxPage) page = maxPage
 
-        // create & update use Id
-        // findOne needs join also
-        // handle mapping tables only in findOne
         const joinCols = {}
         for (let key in table.cols) {
           const rel = mapRelation(key, table.cols[key])
@@ -168,7 +171,7 @@ module.exports = express.Router()
           }
         }
         rows = await query.clone().column(...columns).orderBy(sorter).limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
-        rows = rows.map(kvDb2Col)
+        rows = rows.map((row) => kvDb2Col(row, joinCols))
       }
     } else { // mongo
       // TBD Joins for MongoDB
@@ -283,9 +286,6 @@ module.exports = express.Router()
   
       let query = knex(table.name).where(where)
   
-      // TBD transform to key text
-      // TBD transform key text to key in patch and post
-      // TBD deal with multiple, repeat, tag-limit, allow-custom-tag
       const joinCols = {}
       for (let key in table.cols) {
         const rel = mapRelation(key, table.cols[key])
@@ -300,6 +300,7 @@ module.exports = express.Router()
       }
 
       rv = await query.column(...columns).first()
+      rv = kvDb2Col(rv, joinCols)
     } else { // mongodb
       rv = await mongo.db.collection(table.name).findOne(where) // { _id: new ObjectID(id) }
     }    
@@ -320,6 +321,7 @@ module.exports = express.Router()
       }
 
       const col = table.cols[key]
+      if (col?.ui?.writeType) body[key] = body[key][col.ui.writeType] // select a value from object
       if (col.auto && col.auto === 'user') {
         body[key] = 'TBD USER ID'
       } else if (col.auto && col.auto === 'ts') {
@@ -358,6 +360,7 @@ module.exports = express.Router()
       }
 
       const col = table.cols[key]
+      if (col?.ui?.writeType) body[key] = body[key][col.ui.writeType] // select a value from object
       if (col.auto && col.auto === 'user') {
         body[key] = 'TBD USER ID'
       } else if (col.auto && col.auto === 'ts') {

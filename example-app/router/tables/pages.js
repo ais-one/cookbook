@@ -43,6 +43,7 @@ module.exports = {
       ui: {
         tag: 'bwc-combobox', // input
         valueType: 'text',
+        writeType: 'key',
       }
     },
     created_at: {

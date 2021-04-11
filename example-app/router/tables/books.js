@@ -72,6 +72,7 @@ module.exports = {
       ui: {
         tag: 'bwc-combobox',
         valueType: 'text', //  either key or text
+        writeType: 'key', //  either key or text
       }
     },
     // authors: { //  this one data is from join table
@@ -91,8 +92,8 @@ module.exports = {
     //   },
     //   ui: {
     //     tag: 'bwc-combobox',
-    //     valueType: 'name',
-    //     valueKey: 'id',
+    //     valueType: 'text',
+    //     writeType: 'key',
     //     attrs: {
     //       multiple: true,
     //       tagLimit: 8
