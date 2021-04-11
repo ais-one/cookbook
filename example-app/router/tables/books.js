@@ -71,8 +71,11 @@ module.exports = {
       },
       ui: {
         tag: 'bwc-combobox',
-        valueType: 'string',
-        valueKey: 'id'
+        refVal: 'categoryId_name',
+        // valueType: 'string',
+        // valueKey: 'id',
+        'object-key': 'id',
+        'object-text': 'name',
       }
     },
     // authors: { //  this one data is from join table

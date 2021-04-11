@@ -157,7 +157,7 @@ class BwcCombobox extends HTMLElement {
       }
     }
 
-    console.log('combo box connected', this.required, this.disabled, this.inputClass)
+    // console.log('combo box connected', this.required, this.disabled, this.inputClass)
     this.#elInput.value = this.value
     this.#elInput.className = this.inputClass || 'input' // default to bulma - // if (this.hasAttribute('input-class')) el.setAttribute('class', this.getAttribute('input-class'))
     this.required ? this.#elInput.setAttribute('required', '') : this.#elInput.removeAttribute('required')

@@ -21,6 +21,10 @@ git remote add neworigin https://github.com/user/repo.git
 git remote rm someorigin
 git reset --hard
 git commit -am "some message"
+
+# remove file or folder from tracking
+git rm --cached <file>
+git rm -r --cached <folder>
 ```
 
 ### clone git repo without history

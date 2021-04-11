@@ -18,6 +18,7 @@ const { Parser } = require('json2csv')
 
 // const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
 const { memoryUpload, storageUpload } = require('../common-express/upload')
+const { cols } = require('./tables/books')
 const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 
 const processJson = async (req, res, next) => {
@@ -62,31 +63,51 @@ async function generateTable (req, res, next) { // TBD get config info from a ta
 }
 
 function formUniqueKey(table, args) {
-  if (table.pk) return table.db === 'knex' ? { [table.pk]: args } : { _id: new ObjectID(args) } // return for pk
+  if (table.pk) return table.db === 'knex' ? { [table.name + '.' + table.pk]: args } : { _id: new ObjectID(args) } // return for pk
   const where = {} // return for multiKey
-
-  const key_a = args.split('|')
-  let  i = 0
-
-  for (let col of table.multiKey) {
-    if (key_a[i]) {
-      where[col] = key_a[i]
-      i++
-    }
-    // if (args[col]) where[col] = args[col]
-    else return null
+  const val_a = args.split('|')
+  if (val_a.length !== table.multiKey.length) return null
+  for (let i=0; i<val_a.length; i++) {
+    if (!val_a[i]) return null
+    const key = table.multiKey[i]
+    where[table.db === 'knex' ? table.name + '.' + key : key] = val_a[i]
   }
-
   return (Object.keys(where).length) ? where : null
+}
+
+function mapRelation (key, col) {
+  if (col?.ui?.tag !== 'bwc-combobox') return null
+  if (col?.ui?.attrs?.multiple) return null // temp do not handle for now 
+  if (col?.ui?.tag) {
+    if (col?.ui?.attrs?.multiple) {
+    } else {
+      const table2 = col?.options?.tableName
+      const table2Id = col?.options?.key
+      const table1Id = key
+      const table2Text = col?.options?.text  
+      if (table2 && table2Id && table2Text && table1Id) return { table2, table2Id, table2Text, table1Id }
+    }
+  } else {
+
+  }
+  return null
+}
+
+function kvCol2Db (key, col) { // a key value column to DB
+
+}
+
+function kvDb2Col (key, col) { // a key value DB to column
+
 }
 
 module.exports = express.Router()
   .get('/test', (req, res) => res.send('t4t ok'))
 
-  .get('/config/:table', generateTable, asyncWrapper(async (req, res) => {
+  .get('/config/:table', authUser, generateTable, asyncWrapper(async (req, res) => {
     res.json(req.table) // return the table info...
   }))
-  .get('/find/:table', generateTable, asyncWrapper(async (req, res) => { // page is 1 based
+  .get('/find/:table', authUser, generateTable, asyncWrapper(async (req, res) => { // page is 1 based
     const { table } = req
     let { page = 1, limit = 25, filters = null, sorter = null, csv = '' } = req.query
     page = parseInt(page) // 1-based
@@ -102,7 +123,14 @@ module.exports = express.Router()
     let sort = []
 
     if (table.db === 'knex') {
-      query = knex(table.name).where({})
+      let columns = [`${table.name}.*`]
+      if (table.select) columns = table.select.split(',') // custom columns... TBD need to add table name?
+
+      query = knex(table.name)
+      query = query.where({})
+
+      // query = knex(table.name).where({})
+      // TBD handle filters for joins...
       let prevFilter = {}
       if (filters && filters.length) for (let filter of filters) {
         const key = filter.key
@@ -120,9 +148,40 @@ module.exports = express.Router()
         rv.total = Object.values(total[0])[0]
         const maxPage = Math.ceil(rv.total / limit)
         if (page > maxPage) page = maxPage
-        rows = await query.clone().orderBy(sorter).limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
+
+        // create & update use Id
+        // findOne needs join also
+        // handle mapping tables only in findOne
+        for (let key in table.cols) {
+          const rel = mapRelation(key, table.cols[key])
+          if (rel) { // if has relation
+            const { table2, table2Id, table2Text, table1Id } = rel
+            query = query.join(table2, table.name + '.' + table1Id, '=', table2 + '.' + table2Id) // handles joins...
+            columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id + '_' + table2Text]
+            // columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id]
+          }
+        }
+        rows = await query.clone().column(...columns).orderBy(sorter).limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
+        // console.log('rows', rows)
       }
     } else { // mongo
+      // TBD Joins for MongoDB
+      //   db.orders.aggregate([
+      //     { $match: { <query> } },
+      //     { $skip: <positive integer> },
+      //     { $limit: <positive integer> },
+      //     {
+      //        $lookup: {
+      //           from: "items",
+      //           localField: "item",    // field in the orders collection
+      //           foreignField: "item",  // field in the items collection
+      //           as: "fromItems"
+      //        }
+      //     },
+      //     { $sort: { <field1>: <sort order>, <field2>: <sort order> ... } },
+      //     // { $project: { fromItems: 0 } }
+      //  ])
+
       sort = sorter && sorter.length ? [ [sorter[0].column, sorter[0].order === 'asc' ? 1 : -1] ] : []
       const or = [] // { "$or" : [] }
       const and = [] // { "$and" : [] }
@@ -207,20 +266,41 @@ module.exports = express.Router()
     res.json(rows)
   }))
 
-  .get('/find-one/:table', generateTable, asyncWrapper(async (req, res) => {
+  .get('/find-one/:table', authUser, generateTable, asyncWrapper(async (req, res) => {
     const { table } = req
     const where = formUniqueKey(table, req.query.__key)
     if (!where) return res.status(400).json({}) // bad request
     let rv = {}
     if (table.db === 'knex') {
-      rv = await knex(table.name).where(where).first()
+      let columns = [`${table.name}.*`]
+      if (table.select) columns = table.select.split(',') // custom columns... TBD need to add table name?
+  
+      let query = knex(table.name).where(where)
+  
+      // TBD transform to key text
+      // TBD transform key text to key in patch and post
+      // TBD deal with multiple, repeat, tag-limit, allow-custom-tag
+      for (let key in table.cols) {
+        const col = table.cols[key]
+        const table2 = col?.options?.tableName
+        const table2Id = col?.options?.key
+        const table1Id = key
+        const table2Text = col?.options?.text
+        if (col?.ui?.tag === 'bwc-combobox' && !col?.ui?.attrs?.multiple && table2 && table2Id && table2Text && table1Id) {
+          query = query.join(table2, table.name + '.' + table1Id, '=', table2 + '.' + table2Id) // handles joins...
+          columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id + '_' + table2Text]
+          // columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id]
+        }
+      }
+      query = query.column(...columns)
+      rv = await query.first()
     } else { // mongodb
       rv = await mongo.db.collection(table.name).findOne(where) // { _id: new ObjectID(id) }
     }    
-    return res.json(rv)
+    return res.json(rv)  
   }))
 
-  .patch('/update/:table/:id?', generateTable, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), processJson, asyncWrapper(async (req, res) => {
+  .patch('/update/:table/:id?', authUser, generateTable, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), processJson, asyncWrapper(async (req, res) => {
     const { body, table } = req
     const where = formUniqueKey(table, req.query.__key)
     let count = 0
@@ -234,12 +314,16 @@ module.exports = express.Router()
       }
 
       const col = table.cols[key]
-      if (col.auto && col.auto === 'user') body[key] = 'TBD USER ID'
-      if (col.auto && col.auto === 'ts') body[key] = new Date()
-      // TRANSFORM INPUT
-      body[key] = table.cols[key].type === 'integer' || table.cols[key].type === 'number' ? Number(body[key])
-      : table.cols[key].type === 'datetime' || table.cols[key].type === 'date' || table.cols[key].type === 'time' ? (body[key] ? new Date(body[key]) : null)
-      : body[key]
+      if (col.auto && col.auto === 'user') {
+        body[key] = 'TBD USER ID'
+      } else if (col.auto && col.auto === 'ts') {
+        body[key] = (new Date()).toISOString()
+      } else {
+        // TRANSFORM INPUT
+        body[key] = table.cols[key].type === 'integer' || table.cols[key].type === 'number' ? Number(body[key])
+        : table.cols[key].type === 'datetime' || table.cols[key].type === 'date' || table.cols[key].type === 'time' ? (body[key] ? new Date(body[key]) : null)
+        : body[key]
+      }
     }
 
     if (table.db === 'knex') {
@@ -258,7 +342,7 @@ module.exports = express.Router()
     return res.json({count})
   }))
 
-  .post('/create/:table', generateTable, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), processJson, asyncWrapper(async (req, res) => {
+  .post('/create/:table', authUser, generateTable, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), processJson, asyncWrapper(async (req, res) => {
     const { table, body } = req
     for (let key in table.cols) {
       const { rules, type } = table.cols[key]
@@ -268,13 +352,17 @@ module.exports = express.Router()
       }
 
       const col = table.cols[key]
-      if (col.auto && col.auto === 'user') body[key] = 'TBD USER ID'
-      if (col.auto && col.auto === 'ts') body[key] = new Date()
+      if (col.auto && col.auto === 'user') {
+        body[key] = 'TBD USER ID'
+      } else if (col.auto && col.auto === 'ts') {
+        body[key] = (new Date()).toISOString()
+      } else {
+        // TRANSFORM INPUT
+        body[key] = table.cols[key].type === 'integer' || table.cols[key].type === 'number' ? Number(body[key])
+        : table.cols[key].type === 'datetime' || table.cols[key].type === 'date' || table.cols[key].type === 'time' ? (body[key] ? new Date(body[key]) : null)
+        : body[key]
+      }
       if (col.auto && col.auto === 'pk' && key in body) delete body[key]
-      // TRANSFORM INPUT
-      body[key] = table.cols[key].type === 'integer' || table.cols[key].type === 'number' ? Number(body[key])
-      : table.cols[key].type === 'datetime' || table.cols[key].type === 'date' || table.cols[key].type === 'time' ? (body[key] ? new Date(body[key]) : null)
-      : body[key]
     }
 
     let rv = 0
@@ -288,7 +376,7 @@ module.exports = express.Router()
     return res.status(201).json(rv)
   }))
 
-  .post('/remove/:table', generateTable, asyncWrapper(async (req, res) => {
+  .post('/remove/:table', authUser, generateTable, asyncWrapper(async (req, res) => {
     const { table } = req
     const { ids } = req.body
     if (ids.length > 1000) return res.status(400).json({ error: 'Select up to 1000 items' })
@@ -341,7 +429,7 @@ for {
 // code,name
 // zzz,1234
 // ddd,5678
-  .post('/upload/:table', generateTable, memoryUpload(UPLOAD_MEMORY).single('csv-file'), async (req, res) => { // do not use asyncWrapper
+  .post('/upload/:table', authUser, generateTable, memoryUpload(UPLOAD_MEMORY).single('csv-file'), async (req, res) => { // do not use asyncWrapper
     const { table } = req
     const csv = req.file.buffer.toString('utf-8')
     const output = []
@@ -350,13 +438,11 @@ for {
     let currLine = 0
     // console.log('up0', csv)
     csvParse(csv)
-      .on('error', (e) => {
-        console.log(e.message)
-      })
+      .on('error', (e) => console.log(e.message))
       .on('readable', function () {
         let record
         while ( (record = this.read()) ) {
-          console.log('record', record)
+          // console.log('record', record)
           currLine++
           if (currLine === 1) {
             keys = [...record]
@@ -402,7 +488,6 @@ for {
         return res.status(200).json({ errorCount: errors.length, errors })
       })
   })
-
 
   // delete file
   // export async function deleteFile(filePath) {

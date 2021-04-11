@@ -9,7 +9,7 @@ exports.open = () => {
     const address = JOB_MONGO_URL || MONGO_URL
     const jobTypes = JOB_TYPES ? JOB_TYPES.split(',') : []
     if (jobTypes.length && address && JOB_COLLECTION) {
-      const Agenda = require('agenda')
+      const { Agenda } = require('agenda')
       const connectionOpts = { // mongodb options
         db: {
           address,

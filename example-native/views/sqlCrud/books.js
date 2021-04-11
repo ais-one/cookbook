@@ -216,9 +216,11 @@ export default {
                 tableId: v.link.tableId,
                 id: row[v.link.linkId]
               }
-              const output = `<a class='button' onclick='this.dispatchEvent(new CustomEvent("bookslinkevent", { detail: ${JSON.stringify(payload)} }))'>${val}</a>`
+              const output = `<a class='button is-small' onclick='this.dispatchEvent(new CustomEvent("bookslinkevent", { detail: ${JSON.stringify(payload)} }))'>${val}</a>`
               return output
             }
+          } else if (v?.ui?.refVal) {
+            _col.render = ({val, key, row, idx}) => row[v.ui.refVal]
           }
           return _col
         })
