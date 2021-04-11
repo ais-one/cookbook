@@ -91,7 +91,12 @@ function mapRelation (key, col) {
 }
 
 function kvDb2Col (row) { // a key value from DB to column
-
+  for (let k in joinCols) {
+    const v = joinCols[k]
+    row[k] = { key: row[k], text: row[v] }
+    delete row[v]
+  }
+  return row
 }
 
 function kvCol2Db (key, col) { // a key value from column to DB
@@ -163,14 +168,7 @@ module.exports = express.Router()
           }
         }
         rows = await query.clone().column(...columns).orderBy(sorter).limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
-        rows = rows.map(row => {
-          for (let k in joinCols) {
-            const v = joinCols[k]
-            row[k] = { key: row[k], text: row[v] }
-            delete row[v]
-          }
-          return row
-        })
+        rows = rows.map(kvDb2Col)
       }
     } else { // mongo
       // TBD Joins for MongoDB
@@ -288,20 +286,20 @@ module.exports = express.Router()
       // TBD transform to key text
       // TBD transform key text to key in patch and post
       // TBD deal with multiple, repeat, tag-limit, allow-custom-tag
+      const joinCols = {}
       for (let key in table.cols) {
-        const col = table.cols[key]
-        const table2 = col?.options?.tableName
-        const table2Id = col?.options?.key
-        const table1Id = key
-        const table2Text = col?.options?.text
-        if (col?.ui?.tag === 'bwc-combobox' && !col?.ui?.attrs?.multiple && table2 && table2Id && table2Text && table1Id) {
+        const rel = mapRelation(key, table.cols[key])
+        if (rel) { // if has relation and is key-value
+          const { table2, table2Id, table2Text, table1Id } = rel
           query = query.join(table2, table.name + '.' + table1Id, '=', table2 + '.' + table2Id) // handles joins...
-          columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id + '_' + table2Text]
+          const joinCol = table1Id + '_' + table2Text
+          joinCols[table1Id] = joinCol
+          columns = [...columns, table2 + '.' + table2Text + ' as ' + joinCol] // add a join colomn
           // columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id]
         }
       }
-      query = query.column(...columns)
-      rv = await query.first()
+
+      rv = await query.column(...columns).first()
     } else { // mongodb
       rv = await mongo.db.collection(table.name).findOne(where) // { _id: new ObjectID(id) }
     }    
