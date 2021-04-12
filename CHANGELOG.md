@@ -11,6 +11,13 @@
   - handle one-to-one/one-to-many relation
   - back button at child table
   - handle reference tables (many to many) [TODO]
+    - read [Done]
+    - create
+    - update
+  - search filter [TODO]
+    - m/n
+    - 1/1 or 1/m
+  - testing [TODO]
   - clean up repeated table code [TODO]
 
 ### Version 0.4.8

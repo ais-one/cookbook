@@ -98,6 +98,8 @@ module.exports = {
           t2: 'authors',
           t1id: 'id',
           t2id: 'id',
+          t1txt: 'name',
+          t2txt: 'name',
           refT1id: 'bookId',
           refT2id: 'authorId',  
         },

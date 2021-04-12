@@ -91,11 +91,15 @@ function mapRelation (key, col) {
   return null
 }
 
-function kvDb2Col (row, joinCols) { // a key value from DB to column
+function kvDb2Col (row, joinCols, linkCols) { // a key value from DB to column
   for (let k in joinCols) {
     const v = joinCols[k]
     row[k] = { key: row[k], text: row[v] }
     delete row[v]
+  }
+  for (let k in linkCols) {
+    console.log(linkCols[k])
+    row[k] = linkCols[k]
   }
   return row
 }
@@ -299,30 +303,21 @@ module.exports = express.Router()
       let query = knex(table.name).where(where)
   
       const joinCols = {}
+      const linkCols = {}
       for (let key in table.cols) {
         const col = table.cols[key]
         if (col?.ui?.reference) { // many to many
           // TBD
           const rel = col?.ui?.reference
-          const { link, t1, t2, t1id, r2id, refT1id, refT2id } = rel
-          const sql = `SELECT DISTINCT ${t2}.${t2id},${t2}.${t2txt} FROM ${link} JOIN ${t2} ON ${link}.${refT2id} = ${t2}.${t2id} AND ${refT1id}.${refT2id} = 4`
+          const { link, t1, t2, t1id, t2id, t2txt, refT1id, refT2id } = rel
+          const sql = `SELECT DISTINCT ${t2}.${t2id},${t2}.${t2txt} FROM ${link} JOIN ${t2} ON ${link}.${refT2id} = ${t2}.${t2id} AND ${link}.${refT1id} = 11` // + req.query.__key
           // SELECT DISTINCT authors.id,authors.name FROM books_authors JOIN authors on books_authors.authorId = authors.id AND books_authors.bookId = 4
-          // const reference = {
-          //   link: 'books_authors',
-          //   t1: 'books',
-          //   t2: 'authors',
-          //   t1id: 'id',
-          //   t2id: 'id',
-          //   t1txt: 'name',
-          //   t2txt: 'name',
-          //   refT1id: 'bookId',
-          //   refT2id: 'authorId',  
-          // }
+          const links = await knex.raw(sql)
+          linkCols[key] = links.map(item => ({ key: item[t2id], text: item[t2txt] }))
         } else { // 1 to many, 1 to 1
           const rel = mapRelation(key, table.cols[key])
           if (rel) { // if has relation and is key-value
             if (rel.type === 'manyToMany') {
-      
               // https://stackoverflow.com/questions/14869041/sql-query-on-multiple-tables-one-being-a-junction-table
             } else {
               const { table2, table2Id, table2Text, table1Id } = rel
@@ -337,7 +332,7 @@ module.exports = express.Router()
       }
 
       rv = await query.column(...columns).first()
-      rv = kvDb2Col(rv, joinCols)
+      rv = kvDb2Col(rv, joinCols, linkCols)
     } else { // mongodb
       rv = await mongo.db.collection(table.name).findOne(where) // { _id: new ObjectID(id) }
     }    
