@@ -310,7 +310,7 @@ module.exports = express.Router()
           // TBD
           const rel = col?.ui?.reference
           const { link, t1, t2, t1id, t2id, t2txt, refT1id, refT2id } = rel
-          const sql = `SELECT DISTINCT ${t2}.${t2id},${t2}.${t2txt} FROM ${link} JOIN ${t2} ON ${link}.${refT2id} = ${t2}.${t2id} AND ${link}.${refT1id} = 11` // + req.query.__key
+          const sql = `SELECT DISTINCT ${t2}.${t2id},${t2}.${t2txt} FROM ${link} JOIN ${t2} ON ${link}.${refT2id} = ${t2}.${t2id} AND ${link}.${refT1id} = ` + req.query.__key
           // SELECT DISTINCT authors.id,authors.name FROM books_authors JOIN authors on books_authors.authorId = authors.id AND books_authors.bookId = 4
           const links = await knex.raw(sql)
           linkCols[key] = links.map(item => ({ key: item[t2id], text: item[t2txt] }))
