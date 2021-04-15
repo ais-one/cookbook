@@ -21,7 +21,7 @@
   "dependencies": {
     "@es-labs/esm": "file:../@es-labs/esm",
     "@es-labs/node": "file:../@es-labs/node",
-    "apollo-server-express": "^2.22.2",
+    "apollo-server-express": "^2.23.0",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "connect-history-api-fallback": "^1.6.0",
@@ -34,7 +34,7 @@
     "express-oas-generator": "^1.0.33",
     "graphql": "^15.5.0",
     "helmet": "^4.4.1",
-    "http-proxy-middleware": "^1.1.1",
+    "http-proxy-middleware": "^1.1.2",
     "json2csv": "^5.0.6",
     "kafkajs": "^1.15.0",
     "morgan": "^1.10.0",

@@ -364,10 +364,14 @@ module.exports = express.Router()
         : table.cols[key].type === 'datetime' || table.cols[key].type === 'date' || table.cols[key].type === 'time' ? (body[key] ? new Date(body[key]) : null)
         : body[key]
       }
+      if (col?.ui?.reference) { // TBD check for junction/ink table column
+      }
     }
 
     if (table.db === 'knex') {
       count = await knex(table.name).update(body).where(where)
+      // TBD update the junction/link tables (also for create?)
+      // await knex(link).whereIn('id', ids).delete()
       if (!count) {
         // do insert ?
       }

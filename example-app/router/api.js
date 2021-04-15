@@ -3,6 +3,7 @@ const express = require('express')
 const { spawn } = require('child_process')
 const axios = require('axios')
 
+const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
 const bull = require('@es-labs/node/services/mq/bull').get() // bull message queue
 const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
@@ -141,3 +142,16 @@ module.exports = express.Router()
     }
   }))
 
+  // stream back data
+  .get('/stream', async function (req, res, next) {
+    res.writeHead(200, { 'Content-Type': 'text/plain', 'Transfer-Encoding': 'chunked' })
+    const chunks = 5
+    let count = 1
+    while (count <= chunks) {
+      console.log('streaming', count)
+      await sleep(1000)
+      res.write(JSON.stringify({ type: "stream", chunk: count++ })+'\n')
+    }  
+    res.end()
+    // next()
+  })
