@@ -364,12 +364,19 @@ module.exports = express.Router()
         : body[key]
       }
       if (col?.ui?.junction) { // TBD check for junction/link table column
-        console.log('vvvvv', key, col?.ui?.junction, body[key]) // [ { key: 1, text: 'author1' }, { key: 2, text: 'author2' } ]
-        // TBD update the junction/link tables (also for create?)
-        // await knex(link).whereIn('id', ids).delete()
+        console.log('vvvvv', key, req.query.__key, col?.ui?.junction, body[key]) // [ { key: 1, text: 'author1' }, { key: 2, text: 'author2' } ]
+        const _id = req.query.__key
+        const { link,refT1id, refT2id } = col.ui.junction
+        const ids = body[key].map(item => ({
+          [refT1id]: _id,
+          [refT2id]: item.key
+        }))
+        await knex(link).where(refT1id, _id).delete() // test if all authors removed
+        await knex(link).insert(ids)
+        delete body[key] // also remove this column from the body...
       }
     }
-    return res.json({ count: 1 })
+    // return res.json({ count: 1 })
 
     if (table.db === 'knex') {
       count = await knex(table.name).update(body).where(where)

@@ -113,7 +113,9 @@ export default {
           }
         }
       } catch (e) {
-        alert(`Error ${mode.value} ${e.toString()}`)
+        console.log(e)
+        const msg = e?.data?.message
+        alert(`Error ${mode.value} ${msg || e.toString()}`)
       }
       // loading.value = false
       mode.value = ''
