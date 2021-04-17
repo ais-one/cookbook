@@ -27,7 +27,7 @@
     "connect-history-api-fallback": "^1.6.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
-    "csv-parse": "^4.15.3",
+    "csv-parse": "^4.15.4",
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-json-validator-middleware": "^2.1.1",

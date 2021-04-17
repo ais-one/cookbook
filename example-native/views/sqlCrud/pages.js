@@ -12,7 +12,7 @@ const template = /*html*/`
   ></bwc-t4t-form>
   <bwc-table
     v-else
-    commands="reload,filter,add,del,import,export,goback"
+    :commands="commands"
     :pagination="true"
     :sort="true"
     :page="page"
@@ -24,6 +24,7 @@ const template = /*html*/`
     @rowclick="rowClick"
     @checked="checked"
     @triggered="triggered"
+    @linkevent.capture="linkEvent"
     @cmd="cmd"
     style="--bwc-table-height: calc(100vh - 160px);--bwc-table-width: 100%;"
     class="sticky-header sticky-column"
@@ -32,7 +33,7 @@ const template = /*html*/`
 `
 
 import * as t4t from '/esm/t4t-fe.js'
-import { downloadData } from '/esm/util.js'
+import { downloadData, emptyObject } from '/esm/util.js'
 
 const { onMounted, ref, reactive } = Vue
 const { useRoute, useRouter } = VueRouter
@@ -48,6 +49,9 @@ export default {
     // reactive
     const mode = ref('')
     const page = ref(1)
+    let _commands = 'reload,filter,add,del,import,export'
+    if (!emptyObject(route.query)) _commands += ',goback'
+    const commands = ref(_commands)
     const pageSize = ref(10)
     const table = reactive({
       config: {},
@@ -144,9 +148,7 @@ export default {
     }
 
     // events
-    const checked = (e) => {
-      console.log('checked', e.detail)
-    }
+    const checked = (e) => console.log('checked', e.detail)
     const triggered = async (e) => {
       // TBD if (name === 'page-size') ...
       console.log('triggered', e.detail)
@@ -182,17 +184,22 @@ export default {
       }
     }
 
+    const linkEvent = async (e) => {
+      const to = `${e.detail.path}/${e.detail.table}`
+      router.push({ path: to, query: { col: e.detail.tableId, id: e.detail.id } })
+      // console.log('linkEvent', e.detail)
+    }
+
     onMounted(async () => {
-      console.log('pages mounted!')
       t4t.setTableName(tableName)
-      if (route.query) t4t.setParentFilter(route.query)
+      if (!emptyObject(route.query)) t4t.setParentFilter(route.query)
       table.config = await t4t.getConfig()
 
       // create the columns
       table.columns = Object.entries(table.config.cols)
         .filter(([k,v]) => !v.hide)
         .map(([k,v]) => {
-          return {
+          const _col = {
             key: k,
             label: v.label,
             filter: v.filter || false,
@@ -200,6 +207,18 @@ export default {
             // width
             // How to handle render function?
           }
+          if (v.link) {
+            _col.render = ({val, key, row, idx}) => {
+              const payload = {
+                table: v.link.table, tableId: v.link.tableId, id: row[v.link.linkId], path: v.link.path
+              }
+              const output = `<a class='button is-small' onclick='this.dispatchEvent(new CustomEvent("linkevent", { detail: ${JSON.stringify(payload)} }))'>${val}</a>`
+              return output
+            }
+          } else if (v?.ui?.valueType) {
+            _col.render = ({val, key, row, idx}) => val[v.ui.valueType]
+          }
+          return _col
         })
 
       // get initial data...
@@ -208,9 +227,10 @@ export default {
     return {
       // reactive / ref
       mode,
+      commands,
+      page,
       table,
       form,
-      page,
       pageSize,
       pageSizeList,
       // methods
@@ -222,6 +242,7 @@ export default {
       checked,
       triggered,
       cmd,
+      linkEvent,
     }
   }
 }

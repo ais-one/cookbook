@@ -10,7 +10,7 @@
   - child table
   - handle one-to-one/one-to-many relation
   - back button at child table
-  - handle reference tables (many to many) [TODO]
+  - handle junction tables (many to many) [TODO]
     - read [Done]
     - create
     - update

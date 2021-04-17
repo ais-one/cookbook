@@ -62,6 +62,7 @@ const base64toUtf8 = (str) => Buffer.from(str, 'base64').toString('utf8')
 
 const foo = Math.PI + Math.SQRT2
 
+// https://www.samanthaming.com/tidbits/94-how-to-check-if-object-is-empty/
 const emptyObject = value => value && Object.keys(value).length === 0 && value.constructor === Object // check if object is empty, also false if not object
 
-export { foo, downloadData, debounce, throttle, isEmail, obj2Qs }
+export { foo, downloadData, debounce, throttle, isEmail, obj2Qs, emptyObject }

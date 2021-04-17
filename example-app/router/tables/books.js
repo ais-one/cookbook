@@ -17,7 +17,8 @@ module.exports = {
       link: {
         table: 'pages',
         tableId: 'bookId',
-        linkId: 'id', //  this column  
+        linkId: 'id', //  this column
+        path: '/sql-crud' // ui route
       }
     },
     name: {
@@ -92,7 +93,7 @@ module.exports = {
       },
       ui: {
         tag: 'bwc-combobox',
-        reference: {
+        junction: {
           link: 'books_authors',
           t1: 'books',
           t2: 'authors',

@@ -13,7 +13,7 @@ const template = /*html*/`
   ></bwc-t4t-form>
   <bwc-table
     v-else
-    commands="reload,filter,add,del,import,export"
+    :commands="commands"
     :pagination="true"
     :sort="true"
     :page="page"
@@ -25,7 +25,7 @@ const template = /*html*/`
     @rowclick="rowClick"
     @checked="checked"
     @triggered="triggered"
-    @bookslinkevent.capture="linkEvent"
+    @linkevent.capture="linkEvent"
     @cmd="cmd"
     style="--bwc-table-height: calc(100vh - 160px);--bwc-table-width: 100%;"
     class="sticky-header sticky-column"
@@ -34,20 +34,24 @@ const template = /*html*/`
 `
 
 import * as t4t from '/esm/t4t-fe.js'
-import { downloadData } from '/esm/util.js'
+import { downloadData, emptyObject } from '/esm/util.js'
 
 const { onMounted, ref, reactive } = Vue
-const { useRouter } = VueRouter
+const { useRoute, useRouter } = VueRouter
 
 const tableName = 'books'
 
 export default {
   template,
   setup() {
+    const route = useRoute()
     const router = useRouter()
     // reactive
     const mode = ref('')
     const page = ref(1)
+    let _commands = 'reload,filter,add,del,import,export'
+    if (!emptyObject(route.query)) _commands += ',goback'
+    const commands = ref(_commands)
     const pageSize = ref(10)
     const table = reactive({
       config: {},
@@ -149,9 +153,7 @@ export default {
     }
 
     // events
-    const checked = (e) => {
-      console.log('checked', e.detail)
-    }
+    const checked = (e) => console.log('checked', e.detail)
     const triggered = async (e) => {
       // TBD if (name === 'page-size') ...
       console.log('triggered', e.detail)
@@ -179,6 +181,8 @@ export default {
           // TBD const _filters = keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters
           const data = await t4t.download(filters, sorter)
           if (data) downloadData(data.csv, tableName + '.csv', 'text/csv;charset=utf-8;')
+        } else if (e.detail.cmd === 'goback') {
+          router.back()
         }
       } catch (e) {        
         console.log('error cmd', e.toString())
@@ -186,20 +190,20 @@ export default {
     }
 
     const linkEvent = async (e) => {
-      const to = `/sql-crud/${e.detail.table}`
+      const to = `${e.detail.path}/${e.detail.table}`
       router.push({ path: to, query: { col: e.detail.tableId, id: e.detail.id } })
       // console.log('linkEvent', e.detail)
     }
 
     // lifecycle
     onMounted(async () => {
-      console.log('ui4 mounted!')
-      t4t.setTableName(tableName) // country
+      t4t.setTableName(tableName)
+      if (!emptyObject(route.query)) t4t.setParentFilter(route.query)
       table.config = await t4t.getConfig()
 
       // create the columns
       table.columns = Object.entries(table.config.cols)
-        .filter(([k,v]) => !v.hide && !v?.ui?.reference) // do not include col of reference table, computationally intensive to list out, use when zooming in 1 record
+        .filter(([k,v]) => !v.hide && !v?.ui?.junction) // do not include col of junction table, computationally intensive to list out, use when zooming in 1 record
         .map(([k,v]) => {
           const _col = {
             key: k,
@@ -212,11 +216,9 @@ export default {
           if (v.link) {
             _col.render = ({val, key, row, idx}) => {
               const payload = {
-                table: v.link.table,
-                tableId: v.link.tableId,
-                id: row[v.link.linkId]
+                table: v.link.table, tableId: v.link.tableId, id: row[v.link.linkId], path: v.link.path
               }
-              const output = `<a class='button is-small' onclick='this.dispatchEvent(new CustomEvent("bookslinkevent", { detail: ${JSON.stringify(payload)} }))'>${val}</a>`
+              const output = `<a class='button is-small' onclick='this.dispatchEvent(new CustomEvent("linkevent", { detail: ${JSON.stringify(payload)} }))'>${val}</a>`
               return output
             }
           } else if (v?.ui?.valueType) {
@@ -231,6 +233,7 @@ export default {
     return {
       // reactive / ref
       mode,
+      commands,
       table,
       form,
       page,

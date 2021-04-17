@@ -98,7 +98,6 @@ function kvDb2Col (row, joinCols, linkCols) { // a key value from DB to column
     delete row[v]
   }
   for (let k in linkCols) {
-    console.log(linkCols[k])
     row[k] = linkCols[k]
   }
   return row
@@ -167,7 +166,7 @@ module.exports = express.Router()
         const joinCols = {}
         for (let key in table.cols) {
           const col = table.cols[key]
-          if (col?.ui?.reference) { // many to many
+          if (col?.ui?.junction) { // many to many
             // do nothing here 
           } else { // 1 to many, 1 to 1
             const rel = mapRelation(key, table.cols[key])
@@ -306,9 +305,9 @@ module.exports = express.Router()
       const linkCols = {}
       for (let key in table.cols) {
         const col = table.cols[key]
-        if (col?.ui?.reference) { // many to many
+        if (col?.ui?.junction) { // many to many
           // TBD
-          const rel = col?.ui?.reference
+          const rel = col?.ui?.junction
           const { link, t1, t2, t1id, t2id, t2txt, refT1id, refT2id } = rel
           const sql = `SELECT DISTINCT ${t2}.${t2id},${t2}.${t2txt} FROM ${link} JOIN ${t2} ON ${link}.${refT2id} = ${t2}.${t2id} AND ${link}.${refT1id} = ` + req.query.__key
           // SELECT DISTINCT authors.id,authors.name FROM books_authors JOIN authors on books_authors.authorId = authors.id AND books_authors.bookId = 4
@@ -364,14 +363,16 @@ module.exports = express.Router()
         : table.cols[key].type === 'datetime' || table.cols[key].type === 'date' || table.cols[key].type === 'time' ? (body[key] ? new Date(body[key]) : null)
         : body[key]
       }
-      if (col?.ui?.reference) { // TBD check for junction/ink table column
+      if (col?.ui?.junction) { // TBD check for junction/link table column
+        console.log('vvvvv', key, col?.ui?.junction, body[key]) // [ { key: 1, text: 'author1' }, { key: 2, text: 'author2' } ]
+        // TBD update the junction/link tables (also for create?)
+        // await knex(link).whereIn('id', ids).delete()
       }
     }
+    return res.json({ count: 1 })
 
     if (table.db === 'knex') {
       count = await knex(table.name).update(body).where(where)
-      // TBD update the junction/link tables (also for create?)
-      // await knex(link).whereIn('id', ids).delete()
       if (!count) {
         // do insert ?
       }
