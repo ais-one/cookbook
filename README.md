@@ -11,6 +11,7 @@
 Latest Version [0.5.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.0) - Released 2021 Mar 31 1220 +8GMT
 
 - improvements on auth
+- include crud example from example-webpack to example-native
 
 # Features
 

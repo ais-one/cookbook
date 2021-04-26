@@ -344,6 +344,8 @@ module.exports = express.Router()
     let count = 0
     if (!where) return res.status(400).json({}) // bad request
 
+    const links = []
+
     for (let key in table.cols) { // add in auto fields
       const { rules, type } = table.cols[key]
       if (rules) {
@@ -363,23 +365,25 @@ module.exports = express.Router()
         : table.cols[key].type === 'datetime' || table.cols[key].type === 'date' || table.cols[key].type === 'time' ? (body[key] ? new Date(body[key]) : null)
         : body[key]
       }
-      if (col?.ui?.junction) { // TBD check for junction/link table column
-        console.log('vvvvv', key, req.query.__key, col?.ui?.junction, body[key]) // [ { key: 1, text: 'author1' }, { key: 2, text: 'author2' } ]
-        const _id = req.query.__key
-        const { link,refT1id, refT2id } = col.ui.junction
-        const ids = body[key].map(item => ({
-          [refT1id]: _id,
-          [refT2id]: item.key
-        }))
-        await knex(link).where(refT1id, _id).delete() // test if all authors removed
-        await knex(link).insert(ids)
+      if (col?.ui?.junction) { // process for junction/link table column
+        const { link, refT1id, refT2id } = col.ui.junction
+        const ids = body[key].map(item => ({ [refT1id]: req.query.__key, [refT2id]: item.key }))
+        links.push({
+          link, ids, refT1id, // === req.query.__key
+        })
         delete body[key] // also remove this column from the body...
       }
     }
     // return res.json({ count: 1 })
 
     if (table.db === 'knex') {
+      // transaction and promise all
       count = await knex(table.name).update(body).where(where)
+      // const promises = []
+      for (let item of links) {
+        await knex(item.link).where(item.refT1id, req.query.__key).delete() // test if all authors removed
+        await knex(item.link).insert(item.ids)  
+      }
       if (!count) {
         // do insert ?
       }
@@ -418,11 +422,14 @@ module.exports = express.Router()
       if (col.auto && col.auto === 'pk' && key in body) delete body[key]
     }
 
-    let rv = 0
+    let rv = null
     if (table.db === 'knex') {
-      rv = await knex(table.name)
-        // .returning('id')
-        .insert(body)
+      let query = knex(table.name).insert(body)
+      if (table.pk) query = query.returning(table.pk)
+      rv = await query.clone()
+      if (rv && rv[0]) { // id
+
+      }
     } else { // mongodb
       await mongo.db.collection(table.name).insertOne(body) // rv.insertedId, rv.result.ok
     }
@@ -430,6 +437,7 @@ module.exports = express.Router()
   }))
 
   .post('/remove/:table', authUser, generateTable, asyncWrapper(async (req, res) => {
+    // TBD delete relations junction, do not delete if value is in use...
     const { table } = req
     const { ids } = req.body
     if (ids.length > 1000) return res.status(400).json({ error: 'Select up to 1000 items' })
@@ -438,7 +446,7 @@ module.exports = express.Router()
       if (table.db === 'knex')
         await knex(table.name).whereIn('id', ids).delete()
       else
-        await mongo.db.collection(table.name).deleteMany({ _id: { $in: ids.map(id => new ObjectID(id)) } })  
+        await mongo.db.collection(table.name).deleteMany({ _id: { $in: ids.map(id => new ObjectID(id)) } })
     } else { // delete using keys
       const keys = ids.map(id => {
         let id_a = id.split('|')
@@ -456,9 +464,7 @@ module.exports = express.Router()
       if (table.db === 'knex') {
         await Promise.allSettled(keys)
       } else {
-        // const dbRv = 
-        await db.collection(table.name).bulkWrite(keys)
-        // result: dbRv.result
+        await db.collection(table.name).bulkWrite(keys) // result: dbRv.result
       }
     }
     return res.json()
