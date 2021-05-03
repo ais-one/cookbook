@@ -428,7 +428,7 @@ module.exports = express.Router()
       if (table.pk) query = query.returning(table.pk)
       rv = await query.clone()
       if (rv && rv[0]) { // id
-
+        // disallow link tables input... for creation
       }
     } else { // mongodb
       await mongo.db.collection(table.name).insertOne(body) // rv.insertedId, rv.result.ok

@@ -12,8 +12,9 @@
   - back button at child table
   - handle junction tables (many to many) [TODO]
     - read [Done]
-    - create
-    - update
+    - create [Done] - do not allow in create operation
+    - update [Done]
+    - delete - how to delete data in related keys in other tables [TODO]
   - search filter [TODO]
     - m/n
     - 1/1 or 1/m

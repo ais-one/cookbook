@@ -80,6 +80,7 @@ module.exports = {
       label: 'Authors',
       type: 'string',
       filter: true,
+      add: 'hide', // do not allow join tables for create operation
       options: {
         parentCol: '',
         parentTableColName: '',
