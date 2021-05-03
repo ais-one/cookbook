@@ -1,3 +1,17 @@
+### Version 0.5.1
+- [chore] update packages & cleanup & work on improving documentation
+- [example-native] migrate example-webpack vue-crud-x table examples to example-native
+  - handle junction tables (many to many) [TODO]
+    - read [Done]
+    - create [Done] - do not allow in create operation
+    - update [Done]
+    - delete - how to delete data in related keys in other tables [TODO]
+  - search filter [TODO]
+    - m/n
+    - 1/1 or 1/m
+  - testing [TODO]
+  - clean up repeated table code [TODO]
+
 ### Version 0.5.0
 - [chore] update packages & cleanup & work on improving documentation
 - [update] clean up auth codes..., breaking change on return values of /api/auth/login and /api/auth/otp, SAML configuration, additional AUTH_ and JWT_ configurations, @es-labs/esm/http.js, @es-labs/node/auth/index.js, example-app auth controller and auth route
