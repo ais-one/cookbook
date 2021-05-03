@@ -56,15 +56,16 @@ const template = /*html*/`
     <ul class="menu-list">
       <li><a>Team Settings</a></li>
       <li>
-        <a @click="menu0 = !menu0">{{ menu0 ? '+' : '-' }} SQL CRUD</a>
-        <ul v-show="menu0">
+        <a @click="subMenu0 = !subMenu0">{{ subMenu0 ? '+' : '-' }} SQL CRUD</a>
+        <ul v-show="subMenu0">
           <li><router-link :to="{ path: '/sql-crud/authors' }">Authors</router-link></li>
           <li><router-link :to="{ path: '/sql-crud/categories' }">Categories</router-link></li>
+          <li><router-link :to="{ path: '/sql-crud/books' }">Books</router-link></li>
         </ul>
       </li>
       <li>
-        <a @click="menu1 = !menu1">{{ menu1 ? '+' : '-' }} Tests</a>
-        <ul v-show="menu1">
+        <a @click="subMenu1 = !subMenu1">{{ subMenu1 ? '+' : '-' }} Tests</a>
+        <ul v-show="subMenu1">
           <li v-for="n of 30"><a>Testing</a></li>
         </ul>
       </li>
@@ -89,8 +90,8 @@ export default {
     const store = useStore()
     const router = useRouter()
     const showSide = ref(true)
-    const menu0 = ref(false)
-    const menu1 = ref(false)
+    const subMenu0 = ref(true)
+    const subMenu1 = ref(false)
 
     onMounted(async () => {
       console.log('Secure mounted!')
@@ -129,8 +130,8 @@ export default {
       clickLogo,
       clickBurger,
       showSide,
-      menu0,
-      menu1,
+      subMenu0,
+      subMenu1,
       logout
     }
   }

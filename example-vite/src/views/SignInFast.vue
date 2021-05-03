@@ -5,16 +5,12 @@
       sub-title="Your one-stop web portal for all things web"
     >
       <template #icon>
-        <a-image
-          :width="200"
-          src="https://upload.wikimedia.org/wikipedia/commons/archive/6/6a/20120221235432%21JavaScript-logo.png"
-        />
+        <a-image :width="150" src="https://via.placeholder.com/150x150.png?text=A+Logo" />
       </template>
       <template #extra>
         <a-button type="primary" html-type="button" @click="login">Log in</a-button>
       </template>
     </a-result>
-
   </div>
 </template>
 
@@ -23,6 +19,7 @@ import { onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { SmileTwoTone } from '@ant-design/icons-vue';
+import { VITE_INITAL_SECURE_PATH } from '/config.js'
 
 export default {
   components: {
@@ -41,14 +38,13 @@ export default {
     const _setUser = async () => {
       const decoded = {
         id: 'Aaa',
-        groups: [],
-        verified: true
+        groups: 'MyGroup,AnotherGroup'
       }
       await store.dispatch('doLogin', decoded) // store user
     }
     const login = async () => {
       _setUser()
-      router.push('/dashboard')
+      router.push(VITE_INITAL_SECURE_PATH)
     }
 
     return {

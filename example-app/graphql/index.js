@@ -35,11 +35,8 @@ module.exports = function (app, server) {
           return connection.context;
         } else {
           // TBD - GraphQL not taking into account refresh token and revocation
-          // TBD: Check Auth Token Here
-          // TBD const token = req.headers['authorization'] || ''
           return {
-            // User,
-            // Post,
+            // User, Post,
             pubsub, // subscription
             // currentUser: await getUser(token)
           }  

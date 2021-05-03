@@ -9,12 +9,17 @@ module.exports = {
   export: true,
   multiSelect: true, // multiple selection
   cols: {
-    id: { // primary key column, _id for mongodb (can cause error in mongodb)
+    id: { // TBD click to get to pages table
       label: 'ID',
       auto: 'pk',
-      hide: true,
       add: 'hide',
-      edit: 'readonly'
+      edit: 'readonly',
+      link: {
+        table: 'pages',
+        tableId: 'bookId',
+        linkId: 'id', //  this column
+        path: '/sql-crud' // ui route
+      }
     },
     name: {
       label: 'Name',
@@ -44,10 +49,10 @@ module.exports = {
       default: '',
       ui: {
         tag: 'input',
-        attrs: { pattern: '^[1-9]\d{3}$' }
+        attrs: { pattern: '^[1-9]\\d{3}$' } // escape twice
       },
       rules: {
-        regex: '^[1-9]\d{3}$'
+        regex: '^[1-9]\\d{3}$'
       }
     },
     categoryId: {
@@ -66,9 +71,44 @@ module.exports = {
         text: 'name'
       },
       ui: {
-        tag: 'bwc-combobox', // input
-        valueType: 'object', // string or object, if object then no conversion needed
-        valueKey: 'id'
+        tag: 'bwc-combobox',
+        valueType: 'text', //  either key or text
+        writeType: 'key', //  either key or text
+      }
+    },
+    authors: { //  this one data is from join table
+      label: 'Authors',
+      type: 'string',
+      filter: true,
+      add: 'hide', // do not allow join tables for create operation
+      options: {
+        parentCol: '',
+        parentTableColName: '',
+        childCol: '',
+        dbName: 'knex',
+        tableName: 'authors',
+        limit: 8,
+        strict: true,
+        key: 'id',
+        text: 'name'
+      },
+      ui: {
+        tag: 'bwc-combobox',
+        junction: {
+          link: 'books_authors',
+          t1: 'books',
+          t2: 'authors',
+          t1id: 'id',
+          t2id: 'id',
+          t1txt: 'name',
+          t2txt: 'name',
+          refT1id: 'bookId',
+          refT2id: 'authorId',  
+        },
+        attrs: {
+          multiple: true,
+          tagLimit: 5
+        }
       }
     },
     created_at: {

@@ -1,0 +1,42 @@
+# Use root/root as user/password credentials
+# use HeidiSQL instead of adminer
+version: '3.1'
+services:
+  cache:
+    image: redis:alpine
+    container_name: redis
+    entrypoint: redis-server --appendonly yes
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    ports:
+      - 6379:6379
+
+# services:
+#   app:
+#     image: lagden/cep_consulta:5.0.0
+#     command: ["node", "index.js"]
+#     environment:
+#       - NODE_ENV=production
+#       - RHOST=redis
+#     ports:
+#       - 1235:3000
+#     networks:
+#       - redis-net
+#     depends_on:
+#       - redis
+
+#   redis:
+#     image: redis:4.0.5-alpine
+#     command: ["redis-server", "--appendonly", "yes"]
+#     hostname: redis
+#     networks:
+#       - redis-net
+#     volumes:
+#       - redis-data:/data
+
+# networks:
+#   redis-net:
+
+# volumes:
+#   redis-data:

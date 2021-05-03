@@ -8,9 +8,10 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.4.8](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.8) - Released 2021 Mar 06 1220 +8GMT
+Latest Version [0.5.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.0) - Released 2021 Mar 31 1220 +8GMT
 
-- urgent fix for **example-native**, add rxjs to **example-vite**
+- improvements on auth
+- include crud example from example-webpack to example-native
 
 # Features
 
@@ -38,7 +39,7 @@ Latest Version [0.4.8](https://github.com/ais-one/vue-crud-x/releases/tag/0.4.8)
     - Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
   - Unit Test & Integration Test
 - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
-- [Docker setups](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) for Mongodb, Mysql, SAML IDP, Kafka, Hashicorp Vault
+- [Docker setups](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) for Mongodb, Mysql, SAML IDP, Kafka, Hashicorp Vault, Redis
 - [Secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
 - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
 - [AMP Website](https://github.com/ais-one/vue-crud-x/tree/master/example-amp): AMP (Accelerated Mobile Page) application sample (TBD)
@@ -220,7 +221,6 @@ vue-crud-x
 |  +- common-express/ : common codes used in express apps
 +- example-native/ : frontend (Vue3 no bundle) - See example-native/README.md for Project Structure
 +- example-vite/ : frontend (Vue3 rollup) - See example-vite/README.md for Project Structure
-|  +- lib/esm-rollup/ : rolled up components for frontend (e.g. apollo.js)
 +- example-webpack/ : frontend associated to the backend (Vue2 webpack) - See example-webpack/README.md for Project Structure
 |  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
 +- k8s/ : kubernetes YAML files (WIP)

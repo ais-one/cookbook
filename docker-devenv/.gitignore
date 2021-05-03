@@ -1,3 +1,4 @@
 .DS_Store
 mongodb/data
 mysql/data
+redis/data

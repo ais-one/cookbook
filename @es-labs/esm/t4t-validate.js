@@ -22,7 +22,7 @@ function validateColumn (rules, type, col, record) {
       if (type === 'string') {
         if (rule === 'min' && record[col].length < rules[rule]) invalid = `need at least ${rules[rule]} characters`
         else if (rule === 'max' && record[col].length > rules[rule]) invalid = `maximum ${rules[rule]} characters`
-        else if (rule === 'regex' && !RegExp(rules[rule]).test(record[col])) invalid = `regex ${rules[rule]} failed`
+        else if (rule === 'regex' && !(new RegExp(rules[rule])).test(record[col])) invalid = `regex ${rules[rule]} failed`
       } else if (['integer', 'decimal', 'datetime', 'date', 'time'].includes(type)) {
         if (rule === 'min' && record[col] < rules[rule]) invalid = `cannot be less than ${rules[rule]}`
         else if (rule === 'max' && record[col] > rules[rule]) invalid = `cannot be more than ${rules[rule]}`

@@ -1,6 +1,8 @@
 // console.log('fffff', process.env.NODE_ENV, import.meta.env)
 export const {
   VITE_API_URL,
+  VITE_REFRESH_URL,
+
   VITE_WS_URL, // ws://127.0.0.1:3001, wss://127.0.0.1:3001
   VITE_WS_MS,
   VITE_GQL_URI,
@@ -11,9 +13,11 @@ export const {
   // VITE_HTTPONLY_TOKEN = false, // true, // NOTUSED... replaced by VITE_WITH_CREDENTIALS
   VITE_WITH_CREDENTIALS = 'same-origin', // same-origin, include = cors
 
+  VITE_SAML_URL,
   VITE_CALLBACK_URL,
 
-  BASE_URL // from vite.config.js base property
+  VITE_INITAL_SECURE_PATH,
+  BASE_URL, // from vite.config.js base property
 } = import.meta.env
 
 // APP_VERSION: '0.0.0' // TBD Use package.json version

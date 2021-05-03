@@ -71,7 +71,8 @@ module.exports = {
       },
       ui: {
         tag: 'bwc-combobox', // input
-        valueType: 'string', // string or object, if object then no conversion needed
+        valueType: '', // '' = string, otherwise it is object key to display
+        writeType: '',
       }
     },
     state: {
@@ -90,7 +91,8 @@ module.exports = {
       },
       ui: {
         tag: 'bwc-combobox',
-        valueType: 'string',
+        valueType: '',
+        writeType: '',
         attrs: {
           multiple: true,
           tagLimit: 3

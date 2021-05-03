@@ -9,11 +9,12 @@
   // HTTPONLY_TOKEN
   // HTTPONLY_TOKEN: true
   // WITH_CREDENTIALS: true
+  API_REFRESH_URL: process.env.VUE_APP_REFRESH_URL || '/api/auth/refresh',
 
   PAGESIZE: process.env.VUE_APP_PAGESIZE || 4,
   PAGESIZE_OPTS: process.env.VUE_APP_PAGESIZE_OPTS && process.env.VUE_APP_PAGESIZE_OPTS.length ? JSON.parse(process.env.VUE_APP_PAGESIZE_OPTS) : [4, 8, 10],
 
-  APP_VERSION: '0.4.8',
+  APP_VERSION: '0.5.0',
 }
 // console.log('WS_URL', WS_URL, process.env.VUE_APP_WS_URL)
 export const {

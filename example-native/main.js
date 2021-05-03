@@ -1,8 +1,6 @@
 // const urlParams = new URLSearchParams(window.location.search)
 // const myParam = urlParams.get('myParam')
 
-// TBD fix this for production deployments
-import '/esm/http.js' // served from express /esm static route
 import '/esm/bwc-autocomplete.js'
 import '/esm/bwc-combobox.js'
 import '/esm/bwc-fileupload.js'

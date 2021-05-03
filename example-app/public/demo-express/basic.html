@@ -18,6 +18,7 @@
     <li><a href="#" onclick="testAPI('/api/error-not-found')">Test Express - Not Found Error</a></li>
     <li><a href="#" onclick="testAPI('/api/error-unhandled-promise-rejection')">Test Express - Unhandled Promise Rejection</a></li>
     <li><a href="#" onclick="testCors()">Test XHR</a></li>
+    <li><a href="#" onclick="testStream('/api/stream')">Test return stream</a></li>
   </ul>
 </body>
 
@@ -44,7 +45,34 @@
     } catch (e) {
       console.log(e)
     }
-  }  
+  }
+
+  const testStream = (url) => {
+    fetch(url)
+    .then(resp => resp.body)
+    .then(body => {
+      const reader = body.pipeThrough(new TextDecoderStream()).getReader()
+
+      return new ReadableStream({
+        start(controller) {
+          return pump();
+          function pump() {
+            return reader.read().then(({ done, value }) => {
+              if (value) console.log(value)
+              // When no more data needs to be consumed, close the stream
+              if (done) {
+                controller.close();
+                return;
+              }
+              // Enqueue the next data chunk into our target stream
+              controller.enqueue(value);
+              return pump();
+            });
+          }
+        }
+      })  
+    })
+  }
 </script>
 
 </html>

@@ -4,10 +4,11 @@
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
       <div class="logo" />
       <a-menu theme="dark" mode="inline" v-model:selectedKeys="selectedKeys">
-        <a-menu-item key="1" @click="$router.push('/dashboard')">
+        <a-menu-item key="1" @click="$router.push(VITE_INITAL_SECURE_PATH)">
           <user-outlined />
           <span>Dashboard</span>
         </a-menu-item>
+        <a-menu-item key="main" @click="$router.push('/demo-main')">Main</a-menu-item>
         <a-sub-menu key="sub1">
           <template #title>
             <span>
@@ -17,7 +18,7 @@
           </template>
           <a-menu-item key="21" @click="$router.push('/demo-chart1')">Chart 1</a-menu-item>
           <a-menu-item key="22" @click="$router.push('/demo-chart2')">Chart 2</a-menu-item>
-          <a-menu-item key="23" @click="$router.push('/demo-map')">Map</a-menu-item>
+          <a-menu-item key="23" @click="$router.push('/demo-antd-map')">Map</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="sub2">
           <template #title>
@@ -34,32 +35,20 @@
           <video-camera-outlined />
           <span>Tables</span>
         </a-menu-item>
-        <a-sub-menu key="sub5">
-          <template #title>
-            <span>
-              <upload-outlined />
-              <span>NTU CSR</span>
-            </span>
-          </template>
-          <a-menu-item key="51" @click="$router.push('/major-gift')">Major Gift</a-menu-item>
-          <a-menu-item key="52" @click="$router.push('/appeal-m')">Appeal M</a-menu-item>
-          <a-menu-item key="53" @click="$router.push('/update-db')">UpdateDB</a-menu-item>
-        </a-sub-menu>
 
-        <a-sub-menu key="sub6">
+        <a-sub-menu key="sub5">
           <template #title>
             <span>
               <upload-outlined />
               <span>Demo</span>
             </span>
           </template>
-          <a-menu-item key="61" @click="$router.push('/demo-main')">Demo Main</a-menu-item>
-          <a-menu-item key="62" @click="$router.push('/demo-map')">Demo Map</a-menu-item>
-          <a-menu-item key="63" @click="$router.push('/demo-chart')">Demo Chart</a-menu-item>
-          <a-menu-item key="64" @click="$router.push('/demo-web-cam')">Web Cam</a-menu-item>
-          <a-menu-item key="65" @click="$router.push('/demo-sign-pad')">SIgn Pad</a-menu-item>
+          <a-menu-item key="51" @click="$router.push('/demo-map')">Demo Map</a-menu-item>
+          <a-menu-item key="52" @click="$router.push('/demo-chart')">Demo Chart</a-menu-item>
+          <a-menu-item key="53" @click="$router.push('/demo-web-cam')">Web Cam</a-menu-item>
+          <a-menu-item key="54" @click="$router.push('/demo-sign-pad')">SIgn Pad</a-menu-item>
         </a-sub-menu>
-        <a-menu-item key="7" @click="logout">Logout</a-menu-item>
+        <a-menu-item key="6" @click="logout">Logout</a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -70,7 +59,7 @@
           @click="() => (collapsed = !collapsed)"
         />
         <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
-        <span>Data Science Dashboard</span>
+        <span>Our Dashboard</span>
       </a-layout-header>
       <a-layout-content :style="{ margin: '16px 12px', padding: '16px', background: '#fff', minHeight: 'calc(100vh - 96px)' }">
         <a-breadcrumb style="margin: 8px 0">
@@ -88,6 +77,9 @@
 // :key="$route.fullPath" // this is causing problems
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useStore } from 'vuex'
+import { VITE_INITAL_SECURE_PATH } from '/config.js'
+
+import idleTimer from '/@es-labs/esm/idle.js'
 
 import {
   UserOutlined,
@@ -109,13 +101,27 @@ export default {
     const store = useStore()
     onMounted(async () => {
       console.log('SECURE mounted!')
+      idleTimer.timeouts.push(
+        { // timme in seconds and ascending value
+          time: 5,
+          fn: () => {
+            alert('Timeout')
+          },
+          stop: true
+        }
+      )
+      idleTimer.start()
     })
-    onUnmounted(() => console.log('SECURE unmounted'))
+    onUnmounted(() => {
+      console.log('SECURE unmounted')
+      idleTimer.stop()
+    })
     const logout = async () => await store.dispatch('doLogin', null)
     return {
       logout,
       selectedKeys: ref(['1']),
       collapsed: ref(false),
+      VITE_INITAL_SECURE_PATH,
     }
   }
 }

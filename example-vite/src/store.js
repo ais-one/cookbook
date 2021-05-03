@@ -1,7 +1,8 @@
 import { createStore } from 'vuex'
 import router from './router.js'
-import * as http from '/@es-labs/esm/http.js' // served from express /esm static route
+import { http } from '/src/services.js'
 // import aaa from 'https://unpkg.com/swrv@0.3.0/esm/index.js' - will error
+import { VITE_INITAL_SECURE_PATH } from '/config.js'
 
 const mutations = {
   login(state, payload) {
@@ -30,7 +31,7 @@ const actions = {
       } else {
         // sign in ok
         commit('login', payload)
-        await router.push('/dashboard')
+        await router.push(VITE_INITAL_SECURE_PATH)
       }
     } else {
       // sign in failed
@@ -40,7 +41,7 @@ const actions = {
         commit('login', null)
         await router.push('/signin')
       } catch (e) {
-        if (e && e.data && e.data.message !== 'Token Expired Error') {
+        if (e.toString() === 'TypeError: Failed to fetch'  || (e.data && e.data.message !== 'Token Expired Error')) {
           commit('login', null)
           await router.push('/signin')
         }
@@ -72,7 +73,7 @@ const getters = {
 // state below the rest // https://stackoverflow.com/questions/43843180/eslint-state-already-declared-vuex
 const state = {
   count: 99,
-  user: null // id, verified, groups
+  user: null // id, groups
 }
 
 const store = createStore({

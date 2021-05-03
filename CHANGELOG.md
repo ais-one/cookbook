@@ -1,3 +1,26 @@
+### Version 0.5.0
+- [chore] update packages & cleanup & work on improving documentation
+- [update] clean up auth codes..., breaking change on return values of /api/auth/login and /api/auth/otp, SAML configuration, additional AUTH_ and JWT_ configurations, @es-labs/esm/http.js, @es-labs/node/auth/index.js, example-app auth controller and auth route
+- [frontend] able to create and use multiple
+  - http requests (also stop using @es-labs/esm/http.js, change to @es-labs/esm/fetch.js)
+  - ws
+  - i18n (do not need to make multiple, keep as single)
+- [example-native] migrate example-webpack vue-crud-x table examples to example-native
+  - category, author, book - has 1 category & has book_author, page - belongs to 1 book
+  - child table
+  - handle one-to-one/one-to-many relation
+  - back button at child table
+  - handle junction tables (many to many) [TODO]
+    - read [Done]
+    - create [Done] - do not allow in create operation
+    - update [Done]
+    - delete - how to delete data in related keys in other tables [TODO]
+  - search filter [TODO]
+    - m/n
+    - 1/1 or 1/m
+  - testing [TODO]
+  - clean up repeated table code [TODO]
+
 ### Version 0.4.8
 - [chore] update packages & cleanup & work on improving documentation
 - [example-vite] add rxjs example in demo (debounce, switchMap, etc)

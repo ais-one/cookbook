@@ -35,6 +35,7 @@ module.exports = function (app, express, options) {
   // 'Bad Request': 400, 'Unauthorized': 401, 'Forbidden': 403, 'Not Found': 404, 'Conflict': 409, 'Unprocessable Entity': 422, 'Internal Server Error': 500,
   app.use((error, req, res, next) => { // error middleware - 200s should not reach here
     // console.log('typeof error', error instanceof Error)
+    console.log('error', error)
     let message= 'Unknown Error'
     if (error.message) {
       // console.log('Error Object', error.name, error.name, error.stack)

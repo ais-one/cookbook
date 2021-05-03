@@ -140,7 +140,8 @@ template.innerHTML = /*html*/`
     <div id="table-navbar-menu" class="navbar-menu">
       <div class="navbar-start">
         <div id="commands" class="navbar-item">
-          <a id="cmd-filter" class="button">o</a>
+          <a id="cmd-goback" class="button">↶</a>
+          <a id="cmd-filter" class="button">o</a><!-- need to make this configurable -->
           <a id="cmd-reload" class="button">↻</a>
           <a id="cmd-add" class="button">+</a>
           <a id="cmd-del" class="button">-</a>
@@ -270,6 +271,7 @@ class Table extends HTMLElement {
     }).observe(this.querySelector('#filters')) // start observing a DOM node
 
     this.querySelector('#cmd-reload').onclick = () => this._trigger('reload') 
+    this.querySelector('#cmd-goback').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'goback' } }))
     this.querySelector('#cmd-add').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'add' } }))
     this.querySelector('#cmd-del').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'del', checkedRows: this.#checkedRows } }))
     this.querySelector('#cmd-import').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'import' } }))
@@ -315,6 +317,7 @@ class Table extends HTMLElement {
       this.querySelector('#cmd-del').style.display = this.#commands.includes('del') ? 'block' : 'none'
       this.querySelector('#cmd-import').style.display = this.#commands.includes('import') ? 'block' : 'none'
       this.querySelector('#cmd-export').style.display = this.#commands.includes('export') ? 'block' : 'none'
+      this.querySelector('#cmd-goback').style.display = this.#commands.includes('goback') ? 'block' : 'none'
     }
     
     this._render()

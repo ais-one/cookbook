@@ -23,6 +23,7 @@ global.CONFIG.COOKIE_SAMESITE = 'Lax'
 global.CONFIG.COOKIE_MAXAGE = ''
 global.CONFIG.COOKIE_SECRET = '' // for use by cookie-parser
 
+global.CONFIG.AUTH_REFRESH_URL = '/api/auth/refresh'
 global.CONFIG.AUTH_USER_STORE = 'objection' // mongo, objection
 global.CONFIG.AUTH_USER_STORE_NAME = 'users'
 global.CONFIG.AUTH_USER_FIELD_ID_FOR_JWT = 'id' // mongo = _id, objection = id // can be NTID from SAML
@@ -34,7 +35,8 @@ global.CONFIG.AUTH_USER_FIELD_GAKEY = 'gaKey'
 // AUTH JWT - secret key
 global.CONFIG.JWT_ALG = 'HS256' // 'RS256' (use SSL certs), 'HS256' (use secret string)
 global.CONFIG.JWT_SECRET = '123456789' // HS256
-global.CONFIG.JWT_EXPIRY = 5 // 5 // 1800 // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism, numeric is seconds
+global.CONFIG.JWT_REFRESH_SECRET = '123456789' // HS256
+global.CONFIG.JWT_EXPIRY = 1800 // 5 // 1800 // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism, numeric is seconds
 global.CONFIG.JWT_REFRESH_EXPIRY = 3600 // 10 // 3600 // do not allow refresh handling after defined seconds
 global.CONFIG.JWT_REFRESH_STORE = 'keyv' // mongo, objection, redis, keyv (default)
 global.CONFIG.JWT_REFRESH_STORE_NAME = 'user_session' // collection or table name
@@ -44,10 +46,7 @@ global.CONFIG.USE_OTP = 'TEST' // GA, SMS, '' (also on FE) set to TEST for testi
 global.CONFIG.OTP_EXPIRY = 30 // 8 // 30 // defined seconds to allow user to submit OTP
 
 // SAML
-global.CONFIG.SAML_ISSUER = 'saml-poc'
-global.CONFIG.SAML_ENTRYPOINT = 'http://127.0.0.1:8081/simplesaml/saml2/idp/SSOService.php'
-global.CONFIG.SAML_CALLBACK_URL = 'http://127.0.0.1:3000/api/saml/login/callback'
-global.CONFIG.SAML_AUTH_REDIRECT_URL = '' // should use relayState
+global.CONFIG.SAML_OPTIONS = null // https://github.com/node-saml/passport-saml#config-parameter-details
 
 // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
 // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}
@@ -114,6 +113,7 @@ global.CONFIG.WEB_STATIC = null
 global.CONFIG.UPLOAD_STATIC = null
 
 global.CONFIG.JWT_CERTS = null // { key: '', cert: '' }
+global.CONFIG.JWT_REFRESH_CERTS = null // { key: '', cert: '' }
 global.CONFIG.HTTPS_CERTS = null // { key: '', cert: '' }
 
 // Role-based access control - not needed, implemented by middleware - e.g. isAdmin after user authentication

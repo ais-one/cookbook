@@ -27,9 +27,11 @@ content-type: application/json
 
 # OTP
 POST http://127.0.0.1:3000/api/auth/otp
-Authorization: Bearer 
+access_token:
+refresh_token: 
 content-type: application/json
 
 {
+  "id": 1,
   "pin": "111111"
 }

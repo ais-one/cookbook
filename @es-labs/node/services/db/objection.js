@@ -11,10 +11,9 @@ exports.open = async () => {
       const config = KNEXFILE
       Model = require('objection').Model
       const knexConnection = Knex(config)
+      // sqlite, may need to use another statement with other sql dbs
+      knexConnection.raw('select 1+1 as result').then(() => console.log('DB ok')).catch(err => { console.log('DB error: ' + err.toString()) })
       Model.knex(knexConnection)
-      // const knex = Model.knex()
-      // const data = await knex.raw('SELECT * FROM users')
-      console.log('db open ok')
     } catch (e) {
       console.log('db open err', e.toString())
     }

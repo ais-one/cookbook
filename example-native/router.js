@@ -45,6 +45,15 @@ const router = createRouter({
 
     { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/sql-crud/authors', component: () => import('./views/sqlCrud/authors.js'), name: 'sql-crud_authors' },
     { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/sql-crud/categories', component: () => import('./views/sqlCrud/categories.js'), name: 'sql-crud_categories' },
+    { meta: { requiresAuth: true, layout: 'layout-secure' }, beforeEnter: AuthGuard, path: '/sql-crud/books', component: () => import('./views/sqlCrud/books.js'), name: 'sql-crud_books' },
+    {
+      meta: { requiresAuth: true, layout: 'layout-secure' },
+      beforeEnter: AuthGuard,
+      path: '/sql-crud/pages/:id?',
+      component: () => import('./views/sqlCrud/pages.js'),
+      name: 'sql-crud_pages',
+      props: route => ({ query: route.query })
+    },
 
     // public
     { meta: { requiresAuth: false, layout: 'layout-public' }, path: '/', name: 'signIn', component: SignIn },

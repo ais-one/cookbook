@@ -1,3 +1,4 @@
+// TBD goto pages
 const template = /*html*/`
 <div>
   <input type="file" id="upload" style="display:none" @change="doUpload">
@@ -12,7 +13,7 @@ const template = /*html*/`
   ></bwc-t4t-form>
   <bwc-table
     v-else
-    commands="reload,filter,add,del,import,export"
+    :commands="commands"
     :pagination="true"
     :sort="true"
     :page="page"
@@ -24,6 +25,7 @@ const template = /*html*/`
     @rowclick="rowClick"
     @checked="checked"
     @triggered="triggered"
+    @linkevent.capture="linkEvent"
     @cmd="cmd"
     style="--bwc-table-height: calc(100vh - 160px);--bwc-table-width: 100%;"
     class="sticky-header sticky-column"
@@ -32,18 +34,24 @@ const template = /*html*/`
 `
 
 import * as t4t from '/esm/t4t-fe.js'
-import { downloadData } from '/esm/util.js'
+import { downloadData, emptyObject } from '/esm/util.js'
 
 const { onMounted, ref, reactive } = Vue
+const { useRoute, useRouter } = VueRouter
 
-const tableName = 'authors'
+const tableName = 'books'
 
 export default {
   template,
   setup() {
+    const route = useRoute()
+    const router = useRouter()
     // reactive
     const mode = ref('')
     const page = ref(1)
+    let _commands = 'reload,filter,add,del,import,export'
+    if (!emptyObject(route.query)) _commands += ',goback'
+    const commands = ref(_commands)
     const pageSize = ref(10)
     const table = reactive({
       config: {},
@@ -70,7 +78,12 @@ export default {
       console.log('submitForm', e.detail)
       // do update here and display error message?
       const { data, error } = e.detail
-      if (error) return alert('Validation Error')
+      if (error) {
+        console.log(error)
+        return alert('Validation Error')
+      } else if (data) {
+        console.log(data)       
+      }
       const invalid = t4t.validate(data)
       if (invalid) return alert(`Invalid ${invalid.col} - ${invalid.msg}`)
 
@@ -100,7 +113,9 @@ export default {
           }
         }
       } catch (e) {
-        alert(`Error ${mode.value} ${e.toString()}`)
+        console.log(e)
+        const msg = e?.data?.message
+        alert(`Error ${mode.value} ${msg || e.toString()}`)
       }
       // loading.value = false
       mode.value = ''
@@ -140,9 +155,7 @@ export default {
     }
 
     // events
-    const checked = (e) => {
-      console.log('checked', e.detail)
-    }
+    const checked = (e) => console.log('checked', e.detail)
     const triggered = async (e) => {
       // TBD if (name === 'page-size') ...
       console.log('triggered', e.detail)
@@ -170,23 +183,31 @@ export default {
           // TBD const _filters = keycol.value ? [...filters, { col: keycol.value, op: '=', val: keyval.value, andOr: 'and' }] : filters
           const data = await t4t.download(filters, sorter)
           if (data) downloadData(data.csv, tableName + '.csv', 'text/csv;charset=utf-8;')
+        } else if (e.detail.cmd === 'goback') {
+          router.back()
         }
       } catch (e) {        
         console.log('error cmd', e.toString())
       }
     }
 
+    const linkEvent = async (e) => {
+      const to = `${e.detail.path}/${e.detail.table}`
+      router.push({ path: to, query: { col: e.detail.tableId, id: e.detail.id } })
+      // console.log('linkEvent', e.detail)
+    }
+
     // lifecycle
     onMounted(async () => {
-      console.log('ui4 mounted!')
-      t4t.setTableName(tableName) // country
+      t4t.setTableName(tableName)
+      if (!emptyObject(route.query)) t4t.setParentFilter(route.query)
       table.config = await t4t.getConfig()
 
       // create the columns
       table.columns = Object.entries(table.config.cols)
-        .filter(([k,v]) => !v.hide)
+        .filter(([k,v]) => !v.hide && !v?.ui?.junction) // do not include col of junction table, computationally intensive to list out, use when zooming in 1 record
         .map(([k,v]) => {
-          return {
+          const _col = {
             key: k,
             label: v.label,
             filter: v.filter || false,
@@ -194,6 +215,18 @@ export default {
             // width
             // How to handle render function?
           }
+          if (v.link) {
+            _col.render = ({val, key, row, idx}) => {
+              const payload = {
+                table: v.link.table, tableId: v.link.tableId, id: row[v.link.linkId], path: v.link.path
+              }
+              const output = `<a class='button is-small' onclick='this.dispatchEvent(new CustomEvent("linkevent", { detail: ${JSON.stringify(payload)} }))'>${val}</a>`
+              return output
+            }
+          } else if (v?.ui?.valueType) {
+            _col.render = ({val, key, row, idx}) => val[v.ui.valueType]
+          }
+          return _col
         })
 
       // get initial data...
@@ -202,6 +235,7 @@ export default {
     return {
       // reactive / ref
       mode,
+      commands,
       table,
       form,
       page,
@@ -216,6 +250,7 @@ export default {
       checked,
       triggered,
       cmd,
+      linkEvent,
     }
   }
 }

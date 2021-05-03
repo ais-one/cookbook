@@ -1,30 +1,16 @@
 # Deployment Configs & Files
 
-## Files
+## Files & Folders
 
-- knexfile.js
-- <env>.gcp.json
-- <env>.gcp.cors.json
-- <env>.pem
++ <env>.gcp.json (need to create your own)
++ <env>.gcp.cors.json (need to create your own)
++ <env>.pem (need to create your own)
++ db (example running scripts used to populate knex-supported db and mongodb)
+  + knex
+  + mongo
+  + icc.json
+  + state.json
 
-### knexfile.js Example
-
-```js
-const path = require('path')
-
-module.exports = {
-  development: {
-    client: 'sqlite3',
-    connection: { filename: path.join(__dirname, '..', 'dev.sqlite3') }, // relative to directory that package.json was run
-    migrations: { directory: '../db/migrations' },
-    seeds: { directory: '../db/seeds/development' },
-    useNullAsDefault: true  
-  },
-  uat: {
-
-  }
-}
-```
 
 ### <env>.gcp.json Example
 
@@ -60,7 +46,7 @@ CORS Origin To Allow - For Google Cloud Storage
 ]
 ```
 
-Run the following command
+Run the following command using gsutil to set GCP bucket CORS settings
 
 ```bash
 gsutil cors set [JSON_FILE_NAME].json gs://[BUCKET_NAME]
@@ -76,7 +62,7 @@ For SSH to VM
 
 ## Knex
 
-no longer in use...
+No longer in use...
 
 ```json
 {

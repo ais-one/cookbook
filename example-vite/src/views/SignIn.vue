@@ -8,7 +8,7 @@
         <a-input label="Password" type="password" v-model:value="password"></a-input>
         <div class="buttons-box-flex">
           <a-button @click="login">Login</a-button>
-          <a-button @click="() => samlLogin(callbackUrl)">SAML</a-button>
+          <a-button @click="() => samlLogin(VITE_SAML_URL, VITE_CALLBACK_URL)">SAML</a-button>
           <a-button @click="$router.push('/signin-fast')">Fast</a-button>
         </div>
         <p><router-link to="/signup">Sign Up</router-link></p>
@@ -30,13 +30,13 @@ import { ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
-import * as http from '/@es-labs/esm/http.js' // aliased in vite.config.js
+
 import parseJwt from '/@es-labs/esm/parse-jwt.js'
 import { samlLogin } from '/@es-labs/esm/saml.js'
-import ws from '/@es-labs/esm/ws.js'
 
+import { http, ws } from '/src/services.js'
 import { useI18n } from '/src/plugins/i18n.js'
-import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL } from '/config.js'
+import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL, VITE_SAML_URL } from '/config.js'
 
 import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
 import { DO_HELLO } from '/src/queries.js'
@@ -68,8 +68,10 @@ export default {
     const otp = ref('')
 
     const callbackUrl = VITE_CALLBACK_URL
+    const samlUrl = VITE_SAML_URL
 
     let otpCount = 0
+    let otpId = ''
     let timerId = null
 
     const setToLogin = () => {
@@ -89,9 +91,9 @@ export default {
       errorMessage.value = ''
       loading.value = false
 
+      // set ws
       ws.connect()
-      const wsHandler = (e) => console.log('ws onmessage', e.data)
-      ws.setMessage(wsHandler)
+      ws.setMessage((e) => console.log('ws onmessage', e.data))
 
       timerId = setInterval(async () => {
         if (ws) {
@@ -115,7 +117,7 @@ export default {
 
     const _setUser = async (data, decoded) => {
       await store.dispatch('doLogin', decoded) // store user
-      // id, verified, groups, token, refresh_token
+      // id, groups, access_token, refresh_token
     }
 
     const login = async () => {
@@ -128,19 +130,21 @@ export default {
           email: email.value,
           password: password.value
         })
-        const decoded = parseJwt(data.token)
-        http.setToken(data.token)
-        http.setRefreshToken(data.refresh_token)
-        if (decoded.verified) {
-          _setUser(data, decoded)
-        } else {
+        if (data.otp) {
           // OTP
           mode.value = 'otp'
+          otpId = data.otp
           otpCount = 0
+        } else {
+          const decoded = parseJwt(data.access_token)
+          http.setTokens({ access: data.access_token, refresh: data.refresh_token })
+          _setUser(data, decoded)
         }
       } catch (e) {
-        console.log('login error', e.toString())
-        errorMessage.value = e.data ? e.data.message : JSON.stringify(e)
+        // fetch failed
+        // auth failed
+        console.log('login error', e.toString(), e)
+        errorMessage.value = e?.data?.message || e.toString()
       }
       loading.value = false
     }
@@ -150,13 +154,10 @@ export default {
       loading.value = true
       errorMessage.value = ''
       try {
-        const { data } = await http.post('/api/auth/otp', { pin: otp.value })
-        const decoded = parseJwt(data.token)
-        http.setToken(data.token)
-        http.setRefreshToken(data.refresh_token)
-        if (decoded.verified) {
-          _setUser(data, decoded)
-        }
+        const { data } = await http.post('/api/auth/otp', { id: otpId, pin: otp.value })
+        const decoded = parseJwt(data.access_token)
+        http.setTokens({ access: data.access_token, refresh: data.refresh_token })
+        _setUser(data, decoded)
       } catch (e) {
         if (e.data.message === 'Token Expired Error') {
           errorMessage.value = 'OTP Expired'
@@ -183,7 +184,8 @@ export default {
       login, // method
       otpLogin,
       i18n,
-      callbackUrl
+      VITE_CALLBACK_URL,
+      VITE_SAML_URL,
     }
   }
 }

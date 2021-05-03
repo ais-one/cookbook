@@ -1,10 +1,10 @@
 ## Issues
 
 ### For next sprint / version
-- [TODO]
-  - [example-native] migrate example-webpack vue-crud-x table examples to example-native (child table, join tables), (category, author, book - has 1 category, page - belongs to 1 book, book_author)... t4t.js to save to column or to join table
-  - [example-app] jsonschema & openapi 3.1
-  - [example-vite] cypress e2e testing
+- [example-app] jsonschema & openapi 3.1
+- [deprecate] remove v1 branch and put in wiki archive page
+- [deprecate] remove v0.4.8 branch and put in wiki archive page
+- [example-vite] cypress e2e testing
 - [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)
 - [@es-labs/esm/bwc-t4t-form.js] - handle multiple parent values use case of combobox..., handle reset of multiple child columns
 - [fix] - ==='object' - handle null object
