@@ -1,16 +1,12 @@
 ### Version 0.5.1
 - [chore] update packages & cleanup & work on improving documentation
 - [example-native] migrate example-webpack vue-crud-x table examples to example-native
+  - clean up repeated table code [TODO]
   - handle junction tables (many to many) [TODO]
-    - read [Done]
-    - create [Done] - do not allow in create operation
-    - update [Done]
     - delete - how to delete data in related keys in other tables [TODO]
   - search filter [TODO]
     - m/n
     - 1/1 or 1/m
-  - testing [TODO]
-  - clean up repeated table code [TODO]
 
 ### Version 0.5.0
 - [chore] update packages & cleanup & work on improving documentation
@@ -33,7 +29,6 @@
     - m/n
     - 1/1 or 1/m
   - testing [TODO]
-  - clean up repeated table code [TODO]
 
 ### Version 0.4.8
 - [chore] update packages & cleanup & work on improving documentation
