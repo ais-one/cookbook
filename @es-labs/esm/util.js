@@ -16,6 +16,19 @@ function downloadData(content, filename, type = 'text/csv;charset=utf-8;') {
   }
 }
 
+function jsonToCsv (json) {
+  var fields = Object.keys(json[0])
+  var replacer = function(key, value) { return value === null ? '' : value } 
+  var csv = json.map(function(row){
+    return fields.map(function(fieldName){
+      return JSON.stringify(row[fieldName], replacer)
+    }).join(',')
+  })
+  csv.unshift(fields.join(',')) // add header column
+  csv = csv.join('\r\n')
+  return csv
+}
+
 // call only after X ms has passed
 // Sample Usage
 // searchIdDom.addEventListener('input', debounce(makeApiFetch, 1000))
@@ -65,4 +78,4 @@ const foo = Math.PI + Math.SQRT2
 // https://www.samanthaming.com/tidbits/94-how-to-check-if-object-is-empty/
 const emptyObject = value => value && Object.keys(value).length === 0 && value.constructor === Object // check if object is empty, also false if not object
 
-export { foo, downloadData, debounce, throttle, isEmail, obj2Qs, emptyObject }
+export { foo, jsonToCsv, downloadData, debounce, throttle, isEmail, obj2Qs, emptyObject }

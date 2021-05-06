@@ -437,11 +437,14 @@ module.exports = express.Router()
   }))
 
   .post('/remove/:table', authUser, generateTable, asyncWrapper(async (req, res) => {
-    // TBD delete relations junction, do not delete if value is in use...
     const { table } = req
     const { ids } = req.body
-    if (ids.length > 1000) return res.status(400).json({ error: 'Select up to 1000 items' })
+    if (!table.delete) return res.status(400).json({ error: 'Delete not allowed' })
+    if (table.delete != -1 && ids.length > table.delete) return res.status(400).json({ error: `Select up to ${table.delete} items` })
     if (ids.length < 1) return res.status(400).json({ error: 'No item selected' })
+
+    // TBD delete relations junction, do not delete if value is in use...
+
     if (table.pk) { // delete using pk
       if (table.db === 'knex')
         await knex(table.name).whereIn('id', ids).delete()

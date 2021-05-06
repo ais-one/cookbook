@@ -39,7 +39,7 @@ import { downloadData, emptyObject } from '/esm/util.js'
 const { defineComponent, onMounted, ref, reactive, toRefs } = Vue
 const { useRoute, useRouter } = VueRouter
 
-export default {
+export default defineComponent({
   template,
   props: {
     tableName: { type: String, required: true },
@@ -237,23 +237,12 @@ export default {
     })
     return {
       // reactive / ref
-      mode,
-      commands,
-      table,
-      form,
-      page,
-      pageSize,
-      pageSizeList,
+      mode, table, form, page,
+      commands, pageSize, pageSizeList,
       // methods
-      rowClick,
-      submitForm,
-      cancelForm,
-      doUpload,
+      rowClick, submitForm, cancelForm, doUpload,
       // events
-      checked,
-      triggered,
-      cmd,
-      linkEvent,
+      checked, triggered, cmd, linkEvent,
     }
   }
-}
+})

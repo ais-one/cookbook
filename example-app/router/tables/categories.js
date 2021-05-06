@@ -4,7 +4,7 @@ module.exports = {
   name: 'categories',
   create: true,
   update: true,
-  delete: true,
+  delete: -1,
   import: true,
   export: true,
   multiSelect: true, // multiple selection
