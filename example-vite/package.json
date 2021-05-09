@@ -36,7 +36,7 @@
     "@vue/compiler-sfc": "^3.0.11",
     "cypress": "^7.2.0",
     "dotenv": "^8.6.0",
-    "eslint": "^7.25.0",
+    "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",

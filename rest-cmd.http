@@ -35,3 +35,11 @@ content-type: application/json
   "id": 1,
   "pin": "111111"
 }
+
+###
+
+# Post Test - will cause an error because content-type and body is different
+POST http://127.0.0.1:3000/api/test-post-json
+content-type: application/json
+
+hello world

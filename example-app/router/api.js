@@ -77,6 +77,8 @@ module.exports = express.Router()
     version: APP_VERSION
   }) }) // health check
 
+  .post('/test-post-json', (req, res) => { res.json(req.body) }) // check if send header as application/json but body is text
+
   .post('/test-cors-post', (req, res) => { res.send('Cors Done') }) // check CORS
 
   /**
