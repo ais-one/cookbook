@@ -61,7 +61,7 @@ module.exports = function(app, options) {
 
   const { STACK_TRACE_LIMIT = 1 } = options
   const { ENABLE_LOGGER } = options
-  const  { CORS_OPTIONS, CORS_ORIGINS } = options
+  const  { HELMET_OPTIONS, CORS_OPTIONS, CORS_ORIGINS } = options
   const { COOKIE_SECRET = (parseInt(Date.now() / 28800000) * 28800000).toString() } = options
   // const { SWAGGER_DEFS } = options
   const { SAML_OPTIONS } = options
@@ -77,6 +77,12 @@ module.exports = function(app, options) {
   }
 
   // ------ SECURITY ------
+  if (HELMET_OPTIONS) {
+    if (HELMET_OPTIONS.nosniff) app.use(helmet.noSniff())
+    if (HELMET_OPTIONS.xssfilter) app.use(helmet.xssFilter())
+    if (HELMET_OPTIONS.hideServer) app.use(helmet.hidePoweredBy())
+    if (HELMET_OPTIONS.csp) app.use(helmet.contentSecurityPolicy(HELMET_OPTIONS.csp))
+  }
   // const helmet = require('helmet')
   // app.use(helmet.noCache())
 

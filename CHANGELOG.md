@@ -1,5 +1,6 @@
 ### Version 0.5.1
 - [chore] update packages & cleanup & work on improving documentation
+- [example-app] implement configs for helmetjs
 - [example-native] migrate example-webpack vue-crud-x table examples to example-native
   - clean up repeated table code [Done]
   - handle junction tables (many to many) [TODO]
