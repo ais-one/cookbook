@@ -77,13 +77,13 @@ module.exports = function(app, options) {
   }
 
   // ------ SECURITY ------
+  const helmet = require('helmet')
   if (HELMET_OPTIONS) {
     if (HELMET_OPTIONS.nosniff) app.use(helmet.noSniff())
     if (HELMET_OPTIONS.xssfilter) app.use(helmet.xssFilter())
     if (HELMET_OPTIONS.hideServer) app.use(helmet.hidePoweredBy())
     if (HELMET_OPTIONS.csp) app.use(helmet.contentSecurityPolicy(HELMET_OPTIONS.csp))
   }
-  // const helmet = require('helmet')
   // app.use(helmet.noCache())
 
   // Set CORS headers so client is able to communicate with this server

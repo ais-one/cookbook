@@ -3,7 +3,7 @@ module.exports = {
   name: 'person', // table name
   create: true, // able to add record,
   update: true, // able to update
-  delete: -1, // able to delete record(s), -1, 0, delete limit
+  delete: -1, // able to delete record(s), -1(no delete limit), 0 (cannot delete), delete limit
   import: true, // can import from csv
   export: true, // can export to csv
   multiSelect: true, // multiple selection

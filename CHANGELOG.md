@@ -1,6 +1,8 @@
 ### Version 0.5.1
 - [chore] update packages & cleanup & work on improving documentation
 - [example-app] implement configs for helmetjs
+- [fix] @es-labs/esm/bwc-table.js - fixed filter (so that adding or removing each filter does not remove input values)
+- [doc] add note on commit messages
 - [example-native] migrate example-webpack vue-crud-x table examples to example-native
   - clean up repeated table code [Done]
   - handle junction tables (many to many) [TODO]

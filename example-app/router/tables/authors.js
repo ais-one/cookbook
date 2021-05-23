@@ -4,7 +4,7 @@ module.exports = {
   name: 'authors',
   create: true,
   update: true,
-  delete: 1, // all
+  delete: 0,
   import: true,
   export: true,
   multiSelect: true, // multiple selection

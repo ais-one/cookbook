@@ -439,6 +439,7 @@ class Table extends HTMLElement {
     const el = this.querySelector('#filters')
     el.textContent = ''
     if (this.#filters.length) {
+      console.log('_renderFilters', this.#filters)
       for (let i=0; i < this.#filters.length; i++) {
         const filter = this.#filters[i]
         const div = document.createElement('div')
@@ -452,6 +453,7 @@ class Table extends HTMLElement {
         const filterInput = document.createElement('input')
         filterInput.classList.add('input')
         filterInput.value = filter.val
+        filterInput.oninput = e => filter.val = e.target.value // so that we can keep the filter value
         p.appendChild(filterInput)
         div.appendChild(p)
 
