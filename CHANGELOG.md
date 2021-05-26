@@ -1,13 +1,14 @@
 ### Version 0.5.1
 - [chore] update packages & cleanup & work on improving documentation
 - [example-app] implement configs for helmetjs
+- [example-app] web worker example file upload - https://kongaraju.blogspot.com/2012/07/large-file-upload-more-than-1gb-using.html
 - [fix] @es-labs/esm/bwc-table.js - fixed filter (so that adding or removing each filter does not remove input values)
 - [doc] add note on commit messages
 - [example-native] migrate example-webpack vue-crud-x table examples to example-native
   - clean up repeated table code [Done]
-  - handle junction tables (many to many) [TODO]
-    - delete - how to delete data in related keys in other tables [TODO]
-  - search filter [TODO]
+  - handle junction tables (many to many) [Done]
+  - delete - delete data with related keys in other tables - use soft delete or foreign key [Done]
+  - search filter for references [TODO]
     - m/n
     - 1/1 or 1/m
 

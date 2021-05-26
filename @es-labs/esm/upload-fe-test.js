@@ -88,7 +88,7 @@ export async function uploadFiles(files) {
     const formData = new FormData()
     for (const file of files) {
       const ext = file.name.split('.').pop()
-      console.log(ext, typeof file, file)
+      // console.log(ext, typeof file, file)
       formData.append(ext, file, file.name)
     }
     // console.log(files)
@@ -96,9 +96,11 @@ export async function uploadFiles(files) {
     formData.append('json-data2', JSON.stringify({ name: 'name2', age: 35 }))
     const res = await fetch('/api/upload-disk', { method: 'POST', body: formData })
     const rv = await res.json()
-    console.log(rv)
+    // console.log(rv)
+    return rv
   } catch (e) {
-    console.log(e)
+    // console.log(e)
+    return e
   }
 }
 

@@ -105,6 +105,7 @@ module.exports = express.Router()
         console.log(key, part) // text parts
       }
       res.json({
+        ok: true, // success
         message: 'Uploaded',
         body: req.body
       })

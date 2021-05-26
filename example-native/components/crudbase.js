@@ -1,4 +1,3 @@
-// TBD goto pages
 const template = /*html*/`
 <div>
   <input type="file" id="upload" style="display:none" @change="doUpload">

@@ -53,11 +53,11 @@ module.exports = {
       fileFilter: (req, file, cb) => { // better to also filter at frontend
         // console.log('fileFilter', file)
         if ( ['text', 'image'].find(item => file.mimetype.includes(item)) ) return cb(null, true) // accept image or text
-        return cb(null, false, new Error("Only text/plain are allowed"))
+        return cb(null, false, new Error("Only text/plain or images are allowed"))
       },
       limits: {
-        files: 1,
-        fileSize: 10000 // size in bytes
+        files: 2,
+        fileSize: 10000000 // size in bytes
       },
     }
   },

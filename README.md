@@ -41,8 +41,8 @@ Latest Version [0.5.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.1)
 - [Docker setups](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) for Mongodb, Mysql, SAML IDP, Kafka, Hashicorp Vault, Redis
 - [Secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
 - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
-- [AMP Website](https://github.com/ais-one/vue-crud-x/tree/master/example-amp): AMP (Accelerated Mobile Page) application sample (TBD)
-
+- AMP Website: [removed](https://plausible.io/blog/google-amp)
+- [example-react]: TBD
 
 # QUICK START - ON YOUR LOCAL MACHINE
 
