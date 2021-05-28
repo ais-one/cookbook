@@ -42,7 +42,7 @@
 // style="--bwc-table-height: calc(100vh - 360px);--bwc-table-width: 200%;"
 // class="sticky-header sticky-column"
 
-// TBD change some properties to attributes? handle multiple UI frameworks
+// TBD change some properties to attributes?
 
 // EVENTS
 // rowclick { detail: { row, col, data }
@@ -126,15 +126,8 @@ template.innerHTML = /*html*/`
   left: 0;
   z-index: 1;
 }
-input::-webkit-outer-spin-button, /* to remove up and down arrows */
-input::-webkit-inner-spin-button {
-   -webkit-appearance: none;
-   margin: 0;
-}
-input[type="number"] {
-   -moz-appearance: textfield;
-}
 </style>
+<!-- TBD - To handle multiple UI frameworks -->
 <div id="table-wrapper">
   <nav id="table-navbar" class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
@@ -237,16 +230,6 @@ class Table extends HTMLElement {
     }
   }
 
-  _eventPageInputEL(e) {
-    const page = Number(e.target.value)
-    if (page >= 1 && page <= this.#pages && Number(page) !== Number(this.page)) {
-      this.page = page
-      this._trigger('page')
-    } else {
-      this._renderPageInput()
-    }
-  }
-
   connectedCallback() {
     console.log('connected callback')
 
@@ -262,11 +245,14 @@ class Table extends HTMLElement {
       this.querySelector('#table-navbar-burger').classList.toggle('is-active') // navbar-burger
       this.querySelector('#table-navbar-menu').classList.toggle('is-active') // navbar-menu
     }
-    this.querySelector('#page-input').onkeypress = (e) => {
-      e.code === 'Enter' && this._eventPageInputEL(e)
-    }
     this.querySelector('#page-input').onblur = (e) => {
-      this._eventPageInputEL(e)
+      const page = e.target.value
+      if (page >= 1 && page <= this.#pages && Number(page) !== Number(this.page)) {
+        this.page = page
+        this._trigger('page')
+      } else {
+        this._renderPageInput()
+      }
     }
 
     this.querySelector('#cmd-filter').onclick = () => {
@@ -291,29 +277,26 @@ class Table extends HTMLElement {
     this.querySelector('#cmd-import').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'import' } }))
     this.querySelector('#cmd-export').onclick = () => this.dispatchEvent(new CustomEvent('cmd', { detail: { cmd: 'export', checkedRows: this.#checkedRows } }))
     this.querySelector('#page-dec').onclick = (e) => {
-      let numPage = Number(this.page)
-      if (numPage > 1 && numPage <= this.#pages) {
-        numPage -= 1
-        this.page = numPage
+      if (this.page > 1) {
+        this.page -= 1
+        this._renderPageInput()
         this._trigger('page')
       }
     }
     this.querySelector('#page-inc').onclick = (e) => {
-      // console.log('inc page', this.page, this.#pages)
-      let numPage = Number(this.page)
-      if (numPage < this.#pages) {
-        numPage += 1
-        this.page = numPage
+      console.log('inc page', this.page, this.#pages)
+      if (this.page < this.#pages) {
+        this.page += 1
+        this._renderPageInput()
         this._trigger('page')
       }
     }
     this.querySelector('#page-select').onchange = (e) => {
+      console.log('page select', e.target.value)
+      // recompute #pages
+      // reset page?
       this.pageSize = e.target.value
       this._trigger('page-size')
-      if (this.page > this.#pages){
-        this.page = this.#pages
-        this._trigger('page-size')
-      }
     }
 
     // console.log('connectedCallback 0')
@@ -456,6 +439,7 @@ class Table extends HTMLElement {
     const el = this.querySelector('#filters')
     el.textContent = ''
     if (this.#filters.length) {
+      console.log('_renderFilters', this.#filters)
       for (let i=0; i < this.#filters.length; i++) {
         const filter = this.#filters[i]
         const div = document.createElement('div')
@@ -552,7 +536,7 @@ class Table extends HTMLElement {
     this._renderFilters()
   }
   _addFilter (index) {
-    this.#filters.splice(index, 0, { key: this.#filterCols[0].key, label: this.#filterCols[0].label, op: this.#filterOps[0], val: '', andOr: 'and' })
+    this.#filters.splice(index, 0, { key: this.#filterCols[0].key, label: this.#filterCols[0].label, op: '=', val: '', andOr: 'and' })
     this._renderFilters()
   }
   

@@ -2,15 +2,16 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [example-app] implement configs for helmetjs
 - [example-app] web worker example file upload - https://kongaraju.blogspot.com/2012/07/large-file-upload-more-than-1gb-using.html
-- [fix] @es-labs/esm/bwc-table.js - fixed filter (so that adding or removing each filter does not remove input values)
+- [fix] @es-labs/esm/bwc-table.js - fixed filter (so that adding or removing each filter does not remove input values), and page change bugs
 - [doc] add note on commit messages
 - [example-native] migrate example-webpack vue-crud-x table examples to example-native
   - clean up repeated table code [Done]
   - handle junction tables (many to many) [Done]
   - delete - delete data with related keys in other tables - use soft delete or foreign key [Done]
-  - search filter for references [TODO]
-    - m/n
-    - 1/1 or 1/m
+  - search filter for references
+    - m/n (not possible, unless id value is same as label, or filter input is multi-select auto-complete) - https://dba.stackexchange.com/a/239069 [Note]
+    - for multiple tags (1/m), the value and label must be same, column must use token seperated string, or filter input is multi-select auto-complete [Note]
+    - for single tags (1/1) - need to search join column, or filter input is single-select auto-complete [Note]
 
 ### Version 0.5.0
 - [chore] update packages & cleanup & work on improving documentation
@@ -25,14 +26,10 @@
   - handle one-to-one/one-to-many relation
   - back button at child table
   - handle junction tables (many to many) [TODO]
-    - read [Done]
-    - create [Done] - do not allow in create operation
-    - update [Done]
+    - read [Done], create [Done] - do not allow in create operation, update [Done]
     - delete - how to delete data in related keys in other tables [TODO]
   - search filter [TODO]
-    - m/n
-    - 1/1 or 1/m
-  - testing [TODO]
+    - m/n, 1/1 or 1/m
 
 ### Version 0.4.8
 - [chore] update packages & cleanup & work on improving documentation
