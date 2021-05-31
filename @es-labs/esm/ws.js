@@ -40,10 +40,7 @@ class Ws {
     try {
       this.instance = new WebSocket(this.options.endpoint)
       this.instance.onopen = () => console.log('ws open - connected')
-      this.instance.onerror = (err) => {
-        console.log(err.message)
-        ws.close()
-      }
+      this.instance.onerror = (err) => console.log(err)
       this.instance.onmessage = this.options.onmessage
       this.instance.onclose = (e) => {
         if (!e.wasClean && this.options.reconnectMs) {

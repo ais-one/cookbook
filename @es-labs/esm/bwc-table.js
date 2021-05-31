@@ -429,7 +429,7 @@ class Table extends HTMLElement {
     el.value = this.page
   }
 
-  _createSelect (items, value) {
+  _createSelect (items, filter, prop) {
     const p = document.createElement('p')
     p.classList.add('control', 'm-0')
     const span = document.createElement('span')
@@ -446,7 +446,8 @@ class Table extends HTMLElement {
       }
       select.appendChild(option)
     })
-    select.value = value
+    select.value = filter[prop]
+    select.onchange = e => filter[prop] = e.target.value
     span.appendChild(select)
     p.appendChild(span)
     return p
@@ -461,8 +462,8 @@ class Table extends HTMLElement {
         const div = document.createElement('div')
         div.classList.add('field', 'has-addons', 'm-0', 'p-1')
 
-        div.appendChild( this._createSelect (this.#filterCols, filter.key) ) // TBD set input type and pattern based on column UI change event
-        div.appendChild( this._createSelect (this.#filterOps, filter.op) )
+        div.appendChild( this._createSelect (this.#filterCols, filter, 'key') ) // TBD set input type and pattern based on column UI change event
+        div.appendChild( this._createSelect (this.#filterOps, filter, 'op') )
 
         const p = document.createElement('p')
         p.classList.add('control', 'm-0')
@@ -482,6 +483,7 @@ class Table extends HTMLElement {
         </select>
         </span>`
         pf.querySelector('#filter-and-or').value = filter.andOr
+        pf.querySelector('#filter-and-or').onchange = e => filter.andOr = e.target.value
         div.appendChild(pf)
 
         const p1 = document.createElement('p')
