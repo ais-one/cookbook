@@ -1,6 +1,6 @@
 const express = require('express')
 const { authUser } = require('../middlewares/auth')
-const { storageUpload } = require('../common-express/upload')
+const { storageUpload } = require('@es-labs/node/express/upload')
 const { UPLOAD_STATIC } = global.CONFIG
 
 const authorController = require('../controllers/author') // use controller

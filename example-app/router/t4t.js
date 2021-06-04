@@ -17,7 +17,7 @@ const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
 // const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
-const { memoryUpload, storageUpload } = require('../common-express/upload')
+const { memoryUpload, storageUpload } = require('@es-labs/node/express/upload')
 const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 
 const processJson = async (req, res, next) => {
@@ -178,7 +178,6 @@ module.exports = express.Router()
                 const joinCol = table1Id + '_' + table2Text
                 joinCols[table1Id] = joinCol
                 columns = [...columns, table2 + '.' + table2Text + ' as ' + joinCol] // add a join colomn
-                // columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id]  
               }
             }
           }

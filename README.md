@@ -8,9 +8,9 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.5.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.1) - Released 2021 May 31 1220 +8GMT
+Latest Version [0.5.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.1) - Released 2021 June 03 0810 +8GMT
 
-- complete crud example from example-webpack to example-native
+- complete crud example from example-webpack to example-native, add web workers example
 
 # Features
 
@@ -32,11 +32,11 @@ Latest Version [0.5.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.1)
   - Objection ORM, Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis
   - Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram
   - AgendaJS message queue
-  - File uploads, Signed URL file upload to GCP Storage
-  - Websockets, graphql
-  - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML
-    - Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
   - Unit Test & Integration Test
+  - Features with frontend demo in **example-app/public/demo-express**
+    - File uploads, Signed URL file upload to GCP Storage, websockets, webworkers (frontend demo)
+    - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML
+    - Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
 - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
 - [Docker setups](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) for Mongodb, Mysql, SAML IDP, Kafka, Hashicorp Vault, Redis
 - [Secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
@@ -210,6 +210,7 @@ vue-crud-x
 |     +- auth/ : authentication
 |     +- comms/ : messaging
 |     +- services/ : db
+|     +- express/ : for ExpressJS
 |     +- config.default.js: defaults
 |     +- config.js: config loader
 |     +- package.json

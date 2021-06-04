@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(app, options) {
+module.exports = function(app, express, options) {
   // set globals here
   // caution - avoid name clashes with native JS libraries, other libraries, other globals
 
@@ -119,9 +119,8 @@ module.exports = function(app, options) {
   // const compression = require('compression') // Use reverse proxy instead for high traffic site
 
   // ------ body-parser and-cookie parser ------
-  const bodyParser = require('body-parser')
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: true }))
+  app.use(express.json())
+  app.use(express.urlencoded({ extended: true }))
 
   const cookieParser = require('cookie-parser')
   app.use(cookieParser(COOKIE_SECRET))
@@ -161,7 +160,7 @@ module.exports = function(app, options) {
           ...profile
         })
       }
-    ))  
+    ))
   }
 
   return this // this is undefined...

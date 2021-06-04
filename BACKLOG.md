@@ -4,6 +4,7 @@
 - shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
 - nodejs workers
 - webauthn (https://developers.google.com/codelabs/webauthn-reauth)
+- passport-saml version 3 onward, cert needs to have value! test-saml-idp docker image need to include also
 - [chore] migration to node 16
 - [example-app] jsonschema & openapi 3.1
 - [example-vite] cypress e2e testing

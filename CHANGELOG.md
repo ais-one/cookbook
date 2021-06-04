@@ -2,6 +2,7 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [example-app] implement configs for helmetjs
 - [example-app] web worker example file upload - https://kongaraju.blogspot.com/2012/07/large-file-upload-more-than-1gb-using.html
+- [example-app] moved common-express folder files to @es-labs\node\express
 - [fix] @es-labs/esm/bwc-table.js - fixed filter (so that adding or removing each filter does not remove input values), and page change bugs
 - [doc] add note on commit messages
 - [example-native] migrate example-webpack vue-crud-x table examples to example-native
