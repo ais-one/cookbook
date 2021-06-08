@@ -12,7 +12,7 @@
   - search filter for references
     - m/n (not possible, unless id value is same as label, or filter input is multi-select auto-complete) - https://dba.stackexchange.com/a/239069 [Note]
     - for multiple tags (1/m), the value and label must be same, column must use token seperated string, or filter input is multi-select auto-complete [Note]
-    - for single tags (1/1) - need to search join column, or filter input is single-select auto-complete [Note]
+    - for single tags (1/1) - need to search join column, or filter input is single-select auto-complete [Done]
 
 ### Version 0.5.0
 - [chore] update packages & cleanup & work on improving documentation
