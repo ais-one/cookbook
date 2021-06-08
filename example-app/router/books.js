@@ -1,3 +1,5 @@
+'use strict'
+
 const express = require('express')
 const { Parser } = require('json2csv')
 const parser = new Parser({})

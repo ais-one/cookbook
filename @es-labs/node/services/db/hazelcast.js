@@ -1,3 +1,5 @@
+'use strict'
+
 const { HAZELCAST } = global.CONFIG
 const { Client, Predicates } = require('hazelcast-client')
 

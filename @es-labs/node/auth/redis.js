@@ -1,3 +1,4 @@
+'use strict'
 const redis = require('../services/redis')
 
 // set LRU and Expiry

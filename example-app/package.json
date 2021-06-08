@@ -38,9 +38,9 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.3",
-    "eslint": "^7.27.0",
+    "eslint": "^7.28.0",
     "husky": "^6.0.0",
-    "jest": "^27.0.3",
+    "jest": "^27.0.4",
     "node-mocks-http": "^1.10.1",
     "nodemon": "^2.0.7",
     "supertest": "^6.1.3"

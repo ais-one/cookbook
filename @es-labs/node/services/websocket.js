@@ -1,7 +1,10 @@
 'use strict'
-
+// https://www.npmjs.com/package/ws
 // NOTE: if --forcedExit --detectOpenHandles in JEST test, will cause error
 // TBD: testing for websockets
+const WebSocket = require('ws')
+const https = require('https')
+
 let wss
 
 let onClientClose = (ws) => {
@@ -25,15 +28,23 @@ let onClientMessage = async (message, ws, _wss) => { // client incoming message
   }
 }
 
+exports.getWs = () => wss // get wss so that you can send messages to other clients...
+
+exports.send = (data) => {
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(data)
+    }
+  })
+}
+
 exports.open = function (server=null, app=null) {
   const { WS_PORT, WS_KEEEPALIVE_MS, HTTPS_CERTS } = global.CONFIG
   let err
   try {
     if (!wss && WS_PORT) {
-      const WebSocket = require('ws')
-      const https = require('https')
       if (HTTPS_CERTS) {
-        if (!server) server = https.createServer(HTTPS_CERTS).listen(WS_PORT) // use same port
+        if (!server) server = https.createServer(HTTPS_CERTS).listen(WS_PORT) // use same port, create server because of graphql subscriptions
         wss = new WebSocket.Server({ server })
       } else {
         if (!server) wss = new WebSocket.Server({ port: WS_PORT }) // use seperate port

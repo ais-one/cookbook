@@ -1,8 +1,11 @@
+'use strict'
+
 const fs = require('fs')
 const express = require('express')
 const { spawn } = require('child_process')
 const axios = require('axios')
 
+const ws = require('@es-labs/node/services/websocket')
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
 const bull = require('@es-labs/node/services/mq/bull').get() // bull message queue
@@ -157,4 +160,11 @@ module.exports = express.Router()
     }  
     res.end()
     // next()
+  })
+
+  // test websocket broadcast
+  .get('/ws-broadcast', async function (req, res) {
+    // console.log(ws, ws.getWs())
+    ws.send("WS Broadcast")
+    res.send("ws broadcast")
   })
