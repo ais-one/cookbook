@@ -8,9 +8,6 @@
           @change="(e) => editableData[record.key][col] = e.target.value"
           style="margin: -5px 0"
         />
-        <!--
-          v-model:value="editableData[record.key][col]"
-        -->
         <template v-else>
           {{ text }}
         </template>

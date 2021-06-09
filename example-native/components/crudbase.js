@@ -47,7 +47,7 @@ export default defineComponent({
     pageSizeList: { type: Array, default: function() { return [5, 10, 15] } },
     signedUrl: { type: Boolean, default: false }
   },
-  setup(props) {
+  setup (props) {
     const route = useRoute()
     const router = useRouter()
     // reactive
@@ -90,8 +90,6 @@ export default defineComponent({
       const invalid = t4t.validate(data)
       if (invalid) return alert(`Invalid ${invalid.col} - ${invalid.msg}`)
 
-      // if (loading.value) return
-      // loading.value = true
       try {
         if (mode.value === 'add') {
           const rv = t4t.processData(data, { signedUrl: props.signedUrl })
@@ -114,10 +112,10 @@ export default defineComponent({
             }
           }
         }
-      } catch (e) {
+      } catch (err) {
         // console.log(e)
-        const msg = e?.data?.message
-        alert(`Error ${mode.value} ${msg || e.toString()}`)
+        const msg = err?.data?.message
+        alert(`Error ${mode.value} ${msg || err.toString()}`)
       }
       // loading.value = false
       mode.value = ''
@@ -151,8 +149,8 @@ export default defineComponent({
         type: "text/plain"
         webkitRelativePath: ""
         */
-      } catch (e) {
-        console.log('doUpload', e.toString())
+      } catch (err) {
+        console.log('doUpload', err.toString())
       }
     }
 
@@ -188,8 +186,8 @@ export default defineComponent({
         } else if (e.detail.cmd === 'goback') {
           router.back()
         }
-      } catch (e) {        
-        console.log('error cmd', e.toString())
+      } catch (err) {        
+        console.log('error cmd', err.toString())
       }
     }
 
@@ -222,8 +220,7 @@ export default defineComponent({
               const payload = {
                 table: v.link.table, tableId: v.link.tableId, id: row[v.link.linkId], path: v.link.path
               }
-              const output = `<a class='button is-small' onclick='this.dispatchEvent(new CustomEvent("linkevent", { detail: ${JSON.stringify(payload)} }))'>${val}</a>`
-              return output
+              return `<a class='button is-small' onclick='this.dispatchEvent(new CustomEvent("linkevent", { detail: ${JSON.stringify(payload)} }))'>${val}</a>`
             }
           } else if (v?.ui?.valueType) {
             _col.render = ({val, key, row, idx}) => val[v.ui.valueType]

@@ -42,7 +42,7 @@ module.exports = function (app, express, options) {
       message = process.env.NODE_ENV === 'development' ? error.stack : error.message
     } else if (typeof error === 'string') {
       message = error
-    } else {
+    } else if (error?.toString) {
       message = error.toString()
     }
     res.status(500).json({ message })

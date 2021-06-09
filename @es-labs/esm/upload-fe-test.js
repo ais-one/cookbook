@@ -95,9 +95,7 @@ export async function uploadFiles(files) {
     formData.append('json-data1', JSON.stringify({ name: 'name', age: 25 }))
     formData.append('json-data2', JSON.stringify({ name: 'name2', age: 35 }))
     const res = await fetch('/api/upload-disk', { method: 'POST', body: formData })
-    const rv = await res.json()
-    // console.log(rv)
-    return rv
+    return await res.json()
   } catch (e) {
     // console.log(e)
     return e

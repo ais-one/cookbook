@@ -20,20 +20,10 @@ function downloadData(content, filename, type = 'text/csv;charset=utf-8;') {
 function jsonToCsv (items) {
   const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
   const header = Object.keys(items[0])
-  const csv = [
+  return [
     header.join(','), // header row first
     ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
   ].join('\r\n')
-  // var fields = Object.keys(json[0])
-  // var replacer = function(key, value) { return value === null ? '' : value } 
-  // var csv = json.map(function(row){
-  //   return fields.map(function(fieldName){
-  //     return JSON.stringify(row[fieldName], replacer)
-  //   }).join(',')
-  // })
-  // csv.unshift(fields.join(',')) // add header column
-  // csv = csv.join('\r\n')
-  return csv
 }
 
 // call only after X ms has passed

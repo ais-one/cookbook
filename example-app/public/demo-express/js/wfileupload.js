@@ -45,7 +45,6 @@ async function process() {
 }
 
 self.onmessage = function (e) {
-  // console.log(e)
   // self.postMessage('Data Len: ' + e.data.files.length)
   for (var j = 0; j < e.data.files.length; j++) files.push(e.data.files[j])
   if (p) {
