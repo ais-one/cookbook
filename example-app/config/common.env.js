@@ -69,6 +69,9 @@ module.exports = {
     // fileFilter,
   },
 
+  BODYPARSER_JSON: { limit: '2mb' },
+  BODYPARSER_URLENCODED: { extended: true, limit: '2mb' },
+
   AUTH_REFRESH_URL: '/api/auth/refresh',
   // JWT_EXPIRY: 5, // to test refresh token
   // JWT_REFRESH_EXPIRY: 10, // to test refresh token

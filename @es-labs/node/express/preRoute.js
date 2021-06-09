@@ -111,7 +111,7 @@ module.exports = function(app, express, options) {
     }
     if (origin) corsOptions.origin = origin  
   }
-  app.use(CORS_OPTIONS ? cors(corsOptions) : cors())
+  app.use(CORS_OPTIONS ? cors(corsOptions) : cors({ origin: '*' }))
 
   // const limiter = require('express-limiter')(app, require('redis').createClient())
   // limiter({ lookup: ['connection.remoteAddress'], total: 100, expire: 1000 * 60 * 60 }) // Limit requests to 100 per hour per ip address.
@@ -119,8 +119,9 @@ module.exports = function(app, express, options) {
   // const compression = require('compression') // Use reverse proxy instead for high traffic site
 
   // ------ body-parser and-cookie parser ------
-  app.use(express.json())
-  app.use(express.urlencoded({ extended: true }))
+  const { BODYPARSER_JSON, BODYPARSER_URLENCODED } = options
+  app.use(express.json( BODYPARSER_JSON || { limit: '2mb' }))
+  app.use(express.urlencoded( BODYPARSER_URLENCODED || { extended: true, limit: '2mb' })) // https://stackoverflow.com/questions/29175465/body-parser-extended-option-qs-vs-querystring/29177740#29177740
 
   const cookieParser = require('cookie-parser')
   app.use(cookieParser(COOKIE_SECRET))
