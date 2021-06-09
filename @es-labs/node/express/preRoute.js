@@ -111,7 +111,7 @@ module.exports = function(app, express, options) {
     }
     if (origin) corsOptions.origin = origin  
   }
-  app.use(CORS_OPTIONS ? cors(corsOptions) : cors({ origin: '*' }))
+  app.use(CORS_OPTIONS ? cors(corsOptions) : cors()) // default { origin: '*' }
 
   // const limiter = require('express-limiter')(app, require('redis').createClient())
   // limiter({ lookup: ['connection.remoteAddress'], total: 100, expire: 1000 * 60 * 60 }) // Limit requests to 100 per hour per ip address.
