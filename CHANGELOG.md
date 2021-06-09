@@ -1,3 +1,6 @@
+### Version 0.5.2
+- [chore] update packages & cleanup & work on improving documentation
+
 ### Version 0.5.1
 - [chore] update packages & cleanup & work on improving documentation
 - [example-app] implement configs for helmetjs
