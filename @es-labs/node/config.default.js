@@ -71,6 +71,22 @@ global.CONFIG.KNEXFILE = null // knexfile
 global.CONFIG.GCP_SERVICE_KEY = null // GCP SERVICE KEY { }
 global.CONFIG.GCP_DEFAULT_BUCKET = 'mybot-live.appspot.com'
 
+// helmetjs options
+global.CONFIG.HELMET_OPTIONS = {
+  hideServer: true,
+  csp: null,
+  nosniff: true,
+  xssfilter: true,
+  // csp: {
+  //   directives: {
+  //     defaultSrc: ["'self'"],
+  //     scriptSrc: ["'self'",'code.jquery.com','maxcdn.bootstrapcdn.com'],
+  //     styleSrc: ["'self'",'maxcdn.bootstrapcdn.com'],
+  //     fontSrc: ["'self'",'maxcdn.bootstrapcdn.com']
+  //   }
+  // }
+}
+
 // CORS - SAME ORIGIN - PROXIED
 //   CORS_OPTIONS: null
 //   PROXY_WWW_ORIGIN: 'example.com:8080'
@@ -166,3 +182,7 @@ global.CONFIG.REDIS_CONFIG = null
 
 // Caching Keyv
 global.CONFIG.KEYV_CACHE = null
+
+// bodyparser
+global.CONFIG.BODYPARSER_JSON = null
+global.CONFIG.BODYPARSER_URLENCODED = null

@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(app, options) {
+module.exports = function(app, express, options) {
   // set globals here
   // caution - avoid name clashes with native JS libraries, other libraries, other globals
 
@@ -61,7 +61,7 @@ module.exports = function(app, options) {
 
   const { STACK_TRACE_LIMIT = 1 } = options
   const { ENABLE_LOGGER } = options
-  const  { CORS_OPTIONS, CORS_ORIGINS } = options
+  const  { HELMET_OPTIONS, CORS_OPTIONS, CORS_ORIGINS } = options
   const { COOKIE_SECRET = (parseInt(Date.now() / 28800000) * 28800000).toString() } = options
   // const { SWAGGER_DEFS } = options
   const { SAML_OPTIONS } = options
@@ -77,7 +77,13 @@ module.exports = function(app, options) {
   }
 
   // ------ SECURITY ------
-  // const helmet = require('helmet')
+  const helmet = require('helmet')
+  if (HELMET_OPTIONS) {
+    if (HELMET_OPTIONS.nosniff) app.use(helmet.noSniff())
+    if (HELMET_OPTIONS.xssfilter) app.use(helmet.xssFilter())
+    if (HELMET_OPTIONS.hideServer) app.use(helmet.hidePoweredBy())
+    if (HELMET_OPTIONS.csp) app.use(helmet.contentSecurityPolicy(HELMET_OPTIONS.csp))
+  }
   // app.use(helmet.noCache())
 
   // Set CORS headers so client is able to communicate with this server
@@ -105,7 +111,7 @@ module.exports = function(app, options) {
     }
     if (origin) corsOptions.origin = origin  
   }
-  app.use(CORS_OPTIONS ? cors(corsOptions) : cors())
+  app.use(CORS_OPTIONS ? cors(corsOptions) : cors()) // default { origin: '*' }
 
   // const limiter = require('express-limiter')(app, require('redis').createClient())
   // limiter({ lookup: ['connection.remoteAddress'], total: 100, expire: 1000 * 60 * 60 }) // Limit requests to 100 per hour per ip address.
@@ -113,9 +119,9 @@ module.exports = function(app, options) {
   // const compression = require('compression') // Use reverse proxy instead for high traffic site
 
   // ------ body-parser and-cookie parser ------
-  const bodyParser = require('body-parser')
-  app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: true }))
+  const { BODYPARSER_JSON, BODYPARSER_URLENCODED } = options
+  app.use(express.json( BODYPARSER_JSON || { limit: '2mb' }))
+  app.use(express.urlencoded( BODYPARSER_URLENCODED || { extended: true, limit: '2mb' })) // https://stackoverflow.com/questions/29175465/body-parser-extended-option-qs-vs-querystring/29177740#29177740
 
   const cookieParser = require('cookie-parser')
   app.use(cookieParser(COOKIE_SECRET))
@@ -155,7 +161,7 @@ module.exports = function(app, options) {
           ...profile
         })
       }
-    ))  
+    ))
   }
 
   return this // this is undefined...

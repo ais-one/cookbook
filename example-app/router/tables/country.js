@@ -3,7 +3,7 @@ module.exports = {
   name: 'country',
   create: true,
   update: true,
-  delete: true,
+  delete: -1,
   import: true,
   export: true,
   multiSelect: true,

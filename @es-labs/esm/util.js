@@ -16,6 +16,16 @@ function downloadData(content, filename, type = 'text/csv;charset=utf-8;') {
   }
 }
 
+// https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable
+function jsonToCsv (items) {
+  const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+  const header = Object.keys(items[0])
+  return [
+    header.join(','), // header row first
+    ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
+  ].join('\r\n')
+}
+
 // call only after X ms has passed
 // Sample Usage
 // searchIdDom.addEventListener('input', debounce(makeApiFetch, 1000))
@@ -65,4 +75,4 @@ const foo = Math.PI + Math.SQRT2
 // https://www.samanthaming.com/tidbits/94-how-to-check-if-object-is-empty/
 const emptyObject = value => value && Object.keys(value).length === 0 && value.constructor === Object // check if object is empty, also false if not object
 
-export { foo, downloadData, debounce, throttle, isEmail, obj2Qs, emptyObject }
+export { foo, jsonToCsv, downloadData, debounce, throttle, isEmail, obj2Qs, emptyObject }

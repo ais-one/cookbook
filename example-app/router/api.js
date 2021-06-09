@@ -1,13 +1,16 @@
+'use strict'
+
 const fs = require('fs')
 const express = require('express')
 const { spawn } = require('child_process')
 const axios = require('axios')
 
+const ws = require('@es-labs/node/services/websocket')
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
 const bull = require('@es-labs/node/services/mq/bull').get() // bull message queue
 const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
-const { memoryUpload, storageUpload } = require('../common-express/upload')
+const { memoryUpload, storageUpload } = require('@es-labs/node/express/upload')
 
 const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 
@@ -77,6 +80,8 @@ module.exports = express.Router()
     version: APP_VERSION
   }) }) // health check
 
+  .post('/test-post-json', (req, res) => { res.json(req.body) }) // check if send header as application/json but body is text
+
   .post('/test-cors-post', (req, res) => { res.send('Cors Done') }) // check CORS
 
   /**
@@ -103,6 +108,7 @@ module.exports = express.Router()
         console.log(key, part) // text parts
       }
       res.json({
+        ok: true, // success
         message: 'Uploaded',
         body: req.body
       })
@@ -154,4 +160,11 @@ module.exports = express.Router()
     }  
     res.end()
     // next()
+  })
+
+  // test websocket broadcast
+  .get('/ws-broadcast', async function (req, res) {
+    // console.log(ws, ws.getWs())
+    ws.send("WS Broadcast")
+    res.send("ws broadcast")
   })

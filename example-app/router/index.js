@@ -1,3 +1,5 @@
+'use strict'
+
 const router = require('express').Router()
 
 // TBD Future Enhancement... using config file

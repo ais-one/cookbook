@@ -4,7 +4,7 @@ module.exports = {
   name: 'books',
   create: true,
   update: true,
-  delete: true,
+  delete: 0,
   import: true,
   export: true,
   multiSelect: true, // multiple selection
@@ -76,6 +76,7 @@ module.exports = {
         writeType: 'key', //  either key or text
       }
     },
+    // IMPORTANT NOTE: use foreign keys to maintain referential integrity of dependent fields 
     authors: { //  this one data is from join table
       label: 'Authors',
       type: 'string',

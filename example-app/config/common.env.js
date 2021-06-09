@@ -53,11 +53,11 @@ module.exports = {
       fileFilter: (req, file, cb) => { // better to also filter at frontend
         // console.log('fileFilter', file)
         if ( ['text', 'image'].find(item => file.mimetype.includes(item)) ) return cb(null, true) // accept image or text
-        return cb(null, false, new Error("Only text/plain are allowed"))
+        return cb(null, false, new Error("Only text/plain or images are allowed"))
       },
       limits: {
-        files: 1,
-        fileSize: 10000 // size in bytes
+        files: 2,
+        fileSize: 10000000 // size in bytes
       },
     }
   },
@@ -68,6 +68,9 @@ module.exports = {
     },
     // fileFilter,
   },
+
+  BODYPARSER_JSON: { limit: '2mb' },
+  BODYPARSER_URLENCODED: { extended: true, limit: '2mb' },
 
   AUTH_REFRESH_URL: '/api/auth/refresh',
   // JWT_EXPIRY: 5, // to test refresh token

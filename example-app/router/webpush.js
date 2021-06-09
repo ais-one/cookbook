@@ -1,3 +1,5 @@
+'use strict'
+
 const express = require('express')
 const { vapidPubKey, send } = require('@es-labs/node/services/webpush')
 const fcmSend = require('@es-labs/node/comms/fcm')

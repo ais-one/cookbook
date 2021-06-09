@@ -1,3 +1,5 @@
+'use strict'
+
 const express = require('express')
 const passport = require('passport')
 const { createToken } = require('@es-labs/node/auth')

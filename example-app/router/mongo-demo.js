@@ -1,3 +1,5 @@
+'use strict'
+
 // cookbook for mongoDB
 const express = require('express')
 const mongo = require('@es-labs/node/services/db/mongodb').get()

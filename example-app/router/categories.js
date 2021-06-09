@@ -1,3 +1,5 @@
+'use strict'
+
 const express = require('express')
 const { authUser } = require('../middlewares/auth')
 const categoryController = require('../controllers/category')

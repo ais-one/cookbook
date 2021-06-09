@@ -15,9 +15,24 @@ const { HTTPS_CERTS } = global.CONFIG
 // }
 const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createServer(app)
 
+server.on('upgrade', function upgrade(request, socket, head) {
+  // This function is not defined on purpose. Implement it with your own logic.
+  // authenticate(request, (err, client) => {
+  //   if (err || !client) {
+  //     socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
+  //     socket.destroy();
+  //     return;
+  //   }
+  //   wss.handleUpgrade(request, socket, head, function done(ws) {
+  //     wss.emit('connection', ws, request, client)
+  //   })
+  // })
+  console.log('upgrade event')
+})
+
 // const expressOasGenerator = require('express-oas-generator')
 // expressOasGenerator.handleResponses(app, {})
-require('./common-express/preRoute')(app, global.CONFIG)
+require('@es-labs/node/express/preRoute')(app, express, global.CONFIG)
 
 // START SERVICES
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
@@ -71,6 +86,6 @@ try {
 // https://github.com/mpashkovskiy/express-oas-generator/issues/24#issuecomment-764469904
 // expressOasGenerator.handleRequests()
 
-require('./common-express/postRoute')(app, express, global.CONFIG)
+require('@es-labs/node/express/postRoute')(app, express, global.CONFIG)
 
 module.exports = { server }

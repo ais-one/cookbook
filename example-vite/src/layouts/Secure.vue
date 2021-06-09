@@ -105,7 +105,7 @@ export default {
         { // timme in seconds and ascending value
           time: 5,
           fn: () => {
-            alert('Timeout')
+            alert('Idle Timeout Test')
           },
           stop: true
         }

@@ -1,3 +1,4 @@
+'use strict'
 // TBD use __key instead of key
 // table for tables
 const express = require('express')
@@ -17,8 +18,7 @@ const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
 // const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
-const { memoryUpload, storageUpload } = require('../common-express/upload')
-const { cols } = require('./tables/books')
+const { memoryUpload, storageUpload } = require('@es-labs/node/express/upload')
 const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 
 const processJson = async (req, res, next) => {
@@ -146,12 +146,33 @@ module.exports = express.Router()
       // query = knex(table.name).where({})
       // TBD handle filters for joins...
       let prevFilter = {}
+      const joinCols = {}
       if (filters && filters.length) for (let filter of filters) {
         const key = filter.key
         const op = filter.op
         const value = op === 'like' ? `%${filter.val}%` : filter.val
-        if (prevFilter.andOr || prevFilter.andOr === 'and') query = query.andWhere(key, op, value)
-        else query = query.orWhere(key, op, value)
+
+        let _key = key
+        const col = table.cols[key]
+        if (col?.ui?.junction) { // many to many
+          // do nothing here 
+        } else { // 1 to many, 1 to 1
+          const rel = mapRelation(key, table.cols[key])
+          if (rel) { // if has relation and is key-value
+            if (rel.type === 'manyToMany') {
+              // https://stackoverflow.com/questions/14869041/sql-query-on-multiple-tables-one-being-a-junction-table
+            } else {
+              const { table2, table2Id, table2Text, table1Id } = rel
+              query = query.join(table2, table.name + '.' + table1Id, '=', table2 + '.' + table2Id) // handles joins...
+              const joinCol = table1Id + '_' + table2Text
+              joinCols[table1Id] = joinCol
+              _key = table2 + '.' + table2Text
+            }
+          }
+        }
+
+        if (prevFilter.andOr || prevFilter.andOr === 'and') query = query.andWhere(_key, op, value)
+        else query = query.orWhere(_key, op, value)
         prevFilter = filter
       }
       if (limit === 0 || csv) {
@@ -163,7 +184,7 @@ module.exports = express.Router()
         const maxPage = Math.ceil(rv.total / limit)
         if (page > maxPage) page = maxPage
 
-        const joinCols = {}
+        //xxx const joinCols = {}
         for (let key in table.cols) {
           const col = table.cols[key]
           if (col?.ui?.junction) { // many to many
@@ -175,11 +196,16 @@ module.exports = express.Router()
                 // https://stackoverflow.com/questions/14869041/sql-query-on-multiple-tables-one-being-a-junction-table
               } else {
                 const { table2, table2Id, table2Text, table1Id } = rel
-                query = query.join(table2, table.name + '.' + table1Id, '=', table2 + '.' + table2Id) // handles joins...
-                const joinCol = table1Id + '_' + table2Text
-                joinCols[table1Id] = joinCol
-                columns = [...columns, table2 + '.' + table2Text + ' as ' + joinCol] // add a join colomn
-                // columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id]  
+                //xxx query = query.join(table2, table.name + '.' + table1Id, '=', table2 + '.' + table2Id) // handles joins...
+                //xxx const joinCol = table1Id + '_' + table2Text
+                //xxx joinCols[table1Id] = joinCol
+                //xxx
+                if (table1Id && !joinCols[table1Id]) {
+                  query = query.join(table2, table.name + '.' + table1Id, '=', table2 + '.' + table2Id) // handles joins...
+                  const joinCol = table1Id + '_' + table2Text
+                  joinCols[table1Id] = joinCol
+                }
+                columns = [...columns, table2 + '.' + table2Text + ' as ' + joinCols[table1Id]] // add a join column
               }
             }
           }
@@ -205,7 +231,6 @@ module.exports = express.Router()
       //     { $sort: { <field1>: <sort order>, <field2>: <sort order> ... } },
       //     // { $project: { fromItems: 0 } }
       //  ])
-
       sort = sorter && sorter.length ? [ [sorter[0].column, sorter[0].order === 'asc' ? 1 : -1] ] : []
       const or = [] // { "$or" : [] }
       const and = [] // { "$and" : [] }
@@ -306,7 +331,6 @@ module.exports = express.Router()
       for (let key in table.cols) {
         const col = table.cols[key]
         if (col?.ui?.junction) { // many to many
-          // TBD
           const rel = col?.ui?.junction
           const { link, t1, t2, t1id, t2id, t2txt, refT1id, refT2id } = rel
           const sql = `SELECT DISTINCT ${t2}.${t2id},${t2}.${t2txt} FROM ${link} JOIN ${t2} ON ${link}.${refT2id} = ${t2}.${t2id} AND ${link}.${refT1id} = ` + req.query.__key
@@ -324,7 +348,6 @@ module.exports = express.Router()
               const joinCol = table1Id + '_' + table2Text
               joinCols[table1Id] = joinCol
               columns = [...columns, table2 + '.' + table2Text + ' as ' + joinCol] // add a join colomn
-              // columns = [...columns, table2 + '.' + table2Text + ' as ' + table1Id]  
             }
           }
         }
@@ -437,11 +460,14 @@ module.exports = express.Router()
   }))
 
   .post('/remove/:table', authUser, generateTable, asyncWrapper(async (req, res) => {
-    // TBD delete relations junction, do not delete if value is in use...
     const { table } = req
     const { ids } = req.body
-    if (ids.length > 1000) return res.status(400).json({ error: 'Select up to 1000 items' })
+    if (!table.delete) return res.status(400).json({ error: 'Delete not allowed' })
+    if (table.delete != -1 && ids.length > table.delete) return res.status(400).json({ error: `Select up to ${table.delete} items` })
     if (ids.length < 1) return res.status(400).json({ error: 'No item selected' })
+
+    // TBD delete relations junction, do not delete if value is in use...
+
     if (table.pk) { // delete using pk
       if (table.db === 'knex')
         await knex(table.name).whereIn('id', ids).delete()
