@@ -74,7 +74,7 @@ global.CONFIG.GCP_DEFAULT_BUCKET = 'mybot-live.appspot.com'
 // helmetjs options
 global.CONFIG.HELMET_OPTIONS = {
   hideServer: true,
-  csp: false, // {}
+  csp: null,
   nosniff: true,
   xssfilter: true,
   // csp: {
