@@ -18,15 +18,15 @@
     "@ant-design/icons-vue": "^6.0.1",
     "@antv/data-set": "^0.11.8",
     "@antv/g2": "^4.1.18",
-    "@antv/g2plot": "^2.3.21",
-    "@apollo/client": "^3.3.19",
-    "ant-design-vue": "^2.2.0-beta.2",
+    "@antv/g2plot": "^2.3.23",
+    "@apollo/client": "^3.3.20",
+    "ant-design-vue": "^2.2.0-beta.3",
     "echarts": "^5.1.2",
     "graphql": "^15.5.0",
     "graphql-tag": "^2.12.4",
     "leaflet": "^1.7.1",
     "rxjs": "^7.1.0",
-    "subscriptions-transport-ws": "^0.9.18",
+    "subscriptions-transport-ws": "^0.9.19",
     "vue": "^3.1.1",
     "vue-router": "^4.0.8",
     "vuex": "^4.0.1"
@@ -44,7 +44,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-standard": "^5.0.0",
-    "eslint-plugin-vue": "^7.10.0",
+    "eslint-plugin-vue": "^7.11.0",
     "prettier": "^2.3.1",
     "vite": "^2.3.7"
   }

@@ -23,3 +23,10 @@ npm install <path-to-this-foder-from-where-you-want-to-install-this>
 e.g.
 
 npm install ../lib
+
+
+for publishing scoped packages
+
+```bash
+npm publish --access public
+```

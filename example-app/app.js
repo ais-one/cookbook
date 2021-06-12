@@ -30,8 +30,6 @@ server.on('upgrade', function upgrade(request, socket, head) {
   console.log('upgrade event')
 })
 
-// const expressOasGenerator = require('express-oas-generator')
-// expressOasGenerator.handleResponses(app, {})
 require('@es-labs/node/express/preRoute')(app, express, global.CONFIG)
 
 // START SERVICES
@@ -82,9 +80,6 @@ try {
   console.log(e.toString())
 }
 // END ROUTES
-
-// https://github.com/mpashkovskiy/express-oas-generator/issues/24#issuecomment-764469904
-// expressOasGenerator.handleRequests()
 
 require('@es-labs/node/express/postRoute')(app, express, global.CONFIG)
 

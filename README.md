@@ -42,7 +42,6 @@ Latest Version [0.5.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.2)
 - [Secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
 - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
 - AMP Website: [removed](https://plausible.io/blog/google-amp)
-- [example-react]: TBD
 
 # QUICK START - ON YOUR LOCAL MACHINE
 
@@ -210,15 +209,13 @@ vue-crud-x
 |     +- auth/ : authentication
 |     +- comms/ : messaging
 |     +- services/ : db
-|     +- express/ : for ExpressJS
+|     +- express/ : common codes used in express JS apps
 |     +- config.default.js: defaults
 |     +- config.js: config loader
 |     +- package.json
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
-+- example-amp/ : AMP example (TBD)
 +- example-app/ : [example backend] - See example-app/README.md for Project Structure
-|  +- common-express/ : common codes used in express apps
 +- example-native/ : frontend (Vue3 no bundle) - See example-native/README.md for Project Structure
 +- example-vite/ : frontend (Vue3 rollup) - See example-vite/README.md for Project Structure
 +- example-webpack/ : frontend associated to the backend (Vue2 webpack) - See example-webpack/README.md for Project Structure

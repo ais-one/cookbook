@@ -12,7 +12,9 @@
   "engines": {
     "node": "14"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@es-labs/esm": "file:@es-labs/esm"
+  },
   "devDependencies": {},
   "private": true
 }
