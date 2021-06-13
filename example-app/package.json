@@ -31,7 +31,6 @@
     "json2csv": "^5.0.6",
     "kafkajs": "^1.15.0",
     "morgan": "^1.10.0",
-    "passport": "^0.4.1",
     "selfsigned": "^1.10.11"
   },
   "devDependencies": {

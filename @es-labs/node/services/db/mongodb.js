@@ -16,7 +16,7 @@ const mongo = {
   ObjectID: null,
 }
 
-exports.close =  async () => {
+exports.close = async () => {
   if (mongo.client) await mongo.client.close()
   console.log('MONGODB CLOSED')
 },

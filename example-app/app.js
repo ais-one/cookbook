@@ -31,6 +31,7 @@ server.on('upgrade', function upgrade(request, socket, head) {
 })
 
 require('@es-labs/node/express/preRoute')(app, express, global.CONFIG)
+require('@es-labs/node/express/passport').init(app)
 
 // START SERVICES
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
