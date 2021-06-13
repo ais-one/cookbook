@@ -14,7 +14,7 @@ module.exports = {
   SAML_OPTIONS: {
     // cert: fs.readFileSync('/path/to/adfs.acme_tools.com.crt', 'utf-8'), // PEM in single string to ensure ADFS Server is not a fake one
 
-    // [keycloak]
+    // NOTE: need to setup keycloak see readme in docker-devenv folder
     issuer: 'test-client',
     callbackUrl: 'http://127.0.0.1:3000/api/saml/login/callback',
     entryPoint: 'http://127.0.0.1:8081/auth/realms/test/protocol/saml',

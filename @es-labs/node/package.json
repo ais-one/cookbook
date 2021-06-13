@@ -11,7 +11,10 @@
     "url": "https://github.com/ais-one/vue-crud-x/issues"
   },
   "homepage": "https://github.com/ais-one/vue-crud-x#readme",
-  "keywords": [ "nodejs", "express" ],
+  "keywords": [
+    "nodejs",
+    "express"
+  ],
   "description": "shared libraries - node",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -38,7 +41,7 @@
     "objection": "^2.2.15",
     "otplib": "^12.0.1",
     "passport": "^0.4.1",
-    "passport-saml": "^2.2.0",
+    "passport-saml": "^3.0.0",
     "sqlite3": "^5.0.2",
     "web-push": "^3.4.4",
     "ws": "^7.4.6"

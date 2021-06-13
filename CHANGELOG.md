@@ -1,10 +1,9 @@
 ### Version 0.5.2
 - [chore] update packages & cleanup & work on improving documentation
 - [chore] upload **@es-labs/esm** and **@es-labs/node** as scoped public packages on npm
-- [chore] add **keycloak** to **docker-devenv**
+- [chore] add **keycloak** to **docker-devenv**, removed **saml** (kristophjunge/test-saml-idp)
+- [@es-labs/node] passport-saml version 3 onward, cert needs to have value! use keycloak
   - webauthn (https://developers.google.com/codelabs/webauthn-reauth)
-  - passport-saml version 3 onward, cert needs to have value! test-saml-idp docker image need to include also
-
 
 ### Version 0.5.1
 - [chore] update packages & cleanup & work on improving documentation
