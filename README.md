@@ -220,7 +220,9 @@ vue-crud-x
 +- example-vite/ : frontend (Vue3 rollup) - See example-vite/README.md for Project Structure
 +- example-webpack/ : frontend associated to the backend (Vue2 webpack) - See example-webpack/README.md for Project Structure
 |  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
-+- k8s/ : kubernetes YAML files (WIP)
++- wip/ : projects in progress
+|  +- k8s/ : kubernetes YAML files (WIP)
+|  +- fido2/ : WebAuthn example
 +- .editorconfig
 +- .gitignore
 +- BACKLOG.md

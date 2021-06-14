@@ -1,0 +1,52 @@
+<!--
+ Copyright 2019 Google Inc.
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>WebAuthn Codelab</title>
+    <meta name="description" content="WebAuthn Codelab">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <h1>WebAuthn codelab</h1>
+    <main class="content">
+      <h2>Login with a random username</h2>
+      <form id="form" method="POST" action="/webauthn/username" >
+        <label id="username-label">username</label>
+        <input type="text" aria-labelledby="username-label" name="username" />
+        <input type="submit" value="Next" />
+      </form>
+      <script type="module">
+        if (window.location.hash) {
+          // verify incoming token, if ok redirect to private page
+        }
+
+        import { _fetch } from '/client.js';
+        const form = document.querySelector('#form');
+        form.addEventListener('submit', e => {
+          e.preventDefault()
+          const form = new FormData(e.target)
+          const cred = {}
+          form.forEach((v, k) => cred[k] = v)
+          _fetch(e.target.action, cred).then(user => location.href = '/reauth').catch(e => alert(e))
+        })
+      </script>
+    </main>
+  </body>
+</html>
