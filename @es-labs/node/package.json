@@ -31,7 +31,7 @@
     "hazelcast-client": "^4.2.0",
     "helmet": "^4.6.0",
     "http-proxy-middleware": "^2.0.0",
-    "ioredis": "^4.27.5",
+    "ioredis": "^4.27.6",
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.0.3",
     "knex": "^0.95.6",

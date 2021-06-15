@@ -1,32 +1,8 @@
-/*
- * @license
- * Copyright 2019 Google Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License
- */
 const express = require('express')
 const router = express.Router()
 const crypto = require('crypto')
 const fido2 = require('@simplewebauthn/server')
 const base64url = require('base64url')
-
-// lowdb
-// const fs = require('fs')
-// const low = require('lowdb') // npm install lowdb
-// const FileSync = require('lowdb/adapters/FileSync')
-// const adapter = new FileSync('./db.json') // specify filename here
-// const db = low(adapter)
-// db.defaults({ users: [], }).write()
 
 router.use(express.json())
 
@@ -60,24 +36,16 @@ const userUpdate = (id, _user) => {
 
 const userDelete = (id) => { }
 
-
-const csrfCheck = (req, res, next) => {
-  if (req.header('X-Requested-With') != 'XMLHttpRequest') {
-    res.status(400).json({ error: 'invalid access.' })
-    return
+const authCheck = (req, res, next) => {
+  if (req.header('X-Requested-With') !== 'XMLHttpRequest') return res.status(400).json({ error: 'invalid access.' })
+  // console.log('req.headers', req.headers)
+  if (!req.headers.authorization) return res.status(400).json({ error: 'invalid access 2.' })
+  const username = req.headers.authorization
+  req.token = {
+    username
   }
   next()
 };
-
-// Checks CSRF protection using custom header `X-Requested-With`
-// If the session doesn't contain `signed-in`, consider the user is not authenticated.
-const sessionCheck = (req, res, next) => {
-  if (!req.session['signed-in']) {
-    res.status(401).json({ error: 'not signed in.' })
-    return
-  }
-  next()
-}
 
 const getOrigin = (userAgent) => {
   let origin = '';
@@ -93,77 +61,45 @@ const getOrigin = (userAgent) => {
 
 router.post('/spa-register', (req, res) => {
   try {
-    const username = req.body.username
+    const { username, password } = req.body
     // Only check username, no need to check password as this is a mock
-    if (!username || !/[a-zA-Z0-9-_]+/.test(username)) {
-      return res.status(400).json({ error: 'Bad request' })
-    } else {
-      // See if account already exists
-      let user = userFind(username)
-      // If user entry is not created yet, create one
-      if (!user) {
-        user = {
-          username: username,
-          id: base64url.encode(crypto.randomBytes(32)),
-          credentials: [],
-        }
-        userCreate(user)
-      }
-      res.json(user)
-    }  
-  } catch (e) {
-    res.status(500).json({ error: e.toString() })
-  }
-})
+    if (!username || !/[a-zA-Z0-9-_]+/.test(username)|| !password) return res.status(400).json({ error: 'Bad request' })
 
-// Check username, create a new account if it doesn't exist.
-// Set a `username` in the session.
-router.post('/username', (req, res) => {
-  const username = req.body.username
-  // Only check username, no need to check password as this is a mock
-  if (!username || !/[a-zA-Z0-9-_]+/.test(username)) {
-    res.status(400).send({ error: 'Bad request' })
-    return
-  } else {
     // See if account already exists
     let user = userFind(username)
     // If user entry is not created yet, create one
     if (!user) {
       user = {
-        username: username,
+        username,
+        password,
         id: base64url.encode(crypto.randomBytes(32)),
         credentials: [],
       }
       userCreate(user)
     }
-    // Set username in the session
-    req.session.username = username
-    // If sign-in succeeded, redirect to `/home`.
     res.json(user)
+  } catch (e) {
+    res.status(500).json({ error: e.toString() })
   }
 })
 
 // Verifies user credential and let the user sign-in.
 // No preceding registration required.
 // This only checks if `username` is not empty string and ignores the password.
-router.post('/password', (req, res) => {
-  if (!req.body.password) {
-    res.status(401).json({ error: 'Enter at least one random letter.' })
-    return
+router.post('/spa-login', (req, res) => {
+  try {
+    const { username, password } = req.body
+    const user = userFind(username)
+    if (!user) return res.status(401).json({ error: 'User not found' })
+    if (user.password !== password) return res.status(401).json({ error: 'Login failed' })
+    res.json(user)
+  } catch (e) {
+    res.status(500).json({ error: e.toString() })
   }
-  const user = userFind(req.session.username)
-  if (!user) {
-    res.status(401).json({ error: 'Enter username first.' })
-    return
-  }
-  req.session['signed-in'] = 'yes'
-  res.json(user)
 })
 
 router.get('/signout', (req, res) => {
   // Remove the session
-  delete req.session.username
-  delete req.session['signed-in']
   // Redirect to `/`
   res.redirect(302, '/')
 })
@@ -177,23 +113,21 @@ router.get('/signout', (req, res) => {
 // ```
 // { credId: String, publicKey: String, aaguid: ??, prevCounter: Int };
 // ```
-router.post('/getKeys', csrfCheck, sessionCheck, (req, res) => {
-  const user = userFind(req.session.username)
+router.post('/get-keys', authCheck, (req, res) => {
+  const user = userFind(req.token.username)
   res.json(user || {})
 })
 
 // Removes a credential id attached to the user
 // Responds with empty JSON `{}`
-router.post('/removeKey', csrfCheck, sessionCheck, (req, res) => {
-  const credId = req.query.credId;
-  const username = req.session.username;
+router.post('/remove-key', authCheck, (req, res) => {
+  const credId = req.query.credId
+  const { username } = req.token
   const user = userFind(username)
-
   const newCreds = user.credentials.filter((cred) => {
     // Leave credential ids that do not match
     return cred.credId !== credId;
   })
-
   userUpdate(username, { credentials: newCreds })
   res.json({});
 });
@@ -230,10 +164,9 @@ router.post('/removeKey', csrfCheck, sessionCheck, (req, res) => {
      attestation: ('none'|'indirect'|'direct')
  * }```
  **/
-router.post('/registerRequest', csrfCheck, sessionCheck, async (req, res) => {
-  const username = req.session.username;
+router.post('/spa-register-request', authCheck, async (req, res) => {
+  const { username } = req.token
   const user = userFind(username)
-
   try {
     const excludeCredentials = [];
     if (user.credentials.length > 0) {
@@ -292,9 +225,6 @@ router.post('/registerRequest', csrfCheck, sessionCheck, async (req, res) => {
       authenticatorSelection,
     });
 
-    console.log('req.session.challenge =', options.challenge)
-    req.session.challenge = options.challenge;
-
     // Temporary hack until SimpleWebAuthn supports `pubKeyCredParams`
     options.pubKeyCredParams = [];
     for (let param of params) {
@@ -322,9 +252,10 @@ router.post('/registerRequest', csrfCheck, sessionCheck, async (req, res) => {
      }
  * }```
  **/
-router.post('/registerResponse', csrfCheck, sessionCheck, async (req, res) => {
-  const username = req.session.username;
-  const expectedChallenge = req.session.challenge;
+router.post('/spa-register-response', authCheck, async (req, res) => {
+  console.log('response req.query.challenge', req.query.challenge) // BE
+  const username = req.token.username;
+  const expectedChallenge = req.query.challenge;
   const expectedOrigin = getOrigin(req.get('User-Agent'));
   const expectedRPID = RP_ID()
   const credId = req.body.id;
@@ -348,7 +279,7 @@ router.post('/registerResponse', csrfCheck, sessionCheck, async (req, res) => {
 
     const { base64PublicKey, base64CredentialID, counter } = authenticatorInfo;
 
-    const user = userFind(req.session.username)
+    const user = userFind(req.token.username)
     const existingCred = user.credentials.find(
       (cred) => cred.credID === base64CredentialID,
     );
@@ -365,13 +296,9 @@ router.post('/registerResponse', csrfCheck, sessionCheck, async (req, res) => {
     }
 
     userUpdate(username, user)
-
-    delete req.session.challenge;
-
     // Respond with user info
     res.json(user);
   } catch (e) {
-    delete req.session.challenge;
     res.status(400).send({ error: e.message });
   }
 });
@@ -390,9 +317,9 @@ router.post('/registerResponse', csrfCheck, sessionCheck, async (req, res) => {
      }, ...]
  * }```
  **/
-router.post('/signinRequest', csrfCheck, async (req, res) => {
+router.post('/spa-signin-request', authCheck, async (req, res) => {
   try {
-    const user = userFind(req.session.username)
+    const user = userFind(req.token.username)
     if (!user) {
       // Send empty response if user is not registered yet.
       res.json({ error: 'User not found.' });
@@ -423,8 +350,6 @@ router.post('/signinRequest', csrfCheck, async (req, res) => {
        */
       userVerification,
     });
-    console.log('req.session.challenge =', options.challenge)
-    req.session.challenge = options.challenge;
 
     res.json(options);
   } catch (e) {
@@ -447,14 +372,14 @@ router.post('/signinRequest', csrfCheck, async (req, res) => {
      }
  * }```
  **/
-router.post('/signinResponse', csrfCheck, async (req, res) => {
+router.post('/spa-signin-response', authCheck, async (req, res) => {
   const { body } = req;
-  const expectedChallenge = req.session.challenge;
+  const expectedChallenge = req.query.challenge;
   const expectedOrigin = getOrigin(req.get('User-Agent'));
   const expectedRPID = RP_ID()
 
   // Query the user
-  const user = userFind(req.session.username)
+  const user = userFind(req.token.username)
 
   let credential = user.credentials.find((cred) => cred.credId === req.body.id);
 
@@ -479,13 +404,10 @@ router.post('/signinResponse', csrfCheck, async (req, res) => {
 
     credential.prevCounter = authenticatorInfo.counter;
 
-    userUpdate(req.session.username, user)
+    userUpdate(req.token.username, user)
 
-    delete req.session.challenge;
-    req.session['signed-in'] = 'yes';
     res.json(user);
   } catch (e) {
-    delete req.session.challenge;
     res.status(400).json({ error: e });
   }
 });

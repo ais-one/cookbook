@@ -20,6 +20,7 @@ const express = require('express')
 const session = require('express-session')
 const hbs = require('hbs')
 const webauthn = require('./webauthn')
+const webauthnSpa = require('./webauthn-spa')
 const app = express()
 
 const HOSTNAME = '192.168.18.8' // 'localhost'
@@ -29,7 +30,8 @@ app.set('view engine', 'html')
 app.engine('html', hbs.__express)
 app.set('views', './views')
 app.use(express.json())
-app.use(express.static('public'))
+app.use('/spa', express.static('public/spa'))
+app.use('/', express.static('public/ssr'))
 app.use(session({
   secret: 'secret', // You should specify a real secret here
   resave: true,
@@ -124,6 +126,7 @@ app.get('/.well-known/assetlinks.json', (req, res) => {
 })
 
 app.use('/webauthn', webauthn)
+app.use('/webauthn-spa', webauthnSpa)
 
 // listen for req :)
 // const listener = app.listen(port || process.env.PORT, () => console.log('Your app is listening on port ' + listener.address().port));
