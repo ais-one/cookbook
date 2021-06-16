@@ -8,9 +8,9 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.5.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.2) - Released 2021 July 09 1010 +8GMT
+Latest Version [0.5.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.2) - Released 2021 June 16 2115 +8GMT
 
-- replace **kristophjunge/test-saml-idp** with **keycloak** as idp
+- replace docker image **kristophjunge/test-saml-idp** with **keycloak** as idp, add webauthn samples in folder **wip/fido2**
 
 # Features
 
@@ -37,6 +37,7 @@ Latest Version [0.5.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.2)
     - File uploads, Signed URL file upload to GCP Storage, websockets, webworkers (frontend demo)
     - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML
     - Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
+- [wip/fido2] - sample implementation for webauthn (SSR sample and SPA sample)
 - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
 - [Docker setups](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) for Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
 - [Secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)

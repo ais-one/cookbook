@@ -129,12 +129,13 @@ export default {
       try {
         if (!password.value) {
           const rv = await authenticate(credId.value)
-          console.log(rv)
+          console.log('webauthn', rv)
+          loggedIn.value = true
         } else {
           const rv = await _fetch('/webauthn-spa/spa-login', { username: username.value, password: password.value })
-          console.log(rv)
+          loggedIn.value = true
+          console.log('password', rv)
         }
-        loggedIn.value = true
       } catch (e) {
         console.log('login', e.toString())
       }

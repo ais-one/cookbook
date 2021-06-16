@@ -6,6 +6,7 @@
 - [chore] migration to node 16
 - [example-app] jsonschema & openapi 3.1
 - [example-vite] cypress e2e testing
+- update webauthnsimple to v3
 - [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)
 - [@es-labs/esm/bwc-t4t-form.js] - handle multiple parent values use case of combobox..., handle reset of multiple child columns
 - [fix] - ==='object' - handle null object

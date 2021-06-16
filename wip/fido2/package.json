@@ -15,7 +15,7 @@
     "selfsigned": "^1.10.11"
   },
   "engines": {
-    "node": "10.x"
+    "node": "12.x"
   },
   "repository": {
     "url": "https://github.com/googlecodelabs/fido2-codelab"
