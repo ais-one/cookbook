@@ -87,7 +87,6 @@ export const authenticate = async (credId) => {
   const opts = {}
 
   let url = '/webauthn-spa/spa-signin-request'
-  // const credId = localStorage.getItem(`credId`) // TBD
   if (credId) {
     url += `?credId=${encodeURIComponent(credId)}`
   }

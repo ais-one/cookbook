@@ -51,11 +51,9 @@ app.use((req, res, next) => {
     process.env.HOSTNAME = req.headers.host;
   }
   // process.env.HOSTNAME = HOSTNAME + ':' + port // if not 80n or 443
-  // console.log('process.env.HOSTNAME', process.env.HOSTNAME)
 
   const protocol = 'https' // /^localhost/.test(process.env.HOSTNAME) ? 'http' : 'https';
   process.env.ORIGIN = `${protocol}://${process.env.HOSTNAME}`;
-  // console.log('process.env.ORIGIN', process.env.ORIGIN)
   if (
     req.get('x-forwarded-proto') &&
     req.get('x-forwarded-proto').split(',')[0] !== 'https'

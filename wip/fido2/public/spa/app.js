@@ -82,15 +82,12 @@ export default {
     const username = ref('')
     const password = ref('')
     const credId = ref('') // credentials id
-    const access_token = ref('')
-    const refresh_token = ref('')
     const loggedIn = ref(false)
 
     //store management: save $variables to localstorage
     onMounted(() => {
       if (window.location.hash) {
         // verify incoming token, if ok redirect to private page
-        access_token
       }
     })
 
@@ -106,7 +103,7 @@ export default {
 
     const register = async () => {
       try {
-        const rv = await _fetch('/webauthn-spa/spa-register', { username: username.value, password: password.value })
+        await _fetch('/webauthn-spa/spa-register', { username: username.value, password: password.value })
         setToken(username.value)
         registerCredential().then(async (user) => {
           credId.value = await getCredentials()

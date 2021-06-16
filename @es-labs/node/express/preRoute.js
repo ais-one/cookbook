@@ -64,7 +64,6 @@ module.exports = function(app, express, options) {
   const  { HELMET_OPTIONS, CORS_OPTIONS, CORS_ORIGINS } = options
   const { COOKIE_SECRET = (parseInt(Date.now() / 28800000) * 28800000).toString() } = options
   // const { SWAGGER_DEFS } = options
-  const { SAML_OPTIONS } = options
 
   Error.stackTraceLimit = STACK_TRACE_LIMIT // limit error stack trace to 1 level
   console.log('stackTraceLimit: ', STACK_TRACE_LIMIT)

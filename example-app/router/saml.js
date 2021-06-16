@@ -3,7 +3,6 @@
 // working SAML ADFS example
 
 const express = require('express')
-// const passport = require('passport')
 const { createToken } = require('@es-labs/node/auth')
 const { JWT_EXPIRY } = global.CONFIG
 const passport = require('@es-labs/node/express/passport').get()

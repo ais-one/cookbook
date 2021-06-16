@@ -8,7 +8,7 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.5.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.2) - Released 2021 June 16 2115 +8GMT
+Latest Version [0.5.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.2) - Released 2021 June 16 2145 +8GMT
 
 - replace docker image **kristophjunge/test-saml-idp** with **keycloak** as idp, add webauthn samples in folder **wip/fido2**
 
