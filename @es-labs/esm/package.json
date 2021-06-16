@@ -1,13 +1,22 @@
 {
   "name": "@es-labs/esm",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "author": "Aaron Gong",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ais-one/vue-crud-x.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ais-one/vue-crud-x/issues"
+  },
+  "homepage": "https://github.com/ais-one/vue-crud-x#readme",
+  "keywords": [ "javascript", "esm", "modules" ],
   "description": "shared libraries - esm",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
   }
 }

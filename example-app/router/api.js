@@ -16,13 +16,13 @@ const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 
 const { authUser } = require('../middlewares/auth')
 
-module.exports = express.Router()
+module.exports = express.Router({caseSensitive: true})
   .get('/python', (req, res) => {
-    // long running python
+    // spawn long running python process
     const child = spawn('python', ['test.py'], {
       detached: true,
       stdio: 'ignore'
-    })    
+    })
     // child.stdout.on('data', function (data) {
     //   console.log('Pipe data from python script ...')
     //   dataToSend = data.toString()

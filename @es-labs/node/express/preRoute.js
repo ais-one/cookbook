@@ -64,7 +64,6 @@ module.exports = function(app, express, options) {
   const  { HELMET_OPTIONS, CORS_OPTIONS, CORS_ORIGINS } = options
   const { COOKIE_SECRET = (parseInt(Date.now() / 28800000) * 28800000).toString() } = options
   // const { SWAGGER_DEFS } = options
-  const { SAML_OPTIONS } = options
 
   Error.stackTraceLimit = STACK_TRACE_LIMIT // limit error stack trace to 1 level
   console.log('stackTraceLimit: ', STACK_TRACE_LIMIT)
@@ -101,7 +100,8 @@ module.exports = function(app, express, options) {
     if (allowList.length === 1) origin = allowList[0]
     else if (allowList.length > 1) {
       origin = function (_origin, callback) {
-        if(!_origin) return callback(null, true) // allow requests with no origin (like mobile apps or curl requests)
+        // console.log('CORS origin', typeof _origin, _origin, allowList)
+        if(!_origin || _origin === 'null') return callback(null, true) // allow requests with no origin (like mobile apps or curl requests)
         if (allowList.indexOf(_origin) !== -1) {
           return callback(null, true)
         } else {
@@ -137,32 +137,6 @@ module.exports = function(app, express, options) {
   //     explorer: true
   //   }))  
   // }
-
-  // working SAML ADFS example
-  // https://github.com/bergie/passport-saml/blob/master/docs/adfs/README.md
-  // const fs = require('fs')
-  if (SAML_OPTIONS) {
-    const passport = require('passport')
-    const SamlStrategy = require('passport-saml').Strategy
-  
-    app.use(passport.initialize())
-
-    passport.serializeUser((user, done) => { done(null, user) })
-    passport.deserializeUser((user, done) => { done(null, user) })
-
-    passport.use('saml', new SamlStrategy(
-      SAML_OPTIONS,
-      (profile, done) => {
-        // console.log('profile', profile)
-        return done(null, { // map whatever claims/profile info you want here
-          // upn: profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn'],
-          // // e.g. if you added a Group claim
-          // group: profile['http://schemas.xmlsoap.org/claims/Group']
-          ...profile
-        })
-      }
-    ))
-  }
 
   return this // this is undefined...
 }

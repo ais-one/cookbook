@@ -1,0 +1,33 @@
+{
+  "name": "webauthn-simple",
+  "version": "0.0.3",
+  "description": "Simple WebAuthn Example",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "@simplewebauthn/server": "^0.10.3",
+    "base64url": "^3.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "hbs": "^4.1.1",
+    "selfsigned": "^1.10.11"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "repository": {
+    "url": "https://github.com/googlecodelabs/fido2-codelab"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "node",
+    "express",
+    "webauthn",
+    "fido2"
+  ],
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}

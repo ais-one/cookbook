@@ -8,9 +8,9 @@
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.5.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.1) - Released 2021 June 09 1010 +8GMT
+Latest Version [0.5.2](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.2) - Released 2021 June 16 2145 +8GMT
 
-- complete crud example from example-webpack to example-native, add web workers example
+- replace docker image **kristophjunge/test-saml-idp** with **keycloak** as idp, add webauthn samples in folder **wip/fido2**
 
 # Features
 
@@ -37,12 +37,12 @@ Latest Version [0.5.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.1)
     - File uploads, Signed URL file upload to GCP Storage, websockets, webworkers (frontend demo)
     - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML
     - Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
+- [wip/fido2] - sample implementation for webauthn (SSR sample and SPA sample)
 - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
-- [Docker setups](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) for Mongodb, Mysql, SAML IDP, Kafka, Hashicorp Vault, Redis
+- [Docker setups](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) for Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
 - [Secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
 - [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
 - AMP Website: [removed](https://plausible.io/blog/google-amp)
-- [example-react]: TBD
 
 # QUICK START - ON YOUR LOCAL MACHINE
 
@@ -182,10 +182,10 @@ Login is same as Vite SPA
 ## SAML
 
 Refer to link below on how to try out...
-- https://github.com/ais-one/vue-crud-x/blob/develop/docker-devenv/saml/docker-compose.yml
+- https://github.com/ais-one/vue-crud-x/blob/master/docker-devenv/keycload/README.md
 - You can test out on the **example-vite** Signin UI, clicking on SAML button to see redirect callback
-- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/common-express/preRoute.js
-- https://github.com/ais-one/vue-crud-x/blob/develop/example-app/router/saml.js
+- https://github.com/ais-one/vue-crud-x/blob/master/@es-labs/node/express/passport.js
+- https://github.com/ais-one/vue-crud-x/blob/master/example-app/router/saml.js
 
 ---
 ## Configuration
@@ -210,20 +210,20 @@ vue-crud-x
 |     +- auth/ : authentication
 |     +- comms/ : messaging
 |     +- services/ : db
-|     +- express/ : for ExpressJS
+|     +- express/ : common codes used in express JS apps
 |     +- config.default.js: defaults
 |     +- config.js: config loader
 |     +- package.json
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
-+- example-amp/ : AMP example (TBD)
 +- example-app/ : [example backend] - See example-app/README.md for Project Structure
-|  +- common-express/ : common codes used in express apps
 +- example-native/ : frontend (Vue3 no bundle) - See example-native/README.md for Project Structure
 +- example-vite/ : frontend (Vue3 rollup) - See example-vite/README.md for Project Structure
 +- example-webpack/ : frontend associated to the backend (Vue2 webpack) - See example-webpack/README.md for Project Structure
 |  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
-+- k8s/ : kubernetes YAML files (WIP)
++- wip/ : projects in progress
+|  +- k8s/ : kubernetes YAML files (WIP)
+|  +- fido2/ : WebAuthn example
 +- .editorconfig
 +- .gitignore
 +- BACKLOG.md

@@ -2,9 +2,7 @@
 
 Libs are now found within the example projects.
 
-1. vue (wepback) - example-vite/lib/webpacked (to deprecate and remove)
-
-2. nodejs and express - example-app/lib/[all others not listed above]
+vue (wepback) - example-webpacked/lib/webpacked (to deprecate and remove)
 
 ## Projects and Repo
 
@@ -12,14 +10,26 @@ We will find a better way of updating to have correct CI the following folders s
 - example-app
 - example-native
 - example-vite
-- example-webpack
+- example-webpack (to remove)
 
 
-
-## Usage (Improved Modularity - WIP)
+## Usage
 
 npm install <path-to-this-foder-from-where-you-want-to-install-this>
 
 e.g.
 
-npm install ../lib
+```
+cd my-project
+npm install ../@es-labs/node
+```
+
+## Publishing packages to npm
+
+```bash
+# for scoped packages e.g. @es-labs/node
+npm publish --access public
+
+# for packages e.g. ais-one/vue-crud-x
+npm publish
+```
