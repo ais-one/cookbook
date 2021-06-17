@@ -11,14 +11,15 @@
 Latest Version [0.5.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.3) - Released 2021 July 01 2145 +8GMT
 
 - replace docker image **kristophjunge/test-saml-idp** with **keycloak** as idp, add webauthn samples in folder **wip/fido2**
+- [NOTE!] project name is going to be replaced to a more appropriate one
 
 # About
 
-**vue-crud-x** is cookbook with evergreen recipes and templates to develop applications faster. While reducing the need for rewrite or refactoring due to changes in dependencies.
+**vue-crud-x** is a cookbook with evergreen recipes and templates to develop applications faster. While reducing the need for rewrite or refactoring due to changes in dependencies.
 
 Folder | Description | Features
 ---|---|---
-[@es-labs/esm](https://github.com/ais-one/vue-crud-x/tree/master/@es-labs/esm) | resuable ES module codes | Available as npm package also
+[@es-labs/esm](@es-labs/esm) | resuable ES module codes | Available as npm package also
 [@es-labs/node](https://github.com/ais-one/vue-crud-x/tree/master/@es-labs/node) | reusable common JS codes | Available as npm package also
 [docker-devenv](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) | Docker containers supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
 [docs](https://github.com/ais-one/vue-crud-x/tree/master/docs) | Documentation | always work in progress and to be improved<br/>[Secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
@@ -146,7 +147,7 @@ Login using the following:
 - Password: test
 - OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin
 
-You can test PWA Push notifications using Webpush or FCM () on Dashboard page depending on **.env.<environment>** file configuration (need to be on 127.0.0.1).
+You can test PWA Push notifications using Webpush or FCM on Dashboard page depending on **.env.<environment>** file configuration (need to be on 127.0.0.1).
 
 Click the following buttons in order (see their output in console.log and screen):
 - sub PN (subscribe)
@@ -162,7 +163,7 @@ npm run build-uat # build uat environment, deploy to GCP Storage
 ```
 Navigate to http://127.0.0.1:3000/vite/
 
-### Webpack SPA Setup & Run - development environment - TO DEPRECATE
+### Webpack SPA Setup & Run - development environment - DEPRECATED
 
 ```bash
 cd example-webpack
@@ -196,8 +197,6 @@ Refer to link below on how to try out...
 The **example-app/config/** folder contains the config information.
 
 You can override the configurations using <NODE_ENV>.env.js files, e.g. development.env.js or uat.env.js in **example-app/config**
-
-If too many config properties, split it to other more and files
 
 ---
 
@@ -239,7 +238,7 @@ vue-crud-x
 
 ## CI/CD
 
-Using github actions
+Using github actions, deploy to GCP Cloud
 
 Manually triggered deployment on .github/workflows/manual.yml
 
@@ -279,7 +278,8 @@ VAULT={ secrets: { ... all your secrets here } } # base64 encoded
 
 ## VERSION CHANGE NOTES
 
+- **v0.5+** Improve organization and authentication, add new features
 - **v0.4+** Improve folders and structure organization, handle CI/CD better
 - **v0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
-- **v0.2+** uses Vuetify 2. Due to many breaking changes from Vuetify 1 to 2, CRUD component code was refactored to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and <a href="https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0" target="_blank">supprting article - VueJS+ExpressJS CRUD & Cookbook</a>
+- **v0.2+** uses Vuetify 2. Due to breaking changes from Vuetify 1 to 2, CRUD component code was refactored to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and <a href="https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0" target="_blank">supprting article - VueJS+ExpressJS CRUD & Cookbook</a>
 - **v0.1** and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1). You can refer to the v1  <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Legacy Article (For Historical Reference)</a>
