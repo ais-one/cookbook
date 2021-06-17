@@ -1,10 +1,7 @@
 ## Issues
 
 ### For next sprint / version
-- shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
-- nodejs workers
 - [chore] migration to node 16
-- [example-app] jsonschema & openapi 3.1
 - [example-vite] cypress e2e testing
 - update webauthnsimple to v3
 - [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)

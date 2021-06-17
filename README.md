@@ -12,9 +12,28 @@ Latest Version [0.5.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.3)
 
 - replace docker image **kristophjunge/test-saml-idp** with **keycloak** as idp, add webauthn samples in folder **wip/fido2**
 
+# About
+
+**vue-crud-x** is cookbook with evergreen recipes and templates to develop applications faster. While reducing the need for rewrite or refactoring due to changes in dependencies.
+
+Folder | Description | Features
+---|---|---
+[@es-labs/esm](https://github.com/ais-one/vue-crud-x/tree/master/@es-labs/esm) | resuable ES module codes | Available as npm package also
+[@es-labs/node](https://github.com/ais-one/vue-crud-x/tree/master/@es-labs/node) | reusable common JS codes | Available as npm package also
+[docker-devenv](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) | Docker containers supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
+[docs](https://github.com/ais-one/vue-crud-x/tree/master/docs) | Documentation | always work in progress and to be improved<br/>[Secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
+[example-app](https://github.com/ais-one/vue-crud-x/tree/master/example-app) | Backend applications (REST API, TCP server, etc) | <ul><li>CORS, proxy middleware, helmet, error handling, logging, OpenAPI</li><li>Objection ORM, Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis</li><li>Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram</li><li>AgendaJS message queue</li><li>Unit Test & Integration Test</li></ul>
+[example-app/public/demo-express](https://github.com/ais-one/vue-crud-x/tree/master/example-app/public/demo-express) | Frontend to test backend features | <ul><li>File uploads, Signed URL file upload to GCP Storage, websockets, webworkers (frontend demo)</li><li>JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML</li><li>Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)</li></ul>
+[example-native](https://github.com/ais-one/vue-crud-x/tree/master/example-native) | Vue 3 SPA no bundler + Bulma | <ul><li>signed uploads</li><li>JWT refresh token, OTP, recaptcha, Github OAuth2</li><li>**Web component table, form & CRUD backend** (files to note)</li></ul>
+[example-vite](https://github.com/ais-one/vue-crud-x/tree/master/example-vite) | Vue 3 SPA using vite + Ant Design | <ul><li>Leaflet Map, ECharts</li><li>PWA</li><li>JWT refresh token, 2FA GA OTP, SAML</li><li>Websockets</li><li>GraphQL</li><li>rxJS</li><li>Web Components (Webcam, Signature)</li></ul>
+[example-webpack](https://github.com/ais-one/vue-crud-x/tree/master/example-webpack) - Deprecated | Vue 2 SPA using webpack + Vuetify | <ul><li>Graphql (subscriptions, cache, optimistic UI, refetch queries)</li><li>REST</li><li>VueCrudX</li><li>i18n</li><li>RxJS</li></ul>
+[wip](https://github.com/ais-one/vue-crud-x/tree/master/wip) | Work In Progress | <ul><li>[fido2-Webauthn](https://github.com/ais-one/vue-crud-x/tree/master/wip/fido2) - sample implementation for webauthn (SSR sample and SPA sample)</li><li>[K8s](https://github.com/ais-one/vue-crud-x/tree/master/wip/k8s)</li></ul>
+
+Considerations for this project are similar to https://github.com/ais-one/favv/blob/master/README.md#considerations
+
 # Features
 
-- [SPA, ES Modules, Vue3 & Bulma](https://github.com/ais-one/vue-crud-x/tree/master/example-native): No bundler, scalable VueJS Application, example codes (signed uploads, JWT refresh token, OTP), recaptcha, Github OAuth2 login, **Web component table, form & CRUD backend** (files to note)
+- [SPA, ES Modules, Vue3 & Bulma]: 
   - example-app/router/tables/*.* - table configurations
   - example-app/router/t4t.js - handle backend CRUD API
   - @es-labs/esm/t4t-fe.js - frontend operations to interact with t4t.js
@@ -25,23 +44,7 @@ Latest Version [0.5.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.3)
   - example-native/views/ui2.js - table example
   - example-native/views/ui3.js - form example (with connection to backend)
   - example-native/views/ui4.js - table and form example (with connection to backend)
-- [SPA, Vite, Vue3 & Ant Design Vue](https://github.com/ais-one/vue-crud-x/tree/master/example-vite): Web Components, Leaflet Map, ECharts, Webcam, Signature canvas, PWA, JWT refresh token, 2FA GA OTP, SAML, Websockets, GraphQL, rxjs
-- [SPA, Vue-cli, Vue2 & Vuetify](https://github.com/ais-one/vue-crud-x/tree/master/example-webpack): Graphql (subscriptions, cache, optimistic UI, refetch queries), REST, VueCrudX, i18n, RxJS
-- [Express JS Backend](https://github.com/ais-one/vue-crud-x/tree/master/example-app/)
-  - Cors, proxy middleware, helmet, error handling, logging, OpenAPI
-  - Objection ORM, Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis
-  - Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram
-  - AgendaJS message queue
-  - Unit Test & Integration Test
-  - Features with frontend demo in **example-app/public/demo-express**
-    - File uploads, Signed URL file upload to GCP Storage, websockets, webworkers (frontend demo)
-    - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML
-    - Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
-- [wip/fido2] - sample implementation for webauthn (SSR sample and SPA sample)
 - [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
-- [Docker setups](https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv) for Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
-- [Secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
-- [Documentation](https://github.com/ais-one/vue-crud-x/tree/master/docs): always work in progress and to be improved
 - AMP Website: [removed](https://plausible.io/blog/google-amp)
 
 # QUICK START - ON YOUR LOCAL MACHINE

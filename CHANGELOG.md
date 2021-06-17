@@ -1,5 +1,14 @@
 ### Version 0.5.3
 - [chore] update packages & cleanup & work on improving documentation
+- change repo name?
+  - cookbook
+  - recipe
+  - mevn
+  - framework
+  - pluggable
+- shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
+- nodejs workers
+- [example-app] jsonschema & openapi 3.1
 
 ### Version 0.5.2
 - [chore] update packages & cleanup & work on improving documentation

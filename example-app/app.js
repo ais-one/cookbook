@@ -76,7 +76,7 @@ const handleExit = async (signal) => {
 // START ROUTES
 try {
   require('./router')(app)
-  require('./graphql')(app, server)  
+  require('./graphql')(app, server)
 } catch (e) {
   console.log(e.toString())
 }
