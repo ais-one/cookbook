@@ -21,14 +21,15 @@ Folder | Description | Features
 ---|---|---
 [@es-labs/esm](@es-labs/esm) | resuable ES module codes | Available as npm package also
 [@es-labs/node](@es-labs/node) | reusable common JS codes | Available as npm package also
-[docker-devenv]() | Docker containers supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
-[docs](docs) | Documentation | always work in progress and to be improved<br/>[Secrets](https://github.com/ais-one/vue-crud-x/tree/master/docs/secrets.md)
+[docker-devenv](docker-devenv) | Docker containers supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
+[docs](docs) | Documentation | always work in progress and to be improved<br>- [Main](docs/home.md) documentation<br>- [Secrets](docs/secrets.md)<br>- [vue-crud-x](docs/VueCrudX.md) library<br>- [Deployment](docs/deployment/home.md) notes<br>- [Kafka](docs/kafka.md) docs and [code](example-app/sandbox)<br>- [TCP-Server](docs/tcp.md) docs and [code](example-app/sandbox)
 [example-app](example-app) | Backend applications (REST API, TCP server, etc) | <ul><li>CORS, proxy middleware, helmet, error handling, logging, OpenAPI</li><li>Objection ORM, Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis</li><li>Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram</li><li>AgendaJS message queue</li><li>Unit Test & Integration Test</li></ul>
 [example-app/public/demo-express](example-app/public/demo-express) | Frontend to test backend features | <ul><li>File uploads, Signed URL file upload to GCP Storage, websockets, webworkers (frontend demo)</li><li>JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML</li><li>Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)</li></ul>
 [example-native](example-native) | Vue 3 SPA no bundler + Bulma | <ul><li>signed uploads</li><li>JWT refresh token, OTP, recaptcha, Github OAuth2</li><li>**Web component table, form & CRUD backend** (files to note)</li></ul>
 [example-vite](example-vite) | Vue 3 SPA using vite + Ant Design | <ul><li>Leaflet Map, ECharts</li><li>PWA</li><li>JWT refresh token, 2FA GA OTP, SAML</li><li>Websockets</li><li>GraphQL</li><li>rxJS</li><li>Web Components (Webcam, Signature)</li></ul>
 [example-webpack](example-webpack) - Deprecated | Vue 2 SPA using webpack + Vuetify | <ul><li>Graphql (subscriptions, cache, optimistic UI, refetch queries)</li><li>REST</li><li>VueCrudX</li><li>i18n</li><li>RxJS</li></ul>
 [wip](wip) | Work In Progress | <ul><li>[fido2-Webauthn](wip/fido2) - sample implementation for webauthn (SSR sample and SPA sample)</li><li>[K8s](wip/k8s)</li></ul>
+[Github Actions](.github/workflows) | Manually Triggered CI/CD | -
 
 Considerations for this project are similar to https://github.com/ais-one/favv/blob/master/README.md#considerations
 
@@ -45,7 +46,6 @@ Considerations for this project are similar to https://github.com/ais-one/favv/b
   - example-native/views/ui2.js - table example
   - example-native/views/ui3.js - form example (with connection to backend)
   - example-native/views/ui4.js - table and form example (with connection to backend)
-- [Github Actions](https://github.com/ais-one/vue-crud-x/tree/master/.github/workflows) - Manual Trigger
 - AMP Website: [removed](https://plausible.io/blog/google-amp)
 
 # QUICK START - ON YOUR LOCAL MACHINE
@@ -53,7 +53,7 @@ Considerations for this project are similar to https://github.com/ais-one/favv/b
 ## Requirements
 
 - NodeJS LTS
-- For Windows, integrate bash shell to cmd shell (when installing git), or use git-bash
+- For Windows, **integrate bash shell to cmd shell** (when installing git), or use git-bash
 - Docker (easier to use VS Code Docker plugin)
 
 ## Download
@@ -186,17 +186,19 @@ Login is same as Vite SPA
 ## SAML
 
 Refer to link below on how to try out...
-- https://github.com/ais-one/vue-crud-x/blob/master/docker-devenv/keycload/README.md
-- You can test out on the **example-vite** Signin UI, clicking on SAML button to see redirect callback
-- https://github.com/ais-one/vue-crud-x/blob/master/@es-labs/node/express/passport.js
-- https://github.com/ais-one/vue-crud-x/blob/master/example-app/router/saml.js
+- [Keycloak](docker-devenv/keycloak/README.md) README.md
+- You can test out on the [example-vite](example-vite) Signin UI, clicking on SAML button to see redirect callback
+- Refer also to the following files
+  - [@es-labs/node/express/passport.js](@es-labs/node/express/passport.js)
+  - [example-app/router/saml.js](example-app/router/saml.js)
 
 ---
+
 ## Configuration
 
-The **example-app/config/** folder contains the config information.
+The [example-app/config](example-app/config) folder contains the config information.
 
-You can override the configurations using <NODE_ENV>.env.js files, e.g. development.env.js or uat.env.js in **example-app/config**
+You can override the configurations using <NODE_ENV>.env.js files, e.g. development.env.js or uat.env.js in [example-app/config](example-app/config)
 
 ---
 
@@ -264,17 +266,6 @@ VAULT={ url, token } # base64 encoded
  # pass in secrets, this way is insecure and not a good way to send in secrets
 VAULT={ secrets: { ... all your secrets here } } # base64 encoded
 ```
-
-## DOCUMENTATION
-
-- Project roadmap at [BACKLOG.md](BACKLOG.md)
-- Release notes at [CHANGELOG.md](CHANGELOG.md)
-- Current Issues at [CHANGELOG.md](ISSUES.md)
-- Main documentation starts at [docs/home.md](docs/home.md)
-- **vue-crud-x** library documentation can be found in [docs/VueCrudX.md](docs/VueCrudX.md)
-- Deployment notes can be found in (docs/deployment/home.md)
-- Kafka [docs/kafka.md](docs/kafka.md) and code found in **example-app/sandbox**
-- TCP Server [docs/tcp.md](docs/tcp.md) and code found in **example-app/sandbox**
 
 ## VERSION CHANGE NOTES
 
