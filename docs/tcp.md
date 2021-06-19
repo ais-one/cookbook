@@ -1,10 +1,10 @@
 ## TCP Server
 
-Running the example (from vue-crud-x folder)
+Running the example
 
 ```
 npm i
-cd sandbox
+cd example-app/sandbox
 node tcpServer.js
 ```
 

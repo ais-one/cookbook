@@ -37,10 +37,7 @@ Commands to import or export your data
 
 ## Docker (WSL or Linux)
 
-Reference : https://github.com/ais-one/vue-crud-x/tree/master/docker-devenv/mongodb
-
-
-
+Reference : [../../docker-devenv/mongodb](../../docker-devenv/mongodb)
 
 
 https://github.com/microsoft/WSL/issues/796

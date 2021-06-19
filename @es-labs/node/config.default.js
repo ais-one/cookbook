@@ -51,8 +51,8 @@ global.CONFIG.SAML_OPTIONS = null // https://github.com/node-saml/passport-saml#
 // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
 // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}
 // MONGO_URL=mongodb://127.0.0.1:27017/mm?replicaSet=rs0
-global.CONFIG.MONGO_DB = 'testdb-' + process.env.NODE_ENV
-global.CONFIG.MONGO_URL = 'mongodb://127.0.0.1:27017/testdb-' + process.env.NODE_ENV
+global.CONFIG.MONGO_DB = null
+global.CONFIG.MONGO_URL = null
 // https://mongodb.github.io/node-mongodb-native/3.6/reference/connecting/connection-settings/
 global.CONFIG.MONGO_OPTIONS = {
   // https://github.com/Automattic/mongoose/issues/8180

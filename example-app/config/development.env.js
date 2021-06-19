@@ -1,4 +1,13 @@
 module.exports = {
+  KNEXFILE: {
+    client: 'sqlite3',
+    connection: { filename: 'dev.sqlite3' }, // relative to directory that package.json was run
+    useNullAsDefault: true  
+  },
+
+  MONGO_DB: 'testdb-' + process.env.NODE_ENV,
+  MONGO_URL: 'mongodb://127.0.0.1:27017/testdb-' + process.env.NODE_ENV,
+  
   JWT_REFRESH_STORE: 'keyv',
   USE_GRAPHQL: true,
   CORS_ORIGINS: 'http://127.0.0.1:8080,http://127.0.0.1:3000,http://127.0.0.1:8081,' // port 8081 is from SAML
