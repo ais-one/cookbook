@@ -55,83 +55,10 @@ https://github.com/hkiang01/fastapi-keycloak-oidc-auth
 
 Create oidc client called test-oidc-client-favv on keycloak
 
-Root URL: http://localhost:8000
-Valid Redirect URIS: http://localhost:8000/auth
-Admin URL: http://localhost:8000/login
-Web Origins: http://localhost:8000/login
-
-```py
-import json
-import logging
-from typing import Dict
-
-import jwt
-import requests
-import uvicorn
-from fastapi import FastAPI
-from fastapi.security.utils import get_authorization_scheme_param
-from starlette.requests import Request
-from starlette.responses import RedirectResponse
-
-APP_BASE_URL = "http://localhost:8000/"
-KEYCLOAK_BASE_URL = "http://localhost:8081"
-CLIENT_ID = "test-oidc-client-favv"
-
-AUTH_URL = (
-    f"{KEYCLOAK_BASE_URL}/auth/realms/Clients"
-    f"/protocol/openid-connect/auth?client_id={CLIENT_ID}}&response_type=code"
-)
-TOKEN_URL = (
-    f"{KEYCLOAK_BASE_URL}/auth/realms/Clients/protocol/openid-connect/token"
-)
-
-
-logger = logging.getLogger(__name__)
-logger.setLevel("DEBUG")
-
-app = FastAPI()
-
-
-@app.get("/login")
-async def login() -> RedirectResponse:
-    return RedirectResponse(AUTH_URL)
-
-
-@app.get("/auth")
-async def auth(code: str) -> RedirectResponse:
-    payload = (
-        f"grant_type=authorization_code&code={code}"
-        f"&redirect_uri={APP_BASE_URL}&client_id={CLIENT_ID}}"
-    )
-    headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    token_response = requests.request(
-        "POST", TOKEN_URL, data=payload, headers=headers
-    )
-
-    token_body = json.loads(token_response.content)
-    access_token = token_body["access_token"]
-
-    response = RedirectResponse(url="/")
-    response.set_cookie("Authorization", value=f"Bearer {access_token}")
-    return response
-
-
-@app.get("/")
-async def root(request: Request,) -> Dict:
-    authorization: str = request.cookies.get("Authorization")
-    scheme, credentials = get_authorization_scheme_param(authorization)
-
-    decoded = jwt.decode(
-        credentials, verify=False
-    )  # TODO input keycloak public key as key, disable option to verify aud
-    logger.debug(decoded)
-
-    return {"message": "You're logged in!"}
-
-
-if __name__ == "__main__":
-    uvicorn.run(app, port=8000, loop="asyncio")
-```
+Root URL: http://127.0.0.1:3000/api/oidc
+Valid Redirect URIS: http://127.0.0.1:3000/api/oidc/auth
+Admin URL: http://127.0.0.1:3000/api/oidc/login
+Web Origins: http://127.0.0.1:3000/api/oidc/login
 
 ## Kubernetes
 

@@ -16,7 +16,7 @@ Considerations for this project are similar to [https://github.com/ais-one/favv/
 
 Latest Version [0.5.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.3) - Released 2021 July 01 2145 +8GMT
 
-- replace docker image **kristophjunge/test-saml-idp** with **keycloak** as idp, add webauthn samples in folder **wip/fido2**
+- add oidc example
 - [NOTE!] project name is going to be replaced to a more appropriate one
 
 # Features
@@ -28,9 +28,9 @@ Folder | Description | Features
 [docker-devenv](docker-devenv) | Docker containers supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
 [docs](docs) | Documentation | always work in progress and to be improved<br>- Main [documentation](docs/home.md)<br>- Secrets [documentation](docs/secrets.md)<br>- vue-crud-x [documentation](docs/VueCrudX.md)<br>- Deployment [notes](docs/deployment/home.md)<br>- Kafka [docs](docs/kafka.md) and [code](example-app/sandbox)<br>- TCP Server [docs](docs/tcp.md) and [code](example-app/sandbox)
 [example-app](example-app) | Backend applications (REST API, TCP server, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Objection ORM, Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
-[example-app/public/demo-express](example-app/public/demo-express) | Frontend to test backend features | - File uploads, Signed URL file upload to GCP Storage, websockets, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
+[example-app/public/demo-express](example-app/public/demo-express) | Frontend to test backend features | - File uploads, Signed URL file upload to GCP Storage, websockets, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
 [example-native](example-native) | Vue 3 SPA no bundler + Bulma | - signed uploads<br>- JWT refresh token, OTP, recaptcha, Github OAuth2<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[example-app/router/tables/](example-app/router/tables/)</td><td>table configurations</td></tr><tr><td>[example-app/router/t4t.js](example-app/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[example-native/views/ui1.js](example-native/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[example-native/views/ui2.js](example-native/views/ui2.js)</td><td>table example</td></tr><tr><td>[example-native/views/ui3.js](example-native/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[example-native/views/ui4.js](example-native/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
-[example-vite](example-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, ECharts<br>- PWA<br>- JWT refresh token, 2FA GA OTP, SAML<br>- Websockets<br>- GraphQL<br>- rxJS<br>- Web Components (Webcam, Signature)
+[example-vite](example-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, ECharts<br>- PWA<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML<br>- Websockets<br>- GraphQL<br>- rxJS<br>- Web Components (Webcam, Signature)
 [example-webpack](example-webpack) - Deprecated | Vue 2 SPA using webpack + Vuetify | - Graphql (subscriptions, cache, optimistic UI, refetch queries)<br>- REST<br>- VueCrudX<br>- i18n<br>- rxJS
 [wip](wip) | Work In Progress | - [Webauthn](wip/fido2) SPA & SSR sample implementation<br>- [K8s](wip/k8s)
 [.github/workflows](.github/workflows) | Github Actions | Manually Triggered CI/CD
@@ -172,14 +172,15 @@ Login is same as Vite SPA
 - https://github.com/nuxt/nuxt.js/issues/8102
 - prefer static sites and lazy loaded SPA for now
 
-## SAML
+## SAML & OIDC
 
 Refer to link below on how to try out...
 - [Keycloak](docker-devenv/keycloak/README.md) README.md
-- You can test out on the [example-vite](example-vite) Signin UI, clicking on SAML button to see redirect callback
+- You can test out on the [example-vite](example-vite) Signin UI, clicking on SAML button / OIDC button to see redirect callback
 - Refer also to the following files
   - [@es-labs/node/express/passport.js](@es-labs/node/express/passport.js)
   - [example-app/router/saml.js](example-app/router/saml.js)
+  - [example-app/router/oidc.js](example-app/router/oidc.js)
 
 ---
 

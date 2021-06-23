@@ -1,9 +1,10 @@
 ### Version 0.5.3
 - [chore] update packages & cleanup & work on improving documentation
-- [example-app] jsonschema & openapi 3.1
-- oidc example
-- shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
-- nodejs workers
+- [example-app] add oidc example (grant_type: authorization_code)
+- [wip]
+  - [example-app] jsonschema & openapi 3.1
+  - shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
+  - nodejs workers
 
 ### Version 0.5.2
 - [chore] update packages & cleanup & work on improving documentation

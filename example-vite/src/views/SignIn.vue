@@ -9,6 +9,7 @@
         <div class="buttons-box-flex">
           <a-button @click="login">Login</a-button>
           <a-button @click="() => samlLogin(VITE_SAML_URL, VITE_CALLBACK_URL)">SAML</a-button>
+          <a-button @click="oidcLogin">OIDC</a-button>
           <a-button @click="$router.push('/signin-fast')">Fast</a-button>
         </div>
         <p><router-link to="/signup">Sign Up</router-link></p>
@@ -36,7 +37,7 @@ import { samlLogin } from '/@es-labs/esm/saml.js'
 
 import { http, ws } from '/src/services.js'
 import { useI18n } from '/src/plugins/i18n.js'
-import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL, VITE_SAML_URL } from '/config.js'
+import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL, VITE_SAML_URL, VITE_SSO_URL } from '/config.js'
 
 import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
 import { DO_HELLO } from '/src/queries.js'
@@ -67,8 +68,8 @@ export default {
     const mode = ref('login') // login, otp
     const otp = ref('')
 
-    const callbackUrl = VITE_CALLBACK_URL
-    const samlUrl = VITE_SAML_URL
+    // const callbackUrl = VITE_CALLBACK_URL
+    // const samlUrl = VITE_SAML_URL
 
     let otpCount = 0
     let otpId = ''
@@ -173,6 +174,8 @@ export default {
       loading.value = false
     }
 
+    const oidcLogin = () => window.location.assign(VITE_SSO_URL)
+
     return {
       samlLogin,
       email, // data
@@ -186,6 +189,7 @@ export default {
       i18n,
       VITE_CALLBACK_URL,
       VITE_SAML_URL,
+      oidcLogin
     }
   }
 }

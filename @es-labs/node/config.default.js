@@ -47,6 +47,8 @@ global.CONFIG.OTP_EXPIRY = 30 // 8 // 30 // defined seconds to allow user to sub
 
 // SAML
 global.CONFIG.SAML_OPTIONS = null // https://github.com/node-saml/passport-saml#config-parameter-details
+// OIDC
+global.CONFIG.OIDC_OPTIONS = null
 
 // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
 // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}

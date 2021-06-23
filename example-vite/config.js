@@ -16,8 +16,10 @@ export const {
   VITE_SAML_URL,
   VITE_CALLBACK_URL,
 
+  VITE_SSO_URL,
+
   VITE_INITAL_SECURE_PATH,
-  BASE_URL, // from vite.config.js base property
+  BASE_URL // from vite.config.js base property
 } = import.meta.env
 
 // APP_VERSION: '0.0.0' // TBD Use package.json version
