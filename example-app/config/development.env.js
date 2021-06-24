@@ -45,6 +45,7 @@ module.exports = {
   OIDC_OPTIONS: {
     URL: 'http://127.0.0.1:8081/auth/realms/test/protocol/openid-connect',
     CLIENT_ID: 'test-oidc-client-favv',
+    CLIENT_SECRET: '',
     CALLBACK: 'http://127.0.0.1:8080/callback'
   },
 
