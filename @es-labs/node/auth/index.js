@@ -6,7 +6,8 @@ const jwt = require('jsonwebtoken')
 
 // const uuid = require('uuid/v4')
 // const qrcode = require('qrcode')
-const { USE_OTP, OTP_EXPIRY, COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, COOKIE_MAXAGE, CORS_OPTIONS, AUTH_USER_STORE, AUTH_USER_STORE_NAME } = global.CONFIG
+const { COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, COOKIE_MAXAGE, COOKIE_DOMAIN } = global.CONFIG
+const { USE_OTP, OTP_EXPIRY, CORS_OPTIONS, AUTH_USER_STORE, AUTH_USER_STORE_NAME } = global.CONFIG
 const { AUTH_REFRESH_URL, AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD = ''} = global.CONFIG
 const { JWT_ALG, JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE ='keyv', JWT_CERTS, JWT_REFRESH_CERTS } = global.CONFIG
 
@@ -26,7 +27,10 @@ const { setToken, getToken, revokeToken } = require('./' + JWT_REFRESH_STORE)
 
 // SameSite=None; must use with Secure;
 // may need to restart browser, TBD set Max-Age, ALTERNATE use res.cookie, Signed?
-const httpOnlyCookie = `HttpOnly;Path=/;SameSite=${COOKIE_SAMESITE};` + (COOKIE_SECURE ? 'Secure;':'') + (COOKIE_MAXAGE ? 'MaxAge='+COOKIE_MAXAGE+';':'')
+const httpOnlyCookie = `HttpOnly;SameSite=${COOKIE_SAMESITE};`
+  + (COOKIE_SECURE ? 'Secure;':'')
+  + (COOKIE_MAXAGE ? 'MaxAge='+COOKIE_MAXAGE+';':'')
+  + (COOKIE_DOMAIN ? 'domain='+COOKIE_DOMAIN+';':'')
 
 // algorithm
 // expiresIn
@@ -112,8 +116,8 @@ const createToken = async (user) => { // Create a tokens & data from user
 const setTokensToHeader = (res, {access_token, refresh_token}) => {
   if (COOKIE_HTTPONLY) {
     res.setHeader('Set-Cookie', [
-      `access_token=${access_token};`+ httpOnlyCookie,
-      `refresh_token=${refresh_token};`+ httpOnlyCookie
+      `access_token=${access_token};Path=/;`+ httpOnlyCookie,
+      `refresh_token=${refresh_token};Path=${AUTH_REFRESH_URL};`+ httpOnlyCookie // send only if path contains refresh
     ])
   } else {
     res.setHeader('access_token', `${access_token}`)
@@ -124,43 +128,46 @@ const setTokensToHeader = (res, {access_token, refresh_token}) => {
 const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
   let access_result = null
-  let access_token = req?.cookies?.access_token || req?.headers?.access_token
+  let access_token = req?.cookies?.access_token || req?.headers?.access_token || req?.query?.access_token
   if (access_token) {
     try {
       access_result = jwt.verify(access_token, getSecret('verify', 'access'), { algorithm: [JWT_ALG] }) // and options
     } catch (e) {
       if (e.name === 'TokenExpiredError') {
-        try {
-          if (AUTH_REFRESH_URL && (req.baseUrl + req.path === AUTH_REFRESH_URL)) {
-            const refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token // check refresh token & user - always stateful          
-            const refresh_result = jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
-            const { id } = refresh_result
-            let refreshToken = await getToken(id)
-            if (String(refreshToken) === String(refresh_token)) { // ok... generate new access token & refresh token?
-              const user = await findUser({ id })
-              const tokens = await createToken(user) // 5 minute expire for login
-              setTokensToHeader(res, tokens)
-              return res.status(200).json(tokens)
-            } else {
-              return res.status(401).json({ message: 'Refresh Token Error: Uncaught' })              
-            }
-          } else {
-            return res.status(401).json({ message: 'Token Expired Error' })
-          }
-        } catch (err) { // use err instead of e (fix no-catch-shadow issue)
-          console.log(err)
-          return res.status(401).json({ message: 'Refresh Token Error' })
-        }
+        return res.status(401).json({ message: 'Token Expired Error' })
       } else {
         console.log('auth err', e.name)
+        return res.status(401).json({ message: 'Token Error' })
       }
     }
     if (access_result) {
       req.decoded = access_result
       return next()
+    } else {
+      return res.status(401).json({error: 'Access Error' })
     }
   }
-  return res.status(401).json({error: 'Token Error' })
+  return res.status(401).json({error: 'Server Error' })
+}
+
+const authRefresh = async (req, res) => { // get refresh token
+  try {
+    const refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token || req?.query?.refresh_token // check refresh token & user - always stateful          
+    const refresh_result = jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
+    const { id } = refresh_result
+    let refreshToken = await getToken(id)
+    if (String(refreshToken) === String(refresh_token)) { // ok... generate new access token & refresh token?
+      const user = await findUser({ id })
+      const tokens = await createToken(user) // 5 minute expire for login
+      setTokensToHeader(res, tokens)
+      return res.status(200).json(tokens)
+    } else {
+      return res.status(401).json({ message: 'Refresh Token Error: Uncaught' })              
+    }
+  } catch (err) { // use err instead of e (fix no-catch-shadow issue)
+    console.log('authRefresh', err)
+    return res.status(401).json({ message: 'Refresh Token Error' })
+  }
 }
 
 const logout = async (req, res) => {
@@ -239,7 +246,7 @@ const otp = async (req, res) => { // need to be authentication, body { id: '', p
   return res.status(401).json({ message: 'Error token revoked' })
 }
 
-module.exports = { findUser, updateUser, createToken, setTokensToHeader, revokeToken, authUser, logout, refresh, login, otp, bcrypt, otplib } // getToken, setToken,
+module.exports = { findUser, updateUser, createToken, setTokensToHeader, revokeToken, authUser, authRefresh, logout, refresh, login, otp, httpOnlyCookie, bcrypt, otplib } // getToken, setToken,
 
 /*
 const crypto = require('crypto')

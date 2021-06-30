@@ -67,6 +67,8 @@ class Fetch {
       if (['POST', 'PATCH', 'PUT'].includes(method)) { // check if HTTP method has req body (DELETE is maybe)
         if (body && body instanceof FormData) {
           options.body = body // options.headers['Content-Type'] = 'multipart/form-data' // NOT NEEDED!!!
+        } else if (options.headers['Content-Type'] && options.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+          options.body = new URLSearchParams(body) // body should be JSON
         } else if (options.headers['Content-Type'] && options.headers['Content-Type'] === 'application/octet-stream') {
           options.body = body // handling stream...
         } else {
@@ -81,7 +83,7 @@ class Fetch {
       if (rv0.status >= 200 && rv0.status < 400) return rv0
       else if (rv0.status === 401) { // no longer needed urlPath !== '/api/auth/refresh'
         if (rv0.data.message === 'Token Expired Error' && this.options.refreshUrl) {
-          const rv1 = await http('POST', urlOrigin + this.options.refreshUrl, { refresh_token: this.tokens.refresh }) // rv1 JSON already processed
+          const rv1 = await this.http('POST', urlOrigin + this.options.refreshUrl, { refresh_token: this.tokens.refresh }) // rv1 JSON already processed
           if (rv1.status === 200) {
             this.tokens.access = rv1.data.access_token
             this.tokens.refresh = rv1.data.refresh_token

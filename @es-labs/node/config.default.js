@@ -22,6 +22,7 @@ global.CONFIG.COOKIE_SECURE = false
 global.CONFIG.COOKIE_SAMESITE = 'Lax'
 global.CONFIG.COOKIE_MAXAGE = ''
 global.CONFIG.COOKIE_SECRET = '' // for use by cookie-parser
+global.CONFIG.COOKIE_DOMAIN = ''
 
 global.CONFIG.AUTH_REFRESH_URL = '/api/auth/refresh'
 global.CONFIG.AUTH_USER_STORE = 'objection' // mongo, objection
