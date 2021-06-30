@@ -1,6 +1,6 @@
 'use strict'
 
-const { authUser, findUser, updateUser } = require('@es-labs/node/auth')
+const { authUser, authRefresh, findUser, updateUser } = require('@es-labs/node/auth')
 
 const authIsAdmin = async (req, res, next) => {
   if (req.decoded.groups.includes('admin')) {
@@ -13,6 +13,7 @@ const authIsAdmin = async (req, res, next) => {
 
 module.exports = {
   authUser,
+  authRefresh,
   findUser,
   updateUser,
   authIsAdmin

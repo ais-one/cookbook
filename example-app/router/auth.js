@@ -2,7 +2,7 @@
 
 const express = require('express')
 
-const { authUser } = require('../middlewares/auth')
+const { authUser, authRefresh } = require('../middlewares/auth')
 const authController = require('../controllers/auth')
 
 module.exports = express.Router()
@@ -37,6 +37,7 @@ module.exports = express.Router()
    */
   .post('/login', authController.login)
   .post('/otp', authController.otp)
-  .post('/refresh', authUser, authController.refresh)
+  .post('/refresh', authRefresh)
   .get('/logout', authController.logout)
   .get('/me', authUser, authController.me)
+  .get('/verify', authUser, asyncWrapper( async (req, res) => res.json({}) ))

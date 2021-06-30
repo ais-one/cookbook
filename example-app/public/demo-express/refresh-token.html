@@ -28,8 +28,9 @@ let accessToken = ''
 let refreshToken = ''
 
 const http = new Fetch()
+http.setOptions({ refreshUrl: '/api/auth/refresh' })
 
-const test = () => console.log('https test')
+const test = () => console.log('https test', http)
 
 document.querySelector("#test-ed").onclick = test
 
