@@ -463,7 +463,7 @@ module.exports = express.Router()
     const { table } = req
     const { ids } = req.body
     if (!table.delete) return res.status(400).json({ error: 'Delete not allowed' })
-    if (table.delete != -1 && ids.length > table.delete) return res.status(400).json({ error: `Select up to ${table.delete} items` })
+    if (table.delete !== -1 && ids.length > table.delete) return res.status(400).json({ error: `Select up to ${table.delete} items` })
     if (ids.length < 1) return res.status(400).json({ error: 'No item selected' })
 
     // TBD delete relations junction, do not delete if value is in use...

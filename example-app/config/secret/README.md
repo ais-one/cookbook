@@ -2,7 +2,7 @@
 
 Contains secret config files
 - common.env.js
-- <env>.env.js
+- [env].env.js
 
 The files are not committed To Github
 
@@ -12,7 +12,6 @@ The files are not committed To Github
 module.exports = {
   HTTPS_CERTS: { key: '', cert: '' },
   GCP_SERVICE_KEY: {},
-  KNEXFILE: {}
 }
 
 ```
@@ -21,15 +20,10 @@ module.exports = {
 
 ```
 module.exports = {
-  KNEXFILE: {
-    client: 'sqlite3',
-    connection: { filename: 'dev.sqlite3' }, // relative to directory that package.json was run
-    useNullAsDefault: true  
-  },
   GCP_SERVICE_KEY: {},
-  GITHUB_CLIENT_ID: '', // OAuth2 Client ID // used by example-native frontend
-  GITHUB_CLIENT_SECRET: '', // OAuth2 Client SECRET
-  GITHUB_CALLBACK: '', // OAuth2 callback URL
+  OAUTH_CLIENT_ID: '', // OAuth2 Client ID // used by example-native frontend
+  OAUTH_CLIENT_SECRET: '', // OAuth2 Client SECRET
+  OAUTH_CALLBACK: '', // OAuth2 callback URL
   FCM_SERVER_KEY: '',
 }
 

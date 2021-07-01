@@ -1,13 +1,11 @@
 'use strict'
+const { revokeToken, logout, login, otp } = require('@es-labs/node/auth')
 
 const express = require('express')
-
-const { authUser } = require('../middlewares/auth')
+const { authUser, authRefresh } = require('../middlewares/auth')
 const authController = require('../controllers/auth')
 
 module.exports = express.Router()
-  .post('/signup', authController.signup)
-  .get('/check-github', authController.checkGithub)
   /**
    * @swagger
    * /api/auth/login:
@@ -35,8 +33,10 @@ module.exports = express.Router()
    *        default:
    *          description: Unexpected error
    */
-  .post('/login', authController.login)
-  .post('/otp', authController.otp)
-  .post('/refresh', authUser, authController.refresh)
-  .get('/logout', authController.logout)
+  .post('/login', login)
+  .post('/otp', otp)
+  .post('/refresh', authRefresh)
+  .get('/logout', logout)
+  .get('/verify', authUser, asyncWrapper( async (req, res) => res.json({}) ))
   .get('/me', authUser, authController.me)
+  .post('/signup', authController.signup)

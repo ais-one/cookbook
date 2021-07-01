@@ -38,13 +38,10 @@ const template = /*html*/`
             <div v-if="recaptchaSiteKey" class="g-recaptcha" :data-sitekey="recaptchaSiteKey"></div>
             <div class="field is-grouped">
               <div class="control">
-                <button class="button is-success" disabled>Login</button>
+                <button class="button is-success test-bg" @click.stop.prevent="login">Faked Login</button>
               </div>
               <div class="control">
-                <button class="button is-success test-bg" @click.stop.prevent="login">SSO Login</button>
-              </div>
-              <div class="control">
-                <button class="button is-success" @click.stop.prevent="githubLogin">Github</button>
+                <button class="button is-success" @click.stop.prevent="oauthLogin">Faked OAuth</button>
               </div>
             </div>
           </form>
@@ -81,7 +78,7 @@ export default {
       // TBD loading spinner...
       console.log('SignIn mounted!')
       if (window.location.hash) {
-        alert('Github OAuth2 Success! Remember to remove hash from front of token', window.location.hash) // token-refresh_token, - character is seperator
+        alert('Test OAuth callback Success! Remember to remove hash from front of token', window.location.hash) // token-refresh_token, - character is seperator
       }
 
       // set google recaptcha callbacks
@@ -107,8 +104,9 @@ export default {
       router.push('/dashboard')
     }
 
-    const githubLogin = () => {
-      window.location.replace('https://github.com/login/oauth/authorize?scope=user:email&client_id=' + 'a355948a635c2a2066e2')
+    const oauthLogin = () => {
+      const url = window.location.href + '/index.html#sometoken'
+      window.location.replace(url)
     }
 
     return {
@@ -117,7 +115,7 @@ export default {
       password,
       recaptchaSiteKey,
       login,
-      githubLogin
+      oauthLogin
     }
   }
 }

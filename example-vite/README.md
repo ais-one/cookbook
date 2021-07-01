@@ -1,7 +1,5 @@
 # Example Use of vite / vitepress
 
-**IMPORTANT - Moving this over to repository [https://github.com/ais-one/vue-crud-x](https://github.com/ais-one/vue-crud-x)
-
 Let's see if we can use vite for a more-or-less real-life application
 
 And let's try out vitepress

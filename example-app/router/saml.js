@@ -1,11 +1,13 @@
 'use strict'
 
 // working SAML ADFS example
+// no refresh token, issue own OAuth2 like JWT server
 
 const express = require('express')
 const { createToken } = require('@es-labs/node/auth')
-const { JWT_EXPIRY } = global.CONFIG
 const passport = require('@es-labs/node/express/passport').get()
+
+const { AUTH_ERROR_URL } = global.CONFIG
 
 module.exports = express.Router()
   .get('/test', (req,res) => res.send('ok'))
@@ -36,13 +38,12 @@ module.exports = express.Router()
             groups: req.user.Role, // comma seperated string
           }
           const tokens = await createToken(user)
-          res.redirect(TO + '#' + tokens.access_token + '-' + tokens.refresh_token + '-' + JSON.stringify(tokens.user_meta)) // use url fragment...
+          return res.redirect(TO + '#' + tokens.access_token + '-' + tokens.refresh_token + '-' + JSON.stringify(tokens.user_meta)) // use url fragment...
         } else {
-          res.json({ status: 'NOT authenticated' })
-          // res.redirect('/forbidden')
+          return AUTH_ERROR_URL ? res.redirect(AUTH_ERROR_URL) : res.status(401).json({ error: 'NOT Authenticated' })
         }
       } catch (e) {
-        res.status(500).json({ error: e.toString() })
+        return AUTH_ERROR_URL ? res.redirect(AUTH_ERROR_URL) : res.status(500).json({ error: e.toString() })
       }
     }
   )

@@ -8,8 +8,12 @@
         <a-input label="Password" type="password" v-model:value="password"></a-input>
         <div class="buttons-box-flex">
           <a-button @click="login">Login</a-button>
-          <a-button @click="() => samlLogin(VITE_SAML_URL, VITE_CALLBACK_URL)">SAML</a-button>
           <a-button @click="$router.push('/signin-fast')">Fast</a-button>
+        </div>
+        <div class="buttons-box-flex">
+          <a-button @click="loginSaml">SAML</a-button>
+          <a-button @click="loginOidc">OIDC</a-button>
+          <a-button @click="loginOAuth">Github</a-button>
         </div>
         <p><router-link to="/signup">Sign Up</router-link></p>
       </div>
@@ -30,13 +34,12 @@ import { ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
-
 import parseJwt from '/@es-labs/esm/parse-jwt.js'
 import { samlLogin } from '/@es-labs/esm/saml.js'
 
 import { http, ws } from '/src/services.js'
 import { useI18n } from '/src/plugins/i18n.js'
-import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL, VITE_SAML_URL } from '/config.js'
+import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL, VITE_SAML_URL, VITE_OIDC_URL, VITE_OAUTH_CLIENT_ID, VITE_OAUTH_URL, VITE_REFRESH_URL, VITE_REFRESH_URL_MANAGED } from '/config.js'
 
 import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
 import { DO_HELLO } from '/src/queries.js'
@@ -67,8 +70,8 @@ export default {
     const mode = ref('login') // login, otp
     const otp = ref('')
 
-    const callbackUrl = VITE_CALLBACK_URL
-    const samlUrl = VITE_SAML_URL
+    // const callbackUrl = VITE_CALLBACK_URL
+    // const samlUrl = VITE_SAML_URL
 
     let otpCount = 0
     let otpId = ''
@@ -154,6 +157,7 @@ export default {
       loading.value = true
       errorMessage.value = ''
       try {
+        http.setOptions({ refreshUrl: VITE_REFRESH_URL })
         const { data } = await http.post('/api/auth/otp', { id: otpId, pin: otp.value })
         const decoded = parseJwt(data.access_token)
         http.setTokens({ access: data.access_token, refresh: data.refresh_token })
@@ -173,8 +177,21 @@ export default {
       loading.value = false
     }
 
+    const loginOidc = () => {
+      http.setOptions({ refreshUrl: VITE_REFRESH_URL_MANAGED }) // auth service is managed
+      window.location.assign(VITE_OIDC_URL)
+    }
+    const loginOAuth = () => {
+      http.setOptions({ refreshUrl: VITE_REFRESH_URL })
+      window.location.replace(`${VITE_OAUTH_URL}=${VITE_OAUTH_CLIENT_ID}`)
+    }
+
+    const loginSaml = () => {
+      http.setOptions({ refreshUrl: VITE_REFRESH_URL })
+      samlLogin(VITE_SAML_URL, VITE_CALLBACK_URL)
+    }
+
     return {
-      samlLogin,
       email, // data
       password,
       errorMessage,
@@ -186,6 +203,9 @@ export default {
       i18n,
       VITE_CALLBACK_URL,
       VITE_SAML_URL,
+      loginSaml,
+      loginOidc,
+      loginOAuth
     }
   }
 }

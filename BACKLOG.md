@@ -1,10 +1,10 @@
-## Issues
+## Roadmap & Issues To Address
 
 ### For next sprint / version
-- shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
-- nodejs workers
-- [chore] migration to node 16
 - [example-app] jsonschema & openapi 3.1
+  - shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
+  - nodejs workers
+- [chore] migration to node 16 and npm 7
 - [example-vite] cypress e2e testing
 - update webauthnsimple to v3
 - [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)
@@ -22,7 +22,6 @@
 - [frontend] react example
 
 ### For future product improvement
-- [chore] use monorepo when npm 7 is released ?
 - [frontend-i18n] node-polyglot
 - [backend-testing] research auto generated REST API and Testing (keep in view dredd.io)
 - [backend-testing] research websocket testing - https://stackoverflow.com/questions/55963562/test-websockets-with-jest

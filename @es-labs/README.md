@@ -1,35 +1,10 @@
-## Library Notes
+# @es-labs Reusable Components
 
-Libs are now found within the example projects.
+Consists of two npm installable packages with reusable codes in JS Browser and NodeJS applications
 
-vue (wepback) - example-webpacked/lib/webpacked (to deprecate and remove)
+- [@es-labs/esm](esm): ES modules for use in both JS Browser and NodeJS
+- [@es-labs/node](node): commonJS codes for use in NodeJS
+  - dependent on [@es-labs/node/config.js](@es-labs/node/config.js)
+  - default settings for configs are found in [@es-labs/node/config.default.js](@es-labs/node/config.default.js)
 
-## Projects and Repo
-
-We will find a better way of updating to have correct CI the following folders should have their own repo
-- example-app
-- example-native
-- example-vite
-- example-webpack (to remove)
-
-
-## Usage
-
-npm install <path-to-this-foder-from-where-you-want-to-install-this>
-
-e.g.
-
-```
-cd my-project
-npm install ../@es-labs/node
-```
-
-## Publishing packages to npm
-
-```bash
-# for scoped packages e.g. @es-labs/node
-npm publish --access public
-
-# for packages e.g. ais-one/vue-crud-x
-npm publish
-```
+See [@es-labs/esm/README.md](esm/README.md), [@es-labs/node/README.md](node/README.md) for respective installation and publishing

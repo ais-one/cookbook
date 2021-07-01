@@ -1,0 +1,6 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo pre-commit execute start
+cd example-app && npm run lint
+echo pre-commit execute end

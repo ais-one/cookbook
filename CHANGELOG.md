@@ -1,9 +1,13 @@
+### Version 0.5.3
+- [chore] update packages & cleanup & work on improving documentation
+- [example-app] add oidc example (grant_type: authorization_code), improve further on auth structure, rename GITHUB_ to OAUTH_
+- [feat] added husky
 ### Version 0.5.2
 - [chore] update packages & cleanup & work on improving documentation
 - [chore] upload **@es-labs/esm** and **@es-labs/node** as scoped public packages on npm
 - [chore] add **keycloak** to **docker-devenv**, removed **saml** (kristophjunge/test-saml-idp)
 - [@es-labs/node] passport-saml version 3 onward, cert needs to have value! use keycloak
-- [wib/fido2] demo for web auth login (for SPA and SSR pages) (https://developers.google.com/codelabs/webauthn-reauth) - need to update webauthnsimple to v3
+- [wip/fido2] demo for web auth login (for SPA and SSR pages) (https://developers.google.com/codelabs/webauthn-reauth) - need to update webauthnsimple to v3
 
 ### Version 0.5.1
 - [chore] update packages & cleanup & work on improving documentation

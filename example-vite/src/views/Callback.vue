@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Callback</h1>
-    <p>SAML</p>
+    <p>SAML or OIDC or OAuth</p>
     <p>Hash = {{ hash }}</p>
   </div>
 </template>

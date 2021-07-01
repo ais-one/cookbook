@@ -118,3 +118,7 @@ nav.navbar {
   }
 }
 */
+
+.g-recaptcha {
+  transform:scale(0.8);-webkit-transform:scale(0.8);transform-origin:0 0;-webkit-transform-origin:0 0;
+}

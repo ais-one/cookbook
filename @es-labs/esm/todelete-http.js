@@ -1,18 +1,18 @@
-// FRONTEND ONLY
+// FRONTEND ONLY - To supercede this with Fetch Class
 // TBD make this such that can use default instance or create new instance
 // TBD add retry
 // https://dev.to/ycmjason/javascript-fetch-retry-upon-failure-3p6g
 /*
 const fetch_retry = async (url, options, n) => {
-    let error;
-    for (let i = 0; i < maxRetry; i++) {
-        try {
-            return await fetch(url, options);
-        } catch (err) {
-            error = err;
-        }
-    }
-    throw error;
+  let error;
+  for (let i = 0; i < maxRetry; i++) {
+      try {
+          return await fetch(url, options);
+      } catch (err) {
+          error = err;
+      }
+  }
+  throw error;
 };
 */
 
@@ -87,6 +87,8 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     if (['POST', 'PATCH', 'PUT'].includes(method)) { // check if HTTP method has req body (DELETE is maybe)
       if (body && body instanceof FormData) {
         options.body = body // options.headers['Content-Type'] = 'multipart/form-data' // NOT NEEDED!!!
+      } else if (options.headers['Content-Type'] && options.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
+        options.body = new URLSearchParams(body) // body should be JSON
       } else if (options.headers['Content-Type'] && options.headers['Content-Type'] === 'application/octet-stream') {
         options.body = body // handling stream...
       } else {
