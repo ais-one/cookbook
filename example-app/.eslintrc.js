@@ -100,7 +100,7 @@ module.exports = {
     'getter-return': 2,
 
     // Disallow await inside of loops
-    'no-await-in-loop': 1,
+    'no-await-in-loop': 0,
 
     // Disallow comparing against -0
     'no-compare-neg-zero': 2,
