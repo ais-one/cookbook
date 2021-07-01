@@ -7,12 +7,15 @@
   "scripts": {
     "spa": "cd example-webpack && npm run serve",
     "vite": "cd example-vite && npm run dev",
-    "app": "cd example-app&&npm run app -- development"
+    "app": "cd example-app&&npm run app -- development",
+    "prepare": "husky install"
   },
   "engines": {
     "node": "14"
   },
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "husky": "^7.0.0"
+  },
   "private": true
 }

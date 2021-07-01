@@ -1,8 +1,12 @@
-# ESLint & Prettier
+# Linting, Husky, Commitizen
+
+Development Tooling
+
+## ESLint & Prettier
 
 How to get eslint and prettier to play together
 
-## References
+### References
 
 - https://dev.to/pixari/how-to-make-eslint-work-with-prettier-avoiding-conflicts-and-problems-57pi
 - https://stackoverflow.com/questions/55481968/error-delete-cr-prettier-prettier-visual-studio-code
@@ -11,7 +15,7 @@ How to get eslint and prettier to play together
 - https://stackoverflow.com/questions/49789177/module-is-not-defined-and-process-is-not-defined-in-eslint-in-visual-studio-code
 
 
-# package.json
+### package.json
 
 ```json
 {
@@ -21,13 +25,13 @@ How to get eslint and prettier to play together
 }
 ```
 
-# install packages
+### install packages
 
 ```bash
 npm install --save-dev eslint prettier eslint-plugin-prettier eslint-config-prettier eslint-plugin-vue@next
 ```
 
-# initialize the esint config file - use JS
+### initialize the esint config file - use JS
 
 npx eslint --init
 - To check syntax, find problems, and enforce code style
@@ -72,7 +76,7 @@ module.exports = {
 };
 ```
 
-## Other Eslint Configs and Plugins
+### Other Eslint Configs and Plugins
 
 Check if they are deprecated in newer eslint versions
 
@@ -82,3 +86,15 @@ Check if they are deprecated in newer eslint versions
 - eslint-plugin-jest
 - eslint-plugin-promise
 - eslint-plugin-standard
+
+
+## husky
+
+Always install at root of your repo
+
+```
+npx husky-init && npm install
+
+```
+
+pre-commit sample file is created in .husky/pre-commit
