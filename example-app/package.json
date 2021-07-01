@@ -16,7 +16,8 @@
     "process-long": "node process-long.js",
     "test": "cross-env NODE_ENV=development jest --config=jest.config.js",
     "lint": "eslint . --ext .js",
-    "lint:fix": "eslint --fix --no-fix-warnings --no-report-warnings ."
+    "lint:fix": "eslint --fix --no-fix-warnings --no-report-warnings .",
+    "update-commit-hash": "git rev-parse --verify --short HEAD > commit-hash"
   },
   "dependencies": {
     "@es-labs/esm": "file:../@es-labs/esm",
@@ -45,7 +46,8 @@
     "hooks": {
       "pre-commit": "npm run lint",
       "pre-commit-with-fix": "npm run lint && npm run lint:fix",
-      "pre-commit-without-fix": "npm run lint"
+      "pre-commit-without-fix": "npm run lint",
+      "pre-push": "echo pre-push called"
     }
   },
   "repository": {

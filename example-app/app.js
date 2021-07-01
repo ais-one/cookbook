@@ -15,7 +15,7 @@ const { HTTPS_CERTS } = global.CONFIG
 // }
 const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createServer(app)
 
-server.on('upgrade', function upgrade(request, socket, head) {
+server.on('upgrade', (request, socket, head) => {
   // This function is not defined on purpose. Implement it with your own logic.
   // authenticate(request, (err, client) => {
   //   if (err || !client) {

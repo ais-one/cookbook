@@ -149,13 +149,13 @@ module.exports = express.Router({caseSensitive: true})
   }))
 
   // stream back data
-  .get('/stream', async function (req, res, next) {
+  .get('/stream', async (req, res, next) => {
     res.writeHead(200, { 'Content-Type': 'text/plain', 'Transfer-Encoding': 'chunked' })
     const chunks = 5
     let count = 1
     while (count <= chunks) {
       console.log('streaming', count)
-      await sleep(1000)
+      await sleep(1000) // eslint-disable-line
       res.write(JSON.stringify({ type: "stream", chunk: count++ })+'\n')
     }  
     res.end()
@@ -163,7 +163,7 @@ module.exports = express.Router({caseSensitive: true})
   })
 
   // test websocket broadcast
-  .get('/ws-broadcast', async function (req, res) {
+  .get('/ws-broadcast', async (req, res) => {
     // console.log(ws, ws.getWs())
     ws.send("WS Broadcast")
     res.send("ws broadcast")
