@@ -12,6 +12,12 @@
 
 Considerations for this project are similar to [https://github.com/ais-one/favv/blob/master/README.md#considerations](https://github.com/ais-one/favv/blob/master/README.md#considerations).
 
+The difference between this project and [https://github.com/ais-one/favv](https://github.com/ais-one/favv) are:
+- vue-crud-x is more of a cookbook and recipes are constantly being improved and updated
+- favv tries to seperate boiler plate from custom logic for better maintainability
+- they complement each other and each can be used to improve on the other
+
+
 We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem. It is easier for TS people to take the JS here and implement with TS.
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
