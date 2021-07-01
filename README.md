@@ -10,7 +10,9 @@
 
 **vue-crud-x** is a cookbook with evergreen recipes and templates to develop applications faster. While reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Considerations for this project are similar to [https://github.com/ais-one/favv/blob/master/README.md#considerations](https://github.com/ais-one/favv/blob/master/README.md#considerations)
+Considerations for this project are similar to [https://github.com/ais-one/favv/blob/master/README.md#considerations](https://github.com/ais-one/favv/blob/master/README.md#considerations).
+
+We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem. It is easier for TS people to take the JS here and implement with TS.
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 

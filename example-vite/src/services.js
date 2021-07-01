@@ -4,7 +4,7 @@ import Ws from '/@es-labs/esm/ws.js'
 
 export const http = new Fetch({
   baseUrl: VITE_API_URL,
-  refreshUrl: VITE_REFRESH_URL,
+  refreshUrl: VITE_REFRESH_URL, // set as default
   credentials: VITE_WITH_CREDENTIALS || 'same-origin'
 })
 // export const http2 = new Fetch({ baseUrl: '/api2' })

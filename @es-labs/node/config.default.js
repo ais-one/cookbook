@@ -50,6 +50,13 @@ global.CONFIG.OTP_EXPIRY = 30 // 8 // 30 // defined seconds to allow user to sub
 global.CONFIG.SAML_OPTIONS = null // https://github.com/node-saml/passport-saml#config-parameter-details
 // OIDC
 global.CONFIG.OIDC_OPTIONS = null
+// URL to redirect if error
+global.CONFIG.AUTH_ERROR_URL = '' // for 
+
+// OAuth (we use github for example)
+global.CONFIG.OAUTH_CLIENT_ID = ''
+global.CONFIG.OAUTH_CLIENT_SECRET = ''
+global.CONFIG.OAUTH_CALLBACK = ''
 
 // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
 // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}
@@ -142,21 +149,6 @@ global.CONFIG.HTTPS_CERTS = null // { key: '', cert: '' }
 // Express - OpenAPI - refer to common-express/preRoute.js
 global.CONFIG.SWAGGER_DEFS = null
 global.CONFIG.ENABLE_LOGGER = false
-
-// Github OAuth2
-// global.CONFIG.GITHUB_CLIENT_ID = ''
-// global.CONFIG.GITHUB_CLIENT_SECRET = ''
-// global.CONFIG.GITHUB_CALLBACK = ''
-
-// Google - TBD
-// global.CONFIG.GOOGLE_CLIENT_ID = ''
-// global.CONFIG.GOOGLE_CLIENT_SECRET = ''
-// global.CONFIG.GOOGLE_CALLBACK = ''
-
-// Microsoft - TBD
-// global.CONFIG.MS_CLIENT_ID = ''
-// global.CONFIG.MS_CLIENT_SECRET = ''
-// global.CONFIG.MS_CLIENT_CALLBACK = ''
 
 // MQ - bullmq - requires redis - currently not used
 global.CONFIG.JOB_BULL = null

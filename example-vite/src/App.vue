@@ -26,14 +26,6 @@ export default {
     }
     http.setOptions({ forceLogoutFn: logout })
 
-    // // set http
-    // http.setOptions({
-    //   baseUrl: VITE_API_URL,
-    //   refreshUrl: VITE_REFRESH_URL,
-    //   credentials: VITE_WITH_CREDENTIALS || 'same-origin',
-    //   forceLogoutFn: logout
-    // })
-
     // set i18n
     provideI18n({
       locale: 'en',

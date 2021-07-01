@@ -16,8 +16,9 @@ module.exports = {
   // in secret
   // KNEXFILE: null,
   // GCP_SERVICE_KEY: null,
-  // GITHUB_CLIENT_ID: '',
-  // GITHUB_CLIENT_SECRET: '',
+  // OAUTH_CLIENT_ID: '',
+  // OAUTH_CLIENT_SECRET: '',
+  // OAUTH_CALLBACK: '',
   // FCM_SERVER_KEY: '',
 
   SAML_OPTIONS: {

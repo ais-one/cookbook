@@ -9,6 +9,7 @@ module.exports = function (app) {
     router.use('/auth', require('./auth')),
     router.use('/saml', require('./saml')),
     router.use('/oidc', require('./oidc')),
+    router.use('/oauth', require('./oauth')),
     router.use('/mongo-demo', require('./mongo-demo')),
     router.use('/t4t', require('./t4t')),
     router.use('/webpush', require('./webpush')),
