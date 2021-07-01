@@ -102,3 +102,12 @@ npx husky-init && npm install
 ```
 
 pre-commit sample file is created in .husky/pre-commit
+
+### References
+
+- https://typicode.github.io/husky/#/
+- https://github.com/typicode/husky
+
+## commitizen
+
+TBD
