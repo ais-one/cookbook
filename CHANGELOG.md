@@ -1,7 +1,16 @@
+### Version 0.5.4
+- [chore] update packages & cleanup & work on improving documentation
+- In Progress
+  - [feat] add commitizen
+  - [example-app] jsonschema & openapi 3.1
+    - shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
+    - nodejs workers
+
 ### Version 0.5.3
 - [chore] update packages & cleanup & work on improving documentation
 - [example-app] add oidc example (grant_type: authorization_code), improve further on auth structure, rename GITHUB_ to OAUTH_
 - [feat] added husky
+
 ### Version 0.5.2
 - [chore] update packages & cleanup & work on improving documentation
 - [chore] upload **@es-labs/esm** and **@es-labs/node** as scoped public packages on npm
