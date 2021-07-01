@@ -22,9 +22,9 @@ We do not use Typescript because TS people can understand JS easily, but JS-only
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
 
-Latest Version [0.5.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.3) - Released 2021 July 01 2145 +8GMT
+Latest Version [0.5.3](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.3) - Released 2021 July 02 0730 +8GMT
 
-- add oidc example
+- add oidc example and improved auth handling
 - [NOTE!] project name is going to be replaced to a more appropriate one
 
 # Features

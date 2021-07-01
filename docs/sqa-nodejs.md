@@ -1,6 +1,10 @@
-# Linting, Husky, Commitizen
+# SQA NodeJS
 
-Development Tooling
+The following development dependencies are using to assist in SQA in NodeJS
+
+- eslint, prettier
+- husky
+- commitizen (to be implemented)
 
 ## ESLint & Prettier
 
