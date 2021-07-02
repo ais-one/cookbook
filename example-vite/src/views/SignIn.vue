@@ -9,6 +9,7 @@
         <div class="buttons-box-flex">
           <a-button @click="login">Login</a-button>
           <a-button @click="$router.push('/signin-fast')">Fast</a-button>
+          <a-button @click="changeMessage">GQL Update</a-button>
         </div>
         <div class="buttons-box-flex">
           <a-button @click="loginSaml">SAML</a-button>
@@ -42,20 +43,10 @@ import { useI18n } from '/src/plugins/i18n.js'
 import { VITE_GQL_URI, VITE_GWS_URI, VITE_CALLBACK_URL, VITE_SAML_URL, VITE_OIDC_URL, VITE_OAUTH_CLIENT_ID, VITE_OAUTH_URL, VITE_REFRESH_URL, VITE_REFRESH_URL_MANAGED } from '/config.js'
 
 import apollo from '/lib/esm-rollup/apollo.js' // may not need to use provide/inject if no reactivity ? // served from express /esm static route
-import { DO_HELLO } from '/src/queries.js'
+import { DO_HELLO, SET_HELLO, HELLO_UPDATED } from '/src/queries.js'
+
 apollo.init({ gwsUri: VITE_GWS_URI, gqlUri: VITE_GQL_URI })
 const apolloClient = apollo.get()
-if (apolloClient) {
-  apolloClient // apollo test
-    .query({
-      query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
-      variables: {
-        message: 'Meow'
-      }
-    })
-    .then((data) => console.log('graphql', data))
-    .catch((error) => console.error(error))
-}
 
 export default {
   setup(props, context) {
@@ -70,12 +61,11 @@ export default {
     const mode = ref('login') // login, otp
     const otp = ref('')
 
-    // const callbackUrl = VITE_CALLBACK_URL
-    // const samlUrl = VITE_SAML_URL
-
     let otpCount = 0
     let otpId = ''
     let timerId = null
+
+    let subscriptionObserver = null // graphql subscription
 
     const setToLogin = () => {
       mode.value = 'login' // ui-reactive...
@@ -106,6 +96,23 @@ export default {
           console.log('ws falsy')
         }
       }, 10000)
+
+      if (apolloClient) {
+        apolloClient // apollo test
+          .query({
+            query: DO_HELLO, // gql`query DoHello($message: String!) { hello(message: $message) }`,
+            variables: {
+              message: 'Meow'
+            }
+          })
+          .then((data) => console.log('graphql', data))
+          .catch((error) => console.error(error))
+
+        subscriptionObserver = apolloClient.subscribe({ query: HELLO_UPDATED }).subscribe(
+          (data) => console.log('GQL Subs Data', data),
+          (error) => console.error('GQL Subs Error', error.toString())
+        )
+      }
     })
 
     onBeforeUnmount(() => {
@@ -116,7 +123,25 @@ export default {
       }
       if (ws) ws.setMessage(null)
       ws.close()
+
+      if (subscriptionObserver) subscriptionObserver.unsubscribe()
     })
+
+    const changeMessage = async () => {
+      try {
+        const rv = await apolloClient.mutate({
+          mutation: SET_HELLO,
+          variables: {
+            body: {
+              message: 'HI: ' + Date.now()
+            }
+          }
+        })
+        console.log('changeMessage', rv)
+      } catch (e) {
+        console.log('changeMessage Err', e)
+      }
+    }
 
     const _setUser = async (data, decoded) => {
       await store.dispatch('doLogin', decoded) // store user
@@ -192,6 +217,7 @@ export default {
     }
 
     return {
+      changeMessage, // graphql mutation test
       email, // data
       password,
       errorMessage,

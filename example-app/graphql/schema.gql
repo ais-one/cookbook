@@ -1,7 +1,5 @@
 type Query {
   hello(message: String): String
-  getAuthor(id: Int!): Author
-  getAuthors(page: Int, limit: Int, search: String): [Author!]!
 
   getCategory(id: Int!): Category
   getCategories(page: Int!, limit: Int!): Categories
@@ -10,14 +8,17 @@ type Query {
 }
 
 type Mutation {
-  putAuthor(id: Int!, body: InputAuthor!): Author
-  postAuthor(body: InputAuthor!): Author
+  setHello(body: HelloObj!): String
+
   patchCategory(id: Int!, body: InputCategory!): Category
   postCategory(body: InputCategory!): Category
 
   singleUpload(file: Upload!): File! # file upload
 }
 
+type Subscription {
+  helloUpdated: String
+}
  
 type File { # File Upload - Upload scalar type is from Apollo - better to use rest for this?
   filename: String!
@@ -25,16 +26,9 @@ type File { # File Upload - Upload scalar type is from Apollo - better to use re
   encoding: String!
 }
 
-input InputAuthor {
-  name: String!
-  avatar: String!
+input HelloObj {
+  message: String!
 }
-type Author {
-  id: ID!
-  name: String!
-  avatar: String!
-}
-
 input InputCategory {
   name: String!
 }
@@ -42,36 +36,7 @@ type Category {
   id: ID!
   name: String!
 }
-type Book {
-  id: ID!
-  name: String!
-  category: Category!
-  authora: [Author]!
-}
-type Page {
-  id: ID!
-  content: String!
-  bookId: Book!
-}
-
 type Categories {
   results: [Category]!
   total: Int!
-}
-type Authors {
-  results: [Author]!
-  total: Int!
-}
-type Books {
-  results: [Book]!
-  total: Int!
-}
-type Pages {
-  results: [Page]!
-  total: Int!
-}
-
-type Subscription {
-  categoryAdded: Category
-  categoryUpdated: Category
 }

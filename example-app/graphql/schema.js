@@ -1,12 +1,10 @@
 'use strict'
 
 // for the resolvers
-const Author = require('../models/Author')
 const Category = require('../models/Category')
 
 // const { gql } = require('apollo-server-express')
 // graphql Schema
-
 const fs = require('fs')
 const typeDefs = fs.readFileSync('./graphql/schema.gql', 'utf8').toString() // relative to package.json directory where script is executed
 
@@ -15,30 +13,6 @@ const resolvers = {
   Query: {
     hello: (parent, args, context, info) => {
       return args.message ? 'Hello ' + args.message : 'Hello world!'
-    },
-    getAuthor: async (parent, args, context, info) => {
-      try {
-        const author = await Author.query().findById(args.id)
-        return author
-      } catch (e) {
-        return {}
-      }
-    },
-    getAuthors: async (parent, args, context, info) => {
-      // args.page, args.limit
-      try {
-        const limit = args.limit ? args.limit : 2
-        const page = args.page ? args.page : 0
-        const search = args.search ? args.search : ''
-        const authors = await Author.query()
-          .where('name', 'like', `%${search}%`)
-          // .where('bookId', req.params.id)
-          // .orderBy
-          .page(page, limit)
-        return authors
-      } catch (e) {
-        return {}
-      }
     },
 
     getCategory: async (parent, args, context, info) => {
@@ -65,27 +39,20 @@ const resolvers = {
     }
   },
   Mutation: {
-    putAuthor: async (parent, args, context, info) => {
+    setHello: async (parent, args, context, info) => {
       try {
-        const author = await Author.query().patchAndFetchById(args.id, args.body)
-        return author
+        // do your DB stuff here...
+        context.pubsub.publish('HELLO_UPDATED', { helloUpdated: args.body.message }) // subscription
+        return args.body.message // string
       } catch (e) {
-        return {}
-      }
-    },
-    postAuthor: async (parent, args, context, info) => {
-      try {
-        const author = await Author.query().insert(args.body)
-        return author
-      } catch (e) {
-        return {}
+        console.log('mutation error', e)
+        return 'No Message'
       }
     },
 
     patchCategory: async (parent, args, { pubsub }, info) => {
       try {
         const category = await Category.query().patchAndFetchById(args.id, args.body)
-        pubsub.publish('CATEGORY_UPDATED', { categoryUpdated: category }) // subscription
         return category
       } catch (e) {
         return {}
@@ -94,7 +61,6 @@ const resolvers = {
     postCategory: async (parent, args, { pubsub }, info) => {
       try {
         const category = await Category.query().insert(args.body)
-        pubsub.publish('CATEGORY_ADDED', { categoryAdded: category }) // subscription
         return category
       } catch (e) {
         return {}
@@ -111,16 +77,10 @@ const resolvers = {
     // }
   },
   Subscription: {
-    categoryAdded: {
+    helloUpdated: {
       // Additional event labels can be passed to asyncIterator creation
       subscribe: (parent, args, { pubsub }, info) => {
-        return pubsub.asyncIterator('CATEGORY_ADDED')
-      }
-    },
-    categoryUpdated: {
-      // Additional event labels can be passed to asyncIterator creation
-      subscribe: (parent, args, { pubsub }, info) => {
-        return pubsub.asyncIterator('CATEGORY_UPDATED')
+        return pubsub.asyncIterator('HELLO_UPDATED')
       }
     }
   }
