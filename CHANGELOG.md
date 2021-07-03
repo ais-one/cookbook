@@ -1,5 +1,6 @@
 ### Version 0.5.4
 - [chore] update packages & cleanup & work on improving documentation
+- [example-app] add server side event (SSE) example
 - In Progress
   - [feat] add commitizen
   - [example-app] jsonschema & openapi 3.1

@@ -43,3 +43,13 @@ POST http://127.0.0.1:3000/api/test-post-json
 content-type: application/json
 
 hello world
+
+###
+
+# Post Test SSE endpoint
+POST http://127.0.0.1:3000/api/sse/event
+content-type: application/json
+
+{
+  "bye": "everybody"
+}

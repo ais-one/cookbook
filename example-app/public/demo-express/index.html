@@ -69,5 +69,12 @@
   </form>
 </div>
 
+<script type="text/javascript">
+  const source = new EventSource('/api/sse/register')
+  source.addEventListener('message', (message) => {
+    console.log('SSE', message);
+  })
+</script>
+
 </body>
 </html>
