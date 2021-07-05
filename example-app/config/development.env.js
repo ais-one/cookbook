@@ -33,7 +33,7 @@ module.exports = {
 
     // privateCert: fs.readFileSync('/path/to/acme_tools_com.key', 'utf-8'), // not needed yet
     // authnContext: 'http://schemas.microsoft.com/ws/2008/06/identity/authenticationmethod/password',
-    // authnContext: 'http://schemas.microsoft.com/ws/2008/06/identity/authenticationmethod/windows',
+    // authnContext: 'http://schemas.microsoft.com/ws/2008/06/identity/authenticationmethod/windows', //  use AD
     acceptedClockSkewMs: -1, // DGAF on time diff between IDP and SP
     identifierFormat: null,
     // this is configured under the Advanced tab in AD FS relying party
