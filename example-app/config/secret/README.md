@@ -21,9 +21,10 @@ module.exports = {
 ```
 module.exports = {
   GCP_SERVICE_KEY: {},
-  OAUTH_CLIENT_ID: '', // OAuth2 Client ID // used by example-native frontend
-  OAUTH_CLIENT_SECRET: '', // OAuth2 Client SECRET
-  OAUTH_CALLBACK: '', // OAuth2 callback URL
+  OAUTH_URL: '', // OAuth URL
+  OAUTH_CLIENT_ID: '', // OAuth Client ID // used by example-native frontend
+  OAUTH_CLIENT_SECRET: '', // OAuth Client SECRET
+  OAUTH_CALLBACK: '', // OAuth callback URL
   FCM_SERVER_KEY: '',
 }
 

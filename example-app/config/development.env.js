@@ -16,6 +16,7 @@ module.exports = {
   // in secret
   // KNEXFILE: null,
   // GCP_SERVICE_KEY: null,
+  // OAUTH_URL: '',
   // OAUTH_CLIENT_ID: '',
   // OAUTH_CLIENT_SECRET: '',
   // OAUTH_CALLBACK: '',

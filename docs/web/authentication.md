@@ -10,3 +10,7 @@ The following are supported
     - grant types are
       - authorization_code
       - refresh_token
+
+
+
+https://auth0.com/docs/flows/call-your-api-using-the-authorization-code-flow

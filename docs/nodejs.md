@@ -127,6 +127,10 @@ busboy, formidable
 - https://dev.to/helenanders26/sql-301-why-you-need-sql-window-functions-part-2-2nmj
 
 
+## SSE
+
+- https://www.digitalocean.com/community/tutorials/nodejs-server-sent-events-build-realtime-app
+
 ## NPM corruption
 1. delete node_modules
 2. delete package-lock.json ???

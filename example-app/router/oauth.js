@@ -1,6 +1,6 @@
 'use strict'
 const axios = require('axios')
-const { OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, OAUTH_CALLBACK } = global.CONFIG
+const { OAUTH_CLIENT_ID, OAUTH_CLIENT_SECRET, OAUTH_CALLBACK, OAUTH_URL } = global.CONFIG
 const { AUTH_ERROR_URL } = global.CONFIG
 const { findUser, createToken, setTokensToHeader, revokeToken } = require('@es-labs/node/auth')
 
@@ -12,7 +12,7 @@ const express = require('express')
 const callbackGithub = async (req, res) => {
   try {
     const { code, state } = req.query
-    const { data } = await axios.post('https://github.com/login/oauth/access_token', {
+    const { data } = await axios.post(OAUTH_URL, {
       client_id: OAUTH_CLIENT_ID, client_secret: OAUTH_CLIENT_SECRET, code, state
     }, {
       headers: {

@@ -54,6 +54,7 @@ global.CONFIG.OIDC_OPTIONS = null
 global.CONFIG.AUTH_ERROR_URL = '' // for 
 
 // OAuth (we use github for example)
+global.CONFIG.OAUTH_URL = ''
 global.CONFIG.OAUTH_CLIENT_ID = ''
 global.CONFIG.OAUTH_CLIENT_SECRET = ''
 global.CONFIG.OAUTH_CALLBACK = ''
