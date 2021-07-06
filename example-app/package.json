@@ -30,7 +30,9 @@
     "json2csv": "^5.0.6",
     "kafkajs": "^1.15.0",
     "morgan": "^1.10.0",
-    "selfsigned": "^1.10.11"
+    "selfsigned": "^1.10.11",
+    "swagger-ui-express": "^4.1.6",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
