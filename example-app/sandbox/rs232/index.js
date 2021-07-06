@@ -1,14 +1,20 @@
+const net = require('net')
+const client = new net.Socket()
+const port = 4000
+const host = '13.212.204.79' // '127.0.0.1'
+
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
+let netConnect = false
 
-const comPort = process.argv[2]
+const COMM_PORT = process.argv[2]
 
-if (!comPort) {
+if (!COMM_PORT) {
   console.log('Please specify com port in command argument, e.g. rs232.exe COM2')
   process.exit(1)
 }
 
-const port = new SerialPort(comPort, {
+const serialport = new SerialPort(COMM_PORT, {
   baudRate: 57600,
   autoOpen: false,
   /* default
@@ -28,33 +34,60 @@ const port = new SerialPort(comPort, {
   */
 })
 
-port.open(function (err) {
+serialport.open((err) => {
   if (err) {
-    return console.log('Error opening port: ', err.message)
+    return console.log('Error opening serialport: ', err.message)
   }
-  // Because there's no callback to write, write errors will be emitted on the port:
-  port.write('Port Open...')
+  // Because there's no callback to write, write errors will be emitted on the serialport:
+  // serialport.write('Port Open...')
+  console.log('Port Open')
 })
 
 // The open event is always emitted
-// port.on('open', function() {
+// serialport.on('open', function() {
 //   // open logic
 // })
 
-const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
-parser.on('data', (data) => console.log(data))
+const parser = serialport.pipe(new Readline({ delimiter: '\r\n' }))
+parser.on('data', (data) => {
+  if (netConnect) {
+    console.log(data)
+    client.write(data)
+  }
+})
 
 // Read data that is available but keep the stream in "paused mode"
-// port.on('readable', function () {
-//   console.log('Data:', port.read())
+// serialport.on('readable', function () {
+//   console.log('Data:', serialport.read())
 // })
 
-// Switches the port into "flowing mode"
-// port.on('data', function (data) {
+// Switches the serialport into "flowing mode"
+// serialport.on('data', function (data) {
 //   console.log('Data:', data.toString('utf8'))
 // })
 
 // Pipe the data into another stream (like a parser or standard out)
-// const lineStream = port.pipe(new Readline())
+// const lineStream = serialport.pipe(new Readline())
+
+
+// creating a custom socket client and connecting it....
+client.connect({ host, port })
+client.setEncoding('utf8')
+
+client.on('connect', () => {
+  console.log('Client: connection established with server')
+  netConnect = true
+  // writing data to server
+  client.write('hello from client')
+})
+
+// client.on('data', (data) => console.log('Data from server:' + data))
+client.on('error', (error) => {
+  netConnect = false
+  console.log(error.toString())
+  client.end()
+})
+
+client.on('end', () => console.log('disconnected from server'))
 
 

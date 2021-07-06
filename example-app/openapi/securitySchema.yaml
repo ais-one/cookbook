@@ -8,7 +8,7 @@ MySecurity:
   ApiKeyAuth:
     type: apiKey
     in: header # "header", "query" or "cookie"
-    name: X-API-Key
+    name: Authorization
   OpenID:
     type: openIdConnect
     openIdConnectUrl: https://example.com/.well-known/openid-configuration

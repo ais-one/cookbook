@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
-const swaggerDocument = YAML.load('./openapi/petstore.yaml')
+const swaggerDocument = YAML.load('./openapi/example.yaml')
 // const swaggerDocument = require('./swagger.json')
 
 const options = {
