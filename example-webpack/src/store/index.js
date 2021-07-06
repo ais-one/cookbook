@@ -33,7 +33,7 @@ export const store = new Vuex.Store({
       state.user = payload
       if (payload) {
         if (!HTTPONLY_TOKEN) {
-          http.defaults.headers.common['access_token'] = payload.access_token
+          http.defaults.headers.common['Authorization'] = `Bearer ${payload.access_token}`
           http.defaults.headers.common['refresh_token'] = payload.refresh_token
         }
         const { access_token, refresh_token, ...noTokens } = payload
@@ -41,7 +41,7 @@ export const store = new Vuex.Store({
       } else {
         localStorage.removeItem('session')
         if (!HTTPONLY_TOKEN) {
-          delete http.defaults.headers.common.access_token
+          delete http.defaults.headers.common.Authorization
           delete http.defaults.headers.common.refresh_token
         }
       }

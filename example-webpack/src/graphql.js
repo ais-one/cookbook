@@ -43,8 +43,8 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      access_token: access_token || '', // TBD - GraphQL not taking into account refresh token and revocation
-      refresh_token: refresh_token || ''
+      Authorization: `Bearer ${access_token}`, // TBD - GraphQL not taking into account refresh token and revocation
+      // refresh_token: refresh_token || ''
     }
   }
 })

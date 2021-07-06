@@ -114,24 +114,36 @@ const createToken = async (user) => { // Create a tokens & data from user
 }
 
 const setTokensToHeader = (res, {access_token, refresh_token}) => {
+  const _access_token = `Bearer ${access_token}`
   if (COOKIE_HTTPONLY) {
     res.setHeader('Set-Cookie', [
-      `access_token=${access_token};Path=/;`+ httpOnlyCookie,
+      `Authorization=${_access_token};Path=/;`+ httpOnlyCookie,
       `refresh_token=${refresh_token};Path=${AUTH_REFRESH_URL};`+ httpOnlyCookie // send only if path contains refresh
     ])
   } else {
-    res.setHeader('access_token', `${access_token}`)
+    res.setHeader('Authorization', `${_access_token}`)
     res.setHeader('refresh_token', `${refresh_token}`)
   }
 }
 
 const authUser = async (req, res, next) => {
   // console.log('auth express', req.baseUrl, req.path, req.cookies, req.signedCookies)
-  let access_result = null
-  let access_token = req?.cookies?.access_token || req?.headers?.access_token || req?.query?.access_token
+  let access_token = null
+  try {
+    let tmp = req.cookies?.Authorization || req.header('Authorization') || req.query?.Authorization
+    access_token = tmp.split(' ')[1]
+  } catch (e) {
+    return res.status(401).json({ message: 'Token Format Error' })
+  }
   if (access_token) {
     try {
-      access_result = jwt.verify(access_token, getSecret('verify', 'access'), { algorithm: [JWT_ALG] }) // and options
+      let access_result = jwt.verify(access_token, getSecret('verify', 'access'), { algorithm: [JWT_ALG] }) // and options
+      if (access_result) {
+        req.decoded = access_result
+        return next()
+      } else {
+        return res.status(401).json({error: 'Access Error' })
+      }  
     } catch (e) {
       if (e.name === 'TokenExpiredError') {
         return res.status(401).json({ message: 'Token Expired Error' })
@@ -140,19 +152,14 @@ const authUser = async (req, res, next) => {
         return res.status(401).json({ message: 'Token Error' })
       }
     }
-    if (access_result) {
-      req.decoded = access_result
-      return next()
-    } else {
-      return res.status(401).json({error: 'Access Error' })
-    }
+  } else {
+    return res.status(401).json({error: 'Token Missing' })
   }
-  return res.status(401).json({error: 'Server Error' })
 }
 
 const authRefresh = async (req, res) => { // get refresh token
   try {
-    const refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token || req?.query?.refresh_token // check refresh token & user - always stateful          
+    const refresh_token = req.cookies?.refresh_token || req.header('refresh_token') || req.query?.refresh_token // check refresh token & user - always stateful          
     const refresh_result = jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
     const { id } = refresh_result
     let refreshToken = await getToken(id)
@@ -173,7 +180,7 @@ const authRefresh = async (req, res) => { // get refresh token
 const logout = async (req, res) => {
   let id = null
   try {
-    let refresh_token = req?.cookies?.refresh_token || req?.headers?.refresh_token // check refresh token & user - always stateful          
+    let refresh_token = req.cookies?.refresh_token || req.header('refresh_token') || req.query?.refresh_token // check refresh token & user - always stateful          
     const result = jwt.decode(refresh_token)
     id = result.id
     jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
@@ -185,7 +192,7 @@ const logout = async (req, res) => {
       await revokeToken(id) // clear
       if (COOKIE_HTTPONLY) {
         res.clearCookie('refresh_token')
-        res.clearCookie('access_token')
+        res.clearCookie('Authorization')
       }  
       return res.status(200).json({ message: 'Logged Out' })  
     }

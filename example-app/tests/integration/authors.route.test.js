@@ -27,7 +27,7 @@ describe(endpointUrl, () => {
     const { createToken } = require('@es-labs/node/auth')
     const tokens = await createToken({ id: 100, groups: 'TestGroup' })
     authObj = {
-      access_token: tokens.access_token,
+      Authorization: `Bearer ${tokens.access_token}`,
       refresh_token: tokens.refresh_token
     }
   })

@@ -35,7 +35,7 @@ http.interceptors.response.use(
             const { access_token, refresh_token } = res.data
             store.commit('setUser', res.data)
             if (!HTTPONLY_TOKEN) {
-              error.config.headers.access_token = access_token
+              error.config.headers.Authorization = `Bearer ${access_token}`
               error.config.headers.refresh_token = refresh_token
             }
             // if (myURL.pathname === '/api/health-auth') console.log('retrying...', error.config, error.config.headers.Authorization) // For Testing Refresh Token

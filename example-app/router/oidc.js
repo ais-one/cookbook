@@ -49,7 +49,7 @@ module.exports = express.Router()
     const headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
     const payload = new URLSearchParams()
     payload.append('grant_type', 'refresh_token')
-    payload.append('refresh_token', req?.headers?.refresh_token || req?.cookies?.refresh_token || req?.query?.refresh_token)
+    payload.append('refresh_token', req.cookies?.refresh_token || req.header('refresh_token') || req.query?.refresh_token)
     payload.append('client_id', OIDC_OPTIONS.CLIENT_ID)
     // add offline_access to get refresh token
     const rv = await axios.post(TOKEN_URL, payload, { headers })

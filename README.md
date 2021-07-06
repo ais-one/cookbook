@@ -17,7 +17,6 @@ The difference between this project and [https://github.com/ais-one/favv](https:
 - favv tries to seperate boiler plate from custom logic for better maintainability
 - they complement each other and each can be used to improve on each other
 
-
 We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem. It is easier for TS people to take the JS here and implement with TS.
 
 > **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
@@ -25,6 +24,7 @@ We do not use Typescript because TS people can understand JS easily, but JS-only
 Latest Version [0.5.4](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.4) - Released 2021 July 15 0730 +8GMT
 
 - add openapi example and validation, commitizen
+- add rs232 and vercel/pkg usage example in sandbox
 - [NOTE!] project name is going to be replaced to a more appropriate one
 
 # Features

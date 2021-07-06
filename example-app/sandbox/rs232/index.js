@@ -1,8 +1,7 @@
 const SerialPort = require('serialport')
+const Readline = require('@serialport/parser-readline')
 
-console.log()
-
-comPort = process.argv[2]
+const comPort = process.argv[2]
 
 if (!comPort) {
   console.log('Please specify com port in command argument, e.g. rs232.exe COM2')
@@ -38,9 +37,12 @@ port.open(function (err) {
 })
 
 // The open event is always emitted
-port.on('open', function() {
-  // open logic
-})
+// port.on('open', function() {
+//   // open logic
+// })
+
+const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
+parser.on('data', (data) => console.log(data))
 
 // Read data that is available but keep the stream in "paused mode"
 // port.on('readable', function () {
@@ -48,30 +50,11 @@ port.on('open', function() {
 // })
 
 // Switches the port into "flowing mode"
-port.on('data', function (data) {
-  console.log('Data:', data)
-})
+// port.on('data', function (data) {
+//   console.log('Data:', data.toString('utf8'))
+// })
 
 // Pipe the data into another stream (like a parser or standard out)
 // const lineStream = port.pipe(new Readline())
 
 
-/*
-require('dotenv').config()
- 
-Your require files which have variables…
-
-const path = require('path')
-
-// Change FROM
-let aaa = require(`./xxx/yyy.json`);
-
-// Change TO
-const loc = path.join(process.cwd(), `/config/xxx/yyy.json`)
-let aaa = require(loc);
-
-npx pkg --targets win ./bin/www
-npx pkg --targets linux ./bin/www
-
-npx pkg index.js --targets node14-win-x64 --output rs232.exe
-*/
