@@ -38,11 +38,11 @@ module.exports = {
 
   WEB_STATIC: [ // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
     // options does not seem to work
+    // { folder: 'openapi', url: '/ftp2', options: {'icons': true}, list: true },
     { folder: '../@es-labs/esm', url: '/esm' },
-    { folder: '../example-amp', url: '/amp', options: { extensions: ['html'], index: false } },
     { folder: '../example-native', url: '/native', options: { extensions: ['html'], index: false } },
     { folder: '../example-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
-    { folder: 'public/demo-express', url: '/' }
+    { folder: 'public/demo-express', url: '/' }, // last as path is /
   ],
 
   // for file uploads
@@ -59,7 +59,9 @@ module.exports = {
         files: 2,
         fileSize: 10000000 // size in bytes
       },
-    }
+    },
+    list: true, // allow to list 
+    listOptions: { icons: true } // refer to serve-index package
   },
   UPLOAD_MEMORY: {
     limits: {

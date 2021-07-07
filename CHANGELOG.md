@@ -1,7 +1,9 @@
 ### Version 0.5.4
 - [chore] update packages & cleanup & work on improving documentation
 - [example-app] add server side event (SSE) example
+- [example-app] add serve-index function to uploads folder (list files and folders)
 - In Progress
+  - [example-app] multiple UPLOAD_STATIC
   - [feat] add commitizen
   - [example-app] jsonschema & openapi 3.1
     - shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)

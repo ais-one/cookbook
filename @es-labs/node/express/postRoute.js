@@ -4,6 +4,17 @@ module.exports = function (app, express, options) {
   const  { UPLOAD_STATIC, PROXY_WWW_ORIGIN, WEB_STATIC } = options
 
   // app.set('case sensitive routing', true)
+
+  // Upload URL, Should use Signed URL and get from cloud storage instead
+  if (UPLOAD_STATIC) { 
+    const serveIndex = require('serve-index') // connect-history-api-fallback causes problems, so do upload first
+    const { url, folder, list, listOptions } = UPLOAD_STATIC
+    if (url && folder) {
+      app.use(url, express.static(folder))
+      if (list) app.use(url, serveIndex(folder, listOptions)) // allow file and directory to be listed
+    }
+  }
+
   const hasWebStatic = WEB_STATIC && WEB_STATIC.length
   if (PROXY_WWW_ORIGIN && !hasWebStatic) {
     const proxy = require('http-proxy-middleware')
@@ -23,12 +34,6 @@ module.exports = function (app, express, options) {
       })
     }
     app.use("*", (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
-  }
-  // Upload URL, Should use Signed URL and get from cloud storage instead
-  if (UPLOAD_STATIC) {
-    const { url, folder } = UPLOAD_STATIC
-    if (url && folder) app.use(url, express.static(folder))
-    else console.log('blank upload details', UPLOAD_STATIC)
   }
 
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
