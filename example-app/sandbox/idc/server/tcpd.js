@@ -1,3 +1,6 @@
+'use strict'
+require('dotenv').config()
+
 /* eslint-disable */
 // TCP server
 const net = require('net')
@@ -32,8 +35,9 @@ server.listen(port, host, () => {
 const utcOffsetHours = (new Date().getTimezoneOffset()) / 60
 
 const processData = (data) => {
-  data = '162,727.75,11243960,6,1.3523782,103.7447128,0.00,0.00,0.00,0.00,0.00,0.00,0.00,,0,1,1,1,0,18.90,18.90,4964' // testing
-  const data_a = data.split(',')
+  console.log('processData', data, typeof data)
+  // data = '162,727.75,11243960,6,1.3523782,103.7447128,0.00,0.00,0.00,0.00,0.00,0.00,0.00,,0,1,1,1,0,18.90,18.90,4964' // testing
+  const data_a = data.toString('utf8').split(',')
   if (data_a.length === 22) {
     let [serial, Time, GPS_Time, Sat, Latitude, Longitude, Speed, Roll, Pitch, Z_Rate, Accx, Accy, RPM, Gear_Ratio, Calc_gear, Clutch, Front_Brake, Rear_Brake, Engine_Brake, Foot_Right, Foot_Left, checksum] = data_a
     const hh = parseInt(GPS_Time.substring(0, 2))
@@ -125,8 +129,5 @@ signalTraps.forEach(type => {
     return
   })
 })
-
-
-
 
 // https://gist.github.com/sid24rane/2b10b8f4b2f814bd0851d861d3515a10

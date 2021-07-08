@@ -16,10 +16,16 @@ module.exports = {
   // in secret
   // KNEXFILE: null,
   // GCP_SERVICE_KEY: null,
+
   // OAUTH_URL: '',
   // OAUTH_CLIENT_ID: '',
   // OAUTH_CLIENT_SECRET: '',
   // OAUTH_CALLBACK: '',
+  // OAUTH_USER_URL: '',
+  // OAUTH_USER_ID: '',
+  // OAUTH_USER_GROUPS: '',
+  // OAUTH_FIND_ID: '',
+  
   // FCM_SERVER_KEY: '',
 
   SAML_OPTIONS: {
@@ -46,7 +52,7 @@ module.exports = {
   // NOTE: need to setup keycloak for OIDC see readme in docker-devenv folder
   OIDC_OPTIONS: {
     URL: 'http://127.0.0.1:8081/auth/realms/test/protocol/openid-connect',
-    CLIENT_ID: 'test-oidc-client-favv',
+    CLIENT_ID: 'test-oidc-client',
     CLIENT_SECRET: '',
     CALLBACK: 'http://127.0.0.1:8080/callback'
   },

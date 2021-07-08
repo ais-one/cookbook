@@ -1,11 +1,12 @@
+require('dotenv').config()
+
 const logger = require('./logger')
 const net = require('net')
 const client = new net.Socket()
 const port = 4000
 const host = '13.212.204.79' // '127.0.0.1'
 
-
-console.log('Serial Server - BUILD 0.0.2')
+console.log('Serial Server - BUILD 0.0.3.2', process.env.VERSION)
 
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
@@ -63,9 +64,13 @@ if (!COMM_PORT) {
   const parser = serialport.pipe(new Readline({ delimiter: '\r\n' }))
   parser.on('data', (data) => {
     if (netConnect) {
-      // console.log(data)
-      logger.info(data)
-      client.write(data)
+      try {
+        console.log(data)
+        logger.info(data)
+        client.write(data)  
+      } catch (e) {
+        console.log('processing error', e.toString())
+      }
     }
   })
   // serialport.on('readable', () => console.log('Data:', serialport.read())) // Read data that is available but keep the stream in "paused mode"

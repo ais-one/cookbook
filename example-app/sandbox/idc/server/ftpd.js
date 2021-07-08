@@ -1,7 +1,10 @@
-var express    = require('express')
-var serveIndex = require('serve-index')
+'use strict'
+require('dotenv').config()
 
-var app = express()
+const express    = require('express')
+const serveIndex = require('serve-index')
+
+const app = express()
 
 // Serve URLs like /ftp/thing as public/ftp/thing
 // The express.static serves the file contents

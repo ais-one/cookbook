@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "serialport": "^9.2.0",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5"

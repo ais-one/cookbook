@@ -33,6 +33,7 @@ module.exports = express.Router()
       payload.append('code', code)
       payload.append('redirect_uri', OIDC_OPTIONS.CALLBACK)
       payload.append('client_id', OIDC_OPTIONS.CLIENT_ID)
+      // if (session_state)
       if (OIDC_OPTIONS.CLIENT_SECRET) payload.append('client_secret', OIDC_OPTIONS.CLIENT_SECRET)
       // add offline_access to get refresh token
 
