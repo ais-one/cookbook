@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const { authUser } = require('../middlewares/auth')
+const { authUser } = require('@es-labs/node/auth')
 const { storageUpload } = require('@es-labs/node/express/upload')
 const { UPLOAD_STATIC } = global.CONFIG
 

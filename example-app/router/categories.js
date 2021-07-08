@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const { authUser } = require('../middlewares/auth')
+const { authUser } = require('@es-labs/node/auth')
 const categoryController = require('../controllers/category')
 
 // const Category = require('../models/Category')

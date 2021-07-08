@@ -3,4 +3,5 @@
 
 echo pre-commit execute start
 cd example-app && npm run lint
+# you can do a git add . here also
 echo pre-commit execute end

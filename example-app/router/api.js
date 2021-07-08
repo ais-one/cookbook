@@ -14,7 +14,7 @@ const { memoryUpload, storageUpload } = require('@es-labs/node/express/upload')
 
 const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 
-const { authUser } = require('../middlewares/auth')
+const { authUser } = require('@es-labs/node/auth')
 
 module.exports = express.Router({caseSensitive: true})
   .get('/python', (req, res) => {

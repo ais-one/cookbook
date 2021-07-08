@@ -41,6 +41,3 @@ npx pkg index.js --targets node14-win-x64 --output rs232.exe
 ```bash
 npx pkg .
 ```
-
-pm2 logs --timestamp --raw
-pm2 start tcpServer.js --time --output log.txt --error err.txt

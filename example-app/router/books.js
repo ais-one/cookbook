@@ -4,7 +4,7 @@ const express = require('express')
 const { Parser } = require('json2csv')
 const parser = new Parser({})
 
-const { authUser } = require('../middlewares/auth')
+const { authUser } = require('@es-labs/node/auth')
 
 const Book = require('../models/Book')
 // const Author = require('../models/Author')

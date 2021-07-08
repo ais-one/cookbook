@@ -11,7 +11,7 @@ const { validateColumn } = require('esm')(module)('@es-labs/esm/t4t-validate') /
 const mongo = require('@es-labs/node/services/db/mongodb').get()
 const ObjectID = mongo.ObjectID
 
-// const { authUser } = require('../middlewares/auth')
+// const { authUser } = require('@es-labs/node/auth')
 const authUser = async (req, res, next) => next()
 
 const csvParse = require('csv-parse')

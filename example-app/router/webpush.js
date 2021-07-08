@@ -3,7 +3,7 @@
 const express = require('express')
 const { vapidPubKey, send } = require('@es-labs/node/services/webpush')
 const fcmSend = require('@es-labs/node/comms/fcm')
-const { authUser, findUser, updateUser } = require('../middlewares/auth')
+const { authUser, findUser, updateUser } = require('@es-labs/node/auth')
 
 module.exports = express.Router()
   .get('/vapid-public-key', (req, res) => res.json({ publicKey: vapidPubKey }))
