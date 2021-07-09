@@ -4,9 +4,8 @@ require('dotenv').config()
 /* eslint-disable */
 // TCP server
 const net = require('net')
-const port = 4000
-const host = '0.0.0.0'
-
+const port = process.env.TCP_PORT
+const host = process.env.TCP_HOST
 
 let sockets = []
 let dbReady = false
@@ -14,10 +13,10 @@ let dbReady = false
 const knex = require('knex')({
   client: 'mysql',
   connection: {
-    host : 'ls-8d106a4d1735c947d98ee24733aefbdb793b65f7.cplamvbmuewb.ap-southeast-1.rds.amazonaws.com',
-    user : 'dbmasteruser',
-    password : '[|a=D5a2SX8k%di+0Y9X~8=u3UpeP)uT',
-    database : 'dbmaster'
+    host : process.env.DB_HOST,
+    user : process.env.DB_USER,
+    password : process.env.DB_PASS,
+    database : process.env.DB_NAME
   }
 })
 knex.raw('select 1+1 as result').then(() => {
@@ -25,7 +24,6 @@ knex.raw('select 1+1 as result').then(() => {
   console.log('db connected')
   // processData('test')
 }).catch(err => { console.log('DB error: ' + err.toString()) })
-
 
 const server = net.createServer()
 server.listen(port, host, () => {
@@ -87,47 +85,25 @@ server.on('connection', (sock) => {
     if (index !== -1) sockets.splice(index, 1)
     console.log('CLOSED: ' + sock.remoteAddress + ' ' + sock.remotePort)
   })
-
   sock.on('error', () => console.log('Socket error'))
 })
 
-server.on('close',function(){
-  console.log('Server closed 2')
-})
+server.on('close', () => console.log('Server closed 2'))
 
-const errorTypes = ['unhandledRejection', 'uncaughtException']
-const signalTraps = ['SIGTERM', 'SIGINT', 'SIGUSR2']
-
-errorTypes.forEach(type => {
-  process.on(type, async e => {
-    try {
-      console.log(`process.on ${type}`)
-      console.error(e)
-      return process.exit(0)
-    } catch (_) {
-      return process.exit(1)
-    }
-  })
-})
-
-signalTraps.forEach(type => {
-  process.once(type, async () => {
-    try {
-      console.log('Signal Trap', type)
-      for (let socket of sockets) socket.destroy()
-      // server.close()
-      server.close(function () {
-        console.log('server closed')
-        server.unref()
-      })
-      // await consumer.disconnect()
-      console.log('end')
-    } finally {
-      // Do not call this as need time to close the server...
-      // process.kill(process.pid, type)
-    }
-    return
-  })
+require('../traps')(null, async () => {
+  try {
+    console.log('Signal Trap', type)
+    for (let socket of sockets) socket.destroy()
+    // server.close()
+    server.close(() => {
+      console.log('server closed')
+      server.unref()
+    })
+    console.log('end')
+  } finally {
+    // Do not call this as need time to close the server...
+    // process.kill(process.pid, type)
+  }
 })
 
 // https://gist.github.com/sid24rane/2b10b8f4b2f814bd0851d861d3515a10

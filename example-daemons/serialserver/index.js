@@ -3,10 +3,10 @@ require('dotenv').config()
 const logger = require('./logger')
 const net = require('net')
 const client = new net.Socket()
-const port = 4000
-const host = '13.212.204.79' // '127.0.0.1'
+const host = process.env.TCP_HOST
+const port = process.env.TCP_PORT
 
-console.log('Serial Server - BUILD 0.0.3.2', process.env.VERSION)
+console.log('Serial Server 0.0.4')
 
 const SerialPort = require('serialport')
 const Readline = require('@serialport/parser-readline')
@@ -14,7 +14,8 @@ let netConnect = false
 let commOpen = false
 let serialport = null
 
-const COMM_PORT = process.argv[2] // || 'COM1'
+const COMM_PORT = process.argv[2] || process.env.COMM_PORT
+const COMM_BAUD = Number(process.env.COMM_BAUD)
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
 logger.on('finish', async () => {
@@ -30,7 +31,7 @@ if (!COMM_PORT) {
   logger.end()
 } else {
   serialport = new SerialPort(COMM_PORT, {
-    baudRate: 57600,
+    baudRate: COMM_BAUD,
     autoOpen: false,
     // default
     // autoOpen: true,

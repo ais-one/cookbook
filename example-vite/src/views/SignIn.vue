@@ -164,8 +164,10 @@ export default {
           otpId = data.otp
           otpCount = 0
         } else {
+          // logged in
           const decoded = parseJwt(data.access_token)
           http.setTokens({ access: data.access_token, refresh: data.refresh_token })
+          http.setOptions({ refreshUrl: VITE_REFRESH_URL })
           _setUser(data, decoded)
         }
       } catch (e) {
@@ -184,8 +186,10 @@ export default {
       try {
         http.setOptions({ refreshUrl: VITE_REFRESH_URL })
         const { data } = await http.post('/api/auth/otp', { id: otpId, pin: otp.value })
+        // logged in
         const decoded = parseJwt(data.access_token)
         http.setTokens({ access: data.access_token, refresh: data.refresh_token })
+        http.setOptions({ refreshUrl: VITE_REFRESH_URL })
         _setUser(data, decoded)
       } catch (e) {
         if (e.data.message === 'Token Expired Error') {

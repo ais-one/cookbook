@@ -318,7 +318,7 @@
           "attributes": {}
         }
       ],
-      "test-oidc-client-favv": [
+      "test-oidc-client": [
         {
           "id": "92d2ed43-8c56-41bc-92a4-21a2b0936769",
           "name": "test-oidc-client-favv-role-1",
@@ -837,7 +837,7 @@
     },
     {
       "id": "bdba8e77-8792-4f00-a7ca-8c08791eaef1",
-      "clientId": "test-oidc-client-favv",
+      "clientId": "test-oidc-client",
       "rootUrl": "http://127.0.0.1:3000/api/oidc/",
       "adminUrl": "http://127.0.0.1:3000/api/oidc/login",
       "surrogateAuthRequired": false,

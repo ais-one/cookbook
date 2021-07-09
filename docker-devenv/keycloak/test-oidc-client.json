@@ -1,5 +1,5 @@
 {
-    "clientId": "test-oidc-client-favv",
+    "clientId": "test-oidc-client",
     "rootUrl": "http://127.0.0.1:3000/api/oidc/",
     "adminUrl": "http://127.0.0.1:3000/api/oidc/login",
     "surrogateAuthRequired": false,

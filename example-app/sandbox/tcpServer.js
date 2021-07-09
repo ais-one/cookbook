@@ -76,7 +76,4 @@ signalTraps.forEach(type => {
   })
 })
 
-
-
-
 // https://gist.github.com/sid24rane/2b10b8f4b2f814bd0851d861d3515a10
