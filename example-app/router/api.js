@@ -100,7 +100,7 @@ module.exports = express.Router({caseSensitive: true})
   // body action: 'read' | 'write', filename: 'my-file.txt', bucket: 'bucket name'
   .post('/gcp-sign', asyncWrapper(gcpGetSignedUrl))
 
-  .post('/upload-disk', storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), (req,res) => { // avatar is form input name // single('filedata')
+  .post('/upload-disk', storageUpload(UPLOAD_STATIC[0]).any(), (req,res) => { // avatar is form input name // single('filedata')
     try {
       // console.log('files', req, req.files)
       for (let key in req.body) {
@@ -117,7 +117,7 @@ module.exports = express.Router({caseSensitive: true})
     }
   })
 
-  .post('/upload-memory', memoryUpload(UPLOAD_MEMORY).single('memory'), (req, res) => {
+  .post('/upload-memory', memoryUpload(UPLOAD_MEMORY[0]).single('memory'), (req, res) => {
     console.log(req.file.originalname, req.body)
     res.json({ message: req.file.buffer.toString() })
     // req.files is array of `photos` files

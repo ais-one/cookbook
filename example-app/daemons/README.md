@@ -7,7 +7,9 @@ Projects
     - pkg
     - logging
 - tcpserver
-  - tcp server
+  - tcp server - stream (keep client, connected and can reply to client, but need to take note on number of client connections)
+    - knex & mysql
+  - tcp server - event (close after receiving packet from client)
     - knex & mysql
 - kafkaRx.js
   - kafka consumer

@@ -361,7 +361,7 @@ module.exports = express.Router()
     return res.json(rv)  
   }))
 
-  .patch('/update/:table/:id?', authUser, generateTable, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), processJson, asyncWrapper(async (req, res) => {
+  .patch('/update/:table/:id?', authUser, generateTable, storageUpload(UPLOAD_STATIC[0]).any(), processJson, asyncWrapper(async (req, res) => {
     const { body, table } = req
     const where = formUniqueKey(table, req.query.__key)
     let count = 0
@@ -421,7 +421,7 @@ module.exports = express.Router()
     return res.json({count})
   }))
 
-  .post('/create/:table', authUser, generateTable, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).any(), processJson, asyncWrapper(async (req, res) => {
+  .post('/create/:table', authUser, generateTable, storageUpload(UPLOAD_STATIC[0]).any(), processJson, asyncWrapper(async (req, res) => {
     const { table, body } = req
     for (let key in table.cols) {
       const { rules, type } = table.cols[key]
@@ -510,11 +510,11 @@ for {
 }
 */
 
-// Test country collection upload using a csv file with following contents
-// code,name
-// zzz,1234
-// ddd,5678
-  .post('/upload/:table', authUser, generateTable, memoryUpload(UPLOAD_MEMORY).single('csv-file'), async (req, res) => { // do not use asyncWrapper
+  // Test country collection upload using a csv file with following contents
+  // code,name
+  // zzz,1234
+  // ddd,5678
+  .post('/upload/:table', authUser, generateTable, memoryUpload(UPLOAD_MEMORY[0]).single('csv-file'), async (req, res) => { // do not use asyncWrapper
     const { table } = req
     const csv = req.file.buffer.toString('utf-8')
     const output = []

@@ -46,7 +46,7 @@ module.exports = {
   ],
 
   // for file uploads
-  UPLOAD_STATIC: {
+  UPLOAD_STATIC: [{
     folder: APP_PATH + '/uploads',
     url: '/uploads',
     options: {
@@ -60,16 +60,17 @@ module.exports = {
         fileSize: 10000000 // size in bytes
       },
     },
+    savedFilename: null, // null or function (file pass in) returning a string...
     list: true, // allow to list 
     listOptions: { icons: true } // refer to serve-index package
-  },
-  UPLOAD_MEMORY: {
+  }],
+  UPLOAD_MEMORY: [{
     limits: {
       files : 1,
       fileSize: 500000 // size in bytes
     },
     // fileFilter,
-  },
+  }],
 
   BODYPARSER_JSON: { limit: '2mb' },
   BODYPARSER_URLENCODED: { extended: true, limit: '2mb' },

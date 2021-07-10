@@ -27,7 +27,7 @@ module.exports = express.Router({caseSensitive: true})
     req.on('close', () => {
       console.log(`${clientId} Connection closed`)
       clients = clients.filter(client => client.id !== clientId)
-      console.log('SSE Clients', clients)
+      // console.log('SSE Clients', clients)
     })
   })
 

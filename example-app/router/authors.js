@@ -57,7 +57,7 @@ module.exports = express.Router()
    *            $ref: '#/definitions/AuthorObject'
 
    */
-  .patch('/:id', authUser, storageUpload(UPLOAD_STATIC.folder, '', UPLOAD_STATIC.options).single('filex'), authorController.update)
+  .patch('/:id', authUser, storageUpload(UPLOAD_STATIC[0]).single('filex'), authorController.update)
   /**
    * @swagger
    * /api/authors/{id}:

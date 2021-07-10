@@ -1,6 +1,20 @@
 'use strict'
 require('dotenv').config()
 
+global.CONFIG = {
+  KNEXFILE: {
+    client: 'sqlite3',
+    connection: { filename: 'dev.sqlite3' }, // relative to directory that package.json was run
+    useNullAsDefault: true  
+  }
+}
+
+const Model = require('@es-labs/node/services/db/objection').open()
+Model.then(rv => {
+  console.log(rv)
+  const knex2 = rv.get()
+})
+
 /* eslint-disable */
 // TCP server
 const net = require('net')

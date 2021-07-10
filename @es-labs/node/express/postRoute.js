@@ -8,11 +8,13 @@ module.exports = function (app, express, options) {
   // Upload URL, Should use Signed URL and get from cloud storage instead
   if (UPLOAD_STATIC) { 
     const serveIndex = require('serve-index') // connect-history-api-fallback causes problems, so do upload first
-    const { url, folder, list, listOptions } = UPLOAD_STATIC
-    if (url && folder) {
-      app.use(url, express.static(folder))
-      if (list) app.use(url, serveIndex(folder, listOptions)) // allow file and directory to be listed
-    }
+    UPLOAD_STATIC.forEach(item => {
+      const { url, folder, list, listOptions } = item
+      if (url && folder) {
+        app.use(url, express.static(folder))
+        if (list) app.use(url, serveIndex(folder, listOptions)) // allow file and directory to be listed
+      }
+    })
   }
 
   const hasWebStatic = WEB_STATIC && WEB_STATIC.length
