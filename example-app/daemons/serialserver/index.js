@@ -116,10 +116,11 @@ client.on('connect', () => {
   console.log(`TCP Client: connection established with server @ ${host}:${port}`)
   netConnect = true
 })
-
 client.on('error', (err) => launchIntervalConnect(err.toString))
 client.on('close', launchIntervalConnect)
 client.on('end', launchIntervalConnect) // dc from server
+client.on('timeout', launchIntervalConnect)
+
 // client.on('data', (data) => console.log('Data from server:' + data))
 
 TcpConnect()

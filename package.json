@@ -5,9 +5,6 @@
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
   "scripts": {
-    "spa": "cd example-webpack && npm run serve",
-    "vite": "cd example-vite && npm run dev",
-    "app": "cd example-app&&npm run app -- development",
     "prepare": "husky install",
     "git:hash": "git rev-parse --verify --short HEAD",
     "git:branch": "git rev-parse --abbrev-ref HEAD"

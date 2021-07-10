@@ -26,6 +26,7 @@ knex.raw('select 1+1 as result').then(() => {
 }).catch(err => { console.log('DB error: ' + err.toString()) })
 
 const server = net.createServer()
+
 server.listen(port, host, () => {
   console.log('TCP Server is running on port ' + port + '.')
 })
@@ -63,14 +64,14 @@ const processData = (data) => {
   }
 }
 
-server.on('connection', (sock) => {
-  console.log('CONNECTED: ' + sock.remoteAddress + ':' + sock.remotePort)
+server.on('connection', (client) => {
+  console.log('CONNECTED: ' + client.remoteAddress + ':' + client.remotePort)
 
-  sockets.push(sock)
+  sockets.push(client)
 
-  // sock.setEncoding('utf8')
-  sock.on('data', (data) => {
-    console.log('DATA ' + sock.remoteAddress + ': ' + data)
+  // client.setEncoding('utf8')
+  client.on('data', (data) => {
+    console.log('DATA ' + client.remoteAddress + ': ' + data)
     if (dbReady) {
       processData(data)
     }
@@ -78,17 +79,18 @@ server.on('connection', (sock) => {
   })
 
   // Add a 'close' event handler to this instance of socket
-  sock.on('close', (data) => {
+  client.on('close', (data) => {
     let index = sockets.findIndex((o) => {
-      return o.remoteAddress === sock.remoteAddress && o.remotePort === sock.remotePort
+      return o.remoteAddress === client.remoteAddress && o.remotePort === client.remotePort
     })
     if (index !== -1) sockets.splice(index, 1)
-    console.log('CLOSED: ' + sock.remoteAddress + ' ' + sock.remotePort)
+    console.log('CLOSED: ' + client.remoteAddress + ' ' + client.remotePort)
   })
-  sock.on('error', () => console.log('Socket error'))
+  client.on('error', () => console.log('Socket error'))
 })
 
 server.on('close', () => console.log('Server closed 2'))
+server.on('error', (err) => { throw err })
 
 require('../traps')(null, async () => {
   try {
@@ -105,5 +107,3 @@ require('../traps')(null, async () => {
     // process.kill(process.pid, type)
   }
 })
-
-// https://gist.github.com/sid24rane/2b10b8f4b2f814bd0851d861d3515a10

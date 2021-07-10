@@ -67,6 +67,7 @@
 +- common-express/ : common setup
 +- config/ : centralized config folder (see README.md within the config folder)
 +- controllers/
++- daemons/ : long runnning processes
 +- deploy/ : deployment folder (see README.md within the deploy folder)
 |  +- db/ : for seeding and migrating data
 |     +- knex/

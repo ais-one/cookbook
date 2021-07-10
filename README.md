@@ -8,7 +8,7 @@
 
 # About
 
-**vue-crud-x** is a cookbook with evergreen recipes and templates to develop applications faster. While reducing the need for rewrite or refactoring due to changes in dependencies.
+> **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, Cloud container deployment, Web Components, ES Modules) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
 Considerations for this project are similar to [https://github.com/ais-one/favv/blob/master/README.md#considerations](https://github.com/ais-one/favv/blob/master/README.md#considerations).
 
@@ -19,13 +19,11 @@ The difference between this project and [https://github.com/ais-one/favv](https:
 
 We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem. It is easier for TS people to take the JS here and implement with TS.
 
-> **TL;DR** ExpressJS & VueJS Web App Cookbook, Customisable CRUD Library, CI/CD, Cloud Container Deployment, Web Components, ES Modules
-
 Latest Version [0.5.4](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.4) - Released 2021 July 15 0730 +8GMT
 
 - add openapi example and validation, commitizen
-- add rs232 and vercel/pkg usage example in sandbox
-- [NOTE!] project name is going to be replaced to a more appropriate one
+- add rs232 and vercel/pkg usage
+- **NOTE!** project name is going to be replaced to a more appropriate one
 
 # Features
 

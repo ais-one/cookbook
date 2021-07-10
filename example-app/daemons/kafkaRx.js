@@ -29,30 +29,4 @@ const run = async () => {
 
 run().catch(e => console.error(`[example/consumer] ${e.message}`, e))
 
-const errorTypes = ['unhandledRejection', 'uncaughtException']
-const signalTraps = ['SIGTERM', 'SIGINT', 'SIGUSR2']
-
-errorTypes.forEach(type => {
-  process.on(type, async e => {
-    try {
-      console.log(`process.on ${type}`)
-      console.error(e)
-      return process.exit(0)
-    } catch (_) {
-      return process.exit(1)
-    }
-  })
-})
-
-signalTraps.forEach(type => {
-  process.once(type, async () => {
-    try {
-      await consumer.disconnect()
-      console.log('end')
-    } finally {
-      // process.kill(process.pid, type)
-    }
-    return
-  })
-})
-
+require('./traps')(null, async () => await consumer.disconnect())

@@ -9,6 +9,12 @@ Projects
 - tcpserver
   - tcp server
     - knex & mysql
+- kafkaRx.js
+  - kafka consumer
+  - requires kafka to run (see /docker-devenv/kafka)
+- kafkaTx.js
+  - kafka producer
+  - requires kafka to run (see /docker-devenv/kafka)
 
 # Useful commands
 
@@ -19,3 +25,9 @@ echo abc.java >> logfile.`date +'%Y-%m-%d'`.log
 #or
 echo abc.java >> "logfile.$(date +'%Y-%m-%d').log"
 ```
+
+Null Modem Emulator
+https://sourceforge.net/projects/com0com/
+
+TCP
+https://gist.github.com/sid24rane/2b10b8f4b2f814bd0851d861d3515a10

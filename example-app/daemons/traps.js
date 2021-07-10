@@ -33,11 +33,10 @@ module.exports = (exceptionFn, signalFn, readlinePkg) => {
       input: process.stdin,
       output: process.stdout
     })  
-    rl.on("SIGINT", function () {
+    rl.on("SIGINT", () => {
       process.emit("SIGINT");
     })
   }  
-
   const signals = ['SIGTERM', 'SIGINT', 'SIGUSR2'] // SIGINT might not work on windows
   signals.forEach(type => {
     process.once(type, signalFn)
