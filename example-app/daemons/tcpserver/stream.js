@@ -106,9 +106,8 @@ server.on('connection', (client) => {
 server.on('close', () => console.log('Server closed 2'))
 server.on('error', (err) => { throw err })
 
-require('../traps')(null, async () => {
+require('../traps')(async () => {
   try {
-    console.log('Signal Trap', type)
     for (let socket of sockets) socket.destroy()
     // server.close()
     server.close(() => {
@@ -117,7 +116,6 @@ require('../traps')(null, async () => {
     })
     console.log('end')
   } finally {
-    // Do not call this as need time to close the server...
-    // process.kill(process.pid, type)
+    return 0
   }
 })

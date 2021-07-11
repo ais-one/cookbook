@@ -1,44 +1,20 @@
-//
-// readlinePkg = require('readline')
-module.exports = (exceptionFn, signalFn, readlinePkg) => {
-  let defaultExceptionFn = async (e) => {
-    try {
-      console.log(`process.on ${type}`)
-      console.error(e)
-      return process.exit(0)
-    } catch (_) {
-      return process.exit(1)
-    }
+module.exports = (signalFn, exceptionFn) => {
+  let defaultExceptionFn = async (e, type) => {
+    console.log(type, e.toString())
+    // process.emit("SIGTERM") // process.exit(0), process.kill(process.pid, type)
   }
   if (!exceptionFn) exceptionFn = defaultExceptionFn
-  
-  let defaultSignalFn = async () => {
-    console.log('Signal Trap', type)
-    try {
-    } catch (e) {
-    } finally {
-      // Do not call this as need time to close the server...
-      // process.kill(process.pid, type)
-    }
-  }
-  if (!signalFn) signalFn = defaultSignalFn
-  
   const exceptions = ['unhandledRejection', 'uncaughtException']
-  exceptions.forEach(type => {
-    process.on(type, exceptionFn)
-  })
+  exceptions.forEach(type => process.on(type, (e) => exceptionFn(e, type)))
   
-  if (process.platform === "win32" && readlinePkg) { // handle for windows
-    const rl = readlinePkg.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    })  
-    rl.on("SIGINT", () => {
-      process.emit("SIGINT");
-    })
-  }  
-  const signals = ['SIGTERM', 'SIGINT', 'SIGUSR2'] // SIGINT might not work on windows
-  signals.forEach(type => {
-    process.once(type, signalFn)
-  })
+  let defaultSignalFn = async (type) => console.log(type)
+  if (!signalFn) signalFn = defaultSignalFn
+  const signals = ['SIGTERM', 'SIGINT', 'SIGUSR2'] // SIGINT now works on windows
+  // if (process.platform === 'win32') {
+  //   require('readline').createInterface({ input: process.stdin, output: process.stdout }).on('SIGINT', () => process.emit('SIGINT'))
+  // }
+  signals.forEach(type => process.once(type, async () => {
+    const exitCode = await signalFn(type)
+    return Number.isInteger(exitCode) ? process.exit(parseInt(exitCode)) : process.exit(-10001) // should terminate the application
+  }))
 }

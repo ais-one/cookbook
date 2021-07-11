@@ -2,10 +2,7 @@
 const axios = require('axios')
 const path = require('path')
 module.exports = async function(app_path) {
-  const envs = ['development', 'uat', 'production']
-  if (!envs.includes(process.env.NODE_ENV) && envs.includes(process.argv[2])) {
-    process.env.NODE_ENV = process.argv[2] 
-  }
+  process.env.NODE_ENV = process.env.NODE_ENV || process.argv[2] || '' // development, uat, production...
   const { NODE_ENV, VAULT } = process.env
   if (!NODE_ENV) {
     console.log('Exiting No Environment Specified')

@@ -59,8 +59,7 @@ const shutdown = async () => {
 
 const handleExit = async (signal) => {
   console.log(`Received ${signal}. Close my server properly. (nodemon causes problems here)`)
-  server.close(async () => {
-    // close your other stuff...
+  server.close(async () => { // close your other stuff...
     try {
       await shutdown()
       console.log('Server close done')

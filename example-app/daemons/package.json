@@ -1,0 +1,12 @@
+{
+  "name": "daemons",
+  "version": "1.0.0",
+  "description": "Projects\r - serialserver\r   - serial server receive RS232 and send via tcp\r     - serialport\r     - pkg\r     - logging\r - tcpserver\r   - tcp server - stream (keep client, connected and can reply to client, but need to take note on number of client connections)\r     - knex & mysql\r   - tcp server - event (close after receiving packet from client)\r     - knex & mysql\r - kafkaRx.js\r   - kafka consumer\r   - requires kafka to run (see /docker-devenv/kafka)\r - kafkaTx.js\r   - kafka producer\r   - requires kafka to run (see /docker-devenv/kafka)",
+  "main": "index.js",
+  "scripts": {
+    "process-cron": "node process-cron.js",
+    "process-long": "node process-long.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

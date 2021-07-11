@@ -189,7 +189,53 @@ function myFunction(){
 myFunction(); 
 ```
 
+# Classes vs Factories
+
+Reference:
+- https://medium.com/javascript-in-plain-english/factories-are-still-better-than-classes-in-javascript-47f15071904e
 
 
+## Class
 
-### https://medium.com/javascript-in-plain-english/factories-are-still-better-than-classes-in-javascript-47f15071904e
+```js
+class Car {
+  constructor(maxSpeed){
+    this.maxSpeed = maxSpeed;
+  }
+  drive1 = () => {
+    console.log(`driving ${this.maxSpeed} mph!`)
+  }
+  drive2 () {
+    console.log(`driving ${this.maxSpeed} mph!`)
+  }
+}
+
+const car = new Car(120)
+
+$('button').click(car.drive2) // driving undefined mph!
+$('button').click(car.drive2.bind(car) // driving 120 mph!
+$('button').click(_ => car.drive2()) // driving 120 mph!
+
+$('button').click(car.drive1) // driving 120 mph!
+```
+
+## Factory
+
+```js
+const Car = (ms) => {
+  const maxSpeed = ms
+  
+  return {
+    drive: () => console.log(`driving ${maxSpeed} mph!`), // Creates a copy of each method in EVERY SINGLE instence -> Memory use! 
+  } 
+}
+```
+
+# mixing ES Modules into a CommonJS project
+
+Reference:
+- https://codewithhugo.com/use-es-modules-in-node-without-babel/webpack-using-esm/
+
+```js
+const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
+```

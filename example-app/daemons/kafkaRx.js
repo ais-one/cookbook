@@ -1,6 +1,6 @@
 /* eslint-disable */
-const { Kafka, logLevel  } = require('kafkajs')
- 
+const { Kafka, logLevel } = require('kafkajs')
+
 const kafka = new Kafka({
   logLevel: logLevel.ERROR, // NOTHING, ERROR, WARN, INFO, and DEBUG
   clientId: 'my-app',
@@ -10,10 +10,10 @@ const kafka = new Kafka({
 const consumer = kafka.consumer({ groupId: 'test-group' })
 
 const run = async () => {
-   // Consuming
+  // Consuming
   await consumer.connect()
   await consumer.subscribe({ topic: 'test-topic', fromBeginning: true })
- 
+
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
       console.log({
@@ -29,4 +29,9 @@ const run = async () => {
 
 run().catch(e => console.error(`[example/consumer] ${e.message}`, e))
 
-require('./traps')(null, async () => await consumer.disconnect())
+require('./traps')(async () => await consumer.disconnect())
+// try {
+//   await consumer.disconnect()
+// } finally {
+//   process.kill(process.pid, type)
+// }

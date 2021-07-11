@@ -51,13 +51,11 @@ module.exports = function(app, express, options) {
   })
 
   // comment below and application will crash
-  process.on('uncaughtException',
-    err => {
-      // console.log('If you do not process uncaughtException, application will crash and hang')
-      console.log(`Uncaught Exception: ${err}`)
-      if (process.env.NODE_ENV === 'production') process.exit(1) // exit
-    }
-  )
+  process.on('uncaughtException', (err) => {
+    // console.log('If you do not process uncaughtException, application will crash and hang')
+    console.log(`Uncaught Exception: ${err}`)
+    if (process.env.NODE_ENV === 'production') process.exit(1) // exit
+  })
 
   const { STACK_TRACE_LIMIT = 1 } = options
   const { ENABLE_LOGGER } = options

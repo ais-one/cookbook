@@ -3,10 +3,10 @@
 - [example-app] add server side event (SSE) example
 - [example-app] add serve-index function to uploads folder (list files and folders)
 - [example-app] multiple UPLOAD_STATIC & UPLOAD_MEMORY
+- [@es-labs/node] do not restrict environments to development, uat, production, let user define 
 - In Progress
   - [chore] remove example-webpack
   - [chore] remove example-app/routes/ related to example-webpack (check transaction code)
-  - [feat] add commitizen, add semantic-version
   - [example-app] jsonschema & openapi 3.1
     - shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
     - nodejs workers

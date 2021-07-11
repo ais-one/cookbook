@@ -12,8 +12,6 @@
     "mongo": "node deploy/db/mongo/index.js",
     "app": "nodemon --trace-warnings index.js",
     "app:lint": "nodemon --ignore tests/ --ignore public/ --exec \"npm run lint && node\" index.js",
-    "process-cron": "node process-cron.js",
-    "process-long": "node process-long.js",
     "test": "cross-env NODE_ENV=development jest --config=jest.config.js",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint --fix --no-fix-warnings --no-report-warnings .",

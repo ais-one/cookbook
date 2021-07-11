@@ -68,6 +68,8 @@
 +- config/ : centralized config folder (see README.md within the config folder)
 +- controllers/
 +- daemons/ : long runnning processes
+|  +- process-cron.js: sample cron triggered process
+|  +- process-long.js: sample long running process
 +- deploy/ : deployment folder (see README.md within the deploy folder)
 |  +- db/ : for seeding and migrating data
 |     +- knex/
@@ -98,8 +100,6 @@
 +- jest.config.js: JEST testing
 +- knexfile.js: Knex query builder
 +- package.json
-+- process-cron.js: sample cron triggered process
-+- process-long.js: sample long running process
 +- README.md
 +- test.py: run python from express
 

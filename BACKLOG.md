@@ -1,6 +1,7 @@
 ## Roadmap & Issues To Address
 
 ### For next sprint / version
+- [feat] add commitizen, add semantic-version
 - [example-app] jsonschema & openapi 3.1
   - shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
   - nodejs workers

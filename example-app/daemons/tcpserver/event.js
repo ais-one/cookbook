@@ -23,4 +23,4 @@ server.on('connection', (client) => {
 server.on('close', () => console.log('TCP Server closed'))
 server.on('error', (err) => { throw err })
 server.listen(port, host, () => console.log(`TCP Server listening on: ${host}:${port}`))
-require('../traps')(null, async () => server.close(() => server.unref()))
+require('../traps')(async () => server.close(() => server.unref()))

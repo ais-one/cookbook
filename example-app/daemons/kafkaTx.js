@@ -23,13 +23,11 @@ const run = async () => {
 
 run().catch(e => console.error(`[***] ${e.message}`, e))
 
-require('./traps')(null, async () => {
+require('./traps')(async () => {
   try {
-    console.log('stopping')
     stop = true
     await producer.disconnect()
-    console.log('end')
   } finally {
-    // process.kill(process.pid, type)
+    return 0
   }
 })

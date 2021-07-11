@@ -37,11 +37,10 @@ Folder | Description | Features
 [example-app/public/demo-express](example-app/public/demo-express) | Frontend to test backend features | - File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
 [example-native](example-native) | Vue 3 SPA no bundler + Bulma | - signed uploads<br>- JWT refresh token, OTP, recaptcha, Github OAuth2<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[example-app/router/tables/](example-app/router/tables/)</td><td>table configurations</td></tr><tr><td>[example-app/router/t4t.js](example-app/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[example-native/views/ui1.js](example-native/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[example-native/views/ui2.js](example-native/views/ui2.js)</td><td>table example</td></tr><tr><td>[example-native/views/ui3.js](example-native/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[example-native/views/ui4.js](example-native/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
 [example-vite](example-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, ECharts<br>- PWA<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML<br>- Websockets<br>- GraphQL<br>- rxJS<br>- Web Components (Webcam, Signature)
-[example-webpack](example-webpack) - Deprecated | Vue 2 SPA using webpack + Vuetify | - Graphql (subscriptions, cache, optimistic UI, refetch queries)<br>- REST<br>- VueCrudX<br>- i18n<br>- rxJS
+[example-webpack](example-webpack) <b>(Deprecated)</b> | Vue 2 SPA using webpack + Vuetify | - Graphql (subscriptions, cache, optimistic UI, refetch queries)<br>- REST<br>- VueCrudX<br>- i18n<br>- rxJS
 [wip](wip) | Work In Progress | - [Webauthn](wip/fido2) SPA & SSR sample implementation<br>- [K8s](wip/k8s)
 [.github/workflows](.github/workflows) | Github Actions | Manually Triggered CI/CD
-
-- AMP Website: [removed](https://plausible.io/blog/google-amp)
+AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 
 # QUICK START - ON YOUR LOCAL MACHINE
 
@@ -90,14 +89,6 @@ npm run mongo -- development seed
 npm run app -- development
 
 # or npm run app:lint to include eslint checks
-
-# Command to simulate long running process (do take note of caveats, for production need a monitor to handle restart strategy)
-# command: npm run process-long -- development
-npm run process-long
-
-# Command to simulate process triggered by cron (**NOTE:** may be better to use cron to call API than trigger a process)
-# command: npm run process-cron -- development
-npm run process-cron
 ```
 
 **Visit the following URLs**
@@ -117,6 +108,27 @@ See **native** app above
 ```bash
 # run in development only
 npm run test
+```
+
+### Long Running Processes
+
+Codes for long running processes
+- tcp server (event mode, streaming mode)
+- serial server
+- kafka producer, consumer
+- cron-triggered process
+
+```
+cd example-app
+cd daemons
+
+# Command to simulate long running process (do take note of caveats, for production need a monitor to handle restart strategy)
+# command: npm run process-long -- development
+npm run process-long
+
+# Command to simulate process triggered by cron (**NOTE:** may be better to use cron to call API than trigger a process)
+# command: npm run process-cron -- development
+npm run process-cron
 ```
 
 ---
