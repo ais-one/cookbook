@@ -65,20 +65,15 @@ module.exports = express.Router({caseSensitive: true})
     Promise.reject(new Error('woops')) // unhandled
   }))
 
-  /**
-   * @swagger
-   * /api/healthcheck:
-   *    post:
-   *      tags:
-   *        - "Base"
-   *      description: Health check
-   */
   .get('/healthcheck', (req, res) => { res.json({
     message: 'OK',
     app: APP_NAME,
     environment: process.env.NODE_ENV,
     version: APP_VERSION
   }) }) // health check
+  .post('/healthcheck', (req, res) => { res.json({
+    message: 'POST OK',
+  }) }) // POST health check
 
   .post('/test-post-json', (req, res) => { res.json(req.body) }) // check if send header as application/json but body is text
 

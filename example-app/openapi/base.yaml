@@ -1,0 +1,22 @@
+healthcheck:
+  get:
+    tags:
+      - "Base"
+    responses:
+      '200':
+        description: GET healthcheck response ok
+  post:
+    tags:
+      - "Base"
+    responses:
+      '200':
+        description: POST healthcheck response ok
+health-auth:
+  get:
+    tags:
+      - "Base"
+    security:
+      - ApiKeyAuth: [] 
+    responses:
+      '200':
+        description: GET healthcheck (authorized) response ok

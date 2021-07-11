@@ -10,7 +10,7 @@ const options = { explorer: true }
 app.use('/openapi', express.static('openapi'))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))
 app.get('*', (req, res) => res.send('use /api-docs!'))
-app.listen(3000, () => console.log(`Example app listening at http://localhost:3000`))
+app.listen(8080, () => console.log(`Example app listening at http://localhost:8080`))
 
 // if serving multiple documents
 // const swaggerDocumentOne = require('./swagger-one.json');
