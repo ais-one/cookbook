@@ -1,11 +1,13 @@
-### Version 0.5.4
+### Version 0.6.0
 - [chore] update packages & cleanup & work on improving documentation
 - [example-app] add server side event (SSE) example
 - [example-app] add serve-index function to uploads folder (list files and folders)
 - [example-app] multiple UPLOAD_STATIC & UPLOAD_MEMORY
 - [@es-labs/node] do not restrict environments to development, uat, production, let user define 
+- [chore] remove example-webpack, document last known good version in README.md
+- [example-app/daemons/tcpserver] stream-based
+- [example-app/daemons/tcpserver] event-based
 - In Progress
-  - [chore] remove example-webpack
   - [chore] remove example-app/routes/ related to example-webpack (check transaction code)
   - [example-app] jsonschema & openapi 3.1
     - shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)

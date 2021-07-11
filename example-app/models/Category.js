@@ -14,19 +14,6 @@ class Category extends Model {
       }
     }
   }
-  // static get relationMappings() {
-  //   const Book = require('./Book')
-  //   return {
-  //     book: {
-  //       relation: Model.HasOneRelation,
-  //       modelClass: Book,
-  //       join: {
-  //         from: 'categories.id',
-  //         to: 'books.categoryId'
-  //       }
-  //     }
-  //   } 
-  // }
 }
 
 module.exports = Category

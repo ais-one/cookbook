@@ -5,19 +5,12 @@ const YAML = require('yamljs')
 const swaggerDocument = YAML.load('./openapi/example.yaml')
 // const swaggerDocument = require('./swagger.json')
 
-const options = {
-  explorer: true
-}
+const options = { explorer: true }
 
 app.use('/openapi', express.static('openapi'))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, options))
-app.get('*', (req, res) => {
-  res.send('use /api-docs!')
-})
-app.listen(3000, () => {
-  console.log(`Example app listening at http://localhost:3000`)
-})
-
+app.get('*', (req, res) => res.send('use /api-docs!'))
+app.listen(3000, () => console.log(`Example app listening at http://localhost:3000`))
 
 // if serving multiple documents
 // const swaggerDocumentOne = require('./swagger-one.json');

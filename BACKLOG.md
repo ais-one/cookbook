@@ -16,7 +16,7 @@
 ### Backlog
 - [deprecate] remove v1 branch and put in wiki archive page
 - [deprecate] remove v0.4.8 branch and put in wiki archive page
-- [example-webpack] what to do with apollo graphql client???
+- [chore] what to do with apollo graphql client???
 - [backend-deployment] GKE, Kubernetes
 - [frontend-graphql] try @octokit/graphql
 - [frontend] aria

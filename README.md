@@ -19,7 +19,7 @@ The difference between this project and [https://github.com/ais-one/favv](https:
 
 We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem. It is easier for TS people to take the JS here and implement with TS.
 
-Latest Version [0.5.4](https://github.com/ais-one/vue-crud-x/releases/tag/0.5.4) - Released 2021 July 15 0730 +8GMT
+Latest Version [0.6.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.6.0) - Released 2021 July 15 0730 +8GMT
 
 - add openapi example and validation, commitizen
 - add rs232 and vercel/pkg usage
@@ -37,7 +37,7 @@ Folder | Description | Features
 [example-app/public/demo-express](example-app/public/demo-express) | Frontend to test backend features | - File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
 [example-native](example-native) | Vue 3 SPA no bundler + Bulma | - signed uploads<br>- JWT refresh token, OTP, recaptcha, Github OAuth2<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[example-app/router/tables/](example-app/router/tables/)</td><td>table configurations</td></tr><tr><td>[example-app/router/t4t.js](example-app/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[example-native/views/ui1.js](example-native/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[example-native/views/ui2.js](example-native/views/ui2.js)</td><td>table example</td></tr><tr><td>[example-native/views/ui3.js](example-native/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[example-native/views/ui4.js](example-native/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
 [example-vite](example-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, ECharts<br>- PWA<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML<br>- Websockets<br>- GraphQL<br>- rxJS<br>- Web Components (Webcam, Signature)
-[example-webpack](example-webpack) <b>(Deprecated)</b> | Vue 2 SPA using webpack + Vuetify | - Graphql (subscriptions, cache, optimistic UI, refetch queries)<br>- REST<br>- VueCrudX<br>- i18n<br>- rxJS
+example-webpack<br><b>(Deprecated & removed)</b><br>[last updated version](https://github.com/ais-one/vue-crud-x/tree/0.5.3) | Vue 2 SPA using webpack + Vuetify | - Graphql (subscriptions, cache, optimistic UI, refetch queries)<br>- REST<br>- VueCrudX<br>- i18n<br>- rxJS
 [wip](wip) | Work In Progress | - [Webauthn](wip/fido2) SPA & SSR sample implementation<br>- [K8s](wip/k8s)
 [.github/workflows](.github/workflows) | Github Actions | Manually Triggered CI/CD
 AMP Website | [removed](https://plausible.io/blog/google-amp) | -
@@ -170,20 +170,6 @@ npm run build-uat # build uat environment, deploy to GCP Storage
 ```
 Navigate to http://127.0.0.1:3000/vite/
 
-### Webpack SPA Setup & Run - development environment - DEPRECATED
-
-```bash
-cd example-webpack
-npm i
-npm run serve
-```
-
-Navigate to http://127.0.0.1:8080/webpack to view application with VueCrudX demo 
-
-Login is same as Vite SPA
-
----
-
 ## Why No SSR or SSG
 
 - potential slow rendering by server app, added complexity in code, rehydration errors, added complexity in server
@@ -230,8 +216,6 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. developm
 +- example-app/ : [example backend] - See example-app/README.md for Project Structure
 +- example-native/ : frontend (Vue3 no bundle) - See example-native/README.md for Project Structure
 +- example-vite/ : frontend (Vue3 rollup) - See example-vite/README.md for Project Structure
-+- example-webpack/ : frontend associated to the backend (Vue2 webpack) - See example-webpack/README.md for Project Structure
-|  +- lib/webpacked/ : webpacked components for frontend (e.g. VueCrudX.vue)
 +- wip/ : projects in progress
 |  +- k8s/ : kubernetes YAML files (WIP)
 |  +- fido2/ : WebAuthn example
