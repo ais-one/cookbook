@@ -1,3 +1,4 @@
+## git
 
 ### Commands
 
@@ -103,3 +104,25 @@ Fixes #123, #124
 ```
 
 https://wiki.openstack.org/wiki/GitCommitMessages
+
+
+## Github
+
+### Github pages
+
+https://dev.to/yuribenjamin/how-to-deploy-react-app-in-github-pages-2a1f
+
+```bash
+npm i -D gh-pages
+```
+
+package.json
+```json
+{
+  "homepage": "http://<username>.github.io/<repo-name>",
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d <build folder>"
+  }
+}
+```

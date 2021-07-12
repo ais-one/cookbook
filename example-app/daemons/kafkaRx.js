@@ -1,3 +1,4 @@
+`use strict`;
 /* eslint-disable */
 const { Kafka, logLevel } = require('kafkajs')
 
@@ -6,14 +7,11 @@ const kafka = new Kafka({
   clientId: 'my-app',
   brokers: ['localhost:9092'] // single broker test
 })
-
 const consumer = kafka.consumer({ groupId: 'test-group' })
 
 const run = async () => {
-  // Consuming
   await consumer.connect()
   await consumer.subscribe({ topic: 'test-topic', fromBeginning: true })
-
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
       console.log({
@@ -28,10 +26,4 @@ const run = async () => {
 }
 
 run().catch(e => console.error(`[example/consumer] ${e.message}`, e))
-
 require('./traps')(async () => await consumer.disconnect())
-// try {
-//   await consumer.disconnect()
-// } finally {
-//   process.kill(process.pid, type)
-// }
