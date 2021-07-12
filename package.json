@@ -15,7 +15,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "husky": "^7.0.0"
+    "husky": "^7.0.1"
   },
   "private": true
 }
