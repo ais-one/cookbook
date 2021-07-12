@@ -17,10 +17,10 @@
     "husky": "^7.0.1"
   },
   "workspaces": [
-    "./@es-labs",
+    "./@es-labs/*",
     "./example-app",
     "./example-vite",
-    "./example-daemons"
+    "./example-daemons/*"
   ],
   "private": true
 }

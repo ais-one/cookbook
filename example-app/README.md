@@ -66,10 +66,9 @@
 ```
 +- common-express/ : common setup
 +- config/ : centralized config folder (see README.md within the config folder)
-+- controllers/
-+- daemons/ : long runnning processes
-|  +- process-cron.js: sample cron triggered process
-|  +- process-long.js: sample long running process
++- app-custom/ : sample custom application (prefixed with app)
+|  +- controllers/
+|  +- models/
 +- deploy/ : deployment folder (see README.md within the deploy folder)
 |  +- db/ : for seeding and migrating data
 |     +- knex/
@@ -80,7 +79,6 @@
 +- jobs/ : message queue jobs
 +- logs/
 +- middlewares/
-+- models/
 +- public/ : for serving static files - website
 |  +- demo-express/ (127.0.0.1/)
 +- router/

@@ -1,7 +1,7 @@
 const request = require('supertest')
 const express = require('express')
 const app = express()
-const endpointUrl = '/api/categories'
+const endpointUrl = '/api/app-custom/categories'
 const newCategory = require('../mock-data/new-category.json')
 
 let createdCategoryId
@@ -12,7 +12,7 @@ beforeAll(async () => {
   await require('@es-labs/node/config')(process.cwd())
   sqldb = await require('@es-labs/node/services/db/knex').open()
   require('@es-labs/node/express/preRoute')(app, express, global.CONFIG)
-  require('../../router')(app)
+  require(APP_PATH + '/router')(app)
 
   const { createToken } = require('@es-labs/node/auth')
   const tokens = await createToken({ id: 100, groups: 'TestGroup' })

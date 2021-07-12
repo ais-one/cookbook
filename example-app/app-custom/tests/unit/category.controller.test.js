@@ -13,8 +13,7 @@ beforeEach(() => {
 beforeAll(async () => {
   await require('@es-labs/node/config')(process.cwd())
   sqldb = await require('@es-labs/node/services/db/knex').open()
-  console.log('sqldb', sqldb)
-  CategoryController = require(APP_PATH + '/controllers/category')
+  CategoryController = require('../../controllers/category')
 })
 afterAll(async () => {
   await sqldb.close()

@@ -10,9 +10,8 @@
 - [chore] remove objection ORM
 - [chore] add packages folder and prepare for workspaces
 - In Progress
+  - [chore] improve project organisation, and rename folders
   - [example-app] jsonschema & openapi 3.1
-    - shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
-    - nodejs workers
 
 ### Version 0.5.3
 - [chore] update packages & cleanup & work on improving documentation
