@@ -8,7 +8,6 @@
 - [example-app/daemons/tcpserver] stream-based
 - [example-app/daemons/tcpserver] event-based
 - In Progress
-  - [chore] remove example-app/routes/ related to example-webpack (check transaction code)
   - [example-app] jsonschema & openapi 3.1
     - shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
     - nodejs workers

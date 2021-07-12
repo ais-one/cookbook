@@ -68,3 +68,17 @@ components:
           format: int32
         message:
           type: string
+
+# requestBody:
+#   content:
+#     'application/x-www-form-urlencoded':
+#       schema:
+#        properties:
+#           name: 
+#             description: Updated name of the pet
+#             type: string
+#           status:
+#             description: Updated status of the pet
+#             type: string
+#        required:
+#          - status
