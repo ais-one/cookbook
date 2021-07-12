@@ -35,7 +35,7 @@ require('@es-labs/node/express/passport').init(app)
 
 // START SERVICES
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
-const objection = require('@es-labs/node/services/db/objection').open()
+const sqldb = require('@es-labs/node/services/db/knex').open()
 const mongodb = require('@es-labs/node/services/db/mongodb').open()
 const websocket = require('@es-labs/node/services/websocket').open(null, null) // or set to null
 const agenda = require('@es-labs/node/services/mq/agenda').open()
@@ -47,7 +47,7 @@ const shutdown = async () => {
     await agenda.close()
     await bull.close()
     await mongodb.close()
-    await objection.close()
+    await sqldb.close()
     // await hazelcast.close()
     // TBD does apollo graphql have a shutdown?
     await sleep(10) // wait awhile more for things to settle

@@ -20,10 +20,7 @@ module.exports = function (app) {
   const { KNEXFILE } = global.CONFIG
   if (KNEXFILE) {
     app.use('/api',
-      router.use('/authors', require('./authors')),
-      router.use('/books', require('./books')),
       router.use('/categories', require('./categories')),
-      router.use('/pages', require('./pages')),
     )
   }
 

@@ -1,7 +1,7 @@
 'use strict'
 
 // for the resolvers
-const Category = require('../models/Category')
+const knex = require('@es-labs/node/services/db/knex').get()
 
 // const { gql } = require('apollo-server-express')
 // graphql Schema
@@ -17,7 +17,7 @@ const resolvers = {
 
     getCategory: async (parent, args, context, info) => {
       try {
-        const category = await Category.query().findById(args.id)
+        const category = await knex('categories').where({ id: args.id }).first()
         return category
       } catch (e) {
         return {}
@@ -27,7 +27,7 @@ const resolvers = {
       try {
         const limit = args.limit ? args.limit : 2
         const page = args.page ? args.page : 0
-        const categories = await Category.query().page(page, limit)
+        const categories = await knex('categories').limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
         // console.log('categories', page, limit, categories)
         return categories  
       } catch (e) {

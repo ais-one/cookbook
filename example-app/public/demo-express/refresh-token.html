@@ -44,6 +44,7 @@ async function login() {
     refreshToken = data.refresh_token
     console.log('logged in - tokens', accessToken, refreshToken)
     console.log('logged in - parsed', parseJwt(accessToken), parseJwt(refreshToken))
+    http.setTokens({ access: accessToken, refresh: refreshToken })
   }
 }
 
@@ -52,9 +53,10 @@ async function otp() {
     const { data } = await http.post('/api/auth/otp', { id: otpId, pin: '111111' })
     if (data.access_token) {
       accessToken = data.access_token
-      // refreshToken = data.refresh_token
+      refreshToken = data.refresh_token
       console.log('otp ok - access token', accessToken)
       console.log('otp ok - refresh token', refreshToken)
+      http.setTokens({ access: accessToken, refresh: refreshToken })
     } else {
       console.log('otp error', data)
     }

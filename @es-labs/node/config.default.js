@@ -25,9 +25,9 @@ global.CONFIG.COOKIE_SECRET = '' // for use by cookie-parser
 global.CONFIG.COOKIE_DOMAIN = ''
 
 global.CONFIG.AUTH_REFRESH_URL = '/api/auth/refresh'
-global.CONFIG.AUTH_USER_STORE = 'objection' // mongo, objection
+global.CONFIG.AUTH_USER_STORE = 'knex' // mongo, knex
 global.CONFIG.AUTH_USER_STORE_NAME = 'users'
-global.CONFIG.AUTH_USER_FIELD_ID_FOR_JWT = 'id' // mongo = _id, objection = id // can be NTID from SAML
+global.CONFIG.AUTH_USER_FIELD_ID_FOR_JWT = 'id' // mongo = _id, knex = id // can be NTID from SAML
 global.CONFIG.AUTH_USER_FIELDS_JWT_PAYLOAD = 'email,groups' // comma seperated, can be AD Groups from SAML, email, etc.
 global.CONFIG.AUTH_USER_FIELD_LOGIN = 'email'
 global.CONFIG.AUTH_USER_FIELD_PASSWORD = 'password' 
@@ -39,7 +39,7 @@ global.CONFIG.JWT_SECRET = '123456789' // HS256
 global.CONFIG.JWT_REFRESH_SECRET = '123456789' // HS256
 global.CONFIG.JWT_EXPIRY = 1800 // 5 // 1800 // '150d', '15d', '15m', '15s', use small expiry to test refresh mechanism, numeric is seconds
 global.CONFIG.JWT_REFRESH_EXPIRY = 3600 // 10 // 3600 // do not allow refresh handling after defined seconds
-global.CONFIG.JWT_REFRESH_STORE = 'keyv' // mongo, objection, redis, keyv (default)
+global.CONFIG.JWT_REFRESH_STORE = 'keyv' // mongo, knex, redis, keyv (default)
 global.CONFIG.JWT_REFRESH_STORE_NAME = 'user_session' // collection or table name
 
 // AUTH - OTP

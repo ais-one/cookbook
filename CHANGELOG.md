@@ -7,6 +7,7 @@
 - [chore] remove example-webpack, document last known good version in README.md
 - [example-app/daemons/tcpserver] stream-based
 - [example-app/daemons/tcpserver] event-based
+- [chore] remove objection ORM
 - [chore] add packages folder and prepare for workspaces
 - In Progress
   - [example-app] jsonschema & openapi 3.1

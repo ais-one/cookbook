@@ -2,8 +2,7 @@
 // TBD use __key instead of key
 // table for tables
 const express = require('express')
-const Model = require('@es-labs/node/services/db/objection').get()
-const knex = Model ? Model.knex() : null
+const knex = require('@es-labs/node/services/db/knex').get()
 const fs = require('fs')
 
 const { validateColumn } = require('esm')(module)('@es-labs/esm/t4t-validate') // TBD validateColumn on server side also

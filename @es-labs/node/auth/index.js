@@ -17,10 +17,9 @@ if (AUTH_USER_STORE === 'mongo') {
   ObjectID = mongo.ObjectID
 }
 
-let Model, knex
-if (AUTH_USER_STORE === 'objection') {
-  Model = require('../services/db/objection').get()
-  knex = Model ? Model.knex() : null  
+let knex
+if (AUTH_USER_STORE === 'knex') {
+  knex = require('../services/db/knex').get()
 }
 
 const { setToken, getToken, revokeToken } = require('./' + JWT_REFRESH_STORE)
@@ -45,7 +44,7 @@ const findUser = async (where) => {
   if (AUTH_USER_STORE === 'mongo') {
     if (where.id) where = { _id: new ObjectID(where.id) }
     return await mongo.db.collection(AUTH_USER_STORE_NAME).findOne(where)
-  } else if (AUTH_USER_STORE === 'objection') {
+  } else if (AUTH_USER_STORE === 'knex') {
     return await knex(AUTH_USER_STORE_NAME).where(where).first()
   }
   return null
@@ -55,7 +54,7 @@ const updateUser = async (where, payload) => {
   if (AUTH_USER_STORE === 'mongo') {     
     if (where.id) where = { _id: new ObjectID(where.id) }
     return await mongo.db.collection(AUTH_USER_STORE_NAME).updateOne(where, { $set: payload })
-  } else if (AUTH_USER_STORE === 'objection') {
+  } else if (AUTH_USER_STORE === 'knex') {
     return await knex(AUTH_USER_STORE_NAME).where(where).first().update(payload)
   }
   return null
@@ -180,10 +179,12 @@ const authRefresh = async (req, res) => { // get refresh token
 const logout = async (req, res) => {
   let id = null
   try {
-    let refresh_token = req.cookies?.refresh_token || req.header('refresh_token') || req.query?.refresh_token // check refresh token & user - always stateful          
-    const result = jwt.decode(refresh_token)
+    let access_token = null
+    let tmp = req.cookies?.Authorization || req.header('Authorization') || req.query?.Authorization
+    access_token = tmp.split(' ')[1]
+    const result = jwt.decode(access_token)
     id = result.id
-    jwt.verify(refresh_token, getSecret('verify', 'refresh'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
+    jwt.verify(access_token, getSecret('verify', 'access'), { algorithm: [JWT_ALG] }) // throw if expired or invalid
   } catch (e) {
     if (e.name !== 'TokenExpiredError') id = null
   }

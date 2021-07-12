@@ -15,14 +15,13 @@ async function doMigrate(migrateName, knex) {
 async function run() {
   try {
     require('@es-labs/node/config')(process.cwd()) //  first thing to include
-    const objection = await require('@es-labs/node/services/db/objection').open()
-    const Model = objection.get()
-    const knex = Model.knex()
+    const sqldb = await require('@es-labs/node/services/db/knex').open()
+    const knex = sqldb.get()
 
     await doMigrate('20180927133438_create_users', knex)
     await doMigrate('20181022165031_create_test', knex)
 
-    await objection.close()
+    await sqldb.close()
     process.exit(0)
   } catch (e) {
     console.log(e.toString())

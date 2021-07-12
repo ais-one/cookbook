@@ -1,19 +1,16 @@
 'use strict'
 
-let Model
+let knex
 
 exports.open = async () => {
   const { KNEXFILE } = global.CONFIG
   if (!KNEXFILE) console.log('KNEXFILE property empty or undefined - knex not started')
-  if (!Model && KNEXFILE) {
+  if (!knex && KNEXFILE) {
     try {
       const Knex = require('knex')
-      const config = KNEXFILE
-      Model = require('objection').Model
-      const knexConnection = Knex(config)
+      knex = Knex(KNEXFILE)
       // sqlite, may need to use another statement with other sql dbs
-      knexConnection.raw('select 1+1 as result').then(() => console.log('DB ok')).catch(err => { console.log('DB error: ' + err.toString()) })
-      Model.knex(knexConnection)
+      await knex.raw('select 1+1 as result').then(() => console.log('DB ok')).catch(err => { console.log('DB error: ' + err.toString()) })
     } catch (e) {
       console.log('db open err', e.toString())
     }
@@ -22,15 +19,11 @@ exports.open = async () => {
 }
 
 exports.close = async () => {
-  if (Model) {
-    const knex = Model.knex()
-    if (knex) await knex.destroy()
-    console.log('db closed')
-  }
+  if (knex) await knex.destroy()
+  console.log('db closed')
 }
 
-exports.get = () => Model
-exports.Model = Model
+exports.get = () => knex
 
 // Model.knex().destroy(() => {}) // returns a promise
 

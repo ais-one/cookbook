@@ -40,7 +40,6 @@
     "mongodb": "^3.6.10",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
-    "objection": "^2.2.15",
     "otplib": "^12.0.1",
     "passport": "^0.4.1",
     "passport-saml": "^3.1.0",

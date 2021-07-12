@@ -28,7 +28,6 @@
 
 ## Documents
 
-- VueCrudX [VueCrudX.md](VueCrudX.md)
 - Techstack
   - GraphQL [graphql.md](graphql.md)
   - Kafka [kafka.md](kafka.md)
