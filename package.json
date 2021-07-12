@@ -14,7 +14,13 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "husky": "^7.0.0"
+    "husky": "^7.0.1"
   },
+  "workspaces": [
+    "./@es-labs",
+    "./example-app",
+    "./example-vite",
+    "./example-daemons"
+  ],
   "private": true
 }

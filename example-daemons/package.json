@@ -1,0 +1,12 @@
+{
+  "name": "daemons",
+  "version": "1.0.0",
+  "description": "Long running processes",
+  "main": "index.js",
+  "scripts": {
+    "process-cron": "node process-cron.js",
+    "process-long": "node process-long.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
