@@ -68,14 +68,15 @@
 +- config/ : centralized config folder (see README.md within the config folder)
 +- app-custom/ : sample custom application (prefixed with app)
 |  +- controllers/
+|  +- graphql/ : graphql stuff
 |  +- models/
+|  +- tests/ : Jest tests
 +- deploy/ : deployment folder (see README.md within the deploy folder)
 |  +- db/ : for seeding and migrating data
 |     +- knex/
 |     |  +- migrations/
 |     |  +- seeds/
 |     +- mongo/
-+- graphql/ : graphql stuff
 +- jobs/ : message queue jobs
 +- logs/
 +- middlewares/
@@ -83,7 +84,6 @@
 |  +- demo-express/ (127.0.0.1/)
 +- router/
 +- sandbox/ : Useful scripts
-+- tests/ : Jest tests
 +- uploads/ : for serving static files - files
 +- .dockerignore
 +- .eslintrc.js

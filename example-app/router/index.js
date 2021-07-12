@@ -17,8 +17,6 @@ module.exports = function (app) {
     router.use('/webpush', require('./webpush')),
   )
 
-  // const { KNEXFILE } = global.CONFIG
-  // if (KNEXFILE) app.use('/api', router.use('/categories', require('./categories')) )
   const { CUSTOM_APP } = global.CONFIG
   if (CUSTOM_APP) require(`../${CUSTOM_APP}/routes`)(app)
   

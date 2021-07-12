@@ -1,11 +1,6 @@
 'use strict'
 
-let graphql
-
 module.exports = function (app, server) {
-  if (!graphql) {
-    const schema = require('./schema')
-    graphql = require('@es-labs/node/express/graphql')(app, server, schema)
-  }
-  return graphql
+  const { CUSTOM_APP } = global.CONFIG
+  if (CUSTOM_APP) require(`../${CUSTOM_APP}/graphql`)(app, server)
 }

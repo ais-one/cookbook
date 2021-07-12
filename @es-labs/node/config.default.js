@@ -152,7 +152,6 @@ global.CONFIG.HTTPS_CERTS = null // { key: '', cert: '' }
 // master list of config keys - defaults will be undefined unless specified
 
 // Express - OpenAPI - refer to common-express/preRoute.js
-global.CONFIG.SWAGGER_DEFS = null
 global.CONFIG.ENABLE_LOGGER = false
 
 // MQ - bullmq - requires redis - currently not used
@@ -188,4 +187,4 @@ global.CONFIG.BODYPARSER_JSON = null
 global.CONFIG.BODYPARSER_URLENCODED = null
 
 // custom app name
-global.CONFIG.CUSTOM_APP = 'app-custom' // TBD
+global.CONFIG.CUSTOM_APP = null

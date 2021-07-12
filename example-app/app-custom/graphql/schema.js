@@ -6,7 +6,7 @@ const knex = require('@es-labs/node/services/db/knex').get()
 // const { gql } = require('apollo-server-express')
 // graphql Schema
 const fs = require('fs')
-const typeDefs = fs.readFileSync('./graphql/schema.gql', 'utf8').toString() // relative to package.json directory where script is executed
+const typeDefs = fs.readFileSync('./app-custom/graphql/schema.gql', 'utf8').toString() // relative to package.json directory where script is executed
 
 // Provide resolver functions for your schema fields
 const resolvers = {
