@@ -11,28 +11,20 @@ export default ({ command, mode }) => {
     base: env.BASE_PATH || '/', // set to '/vite' for dev:build, '/' otherwise
     build: {
       // sourcemap: true,
-      rollupOptions: { // vite 2
-        external: [
-          'react' // ignore react stuff
-        ]
-      }  
+      // rollupOptions: { // vite 2
+      //   external: [
+      //     'react' // ignore react stuff
+      //   ]
+      // }
     },
     optimizeDeps: {
-      include: [
-        'echarts',
-        'leaflet',
-        '@apollo/client/core',
-        '@apollo/client/cache',
-        '@apollo/client/link/ws',
-        '@apollo/client/link/context',
-        '@apollo/client/utilities'
-      ]
+      include: ['echarts', 'leaflet']
     },
     plugins: [
       vue({
         template: {
           compilerOptions: {
-            isCustomElement: tag => tag.startsWith('bwc-') || tag.startsWith('vcxwc-')
+            isCustomElement: (tag) => tag.startsWith('bwc-') || tag.startsWith('vcxwc-')
           }
         }
       })
@@ -45,7 +37,7 @@ export default ({ command, mode }) => {
       }
     },
     server: {
-      port: 8080,
+      port: 8080
       // proxy: { // use alias instead
       //   // '/esm': 'http://127.0.0.1:3000/esm', // does not seem to work
       //   '/@es-labs/esm': {

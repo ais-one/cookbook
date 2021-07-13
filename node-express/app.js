@@ -49,7 +49,6 @@ const shutdown = async () => {
     await mongodb.close()
     await sqldb.close()
     // await hazelcast.close()
-    // TBD does apollo graphql have a shutdown?
     await sleep(10) // wait awhile more for things to settle
     console.log('Server close done')
   } catch (e) {
@@ -75,7 +74,6 @@ const handleExit = async (signal) => {
 // START ROUTES
 try {
   require('./router')(app)
-  require('./graphql')(app, server)
 } catch (e) {
   console.log(e.toString())
 }

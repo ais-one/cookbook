@@ -3,6 +3,7 @@
 - [note] rename example-app to node-express
 - [note] rename example-native to vue-nobundler
 - [note] rename example-vite to vue-vite
+- [node-express] move config to app-template
 - [node-express] move @es-labs/node/express to node-express/common
 - [node-express] add server side event (SSE) example
 - [node-express] add serve-index function to uploads folder (list files and folders)
@@ -13,9 +14,6 @@
 - [node-daemons/tcpserver] event-based
 - [chore] remove objection ORM
 - [chore] add packages folder and prepare for workspaces
-- In Progress
-  - [node-express] move config to app-template
-  - [node-express] jsonschema & openapi 3.1
 
 ### Version 0.5.3
 - [chore] update packages & cleanup & work on improving documentation

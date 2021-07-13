@@ -26,28 +26,28 @@ module.exports = async function(app_path) {
 
     // load common config from file
     try {
-      const commonEnv = require(path.join(APP_PATH, 'config', 'common.env.js'))
+      const commonEnv = require(path.join(APP_PATH, 'apps', APP_NAME, 'config', 'common.env.js'))
       global.CONFIG = { ...CONFIG, ...commonEnv }
     } catch (e) {
       console.log('missing common configuration file(s)', e.toString())
     }
     // load specific config from file
     try {
-      const specificEnv = require(path.join(APP_PATH, 'config', process.env.NODE_ENV + '.env.js'))
+      const specificEnv = require(path.join(APP_PATH, 'apps', APP_NAME, 'config', process.env.NODE_ENV + '.env.js'))
       global.CONFIG = { ...CONFIG, ...specificEnv }
     } catch (e) {
       console.log('missing environment specific configuration file(s)', e.toString())
     }
     // load secret common config from file
     try {
-      const commonEnv = require(path.join(APP_PATH, 'config', 'secret', 'common.env.js'))
+      const commonEnv = require(path.join(APP_PATH, 'apps', APP_NAME, 'config', 'secret', 'common.env.js'))
       global.CONFIG = { ...CONFIG, ...commonEnv }
     } catch (e) {
       console.log('missing common configuration file(s)', e.toString())
     }
     // load secret specific config from file
     try {
-      const specificEnv = require(path.join(APP_PATH, 'config', 'secret', process.env.NODE_ENV + '.env.js'))
+      const specificEnv = require(path.join(APP_PATH, 'apps', APP_NAME, 'config', 'secret', process.env.NODE_ENV + '.env.js'))
       global.CONFIG = { ...CONFIG, ...specificEnv }
     } catch (e) {
       console.log('missing environment specific configuration file(s)', e.toString())

@@ -67,7 +67,6 @@
 +- apps : custom apps are here in this folder
 |  +- app-template/ : sample custom application (prefixed with app)
 |  |  +- controllers/
-|  |  +- graphql/ : graphql stuff
 |  |  +- models/
 |  |  +- routes/ : rest API & websocket setup
 |  |  +- tests/ : Jest tests

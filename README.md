@@ -21,8 +21,9 @@ We do not use Typescript because TS people can understand JS easily, but JS-only
 
 Latest Version [0.6.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.6.0) - Released 2021 July 15 0730 +8GMT
 
-- add openapi example and validation, commitizen
-- add rs232 and vercel/pkg usage
+- add openapi example, add rs232 and vercel/pkg usage, allow multiple upload folers handling
+- improvement on project organization and preparation for npm workspaces and node 16
+- remove graphql (subscriptions apollo-server, also keeps breaking badly when major change), removed ORM
 - **NOTE!** project name is going to be replaced to a more appropriate one
 
 # Features
@@ -33,11 +34,11 @@ Folder | Description | Features
 [@es-labs/node](@es-labs/node) | reusable common JS codes | Available as npm package also
 [docker-devenv](docker-devenv) | Docker containers supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
 [docs](docs) | Documentation | always work in progress and to be improved<br>- Main [documentation](docs/home.md)<br>- Secrets [documentation](docs/secrets.md)<br>- Deployment [notes](docs/deployment/home.md)<br>- Kafka [docs](docs/kafka.md) and [code](node-daemons)<br>- TCP Server [docs](docs/tcp.md) and [code](node-daemons)
-[node-express](node-express) | Backend applications (REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Objection ORM (**removed**), Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
+[node-express](node-express) | Backend applications (REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Objection ORM (**removed**), Knex, MongoDb, Relational DB data example, migration, seed, GraphQL (**removed**), Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
 [node-daemons](node-daemons) | Backend applications (TCP server, Kafka consumer, etc) | - TCP server (event/stream_)<br>- Serial server<br>- Kafka consumer/producer<br>- cron / long-running process example
 [node-express/public/demo-express](node-express/public/demo-express) | Frontend to test backend features | - File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
 [vue-nobundler](vue-nobundler) | Vue 3 SPA no bundler + Bulma | - signed uploads<br>- JWT refresh token, OTP, recaptcha, Github OAuth2<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[node-express/router/tables/](node-express/router/tables/)</td><td>table configurations</td></tr><tr><td>[node-express/router/t4t.js](node-express/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[vue-nobundler/views/ui1.js](vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[vue-nobundler/views/ui2.js](vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[vue-nobundler/views/ui3.js](vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[vue-nobundler/views/ui4.js](vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
-[vue-vite](vue-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, ECharts<br>- PWA<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML<br>- Websockets<br>- GraphQL<br>- rxJS<br>- Web Components (Webcam, Signature)
+[vue-vite](vue-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, ECharts<br>- PWA<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML<br>- Websockets<br>- GraphQL (**removed**)<br>- rxJS<br>- Web Components (Webcam, Signature)
 example-webpack<br><b>(Deprecated & removed)</b><br>[last updated version](https://github.com/ais-one/vue-crud-x/tree/0.5.3) | Vue 2 SPA using webpack + Vuetify | - Graphql (subscriptions, cache, optimistic UI, refetch queries)<br>- REST<br>- VueCrudX<br>- i18n<br>- rxJS
 [wip](wip) | Work In Progress | - [Webauthn](wip/fido2) SPA & SSR sample implementation<br>- [K8s](wip/k8s)
 [.github/workflows](.github/workflows) | Github Actions | Manually Triggered CI/CD
@@ -71,7 +72,7 @@ npm i ../@es-labs/node
 
 **NOTES**
 - MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
-- The **node-express/config/secret/*.env,js** files are not present. So there maybe some console log errors (but it is ok to ignore), graphql and websockets will not work. Quick start is still usable. Use the README.md to fill up
+- The **node-express/apps/app-template/config/secret/*.env,js** files are not present. So there maybe some console log errors (but it is ok to ignore) and websockets will not work. Quick start is still usable. Use the README.md to fill up
 
 ### Run migration & app
 

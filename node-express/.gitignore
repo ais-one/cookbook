@@ -1,12 +1,10 @@
 # npm
 node_modules
 
-# deploy & configs
+# deploy
 deploy/*
 !deploy/README.md
 !deploy/db
-config/secret/*
-!config/secret/README.md
 
 # custom app
 apps/app-*

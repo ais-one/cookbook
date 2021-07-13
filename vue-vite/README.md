@@ -66,13 +66,10 @@ rm package-lock.json
 +- src/
 |  +- components/
 |  +- layouts/
-|  +- lib/ : common libs
-|  |  +- esm : JS that can be used by both front and backend
 |  +- plugins/
 |  +- views/
 |  +- App.vue
 |  +- main.js
-|  +- queries.js
 |  +- router.js
 |  +- store.js
 +- .env.development

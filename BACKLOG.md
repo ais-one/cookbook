@@ -1,6 +1,7 @@
 ## Roadmap & Issues To Address
 
 ### For next sprint / version
+- [node-express] validation middleware (preferable use openapi 3.1)
 - [feat] add commitizen, add semantic-version
 - [chore] migration to node 16 and npm 7
 - [vue-vite] shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
@@ -11,9 +12,8 @@
 - [@es-labs/esm/bwc-t4t-form.js] - handle multiple parent values use case of combobox..., handle reset of multiple child columns
 - [fix] - ==='object' - handle null object
 - [chore] disable console.log in production / proper console logging
-- [chore] what to do with apollo graphql client???
+- [chore] what to do with apollo graphql client??? - subscriptions not ready, try @octokit/graphql (frontend) & graphql-express (backend)
 - [backend-deployment] GKE, Kubernetes
-- [frontend-graphql] try @octokit/graphql
 - [frontend] aria
 - [frontend] react example
 

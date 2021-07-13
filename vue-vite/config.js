@@ -4,8 +4,6 @@ export const {
 
   VITE_WS_URL, // ws://127.0.0.1:3001, wss://127.0.0.1:3001
   VITE_WS_MS,
-  VITE_GQL_URI,
-  VITE_GWS_URI,
   VITE_PWA_PN, // Webpush, FCM
   // NOT NEEDED... BACKEND DETERMINES VITE_USE_OTP, // GA, SMS, ''
   VITE_RECAPTCHA_KEY,
