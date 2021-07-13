@@ -3,7 +3,7 @@
 # try to use as much shell scripting a possible
 # actions appear from default branch - https://github.community/t/workflow-files-only-picked-up-from-master/16129/2
 
-# manual workflow for example-app
+# manual workflow for node-express
 name: Manual workflow
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
@@ -32,7 +32,7 @@ jobs:
       matrix:
         node: [ '14' ]
 
-    name: Deploying example-app - ${{ github.event.inputs.service }} - ${{ github.event.inputs.environment }}... Using Node ${{ matrix.node }}
+    name: Deploying node-express - ${{ github.event.inputs.service }} - ${{ github.event.inputs.environment }}... Using Node ${{ matrix.node }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
@@ -52,7 +52,7 @@ jobs:
           check-latest: true
       - name: Make shell script executable
         run: |
-          chmod +x ./example-app/deploy.sh
+          chmod +x ./node-express/deploy.sh
       # Runs a single command using the runners shell
       - name: Initiate Deployment
         env:
@@ -67,5 +67,5 @@ jobs:
           echo "Service: ${{ github.event.inputs.service }}"
           echo "Branch: ${GITHUB_REF##*/}"
           echo "Environment: ${{ github.event.inputs.environment }}"
-          cd example-app
+          cd node-express
           ./deploy.sh ${{ github.event.inputs.environment }} ${{ github.event.inputs.service }}

@@ -86,13 +86,13 @@ gcloud container clusters delete hello-cluster
 
 # https://cloud.google.com/kubernetes-engine/docs/tutorials/http-balancer
 
-- [web-deployment.yaml](../example-app/config/k8s/web-deployment.yaml)
-- [web-service.yaml](../example-app/config/k8s/web-service.yaml)
-- [ingress-basic.yaml](../example-app/config/k8s/ingress-basic.yaml)
-- [compute-address.yaml](../example-app/config/k8s/compute-address.yaml)
-- [web-deployment2.yaml](../example-app/config/k8s/web-deployment2.yaml)
-- [web-service2.yaml](../example-app/config/k8s/web-service2.yaml)
-- [ingress-fanout.yaml](../example-app/config/k8s/ingress-fanout.yaml)
+- [web-deployment.yaml](../wip/k8s/web-deployment.yaml)
+- [web-service.yaml](../wip/k8s/web-service.yaml)
+- [ingress-basic.yaml](../wip/k8s/ingress-basic.yaml)
+- [compute-address.yaml](../wip/k8s/compute-address.yaml)
+- [web-deployment2.yaml](../wip/k8s/web-deployment2.yaml)
+- [web-service2.yaml](../wip/k8s/web-service2.yaml)
+- [ingress-fanout.yaml](../wip/k8s/ingress-fanout.yaml)
 
 
 ```bash

@@ -5,9 +5,9 @@ Store JS files used by both frontend and backend
 - Use ESM to avoid using webpack for compilation on frontend
 - For backend refer to NodeJS document on how to use ESM in NodeJS
 
-Refer to [example-app](../../example-app) folder for usage
-Refer to [example-vite](../../example-vite) folder for usage
-Refer to [example-native](../../example-native) folder for usage
+- Refer to [node-express](../../node-express) folder for usage
+- Refer to [vue-nobundler](../../vue-nobundler) folder for usage
+- Refer to [vue-vite](../../vue-vite) folder for usage
 
 ## Installation
 
@@ -17,17 +17,16 @@ npm install <path-to-this-foder-from-where-you-want-to-install-this>
 e.g.
 
 ```
-cd example-app
+cd node-express
 npm install ../@es-labs/esm
 ```
 
 2. from npm
 
 ```
-cd example-app
+cd node-express
 npm i @es-labs/esm
 ```
-
 
 ## Publishing packages to npm
 

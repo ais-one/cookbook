@@ -62,7 +62,7 @@ rm package-lock.json
 |  +- service-worker.js
 |  +- sitemap.xml
 |  +- style.css
-+- deploy/ : contains deployment info & files see example-app/deploy/README.md
++- deploy/ : contains deployment info & files see node-express/deploy/README.md
 +- src/
 |  +- components/
 |  +- layouts/

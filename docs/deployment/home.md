@@ -51,14 +51,13 @@ In GCP
 In Mongo Atlas
 - create mongo atlas account
 
-### Bacekend - example-app
+### Backend - node-express
 
-In example-app folder
+In node-express folder
 
-1. set package.json "config.env" = "uat"
-2. place service account json file into secrets folder
-3. set the mongodb info in config/secrets/uat.env.js
-4. set the CORS to allow frontend origin from the frontend setup 
+1. place service account json file into secrets folder
+2. set the mongodb info in config/secrets/uat.env.js
+3. set the CORS to allow frontend origin from the frontend setup 
 
 ```bash
 # on windows, need to use bash shell
@@ -67,9 +66,9 @@ deploy.sh uat
 
 Note the URL returned you can test it using <URL>/api/healthcheck, you may need to wait awhile for initial response or retry a few times
 
-### Frontend - example-vite
+### Frontend - vue-vite
 
-In example-vite folder
+In vue-vite folder
 
 1. place service account json file into **deploy** folder
 2. setup the API URL in **.env.uat** file from the URL returned in a successful backend setup
@@ -114,7 +113,7 @@ We can build backend on container so that we can orchestrate using K8s
 
 See [deployment-container.md](deployment-container.md)
 
-And [../example-app/Dockerfile](../example-app/Dockerfile)
+And [../node-express/Dockerfile](../node-express/Dockerfile)
 
 ## Deployment Preparation
 
@@ -122,18 +121,18 @@ View files, folders and readme.md below, and configure them
 
 ### Backend
 
-- example-app/config/
-- example-app/deploy/
-- example-app/ecosystem.config.js (for pm2 deployments)
-- example-app/Dockerfile (for docker deployments)
-- example-app/deploy.sh
-- example-app/deploy-vm.sh
+- node-express/config/
+- node-express/deploy/
+- node-express/ecosystem.config.js (for pm2 deployments)
+- node-express/Dockerfile (for docker deployments)
+- node-express/deploy.sh
+- node-express/deploy-vm.sh
 
 ### Frontend
 
-- example-vite/.env.*
-- example-vite/deploy/
-- example-app/deploy.sh
+- vue-vite/.env.*
+- vue-vite/deploy/
+- vue-vite/deploy.sh
 
 ---
 

@@ -4,13 +4,13 @@
 # set vite.config.js base: "/name-of-your-project",
 # set src/router.js: const routerHistory = createWebHistory('/name-of-your-project/')
 # on Github, select the branch of the Github pages site from project settings
-name: Deploy example-vite to github pages
+name: Deploy vue-vite to github pages
 on:
   # push:
   #   branches:
   #     - master
   #   paths:
-  #     - 'example-vite/**'
+  #     - 'vue-vite/**'
   workflow_dispatch:
     inputs:
       environment:
@@ -21,7 +21,7 @@ on:
 defaults:
   run:
     # abc/def
-    working-directory: example-vite
+    working-directory: vue-vite
 
 jobs:
   gh-pages-deploy:

@@ -6,9 +6,9 @@ A component for capturing signature using canvas (component name: vcxwc-sign-pad
 
 Component file location [../@es-labs/esm/sign-pad.js](../@es-labs/esm/sign-pad.js)
 
-Example can be found on example-vite DemoSignPad page
+Example can be found on vue-vite DemoSignPad page
 
-Example Usage file location [../example-vite/pages/DemoSignPad.vue](../example-vite/src/pages/DemoSignPad.vue)
+Example Usage file location [../vue-vite/pages/DemoSignPad.vue](../vue-vite/src/pages/DemoSignPad.vue)
 
 Features
 - handle attibutes and properties
@@ -37,9 +37,9 @@ A component for capturing image using webcam (component name: vcxwc-web-cam)
 
 Component file location [../@es-labs/esm/web-cam.js](../@es-labs/esm/web-cam.js)
 
-Example can be found on example-vite DemoWebCam page
+Example can be found on vue-vite DemoWebCam page
 
-Example Usage file location [../example-vite/pages/DemoWebCam.vue](../example-vite/src/pages/DemoWebCam.vue)
+Example Usage file location [../vue-vite/pages/DemoWebCam.vue](../vue-vite/src/pages/DemoWebCam.vue)
 
 Features
 - shadowDOM and litDOM

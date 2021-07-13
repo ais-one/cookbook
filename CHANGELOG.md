@@ -1,17 +1,20 @@
 ### Version 0.6.0
 - [chore] update packages & cleanup & work on improving documentation
-- [example-app] add server side event (SSE) example
-- [example-app] add serve-index function to uploads folder (list files and folders)
-- [example-app] multiple UPLOAD_STATIC & UPLOAD_MEMORY
+- [note] rename example-app to node-express
+- [note] rename example-native to vue-nobundler
+- [note] rename example-vite to vue-vite
+- [node-express] add server side event (SSE) example
+- [node-express] add serve-index function to uploads folder (list files and folders)
+- [node-express] multiple UPLOAD_STATIC & UPLOAD_MEMORY
 - [@es-labs/node] do not restrict environments to development, uat, production, let user define 
 - [chore] remove example-webpack, document last known good version in README.md
-- [example-app/daemons/tcpserver] stream-based
-- [example-app/daemons/tcpserver] event-based
+- [node-daemons/tcpserver] stream-based
+- [node-daemons/tcpserver] event-based
 - [chore] remove objection ORM
 - [chore] add packages folder and prepare for workspaces
 - In Progress
   - [chore] improve project organisation, and rename folders
-  - [example-app] jsonschema & openapi 3.1
+  - [node-express] jsonschema & openapi 3.1
 
 ### Version 0.5.3
 - [chore] update packages & cleanup & work on improving documentation

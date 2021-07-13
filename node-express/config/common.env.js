@@ -40,8 +40,8 @@ module.exports = {
     // options does not seem to work
     // { folder: 'openapi', url: '/ftp2', options: {'icons': true}, list: true },
     { folder: '../@es-labs/esm', url: '/esm' },
-    { folder: '../example-native', url: '/native', options: { extensions: ['html'], index: false } },
-    { folder: '../example-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
+    { folder: '../vue-nobundler', url: '/native', options: { extensions: ['html'], index: false } },
+    { folder: '../vue-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
     { folder: 'public/demo-express', url: '/' }, // last as path is /
   ],
 

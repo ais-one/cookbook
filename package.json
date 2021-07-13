@@ -18,9 +18,9 @@
   },
   "workspaces": [
     "./@es-labs/*",
-    "./example-app",
-    "./example-vite",
-    "./example-daemons/*"
+    "./node-daemons/*",
+    "./node-express",
+    "./vue-vite"
   ],
   "private": true
 }

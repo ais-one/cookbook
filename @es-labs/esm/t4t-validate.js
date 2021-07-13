@@ -14,7 +14,7 @@
 
 // TBD i18n
 // for use with
-// - example-app/router/t4t.js
+// - node-express/router/t4t.js
 function validateColumn (rules, type, col, record) {
   let invalid = ''
   try {
