@@ -10,7 +10,7 @@ const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
 const bull = require('@es-labs/node/services/mq/bull').get() // bull message queue
 const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
-const { memoryUpload, storageUpload } = require('@es-labs/node/express/upload')
+const { memoryUpload, storageUpload } = require(APP_PATH + '/common/upload')
 
 const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 

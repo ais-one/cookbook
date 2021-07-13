@@ -17,7 +17,7 @@ const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
 // const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
-const { memoryUpload, storageUpload } = require('@es-labs/node/express/upload')
+const { memoryUpload, storageUpload } = require(APP_PATH + '/common/upload')
 const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 
 const processJson = async (req, res, next) => {

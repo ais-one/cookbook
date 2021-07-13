@@ -30,8 +30,8 @@ server.on('upgrade', (request, socket, head) => {
   console.log('upgrade event')
 })
 
-require('@es-labs/node/express/preRoute')(app, express, global.CONFIG)
-require('@es-labs/node/express/passport').init(app)
+require('./common/preRoute')(app, express, global.CONFIG)
+require('./common/passport').init(app)
 
 // START SERVICES
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
@@ -81,6 +81,6 @@ try {
 }
 // END ROUTES
 
-require('@es-labs/node/express/postRoute')(app, express, global.CONFIG)
+require('./common/postRoute')(app, express, global.CONFIG)
 
 module.exports = { server }

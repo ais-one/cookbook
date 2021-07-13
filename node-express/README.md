@@ -64,8 +64,6 @@
 # Project Strcuture
 
 ```
-+- common-express/ : common setup
-+- config/ : centralized config folder (see README.md within the config folder)
 +- apps : custom apps are here in this folder
 |  +- app-template/ : sample custom application (prefixed with app)
 |  |  +- controllers/
@@ -74,6 +72,8 @@
 |  |  +- routes/ : rest API & websocket setup
 |  |  +- tests/ : Jest tests
 |  +- app-custom/ : your custom app, put under source control (app-* is git ignored)
++- common/ : common express setup
++- config/ : centralized config folder (see README.md within the config folder)
 +- deploy/ : deployment folder (see README.md within the deploy folder)
 |  +- db/ : for seeding and migrating data
 |     +- knex/

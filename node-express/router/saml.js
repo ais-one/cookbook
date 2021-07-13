@@ -5,7 +5,7 @@
 
 const express = require('express')
 const { createToken } = require('@es-labs/node/auth')
-const passport = require('@es-labs/node/express/passport').get()
+const passport = require(APP_PATH + '/common/passport').get()
 
 const { AUTH_ERROR_URL } = global.CONFIG
 

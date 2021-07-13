@@ -182,7 +182,7 @@ Refer to link below on how to try out...
 - [Keycloak](docker-devenv/keycloak/README.md) README.md
 - You can test out on the [vue-vite](vue-vite) Signin UI, clicking on SAML button / OIDC button to see redirect callback
 - Refer also to the following files
-  - [@es-labs/node/express/passport.js](@es-labs/node/express/passport.js)
+  - [node-express/common/passport.js](node-express/common/passport.js)
   - [node-express/router/saml.js](node-express/router/saml.js)
   - [node-express/router/oidc.js](node-express/router/oidc.js)
 
