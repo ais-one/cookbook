@@ -1,10 +1,8 @@
 ## Roadmap & Issues To Address
 
 ### For next sprint / version
-- [node-express] validation middleware (preferable use openapi 3.1)
 - [feat] add commitizen, add semantic-version
 - [chore] migration to node 16 and npm 7
-- [vue-vite] shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
 - [node-express] nodejs workers
 - [vue-vite] cypress e2e testing
 - update webauthnsimple to v3

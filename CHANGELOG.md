@@ -8,12 +8,15 @@
 - [node-express] add server side event (SSE) example
 - [node-express] add serve-index function to uploads folder (list files and folders)
 - [node-express] multiple UPLOAD_STATIC & UPLOAD_MEMORY
-- [@es-labs/node] do not restrict environments to development, uat, production, let user define 
+- [@es-labs/node] for config, do not restrict environments to development, uat, production, let user define 
 - [chore] remove example-webpack, document last known good version in README.md
 - [node-daemons/tcpserver] stream-based
 - [node-daemons/tcpserver] event-based
 - [chore] remove objection ORM
 - [chore] add packages folder and prepare for workspaces
+- In Progress
+  - [node-express] shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
+  - [node-express] validation middleware (preferable use openapi 3.1)
 
 ### Version 0.5.3
 - [chore] update packages & cleanup & work on improving documentation
