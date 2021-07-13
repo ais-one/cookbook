@@ -16,7 +16,7 @@ services:
     # environment:
     #   - API_PORT=3333
     #   - NODE_ENV=development
-    #   - APP_NAME=example-app
+    #   - APP_NAME=app-template
     # volumes:
     #   - .:/home/node/app # "host:container"
     #   - node_modules:/home/node/app/node_modules # "host:container"

@@ -14,7 +14,7 @@ on:
     inputs:
       service:
         description: 'Service to deploy (APP_NAME)'
-        default: 'app-custom'
+        default: 'app-template'
         required: true
       environment:
         description: 'The environment (uat, prod)'

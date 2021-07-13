@@ -8,6 +8,10 @@ deploy/*
 config/secret/*
 !config/secret/README.md
 
+# custom app
+apps/app-*
+!apps/app-template
+
 # database stores
 *.sqlite3
 

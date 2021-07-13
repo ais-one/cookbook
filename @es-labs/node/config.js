@@ -11,7 +11,7 @@ module.exports = async function(app_path) {
 
   const { version, name } = require(path.join(app_path, 'package.json'))
   global.APP_VERSION = version
-  global.APP_NAME = process.env.APP_NAME || process.argv[3] || 'app-custom'
+  global.APP_NAME = process.env.APP_NAME || process.argv[3] || 'app-template'
   global.APP_PATH = path.join(app_path)
   
   if (NODE_ENV && APP_PATH) {

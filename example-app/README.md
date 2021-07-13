@@ -66,11 +66,13 @@
 ```
 +- common-express/ : common setup
 +- config/ : centralized config folder (see README.md within the config folder)
-+- app-custom/ : sample custom application (prefixed with app)
-|  +- controllers/
-|  +- graphql/ : graphql stuff
-|  +- models/
-|  +- tests/ : Jest tests
++- apps : your list of custom apps here
+|  +- app-template/ : sample custom application (prefixed with app)
+|  |  +- controllers/
+|  |  +- graphql/ : graphql stuff
+|  |  +- models/
+|  |  +- tests/ : Jest tests
+|  +- app-custom/ : your custom app, put under source control (app-* is git ignored)
 +- deploy/ : deployment folder (see README.md within the deploy folder)
 |  +- db/ : for seeding and migrating data
 |     +- knex/
