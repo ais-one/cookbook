@@ -185,6 +185,3 @@ global.CONFIG.KEYV_CACHE = null
 // bodyparser
 global.CONFIG.BODYPARSER_JSON = null
 global.CONFIG.BODYPARSER_URLENCODED = null
-
-// custom app name
-global.CONFIG.CUSTOM_APP = null

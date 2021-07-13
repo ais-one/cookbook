@@ -1,12 +1,12 @@
 const request = require('supertest')
 const express = require('express')
 const app = express()
-const endpointUrl = '/api/app-custom/categories'
 const newCategory = require('../mock-data/new-category.json')
 
+let sqldb
 let createdCategoryId
 let authObj = {}
-let sqldb
+let endpointUrl
 
 beforeAll(async () => {
   await require('@es-labs/node/config')(process.cwd())
@@ -20,6 +20,7 @@ beforeAll(async () => {
     Authorization: `Bearer ${tokens.access_token}`,
     refresh_token: tokens.refresh_token
   }
+  endpointUrl = `/api/${global.APP_NAME}/categories`
 })
 afterAll(async () => {
   await sqldb.close()

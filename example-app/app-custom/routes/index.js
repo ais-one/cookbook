@@ -7,6 +7,7 @@ const categories = require('./categories')
 // websocket.setOnClientMessage = async (message, ws, _wss) => { }
 // websocket.setOnClientCLose =  (ws) => { }
 
+// export your routes here - make sure no clashes
 module.exports = (app) => {
-  app.use(`/api/app-custom`, categories )
+  app.use(`/api/${APP_NAME}`, categories )
 }

@@ -12,7 +12,7 @@ module.exports = {
   //   "global": { branches: 50, functions: 50, lines: 50, statements: 50 },
   //   "./src/components/": { branches: 40, statements: 40 },
   // },
-  // roots: ['<rootDir>/app-custom/tests'], // directories to match // root dir
+  // roots: [`<rootDir>/${APP_NAME}/tests`], // directories to match // root dir
   testEnvironment: 'node',
   testMatch: [ "**/tests/**/*.test.js"],
   // setupFiles: [ path.join(process.cwd(), 'setup.js') ],

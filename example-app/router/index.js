@@ -17,8 +17,7 @@ module.exports = function (app) {
     router.use('/webpush', require('./webpush')),
   )
 
-  const { CUSTOM_APP } = global.CONFIG
-  if (CUSTOM_APP) require(`../${CUSTOM_APP}/routes`)(app)
+  if (APP_NAME) require(`../${APP_NAME}/routes`)(app)
   
   app.use('/api/**', (req, res) => res.status(404).json({error: 'Not Found'}))
 }

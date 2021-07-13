@@ -27,7 +27,10 @@ fi
 echo Deploying To Google Cloud Run $1
 
 BUILD_TS=`date +"%Y%m%d%H%M"`
-APP_NAME=example-app
+APP_NAME=$2
+if [ ! $APP_NAME ]; then
+  APP_NAME="app-custom"
+fi
 
 if [ "$CI" = "true" ]; then
   echo "CI deploy"

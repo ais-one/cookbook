@@ -9,10 +9,7 @@
     "prettier:check": "prettier --check src/**/*.{js,jsx,json}",
     "prettier:write": "prettier --write src/**/*.{js,jsx,json}",
     "dev": "vite",
-    "dev:build": "vite build --mode development",
-    "build": "vite build",
-    "build-uat": "vite build --mode uat",
-    "build-production": "vite build --mode production"
+    "build": "vite build"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",

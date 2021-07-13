@@ -89,5 +89,4 @@ module.exports = {
   // HTTPS_CERTS: null,
   // GCP_SERVICE_KEY: null, // {}
   // KNEXFILE: null, // {}
-  CUSTOM_APP: 'app-custom'
 }

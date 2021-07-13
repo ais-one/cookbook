@@ -166,8 +166,8 @@ Click the following buttons in order (see their output in console.log and screen
 
 ```bash
 cd example-vite
-npm run dev:build # build into example app, development environment
-npm run build-uat # build uat environment, deploy to GCP Storage
+npx vite build --mode development # build into example app, development environment
+npx vite build --mode uat # build uat environment, deploy to GCP Storage
 ```
 Navigate to http://127.0.0.1:3000/vite/
 

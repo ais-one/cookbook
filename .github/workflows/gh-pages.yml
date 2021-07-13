@@ -6,18 +6,17 @@
 # on Github, select the branch of the Github pages site from project settings
 name: Deploy example-vite to github pages
 on:
-  push:
-    branches:
-      - master
-    # 'abc/def/**'
-    paths:
-      - 'example-vite/**'
-  # workflow_dispatch:
-  #   inputs:
-  #     branch:
-  #       description: 'Branch To Use'
-  #       default: 'develop'
-  #       required: true
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - 'example-vite/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'The environment (uat, production)'
+        default: 'production'
+        required: true
 
 defaults:
   run:
@@ -35,10 +34,17 @@ jobs:
           version:  14.x
       - name: Checkout branch
         uses: actions/checkout@v2
+      - name: Show checkout branch name
+        run: echo checking out on branch ${GITHUB_REF##*/}
       - name: Clean install dependencies
         run: npm ci
+      # - name: Make shell script executable
+      #   run: chmod +x deploy.sh
+      # - name: Initiate Deployment
+      #   ./deploy.sh ${{ github.event.inputs.environment }}
       - name: Run deploy script
         # remember to change user.name and user.email
+        # TBD npx vite build -- mode ${{ github.event.inputs.environment }}
         run: |
           git config user.name "Your username" && git config user.email "your email"
           git checkout --orphan gh-pages
