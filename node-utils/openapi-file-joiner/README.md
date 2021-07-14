@@ -6,11 +6,19 @@ Adapted from https://github.com/mohsen1/multi-file-swagger-example
 
 Better to combine to a single file for use.
 
+## Other References
+
+- https://azimi.me/2015/07/16/split-swagger-into-smaller-files.html#tools
+- https://community.smartbear.com/t5/Swagger-Open-Source-Tools/Swagger-ref-won-t-work/td-p/175957
+
 ## Usage
 
-1. npm i
-2. openapi root folder relative to this script
-3. starting yaml file
+```
+npm i
+```
 
-## License
-MIT
+Refer to .env file for openapi folder (relative to this script), root file and output file (will be generated in the openapi folder)
+
+```
+node index.js
+```
