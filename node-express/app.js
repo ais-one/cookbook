@@ -79,6 +79,54 @@ try {
 }
 // END ROUTES
 
+// GraphQL
+// https://github.com/graphql/express-graphql
+// https://github.com/enisdenjo/graphql-ws
+const ws = require('ws')
+const { graphqlHTTP } = require('express-graphql')
+const { useServer } = require('graphql-ws/lib/use/ws')
+const { execute, subscribe } = require('graphql')
+
+const { schema, roots, rootValue } = require('./app-graphql-schema')
+
+const subscriptionEndpoint = `ws://127.0.0.1:3000/subscriptions`;
+
+// create express and middleware
+app.use('/graphql', graphqlHTTP({
+  schema,
+  rootValue,
+  graphiql: {
+    // subscriptionEndpoint,
+    // websocketClient: 'v1',
+  },
+}))
+
+const wsServer = new ws.Server({
+  noServer: true,
+  path: '/subscriptions',
+})
+useServer({
+  schema,
+  roots,
+  execute,
+  subscribe,
+}, wsServer);
+
+// const graphQlserver = app.listen(3000, () => {
+//   // create and use the websocket server
+//   const wsServer = new ws.Server({
+//     server: graphQlserver,
+//     // path: '/graphql',
+//     path: '/subscriptions',
+//   })
+//   useServer({
+//     schema,
+//     roots,
+//     execute,
+//     subscribe,
+//   }, wsServer);
+// })
+
 require('./common/postRoute')(app, express, global.CONFIG)
 
 module.exports = { server }

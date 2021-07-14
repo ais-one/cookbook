@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>GraphQL over WebSocket</title>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/graphql-ws/umd/graphql-ws.min.js"
+    ></script>
+    <script type="modules" src="https://unpkg.com/browse/urql@2.0.4/dist/urql.es.js"></script>
+  </head>
+  <body>
+    <h1>GraphQL over WebSocket - URQL + Subscriptions <a href="index.html">Back</a></h1>
+    <ul>
+      <li><a href="#" onclick="testHello()">Test Hello</a></li>
+    </ul>
+
+    <script type="text/javascript">
+      // https://unpkg.com/urql@2.0.4/dist/urql.js
+
+      const client = graphqlWs.createClient({
+        // url: 'ws://127.0.0.1:3000/graphql',
+        url: 'ws://127.0.0.1:3000/subscriptions',
+      });
+
+      async function execute(payload) {
+        return new Promise((resolve, reject) => {
+          let result;
+          client.subscribe(payload, {
+            next: (data) => (result = data),
+            error: reject,
+            complete: () => resolve(result),
+          })
+        })
+      }
+
+      testHello = async () => {
+        const result2 = await new Promise((resolve, reject) => {
+          let result
+          client.subscribe(
+            {
+              query: '{ hello }',
+            },
+            {
+              next: (data) => (result = data),
+              error: reject,
+              complete: () => resolve(result),
+            },
+          )
+        })
+        console.log('result2', result2)
+        // try {
+        //   const result = await execute({
+        //     query: '{ hello }',
+        //   });
+        //   // complete
+        //   // next = result = { data: { hello: 'Hello World!' } }
+        //   console.log(result)
+        // } catch (err) {
+        //   console.log(err)
+        //   // error
+        // }
+      }
+
+
+      // subscription
+      // (async () => {
+      //   const onNext = () => {
+      //     // handle incoming values
+      //   };
+
+      //   let unsubscribe = () => {
+      //     // complete the subscription
+      //   };
+
+      //   await new Promise((resolve, reject) => {
+      //     unsubscribe = client.subscribe(
+      //       {
+      //         query: 'subscription { greetings }',
+      //       },
+      //       {
+      //         next: onNext,
+      //         error: reject,
+      //         complete: resolve,
+      //       },
+      //     );
+      //   });
+      // })();
+
+      // consider other recipes for usage inspiration
+    </script>
+  </body>
+</html>

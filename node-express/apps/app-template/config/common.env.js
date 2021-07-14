@@ -91,10 +91,11 @@ module.exports = {
   // GCP_SERVICE_KEY: null, // {}
   // KNEXFILE: null, // {}
 
-  OPENAPI_PATH: './apps/app-template/openapi/example.output.yaml',
-  OPENAPI_VALIDATOR: {
-    apiSpec: './apps/app-template/openapi/example.output.yaml',
-    validateRequests: true, // (default)
-    validateResponses: true, // false by default
-  }
+  OPENAPI_PATH: '', // './apps/app-template/openapi/example.output.yaml',
+  OPENAPI_VALIDATOR: null,
+  // {
+  //   apiSpec: './apps/app-template/openapi/example.output.yaml',
+  //   validateRequests: true, // (default)
+  //   validateResponses: true, // false by default
+  // },
 }
