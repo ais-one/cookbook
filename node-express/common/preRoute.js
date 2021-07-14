@@ -124,7 +124,20 @@ module.exports = function(app, express, options) {
   app.use(cookieParser(COOKIE_SECRET))
 
   // ------ SWAGGER ------
-  // TBD
+  const { OPENAPI_PATH } = options
+  if (OPENAPI_PATH) {
+    const swaggerUi = require('swagger-ui-express')
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(require('yamljs').load(OPENAPI_PATH), { explorer: true }))
+
+    const OpenApiValidator = require('express-openapi-validator')
+    app.use(
+      OpenApiValidator.middleware({
+        apiSpec: OPENAPI_PATH,
+        validateRequests: true, // (default)
+        validateResponses: true, // false by default
+      }),
+    )
+  }
 
   return this // this is undefined...
 }

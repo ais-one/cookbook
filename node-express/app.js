@@ -35,8 +35,8 @@ require('./common/passport').init(app)
 
 // START SERVICES
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
-const sqldb = require('@es-labs/node/services/db/knex').open()
-const mongodb = require('@es-labs/node/services/db/mongodb').open()
+require('@es-labs/node/services/db/knex').open()
+require('@es-labs/node/services/db/mongodb').open()
 const websocket = require('@es-labs/node/services/websocket').open(null, null) // or set to null
 const agenda = require('@es-labs/node/services/mq/agenda').open()
 const bull = require('@es-labs/node/services/mq/bull').open()
@@ -46,11 +46,11 @@ const shutdown = async () => {
     websocket.close() // websockets
     await agenda.close()
     await bull.close()
-    await mongodb.close()
-    await sqldb.close()
+    await require('@es-labs/node/services/db/mongodb').close()
+    await require('@es-labs/node/services/db/knex').close()
     // await hazelcast.close()
     await sleep(10) // wait awhile more for things to settle
-    console.log('Server close done')
+    console.log('shutdown done')
   } catch (e) {
     console.log(e)
   }

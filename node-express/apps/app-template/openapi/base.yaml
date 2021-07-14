@@ -5,6 +5,10 @@ healthcheck:
     responses:
       '200':
         description: GET healthcheck response ok
+        content:
+          application/json:
+            schema:
+              type: object
   post:
     tags:
       - "Base"

@@ -35,29 +35,28 @@ servers:
 components:
   securitySchemes:
     BasicAuth:
-      $ref: 'http://127.0.0.1:8080/openapi/securitySchema.yaml#/MySecurity/BasicAuth'
+      $ref: './securitySchema.yaml#/MySecurity/BasicAuth'
     ApiKeyAuth:
-      $ref: 'http://127.0.0.1:8080/openapi/securitySchema.yaml#/MySecurity/ApiKeyAuth'
+      $ref: './securitySchema.yaml#/MySecurity/ApiKeyAuth'
   schemas:
     Error:
-      $ref: 'http://127.0.0.1:8080/openapi/objects.yaml#/components/schemas/Error'
-
-security:
-  - BasicAuth: []
-  - ApiKeyAuth: []
-
+      $ref: './objects.yaml#/components/schemas/Error'
+# this one below implements auth for all paths
+# security:
+#   - BasicAuth: []
+#   - ApiKeyAuth: []
 paths:
   /healthcheck:
-    $ref: 'http://127.0.0.1:8080/openapi/base.yaml#healthcheck'
+    $ref: './base.yaml#/healthcheck'
   /health-auth:
-    $ref: 'http://127.0.0.1:8080/openapi/base.yaml#health-auth'
+    $ref: './base.yaml#/health-auth'
   /upload-disk:
-    $ref: 'http://127.0.0.1:8080/openapi/base.yaml#upload-disk'
+    $ref: './base.yaml#/upload-disk'
   /auth/login:
-    $ref: 'http://127.0.0.1:8080/openapi/auth.yaml#login'
+    $ref: './auth.yaml#/login'
   /auth/otp:
-    $ref: 'http://127.0.0.1:8080/openapi/auth.yaml#otp'
+    $ref: './auth.yaml#/otp'
   /categories:
-    $ref: 'http://127.0.0.1:8080/openapi/categories.yaml#no-id'
+    $ref: './categories.yaml#/no-id'
   /categories/{id}:
-    $ref: 'http://127.0.0.1:8080/openapi/categories.yaml#with-id'
+    $ref: './categories.yaml#/with-id'

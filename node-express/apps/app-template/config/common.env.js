@@ -39,6 +39,7 @@ module.exports = {
   WEB_STATIC: [ // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
     // options does not seem to work
     // { folder: 'openapi', url: '/ftp2', options: {'icons': true}, list: true },
+    { folder: 'apps/app-template/openapi', url: '/openapi' },
     { folder: '../@es-labs/esm', url: '/esm' },
     { folder: '../vue-nobundler', url: '/native', options: { extensions: ['html'], index: false } },
     { folder: '../vue-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
@@ -89,4 +90,6 @@ module.exports = {
   // HTTPS_CERTS: null,
   // GCP_SERVICE_KEY: null, // {}
   // KNEXFILE: null, // {}
+
+  OPENAPI_PATH: './apps/app-template/openapi/example.output.yaml',
 }

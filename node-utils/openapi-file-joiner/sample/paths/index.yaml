@@ -1,0 +1,6 @@
+/foo:
+  $ref: ./foo.yaml
+/bar:
+  $ref: ./bar.yaml
+/nested:
+  $ref: ./nested.yaml#/response

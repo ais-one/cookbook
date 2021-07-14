@@ -185,3 +185,6 @@ global.CONFIG.KEYV_CACHE = null
 // bodyparser
 global.CONFIG.BODYPARSER_JSON = null
 global.CONFIG.BODYPARSER_URLENCODED = null
+
+// OPENAPI document
+global.CONFIG.OPENAPI_PATH = ''

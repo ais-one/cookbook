@@ -3,16 +3,16 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
+- [chore] re-test and re-document deployments, clean up GCP cloud documentation... 
 - [chore] disable console.log in production / proper console logging
   - https://stackoverflow.com/questions/7042611/override-console-log-for-production/21789576
   - https://ourcodeworld.com/articles/read/104/how-to-override-the-console-methods-in-javascript
   - https://gist.github.com/pincheira/2724082
   - https://stackoverflow.com/questions/63075459/override-console-log-method-without-losing-the-original-stack-javascript
-- [feat] add commitizen, add semantic-version
-- [chore] migration to node 16 and npm 7
 - [vue-vite] cypress e2e testing
 - update webauthnsimple to v3
-- [chore] clean up GCP cloud documentation... 
+- [chore] migration to node 16 and npm 7
+- [feat] add commitizen, add semantic-version
 
 ### For future product improvement
 - [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)

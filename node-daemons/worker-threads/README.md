@@ -4,6 +4,7 @@
 - https://livecodestream.dev/post/how-to-work-with-worker-threads-in-nodejs/
 - https://medium.com/codex/achieve-the-best-performance-10x-faster-node-js-with-worker-threads-97fc2890e40f
   - https://github.com/GaetanoPiazzolla/nodejs-worker-performance
+- https://blog.logrocket.com/real-time-processing-web-workers/
 
 The codes in this **worker-threads** folder are lifted from the above references
 

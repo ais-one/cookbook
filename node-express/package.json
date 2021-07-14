@@ -28,6 +28,7 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-json-validator-middleware": "^2.1.1",
+    "express-openapi-validator": "^4.12.14",
     "helmet": "^4.6.0",
     "http-proxy-middleware": "^2.0.1",
     "json2csv": "^5.0.6",

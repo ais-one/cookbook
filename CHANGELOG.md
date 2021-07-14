@@ -15,9 +15,11 @@
 - [chore] remove objection ORM
 - [chore] add packages folder and prepare for workspaces
 - [node-daemons] nodejs workers
+- [node-express] shared webworkers
 - In Progress
-  - [node-express] shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
   - [node-express] validation middleware (preferable use openapi 3.1)
+  - [node-express] openapi folder location
+
 
 ### Version 0.5.3
 - [chore] update packages & cleanup & work on improving documentation

@@ -37,25 +37,6 @@ components:
       properties:
         name:
           type: string
-    Author:
-      allOf:
-        - $ref: '#/components/schemas/NewAuthor'
-        - type: object
-          required:
-          - id
-          properties:
-            id:
-              type: integer
-              format: int64
-    NewAuthor:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-        avatar:
-          type: string
 
     Error:
       type: object

@@ -1,0 +1,15 @@
+{
+  "name": "openapi-file-joiner",
+  "version": "0.0.0",
+  "description": "Multi-file OpenAPI joiner",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "js-yaml": "^3.12.2",
+    "json-refs": "^3.0.12"
+  }
+}
