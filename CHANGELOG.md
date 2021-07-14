@@ -14,6 +14,7 @@
 - [node-daemons/tcpserver] event-based
 - [chore] remove objection ORM
 - [chore] add packages folder and prepare for workspaces
+- [node-daemons] nodejs workers
 - In Progress
   - [node-express] shared webworkers (https://blog.logrocket.com/real-time-processing-web-workers/)
   - [node-express] validation middleware (preferable use openapi 3.1)

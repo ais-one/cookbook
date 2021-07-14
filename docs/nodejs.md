@@ -170,3 +170,9 @@ If you edit the file in ../@eslabs/..., it will also be changed the installed no
 - node signal events: https://nodejs.org/dist/latest-v11.x/docs/api/processhtml#process_signal_events
 - kubernetes shutdown: https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-terminating-with-grace
 
+
+## performance
+
+- https://blog.logrocket.com/optimize-node-js-performance-with-clustering/
+- https://blog.logrocket.com/customizing-node-js-env-files/
+- [../node-daemons/workerthreads]

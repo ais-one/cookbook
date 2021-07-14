@@ -7,6 +7,12 @@
 
 The codes in this **worker-threads** folder are lifted from the above references
 
+## Notes
+
+- worker thread useful for CPU intensive operations (not for I/O intensive as native nodejs handles it well)
+- creating and destruction of thread is resource heavy
+- thread pool still has time overheads, faster is pre-allocate array of threads
+
 ## Sample Codes from above reference
 
 ```js
