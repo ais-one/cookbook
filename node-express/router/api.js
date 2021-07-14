@@ -79,16 +79,6 @@ module.exports = express.Router({caseSensitive: true})
 
   .post('/test-cors-post', (req, res) => { res.send('Cors Done') }) // check CORS
 
-  /**
-   * @swagger
-   * /api/health-auth:
-   *    post:
-   *      tags:
-   *        - "Base"
-   *      security:
-   *        - bearerAuth: []
-   *      description: Health check with authorization
-   */
   .get('/health-auth', authUser, (req, res) => { res.json({ message: 'OK' }) }) // health check auth
  
   // test uploads

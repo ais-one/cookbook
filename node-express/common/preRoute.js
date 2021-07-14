@@ -123,20 +123,30 @@ module.exports = function(app, express, options) {
   const cookieParser = require('cookie-parser')
   app.use(cookieParser(COOKIE_SECRET))
 
-  // ------ SWAGGER ------
-  const { OPENAPI_PATH } = options
+  // ------ OPENAPI ------
+  // if serving multiple documents
+  // const swaggerDocumentOne = require('./swagger-one.json');
+  // const swaggerDocumentTwo = require('./swagger-one.json');
+  // app.use('/api-docs-one', swaggerUi.serveFiles(swaggerDocumentOne, options), swaggerUi.setup(swaggerDocumentOne));
+  // app.use('/api-docs-two', swaggerUi.serveFiles(swaggerDocumentTwo, options), swaggerUi.setup(swaggerDocumentTwo));
+  // load from multiple URLs
+  // var options = {
+  //   explorer: true,
+  //   swaggerOptions: {
+  //     urls: [
+  //       { url: 'http://petstore.swagger.io/v2/swagger.json', name: 'Spec1' },
+  //       { url: 'http://petstore.swagger.io/v2/swagger.json', name: 'Spec2' }
+  //     ]
+  //   }
+  // }
+  const { OPENAPI_PATH, OPENAPI_VALIDATOR } = options
   if (OPENAPI_PATH) {
     const swaggerUi = require('swagger-ui-express')
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(require('yamljs').load(OPENAPI_PATH), { explorer: true }))
-
-    const OpenApiValidator = require('express-openapi-validator')
-    app.use(
-      OpenApiValidator.middleware({
-        apiSpec: OPENAPI_PATH,
-        validateRequests: true, // (default)
-        validateResponses: true, // false by default
-      }),
-    )
+    if (OPENAPI_VALIDATOR) {
+      const OpenApiValidator = require('express-openapi-validator')
+      app.use(OpenApiValidator.middleware(OPENAPI_VALIDATOR))  
+    }
   }
 
   return this // this is undefined...

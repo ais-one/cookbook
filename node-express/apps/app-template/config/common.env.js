@@ -92,4 +92,9 @@ module.exports = {
   // KNEXFILE: null, // {}
 
   OPENAPI_PATH: './apps/app-template/openapi/example.output.yaml',
+  OPENAPI_VALIDATOR: {
+    apiSpec: './apps/app-template/openapi/example.output.yaml',
+    validateRequests: true, // (default)
+    validateResponses: true, // false by default
+  }
 }
