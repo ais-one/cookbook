@@ -15,7 +15,12 @@ const { HTTPS_CERTS } = global.CONFIG
 // }
 const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createServer(app)
 
+const url = require("url")
 server.on('upgrade', (request, socket, head) => {
+  const protocol = request.headers['sec-websocket-protocol']
+  console.log(protocol)
+  const pathname = url.parse(request.url).pathname
+  console.log(pathname)
   // This function is not defined on purpose. Implement it with your own logic.
   // authenticate(request, (err, client) => {
   //   if (err || !client) {
@@ -27,6 +32,11 @@ server.on('upgrade', (request, socket, head) => {
   //     wss.emit('connection', ws, request, client)
   //   })
   // })
+  if (pathname === '/subscriptions') { // upgrade the graphql server
+    wsServer.handleUpgrade(request, socket, head, (ws) => {
+      wsServer.emit('connection', ws, request);
+    })
+  }
   console.log('upgrade event')
 })
 
@@ -82,6 +92,10 @@ try {
 // GraphQL
 // https://github.com/graphql/express-graphql
 // https://github.com/enisdenjo/graphql-ws
+// https://httptoolkit.tech/blog/simple-graphql-server-without-apollo
+// https://blog.logrocket.com/why-i-finally-switched-to-urql-from-apollo-client/
+// https://dev.to/remorses/you-don-t-need-apollo-to-use-graphql-in-react-1277
+
 const ws = require('ws')
 const { graphqlHTTP } = require('express-graphql')
 const { useServer } = require('graphql-ws/lib/use/ws')
