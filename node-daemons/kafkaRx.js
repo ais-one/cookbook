@@ -1,5 +1,5 @@
-`use strict`;
 /* eslint-disable */
+'use strict'
 const { Kafka, logLevel } = require('kafkajs')
 
 const kafka = new Kafka({

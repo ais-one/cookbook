@@ -1,5 +1,5 @@
-`use strict`;
-(async function() {
+/* eslint-disable */
+'use strict'; (async function() {
 const { Kafka, logLevel } = require('kafkajs')
 const kafka = new Kafka({
   logLevel: logLevel.ERROR, // NOTHING, ERROR, WARN, INFO, and DEBUG

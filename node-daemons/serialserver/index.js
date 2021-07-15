@@ -98,9 +98,9 @@ const TcpConnect = () => {
   client.connect({ host, port })
 }
 
-const launchIntervalConnect = () => {
+const launchIntervalConnect = (err = 'an error') => {
   if (false !== intervalId) return
-  console.log('no connection')
+  console.log('no connection', err)
   netConnect = false
   intervalId = setInterval(TcpConnect, 5000)
 }
@@ -116,7 +116,7 @@ client.on('connect', () => {
   console.log(`TCP Client: connection established with server @ ${host}:${port}`)
   netConnect = true
 })
-client.on('error', (err) => launchIntervalConnect(err.toString))
+client.on('error', (err) => launchIntervalConnect('error'))
 client.on('close', launchIntervalConnect)
 client.on('end', launchIntervalConnect) // dc from server
 client.on('timeout', launchIntervalConnect)

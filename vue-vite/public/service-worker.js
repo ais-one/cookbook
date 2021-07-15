@@ -24,6 +24,7 @@ const cacheFilesStatic = [
 
 // SW install and cache static assets
 function addCaches(e) {
+  // if (e.origin !== "http://example.org") return // check and reject if not correct origin
   console.log('SW location', location)
   try {
     const params = new URL(location).searchParams.get('params')
@@ -37,6 +38,7 @@ self.addEventListener('install', addCaches)
 
 // SW activate and cache cleanup
 function clearCaches(e) {
+  // if (e.origin !== "http://example.org") return // check and reject if not correct origin
   console.log('SW clearCaches')
   e.waitUntil(
     caches.keys()
@@ -184,6 +186,7 @@ function networkOnly(e) {
 
 // WebPush
 self.addEventListener('push', function (e) {
+  // if (e.origin !== "http://example.org") return // check and reject if not correct origin
   let message = 'Push message no payload'
   if (e.data) {
     message = e.data.text()
@@ -232,7 +235,10 @@ async function handlePush(e) {
   // Send a message to the client.
   client.postMessage({ msg: 'pushsubscriptionchange', sub: e.newSubscription })
 }
-self.addEventListener('pushsubscriptionchange', (e) => e.waitUntil(handlePush(e)))
+self.addEventListener('pushsubscriptionchange', (e) => {
+  // if (e.origin !== "http://example.org") return // check and reject if not correct origin
+  return e.waitUntil(handlePush(e))
+})
 
 // self.addEventListener('fetch', (e) => e.waitUntil(handlePush(event)))
 

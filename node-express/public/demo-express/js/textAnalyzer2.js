@@ -2,6 +2,7 @@ self.addEventListener("connect", (event) => {
   const port = event.ports[0];
 
   port.addEventListener("message", (event) => {
+    // if (event.origin !== "http://example.org") return // check and reject if not correct origin
     if (typeof event.data === "string") {
       port.postMessage(analyze(event.data));    
     } else {
