@@ -18,8 +18,6 @@
 - [node-express] shared webworkers
 - [node-express] validation middleware (preferable use openapi 3.1)
 - [node-express] openapi folder location
-- In Progress
-  - [chore] documentation & folder reorganisation
 
 ### Version 0.5.3
 - [chore] update packages & cleanup & work on improving documentation

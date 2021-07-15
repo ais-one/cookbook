@@ -92,16 +92,18 @@ try {
 // GraphQL
 // https://github.com/graphql/express-graphql
 // https://github.com/enisdenjo/graphql-ws
+// https://shammelburg.medium.com/subscriptions-with-graphql-dfa8279af050
+
 // https://httptoolkit.tech/blog/simple-graphql-server-without-apollo
 // https://blog.logrocket.com/why-i-finally-switched-to-urql-from-apollo-client/
 // https://dev.to/remorses/you-don-t-need-apollo-to-use-graphql-in-react-1277
+// https://the-guild.dev/blog/subscriptions-and-live-queries-real-time-with-graphql (quite good)
 
 const ws = require('ws')
 const { graphqlHTTP } = require('express-graphql')
 const { useServer } = require('graphql-ws/lib/use/ws')
 const { execute, subscribe } = require('graphql')
-
-const { schema, roots, rootValue } = require('./app-graphql-schema')
+const { schema, roots, rootValue } = require('./apps/app-template/graphql-schema') // to make cpnfigurable
 
 const subscriptionEndpoint = `ws://127.0.0.1:3000/subscriptions`;
 
@@ -115,6 +117,7 @@ app.use('/graphql', graphqlHTTP({
   },
 }))
 
+// wsServer.close()
 const wsServer = new ws.Server({
   noServer: true,
   path: '/subscriptions',
@@ -124,7 +127,13 @@ useServer({
   roots,
   execute,
   subscribe,
-}, wsServer);
+
+  onConnect: (ctx) => console.log('Connect', ctx),
+  onSubscribe: (ctx, msg) => console.log('Subscribe', { ctx, msg }),
+  onNext: (ctx, msg, args, result) => console.debug('Next', { ctx, msg, args, result }),
+  onError: (ctx, msg, errors) => console.error('Error', { ctx, msg, errors }),
+  onComplete: (ctx, msg) => console.log('Complete', { ctx, msg }),
+}, wsServer)
 
 // const graphQlserver = app.listen(3000, () => {
 //   // create and use the websocket server
