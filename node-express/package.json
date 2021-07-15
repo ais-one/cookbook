@@ -1,6 +1,6 @@
 {
   "name": "node-express",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "example express application",
   "main": "index.js",
   "directories": {

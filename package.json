@@ -1,6 +1,6 @@
 {
   "name": "vue-crud-x",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Fullstack JS Application Cookbook",
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
@@ -20,6 +20,7 @@
     "./@es-labs/*",
     "./node-daemons/*",
     "./node-express",
+    "./node-utils/*",
     "./vue-vite"
   ],
   "private": true

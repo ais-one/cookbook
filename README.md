@@ -10,9 +10,9 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, Cloud container deployment, Web Components, ES Modules) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Considerations for this project are similar to this [python fullstack project](https://github.com/ais-one/favv/blob/master/README.md#considerations).
+**NOTE!** project name is going to be replaced to a more appropriate one in 0.6.2
 
-**NOTE!** project name is going to be replaced to a more appropriate one
+Considerations for this project are similar to [https://github.com/ais-one/favv](https://github.com/ais-one/favv/blob/master/README.md#considerations).
 
 The difference between this project and [https://github.com/ais-one/favv](https://github.com/ais-one/favv) are:
 - vue-crud-x is more of a cookbook and recipes are constantly being improved and updated
@@ -21,11 +21,7 @@ The difference between this project and [https://github.com/ais-one/favv](https:
 
 We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem. It is easier for TS people to take the JS here and implement with TS.
 
-Latest Version [0.6.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.6.0) - Released 2021 July 15 1500 +8GMT
-
-- add openapi example & validation, add rs232 and vercel/pkg usage, allow multiple upload folers handling
-- improvement on project organization and preparation for npm workspaces and node 16
-- replacing apollo graphql library (bloated, overly complex, breaks badly when major change), removed ORM
+Latest Version [0.6.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.6.1) - Released 2021 July 30 1500 +8GMT
 
 # Features
 
