@@ -9,8 +9,8 @@ console.log('Can also be for cronjobs (but better to use cronjob call an API)')
 await require('../@es-labs/node/config')(path.join(process.cwd(),'..')) //  first thing to run
 // const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 
-const running = true
 const MAX_CYCLES = 0
+let running = true
 let counter = 0
 
 const run = async () => {
