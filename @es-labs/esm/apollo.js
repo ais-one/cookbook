@@ -52,7 +52,7 @@ const init = (options) => {
       // return the headers to the context so httpLink can read them
       let access_token = ''
       let refresh_token = ''
-      const item = localStorage.getItem('session') // survive a refresh
+      // do not use localStorage const item = localStorage.getItem('session') // survive a refresh
       if (item) {
         const user = JSON.parse(item)
         access_token = user.access_token
@@ -61,8 +61,8 @@ const init = (options) => {
       return {
         headers: {
           ...headers,
-          access_token: access_token || '',
-          refresh_token: refresh_token || '' // TBD - GraphQL not taking into account refresh token and revocation yet
+          Authorization: `Bearer ${access_token}`,
+          // refresh_token: refresh_token || '' // TBD - GraphQL not taking into account refresh token and revocation yet
         }
       }
     })

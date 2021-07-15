@@ -53,7 +53,7 @@ admin / Pa55w0rd (same as in docker compose file)
 https://github.com/hkiang01/fastapi-keycloak-oidc-auth
 
 
-Create oidc client called test-oidc-client-favv on keycloak
+Create oidc client called test-oidc-client on keycloak
 
 Root URL: http://127.0.0.1:3000/api/oidc
 Valid Redirect URIS: http://127.0.0.1:3000/api/oidc/auth

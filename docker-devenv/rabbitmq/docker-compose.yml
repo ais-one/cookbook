@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    ports:
+      - '4369:4369'
+      - '5672:5672'
+      - '25672:25672'
+      - '15672:15672'
+      - '35197:35197'
+    environment:
+      - RABBITMQ_SECURE_PASSWORD=yes
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=pass
+      - RABBITMQ_DEFAULT_VHOST=vhost
+    volumes:
+      - './data/lib:/var/lib/rabbitmq'
+      - './data/log:/var/log/rabbitmq'
+    hostname: rabbit
+# volumes:
+#   data:
+#     driver: local

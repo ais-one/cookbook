@@ -23,6 +23,9 @@ mongoexport --db ahop --collection mdh-snapshot --out mdh-snapshot.json --jsonAr
 mongoexport --db ahop --collection vts-hist --out vts-hist.json --jsonArray
 mongoexport --db ahop --collection job --out job.json --jsonArray
 
+--type=csv
+--fields=f1,f2,f3
+
 
 ## Outstanding Issues
 

@@ -1,6 +1,6 @@
 {
   "name": "@es-labs/node",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "author": "Aaron Gong",
   "license": "MIT",
   "repository": {
@@ -22,30 +22,19 @@
   "dependencies": {
     "@google-cloud/storage": "^5.8.5",
     "agenda": "^4.1.3",
-    "apollo-server-express": "^2.25.2",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
-    "bull": "^3.22.10",
-    "connect-history-api-fallback": "^1.6.0",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "graphql": "^15.5.1",
+    "bull": "^3.23.0",
     "hazelcast-client": "^4.2.0",
-    "helmet": "^4.6.0",
-    "http-proxy-middleware": "^2.0.1",
     "ioredis": "^4.27.6",
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.0.3",
-    "knex": "^0.95.6",
-    "mongodb": "^3.6.9",
-    "multer": "^1.4.2",
+    "knex": "^0.95.7",
+    "mongodb": "^3.6.10",
     "mysql": "^2.18.1",
-    "objection": "^2.2.15",
     "otplib": "^12.0.1",
-    "passport": "^0.4.1",
-    "passport-saml": "^3.1.0",
     "sqlite3": "^5.0.2",
     "web-push": "^3.4.5",
-    "ws": "^7.5.1"
+    "ws": "^7.5.3"
   }
 }

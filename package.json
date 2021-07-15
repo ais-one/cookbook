@@ -1,21 +1,26 @@
 {
   "name": "vue-crud-x",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "description": "Fullstack JS Application Cookbook",
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
   "scripts": {
-    "spa": "cd example-webpack && npm run serve",
-    "vite": "cd example-vite && npm run dev",
-    "app": "cd example-app&&npm run app -- development",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "git:hash": "git rev-parse --verify --short HEAD",
+    "git:branch": "git rev-parse --abbrev-ref HEAD"
   },
   "engines": {
     "node": "14"
   },
   "dependencies": {},
   "devDependencies": {
-    "husky": "^7.0.0"
+    "husky": "^7.0.1"
   },
+  "workspaces": [
+    "./@es-labs/*",
+    "./node-daemons/*",
+    "./node-express",
+    "./vue-vite"
+  ],
   "private": true
 }

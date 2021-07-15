@@ -189,7 +189,166 @@ function myFunction(){
 myFunction(); 
 ```
 
+# Classes vs Factories
+
+Reference:
+- https://medium.com/javascript-in-plain-english/factories-are-still-better-than-classes-in-javascript-47f15071904e
 
 
+## Class
 
-### https://medium.com/javascript-in-plain-english/factories-are-still-better-than-classes-in-javascript-47f15071904e
+```js
+class Car {
+  constructor(maxSpeed){
+    this.maxSpeed = maxSpeed;
+  }
+  drive1 = () => {
+    console.log(`driving ${this.maxSpeed} mph!`)
+  }
+  drive2 () {
+    console.log(`driving ${this.maxSpeed} mph!`)
+  }
+}
+
+const car = new Car(120)
+
+$('button').click(car.drive2) // driving undefined mph!
+$('button').click(car.drive2.bind(car) // driving 120 mph!
+$('button').click(_ => car.drive2()) // driving 120 mph!
+
+$('button').click(car.drive1) // driving 120 mph!
+```
+
+## Factory
+
+```js
+const Car = (ms) => {
+  const maxSpeed = ms
+  
+  return {
+    drive: () => console.log(`driving ${maxSpeed} mph!`), // Creates a copy of each method in EVERY SINGLE instence -> Memory use! 
+  } 
+}
+```
+
+# mixing ES Modules into a CommonJS project
+
+Reference:
+- https://codewithhugo.com/use-es-modules-in-node-without-babel/webpack-using-esm/
+
+```js
+const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
+```
+
+# Asynchronous
+
+callbacks
+
+promises (use to batch, parallel async operations)
+- Promise.all
+- Promise.any
+- Promist.allSettled
+
+generators
+
+async/await
+
+
+## ES2016
+- Array.prototype.includes()
+- exponentiation operator **
+
+## ES2017
+
+- String padding
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padStart
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/padEnd
+- Object.values()
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/values
+- Object.entries()
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries
+- getOwnPropertyDescriptors()
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyDescriptors
+  - In what way is this useful?
+    - ES6 gave us Object.assign(), which copies all enumerable own properties from one or more objects, and return a new object.
+    - However there is a problem with that, because it does not correctly copies properties with non-default attributes.
+    - If an object for example has just a setter, it’s not correctly copied to a new object, using Object.assign().
+- Trailing commas
+- Async functions (async / await)
+- Shared Memory and Atomics
+  - https://github.com/tc39/ecmascript_sharedmem/blob/master/TUTORIAL.md
+
+## ES2018
+- String.raw
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/raw
+- s dotAll flag for regular expressions
+  - /^.$/s.test('\n') true
+- RegExp named capture groups
+  - A capture group can be given a name using the (?<name>...) syntax, for any identifier name.
+  - The regular expression for a date then can be written as /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/u. Each name should be unique.
+  - const regExp = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/u
+  - const res = regExp.exec('2020-11-12')
+- Rest & Spread operators
+  - const { a, b, ...zz } = { a: 1, b: 2, c: 3. d: 4 } // rest
+  - const zz = { a, b, ...zz} // spread
+- Regexp Lookbehind Assertions
+  - Positive lookbehind assertions are denoted as (?<=...) and they ensure that the pattern contained within precedes the pattern following the assertion.
+  - Negative lookbehind assertions are denoted as (?<!...) and, on the other hand, make sure that the pattern within doesn't precede the pattern following the assertion.
+- Regexp Unicode Property Escapes
+- Promise.prototype.finally
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally
+- Asynchronous Iteration
+  - for await (const item of promises) { console.log(item) }
+
+## ES2019 (to check)
+
+- Array.flat() Array.flatMap()
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/flatMap
+- Object.fromEntries
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/fromEntries
+- String.trimStart(), String.trimEnd()
+- Symbol.Description
+- Optional Catch BInding
+  - try {} catch {}
+- JSON ⊂ ECMAScript 
+  - The unescaped line separator U+2028 and paragraph separator U+2029 characters were not accepted in the pre-ES10 era.
+- Well-Formed JSON.stringify()
+  - JSON.stringify() may return characters between U+D800 and U+DFFF as values for which there are no equivalent UTF-8 characters. However, JSON format requires UTF-8 encoding. The proposed solution is to represent unpaired surrogate code points as JSON escape sequences rather than returning them as single UTF-16 code units.
+- Stable Array.prototype.sort()
+- Function.toString()
+
+## ES2020
+
+- BigInt
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
+- Dynamic Import
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#dynamic_imports
+- Nullish Coalescing (only undefined and null considered as falsy) ??
+- Optional Chaining ?.
+- Promise.allSettled
+- String matchAll
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/matchAll
+- globalThis
+- Module namespace exports
+  - export * as utils from './utils.mjs' === import * as utils from './utils.mjs'; export { utils }
+- Well defined for-in order
+  - for (let x in y), is now ordered
+- import.meta
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import.meta
+- private class variables
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Private_class_fields
+## ES2021
+
+- Logical Assignment Operators (&&= ||= ??=)
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators
+- Numeric Separators (1_000)
+  - https://github.com/tc39/proposal-numeric-separator 
+- Promise.any & AggregateError
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError
+- String.prototype.replaceAll
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll
+- WeakRefs & FinalizationRegistry Objects
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry

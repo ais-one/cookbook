@@ -1,0 +1,14 @@
+response:
+  get:
+    responses:
+      200:
+        description: OK
+        schema:
+          $ref: '#/nested/SameFileReference'
+
+nested:
+  SameFileReference:
+    type: object
+    properties:
+      name:
+        type: string

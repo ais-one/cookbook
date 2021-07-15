@@ -3,3 +3,4 @@ mongodb/data
 mysql/data
 redis/data
 keycloak/data
+rabbitmq/data

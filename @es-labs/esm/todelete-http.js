@@ -79,8 +79,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
     const options = { method, headers }
     if (opts.timeoutMs > 0) options.signal = signal
     if (opts.credentials !== 'include') { // include === HTTPONLY_TOKEN
-      if (tokens.access) options.headers.access_token = tokens.access
-      if (tokens.refresh) options.headers.refresh_token = tokens.refresh
+      if (tokens.access) options.headers.Authorization = `Bearer ${tokens.access}`
     }
     options.credentials = opts.credentials
 
@@ -108,8 +107,7 @@ const http = async (method, url, body = null, query = null, headers = null) => {
           tokens.access = rv1.data.access_token
           tokens.refresh = rv1.data.refresh_token
           if (options.credentials !== 'include') { // include === HTTPONLY_TOKEN
-            if (tokens.access) options.headers.access_token = tokens.access
-            if (tokens.refresh) options.headers.refresh_token = tokens.refresh
+            if (tokens.access) options.headers.Authorization = `Bearer ${tokens.access}`
           }
           const rv2 = await fetch(urlFull + qs, options)
           const txt2 = await rv2.text()

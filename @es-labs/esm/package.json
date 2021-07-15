@@ -1,6 +1,6 @@
 {
   "name": "@es-labs/esm",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "author": "Aaron Gong",
   "license": "MIT",
   "repository": {
@@ -16,7 +16,5 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
   }
 }

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vanilla Javascript Samples</title>
+</head>
+<body>
+  <h1>AA Authentication, OTP & Refresh Token <a href="index.html">Back</a></h1>
+  <ul>
+    <li>Clear application data (localStorage & httponly cookie)</li>
+    <li>check console for logs</li>
+    <li>check configs token expiry, refresh expiry, httponly?, use otp = TEST?</li>
+  </ul>
+  <button onclick="login()">Login test / test</button><br/>
+  <button onclick="otp()">Send OTP 111111</button><br/>
+  <button onclick="testAuth()">Get Private Data</button><br/>
+  <button onclick="logout()">Logout</button><br/>
+  <button id="test-ed">test</button><br/>
+</body>
+<script type="module">
+import Fetch from '/esm/fetch.js'
+import parseJwt from '/esm/parse-jwt.js'
+
+let otpId = ''
+let accessToken = ''
+let refreshToken = ''
+
+const http = new Fetch()
+http.setOptions({ refreshUrl: '/api/auth/refresh' })
+
+const test = () => console.log('https test', http)
+
+document.querySelector("#test-ed").onclick = test
+
+async function login() {
+  const { data } = await http.post('/api/auth/login', { email: 'test', password: 'test' })
+  if (data.otp) {
+    otpId = data.otp
+    console.log('need otp', data)
+  } else {
+    accessToken = data.access_token
+    refreshToken = data.refresh_token
+    console.log('logged in - tokens', accessToken, refreshToken)
+    console.log('logged in - parsed', parseJwt(accessToken), parseJwt(refreshToken))
+    http.setTokens({ access: accessToken, refresh: refreshToken })
+  }
+}
+
+async function otp() {
+  try {
+    const { data } = await http.post('/api/auth/otp', { id: otpId, pin: '111111' })
+    if (data.access_token) {
+      accessToken = data.access_token
+      refreshToken = data.refresh_token
+      console.log('otp ok - access token', accessToken)
+      console.log('otp ok - refresh token', refreshToken)
+      http.setTokens({ access: accessToken, refresh: refreshToken })
+    } else {
+      console.log('otp error', data)
+    }
+  } catch (e) {
+    console.log('otp', e.toString())
+  }
+}
+
+async function testAuth() {
+  try {
+    const { data } = await http.get('/api/health-auth')
+    if (data) console.log('/api/health-auth', data)
+    else console.log('get no data', data)
+  } catch (e) {
+    console.log('get', e)
+  }
+}
+
+async function logout() {
+  try {
+    const { data } = await http.get('/api/auth/logout')
+    console.log('logout done', data)
+  } catch (e) {
+    console.log('logout error', e)
+  }
+}
+
+// need to improve on this
+window.login = login
+window.otp = otp
+window.testAuth = testAuth
+window.logout = logout
+
+</script>
+
+</html>

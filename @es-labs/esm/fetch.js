@@ -59,8 +59,7 @@ class Fetch {
       const options = { method, headers }
       if (this.options.timeoutMs > 0) options.signal = signal
       if (this.options.credentials !== 'include') { // include === HTTPONLY_TOKEN
-        if (this.tokens.access) options.headers.access_token = this.tokens.access
-        if (this.tokens.refresh) options.headers.refresh_token = this.tokens.refresh
+        if (this.tokens.access) options.headers.Authorization = `Bearer ${this.tokens.access}`
       }
       options.credentials = this.options.credentials
   
@@ -88,8 +87,7 @@ class Fetch {
             this.tokens.access = rv1.data.access_token
             this.tokens.refresh = rv1.data.refresh_token
             if (options.credentials !== 'include') { // include === HTTPONLY_TOKEN
-              if (this.tokens.access) options.headers.access_token = this.tokens.access
-              if (this.tokens.refresh) options.headers.refresh_token = this.tokens.refresh
+              if (this.tokens.access) options.headers.Authorization = `Bearer ${this.tokens.access}`
             }
             const rv2 = await fetch(urlFull + qs, options)
             const txt2 = await rv2.text()

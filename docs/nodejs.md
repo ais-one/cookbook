@@ -127,6 +127,10 @@ busboy, formidable
 - https://dev.to/helenanders26/sql-301-why-you-need-sql-window-functions-part-2-2nmj
 
 
+## SSE
+
+- https://www.digitalocean.com/community/tutorials/nodejs-server-sent-events-build-realtime-app
+
 ## NPM corruption
 1. delete node_modules
 2. delete package-lock.json ???
@@ -166,3 +170,9 @@ If you edit the file in ../@eslabs/..., it will also be changed the installed no
 - node signal events: https://nodejs.org/dist/latest-v11.x/docs/api/processhtml#process_signal_events
 - kubernetes shutdown: https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-terminating-with-grace
 
+
+## performance
+
+- https://blog.logrocket.com/optimize-node-js-performance-with-clustering/
+- https://blog.logrocket.com/customizing-node-js-env-files/
+- [../node-daemons/workerthreads]

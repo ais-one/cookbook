@@ -1,0 +1,44 @@
+{
+  "name": "vue-vite",
+  "version": "0.6.0",
+  "description": "vue 3 SPA + vite example",
+  "author": "aaronjxz@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint . --ext .js,.vue",
+    "prettier:check": "prettier --check src/**/*.{js,jsx,json}",
+    "prettier:write": "prettier --write src/**/*.{js,jsx,json}",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@ant-design/icons-vue": "^6.0.1",
+    "@antv/data-set": "^0.11.8",
+    "@antv/g2": "^4.1.20",
+    "@antv/g2plot": "^2.3.26",
+    "ant-design-vue": "^2.2.2",
+    "echarts": "^5.1.2",
+    "leaflet": "^1.7.1",
+    "rxjs": "^7.2.0",
+    "vue": "^3.1.4",
+    "vue-router": "^4.0.10",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.2.5",
+    "@vue/compiler-sfc": "^3.1.4",
+    "cypress": "^7.7.0",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.30.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^5.0.0",
+    "eslint-plugin-vue": "^7.13.0",
+    "prettier": "^2.3.2",
+    "vite": "^2.4.2"
+  }
+}
