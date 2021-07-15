@@ -99,56 +99,47 @@ try {
 // https://dev.to/remorses/you-don-t-need-apollo-to-use-graphql-in-react-1277
 // https://the-guild.dev/blog/subscriptions-and-live-queries-real-time-with-graphql (quite good)
 
-const ws = require('ws')
-const { graphqlHTTP } = require('express-graphql')
-const { useServer } = require('graphql-ws/lib/use/ws')
-const { execute, subscribe } = require('graphql')
-const { schema, roots, rootValue } = require('./apps/app-template/graphql-schema') // to make cpnfigurable
-
-const subscriptionEndpoint = `ws://127.0.0.1:3000/subscriptions`;
-
-// create express and middleware
-app.use('/graphql', graphqlHTTP({
-  schema,
-  rootValue,
-  graphiql: {
-    // subscriptionEndpoint,
-    // websocketClient: 'v1',
-  },
-}))
-
-// wsServer.close()
-const wsServer = new ws.Server({
-  noServer: true,
-  path: '/subscriptions',
-})
-useServer({
-  schema,
-  roots,
-  execute,
-  subscribe,
-
-  onConnect: (ctx) => console.log('Connect', ctx),
-  onSubscribe: (ctx, msg) => console.log('Subscribe', { ctx, msg }),
-  onNext: (ctx, msg, args, result) => console.debug('Next', { ctx, msg, args, result }),
-  onError: (ctx, msg, errors) => console.error('Error', { ctx, msg, errors }),
-  onComplete: (ctx, msg) => console.log('Complete', { ctx, msg }),
-}, wsServer)
-
-// const graphQlserver = app.listen(3000, () => {
-//   // create and use the websocket server
-//   const wsServer = new ws.Server({
-//     server: graphQlserver,
-//     // path: '/graphql',
-//     path: '/subscriptions',
-//   })
-//   useServer({
-//     schema,
-//     roots,
-//     execute,
-//     subscribe,
-//   }, wsServer);
-// })
+const { GRAPHQL_SCHEMA_PATH, GRAPHQL_SUB_URL, GRAPHQL_URL } = global.CONFIG
+if (GRAPHQL_SCHEMA_PATH) {
+  const ws = require('ws')
+  const { graphqlHTTP } = require('express-graphql')
+  const { useServer } = require('graphql-ws/lib/use/ws')
+  const { execute, subscribe } = require('graphql')
+  const { schema, roots, rootValue } = require(GRAPHQL_SCHEMA_PATH) // to make cpnfigurable
+  
+  // const subscriptionEndpoint = ;
+  // create express and middleware
+  if (GRAPHQL_URL) {
+    app.use(GRAPHQL_URL, graphqlHTTP({
+      schema,
+      rootValue,
+      graphiql: {
+        // subscriptionEndpoint: `ws://127.0.0.1:3000/subscriptions`, websocketClient: 'v1',
+      },
+    }))
+  }
+  
+  // wsServer.close()
+  if (GRAPHQL_SUB_URL) {
+    const wsServer = new ws.Server({ noServer: true, path: GRAPHQL_SUB_URL })
+    useServer({
+      schema,
+      roots,
+      execute,
+      subscribe,
+  
+      onConnect: (ctx) => console.log('Connect', ctx),
+      onSubscribe: (ctx, msg) => console.log('Subscribe', { ctx, msg }),
+      onNext: (ctx, msg, args, result) => console.debug('Next', { ctx, msg, args, result }),
+      onError: (ctx, msg, errors) => console.error('Error', { ctx, msg, errors }),
+      onComplete: (ctx, msg) => console.log('Complete', { ctx, msg }),
+    }, wsServer)  
+  }
+  // const graphQlserver = app.listen(3000, () => {
+  //   const wsServer = new ws.Server({ server: graphQlserver, path: '/subscriptions', })
+  //   useServer({ schema, roots, execute, subscribe, }, wsServer);
+  // })  
+}
 
 require('./common/postRoute')(app, express, global.CONFIG)
 

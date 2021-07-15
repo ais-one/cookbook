@@ -1,23 +1,25 @@
 ### Version 0.6.0
 - [chore] update packages & cleanup & work on improving documentation
-- [note] rename example-app to node-express
-- [note] rename example-native to vue-nobundler
-- [note] rename example-vite to vue-vite
-- [node-express] move config to app-template
-- [node-express] move @es-labs/node/express to node-express/common
-- [node-express] add server side event (SSE) example
-- [node-express] add serve-index function to uploads folder (list files and folders)
-- [node-express] multiple UPLOAD_STATIC & UPLOAD_MEMORY
-- [@es-labs/node] for config, do not restrict environments to development, uat, production, let user define 
+- [note] rename example-native to vue-nobundler - No breaking change
+- [note] rename example-vite to vue-vite - No breaking change
+- [note] rename example-app to node-express - Breaking change (major folder reorganization) 
+- [node-express] create apps/app-template (reference application, we can create more apps inside the apps folder, the custom apps can be in another repo) 
+- [node-express] move config to apps/app-template/config
+- [node-express] move @es-labs/node/express back to node-express/common
+  - [node-express] add server side event (SSE) example
+  - [node-express] add serve-index function to uploads folder (list files and folders)
+  - [node-express] multiple UPLOAD_STATIC & UPLOAD_MEMORY
+  - [@es-labs/node] for config, do not restrict environments to development, uat, production, let user define 
 - [chore] remove example-webpack, document last known good version in README.md
-- [node-daemons/tcpserver] stream-based
-- [node-daemons/tcpserver] event-based
-- [chore] remove objection ORM
-- [chore] add packages folder and prepare for workspaces
+- [node-daemons/tcpserver] stream-based TCP server
+- [node-daemons/tcpserver] event-based TCP server
+- [@es-labs/node] remove objection ORM
+- [chore] prepare package.json for workspaces, added workspaces entry
 - [node-daemons] nodejs workers
 - [node-express] shared webworkers
-- [node-express] validation middleware (preferable use openapi 3.1)
-- [node-express] openapi folder location
+- [node-express] openapi implementation and validation middleware
+- [node-utils] create openapi file joiner, better for now to create single file for use by swagger-ui-express and express-openapi-validator
+- [node-express] replace bloated and flaky apollo with express-graphql and graphql-ws, need to close nicely
 
 ### Version 0.5.3
 - [chore] update packages & cleanup & work on improving documentation

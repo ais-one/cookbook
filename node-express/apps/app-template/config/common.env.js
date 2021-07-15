@@ -98,4 +98,8 @@ module.exports = {
   //   validateRequests: true, // (default)
   //   validateResponses: true, // false by default
   // },
+
+  GRAPHQL_SCHEMA_PATH: './apps/app-template/graphql-schema',
+  GRAPHQL_URL: '/graphql',
+  GRAPHQL_SUB_URL: '/subscriptions',
 }
