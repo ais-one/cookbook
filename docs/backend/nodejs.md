@@ -175,4 +175,4 @@ If you edit the file in ../@eslabs/..., it will also be changed the installed no
 
 - https://blog.logrocket.com/optimize-node-js-performance-with-clustering/
 - https://blog.logrocket.com/customizing-node-js-env-files/
-- [../node-daemons/workerthreads]
+- [../../node-daemons/workerthreads]

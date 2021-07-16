@@ -90,15 +90,6 @@ try {
 // END ROUTES
 
 // GraphQL
-// https://github.com/graphql/express-graphql
-// https://github.com/enisdenjo/graphql-ws
-// https://shammelburg.medium.com/subscriptions-with-graphql-dfa8279af050
-
-// https://httptoolkit.tech/blog/simple-graphql-server-without-apollo
-// https://blog.logrocket.com/why-i-finally-switched-to-urql-from-apollo-client/
-// https://dev.to/remorses/you-don-t-need-apollo-to-use-graphql-in-react-1277
-// https://the-guild.dev/blog/subscriptions-and-live-queries-real-time-with-graphql (quite good)
-
 const { GRAPHQL_SCHEMA_PATH, GRAPHQL_SUB_URL, GRAPHQL_URL } = global.CONFIG
 if (GRAPHQL_SCHEMA_PATH) {
   const ws = require('ws')

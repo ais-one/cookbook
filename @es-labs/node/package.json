@@ -24,7 +24,7 @@
     "agenda": "^4.1.3",
     "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
-    "bull": "^3.23.0",
+    "bull": "^3.25.0",
     "hazelcast-client": "^4.2.0",
     "ioredis": "^4.27.6",
     "jsonwebtoken": "^8.5.1",

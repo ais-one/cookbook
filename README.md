@@ -12,16 +12,14 @@
 
 **NOTE!** project name is going to be replaced to a more appropriate one in 0.6.2
 
-Considerations for this project are similar to [https://github.com/ais-one/favv](https://github.com/ais-one/favv/blob/master/README.md#considerations).
-
-The difference between this project and [https://github.com/ais-one/favv](https://github.com/ais-one/favv) are:
+Considerations for this project are similar to [https://github.com/ais-one/favv](https://github.com/ais-one/favv/blob/master/README.md#considerations). The difference between this project and [https://github.com/ais-one/favv](https://github.com/ais-one/favv) are:
 - vue-crud-x is more of a cookbook and recipes are constantly being improved and updated
 - favv tries to seperate boiler plate from custom logic for better maintainability
 - they complement each other and each can be used to improve on each other
 
 We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem. It is easier for TS people to take the JS here and implement with TS.
 
-Latest Version [0.6.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.6.1) - Released 2021 July 30 1500 +8GMT
+Latest Version [0.6.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.6.1) - Released 2021 July 22 1500 +8GMT
 
 # Features
 
@@ -30,7 +28,7 @@ Folder | Description | Features
 [@es-labs/esm](@es-labs/esm) | resuable ES module codes | Available as npm package also
 [@es-labs/node](@es-labs/node) | reusable common JS codes | Available as npm package also
 [docker-devenv](docker-devenv) | Docker containers supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
-[docs](docs) | Documentation | always work in progress and to be improved<br>- Main [documentation](docs/home.md)<br>- Secrets [documentation](docs/secrets.md)<br>- Deployment [notes](docs/deployment/home.md)<br>- Kafka [docs](docs/kafka.md) and [code](node-daemons)<br>- TCP Server [docs](docs/tcp.md) and [code](node-daemons)
+[docs](docs) | Documentation | always work in progress and to be improved<br>- Main [documentation](docs/home.md)<br>- Secrets [documentation](docs/deployment/secrets.md)<br>- Deployment [notes](docs/deployment/home.md)<br>- Kafka [docs](docs/backend/kafka.md) and [code](node-daemons)<br>- TCP Server [docs](docs/backend/tcp.md) and [code](node-daemons)
 [node-express](node-express) | Backend applications (REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Objection ORM (**removed**), Knex, MongoDb, Relational DB data example, migration, seed, GraphQL (**replacing apollo**), Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
 [node-daemons](node-daemons) | Backend applications (TCP server, Kafka consumer, etc) | - TCP server (event/stream_)<br>- Serial server<br>- Kafka consumer/producer<br>- cron / long-running process example
 [node-express/public/demo-express](node-express/public/demo-express) | Frontend to test backend features | - File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
@@ -69,7 +67,7 @@ npm i ../@es-labs/node
 ```
 
 **NOTES**
-- MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
+- MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/backend/mongodb/install.md**
 - The **node-express/apps/app-template/config/secret/*.env,js** files are not present. So there maybe some console log errors (but it is ok to ignore) and websockets will not work. Quick start is still usable. Use the README.md to fill up
 
 ### Run migration & app
@@ -93,8 +91,8 @@ npm run app -- development
 
 **Visit the following URLs**
 - http://127.0.0.1:3000/api/healthcheck - app is running normally
-- http://127.0.0.1:3000 - Website served by Express with functional samples and demos (click on link to view **native** app or link to view **vite production build** app)
-- http://127.0.0.1:3000/api-docs
+- http://127.0.0.1:3000 - Website served by Express with functional samples and demos
+- http://127.0.0.1:3000/api-docs - OpenAPI documentation
 
 Note: to generate api docs, visit [node-utils/openapi-file-joiner](node-utils/openapi-file-joiner) and follow readme file, also look at the config properties OPENAPI_PATH and OPENAPI_VALIDATOR in [node-express/apps/app-template/config/common.env.js](node-express/apps/app-template/config/common.env.js).
 

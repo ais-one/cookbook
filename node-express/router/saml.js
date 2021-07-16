@@ -20,7 +20,7 @@ module.exports = express.Router()
     },
     passport.authenticate('saml') // , { failureRedirect: '/', failureFlash: true }),
   )
-  .post('/login/callback',
+  .post('/callback',
     // bodyParser.urlencoded({ extended: false }),
     passport.authenticate('saml', { failureRedirect: '/', failureFlash: true }),
     async (req, res) => {
