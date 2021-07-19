@@ -3,9 +3,10 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
+- [vue-vite] add sentry when ready
 - [vue-vite] cypress e2e testing
-- update webauthnsimple to v3
 - [chore] migration to node 16 and npm 7
+- [chore] update webauthnsimple to v3
 - [feat] add commitizen, add semantic-version
 
 ### For future product improvement

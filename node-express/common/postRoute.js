@@ -38,21 +38,5 @@ module.exports = function (app, express, options) {
     app.use("*", (req, res) => res.status(404).json({ Error: '404 Not Found...' }))
   }
 
-  // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
-  // 'Bad Request': 400, 'Unauthorized': 401, 'Forbidden': 403, 'Not Found': 404, 'Conflict': 409, 'Unprocessable Entity': 422, 'Internal Server Error': 500,
-  app.use((error, req, res, next) => { // error middleware - 200s should not reach here
-    // console.log('typeof error', error instanceof Error)
-    console.log('error', error)
-    let message= 'Unknown Error'
-    if (error.message) {
-      // console.log('Error Object', error.name, error.name, error.stack)
-      message = process.env.NODE_ENV === 'development' ? error.stack : error.message
-    } else if (typeof error === 'string') {
-      message = error
-    } else if (error?.toString) {
-      message = error.toString()
-    }
-    res.status(500).json({ message })
-  })
   return this
 }

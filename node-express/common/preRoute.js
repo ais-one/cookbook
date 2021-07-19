@@ -46,15 +46,34 @@ module.exports = function(app, express, options) {
     .catch(args[2]) //  proceed to error handler
 
   process.on('unhandledRejection', (reason, promise) => {
-    console.log('Unhandled Rejection at:', reason.stack || reason)
+    console.log('UNHANDLED Rejection:', reason.stack || reason)
     // Recommended: send info to sentry.io or crash reporting service
   })
 
   // comment below and application will crash
-  process.on('uncaughtException', (err) => {
-    // console.log('If you do not process uncaughtException, application will crash and hang')
-    console.log(`Uncaught Exception: ${err}`)
-    if (process.env.NODE_ENV === 'production') process.exit(1) // exit
+  process.on('uncaughtException', async (err) => {
+    console.log(`UNCAUGHT Exception: ${err}`)
+    // setTimeout(() => {
+    //   process.nextTick(() => {
+    //     console.log('exiting11111')
+    //     process.stderr.write('really good bye')
+    //     // process.exit(1)
+    //   })
+    // }, 3000)
+
+    // process.stderr.write('bye bye 2', () => {
+    // })
+
+    // process.nextTick(() => {
+    //   console.log('exiting11111')
+    //   console.log('exiting22222')
+    //   console.log('exiting33333')
+    //   setTimeout(() => {
+    //     process.stderr.write('really good bye', () => {
+    //       process.exit(1)
+    //     })
+    //   }, 3000)
+    // })
   })
 
   const { STACK_TRACE_LIMIT = 1 } = options

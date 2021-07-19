@@ -146,7 +146,11 @@ npm i
 npm run dev
 ```
 
-Navigate to http://127.0.0.1:8080/ to view application
+Navigate to:
+- http://127.0.0.1:8080/ to view application
+- http://127.0.0.1:8080/nested/index.html to view another page (vite serving multi page, each page can be an SPA)
+
+#### http://127.0.0.1:8080/ Application
 
 Login using the following:
 - User: test

@@ -11,11 +11,15 @@ export default ({ command, mode }) => {
     base: env.BASE_PATH || '/', // set to '/vite' for dev:build, '/' otherwise
     build: {
       // sourcemap: true,
-      // rollupOptions: { // vite 2
-      //   external: [
-      //     'react' // ignore react stuff
-      //   ]
-      // }
+      rollupOptions: {
+        // external: [
+        //   'react' // ignore react stuff
+        // ]
+        input: {
+          main: path.resolve(__dirname, 'index.html'),
+          nested: path.resolve(__dirname, 'nested/index.html')
+        }
+      }
     },
     optimizeDeps: {
       include: ['echarts', 'leaflet']

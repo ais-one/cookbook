@@ -16,6 +16,14 @@ const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 
 const { authUser } = require('@es-labs/node/auth')
 
+function openMissingFile() {
+  fs.readFile('somefile4.txt', (err, data) => {
+    if (err) throw err;
+    console.log(data);
+  })  
+}
+openMissingFile()
+
 module.exports = express.Router({caseSensitive: true})
   .get('/python', (req, res) => {
     // spawn long running python process
@@ -41,39 +49,23 @@ module.exports = express.Router({caseSensitive: true})
     res.json({})
   })
 
-  .get('/wrap-test', asyncWrapper(async (req, res) => {
-    // return res.status(201).json({ aa: 'bb' }) // should not return...
-    // next(new Error('Generated Wrapper Error - next')) // use throw instead
-    throw new Error('Generated Wrapper Error - throw')
-  }))
-
-  .get('/error', asyncWrapper(async (req, res) => { // for an error - test catching of errors
+  .get('/error', (req, res) => { // error caught by error middleware
     req.something.missing = 10
     res.json({ message: 'OK' })
+  })
+
+  .get('/error-handled-rejection', asyncWrapper(async (req, res) => {
+    await Promise.reject(new Error('handled rejection of promise'))
   }))
 
-  .get('/crash', asyncWrapper(async (req, res) => { // for crashing the application - catching error in process exception
-    fs.readFile('somefile.txt', (err, data) => {
-      if (err) throw err
-      console.log(data)
-    })
-    res.json({ message: 'Crash initiated check express server logs' })
+  .get('/error-unhandled-rejection', asyncWrapper(async (req, res, next) => { // catching error in unhandledException
+    Promise.reject(new Error('unhandled rejection of promise')) // call on.process unhandledRejection - promise rejection, unhandled
   }))
 
-  .get('/error-unhandled-promise-rejection', asyncWrapper(async (req, res, next) => { // catching error in unhandled exception
-    // Promise.reject(new Error('woops')).catch(e => next(e)) //  handled
-    Promise.reject(new Error('woops')) // unhandled
-  }))
-
-  .get('/healthcheck', (req, res) => { res.json({
-    message: 'OK',
-    app: APP_NAME,
-    environment: process.env.NODE_ENV,
-    version: APP_VERSION
-  }) }) // health check
-  .post('/healthcheck', (req, res) => { res.json({
-    message: 'POST OK',
-  }) }) // POST health check
+  .get('/healthcheck', (req, res) => res.json({
+    message: 'OK', app: APP_NAME, environment: process.env.NODE_ENV, version: APP_VERSION
+  }) ) // health check
+  .post('/healthcheck', (req, res) => res.json({ message: 'POST OK' }) ) // POST health check
 
   .post('/test-post-json', (req, res) => { res.json(req.body) }) // check if send header as application/json but body is text
 

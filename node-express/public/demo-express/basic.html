@@ -13,13 +13,16 @@
   <p>check console for logs</p>
   <ul>
     <li><a href="#" onclick="testAPI('/api/healthcheck')">Express Server Health Check</a></li>
-    <li><a href="#" onclick="testAPI('/api/crash')">Test Express - Unhandled Exception</a></li>
-    <li><a href="#" onclick="testAPI('/api/error')">Test Express - Error Middleware</a></li>
-    <li><a href="#" onclick="testAPI('/api/error-not-found')">Test Express - Not Found Error</a></li>
-    <li><a href="#" onclick="testAPI('/api/error-unhandled-promise-rejection')">Test Express - Unhandled Promise Rejection</a></li>
+    <li><a href="#" onclick="testAPI('/api/error')">Handled Exception - /api/error - caught by middleware</a></li>
+    <li><a href="#" onclick="testAPI('/api/error-handled-rejection')">Handled Promise Rejection - /api/error-handled-rejection - caught by middleware</a></li>
+    <li><a href="#" onclick="testAPI('/api/error-unhandled-rejection')">Unhandled Promise Rejection - /api/error-unhandled-rejection - caught by on.process</a></li>
+    <li><a href="#" onclick="testAPI('/api/error-not-found')">404 Not Found Error</a></li>
     <li><a href="#" onclick="testCors()">Test XHR</a></li>
     <li><a href="#" onclick="testStream('/api/stream')">Test return stream</a></li>
   </ul>
+  <p>
+  <b>NOTE:</b> To test uncaught exception, need to uncomment "// openMissingFile()" in node-express/router/api.js
+  </p>
 </body>
 
 <script>

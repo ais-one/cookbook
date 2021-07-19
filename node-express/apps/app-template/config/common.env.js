@@ -102,4 +102,8 @@ module.exports = {
   GRAPHQL_SCHEMA_PATH: './apps/app-template/graphql-schema',
   GRAPHQL_URL: '/graphql',
   GRAPHQL_SUB_URL: '/subscriptions',
+
+  SENTRY_DSN: 'https://59719c6eb4ec44c988b86a0e3157347b@o406131.ingest.sentry.io/5868141',
+  SENTRY_SAMPLE_RATE: 1.0,
+  SENTRY_REQOPTS: null
 }
