@@ -24,22 +24,20 @@ module.exports = express.Router()
       const { id } = req.params
       const { mode, data = {} } = req.body
       const user = await findUser({ id })
+      let rv = null
       if (user && user.pnToken) {
         if (mode === 'FCM') {
-          // Use FCM
-          fcmSend(user.pnToken, data.title || '', data.body || '')
+          rv = await fcmSend(user.pnToken, data.title || '', data.body || '')
         } else if (mode === 'Webpush') {
           // Use Webpush
           const subscription = JSON.parse(user.pnToken)
-          const rv = await send(subscription, data)
-          console.log('pn send', rv)
+          rv = await send(subscription, data)
         }
-        res.json({ status: 'sent '})
+        res.json({ status: 'sent', mode, rv })
       } else {
         res.status(404).json({ status: 'no user or token'})
       }
     } catch (e) {
-      console.log(e.toString())
       res.status(500).json({ error: process.env.NODE_ENV === 'production' ? 'Send Error: contact admin' : e.toString() })
     }
   })

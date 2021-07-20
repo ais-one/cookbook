@@ -10,7 +10,6 @@
 
 <body>
   <h1>Basic Express <a href="index.html">Back</a></h1>
-  <p>check console for logs</p>
   <ul>
     <li><a href="#" onclick="testAPI('/api/healthcheck')">Express Server Health Check</a></li>
     <li><a href="#" onclick="testAPI('/api/error')">Handled Exception - /api/error - caught by middleware</a></li>
@@ -23,20 +22,22 @@
   <p>
   <b>NOTE:</b> To test uncaught exception, need to uncomment "// openMissingFile()" in node-express/router/api.js
   </p>
+  <pre id="output">Output will be shown here</pre>
 </body>
 
 <script>
+  const outputEl = document.querySelector('#output')
+
   function testCors() {
     let requestBody = JSON.stringify({"aa": "a1", "bb": "b2"})
-    var requestString = '${serviceSettings.authURL}auth';
-    var request = new XMLHttpRequest();
-    request.open('POST', 'http://127.0.0.1:3000/api/test-cors-post');
-    request.setRequestHeader('Access-Control-Allow-Origin', '<origin> | *');
-    request.setRequestHeader("Content-Type", "application/json");
-    request.responseType = 'text';
+    const request = new XMLHttpRequest()
+    request.open('POST', 'http://127.0.0.1:3000/api/test-cors-post')
+    request.setRequestHeader('Access-Control-Allow-Origin', '<origin> | *')
+    request.setRequestHeader("Content-Type", "application/json")
+    request.responseType = 'text'
     request.onload = function() {
-      console.log(request.response)
-    }; 
+      outputEl.innerHTML = JSON.stringify(request.response, null, 2)
+    }
     request.send(requestBody)
   }
 
@@ -44,13 +45,15 @@
     try {
       const res = await fetch(url, { method: 'GET' })
       const rv = await res.json()
-      console.log(rv)
+      outputEl.innerHTML = JSON.stringify(rv, null, 2)
     } catch (e) {
-      console.log(e)
+      outputEl.innerHTML = JSON.stringify(e, null, 2)
+      res.status(500).json()
     }
   }
 
   const testStream = (url) => {
+    outputEl.innerHTML = ''
     fetch(url)
     .then(resp => resp.body)
     .then(body => {
@@ -61,16 +64,19 @@
           return pump();
           function pump() {
             return reader.read().then(({ done, value }) => {
-              if (value) console.log(value)
+              if (value) {
+                outputEl.innerHTML += value + '<br/>'
+              }
               // When no more data needs to be consumed, close the stream
               if (done) {
-                controller.close();
-                return;
+                outputEl.innerHTML += 'Stream Done<br/>'
+                controller.close()
+                return
               }
               // Enqueue the next data chunk into our target stream
               controller.enqueue(value);
-              return pump();
-            });
+              return pump()
+            })
           }
         }
       })  

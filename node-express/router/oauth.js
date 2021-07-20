@@ -9,7 +9,7 @@ const express = require('express')
 // set callback URL on github to <schema://host:port>/api/oauth/callback
 // initiated from browser - window.location.replace('https://github.com/login/oauth/authorize?scope=user:email&client_id=XXXXXXXXXXXXXXXXXXXX')
 
-const callbackGithub = async (req, res) => {
+const callbackOAuth = async (req, res) => {
   try {
     const { code, state } = req.query
     const { data } = await axios.post(OAUTH_URL, { client_id: OAUTH_CLIENT_ID, client_secret: OAUTH_CLIENT_SECRET, code, state }, { headers: { Accept: 'application/json' } })
@@ -22,11 +22,10 @@ const callbackGithub = async (req, res) => {
     setTokensToHeader(res, tokens)
     return res.redirect(OAUTH_CALLBACK + '#' + tokens.access_token + '-' + tokens.refresh_token + '-' + JSON.stringify(tokens.user_meta)) // use url fragment...
   } catch (e) {
-    console.log('github auth err', e.toString())
+    console.error('github auth err', e.toString())
     return AUTH_ERROR_URL ? res.redirect(AUTH_ERROR_URL) : res.status(401).json({ error: 'NOT Authenticated' })
-    // return res.status(401).end()
   }
 }
 
 module.exports = express.Router()
-  .get('/callback', callbackGithub)
+  .get('/callback', callbackOAuth)

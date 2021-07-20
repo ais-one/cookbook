@@ -33,7 +33,7 @@ function handleFileSelect(evt) {
   evt.stopPropagation()
   evt.preventDefault()
   const files = evt?.dataTransfer?.files || evt?.target?.files
-  console.log('handleFileSelect', files)
+  // console.log('handleFileSelect', files)
   worker.postMessage({ 'files' : files })
   //Sending File list to worker
   var output = []

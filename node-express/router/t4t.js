@@ -414,7 +414,7 @@ module.exports = express.Router()
         if (body._id) delete body._id
         await mongo.db.collection(table.name).updateOne(where, { $set: body })
       } catch (e) {
-        console.log(e.toString())
+        console.error(e.toString())
       }
     }
     return res.json({count})
@@ -520,19 +520,16 @@ for {
     let errors = []
     let keys = []
     let currLine = 0
-    // console.log('up0', csv)
     csvParse(csv)
-      .on('error', (e) => console.log(e.message))
+      .on('error', (e) => console.error(e.message))
       .on('readable', function () {
         let record
         while ( (record = this.read()) ) {
-          // console.log('record', record)
           currLine++
           if (currLine === 1) {
             keys = [...record]
             continue // ignore first line
           }
-          // console.log('up1',record.length, table.nonAuto.length)
           if (record.length === table.nonAuto.length) { // ok
             if (record.join('')) {
               // TBD format before push?
@@ -557,13 +554,11 @@ for {
             for (let i=0; i<keys.length; i++) {
               obj[ keys[i] ] = row[i]
             }
-            // console.log(obj)
             if (table.db === 'knex') {
               writes.push(knex(table.name).insert(obj))
             } else {
               writes.push(mongo.db.collection(table.name).insertOne(obj))
             }
-            // console.log(obj)
           } catch (e) {
             errors.push({ line, data: row.join(','), msg: 'Caught exception: ' + e.toString() })
           }

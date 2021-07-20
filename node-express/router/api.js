@@ -18,8 +18,8 @@ const { authUser } = require('@es-labs/node/auth')
 
 function openMissingFile() {
   fs.readFile('somefile4.txt', (err, data) => {
-    if (err) throw err;
-    console.log(data);
+    if (err) throw err
+    // console.log(data)
   })  
 }
 // openMissingFile()
@@ -62,9 +62,8 @@ module.exports = express.Router({caseSensitive: true})
     Promise.reject(new Error('unhandled rejection of promise')) // call on.process unhandledRejection - promise rejection, unhandled
   }))
 
-  .get('/healthcheck', (req, res) => res.json({
-    message: 'OK', app: APP_NAME, environment: process.env.NODE_ENV, version: APP_VERSION
-  }) ) // health check
+  .get('/healthcheck', (req, res) => res.json({ message: 'OK', app: APP_NAME, environment: process.env.NODE_ENV, version: APP_VERSION }) ) // health check
+
   .post('/healthcheck', (req, res) => res.json({ message: 'POST OK' }) ) // POST health check
 
   .post('/test-post-json', (req, res) => { res.json(req.body) }) // check if send header as application/json but body is text
@@ -80,10 +79,7 @@ module.exports = express.Router({caseSensitive: true})
   .post('/upload-disk', storageUpload(UPLOAD_STATIC[0]).any(), (req,res) => { // avatar is form input name // single('filedata')
     try {
       // console.log('files', req, req.files)
-      for (let key in req.body) {
-        const part = req.body[key]
-        console.log(key, part) // text parts
-      }
+      // body is string, need to parse if json
       res.json({
         ok: true, // success
         message: 'Uploaded',
@@ -95,53 +91,58 @@ module.exports = express.Router({caseSensitive: true})
   })
 
   .post('/upload-memory', memoryUpload(UPLOAD_MEMORY[0]).single('memory'), (req, res) => {
-    console.log(req.file.originalname, req.body)
-    res.json({ message: req.file.buffer.toString() })
     // req.files is array of `photos` files
     // req.body will contain the text fields, if there were any
+    res.json({
+      fileOriginalName: req.file.originalname,
+      body: req.body,
+      message: req.file.buffer.toString()
+    })
   })
 
   // message queues
   .get('/mq-agenda', asyncWrapper(async (req, res) => { // test message queue - agenda
     if (agenda) {
-      const job = await agenda.now('registration email', { email: 'abc@test.com' })
-      console.log('Agenda Pub')
-      res.json({ job, note: 'Check Server Console Log For Processed Message...' })
+      try {
+        const job = await agenda.now('registration email', { email: 'abc@test.com' })
+        res.json({ job, note: 'Agenda - Check Server Console Log For Processed Message...' })  
+      } catch (e) {
+        res.json({ AgendaError: e.toString() })        
+      }
     } else {
-      console.log('Agenda Not Configured')
       res.json({ job, note: 'Agenda Not Configured' })
     }
   }))
 
   .get('/mq-bull', asyncWrapper(async (req, res) => { // test message queue - bullmq
     if (bull) {
-      const jobOpts = { removeOnComplete: true, removeOnFail: true }
-      bull.add({ message: new Date() }, jobOpts)
-      console.log('Bull Pub')
-      res.json({ note: 'Check Server Console Log For Processed Message...' })
+      try {
+        const jobOpts = { removeOnComplete: true, removeOnFail: true }
+        bull.add({ message: new Date() }, jobOpts)
+        res.json({ note: 'Bull - Check Server Console Log For Processed Message...' })
+      } catch (e) {
+        res.json({ BullMQError: e.toString() })        
+      }
     } else {
-      console.log('No Bull MQ configured')
-      res.json({ note: 'No Bull MQ configured' })
+      res.json({ note: 'Bull MQ Not Configured' })
     }
   }))
 
   // stream back data
-  .get('/stream', async (req, res, next) => {
+  .get('/stream', async (req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain', 'Transfer-Encoding': 'chunked' })
     const chunks = 5
     let count = 1
     while (count <= chunks) {
-      console.log('streaming', count)
+      // console.log('streaming', count)
       await sleep(1000) // eslint-disable-line
       res.write(JSON.stringify({ type: "stream", chunk: count++ })+'\n')
     }  
     res.end()
-    // next()
   })
 
   // test websocket broadcast
   .get('/ws-broadcast', async (req, res) => {
-    // console.log(ws, ws.getWs())
     ws.send("WS Broadcast")
     res.send("ws broadcast")
   })

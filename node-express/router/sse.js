@@ -5,7 +5,7 @@ const express = require('express')
 let clients = []
 
 function sendEventsToAll(data) {
-  console.log('Send SSE', clients, data)
+  // console.log('Send SSE', clients, data)
   clients.forEach(client => client.res.write(`data: ${JSON.stringify(data)}`))
 }
 
@@ -25,7 +25,7 @@ module.exports = express.Router({caseSensitive: true})
     clients.push(newClient)
 
     req.on('close', () => {
-      console.log(`${clientId} Connection closed`)
+      // console.log(`${clientId} Connection closed`)
       clients = clients.filter(client => client.id !== clientId)
       // console.log('SSE Clients', clients)
     })

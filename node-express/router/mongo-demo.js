@@ -36,12 +36,13 @@ module.exports = express.Router()
     }
   })
   .get('/transaction-callback-api', async (req,res) => {
-    // TBD
+    // TBD - TOTEST
     // Using Callback API - withTransaction()
     // Starts a transaction, executes the specified operations, and commits (or aborts on error).
     // Automatically incorporates error handling logic for "TransientTransactionError" and "UnknownTransactionCommitResult".
+    let transactionResults = null
+    let error = null
     const { defaultTransactionOptions, client } = mongo
-    console.log(defaultTransactionOptions)
     const transactionOptions = {
       readPreference: 'primary',
       readConcern: { level: 'local' },
@@ -50,7 +51,7 @@ module.exports = express.Router()
     const session = client.startSession({ defaultTransactionOptions: transactionOptions});
   
     try {
-      const transactionResults = await session.withTransaction(async () => {
+      transactionResults = await session.withTransaction(async () => {
         // Important:: You must pass the session to the operations
         await mongo.db.collection('mongo-test').insertOne({ name: 'Hello 3', ts: Date.now() }, { session })
         const error = true //  force an error to test
@@ -60,14 +61,11 @@ module.exports = express.Router()
         }
         await mongo.db.collection('mongo-test').insertOne({ name: 'Hello 4', ts: Date.now() }, { session })
       }, transactionOptions) // you can set your own transaction options here also
-      if (transactionResults) {
-        console.log("transaction successful");
-      } else {
-        console.log("transaction intentionally aborted");
-      }
     } catch(e){
-      console.log("transaction aborted due unexpected error: " + e);
+      error = e.toString()
+      console.error("Transaction aborted due unexpected error: " + e);
     } finally {
       await session.endSession()
     }
+    return transactionResults ? res.json({ msg: 'transaction successful' }) : res.status(500).json({ msg: 'transaction aborted', error })
   })
