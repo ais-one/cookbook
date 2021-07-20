@@ -28,10 +28,9 @@ exports.open = async () => {
 }
 
 exports.close = () => {
-  console.log('hz close...')
   if (hazelcast.client) {
     hazelcast.client.shutdown()
-    console.log('db closed')
+    console.log('hazelcast closed')
   }
 }
 

@@ -10,9 +10,9 @@ exports.open = async () => {
       const Knex = require('knex')
       knex = Knex(KNEXFILE)
       // sqlite, may need to use another statement with other sql dbs
-      await knex.raw('select 1+1 as result').then(() => console.log('DB ok')).catch(err => { console.log('DB error: ' + err.toString()) })
+      await knex.raw('select 1+1 as result').then(() => console.log('knex CONNECTED')).catch(err => { console.log('DB error: ' + err.toString()) })
     } catch (e) {
-      console.log('db open err', e.toString())
+      console.log('knex CONNECT ERROR', e.toString())
     }
   }
   return this
@@ -20,7 +20,7 @@ exports.open = async () => {
 
 exports.close = async () => {
   if (knex) await knex.destroy()
-  console.log('db closed')
+  console.log('knex closed')
 }
 
 exports.get = () => knex

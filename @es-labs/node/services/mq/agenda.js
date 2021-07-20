@@ -36,7 +36,7 @@ exports.open = () => {
 exports.close = async () => {
   if (agenda) {
     await agenda.stop()
-    console.log('agenda stopped')
+    console.log('agenda closed')
   }
 }
 

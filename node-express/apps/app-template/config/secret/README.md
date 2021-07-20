@@ -10,7 +10,16 @@ The files are not committed To Github
 
 ```
 module.exports = {
-  HTTPS_CERTS: { key: '', cert: '' },
+  HTTPS_CERTS: {
+    key: '',
+    cert: '',
+    // secureOptions: constants.SSL_OP_NO_SSLv2 | constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_TLSv1 | constants.SSL_OP_NO_TLSv1_1,
+    // ciphers: 'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256:TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384',
+    // honorCipher: true
+    // passphrase: (fs.readFileSync('passphrase.txt')).toString(),
+    // pfx: fs.readFileSync('./8ab20f7b-51b9-4c09-a2e0-1918bb9fb37f.pfx'),
+    // ca: fs.readFileSync('ca.cert'),
+  },
   GCP_SERVICE_KEY: {},
 }
 

@@ -4,10 +4,26 @@
 // no refresh token, issue own OAuth2 like JWT server
 
 const express = require('express')
+const passport = require('passport')
 const { createToken } = require('@es-labs/node/auth')
-const passport = require(APP_PATH + '/common/passport').get()
 
-const { AUTH_ERROR_URL } = global.CONFIG
+const { AUTH_ERROR_URL, SAML_OPTIONS } = global.CONFIG
+
+if (SAML_OPTIONS) {
+  const SamlStrategy = require('passport-saml').Strategy
+  passport.use('saml', new SamlStrategy(
+    SAML_OPTIONS,
+    (profile, done) => {
+      // console.log('profile', profile)
+      return done(null, { // map whatever claims/profile info you want here
+        // upn: profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/upn'],
+        // // e.g. if you added a Group claim
+        // group: profile['http://schemas.xmlsoap.org/claims/Group']
+        ...profile
+      })
+    }
+  ))
+}
 
 module.exports = express.Router()
   .get('/test', (req,res) => res.send('ok'))
@@ -21,14 +37,14 @@ module.exports = express.Router()
     passport.authenticate('saml') // , { failureRedirect: '/', failureFlash: true }),
   )
   .post('/callback',
-    // bodyParser.urlencoded({ extended: false }),
     passport.authenticate('saml', { failureRedirect: '/', failureFlash: true }),
     async (req, res) => {
       try {
+        console.debug('saml2 user:', req.user)
+        console.debug('saml2 relayState:', req.body.RelayState)
         const relayState = req.body.RelayState.split(';') // 0 = frontend callback, 1 = allowed groups, 2 = expiry
         const TO = relayState[0]
         if (req.isAuthenticated()) {
-          console.log('saml2', req.user)
           const user = {
             // [kristophjunge/test-saml-idp]
             // id: req.user.uid, // currently either id (knex) / _id (mongodb)
