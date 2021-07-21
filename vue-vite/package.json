@@ -14,7 +14,7 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
     "@antv/data-set": "^0.11.8",
-    "@antv/g2": "^4.1.20",
+    "@antv/g2": "^4.1.21",
     "@antv/g2plot": "^2.3.26",
     "ant-design-vue": "^2.2.2",
     "echarts": "^5.1.2",
@@ -39,6 +39,6 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.14.0",
     "prettier": "^2.3.2",
-    "vite": "^2.4.2"
+    "vite": "^2.4.3"
   }
 }

@@ -9,9 +9,6 @@ const app = express()
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 require('./common/init')(global.CONFIG)
 
-// https://shapeshed.com/uncaught-exceptions-in-node/
-// https://www.joyent.com/node-js/production/design/errors
-// https://blog.heroku.com/best-practices-nodejs-errors
 // setup graceful exit
 const handleExitSignal = async (signal) => await cleanup(`Signal ${signal}`, 0)
 const handleExitException = async (err, origin) => await cleanup(`Uncaught Exception. error: ${err} origin: ${origin}`, 1)

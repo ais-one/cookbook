@@ -53,5 +53,6 @@
   - GraphQL [web/graphql.md](web/graphql.md)
   - JS [web/js.md](web/js.md)
   - Performance [web/performance.md](web/performance.md)
+  - Logging [web/logging.md](web/logging.md)
 - Git [git.md](git.md)
 - Udemy Courses [courses.md](courses.md)

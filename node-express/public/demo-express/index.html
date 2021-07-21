@@ -15,7 +15,7 @@
     }
   </style>
   <script src='https://js.sentry-cdn.com/1a5bdb07fa464814bb1ce95607ffde31.min.js' crossorigin="anonymous" data-lazy="no"></script>
-  <script src="/esm/logging.js"></script>
+  <script src="/esm/log-filter.js"></script>
 </head>
 
 <body>
@@ -46,8 +46,8 @@
       <label for="country_code">Country code:</label>
       <input id="country_code" type="text" pattern="[A-Za-z]{3}" title="Three letter country code" minlength="3"
         maxlength="3" />
-      <button onclick="testConsole()">Test console.log</button>
-      <button onclick="testSentry()">Test Sentry</button>
+      <button onclick="testConsole()">Test console.log disabling</button>
+      <button onclick="testSentry()">Test Sentry for frontend</button>
     </div>
     <form>
       <fieldset>
@@ -80,13 +80,19 @@
   </div>
 
   <script type="text/javascript">
+    LogFilter(['log']) // debugOn, suppressAll
+
     const source = new EventSource('/api/sse/register')
     source.addEventListener('message', (message) => {
       console.log('SSE', message);
     })
 
     const testConsole = () => {
-      console.error('aaaaa')
+      alert('Check console for messages')
+      console.log('console.log')
+      console.info('console.info')
+      console.warn('console.warn')
+      console.error('console.error')
     }
 
     const testSentry = () => {

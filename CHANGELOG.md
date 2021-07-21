@@ -1,17 +1,11 @@
 ### Version 0.6.1
 - [chore] update packages & cleanup & work on improving documentation
-- [node-express] add graphql sample code for simple CRUD (with graphiql queries & variables provided)
-- [node-express] improve shutdown / cleanup
-- [chore] add sentry logging for express, vanilla js, vite
+- [node-express] add graphql sample code for simple CRUD (with graphiql queries & variables provided) [sample](node-express/public/demo-express/graphql.html)
+- [node-express] improve shutdown / cleanup [sample](node-express/app.js)
 - [vue-vite] add multi-page app example
-- IN PROGRESS
-  - [node-express] add sentry
-  - [node-express/public/demo-express] add sentry
-  - [chore] disable console.log in production / proper console logging
-    - https://stackoverflow.com/questions/7042611/override-console-log-for-production/21789576
-    - https://ourcodeworld.com/articles/read/104/how-to-override-the-console-methods-in-javascript
-    - https://gist.github.com/pincheira/2724082
-    - https://stackoverflow.com/questions/63075459/override-console-log-method-without-losing-the-original-stack-javascript
+- [node-express] add sentry [file](node-express/common/sentry.js)
+- [node-express/public/demo-express] add sentry [sample](node-express/public/demo-express/index.html)
+- [chore] disable console.log at frontend [@es-labs/esm/log-filter.js](@es-labs/esm/log-filter.js) and [sample](node-express/public/demo-express/index.html)
 
 ### Version 0.6.0
 - [chore] update packages & cleanup & work on improving documentation

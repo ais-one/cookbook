@@ -3,6 +3,7 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
+- [node-express] scale websockets... https://pushpin.org/
 - [vue-vite] add sentry when ready
 - [vue-vite] cypress e2e testing
 - [chore] migration to node 16 and npm 7

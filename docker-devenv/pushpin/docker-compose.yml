@@ -1,0 +1,11 @@
+version: '3.1'
+services:
+  pushpin:
+    image: fanout/pushpin
+    restart: 'unless-stopped'
+    # volumes:
+    #   - './data:/var/lib/mysql'
+    #   - $(pwd)/config:/etc/pushpin/
+    ports:
+      - 7999:7999
+      - 5560-5563:5560-5563
