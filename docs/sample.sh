@@ -11,7 +11,7 @@ echo "SAMPLE SHELL SCRIPT"
 if [ ! $1 ]; then # environment eg. uat
     echo "Missing project environment. Set at package.json" && read && exit
 fi
-if [ ! $2 ]; then # path to backend eg. node-express
+if [ ! $2 ]; then # path to backend eg. recipe-node-express
     echo "Missing path to project. Set at package.json" && read && exit
 fi
 if [ ! $3 ]; then # path to frontends eg. example-web

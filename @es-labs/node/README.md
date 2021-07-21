@@ -12,7 +12,7 @@ Node JS only libraries for backend
   - mq: message queue
   - others gcp, keyv, redis, webpush, websocket
 
-Refer to [node-express](../../node-express) folder for usage
+Refer to [recipe-node-express](../../recipe-node-express) folder for usage
 
 ## Installation
 
@@ -22,14 +22,14 @@ npm install <path-to-this-foder-from-where-you-want-to-install-this>
 e.g.
 
 ```
-cd node-express
+cd recipe-node-express
 npm install ../@es-labs/node
 ```
 
 2. from npm
 
 ```
-cd node-express
+cd recipe-node-express
 npm i @es-labs/node
 ```
 

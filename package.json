@@ -18,10 +18,9 @@
   },
   "workspaces": [
     "./@es-labs/*",
-    "./node-daemons/*",
-    "./node-express",
-    "./node-utils/*",
-    "./vue-vite"
+    "./recipe-node-apps/*",
+    "./recipe-node-express",
+    "./recipe-vue-vite"
   ],
   "private": true
 }

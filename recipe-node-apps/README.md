@@ -1,6 +1,8 @@
 # Description
 
 Projects
+- openapi-file-joiner
+  - utility to join multiple openapi yaml files to a single file to be consumed by openapi ui and validation libraries
 - serialserver
   - serial server receive RS232 and send via tcp
     - serialport

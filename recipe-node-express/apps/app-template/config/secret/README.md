@@ -32,7 +32,7 @@ module.exports = {
   GCP_SERVICE_KEY: {},
 
   OAUTH_URL: '', // OAuth URL
-  OAUTH_CLIENT_ID: '', // OAuth Client ID // used by vue-nobundler frontend
+  OAUTH_CLIENT_ID: '', // OAuth Client ID
   OAUTH_CLIENT_SECRET: '', // OAuth Client SECRET
   OAUTH_CALLBACK: '', // OAuth callback URL
   OAUTH_USER_URL: '', // to get user

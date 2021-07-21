@@ -162,7 +162,6 @@ npm run abc:xyz
 
 If you edit the file in ../@eslabs/..., it will also be changed the installed node_modules
 
-
 ## Shutdown
 
 - NodeJS app & express
@@ -179,4 +178,4 @@ If you edit the file in ../@eslabs/..., it will also be changed the installed no
 
 - https://blog.logrocket.com/optimize-node-js-performance-with-clustering/
 - https://blog.logrocket.com/customizing-node-js-env-files/
-- [../../node-daemons/workerthreads]
+- [../../recipe-node-apps/workerthreads]

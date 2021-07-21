@@ -1,7 +1,7 @@
 // self.importScripts('data/games.js') // import own data here
 
-const CACHE_NAME_STATIC = 'node-express-vite-cache-static-v1.0.0'
-const CACHE_NAME_DYNAMIC = 'node-express-vite-cache-dynamic-v1.0.0'
+const CACHE_NAME_STATIC = 'recipe-vue-vite-cache-static-v1.0.0'
+const CACHE_NAME_DYNAMIC = 'recipe-vue-vite-cache-dynamic-v1.0.0'
 
 // requirements for add to homescreen
 // - manifest
