@@ -1,6 +1,7 @@
 ### Version 0.6.1
 - [chore] update packages & cleanup & work on improving documentation
 - [node-express] add graphql sample code for simple CRUD (with graphiql queries & variables provided)
+- [node-express] improve shutdown / cleanup
 - [chore] add sentry logging for express, vanilla js, vite
 - [vue-vite] add multi-page app example
 - IN PROGRESS

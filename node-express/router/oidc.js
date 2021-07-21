@@ -38,7 +38,6 @@ module.exports = express.Router()
       // add offline_access to get refresh token
 
       const rv = await axios.post(TOKEN_URL, payload, { headers })
-      // console.log('/api/oidc/auth', rv.data)
       const { access_token, refresh_token, ...user_meta } = rv.data
       return res.redirect(OIDC_OPTIONS.CALLBACK + '#' + access_token + '-' + refresh_token + '-' + JSON.stringify(user_meta))
     } catch (e) {
@@ -54,7 +53,6 @@ module.exports = express.Router()
     payload.append('client_id', OIDC_OPTIONS.CLIENT_ID)
     // add offline_access to get refresh token
     const rv = await axios.post(TOKEN_URL, payload, { headers })
-    // console.log('/api/oidc/refresh', rv.data)
     const { access_token, refresh_token } = rv.data
     const tokens = { access_token, refresh_token }
     setTokensToHeader(res, tokens)

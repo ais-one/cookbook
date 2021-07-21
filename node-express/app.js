@@ -7,9 +7,20 @@ const express = require('express')
 const app = express()
 
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
+require('./common/init')(global.CONFIG)
 
-const Sentry = require('./common/init')(app, express, global.CONFIG)
-require('./common/preRoute')(app, express, global.CONFIG)
+// https://shapeshed.com/uncaught-exceptions-in-node/
+// https://www.joyent.com/node-js/production/design/errors
+// https://blog.heroku.com/best-practices-nodejs-errors
+// setup graceful exit
+const handleExitSignal = async (signal) => await cleanup(`Signal ${signal}`, 0)
+const handleExitException = async (err, origin) => await cleanup(`Uncaught Exception. error: ${err} origin: ${origin}`, 1)
+const handleExitRejection = async (reason, promise) => await cleanup(`Unhandled Rejection. reason: ${reason}`, 1)
+process.on('SIGINT', handleExitSignal)
+process.on('SIGTERM', handleExitSignal)
+process.on('SIGQUIT', handleExitSignal)
+process.on('uncaughtException', handleExitException)
+process.on('unhandledRejection', handleExitRejection)
 
 const { HTTPS_CERTS, TLS_1_2 } = global.CONFIG
 if (TLS_1_2) { // TLS 1.2
@@ -20,39 +31,44 @@ if (TLS_1_2) { // TLS 1.2
     honorCipher: true
   }
 }
-
 const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createServer(app)
-let graphqlWsServer = require('./common/graphql')(app, server)
 
-// START SERVICES
+require('./common/preRoute')(app, express, global.CONFIG)
+const graphqlWsServer = require('./common/graphql')(app, server, global.CONFIG)
+const Sentry = require('./common/sentry')(app, global.CONFIG)
+
+// CLEANUP
+const cleanup = async (message, exitCode = 0, coreDump = false, timeOutMs = 1000) => {
+  console.log(message)
+  console.log(`
+  nodemon win - can see messages
+  nodemon bash - can see messages
+  node win - cannot see messages
+  node bash - can see messages
+  `)
+  if (server) {
+    server.close(async () => {
+      try {
+        await graphqlWsServer.close()
+        await services.stop()
+        // or should process.exit be placed here?
+      } catch (e) {
+        console.error(e)
+      }
+    })
+  }
+  console.log('cleaning up and awaiting exit...')
+  await sleep(timeOutMs) // from here on... does not get called on uncaught exception crash
+  console.log('exiting') // require('fs').writeSync(process.stderr.fd, `bbbbbbbbbbbb`)
+  return coreDump ? process.abort : process.exit(exitCode)
+  // setTimeout(() => console.log('exiting'), timeOutMs).unref()    
+}
+
+// SERVICES
 const services = require(`./apps/${APP_NAME}/services`)
 services.start()
 
-
-// https://shapeshed.com/uncaught-exceptions-in-node/
-// https://www.joyent.com/node-js/production/design/errors
-// https://blog.heroku.com/best-practices-nodejs-errors
-const handleExit = async (signal) => {
-  console.log(`Received ${signal}. Close my server properly. (nodemon causes problems here)`)
-  server.close(async () => {
-    try {
-      console.log('Server closing')
-      await graphqlWsServer.close()
-      await services.stop()
-      await sleep(1000) // wait awhile more (1000ms) for things to settle
-      console.log('Server closed')
-      process.exit(0)
-    } catch (e) {
-      console.log(e)
-      process.exit(1)
-    }
-  })  
-}
-;['SIGINT', 'SIGQUIT', 'SIGTERM'].forEach(signal => process.on(signal, handleExit))
-// ['unhandledRejection', 'uncaughtException'].forEach(type => process.on(type, (e) => exceptionFn(e, type)))
-// END SERVICES
-
-// START ROUTES
+// ROUTES
 try {
   require('./router')(app)
 } catch (e) {

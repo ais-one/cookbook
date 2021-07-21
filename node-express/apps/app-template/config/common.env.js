@@ -23,8 +23,6 @@ const pems = selfsigned.generate(
     // clientCertificateCN: 'jdoe' // client certificate's common name (default: 'John Doe jdoe123')
   }
 )
-// console.log(JSON.stringify(pems))
-// console.log(pems.private)
 // {
 //   private: '-----BEGIN RSA PRIVATE KEY-----\r\n ... \r\n-----END RSA PRIVATE KEY-----\r\n',
 //   public: '-----BEGIN PUBLIC KEY-----\r\n ... \r\n-----END PUBLIC KEY-----\r\n',
@@ -52,7 +50,6 @@ module.exports = {
     url: '/uploads',
     options: {
       fileFilter: (req, file, cb) => { // better to also filter at frontend
-        // console.log('fileFilter', file)
         if ( ['text', 'image'].find(item => file.mimetype.includes(item)) ) return cb(null, true) // accept image or text
         return cb(null, false, new Error("Only text/plain or images are allowed"))
       },

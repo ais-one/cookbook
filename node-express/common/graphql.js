@@ -1,8 +1,8 @@
 'use strict'
 let graphqlWsServer
 
-module.exports = function(app, server) {
-  const { GRAPHQL_SCHEMA_PATH, GRAPHQL_SUB_URL, GRAPHQL_URL } = global.CONFIG
+module.exports = function(app, server, options) {
+  const { GRAPHQL_SCHEMA_PATH, GRAPHQL_SUB_URL, GRAPHQL_URL } = options
   if (GRAPHQL_SCHEMA_PATH) {
     const ws = require('ws')
     const { graphqlHTTP } = require('express-graphql')

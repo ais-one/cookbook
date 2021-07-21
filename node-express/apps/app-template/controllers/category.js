@@ -19,8 +19,7 @@ exports.findOne = async (req, res, next) => {
     else
       return res.status(404).json({})
   } catch (e) {
-    console.log(e.toString())
-    return res.status(500).json()
+    return res.status(500).json({ error: e.string() })
   }
 }
 
@@ -29,8 +28,7 @@ exports.update = async (req, res, next) => {
     const count = await knex('categories').where({ id: req.params.id }).update(req.body)
     return res.status(count ? 200 : 404).json({ count })
   } catch (e) {
-    console.log(e.toString())
-    return res.status(500).json()
+    return res.status(500).json({ error: e.string() })
   }
 }
 
@@ -41,8 +39,7 @@ exports.find = async (req, res, next) => {
     const categories = await knex('categories').limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
     return res.status(200).json(categories)  
   } catch (e) {
-    console.log(e.toString())
-    return res.status(500).json()
+    return res.status(500).json({ error: e.string() })
   }
 }
 
@@ -51,8 +48,7 @@ exports.remove = async (req, res, next) => {
     const count = await knex('categories').where({ id: req.params.id }).delete()
     return res.status(count ? 200 : 404).json({ count })
   } catch (e) {
-    console.log(e.toString())
-    return res.status(500).json()
+    return res.status(500).json({ error: e.string() })
   }
 }
 

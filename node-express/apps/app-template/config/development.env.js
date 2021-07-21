@@ -62,6 +62,6 @@ module.exports = {
   TTT: {
     aaa: 222,
     cccxx: 'cdcd',
-    zzz: () => console.log('ffff') //  DO NOT USE FUNCTIONS!!!
+    zzz: () => console.log('DO NOT USE FUNCTIONS!!!!')
   }
 }

@@ -35,7 +35,6 @@ module.exports = function(app, express, options) {
     if (allowList.length === 1) origin = allowList[0]
     else if (allowList.length > 1) {
       origin = function (_origin, callback) {
-        // console.log('CORS origin', typeof _origin, _origin, allowList)
         if(!_origin || _origin === 'null') return callback(null, true) // allow requests with no origin (like mobile apps or curl requests)
         if (allowList.indexOf(_origin) !== -1) {
           return callback(null, true)
