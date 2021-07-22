@@ -1,6 +1,8 @@
 # Description
 
 Projects
+- expressjs
+  - see [expressjs/README.md](expressjs/README.md)
 - openapi-file-joiner
   - utility to join multiple openapi yaml files to a single file to be consumed by openapi ui and validation libraries
 - serialserver
@@ -13,12 +15,17 @@ Projects
     - knex & mysql
   - tcp server - event (close after receiving packet from client)
     - knex & mysql
-- kafkaRx.js
-  - kafka consumer
-  - requires kafka to run (see /docker-devenv/kafka)
-- kafkaTx.js
-  - kafka producer
-  - requires kafka to run (see /docker-devenv/kafka)
+- wip
+  - fido2
+  - k8s
+  - kafkaRx.js
+    - kafka consumer
+    - requires kafka to run (see /docker-devenv/kafka)
+  - kafkaTx.js
+    - kafka producer
+    - requires kafka to run (see /docker-devenv/kafka)
+  - process-cron.js
+  - process-long.js
 
 # Useful commands
 

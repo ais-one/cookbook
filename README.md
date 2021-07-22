@@ -12,14 +12,14 @@
 
 **NOTE!** project name is going to be replaced to a more appropriate one in 0.6.2
 
+Latest Version [0.6.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.6.1) - Released 2021 July 23 1500 +8GMT
+
 Considerations for this project are similar to [https://github.com/ais-one/favv](https://github.com/ais-one/favv/blob/master/README.md#considerations). The difference between this project and [https://github.com/ais-one/favv](https://github.com/ais-one/favv) are:
 - vue-crud-x is more of a cookbook and recipes are constantly being improved and updated
 - favv tries to seperate boiler plate from custom logic for better maintainability
 - they complement each other and each can be used to improve on each other
 
 We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem. It is easier for TS people to take the JS here and implement with TS.
-
-Latest Version [0.6.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.6.1) - Released 2021 July 22 1500 +8GMT
 
 # Features
 
@@ -214,11 +214,15 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 |     +- package.json
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
-+- js-node/ : nodejs applications (express, tcpserver, serialserver, worker threads, kafka, cron triggered, long running, pre/post processing utilities)
++- js-node/ : nodejs applications (kafka, cron triggered, long running)
 |  +- expressjs/ : express backend - See [js-node/expressjs/README.md](js-node/expressjs/README.md) for project structure
+|  +- openapi-file-joiner/ : pre-process utility to combine openapi yaml files for use in openapi related packages
+|  +- serialserver/
+|  +- tcpserver/
 |  +- wip/ : projects in progress
-|     +- k8s/ : kubernetes YAML files (WIP)
-|     +- fido2/ : WebAuthn example
+|  |  +- k8s/ : kubernetes YAML files (WIP)
+|  |  +- fido2/ : WebAuthn example
+|  +- worker-threads/ : demo on use of worker threads
 +- js-web
 |  +- vue-nobundler/ : frontend (Vue3 no bundle) - See [js-web/vue-nobundler/README.md](js-web/vue-nobundler/README.md) for Project Structure
 |  +- vue-vite/: frontend (Vue3 rollup) - See [js-web/vue-vite/README.md](js-web/vue-nobundler/README.md) for Project Structure
@@ -263,6 +267,7 @@ VAULT={ secrets: { ... all your secrets here } } # base64 encoded
 
 ## VERSION CHANGE NOTES
 
+- **v0.6+** Improve organization, graceful exit, logging, project rename, add more nodejs applications
 - **v0.5+** Improve organization and authentication, add new features
 - **v0.4+** Improve folders and structure organization, handle CI/CD better
 - **v0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.

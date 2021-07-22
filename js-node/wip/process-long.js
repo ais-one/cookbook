@@ -6,7 +6,7 @@ console.log('this can be a Kafka producer... listen to incoming tcp messages and
 console.log('Do take note limitations for Long running NodeJS process')
 console.log('Can also be for cronjobs (but better to use cronjob call an API)')
 
-await require('../@es-labs/node/config')(path.join(process.cwd(),'..')) //  first thing to run
+await require('../../@es-labs/node/config')(path.join(process.cwd(),'..','expressjs')) //  first thing to run
 // const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 
 const MAX_CYCLES = 0
@@ -28,5 +28,5 @@ const run = async () => {
 }
 
 run().catch(e => console.error(`[***] ${e.message}`, e))
-require('./traps')(async (type) => console.log(`Signal ${type}`))
+require('../traps')(async (type) => console.log(`Signal ${type}`))
 }())
