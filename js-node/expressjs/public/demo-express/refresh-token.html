@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vanilla Javascript Samples</title>
+</head>
+
+<body>
+  <h1>AA Authentication, OTP & Refresh Token <a href="index.html">Back</a></h1>
+  <ul>
+    <li>Clear application data (localStorage & httponly cookie)</li>
+    <li>check console for logs</li>
+    <li>check configs token expiry, refresh expiry, httponly?, use otp = TEST?</li>
+  </ul>
+  <button onclick="login()">Login test / test</button><br />
+  <button onclick="otp()">Send OTP 111111</button><br />
+  <button onclick="testAuth()">Get Private Data</button><br />
+  <button onclick="logout()">Logout</button><br />
+  <button id="test-ed">test</button><br />
+  <pre id="output">Output will be shown here</pre>
+</body>
+<script type="module">
+  import Fetch from '/esm/fetch.js'
+  import parseJwt from '/esm/parse-jwt.js'
+
+  let otpId = ''
+  let accessToken = ''
+  let refreshToken = ''
+  const outputEl = document.querySelector('#output')
+
+  const http = new Fetch()
+  http.setOptions({ refreshUrl: '/api/auth/refresh' })
+
+  document.querySelector("#test-ed").onclick = () => outputEl.innerHTML = JSON.stringify(http, null, 2)
+
+  function processLoginOut(data) {
+    accessToken = data.access_token
+    refreshToken = data.refresh_token
+    outputEl.innerHTML = JSON.stringify({
+      ...data,
+      parsedAccessToken: parseJwt(accessToken),
+      parsedRefreshToken: parseJwt(refreshToken)
+    }, null, 2)
+    http.setTokens({ access: accessToken, refresh: refreshToken })
+  }
+
+  async function login() {
+    try {
+      const { data } = await http.post('/api/auth/login', { email: 'test', password: 'test' })
+      if (data.otp) {
+        otpId = data.otp
+        outputEl.innerHTML = JSON.stringify(data, null, 2)
+      } else {
+        processLoginOut(data)
+      }
+    } catch (e) {
+      outputEl.innerHTML = JSON.stringify({ 'login error - exception': e }, null, 2)
+    }
+  }
+
+  async function otp() {
+    try {
+      const { data } = await http.post('/api/auth/otp', { id: otpId, pin: '111111' })
+      if (data.access_token) {
+        processLoginOut(data)
+      } else {
+        outputEl.innerHTML = JSON.stringify({ 'otp error - no access token': data }, null, 2)
+      }
+    } catch (e) {
+      outputEl.innerHTML = JSON.stringify({ 'otp error - exception': e }, null, 2)
+    }
+  }
+
+  async function testAuth() {
+    try {
+      const { data } = await http.get('/api/health-auth')
+      outputEl.innerHTML = JSON.stringify({ 'test auth - ok': data }, null, 2)
+    } catch (e) {
+      outputEl.innerHTML = JSON.stringify({ 'test auth - exception': e }, null, 2)
+    }
+  }
+
+  async function logout() {
+    try {
+      const { data } = await http.get('/api/auth/logout')
+      outputEl.innerHTML = JSON.stringify({ 'logout - ok': data }, null, 2)
+    } catch (e) {
+      outputEl.innerHTML = JSON.stringify({ 'logout - exception': e }, null, 2)
+    }
+  }
+
+  // need to improve on this
+  window.login = login
+  window.otp = otp
+  window.testAuth = testAuth
+  window.logout = logout
+
+</script>
+
+</html>

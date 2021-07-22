@@ -3,23 +3,18 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
-- [chore] disable console.log in production / proper console logging
-  - https://stackoverflow.com/questions/7042611/override-console-log-for-production/21789576
-  - https://ourcodeworld.com/articles/read/104/how-to-override-the-console-methods-in-javascript
-  - https://gist.github.com/pincheira/2724082
-  - https://stackoverflow.com/questions/63075459/override-console-log-method-without-losing-the-original-stack-javascript
-- [express-node] add graphql sample code for simple CRUD
-- [chore] folder reorganisation, fix documents, re-test and re-document deployments, clean up GCP cloud documentation... 
-- [vue-vite] cypress e2e testing
-- update webauthnsimple to v3
+- [chore] rename project
+- [js-node/expressjs] scale websockets... https://pushpin.org/
+- [js-web/vue-vite] add sentry when ready
+- [js-web/vue-vite] cypress e2e testing
 - [chore] migration to node 16 and npm 7
+- [chore] update webauthnsimple to v3
 - [feat] add commitizen, add semantic-version
 
 ### For future product improvement
 - [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)
 - [@es-labs/esm/bwc-t4t-form.js] - handle multiple parent values use case of combobox..., handle reset of multiple child columns
 - [fix] - ==='object' - handle null object
-- [chore] what to do with apollo graphql client??? - subscriptions not ready, try @octokit/graphql (frontend) & graphql-express (backend)
 - [backend-deployment] GKE, Kubernetes
 - [frontend] aria
 - [frontend] react example

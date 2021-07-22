@@ -10,22 +10,16 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, Cloud container deployment, Web Components, ES Modules) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Considerations for this project are similar to this [python fullstack project](https://github.com/ais-one/favv/blob/master/README.md#considerations).
+**NOTE!** project name is going to be replaced to a more appropriate one in 0.6.2
 
-**NOTE!** project name is going to be replaced to a more appropriate one
+Latest Version [0.6.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.6.1) - Released 2021 July 23 1500 +8GMT
 
-The difference between this project and [https://github.com/ais-one/favv](https://github.com/ais-one/favv) are:
+Considerations for this project are similar to [https://github.com/ais-one/favv](https://github.com/ais-one/favv/blob/master/README.md#considerations). The difference between this project and [https://github.com/ais-one/favv](https://github.com/ais-one/favv) are:
 - vue-crud-x is more of a cookbook and recipes are constantly being improved and updated
 - favv tries to seperate boiler plate from custom logic for better maintainability
 - they complement each other and each can be used to improve on each other
 
-We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem. It is easier for TS people to take the JS here and implement with TS.
-
-Latest Version [0.6.0](https://github.com/ais-one/vue-crud-x/releases/tag/0.6.0) - Released 2021 July 15 1500 +8GMT
-
-- add openapi example & validation, add rs232 and vercel/pkg usage, allow multiple upload folers handling
-- improvement on project organization and preparation for npm workspaces and node 16
-- replacing apollo graphql library (bloated, overly complex, breaks badly when major change), removed ORM
+We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem.
 
 # Features
 
@@ -33,17 +27,17 @@ Folder | Description | Features
 ---|---|---
 [@es-labs/esm](@es-labs/esm) | resuable ES module codes | Available as npm package also
 [@es-labs/node](@es-labs/node) | reusable common JS codes | Available as npm package also
-[docker-devenv](docker-devenv) | Docker containers supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
-[docs](docs) | Documentation | always work in progress and to be improved<br>- Main [documentation](docs/home.md)<br>- Secrets [documentation](docs/secrets.md)<br>- Deployment [notes](docs/deployment/home.md)<br>- Kafka [docs](docs/kafka.md) and [code](node-daemons)<br>- TCP Server [docs](docs/tcp.md) and [code](node-daemons)
-[node-express](node-express) | Backend applications (REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Objection ORM (**removed**), Knex, MongoDb, Relational DB data example, migration, seed, GraphQL (**replacing apollo**), Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
-[node-daemons](node-daemons) | Backend applications (TCP server, Kafka consumer, etc) | - TCP server (event/stream_)<br>- Serial server<br>- Kafka consumer/producer<br>- cron / long-running process example
-[node-express/public/demo-express](node-express/public/demo-express) | Frontend to test backend features | - File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
-[node-utils](node-utils) | Utilities for pre/post processing | - Combine OpenAPI files for use (openapi-file-joiner)<br>
-[vue-nobundler](vue-nobundler) | Vue 3 SPA no bundler + Bulma | - signed uploads<br>- JWT refresh token, OTP, recaptcha, Github OAuth2<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[node-express/router/tables/](node-express/router/tables/)</td><td>table configurations</td></tr><tr><td>[node-express/router/t4t.js](node-express/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[vue-nobundler/views/ui1.js](vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[vue-nobundler/views/ui2.js](vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[vue-nobundler/views/ui3.js](vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[vue-nobundler/views/ui4.js](vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
-[vue-vite](vue-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, ECharts<br>- PWA<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML<br>- Websockets<br>- GraphQL (**replacing apollo**)<br>- rxJS<br>- Web Components (Webcam, Signature)
-example-webpack<br><b>(Deprecated & removed)</b><br>[last updated version](https://github.com/ais-one/vue-crud-x/tree/0.5.3) | Vue 2 SPA using webpack + Vuetify | - Graphql (subscriptions, cache, optimistic UI, refetch queries)<br>- REST<br>- VueCrudX<br>- i18n<br>- rxJS
-[wip](wip) | Work In Progress | - [Webauthn](wip/fido2) SPA & SSR sample implementation<br>- [K8s](wip/k8s)
-[.github/workflows](.github/workflows) | Github Actions | Manually Triggered CI/CD
+[docker-devenv](docker-devenv) | Docker containers<br>supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
+[docs](docs) | Documentation<br>To constantly improved/updated | - Main [documentation](docs/home.md)<br>- Secrets [documentation](docs/deployment/secrets.md)<br>- Deployment [notes](docs/deployment/home.md)<br>- Kafka [docs](docs/backend/kafka.md) and [code](js-node)<br>- TCP Server [docs](docs/backend/tcp.md) and [code](js-node)
+[js-node](js-node) | Backend applications<br>(TCP server, Kafka consumer, etc) | - TCP server (event/stream)<br>- Serial server<br>- Kafka consumer/producer<br>- cron / long-running process example<br>- Combine OpenAPI files for use (openapi-file-joiner)
+[js-node/expressjs](js-node/expressjs) | Backend applications<br>(REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Objection ORM (**removed**), Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
+[js-node/expressjs/apps/app-template](js-node/expressjs/apps/app-template) | Custom application called **app-template** | - [config] app configs<br>- [controllers] <br>- [models] <br>- [openapi] OpenAPI yamls<br>- [routes] API routes (also websocket handlers)<br>- [services] services to startup/shutdown<br>- [tables] config tables for generic table crud (t4t)<br>- [tests] folder for tests<br>- graphql-schema.js GraphQL
+[js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
+[js-node/wip](js-node/wip) | Work In Progress | - [Webauthn](js-node/wip/fido2) SPA & SSR sample implementation<br>- [K8s](js-node/wip/k8s)
+[js-web/vue-nobundler](js-web/vue-nobundler) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/apps/app-template/tables/](js-node/expressjs/apps/app-template/tables/)</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[js-web/vue-nobundler/views/ui1.js](js-web/vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[js-web/vue-nobundler/views/ui2.js](js-web/vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[js-web/vue-nobundler/views/ui3.js](js-web/vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[js-web/vue-nobundler/views/ui4.js](js-web/vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
+[js-web/vue-vite](js-web/vue-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, ECharts<br>- PWA<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML, Github OAuth<br>- Websockets, rxJS<br>- Web Components (Webcam, Signature)
+example-webpack<br><b>(Deprecated & removed)</b><br>[last updated version](https://github.com/ais-one/vue-crud-x/tree/0.5.3) | Vue 2 SPA using webpack + Vuetify | - Graphql, REST, VueCrudX, i18n, rxJS
+[.github/workflows](.github/workflows) | Github Actions (CI/CD) | - Manually Trigger<br>- On-push Trigger (WIP)
 AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 
 # QUICK START - ON YOUR LOCAL MACHINE
@@ -66,15 +60,15 @@ cd vue-crud-x
 
 ```bash
 # install
-cd node-express
+cd js-node/expressjs
 npm i
 npm i ../@es-labs/esm
 npm i ../@es-labs/node
 ```
 
 **NOTES**
-- MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/mongodb/install.md**
-- The **node-express/apps/app-template/config/secret/*.env,js** files are not present. So there maybe some console log errors (but it is ok to ignore) and websockets will not work. Quick start is still usable. Use the README.md to fill up
+- MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/backend/mongodb/install.md**
+- The **js-node/expressjs/apps/app-template/config/secret/*.env,js** files are not present. So there maybe some console log errors (but it is ok to ignore) and websockets will not work. Quick start is still usable. Use the README.md to fill up
 
 ### Run migration & app
 
@@ -97,35 +91,32 @@ npm run app -- development
 
 **Visit the following URLs**
 - http://127.0.0.1:3000/api/healthcheck - app is running normally
-- http://127.0.0.1:3000 - Website served by Express with functional samples and demos (click on link to view **native** app or link to view **vite production build** app)
-- http://127.0.0.1:3000/api-docs
+- http://127.0.0.1:3000 - Website served by Express with functional samples and demos
+- http://127.0.0.1:3000/api-docs - OpenAPI documentation
 
-Note: to generate api docs, visit [node-utils/openapi-file-joiner](node-utils/openapi-file-joiner) and follow readme file, also look at the config properties OPENAPI_PATH and OPENAPI_VALIDATOR in [node-express/apps/app-template/config/common.env.js](node-express/apps/app-template/config/common.env.js).
+Note: to generate api docs, visit [js-node/openapi-file-joiner](js-node/openapi-file-joiner) and follow readme file, also look at the config properties OPENAPI_PATH and OPENAPI_VALIDATOR in [js-node/expressjs/apps/app-template/config/common.env.js](js-node/expressjs/apps/app-template/config/common.env.js).
 
 ### No bundler frontend
 
-See **native** app above
+See [js-web/vue-nobundler](js-web/vue-nobundler). Server from [http://127.0.0.1:3000/native/index.html](http://127.0.0.1:3000/native/index.html)
 
 ### Testing
 
-- To run unit & integration test on /api/authors. E2E testing is **Work In Progress**
-- TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in node-express/apps/app-template/tests
+- To run unit & integration test on **/api/categories** endpoint. E2E testing is **Work In Progress**
+- TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in **js-node/expressjs/apps/app-template/tests**
 
 ```bash
+cd js-node/expressjs
 # run in development only
 npm run test
 ```
 
 ### Long Running Processes
 
-Codes for long running processes
-- tcp server (event mode, streaming mode)
-- serial server
-- kafka producer, consumer
-- cron-triggered process
+Codes for long running processes such as tcp server (event mode, streaming mode), serial server, kafka producer, consumer, cron-triggered process, etc.
 
 ```
-cd node-daemons
+cd js-node/wip
 
 # Command to simulate long running process (do take note of caveats, for production need a monitor to handle restart strategy)
 # command: npm run process-long -- development
@@ -147,12 +138,16 @@ For Push Notification
 - using self hosted webpush is also supported and available
 
 ```bash
-cd vue-vite
+cd js-web/vue-vite
 npm i
 npm run dev
 ```
 
-Navigate to http://127.0.0.1:8080/ to view application
+Navigate to:
+- http://127.0.0.1:8080/ to view application
+- http://127.0.0.1:8080/nested/index.html to view another page (vite serving multi page, each page can be an SPA)
+
+#### http://127.0.0.1:8080/ Application
 
 Login using the following:
 - User: test
@@ -169,7 +164,7 @@ Click the following buttons in order (see their output in console.log and screen
 ### Vite SPA - static build
 
 ```bash
-cd vue-vite
+cd js-web/vue-vite
 npx vite build --mode development # build into example app, development environment
 npx vite build --mode uat # build uat environment, deploy to GCP Storage
 ```
@@ -181,23 +176,23 @@ Navigate to http://127.0.0.1:3000/vite/
 - https://github.com/nuxt/nuxt.js/issues/8102
 - prefer static sites and lazy loaded SPA for now
 
-## SAML & OIDC
+## SAML, OIDC, OAuth
 
 Refer to link below on how to try out...
 - [Keycloak](docker-devenv/keycloak/README.md) README.md
-- You can test out on the [vue-vite](vue-vite) Signin UI, clicking on SAML button / OIDC button to see redirect callback
 - Refer also to the following files
-  - [node-express/common/passport.js](node-express/common/passport.js)
-  - [node-express/router/saml.js](node-express/router/saml.js)
-  - [node-express/router/oidc.js](node-express/router/oidc.js)
+  - [js-node/expressjs/router/saml.js](js-node/expressjs/router/saml.js)
+  - [js-node/expressjs/router/oidc.js](js-node/expressjs/router/oidc.js)
+  - [js-node/expressjs/router/oauth.js](js-node/expressjs/router/oauth.js) **requires setup of github account and config setup here**
+- You can test out on the [js-web/vue-vite](js-web/vue-vite) Signin UI, clicking on SAML button / OIDC button / OAuth (github) button to see redirect callback
 
 ---
 
 ## Configuration
 
-The [node-express/config](node-express/config) folder contains the config information.
+The [js-node/expressjs/apps/app-template/config](js-node/expressjs/apps/app-template/config) folder contains the config information.
 
-You can override the configurations using <NODE_ENV>.env.js files, e.g. development.env.js or uat.env.js in [node-express/config](node-express/config)
+You can override the configurations using <NODE_ENV>.env.js files, e.g. **development.env.js** or **uat.env.js** in the folder
 
 ---
 
@@ -205,30 +200,31 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. developm
 
 ```
 +- .github/ : github related CICD and automations
++- .husky : git hooks
 +- @es-labs/
 |  +- esm/ : [shared es modules]
 |     +- package.json
 |  +- node/ : [shared cjs modules]
 |     +- auth/ : authentication
 |     +- comms/ : messaging
-|     +- services/ : db
-|     +- express/ : common codes used in express JS apps
+|     +- services/ : db, mq, etc.
 |     +- config.default.js: defaults
 |     +- config.js: config loader
 |     +- package.json
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
-+- node-daemons/ : long runnning processes
-|  +- process-cron.js: sample cron triggered process
-|  +- process-long.js: sample long running process
-+- node-utils/ : pre/post processing utilities
-|  +- openapi-file-joiner
-+- node-express/ : [example backend] - See node-express/README.md for Project Structure
-+- vue-nobundler/ : frontend (Vue3 no bundle) - See vue-nobundler/README.md for Project Structure
-+- vue-vite/ : frontend (Vue3 rollup) - See vue-vite/README.md for Project Structure
-+- wip/ : projects in progress
-|  +- k8s/ : kubernetes YAML files (WIP)
-|  +- fido2/ : WebAuthn example
++- js-node/ : nodejs applications (kafka, cron triggered, long running)
+|  +- expressjs/ : express backend - See [js-node/expressjs/README.md](js-node/expressjs/README.md) for project structure
+|  +- openapi-file-joiner/ : pre-process utility to combine openapi yaml files for use in openapi related packages
+|  +- serialserver/
+|  +- tcpserver/
+|  +- wip/ : projects in progress
+|  |  +- k8s/ : kubernetes YAML files (WIP)
+|  |  +- fido2/ : WebAuthn example
+|  +- worker-threads/ : demo on use of worker threads
++- js-web
+|  +- vue-nobundler/ : frontend (Vue3 no bundler) - See [js-web/vue-nobundler/README.md](js-web/vue-nobundler/README.md) for Project Structure
+|  +- vue-vite/: frontend (Vue3 rollup) - See [js-web/vue-vite/README.md](js-web/vue-nobundler/README.md) for Project Structure
 +- .editorconfig
 +- .gitignore
 +- BACKLOG.md
@@ -247,7 +243,7 @@ Manually triggered deployment on .github/workflows/manual.yml
 
 selectable inputs
 - environment (uat for now, development does not deploy anything)
-- application (node-express, vue-vite)
+- application (js-node/expressjs, js-web/vue-vite)
 - code branch
 
 **NOTE** config/secret contents will not be in repo for CI/CD (so you can get errors), those should be put in VAULT
@@ -270,6 +266,7 @@ VAULT={ secrets: { ... all your secrets here } } # base64 encoded
 
 ## VERSION CHANGE NOTES
 
+- **v0.6+** Improve organization, graceful exit, logging, project rename, add more nodejs applications
 - **v0.5+** Improve organization and authentication, add new features
 - **v0.4+** Improve folders and structure organization, handle CI/CD better
 - **v0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.

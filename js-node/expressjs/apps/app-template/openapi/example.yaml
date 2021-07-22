@@ -1,0 +1,62 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Cookbook API
+  description: A sample API to demonstrate features in the OpenAPI specification
+  termsOfService: http://es-labs.org/terms/
+  contact:
+    name: ES-Labs API Team
+    email: eslabs.com@gmail.com
+    url: https://es-labs.org
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+tags:
+  - name: Auth
+    description: authentication api
+  - name: Base
+    description: basic api
+servers:
+  - url: http://127.0.0.1:3000/api
+    description: local development server
+  - url: '{protocol}://{environment}.example.com/v2'
+    variables:
+      protocol:
+        enum:
+          - http
+          - https
+        default: https
+      environment:
+        default: api    # Production server
+        enum:
+          - api         # Production server
+          - api.dev     # Development server
+          - api.staging # Staging server
+components:
+  securitySchemes:
+    BasicAuth:
+      $ref: './securitySchema.yaml#/MySecurity/BasicAuth'
+    ApiKeyAuth:
+      $ref: './securitySchema.yaml#/MySecurity/ApiKeyAuth'
+  schemas:
+    Error:
+      $ref: './objects.yaml#/components/schemas/Error'
+# this one below implements auth for all paths
+# security:
+#   - BasicAuth: []
+#   - ApiKeyAuth: []
+paths:
+  /healthcheck:
+    $ref: './base.yaml#/healthcheck'
+  /health-auth:
+    $ref: './base.yaml#/health-auth'
+  /upload-disk:
+    $ref: './base.yaml#/upload-disk'
+  /auth/login:
+    $ref: './auth.yaml#/login'
+  /auth/otp:
+    $ref: './auth.yaml#/otp'
+  /app-template/categories:
+    $ref: './categories.yaml#/no-id'
+  /app-template/categories/{id}:
+    $ref: './categories.yaml#/with-id'

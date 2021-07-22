@@ -28,26 +28,31 @@
 
 ## Documents
 
-- Techstack
-  - GraphQL [graphql.md](graphql.md)
-  - Kafka [kafka.md](kafka.md)
-  - Mongo DB [mongodb/home.md](mongodb/home.md)
-  - NodeJS [nodejs.md](nodejs.md)
-  - TCP [tcp.md](tcp.md)
-  - MicroServices [micro-services.md](micro-services.md)
-- DevOps
-  - Git [git.md](git.md)
-  - Deployment And Scaling [deployment/home.md](deployment/home.md) **WIP**
-  - GCP [gcp/home.md](gcp/home.md)
-  - Linting [lint.md](lint.md)
-  - Secrets Management [secrets.md](secrets.md)
-  - E2E Testing **WIP** [cypress.md](cypress.md)
-- Others
-  - SQA Tools [sqa-tools.md](sqa-tools.md)
-  - Team Guidance [team-guidance.md](team-guidance.md)
-  - Udemy Courses [courses.md](courses.md)
+- Backend
+  - Kafka [backend/kafka.md](backend/kafka.md)
+  - MicroServices [backend/micro-services.md](backend/micro-services.md)
+  - NodeJS [backend/nodejs.md](backend/nodejs.md)
+  - TCP [backend/tcp.md](tcp.md)
+  - Mongo DB [backend/mongodb/home.md](backend/mongodb/home.md)
+- Deployment And Scaling
+  - Deployment [deployment/home.md](deployment/home.md)
+  - Deployment Container [deployment/deployment-container.md](deployment/deployment-container.md)
+  - Deployment VM [deployment/deployment-vm.md](deployment/deployment-vm.md)
+  - Deployment Secrets[deployment/secrets.md](deployment/secrets.md)
+- GCP
+  - Home [gcp/home.md](gcp/home.md)
+- SQA
+  - E2E Testing **WIP** [sqa/cypress.md](sqa/cypress.md)
+  - SQA Tools [sqa/sqa-tools.md](sqa/sqa-tools.md)
+  - SQA NodeJS [sqa/sqa-nodejs.md](sqa/sqa-nodejs.md)
+  - Team Guidance [sqa/team-guidance.md](sqa/team-guidance.md)
 - Web
-  - Custom Elements [web/custom-element.md](custom-element.md)
-  - Fetch API [web/fetch.md](fetch.md)
-  - JS [web/js.md](js.md)
-  - Performance [web/web-performance.md](js.md)
+  - Authentication [web/authentication.md](web/authentication.md)
+  - Custom Elements [web/custom-element.md](web/custom-element.md)
+  - Fetch API [web/fetch.md](web/fetch.md)
+  - GraphQL [web/graphql.md](web/graphql.md)
+  - JS [web/js.md](web/js.md)
+  - Performance [web/performance.md](web/performance.md)
+  - Logging [web/logging.md](web/logging.md)
+- Git [git.md](git.md)
+- Udemy Courses [courses.md](courses.md)

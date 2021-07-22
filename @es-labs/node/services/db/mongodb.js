@@ -18,7 +18,7 @@ const mongo = {
 
 exports.close = async () => {
   if (mongo.client) await mongo.client.close()
-  console.log('MONGODB CLOSED')
+  console.log('mongodb closed')
 },
 
 exports.open = async () => {
@@ -48,8 +48,8 @@ exports.open = async () => {
       //   console.log(change); // You could parse out the needed info and send only that data.
       //   // use websocket to listen to changes
       // })
-      console.log('MONGODB CONNECTED', MONGO_URL)
-    } catch (e) { console.log('MONGODB ERROR', MONGO_URL, e.toString()) }
+      console.log('mongodb CONNECTED', MONGO_URL)
+    } catch (e) { console.log('mongodb CONNECT ERROR', MONGO_URL, e.toString()) }
   }
   // return mongo
   return this

@@ -1,3 +1,19 @@
+### Version 0.6.1
+- [chore] update packages & cleanup & work on improving documentation
+- [note] Folder renames - No breaking change except folder renames in docs and configs
+  - **vue-nobundler** to js-web/vue-nobundler
+  - **vue-vite** to js-web/vue-vite
+  - **node-utils** to node-daemons and remove **node-utils**
+  - **node-daemons** to js-node
+  - **node-express** to js-node/expressjs
+  - **wip** to js-node/wip
+- [js-node/expressjs] add graphql sample code for simple CRUD (with graphiql queries & variables provided) [sample](js-node/expressjs/public/demo-express/graphql.html)
+- [js-node/expressjs] improve shutdown / cleanup [sample](js-node/expressjs/app.js)
+- [js-web/vue-vite] add multi-page app example
+- [js-node/expressjs] add sentry [file](js-node/expressjs/common/sentry.js)
+- [js-node/expressjs/public/demo-express] add sentry [sample](js-node/expressjs/public/demo-express/index.html)
+- [chore] disable console.log at frontend [@es-labs/esm/log-filter.js](@es-labs/esm/log-filter.js) and [sample](js-node/expressjs/public/demo-express/index.html)
+
 ### Version 0.6.0
 - [chore] update packages & cleanup & work on improving documentation
 - [note] rename example-native to vue-nobundler - No breaking change

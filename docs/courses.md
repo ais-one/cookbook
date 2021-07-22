@@ -1,21 +1,7 @@
 Courses
 
-- fullstack vue, express, mongo
-  - 9.5h https://www.udemy.com/course/learn-how-to-build-amazon-website-using-vuejs-and-nodejs
-
 - vue
-  - 1.5h https://www.udemy.com/course/weather-app-vue-js-quasar/
-  - 2h https://www.udemy.com/course/vuejs-google-maps-api-for-beginners
-  - *3.5h https://www.udemy.com/course/vue-js-2-project-cms-and-shopping-cart
-  - *8.5h https://www.udemy.com/course/vue-js-2-beginner-to-developer
-  - https://www.udemy.com/course/learn-vuejs-in-under-6-minutes-1-essentials/ [paid]
-  - https://www.udemy.com/course/learn-vuejs-in-under-6-minutes-2-advanced-components/
   - https://www.vuemastery.com/ 
-
-- nuxt
-  - 6.5h https://www.udemy.com/course/nuxtjs-vuejs-on-steroids
-  - 6h https://www.udemy.com/course/master-nuxtjs-a-vuejs-framework-by-building-projects-and-deploy
-  - 18h https://www.udemy.com/course/vuejs-for-students-with-zero-es6-foundation
 
 - express, mongo
   - 11h https://www.udemy.com/course/build-restful-api-in-nodejs
@@ -26,10 +12,12 @@ Courses
 - mongodb
   - 17.5h https://www.udemy.com/course/mongodb-the-complete-developers-guide
   - https://www.udemy.com/course/the-complete-developers-guide-to-mongodb
+
 - express
   - 40h https://www.udemy.com/course/nodejs-the-complete-guide
-- jest
- - - 3h https://www.udemy.com/course/nodejs-unit-testing-and-integration-testing-with-express-and-jest
+
+- Jest
+ - 3h https://www.udemy.com/course/nodejs-unit-testing-and-integration-testing-with-express-and-jest
 
 - Advanced JS
   - 25h https://www.udemy.com/course/advanced-javascript-concepts
@@ -54,8 +42,6 @@ Courses
 
 - web dev
   - 22h https://www.udemy.com/course/the-complete-web-developer-masterclass-beginner-to-advanced
-  - jmeter
-
 
 - CSS
   - 2h https://www.udemy.com/course/flexbox-tutorial/

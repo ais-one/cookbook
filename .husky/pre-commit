@@ -2,6 +2,6 @@
 . "$(dirname "$0")/_/husky.sh"
 
 echo pre-commit execute start
-cd node-express && npm run lint
+cd js-node/expressjs && npm run lint
 # you can do a git add . here also
 echo pre-commit execute end

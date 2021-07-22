@@ -8,7 +8,7 @@ From vue-crud-x folder (replace **ais-one/node-web-app** with your own image nam
 
 ```Dockerfile
 # build the container
-docker build -t ais-one/node-web-app:latest -f node-express/Dockerfile . 
+docker build -t ais-one/node-web-app:latest -f js-node/expressjs/Dockerfile . 
 
 ## NOT USED: docker run -it -d ais-one/node-web-app /bin/bash
 # run the container

@@ -1,0 +1,355 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Cookbook API
+  description: A sample API to demonstrate features in the OpenAPI specification
+  termsOfService: 'http://es-labs.org/terms/'
+  contact:
+    name: ES-Labs API Team
+    email: eslabs.com@gmail.com
+    url: 'https://es-labs.org'
+  license:
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: Auth
+    description: authentication api
+  - name: Base
+    description: basic api
+servers:
+  - url: 'http://127.0.0.1:3000/api'
+    description: local development server
+  - url: '{protocol}://{environment}.example.com/v2'
+    variables:
+      protocol:
+        enum:
+          - http
+          - https
+        default: https
+      environment:
+        default: api
+        enum:
+          - api
+          - api.dev
+          - api.staging
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+  schemas:
+    Error: &ref_0
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+paths:
+  /healthcheck:
+    get:
+      tags:
+        - Base
+      responses:
+        '200':
+          description: GET healthcheck response ok
+          content:
+            application/json:
+              schema:
+                type: object
+    post:
+      tags:
+        - Base
+      responses:
+        '200':
+          description: POST healthcheck response ok
+  /health-auth:
+    get:
+      tags:
+        - Base
+      security:
+        - ApiKeyAuth: []
+      responses:
+        '200':
+          description: GET healthcheck (authorized) response ok
+  /upload-disk:
+    post:
+      tags:
+        - Base
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                somestring:
+                  type: string
+      responses:
+        '200':
+          description: GET healthcheck (authorized) response ok
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login
+      description: >
+        Returns { otp: 1} if user needs to use OTP, else return access and
+        refresh tokens 
+
+        Nam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus
+        sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem.
+        Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis
+        mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse
+        platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean
+        pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras
+        quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna
+        volutpat venenatis eget eget mauris. In eleifend fermentum facilisis.
+        Praesent enim enim, gravida ac sodales sed, placerat id erat.
+        Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum
+        libero. Morbi euismod sagittis libero sed lacinia.
+
+
+        Sed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu
+        condimentum ligula luctus nec. Phasellus semper velit eget aliquet
+        faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum
+        lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius
+        odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae.
+        Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada
+        accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit
+        amet auctor felis gravida. Sed libero lorem, molestie sed nisl in,
+        accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed
+        vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu,
+        euismod sapien.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  example: test
+                password:
+                  type: string
+                  example: test
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  otp:
+                    type: integer
+                    example: 1
+                  access_token:
+                    type: string
+                    example: >-
+                      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ._l3MQQAq4Py1q9eWoaLomaX8wvSkYNiztEK_OZ1qlFA
+                  refresh_token:
+                    type: string
+                    example: ey....
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        default:
+          description: Unexpected error
+  /auth/otp:
+    post:
+      tags:
+        - Auth
+      summary: OTP
+      description: Return access and refresh tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - id
+                - pin
+              properties:
+                id:
+                  type: string
+                  example: '1'
+                pin:
+                  type: string
+                  example: '111111'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  otp:
+                    type: integer
+                    example: 1
+                  access_token:
+                    type: string
+                    example: >-
+                      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ._l3MQQAq4Py1q9eWoaLomaX8wvSkYNiztEK_OZ1qlFA
+                  refresh_token:
+                    type: string
+                    example: ey....
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        default:
+          description: Unexpected error
+  /app-template/categories:
+    get:
+      summary: Get categories
+      description: Returns all categories from the system that the user has access to
+      tags:
+        - Categories
+      operationId: findCategories
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: page
+          in: query
+          description: 1-based page index
+          required: false
+          style: form
+          schema:
+            type: integer
+            format: int32
+        - name: limit
+          in: query
+          description: page size
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: category response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                  results:
+                    type: array
+                    items: &ref_2
+                      allOf:
+                        - &ref_1
+                          type: object
+                          required:
+                            - name
+                          properties:
+                            name:
+                              type: string
+                        - type: object
+                          required:
+                            - id
+                          properties:
+                            id:
+                              type: integer
+                              format: int64
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema: *ref_0
+    post:
+      description: Creates a new category
+      tags:
+        - Categories
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        description: Pet to add to the store
+        required: true
+        content:
+          application/json:
+            schema: *ref_1
+      responses:
+        '200':
+          description: pet response
+          content:
+            application/json:
+              schema: *ref_2
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema: *ref_0
+  '/app-template/categories/{id}':
+    get:
+      description: Returns a user based on a single ID
+      tags:
+        - Categories
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of category to fetch
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: category response
+          content:
+            application/json:
+              schema: *ref_2
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema: *ref_0
+    patch:
+      description: Update a user based on a single ID
+      tags:
+        - Categories
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID of category to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: category to update
+        required: true
+        content:
+          application/json:
+            schema: *ref_1
+      responses:
+        '200':
+          description: category response
+          content:
+            application/json:
+              schema: *ref_2
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema: *ref_0

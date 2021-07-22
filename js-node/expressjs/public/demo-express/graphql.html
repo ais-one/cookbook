@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta content="text/html; charset=utf-8" />
+    <title>GraphQL over WebSocket</title>
+    <script type="text/javascript" src="https://unpkg.com/graphql-ws/umd/graphql-ws.min.js"></script>
+  </head>
+  <body>
+    <h1>GraphQL + Subscriptions (Webscoket) <a href="index.html">Back</a></h1>
+    <ul>
+      <li><a href="#" onclick="testSub()">Subscribe Hello</a></li>
+      <li><a href="#" onclick="testUnsub()">Unsubscribe Hello</a></li>
+      <li><a href="#" onclick="testHello()">Test Hello Query, will also trigger subcription data from server to client</a></li>
+    </ul>
+    <pre id="output">Output will be shown here</pre>
+    <hr/>
+    <pre id="outputSub">Subscription Output will be shown here</pre>
+    <hr/>
+    <h3>You can use graphiql to test simple CRUD</h3>
+    <pre>
+      # create
+      mutation AddMessage($input: MessageInput) {
+        addMessage(input: $input) {
+          id
+          content
+        }
+      }
+      
+      # variables
+      {
+        "input": {
+          "content": "aaaa"
+        }
+      }
+      
+      # update
+      mutation SetMessage($id: ID!, $input: MessageInput) {
+        setMessage(id: $id, input: $input) {
+          id
+          content
+        }
+      }
+      
+      # variables
+      {
+        "id": "1",
+        "input": {
+          "content": "aaaa"
+        }
+      }
+      
+      # get all
+      query GetMessages {
+        getMessages {
+          id content
+        }
+      }
+      
+      # variables
+      N.A.
+      
+      # get one by id
+      query GetMessage($id: ID!) {
+        getMessage(id: $id) {
+          id
+          content
+        }
+      }
+      
+      # variables
+      {
+        "id":"2"
+      }
+    </pre>
+
+    <script type="text/javascript">
+      // TBD unsubscribe...
+      // clean closing of websocket...
+
+      // mutation {
+      //   createMessage(input: {
+      //     content: "hope is a good thing",
+      //   }) {
+      //     id
+      //   }
+      // }
+      const outputEl = document.querySelector('#output')
+      const outputSubEl = document.querySelector('#outputSub')
+      const qGetMessage = `query GetMessage($id: ID!) {
+        getMessage(id: $id) {
+          id
+          content
+        }
+      }`
+      const vGetMessage = {
+        id: 1
+      }
+
+      const qAddMessage = `mutation AddMessage($input: MessageInput) {
+        addMessage(input: $input) {
+          id,
+          content
+        }
+      }`
+      const vAddMessage = {
+        input: {
+          content: 'content:' + Date.now()
+        }
+      }
+
+      const qSetMessage = `mutation SetMessage($id: ID!, $input: MessageInput) {
+        setMessage(id: $id, input: $input) {
+          id,
+          content
+        }
+      }`
+      const vSetMessage = {
+        input: {
+          content: 'content:' + Date.now()
+        }
+      }
+
+      const doGql = async (query, variables, operationName) => {
+        const payload = { query }
+        if (variables) payload.variables = variables
+        fetch("http://127.0.0.1:3000/graphql", {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json', Accept: "application/json" },
+          body: JSON.stringify(payload)
+        })
+          .then(res => res.json())
+          .then(res => { outputEl.innerHTML = JSON.stringify(res.data, null, 2) })
+      }
+
+      // document.addEventListener('DOMContentLoaded', e => console.log(window))
+      const testHello = async () => {
+        await doGql("{ hello }")
+      }
+
+      const client = graphqlWs.createClient({
+        // url: 'ws://127.0.0.1:3000/graphql',
+        url: 'ws://127.0.0.1:3000/subscriptions',
+      });
+
+      let unsubscribe = () => {
+        // complete the subscription
+      }
+
+      async function execute(payload) {
+        return new Promise((resolve, reject) => {
+          let result
+          unsubscribe = client.subscribe(payload, {
+            next: (data) => {
+              outputSubEl.innerHTML += JSON.stringify(data, null, 2)
+              return (result = data)
+            },
+            error: reject,
+            complete: () => resolve(result),
+          })
+        })
+      }
+
+      const testUnsub = async () => {
+        await unsubscribe()
+        outputSubEl.innerHTML = 'Unsubscribed...<br/>'
+      }
+
+      const testSub = async () => {
+        try {
+          execute({
+            query: 'subscription { helloQueried }', // '{ hello }',
+          });
+          // complete
+          // next = result = { data: { hello: 'Hello World!' } }
+          outputEl.outputSubEl = 'Subscribed...<br/>'
+        } catch (err) {
+          outputEl.innerHTML = JSON.stringify(err, null, 2)
+        }
+      }
+
+      // consider other recipes for usage inspiration
+    </script>
+  </body>
+</html>
