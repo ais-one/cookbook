@@ -98,28 +98,25 @@ Note: to generate api docs, visit [js-node/openapi-file-joiner](js-node/openapi-
 
 ### No bundler frontend
 
-See **native** app above
+See [js-web/vue-nobundler](js-web/vue-nobundler). Server from [http://127.0.0.1:3000/native/index.html](http://127.0.0.1:3000/native/index.html)
 
 ### Testing
 
-- To run unit & integration test on /api/authors. E2E testing is **Work In Progress**
-- TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in js-node/expressjs/apps/app-template/tests
+- To run unit & integration test on **/api/categories** endpoint. E2E testing is **Work In Progress**
+- TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in **js-node/expressjs/apps/app-template/tests**
 
 ```bash
+cd js-node/expressjs
 # run in development only
 npm run test
 ```
 
 ### Long Running Processes
 
-Codes for long running processes
-- tcp server (event mode, streaming mode)
-- serial server
-- kafka producer, consumer
-- cron-triggered process
+Codes for long running processes such as tcp server (event mode, streaming mode), serial server, kafka producer, consumer, cron-triggered process, etc.
 
 ```
-cd js-node
+cd js-node/wip
 
 # Command to simulate long running process (do take note of caveats, for production need a monitor to handle restart strategy)
 # command: npm run process-long -- development
@@ -179,14 +176,15 @@ Navigate to http://127.0.0.1:3000/vite/
 - https://github.com/nuxt/nuxt.js/issues/8102
 - prefer static sites and lazy loaded SPA for now
 
-## SAML & OIDC
+## SAML, OIDC, OAuth
 
 Refer to link below on how to try out...
 - [Keycloak](docker-devenv/keycloak/README.md) README.md
-- You can test out on the [js-web/vue-vite](js-web/vue-vite) Signin UI, clicking on SAML button / OIDC button to see redirect callback
 - Refer also to the following files
   - [js-node/expressjs/router/saml.js](js-node/expressjs/router/saml.js)
   - [js-node/expressjs/router/oidc.js](js-node/expressjs/router/oidc.js)
+  - [js-node/expressjs/router/oauth.js](js-node/expressjs/router/oauth.js) **requires setup of github account and config setup here**
+- You can test out on the [js-web/vue-vite](js-web/vue-vite) Signin UI, clicking on SAML button / OIDC button / OAuth (github) button to see redirect callback
 
 ---
 
@@ -225,7 +223,7 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 |  |  +- fido2/ : WebAuthn example
 |  +- worker-threads/ : demo on use of worker threads
 +- js-web
-|  +- vue-nobundler/ : frontend (Vue3 no bundle) - See [js-web/vue-nobundler/README.md](js-web/vue-nobundler/README.md) for Project Structure
+|  +- vue-nobundler/ : frontend (Vue3 no bundler) - See [js-web/vue-nobundler/README.md](js-web/vue-nobundler/README.md) for Project Structure
 |  +- vue-vite/: frontend (Vue3 rollup) - See [js-web/vue-vite/README.md](js-web/vue-nobundler/README.md) for Project Structure
 +- .editorconfig
 +- .gitignore
