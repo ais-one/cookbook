@@ -1,9 +1,8 @@
 'use strict'
 
 const express = require('express')
-const webhookRoutes = express.Router()
+// const { authUser } = require('@es-labs/node/auth')
 
-module.exports = webhookRoutes
 
 // channel
 // https://stackoverflow.com/questions/33858927/how-to-obtain-the-chat-id-of-a-private-telegram-channel
@@ -19,3 +18,24 @@ module.exports = webhookRoutes
 // Add Administrator
 // There will be no bots in contact list, so you need to search for it. Enter your bot's username
 // Clicking on it you make it as administrator./33126743/how-do-i-add-my-bot-to-a-channel
+
+
+module.exports = express.Router()
+  .get('/', (req, res) => res.send('Webhooks OK'))
+  // body {
+  //   msisdn: '6588888888',
+  //   to: 'monumber',
+  //   messageId: '170000028F5FBC1B',
+  //   text: 'Hello\nWorld',
+  //   type: 'text',
+  //   keyword: 'HELLO\nWORLD',
+  //   'api-key': '88888888',
+  //   'message-timestamp': '2020-10-28 07:54:38'
+  // }
+  // TBD need to handle the Nexmo MO-SNS
+  .post('/nexmo-mo-sms', asyncWrapper(async (req, res) => {
+    const { body, query, params} = req
+    res.json({
+      body, query, params
+    })
+  }))

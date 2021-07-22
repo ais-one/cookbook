@@ -7,8 +7,6 @@ module.exports = function (app) {
   app.use('/api',
     router.use('/', require('./api')),
     router.use('/auth', require('./auth')),
-    router.use('/mongo-demo', require('./mongo-demo')),
-    router.use('/nexmo', require('./nexmo')),
     router.use('/oidc', require('./oidc')),
     router.use('/oauth', require('./oauth')),
     router.use('/saml', require('./saml')),
