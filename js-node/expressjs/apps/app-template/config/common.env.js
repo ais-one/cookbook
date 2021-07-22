@@ -88,7 +88,8 @@ module.exports = {
   // GCP_SERVICE_KEY: null, // {}
   // KNEXFILE: null, // {}
 
-  OPENAPI_PATH: '', // './apps/app-template/openapi/example.output.yaml',
+  // OPENAPI_PATH: '',
+  OPENAPI_PATH: './apps/app-template/openapi/example.output.yaml',
   OPENAPI_VALIDATOR: null,
   // {
   //   apiSpec: './apps/app-template/openapi/example.output.yaml',
