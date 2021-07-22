@@ -2,7 +2,7 @@
 
 Install the dependencies first
 
-From vue-crud-x folder
+From cookbook folder
 
 ```
 npm i
@@ -12,7 +12,7 @@ npm i
 
 Start up using docker-compose
 
-From vue-crud-x folder
+From cookbook folder
 
 ```
 cd docker-devenv
@@ -38,7 +38,7 @@ docker-compose down
 
 ### Kafka Consumer
 
-From vue-crud-x folder
+From cookbook folder
 
 ```
 cd sandbox
@@ -51,7 +51,7 @@ Kafka Consumer Example Usage file location [../js-node/kafkaRx.js](../js-node/ka
 
 ### Kafka Producer
 
-From vue-crud-x folder
+From cookbook folder
 
 ```
 cd sandbox

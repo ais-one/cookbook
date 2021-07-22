@@ -1,21 +1,21 @@
-![master commit](https://badgen.net/github/last-commit/ais-one/vue-crud-x/master)
-![release](https://img.shields.io/github/v/release/ais-one/vue-crud-x)
-[![npm version](https://badge.fury.io/js/vue-crud-x.svg)](https://badge.fury.io/js/vue-crud-x)
-[![npm](https://img.shields.io/npm/dm/vue-crud-x.svg)](https://www.npmjs.com/package/vue-crud-x)
+![master commit](https://badgen.net/github/last-commit/ais-one/cookbook/master)
+![release](https://img.shields.io/github/v/release/ais-one/cookbook)
+[![npm version](https://badge.fury.io/js/cookbook.svg)](https://badge.fury.io/js/cookbook)
+[![npm](https://img.shields.io/npm/dm/cookbook.svg)](https://www.npmjs.com/package/cookbook)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine)
-[![Known Vulnerabilities](https://snyk.io/test/github/ais-one/vue-crud-x/badge.svg)](https://snyk.io/test/github/ais-one/vue-crud-x)
-[![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/vue-crud-x/shield-link)
+[![Known Vulnerabilities](https://snyk.io/test/github/ais-one/cookbook/badge.svg)](https://snyk.io/test/github/ais-one/cookbook)
+[![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/cookbook/shield-link)
 
 # About
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, Cloud container deployment, Web Components, ES Modules) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-**NOTE!** project name is going to be replaced to a more appropriate one in 0.6.2
+**NOTE!** project name vue-crud-x changed to cookbook
 
-Latest Version [0.6.1](https://github.com/ais-one/vue-crud-x/releases/tag/0.6.1) - Released 2021 July 23 1500 +8GMT
+Latest Version [0.6.2](https://github.com/ais-one/cookbook/releases/tag/0.6.2) - Released 2021 July 23 1500 +8GMT
 
 Considerations for this project are similar to [https://github.com/ais-one/favv](https://github.com/ais-one/favv/blob/master/README.md#considerations). The difference between this project and [https://github.com/ais-one/favv](https://github.com/ais-one/favv) are:
-- vue-crud-x is more of a cookbook and recipes are constantly being improved and updated
+- this repo is more of a cookbook and recipes are constantly being improved and updated
 - favv tries to seperate boiler plate from custom logic for better maintainability
 - they complement each other and each can be used to improve on each other
 
@@ -36,7 +36,7 @@ Folder | Description | Features
 [js-node/wip](js-node/wip) | Work In Progress | - [Webauthn](js-node/wip/fido2) SPA & SSR sample implementation<br>- [K8s](js-node/wip/k8s)
 [js-web/vue-nobundler](js-web/vue-nobundler) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/apps/app-template/tables/](js-node/expressjs/apps/app-template/tables/)</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[js-web/vue-nobundler/views/ui1.js](js-web/vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[js-web/vue-nobundler/views/ui2.js](js-web/vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[js-web/vue-nobundler/views/ui3.js](js-web/vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[js-web/vue-nobundler/views/ui4.js](js-web/vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
 [js-web/vue-vite](js-web/vue-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, ECharts<br>- PWA<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML, Github OAuth<br>- Websockets, rxJS<br>- Web Components (Webcam, Signature)
-example-webpack<br><b>(Deprecated & removed)</b><br>[last updated version](https://github.com/ais-one/vue-crud-x/tree/0.5.3) | Vue 2 SPA using webpack + Vuetify | - Graphql, REST, VueCrudX, i18n, rxJS
+example-webpack<br><b>(Deprecated & removed)</b><br>[last updated version](https://github.com/ais-one/cookbook/tree/0.5.3) | Vue 2 SPA using webpack + Vuetify | - Graphql, REST, VueCrudX, i18n, rxJS
 [.github/workflows](.github/workflows) | Github Actions (CI/CD) | - Manually Trigger<br>- On-push Trigger (WIP)
 AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 
@@ -52,8 +52,8 @@ AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 
 ```bash
 # clone repo and install backend
-git clone https://github.com/ais-one/vue-crud-x.git
-cd vue-crud-x
+git clone https://github.com/ais-one/cookbook.git
+cd cookbook
 ```
 
 ## ExpressJS Backend Setup & Run - development environment
@@ -271,4 +271,4 @@ VAULT={ secrets: { ... all your secrets here } } # base64 encoded
 - **v0.4+** Improve folders and structure organization, handle CI/CD better
 - **v0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
 - **v0.2+** uses Vuetify 2. Due to breaking changes from Vuetify 1 to 2, CRUD component code was refactored to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and <a href="https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0" target="_blank">supprting article - VueJS+ExpressJS CRUD & Cookbook</a>
-- **v0.1** and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/vue-crud-x/tree/v1). You can refer to the v1  <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Legacy Article (For Historical Reference)</a>
+- **v0.1** and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/cookbook/tree/v1). You can refer to the v1  <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Legacy Article (For Historical Reference)</a>

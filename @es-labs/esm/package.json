@@ -5,12 +5,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ais-one/vue-crud-x.git"
+    "url": "git+https://github.com/ais-one/cookbook.git"
   },
   "bugs": {
-    "url": "https://github.com/ais-one/vue-crud-x/issues"
+    "url": "https://github.com/ais-one/cookbook/issues"
   },
-  "homepage": "https://github.com/ais-one/vue-crud-x#readme",
+  "homepage": "https://github.com/ais-one/cookbook#readme",
   "keywords": [ "javascript", "esm", "modules" ],
   "description": "shared libraries - esm",
   "main": "index.js",

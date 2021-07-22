@@ -4,7 +4,7 @@
 
 Reference - https://nodejs.org/de/docs/guides/nodejs-docker-webapp/
 
-From vue-crud-x folder (replace **ais-one/node-web-app** with your own image name)
+From cookbook folder (replace **ais-one/node-web-app** with your own image name)
 
 ```Dockerfile
 # build the container
