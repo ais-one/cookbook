@@ -62,7 +62,7 @@ rm package-lock.json
 |  +- service-worker.js
 |  +- sitemap.xml
 |  +- style.css
-+- deploy/ : contains deployment info & files see recipe-node-express/deploy/README.md
++- deploy/ : contains deployment info & files see js-node/expressjs/deploy/README.md
 +- src/
 |  +- components/
 |  +- layouts/

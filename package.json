@@ -18,9 +18,8 @@
   },
   "workspaces": [
     "./@es-labs/*",
-    "./recipe-node-apps/*",
-    "./recipe-node-express",
-    "./recipe-vue-vite"
+    "./js-node/*",
+    "./js-web/*"
   ],
   "private": true
 }

@@ -3,9 +3,9 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
-- [recipe-node-express] scale websockets... https://pushpin.org/
-- [recipe-vue-vite] add sentry when ready
-- [recipe-vue-vite] cypress e2e testing
+- [js-node/expressjs] scale websockets... https://pushpin.org/
+- [js-web/vue-vite] add sentry when ready
+- [js-web/vue-vite] cypress e2e testing
 - [chore] migration to node 16 and npm 7
 - [chore] update webauthnsimple to v3
 - [feat] add commitizen, add semantic-version

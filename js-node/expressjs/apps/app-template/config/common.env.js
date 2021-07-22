@@ -38,9 +38,9 @@ module.exports = {
     // options does not seem to work
     // { folder: 'openapi', url: '/ftp2', options: {'icons': true}, list: true },
     { folder: 'apps/app-template/openapi', url: '/openapi' },
-    { folder: '../@es-labs/esm', url: '/esm' },
-    { folder: '../recipe-vue-nobundler', url: '/native', options: { extensions: ['html'], index: false } },
-    { folder: '../recipe-vue-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
+    { folder: '../../@es-labs/esm', url: '/esm' },
+    { folder: '../../js-web/vue-nobundler', url: '/native', options: { extensions: ['html'], index: false } },
+    { folder: '../../js-web/vue-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
     { folder: 'public/demo-express', url: '/' }, // last as path is /
   ],
 

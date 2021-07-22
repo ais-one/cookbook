@@ -1,16 +1,18 @@
+
+# TBD - to test
 # https://dev.to/rolanddoda/deploy-to-github-pages-like-a-pro-with-github-actions-4hdg
 # notes:
 # set package.json "homepage": "/name-of-your-project/",
 # set vite.config.js base: "/name-of-your-project",
 # set src/router.js: const routerHistory = createWebHistory('/name-of-your-project/')
 # on Github, select the branch of the Github pages site from project settings
-name: Deploy recipe-vue-vite to github pages
+name: Deploy js-web/vue-vite to github pages
 on:
   # push:
   #   branches:
   #     - master
   #   paths:
-  #     - 'recipe-vue-vite/**'
+  #     - 'js-web/vue-vite/**'
   workflow_dispatch:
     inputs:
       environment:
@@ -21,7 +23,7 @@ on:
 defaults:
   run:
     # abc/def
-    working-directory: recipe-vue-vite
+    working-directory: js-web/vue-vite
 
 jobs:
   gh-pages-deploy:

@@ -51,9 +51,9 @@ In GCP
 In Mongo Atlas
 - create mongo atlas account
 
-### Backend - recipe-node-express
+### Backend - js-node/expressjs
 
-In recipe-node-express folder
+In js-node/expressjs folder
 
 1. place service account json file into secrets folder
 2. set the mongodb info in config/secrets/uat.env.js
@@ -66,9 +66,9 @@ deploy.sh uat
 
 Note the URL returned you can test it using <URL>/api/healthcheck, you may need to wait awhile for initial response or retry a few times
 
-### Frontend - recipe-vue-vite
+### Frontend - js-web/vue-vite
 
-In recipe-vue-vite folder
+In js-web/vue-vite folder
 
 1. place service account json file into **deploy** folder
 2. setup the API URL in **.env.uat** file from the URL returned in a successful backend setup
@@ -113,7 +113,7 @@ We can build backend on container so that we can orchestrate using K8s
 
 See [deployment-container.md](deployment-container.md)
 
-And [../recipe-node-express/Dockerfile](../recipe-node-express/Dockerfile)
+And [../../js-node/expressjs/Dockerfile](../../js-node/expressjs/Dockerfile)
 
 ## Deployment Preparation
 
@@ -121,18 +121,18 @@ View files, folders and readme.md below, and configure them
 
 ### Backend
 
-- recipe-node-express/apps/app-template/config/
-- recipe-node-express/deploy/
-- recipe-node-express/ecosystem.config.js (for pm2 deployments)
-- recipe-node-express/Dockerfile (for docker deployments)
-- recipe-node-express/deploy.sh
-- recipe-node-express/deploy-vm.sh
+- js-node/expressjs/apps/app-template/config/
+- js-node/expressjs/deploy/
+- js-node/expressjs/ecosystem.config.js (for pm2 deployments)
+- js-node/expressjs/Dockerfile (for docker deployments)
+- js-node/expressjs/deploy.sh
+- js-node/expressjs/deploy-vm.sh
 
 ### Frontend
 
-- recipe-vue-vite/.env.*
-- recipe-vue-vite/deploy/
-- recipe-vue-vite/deploy.sh
+- js-web/vue-vite/.env.*
+- js-web/vue-vite/deploy/
+- js-web/vue-vite/deploy.sh
 
 ---
 
