@@ -56,7 +56,7 @@ paths:
     $ref: './auth.yaml#/login'
   /auth/otp:
     $ref: './auth.yaml#/otp'
-  /categories:
+  /app-template/categories:
     $ref: './categories.yaml#/no-id'
-  /categories/{id}:
+  /app-template/categories/{id}:
     $ref: './categories.yaml#/with-id'

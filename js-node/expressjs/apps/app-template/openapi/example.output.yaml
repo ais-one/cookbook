@@ -53,9 +53,6 @@ components:
           format: int32
         message:
           type: string
-# security:
-#   - BasicAuth: []
-#   - ApiKeyAuth: []
 paths:
   /healthcheck:
     get:
@@ -220,7 +217,7 @@ paths:
           description: Forbidden
         default:
           description: Unexpected error
-  /categories:
+  /app-template/categories:
     get:
       summary: Get categories
       description: Returns all categories from the system that the user has access to
@@ -301,7 +298,7 @@ paths:
           content:
             application/json:
               schema: *ref_0
-  '/categories/{id}':
+  '/app-template/categories/{id}':
     get:
       description: Returns a user based on a single ID
       tags:
