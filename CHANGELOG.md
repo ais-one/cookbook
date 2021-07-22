@@ -1,3 +1,6 @@
+### Version 0.6.2
+- [chore] rename project
+
 ### Version 0.6.1
 - [chore] update packages & cleanup & work on improving documentation
 - [note] Folder renames - No breaking change except folder renames in docs and configs

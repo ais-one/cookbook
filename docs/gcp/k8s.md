@@ -58,7 +58,7 @@ gcloud compute instances list
 
 ```bash
 # create deployment
-kubectl create deployment hello-web --image=gcr.io/${PROJECT_ID}/vue-crud-x:latest --port 8080
+kubectl create deployment hello-web --image=gcr.io/${PROJECT_ID}/cookbook:latest --port 8080
 kubectl get pods
 # expose to internet
 kubectl expose deployment hello-web --type=LoadBalancer --port 80 --target-port 8080

@@ -3,7 +3,6 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
-- [chore] rename project
 - [js-node/expressjs] scale websockets... https://pushpin.org/
 - [js-web/vue-vite] add sentry when ready
 - [js-web/vue-vite] cypress e2e testing

@@ -6,7 +6,7 @@
 
 ## Code Quality Analysis
 
-- https://sonarcloud.io/ (BEST) - https://www.sonarqube.org/ (https://github.com/ais-one/vue-crud-x/pull/85)
+- https://sonarcloud.io/ (BEST) - https://www.sonarqube.org/ (https://github.com/ais-one/cookbook/pull/85)
 - https://deepsource.io/
 - https://www.veracode.com/
 
