@@ -5,7 +5,6 @@ const { authUser } = require('@es-labs/node/auth')
 const categoryController = require('../controllers/category')
 
 module.exports = express.Router()
-  .get('/healthcheck', (req, res) => res.send('Cat OK'))
   .post('/categories', authUser, categoryController.create)
   .patch('/categories/:id', authUser, categoryController.update)
   .get('/categories/:id', authUser, categoryController.findOne)
