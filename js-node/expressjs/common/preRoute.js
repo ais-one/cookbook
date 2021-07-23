@@ -54,8 +54,9 @@ module.exports = function(app, express, options) {
 
   // ------ body-parser and-cookie parser ------
   const { BODYPARSER_JSON, BODYPARSER_URLENCODED } = options
+  // look out for... Unexpected token n in JSON at position 0 ... client request body must match request content-type, if applicaion/json, body cannot be null/undefined
   app.use(express.json( BODYPARSER_JSON || { limit: '2mb' }))
-  app.use(express.urlencoded( BODYPARSER_URLENCODED || { extended: true, limit: '2mb' })) // https://stackoverflow.com/questions/29175465/body-parser-extended-option-qs-vs-querystring/29177740#29177740
+  app.use(express.urlencoded( BODYPARSER_URLENCODED || { extended: trnue, limit: '2mb' })) // https://stackoverflow.com/questions/29175465/body-parser-extended-option-qs-vs-querystring/29177740#29177740
 
   const cookieParser = require('cookie-parser')
   app.use(cookieParser(COOKIE_SECRET))
