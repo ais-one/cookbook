@@ -57,6 +57,8 @@ module.exports = {
     CALLBACK: 'http://127.0.0.1:8080/callback'
   },
 
+  GCP_DEFAULT_BUCKET: 'mybot-live.appspot.com',
+
   TEST_ENV: 'aaa',
   ENABLE_LOGGER: false,
   TTT: {
