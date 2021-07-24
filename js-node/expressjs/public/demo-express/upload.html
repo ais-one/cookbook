@@ -19,16 +19,20 @@
   </p>
   <hr/>
   <h2>Upload to GCP using signed URL</h2>
-  Upload Google (filename must be test.txt) <input id="input-gcp-upload" type="file"></br>
+  Upload To Google Storage <input id="input-gcp-upload" type="file"><br>
   <button id="btn-gcp-cors">Enable Cors Google</button>
-  <button id="btn-gcp-read">Read Google</button>
-  <button id="btn-gcp-delete">Delete Google</button><br/>
-  <button id="btn-clear">Clear Inputs</button>
+  <button id="btn-gcp-read">Read Google</button><br>
+  <button id="btn-gcp-delete">Delete Google</button><br>
+  <button id="btn-clear">Clear File Input</button><br>
+  Enter filename in Google Storage <input id="file-name" onchange="setFileName" /><br>
 </body>
 
 <script type="module">
 import * as mod from '/esm/upload-fe-test.js'
-const testFilename = 'test.txt'
+
+let testFilename = ''
+const fnEl = document.querySelector('#file-name')
+fnEl.onchange = (e) => testFilename = e.target.value
 
 document.querySelector('#btn-json').onclick = (e) => mod.jsonOnly()
 document.querySelector('#btn-upload-memory').onchange = (e) => mod.uploadMemory(e.target.files)

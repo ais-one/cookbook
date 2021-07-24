@@ -33,7 +33,7 @@ echo "build and deploy ($1)"
 # npm install && npm cache clean --force
 npm install
 # npm run vite build --mode $1 # Cannot work - cannot find vite
-npm run build-$1
+npx vite build --mode $1
 
 if [ "$CI" = "true" ]; then
   echo "CI configured gcloud auth"

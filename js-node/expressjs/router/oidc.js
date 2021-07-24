@@ -6,8 +6,8 @@ const { setTokensToHeader } = require('@es-labs/node/auth')
 
 const { OIDC_OPTIONS, AUTH_ERROR_URL } = global.CONFIG
 
-const AUTH_URL = `${OIDC_OPTIONS.URL}/auth?`
-const TOKEN_URL = `${OIDC_OPTIONS.URL}/token`
+const AUTH_URL = OIDC_OPTIONS ? `${OIDC_OPTIONS.URL}/auth?` : ''
+const TOKEN_URL = OIDC_OPTIONS ? `${OIDC_OPTIONS.URL}/token` : ''
 
 // payload.append('client_secret', OIDC_OPTIONS.CLIENT_SECRET) // if keycloak client access type is confidential
 

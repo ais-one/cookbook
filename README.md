@@ -131,44 +131,7 @@ npm run process-cron
 
 ### Vite SPA Setup & Run - development environment
 
-[Why Use Vite](https://indepth.dev/a-note-on-vite-a-very-fast-dev-build-tool/)
-
-For Push Notification
-- using Google FCM, setup your firebase account and messaging, also setup FCM server key in backend
-- using self hosted webpush is also supported and available
-
-```bash
-cd js-web/vue-vite
-npm i
-npm run dev
-```
-
-Navigate to:
-- http://127.0.0.1:8080/ to view application
-- http://127.0.0.1:8080/nested/index.html to view another page (vite serving multi page, each page can be an SPA)
-
-#### http://127.0.0.1:8080/ Application
-
-Login using the following:
-- User: test
-- Password: test
-- OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin
-
-You can test PWA Push notifications using Webpush or FCM on Dashboard page depending on **.env.<environment>** file configuration (need to be on 127.0.0.1).
-
-Click the following buttons in order (see their output in console.log and screen):
-- sub PN (subscribe)
-- Test PN (send a test message to user id 1 - on sqlite)
-- Unsub PN (unsubscribe)
-
-### Vite SPA - static build
-
-```bash
-cd js-web/vue-vite
-npx vite build --mode development # build into example app, development environment
-npx vite build --mode uat # build uat environment, deploy to GCP Storage
-```
-Navigate to http://127.0.0.1:3000/vite/
+See [js-web/vue-vite/README.md](js-web/vue-vite/README.md)
 
 ## Why No SSR or SSG
 

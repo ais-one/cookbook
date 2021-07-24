@@ -84,7 +84,7 @@ global.CONFIG.JOB_TYPES = 'email' // 'email', // 'email,nexmo,telegram' //  agen
 
 global.CONFIG.KNEXFILE = null // knexfile
 global.CONFIG.GCP_SERVICE_KEY = null // GCP SERVICE KEY { }
-global.CONFIG.GCP_DEFAULT_BUCKET = 'mybot-live.appspot.com'
+global.CONFIG.GCP_DEFAULT_BUCKET = ''
 
 // helmetjs options
 global.CONFIG.HELMET_OPTIONS = {

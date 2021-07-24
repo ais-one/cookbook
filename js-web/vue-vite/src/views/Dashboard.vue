@@ -216,7 +216,7 @@ export default {
       // No FCM Unsub
       try {
         if (VITE_PWA_PN === 'Webpush') await webpushUnsubscribe()
-        await http.post('/api/webpush/unsub')
+        await http.post('/api/webpush/unsub', {})
       } catch (e) {
         console.log('unsubPn', e)
       }
