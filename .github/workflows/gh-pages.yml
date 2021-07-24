@@ -38,7 +38,7 @@ jobs:
       - name: Show checkout branch name
         run: echo checking out on branch ${GITHUB_REF##*/}
       - name: Clean install dependencies
-        run: npm ci --only=production
+        run: npm ci
       # - name: Make shell script executable
       #   run: chmod +x deploy.sh
       # - name: Initiate Deployment
