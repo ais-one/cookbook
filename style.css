@@ -1,0 +1,55 @@
+body {
+  display: block;
+  margin: 0;
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+/* height: 100%; width: 100%; margin: 0; padding: 0; */
+
+.container {
+  margin: 4px 4px 4px 4px;
+}
+
+.v-center {
+  display: flex;
+  align-items: center;
+}
+
+.h-center {
+  display: flex;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* super center in just 2 lines */
+.parent-grid-centered {
+  display: grid;
+  place-items: center;
+  /* resize: both; */
+  /* overflow: auto; */
+  width: 100vw;
+  height: 100vh;
+}
+
+/* can mix use of flexbox, cssgrid, @media query */
+
+/* Extra small devices (portrait phones, less than 576px) */
+/* @media screen and (max-width: 575.98px) { } */
+
+/* Small devices (landscape phones, 576px and up) */
+/* @media screen and (min-width: 576px) and (max-width: 767.98px) { } */
+
+/* Medium devices (tablets, 768px and up) */
+/* @media screen and (min-width: 768px) and (max-width: 991.98px) { } */
+
+/* Large devices (desktops, 992px and up) */
+/* @media screen and (min-width: 992px) and (max-width: 1199.98px) { } */
+
+/* Extra large devices (large desktops, 1200px and up) */
+/* @media screen and (min-width: 1200px) { } */
