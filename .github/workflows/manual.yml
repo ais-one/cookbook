@@ -35,7 +35,7 @@ jobs:
     name: Deploying js-node/expressjs - ${{ github.event.inputs.service }} - ${{ github.event.inputs.environment }}... Using Node ${{ matrix.node }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - uses: google-github-actions/setup-gcloud@master
         with:
           version: 'latest'
           project_id: ${{ secrets.GCP_PROJECT_ID }}
