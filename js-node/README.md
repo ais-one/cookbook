@@ -1,6 +1,7 @@
 # Description
 
-Projects
+Below are a list of NodeJS applications
+
 - expressjs
   - see [expressjs/README.md](expressjs/README.md)
 - openapi-file-joiner
@@ -26,6 +27,26 @@ Projects
     - requires kafka to run (see /docker-devenv/kafka)
   - process-cron.js
   - process-long.js
+
+
+## 
+
+To test out
+
+```
+cd js-node/wip
+
+# Command to simulate long running process (do take note of caveats, for production need a monitor to handle restart strategy)
+# command: npm run process-long -- development
+npm run process-long
+
+# Command to simulate process triggered by cron (**NOTE:** may be better to use cron to call API than trigger a process)
+# command: npm run process-cron -- development
+npm run process-cron
+```
+
+
+
 
 # Useful commands
 

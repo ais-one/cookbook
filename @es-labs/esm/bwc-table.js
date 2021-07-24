@@ -577,7 +577,7 @@ class Table extends HTMLElement {
         parent.remove()
       }
 
-      if (typeof this.#columns === 'object') {
+      if (this.#columns && typeof this.#columns === 'object') {
         // console.log('render thead')
         table = document.createElement('table')
         table.setAttribute('id', 'table')
@@ -664,7 +664,7 @@ class Table extends HTMLElement {
         }
 
         // populate the data
-        if (typeof this.#items === 'object' && this.#items.length) {
+        if (this.#items && typeof this.#items === 'object' && this.#items.length) {
           // console.log('render tbody')
           const tbody = document.createElement('tbody')
           // TBD function to get checked rows...

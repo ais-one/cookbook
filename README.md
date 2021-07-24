@@ -111,19 +111,9 @@ npm run test
 
 ### Long Running Processes
 
-Codes for long running processes such as tcp server (event mode, streaming mode), serial server, kafka producer, consumer, cron-triggered process, etc.
+For long running processes such as tcp server (event mode, streaming mode), serial server, kafka producer, consumer, cron-triggered process, etc.
 
-```
-cd js-node/wip
-
-# Command to simulate long running process (do take note of caveats, for production need a monitor to handle restart strategy)
-# command: npm run process-long -- development
-npm run process-long
-
-# Command to simulate process triggered by cron (**NOTE:** may be better to use cron to call API than trigger a process)
-# command: npm run process-cron -- development
-npm run process-cron
-```
+See [js-node/README.md](js-node/README.md)
 
 ---
 
@@ -196,9 +186,18 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 +- rest-cmd.http : rest commands for testing
 ```
 
-## CI/CD
+## CI/CD & Cloud Deployment
 
-Deployment Using Github Actions
+### Cloud Services
+
+The following Google Cloud Platform services are used
+- Container Registry
+- Cloud Run
+- Cloud Storage 
+
+Refer to [doc/deployment/home.md](doc/deployment/home.md) for documentation on deployments
+
+### Deployment Using Github Actions
 
 - .github/workflows/manual-gcp-expressjs.yml (Manually deploy js-node/expressjs to GCP CloudRun)
   - selectable inputs

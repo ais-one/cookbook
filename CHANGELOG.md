@@ -2,6 +2,10 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [chore] improve github workflow and documentation
 - [js-web/vue-vite] add sentry when ready
+- [fix] typeof xx === 'object' - handle if xx is null
+- [js-node/expressjs] make deployment application specific also, moved **deploy** folder to [js-node/expressjs/apps/app-template](js-node/expressjs/apps/app-template)
+- fix migration & seeding
+- TBD allow options to be passed in for services...
 
 ### Version 0.6.2
 - [chore] rename project

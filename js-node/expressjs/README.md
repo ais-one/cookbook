@@ -1,3 +1,52 @@
+## Project Strcuture
+
+```
++- apps : custom apps are here in this folder
+|  +- app-template/ : sample custom application (prefixed with app)
+|  |  +- config/ : application configs (see README.md within the config folder)
+|  |  +- controllers/
+|  +- deploy/ : deployment folder (see README.md within the deploy folder)
+|  |  +- db/ : for seeding and migrating data
+|  |  |  +- knex/
+|  |  |  |  +- migrations/
+|  |  |  |  +- seeds/
+|  |  |  +- mongo/
+|  |  +- models/
+|  |  +- openapi/ : OpenAPI yaml files
+|  |  +- routes/ : application REST API & websocket setup
+|  |  +- services/ : services used
+|  |  +- tables/ : configurable table & crud
+|  |  +- tests/ : Jest tests
+|  |  +- graphql-schema.js : application GraphQL schemas and resolvers
+|  +- app-custom/ : your custom app, put under source control (app-* is git ignored)
++- common/ : common express setup
++- jobs/ : message queue jobs
++- logs/
++- middlewares/
++- public/ : for serving static files - website
+|  +- demo-express/ (127.0.0.1/)
++- router/
++- sandbox/ : Useful scripts
++- uploads/ : for serving static files - files
++- .dockerignore
++- .eslintrc.js
++- .gitignore
++- app.js : the express app boilerplate
++- deploy-vm.sh: VM deployment script
++- deploy.sh: GCP deployment script
++- docker-compose.yml
++- Dockerfile
++- ecosystem.config.js
++- index.js
++- jest.config.js: JEST testing
++- knexfile.js: Knex query builder
++- package.json
++- README.md
++- test.py: run python from express
+
+```
+
+
 ## Relational Database Schema
 
 ### Simple Relation
@@ -61,46 +110,4 @@
 * POST /books/:id/authors/:authorId - relate author to book
 * DELETE /books/:id/authors/:authorId - unrelate author to book
 
-# Project Strcuture
 
-```
-+- apps : custom apps are here in this folder
-|  +- app-template/ : sample custom application (prefixed with app)
-|  |  +- controllers/
-|  |  +- models/
-|  |  +- routes/ : rest API & websocket setup
-|  |  +- tests/ : Jest tests
-|  +- app-custom/ : your custom app, put under source control (app-* is git ignored)
-+- common/ : common express setup
-+- config/ : centralized config folder (see README.md within the config folder)
-+- deploy/ : deployment folder (see README.md within the deploy folder)
-|  +- db/ : for seeding and migrating data
-|     +- knex/
-|     |  +- migrations/
-|     |  +- seeds/
-|     +- mongo/
-+- jobs/ : message queue jobs
-+- logs/
-+- middlewares/
-+- public/ : for serving static files - website
-|  +- demo-express/ (127.0.0.1/)
-+- router/
-+- sandbox/ : Useful scripts
-+- uploads/ : for serving static files - files
-+- .dockerignore
-+- .eslintrc.js
-+- .gitignore
-+- app.js : the express app boilerplate
-+- deploy-vm.sh: VM deployment script
-+- deploy.sh: GCP deployment script
-+- docker-compose.yml
-+- Dockerfile
-+- ecosystem.config.js
-+- index.js
-+- jest.config.js: JEST testing
-+- knexfile.js: Knex query builder
-+- package.json
-+- README.md
-+- test.py: run python from express
-
-```

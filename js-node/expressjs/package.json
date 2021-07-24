@@ -8,8 +8,8 @@
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development PORT=3001 DEBUG=app:* nodemon --ignore tests/ --ignore public/ --watch src bin/www",
-    "knex": "node deploy/db/knex/index.js",
-    "mongo": "node deploy/db/mongo/index.js",
+    "knex": "node apps/app-template/deploy/db/knex/index.js",
+    "mongo": "node apps/app-template/deploy/db/mongo/index.js",
     "app": "nodemon --trace-warnings index.js",
     "app:lint": "nodemon --ignore tests/ --ignore public/ --exec \"npm run lint && node\" index.js",
     "test": "cross-env NODE_ENV=development jest --config=jest.config.js",

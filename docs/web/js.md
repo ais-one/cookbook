@@ -30,6 +30,32 @@ const x2 = num => num * 2
 compose(inc, x2)(5) // return value should be (5 * 2) + 1 = 11 
 ```
 
+### Truthy, falsy & typeof
+
+- Typeof
+
+```js
+typeof null === 'object'
+typeof [] === 'object'
+typeof {} === 'object'
+typeof '' === 'string'
+typeof function () {} === 'function'
+typeof 1 === 'number'
+typeof true === 'boolean'
+typeof undefined === 'undefined'
+```
+
+- Falsy
+
+```
+null, false, 0, undefined, ''
+```
+
+- Truthy
+
+```
+true, 1, 'a', [], {}, () => {}),
+```
 
 ### ES2020
 
