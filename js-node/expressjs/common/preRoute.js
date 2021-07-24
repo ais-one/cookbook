@@ -80,7 +80,7 @@ module.exports = function(app, express, options) {
   const { OPENAPI_PATH, OPENAPI_VALIDATOR } = options
   if (OPENAPI_PATH) {
     const swaggerUi = require('swagger-ui-express')
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(require('yamljs').load(OPENAPI_PATH), { explorer: true }))
+    app.use('/api-docs1', swaggerUi.serve, swaggerUi.setup(require('yamljs').load(OPENAPI_PATH), { explorer: true }))
     if (OPENAPI_VALIDATOR) {
       const OpenApiValidator = require('express-openapi-validator')
       app.use(OpenApiValidator.middleware(OPENAPI_VALIDATOR))  
