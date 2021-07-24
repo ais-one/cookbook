@@ -35,7 +35,7 @@ jobs:
     name: Deploying js-node/expressjs - ${{ github.event.inputs.service }} - ${{ github.event.inputs.environment }}... Using Node ${{ matrix.node }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      - uses: google-github-actions/setup-gcloud@master
         with:
           version: 'latest'
           project_id: ${{ secrets.GCP_PROJECT_ID }}
@@ -46,10 +46,10 @@ jobs:
         #   ref: if_you_need_to_specify_a_branch
       - name: Show checkout branch name
         run: echo checking out on branch ${GITHUB_REF##*/}
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node }}
-          check-latest: true
+          check-latest: false
       - name: Make shell script executable
         run: |
           chmod +x ./js-node/expressjs/deploy.sh
