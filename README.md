@@ -198,14 +198,24 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 
 ## CI/CD
 
-Using github actions, deploy to GCP Cloud
+Deployment Using Github Actions
 
-Manually triggered deployment on .github/workflows/manual.yml
+- .github/workflows/manual-gcp-expressjs.yml (Manually deploy js-node/expressjs to GCP CloudRun)
+  - selectable inputs
+    - environment (uat for now, development does not deploy anything)
+    - service (default = app-template)
+    - branch
+- .github/workflows/manual-gcp-vue-vite.yml (Manually deploy js-web/vue-vite to GCP Cloud Storage)
+  - selectable inputs
+    - environment (uat for now, development does not deploy anything)
+    - csutom_app (to be implemented)
+    - branch
+- .github/workflows/manual-gh-pages.yml (Manually deploy js-web/vue-vite to Github Pages)
+  - selectable inputs
+    - environment (uat for now, development does not deploy anything)
+    - csutom_app (to be implemented)
+    - branch
 
-selectable inputs
-- environment (uat for now, development does not deploy anything)
-- application (js-node/expressjs, js-web/vue-vite)
-- code branch
 
 **NOTE** config/secret contents will not be in repo for CI/CD (so you can get errors), those should be put in VAULT
 

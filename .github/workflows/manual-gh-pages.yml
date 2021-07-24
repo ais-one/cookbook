@@ -32,7 +32,7 @@ jobs:
       - name: Setup Node.js for use with actions
         uses: actions/setup-node@v2
         with:
-          version:  14.x
+          node-version: 14.x
       - name: Checkout branch
         uses: actions/checkout@v2
       - name: Show checkout branch name
@@ -54,7 +54,7 @@ jobs:
         run: |
           git config user.name "Your username" && git config user.email "your email"
           git checkout --orphan gh-pages
-          npx vite build -- mode ${{ github.event.inputs.environment }}
+          npx vite build --mode ${{ github.event.inputs.environment }}
           git --work-tree dist add --all
           git --work-tree dist commit -m 'Deploy'
           git push origin HEAD:gh-pages --force

@@ -80,12 +80,6 @@ deploy.sh uat
 
 ---
 
-## Github Actions Deploymen
-
-See **.github/workflows/manual.yml**
-
----
-
 # SCALING & DEPLOYMENT STRATEGIES
 
 There should always be alternatives to the service you are using.

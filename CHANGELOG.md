@@ -1,5 +1,7 @@
 ### Version 0.6.3
 - [chore] update packages & cleanup & work on improving documentation
+- [chore] improve github workflow and documentation
+- [js-web/vue-vite] add sentry when ready
 
 ### Version 0.6.2
 - [chore] rename project

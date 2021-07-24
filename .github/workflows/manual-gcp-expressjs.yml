@@ -1,0 +1,71 @@
+# This is a basic workflow that is manually triggered
+# good for testing
+# try to use as much shell scripting a possible
+# actions appear from default branch - https://github.community/t/workflow-files-only-picked-up-from-master/16129/2
+
+# manual workflow for js-node/expressjs
+name: Manual ExpressJS to GCP CloudRun workflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      service:
+        description: 'Service to deploy (APP_NAME)'
+        default: 'app-template'
+        required: true
+      environment:
+        description: 'The environment (uat, prod)'
+        default: 'uat'
+        required: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "deploy_to_cloudrun"
+  deploy_to_cloudrun:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # container: node:lts
+    strategy:
+      matrix:
+        node: [ '14' ]
+
+    name: Deploying js-node/expressjs - ${{ github.event.inputs.service }} - ${{ github.event.inputs.environment }}... Using Node ${{ matrix.node }}
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: google-github-actions/setup-gcloud@master
+        with:
+          version: 'latest'
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+      - uses: actions/checkout@v2
+        # with:
+        #   ref: if_you_need_to_specify_a_branch
+      - name: Show checkout branch name
+        run: echo checking out on branch ${GITHUB_REF##*/}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node }}
+          check-latest: false
+      - name: Make shell script executable
+        run: |
+          chmod +x ./js-node/expressjs/deploy.sh
+      # Runs a single command using the runners shell
+      - name: Initiate Deployment
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+          # VAULT_<env> to VAULT
+          VAULT: ${{ secrets[format('VAULT_{0}', github.event.inputs.environment)] }}
+        run: |
+          # gcloud info
+          echo "CI: $CI"
+          echo "Service: ${{ github.event.inputs.service }}"
+          echo "Branch: ${GITHUB_REF##*/}"
+          echo "Environment: ${{ github.event.inputs.environment }}"
+          cd js-node/expressjs
+          ./deploy.sh ${{ github.event.inputs.environment }} ${{ github.event.inputs.service }}
