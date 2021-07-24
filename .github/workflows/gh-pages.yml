@@ -25,7 +25,7 @@ defaults:
     working-directory: js-web/vue-vite
 
 jobs:
-  gh-pages-deploy:
+  gh-pages-deploy1:
     name: Deploying to gh-pages
     runs-on: ubuntu-latest
     steps:
@@ -38,11 +38,15 @@ jobs:
       - name: Show checkout branch name
         run: echo checking out on branch ${GITHUB_REF##*/}
       - name: Clean install dependencies
-        run: npm ci
+        run: npm ci --only=production
       # - name: Make shell script executable
       #   run: chmod +x deploy.sh
       # - name: Initiate Deployment
       #   ./deploy.sh ${{ github.event.inputs.environment }}
+  gh-pages-deploy2:
+    name: Deploying to gh-pages 2
+    needs: [gh-pages-deploy1]
+    steps:
       - name: Run deploy script
         # remember to change user.name and user.email
         run: |
@@ -53,7 +57,7 @@ jobs:
           git --work-tree dist commit -m 'Deploy'
           git push origin HEAD:gh-pages --force
           rm -r dist
-          git checkout -f master
+          git checkout -f ${GITHUB_REF##*/}
           git branch -D gh-pages
 
 
