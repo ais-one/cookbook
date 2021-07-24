@@ -10,9 +10,7 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, Cloud container deployment, Web Components, ES Modules) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-**NOTE!** project name <u>vue-crud-x</u> changed to <u>cookbook</u>
-
-Latest Version [0.6.2](https://github.com/ais-one/cookbook/releases/tag/0.6.2) - Released 2021 July 23 1230 +8GMT
+Latest Version [0.6.3](https://github.com/ais-one/cookbook/releases/tag/0.6.3) - Released 2021 July 31 1230 +8GMT
 
 Considerations for this project are similar to [favv](https://github.com/ais-one/favv/blob/master/README.md#considerations). The difference between them are:
 - this repo is more of a cookbook and recipes are constantly being improved and updated
@@ -229,7 +227,7 @@ VAULT={ secrets: { ... all your secrets here } } # base64 encoded
 
 ## VERSION CHANGE NOTES
 
-- **v0.6+** Improve organization, graceful exit, logging, project rename, add more nodejs applications
+- **v0.6+** Improve organization, graceful exit, logging, project rename, add more nodejs applications, repo name <u>vue-crud-x</u> changed to <u>cookbook</u>
 - **v0.5+** Improve organization and authentication, add new features
 - **v0.4+** Improve folders and structure organization, handle CI/CD better
 - **v0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.

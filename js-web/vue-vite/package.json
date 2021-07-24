@@ -1,6 +1,6 @@
 {
   "name": "vue-vite",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "vue 3 SPA + vite example",
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
@@ -27,7 +27,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.2.5",
     "@vue/compiler-sfc": "^3.1.5",
-    "cypress": "^7.7.0",
+    "cypress": "^8.0.0",
     "dotenv": "^10.0.0",
     "eslint": "^7.31.0",
     "eslint-config-prettier": "^8.3.0",

@@ -1,7 +1,7 @@
 {
   "name": "expressjs",
-  "version": "0.6.2",
-  "description": "example express application",
+  "version": "0.6.3",
+  "description": "express application",
   "main": "index.js",
   "directories": {
     "test": "tests"

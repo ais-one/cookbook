@@ -1,3 +1,6 @@
+### Version 0.6.3
+- [chore] update packages & cleanup & work on improving documentation
+
 ### Version 0.6.2
 - [chore] rename project
 
