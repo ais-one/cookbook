@@ -39,7 +39,7 @@ if [ "$CI" = "true" ]; then
   echo "build_ts $BUILD_TS"
   # gcloud auth list
 else
-  echo "manual deploy 1"
+  echo "manual deploy"
   GCP_PROJECT_ID=mybot-live
   # test vault
   # VAULT="{ \"url\": \"http://127.0.0.1:8200/v1/secret/data/test?version=1\", \"token\": \"roottoken\" }"

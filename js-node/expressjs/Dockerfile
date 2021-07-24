@@ -3,14 +3,14 @@
 # ARG SETTINGS
 # RUN ./run/init-stuff $SETTINGS
 
-ARG NODE_VERSION=12
+ARG NODE_VERSION=14
 FROM node:${NODE_VERSION}-alpine AS build
 RUN apk update && apk add python make g++ && rm -rf /var/cache/apk/*
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production
-# install shared libraries
-RUN npm i ../lib
+# RUN npm ci --only=production ../../@es-labs causes problems
+RUN npm i @es-labs/esm@latest @es-labs/node@latest
+RUN npm i --only=production
 COPY . .
 
 

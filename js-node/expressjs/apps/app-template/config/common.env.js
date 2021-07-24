@@ -34,16 +34,6 @@ module.exports = {
   API_PORT: 3000,
   WS_PORT: 3001,
 
-  WEB_STATIC: [ // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
-    // options does not seem to work
-    // { folder: 'openapi', url: '/ftp2', options: {'icons': true}, list: true },
-    { folder: 'apps/app-template/openapi', url: '/openapi' },
-    { folder: '../../@es-labs/esm', url: '/esm' },
-    { folder: '../../js-web/vue-nobundler', url: '/native', options: { extensions: ['html'], index: false } },
-    { folder: '../../js-web/vue-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
-    { folder: 'public/demo-express', url: '/' }, // last as path is /
-  ],
-
   // for file uploads
   UPLOAD_STATIC: [{
     folder: APP_PATH + '/uploads',

@@ -13,20 +13,15 @@ module.exports = {
   CORS_ORIGINS: 'http://127.0.0.1:8080,http://127.0.0.1:3000,http://127.0.0.1:8081,' // port 8081 is from SAML
     + 'https://127.0.0.1:8080,https://127.0.0.1:3000,https://127.0.0.1:8081', // port 5500 ? unknown
 
-  // in secret
-  // KNEXFILE: null,
-  // GCP_SERVICE_KEY: null,
-
-  // OAUTH_URL: '',
-  // OAUTH_CLIENT_ID: '',
-  // OAUTH_CLIENT_SECRET: '',
-  // OAUTH_CALLBACK: '',
-  // OAUTH_USER_URL: '',
-  // OAUTH_USER_ID: '',
-  // OAUTH_USER_GROUPS: '',
-  // OAUTH_FIND_ID: '',
-  
-  // FCM_SERVER_KEY: '',
+  WEB_STATIC: [ // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
+    // options does not seem to work
+    // { folder: 'openapi', url: '/ftp2', options: {'icons': true}, list: true },
+    { folder: 'apps/app-template/openapi', url: '/openapi' },
+    { folder: '../../@es-labs/esm', url: '/esm' },
+    { folder: '../../js-web/vue-nobundler', url: '/native', options: { extensions: ['html'], index: false } },
+    { folder: '../../js-web/vue-vite/dist', url: '/vite', options: { extensions: ['html'], index: false } },
+    { folder: 'public/demo-express', url: '/' }, // last as path is /
+  ],
 
   SAML_OPTIONS: {
     // cert: fs.readFileSync('/path/to/adfs.acme_tools.com.crt', 'utf-8'), // PEM in single string to ensure ADFS Server is not a fake one
@@ -66,4 +61,19 @@ module.exports = {
     cccxx: 'cdcd',
     zzz: () => console.log('DO NOT USE FUNCTIONS!!!!')
   }
+
+  // NOTE! in secret
+  // KNEXFILE: null,
+  // GCP_SERVICE_KEY: null,
+
+  // OAUTH_URL: '',
+  // OAUTH_CLIENT_ID: '',
+  // OAUTH_CLIENT_SECRET: '',
+  // OAUTH_CALLBACK: '',
+  // OAUTH_USER_URL: '',
+  // OAUTH_USER_ID: '',
+  // OAUTH_USER_GROUPS: '',
+  // OAUTH_FIND_ID: '',
+  
+  // FCM_SERVER_KEY: '',
 }
