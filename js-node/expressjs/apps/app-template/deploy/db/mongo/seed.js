@@ -3,6 +3,8 @@ async function run() {
     require('@es-labs/node/config')(process.cwd()) //  first thing to include
     const mongodb = await require('@es-labs/node/services/db/mongodb').open()
     const mongo = mongodb.get()
+
+    // @SONAR_STOP@
     // const ObjectID = mongo.ObjectID
 
     // Create JWT User Session Store
@@ -77,6 +79,8 @@ async function run() {
       { personId: personIdStr, subject: 'PHY', grade: '70' }
     ])
     */
+
+    // @SONAR_START@
 
     await mongo.db.collection('grade-todelete').insertMany([
       { subject: 'EM', gradex: '80' },
