@@ -17,7 +17,7 @@ Better to combine to a single file for use.
 npm i
 ```
 
-Refer to .env file for openapi folder (relative to this script), root file and output file (will be generated in the openapi folder)
+Refer to **.env** file for openapi folder (relative to this script), root file and output file (will be generated in the openapi folder)
 
 ```
 node index.js

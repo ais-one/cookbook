@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# THIS SCRIPT DOES NOT WORK - IT IS JUST A SAMPLE FOR LEARNING BASH COMMANDS
+
 # $0. The name of script itself.
 # $$ Process id of current shell.
 # $* Values of all the arguments. ...

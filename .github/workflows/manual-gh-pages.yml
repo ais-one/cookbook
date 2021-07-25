@@ -1,5 +1,5 @@
+# https://ais-one.github.io/cookbook
 
-# TBD - to test
 # https://dev.to/rolanddoda/deploy-to-github-pages-like-a-pro-with-github-actions-4hdg
 # notes:
 # set package.json "homepage": "/name-of-your-project/",
@@ -17,23 +17,22 @@ on:
     inputs:
       environment:
         description: 'The environment (uat, production)'
-        default: 'production'
+        default: 'uat'
         required: true
 
 defaults:
   run:
-    # abc/def
     working-directory: js-web/vue-vite
 
 jobs:
-  gh-pages-deploy:
+  gh-pages-deploy1:
     name: Deploying to gh-pages
     runs-on: ubuntu-latest
     steps:
       - name: Setup Node.js for use with actions
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          version:  14.x
+          node-version: 14.x
       - name: Checkout branch
         uses: actions/checkout@v2
       - name: Show checkout branch name
@@ -44,18 +43,23 @@ jobs:
       #   run: chmod +x deploy.sh
       # - name: Initiate Deployment
       #   ./deploy.sh ${{ github.event.inputs.environment }}
+# DOES NOT WORK THIS WAY
+# gh-pages-deploy2:
+#   name: Deploying to gh-pages 2
+#   runs-on: ubuntu-latest
+#   needs: [gh-pages-deploy1]
+#   steps:
       - name: Run deploy script
         # remember to change user.name and user.email
-        # TBD npx vite build -- mode ${{ github.event.inputs.environment }}
         run: |
           git config user.name "Your username" && git config user.email "your email"
           git checkout --orphan gh-pages
-          npm run build
+          npx vite build --mode ${{ github.event.inputs.environment }}
           git --work-tree dist add --all
           git --work-tree dist commit -m 'Deploy'
           git push origin HEAD:gh-pages --force
           rm -r dist
-          git checkout -f master
+          git checkout -f ${GITHUB_REF##*/}
           git branch -D gh-pages
 
 

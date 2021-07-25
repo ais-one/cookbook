@@ -10,9 +10,7 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, Cloud container deployment, Web Components, ES Modules) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-**NOTE!** project name <u>vue-crud-x</u> changed to <u>cookbook</u>
-
-Latest Version [0.6.2](https://github.com/ais-one/cookbook/releases/tag/0.6.2) - Released 2021 July 23 1230 +8GMT
+Latest Version [0.6.3](https://github.com/ais-one/cookbook/releases/tag/0.6.3) - Released 2021 July 25 1215 +8GMT
 
 Considerations for this project are similar to [favv](https://github.com/ais-one/favv/blob/master/README.md#considerations). The difference between them are:
 - this repo is more of a cookbook and recipes are constantly being improved and updated
@@ -74,16 +72,16 @@ npm i ../@es-labs/node
 
 ```bash
 # create and seed relational db on SQLite, (delete the dev.sqlite file each time before you run this)
-# command: npm run knex -- <development / uat / production> <seed / migrate>
-npm run knex -- development migrate
-npm run knex -- development seed
+# command: npm run knex -- <development / uat / production> <custom app name> <seed / migrate>
+npm run knex -- development app-template migrate
+npm run knex -- development app-template seed
 
 # create and seed MongoDB requires MongoDB - you can skip this but MongoDB examples will not work
-# command: npm run mongo -- <development / uat / production> <seed / update>
-npm run mongo -- development seed
+# command: npm run mongo -- <development / uat / production> <custom app name> <seed / update>
+npm run mongo -- development app-template seed
 
 # run the backend
-# command: npm run app -- <development / uat / production>
+# command: npm run app -- <development / uat / production> <custom app name, default = app-template>
 npm run app -- development
 
 # or npm run app:lint to include eslint checks
@@ -113,19 +111,9 @@ npm run test
 
 ### Long Running Processes
 
-Codes for long running processes such as tcp server (event mode, streaming mode), serial server, kafka producer, consumer, cron-triggered process, etc.
+For long running processes such as tcp server (event mode, streaming mode), serial server, kafka producer, consumer, cron-triggered process, etc.
 
-```
-cd js-node/wip
-
-# Command to simulate long running process (do take note of caveats, for production need a monitor to handle restart strategy)
-# command: npm run process-long -- development
-npm run process-long
-
-# Command to simulate process triggered by cron (**NOTE:** may be better to use cron to call API than trigger a process)
-# command: npm run process-cron -- development
-npm run process-cron
-```
+See [js-node/README.md](js-node/README.md)
 
 ---
 
@@ -198,16 +186,35 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 +- rest-cmd.http : rest commands for testing
 ```
 
-## CI/CD
+## CI/CD & Cloud Deployment
 
-Using github actions, deploy to GCP Cloud
+### Cloud Services
 
-Manually triggered deployment on .github/workflows/manual.yml
+The following Google Cloud Platform services are used
+- Container Registry
+- Cloud Run
+- Cloud Storage 
 
-selectable inputs
-- environment (uat for now, development does not deploy anything)
-- application (js-node/expressjs, js-web/vue-vite)
-- code branch
+Refer to [doc/deployment/home.md](doc/deployment/home.md) for documentation on deployments
+
+### Deployment Using Github Actions
+
+- .github/workflows/manual-gcp-expressjs.yml (Manually deploy js-node/expressjs to GCP CloudRun)
+  - selectable inputs
+    - environment (uat for now, development does not deploy anything)
+    - service (default = app-template)
+    - branch
+- .github/workflows/manual-gcp-vue-vite.yml (Manually deploy js-web/vue-vite to GCP Cloud Storage)
+  - selectable inputs
+    - environment (uat for now, development does not deploy anything)
+    - csutom_app (to be implemented)
+    - branch
+- .github/workflows/manual-gh-pages.yml (Manually deploy js-web/vue-vite to Github Pages)
+  - selectable inputs
+    - environment (uat for now, development does not deploy anything)
+    - csutom_app (to be implemented)
+    - branch
+
 
 **NOTE** config/secret contents will not be in repo for CI/CD (so you can get errors), those should be put in VAULT
 
@@ -229,7 +236,7 @@ VAULT={ secrets: { ... all your secrets here } } # base64 encoded
 
 ## VERSION CHANGE NOTES
 
-- **v0.6+** Improve organization, graceful exit, logging, project rename, add more nodejs applications
+- **v0.6+** Improve organization, graceful exit, logging, project rename, add more nodejs applications, repo name <u>vue-crud-x</u> changed to <u>cookbook</u>
 - **v0.5+** Improve organization and authentication, add new features
 - **v0.4+** Improve folders and structure organization, handle CI/CD better
 - **v0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
