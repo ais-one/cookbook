@@ -19,7 +19,6 @@ exports.up = async (knex) => {
       table.increments('id').primary()
       table.string('content')
       table.integer('bookId').references('books.id')
-      // table.integer('ownerId').unsigned().references('id').inTable('persons').onDelete('SET NULL');
       table.timestamps(true, true)
     })
     await knex.schema
@@ -31,11 +30,8 @@ exports.up = async (knex) => {
     })
     await knex.schema
     .createTable('books_authors', (table) => { // many books, many authors
-      // table.increments('id').primary()
       table.integer('bookId').unsigned().references('books.id')
-      // table.integer('bookId').unsigned().references('id').inTable('books').onDelete('CASCADE')
       table.integer('authorId').unsigned().references('authors.id')
-      // table.integer('authorId').unsigned().references('id').inTable('authors').onDelete('CASCADE')
       table.unique(['bookId', 'authorId']) // remove this and you will have duplicates
     })
 
@@ -92,30 +88,3 @@ exports.down = async (knex) => {
   await knex.schema.dropTableIfExists('person')
   await knex.schema.dropTableIfExists('grade')
 }
-
-
-/* bookshelf
-var Book = bookshelf.Model.extend({
-  tableName: 'books',
-  authors: function() {
-    return this.belongsToMany(Author);
-  },
-  pages: function() {
-    return this.hasMany(Page);
-  }
-});
-
-var Page = bookshelf.Model.extend({
-  tableName: 'pages',
-  book: function() {
-    return this.belongsTo(Book);
-  }
-});
-
-var Author = bookshelf.Model.extend({
-  tableName: 'authors',
-  books: function() {
-    return this.belongsToMany(Book);
-  }
-});
-*/

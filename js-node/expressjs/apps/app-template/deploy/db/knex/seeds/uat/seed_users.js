@@ -14,11 +14,9 @@ exports.seed = async function(knex) {
       username: 'test',
       email: 'test',
       githubId: null,
-      password: '$2b$12$Rr1kYTVjZ.9Mnz8EpvRHk.EccoXNtt574A5mwvDn97S5Gu2xIMFhO', // test
+      password: '$2b$12$Rr1kYTVjZ.9Mnz8EpvRHk.EccoXNtt574A5mwvDn97S5Gu2xIMFhO', //NOSONAR
       gaKey: 'IZDXCUDYNQ4ESMZZNY4HGZSDJRAVGZCO',
       sms: '6596935500',
-      // smsLastSent
-      // smsOtpPin
       smsVerified: 0,
       telegramId: '183535134',
       telegramUsername: 'aaronjxz',
@@ -32,11 +30,9 @@ exports.seed = async function(knex) {
       username: 'ais-one',
       email: 'ais-one',
       githubId: 4284574,
-      password: '$2b$12$Rr1kYTVjZ.9Mnz8EpvRHk.EccoXNtt574A5mwvDn97S5Gu2xIMFhO', // test
+      password: '$2b$12$Rr1kYTVjZ.9Mnz8EpvRHk.EccoXNtt574A5mwvDn97S5Gu2xIMFhO', //NOSONAR
       gaKey: 'IZDXCUDYNQ4ESMZZNY4HGZSDJRAVGZCO',
       sms: '6596935500',
-      // smsLastSent
-      // smsOtpPin
       smsVerified: 0,
       telegramId: '183535134',
       telegramUsername: 'aaronjxz',
@@ -50,11 +46,9 @@ exports.seed = async function(knex) {
       username: 'aaronjxz',
       email: 'aaronjxz',
       githubId: null,
-      password: '$2b$12$Rr1kYTVjZ.9Mnz8EpvRHk.EccoXNtt574A5mwvDn97S5Gu2xIMFhO', // test
+      password: '$2b$12$Rr1kYTVjZ.9Mnz8EpvRHk.EccoXNtt574A5mwvDn97S5Gu2xIMFhO', //NOSONAR
       gaKey: 'IZDXCUDYNQ4ESMZZNY4HGZSDJRAVGZCO',
       sms: '6596935500',
-      // smsLastSent
-      // smsOtpPin
       smsVerified: 0,
       telegramId: '183535134',
       telegramUsername: 'aaronjxz',
