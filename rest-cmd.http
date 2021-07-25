@@ -1,20 +1,20 @@
-# HTTP Testing
+# Using - https://github.com/Huachao/vscode-restclient
+
+### HTTP Testing
 
 https://randomuser.me/api/
 Accept: application/json 
 
-###
+### Test Post
 
 POST https://httpbin.org/post
 Accept: application/json
 
-###
+### Test healthcheck
 GET http://127.0.0.1:3000/api/healthcheck
 Accept: application/json
 
-###
-
-# Login
+### Test Login - Username & Password
 POST http://127.0.0.1:3000/api/auth/login
 content-type: application/json
 
@@ -23,9 +23,7 @@ content-type: application/json
   "password": "test"
 }
 
-###
-
-# OTP
+### Test Login - OTP
 POST http://127.0.0.1:3000/api/auth/otp
 access_token:
 refresh_token: 
@@ -36,17 +34,13 @@ content-type: application/json
   "pin": "111111"
 }
 
-###
-
-# Post Test - will cause an error because content-type and body is different
+### Post Test - will cause an error because content-type and body is different
 POST http://127.0.0.1:3000/api/test-post-json
 content-type: application/json
 
 hello world
 
-###
-
-# Post Test SSE endpoint
+### Post Test SSE endpoint
 POST http://127.0.0.1:3000/api/sse/event
 content-type: application/json
 
