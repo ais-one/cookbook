@@ -4,7 +4,7 @@ async function run() {
     const mongodb = await require('@es-labs/node/services/db/mongodb').open()
     const mongo = mongodb.get()
 
-    // const ObjectID = mongo.ObjectID
+    //NOSONAR // const ObjectID = mongo.ObjectID
 
     // Create JWT User Session Store
     // const { JWT_REFRESH_STORE, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE_NAME } = global.CONFIG
