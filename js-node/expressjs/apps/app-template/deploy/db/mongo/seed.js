@@ -77,6 +77,7 @@ async function run() {
       { personId: personIdStr, subject: 'PHY', grade: '70' }
     ])
     */
+
     await mongo.db.collection('grade-todelete').insertMany([
       { subject: 'EM', gradex: '80' },
       { subject: 'AM', gradex: '90' },

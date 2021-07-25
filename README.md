@@ -72,16 +72,16 @@ npm i ../@es-labs/node
 
 ```bash
 # create and seed relational db on SQLite, (delete the dev.sqlite file each time before you run this)
-# command: npm run knex -- <development / uat / production> <seed / migrate>
-npm run knex -- development migrate
-npm run knex -- development seed
+# command: npm run knex -- <development / uat / production> <custom app name> <seed / migrate>
+npm run knex -- development app-template migrate
+npm run knex -- development app-template seed
 
 # create and seed MongoDB requires MongoDB - you can skip this but MongoDB examples will not work
-# command: npm run mongo -- <development / uat / production> <seed / update>
-npm run mongo -- development seed
+# command: npm run mongo -- <development / uat / production> <custom app name> <seed / update>
+npm run mongo -- development app-template seed
 
 # run the backend
-# command: npm run app -- <development / uat / production>
+# command: npm run app -- <development / uat / production> <custom app name, default = app-template>
 npm run app -- development
 
 # or npm run app:lint to include eslint checks
