@@ -1,3 +1,10 @@
+### Version 0.6.4
+- [chore] update packages & cleanup & work on improving documentation
+- TBD
+  - [@es-labs/node] allow options to be passed in also, currently uses global.CONFIG through (**@es-labs/node/config**)
+  - [js-node/expressjs] scale websockets... https://pushpin.org/
+  - [js-web/vue-vite] cypress e2e testing
+
 ### Version 0.6.3
 - [chore] update packages & cleanup & work on improving documentation
 - [chore] improve github workflow and documentation

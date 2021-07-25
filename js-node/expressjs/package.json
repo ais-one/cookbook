@@ -1,6 +1,6 @@
 {
   "name": "expressjs",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "express application",
   "main": "index.js",
   "directories": {
