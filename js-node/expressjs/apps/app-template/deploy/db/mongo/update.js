@@ -1,11 +1,11 @@
 async function run() {
-  // const { bcrypt } = require('@es-labs/node/auth') //NOSONAR
-  // const WINDOW_SIZE = 100 // update batch window size //NOSONAR
   try {
     require('@es-labs/node/config')(process.cwd()) //  first thing to include
     const mongodb = await require('@es-labs/node/services/db/mongodb').open()
     const mongo = mongodb.get()
-    const ObjectID = mongo.ObjectID
+    // const ObjectID = mongo.ObjectID
+    // const { bcrypt } = require('@es-labs/node/auth')
+    // const WINDOW_SIZE = 100 // update batch window size
 
     // rename field
     // await mongo.db.collection('job').updateMany({}, { $rename: { 'customerCode': 'agencyCode' } } )
