@@ -1,7 +1,8 @@
 'use strict'
 
 const axios = require('axios')
-const  { SENDGRID_KEY, SENDGRID_SENDER } = global.CONFIG
+let key
+let sender
 
 // Sendgrid, Mailgun
 
@@ -13,7 +14,13 @@ const  { SENDGRID_KEY, SENDGRID_SENDER } = global.CONFIG
 //   sgMail.setApiKey(SENDGRID_KEY)
 // }
 
-async function sendGrid(to, from, subject, text, html) {
+function setupSendGrid(options = global.CONFIG) {
+  const { SENDGRID_KEY, SENDGRID_SENDER } = options || {}
+  key = SENDGRID_KEY
+  sender = SENDGRID_SENDER
+}
+
+async function sendSendGrid(to, from, subject, text, html) {
   try {
     // const msg = {
     //   to,
@@ -23,33 +30,27 @@ async function sendGrid(to, from, subject, text, html) {
     // }
     // if (html) msg.html = html
     // await sgMail.send(msg)
-    if (!SENDGRID_KEY) return
-    if (!from) from = SENDGRID_SENDER
+    if (!key) return
+    if (!from) from = sender
 
     const body = {
       personalizations: [
-        {
-          to: [{ email: to }]
-        }
+        { to: [{ email: to }] }
       ],
-      from: {email: from},
+      from: { email: from },
       subject,
       content: [{"type": "text/plain", "value": text}]
     }
-    const options = {
-      headers: {
-        AUthorization: 'Bearer ' + SENDGRID_KEY
-      } 
-    }
-    await axios.post('https://api.sendgrid.com/v3/mail/send', body, options)
+    await axios.post('https://api.sendgrid.com/v3/mail/send', body, { headers: { Authorization: 'Bearer ' + key } })
     console.log('sendMail ok', to, from, subject, text)
   } catch (e) {
-    console.log('sendMail err', e.toString(), SENDGRID_KEY)
+    console.log('sendMail err', e.toString(), key)
   }
 }
 
-// sendGrid('aaronjxz@gmail.com', 'seintern@visiongroup.co', 'Subj', 'Test Message').then(a => console.log('ok', a)).catch(e => console.log('fail', e))
+// sendSendGrid('aaronjxz@gmail.com', 'eslabs.com@gmail.com', 'Subj', 'Test Message').then(a => console.log('ok', a)).catch(e => console.log('fail', e))
 
 module.exports = {
-  sendGrid
+  setupSendGrid,
+  sendSendGrid
 }

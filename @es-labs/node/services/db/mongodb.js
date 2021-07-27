@@ -21,8 +21,8 @@ exports.close = async () => {
   console.log('mongodb closed')
 },
 
-exports.open = async () => {
-  const { MONGO_URL, MONGO_OPTIONS } = global.CONFIG
+exports.open = async (options = global.CONFIG) => {
+  const { MONGO_URL, MONGO_OPTIONS } = options || {}
   if (!mongo.db && MONGO_URL) {
     const { MongoClient, ObjectID } = require('mongodb')
     mongo.ObjectID = ObjectID

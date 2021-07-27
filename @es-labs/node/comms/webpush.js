@@ -3,17 +3,18 @@
 let webPush
 let vapidKeys
 
-const { WEBPUSH_VAPID_URL } = global.CONFIG
-
-if (!webPush) {
-  webPush = require('web-push')
-
-  // We use webpush to generate our public and private keys
-  vapidKeys = webPush.generateVAPIDKeys()
-  const { publicKey, privateKey } = vapidKeys
-
-  // We are giving webpush the required information to encrypt our data
-  webPush.setVapidDetails(WEBPUSH_VAPID_URL, publicKey, privateKey)
+const setup = (options = global.CONFIG) => {
+  const { WEBPUSH_VAPID_URL } = options || {}
+  if (!webPush) {
+    webPush = require('web-push')
+  
+    // We use webpush to generate our public and private keys
+    vapidKeys = webPush.generateVAPIDKeys()
+    const { publicKey, privateKey } = vapidKeys
+  
+    // We are giving webpush the required information to encrypt our data
+    webPush.setVapidDetails(WEBPUSH_VAPID_URL, publicKey, privateKey)
+  }  
 }
 
 // This function takes a subscription object and a payload as an argument. It will try to encrypt the payload
@@ -27,4 +28,6 @@ const send = async (subscription, payload, TTL=60) => {
   return res
 }
 
-module.exports = { vapidPubKey: vapidKeys.publicKey, send }
+const getPubKey = () => vapidKeys.publicKey
+
+module.exports = { getPubKey, send, setup }

@@ -16,7 +16,7 @@ const authUser = async (req, res, next) => next()
 const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
-// const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
+// const { setupStorage, getSignedUrl } = require('@es-labs/node/services/gcp')
 const { memoryUpload, storageUpload } = require(APP_PATH + '/common/upload')
 const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
 

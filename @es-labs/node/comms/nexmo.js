@@ -1,16 +1,24 @@
 'use strict'
 
 const axios = require('axios')
-
-const { NEXMO_KEY, NEXMO_SECRET, NEXMO_FROM = 'SMSnotice' } = global.CONFIG
+let key
+let api_secret
+let sender
 
 const nexmo = {
+  setup: function(options=global.CONFIG) {
+    const { NEXMO_KEY, NEXMO_SECRET, NEXMO_SENDER = 'SMSnotice' } = options || {}
+    key = NEXMO_KEY
+    api_secret = NEXMO_SECRET
+    from = NEXMO_SENDER
+  },
   // sms = 6511112222
   // one at a time...
-  send: async function (sms, message, from = NEXMO_FROM) {
+  send: async function (sms, message, from) {
     try {
+      if (!from) from = sender
       if (sms && message) {
-        return await axios.get(`https://rest.nexmo.com/sms/json?api_key=${NEXMO_KEY}&api_secret=${NEXMO_SECRET}&to=${sms}&from=${from}&text=${message}`)
+        return await axios.get(`https://rest.nexmo.com/sms/json?api_key=${key}&api_secret=${api_secret}&to=${sms}&from=${from}&text=${message}`)
       }
     } catch (e) {
       console.log('send', e.toString())      
@@ -19,16 +27,16 @@ const nexmo = {
   },
   // sms = 6511112222
   // one at a time...
-  ismsSend: async function (sms, message, from = NEXMO_FROM) {
+  ismsSend: async function (sms, message, from) {
     const url = 'https://sms.era.sg/isms_mt.php?'
     try {
       if (sms && message) {
         const options = { 
           params: {
-            uid: NEXMO_KEY,
-            pwd: require('crypto').createHash('md5').update( NEXMO_SECRET ).digest('hex'),
+            uid: key,
+            pwd: require('crypto').createHash('md5').update( api_secret ).digest('hex'),
             dnr: sms,
-            snr: from,
+            snr: from || sender,
             msg: message,
             split: 5
           }

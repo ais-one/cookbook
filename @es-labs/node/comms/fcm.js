@@ -1,16 +1,20 @@
 'use strict'
 
 const axios = require('axios')
+let key
 
-const { FCM_SERVER_KEY } = global.CONFIG
+exports.setup = (options = global.CONFIG) => {
+  const { FCM_SERVER_KEY } = options || {}
+  key = FCM_SERVER_KEY
+}
 
-const fcmSend = async (to, title, body) => { // send firebase push notification
+exports.send = async (to, title, body) => { // send firebase push notification
   try {
     const rv = await axios.post('https://fcm.googleapis.com/fcm/send', {
       to, data: { notification: { title, body } }
     },{
       headers: {
-        Authorization: 'key=' + FCM_SERVER_KEY,
+        Authorization: 'key=' + key,
         'Content-Type': 'application/json'
       }
     })
@@ -20,5 +24,3 @@ const fcmSend = async (to, title, body) => { // send firebase push notification
     return null
   }
 }
-
-module.exports = fcmSend

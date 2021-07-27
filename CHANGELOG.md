@@ -1,7 +1,11 @@
 ### Version 0.6.4
 - [chore] update packages & cleanup & work on improving documentation
+- [@es-labs/node] allow options to be passed in also, currently uses global.CONFIG through (**@es-labs/node/config**)
+  - [@es-labs/node/services/websocket.js](@es-labs/node/services/websocket.js) add onClientConnect function
+  - small breaking changes
+    - [@es-labs/node/comms](@es-labs/node/comms) - add setup function, move **../services/webpush.js** here
+    - [@es-labs/node/services/gcp.js](@es-labs/node/services/gcp.js) add setupStorage function
 - TBD
-  - [@es-labs/node] allow options to be passed in also, currently uses global.CONFIG through (**@es-labs/node/config**)
   - [js-node/expressjs] scale websockets... https://pushpin.org/
   - [js-web/vue-vite] cypress e2e testing
 

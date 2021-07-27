@@ -6,10 +6,8 @@ const WebSocket = require('ws')
 const https = require('https')
 
 let wss
-
-let onClientClose = (ws) => {
-  // console.log('client disconnected')
-}
+let onClientConnect = (ws) => { } // console.log('client connected')
+let onClientClose = (ws) => { } // console.log('client disconnected')
 
 let onClientMessage = async (message, ws, _wss) => { // client incoming message
   // console.log('message', message)
@@ -28,7 +26,7 @@ let onClientMessage = async (message, ws, _wss) => { // client incoming message
   }
 }
 
-exports.getWs = () => wss // get wss so that you can send messages to other clients...
+exports.get = () => wss // get wss so that you can send messages to other clients...
 
 exports.send = (data) => {
   wss.clients.forEach(function each(client) {
@@ -38,8 +36,8 @@ exports.send = (data) => {
   })
 }
 
-exports.open = function (server=null, app=null) {
-  const { WS_PORT, WS_KEEEPALIVE_MS, HTTPS_CERTS } = global.CONFIG
+exports.open = function (server=null, app=null, options=global.CONFIG) {
+  const { WS_PORT, WS_KEEEPALIVE_MS, HTTPS_CERTS } = options || {}
   let err
   try {
     if (!wss && WS_PORT) {
@@ -56,6 +54,7 @@ exports.open = function (server=null, app=null) {
       if (wss) {
         wss.on('connection', (ws) => {
           // console.log('ws client connected')
+          onClientConnect(ws) // what else to do when client connects
           ws.isAlive = true
           ws.on('pong', () => { ws.isAlive = true })
           ws.on('close', () => onClientClose(ws))
@@ -99,7 +98,11 @@ exports.setOnClientMessage = function (onClientMessageFn) {
   onClientMessage = onClientMessageFn
 }
 
-exports.setOnClientCLose = function (onClientCloseFn) {
+exports.setOnClientConnect = function (onClientConnectFn) { //  what to do when client connects
+  onClientConnect = onClientConnectFn
+}
+
+exports.setOnClientCLose = function (onClientCloseFn) { //  what to do when client closes
   onClientClose = onClientCloseFn
 }
 

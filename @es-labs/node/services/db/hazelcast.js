@@ -1,6 +1,4 @@
 'use strict'
-
-const { HAZELCAST } = global.CONFIG
 const { Client, Predicates } = require('hazelcast-client')
 
 let hazelcast = {
@@ -8,7 +6,9 @@ let hazelcast = {
 }
 
 // Hazelcast 4
-exports.open = async () => {
+exports.open = async (options = global.CONFIG) => {
+  const { HAZELCAST } = options || {}
+
   if (!hazelcast.client) {
     if (HAZELCAST.type === 'cloud') {
       // not yet supported

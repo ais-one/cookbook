@@ -2,8 +2,8 @@
 
 let knex
 
-exports.open = async () => {
-  const { KNEXFILE } = global.CONFIG
+exports.open = async (options = global.CONFIG) => {
+  const { KNEXFILE } = options || {}
   if (!KNEXFILE) console.log('KNEXFILE property empty or undefined - knex not started')
   if (!knex && KNEXFILE) {
     try {

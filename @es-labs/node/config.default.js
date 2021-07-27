@@ -158,7 +158,7 @@ global.CONFIG.ENABLE_LOGGER = false
 global.CONFIG.JOB_BULL = null
 
 // Communications - Nexmo - @es-labs/nodecomms/nexmo.js
-global.CONFIG.NEXMO_FROM = ''
+global.CONFIG.NEXMO_SENDER = ''
 global.CONFIG.NEXMO_KEY = ''
 global.CONFIG.NEXMO_SECRET = ''
 
@@ -173,7 +173,7 @@ global.CONFIG.SENDGRID_SENDER = ''
 // Communications - Firebase Messaging - @es-labs/node/comms/fcm.js
 global.CONFIG.FCM_SERVER_KEY = ''
 
-// Communications - Firebase Messaging (@es-labs/node/services/webpush.js)
+// Communications - Firebase Messaging (@es-labs/node/comms/webpush.js)
 global.CONFIG.WEBPUSH_VAPID_URL = process.env.WEBPUSH_VAPID_URL || 'http://127.0.0.1:3000'
 
 // Caching Redis

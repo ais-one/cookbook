@@ -256,112 +256,30 @@ const otp = async (req, res) => { // need to be authentication, body { id: '', p
 
 module.exports = { findUser, updateUser, createToken, setTokensToHeader, revokeToken, authUser, authRefresh, logout, refresh, login, otp, httpOnlyCookie, bcrypt, otplib } // getToken, setToken,
 
+// do refresh token check from backend ?
 /*
-const crypto = require('crypto')
-
-function encryptText(algor, key, iv, text, encoding) {
-  const cipher = crypto.createCipheriv(algor, key, iv)
-  encoding = encoding || 'binary'
-  let result = cipher.update(text, 'utf8', encoding)
-  result += cipher.final(encoding)
-  return result
-}
-
-function decryptText(algor, key, iv, text, encoding) {
-  const decipher = crypto.createDecipheriv(algor, key, iv)
-  encoding = encoding || 'binary'
-  let result = decipher.update(text, encoding)
-  result += decipher.final()
-  return result
-}
-
-const data = 'This is a test'
-const password = 'hello'
-const algorithm = 'aes256'
-const args = process.argv.slice(3)
-
-data = args[0]
-password = args[1]
-algorithm = args[2]
-
-console.log('Text: ' + data)
-console.log('Password: ' + password)
-console.log('Type: ' + algorithm)
-
-const hash, key
-
-if (algorithm.includes("256")) {
-	hash = crypto.createHash('sha256')
-  hash.update(password)
-	key = new Buffer.alloc(32,hash.digest('hex'),'hex')
-} else if (algorithm.includes("192")) {
-	hash = crypto.createHash('sha192')
-  hash.update(password);
-	key = new Buffer.alloc(24,hash.digest('hex'),'hex')
-} else if (algorithm.includes("128")) {
-	hash = crypto.createHash('md5')
-  hash.update(password)
-  key = new Buffer.alloc(16,hash.digest('hex'),'hex')
-}
-
-const iv = new Buffer.alloc(16,crypto.pseudoRandomBytes(16))
-console.log('Key: ' + key.toString('base64'))
-console.log('Salt: ' + iv.toString('base64'))
-
-const encText = encryptText(algorithm, key, iv, data, 'base64')
-console.log('Encrypted: ' + encText)
-
-const decText = decryptText(algorithm, key, iv, encText, 'base64')
-console.log('Decrypted: ' + decText);
-*/
-
-// const crypto = require('crypto-js')
-// let ct = crypto.enc.Base64.parse('your-cipher-text')
-// let iv = crypto.enc.Base64.parse('your-iv')
-// let key = crypto.enc.Base64.parse('your-key')
-// const decrypt = crypto.algo.AES.createDecryptor(key, { iv })
-// const proc = decrypt.process(ct)
-// const final = decrypt.finalize()
-// const plain = proc.toString(crypto.enc.Utf8) + final.toString(crypto.enc.Utf8)
-// console.log(plain)
-
-
-// do refresh token check from backend?
-
-/*
-
 Signout across tabs
 window.addEventListener('storage', this.syncLogout) 
-
 //....
-
 syncLogout (event) {
   if (event.key === 'logout') {
     console.log('logged out from storage!')
     Router.push('/login')
   }
 }
-
 async function logout () {
   inMemoryToken = null;
   const url = 'http://localhost:3010/auth/logout'
-  const response = await fetch(url, {
-    method: 'POST',
-    credentials: 'include',
-  })
+  const response = await fetch(url, { method: 'POST', credentials: 'include', })
   // to support logging out from all windows
   window.localStorage.setItem('logout', Date.now())
 }
-
 */
 
-
-/*
-The user logs in with a login API call.
-Server generates JWT Token and refresh_token
-Server sets a HttpOnly cookie with refresh_token. jwt_token and jwt_token_expiry are returned back to the client as a JSON payload.
-The jwt_token is stored in memory.
-A countdown to a future silent refresh is started based on jwt_token_expiry
-*/
+// The user logs in with a login API call.
+// Server generates JWT Token and refresh_token
+// Server sets a HttpOnly cookie with refresh_token. jwt_token and jwt_token_expiry are returned back to the client as a JSON payload.
+// The jwt_token is stored in memory.
+// A countdown to a future silent refresh is started based on jwt_token_expiry
 
 // https://hasura.io/blog/best-practices-of-using-jwt-with-graphql/

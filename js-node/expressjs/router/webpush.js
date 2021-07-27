@@ -1,12 +1,15 @@
 'use strict'
 
 const express = require('express')
-const { vapidPubKey, send } = require('@es-labs/node/services/webpush')
-const fcmSend = require('@es-labs/node/comms/fcm')
 const { authUser, findUser, updateUser } = require('@es-labs/node/auth')
+const fcm = require('@es-labs/node/comms/fcm')
+const webpush = require('@es-labs/node/comms/webpush')
+
+fcm.setup(global.CONFIG)
+webpush.setup(global.CONFIG)
 
 module.exports = express.Router()
-  .get('/vapid-public-key', (req, res) => res.json({ publicKey: vapidPubKey }))
+  .get('/vapid-public-key', (req, res) => res.json({ publicKey: webpush.getPubKey() }))
   .post('/sub', authUser, asyncWrapper(async (req, res) => {
     const { id } = req.decoded
     const { subscription } = req.body // should be a string
@@ -27,11 +30,10 @@ module.exports = express.Router()
       let rv = null
       if (user && user.pnToken) {
         if (mode === 'FCM') {
-          rv = await fcmSend(user.pnToken, data.title || '', data.body || '')
-        } else if (mode === 'Webpush') {
-          // Use Webpush
+          rv = await fcm.send(user.pnToken, data.title || '', data.body || '')
+        } else if (mode === 'Webpush') { // Use Webpush
           const subscription = JSON.parse(user.pnToken)
-          rv = await send(subscription, data)
+          rv = await webpush.send(subscription, data)
         }
         res.json({ status: 'sent', mode, rv })
       } else {

@@ -9,12 +9,14 @@ const ws = require('@es-labs/node/services/websocket')
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
 const bull = require('@es-labs/node/services/mq/bull').get() // bull message queue
-const { gcpGetSignedUrl } = require('@es-labs/node/services/gcp')
+const gcp = require('@es-labs/node/services/gcp')
 const { memoryUpload, storageUpload } = require(APP_PATH + '/common/upload')
 
 const { UPLOAD_STATIC, UPLOAD_MEMORY, API_PORT, HTTPS_CERTS } = global.CONFIG
 
 const { authUser } = require('@es-labs/node/auth')
+
+gcp.setupStorage(global.CONFIG)
 
 function openMissingFile() {
   fs.readFile('somefile4.txt', (err, data) => { if (err) throw err })
@@ -71,7 +73,7 @@ module.exports = express.Router({caseSensitive: true})
  
   // test uploads
   // body action: 'read' | 'write', filename: 'my-file.txt', bucket: 'bucket name'
-  .post('/gcp-sign', asyncWrapper(gcpGetSignedUrl))
+  .post('/gcp-sign', asyncWrapper(gcp.getSignedUrl))
 
   .post('/upload-disk', storageUpload(UPLOAD_STATIC[0]).any(), (req,res) => { // avatar is form input name // single('filedata')
     try {

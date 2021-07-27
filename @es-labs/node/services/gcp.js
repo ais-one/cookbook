@@ -1,15 +1,7 @@
 'use strict'
 
-const { GCP_SERVICE_KEY, GCP_DEFAULT_BUCKET = '' } = global.CONFIG
 let storage
-
-if (!storage && GCP_SERVICE_KEY && GCP_SERVICE_KEY.project_id) {
-  const { Storage } = require('@google-cloud/storage')
-  const { client_email, private_key } = GCP_SERVICE_KEY
-  storage = new Storage({ credentials: {
-    client_email, private_key
-  } })
-}
+let bucket
 
 // let firestore // use firestore like redis for user sessions
 // if (!firestore && GCP_SERVICE_KEY && GCP_SERVICE_KEY.project_id) {
@@ -34,9 +26,19 @@ if (!storage && GCP_SERVICE_KEY && GCP_SERVICE_KEY.project_id) {
 // gsutil cors set [JSON_FILE_NAME].json gs://[BUCKET_NAME]
 // gsutil cors get gs://[BUCKET_NAME]
 
-exports.gcpGetSignedUrl = async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
+exports.setupStorage = (options = global.CONFIG) => {
+  const { GCP_DEFAULT_BUCKET, GCP_SERVICE_KEY } = options || {}
+  if (!storage && GCP_SERVICE_KEY && GCP_SERVICE_KEY.project_id) {
+    const { Storage } = require('@google-cloud/storage')
+    const { client_email, private_key } = GCP_SERVICE_KEY
+    storage = new Storage({ credentials: { client_email, private_key } })
+    bucket = GCP_DEFAULT_BUCKET
+  }  
+}
+
+exports.getSignedUrl = async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
   // action "read" (HTTP: GET), "write" (HTTP: PUT), or "delete" (HTTP: DELETE),
-  const bucket = storage.bucket(req.body.bucket || GCP_DEFAULT_BUCKET)
+  const bucket = storage.bucket(req.body.bucket || bucket)
   const action = req.body.action || '' // 'read' or 'write'
   const fileName = req.body.filename || ''
   if (!action || !fileName) return res.status(400).json({ error: 'filename and action required'})
@@ -57,7 +59,7 @@ exports.gcpGetSignedUrl = async (req,res) => { // test upload/get with cloud opj
     // curl -X PUT -H 'Content-Type: application/octet-stream' --upload-file my-file 'http://www.test.com'  
     return res.status(200).json({ url })
   } catch (e) {
-    // console.log('Error', 'gcpGetSignedUrl', e.toString())
+    // console.log('Error', 'getSignedUrl', e.toString())
     return res.status(500).json({ error: e.toString() })
   }
 }

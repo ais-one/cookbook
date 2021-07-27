@@ -1,6 +1,5 @@
 'use strict'
 
-const  { REDIS_CONFIG } = global.CONFIG
 // {
 //   port: 6379,
 //   host: '127.0.0.1',
@@ -14,37 +13,26 @@ const  { REDIS_CONFIG } = global.CONFIG
 
 let redis
 
-if (!redis && REDIS_CONFIG) {
-  const Redis = require('ioredis')
-  redis = new Redis({
-    port: 6379,          // Redis port
-    host: '127.0.0.1',   // Redis host
-    family: 4,           // 4 (IPv4) or 6 (IPv6)
-    password: '',
-    db: 0,
-    // if using sentinels
-    // sentinels: [{ host: 'localhost', port: 26379 }, { host: 'localhost', port: 26380 }],
-    // name: 'mymaster',
-    maxRetriesPerRequest: 20,
-    autoResubscribe: true, // default
-    // autoResendUnfulfilledCommands: true,
-
-    // This is the default value of `retryStrategy`
-    retryStrategy: function (times) {
-      var delay = Math.min(times * 50, 2000)
-      return delay
-    },
-    reconnectOnError: function (err) {
-      var targetError = 'READONLY'
-      if (err.message.slice(0, targetError.length) === targetError) {
-        // Only reconnect when the error starts with "READONLY"
-        return true // or `return 1`
-      }
-      return false
-    }
-  })
-
+exports.open = (options = global.CONFIG) => {
+  const { REDIS_CONFIG } = options || {}
+  if (!redis && REDIS_CONFIG) {
+    const Redis = require('ioredis')
+    const redisOpts = REDIS_CONFIG.opts
+    if (REDIS_CONFIG.retry) redisOpts.retryStrategy = (times) => Math.min(times * REDIS_CONFIG.retry.step, REDIS_CONFIG.retry.max)
+    if (REDIS_CONFIG.reconnect) redisOpts.reconnectOnError = (err) => err.message.includes(REDIS_CONFIG.reconnect.targetError) ? true : false
+    redis = new Redis(redisOpts)
+  }  
 }
+
+exports.get = () => redis
+
+exports.close = () => {
+  if (redis) {
+    redis.disconnect()
+    redis = null  
+  }
+}
+
 /*
 var availableSlaves = [{ ip: '127.0.0.1', port: '31231', flags: 'slave' }]
 var preferredSlaves = [ { ip: '127.0.0.1', port: '31231', prio: 1 }, { ip: '127.0.0.1', port: '31232', prio: 2 } ]
