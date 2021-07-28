@@ -46,22 +46,18 @@ global.CONFIG.JWT_REFRESH_STORE_NAME = 'user_session' // collection or table nam
 global.CONFIG.USE_OTP = 'TEST' // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
 global.CONFIG.OTP_EXPIRY = 30 // 8 // 30 // defined seconds to allow user to submit OTP
 
+// URL to redirect if error
+global.CONFIG.AUTH_ERROR_URL = ''
+
 // SAML
 global.CONFIG.SAML_OPTIONS = null // https://github.com/node-saml/passport-saml#config-parameter-details
+global.CONFIG.SAML_PEMS = null
+
 // OIDC
 global.CONFIG.OIDC_OPTIONS = null
-// URL to redirect if error
-global.CONFIG.AUTH_ERROR_URL = '' // for 
 
 // OAuth (we use github for example)
-global.CONFIG.OAUTH_URL = ''
-global.CONFIG.OAUTH_CLIENT_ID = ''
-global.CONFIG.OAUTH_CLIENT_SECRET = ''
-global.CONFIG.OAUTH_CALLBACK = ''
-global.CONFIG.OAUTH_USER_URL = ''
-global.CONFIG.OAUTH_USER_ID = ''
-global.CONFIG.OAUTH_USER_GROUPS = ''
-global.CONFIG.OAUTH_FIND_ID = ''
+global.CONFIG.OAUTH_OPTIONS = null
 
 // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
 // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}

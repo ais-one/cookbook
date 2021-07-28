@@ -30,15 +30,16 @@ module.exports = {
 ```
 module.exports = {
   GCP_SERVICE_KEY: {},
-
-  OAUTH_URL: '', // OAuth URL
-  OAUTH_CLIENT_ID: '', // OAuth Client ID
-  OAUTH_CLIENT_SECRET: '', // OAuth Client SECRET
-  OAUTH_CALLBACK: '', // OAuth callback URL
-  OAUTH_USER_URL: '', // to get user
-  OAUTH_USER_ID: '', // the user id key
-  OAUTH_USER_GROUPS: '', // the user groups key
-  OAUTH_FIND_ID: '', // key to find user in internal DB
+  OAUTH_OPTIONS: {
+    URL: '', // OAuth URL
+    CLIENT_ID: '', // OAuth Client ID
+    CLIENT_SECRET: '', // OAuth Client SECRET
+    CALLBACK: '', // OAuth callback URL
+    USER_URL: '', // to get user
+    USER_ID: '', // the user id key
+    USER_GROUPS: '', // the user groups key
+    FIND_ID: '', // key to find user in internal DB
+  },
   FCM_SERVER_KEY: '',
 }
 

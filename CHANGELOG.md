@@ -5,10 +5,12 @@
   - small breaking changes
     - [@es-labs/node/comms](@es-labs/node/comms) - add setup function, move **../services/webpush.js** here
     - [@es-labs/node/services/gcp.js](@es-labs/node/services/gcp.js) add setupStorage function
+- [js-node/expressjs/apps/app-template/config/secret/README.md](js-node/expressjs/apps/app-template/config/secret/README.md) - improve oauth configuration
 - TBD
-  - [js-node/expressjs] scale websockets... https://pushpin.org/
-  - [js-web/vue-vite] cypress e2e testing
-
+  - [js-node/expressjs/router/saml.js](js-node/expressjs/router/saml.js) - improve saml configuration
+  - [@es-labs/node/services/keyv.js](@es-labs/node/services/keyv.js) - to improve
+  - [@es-labs/node/auth](@es-labs/node/auth) - to improve
+  
 ### Version 0.6.3
 - [chore] update packages & cleanup & work on improving documentation
 - [chore] improve github workflow and documentation

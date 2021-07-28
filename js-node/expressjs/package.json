@@ -42,7 +42,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "passport": "^0.4.1",
-    "passport-saml": "^3.1.0",
+    "passport-saml": "^3.1.1",
     "selfsigned": "^1.10.11",
     "serve-index": "^1.9.1",
     "swagger-ui-express": "^4.1.6",

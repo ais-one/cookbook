@@ -9,9 +9,14 @@ const { createToken } = require('@es-labs/node/auth')
 
 const { AUTH_ERROR_URL, SAML_OPTIONS } = global.CONFIG
 
+const selfsigned = require('selfsigned');
+const samlPems = selfsigned.generate(null, { days: 30, algorithm: 'sha256' }) // TO Make this configurable
+
+let samlStrategy
+
 if (SAML_OPTIONS) {
   const SamlStrategy = require('passport-saml').Strategy
-  passport.use('saml', new SamlStrategy(
+  samlStrategy = new SamlStrategy(
     SAML_OPTIONS,
     (profile, done) => {
       // console.log('profile', profile)
@@ -22,11 +27,17 @@ if (SAML_OPTIONS) {
         ...profile
       })
     }
-  ))
+  )
+  passport.use('saml', samlStrategy)
 }
 
 module.exports = express.Router()
   .get('/test', (req,res) => res.send('ok'))
+  .get('/metadata', (req, res) => {
+    res.type('application/xml')
+    res.status(200).send(samlStrategy.generateServiceProviderMetadata()) // if there is private key involved, then need to pass in cert
+    // res.status(200).send(samlStrategy.generateServiceProviderMetadata(dsSamlCerts.cert, dsSamlCerts.cert)) // cert to match decryptionKey, cert to match privateKey
+  })
   .get('/login',
     (req, res, next) => {
       // return res.redirect('/' + token...) // for faking, bypass real callback
@@ -35,6 +46,7 @@ module.exports = express.Router()
     },
     passport.authenticate('saml') // , { failureRedirect: '/', failureFlash: true }),
   )
+  // .get('/fail', (req, res) => res.status(401).send('Login Fail')
   .post('/callback',
     passport.authenticate('saml', { failureRedirect: '/', failureFlash: true }),
     async (req, res) => {
