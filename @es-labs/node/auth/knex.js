@@ -1,27 +1,17 @@
 'use strict'
 
-const knex = require('../services/db/knex').get()
-const { JWT_REFRESH_STORE_NAME } = global.CONFIG
+const knex = require('../services/db/knex')
 
-// id field must be unique index 
+let JWT_REFRESH_STORE_NAME
+let AUTH_USER_STORE_NAME
+exports.setRefreshTokenStoreName = (name) => JWT_REFRESH_STORE_NAME = name
+exports.setAuthUserStoreName = (name) => AUTH_USER_STORE_NAME = name
 
-const setToken = async (id, refresh_token) => {
-  await knex(JWT_REFRESH_STORE_NAME).insert({ id, refresh_token })
-  await knex(JWT_REFRESH_STORE_NAME).where({id: id}).update({ id, refresh_token })
-}
+// id field must be unique, upsert for PostgreSQL, MySQL, and SQLite only
+exports.setRefreshToken = async (id, refresh_token) => await knex.get()(JWT_REFRESH_STORE_NAME).insert({ id, refresh_token }).onConflict('id').merge()
+exports.getRefreshToken = async (id) => ( await knex.get()(JWT_REFRESH_STORE_NAME).where({ id: id }).first() ).refresh_token
+exports.revokeRefreshToken = async(id) => await knex.get()(JWT_REFRESH_STORE_NAME).where({ id: id }).delete()
 
-const getToken = async (id) => {
-  try {
-    // TBD use DB - maybe better to use DB since it is already being read
-    // const user = await User.query().where('id', '=', id) // TBD FIX THIS
-    // if (user && !user[0].revoked && req.body) refreshToken = user[0].refreshToken
-    const rv = await knex(JWT_REFRESH_STORE_NAME).where({ id: id }).first()
-    return rv.refresh_token
-  } catch (e) {
-    return null
-  }
-}
+exports.findUser = async (where) => await knex.get()(AUTH_USER_STORE_NAME).where(where).first()
+exports.updateUser = async (where, payload) => await knex.get()(AUTH_USER_STORE_NAME).where(where).first().update(payload)
 
-const revokeToken = async(id) => await knex(JWT_REFRESH_STORE_NAME).where({ id: id }).delete()
-
-module.exports = { setToken, getToken, revokeToken }

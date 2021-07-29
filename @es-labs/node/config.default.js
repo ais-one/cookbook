@@ -51,7 +51,8 @@ global.CONFIG.AUTH_ERROR_URL = ''
 
 // SAML
 global.CONFIG.SAML_OPTIONS = null // https://github.com/node-saml/passport-saml#config-parameter-details
-global.CONFIG.SAML_PEMS = null
+global.CONFIG.SAML_DECRYPTION_CERT = ''
+global.CONFIG.SAML_JWT_MAP = { id: 'NameID', groups: 'Group' }
 
 // OIDC
 global.CONFIG.OIDC_OPTIONS = null

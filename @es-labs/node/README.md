@@ -4,13 +4,12 @@ Node JS only libraries for backend
 
 - auth: authorization
 - comms:  for communications
-- express: for express JS framework 
-  - config.js
-  - config.default.js
 - services: various services
   - db: databases
   - mq: message queue
   - others gcp, keyv, redis, webpush, websocket
+- config.js
+- config.default.js
 
 Refer to [../../js-node/expressjs](../../js-node/expressjs) folder for usage
 

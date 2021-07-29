@@ -9,6 +9,8 @@ const agenda = require('@es-labs/node/services/mq/agenda')
 const bull = require('@es-labs/node/services/mq/bull')
 const websocket = require('@es-labs/node/services/websocket')
 
+require('@es-labs/node/auth').setupAuth()
+
 exports.start = () => {
   keyv.open()
   // redis.open()
