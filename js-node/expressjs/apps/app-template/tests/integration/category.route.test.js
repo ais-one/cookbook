@@ -4,6 +4,7 @@ const app = express()
 const newCategory = require('../mock-data/new-category.json')
 
 let sqldb
+let keyv
 let createdCategoryId
 let authObj = {}
 let endpointUrl
@@ -11,6 +12,7 @@ let endpointUrl
 beforeAll(async () => {
   await require('@es-labs/node/config')(process.cwd())
   sqldb = await require('@es-labs/node/services/db/knex').open()
+  keyv = await require('@es-labs/node/services/db/keyv').open()
   require(APP_PATH + '/common/init')(app, express, global.CONFIG)
   require(APP_PATH + '/common/preRoute')(app, express, global.CONFIG)
   require(APP_PATH + '/router')(app)
@@ -25,6 +27,7 @@ beforeAll(async () => {
 })
 afterAll(async () => {
   await sqldb.close()
+  await keyv.close()
 })
 
 describe(endpointUrl, () => {

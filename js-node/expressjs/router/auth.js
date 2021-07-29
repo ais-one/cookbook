@@ -1,5 +1,5 @@
 'use strict'
-const { revokeToken, logout, login, otp } = require('@es-labs/node/auth')
+const { logout, login, otp } = require('@es-labs/node/auth')
 
 const express = require('express')
 const { authUser, authRefresh } = require('@es-labs/node/auth')

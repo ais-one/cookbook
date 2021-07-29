@@ -5,9 +5,9 @@
 
 const express = require('express')
 const passport = require('passport')
-const { createToken } = require('@es-labs/node/auth')
+const { createToken, setTokensToHeader } = require('@es-labs/node/auth')
 
-const { AUTH_ERROR_URL, SAML_OPTIONS } = global.CONFIG
+const { AUTH_ERROR_URL, SAML_OPTIONS, SAML_JWT_MAP, SAML_DECRYPTION_CERT } = global.CONFIG
 
 const selfsigned = require('selfsigned');
 const samlPems = selfsigned.generate(null, { days: 30, algorithm: 'sha256' }) // TO Make this configurable
@@ -35,8 +35,8 @@ module.exports = express.Router()
   .get('/test', (req,res) => res.send('ok'))
   .get('/metadata', (req, res) => {
     res.type('application/xml')
-    res.status(200).send(samlStrategy.generateServiceProviderMetadata()) // if there is private key involved, then need to pass in cert
-    // res.status(200).send(samlStrategy.generateServiceProviderMetadata(dsSamlCerts.cert, dsSamlCerts.cert)) // cert to match decryptionKey, cert to match privateKey
+    // res.status(200).send(samlStrategy.generateServiceProviderMetadata()) // if there is private key involved, then need to pass in cert
+    res.status(200).send(samlStrategy.generateServiceProviderMetadata(SAML_DECRYPTION_CERT, SAML_OPTIONS.privateCert)) // cert to match decryptionKey, cert to match privateKey
   })
   .get('/login',
     (req, res, next) => {
@@ -61,10 +61,12 @@ module.exports = express.Router()
             // id: req.user.uid, // currently either id (knex) / _id (mongodb)
             // groups: req.user.eduPersonAffiliation,
             // [keycloak]
-            id: req.user.nameID, // string
-            groups: req.user.Role, // comma seperated string
+
+            id: res.user[SAML_JWT_MAP.id], // id: req.user.nameID, // string
+            groups: res.user[SAML_JWT_MAP.groups], // groups: req.user.Role, // comma seperated string or array or object...
           }
           const tokens = await createToken(user)
+          setTokensToHeader(res, tokens)
           return res.redirect(TO + '#' + tokens.access_token + '-' + tokens.refresh_token + '-' + JSON.stringify(tokens.user_meta)) // use url fragment...
         } else {
           return AUTH_ERROR_URL ? res.redirect(AUTH_ERROR_URL) : res.status(401).json({ error: 'NOT Authenticated' })

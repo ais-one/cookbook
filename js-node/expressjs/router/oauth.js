@@ -1,7 +1,7 @@
 'use strict'
 const axios = require('axios')
 const { OAUTH_OPTIONS, AUTH_ERROR_URL } = global.CONFIG
-const { findUser, createToken, setTokensToHeader, revokeToken } = require('@es-labs/node/auth')
+const { findUser, createToken, setTokensToHeader } = require('@es-labs/node/auth')
 
 const express = require('express')
 
