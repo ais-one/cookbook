@@ -9,7 +9,8 @@ let wss
 let onClientConnect = (ws) => { } // console.log('client connected')
 let onClientClose = (ws) => { } // console.log('client disconnected')
 
-let onClientMessage = async (message, ws, _wss) => { // client incoming message
+let onClientMessage = async (data, isBinary, ws, _wss) => { // client incoming message
+  const message = isBinary ? data : data.toString()
   // console.log('message', message)
   try { // try-catch only detect immediate error, cannot detect if write failure    
     if (_wss) { // send to other clients except self
@@ -58,7 +59,7 @@ exports.open = function (server=null, app=null, options=global.CONFIG) {
           ws.isAlive = true
           ws.on('pong', () => { ws.isAlive = true })
           ws.on('close', () => onClientClose(ws))
-          ws.on('message', message => onClientMessage(message, ws, wss))
+          ws.on('message', (data, isBinary) => onClientMessage(data, isBinary, ws, wss))
         })
         setInterval(() => { // set keep-alive
           // console.log('WS Clients: ', wss.clients.size)
@@ -80,18 +81,18 @@ exports.open = function (server=null, app=null, options=global.CONFIG) {
 }
 
 exports.close = function () {
-  let err
   try { // close all connections
     if (wss) {
       wss.close()
-      wss.clients.forEach(client => client.close(0, 'wss close() called')) // close gracefully
+      // wss.clients.forEach(client => client.close(0, 'wss close() called')) // close gracefully
+      for (const client of wss.clients) client.terminate() // https://github.com/websockets/ws/releases/tag/8.0.0
       // delete wss
       // wss = null
     }
   } catch (e) {
-    err = e.toString()
+    console.error(e.toString())
   }
-  console.log(err || 'WS API CLOSE OK')
+  console.log('WS API CLOSE OK')
 }
 
 exports.setOnClientMessage = function (onClientMessageFn) {

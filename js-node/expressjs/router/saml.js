@@ -41,7 +41,7 @@ module.exports = express.Router()
   .get('/login',
     (req, res, next) => {
       // return res.redirect('/' + token...) // for faking, bypass real callback
-      req.query.RelayState = req.query.redirect_to + ';' + req.query.groups + ';' + req.query.expiry
+      // console.debug(req.header('referer'))
       next()
     },
     passport.authenticate('saml') // , { failureRedirect: '/', failureFlash: true }),
@@ -51,10 +51,9 @@ module.exports = express.Router()
     passport.authenticate('saml', { failureRedirect: '/', failureFlash: true }),
     async (req, res) => {
       try {
-        console.debug('saml2 user:', req.user)
-        console.debug('saml2 relayState:', req.body.RelayState)
-        const relayState = req.body.RelayState.split(';') // 0 = frontend callback, 1 = allowed groups, 2 = expiry
-        const TO = relayState[0]
+        // console.debug('saml2 user:', req.user)
+        // console.debug('saml2 relayState:', req.body.RelayState)
+        const TO = req.body.RelayState
         if (req.isAuthenticated()) {
           const user = {
             // [kristophjunge/test-saml-idp]
@@ -62,8 +61,8 @@ module.exports = express.Router()
             // groups: req.user.eduPersonAffiliation,
             // [keycloak]
 
-            id: res.user[SAML_JWT_MAP.id], // id: req.user.nameID, // string
-            groups: res.user[SAML_JWT_MAP.groups], // groups: req.user.Role, // comma seperated string or array or object...
+            id: req.user[SAML_JWT_MAP.id], // id: req.user.nameID, // string
+            groups: req.user[SAML_JWT_MAP.groups], // groups: req.user.Role, // comma seperated string or array or object...
           }
           const tokens = await createToken(user)
           setTokensToHeader(res, tokens)

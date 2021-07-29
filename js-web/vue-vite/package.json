@@ -14,14 +14,14 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
     "@antv/data-set": "^0.11.8",
-    "@antv/g2": "^4.1.21",
+    "@antv/g2": "^4.1.22",
     "@antv/g2plot": "^2.3.27",
     "@sentry/tracing": "^6.10.0",
     "@sentry/vue": "^6.10.0",
     "ant-design-vue": "^2.2.2",
     "echarts": "^5.1.2",
     "leaflet": "^1.7.1",
-    "rxjs": "^7.2.0",
+    "rxjs": "^7.3.0",
     "vue": "^3.1.5",
     "vue-router": "^4.0.10",
     "vuex": "^4.0.2"

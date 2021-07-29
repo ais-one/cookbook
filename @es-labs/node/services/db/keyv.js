@@ -6,13 +6,9 @@ let keyv
 exports.open = (options = global.CONFIG) => {
   const  { KEYV_CACHE } = options || {}
   if (!keyv) {
-    // if (KEYV_CACHE) {
-    //   keyv = new Keyv(KEYV_CACHE)
-    // } else {
-    //   keyv = new Keyv({ store: new Map() })
-    // }
-    keyv = new Keyv({ store: new Map() })
-  }  
+    keyv = KEYV_CACHE ? new Keyv(KEYV_CACHE) : new Keyv()
+    keyv.on('error', err => console.error('keyv Connection Error', err))
+  }
   return this
 }
 exports.get = () => keyv

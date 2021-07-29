@@ -3,7 +3,7 @@
 const router = require('express').Router()
 
 // const websocket = require('@es-labs/node/services/websocket') // .open(null, null) // or set to null
-// websocket.setOnClientMessage = async (message, ws, _wss) => { }
+// websocket.setOnClientMessage = async (data, , isBinary ws, _wss) => { }
 // websocket.setOnClientCLose =  (ws) => { }
 
 // export your routes here - make sure no clashes
