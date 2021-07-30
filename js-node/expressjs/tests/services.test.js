@@ -3,7 +3,9 @@ let sqldb
 
 beforeAll(async () => {
   await require('@es-labs/node/config')(process.cwd())
-  sqldb = await require('@es-labs/node/services/db/knex').open()
+  const StoreKnex = require('@es-labs/node/services/db/knex') 
+  sqldb = new StoreKnex()
+  await sqldb.open()
 })
 afterAll(async () => {
   await sqldb.close()

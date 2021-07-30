@@ -6,7 +6,10 @@ async function doSeed(seedName, knex) {
 async function run() {
   try {
     require('@es-labs/node/config')(process.cwd()) //  first thing to include
-    const sqldb = await require('@es-labs/node/services/db/knex').open()
+    const StoreKnex = require('@es-labs/node/services/db/knex') 
+    const sqldb = new StoreKnex()
+    await sqldb.open()
+    // const sqldb = await require('@es-labs/node/services/db/knex').open()
     const knex = sqldb.get()
 
     await doSeed('seed_users', knex)

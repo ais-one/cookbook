@@ -1,7 +1,9 @@
 async function run() {
   try {
     require('@es-labs/node/config')(process.cwd()) //  first thing to include
-    const mongodb = await require('@es-labs/node/services/db/mongodb').open()
+    const StoreMongo = require('@es-labs/node/services/db/mongodb') 
+    const mongodb = new StoreMongo()
+    await mongodb.open()
     const mongo = mongodb.get()
 
     //NOSONAR // const ObjectID = mongo.ObjectID

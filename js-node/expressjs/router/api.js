@@ -43,8 +43,7 @@ module.exports = express.Router({caseSensitive: true})
     res.json({})
   })
 
-  .get('/restart-mongo', async (req, res) => { // restart mongo that cannot initially connect
-    await require('@es-labs/node/services/db/mongodb').open()
+  .get('/restart-mongo', async (req, res) => { // SHOULD NOT HAVE TO DO THIS! restart mongo that cannot initially connect
     res.json({})
   })
 
