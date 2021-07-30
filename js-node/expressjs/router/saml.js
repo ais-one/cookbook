@@ -51,8 +51,6 @@ module.exports = express.Router()
     passport.authenticate('saml', { failureRedirect: '/', failureFlash: true }),
     async (req, res) => {
       try {
-        // console.debug('saml2 user:', req.user)
-        // console.debug('saml2 relayState:', req.body.RelayState)
         const TO = req.body.RelayState
         if (!TO) {
           return res.status(200).json({
@@ -62,11 +60,6 @@ module.exports = express.Router()
         }
         if (req.isAuthenticated()) {
           const user = {
-            // [kristophjunge/test-saml-idp]
-            // id: req.user.uid, // currently either id (knex) / _id (mongodb)
-            // groups: req.user.eduPersonAffiliation,
-            // [keycloak]
-
             id: req.user[SAML_JWT_MAP.id], // id: req.user.nameID, // string
             groups: req.user[SAML_JWT_MAP.groups], // groups: req.user.Role, // comma seperated string or array or object...
           }

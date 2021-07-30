@@ -13,8 +13,7 @@ function setup(options = global.CONFIG) {
 
 async function sendChannelMsg(text) {
   try {
-    const rv = await axios.get('https://api.telegram.org/bot' + apiKey + '/sendMessage?chat_id=' + channelId + '&text=' + text)
-    return rv // { id, date, pts, seq }
+    return await axios.get('https://api.telegram.org/bot' + apiKey + '/sendMessage?chat_id=' + channelId + '&text=' + text) //NOSONAR { id, date, pts, seq }
   } catch (e) {
     return { err: e.toString() }
   }
@@ -23,8 +22,7 @@ async function sendChannelMsg(text) {
 async function sendChatMsg(chatId, text) {
   try {
     // console.log('chatId, text', chatId, text)
-    const rv = await axios.get('https://api.telegram.org/bot' + apiKey + '/sendMessage?chat_id=' + chatId + '&text=' + text)
-    return rv // { id, date, pts, seq }
+    return await axios.get('https://api.telegram.org/bot' + apiKey + '/sendMessage?chat_id=' + chatId + '&text=' + text) //NOSONAR { id, date, pts, seq }
   } catch (e) {
     return { err: e.toString() }
   }

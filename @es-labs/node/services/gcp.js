@@ -38,7 +38,7 @@ exports.setupStorage = (options = global.CONFIG) => {
 
 exports.getSignedUrl = async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
   // action "read" (HTTP: GET), "write" (HTTP: PUT), or "delete" (HTTP: DELETE),
-  const bucket = storage.bucket(req.body.bucket || bucket)
+  const storageBucket = storage.bucket(req.body.bucket || bucket)
   const action = req.body.action || '' // 'read' or 'write'
   const fileName = req.body.filename || ''
   if (!action || !fileName) return res.status(400).json({ error: 'filename and action required'})
@@ -52,7 +52,7 @@ exports.getSignedUrl = async (req,res) => { // test upload/get with cloud opject
     if (action === 'write') options.contentType = 'application/octet-stream'
   
     // Get a v4 signed URL for uploading file
-    const [url] = await bucket.file(fileName).getSignedUrl(options)
+    const [url] = await storageBucket.file(fileName).getSignedUrl(options)
     // console.log(url)
     // // curl command for uploading using signed URL
     // console.log("curl -X PUT -H 'Content-Type: application/octet-stream' " + `--upload-file my-file '${url}'`)

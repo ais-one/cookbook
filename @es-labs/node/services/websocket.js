@@ -6,9 +6,12 @@ const WebSocket = require('ws')
 const https = require('https')
 
 let wss
-let onClientConnect = (ws) => { } // console.log('client connected')
-let onClientClose = (ws) => { } // console.log('client disconnected')
-
+let onClientConnect = (ws) => { 
+  // console.log('client connected')
+}
+let onClientClose = (ws) => { 
+  // console.log('client disconnected')
+}
 let onClientMessage = async (data, isBinary, ws, _wss) => { // client incoming message
   const message = isBinary ? data : data.toString()
   // console.log('message', message)

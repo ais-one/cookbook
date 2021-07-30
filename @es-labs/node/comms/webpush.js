@@ -24,8 +24,7 @@ const send = async (subscription, payload, TTL=60) => {
   const options = { TTL } // what if TTL = 0 ?
   // web-push's sendNotification function does all the work for us
   if (!subscription.keys) { payload = payload || null }
-  const res = await webPush.sendNotification(subscription, payload, options)
-  return res
+  return await webPush.sendNotification(subscription, payload, options)
 }
 
 const getPubKey = () => vapidKeys.publicKey

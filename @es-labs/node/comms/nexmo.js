@@ -10,7 +10,7 @@ const nexmo = {
     const { NEXMO_KEY, NEXMO_SECRET, NEXMO_SENDER = 'SMSnotice' } = options || {}
     key = NEXMO_KEY
     api_secret = NEXMO_SECRET
-    from = NEXMO_SENDER
+    sender = NEXMO_SENDER
   },
   // sms = 6511112222
   // one at a time...

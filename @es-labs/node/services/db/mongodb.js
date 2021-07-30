@@ -57,10 +57,3 @@ module.exports = class StoreMongo {
   get() { return this.mongo }
   setId(id) { return new ObjectID(id) }
 }
-
-// exports.mongo = mongo
-// module.exports = mongo
-
-// USAGE:
-// const mongo = require('<RELATIVE PATH TO>/mongodb').open
-// await mongo.db.collection('users').findOne({ email: email })

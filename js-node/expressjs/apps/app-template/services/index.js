@@ -5,13 +5,13 @@ const services = {
   knex2: null,
   mongo1: null,
   keyv: null,
-  // redis: null,
-  // hazelcast: null
+  //NOSONAR redis: null,
+  //NOSONAR hazelcast: null
 }
 
 const StoreKeyV = require('@es-labs/node/services/db/keyv')
-// const StoreRedis = require('@es-labs/node/services/db/redis')
-// const StoreHazelcast = require('@es-labs/node/services/db/hazelcast')
+//NOSONAR const StoreRedis = require('@es-labs/node/services/db/redis')
+//NOSONAR const StoreHazelcast = require('@es-labs/node/services/db/hazelcast')
 const StoreKnex = require('@es-labs/node/services/db/knex') 
 const StoreMongo = require('@es-labs/node/services/db/mongodb') 
 
@@ -25,10 +25,10 @@ const start = () => {
   console.log('services - start - begin')
   services.keyv = new StoreKeyV()
   services.keyv.open()
-  // services.redis = new StoreRedis()
-  // services.redis.open()
-  // services.hazelcast = new StoreHazelcast()
-  // services.hazelcast.open()
+  //NOSONAR services.redis = new StoreRedis()
+  //NOSONAR services.redis.open()
+  //NOSONAR services.hazelcast = new StoreHazelcast()
+  //NOSONAR services.hazelcast.open()
   services.knex1 = new StoreKnex()
   services.knex1.open()
   services.knex2 = new StoreKnex()
