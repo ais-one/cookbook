@@ -198,10 +198,11 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 
 ### Cloud Services
 
-The following Google Cloud Platform services are used
+The following Google Cloud Platform (GCP) services are used
 - Container Registry
 - Cloud Run
-- Cloud Storage 
+- Cloud Storage
+- Mongo Atlas (hosted on GCP)
 
 Refer to [doc/deployment/home.md](doc/deployment/home.md) for documentation on deployments
 

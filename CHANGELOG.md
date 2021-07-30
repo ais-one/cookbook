@@ -1,5 +1,10 @@
 ### Version 0.6.5
 - [chore] update packages & cleanup & work on improving documentation
+- in progress
+  - [js-node/expressjs] scale websockets... https://pushpin.org/
+  - [js-web/vue-vite] cypress e2e testing, make it configurable
+  - [chore] clean up code based on sonarcloud issues
+
 ### Version 0.6.4
 - [chore] update packages & cleanup & work on improving documentation
 - [@es-labs/node] allow options to be passed in also, currently uses global.CONFIG through (**@es-labs/node/config**)
