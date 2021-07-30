@@ -1,3 +1,5 @@
+### Version 0.6.5
+- [chore] update packages & cleanup & work on improving documentation
 ### Version 0.6.4
 - [chore] update packages & cleanup & work on improving documentation
 - [@es-labs/node] allow options to be passed in also, currently uses global.CONFIG through (**@es-labs/node/config**)
