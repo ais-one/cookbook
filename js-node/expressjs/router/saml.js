@@ -54,6 +54,12 @@ module.exports = express.Router()
         // console.debug('saml2 user:', req.user)
         // console.debug('saml2 relayState:', req.body.RelayState)
         const TO = req.body.RelayState
+        if (!TO) {
+          return res.status(200).json({
+            authenticated: req.isAuthenticated(),
+            user: req.user
+          })
+        }
         if (req.isAuthenticated()) {
           const user = {
             // [kristophjunge/test-saml-idp]

@@ -1,6 +1,7 @@
 // for UI usage only...
 module.exports = {
   db: 'knex',
+  conn: 'knex1',
   name: 'books',
   create: true,
   update: true,
@@ -64,6 +65,7 @@ module.exports = {
         parentTableColName: '', // the column name in the parent table
         childCol: '', // affect child column in this table
         dbName: 'knex',
+        conn: 'knex1',
         tableName: 'categories',
         limit: 8,
         strict: true, // cannot enter own values, must be selected
@@ -87,6 +89,7 @@ module.exports = {
         parentTableColName: '',
         childCol: '',
         dbName: 'knex',
+        conn: 'knex1',
         tableName: 'authors',
         limit: 8,
         strict: true,

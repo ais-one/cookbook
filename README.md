@@ -10,7 +10,11 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, Cloud container deployment, Web Components, ES Modules) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.4](https://github.com/ais-one/cookbook/releases/tag/0.6.4) - Released 2021 July 31 1215 +8GMT
+Latest Version [0.6.4](https://github.com/ais-one/cookbook/releases/tag/0.6.4) - Released 2021 July 31 0030 +8GMT
+
+Improved **@es-lab/node** libraries
+- allow for option to pass in config instead of just using global
+- allow multiple db connection instance to be used
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
@@ -73,6 +77,8 @@ npm i ../@es-labs/node
 ### Run migration & app
 
 ```bash
+# in js-node/expressjs
+
 # create and seed relational db on SQLite, (delete the dev.sqlite file each time before you run this)
 # command: npm run knex -- <development / uat / production> <custom app name> <seed / migrate>
 npm run knex -- development app-template migrate

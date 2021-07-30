@@ -1,6 +1,7 @@
 // for UI usage only...
 module.exports = {
   db: 'knex',
+  conn: 'knex1',
   name: 'authors',
   create: true,
   update: true,

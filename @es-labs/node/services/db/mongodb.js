@@ -7,27 +7,26 @@ const DEFAULT_TRANSACTION_OPTIONS = {
   readPreference: 'primary'
 }
 
-const mongo = {
-  client: null,
-  db: null,
-  session: null,
-  stream: null,
-  defaultTransactionOptions: DEFAULT_TRANSACTION_OPTIONS,
-  ObjectID: null,
-}
+const { MongoClient, ObjectID } = require('mongodb')
 
-exports.close = async () => {
-  if (mongo.client) await mongo.client.close()
-  console.log('mongodb closed')
-},
-
-exports.open = async (options = global.CONFIG) => {
-  const { MONGO_URL, MONGO_OPTIONS } = options || {}
-  if (!mongo.db && MONGO_URL) {
-    const { MongoClient, ObjectID } = require('mongodb')
-    mongo.ObjectID = ObjectID
+module.exports = class StoreMongo {
+	constructor(options = global.CONFIG) {
+    const { MONGO_URL, MONGO_OPTIONS } = options || {}
+    this.MONGO_URL = MONGO_URL
+    this.MONGO_OPTIONS = MONGO_OPTIONS
+    this.mongo = {
+      client: null,
+      db: null,
+      session: null,
+      stream: null,
+      defaultTransactionOptions: DEFAULT_TRANSACTION_OPTIONS,
+      ObjectID: null
+    }
+  }
+  async open() {
+    this.mongo.ObjectID = ObjectID
     try {
-      const client = new MongoClient(MONGO_URL, MONGO_OPTIONS)
+      const client = new MongoClient(this.MONGO_URL, this.MONGO_OPTIONS)
       // {
       //   useUnifiedTopology: true,
       //   useNewUrlParser: true,
@@ -39,24 +38,27 @@ exports.open = async (options = global.CONFIG) => {
       //   reconnectInterval: 1000, // ms
       //   autoReconnect: true
       // }
-      mongo.client = client
+      this.mongo.client = client
       // mongo.client.startSession({ defaultTransactionOptions })
       await client.connect()
-      mongo.db = client.db()
+      this.mongo.db = client.db()
       // mongo.stream = db.db('mm').collection('exchangeUsers').watch() //  for streaming data
       // mongo.stream.on('change', (change) => {
       //   console.log(change); // You could parse out the needed info and send only that data.
       //   // use websocket to listen to changes
       // })
-      console.log('mongodb CONNECTED', MONGO_URL)
-    } catch (e) { console.log('mongodb CONNECT ERROR', MONGO_URL, e.toString()) }
+      console.log('mongodb CONNECTED', this.MONGO_URL)
+    } catch (e) { console.log('mongodb CONNECT ERROR', this.MONGO_URL, e.toString()) }
   }
-  // return mongo
-  return this
+  async close() {
+    if (this.mongo.client) await this.mongo.client.close()
+    console.log('mongodb closed')
+  }
+  get() { return this.mongo }
+  setId(id) { return new ObjectID(id) }
 }
 
-exports.get = () => mongo
-exports.mongo = mongo
+// exports.mongo = mongo
 // module.exports = mongo
 
 // USAGE:

@@ -10,26 +10,27 @@
 //   // sentinels: [{ host: 'localhost', port: 26379 }, { host: 'localhost', port: 26380 }],
 //   // name: 'mymaster',
 // }
+const Redis = require('ioredis')
 
-let redis
+module.exports = class StoreRedis {
+	constructor(options = global.CONFIG) {
+    this.REDIS_CONFIG = options.REDIS_CONFIG
+    this.redis = null
+  }
 
-exports.open = (options = global.CONFIG) => {
-  const { REDIS_CONFIG } = options || {}
-  if (!redis && REDIS_CONFIG) {
-    const Redis = require('ioredis')
-    const redisOpts = REDIS_CONFIG.opts
-    if (REDIS_CONFIG.retry) redisOpts.retryStrategy = (times) => Math.min(times * REDIS_CONFIG.retry.step, REDIS_CONFIG.retry.max)
-    if (REDIS_CONFIG.reconnect) redisOpts.reconnectOnError = (err) => err.message.includes(REDIS_CONFIG.reconnect.targetError) ? true : false
-    redis = new Redis(redisOpts)
-  }  
-}
+  open () {
+    const redisOpts = this.REDIS_CONFIG.opts
+    if (this.REDIS_CONFIG.retry) redisOpts.retryStrategy = (times) => Math.min(times * this.REDIS_CONFIG.retry.step, this.REDIS_CONFIG.retry.max)
+    if (this.REDIS_CONFIG.reconnect) redisOpts.reconnectOnError = (err) => err.message.includes(this.REDIS_CONFIG.reconnect.targetError) ? true : false
+    this.redis = new Redis(redisOpts)
+  }
 
-exports.get = () => redis
-
-exports.close = () => {
-  if (redis) {
-    redis.disconnect()
-    redis = null  
+  get () { return this.redis }
+  close () {
+    if (this.redis) {
+      this.redis.disconnect()
+      this.redis = null  
+    }   
   }
 }
 

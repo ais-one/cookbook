@@ -11,23 +11,27 @@ let COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, COOKIE_MAXAGE, COOKIE_DOMAI
   AUTH_REFRESH_URL, AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD,
   JWT_ALG, JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_CERTS, JWT_REFRESH_CERTS,
   JWT_REFRESH_STORE, AUTH_USER_STORE, AUTH_USER_STORE_NAME, JWT_REFRESH_STORE_NAME,
-  setRefreshToken, getRefreshToken, revokeRefreshToken, setRefreshTokenStoreName,
+  setRefreshToken, getRefreshToken, revokeRefreshToken, setRefreshTokenStoreName, setTokenService, setUserService,
   findUser, updateUser, setAuthUserStoreName
 
-const setupAuth = (options = global.CONFIG) => {
+const setupAuth = (tokenService, userService, options = global.CONFIG) => {
   ({
     COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, COOKIE_MAXAGE, COOKIE_DOMAIN,
     USE_OTP, OTP_EXPIRY, CORS_OPTIONS,
     AUTH_REFRESH_URL, AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD = '',
     JWT_ALG, JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_CERTS, JWT_REFRESH_CERTS,
-    JWT_REFRESH_STORE ='keyv', AUTH_USER_STORE, AUTH_USER_STORE_NAME, JWT_REFRESH_STORE_NAME
+
+    JWT_REFRESH_STORE ='keyv', AUTH_USER_STORE,
+    AUTH_USER_STORE_NAME, JWT_REFRESH_STORE_NAME
   } = options || {});
 
-  ({ setRefreshToken, getRefreshToken, revokeRefreshToken, setRefreshTokenStoreName } = require('./' + JWT_REFRESH_STORE)); // keyv, redis, mongo, knex
-  ({ findUser, updateUser, setAuthUserStoreName } = require('./' + AUTH_USER_STORE)); // mongo, knex
+  ({ setRefreshToken, getRefreshToken, revokeRefreshToken, setRefreshTokenStoreName, setTokenService } = require('./' + JWT_REFRESH_STORE)); // keyv, redis, mongo, knex
+  ({ findUser, updateUser, setAuthUserStoreName, setUserService } = require('./' + AUTH_USER_STORE)); // mongo, knex
   
+  if (setTokenService) setTokenService(tokenService)
+  if (setUserService) setUserService(userService)
   if (setRefreshTokenStoreName) setRefreshTokenStoreName(JWT_REFRESH_STORE_NAME)
-  if (setAuthUserStoreName) setAuthUserStoreName(AUTH_USER_STORE_NAME)  
+  if (setAuthUserStoreName) setAuthUserStoreName(AUTH_USER_STORE_NAME)
 }
 
 // SameSite=None; must use with Secure;
