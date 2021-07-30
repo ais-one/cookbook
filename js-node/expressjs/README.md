@@ -2,7 +2,7 @@
 
 ```
 +- apps : custom apps are here in this folder
-|  +- app-template/ : sample custom application (prefixed with app)
+|  +- app-template/ : sample custom application (prefixed with app-)
 |  |  +- config/ : application configs (see README.md within the config folder)
 |  |  +- controllers/
 |  +- deploy/ : deployment folder (see README.md within the deploy folder)
@@ -16,7 +16,7 @@
 |  |  +- routes/ : application REST API & websocket setup
 |  |  +- services/ : services used
 |  |  +- tables/ : configurable table & crud
-|  |  +- tests/ : Jest tests
+|  |  +- tests/ : Jest tests for custom application
 |  |  +- graphql-schema.js : application GraphQL schemas and resolvers
 |  +- app-custom/ : your custom app, put under source control (app-* is git ignored)
 +- common/ : common express setup
@@ -27,6 +27,7 @@
 |  +- demo-express/ (127.0.0.1/)
 +- router/
 +- sandbox/ : Useful scripts
++- tests/ : Jest tests for expressjs
 +- uploads/ : for serving static files - files
 +- .dockerignore
 +- .eslintrc.js
@@ -43,7 +44,6 @@
 +- package.json
 +- README.md
 +- test.py: run python from express
-
 ```
 
 

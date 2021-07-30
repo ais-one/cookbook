@@ -2,9 +2,9 @@
 
 let agenda
 
-exports.open = () => {
+exports.open = (options = global.CONFIG) => {
   if (!agenda) {
-    const { MONGO_URL, JOB_TYPES, JOB_MONGO_URL, JOB_COLLECTION } = global.CONFIG
+    const { MONGO_URL, JOB_TYPES, JOB_MONGO_URL, JOB_COLLECTION } = options || {}
 
     const address = JOB_MONGO_URL || MONGO_URL
     const jobTypes = JOB_TYPES ? JOB_TYPES.split(',') : []

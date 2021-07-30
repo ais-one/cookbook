@@ -1,44 +1,30 @@
 'use strict'
-
-const { HAZELCAST } = global.CONFIG
 const { Client, Predicates } = require('hazelcast-client')
 
-let hazelcast = {
-  client: null
-}
-
-// Hazelcast 4
-exports.open = async () => {
-  if (!hazelcast.client) {
-    if (HAZELCAST.type === 'cloud') {
-      // not yet supported
-    } else {
-      hazelcast.client = await Client.newHazelcastClient(
-        {
-          clusterName: HAZELCAST.name,
-          network: {
-            clusterMembers: [ HAZELCAST.url ]
-          },
-          lifecycleListeners: [ (state) => console.log('Lifecycle Event >>> ' + state) ]
-        }
-      )    
+module.exports = class StoreHazelcast {
+	constructor(options = global.CONFIG) {
+    const { HAZELCAST } = options || {}
+    this.HAZELCAST = HAZELCAST
+    this.hazelcast = {
+      client: null
     }
   }
-  return this
-}
-
-exports.close = () => {
-  if (hazelcast.client) {
-    hazelcast.client.shutdown()
-    console.log('hazelcast closed')
+  async open() {
+    hazelcast.client = await Client.newHazelcastClient(
+      {
+        clusterName: this.HAZELCAST.name,
+        network: {
+          clusterMembers: [ this.HAZELCAST.url ]
+        },
+        lifecycleListeners: [ (state) => console.log('Lifecycle Event >>> ' + state) ]
+      }
+    )    
   }
+  close () {
+    if (this.hazelcast.client) {
+      this.hazelcast.client.shutdown()
+      console.log('hazelcast closed')
+    }
+  }
+  get () { return this.hazelcast }
 }
-
-exports.get = () => {
-  // if (!hazelcast.client) {
-  //   console.log('hz get....', this)
-  // }
-  // console.log('hazelcast.client get', hazelcast.client.instanceName)
-  return hazelcast
-}
-

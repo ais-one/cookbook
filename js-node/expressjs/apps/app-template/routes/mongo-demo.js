@@ -2,13 +2,13 @@
 
 // cookbook for mongoDB
 const express = require('express')
-const mongo = require('@es-labs/node/services/db/mongodb').get()
+const s = require('../services')
 
 module.exports = express.Router()
   .get('/test', async (req,res) => {
     let results = { error: 'no mongo' }
     try {
-      if (mongo && mongo.db) results = await mongo.db.collection('mongo-test').find({}).toArray()
+      if (s.mongo1.mongo.db) results = await s.mongo1.mongo.db.collection('mongo-test').find({}).toArray()
     } catch (e) {
       results = { error: e.toString() }
     }
@@ -17,14 +17,14 @@ module.exports = express.Router()
 
   .get('/transaction-core-api', async (req,res) => {
     // Using Core API - startTransaction()
-    const { defaultTransactionOptions, client } = mongo
+    const { defaultTransactionOptions, client } = s.mongo1.mongo
     const session = client.startSession({ defaultTransactionOptions }) // for transactions
     session.startTransaction()
     try {
       // const rv0 =
-      await mongo.db.collection('mongo-test').insertOne({ name: 'Hello 1', ts: Date.now() }, { session })
+      await s.mongo1.mongo.db.collection('mongo-test').insertOne({ name: 'Hello 1', ts: Date.now() }, { session })
       // const rv1 =
-      await mongo.db.collection('mongo-test').insertOne({ name: 'Hello 2', ts: Date.now() }, { session })
+      await s.mongo1.mongo.db.collection('mongo-test').insertOne({ name: 'Hello 2', ts: Date.now() }, { session })
       // if (!rv0.result.ok || !rv1.result.ok) throw new Error('DB Update Failed')
       await session.commitTransaction()
       res.status(200).json() // success
@@ -42,7 +42,7 @@ module.exports = express.Router()
     // Automatically incorporates error handling logic for "TransientTransactionError" and "UnknownTransactionCommitResult".
     let transactionResults = null
     let error = null
-    const { defaultTransactionOptions, client } = mongo
+    const { defaultTransactionOptions, client } = s.mongo1.mongo
     const transactionOptions = {
       readPreference: 'primary',
       readConcern: { level: 'local' },
@@ -53,13 +53,13 @@ module.exports = express.Router()
     try {
       transactionResults = await session.withTransaction(async () => {
         // Important:: You must pass the session to the operations
-        await mongo.db.collection('mongo-test').insertOne({ name: 'Hello 3', ts: Date.now() }, { session })
+        await s.mongo1.mongo.db.collection('mongo-test').insertOne({ name: 'Hello 3', ts: Date.now() }, { session })
         const error = true //  force an error to test
         if (error) {
           await session.abortTransaction()
           return
         }
-        await mongo.db.collection('mongo-test').insertOne({ name: 'Hello 4', ts: Date.now() }, { session })
+        await s.mongo1.mongo.db.collection('mongo-test').insertOne({ name: 'Hello 4', ts: Date.now() }, { session })
       }, transactionOptions) // you can set your own transaction options here also
     } catch(e){
       error = e.toString()

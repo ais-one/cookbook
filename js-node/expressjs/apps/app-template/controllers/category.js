@@ -1,10 +1,10 @@
 'use strict'
 
-const knex = require('@es-labs/node/services/db/knex').get()
+const s = require('../services')
 
 exports.create = async (req, res, next) => {
   try {
-    const rv = await knex('categories').insert(req.body)
+    const rv = await s.get('db1').knex('categories').insert(req.body)
     return res.status(201).json({ id: rv[0] })
   } catch (e) {
     return res.status(500).json({})
@@ -13,7 +13,7 @@ exports.create = async (req, res, next) => {
 
 exports.findOne = async (req, res, next) => {
   try {
-    const category = await knex('categories').where({ id: req.params.id }).first()
+    const category = await s.get('db1').knex('categories').where({ id: req.params.id }).first()
     if (category)
       return res.status(200).json(category)
     else
@@ -25,7 +25,7 @@ exports.findOne = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
-    const count = await knex('categories').where({ id: req.params.id }).update(req.body)
+    const count = await s.get('db1').knex('categories').where({ id: req.params.id }).update(req.body)
     return res.status(count ? 200 : 404).json({ count })
   } catch (e) {
     return res.status(500).json({ error: e.string() })
@@ -36,7 +36,7 @@ exports.find = async (req, res, next) => {
   try {
     const limit = req.query.limit ? req.query.limit : 2
     const page = req.query.page ? req.query.page : 0
-    const categories = await knex('categories').limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
+    const categories = await s.get('db1').knex('categories').limit(limit).offset((page > 0 ? page - 1 : 0) * limit)
     return res.status(200).json(categories)  
   } catch (e) {
     return res.status(500).json({ error: e.string() })
@@ -45,7 +45,7 @@ exports.find = async (req, res, next) => {
 
 exports.remove = async (req, res, next) => {
   try {
-    const count = await knex('categories').where({ id: req.params.id }).delete()
+    const count = await s.get('db1').knex('categories').where({ id: req.params.id }).delete()
     return res.status(count ? 200 : 404).json({ count })
   } catch (e) {
     return res.status(500).json({ error: e.string() })

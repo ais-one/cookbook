@@ -6,12 +6,14 @@ const WebSocket = require('ws')
 const https = require('https')
 
 let wss
-
-let onClientClose = (ws) => {
+let onClientConnect = (ws) => { 
+  // console.log('client connected')
+}
+let onClientClose = (ws) => { 
   // console.log('client disconnected')
 }
-
-let onClientMessage = async (message, ws, _wss) => { // client incoming message
+let onClientMessage = async (data, isBinary, ws, _wss) => { // client incoming message
+  const message = isBinary ? data : data.toString()
   // console.log('message', message)
   try { // try-catch only detect immediate error, cannot detect if write failure    
     if (_wss) { // send to other clients except self
@@ -28,7 +30,7 @@ let onClientMessage = async (message, ws, _wss) => { // client incoming message
   }
 }
 
-exports.getWs = () => wss // get wss so that you can send messages to other clients...
+exports.get = () => wss // get wss so that you can send messages to other clients...
 
 exports.send = (data) => {
   wss.clients.forEach(function each(client) {
@@ -38,8 +40,8 @@ exports.send = (data) => {
   })
 }
 
-exports.open = function (server=null, app=null) {
-  const { WS_PORT, WS_KEEEPALIVE_MS, HTTPS_CERTS } = global.CONFIG
+exports.open = function (server=null, app=null, options=global.CONFIG) {
+  const { WS_PORT, WS_KEEEPALIVE_MS, HTTPS_CERTS } = options || {}
   let err
   try {
     if (!wss && WS_PORT) {
@@ -56,10 +58,11 @@ exports.open = function (server=null, app=null) {
       if (wss) {
         wss.on('connection', (ws) => {
           // console.log('ws client connected')
+          onClientConnect(ws) // what else to do when client connects
           ws.isAlive = true
           ws.on('pong', () => { ws.isAlive = true })
           ws.on('close', () => onClientClose(ws))
-          ws.on('message', message => onClientMessage(message, ws, wss))
+          ws.on('message', (data, isBinary) => onClientMessage(data, isBinary, ws, wss))
         })
         setInterval(() => { // set keep-alive
           // console.log('WS Clients: ', wss.clients.size)
@@ -81,25 +84,29 @@ exports.open = function (server=null, app=null) {
 }
 
 exports.close = function () {
-  let err
   try { // close all connections
     if (wss) {
       wss.close()
-      wss.clients.forEach(client => client.close(0, 'wss close() called')) // close gracefully
+      // wss.clients.forEach(client => client.close(0, 'wss close() called')) // close gracefully
+      for (const client of wss.clients) client.terminate() // https://github.com/websockets/ws/releases/tag/8.0.0
       // delete wss
       // wss = null
     }
   } catch (e) {
-    err = e.toString()
+    console.error(e.toString())
   }
-  console.log(err || 'WS API CLOSE OK')
+  console.log('WS API CLOSE OK')
 }
 
 exports.setOnClientMessage = function (onClientMessageFn) {
   onClientMessage = onClientMessageFn
 }
 
-exports.setOnClientCLose = function (onClientCloseFn) {
+exports.setOnClientConnect = function (onClientConnectFn) { //  what to do when client connects
+  onClientConnect = onClientConnectFn
+}
+
+exports.setOnClientCLose = function (onClientCloseFn) { //  what to do when client closes
   onClientClose = onClientCloseFn
 }
 

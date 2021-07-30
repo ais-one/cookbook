@@ -10,12 +10,18 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, Cloud container deployment, Web Components, ES Modules) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.3](https://github.com/ais-one/cookbook/releases/tag/0.6.3) - Released 2021 July 25 1215 +8GMT
+Latest Version [0.6.4](https://github.com/ais-one/cookbook/releases/tag/0.6.4) - Released 2021 July 31 0015 +8GMT
+
+Improved **@es-lab/node** libraries
+- allow for option to pass in config instead of just using global
+- allow multiple db connection instance to be used (using Class)
+
+Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
 Considerations for this project are similar to [favv](https://github.com/ais-one/favv/blob/master/README.md#considerations). The difference between them are:
 - this repo is more of a cookbook and recipes are constantly being improved and updated
-- [favv](https://github.com/ais-one/favv) tries to seperate boilerplate from custom logic for better maintainability (we will do this here for node backend projects too)
-- they complement each other and each can be used to improve on each other
+- [favv](https://github.com/ais-one/favv) backend is written in Python and tries to seperate boilerplate from custom logic for better maintainability (we will do this here for node backend projects too)
+- they can be used to improve on each other
 
 We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem.
 
@@ -71,6 +77,8 @@ npm i ../@es-labs/node
 ### Run migration & app
 
 ```bash
+# in js-node/expressjs
+
 # create and seed relational db on SQLite, (delete the dev.sqlite file each time before you run this)
 # command: npm run knex -- <development / uat / production> <custom app name> <seed / migrate>
 npm run knex -- development app-template migrate

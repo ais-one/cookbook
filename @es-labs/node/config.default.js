@@ -46,22 +46,19 @@ global.CONFIG.JWT_REFRESH_STORE_NAME = 'user_session' // collection or table nam
 global.CONFIG.USE_OTP = 'TEST' // GA, SMS, '' (also on FE) set to TEST for testing using 111111 as PIN
 global.CONFIG.OTP_EXPIRY = 30 // 8 // 30 // defined seconds to allow user to submit OTP
 
+// URL to redirect if error
+global.CONFIG.AUTH_ERROR_URL = ''
+
 // SAML
 global.CONFIG.SAML_OPTIONS = null // https://github.com/node-saml/passport-saml#config-parameter-details
+global.CONFIG.SAML_DECRYPTION_CERT = ''
+global.CONFIG.SAML_JWT_MAP = { id: 'NameID', groups: 'Group' }
+
 // OIDC
 global.CONFIG.OIDC_OPTIONS = null
-// URL to redirect if error
-global.CONFIG.AUTH_ERROR_URL = '' // for 
 
 // OAuth (we use github for example)
-global.CONFIG.OAUTH_URL = ''
-global.CONFIG.OAUTH_CLIENT_ID = ''
-global.CONFIG.OAUTH_CLIENT_SECRET = ''
-global.CONFIG.OAUTH_CALLBACK = ''
-global.CONFIG.OAUTH_USER_URL = ''
-global.CONFIG.OAUTH_USER_ID = ''
-global.CONFIG.OAUTH_USER_GROUPS = ''
-global.CONFIG.OAUTH_FIND_ID = ''
+global.CONFIG.OAUTH_OPTIONS = null
 
 // MONGO DB INFO - SHOULD STORE IN SEPERATE AES ENCRYPTED FILE IN PROD
 // MONGO_URL=mongodb://{USER}:{PASSWORD}@{HOST}:{PORT}/{DBNAME}?authMechanism=SCRAM-SHA-1&authSource={AUTH_DBNAME}
@@ -158,7 +155,7 @@ global.CONFIG.ENABLE_LOGGER = false
 global.CONFIG.JOB_BULL = null
 
 // Communications - Nexmo - @es-labs/nodecomms/nexmo.js
-global.CONFIG.NEXMO_FROM = ''
+global.CONFIG.NEXMO_SENDER = ''
 global.CONFIG.NEXMO_KEY = ''
 global.CONFIG.NEXMO_SECRET = ''
 
@@ -173,7 +170,7 @@ global.CONFIG.SENDGRID_SENDER = ''
 // Communications - Firebase Messaging - @es-labs/node/comms/fcm.js
 global.CONFIG.FCM_SERVER_KEY = ''
 
-// Communications - Firebase Messaging (@es-labs/node/services/webpush.js)
+// Communications - Firebase Messaging (@es-labs/node/comms/webpush.js)
 global.CONFIG.WEBPUSH_VAPID_URL = process.env.WEBPUSH_VAPID_URL || 'http://127.0.0.1:3000'
 
 // Caching Redis

@@ -4,10 +4,10 @@
 
 Reference - https://nodejs.org/de/docs/guides/nodejs-docker-webapp/
 
-From cookbook folder (replace **ais-one/node-web-app** with your own image name)
-
 ```Dockerfile
 # build the container
+# replace "ais-one/node-web-app" with your own image name
+# -f is path from cookbook folder
 docker build -t ais-one/node-web-app:latest -f js-node/expressjs/Dockerfile . 
 
 ## NOT USED: docker run -it -d ais-one/node-web-app /bin/bash
@@ -62,4 +62,14 @@ docker run -p 49160:8080 -d <your username>/node-web-app
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
 docker rmi $(docker images -q)
+
+# save image to file
+docker save $IMAGE:$TAG | gzip > $IMAGE-$TAG.tar.gz
+
+# create image from file
+docker image load -i $IMAGE-$TAG.tar.gz
+
+# If using WSL2 for Docker, make sure time is sync 
+# https://stackoverflow.com/questions/65086856/wsl2-clock-is-out-of-sync-with-windows
+sudo hwclock -s
 ```

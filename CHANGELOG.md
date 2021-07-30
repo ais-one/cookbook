@@ -1,3 +1,19 @@
+### Version 0.6.4
+- [chore] update packages & cleanup & work on improving documentation
+- [@es-labs/node] allow options to be passed in also, currently uses global.CONFIG through (**@es-labs/node/config**)
+- [@es-labs/node/services/websocket.js](@es-labs/node/services/websocket.js) add onClientConnect function
+- breaking changes
+  - [@es-labs/node/auth](@es-labs/node/auth) - convert to class
+  - [@es-labs/node/services/redis.js](@es-labs/node/services/redis.js) - move to [@es-labs/node/services/db/redis.js](@es-labs/node/services/db/redis.js)
+  - [@es-labs/node/services/keyv.js](@es-labs/node/services/keyv.js) - move to [@es-labs/node/services/db/keyv.js](@es-labs/node/services/db/keyv.js)
+  - [@es-labs/node/services/db](@es-labs/node/services/db) - convert to class, allow multiple connections
+  - [@es-labs/node/services/webpush.js](@es-labs/node/services/webpush.js) - add setup function, move to [@es-labs/node/services/comms/webpush.js](@es-labs/node/services/comms/webpush.js)
+  - [@es-labs/node/comms](@es-labs/node/comms) - add setup function
+  - [@es-labs/node/services/gcp.js](@es-labs/node/services/gcp.js) add setupStorage function
+  - [js-node/expressjs/apps/app-template/config/secret/README.md](js-node/expressjs/apps/app-template/config/secret/README.md) - improve oauth configuration
+  - [js-node/expressjs/router/saml.js](js-node/expressjs/router/saml.js) - improve saml configuration, only have RelayState in query
+  - [js-node/expressjs/router/saml.js](js-node/expressjs/router/t4t.js) - allow multiple connections, see also the [table configs](js-node/expressjs/apps/app-template/tables)
+
 ### Version 0.6.3
 - [chore] update packages & cleanup & work on improving documentation
 - [chore] improve github workflow and documentation

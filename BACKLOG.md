@@ -3,7 +3,6 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
-- [@es-labs/node] allow options to be passed in also, currently uses global.CONFIG through (**@es-labs/node/config**)
 - [js-node/expressjs] scale websockets... https://pushpin.org/
 - [js-web/vue-vite] cypress e2e testing
 - [chore] migration to node 16 and npm 7

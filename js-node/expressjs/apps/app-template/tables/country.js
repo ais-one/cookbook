@@ -1,5 +1,6 @@
 module.exports = {
   db: 'mongo',
+  conn: 'mongo1',
   name: 'country',
   create: true,
   update: true,

@@ -93,5 +93,27 @@ module.exports = {
 
   SENTRY_DSN: 'https://59719c6eb4ec44c988b86a0e3157347b@o406131.ingest.sentry.io/5868141',
   SENTRY_SAMPLE_RATE: 1.0,
-  SENTRY_REQOPTS: null
+  SENTRY_REQOPTS: null,
+
+  REDIS_CONFIG: {
+    opts: {
+      port: 6379,          // Redis port
+      host: '127.0.0.1',   // Redis host
+      family: 4,           // 4 (IPv4) or 6 (IPv6)
+      password: '',
+      db: 0,
+      // if using sentinels
+      // sentinels: [{ host: 'localhost', port: 26379 }, { host: 'localhost', port: 26380 }],
+      // name: 'mymaster',
+      maxRetriesPerRequest: 20,
+      autoResubscribe: true, // default
+      // autoResendUnfulfilledCommands: true,
+    },
+    retry: {
+      step: 50, max: 2000 
+    },
+    reconnect: {
+      targetError: 'READONLY'
+    }
+  },
 }

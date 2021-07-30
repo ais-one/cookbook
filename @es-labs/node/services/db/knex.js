@@ -1,29 +1,34 @@
 'use strict'
 
-let knex
 
-exports.open = async () => {
-  const { KNEXFILE } = global.CONFIG
-  if (!KNEXFILE) console.log('KNEXFILE property empty or undefined - knex not started')
-  if (!knex && KNEXFILE) {
-    try {
-      const Knex = require('knex')
-      knex = Knex(KNEXFILE)
-      // sqlite, may need to use another statement with other sql dbs
-      await knex.raw('select 1+1 as result').then(() => console.log('knex CONNECTED')).catch(err => { console.log('DB error: ' + err.toString()) })
-    } catch (e) {
-      console.log('knex CONNECT ERROR', e.toString())
+const Knex = require('knex')
+
+module.exports = class StoreKnex {
+	constructor(options = global.CONFIG) {
+    const { KNEXFILE } = options || {}
+    this.KNEXFILE = KNEXFILE
+    this.knex = null
+  }
+
+  async open(options = global.CONFIG) {
+    if (!this.KNEXFILE) console.log('KNEXFILE property empty or undefined - knex not started')
+    else {
+      try {
+        this.knex = Knex(this.KNEXFILE)
+        // sqlite, may need to use another statement with other sql dbs
+        await this.knex.raw('select 1+1 as result').then(() => console.log('knex CONNECTED')).catch(err => { console.log('DB error: ' + err.toString()) })
+      } catch (e) {
+        console.log('knex CONNECT ERROR', e.toString())
+      }
     }
   }
-  return this
+  get () { return this.knex }
+  async close () {
+    if (this.knex) await this.knex.destroy()
+    console.log('knex closed')
+  }
 }
 
-exports.close = async () => {
-  if (knex) await knex.destroy()
-  console.log('knex closed')
-}
-
-exports.get = () => knex
 
 // Model.knex().destroy(() => {}) // returns a promise
 

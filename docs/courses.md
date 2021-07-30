@@ -45,6 +45,3 @@ Courses
 
 - CSS
   - 2h https://www.udemy.com/course/flexbox-tutorial/
-
-- Ethereum, Solidity, Web3, VueJS
-  - 2h https://www.udemy.com/course/ethereum-and-solidity-build-dapp-with-vuejs/

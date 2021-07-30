@@ -4,19 +4,29 @@ const app = express()
 const newCategory = require('../mock-data/new-category.json')
 
 let sqldb
+let keyv
 let createdCategoryId
 let authObj = {}
 let endpointUrl
 
 beforeAll(async () => {
   await require('@es-labs/node/config')(process.cwd())
-  sqldb = await require('@es-labs/node/services/db/knex').open()
+
+  const StoreKnex = require('@es-labs/node/services/db/knex') 
+  sqldb = new StoreKnex()
+  await sqldb.open()
+  const StoreKeyV = require('@es-labs/node/services/db/keyv') 
+  keyv = new StoreKeyV()
+  await keyv.open()
+
+  const auth = require('@es-labs/node/auth')
+  auth.setupAuth(keyv.get(), sqldb.get())
+
   require(APP_PATH + '/common/init')(app, express, global.CONFIG)
   require(APP_PATH + '/common/preRoute')(app, express, global.CONFIG)
   require(APP_PATH + '/router')(app)
 
-  const { createToken } = require('@es-labs/node/auth')
-  const tokens = await createToken({ id: 100, groups: 'TestGroup' })
+  const tokens = await auth.createToken({ id: 100, groups: 'TestGroup' })
   authObj = {
     Authorization: `Bearer ${tokens.access_token}`,
     refresh_token: tokens.refresh_token
@@ -25,6 +35,7 @@ beforeAll(async () => {
 })
 afterAll(async () => {
   await sqldb.close()
+  await keyv.close()
 })
 
 describe(endpointUrl, () => {

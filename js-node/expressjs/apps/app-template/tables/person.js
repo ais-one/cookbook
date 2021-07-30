@@ -1,5 +1,6 @@
 module.exports = {
   db: 'mongo', // knex / mongodb
+  conn: 'mongo1',
   name: 'person', // table name
   create: true, // able to add record,
   update: true, // able to update
@@ -63,6 +64,7 @@ module.exports = {
         parentTableColName: '', // the column name in the parent table
         childCol: 'state', // affect child column in this table
         dbName: 'mongo',
+        conn: 'mongo1',
         tableName: 'country',
         limit: 8,
         strict: true, // cannot enter own values, must be selected
@@ -84,6 +86,7 @@ module.exports = {
         parentTableColName: 'country_name',
         childCol: '',
         dbName: 'mongo',
+        conn: 'mongo1',
         tableName: 'state',
         limit: 8,
         key: 'code',

@@ -52,7 +52,7 @@ services:
   mongodb1:
     networks:
       - my-network-name
-    image: 'mongo:latest'
+    image: 'mongo:4' # not ready to move to Mongo5 yet
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
     container_name: 'mongodb1'

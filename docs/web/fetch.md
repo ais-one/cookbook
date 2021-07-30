@@ -28,7 +28,7 @@ while (true) {
 credentials: 'include'
 ```
 
-3. axios
+3. axios / XMLHttpRequest
 
 ```
 withCredentials: true
