@@ -87,7 +87,7 @@ rm package-lock.json
 ```
 +- cypress/
 +- deploy/ : contains deployment info & files see js-node/expressjs/deploy/README.md
-+- nested/ : nested application
++- nested/ : testing for multi-html
 +- public/
 |  +- img/
 |  |  +- icons/
@@ -101,16 +101,18 @@ rm package-lock.json
 |  +- sitemap.xml
 |  +- style.css
 +- src/
+|  +- layouts/
 |  +- plugins/
+|  +- views/
 |  +- WebTemplate/
-|  |  +- DataEntry/
-|  |  +- Demo/
-|  |  +- Visuals/
+|  |  +- components/
 |  |  +- layouts/
 |  |  +- views/
-|  |  +- Dashboard.vue
+|  |  |  +- DataEntry/
+|  |  |  +- Demo/
+|  |  |  +- Visuals/
 |  |  +- setup.js : specify routes and other config info
-|  |  +- store.js : store specific to this application
+|  |  +- store.js : store specific to this application (to use pinia)
 |  +- App.vue
 |  +- main.js
 |  +- router.js
