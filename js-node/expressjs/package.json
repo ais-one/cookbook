@@ -51,7 +51,7 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.3",
-    "eslint": "^7.31.0",
+    "eslint": "^7.32.0",
     "jest": "^27.0.6",
     "node-mocks-http": "^1.10.1",
     "nodemon": "^2.0.12",

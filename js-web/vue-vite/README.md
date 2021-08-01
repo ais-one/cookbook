@@ -13,6 +13,14 @@ cd js-web/vue-vite
 npm i
 ```
 
+2. Copy apploader.js
+
+This file specifies the folder containing the custom application
+
+```
+cp apploader.js.example apploader.js
+```
+
 ## Development Mode (using dev server)
 
 Run in development
@@ -25,24 +33,26 @@ Navigate to:
 - http://127.0.0.1:8080/ to view application
 - http://127.0.0.1:8080/nested/index.html to view another page (vite serving multi page, each page can be an SPA)
 
+**Note:** For Login
+- Login using one of the following:
+  - Fast: fake a user and login,  no backend needed
+  - Login: normal login with OTP, express server needs to be run
+    - details already prefilled with following values
+    - User: test
+    - Password: test
+    - OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin
+  - SAML: requires keycloak to be [setup](../../docker-devenv/keycloak/README.md) and run, express server needs to be run
+  - OIDC: requires keycloak to be [setup](../../docker-devenv/keycloak/README.md) and run, express server needs to be run
+  - OAuth: requires github account and app to be [setup](https://docs.github.com/en/developers/apps/building-oauth-apps) and also add github ID to a user in the [sqlite database](../../js-node/expressjs/dev.sqlite3), express server needs to be run
+
 **Note:** For Push Notification
-- using Google FCM, setup your firebase account and messaging, also setup FCM server key in backend
-- using self hosted webpush is also supported and available
-
-#### http://127.0.0.1:8080/ Application
-
-Login using the following:
-- User: test
-- Password: test
-- OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin
-
-You can test PWA Push notifications using Webpush or FCM on Dashboard page depending on **.env.<environment>** file configuration (need to be on 127.0.0.1).
-
-Click the following buttons in order (see their output in console.log and screen):
-- sub PN (subscribe)
-- Test PN (send a test message to user id 1 - on sqlite)
-- Unsub PN (unsubscribe)
-
+- Using Google FCM, setup your firebase account and messaging, also setup FCM server key in backend
+- Using self hosted webpush is also supported and available
+- You can test PWA Push notifications using Webpush or FCM on Dashboard page depending on **.env.<environment>** file configuration (need to be on 127.0.0.1).
+- Click the following buttons in order (see their output in console.log and screen):
+  - sub PN (subscribe)
+  - Test PN (send a test message to user id 1 - on sqlite)
+  - Unsub PN (unsubscribe)
 
 ## For production (served from localhost)
 
@@ -75,6 +85,9 @@ rm package-lock.json
 ## Project Strcuture
 
 ```
++- cypress/
++- deploy/ : contains deployment info & files see js-node/expressjs/deploy/README.md
++- nested/ : nested application
 +- public/
 |  +- img/
 |  |  +- icons/
@@ -87,15 +100,21 @@ rm package-lock.json
 |  +- service-worker.js
 |  +- sitemap.xml
 |  +- style.css
-+- deploy/ : contains deployment info & files see js-node/expressjs/deploy/README.md
 +- src/
-|  +- components/
-|  +- layouts/
 |  +- plugins/
-|  +- views/
+|  +- WebTemplate/
+|  |  +- DataEntry/
+|  |  +- Demo/
+|  |  +- Visuals/
+|  |  +- layouts/
+|  |  +- views/
+|  |  +- Dashboard.vue
+|  |  +- setup.js : specify routes and other config info
+|  |  +- store.js : store specific to this application
 |  +- App.vue
 |  +- main.js
 |  +- router.js
+|  +- services.js
 |  +- store.js
 +- .env.development
 +- .env.uat

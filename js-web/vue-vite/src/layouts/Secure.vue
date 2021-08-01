@@ -38,7 +38,8 @@ import idleTimer from '/@es-labs/esm/idle.js'
 
 export default {
   components: {
-    MenuUnfoldOutlined, MenuFoldOutlined
+    MenuUnfoldOutlined,
+    MenuFoldOutlined
   },
   setup(props, context) {
     const store = useStore()
@@ -47,7 +48,7 @@ export default {
     const subMenus = reactive({})
 
     const toPascalCase = (str) => {
-      str = str.replace(/-\w/g,(x) => ` ${x[1].toUpperCase()}`)
+      str = str.replace(/-\w/g, (x) => ` ${x[1].toUpperCase()}`)
       return str[0].toUpperCase() + str.substring(1, str.length)
     }
 

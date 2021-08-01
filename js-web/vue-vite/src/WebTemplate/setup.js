@@ -1,8 +1,8 @@
 // import { openWs, closeWs } from './hookFns.js'
 
 // :key="$route.fullPath" // this is causing problems
-import layoutPublic from './layouts/Public.vue'
-import layoutSecure from './layouts/Secure.vue'
+import layoutPublic from '../layouts/Public.vue' // you can change this to your own layout
+import layoutSecure from '../layouts/Secure.vue' // as above
 
 export default {
   LAYOUTS: {
@@ -10,33 +10,34 @@ export default {
     layoutSecure
   },
   ROUTES: [
+    // you can change this to your custom views for Not Found and Forbidden view
     // { path: '/:catchAll(.*)', name: 'catchAll', redirect: { name: 'SignIn' }, meta: { requiresAuth: false, layout: 'layout-public' } },
-    { path: '/forbidden', name: 'Forbidden', component: () => import('./views/Forbidden.vue') },
-    { path: '/:catchAll(.*)', name: 'NotFound', component: () => import('./views/NotFound.vue') }
+    { path: '/forbidden', name: 'Forbidden', component: () => import('../views/Forbidden.vue') },
+    { path: '/:catchAll(.*)', name: 'NotFound', component: () => import('../views/NotFound.vue') }
   ],
   PUBLIC_ROUTES: [
-    { path: '/', name: 'Home', component: () => import('./views/SignIn.vue') },
-    { path: '/signin', name: 'SignIn', component: () => import('./views/SignIn.vue') },
-    { path: '/signin-fast', name: 'SignInFast', component: () => import('./views/SignInFast.vue') },
-    { path: '/callback', name: 'Callback', component: () => import('./views/Callback.vue') }
+    { path: '/', name: 'Home', component: () => import('./Views/SignIn.vue') },
+    { path: '/signin', name: 'SignIn', component: () => import('./Views/SignIn.vue') },
+    { path: '/signin-fast', name: 'SignInFast', component: () => import('./Views/SignInFast.vue') },
+    { path: '/callback', name: 'Callback', component: () => import('./Views/Callback.vue') }
   ],
   SECURE_ROUTES: [
-    { path: '/dashboard', name: 'Dashboard', component: async () => await import('./Dashboard.vue') },
+    { path: '/dashboard', name: 'Dashboard', component: async () => await import('./Views/Dashboard.vue') },
 
-    { path: '/demo/web-cam', name: 'Demo Web Cam', component: () => import('./Demo/DemoWebCam.vue') },
-    { path: '/demo/sign-pad', name: 'Demo Sign Pad', component: async () => import('./Demo/DemoSignPad.vue') },
-    { path: '/demo/table', name: 'DemoTable', component: async () => import('./Demo/DemoTable.vue') },
-    { path: '/demo/chart', name: 'Demo Chart', component: () => import('./Demo/DemoChart.vue') },
-    { path: '/demo/map', name: 'Demo Map', component: () => import('./Demo/DemoMap.vue') },
-    { path: '/demo/main', name: 'DemoMain', component: () => import('./Demo/DemoMain.vue') },
+    { path: '/demo/web-cam', name: 'Demo Web Cam', component: () => import('./Views/Demo/DemoWebCam.vue') },
+    { path: '/demo/sign-pad', name: 'Demo Sign Pad', component: async () => import('./Views/Demo/DemoSignPad.vue') },
+    { path: '/demo/table', name: 'DemoTable', component: async () => import('./Views/Demo/DemoTable.vue') },
+    { path: '/demo/chart', name: 'Demo Chart', component: () => import('./Views/Demo/DemoChart.vue') },
+    { path: '/demo/map', name: 'Demo Map', component: () => import('./Views/Demo/DemoMap.vue') },
+    { path: '/demo/main', name: 'DemoMain', component: () => import('./Views/Demo/DemoMain.vue') },
 
-    { path: '/visuals/chart1', name: 'DemoChart1', component: async () => import('./Visuals/DemoChart1.vue') },
-    { path: '/visuals/chart2', name: 'DemoChart2', component: async () => import('./Visuals/DemoChart2.vue') },
-    { path: '/visuals/antd-map', name: 'DemoMap', component: async () => import('./Visuals/DemoMap.vue') },
+    { path: '/visuals/chart1', name: 'DemoChart1', component: async () => import('./Views/Visuals/DemoChart1.vue') },
+    { path: '/visuals/chart2', name: 'DemoChart2', component: async () => import('./Views/Visuals/DemoChart2.vue') },
+    { path: '/visuals/antd-map', name: 'DemoMap', component: async () => import('./Views/Visuals/DemoMap.vue') },
 
-    { path: '/data-entry/form', name: 'DemoForm', component: async () => import('./DataEntry/DemoForm.vue') },
-    { path: '/data-entry/card', name: 'DemoCard', component: async () => import('./DataEntry/DemoCard.vue') },
-    { path: '/data-entry/cascade-ms', name: 'CascadeMs', component: async () => import('./DataEntry/CascadeMs.vue') }
+    { path: '/data-entry/form', name: 'DemoForm', component: async () => import('./Views/DataEntry/DemoForm.vue') },
+    { path: '/data-entry/card', name: 'DemoCard', component: async () => import('./Views/DataEntry/DemoCard.vue') },
+    { path: '/data-entry/cascade-ms', name: 'CascadeMs', component: async () => import('./Views/DataEntry/CascadeMs.vue') }
   ],
   INITIAL_PUBLIC_PATH: '/signin',
   INITIAL_SECURE_PATH: '/dashboard',
