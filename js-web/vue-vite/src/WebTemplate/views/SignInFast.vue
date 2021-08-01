@@ -1,9 +1,6 @@
 <template>
   <div class="super-center-parent" >
-    <a-result
-      title="Welcome To JS Dashboard"
-      sub-title="Your one-stop web portal for all things web"
-    >
+    <a-result title="Welcome To JS Dashboard" sub-title="Your one-stop web portal for all things web">
       <template #icon>
         <a-image :width="150" src="https://via.placeholder.com/150x150.png?text=A+Logo" />
       </template>
@@ -18,13 +15,9 @@
 import { onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
-import { SmileTwoTone } from '@ant-design/icons-vue';
-import { VITE_INITAL_SECURE_PATH } from '/config.js'
+import { INITIAL_SECURE_PATH } from '/config.js'
 
 export default {
-  components: {
-    SmileTwoTone
-  },
   setup() {
     const store = useStore()
     const route = useRoute()
@@ -44,7 +37,7 @@ export default {
     }
     const login = async () => {
       _setUser()
-      router.push(VITE_INITAL_SECURE_PATH)
+      router.push(INITIAL_SECURE_PATH)
     }
 
     return {

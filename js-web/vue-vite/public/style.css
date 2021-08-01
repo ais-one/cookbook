@@ -53,3 +53,18 @@ a {
 
 /* Extra large devices (large desktops, 1200px and up) */
 /* @media screen and (min-width: 1200px) { } */
+
+
+::-webkit-scrollbar {
+  width: 4px;    
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgb(24, 144, 255);
+  background: rgba(0,0,0,0.2);
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+  border-radius: 0;
+  background: rgba(0,0,0,0.1);
+}

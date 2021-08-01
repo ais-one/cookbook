@@ -12,10 +12,6 @@
 
 Latest Version [0.6.5](https://github.com/ais-one/cookbook/releases/tag/0.6.5) - Released 2021 August 09 0015 +8GMT
 
-Improved **@es-lab/node** libraries
-- allow for option to pass in config instead of just using global
-- allow multiple db connection instance to be used (using Class)
-
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
 Considerations for this project are similar to [favv](https://github.com/ais-one/favv/blob/master/README.md#considerations). The difference between them are:
