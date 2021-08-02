@@ -3,13 +3,7 @@
 - [js-web/vue-vite] make it configurable
 - [js-web/vue-vite] improve logged-in layout and scrollbar when overflow
 - in progress
-  - [js-node/expressjs] scale websockets... https://pushpin.org/
-    - https://tsh.io/blog/how-to-scale-websocket/
-    - https://socket.io/docs/v4/using-multiple-nodes
-    - https://socket.io/docs/v4/adapter
-    - https://redislabs.com/blog/how-to-create-notification-services-with-redis-websockets-and-vue-js/
-    - https://www.shebanglabs.io/horizontal-scaling-websocket-on-kubernetes-and-nodejs/
-    - https://www.telerik.com/blogs/websockets-vs-server-sent-events (Websockets vs SSE)
+  - [js-node/expressjs] scale websockets...
   - [chore] clean up code based on sonarcloud issues
 
 ### Version 0.6.4
