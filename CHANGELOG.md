@@ -2,8 +2,8 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [js-web/vue-vite] make it configurable
 - [js-web/vue-vite] improve logged-in layout and scrollbar when overflow
+- [js-node/scaled-ws] scale websockets
 - in progress
-  - [js-node/expressjs] scale websockets...
   - [chore] clean up code based on sonarcloud issues
 
 ### Version 0.6.4

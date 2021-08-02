@@ -29,7 +29,8 @@ Below are a list of NodeJS applications
     - requires kafka to run (see /docker-devenv/kafka)
   - process-cron.js
   - process-long.js
-
+- worker-threads
+  - how to use worker threads
 
 ## 
 

@@ -1,6 +1,8 @@
 ## Introduction
 
-This is an example of scaling up websockets using Redis Pubsub
+This is an example of scaling up websockets using Redis Pubsub, it also includes
+- upgrade event and authentication
+- setting an id
 
 ## References
 
@@ -25,6 +27,10 @@ Use the following website to test
 
 https://www.websocket.org/echo.html
 
+connect 3 clients to 3000
+connect 2 clients to 3001
+
+See output when sending message from a client (currently client that sent will also receive its own message)
 
 ## Notes
 

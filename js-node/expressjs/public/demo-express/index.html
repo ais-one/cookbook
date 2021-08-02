@@ -80,7 +80,7 @@
   </div>
 
   <script type="text/javascript">
-    LogFilter(['log']) // debugOn, suppressAll
+    LogFilter(['log']) // which console method to filter out...
 
     const source = new EventSource('/api/sse/register')
     source.addEventListener('message', (message) => {

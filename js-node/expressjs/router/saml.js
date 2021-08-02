@@ -53,6 +53,7 @@ module.exports = express.Router()
       try {
         const TO = req.body.RelayState
         if (!TO) {
+          // if no RelayState, then it is a test
           return res.status(200).json({
             authenticated: req.isAuthenticated(),
             user: req.user
