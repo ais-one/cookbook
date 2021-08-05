@@ -23,7 +23,7 @@ logger.on('finish', async () => {
   process.exit(1)
 })
 
-// //Should display END before exiting the process according to doc
+//NOSONAR //Should display END before exiting the process according to doc
 // logger.info('END')
 // logger.end()
 if (!COMM_PORT) {
@@ -33,7 +33,7 @@ if (!COMM_PORT) {
   serialport = new SerialPort(COMM_PORT, {
     baudRate: COMM_BAUD,
     autoOpen: false,
-    // default
+    //NOSONAR default
     // autoOpen: true,
     // endOnClose: false,
     // baudRate: 9600,
@@ -74,14 +74,14 @@ if (!COMM_PORT) {
       }
     }
   })
-  // serialport.on('readable', () => console.log('Data:', serialport.read())) // Read data that is available but keep the stream in "paused mode"
+  //NOSONAR serialport.on('readable', () => console.log('Data:', serialport.read())) // Read data that is available but keep the stream in "paused mode"
   // serialport.on('data', (data) =>  console.log('Data:', data.toString('utf8'))) // Switches the serialport into "flowing mode"
 }
 
 // serial port ping to device
 setInterval(() => {
   if (commOpen) serialport.write('ping')
-  // if (netConnect) {
+  //NOSONAR if (netConnect) {
   //   console.log('sending TCP')
   //   client.write('test')
   // } else {

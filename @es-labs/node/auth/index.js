@@ -4,8 +4,8 @@ const otplib = require('otplib')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-// const uuid = require('uuid/v4')
-// const qrcode = require('qrcode')
+//NOSONAR const uuid = require('uuid/v4')
+//NOSONAR const qrcode = require('qrcode')
 let COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, COOKIE_MAXAGE, COOKIE_DOMAIN,
   USE_OTP, OTP_EXPIRY, CORS_OPTIONS,
   AUTH_REFRESH_URL, AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD,
@@ -41,15 +41,15 @@ const httpOnlyCookie = () => `HttpOnly;SameSite=${COOKIE_SAMESITE};`
   + (COOKIE_MAXAGE ? 'MaxAge='+COOKIE_MAXAGE+';':'')
   + (COOKIE_DOMAIN ? 'domain='+COOKIE_DOMAIN+';':'')
 
-// algorithm
+//NOSONAR algorithm
 // expiresIn
 // issuer  = 'Mysoft corp' 
 // subject  = 'some@user.com'
 // audience  = 'http://mysoftcorp.in'
 // ip
-
 // We implement stateful refresh_token not stateless
 
+//NOSONAR
 // mode: sign, verify
 // type: access, refresh
 const getSecret = (mode, type) => {
@@ -208,7 +208,8 @@ const login = async (req, res) => {
     const id = user[AUTH_USER_FIELD_ID_FOR_JWT]
     if (!id) return res.status(401).json({ message: 'Authorization Format Error' })
     if (USE_OTP) {
-      // if (USE_OTP === 'SMS') {
+      //NOSONAR
+      //  if (USE_OTP === 'SMS') {
       //   // Generate PIN
       //   const pin = (Math.floor(Math.random() * (999999 - 0 + 1)) + 0).toString().padStart(6, "0")
       //   const ts = new Date() // utc?

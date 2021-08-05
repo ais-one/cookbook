@@ -43,7 +43,7 @@ wss.on('connection', (ws, req) => {
       if (client.readyState === WebSocket.OPEN) {
         if (ws.id === client.id) client.send(message) //  prevent from getting duplicate messages
         // client.send(message, { binary: isBinary })
-      } else { }
+      }
     })
     console.log(`Received ${message} from ${channel}`)
   })

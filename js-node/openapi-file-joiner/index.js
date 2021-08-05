@@ -21,6 +21,6 @@ const options = {
 }
 resolve(root, options).then(function (results) {
   const yamlStr = YAML.dump(results.resolved) // yaml
-  // console.log(JSON.stringify(results.resolved, null, 2)) // json
+  //NOSONAR console.log(JSON.stringify(results.resolved, null, 2)) // json
   fs.writeFileSync(process.env.OUTPUT_FILE, yamlStr)
 })
