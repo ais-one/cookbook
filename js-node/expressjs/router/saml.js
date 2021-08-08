@@ -76,6 +76,3 @@ module.exports = express.Router()
     }
   )
 
-// '/logout'
-// res.redirect( LOGOUT_URL )
-

@@ -31,6 +31,7 @@ module.exports = function(app, server, options) {
         onComplete: (ctx, msg) => console.log('Complete', { ctx, msg }),
       }, graphqlWsServer)  
     }
+    // NOSONAR
     // const graphQlserver = app.listen(3000, () => {
     //   const graphqlWsServer = new ws.Server({ server: graphQlserver, path: '/subscriptions', })
     //   useServer({ schema, roots, execute, subscribe, }, graphqlWsServer);

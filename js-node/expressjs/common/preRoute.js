@@ -19,6 +19,7 @@ module.exports = function(app, express, options) {
     if (HELMET_OPTIONS.csp) app.use(helmet.contentSecurityPolicy(HELMET_OPTIONS.csp))
   }
   // app.use(helmet.noCache())
+  // csurf not needed at the moment
 
   // Set CORS headers so client is able to communicate with this server
   // Access-Control-Allow-Origin=*
@@ -47,10 +48,7 @@ module.exports = function(app, express, options) {
   }
   app.use(CORS_OPTIONS ? cors(corsOptions) : cors()) // default { origin: '*' }
 
-  // const limiter = require('express-limiter')(app, require('redis').createClient())
-  // limiter({ lookup: ['connection.remoteAddress'], total: 100, expire: 1000 * 60 * 60 }) // Limit requests to 100 per hour per ip address.
-  // const csrf = require('csurf')
-  // const compression = require('compression') // Use reverse proxy instead for high traffic site
+  // express-limiter, compression, use reverse proxy
 
   // ------ body-parser and-cookie parser ------
   const { BODYPARSER_JSON, BODYPARSER_URLENCODED } = options
