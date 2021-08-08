@@ -3,8 +3,8 @@
 - [js-web/vue-vite] make it configurable
 - [js-web/vue-vite] improve logged-in layout and scrollbar when overflow
 - [js-node/scaled-ws] scale websockets
-- in progress
-  - [chore] clean up code based on sonarcloud issues
+- [js-node/expressjs] moved jobs and uploads folder to template application, add JOB_PATH config for jobs, so path to jobs can be specified
+- [chore] clean up code based on sonarcloud issues
 
 ### Version 0.6.4
 - [chore] update packages & cleanup & work on improving documentation

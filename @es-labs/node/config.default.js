@@ -77,7 +77,8 @@ global.CONFIG.MONGO_OPTIONS = {
 // agendamq - requires mongodb
 global.CONFIG.JOB_MONGO_URL = '' // if falsy, use MONGO_URL
 global.CONFIG.JOB_COLLECTION = 'agendaJobs' // collection name
-global.CONFIG.JOB_TYPES = 'email' // 'email', // 'email,nexmo,telegram' //  agenda message queue job types, comma seperated , find the path to agenda job
+global.CONFIG.JOB_PATH = '' // path to folder with the jobs
+global.CONFIG.JOB_TYPES = 'email' // 'email,nexmo,telegram' //  agenda message queue job types, comma seperated, each job is a file name in the jobs folder
 
 global.CONFIG.KNEXFILE = null // knexfile
 global.CONFIG.GCP_SERVICE_KEY = null // GCP SERVICE KEY { }

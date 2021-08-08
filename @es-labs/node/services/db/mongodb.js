@@ -1,6 +1,5 @@
 'use strict'
 
-// const ObjectID = require('mongodb').ObjectID
 const DEFAULT_TRANSACTION_OPTIONS = {
   readConcern: { level: 'local' },
   writeConcern: { w: 'majority' },
@@ -42,6 +41,7 @@ module.exports = class StoreMongo {
       // mongo.client.startSession({ defaultTransactionOptions })
       await client.connect()
       this.mongo.db = client.db()
+      // NOSONAR
       // mongo.stream = db.db('mm').collection('exchangeUsers').watch() //  for streaming data
       // mongo.stream.on('change', (change) => {
       //   console.log(change); // You could parse out the needed info and send only that data.

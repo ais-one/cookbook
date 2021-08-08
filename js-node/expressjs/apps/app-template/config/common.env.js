@@ -36,7 +36,7 @@ module.exports = {
 
   // for file uploads
   UPLOAD_STATIC: [{
-    folder: APP_PATH + '/uploads',
+    folder: APP_PATH + '/apps/' + APP_NAME + '/uploads',
     url: '/uploads',
     options: {
       fileFilter: (req, file, cb) => { // better to also filter at frontend
@@ -116,4 +116,6 @@ module.exports = {
       targetError: 'READONLY'
     }
   },
+
+  JOB_PATH: APP_PATH + '/apps/' + APP_NAME + '/jobs',
 }
