@@ -10,9 +10,7 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, Cloud container deployment, Web Components, ES Modules) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.5](https://github.com/ais-one/cookbook/releases/tag/0.6.5) - Released 2021 August 09 0015 +8GMT
-- scalable web sockets
-- customizable UI 
+Latest Version [0.6.6](https://github.com/ais-one/cookbook/releases/tag/0.6.6) - Released 2021 August XX 0015 +8GMT
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 

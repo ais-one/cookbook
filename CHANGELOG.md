@@ -1,3 +1,6 @@
+### Version 0.6.6
+- [chore] update packages & cleanup & work on improving documentation
+
 ### Version 0.6.5
 - [chore] update packages & cleanup & work on improving documentation
 - [js-web/vue-vite] make it configurable
