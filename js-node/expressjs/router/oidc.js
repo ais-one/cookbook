@@ -27,7 +27,7 @@ module.exports = express.Router()
     try {
       const { code, session_state } = req.query
       const headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
-      // const payload = `grant_type=authorization_code&code=${code}&redirect_uri=${APP_BASE_URL}&client_id=${CLIENT_ID}` // redirects back here again...
+      // NOSONAR // const payload = `grant_type=authorization_code&code=${code}&redirect_uri=${APP_BASE_URL}&client_id=${CLIENT_ID}` // redirects back here again...
       const payload = new URLSearchParams()
       payload.append('grant_type', 'authorization_code')
       payload.append('code', code)

@@ -29,19 +29,16 @@ module.exports = class StoreKnex {
   }
 }
 
-
+// NOSONAR
 // Model.knex().destroy(() => {}) // returns a promise
-
 // Update with your config settings.
 // Mysql 8 issue for now
 // ALTER USER 'user'@'%' IDENTIFIED WITH mysql_native_password BY 'user123!@#PK';
 // FLUSH PRIVILEGES;
-
 // npx knex migrate:make create_users --env development
 // npx knex migrate:latest --env development
 // npx knex seed:make seed_name --env development
 // npx knex seed:run --env development
-
 // migrations
 //
 // exports.up = function (knex, Promise) {
@@ -58,7 +55,6 @@ module.exports = class StoreKnex {
 //     knex.schema.dropTable('ideas')
 //   ])
 // }
-
 // seeds
 // exports.seed = function (knex, Promise) {
 //   return knex('ideas').del().then(() => {

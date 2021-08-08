@@ -33,14 +33,14 @@ let onClientMessage = async (data, isBinary, ws, _wss) => { // client incoming m
 exports.get = () => wss // get wss so that you can send messages to other clients...
 
 exports.send = (data) => {
-  wss.clients.forEach(function each(client) {
+  wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
       client.send(data)
     }
   })
 }
 
-exports.open = function (server=null, app=null, options=global.CONFIG) {
+exports.open = (server=null, app=null, options=global.CONFIG) => {
   const { WS_PORT, WS_KEEEPALIVE_MS, HTTPS_CERTS } = options || {}
   let err
   try {
@@ -69,7 +69,7 @@ exports.open = function (server=null, app=null, options=global.CONFIG) {
           wss.clients.forEach((ws) => {
             if (!ws.isAlive) return ws.terminate() // force close
             ws.isAlive = false
-            return ws.ping(() => {})
+            return ws.ping(() => {}) // NOSONAR
           })
         }, WS_KEEEPALIVE_MS)
       }
@@ -110,6 +110,7 @@ exports.setOnClientCLose = function (onClientCloseFn) { //  what to do when clie
   onClientClose = onClientCloseFn
 }
 
+// NOSONAR
 // function heartbeat() {
 //   clearTimeout(this.pingTimeout)
 //   // Use `WebSocket#terminate()` and not `WebSocket#close()`. Delay should be
@@ -124,7 +125,6 @@ exports.setOnClientCLose = function (onClientCloseFn) { //  what to do when clie
 //   client.on('close', function clear() {
 //   clearTimeout(this.pingTimeout)
 // })
-
 // let WSServer = require('ws').Server
 // // Create web socket server on top of a regular http server
 // let wss = new WSServer({ server })

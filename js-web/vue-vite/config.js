@@ -1,3 +1,6 @@
+import setup from './apploader.js'
+// const setup = await import('./src/' + VITE_APPNAME + '/setup.js').default // await causes problems
+
 // console.log('fffff', process.env.NODE_ENV, import.meta.env)
 export const {
   VITE_API_URL,
@@ -18,8 +21,16 @@ export const {
   VITE_REFRESH_URL,
   VITE_REFRESH_URL_MANAGED,
 
-  VITE_INITAL_SECURE_PATH,
-  BASE_URL // from vite.config.js base property
+  BASE_URL, // from vite.config.js base property
+
+  // From setup.js
+  LAYOUTS = setup.LAYOUTS,
+  ROUTES = setup.ROUTES,
+  PUBLIC_ROUTES = setup.PUBLIC_ROUTES,
+  SECURE_ROUTES = setup.SECURE_ROUTES,
+  INITIAL_SECURE_PATH = setup.INITIAL_SECURE_PATH,
+  INITIAL_PUBLIC_PATH = setup.INITIAL_PUBLIC_PATH,
+  // VERSION = setup.VERSION,
 } = import.meta.env
 
 // APP_VERSION: '0.0.0' // TBD Use package.json version

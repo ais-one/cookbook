@@ -30,6 +30,7 @@ module.exports = express.Router({caseSensitive: true})
       detached: true,
       stdio: 'ignore'
     })
+    // NOSONAR
     // child.stdout.on('data', function (data) {
     //   console.log('Pipe data from python script ...')
     //   dataToSend = data.toString()

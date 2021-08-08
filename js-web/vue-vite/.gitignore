@@ -6,6 +6,12 @@ node_modules
 deploy/*
 !deploy/README.md
 
+# custom app
+Web*
+!Webtemplate
+
+apploader.js
+
 # Log files
 npm-debug.log*
 # apple stuff

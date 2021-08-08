@@ -1,6 +1,14 @@
+### Version 0.6.5
+- [chore] update packages & cleanup & work on improving documentation
+- [js-web/vue-vite] make it configurable
+- [js-web/vue-vite] improve logged-in layout and scrollbar when overflow
+- [js-node/scaled-ws] scale websockets
+- [js-node/expressjs] moved jobs and uploads folder to template application, add JOB_PATH config for jobs, so path to jobs can be specified
+- [chore] clean up code based on sonarcloud issues
+
 ### Version 0.6.4
 - [chore] update packages & cleanup & work on improving documentation
-- [@es-labs/node] allow options to be passed in also, currently uses global.CONFIG through (**@es-labs/node/config**)
+- [@es-labs/node](@es-labs/node) allow options to be passed in also, currently uses global.CONFIG through (**@es-labs/node/config**)
 - [@es-labs/node/services/websocket.js](@es-labs/node/services/websocket.js) add onClientConnect function
 - breaking changes
   - [@es-labs/node/auth](@es-labs/node/auth) - convert to class

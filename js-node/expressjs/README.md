@@ -5,22 +5,23 @@
 |  +- app-template/ : sample custom application (prefixed with app-)
 |  |  +- config/ : application configs (see README.md within the config folder)
 |  |  +- controllers/
-|  +- deploy/ : deployment folder (see README.md within the deploy folder)
-|  |  +- db/ : for seeding and migrating data
-|  |  |  +- knex/
-|  |  |  |  +- migrations/
-|  |  |  |  +- seeds/
-|  |  |  +- mongo/
+|  |  +- deploy/ : deployment folder (see README.md within the deploy folder)
+|  |  |  +- db/ : for seeding and migrating data
+|  |  |  |  +- knex/
+|  |  |  |  |  +- migrations/
+|  |  |  |  |  +- seeds/
+|  |  |  |  +- mongo/
+|  |  +- jobs/ : message queue jobs
 |  |  +- models/
 |  |  +- openapi/ : OpenAPI yaml files
 |  |  +- routes/ : application REST API & websocket setup
 |  |  +- services/ : services used
 |  |  +- tables/ : configurable table & crud
 |  |  +- tests/ : Jest tests for custom application
+|  |  +- uploads/ : for file uploads
 |  |  +- graphql-schema.js : application GraphQL schemas and resolvers
 |  +- app-custom/ : your custom app, put under source control (app-* is git ignored)
 +- common/ : common express setup
-+- jobs/ : message queue jobs
 +- logs/
 +- middlewares/
 +- public/ : for serving static files - website
@@ -28,7 +29,6 @@
 +- router/
 +- sandbox/ : Useful scripts
 +- tests/ : Jest tests for expressjs
-+- uploads/ : for serving static files - files
 +- .dockerignore
 +- .eslintrc.js
 +- .gitignore

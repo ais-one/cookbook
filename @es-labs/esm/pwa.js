@@ -113,7 +113,7 @@ const urlBase64ToUint8Array = (base64String) => {
 
 const handleSwMessage = async (e) => {
   console.log('handleSwMessage', e)
-  // if (e && e.data && e.data.msg === 'pushsubscriptionchange') { }
+  //NOSONAR if (e && e.data && e.data.msg === 'pushsubscriptionchange') { }
 }
 
 export const addSwMessageEvent = (handler = handleSwMessage) => {

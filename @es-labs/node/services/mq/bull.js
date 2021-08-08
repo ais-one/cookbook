@@ -27,5 +27,3 @@ async function processQueueMarketUpdates(job) { // returns a promise
   // Passes the value the promise is resolved with to the "completed" event
   return Promise.resolve()
 }
-
-// module.exports = queueMarketUpdates

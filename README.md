@@ -10,11 +10,9 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, Cloud container deployment, Web Components, ES Modules) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.4](https://github.com/ais-one/cookbook/releases/tag/0.6.4) - Released 2021 July 31 0015 +8GMT
-
-Improved **@es-lab/node** libraries
-- allow for option to pass in config instead of just using global
-- allow multiple db connection instance to be used (using Class)
+Latest Version [0.6.5](https://github.com/ais-one/cookbook/releases/tag/0.6.5) - Released 2021 August 09 0015 +8GMT
+- scalable web sockets
+- customizable UI 
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
@@ -34,10 +32,12 @@ Folder | Description | Features
 [docker-devenv](docker-devenv) | Docker containers<br>supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
 [docs](docs) | Documentation<br>To constantly improved/updated | - Main [documentation](docs/home.md)<br>- Secrets [documentation](docs/deployment/secrets.md)<br>- Deployment [notes](docs/deployment/home.md)<br>- Kafka [docs](docs/backend/kafka.md) and [code](js-node)<br>- TCP Server [docs](docs/backend/tcp.md) and [code](js-node)
 [js-node/expressjs](js-node/expressjs) | **Base ExpressJS application**<br>(REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Objection ORM (**removed**), Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
-[js-node/expressjs/apps/app-template](js-node/expressjs/apps/app-template) | Custom application (**app-template**)<br>built on Base ExpressJS | - [config] app configs<br>- [controllers] <br>- [models] <br>- [openapi] OpenAPI yamls<br>- [routes] API routes (also websocket handlers)<br>- [services] services to startup/shutdown<br>- [tables] config tables for generic table crud (t4t)<br>- [tests] folder for tests<br>- [graphql-schema.js] application GraphQL codes
+[js-node/expressjs/apps/app-template](js-node/expressjs/apps/app-template) | Custom application (**app-template**)<br>built on [Base ExpressJS application](js-node/expressjs) | - [config] app configs<br>- [controllers] <br>- [models] <br>- [openapi] OpenAPI yamls<br>- [routes] API routes (also websocket handlers)<br>- [services] services to startup/shutdown<br>- [tables] config tables for generic table crud (t4t)<br>- [tests] folder for tests<br>- [graphql-schema.js] application GraphQL codes
 [js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
-[js-node/*](js-node) | **Other Backend applications**<br>(TCP server, Kafka consumer, etc) | - TCP server (event/stream)<br>- Serial server<br>- Kafka consumer/producer<br>- cron / long-running process example<br>- Combine OpenAPI files for use (openapi-file-joiner)
+[js-node/*](js-node) | **Other Backend applications**<br>(TCP server, Kafka consumer, etc) | - TCP server (event/stream)<br>- Scalable Websocket with Pubsub (Redis)<br>- Serial server<br>- Kafka consumer/producer<br>- cron / long-running process example<br>- Combine OpenAPI files for use (openapi-file-joiner)
 [js-node/wip](js-node/wip) | Work In Progress | - [Webauthn](js-node/wip/fido2) SPA & SSR sample implementation<br>- [K8s](js-node/wip/k8s)
+[js-web/lucia](js-web/lucia) | Lucia SPA | WIP
+[js-web/solid](js-web/solid) | SolidJS SPA | WIP
 [js-web/vue-nobundler](js-web/vue-nobundler) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/apps/app-template/tables/](js-node/expressjs/apps/app-template/tables/)</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[js-web/vue-nobundler/views/ui1.js](js-web/vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[js-web/vue-nobundler/views/ui2.js](js-web/vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[js-web/vue-nobundler/views/ui3.js](js-web/vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[js-web/vue-nobundler/views/ui4.js](js-web/vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
 [js-web/vue-vite](js-web/vue-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, ECharts<br>- PWA<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML, Github OAuth<br>- Websockets, rxJS<br>- Web Components (Webcam, Signature)
 example-webpack<br><b>(Deprecated & removed)</b><br>[last updated version](https://github.com/ais-one/cookbook/tree/0.5.3) | Vue 2 SPA using webpack + Vuetify | - Graphql, REST, VueCrudX, i18n, rxJS
@@ -198,10 +198,11 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 
 ### Cloud Services
 
-The following Google Cloud Platform services are used
+The following Google Cloud Platform (GCP) services are used
 - Container Registry
 - Cloud Run
-- Cloud Storage 
+- Cloud Storage
+- Mongo Atlas (hosted on GCP)
 
 Refer to [doc/deployment/home.md](doc/deployment/home.md) for documentation on deployments
 

@@ -1,6 +1,6 @@
 {
   "name": "expressjs",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "description": "express application",
   "main": "index.js",
   "directories": {
@@ -20,8 +20,8 @@
   "dependencies": {
     "@es-labs/esm": "file:../../@es-labs/esm",
     "@es-labs/node": "file:../../@es-labs/node",
-    "@sentry/node": "^6.10.0",
-    "@sentry/tracing": "^6.10.0",
+    "@sentry/node": "^6.11.0",
+    "@sentry/tracing": "^6.11.0",
     "axios": "^0.21.1",
     "connect-history-api-fallback": "^1.6.0",
     "cookie-parser": "^1.4.5",
@@ -51,7 +51,7 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "cross-env": "^7.0.3",
-    "eslint": "^7.31.0",
+    "eslint": "^7.32.0",
     "jest": "^27.0.6",
     "node-mocks-http": "^1.10.1",
     "nodemon": "^2.0.12",

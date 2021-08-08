@@ -257,6 +257,15 @@ const Car = (ms) => {
 }
 ```
 
+```js
+function greeterFactory(greeting = "Hello") {
+  return {
+    greet: () => console.log(`${greeting}!`)
+  }
+}
+export default greeterFactory
+```
+
 # mixing ES Modules into a CommonJS project
 
 Reference:

@@ -10,7 +10,7 @@ const transport = new winston.transports.DailyRotateFile({
   json: false
 });
 
-// transport.on('rotate', function(oldFilename, newFilename) {
+//NOSONAR transport.on('rotate', function(oldFilename, newFilename) {
 //   // do something fun
 //   console.log('rotated')
 // });
@@ -21,12 +21,12 @@ const logger = winston.createLogger({
   ]
 });
 
-// logger.log({
+//NOSONAR logger.log({
 //   level: 'info',
 //   message: 'What time is the testing at?'
 // });
 
-// try {
+//NOSONAR try {
 //   logger.info('asdadasd')  
 // } catch (e) {
 //   console.log(e.toString())

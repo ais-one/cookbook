@@ -1,127 +1,96 @@
 <template>
   <a-layout>
     <a-back-top />
-    <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
-      <div class="logo" />
+    <a-layout-sider :style="{ overflowY: 'auto', height: '100vh' }" v-model:collapsed="collapsed" :trigger="null" collapsible :collapsedWidth="0">
+      <div class="logo" :style="`background-image: url('https://via.placeholder.com/168x32.png?text=A+Logo');`" />
       <a-menu theme="dark" mode="inline" v-model:selectedKeys="selectedKeys">
-        <a-menu-item key="1" @click="$router.push(VITE_INITAL_SECURE_PATH)">
-          <user-outlined />
-          <span>Dashboard</span>
-        </a-menu-item>
-        <a-menu-item key="main" @click="$router.push('/demo-main')">Main</a-menu-item>
-        <a-sub-menu key="sub1">
-          <template #title>
-            <span>
-              <user-outlined />
-              <span>Visuals</span>
-            </span>
-          </template>
-          <a-menu-item key="21" @click="$router.push('/demo-chart1')">Chart 1</a-menu-item>
-          <a-menu-item key="22" @click="$router.push('/demo-chart2')">Chart 2</a-menu-item>
-          <a-menu-item key="23" @click="$router.push('/demo-antd-map')">Map</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub2">
-          <template #title>
-            <span>
-              <user-outlined />
-              <span>Data Entry</span>
-            </span>
-          </template>
-          <a-menu-item key="31" @click="$router.push('/demo-form')">Forms</a-menu-item>
-          <a-menu-item key="32" @click="$router.push('/demo-card')">Cards</a-menu-item>
-          <a-menu-item key="33" @click="$router.push('/cascade-ms')">Combobox</a-menu-item>
-        </a-sub-menu>
-        <a-menu-item key="4" @click="$router.push('/demo-table')">
-          <video-camera-outlined />
-          <span>Tables</span>
-        </a-menu-item>
-
-        <a-sub-menu key="sub5">
-          <template #title>
-            <span>
-              <upload-outlined />
-              <span>Demo</span>
-            </span>
-          </template>
-          <a-menu-item key="51" @click="$router.push('/demo-map')">Demo Map</a-menu-item>
-          <a-menu-item key="52" @click="$router.push('/demo-chart')">Demo Chart</a-menu-item>
-          <a-menu-item key="53" @click="$router.push('/demo-web-cam')">Web Cam</a-menu-item>
-          <a-menu-item key="54" @click="$router.push('/demo-sign-pad')">SIgn Pad</a-menu-item>
-        </a-sub-menu>
+        <template v-for="route in mappedRoutes">
+          <a-sub-menu v-if="route.submenu" :key="route.submenu" :title="toPascalCase(route.submenu)">
+            <a-menu-item v-for="menu in subMenus[route.submenu]" :key="menu.path" @click="$router.push(menu.path)">{{ menu.name }}</a-menu-item>
+          </a-sub-menu>
+          <a-menu-item v-else :key="route.path" @click="$router.push(route.path)">{{ route.name }}</a-menu-item>
+        </template>
         <a-menu-item key="6" @click="logout">Logout</a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0">
-        <menu-unfold-outlined
-          v-if="collapsed"
-          class="trigger"
-          @click="() => (collapsed = !collapsed)"
-        />
+        <menu-unfold-outlined v-if="collapsed" class="trigger" @click="() => (collapsed = !collapsed)" />
         <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
-        <span>Our Dashboard</span>
+        <span>Dashboard App</span>
       </a-layout-header>
-      <a-layout-content :style="{ margin: '16px 12px', padding: '16px', background: '#fff', minHeight: 'calc(100vh - 96px)' }">
-        <a-breadcrumb style="margin: 8px 0">
-          <a-breadcrumb-item>Home</a-breadcrumb-item>
-          <a-breadcrumb-item>Dashboard</a-breadcrumb-item>
-        </a-breadcrumb>
+      <a-layout-content :style="{ overflowY: 'auto', margin: '16px 12px', padding: '16px', background: '#fff', height: 'calc(100vh - 96px)' }">
         <router-view :key="$route.fullPath"></router-view>
       </a-layout-content>
-      <!-- <a-layout-footer style="text-align: center">Ant Design ©2018 Created by Ant UED</a-layout-footer> -->
+      <!-- <a-layout-footer style="text-align: center">Ant Design ©2021</a-layout-footer> -->
     </a-layout>
   </a-layout>
 </template>
-<script>
 
+<script>
 // :key="$route.fullPath" // this is causing problems
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, onBeforeUnmount, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
-import { VITE_INITAL_SECURE_PATH } from '/config.js'
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue'
+import { SECURE_ROUTES } from '/config.js'
 
 import idleTimer from '/@es-labs/esm/idle.js'
 
-import {
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-} from '@ant-design/icons-vue'
-
 export default {
   components: {
-    UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
     MenuUnfoldOutlined,
-    MenuFoldOutlined,
+    MenuFoldOutlined
   },
   setup(props, context) {
     const store = useStore()
+    const mappedRoutes = reactive([])
+    const subMenus = reactive({})
+
+    const toPascalCase = (str) => {
+      str = str.replace(/-\w/g, (x) => ` ${x[1].toUpperCase()}`)
+      return str[0].toUpperCase() + str.substring(1, str.length)
+    }
+
     onMounted(async () => {
       console.log('SECURE mounted!')
-      idleTimer.timeouts.push(
-        { // timme in seconds and ascending value
-          time: 5,
-          fn: () => {
-            alert('Idle Timeout Test')
-          },
-          stop: true
-        }
-      )
+      idleTimer.timeouts.push({
+        time: 5, // timme in seconds and ascending value
+        fn: () => alert('Idle Timeout Test'),
+        stop: true
+      })
       idleTimer.start()
+
+      SECURE_ROUTES.filter((route) => route.meta.layout === 'layout-secure').forEach((route) => {
+        const submenu = route.path.split('/').length === 3 ? route.path.split('/', 2)[1] : '' // 2 or 3 only
+        if (submenu) {
+          if (!subMenus[submenu]) {
+            // first time
+            subMenus[submenu] = []
+            mappedRoutes.push({ name: route.name, path: route.path, submenu: submenu })
+          }
+          subMenus[submenu].push({ name: route.name, path: route.path }) // add
+        } else {
+          mappedRoutes.push({ name: route.name, path: route.path, submenu: '' })
+        }
+      })
+      // TBD init WS
     })
     onUnmounted(() => {
       console.log('SECURE unmounted')
       idleTimer.stop()
     })
+    onBeforeUnmount(() => {
+      // TBD close WS
+    })
+
     const logout = async () => await store.dispatch('doLogin', null)
     return {
       logout,
       selectedKeys: ref(['1']),
       collapsed: ref(false),
-      VITE_INITAL_SECURE_PATH,
+      mappedRoutes,
+      subMenus,
+      toPascalCase
     }
   }
 }

@@ -5,7 +5,6 @@ let key
 let sender
 
 // Sendgrid, Mailgun
-
 // using Twilio SendGrid's v3 Node.js Library
 // https://github.com/sendgrid/sendgrid-nodejs
 // let sgMail
@@ -23,10 +22,7 @@ function setupSendGrid(options = global.CONFIG) {
 async function sendSendGrid(to, from, subject, text, html) {
   try {
     // const msg = {
-    //   to,
-    //   from,
-    //   subject,
-    //   text
+    //   to, from, subject, text
     // }
     // if (html) msg.html = html
     // await sgMail.send(msg)

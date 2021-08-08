@@ -4,7 +4,7 @@ let agenda
 
 exports.open = (options = global.CONFIG) => {
   if (!agenda) {
-    const { MONGO_URL, JOB_TYPES, JOB_MONGO_URL, JOB_COLLECTION } = options || {}
+    const { MONGO_URL, JOB_TYPES, JOB_PATH, JOB_MONGO_URL, JOB_COLLECTION } = options || {}
 
     const address = JOB_MONGO_URL || MONGO_URL
     const jobTypes = JOB_TYPES ? JOB_TYPES.split(',') : []
@@ -22,7 +22,7 @@ exports.open = (options = global.CONFIG) => {
       }
       agenda = new Agenda(connectionOpts)
       jobTypes.forEach(type => {
-        require(APP_PATH + '/jobs/' + type)(agenda)
+        require(`${JOB_PATH}/${type}`)(agenda)
       })
       agenda.start() // Returns a promise, which should be handled appropriately
       console.log('agenda started - job count=' + jobTypes.length)
@@ -42,18 +42,12 @@ exports.close = async () => {
 
 exports.get = () => agenda
 
-// module.exports = agenda
-
+// NOSONAR
 // agenda = require('../worker.js');
 // app.post('/users', (req, res, next) => {
-//     agenda.now('registration email', { email: 'abc@test.com' })
+//   agenda.now('registration email', { email: 'abc@test.com' })
 // })
-
 // Events - start, complete, success, fail
 // can be start:<job name>
-// agenda.on('success:send email', job => {
-//   console.log(`Sent Email Successfully to ${job.attrs.data.to}`);
-// });
-// agenda.on('fail:send email', (err, job) => {
-//   console.log(`Job failed with error: ${err.message}`);
-// });
+// agenda.on('success:send email', job => console.log(`Sent Email Successfully to ${job.attrs.data.to}`))
+// agenda.on('fail:send email', (err, job) => console.log(`Job failed with error: ${err.message}`))

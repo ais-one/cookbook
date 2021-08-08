@@ -5,6 +5,10 @@ let key
 let api_secret
 let sender
 
+//NOSONAR
+// nexmo.isms('6596935500', 'Blah ' + new Date())
+// nexmo.ismsSend('6596935500', 'Blah ' + new Date())
+
 const nexmo = {
   setup: function(options=global.CONFIG) {
     const { NEXMO_KEY, NEXMO_SECRET, NEXMO_SENDER = 'SMSnotice' } = options || {}
@@ -49,8 +53,5 @@ const nexmo = {
     return null
   }
 }
-
-// nexmo.isms('6596935500', 'Blah ' + new Date())
-// nexmo.ismsSend('6596935500', 'Blah ' + new Date())
 
 module.exports = nexmo

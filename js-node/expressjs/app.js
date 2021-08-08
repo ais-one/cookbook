@@ -10,9 +10,9 @@ const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 require('./common/init')(global.CONFIG)
 
 // setup graceful exit
-const handleExitSignal = async (signal) => await cleanup(`Signal ${signal}`, 0)
-const handleExitException = async (err, origin) => await cleanup(`Uncaught Exception. error: ${err} origin: ${origin}`, 1)
-const handleExitRejection = async (reason, promise) => await cleanup(`Unhandled Rejection. reason: ${reason}`, 1)
+const handleExitSignal = async (signal) => await cleanup(`Signal ${signal}`, 0) // NOSONAR
+const handleExitException = async (err, origin) => await cleanup(`Uncaught Exception. error: ${err} origin: ${origin}`, 1) // NOSONAR
+const handleExitRejection = async (reason, promise) => await cleanup(`Unhandled Rejection. reason: ${reason}`, 1) // NOSONAR
 process.on('SIGINT', handleExitSignal)
 process.on('SIGTERM', handleExitSignal)
 process.on('SIGQUIT', handleExitSignal)
@@ -20,13 +20,11 @@ process.on('uncaughtException', handleExitException)
 process.on('unhandledRejection', handleExitRejection)
 
 const { HTTPS_CERTS, TLS_1_2 } = global.CONFIG
-if (TLS_1_2) { // TLS 1.2
+if (HTTPS_CERTS && TLS_1_2) { // TLS 1.2
   const { constants } = require('crypto')
-  const opts = {
-    secureOptions: constants.SSL_OP_NO_SSLv2 | constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_TLSv1 | constants.SSL_OP_NO_TLSv1_1,
-    ciphers: 'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256:TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384',
-    honorCipher: true
-  }
+  HTTPS_CERTS.secureOptions = constants.SSL_OP_NO_SSLv2 | constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_TLSv1 | constants.SSL_OP_NO_TLSv1_1
+  HTTPS_CERTS.ciphers = 'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256:TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384'
+  HTTPS_CERTS.honorCipher = true
 }
 const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createServer(app)
 
@@ -74,19 +72,7 @@ try {
 // END ROUTES
 
 server.on('upgrade', (request, socket, head) => {
-  // const protocol = request.headers['sec-websocket-protocol']
   const pathname = url.parse(request.url).pathname
-  // This function is not defined on purpose. Implement it with your own logic.
-  // authenticate(request, (err, client) => {
-  //   if (err || !client) {
-  //     socket.write('HTTP/1.1 401 Unauthorized\r\n\r\n');
-  //     socket.destroy();
-  //     return;
-  //   }
-  //   wss.handleUpgrade(request, socket, head, function done(ws) {
-  //     wss.emit('connection', ws, request, client)
-  //   })
-  // })
   if (pathname === '/subscriptions') { // upgrade the graphql server
     graphqlWsServer.handleUpgrade(request, socket, head, (ws) => {
       graphqlWsServer.emit('connection', ws, request);

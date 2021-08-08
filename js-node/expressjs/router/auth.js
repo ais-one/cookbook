@@ -20,6 +20,6 @@ module.exports = express.Router()
     }
   })
   .post('/signup', (req, res) => {
-    // let encryptedPassword = bcrypt.hashSync(clearPassword, SALT_ROUNDS)
+    // NOSONAR let encryptedPassword = bcrypt.hashSync(clearPassword, SALT_ROUNDS)
     res.status(201).end()
   })

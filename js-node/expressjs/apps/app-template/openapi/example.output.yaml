@@ -3,21 +3,21 @@ info:
   version: 1.0.0
   title: Cookbook API
   description: A sample API to demonstrate features in the OpenAPI specification
-  termsOfService: 'http://es-labs.org/terms/'
+  termsOfService: http://es-labs.org/terms/
   contact:
     name: ES-Labs API Team
     email: eslabs.com@gmail.com
-    url: 'https://es-labs.org'
+    url: https://es-labs.org
   license:
     name: Apache 2.0
-    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
 tags:
   - name: Auth
     description: authentication api
   - name: Base
     description: basic api
 servers:
-  - url: 'http://127.0.0.1:3000/api'
+  - url: http://127.0.0.1:3000/api
     description: local development server
   - url: '{protocol}://{environment}.example.com/v2'
     variables:
@@ -298,7 +298,7 @@ paths:
           content:
             application/json:
               schema: *ref_0
-  '/app-template/categories/{id}':
+  /app-template/categories/{id}:
     get:
       description: Returns a user based on a single ID
       tags:

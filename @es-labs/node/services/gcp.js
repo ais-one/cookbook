@@ -3,17 +3,7 @@
 let storage
 let bucket
 
-// let firestore // use firestore like redis for user sessions
-// if (!firestore && GCP_SERVICE_KEY && GCP_SERVICE_KEY.project_id) {
-//   const Firestore = require('@google-cloud/firestore')
-//   const { client_email, private_key } = GCP_SERVICE_KEY
-//   firestore = new Firestore({ credentials: {
-//     client_email, private_key
-//   } })  
-// }
-// exports.firestore = firestore
-
-// Set CORs
+// NOSONAR Set CORs
 // [
 //     {
 //       "origin": ["https://uat.mybot.live"],
@@ -64,7 +54,7 @@ exports.getSignedUrl = async (req,res) => { // test upload/get with cloud opject
   }
 }
 
-/*
+/* NOSONAR
 // https://stackoverflow.com/questions/20754279/creating-signed-urls-for-google-cloud-storage-using-nodejs
 var crypto = require("crypto");
 var fs = require("fs");
@@ -77,8 +67,6 @@ var privateKey = fs.readFileSync("gcs.pem","utf8");
 var signature = encodeURIComponent(crypto.createSign('sha256').update(stringPolicy).sign(privateKey,"base64"));   
 var signedUrl = "https://" + bucketName + ".commondatastorage.googleapis.com/" + key +"?GoogleAccessId=" + accessId + "&Expires=" + expiry + "&Signature=" + signature;
 console.log(signedUrl);
-
-
   fetch('http://www.example.net', { // Your POST endpoint
     method: 'POST',
     headers: {

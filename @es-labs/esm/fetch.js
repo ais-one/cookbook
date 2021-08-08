@@ -113,11 +113,3 @@ class Fetch {
 }
 
 export default Fetch
-
-// function greeterFactory(greeting = "Hello") {
-//   return {
-//     greet: () => console.log(`${greeting}!`)
-//   }
-// }
-
-// export default greeterFactory

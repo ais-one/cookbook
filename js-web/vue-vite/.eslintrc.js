@@ -29,6 +29,7 @@ module.exports = {
     'vue/max-attributes-per-line': 'off',
     'vue/no-deprecated-slot-attribute': 'off', // interferes with html5 custom elements slot
     'vue/singleline-html-element-content-newline': 'off',
+    'vue/no-v-model-argument': 'off',
     // 'vue/max-attributes-per-line': ['error', {
     //   'singleline': 1,
     //   'multiline': {

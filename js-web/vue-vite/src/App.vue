@@ -1,11 +1,12 @@
 <template>
-  <component :is="$route.meta.layout || 'layout-public'"></component>
+  <component :is="$route.meta.layout || (storeUser ? 'layout-secure' : 'layout-public')"></component>
 </template>
 
 <script>
 // :key="$route.fullPath" // this is causing problems
-import layoutPublic from './layouts/Public.vue' // store.state.user determines if public or secure
-import layoutSecure from './layouts/Secure.vue'
+// import layoutPublic from './layouts/Public.vue' // store.state.user determines if public or secure
+// import layoutSecure from './layouts/Secure.vue'
+import { LAYOUTS } from '../config.js'
 
 import { computed } from 'vue'
 import { useStore } from 'vuex'
@@ -15,8 +16,10 @@ import { provideI18n } from '/src/plugins/i18n.js'
 
 export default {
   components: {
-    'layout-public': layoutPublic,
-    'layout-secure': layoutSecure
+    'layout-public': LAYOUTS.layoutPublic,
+    'layout-secure': LAYOUTS.layoutSecure
+    // 'layout-public': layoutPublic,
+    // 'layout-secure': layoutSecure
   },
   setup(props, context) {
     const store = useStore()

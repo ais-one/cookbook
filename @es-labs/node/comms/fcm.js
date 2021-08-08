@@ -10,7 +10,7 @@ exports.setup = (options = global.CONFIG) => {
 
 exports.send = async (to, title, body) => { // send firebase push notification
   try {
-    const rv = await axios.post('https://fcm.googleapis.com/fcm/send', {
+    return await axios.post('https://fcm.googleapis.com/fcm/send', {
       to, data: { notification: { title, body } }
     },{
       headers: {
@@ -18,7 +18,6 @@ exports.send = async (to, title, body) => { // send firebase push notification
         'Content-Type': 'application/json'
       }
     })
-    return rv
   } catch (e) {
     console.error('Firebase Messaging Error', e.toString())
     return null

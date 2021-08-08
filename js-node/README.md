@@ -6,6 +6,8 @@ Below are a list of NodeJS applications
   - see [expressjs/README.md](expressjs/README.md)
 - openapi-file-joiner
   - utility to join multiple openapi yaml files to a single file to be consumed by openapi ui and validation libraries
+- scaled-ws
+  - how to scale websockets using Redis (or some other) PubSub
 - serialserver
   - serial server receive RS232 and send via tcp
     - serialport
@@ -27,7 +29,8 @@ Below are a list of NodeJS applications
     - requires kafka to run (see /docker-devenv/kafka)
   - process-cron.js
   - process-long.js
-
+- worker-threads
+  - how to use worker threads
 
 ## 
 

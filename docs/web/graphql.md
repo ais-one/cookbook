@@ -3,14 +3,12 @@
 ### Libraries
 
 clients
-- apollo-client - https://github.com/apollographql/apollo-client
+- Fetch API
 - graphql-request - https://github.com/prisma-labs/graphql-request
-- @octokit/graphql - https://github.com/octokit/graphql.js/
-- urql - https://github.com/FormidableLabs/urql
 - graphql-upload - https://github.com/jaydenseric/graphql-upload
+- urql - https://github.com/FormidableLabs/urql
+- apollo-client - https://github.com/apollographql/apollo-client (bloated)
 
--client
-  - Fetch API
 - server
   - https://github.com/graphql/express-graphql
 - subscriptions (client side & server side)
