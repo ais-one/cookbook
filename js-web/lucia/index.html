@@ -1,21 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Test Lucia</title>
   <script src="https://unpkg.com/lucia"></script>
 </head>
 
 <body>
   <div l-state="{ value: '', todo: [] }">
-    <!-- oninput: set `value` to input.value -->
     <input l-model="value" />
-    <!-- onclick: add the current `value` to the `todo` array -->
     <button @click="todo.push(value)">Create</button>
-    <!-- joins `todo` array together -->
     <ul l-for="task in todo">
       <li l-text="this.task"></li>
     </ul>

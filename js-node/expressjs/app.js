@@ -22,8 +22,8 @@ process.on('unhandledRejection', handleExitRejection)
 const { HTTPS_CERTS, TLS_1_2 } = global.CONFIG
 if (HTTPS_CERTS && TLS_1_2) { // TLS 1.2
   const { constants } = require('crypto')
-  HTTPS_CERTS.secureOptions = constants.SSL_OP_NO_SSLv2 | constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_TLSv1 | constants.SSL_OP_NO_TLSv1_1,
-  HTTPS_CERTS.ciphers = 'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256:TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384',
+  HTTPS_CERTS.secureOptions = constants.SSL_OP_NO_SSLv2 | constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_TLSv1 | constants.SSL_OP_NO_TLSv1_1
+  HTTPS_CERTS.ciphers = 'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256:TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384'
   HTTPS_CERTS.honorCipher = true
 }
 const server = HTTPS_CERTS ? https.createServer(HTTPS_CERTS, app) : http.createServer(app)

@@ -43,7 +43,6 @@ export default {
   },
   setup(props, context) {
     const store = useStore()
-    // const router = useRouter()
     const mappedRoutes = reactive([])
     const subMenus = reactive({})
 
@@ -74,14 +73,14 @@ export default {
           mappedRoutes.push({ name: route.name, path: route.path, submenu: '' })
         }
       })
-      // if (ON_LOGIN) openWs()
+      // TBD init WS
     })
     onUnmounted(() => {
       console.log('SECURE unmounted')
       idleTimer.stop()
     })
     onBeforeUnmount(() => {
-      // if (ON_LOGOUT) closeWs()
+      // TBD close WS
     })
 
     const logout = async () => await store.dispatch('doLogin', null)
