@@ -39,7 +39,7 @@ module.exports = express.Router()
 
       const rv = await axios.post(TOKEN_URL, payload, { headers })
       const { access_token, refresh_token, ...user_meta } = rv.data
-      return res.redirect(OIDC_OPTIONS.CALLBACK + '#' + access_token + '-' + refresh_token + '-' + JSON.stringify(user_meta))
+      return res.redirect(OIDC_OPTIONS.CALLBACK + '#' + access_token + ';' + refresh_token + ';' + JSON.stringify(user_meta))
     } catch (e) {
       return AUTH_ERROR_URL ? res.redirect(AUTH_ERROR_URL) : res.status(401).json({ error: 'NOT Authenticated' })
     }

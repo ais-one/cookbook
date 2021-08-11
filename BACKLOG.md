@@ -3,8 +3,6 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
-- [js-web/vue-vite] cypress e2e testing
-- [chore] update webauthnsimple to v3
 - [feat] add commitizen, add semantic-version
 - [chore] migration to node 16 and npm 7
 - [frontend] react example

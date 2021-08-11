@@ -18,7 +18,8 @@ export default {
 
     onMounted(async () => {
       console.log('Callback mounted!', route.hash, route) // deal with hashes here if necessary
-      hash.value = route.hash.substring(1) // <access_token>-<refresh_token>-<groups JSON string>
+      hash.value = route.hash.substring(1) // <access_token>;<refresh_token>;<groups JSON string>
+      // verify first, if ok, do login, else send to forbidden // split(';')
     })
 
     return {
