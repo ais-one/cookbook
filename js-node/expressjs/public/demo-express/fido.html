@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>Fido Test</h1>
+  <script>
+    // check for secure context
+    if (!window.isSecureContext) {
+      alert("This web page was not loaded in a secure context (https). Please try loading the page again using https or make sure you are using a browser with secure context support.");
+    }
+    // check for WebAuthn CR features
+    if (window.PublicKeyCredential === undefined ||
+      typeof window.PublicKeyCredential !== "function" ||
+      typeof window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable !== "function") {
+      console.log("PublicKeyCredential not found");
+      alert("WebAuthn is not currently supported by this browser. See this webpage for a list of supported browsers: <a href=https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API#Browser_compatibility>Web Authentication: Browser Compatibility</a>");
+    }
+
+    // random base64 string
+    const challenge = Uint8Array.from('hRgBpl0aDYOFLKB5y0P7hWxZadEwGHWC8PKjkAH1eNY=', c => c.charCodeAt(0))
+    const challengeStr = new TextDecoder().decode(challenge)
+    console.log('ok so far', challenge, challengeStr)
+
+    // https://webauthn.guide/
+    const publicKeyCredentialCreationOptions = {
+      challenge,
+      rp: {
+        name: 'Duo Security',
+        id: 'nip.io',
+      },
+      user: {
+        // id: Uint8Array.from(window.atob("MIIBkzCCATigAwIBAjCCAZMwggE4oAMCAQIwggGTMII="), c=>c.charCodeAt(0)),
+        id: Uint8Array.from(atob('UZSL85T9AFC'), c => c.charCodeAt(0)),
+        name: 'ct5555', // if use email...
+        displayName: 'Lee',
+      },
+      pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
+      authenticatorSelection: {
+        authenticatorAttachment: 'platform', // Windows Hello, TouchID, cross-platform Yubikey
+
+        // NOT IN GUIDE
+        userVerification: 'required', // preferred, required, discouraged
+        requireResidentKey: false,
+      },
+      // timeout: 60000,
+      attestation: 'none' // none, direct, indirect
+    }
+
+    const create = async () => {
+      // const hasUvpaa = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+
+      // on Chrome
+      // add WebAuthn to dev tools tab
+      // enable virtual WebAuthn environment
+      // create and add authenticator: ctap2, internal, support resident keys, support user verification
+      try {
+        const credential = await navigator.credentials.create({
+          publicKey: publicKeyCredentialCreationOptions // some info in the options come from backend
+        });
+        console.log(credential);
+
+        // decode the clientDataJSON into a utf-8 string
+        const utf8Decoder = new TextDecoder('utf-8')
+        const decodedClientData = utf8Decoder.decode(credential.response.clientDataJSON)
+
+        // parse the string as an object
+        const clientDataObj = JSON.parse(decodedClientData);
+        console.log(clientDataObj)
+
+        // note: a CBOR decoder library is needed here.
+        // const decodedAttestationObj = CBOR.decode(credential.response.attestationObject)
+        // console.log(decodedAttestationObject)
+
+        // const {authData} = decodedAttestationObject;
+
+        // // get the length of the credential ID
+        // const dataView = new DataView(new ArrayBuffer(2));
+        // const idLenBytes = authData.slice(53, 55);
+        // idLenBytes.forEach((value, index) => dataView.setUint8(index, value));
+        // const credentialIdLength = dataView.getUint16();
+
+        // // get the credential ID
+        // const credentialId = authData.slice(55, 55 + credentialIdLength);
+
+        // // get the public key object
+        // const publicKeyBytes = authData.slice(55 + credentialIdLength);
+
+        // // the publicKeyBytes are encoded again as CBOR
+        // const publicKeyObject = CBOR.decode(publicKeyBytes.buffer);
+        // console.log(publicKeyObject)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+
+    const verify = async () => {
+      const publicKeyCredentialRequestOptions = {
+        challenge: Uint8Array.from(
+          randomStringFromServer, c => c.charCodeAt(0)),
+        allowCredentials: [{
+          id: Uint8Array.from(credentialId, c => c.charCodeAt(0)),
+          type: 'public-key',
+          transports: ['internal', 'usb', 'ble', 'nfc'],
+        }],
+        timeout: 60000,
+      }
+
+      const assertion = await navigator.credentials.get({
+        publicKey: publicKeyCredentialRequestOptions
+      })
+      console.log(assertion);
+      // PublicKeyCredential {
+      //   id: 'ADSUllKQmbqdGtpu4sjseh4cg2TxSvrbcHDTBsv4NSSX9...',
+      //     rawId: ArrayBuffer(59),
+      //       response: AuthenticatorAssertionResponse {
+      //     authenticatorData: ArrayBuffer(191),
+      //       clientDataJSON: ArrayBuffer(118),
+      //         signature: ArrayBuffer(70),
+      //           userHandle: ArrayBuffer(10),
+      //     },
+      //   type: 'public-key'
+      // }
+
+      // verification
+      // const storedCredential = await getCredentialFromDatabase(userHandle, credentialId);
+      // const signedData = (authenticatorDataBytes + hashedClientDataJSON);
+      // const signatureIsValid = storedCredential.publicKey.verify(signature, signedData);
+      // if (signatureIsValid) return "Hooray! User is authenticated! 🎉";
+      // else return "Verification failed. 😭"
+    }
+
+    create()
+
+  </script>
+</body>
+
+</html>
