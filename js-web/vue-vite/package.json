@@ -15,7 +15,7 @@
     "@ant-design/icons-vue": "^6.0.1",
     "@antv/data-set": "^0.11.8",
     "@antv/g2": "^4.1.24",
-    "@antv/g2plot": "^2.3.30",
+    "@antv/g2plot": "^2.3.31",
     "@sentry/tracing": "^6.11.0",
     "@sentry/vue": "^6.11.0",
     "ant-design-vue": "^2.2.6",
@@ -42,6 +42,6 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.16.0",
     "prettier": "^2.3.2",
-    "vite": "^2.4.4"
+    "vite": "^2.5.0"
   }
 }

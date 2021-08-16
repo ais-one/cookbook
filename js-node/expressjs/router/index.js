@@ -13,6 +13,7 @@ module.exports = function (app) {
     router.use('/sse', require('./sse')),
     router.use('/t4t', require('./t4t')),
     router.use('/webpush', require('./webpush')),
+    router.use('/fido2', require('./fido2')),
   )
 
   if (APP_NAME) require(`../apps/${APP_NAME}/routes`)(app)

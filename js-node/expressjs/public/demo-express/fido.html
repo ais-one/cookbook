@@ -10,7 +10,12 @@
 
 <body>
   <h1>Fido Test</h1>
+  <button onclick="register()">Register</button>
   <script>
+    // https://192-168-18-8.nip.io:3000/fido.html
+    // https://192-168-18-8.nip.io:3000/api/fido2/...
+
+
     // check for secure context
     if (!window.isSecureContext) {
       alert("This web page was not loaded in a secure context (https). Please try loading the page again using https or make sure you are using a browser with secure context support.");
@@ -23,56 +28,78 @@
       alert("WebAuthn is not currently supported by this browser. See this webpage for a list of supported browsers: <a href=https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API#Browser_compatibility>Web Authentication: Browser Compatibility</a>");
     }
 
-    // random base64 string
-    const challenge = Uint8Array.from('hRgBpl0aDYOFLKB5y0P7hWxZadEwGHWC8PKjkAH1eNY=', c => c.charCodeAt(0))
-    const challengeStr = new TextDecoder().decode(challenge)
-    console.log('ok so far', challenge, challengeStr)
+    const register = async () => {
+      // TESTING random base64 string
+      // const challenge = Uint8Array.from('hRgBpl0aDYOFLKB5y0P7hWxZadEwGHWC8PKjkAH1eNY=', c => c.charCodeAt(0))
+      // const challengeStr = new TextDecoder().decode(challenge)
+      // const challengeStr = new TextDecoder().decode(pkCredCreateOpts.challenge)
+      // console.log('ok so far', challengeStr)
 
-    // https://webauthn.guide/
-    const publicKeyCredentialCreationOptions = {
-      challenge,
-      rp: {
-        name: 'Duo Security',
-        id: 'nip.io',
-      },
-      user: {
-        // id: Uint8Array.from(window.atob("MIIBkzCCATigAwIBAjCCAZMwggE4oAMCAQIwggGTMII="), c=>c.charCodeAt(0)),
-        id: Uint8Array.from(atob('UZSL85T9AFC'), c => c.charCodeAt(0)),
-        name: 'ct5555', // if use email...
-        displayName: 'Lee',
-      },
-      pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
-      authenticatorSelection: {
-        authenticatorAttachment: 'platform', // Windows Hello, TouchID, cross-platform Yubikey
+      // https://webauthn.guide/
+      // const pkCredCreateOpts = {
+      //   attestation: 'none', // none, direct, indirect
+      //   authenticatorSelection: {
+      //     authenticatorAttachment: 'platform', // Windows Hello, TouchID, cross-platform Yubikey
 
-        // NOT IN GUIDE
-        userVerification: 'required', // preferred, required, discouraged
-        requireResidentKey: false,
-      },
-      // timeout: 60000,
-      attestation: 'none' // none, direct, indirect
-    }
+      //     // NOT IN GUIDE
+      //     userVerification: 'required', // preferred, required, discouraged
+      //     requireResidentKey: false,
+      //   },
+      //   challenge,
+      //   rp: {
+      //     name: 'Duo Security',
+      //     id: 'nip.io',
+      //   },
+      //   user: {
+      //     // id: Uint8Array.from(window.atob("MIIBkzCCATigAwIBAjCCAZMwggE4oAMCAQIwggGTMII="), c=>c.charCodeAt(0)),
+      //     id: Uint8Array.from(atob('UZSL85T9AFC'), c => c.charCodeAt(0)),
+      //     name: 'ct5555', // if use email...
+      //     displayName: 'Lee',
+      //   },
+      //   pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
+      //   // timeout: 60000,
+      // }
 
-    const create = async () => {
-      // const hasUvpaa = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
 
       // on Chrome
       // add WebAuthn to dev tools tab
       // enable virtual WebAuthn environment
       // create and add authenticator: ctap2, internal, support resident keys, support user verification
       try {
+        const res = await fetch('/api/fido2/register')
+        const pkCredCreateOpts = await res.json()
+        // console.log('pkCredCreateOpts', pkCredCreateOpts)
+        // const hasUvpaa = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+
+        pkCredCreateOpts.user.id = Uint8Array.from(pkCredCreateOpts.user.id, c => c.charCodeAt(0))
+        const challengeStr = pkCredCreateOpts.challenge // keep for later
+        pkCredCreateOpts.challenge = Uint8Array.from(pkCredCreateOpts.challenge, c => c.charCodeAt(0))
+
         const credential = await navigator.credentials.create({
-          publicKey: publicKeyCredentialCreationOptions // some info in the options come from backend
+          publicKey: pkCredCreateOpts // some info in the options come from backend
         });
-        console.log(credential);
+        console.log('credential', credential.response.clientDataJSON.toString()) // credential.response, credential.id
 
         // decode the clientDataJSON into a utf-8 string
         const utf8Decoder = new TextDecoder('utf-8')
         const decodedClientData = utf8Decoder.decode(credential.response.clientDataJSON)
 
-        // parse the string as an object
+        // // parse the string as an object
         const clientDataObj = JSON.parse(decodedClientData);
-        console.log(clientDataObj)
+        // console.log(clientDataObj)
+
+
+        const body = JSON.stringify({ clientAttestationResponse: null, attestationExpectations: clientDataObj, id: credential.id })
+        console.log('body', body)
+        const res2 = await fetch('/api/fido2/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: body
+        })
+        const rv = await res2.json()
+        console.log('rv', rv )
 
         // note: a CBOR decoder library is needed here.
         // const decodedAttestationObj = CBOR.decode(credential.response.attestationObject)
@@ -136,8 +163,6 @@
       // if (signatureIsValid) return "Hooray! User is authenticated! 🎉";
       // else return "Verification failed. 😭"
     }
-
-    create()
 
   </script>
 </body>
