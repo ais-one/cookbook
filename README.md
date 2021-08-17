@@ -12,6 +12,8 @@
 
 Latest Version [0.6.6](https://github.com/ais-one/cookbook/releases/tag/0.6.6) - Released 2021 August XX 0015 +8GMT
 
+- add fido2 & sample to js-node/expressjs
+
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
 Considerations for this project are similar to [favv](https://github.com/ais-one/favv/blob/master/README.md#considerations). The difference between them are:

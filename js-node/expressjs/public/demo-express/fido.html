@@ -11,6 +11,7 @@
 <body>
   <h1>Fido Test</h1>
   <button onclick="register()">Register</button>
+  <button onclick="validate()">Validate</button>
   <button onclick="testB64()">Test B64</button>
 
 <script>
@@ -75,52 +76,43 @@
       // console.log('pkCredCreateOpts', pkCredCreateOpts)
       // const hasUvpaa = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
 
-      pkCredCreateOpts.user.id = Uint8Array.from(pkCredCreateOpts.user.id, c => c.charCodeAt(0))
-      const challengeStr = pkCredCreateOpts.challenge // keep for later
-      pkCredCreateOpts.challenge = Uint8Array.from(pkCredCreateOpts.challenge, c => c.charCodeAt(0))
+      pkCredCreateOpts.user.id = b64_ab(pkCredCreateOpts.user.id) // convert from base64 to ab
+      const challengeStr = pkCredCreateOpts.challenge // keep for later - base64url
+      pkCredCreateOpts.challenge = b64_ab(b64url_b64(pkCredCreateOpts.challenge))
+      console.log('challengeStr', challengeStr)
 
       const credential = await navigator.credentials.create({
         publicKey: pkCredCreateOpts // some info in the options come from backend
-      });
+      })
       console.log('credential', credential)
-      console.log('credential2', ab_b64(credential.rawId))
+      console.log('credential.rawId', credential.rawId)
+      console.log('credential2', ab_b64( new Uint8Array(credential.rawId) ))
 
-      const utf8Decoder = new TextDecoder('utf-8')
       const passableCredential = {
 				id: credential.id,
-				rawId: btoa(credential.rawId),
+				rawId: ab_b64( new Uint8Array(credential.rawId) ),
 				response: {
-					clientDataJSON: utf8Decoder.decode(
-					  credential.response.clientDataJSON
-					),
-					attestationObject: utf8Decoder.decode(
-						credential.response.attestationObject
-					),
+					clientDataJSON: ab_b64( new Uint8Array(credential.response.clientDataJSON) ),
+					attestationObject: ab_b64( new Uint8Array(credential.response.attestationObject) )
 				},
 				type: credential.type,
 			}
       console.log('passableCredential', passableCredential)
 
-      // decode the clientDataJSON into a utf-8 string
+      // // decode the clientDataJSON into a utf-8 string
       // const utf8Decoder = new TextDecoder('utf-8')
       // const decodedClientData = utf8Decoder.decode(credential.response.clientDataJSON)
-
       // // parse the string as an object
       // const clientDataObj = JSON.parse(decodedClientData);
-      // console.log(clientDataObj)
+      // console.log('decoded credential.response.clientDataJSON', clientDataObj)
 
-
-      // const body = JSON.stringify({ clientAttestationResponse: null, attestationExpectations: clientDataObj, id: credential.id })
-      // console.log('body', body)
-      // const res2 = await fetch('/api/fido2/register', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: body
-      // })
-      // const rv = await res2.json()
-      // console.log('rv', rv )
+      const res2 = await fetch('/api/fido2/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(passableCredential)
+      })
+      const rv = await res2.json()
+      console.log('rv', rv)
 
       // note: a CBOR decoder library is needed here.
       // const decodedAttestationObj = CBOR.decode(credential.response.attestationObject)
@@ -149,22 +141,63 @@
   }
 
 
-  const verify = async () => {
-    const publicKeyCredentialRequestOptions = {
-      challenge: Uint8Array.from(
-        randomStringFromServer, c => c.charCodeAt(0)),
-      allowCredentials: [{
-        id: Uint8Array.from(credentialId, c => c.charCodeAt(0)),
-        type: 'public-key',
-        transports: ['internal', 'usb', 'ble', 'nfc'],
-      }],
-      timeout: 60000,
+  const validate = async () => {
+    try {
+      const res = await fetch('/api/fido2/validate')
+      const authnOptions = await res.json()
+      authnOptions.allowCredentials = authnOptions.allowCredentials.map(item => {
+        item.id = b64_ab(item.id)
+        return item
+      })
+
+      authnOptions.challenge = b64_ab(b64url_b64(authnOptions.challenge))
+      const credential = await navigator.credentials.get({
+        publicKey: authnOptions // some info in the options come from backend
+      })
+      console.log('assert credential', credential)
+
+      const passableCredential = {
+				id: credential.id,
+				rawId: ab_b64( new Uint8Array(credential.rawId) ),
+				response: {
+					clientDataJSON: ab_b64( new Uint8Array(credential.response.clientDataJSON) ),
+					authenticatorData: ab_b64( new Uint8Array(credential.response.authenticatorData) ),
+					signature: ab_b64( new Uint8Array(credential.response.signature) ),
+          userHandle: 'test', // credential.response.userHandle,
+				},
+				type: credential.type,
+			}
+      console.log('assert passableCredential', passableCredential)
+
+      const body = JSON.stringify(passableCredential)
+      // console.log('body', body)
+      const res2 = await fetch('/api/fido2/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: body
+      })
+      const rv = await res2.json()
+      console.log('rv', rv)
+    } catch (e) {      
+      console.log(e)
     }
 
-    const assertion = await navigator.credentials.get({
-      publicKey: publicKeyCredentialRequestOptions
-    })
-    console.log(assertion);
+
+    // const publicKeyCredentialRequestOptions = {
+    //   challenge: Uint8Array.from(
+    //     randomStringFromServer, c => c.charCodeAt(0)),
+    //   allowCredentials: [{
+    //     id: Uint8Array.from(credentialId, c => c.charCodeAt(0)),
+    //     type: 'public-key',
+    //     transports: ['internal', 'usb', 'ble', 'nfc'],
+    //   }],
+    //   timeout: 60000,
+    // }
+
+    // const assertion = await navigator.credentials.get({
+    //   publicKey: publicKeyCredentialRequestOptions
+    // })
+    // console.log(assertion);
     // PublicKeyCredential {
     //   id: 'ADSUllKQmbqdGtpu4sjseh4cg2TxSvrbcHDTBsv4NSSX9...',
     //     rawId: ArrayBuffer(59),
