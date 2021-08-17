@@ -12,7 +12,7 @@
 
 Latest Version [0.6.6](https://github.com/ais-one/cookbook/releases/tag/0.6.6) - Released 2021 August XX 0015 +8GMT
 
-- add fido2 & sample to js-node/expressjs
+- add fido2 & sample in [js-node/expressjs/router/fido2.js](js-node/expressjs/router/fido2.js) and [js-node/expressjs/public/demo-express/fido.html](js-node/expressjs/public/demo-express/fido.html)
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 

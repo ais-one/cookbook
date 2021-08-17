@@ -1,4 +1,7 @@
 'use strict'
+// If using nip.io, need to use HTTPS & domain is LAN address + nip.io
+// need to set rpID, origin and CORS (in <environment>.env.js)
+// careful of all the conversions! :)
 const express = require('express')
 // const base64url = require('base64url') // TOREMOVE in Node 16 LTS - use Buffer.from('hello world', 'base64url')
 
@@ -33,9 +36,13 @@ console.log('b64url', b64url)
 
 // could also use one or more of the options below,
 // which just makes the options calls easier later on:
+
+const rpId = 'localhost' // 192-168-18-8.nip.io
+const origin = 'http://localhost:3000' // https://192-168-18-8.nip.io:3000
+
 const f2l = new Fido2Lib({
   timeout: 120000, // 2 minutes
-  rpId: "192-168-18-8.nip.io",
+  rpId,
   rpName: "ACME",
   // rpIcon: "https://example.com/logo.png",
   challengeSize: 128,
@@ -46,10 +53,9 @@ const f2l = new Fido2Lib({
   authenticatorUserVerification: "required"
 })
 
-let testInfo = {
+let testInfo = { }
 
-}
-
+// TBD make below scalable
 let registerChallenge = '33EHav-jZ1v9qwH783aU-j0ARx6r5o-YHh-wd7C6jPbd7Wh6ytbIZosIIACehwf9-s6hXhySHO-HHUjEwZS29w' //  base64url
 let validateChallenge = '' // ab
 
@@ -65,23 +71,7 @@ module.exports = express.Router()
         name: 'name-' + userId, // if use email...
         displayName: 'displayName-' + userId,
       }
-  
-      // console.log(registrationOptions.user, registrationOptions.challenge)
-      // make sure to add registrationOptions.user.id
-      // save the challenge in the session information...
-      // send registrationOptions to client and pass them in to `navigator.credentials.create()`...
-      // get response back from client (clientAttestationResponse)
-      
-      // const attestationExpectations = {
-      //     challenge: "33EHav-jZ1v9qwH783aU-j0ARx6r5o-YHh-wd7C6jPbd7Wh6ytbIZosIIACehwf9-s6hXhySHO-HHUjEwZS29w",
-      //     origin: "https://localhost:8443",
-      //     factor: "either"
-      // }
-      // const regResult = await f2l.attestationResult(clientAttestationResponse, attestationExpectations) // will throw on error
-      
-      // registration complete!
-      // save publicKey and counter from regResult to user's info for future authentication calls
-      res.json(registrationOptions)  
+        res.json(registrationOptions)  
     } catch (e) {
       res.status(500).json({
         error: 'register get',
@@ -101,14 +91,14 @@ module.exports = express.Router()
   
       const attestationExpectations = {
         challenge: registerChallenge,
-        origin: 'https://192-168-18-8.nip.io:3000',
-        // origin: 'nip.io',
+        origin,
         factor: 'either'
       }
   
-      console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')  
       const regResult = await f2l.attestationResult(regResponse, attestationExpectations)
 
+      // registration complete!
+      // save publicKey and counter from regResult to user's info for future authentication calls
       const authnrData = regResult.authnrData
 			const credId = authnrData.get("credId") // ArrayBuffer
       const counter = authnrData.get("counter") // int
@@ -121,7 +111,7 @@ module.exports = express.Router()
       }
       console.log(credId, counter, publicKey)
 
-      res.json({ msg: 'ok' })
+      res.json({ msg: 'register ok' })
     } catch (e) {
       console.log(e)
       res.status(500).json({
@@ -180,7 +170,7 @@ module.exports = express.Router()
         //     transports: ["usb"]
         // }],
         challenge: b_b64url(ab_b(validateChallenge)), // "eaTyUNnyPDDdK8SNEgTEUvz1Q8dylkjjTimYd5X7QAo-F8_Z1lsJi3BilUpFZHkICNDWY8r9ivnTgW7-XZC3qQ", // validateChallenge
-        origin: 'https://192-168-18-8.nip.io:3000',
+        origin,
         factor: "either",
         publicKey: testInfo.publicKey,
         prevCounter: testInfo.counter,
@@ -192,8 +182,8 @@ module.exports = express.Router()
       assertionExpectations.allowCredentials.push({ type: "public-key", id: credentialId })
 
       const authnResult = await f2l.assertionResult(regResponse, assertionExpectations) // will throw on error
-      console.log(authnResult)
-      res.json(authnResult)
+      // console.log(authnResult)
+      res.json({ msg: 'validate ok' })
     } catch (e) {
       console.log(e)
       res.status(500).json({
