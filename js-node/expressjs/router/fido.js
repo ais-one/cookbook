@@ -2,6 +2,11 @@
 // If using nip.io, need to use HTTPS & domain is LAN address + nip.io
 // need to set rpID, origin and CORS (in <environment>.env.js)
 // careful of all the conversions! :)
+
+// https://webauthn.guide/
+// https://github.com/OWASP/SSO_Project
+// https://github.com/webauthn-open-source/fido2-lib
+
 const express = require('express')
 // const base64url = require('base64url') // TOREMOVE in Node 16 LTS - use Buffer.from('hello world', 'base64url')
 

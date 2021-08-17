@@ -56,3 +56,4 @@
   - Logging [web/logging.md](web/logging.md)
 - Git [git.md](git.md)
 - Udemy Courses [courses.md](courses.md)
+- k8s [kubernetes YAML files (WIP)](k8s)

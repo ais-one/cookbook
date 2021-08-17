@@ -16,7 +16,7 @@
 
 <script>
   // https://192-168-18-8.nip.io:3000/fido.html
-  // https://192-168-18-8.nip.io:3000/api/fido2/...
+  // https://192-168-18-8.nip.io:3000/api/fido/...
 
   const b64_b64url = (inStr) => inStr.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '')
   const b64url_b64 = (inStr) => inStr.replace(/\-/g, '+').replace(/_/g, '/') + '='.repeat((inStr.length % 4) ? 4 - (inStr.length % 4) : 0)
@@ -71,7 +71,7 @@
     // enable virtual WebAuthn environment
     // create and add authenticator: ctap2, internal, support resident keys, support user verification
     try {
-      const res = await fetch('/api/fido2/register')
+      const res = await fetch('/api/fido/register')
       const pkCredCreateOpts = await res.json()
       // console.log('pkCredCreateOpts', pkCredCreateOpts)
       // const hasUvpaa = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
@@ -106,7 +106,7 @@
       // const clientDataObj = JSON.parse(decodedClientData);
       // console.log('decoded credential.response.clientDataJSON', clientDataObj)
 
-      const res2 = await fetch('/api/fido2/register', {
+      const res2 = await fetch('/api/fido/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(passableCredential)
@@ -143,7 +143,7 @@
 
   const validate = async () => {
     try {
-      const res = await fetch('/api/fido2/validate')
+      const res = await fetch('/api/fido/validate')
       const authnOptions = await res.json()
       authnOptions.allowCredentials = authnOptions.allowCredentials.map(item => {
         item.id = b64_ab(item.id)
@@ -171,7 +171,7 @@
 
       const body = JSON.stringify(passableCredential)
       // console.log('body', body)
-      const res2 = await fetch('/api/fido2/validate', {
+      const res2 = await fetch('/api/fido/validate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: body

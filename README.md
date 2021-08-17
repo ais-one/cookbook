@@ -12,7 +12,7 @@
 
 Latest Version [0.6.6](https://github.com/ais-one/cookbook/releases/tag/0.6.6) - Released 2021 August XX 0015 +8GMT
 
-- add fido2 & sample in [js-node/expressjs/router/fido2.js](js-node/expressjs/router/fido2.js) and [js-node/expressjs/public/demo-express/fido.html](js-node/expressjs/public/demo-express/fido.html)
+- add fido2 & sample in [js-node/expressjs/router/fido.js](js-node/expressjs/router/fido.js) and [js-node/expressjs/public/demo-express/fido.html](js-node/expressjs/public/demo-express/fido.html)
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
@@ -35,7 +35,7 @@ Folder | Description | Features
 [js-node/expressjs/apps/app-template](js-node/expressjs/apps/app-template) | Custom application (**app-template**)<br>built on [Base ExpressJS application](js-node/expressjs) | - [config] app configs<br>- [controllers] <br>- [models] <br>- [openapi] OpenAPI yamls<br>- [routes] API routes (also websocket handlers)<br>- [services] services to startup/shutdown<br>- [tables] config tables for generic table crud (t4t)<br>- [tests] folder for tests<br>- [graphql-schema.js] application GraphQL codes
 [js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
 [js-node/*](js-node) | **Other Backend applications** | - [TCP server](js-node/tcpserver) (event/stream)<br>- [Scalable Websocket](js-node/scaled-ws) with Redis Pubsub<br>- [Serial server](js-node/serialserver)<br>- [openapi-file-joiner](js-node/openapi-file-joiner) combine OpenAPI files
-[js-node/wip](js-node/wip) | Work In Progress | - [Webauthn](js-node/wip/fido2) SPA & SSR sample implementation<br>- [K8s](js-node/wip/k8s)<br>- Kafka consumer/producer<br>- cron / long-running process example
+[js-node/wip](js-node/wip) | Work In Progress | - Kafka consumer/producer<br>- cron / long-running process example
 [js-web/lucia](js-web/lucia) | Lucia SPA | WIP
 [js-web/solid](js-web/solid) | SolidJS SPA | WIP
 [js-web/vue-nobundler](js-web/vue-nobundler) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/apps/app-template/tables/](js-node/expressjs/apps/app-template/tables/)</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[js-web/vue-nobundler/views/ui1.js](js-web/vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[js-web/vue-nobundler/views/ui2.js](js-web/vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[js-web/vue-nobundler/views/ui3.js](js-web/vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[js-web/vue-nobundler/views/ui4.js](js-web/vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
@@ -147,6 +147,12 @@ Refer to link below on how to try out...
 
 ---
 
+## Fido2
+
+- Refer to following files for sample
+- [js-node/expressjs/router/fido.js](js-node/expressjs/router/fido.js)
+- [js-node/expressjs/public/demo-express/fido.html](js-node/expressjs/public/demo-express/fido.html)
+
 ## Configuration
 
 The [js-node/expressjs/apps/app-template/config](js-node/expressjs/apps/app-template/config) folder contains the config information.
@@ -178,8 +184,6 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 |  +- serialserver/
 |  +- tcpserver/
 |  +- wip/ : projects in progress
-|  |  +- k8s/ : kubernetes YAML files (WIP)
-|  |  +- fido2/ : WebAuthn example
 |  +- worker-threads/ : demo on use of worker threads
 +- js-web
 |  +- vue-nobundler/ : frontend (Vue3 no bundler) - See [js-web/vue-nobundler/README.md](js-web/vue-nobundler/README.md) for Project Structure
