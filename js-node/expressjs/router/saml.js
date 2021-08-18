@@ -42,6 +42,7 @@ module.exports = express.Router()
     (req, res, next) => {
       // return res.redirect('/' + token...) // for faking, bypass real callback
       // console.debug(req.header('referer'))
+      // req.query.RelayState
       next()
     },
     passport.authenticate('saml') // , { failureRedirect: '/', failureFlash: true }),

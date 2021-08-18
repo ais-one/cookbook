@@ -35,7 +35,6 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
 import parseJwt from '/@es-labs/esm/parse-jwt.js'
-import { samlLogin } from '/@es-labs/esm/saml.js'
 
 import { http, ws } from '/src/services.js'
 import { useI18n } from '/src/plugins/i18n.js'
@@ -173,7 +172,7 @@ export default {
 
     const loginSaml = () => {
       http.setOptions({ refreshUrl: VITE_REFRESH_URL })
-      samlLogin(VITE_SAML_URL, VITE_CALLBACK_URL)
+      window.location.assign(`${VITE_SAML_URL}?RelayState=${VITE_CALLBACK_URL}`)
     }
 
     return {
