@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+module.exports = ({ username }) => /*html*/`<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>WebAuthn Codelab</title>
@@ -13,7 +13,7 @@
   <body>
     <h1>WebAuthn codelab</h1>
     <main class="content">
-      <h2>Welcome {{username}}</h2>
+      <h2>Welcome ${username}</h2>
       <p id="uvpa_unavailable" class="hidden">This device does not support User Verifying Platform Authenticator. You can't register a credential.</p>
       <h3>Your registered credentials:</h3>
       <section>
@@ -49,10 +49,7 @@
           const div = document.createElement('div')
 
           const p = document.createElement('p')
-          p.innerHTML = `
-          Id:  ${cred.credId}<br/>
-          Key: ${cred.publicKey}<hr/>
-          `
+          p.innerHTML = 'Id:  ' + cred.credId + '<br/>' + 'Key: ' + cred.publicKey + '<hr/>'
           const btn = document.createElement('button')
           btn.id = cred.credId
           btn.onclick = removeCredential
@@ -80,11 +77,7 @@
         registerCredential(
           // {
           //   attestation: 'none',
-          //   authenticatorSelection: {
-          //     authenticatorAttachment: 'platform',
-          //     userVerification: 'required',
-          //     requireResidentKey: false
-          //   }
+          //   authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required', requireResidentKey: false }
           // }
         ).then(user => {
           getCredentials()
@@ -92,4 +85,4 @@
       })
     </script>
   </body>
-</html>
+</html>`

@@ -23,13 +23,13 @@
     "leaflet": "^1.7.1",
     "pinia": "^0.5.4",
     "rxjs": "^7.3.0",
-    "vue": "^3.2.3",
+    "vue": "^3.2.4",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.4.0",
-    "@vue/compiler-sfc": "^3.2.3",
+    "@vue/compiler-sfc": "^3.2.4",
     "cypress": "^8.3.0",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",

@@ -4,7 +4,8 @@
 - [js-node/wip/k8s] moved to [docs]
 - [js-web/vue-vite] minor config change VITE_SAML_URL and VITE_CALLBACK_URL to use full URL paths, simplify saml call, **@es-labs/esm/saml.js** REMOVED
 - In progress
-  - [chore] improved fido2 sample in [js-node/expressjs], remove [js-node/wip/fido2]?
+  - [chore] add fido2 spa sample in [js-node/expressjs], remove spa example from [js-node/wip/fido2]
+    - add output in spa example
   - [js-web/vue-vite] cypress e2e testing
 
 ### Version 0.6.5

@@ -10,9 +10,7 @@
     "@simplewebauthn/server": "^0.10.3",
     "base64url": "^3.0.1",
     "express": "^4.17.1",
-    "express-session": "^1.17.1",
-    "hbs": "^4.1.1",
-    "selfsigned": "^1.10.11"
+    "express-session": "^1.17.1"
   },
   "engines": {
     "node": "12.x"
