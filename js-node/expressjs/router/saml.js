@@ -9,10 +9,24 @@ const { createToken, setTokensToHeader } = require('@es-labs/node/auth')
 
 const { AUTH_ERROR_URL, SAML_OPTIONS, SAML_JWT_MAP, SAML_DECRYPTION_CERT } = global.CONFIG
 
-const selfsigned = require('selfsigned');
-const samlPems = selfsigned.generate(null, { days: 30, algorithm: 'sha256' }) // TO Make this configurable
-
 let samlStrategy
+
+// const { SAML } = require('passport-saml/lib/node-saml')
+const { SAML } = require('node-saml')
+// const samlx = new SAML(SAML_OPTIONS)
+const samlx = new SAML(SAML_OPTIONS)
+console.log(SAML_OPTIONS)
+// cause problems in samlx
+// privateCert: samlPems.cert,
+
+// await saml.getLogoutResponseUrl({user, samlLogoutRequest}, {additionalParams});
+// const {success} = await saml.validateRedirect(query, originalQuery);
+// await saml.validatePostResponse(body);
+// await saml.validatePostRequest(body);
+// await saml.getAuthorizeForm();
+// await saml.getAuthorizeUrl(options);
+// await saml.getLogoutUrl(user, options);
+// saml.generateServiceProviderMetadata(decryptionCert, signingCert);
 
 if (SAML_OPTIONS) {
   const SamlStrategy = require('passport-saml').Strategy
@@ -32,7 +46,16 @@ if (SAML_OPTIONS) {
 }
 
 module.exports = express.Router()
-  .get('/test', (req,res) => res.send('ok'))
+  .get('/test', async (req,res) => {
+    console.log(samlx.getAuthorizeUrl)
+    try {
+      const target = await samlx.getAuthorizeUrl()
+      console.log(target)  
+    } catch (e) {
+      console.log(e, SAML_OPTIONS.privateCert)
+    }
+    res.send('ok')
+  })
   .get('/metadata', (req, res) => {
     res.type('application/xml')
     // res.status(200).send(samlStrategy.generateServiceProviderMetadata()) // if there is private key involved, then need to pass in cert
