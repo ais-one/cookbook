@@ -11,9 +11,8 @@ const { AUTH_ERROR_URL, SAML_OPTIONS, SAML_JWT_MAP, SAML_DECRYPTION_CERT } = glo
 
 let samlStrategy
 
-// const { SAML } = require('passport-saml/lib/node-saml')
+// NOSONAR const { SAML } = require('passport-saml/lib/node-saml')
 const { SAML } = require('node-saml')
-// const samlx = new SAML(SAML_OPTIONS)
 const samlx = new SAML(SAML_OPTIONS)
 console.log(SAML_OPTIONS)
 // cause problems in samlx

@@ -4,6 +4,15 @@
   "description": "Fullstack JS Application Cookbook",
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ais-one/cookbook.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ais-one/cookbook/issues"
+  },
+  "homepage": "https://github.com/ais-one/cookbook#readme",
+  "keywords": [ "nodejs", "vuejs" ],
   "scripts": {
     "prepare": "husky install",
     "git:hash": "git rev-parse --verify --short HEAD",
