@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cypress Tutorials</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <style>
+        body {
+            padding: 30px 100px;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        hr {
+            margin: 70px 0 !important;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        
+        .example-parent {
+            border: 2px solid #DFA612;
+            color: black;
+            display: flex;
+            font-family: sans-serif;
+            font-weight: bold;
+}
+
+        .example-origin {
+        flex-basis: 100%;
+        flex-grow: 1;
+        padding: 10px;
+        }
+
+        .example-draggable {
+        background-color: #4AAE9B;
+        font-weight: normal;
+        margin-bottom: 10px;
+        margin-top: 10px;
+        padding: 10px;
+        }
+
+        .example-dropzone {
+        background-color: #6DB65B;
+        flex-basis: 100%;
+        flex-grow: 1;
+        padding: 10px;
+        }
+
+        .button-container {
+            position: relative;
+        }
+
+        .cover {
+            width: 100%;
+            height: 100px;
+            position: absolute;
+            background-color: rgba(225,225,0,0.4);
+            top: -10px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1 class="header1 main" id="header-1">Welcome to Cypress Tutorials</h1>
+    <h2 id="header-1">We will use this website to learn cypress commands</h2>
+    <hr />
+    <p>The available list of courses</p>
+    <ul class="course-list">
+        <li class="list1 web">Cypress</li>
+        <li class="list2 web">Selenium</li>
+        <li class="list3 mobile">Appium</li>
+        <li class="list4 web mobile">wdio</li>
+        <li class="list5 mobile">detox</li>
+        <li class="list6 programming">javascript</li>
+        <li class="list7 web">html</li>
+        <li class="list8 web">css</li>
+        <li class="list9 web">react</li>
+    </ul>
+    <hr>
+    <p>The available list of countries</p>
+    <ul class="country-list">
+        <li class="list1">Jordan</li>
+        <li class="list2">Netherldans</li>
+    </ul>
+    <hr>
+    <p>The available list of snacks</p>
+    <input type="checkbox" id="Banana" name="Banana" value="Banana">
+    <label for="vehicle1"> Banana</label><br>
+    <input type="checkbox" id="Nuts" name="Nuts" value="Nuts">
+    <label for="vehicle2"> Nuts</label><br>
+    <input type="checkbox" id="Fries" name="Fries" value="Fries">
+    <label for="vehicle3"> Fries</label><br><br>
+    <hr>
+    <p>Are you?</p>
+    <div>
+        <input type="radio" id="Developer" name="Developer" value="Developer" checked>
+        <label for="huey">Developer</label>
+    </div>
+
+    <div>
+        <input type="radio" id="Tester" name="Tester" value="Tester">
+        <label for="dewey">Tester</label>
+    </div>
+
+    <div>
+        <input type="radio" id="Manager" name="Manager" value="Manager">
+        <label for="louie">Manager</label>
+    </div>
+    <hr>
+    <p>Select your course</p>
+
+    <select name="courses" id="courses">
+        <option value="cypress">cypress</option>
+        <option value="selenium">selenium</option>
+        <option value="appium">appium</option>
+        <option value="wdio">wdio</option>
+    </select>
+
+    <hr>
+    <div class="button-container">
+        <input value="Download Invoice" type="button" onclick="{setTimeout(() => this.value='Downloaded!', 5000 ) ;this.value='Downloading...'}" class="btn btn-primary invoice-button"/>
+        <input type="text" name="coverdInput" id="coverdInput" />
+        <div class="cover"></div>
+    </div>
+
+    <hr>
+    <p>HTML Table</p>
+    <table>
+        <tr>
+            <th>Invoice number</th>
+            <th>Invoice Amount</th>
+            <th>Invoice document</th>
+        </tr>
+        <tr>
+            <td>Invoice_001</td>
+            <td>200</td>
+            <td><input value="Download Invoice" type="button" onclick="{setTimeout(() => this.value='Downloaded!', 5000 ) ;this.value='Downloading...'}" class="btn btn-primary invoice-button"/></td>
+        </tr>
+        <tr>
+            <td>Invoice_002</td>
+            <td>150</td>
+            <td><input value="Download Invoice" type="button" onclick="{setTimeout(() => this.value='Downloaded!', 5000 ) ;this.value='Downloading...'}" class="btn btn-primary invoice-button"/></td>
+        </tr>
+        <tr>
+            <td>Invoice_003</td>
+            <td>100</td>
+            <td><input value="Download Invoice" type="button" onclick="{setTimeout(() => this.value='Downloaded!', 5000 ) ;this.value='Downloading...'}" class="btn btn-primary invoice-button"/></td>
+        </tr>
+        <tr>
+            <td>Invoice_004</td>
+            <td>80</td>
+            <td><input value="Download Invoice" type="button" onclick="{setTimeout(() => this.value='Downloaded!', 5000 ) ;this.value='Downloading...'}" class="btn btn-primary invoice-button"/></td>
+        </tr>
+        <tr>
+            <td>Invoice_005</td>
+            <td>300</td>
+            <td><input value="Download Invoice" type="button" onclick="{setTimeout(() => this.value='Downloaded!', 5000 ) ;this.value='Downloading...'}" class="btn btn-primary invoice-button"/></td>
+        </tr>
+        <tr>
+            <td>Invoice_006</td>
+            <td>25</td>
+            <td><input value="Download Invoice" type="button" onclick="{setTimeout(() => this.value='Downloaded!', 5000 ) ;this.value='Downloading...'}" class="btn btn-primary invoice-button"/></td>
+        </tr>
+    </table>
+    <hr>
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+        <h5 class="my-0 mr-md-auto font-weight-normal">Company name</h5>
+    </div>
+
+    <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h2 class="display-4">Pricing</h2>
+        <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap
+            example.
+            It's built with default Bootstrap components and utilities with little customization.</p>
+    </div>
+
+    <div class="container">
+        <div class="card-deck mb-3 text-center">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Free</h4>
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h2>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>10 users included</li>
+                        <li>2 GB of storage</li>
+                        <li>Email support</li>
+                        <li>Help center access</li>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Sign up for free</button>
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Pro</h4>
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title pricing-card-title">$15 <small class="text-muted">/ mo</small></h2>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>20 users included</li>
+                        <li>10 GB of storage</li>
+                        <li>Priority email support</li>
+                        <li>Help center access</li>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-primary">Get started</button>
+                </div>
+            </div>
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Enterprise</h4>
+                </div>
+                <div class="card-body">
+                    <h2 class="card-title pricing-card-title">$29 <small class="text-muted">/ mo</small></h2>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>30 users included</li>
+                        <li>15 GB of storage</li>
+                        <li>Phone and email support</li>
+                        <li>Help center access</li>
+                    </ul>
+                    <button type="button" class="btn btn-lg btn-block btn-primary">Contact us</button>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <form class="form-signin">
+            <h2 class="h3 mb-3 font-weight-normal">Please sign in</h2>
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+        </form>
+        <hr>
+        <h1>Drag and drop</h1>
+        <div class="example-parent">
+            <div class="example-origin">
+              <div
+                id="draggable-1"
+                class="example-draggable"
+                draggable="true"
+                ondragstart="onDragStart(event);"
+              >
+                thing 1
+              </div>
+              <div
+                id="draggable-2"
+                class="example-draggable"
+                draggable="true"
+                ondragstart="onDragStart(event);"
+              >
+                thing 2
+              </div>
+              <div
+                id="draggable-3"
+                class="example-draggable"
+                draggable="true"
+                ondragstart="onDragStart(event);"
+              >
+                thing 3
+              </div>
+              <div
+                id="draggable-4"
+                class="example-draggable"
+                draggable="true"
+                ondragstart="onDragStart(event);"
+              >
+                thing 4
+              </div>
+            </div>
+          
+            <div
+              class="example-dropzone"
+              ondragover="onDragOver(event);"
+              ondrop="onDrop(event);"
+            >
+              Done
+            </div>
+          </div>
+
+          <hr>
+          <h1>Right click and double click</h1>
+          <input type="button" value="Click me" class="btn btn-primary" oncontextmenu="this.value='Right Click'" ondblclick="this.value='Double Click'">
+
+          <hr>
+          <h1>Focus and Blur</h1>
+          <input type="text" onfocus="this.style.backgroundColor='red'" onblur="this.style.backgroundColor='blue'">
+
+
+          <hr>
+          <h1>Trigger playground</h1>
+          <input value="Trigger" type="button" class="btn btn-primary trigger-button" onmouseover="this.style.backgroundColor='red'" onmouseout="this.style.backgroundColor='blue'" onmousedown="this.value='long press'" onmouseup="this.value='Trigger'" style="background-color: blue" />
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+<!--
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+-->
+            <script>
+                function onDragStart(event) {
+                    event
+                        .dataTransfer
+                        .setData('text/plain', event.target.id);
+
+                    event
+                        .currentTarget
+                        .style
+                        .backgroundColor = 'yellow';
+                }
+
+                function onDragOver(event) {
+                    event.preventDefault();
+                }
+
+                function onDrop(event) {
+                    const id = event
+                        .dataTransfer
+                        .getData('text');
+                    const draggableElement = document.getElementById(id);
+                    const dropzone = event.target;
+                    dropzone.appendChild(draggableElement);
+                    event
+                        .dataTransfer
+                        .clearData();
+                }
+            </script>
+</body>
+
+</html>
