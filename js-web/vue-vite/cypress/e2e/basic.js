@@ -1,14 +1,75 @@
 /// <reference types="cypress" />
 
 describe('Login feature test', () => {
-  it('should visit the login page correctly', () => {
+  beforeEach(() => {
+    // cy.fixture('example').as('example')
+
+    cy.fixture('example')
+      .then((example) => {
+        example.email = 'test@test.com' // edit fixture data
+      })
+      .as('example')
+  })
+
+  it('test async', () => {
+    // ASYNC
+    let currentURL = ''
+    cy.visit('/cypress/index.html')
+    cy.url().then((url) => {
+      currentURL = url
+      expect(currentURL).to.contains('index.html')
+    })
+
+    // ALIAS / VARIABLES
+    cy.url().as('myurl') // Alias only valid for this test, use beforeEach if you want it available for all tests, use this.myurl in the case & cannot use arrow functions
+    cy.get('@myurl')
+  })
+
+  // FIXTURES
+  it.only('test fixtures', () => {
+    cy.visit('/cypress/index.html')
+    // file name, no need fixture folder and extension
+
+    // use from before each
+    cy.get('@example').then((example) => {
+      cy.get('#inputEmail').type(example.email)
+    })
+
+    // use for this test only
+    // cy.fixture('example').then((example) => {
+    //   cy.log(example.email)
+    //   cy.get('#inputEmail').type(example.email)
+    // })
+    cy.readFile('README.md') //  from project root, not cypress root
+    // cy.writeFile('blah.txt', 'abcdef')
+  })
+
+  it('test selectors', () => {
+    // WRAP
+    const car = {
+      color: 'res',
+      model: 2020,
+      isNew: true,
+      turnOn: () => 'the car is on'
+    }
+    cy.wrap(car).should('have.property', 'color', 'red')
+    cy.wrap(car).its('color')
+    cy.wrap(car).invoke('turnOn')
+
+    cy.get('.selector').its('length')
+    cy.get('#selector').invoke('someFn')
+
+    cy.get('').then((el) => el.click()) // for single
+    cy.url('').then((url) => cy.log(url))
+    cy.get('').each((item) => cy.log(item))
+
     // NOSONAR
     // const screens = ['iphone-5', 'macbook-15']
     // cy.viewport(500, 750) // cy.viewport('macbook-15')
     // cy.viewport('iphone-5')
     // cy.visit('https://example.cypress.io')
     cy.visit('/cypress/index.html')
-    /* NOSONAR
+
     // SELECTORS
 
     // cy.get() .header1.main #header-1
@@ -48,7 +109,6 @@ describe('Login feature test', () => {
 
     // find using attributes
     cy.get('[attribute="value1"]') // '[data-cy="some palce"]'
-
 
     // EVENTS
     cy.get('.invoices-button').first().click('center', {
@@ -97,7 +157,12 @@ describe('Login feature test', () => {
     cy.url().should('contain', 'index.html')
     cy.title().should('eql', 'some title') // get page title
     cy.go('back') // forward
-    */
+
+    cy.setCookie('username', 'theValue')
+    cy.getCookie('username').should('have.property', 'value', 'theValue')
+
+    const now = new Date(2019, 2, 19).getTime()
+    cy.clock(now)
   })
 })
 

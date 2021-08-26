@@ -1,6 +1,7 @@
 {
   "baseUrl-none": "http://localhost:4200",
   "integrationFolder": "cypress/e2e",
+  "fixturesFolder": "cypress/fixtures",
   "ignoreTestFiles": "**/examples/*",
   "viewportHeight": 1080,
   "viewportWidth": 1920,
