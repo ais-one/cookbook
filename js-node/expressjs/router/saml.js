@@ -14,7 +14,7 @@ let samlStrategy
 // NOSONAR const { SAML } = require('passport-saml/lib/node-saml')
 const { SAML } = require('node-saml')
 const samlx = new SAML(SAML_OPTIONS)
-console.log(SAML_OPTIONS)
+// console.log(SAML_OPTIONS)
 // cause problems in samlx
 // privateCert: samlPems.cert,
 
@@ -49,7 +49,7 @@ module.exports = express.Router()
     console.log(samlx.getAuthorizeUrl)
     try {
       const target = await samlx.getAuthorizeUrl()
-      console.log(target)  
+      console.log(target)
     } catch (e) {
       console.log(e, SAML_OPTIONS.privateCert)
     }

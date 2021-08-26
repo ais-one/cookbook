@@ -149,9 +149,11 @@ Refer to link below on how to try out...
 
 ## Fido2
 
-- Refer to following files for sample
-- [js-node/expressjs/router/fido.js](js-node/expressjs/router/fido.js)
-- [js-node/expressjs/public/demo-express/fido.html](js-node/expressjs/public/demo-express/fido.html)
+- Refer to following files for SPA sample (uses fido2-lib in backend)
+  - [js-node/expressjs/router/fido.js](js-node/expressjs/router/fido.js)
+  - [js-node/expressjs/public/demo-express/fido.html](js-node/expressjs/public/demo-express/fido.html)
+- Refer to following folder for SSR sample (backend webauthn-simple package is outdated)
+  - [js-node/wip/fido2](js-node/wip/fido2)
 
 ## Configuration
 
