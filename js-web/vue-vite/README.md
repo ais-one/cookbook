@@ -66,7 +66,7 @@ Need to run **js-node/express** to serve the site on [http://127.0.0.1:3000/vite
 
 ```bash
 cd js-web/vue-vite
-./deploy.sh uat
+./deploy.sh uat web-template
 ```
 
 Details can be found in the **deploy.sh** file
@@ -86,7 +86,6 @@ rm package-lock.json
 
 ```
 +- cypress/
-+- deploy/ : contains deployment info & files see js-node/expressjs/deploy/README.md
 +- nested/ : testing for multi-html
 +- public/
 |  +- img/
@@ -101,16 +100,18 @@ rm package-lock.json
 |  +- sitemap.xml
 |  +- style.css
 +- src/
+|  +- apps/
+|  |  +- web-template/
+|  |     +- components/
+|  |     +- deploy/ : contains deployment info & files see js-node/expressjs/deploy/README.md
+|  |     +- layouts/
+|  |     +- views/
+|  |        +- DataEntry/
+|  |        +- Demo/
+|  |        +- Visuals/
 |  +- layouts/
 |  +- plugins/
 |  +- views/
-|  +- WebTemplate/
-|  |  +- components/
-|  |  +- layouts/
-|  |  +- views/
-|  |  |  +- DataEntry/
-|  |  |  +- Demo/
-|  |  |  +- Visuals/
 |  |  +- setup.js : specify routes and other config info
 |  |  +- store.js : store specific to this application (to use pinia)
 |  +- App.vue

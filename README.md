@@ -90,9 +90,15 @@ npm run mongo -- development app-template seed
 
 # run the backend
 # command: npm run app -- <development / uat / production> <custom app name, default = app-template>
+
+# app name implied (implied as app-template if not in env)
 npm run app -- development
 
-# or npm run app:lint to include eslint checks
+# or app name specified
+npm run app -- development app-template
+
+# to include eslint checks
+npm run app:lint -- development app-template
 ```
 
 **Visit the following URLs**

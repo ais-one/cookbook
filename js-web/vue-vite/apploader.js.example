@@ -1,2 +1,0 @@
-import setup from './src/WebTemplate/setup.js'
-export default setup

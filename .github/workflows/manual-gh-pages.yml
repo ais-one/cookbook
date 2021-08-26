@@ -19,6 +19,10 @@ on:
         description: 'The environment (uat, production)'
         default: 'uat'
         required: true
+      appname:
+        description: 'Application Name (web-template, etc.)'
+        default: 'web-template'
+        required: true
 
 defaults:
   run:

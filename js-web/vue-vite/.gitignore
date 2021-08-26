@@ -7,10 +7,8 @@ deploy/*
 !deploy/README.md
 
 # custom app
-Web*
-!Webtemplate
-
-apploader.js
+web-*
+!web-template
 
 # Log files
 npm-debug.log*

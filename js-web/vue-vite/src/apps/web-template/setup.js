@@ -1,8 +1,8 @@
 // import { openWs, closeWs } from './hookFns.js'
 
 // :key="$route.fullPath" // this is causing problems
-import layoutPublic from '../layouts/Public.vue' // you can change this to your own layout
-import layoutSecure from '../layouts/Secure.vue' // as above
+import layoutPublic from '../../layouts/Public.vue' // you can change this to your own layout
+import layoutSecure from '../../layouts/Secure.vue' // as above
 
 export default {
   LAYOUTS: {
@@ -12,8 +12,8 @@ export default {
   ROUTES: [
     // you can change this to your custom views for Not Found and Forbidden view
     // { path: '/:catchAll(.*)', name: 'catchAll', redirect: { name: 'SignIn' }, meta: { requiresAuth: false, layout: 'layout-public' } },
-    { path: '/forbidden', name: 'Forbidden', component: () => import('../views/Forbidden.vue') },
-    { path: '/:catchAll(.*)', name: 'NotFound', component: () => import('../views/NotFound.vue') }
+    { path: '/forbidden', name: 'Forbidden', component: () => import('../../views/Forbidden.vue') },
+    { path: '/:catchAll(.*)', name: 'NotFound', component: () => import('../../views/NotFound.vue') }
   ],
   PUBLIC_ROUTES: [
     { path: '/', name: 'Home', component: () => import('./Views/SignIn.vue') },

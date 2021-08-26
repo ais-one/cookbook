@@ -3,8 +3,10 @@
 - [js-node/expressjs] minor breaking change. auth callback delimiter from '-' to ';' because '-' can be found in jwt token (https://stackoverflow.com/questions/55201011/what-characters-are-allowed-in-a-jwt-token) and delimiting using '-' can be wrong, use ';' as it can be used in url hash (https://stackoverflow.com/questions/40636281/what-are-the-eligible-characters-in-a-urls-fragment-location-hash) and is not in jwt token
 - [js-node/wip/k8s] moved to [docs]
 - [js-web/vue-vite] minor config change VITE_SAML_URL and VITE_CALLBACK_URL to use full URL paths, simplify saml call, **@es-labs/esm/saml.js** REMOVED
+- [js-web/vue-vite] improve structure for deployment of multiple apps
 - [chore] add fido2 spa sample in [js-node/expressjs], clean up ssr example from [js-node/wip/fido2]
 - In progress
+  - [js-web/vue-vite] fix login & logout add loading spinner
   - [js-web/vue-vite] cypress e2e testing
 
 ### Version 0.6.5
