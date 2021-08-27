@@ -3,8 +3,8 @@ dist
 node_modules
 
 # deploy & configs
-deploy/*
-!deploy/README.md
+gcp.production.json
+gcp.uat.json
 
 # custom app
 web-*

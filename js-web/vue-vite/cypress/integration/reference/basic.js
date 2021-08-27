@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+const testSite = '/cypress/integration/e2e/index.html'
+
 describe('Login feature test', () => {
   beforeEach(() => {
     // cy.fixture('example').as('example')
@@ -14,7 +16,7 @@ describe('Login feature test', () => {
   it('test async', () => {
     // ASYNC
     let currentURL = ''
-    cy.visit('/cypress/index.html')
+    cy.visit(testSite)
     cy.url().then((url) => {
       currentURL = url
       expect(currentURL).to.contains('index.html')
@@ -27,7 +29,7 @@ describe('Login feature test', () => {
 
   // FIXTURES
   it.only('test fixtures', () => {
-    cy.visit('/cypress/index.html')
+    cy.visit(testSite)
     // file name, no need fixture folder and extension
 
     // use from before each
@@ -68,7 +70,7 @@ describe('Login feature test', () => {
     // cy.viewport(500, 750) // cy.viewport('macbook-15')
     // cy.viewport('iphone-5')
     // cy.visit('https://example.cypress.io')
-    cy.visit('/cypress/index.html')
+    cy.visit(testSite)
 
     // SELECTORS
 
