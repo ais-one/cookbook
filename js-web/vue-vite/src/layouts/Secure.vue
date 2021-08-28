@@ -1,5 +1,5 @@
 <template>
-  <a-layout>
+  <a-layout data-cy="layout-secure">
     <a-back-top />
     <a-layout-sider :style="{ overflowY: 'auto', height: '100vh' }" v-model:collapsed="collapsed" :trigger="null" collapsible :collapsedWidth="0">
       <div class="logo" :style="`background-image: url('https://via.placeholder.com/168x32.png?text=A+Logo');`" />

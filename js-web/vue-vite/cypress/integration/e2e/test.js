@@ -1,58 +1,38 @@
 /// <reference types="cypress" />
 
-describe('Login feature test', () => {
-  // beforeEach(() => {
-  // })
-
-  it('GET test', () => {
-    // ASYNC
-    // let currentURL = ''
-    // cy.visit(testSite)
-    // cy.url().then((url) => {
-    //   currentURL = url
-    //   expect(currentURL).to.contains('index.html')
-    // })
-    // // ALIAS / VARIABLES
-    // cy.url().as('myurl') // Alias only valid for this test, use beforeEach if you want it available for all tests, use this.myurl in the case & cannot use arrow functions
-    // cy.get('@myurl')
-
-    cy.request({
-      method: 'GET',
-      url: 'https://httpbin.org/get?test-param=1',
-      qs: { id: 1 }
-    }).then((res) => {
-      cy.log(res.statusText)
-      cy.log(res.duration)
-      cy.log(res.headers)
-      cy.log(res.body)
-      expect(res.status).to.be.eq(200)
-      expect(res.duration).to.be.below(20000)
-    })
+describe('The Home Page', () => {
+  beforeEach(() => {
+    cy.visit('http://127.0.0.1:8080')
   })
 
-  it('POST test', () => {
-    cy.request({
-      method: 'POST',
-      url: 'https://httpbin.org/post',
-      // qs: { id: 1 },
-      body: { abc: 123 }
-    }).then((res) => {
-      expect(res.status).to.be.eq(200)
-      expect(res.duration).to.be.below(20000)
-    })
-  })
+  it('login', () => {
+    cy.get('[data-cy="layout-public"]').should('exist') // wait for public layout to be exist
+    cy.get('[data-cy="layout-secure"]').should('not.exist')
+    cy.get('[data-cy=username]').clear().type('test')
+    cy.get('[data-cy=password]').clear().type('test')
+    cy.get('[data-cy=login]').click()
 
-  it.only('healthcheck auth test', () => {
-    cy.request({
-      method: 'POST',
-      url: 'https://127.0.0.1:3000/api/health-auth',
-      auth: {
-        bearer: ''
-      }
-    }).then((res) => {
-      expect(res.status).to.be.eq(200)
-      expect(res.duration).to.be.below(20000)
-    })
-  })
+    cy.get('[data-cy=pin]').should('be.visible') // we are at OTP
+    cy.get('[data-cy=pin]').clear().type('111111')
+    cy.get('[data-cy=otp]').click()
 
+    cy.get('[data-cy="layout-secure"]').should('exist') // wait for secure to be exist
+    cy.get('[data-cy="layout-public"]').should('not.exist')
+    cy.get('[data-cy="view-dashboard"]').should('have.class', 'container') // we are at dashboard
+
+    cy.get('[data-submenu-id="visuals"]').click()
+    cy.get('[data-menu-id="/visuals/chart2"]').click()
+    // cy.get('#c2').should('exist')
+    cy.get('#c2').children().should('have.length', 1) // wait for chart to load
+    // cy.get('#c3').should('exist')
+    cy.get('#c3').children().should('have.length', 1) // wait for chart to load
+
+    // NOSONAR
+    // cant use these for SPA
+    // cy.location('pathname').should('match', /\/dashboard$/)
+    // cy.location('pathname').should('eq', '/dashboard')
+    // cy.url().should('eq', 'http://127.0.0.1:8080/dashboard')
+
+    // TBD check alert popup
+  })
 })

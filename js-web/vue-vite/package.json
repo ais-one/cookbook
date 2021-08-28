@@ -10,7 +10,8 @@
     "prettier:write": "prettier --write src/**/*.{js,jsx,json}",
     "dev": "vite",
     "build": "vite build",
-    "test:e2e": "cypress run --quiet --reporter json"
+    "test:e2e": "echo \"Remember to run frontend and backend before test...\" && cypress run",
+    "test:e2e:quiet": "echo \"Remember to run frontend and backend before test...\" && cypress run --quiet --reporter json"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
@@ -31,7 +32,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.6.0",
     "@vue/compiler-sfc": "^3.2.6",
-    "cypress": "^8.3.0",
+    "cypress": "^8.3.1",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",

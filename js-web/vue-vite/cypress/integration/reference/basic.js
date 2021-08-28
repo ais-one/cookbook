@@ -120,7 +120,7 @@ describe('Login feature test', () => {
     // rightclick(), dblclick()
 
     cy.get('#inputEmail').type('test@test.com') // .clear() to remove text
-    cy.get('#inputPassword').type('test@test.com')
+    cy.get('#inputPassword').type('test').type('{enter}') // enter password and press enter key
     cy.get('[name="coveredIput]]').type('hello', {
       delay: 100, // wait 100ms after typing each character
       force: true

@@ -4,10 +4,10 @@
     <form class="form-box-flex">
       <div v-show="mode === 'login'">
         <h1>{{ i18n.$t('sign_in') }}</h1>
-        <a-input label="Username" type="text" v-model:value="email"></a-input>
-        <a-input label="Password" type="password" v-model:value="password"></a-input>
+        <a-input data-cy="username" label="Username" type="text" v-model:value="email"></a-input>
+        <a-input data-cy="password" label="Password" type="password" v-model:value="password"></a-input>
         <div class="buttons-box-flex">
-          <a-button @click="login">Login</a-button>
+          <a-button data-cy="login" @click="login">Login</a-button>
           <a-button @click="$router.push('/signin-fast')">Fast</a-button>
         </div>
         <div class="buttons-box-flex">
@@ -19,9 +19,9 @@
       </div>
       <div v-show="mode === 'otp'">
         <h1>Enter OTP</h1>
-        <a-input label="OTP" type="text" v-model:value="otp"></a-input>
+        <a-input data-cy="pin" label="OTP" type="text" v-model:value="otp"></a-input>
         <div class="buttons-box-flex">
-          <a-button @click="otpLogin">OTP</a-button>
+          <a-button data-cy="otp" @click="otpLogin">OTP</a-button>
         </div>
       </div>
       <p v-if="errorMessage">{{ errorMessage }}</p>
@@ -58,10 +58,9 @@ export default {
     let timerId = null
 
     const setToLogin = () => {
+      // reset email and password
       mode.value = 'login' // ui-reactive...
       otp.value = ''
-      // email.value = ''
-      // password.value = ''
       otpCount = 0 // non-ui-reactive
     }
 
