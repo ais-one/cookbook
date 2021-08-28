@@ -20,6 +20,8 @@ Add the code in script file for cypress autocomplete
 /// <reference types="cypress" />
 ```
 
+### Notes
+
 Cypress uses mocha
 
 - describe
@@ -27,12 +29,15 @@ Cypress uses mocha
   - beforeEach, afterEach
 - it
 
-## Commands
-
 cy.log
 
 cy.get() - one or more DOM elements by selector
+
 default wait for 4 seconds before timeout error
+
+## Commands
+
+Useful for creating custom cypress commands to be called in tests to reduce repeats
 
 https://docs.cypress.io/api/table-of-contents
 
@@ -79,4 +84,3 @@ cy.window().then( win => {
 https://www.vuemastery.com/conferences/vueconf-us-2021/component-testing-with-vite-vue-and-cypress/
 https://docs.cypress.io/guides/component-testing/introduction
 https://github.com/JessicaSachs/cypress-loves-vite
-

@@ -11,7 +11,7 @@
           </a-sub-menu>
           <a-menu-item v-else :key="route.path" @click="$router.push(route.path)">{{ route.name }}</a-menu-item>
         </template>
-        <a-menu-item key="logout" @click="logout">Logout</a-menu-item>
+        <a-menu-item data-cy="logout" key="logout" @click="logout">Logout</a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>

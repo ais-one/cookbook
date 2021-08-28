@@ -57,6 +57,11 @@ describe('Login feature test', () => {
     cy.wrap(car).should('have.property', 'color', 'red')
     cy.wrap(car).its('color')
     cy.wrap(car).invoke('turnOn')
+    // NOSONAR
+    // How to wrap
+    // cy.get('.some-class').each(el => cy.wrap(el).should('be.checked'))
+    // Conditional testing
+    // cy.get('body').then(el => el.find('.delete-item').length > 0 && cy.get('.delete-item').click({ multiple: true }))
 
     cy.get('.selector').its('length')
     cy.get('#selector').invoke('someFn')
