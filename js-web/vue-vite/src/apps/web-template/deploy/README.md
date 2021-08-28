@@ -1,10 +1,11 @@
 ## copy to project root folder
-- <web-template>/.env.development
-- <web-template>/.env.production
-- <web-template>/.env.uat
-- <web-template>/apploader.js
+- apploader.js
+- .env.development
+- .env.production
+- .env.uat
+- any other environments
 
-## other info leave here
-- <web-template>/gcp.development.json
-- <web-template>/gcp.production.json
-- <web-template>/gcp.uat.json
+## info to leave here
+- gcp.development.json
+- gcp.production.json, gcp.uat.json (e.g. GCP service keys, not advisable to commit to repo)
+- app specific info, configs, deployment scripts, etc

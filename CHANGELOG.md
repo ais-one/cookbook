@@ -5,9 +5,9 @@
 - [js-web/vue-vite] minor config change VITE_SAML_URL and VITE_CALLBACK_URL to use full URL paths, simplify saml call, **@es-labs/esm/saml.js** REMOVED
 - [js-web/vue-vite] improve structure for deployment of multiple apps
 - [chore] add fido2 spa sample in [js-node/expressjs], clean up ssr example from [js-node/wip/fido2]
+- [js-web/vue-vite] fix login & logout add loading spinner
 - In progress
-  - [js-web/vue-vite] fix login & logout add loading spinner
-  - [js-web/vue-vite] cypress e2e testing
+  - [js-web/vue-vite] cypress e2e testing (logout...)
 
 ### Version 0.6.5
 - [chore] update packages & cleanup & work on improving documentation

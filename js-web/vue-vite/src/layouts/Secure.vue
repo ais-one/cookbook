@@ -1,5 +1,6 @@
 <template>
   <a-layout data-cy="layout-secure">
+    <bwc-loading-overlay v-if="loading"></bwc-loading-overlay>
     <a-back-top />
     <a-layout-sider :style="{ overflowY: 'auto', height: '100vh' }" v-model:collapsed="collapsed" :trigger="null" collapsible :collapsedWidth="0">
       <div class="logo" :style="`background-image: url('https://via.placeholder.com/168x32.png?text=A+Logo');`" />
@@ -10,7 +11,7 @@
           </a-sub-menu>
           <a-menu-item v-else :key="route.path" @click="$router.push(route.path)">{{ route.name }}</a-menu-item>
         </template>
-        <a-menu-item key="6" @click="logout">Logout</a-menu-item>
+        <a-menu-item key="logout" @click="logout">Logout</a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout>
@@ -45,6 +46,7 @@ export default {
     const store = useStore()
     const mappedRoutes = reactive([])
     const subMenus = reactive({})
+    const loading = ref(false)
 
     const toPascalCase = (str) => {
       str = str.replace(/-\w/g, (x) => ` ${x[1].toUpperCase()}`)
@@ -83,8 +85,15 @@ export default {
       // TBD close WS
     })
 
-    const logout = async () => await store.dispatch('doLogin', null)
+    const logout = async () => {
+      console.time('time-logout')
+      loading.value = true
+      await store.dispatch('doLogin', null)
+      loading.value = false
+      console.timeEnd('time-logout')
+    }
     return {
+      loading,
       logout,
       selectedKeys: ref(['1']),
       collapsed: ref(false),

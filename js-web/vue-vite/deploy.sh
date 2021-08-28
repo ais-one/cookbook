@@ -42,7 +42,7 @@ cp src/apps/$2/deploy/apploader.js .
 cp src/apps/$2/deploy/.env.$1 .
 
 echo "build and deploy"
-# CANNOT because need vite to build  npm ci --only=production
+# CANNOT because need vite to build npm ci --only=production
 # npm install && npm cache clean --force
 npm install
 # npm run vite build --mode $1 # Cannot work - cannot find vite

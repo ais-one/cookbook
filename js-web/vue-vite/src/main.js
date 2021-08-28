@@ -18,12 +18,9 @@ import '../pwa-init.js'
 import '/@es-labs/esm/bwc-loading-overlay.js'
 
 const app = createApp(App)
-// console.log('app.config', app.config)
+// NOSONAR
 // https://zhuanlan.zhihu.com/p/135280049
-// app.config.isCustomElement = (tag) => {
-//   console.log(tag)
-//   return tag.startsWith('bwc-') || tag.startsWith('vcxwc-')
-// }
+// app.config.isCustomElement = (tag) => tag.startsWith('bwc-') || tag.startsWith('vcxwc-')
 
 Sentry.init({
   app,
