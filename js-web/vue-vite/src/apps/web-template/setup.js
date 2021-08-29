@@ -1,4 +1,4 @@
-// import { openWs, closeWs } from './hookFns.js'
+// NOSONAR TOREMOVE import { openWs, closeWs } from './hookFns.js'
 
 // :key="$route.fullPath" // this is causing problems
 import layoutPublic from '../../layouts/Public.vue' // you can change this to your own layout
@@ -22,7 +22,7 @@ export default {
     { path: '/callback', name: 'Callback', component: () => import('./Views/Callback.vue') }
   ],
   SECURE_ROUTES: [
-    { path: '/dashboard', name: 'Dashboard', component: async () => await import('./Views/Dashboard.vue') },
+    { path: '/dashboard', name: 'Dashboard', component: async () => import('./Views/Dashboard.vue') },
 
     { path: '/demo/web-cam', name: 'Demo Web Cam', component: () => import('./Views/Demo/DemoWebCam.vue') },
     { path: '/demo/sign-pad', name: 'Demo Sign Pad', component: async () => import('./Views/Demo/DemoSignPad.vue') },

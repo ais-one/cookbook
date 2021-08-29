@@ -42,9 +42,7 @@
 </template>
 
 <script>
-// NOSONAR
-// unref, toRef, toRefs, isRef, isProxy, isReactive, isReadonly
-// defineComponent, getCurrentInstance, reactive, readonly, watch, watchEffect, provide, inject
+// NOSONAR unref, toRef, toRefs, isRef, isProxy, isReactive, isReadonly, defineComponent, getCurrentInstance, reactive, readonly, watch, watchEffect, provide, inject
 import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inject, reactive, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
 import { webpushSubscribe, webpushUnsubscribe, fcmSubscribe } from '/@es-labs/esm/pwa.js' // served from express /esm static route
@@ -158,7 +156,7 @@ export default {
         reactiveData.value += 1
       }, 200000)
 
-      const input$ = fromEvent(searchRef.value.$el, 'input')
+      const input$ = fromEvent(searchRef.value.$el, 'input') // NOSONAR
         .pipe(
           debounceTime(1000),
           map((e) => e.target.value),

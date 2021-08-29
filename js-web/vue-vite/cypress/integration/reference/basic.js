@@ -107,6 +107,7 @@ describe('Login feature test', () => {
     cy.get('li').nextAll().first()
     cy.get('li').nextUntil('.list7').first()
 
+    // NOSONAR
     // prev
     // prevAll
     // prevUntil

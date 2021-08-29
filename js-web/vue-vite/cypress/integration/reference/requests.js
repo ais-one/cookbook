@@ -3,7 +3,7 @@ describe('Request Test', () => {
   // })
 
   it('GET test', () => {
-    // ASYNC
+    // NOSONAR ASYNC
     // let currentURL = ''
     // cy.visit(testSite)
     // cy.url().then((url) => {
