@@ -80,6 +80,7 @@ module.exports = ({ username }) => /*html*/`<!DOCTYPE html>
           //   authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required', requireResidentKey: false }
           // }
         ).then(user => {
+          console.log('xxxxxxxxxxxxxxxxxxxx', user)
           getCredentials()
         }).catch(e => alert(e))
       })

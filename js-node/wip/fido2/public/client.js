@@ -47,14 +47,14 @@ export const registerCredential = async () => {
       requireResidentKey: false
     }
   }
-  const options = await _fetch('/webauthn/registerRequest', opts)
+  const options = await _fetch('/webauthn/registerRequest', opts) // NOSONAR
 
   options.user.id = base64url.decode(options.user.id)
   options.challenge = base64url.decode(options.challenge)
 
   if (options.excludeCredentials) {
-    for (let cred of options.excludeCredentials) {
-      cred.id = base64url.decode(cred.id)
+    for (let _cred of options.excludeCredentials) {
+      _cred.id = base64url.decode(_cred.id)
     }
   }
 
@@ -75,7 +75,7 @@ export const registerCredential = async () => {
 
   localStorage.setItem(`credId`, credential.id)
   // localStorage.setItem(`userName`, options.user.name)
-  return await _fetch('/webauthn/registerResponse', credential)
+  return await _fetch('/webauthn/registerResponse', credential) // NOSONAR
 }
 
 export const authenticate = async () => {
@@ -87,7 +87,7 @@ export const authenticate = async () => {
     url += `?credId=${encodeURIComponent(credId)}`
   }
 
-  const options = await _fetch(url, opts)
+  const options = await _fetch(url, opts) // NOSONAR
 
   if (options.allowCredentials.length === 0) {
     console.info('No registered credentials found.')
@@ -96,8 +96,8 @@ export const authenticate = async () => {
 
   options.challenge = base64url.decode(options.challenge);
 
-  for (let cred of options.allowCredentials) {
-    cred.id = base64url.decode(cred.id);
+  for (let _cred of options.allowCredentials) {
+    _cred.id = base64url.decode(_cred.id);
   }
   const cred = await navigator.credentials.get({ publicKey: options, })
 
@@ -116,7 +116,7 @@ export const authenticate = async () => {
     }
   }
 
-  return await _fetch(`/webauthn/signinResponse`, credential)
+  return await _fetch(`/webauthn/signinResponse`, credential) // NOSONAR
 }
 
 export const unregisterCredential = async (credId) => {

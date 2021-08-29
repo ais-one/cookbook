@@ -42,9 +42,10 @@
 </template>
 
 <script>
+// NOSONAR
 // unref, toRef, toRefs, isRef, isProxy, isReactive, isReadonly
 // defineComponent, getCurrentInstance, reactive, readonly, watch, watchEffect, provide, inject
-import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inject, reactive, onBeforeUpdate, watch } from 'vue'
+import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inject, reactive, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
 import { webpushSubscribe, webpushUnsubscribe, fcmSubscribe } from '/@es-labs/esm/pwa.js' // served from express /esm static route
 import { VITE_PWA_PN } from '/config.js'
@@ -61,19 +62,18 @@ export default {
 
     console.log('provide-inject MyTheme', inject('MyTheme'))
 
-    // reactivity
+    // NOSONAR reactivity
     // // in provider
     // const themeRef = ref('dark')
     // provide(SubThemeSymbol, themeRef)
     // // in consumer
     // const theme = inject(SubThemeSymbol, ref('light'))
     // watchEffect(() => console.log(`theme set to: ${theme.value}`))
-
-    const store = useStore()
     // const route = useRoute()
     // const router = useRouter()
-
     // const obj = reactive({ count: 0 })
+
+    const store = useStore()
     const count = ref(0)
     let nonReactiveData = 10
     const reactiveData = ref(20)
@@ -83,12 +83,13 @@ export default {
     const searchResult = ref('')
 
     const testObjectRef = ref({ a: 10, b: 20, c: 30 })
-    const testObjectReactive = reactive({ a: { xx: 40}, b: 50, c: 60 })
+    const testObjectReactive = reactive({ a: { xx: 40 }, b: 50, c: 60 })
 
-    // const plusOne = computed(() => count.value + 1)
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
     const storeUser = computed(() => store.state.user)
 
+    // NOSONAR
+    // const plusOne = computed(() => count.value + 1)
     // const stop = watchEffect(() => console.log(count.value))
     // // -> logs 0
     // setTimeout(() => {
@@ -96,9 +97,8 @@ export default {
     //   // -> logs 1
     // }, 100)
     // // stop()
-
+    //
     // put watchEffect inside onMounted to have access to DOM
-
     // // watching a getter
     // const state = reactive({ count: 0 })
     // watch(
@@ -106,21 +106,21 @@ export default {
     //   (count, prevCount) => {
     //   }
     // )
-
+    //
     // // directly watching a ref
     // const count = ref(0)
     // watch(search, (newVal, prevVal) => {
     //   console.log('watch search', newVal)
     // })
-
+    //
     // // Watch prop value change and assign to value 'selected' Ref
     // watch(() => props.value, (newValue: Props['value']) => {
     //   selected.value = newValue;
     // });
-
+    //
     // watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
     // })
-
+    //
     // watch(
     //   () => object_or_primitive_being_watched,
     //   (state, prevState) => {
@@ -134,14 +134,18 @@ export default {
     // )
     // watchEffect ... ?
 
-
     // make sure to reset the refs before each update
-    onBeforeUpdate(() => { divs.value = [] })
-    const makeRef = (el, i) => { divs[i] = el }
+    onBeforeUpdate(() => {
+      divs.value = []
+    })
+    const makeRef = (el, i) => {
+      divs[i] = el
+    }
 
     let timerId
     onMounted(async () => {
       console.log('demomain mounted!')
+      // NOSONAR
       // console.log('props', props)
       // console.log('context', context)
       // console.log('useStore', store)
@@ -154,21 +158,23 @@ export default {
         reactiveData.value += 1
       }, 200000)
 
-      const input$ = fromEvent(searchRef.value.$el, 'input').pipe(
+      const input$ = fromEvent(searchRef.value.$el, 'input')
+        .pipe(
           debounceTime(1000),
-          map(e => e.target.value),
+          map((e) => e.target.value),
           // .filter(value => value.length >= 2)
           distinctUntilChanged(),
-          switchMap(
-            search => fetch('https://swapi.dev/api/people/?search='+search+'&format=json').then(res => res.json()).then(data => data)          
+          switchMap((search) =>
+            fetch('https://swapi.dev/api/people/?search=' + search + '&format=json')
+              .then((res) => res.json())
+              .then((data) => data)
           )
           // catchError(handleErrorByReturningObservable)
         )
-        .subscribe(e => {
+        .subscribe((e) => {
           searchResult.value = JSON.stringify(e)
           console.log(e)
         })
-
     })
     onBeforeUnmount(() => {
       if (timerId) clearInterval(timerId)

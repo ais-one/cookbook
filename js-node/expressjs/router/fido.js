@@ -8,8 +8,7 @@
 // https://github.com/webauthn-open-source/fido2-lib
 
 const express = require('express')
-// const base64url = require('base64url') // TOREMOVE in Node 16 LTS - use Buffer.from('hello world', 'base64url')
-
+// NOSONAR const base64url = require('base64url') // TOREMOVE in Node 16 LTS - use Buffer.from('hello world', 'base64url')
 const { Fido2Lib } = require("fido2-lib")
 
 const b64_b64url = (inStr) => inStr.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
@@ -89,7 +88,7 @@ module.exports = express.Router()
     try {
       const regResponse = req.body
       regResponse.rawId = b_ab( b64url_b(regResponse.rawId) )
-
+      // NOSONAR
       // const zz = regResponse.rawId
       // const yy = b_b64url((ab_b(zz)))
       // console.log('bbbbb', regResponse, yy)
@@ -148,11 +147,10 @@ module.exports = express.Router()
       //   userVerification: 'required'
       // }
 
-      // add
+      // NOSONAR add
       // allowCredentials: [
       //   { type: "public-key", id: credentialId }
       // ]
-
       res.json(authnOptions)
     } catch (e) {
       console.log(e)
@@ -186,7 +184,8 @@ module.exports = express.Router()
       assertionExpectations.allowCredentials = []
       assertionExpectations.allowCredentials.push({ type: "public-key", id: credentialId })
 
-      const authnResult = await f2l.assertionResult(regResponse, assertionExpectations) // will throw on error
+      // const authnResult = 
+      await f2l.assertionResult(regResponse, assertionExpectations) // will throw on error
       // console.log(authnResult)
       res.json({ msg: 'validate ok' })
     } catch (e) {
