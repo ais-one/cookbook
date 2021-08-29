@@ -1,5 +1,5 @@
 <template>
-  <div data-cy="view-dashboard" class="container">
+  <div class="container">
     <h1>Site A - Test VueJS 3</h1>
     <!-- <div v-for="(item, i) in list" :key="i" :ref="(el) => { divs[i] = el }"> -->
     <!-- <div v-for="(item, i) in list" :key="i" :ref="(el) => makeRef(el, i)"> -->

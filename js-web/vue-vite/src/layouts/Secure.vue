@@ -1,5 +1,5 @@
 <template>
-  <a-layout data-cy="layout-secure">
+  <a-layout>
     <bwc-loading-overlay v-if="loading"></bwc-loading-overlay>
     <a-back-top />
     <a-layout-sider :style="{ overflowY: 'auto', height: '100vh' }" v-model:collapsed="collapsed" :trigger="null" collapsible :collapsedWidth="0">
@@ -23,7 +23,7 @@
       <a-layout-content :style="{ overflowY: 'auto', margin: '16px 12px', padding: '16px', background: '#fff', height: 'calc(100vh - 96px)' }">
         <router-view :key="$route.fullPath"></router-view>
       </a-layout-content>
-      <!-- <a-layout-footer style="text-align: center">Ant Design ©2021</a-layout-footer> -->
+      <a-layout-footer hidden style="text-align: center">Ant Design ©2021</a-layout-footer>
     </a-layout>
   </a-layout>
 </template>

@@ -1,10 +1,14 @@
 {
   "baseUrl-none": "http://localhost:4200",
-  "integrationFolder": "cypress/integration/e2e",
+  "integrationFolder": "cypress/web-template/integration",
   "fixturesFolder": "cypress/fixtures",
   "ignoreTestFiles": "**/examples/*",
   "viewportHeight": 1080,
   "viewportWidth": 1920,
   "video": false,
-  "defaultCommandTimeout": 4010
+  "retries": {
+    "runMode": 1,
+    "openMode": 0
+  },
+  "defaultCommandTimeout": 4000
 }
