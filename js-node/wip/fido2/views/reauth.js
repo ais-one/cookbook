@@ -1,0 +1,93 @@
+// <!--
+//  Copyright 2019 Google Inc.
+
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+
+//       http://www.apache.org/licenses/LICENSE-2.0
+
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+// -->
+module.exports = ({ username }) => /*html*/`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>WebAuthn Codelab</title>
+    <meta name="description" content="WebAuthn Codelab">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/gh/herrjemand/Base64URL-ArrayBuffer@latest/lib/base64url-arraybuffer.js"></script>
+  </head>
+  <body>
+    <h1>WebAuthn codelab</h1>
+    <main class="content">
+      <div id="uvpa_available" class="hidden">
+        <h2>Verify your identity</h2>
+        <button id="reauth">Authenticate</button>
+        <button id="cancel">Sign-in with password</button>
+      </div>
+      <form id="form" method="POST" action="/webauthn/password" class="hidden">
+        <h2>Enter a password</h2>
+        <input type="hidden" name="username" value="${username}" />
+        <label id="password-label">password</label>
+        <input type="password" aria-labelledby="password-label" name="password"/>
+        <input type="submit" value="Sign-In" />
+        <p class="instructions">password will be ignored in this demo.</p>
+      </form>
+    </main>
+    <script type="module">
+      import { _fetch, authenticate } from '/client.js';
+      const form = document.querySelector('#form');
+      form.addEventListener('submit', e => {
+        e.preventDefault()
+        const form = new FormData(e.target)
+        const cred = {}
+        form.forEach((v, k) => cred[k] = v)
+        _fetch(e.target.action, cred)
+        .then(user => location.href = '/home')
+        .catch(e => alert(e))
+      })
+
+      if (window.PublicKeyCredential) {
+        PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+        .then(uvpaa => {
+          if (uvpaa && localStorage.getItem('credId')) {
+            document.querySelector('#uvpa_available').classList.remove('hidden');
+          } else {
+            form.classList.remove('hidden')
+          }
+        })        
+      } else {
+        form.classList.remove('hidden')
+      }
+
+      const cancel = document.querySelector('#cancel')
+      cancel.addEventListener('click', e => {
+        form.classList.remove('hidden')
+        document.querySelector('#uvpa_available').classList.add('hidden')
+      })
+
+      const button = document.querySelector('#reauth');
+      button.addEventListener('click', e => {
+        authenticate().then(user => {
+          if (user) {
+            location.href = '/home'
+          } else {
+            throw 'User not found.'
+          }
+        }).catch(e => {
+          console.error(e.message || e)
+          alert('2 Authentication failed. Use password to sign-in.' + JSON.stringify(e))
+          form.classList.remove('hidden')
+          document.querySelector('#uvpa_available').classList.add('hidden')
+        })
+      })
+    </script>
+  </body>
+</html>`

@@ -72,4 +72,7 @@ Event Emitted
 - snap
 
 
-TBD - Using web component inside a web component
+TBD - Using web component inside a web component - its possible
+
+- https://www.udemy.com/course/fundamentals-of-web-components
+- https://github.com/basarbk/web-components-fundamentals.git

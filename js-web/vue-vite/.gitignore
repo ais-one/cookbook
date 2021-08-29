@@ -3,14 +3,12 @@ dist
 node_modules
 
 # deploy & configs
-deploy/*
-!deploy/README.md
+gcp.production.json
+gcp.uat.json
 
 # custom app
-Web*
-!Webtemplate
-
-apploader.js
+web-*
+!web-template
 
 # Log files
 npm-debug.log*

@@ -208,14 +208,8 @@ const login = async (req, res) => {
     const id = user[AUTH_USER_FIELD_ID_FOR_JWT]
     if (!id) return res.status(401).json({ message: 'Authorization Format Error' })
     if (USE_OTP) {
-      //NOSONAR
-      //  if (USE_OTP === 'SMS') {
-      //   // Generate PIN
-      //   const pin = (Math.floor(Math.random() * (999999 - 0 + 1)) + 0).toString().padStart(6, "0")
-      //   const ts = new Date() // utc?
-      //   // update pin where ts > ?
-      //   // set user SMS & send it
-      // }
+      // Currently supports only Google Authenticator
+      // Fido2 can be added in future
       return res.status(200).json({ otp: id })
     }
     const tokens = await createToken(user) // 5 minute expire for login

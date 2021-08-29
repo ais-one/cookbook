@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ioredis": "^4.27.7",
-    "ws": "^8.0.0"
+    "ioredis": "^4.27.8",
+    "ws": "^8.2.1"
   }
 }

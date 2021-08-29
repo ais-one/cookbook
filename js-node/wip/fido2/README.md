@@ -1,10 +1,21 @@
 # WebAuthn / FIDO2 API Codelab
 
-This folder contains the source code for the WebAuthn / FIDO2 API codelab. It gives an introduction into implementing FIDO2 API,
+This folder contains the source code for the WebAuthn / FIDO2 API codelab. It gives an introduction into implementing FIDO2 API
 - https://codelabs.developers.google.com/codelabs/fido2-for-android/
 
 
 Originally: https://github.com/googlecodelabs/fido2-codelab
+
+# Next Version
+- replace base64url packages with native
+
+# Version 0.0.2
+
+- use http://localhost:3000, no need to use nip.io
+- remove hbs, selfsigned packages
+
+# Version 0.0.1
+
 - removed mwc
 - use https and nip.io
 - memory only no DB - localStorage may cause problems here... need to clear credId?
@@ -35,7 +46,7 @@ Remove the password and click login, you will be prompted to authenticate using 
 When logged in, the logged in indication text will be set from false to true
 
 
-## Sample User Structure in backend
+# Sample User Structure in backend
 
 ```json
 {

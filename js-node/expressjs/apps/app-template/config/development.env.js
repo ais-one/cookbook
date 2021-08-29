@@ -13,8 +13,11 @@ module.exports = {
   
   JWT_REFRESH_STORE: 'keyv',
   USE_GRAPHQL: true,
-  CORS_ORIGINS: 'http://127.0.0.1:8080,http://127.0.0.1:3000,http://127.0.0.1:8081,' // port 8081 is from SAML
-    + 'https://127.0.0.1:8080,https://127.0.0.1:3000,https://127.0.0.1:8081', // port 5500 ? unknown
+  CORS_ORIGINS: [
+    'http://127.0.0.1:8080','http://127.0.0.1:3000','http://127.0.0.1:8081', // port 8081 is from SAML
+    'https://127.0.0.1:8080','https://127.0.0.1:3000','https://127.0.0.1:8081', // port 5500 ? unknown
+    'https://192-168-18-8.nip.io:3000', 'http://localhost:3000'// fido2 testing
+  ].join(','),
 
   WEB_STATIC: [ // serve website from folder, blank if do not serve from express. Must be '' if there is PROXY_WWW_ORIGIN
     // options does not seem to work

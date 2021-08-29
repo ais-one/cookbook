@@ -36,8 +36,26 @@ Analyze user behavior across your sites and apps
 - MixPanel https://mixpanel.com/home/
 - Google Analytics
 
+# CI/CD - Gitlab Auto Devops
 
-# Wiki Sidebar Example
+- https://gitlab.com/help/topics/autodevops/index.md
+- https://www.gitlab.com/help/user/application_security/sast/index.md
+- https://github.com/ajinabraham/NodeJsScan - SAST
+- https://github.com/zaproxy/zaproxy - DAST
+- https://prometheus.io/ - monitoring
+
+# VS Code IDE Plugins
+- Docker
+- es6-string-html
+- ESLint
+- Prettier
+- REST Client
+- SonarLint
+- Vetur
+- MongoDB for VS Code
+- GitLens
+
+# Github Wiki Sidebar Example
 
 * [Home](../wiki/Home)
   * [Page A](../wiki/Page-A)
@@ -47,11 +65,3 @@ Analyze user behavior across your sites and apps
   * [Page D](../wiki/Page-D)
 * [Page E](../wiki/Page-E)
 
-
-# CI/CD - Gitlab Auto Devops
-
-https://gitlab.com/help/topics/autodevops/index.md
-https://www.gitlab.com/help/user/application_security/sast/index.md
-https://github.com/ajinabraham/NodeJsScan - SAST
-https://github.com/zaproxy/zaproxy - DAST
-https://prometheus.io/ - monitoring

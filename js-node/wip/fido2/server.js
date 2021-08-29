@@ -18,51 +18,31 @@
 // init project
 const express = require('express')
 const session = require('express-session')
-const hbs = require('hbs')
 const webauthn = require('./webauthn')
-const webauthnSpa = require('./webauthn-spa')
 const app = express()
+const port = 3000
 
-const HOSTNAME = '192.168.18.8' // 'localhost'
-const port = 8080
-
-app.set('view engine', 'html')
-app.engine('html', hbs.__express)
-app.set('views', './views')
 app.use(express.json())
-app.use('/spa', express.static('public/spa'))
-app.use('/', express.static('public/ssr'))
+app.use('/', express.static('public'))
+
 app.use(session({
   secret: 'secret', // You should specify a real secret here
   resave: true,
   saveUninitialized: false,
-  proxy: true,
+  // proxy: true,
   cookie:{
     httpOnly: true,
-    secure: true,
-    sameSite: 'none'
+    // secure: false, // if https
+    // sameSite: 'none'
+    path: '/'
   }
 }))
 
-app.use((req, res, next) => {
-  if (process.env.PROJECT_DOMAIN) {
-    process.env.HOSTNAME = `${process.env.PROJECT_DOMAIN}.glitch.me`;
-  } else {
-    process.env.HOSTNAME = req.headers.host;
-  }
-  // process.env.HOSTNAME = HOSTNAME + ':' + port // if not 80n or 443
+process.env.ORIGIN = 'http://localhost:3000'
 
-  const protocol = 'https' // /^localhost/.test(process.env.HOSTNAME) ? 'http' : 'https';
-  process.env.ORIGIN = `${protocol}://${process.env.HOSTNAME}`;
-  if (
-    req.get('x-forwarded-proto') &&
-    req.get('x-forwarded-proto').split(',')[0] !== 'https'
-  ) {
-    return res.redirect(301, process.env.ORIGIN);
-  }
-  req.schema = 'https';
-  next();
-})
+const indexPage = require('./views/index')
+const homePage = require('./views/home')
+const reauthPage = require('./views/reauth')
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get('/', (req, res) => {
@@ -71,8 +51,9 @@ app.get('/', (req, res) => {
     // If user is signed in, redirect to `/reauth`.
     res.redirect(307, '/reauth')
     return
-  }  
-  res.render('index.html') // If user is not signed in, show `index.html` with id/password form.
+  }
+  res.type('text/html')
+  res.status(200).send( indexPage() )
 })
 
 app.get('/home', (req, res) => {
@@ -82,10 +63,12 @@ app.get('/home', (req, res) => {
     return
   }
   // `home.html` shows sign-out link
-  res.render('home.html', { username: req.session.username })
+  res.type('text/html')
+  res.status(200).send( homePage({ username: req.session.username }) )
 })
 
 app.get('/reauth', (req, res) => {
+  console.log(req.session)
   const username = req.session.username;
   if (!username) {
     res.redirect(302, '/')
@@ -94,7 +77,8 @@ app.get('/reauth', (req, res) => {
   // Show `reauth.html`.
   // User is supposed to enter a password (which will be ignored)
   // Make XHR POST to `/signin`
-  res.render('reauth.html', { username: username })
+    res.type('text/html')
+  res.status(200).send( reauthPage({ username: username }) )
 });
 
 app.get('/.well-known/assetlinks.json', (req, res) => {
@@ -124,15 +108,6 @@ app.get('/.well-known/assetlinks.json', (req, res) => {
 })
 
 app.use('/webauthn', webauthn)
-app.use('/webauthn-spa', webauthnSpa)
 
 // listen for req :)
-// const listener = app.listen(port || process.env.PORT, () => console.log('Your app is listening on port ' + listener.address().port));
-
-// DEMO requires HTTPS and a Domain to work...
-const selfsigned = require('selfsigned')
-const https = require('https')
-const pems = selfsigned.generate([{ name: 'commonName', value: HOSTNAME }], {})
-const HTTPS_CERTS = { key: pems.private, cert: pems.cert }
-const server = https.createServer(HTTPS_CERTS, app)
-server.listen(port, () => console.log(`Server Started on https://${HOSTNAME}:${port}`))
+const listener = app.listen(port || process.env.PORT, () => console.log('Your app is listening on port ' + listener.address().port));

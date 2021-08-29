@@ -4,8 +4,6 @@
 
 <script>
 // :key="$route.fullPath" // this is causing problems
-// import layoutPublic from './layouts/Public.vue' // store.state.user determines if public or secure
-// import layoutSecure from './layouts/Secure.vue'
 import { LAYOUTS } from '../config.js'
 
 import { computed } from 'vue'
@@ -16,10 +14,8 @@ import { provideI18n } from '/src/plugins/i18n.js'
 
 export default {
   components: {
-    'layout-public': LAYOUTS.layoutPublic,
+    'layout-public': LAYOUTS.layoutPublic, // store.state.user determines if public or secure
     'layout-secure': LAYOUTS.layoutSecure
-    // 'layout-public': layoutPublic,
-    // 'layout-secure': layoutSecure
   },
   setup(props, context) {
     const store = useStore()

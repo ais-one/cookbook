@@ -15,6 +15,10 @@ on:
         description: 'The environment (uat, prod)'
         default: 'uat'
         required: true
+      appname:
+        description: 'Application Name (web-template, etc.)'
+        default: 'web-template'
+        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,7 +31,7 @@ jobs:
       matrix:
         node: [ '14' ]
 
-    name: Deploying js-web/vue-vite - ${{ github.event.inputs.environment }}... Using Node ${{ matrix.node }}
+    name: Deploying To GCP Storage - ${{ github.event.inputs.appname }} ${{ github.event.inputs.environment }} Using Node ${{ matrix.node }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: google-github-actions/setup-gcloud@master
@@ -61,5 +65,6 @@ jobs:
           echo "CI: $CI"
           echo "Branch: ${GITHUB_REF##*/}"
           echo "Environment: ${{ github.event.inputs.environment }}"
+          echo "App Name: ${{ github.event.inputs.appname }}"
           cd js-web/vue-vite
-          ./deploy.sh ${{ github.event.inputs.environment }}
+          ./deploy.sh ${{ github.event.inputs.environment }} ${{ github.event.inputs.appname }}

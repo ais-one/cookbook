@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>Fido Test</h1>
+  <p>Note: For local testing, please use <strong>localhost</strong> instead of 127.0.0.1</p>
+  <button onclick="register()">Register</button>
+  <button onclick="validate()">Validate</button>
+  <button onclick="testB64()">Test B64</button>
+  <h2>Status</h2>
+  <textarea id="status"></textarea>
+
+<script>
+  // https://192-168-18-8.nip.io:3000/fido.html
+  // https://192-168-18-8.nip.io:3000/api/fido/...
+  const status = document.querySelector('#status')
+
+  const b64_b64url = (inStr) => inStr.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '')
+  const b64url_b64 = (inStr) => inStr.replace(/\-/g, '+').replace(/_/g, '/') + '='.repeat((inStr.length % 4) ? 4 - (inStr.length % 4) : 0)
+  const b64_ab = (inStr) => Uint8Array.from(atob(inStr), c => c.charCodeAt(0)) // base64 encoded utf8
+  const ab_b64 = (buf) => btoa(buf.reduce((data, val)=> data + String.fromCharCode(val), '')) // Uint8Array
+
+  function testB64() {
+    const test = 'dUNUFx6OPh829nRG9J7JK4wMZ4QvUddT5XUUHIf_jH0' // base64 url
+    const b64 = b64url_b64(test) // convert to base64
+    const ab = b64_ab(b64) // convert base64 to binary
+    console.log('ab', ab, typeof ab)
+    // const b64_2 = ab.toString('base64') // convert binary to base64
+    // const b64_2 = btoa(new TextDecoder('utf8').decode(ab));
+    // const b64_2 = btoa(unescape(encodeURIComponent( new TextDecoder('utf8').decode(ab) )))
+    const b64_2 = ab_b64(ab) // convert binary to base64
+
+    console.log('b64_2', b64_2)
+    // convert binary to base64
+  }
+
+  const register = async () => {
+    // TESTING random base64 string
+    // const challenge = Uint8Array.from('hRgBpl0aDYOFLKB5y0P7hWxZadEwGHWC8PKjkAH1eNY=', c => c.charCodeAt(0))
+    // const challengeStr = new TextDecoder().decode(challenge)
+    // const challengeStr = new TextDecoder().decode(pkCredCreateOpts.challenge)
+    // console.log('ok so far', challengeStr)
+
+    // https://webauthn.guide/
+    // const pkCredCreateOpts = {
+    //   attestation: 'none', // none, direct, indirect
+    //   authenticatorSelection: {
+    //     authenticatorAttachment: 'platform', // Windows Hello, TouchID, cross-platform Yubikey
+    //     // NOT IN GUIDE
+    //     userVerification: 'required', // preferred, required, discouraged
+    //     requireResidentKey: false,
+    //   },
+    //   challenge,
+    //   rp: { name: 'Duo Security', id: 'nip.io', },
+    //   user: {
+    //     // id: Uint8Array.from(window.atob("MIIBkzCCATigAwIBAjCCAZMwggE4oAMCAQIwggGTMII="), c=>c.charCodeAt(0)),
+    //     id: Uint8Array.from(atob('UZSL85T9AFC'), c => c.charCodeAt(0)),
+    //     name: 'ct5555', // if use email...
+    //     displayName: 'Lee',
+    //   },
+    //   pubKeyCredParams: [{ alg: -7, type: 'public-key' }],
+    //   // timeout: 60000,
+    // }
+
+
+    // on Chrome
+    // add WebAuthn to dev tools tab
+    // enable virtual WebAuthn environment
+    // create and add authenticator: ctap2, internal, support resident keys, support user verification
+    try {
+      const res = await fetch('/api/fido/register')
+      const pkCredCreateOpts = await res.json()
+      // console.log('pkCredCreateOpts', pkCredCreateOpts)
+      // const hasUvpaa = await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+
+      pkCredCreateOpts.user.id = b64_ab(pkCredCreateOpts.user.id) // convert from base64 to ab
+      const challengeStr = pkCredCreateOpts.challenge // keep for later - base64url
+      pkCredCreateOpts.challenge = b64_ab(b64url_b64(pkCredCreateOpts.challenge))
+      console.log('challengeStr', challengeStr)
+
+      status.value = 'Awaiting PIN to Register...'
+
+      const credential = await navigator.credentials.create({
+        publicKey: pkCredCreateOpts // some info in the options come from backend
+      })
+      console.log('credential', credential)
+      console.log('credential.rawId', credential.rawId)
+      console.log('credential2', ab_b64( new Uint8Array(credential.rawId) ))
+
+      const passableCredential = {
+				id: credential.id,
+				rawId: ab_b64( new Uint8Array(credential.rawId) ),
+				response: {
+					clientDataJSON: ab_b64( new Uint8Array(credential.response.clientDataJSON) ),
+					attestationObject: ab_b64( new Uint8Array(credential.response.attestationObject) )
+				},
+				type: credential.type,
+			}
+      console.log('passableCredential', passableCredential)
+
+      // // decode the clientDataJSON into a utf-8 string
+      // const utf8Decoder = new TextDecoder('utf-8')
+      // const decodedClientData = utf8Decoder.decode(credential.response.clientDataJSON)
+      // // parse the string as an object
+      // const clientDataObj = JSON.parse(decodedClientData);
+      // console.log('decoded credential.response.clientDataJSON', clientDataObj)
+
+      const res2 = await fetch('/api/fido/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(passableCredential)
+      })
+      const rv = await res2.json()
+      console.log('rv', rv)
+
+      // note: a CBOR decoder library is needed here.
+      // const decodedAttestationObj = CBOR.decode(credential.response.attestationObject)
+      // console.log(decodedAttestationObject)
+
+      // const {authData} = decodedAttestationObject;
+
+      // // get the length of the credential ID
+      // const dataView = new DataView(new ArrayBuffer(2));
+      // const idLenBytes = authData.slice(53, 55);
+      // idLenBytes.forEach((value, index) => dataView.setUint8(index, value));
+      // const credentialIdLength = dataView.getUint16();
+
+      // // get the credential ID
+      // const credentialId = authData.slice(55, 55 + credentialIdLength);
+
+      // // get the public key object
+      // const publicKeyBytes = authData.slice(55 + credentialIdLength);
+
+      // // the publicKeyBytes are encoded again as CBOR
+      // const publicKeyObject = CBOR.decode(publicKeyBytes.buffer);
+      // console.log(publicKeyObject)
+      status.value = 'Register Pass...'
+    } catch (e) {
+      console.log(e)
+      status.value = 'Register Fail... ' + e.toString() 
+    }
+  }
+
+
+  const validate = async () => {
+    try {
+      const res = await fetch('/api/fido/validate')
+      const authnOptions = await res.json()
+      authnOptions.allowCredentials = authnOptions.allowCredentials.map(item => {
+        item.id = b64_ab(item.id)
+        return item
+      })
+
+      status.value = 'Awaiting PIN to Validate...'
+
+      authnOptions.challenge = b64_ab(b64url_b64(authnOptions.challenge))
+      const credential = await navigator.credentials.get({
+        publicKey: authnOptions // some info in the options come from backend
+      })
+      console.log('assert credential', credential)
+
+      const passableCredential = {
+				id: credential.id,
+				rawId: ab_b64( new Uint8Array(credential.rawId) ),
+				response: {
+					clientDataJSON: ab_b64( new Uint8Array(credential.response.clientDataJSON) ),
+					authenticatorData: ab_b64( new Uint8Array(credential.response.authenticatorData) ),
+					signature: ab_b64( new Uint8Array(credential.response.signature) ),
+          userHandle: 'test', // credential.response.userHandle,
+				},
+				type: credential.type,
+			}
+      console.log('assert passableCredential', passableCredential)
+
+      const body = JSON.stringify(passableCredential)
+      // console.log('body', body)
+      const res2 = await fetch('/api/fido/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: body
+      })
+      const rv = await res2.json()
+      console.log('rv', rv)
+      status.value = 'Validate Pass...' 
+    } catch (e) {      
+      console.log(e)
+      status.value = 'Validate Fail... ' + e.toString() 
+    }
+
+
+    // const publicKeyCredentialRequestOptions = {
+    //   challenge: Uint8Array.from(
+    //     randomStringFromServer, c => c.charCodeAt(0)),
+    //   allowCredentials: [{
+    //     id: Uint8Array.from(credentialId, c => c.charCodeAt(0)),
+    //     type: 'public-key',
+    //     transports: ['internal', 'usb', 'ble', 'nfc'],
+    //   }],
+    //   timeout: 60000,
+    // }
+
+    // const assertion = await navigator.credentials.get({
+    //   publicKey: publicKeyCredentialRequestOptions
+    // })
+    // console.log(assertion);
+    // PublicKeyCredential {
+    //   id: 'ADSUllKQmbqdGtpu4sjseh4cg2TxSvrbcHDTBsv4NSSX9...',
+    //     rawId: ArrayBuffer(59),
+    //       response: AuthenticatorAssertionResponse {
+    //     authenticatorData: ArrayBuffer(191),
+    //       clientDataJSON: ArrayBuffer(118),
+    //         signature: ArrayBuffer(70),
+    //           userHandle: ArrayBuffer(10),
+    //     },
+    //   type: 'public-key'
+    // }
+
+    // verification
+    // const storedCredential = await getCredentialFromDatabase(userHandle, credentialId);
+    // const signedData = (authenticatorDataBytes + hashedClientDataJSON);
+    // const signatureIsValid = storedCredential.publicKey.verify(signature, signedData);
+    // if (signatureIsValid) return "Hooray! User is authenticated! 🎉";
+    // else return "Verification failed. 😭"
+  }
+
+  // check for secure context
+  if (!window.isSecureContext) {
+    alert("This web page was not loaded in a secure context (https). Please try loading the page again using https or make sure you are using a browser with secure context support.");
+  }
+  // check for WebAuthn CR features
+  if (window.PublicKeyCredential === undefined ||
+    typeof window.PublicKeyCredential !== "function" ||
+    typeof window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable !== "function") {
+    console.log("PublicKeyCredential not found");
+    alert("WebAuthn is not currently supported by this browser. See this webpage for a list of supported browsers: <a href=https://developer.mozilla.org/en-US/docs/Web/API/Web_Authentication_API#Browser_compatibility>Web Authentication: Browser Compatibility</a>");
+  }
+
+  </script>
+</body>
+
+</html>

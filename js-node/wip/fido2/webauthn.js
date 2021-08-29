@@ -31,9 +31,7 @@ const base64url = require('base64url')
 router.use(express.json())
 
 const RP_ID = () => {
-  // console.log('process.env.HOSTNAME', process.env.HOSTNAME)
-  // return process.env.HOSTNAME
-  return 'nip.io'
+  return 'localhost'
 }
 const RP_NAME = 'WebAuthn Simple'
 const TIMEOUT = 30 * 1000 * 60

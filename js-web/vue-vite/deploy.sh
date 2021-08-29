@@ -9,7 +9,15 @@
 echo "CI? [$CI]"
 
 if [ ! $1 ]; then # environment eg. uat
-  echo "Missing project environment. Set at package.json. Press any key to continue..."
+  echo "Missing project environment. Press any key to continue..."
+  if [ "$CI" != "true" ]; then
+    read
+  fi
+  exit
+fi
+
+if [ ! $2 ]; then # app name
+  echo "Missing application name. Press any key to continue..."
   if [ "$CI" != "true" ]; then
     read
   fi
@@ -24,12 +32,17 @@ if [ "$1" = "development" ]; then
   exit
 fi
 
-echo Deploying To Google Storage $1
+echo Deploying $2 To Google Storage $1
 
+# FUTURE ENHANCEMENT need to make GS URL configurable also...
 GS=gs://$1.mybot.live
 
-echo "build and deploy ($1)"
-# CANNOT because need vite to build  npm ci --only=production
+echo "copying files"
+cp src/apps/$2/deploy/apploader.js .
+cp src/apps/$2/deploy/.env.$1 .
+
+echo "build and deploy"
+# CANNOT because need vite to build npm ci --only=production
 # npm install && npm cache clean --force
 npm install
 # npm run vite build --mode $1 # Cannot work - cannot find vite
@@ -41,7 +54,7 @@ if [ "$CI" = "true" ]; then
   gsutil -m rsync -R dist $GS
 else
   GCP_PROJECT_ID=mybot-live
-  gcloud auth activate-service-account --key-file=deploy/$1.gcp.json
+  gcloud auth activate-service-account --key-file=src/apps/$2/deploy/gcp.$1.json
   gcloud config set project $GCP_PROJECT_ID
   echo "NOTE: gsutil.cmd in windows git bash. If cannot find command in Windows, it could be space in path (.../Google Cloud/...) to gsutil."
   echo "Fix by renaming with no space, also edit the PATH env, restart the command console."
