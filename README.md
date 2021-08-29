@@ -10,7 +10,7 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.6](https://github.com/ais-one/cookbook/releases/tag/0.6.6) - Released 2021 August 29 0215 +8GMT
+Latest Version [0.6.7](https://github.com/ais-one/cookbook/releases/tag/0.6.7) - Released 2021 September 15 0215 +8GMT
 
 - add cypress e2e testing to [js-web/vue-vite], improve folder and scripts for CI/CD
 - improve [js-web/vue-vite] structure to support muitple apps with one repository
