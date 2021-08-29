@@ -2,16 +2,20 @@
 import * as signInPage from '../pages/signin'
 import * as layoutSecure from '../pages/layoutSecure'
 import * as demoChartsPage from '../pages/Visuals/DemoChart2'
+import * as Utils from '../support/utils'
 
 describe('Do smoke test on UI', () => {
   beforeEach(() => {
-    cy.visit('http://127.0.0.1:8080')
+    Utils.visitPage('')
+    // cy.visit('http://127.0.0.1:8080')
   })
 
   it('login', () => {
-    signInPage.fieldUsername().clear().type('test')
-    signInPage.fieldPassword().clear().type('test')
-    signInPage.buttonLogin().click()
+    // NOSONAR
+    // signInPage.fieldUsername().clear().type('test')
+    // signInPage.fieldPassword().clear().type('test')
+    // signInPage.buttonLogin().click()
+    signInPage.performLogin('test', 'test')
 
     signInPage.fieldPin().should('be.visible') // we are at OTP
     signInPage.fieldPin().clear().type('111111')
