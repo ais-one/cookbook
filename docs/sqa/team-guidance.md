@@ -171,3 +171,6 @@ SonarQube publishes Quality Gate and code metric results right in GitHub Checks 
 4. Automated deployment
 
 Passing pipelines are deployed to various environments so your product goes to market faster.
+
+## Multirepo, Monorepo, Submodules, SubTree
+https://blog.breakpoint-technology.fr/choose-the-right-way-to-organize-your-code-in-a-git-repository-a900bf52e326

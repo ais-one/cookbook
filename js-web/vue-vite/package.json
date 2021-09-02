@@ -8,30 +8,32 @@
     "lint": "eslint . --ext .js,.vue",
     "prettier:check": "prettier --check src/**/*.{js,jsx,json}",
     "prettier:write": "prettier --write src/**/*.{js,jsx,json}",
+    "api:dev": "npm run app --prefix ../../js-node/expressjs -- development", 
     "dev": "vite",
     "build": "vite build",
     "test:e2e": "echo \"Remember to run frontend and backend before test...\" && cypress run",
-    "test:e2e:quiet": "echo \"Remember to run frontend and backend before test...\" && cypress run --quiet --reporter json"
+    "test:e2e:quiet": "echo \"Remember to run frontend and backend before test...\" && cypress run --quiet --reporter json",
+    "test:all:dev": "start-test api:dev http://localhost:3000/api/healthcheck dev http://localhost:3000 test:e2e"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
     "@antv/data-set": "^0.11.8",
     "@antv/g2": "^4.1.25",
     "@antv/g2plot": "^2.3.32",
-    "@sentry/tracing": "^6.11.0",
-    "@sentry/vue": "^6.11.0",
+    "@sentry/tracing": "^6.12.0",
+    "@sentry/vue": "^6.12.0",
     "ant-design-vue": "^2.2.6",
-    "echarts": "^5.1.2",
+    "echarts": "^5.2.0",
     "leaflet": "^1.7.1",
     "pinia": "^0.5.4",
     "rxjs": "^7.3.0",
-    "vue": "^3.2.6",
+    "vue": "^3.2.7",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.6.0",
-    "@vue/compiler-sfc": "^3.2.6",
+    "@vue/compiler-sfc": "^3.2.7",
     "cypress": "^8.3.1",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
@@ -45,6 +47,7 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.17.0",
     "prettier": "^2.3.2",
-    "vite": "^2.5.1"
+    "start-server-and-test": "^1.13.1",
+    "vite": "^2.5.3"
   }
 }

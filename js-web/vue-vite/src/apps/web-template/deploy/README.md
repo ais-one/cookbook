@@ -4,6 +4,7 @@
 - .env.production
 - .env.uat
 - any other environments
+- cypress.json
 
 ## info to leave here
 - gcp.development.json

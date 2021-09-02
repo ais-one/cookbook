@@ -48,9 +48,22 @@ AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 
 ## Requirements
 
-- NodeJS LTS
+- NodeJS 14+ LTS
 - For Windows, **integrate bash shell to cmd shell** (when installing git), or use git-bash
-- Docker (easier to use VS Code Docker plugin)
+- Docker
+
+## Optional VS Code Plugins
+
+Useful plugins if using VS Code
+- Docker
+- es6-string-html
+- REST Client
+- ESLint
+- SonarLint
+- Vetur (for VueJS)
+- MongoDB for VS Code
+- GitLens
+- Prettier (disabled)
 
 ## Download
 
@@ -133,7 +146,7 @@ See [js-node/README.md](js-node/README.md)
 
 ### Vite SPA Setup & Run - development environment
 
-See [js-web/vue-vite/README.md](js-web/vue-vite/README.md)
+See [js-web/vue-vite/README.md](js-web/vue-vite/README.md). End-to-end testing example using cypress is here also.
 
 ## Why No SSR or SSG
 

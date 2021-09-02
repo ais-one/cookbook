@@ -26,7 +26,7 @@
     "bcryptjs": "^2.4.3",
     "bull": "^3.29.1",
     "hazelcast-client": "^4.2.0",
-    "ioredis": "^4.27.8",
+    "ioredis": "^4.27.9",
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.0.3",
     "knex": "^0.95.10",

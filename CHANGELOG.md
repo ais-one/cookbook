@@ -1,7 +1,7 @@
 ### Version 0.6.7
 - [chore] update packages & cleanup & work on improving documentation
+- [js-web/vue-vite] make cypress work with cicd, start-server-and-test
 - INPROGRESS
-  - [js-web/vue-vite] make cypress work with cicd, start-server-and-test, https://docs.cypress.io/guides/continuous-integration/introduction
   - [feat] add commitizen, add semantic-version
   - [frontend] aria
   - [backend-saml] check node-saml library

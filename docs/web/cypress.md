@@ -5,6 +5,7 @@
 ```bash
 npm i -D cypress
 npx cypress open
+npx cypress run --browser chrome --spec "cypress/integration/secondTest.spec.js"
 ```
 
 ## Linting
@@ -84,3 +85,17 @@ cy.window().then( win => {
 https://www.vuemastery.com/conferences/vueconf-us-2021/component-testing-with-vite-vue-and-cypress/
 https://docs.cypress.io/guides/component-testing/introduction
 https://github.com/JessicaSachs/cypress-loves-vite
+
+
+### Visual Regression Testing
+
+N.A.
+
+### CI/CD
+
+https://docs.cypress.io/guides/continuous-integration/introduction
+
+## Official Examples
+- https://github.com/cypress-io/cypress-realworld-app
+- https://github.com/cypress-io/cypress-example-kitchensink
+- https://github.com/cypress-io/cypress-example-recipes
