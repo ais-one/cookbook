@@ -46,6 +46,12 @@
 +- test.py: run python from express
 ```
 
+## If You Want To Use DTOs
+
+https://stackoverflow.com/questions/62504764/entities-dtos-in-javascript
+
+- Use AJV
+- ORM with Modeling
 
 ## Relational Database Schema
 

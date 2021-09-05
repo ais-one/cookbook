@@ -8,7 +8,7 @@
     "lint": "eslint . --ext .js,.vue",
     "prettier:check": "prettier --check src/**/*.{js,jsx,json}",
     "prettier:write": "prettier --write src/**/*.{js,jsx,json}",
-    "api:dev": "npm run app --prefix ../../js-node/expressjs -- development", 
+    "api:dev": "npm run app --prefix ../../js-node/expressjs -- development",
     "dev": "vite",
     "build": "vite build",
     "test:e2e": "echo \"Remember to run frontend and backend before test...\" && cypress run",
@@ -27,13 +27,13 @@
     "leaflet": "^1.7.1",
     "pinia": "^0.5.4",
     "rxjs": "^7.3.0",
-    "vue": "^3.2.7",
+    "vue": "^3.2.8",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.6.0",
-    "@vue/compiler-sfc": "^3.2.7",
+    "@vue/compiler-sfc": "^3.2.8",
     "cypress": "^8.3.1",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
@@ -47,7 +47,7 @@
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.17.0",
     "prettier": "^2.3.2",
-    "start-server-and-test": "^1.13.1",
+    "start-server-and-test": "^1.14.0",
     "vite": "^2.5.3"
   }
 }
