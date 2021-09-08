@@ -163,6 +163,7 @@ Refer to link below on how to try out...
   - [js-node/expressjs/router/oidc.js](js-node/expressjs/router/oidc.js)
   - [js-node/expressjs/router/oauth.js](js-node/expressjs/router/oauth.js) **requires setup of github account and config setup here**
 - You can test out on the [js-web/vue-vite](js-web/vue-vite) Signin UI, clicking on SAML button / OIDC button / OAuth (github) button to see redirect callback
+  - Use the following username / password credentials for SAML and OIDC... test-user / password
 
 ---
 

@@ -61,7 +61,7 @@ module.exports = express.Router({caseSensitive: true})
     Promise.reject(new Error('unhandled rejection of promise')) // call on.process unhandledRejection - promise rejection, unhandled
   }))
 
-  .get('/healthcheck', (req, res) => res.json({ message: 'OK1', app: APP_NAME, environment: process.env.NODE_ENV, version: APP_VERSION, port: API_PORT, https: HTTPS_CERTS ? true : false }) ) // health check
+  .get('/healthcheck', (req, res) => res.json({ message: 'OK', app: APP_NAME, environment: process.env.NODE_ENV, version: APP_VERSION, port: API_PORT, https: HTTPS_CERTS ? true : false }) ) // health check
 
   .post('/healthcheck', (req, res) => res.json({ message: 'POST OK' }) ) // POST health check
 

@@ -2,9 +2,10 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [js-web/vue-vite] make cypress work with cicd, start-server-and-test
 - INPROGRESS
+  - [backend-saml] https://github.com/node-saml/node-saml/issues/21
+  - [backend-saml] check node-saml library
   - [feat] add commitizen, add semantic-version
   - [frontend] aria
-  - [backend-saml] check node-saml library
   - [frontend] react example
 
 ### Version 0.6.6
