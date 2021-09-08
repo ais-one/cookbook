@@ -1,12 +1,14 @@
 ### Version 0.6.7
 - [chore] update packages & cleanup & work on improving documentation
 - [js-web/vue-vite] make cypress work with cicd, start-server-and-test
+- [backend-saml] test node-saml library without passport, implement test route /api/saml/test, you can see how to generate auth url and parse response in the code
+- [backend-saml] remediate - https://github.com/node-saml/node-saml/issues/21
+- [react-nestjs]
+  - [react-nestjs/react-admin] - React + TS example from https://www.udemy.com/course/react-nest-admin/, to keep updating and further develop
+  - [react-nestjs/nest-admin] - NestJS example from https://www.udemy.com/course/react-nest-admin/, to keep updating and further develop
 - INPROGRESS
-  - [backend-saml] https://github.com/node-saml/node-saml/issues/21
-  - [backend-saml] check node-saml library
   - [feat] add commitizen, add semantic-version
   - [frontend] aria
-  - [frontend] react example
 
 ### Version 0.6.6
 - [chore] update packages & cleanup & work on improving documentation
