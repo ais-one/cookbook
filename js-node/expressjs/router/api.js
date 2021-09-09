@@ -1,9 +1,11 @@
 'use strict'
 
 const fs = require('fs')
+const path = require('path')
 const express = require('express')
 const { spawn } = require('child_process')
 const axios = require('axios')
+const PdfKit = require('pdfkit')
 
 const ws = require('@es-labs/node/services/websocket')
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
@@ -14,14 +16,16 @@ const { memoryUpload, storageUpload } = require(APP_PATH + '/common/upload')
 
 const { UPLOAD_STATIC, UPLOAD_MEMORY, API_PORT, HTTPS_CERTS } = global.CONFIG
 
-const { authUser } = require('@es-labs/node/auth')
+const { authUser, setTokensToHeader } = require('@es-labs/node/auth')
 
 gcp.setupStorage(global.CONFIG)
 
 function openMissingFile() {
-  fs.readFile('somefile4.txt', (err, data) => { if (err) throw err })
+  fs.readFile('somefile4.txt', (err, data) => {
+    if (err) throw err // will cause node JS to crash if throw error in error handler. just handle error inside here or "return next(err)"
+  })
 }
-// openMissingFile()
+// openMissingFile() // test error handling
 
 module.exports = express.Router({caseSensitive: true})
   .get('/python', (req, res) => {
@@ -97,6 +101,45 @@ module.exports = express.Router({caseSensitive: true})
       body: req.body,
       message: req.file.buffer.toString()
     })
+  })
+
+  .get('/download', (req, res, next) => { // serve a file download, you can add authorization here to control downloads
+    const { filename } =  req.query
+    const fullPath = path.join(UPLOAD_STATIC[0].folder, filename)
+
+    // Do not read entire chunk
+    // fs.readFile(fullPath, (err, data) => {
+    //   if (err) {
+    //     return next(err)
+    //   } else {
+    //     res.setHeader('Content-Type', '')
+    //     res.setHeader([
+    //       'Content-Disposition', `inline; filename="${filename}"`
+    //     ])
+    //     return res.send(data)
+    //   }
+    // })
+
+    // Stream file instead
+    const file = fs.createReadStream(fullPath)
+    res.setHeader('Content-Type', 'application/pdf')
+    res.setHeader([
+      'Content-Disposition', `inline; filename="${filename}"`
+    ])
+    file.pipe(res)
+  })
+
+  .get('/download-pdf', (req, res) => {
+    const { filename } =  req.query
+    const ext = path.extname(filename)
+    if (filename && ext === '.pdf') {
+      const fullPath = path.join(UPLOAD_STATIC[0].folder, filename)
+      const pdfDoc = new PdfKit()
+      pdfDoc.pipe(fs.createWriteStream(fullPath)) // save as file
+      pdfDoc.pipe(res) // stream to response
+      pdfDoc.text('hello world!')
+      pdfDoc.end()  
+    }
   })
 
   // message queues

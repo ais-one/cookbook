@@ -3,6 +3,7 @@
 - [js-web/vue-vite] make cypress work with cicd, start-server-and-test
 - [backend-saml] test node-saml library without passport, implement test route /api/saml/test, you can see how to generate auth url and parse response in the code
 - [backend-saml] remediate - https://github.com/node-saml/node-saml/issues/21
+- [js-node/expressjs] streaming file download, create pdf, download pdf
 - [react-nestjs]
   - [react-nestjs/react-admin] - React + TS example from https://www.udemy.com/course/react-nest-admin/, to keep updating and further develop
   - [react-nestjs/nest-admin] - NestJS example from https://www.udemy.com/course/react-nest-admin/, to keep updating and further develop

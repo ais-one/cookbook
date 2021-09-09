@@ -15,6 +15,7 @@ Latest Version [0.6.7](https://github.com/ais-one/cookbook/releases/tag/0.6.7) -
 - cypress e2e testing now also able to run in CI/CD if needed
 - add NestJS and ReactJS example (from https://www.udemy.com/course/react-nest-admin but to be modified)
 - add node-saml usage
+- streaming file download, create pdf, download pdf
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
@@ -22,7 +23,7 @@ Considerations for this project are similar to [favv](https://github.com/ais-one
 - this repo is more of a cookbook and recipes are constantly being improved and updated
 - [favv](https://github.com/ais-one/favv) backend is written in Python, they can be used to improve on each other
 
-We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem.
+We do not use Typescript in most folders because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem. However, we now do a folder for example applications written in Typescript
 
 # Features
 
