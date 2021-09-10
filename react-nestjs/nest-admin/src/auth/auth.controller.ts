@@ -27,7 +27,7 @@ export class AuthController {
 
     return this.userService.create({
       ...body,
-      role: { id: 1 }
+      role: { id: 2 } // default to customer role
     }); // body;
   }
 

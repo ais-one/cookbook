@@ -1,56 +1,62 @@
 'use strict'
 const typeorm = require("typeorm");
 
-async function seedPermission (connection) {
-  try {
-    // For SQLite
-    await connection.manager.query('DELETE FROM permission')
-    await connection.manager.query(`DELETE FROM sqlite_sequence where name='permission'`)
-
-    await connection.manager.createQueryBuilder()
-      .insert()
-      .into('permission')
-      .values([
-        { id: null, name: 'view_users' },
-        { id: null, name: 'edit_users' },
-        { id: null, name: 'view_roles' },
-        { id: null, name: 'edit_roles' },
-        { id: null, name: 'view_products' },
-        { id: null, name: 'edit_products' },
-        { id: null, name: 'view_orders' },
-        { id: null, name: 'edit_orders' }
-      ])
-      .execute();
-    const data = await connection.manager.query('select * from permission')
-    console.log(data)
-  } catch (e) {
-    console.log(e.toString())
-  }
-}
-
-async function resetRolePermission (connection) {
+async function resetUserRolePermission (connection) {
   try {
     // For SQLite
     await connection.manager.query('DELETE FROM role_permission')
 
-    await connection.manager.createQueryBuilder()
-      .insert()
-      .into('role_permission')
-      .values([
-        { role_id: 1, permission_id: 1 }, // Admin Role
-        { role_id: 1, permission_id: 2 },
-        { role_id: 1, permission_id: 3 },
-        { role_id: 1, permission_id: 4 },
-        { role_id: 1, permission_id: 5 },
-        { role_id: 1, permission_id: 6 },
-        { role_id: 1, permission_id: 7 },
-        { role_id: 1, permission_id: 8 },
-        { role_id: 2, permission_id: 5 }, // Customer Role
-        { role_id: 2, permission_id: 7 },
-        { role_id: 2, permission_id: 8 },
-      ])
-      .execute();
-    const data = await connection.manager.query('select * from role_permission')
+    await connection.manager.query('DELETE FROM user')
+    await connection.manager.query(`DELETE FROM sqlite_sequence where name='user'`)
+
+    await connection.manager.query('DELETE FROM role')
+    await connection.manager.query(`DELETE FROM sqlite_sequence where name='role'`)
+
+    await connection.manager.query('DELETE FROM permission')
+    await connection.manager.query(`DELETE FROM sqlite_sequence where name='permission'`)
+
+    let data
+
+    await connection.manager.createQueryBuilder().insert().into('permission').values([
+      { id: null, name: 'view_users' },
+      { id: null, name: 'edit_users' },
+      { id: null, name: 'view_roles' },
+      { id: null, name: 'edit_roles' },
+      { id: null, name: 'view_products' },
+      { id: null, name: 'edit_products' },
+      { id: null, name: 'view_orders' },
+      { id: null, name: 'edit_orders' }
+    ]).execute();
+    data = await connection.manager.query('select * from permission')
+    console.log(data)
+
+    await connection.manager.createQueryBuilder().insert().into('role').values([
+      { id: null, name: 'Admin' },
+      { id: null, name: 'Customer' },
+    ]).execute();
+    data = await connection.manager.query('select * from role')
+    console.log(data)
+
+    await connection.manager.createQueryBuilder().insert().into('role_permission').values([
+      { role_id: 1, permission_id: 1 }, // Admin Role
+      { role_id: 1, permission_id: 2 },
+      { role_id: 1, permission_id: 3 },
+      { role_id: 1, permission_id: 4 },
+      { role_id: 1, permission_id: 5 },
+      { role_id: 1, permission_id: 6 },
+      { role_id: 1, permission_id: 7 },
+      { role_id: 1, permission_id: 8 },
+      { role_id: 2, permission_id: 5 }, // Customer Role
+      { role_id: 2, permission_id: 7 },
+      { role_id: 2, permission_id: 8 },
+    ]).execute();
+    data = await connection.manager.query('select * from role_permission')
+    console.log(data)
+
+    await connection.manager.createQueryBuilder().insert().into('user').values([
+      { id: null, email: 'admin@test.com', first_name: 'adm', last_name: 'min', password: '$2a$12$UvrhmK5FxI7FJHEJVu61aOMEKhIV4QVk5njjgwNZqeEROisnRJMLS', role_id: 1 }
+    ]).execute();
+    data = await connection.manager.query('select * from user')
     console.log(data)
   } catch (e) {
     console.log(e.toString())
@@ -124,10 +130,9 @@ async function run () {
     synchronize: false,
     logging: false
   })
-  await seedProduct(connection)
+  // await seedProduct(connection)
   // await seedOrder(connection)
-  // await seedPermission(connection)
-  // await resetRolePermission(connection)
+  await resetUserRolePermission(connection)
 }
 
 run();

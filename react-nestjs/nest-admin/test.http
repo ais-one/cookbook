@@ -17,7 +17,7 @@ POST http://127.0.0.1:3000/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "aaronjxz@gmail.com",
+  "email": "admin@test.com",
   "password": "password"
 }
 
