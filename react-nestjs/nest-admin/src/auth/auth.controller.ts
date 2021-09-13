@@ -3,12 +3,15 @@ import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
 
+import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
+
 import * as bcrypt from 'bcryptjs';
 import { RegisterDto } from './models/register.dto';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 
+@ApiTags('auth')
 @UseInterceptors(ClassSerializerInterceptor, AuthInterceptor) // to let @Exclude work
   // you can user here for all in this controller, or inside the controller for each route 
 @Controller('auth')
@@ -21,10 +24,10 @@ export class AuthController {
   }
 
   @Post('register')
+  @ApiCreatedResponse()
   async register(@Body() body :RegisterDto) {
     if (body.password !== body.password_confirm) throw new BadRequestException('Password Does Not Match')
     body.password = await bcrypt.hash(body.password, 12);
-
     return this.userService.create({
       ...body,
       role: { id: 2 } // default to customer role

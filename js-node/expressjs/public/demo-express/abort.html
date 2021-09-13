@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button type="button" id="abort-btn"">Abort</button>
+  <div id="status"></div>
+  <script>
+    // https://stackoverflow.com/questions/29478751/cancel-a-vanilla-ecmascript-6-promise-chain
+    let controller = new window.AbortController();
+    let signal = controller.signal;
+    let elem = document.querySelector("#status")
+
+    let example = (signal) => {
+      return new Promise((resolve, reject) => {
+        let timeout = setTimeout(() => {
+          elem.textContent = "Promise resolved";
+          resolve("resolved")
+        }, 10000);
+
+        signal.addEventListener('abort', () => {
+          elem.textContent = "Promise rejected";
+          clearInterval(timeout);
+          reject("Promise aborted")
+        });
+      });
+    }
+
+    function cancelPromise() {
+      controller.abort()
+      console.log(controller);
+    }
+
+    example(signal)
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.log("Catch: ", error)
+      });
+
+    document.getElementById('abort-btn').addEventListener('click', cancelPromise);
+  </script>
+</body>
+
+</html>

@@ -44,6 +44,7 @@ Folder | Description | Features
 [js-web/vue-vite](js-web/vue-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Cypress Testing
 example-webpack<br><b>(Deprecated & removed)</b><br>[last updated version](https://github.com/ais-one/cookbook/tree/0.5.3) | Vue 2 SPA using webpack + Vuetify | - Graphql, REST, VueCrudX, i18n, rxJS
 [react-nestjs](react-nestjs) | React TS + NestJS | A example application (e-commerce dashboard) with ReactJS + TS and NestJS<br>Watch the course https://www.udemy.com/course/react-nest-admin/ for better learning<br>Course is more suitble for those with beginner knowledge in React and NestJS already
+[nestjs-microservice] | Implementing microservice using NestJS! | Refer to this https://github.com/Denrox/nestjs-microservices-example
 [.github/workflows](.github/workflows) | Github Actions (CI/CD) | - Manually Trigger<br>- On-push Trigger (WIP)
 AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 

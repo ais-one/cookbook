@@ -29,10 +29,14 @@ You can use the test.http file with VS Code REST Client plugin to test enpoints
 
 npx @nest/cli new nest-admin --skip-git
 
+npm i @nest/cli
+npx nest new <project> --skip-git
+
 npx create-react-app react-admin --template typescript
 
+---
 
-### Nest
+### nest-admin
 
 
 NOTES:
@@ -44,11 +48,22 @@ TBD:
 2. Add Item, Create New Order If 1st item (logged in user)
 3. Remove Ite, Delete Order if last item (logged in user)
 4. exportCSV to use logged in user
+5. add swagger/openapi
+6. add websockets
 
 
 SELECT SUBSTR(created_at, 0, 11) as date, SUM(oi.price * oi.quantity) as "sum" FROM "order" o JOIN order_item oi ON o.id = oi.order_id GROUP BY date;
 
+# create modules, controller, service, dtos, etc...
+nest g resource users --no-spec
 
-### React
+---
+
+### react-admin
 
 - add loading spinner
+
+
+### nest-Microserice
+
+https://www.merixstudio.com/blog/microservice-nestjs/

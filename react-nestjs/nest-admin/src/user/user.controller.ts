@@ -1,4 +1,6 @@
 import { Controller, Get, Post, Body, UseInterceptors, ClassSerializerInterceptor, UseGuards, Param, Put, Delete, Query, Req, BadRequestException } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+
 import { UserService } from './user.service';
 import { User } from './models/user.entity';
 import * as bcrypt from 'bcryptjs';
@@ -10,6 +12,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { Request } from 'express';
 import { HasPermission } from 'src/permission/has-permission.decorator';
 
+@ApiTags('user')
 @UseInterceptors(ClassSerializerInterceptor) // to let @Exclude work
 @UseGuards(AuthGuard) // only auth users can access
 @Controller('user')
