@@ -12,7 +12,10 @@
     "url": "https://github.com/ais-one/cookbook/issues"
   },
   "homepage": "https://github.com/ais-one/cookbook#readme",
-  "keywords": [ "nodejs", "vuejs" ],
+  "keywords": [
+    "nodejs",
+    "vuejs"
+  ],
   "scripts": {
     "prepare": "husky install",
     "git:hash": "git rev-parse --verify --short HEAD",
@@ -23,7 +26,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "husky": "^7.0.1"
+    "husky": "^7.0.2"
   },
   "workspaces": [
     "./@es-labs/*",

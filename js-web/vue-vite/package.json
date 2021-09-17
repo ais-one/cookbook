@@ -46,7 +46,7 @@
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^7.17.0",
-    "prettier": "^2.4.0",
+    "prettier": "^2.4.1",
     "start-server-and-test": "^1.14.0",
     "vite": "^2.5.7"
   }
