@@ -19,7 +19,9 @@
   "scripts": {
     "prepare": "husky install",
     "git:hash": "git rev-parse --verify --short HEAD",
-    "git:branch": "git rev-parse --abbrev-ref HEAD"
+    "git:branch": "git rev-parse --abbrev-ref HEAD",
+    "postinstall": "git config core.hooksPath ./git-hooks",
+    "postinstall-husky": "git config core.hooksPath .husky"
   },
   "engines": {
     "node": "14"
