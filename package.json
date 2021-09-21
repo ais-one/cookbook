@@ -14,22 +14,20 @@
   "homepage": "https://github.com/ais-one/cookbook#readme",
   "keywords": [
     "nodejs",
-    "vuejs"
+    "nestjs",
+    "vuejs",
+    "reactjs"
   ],
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "git config core.hooksPath ./git-hooks || echo 'Can not set git hooks'",
     "git:hash": "git rev-parse --verify --short HEAD",
-    "git:branch": "git rev-parse --abbrev-ref HEAD",
-    "postinstall": "git config core.hooksPath ./git-hooks",
-    "postinstall-husky": "git config core.hooksPath .husky"
+    "git:branch": "git rev-parse --abbrev-ref HEAD"
   },
   "engines": {
     "node": "14"
   },
   "dependencies": {},
-  "devDependencies": {
-    "husky": "^7.0.2"
-  },
+  "devDependencies": {},
   "workspaces": [
     "./@es-labs/*",
     "./js-node/*",

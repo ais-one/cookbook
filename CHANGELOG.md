@@ -5,11 +5,11 @@
 - [backend-saml] remediate - https://github.com/node-saml/node-saml/issues/21
 - [js-node/expressjs] streaming file download, create pdf, download pdf
 - [react-nestjs]
-  - [react-nestjs/react-admin] - React + TS example from https://www.udemy.com/course/react-nest-admin/, to keep updating and further develop
-  - [react-nestjs/nest-admin] - NestJS example from https://www.udemy.com/course/react-nest-admin/, to keep updating and further develop
+  - [react-nestjs/react-admin] React + TS example from https://www.udemy.com/course/react-nest-admin/, to keep updating and further develop
+  - [react-nestjs/nest-admin] NestJS example from https://www.udemy.com/course/react-nest-admin/, to keep updating and further develop
+- [feat] removed husky, use git-hooks directly instead
 - INPROGRESS
-  - [feat] add commitizen, add semantic-version
-  - [frontend] aria
+  - [feat] add commitizen, add semantic-release
 
 ### Version 0.6.6
 - [chore] update packages & cleanup & work on improving documentation

@@ -4,6 +4,7 @@ Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
 - [chore] migration to node 16 and npm 7
+- [frontend] aria
 - [chore] improve on example applications
 
 ### For future product improvement

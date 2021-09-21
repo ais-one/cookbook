@@ -126,3 +126,27 @@ package.json
   }
 }
 ```
+
+## Git Hooks
+
+- https://dev.to/krzysztofkaczy9/do-you-really-need-husky-247b
+- https://dev.to/azu/git-hooks-without-extra-dependencies-like-husky-in-node-js-project-jjp
+
+
+### commitizen
+
+```bash
+npx commitizen init cz-conventional-changelog --save-dev --save-exact
+```
+
+.git/hooks/prepare-commit-msg
+
+```bash
+#!/bin/bash
+exec < /dev/tty && node_modules/.bin/cz --hook || true
+```
+
+### semantic-release
+
+- https://github.com/semantic-release/semantic-release
+- https://github.com/semantic-release/semantic-release/tree/master/docs/recipes
