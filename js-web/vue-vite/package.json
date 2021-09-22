@@ -21,7 +21,7 @@
     "@sentry/tracing": "^6.11.0",
     "@sentry/vue": "^6.11.0",
     "ant-design-vue": "^2.2.6",
-    "echarts": "^5.1.2",
+    "echarts": "^5.2.1",
     "leaflet": "^1.7.1",
     "pinia": "^0.5.4",
     "rxjs": "^7.3.0",
