@@ -20,7 +20,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@google-cloud/storage": "^5.14.2",
+    "@google-cloud/storage": "^5.14.3",
     "agenda": "^4.2.1",
     "axios": "^0.21.4",
     "bcryptjs": "^2.4.3",
