@@ -8,8 +8,6 @@
   - [react-nestjs/react-admin] React + TS example from https://www.udemy.com/course/react-nest-admin/, to keep updating and further develop
   - [react-nestjs/nest-admin] NestJS example from https://www.udemy.com/course/react-nest-admin/, to keep updating and further develop
 - [feat] removed husky, use git-hooks directly instead
-- INPROGRESS
-  - [feat] add commitizen, add semantic-release
 
 ### Version 0.6.6
 - [chore] update packages & cleanup & work on improving documentation

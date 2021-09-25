@@ -6,6 +6,7 @@ Always finding new things to implement / improve in this list!
 - [chore] migration to node 16 and npm 7
 - [frontend] aria
 - [chore] improve on example applications
+- [feat] add commitizen, add semantic-release
 
 ### For future product improvement
 - [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)

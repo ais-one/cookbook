@@ -18,7 +18,7 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
     "@antv/data-set": "^0.11.8",
-    "@antv/g2": "^4.1.27",
+    "@antv/g2": "^4.1.28",
     "@antv/g2plot": "^2.3.33",
     "@sentry/tracing": "^6.13.2",
     "@sentry/vue": "^6.13.2",
@@ -27,13 +27,13 @@
     "leaflet": "^1.7.1",
     "pinia": "^0.5.4",
     "rxjs": "^7.3.0",
-    "vue": "^3.2.16",
+    "vue": "^3.2.18",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.9.1",
-    "@vue/compiler-sfc": "^3.2.16",
+    "@vitejs/plugin-vue": "^1.9.2",
+    "@vue/compiler-sfc": "^3.2.18",
     "cypress": "^8.4.1",
     "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
