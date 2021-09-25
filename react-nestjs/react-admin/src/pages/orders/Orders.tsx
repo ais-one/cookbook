@@ -38,7 +38,7 @@ const Orders = () => {
 
   const exportCsv = async () => {
     const { data } = await axios.post('/order/export', {}, { responseType: 'blob'})
-    const blob = new Blob([data], { type: 'text/csv' })
+    // const blob = new Blob([data], { type: 'text/csv' }) // not needed - https://stackoverflow.com/a/61302835/2215486
     const url = window.URL.createObjectURL(data);
     const link = document.createElement('a')
     link.href = url

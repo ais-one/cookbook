@@ -1,6 +1,6 @@
 import React, { SyntheticEvent, useState } from 'react'
 import { Redirect } from 'react-router-dom'
-import axios from 'axios'
+// import axios from 'axios'
 
 import '../Login.css'
 

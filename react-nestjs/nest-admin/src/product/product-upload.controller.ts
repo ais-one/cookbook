@@ -3,7 +3,6 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { Express, Response } from "express";
 import { diskStorage } from "multer";
 import { extname } from "path";
-import path from "path/posix";
 
 @Controller()
 export class ProductUploadController {

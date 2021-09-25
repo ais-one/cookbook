@@ -1,4 +1,4 @@
-import { All, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AbstractService } from 'src/abstract/abstract.service';
 import { Repository } from 'typeorm';

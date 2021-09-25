@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
-import { Observable, map, firstValueFrom } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { AxiosResponse } from 'axios';
 
 @Injectable()
@@ -9,6 +9,5 @@ export class RocketService {
 
   getNextLaunchRemainingTime(): Observable<AxiosResponse<any>> { // <AxiosResponse<any>>
     return this.httpService.get('https://api.spacexdata.com/v4/launches/next').pipe(map(response => response.data))
-    // return await firstValueFrom(this.httpService.get('https://api.spacexdata.com/v4/launches/next'))
- }
+  }
 }

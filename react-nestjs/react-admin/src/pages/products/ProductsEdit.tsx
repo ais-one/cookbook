@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import Wrapper from '../../components/Wrapper'
 import { Redirect } from 'react-router-dom'
-import { Product } from '../../models/product'
+// import { Product } from '../../models/product'
 import ImageUpload from '../../components/ImageUpload'
 
 const ProductsEdit = (props: any) => {

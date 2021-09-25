@@ -53,6 +53,7 @@ async function resetUserRolePermission (connection) {
     data = await connection.manager.query('select * from role_permission')
     console.log(data)
 
+    // password is "password"
     await connection.manager.createQueryBuilder().insert().into('user').values([
       { id: null, email: 'admin@test.com', first_name: 'adm', last_name: 'min', password: '$2a$12$UvrhmK5FxI7FJHEJVu61aOMEKhIV4QVk5njjgwNZqeEROisnRJMLS', role_id: 1 }
     ]).execute();

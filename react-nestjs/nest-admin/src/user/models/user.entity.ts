@@ -1,5 +1,5 @@
 import { Exclude } from "class-transformer";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Role } from "src/role/models/role.entity";
 
 @Entity()

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+// import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { connect } from 'react-redux'
@@ -6,7 +7,7 @@ import { connect } from 'react-redux'
 import { User } from '../models/user'
 
 const Nav = (props: { user: User }) => {
-  // use Redux
+  // use Redux instead
   // const [user, setUser] = useState(new User())
   // useEffect(() => {
   //   const getUser = async () => {
