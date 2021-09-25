@@ -1,3 +1,10 @@
+### Version 0.6.8
+- [chore] update packages & cleanup & work on improving documentation
+- IN PROGRESS
+  - [chore] add sri and crossorigin to scripts - https://github.com/bigskysoftware/htmx/issues/261#issuecomment-753850081
+  - [chore] migration to node 16 and npm 7
+  - [frontend] aria
+
 ### Version 0.6.7
 - [chore] update packages & cleanup & work on improving documentation
 - [js-web/vue-vite] make cypress work with cicd, start-server-and-test
