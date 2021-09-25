@@ -3,6 +3,7 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
+- [chore] add sri and crossorigin to scripts - https://github.com/bigskysoftware/htmx/issues/261#issuecomment-753850081
 - [chore] migration to node 16 and npm 7
 - [frontend] aria
 - [chore] improve on example applications

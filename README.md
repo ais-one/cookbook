@@ -10,7 +10,7 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.7](https://github.com/ais-one/cookbook/releases/tag/0.6.7) - Released 2021 September 25 1000 +8GMT
+Latest Version [0.6.7](https://github.com/ais-one/cookbook/releases/tag/0.6.7) - Released 2021 September 25 1030 +8GMT
 
 - cypress e2e testing now also able to run in CI/CD if needed
 - add NestJS and ReactJS example (from https://www.udemy.com/course/react-nest-admin but to be modified)
