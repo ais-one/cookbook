@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo ---------- pre-commit execute start ----------
+cd js-node/expressjs && npm run lint
+# you can do a git add . here also
+echo ---------- pre-commit execute end ----------

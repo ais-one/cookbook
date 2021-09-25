@@ -44,17 +44,6 @@ Analyze user behavior across your sites and apps
 - https://github.com/zaproxy/zaproxy - DAST
 - https://prometheus.io/ - monitoring
 
-# VS Code IDE Plugins
-- Docker
-- es6-string-html
-- ESLint
-- Prettier
-- REST Client
-- SonarLint
-- Vetur
-- MongoDB for VS Code
-- GitLens
-
 # Github Wiki Sidebar Example
 
 * [Home](../wiki/Home)

@@ -3,12 +3,11 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
-- [js-web/vue-vite] make cypress work with cicd, start-server-and-test, https://docs.cypress.io/guides/continuous-integration/introduction
-- [feat] add commitizen, add semantic-version
+- [chore] add sri and crossorigin to scripts - https://github.com/bigskysoftware/htmx/issues/261#issuecomment-753850081
 - [chore] migration to node 16 and npm 7
-- [frontend] react example
 - [frontend] aria
-- [backend-saml] check node-saml library
+- [chore] improve on example applications
+- [feat] add commitizen, add semantic-release
 
 ### For future product improvement
 - [@es-labs/esm/bwc-combobox.js] - enhancement: replace datalist (so can check multiple times on dropdown instead of closing after each check)

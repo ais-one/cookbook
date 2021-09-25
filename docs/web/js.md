@@ -285,9 +285,12 @@ promises (use to batch, parallel async operations)
 - Promist.allSettled
 
 generators
-
 async/await
 
+- Number.isNaN vs isNaN
+- destructuring
+    - const { data: newData } = await axios.get(...) // set a new name also
+    - function calculate({operands = [1, 2], type = 'addition'} = {}) {
 
 ## ES2016
 - Array.prototype.includes()
@@ -387,3 +390,45 @@ async/await
 - WeakRefs & FinalizationRegistry Objects
   - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakRef
   - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/FinalizationRegistry
+
+
+## StackOverflow Recipes
+
+https://stackoverflow.com/questions/784539/how-do-i-replace-all-line-breaks-in-a-string-with-br-elements
+- str = str.replace(/(?:\r\n|\r|\n)/g, '<br>');
+
+https://stackoverflow.com/questions/7225407/convert-camelcasetext-to-sentence-case-text
+const result = 'helloThereMister'.replace(/([A-Z])/g, " $1");
+const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
+
+https://stackoverflow.com/questions/23089016/math-random-applied-as-a-percentage
+Math.floor(Math.random() * 100) + 1 // 1 - 100
+Math.floor(Math.random() * 101) // 0 - 100
+
+- merge objects
+const object3 = {...object1, ...object2 } // If both objects have a property with the same name, then the second object property overwrites the first.
+Object.assign(tgt, ...srcs) // shallow copy of properties, if property collision src overwrite tgt
+lodash.cloneDeep, lodash.merge
+
+
+https://javascript.plainenglish.io/5-html-tricks-nobody-is-talking-about-a0480104fe19
+- lazy loading
+```html
+<img src="image.png" loading="lazy" alt="…" width="200" height="200">```
+```
+- picture tag
+```html
+<picture>
+  <source media="(min-width:768px)" srcset="med_flag.jpg">
+  <source media="(min-width:495px)" srcset="small_flower.jpg">
+  <img src="high_flag.jpg" alt="Flags" style="width:auto;">
+</picture>
+```
+- base url
+```html
+<head><base href="https://www.twitter.com/" target="_blank"></head>
+```
+- redirect after x seconds
+```html
+<meta http-equiv="refresh" content="4; URL='https://google.com' />
+```

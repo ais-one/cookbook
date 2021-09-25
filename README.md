@@ -10,10 +10,12 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.6](https://github.com/ais-one/cookbook/releases/tag/0.6.6) - Released 2021 August 29 0215 +8GMT
+Latest Version [0.6.7](https://github.com/ais-one/cookbook/releases/tag/0.6.7) - Released 2021 September 25 1030 +8GMT
 
-- add cypress e2e testing to [js-web/vue-vite], improve folder and scripts for CI/CD
-- improve [js-web/vue-vite] structure to support muitple apps with one repository
+- cypress e2e testing now also able to run in CI/CD if needed
+- add NestJS and ReactJS example (from https://www.udemy.com/course/react-nest-admin but to be modified)
+- add node-saml usage
+- streaming file download, create pdf, download pdf
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
@@ -21,7 +23,7 @@ Considerations for this project are similar to [favv](https://github.com/ais-one
 - this repo is more of a cookbook and recipes are constantly being improved and updated
 - [favv](https://github.com/ais-one/favv) backend is written in Python, they can be used to improve on each other
 
-We do not use Typescript because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem.
+We do not use Typescript in most folders because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem. However, we now do a folder for example applications written in Typescript
 
 # Features
 
@@ -41,6 +43,8 @@ Folder | Description | Features
 [js-web/vue-nobundler](js-web/vue-nobundler) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/apps/app-template/tables/](js-node/expressjs/apps/app-template/tables/)</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[js-web/vue-nobundler/views/ui1.js](js-web/vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[js-web/vue-nobundler/views/ui2.js](js-web/vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[js-web/vue-nobundler/views/ui3.js](js-web/vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[js-web/vue-nobundler/views/ui4.js](js-web/vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
 [js-web/vue-vite](js-web/vue-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Cypress Testing
 example-webpack<br><b>(Deprecated & removed)</b><br>[last updated version](https://github.com/ais-one/cookbook/tree/0.5.3) | Vue 2 SPA using webpack + Vuetify | - Graphql, REST, VueCrudX, i18n, rxJS
+[react-nestjs](react-nestjs) | React TS + NestJS | A example application (e-commerce dashboard) with ReactJS + TS and NestJS<br>Watch the course https://www.udemy.com/course/react-nest-admin/ for better learning<br>Course is more suitble for those with beginner knowledge in React and NestJS already
+[nestjs-microservice] | Implementing microservice using NestJS! | Refer to this https://github.com/Denrox/nestjs-microservices-example
 [.github/workflows](.github/workflows) | Github Actions (CI/CD) | - Manually Trigger<br>- On-push Trigger (WIP)
 AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 
@@ -48,9 +52,22 @@ AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 
 ## Requirements
 
-- NodeJS LTS
+- NodeJS 14+ LTS
 - For Windows, **integrate bash shell to cmd shell** (when installing git), or use git-bash
-- Docker (easier to use VS Code Docker plugin)
+- Docker
+
+## Optional VS Code Plugins
+
+Useful plugins if using VS Code
+- Docker
+- es6-string-html
+- REST Client
+- ESLint
+- SonarLint
+- Vetur (for VueJS)
+- MongoDB for VS Code
+- GitLens
+- Prettier (disabled)
 
 ## Download
 
@@ -133,7 +150,7 @@ See [js-node/README.md](js-node/README.md)
 
 ### Vite SPA Setup & Run - development environment
 
-See [js-web/vue-vite/README.md](js-web/vue-vite/README.md)
+See [js-web/vue-vite/README.md](js-web/vue-vite/README.md). End-to-end testing example using cypress is here also.
 
 ## Why No SSR or SSG
 
@@ -150,6 +167,7 @@ Refer to link below on how to try out...
   - [js-node/expressjs/router/oidc.js](js-node/expressjs/router/oidc.js)
   - [js-node/expressjs/router/oauth.js](js-node/expressjs/router/oauth.js) **requires setup of github account and config setup here**
 - You can test out on the [js-web/vue-vite](js-web/vue-vite) Signin UI, clicking on SAML button / OIDC button / OAuth (github) button to see redirect callback
+  - Use the following username / password credentials for SAML and OIDC... test-user / password
 
 ---
 
@@ -196,6 +214,7 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 +- js-web
 |  +- vue-nobundler/ : frontend (Vue3 no bundler) - See [js-web/vue-nobundler/README.md](js-web/vue-nobundler/README.md) for Project Structure
 |  +- vue-vite/: frontend (Vue3 rollup) - See [js-web/vue-vite/README.md](js-web/vue-nobundler/README.md) for Project Structure
++- react-nestjs/: fullstack example
 +- .editorconfig
 +- .gitignore
 +- BACKLOG.md
@@ -205,6 +224,10 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 +- README.md
 +- rest-cmd.http : rest commands for testing
 ```
+
+## React + NestJS
+
+Refer to readme in the [folder](react-nestjs) to start backend and frontend
 
 ## CI/CD & Cloud Deployment
 

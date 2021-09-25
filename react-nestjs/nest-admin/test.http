@@ -1,0 +1,172 @@
+# HTTP Testing
+
+### Register A New User
+POST http://127.0.0.1:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "aaronjxz@gmail.com",
+  "first_name": "aaron",
+  "last_name": "jxz",
+  "password": "password",
+  "password_confirm": "password"
+}
+
+### Login User
+POST http://127.0.0.1:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@test.com",
+  "password": "password"
+}
+
+### Verify Login User
+GET http://127.0.0.1:3000/api/auth/user
+
+### Logout User
+POST http://127.0.0.1:3000/api/auth/logout
+
+### Find paged users
+GET http://127.0.0.1:3000/api/user?page=1
+
+### Find one user by Id
+GET http://127.0.0.1:3000/api/user/1
+
+### Create one user
+POST http://127.0.0.1:3000/api/user
+Content-Type: application/json
+
+{
+  "email": "demo@gmail.com",
+  "first_name": "de",
+  "last_name": "mo",
+  "role_id": 2
+}
+
+### Update one user
+
+## TBD WILL HAVE PROBLEM IF ROLE.ID IS NOT INCLUDED
+PUT http://127.0.0.1:3000/api/user/1
+Content-Type: application/json
+
+{
+  "first_name": "waar",
+  "last_name": "onjxz"
+}
+
+### Delete one user
+DELETE http://127.0.0.1:3000/api/user/4
+
+
+### Update logged in user info
+PUT http://127.0.0.1:3000/api/user/info
+Content-Type: application/json
+
+{
+  "first_name": "de1",
+  "last_name": "mo2"
+}
+
+### Update logged in user password
+PUT http://127.0.0.1:3000/api/user/password
+Content-Type: application/json
+
+{
+  "password": "password",
+  "password_confirm": "password"
+}
+
+###### ROLES ######
+
+### Get Roles
+GET http://127.0.0.1:3000/api/role
+
+### Create one role - Admin, Read, Write
+POST http://127.0.0.1:3000/api/role
+Content-Type: application/json
+
+{
+  "name": "Admin",
+  "permission": [1, 2, 3, 4, 5, 6, 7, 8]
+}
+
+### Get Role by Id
+GET http://127.0.0.1:3000/api/role/1
+
+### Update Role by Id
+PUT http://127.0.0.1:3000/api/role/1
+Content-Type: application/json
+
+{
+  "name": "Admin",
+  "permission": [1,2]
+}
+
+### Delete Role by Id
+DELETE http://127.0.0.1:3000/api/role/1
+
+
+###### PERMISSION ######
+
+### Get Permissions
+GET http://127.0.0.1:3000/api/permission
+
+
+###### PRODUCT ######
+
+### Get Products
+GET http://127.0.0.1:3000/api/product
+
+### Create one product
+POST http://127.0.0.1:3000/api/product
+Content-Type: application/json
+
+{
+  "title": "Captain Crunch",
+  "description": "Delicious Cereal",
+  "image": "some image",
+  "price": 5.20
+}
+
+### Get product by Id
+GET http://127.0.0.1:3000/api/product/1
+
+### Update product by Id
+PUT http://127.0.0.1:3000/api/product/1
+Content-Type: application/json
+
+{
+  "price": 5.50
+}
+
+### Delete product by Id
+DELETE http://127.0.0.1:3000/api/product/1
+
+
+### Upload Image
+
+POST http://127.0.0.1:3000/api/upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="product-image"; filename="test.png"
+Content-Type: image/png
+
+< ./test.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###### Order ######
+
+### Get Orders
+GET http://127.0.0.1:3000/api/order
+
+
+### Get Orders CSV
+POST http://127.0.0.1:3000/api/order/export
+
+### Get Orders Chart
+GET http://127.0.0.1:3000/api/order/chart
+
+
+########################################

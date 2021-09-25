@@ -1,6 +1,6 @@
 {
   "name": "cookbook",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "description": "Fullstack JS Application Cookbook",
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
@@ -12,9 +12,14 @@
     "url": "https://github.com/ais-one/cookbook/issues"
   },
   "homepage": "https://github.com/ais-one/cookbook#readme",
-  "keywords": [ "nodejs", "vuejs" ],
+  "keywords": [
+    "nodejs",
+    "nestjs",
+    "vuejs",
+    "reactjs"
+  ],
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "git config core.hooksPath ./git-hooks || echo 'Can not set git hooks'",
     "git:hash": "git rev-parse --verify --short HEAD",
     "git:branch": "git rev-parse --abbrev-ref HEAD"
   },
@@ -22,9 +27,7 @@
     "node": "14"
   },
   "dependencies": {},
-  "devDependencies": {
-    "husky": "^7.0.1"
-  },
+  "devDependencies": {},
   "workspaces": [
     "./@es-labs/*",
     "./js-node/*",

@@ -9,11 +9,15 @@ network: my-test-net
 ## Applications
 
 applications:
+- keycloak
 - mongodb
-- redis (not yet)
-- kafka (not yet)
+- mysql
+- redis
+- vault
+- rabbitmq (in progress)
+- kafka (in progress)
+- opensearch (in progress)
 - hazelcast (not yet)
-- elastic search (not yet)
 
 ## Persistent Data Folder
 

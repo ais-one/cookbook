@@ -54,6 +54,15 @@ Navigate to:
   - Test PN (send a test message to user id 1 - on sqlite)
   - Unsub PN (unsubscribe)
 
+## End-to-end Testing
+
+- Ensure that dev.sqlite is created and populated [running](../../README.md#run-migration--app), DO NOT RUN THE APP. JUST MIGRATE AND SEED DB.
+- Ensure that MongoDB is [running](../../docker-devenv/mongodb/README.md).
+
+```
+npm run test:all:dev
+```
+
 ## For production (served from localhost)
 
 ```
