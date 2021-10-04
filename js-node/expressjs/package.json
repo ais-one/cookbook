@@ -22,7 +22,7 @@
     "@es-labs/node": "file:../../@es-labs/node",
     "@sentry/node": "^6.13.2",
     "@sentry/tracing": "^6.13.2",
-    "axios": "^0.21.4",
+    "axios": "^0.22.0",
     "base64url": "^3.0.1",
     "connect-history-api-fallback": "^1.6.0",
     "cookie-parser": "^1.4.5",
