@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "ioredis": "^4.27.9",
-    "ws": "^8.2.2"
+    "ws": "^8.2.3"
   }
 }
