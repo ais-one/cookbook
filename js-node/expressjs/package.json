@@ -34,7 +34,7 @@
     "express-json-validator-middleware": "^2.2.1",
     "express-openapi-validator": "^4.13.1",
     "fido2-lib": "^2.6.7",
-    "graphql": "^15.6.0",
+    "graphql": "^15.6.1",
     "graphql-subscriptions": "^1.2.1",
     "graphql-ws": "^5.5.0",
     "helmet": "^4.6.0",

@@ -31,6 +31,8 @@ export const {
   INITIAL_SECURE_PATH = setup.INITIAL_SECURE_PATH,
   INITIAL_PUBLIC_PATH = setup.INITIAL_PUBLIC_PATH,
   // VERSION = setup.VERSION,
+  ON_LOGIN = setup.ON_LOGIN,
+  ON_LOGOUT = setup.ON_LOGOUT
 } = import.meta.env
 
 // APP_VERSION: '0.0.0' // TBD Use package.json version

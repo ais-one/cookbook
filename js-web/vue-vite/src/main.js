@@ -1,10 +1,12 @@
 import { createApp } from 'vue'
 import router from './router.js'
 import store from './store.js'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
+// import 'ant-design-vue/dist/antd.dark.css'
 
 // Sentry
 import * as Sentry from '@sentry/vue'
@@ -43,6 +45,7 @@ const theme = 'dark'
 // const ThemeSymbol = Symbol()
 app.provide('MyTheme', theme) // provide & inject
 app.use(store)
+app.use(createPinia())
 app.use(router)
 app.use(Antd)
 

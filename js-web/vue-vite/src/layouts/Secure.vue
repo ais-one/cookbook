@@ -21,6 +21,10 @@
         <span>Dashboard App</span>
       </a-layout-header>
       <a-layout-content :style="{ overflowY: 'auto', margin: '16px 12px', padding: '16px', background: '#fff', height: 'calc(100vh - 96px)' }">
+        <a-breadcrumb style="margin: 8px 0">
+          <a-breadcrumb-item>Home</a-breadcrumb-item>
+          <a-breadcrumb-item>Dashboard</a-breadcrumb-item>
+        </a-breadcrumb>
         <router-view :key="$route.fullPath"></router-view>
       </a-layout-content>
       <a-layout-footer hidden style="text-align: center">Ant Design ©2021</a-layout-footer>
@@ -33,9 +37,11 @@
 import { onMounted, onUnmounted, onBeforeUnmount, ref, reactive } from 'vue'
 import { useStore } from 'vuex'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue'
-import { SECURE_ROUTES } from '/config.js'
+import { SECURE_ROUTES, ON_LOGIN, ON_LOGOUT } from '/config.js'
 
 import idleTimer from '/@es-labs/esm/idle.js'
+
+const { VITE_WS_URL } = import.meta.env
 
 export default {
   components: {
@@ -75,14 +81,15 @@ export default {
           mappedRoutes.push({ name: route.name, path: route.path, submenu: '' })
         }
       })
-      // TBD init WS
+      ON_LOGIN && ON_LOGIN()
     })
     onUnmounted(() => {
       console.log('SECURE unmounted')
-      idleTimer.stop()
     })
     onBeforeUnmount(() => {
-      // TBD close WS
+      // close WS
+      idleTimer.stop()
+      ON_LOGOUT && ON_LOGOUT()
     })
 
     const logout = async () => {

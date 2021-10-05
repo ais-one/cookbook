@@ -1,6 +1,7 @@
 ### Version 0.6.8
 - [chore] update packages & cleanup & work on improving documentation
 - IN PROGRESS
+  - [frontend] integrate [https://github.com/ais-one/favv/vitevue](https://github.com/ais-one/favv/vitevue) to [js-web/vue-vite](js-web/vue-vite)
   - [chore] add sri and crossorigin to scripts - https://github.com/bigskysoftware/htmx/issues/261#issuecomment-753850081
   - [chore] migration to node 16 and npm 7
   - [frontend] aria
