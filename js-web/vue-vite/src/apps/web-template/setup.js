@@ -42,9 +42,9 @@ export default {
     { path: '/data-entry/cascade2-api', name: 'Casecase2 (API) FAVV', component: async () => import('./views/DataEntry/DemoCascade2Api.vue') },
 
     // demo2
-    { path: '/demo2/cnn', name: 'Demo2 Cnn', component: async () => import('./views/Demo2/DemoCnn.vue') },
-    { path: '/demo2/table', name: 'Demo2 Table', component: async () => import('./views/Demo2/DemoTable.vue') },
-    { path: '/demo2/tableapi', name: 'Demo2 Table API', component: async () => import('./views/Demo2/DemoTableApi.vue') }
+    { path: '/favv/cnn', name: 'Favv Cnn', component: async () => import('./views/Favv/DemoCnn.vue') },
+    { path: '/favv/table', name: 'Favv Table', component: async () => import('./views/Favv/DemoTable.vue') },
+    { path: '/favv/tableapi', name: 'Favv Table API', component: async () => import('./views/Favv/DemoTableApi.vue') }
   ],
   INITIAL_PUBLIC_PATH: '/signin',
   INITIAL_SECURE_PATH: '/dashboard',

@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  service2:
+    image: busybox
+    command: sleep infinity
+
+networks:
+  default:
+    external:
+      name: redis_default

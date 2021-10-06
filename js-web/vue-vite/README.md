@@ -117,6 +117,7 @@ rm package-lock.json
 |  |     +- views/
 |  |        +- DataEntry/
 |  |        +- Demo/
+|  |        +- Favv/ : requires https://github.com/ais-one/favv/ Fastapi backend
 |  |        +- Visuals/
 |  +- layouts/
 |  +- plugins/

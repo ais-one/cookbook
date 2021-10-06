@@ -20,8 +20,8 @@
   "dependencies": {
     "@es-labs/esm": "file:../../@es-labs/esm",
     "@es-labs/node": "file:../../@es-labs/node",
-    "@sentry/node": "^6.13.2",
-    "@sentry/tracing": "^6.13.2",
+    "@sentry/node": "^6.13.3",
+    "@sentry/tracing": "^6.13.3",
     "axios": "^0.22.0",
     "base64url": "^3.0.1",
     "connect-history-api-fallback": "^1.6.0",
