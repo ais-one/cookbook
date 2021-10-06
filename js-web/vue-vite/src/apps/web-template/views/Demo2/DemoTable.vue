@@ -94,20 +94,23 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, onUnmounted, reactive, ref } from 'vue';
-import { SearchOutlined, CopyOutlined, DownloadOutlined, SettingOutlined } from '@ant-design/icons-vue';
+import { defineComponent, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { SearchOutlined, CopyOutlined, DownloadOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import { downloadData, jsonToCsv } from '/@es-labs/esm/util.js'
 
 export default defineComponent({
   components: {
-    SearchOutlined, CopyOutlined, DownloadOutlined, SettingOutlined
+    SearchOutlined,
+    CopyOutlined,
+    DownloadOutlined,
+    SettingOutlined
   },
   setup() {
     // Common Properties And Methods ---------------------------------------------------------------------------------------------------------------------
     const tabActiveKey = ref('2')
 
     const processTable = (table) => {
-      table.columns.forEach(col => {
+      table.columns.forEach((col) => {
         const key = col.dataIndex
         if (col.sort) col.sorter = (a, b) => a[key] > b[key]
         else if (col.sorter) delete col.sorter
@@ -118,7 +121,7 @@ export default defineComponent({
 
         if (col.dropdownFilter) {
           col.slots = { filterDropdown: 'filterDropdown', filterIcon: 'filterIcon', customRender: 'customRender' }
-          col.onFilterDropdownVisibleChange = visible => visible && setTimeout(() => searchInput.value.focus(), 0)
+          col.onFilterDropdownVisibleChange = (visible) => visible && setTimeout(() => searchInput.value.focus(), 0)
           col.onFilter = (value, record) => record[key].toString().toLowerCase().includes(value.toLowerCase())
         } else if (col.filter) {
           col.slots = { filterDropdown: 'filterDropdown', filterIcon: 'filterIcon', customRender: 'customRender' }
@@ -130,7 +133,7 @@ export default defineComponent({
     // Table 1 Properties And Methods
     const state = reactive({
       searchText: '',
-      searchedColumn: '',
+      searchedColumn: ''
     })
     const searchInput = ref()
 
@@ -140,7 +143,7 @@ export default defineComponent({
         { title: 'ID', dataIndex: 'id', width: 100 },
         { title: 'User ID', dataIndex: 'userId', width: 150, sort: true },
         { title: 'Title', dataIndex: 'title', sort: true, dropdownFilter: true },
-        { title: 'Body', dataIndex: 'body', dropdownFilter: true },
+        { title: 'Body', dataIndex: 'body', dropdownFilter: true }
       ],
       dataSource: []
     })
@@ -156,7 +159,7 @@ export default defineComponent({
       state.searchedColumn = dataIndex
     }
 
-    const handleReset = clearFilters => {
+    const handleReset = (clearFilters) => {
       clearFilters()
       state.searchText = ''
     }
@@ -166,10 +169,10 @@ export default defineComponent({
     const table2 = reactive({
       scroll: { x: 1200, y: 480 },
       columns: [
-        { title: 'ID', dataIndex: 'id', width: 100, sort: true},
-        { title: 'User ID', dataIndex: 'userId', width: 150, sort: false, },
+        { title: 'ID', dataIndex: 'id', width: 100, sort: true },
+        { title: 'User ID', dataIndex: 'userId', width: 150, sort: false },
         { title: 'Title', dataIndex: 'title', filter: true, sort: false },
-        { title: 'Body', dataIndex: 'body', filter: true, sort: false },
+        { title: 'Body', dataIndex: 'body', filter: true, sort: false }
       ],
       dataSource: [],
       filteredData: []
@@ -189,21 +192,25 @@ export default defineComponent({
 
     const onChange2 = (pagination, filters, sorter) => console.log('params2', pagination, filters, sorter)
 
-    const onSearch2 = val => {
-      if (!val) return table2.filteredData = [...table2.dataSource]
-      const val_a = val.split(' ') // get array of strings to search for
+    const onSearch2 = (val) => {
+      if (!val) {
+        table2.filteredData = [...table2.dataSource]
+        return
+      }
+      const valArray = val.split(' ') // get array of strings to search for
 
-      table2.filteredData = table2.dataSource.filter(row => {
+      table2.filteredData = table2.dataSource.filter((row) => {
         if (!filters2.value.length) return true
         if (andOr2.value === 'and') {
-          return filters2.value.find(col => {
+          return filters2.value.find((col) => {
             const rowVal = row[col].toString().toLowerCase()
-            return val_a.every(word => rowVal.includes(word.toLowerCase()))
+            return valArray.every((word) => rowVal.includes(word.toLowerCase()))
           })
-        } else { // or logic
-          return filters2.find(col => {
+        } else {
+          // OR logic
+          return filters2.value.find((col) => {
             const rowVal = row[col].toString().toLowerCase()
-            return val_a.find(word => rowVal.includes(word.toLowerCase()))
+            return valArray.find((word) => rowVal.includes(word.toLowerCase()))
           })
         }
         // row[col].toString().toLowerCase().includes(word.toLowerCase()))
@@ -252,10 +259,13 @@ export default defineComponent({
       setTableConfigs()
       processTable(table2)
       try {
-        localStorage.setItem('demo-table2-cfg', JSON.stringify({
-          sorts: [...form.sorts],
-          filters: [...form.filters],
-        }))
+        localStorage.setItem(
+          'demo-table2-cfg',
+          JSON.stringify({
+            sorts: [...form.sorts],
+            filters: [...form.filters]
+          })
+        )
       } catch (e) {
         console.log(e.toString())
       }
@@ -277,19 +287,17 @@ export default defineComponent({
       }
       processTable(table2)
 
-      filters2.value = table2.columns.filter(item => item.filter).map(item => item.dataIndex)
+      filters2.value = table2.columns.filter((item) => item.filter).map((item) => item.dataIndex)
 
-      let url = `https://jsonplaceholder.typicode.com/posts`
+      const url = `https://jsonplaceholder.typicode.com/posts`
       const res = await fetch(url)
       const json = await res.json()
       table.dataSource = [...json]
       table2.dataSource = [...json]
       table2.filteredData = [...json]
       // console.log(json)
-
     })
-    onUnmounted(()=> {
-    })
+    onUnmounted(() => {})
 
     return {
       tabActiveKey,
@@ -314,8 +322,8 @@ export default defineComponent({
       formClose,
       form,
       downloadCsv,
-      copyPaste,
-    };
-  },
-});
+      copyPaste
+    }
+  }
+})
 </script>

@@ -47,8 +47,7 @@
           <div id="c1"></div>
         </a-tab-pane>
         <a-tab-pane key="2" tab="Table">
-          <a-table :columns="columns" :data-source="dataSource" bordered rowKey="bd">
-          </a-table>
+          <a-table :columns="columns" :data-source="dataSource" bordered rowKey="bd"></a-table>
         </a-tab-pane>
       </a-tabs>
     </a-collapse-panel>
@@ -61,22 +60,18 @@ import { Chart } from '@antv/g2'
 import { http } from '/src/services.js'
 import { VITE_API_URL } from '/config.js'
 
-
-
 export default {
   setup() {
     const submitResult = ref('')
     const dataSource = ref([])
     const columns = ref([])
 
-    const activeKey = ref(['1']); // accordian
-    watch(activeKey, val => {
-      console.log(val);
-    });
+    const activeKey = ref(['1']) // accordian
+    watch(activeKey, (val) => {
+      console.log(val)
+    })
     const tabActiveKey = ref('1')
-
-
-    const formState = reactive({ // form
+    const formState = reactive({
       compareCnnModel: [],
       compareCnnModelList: [],
       compareCnnModelMetrics: [],
@@ -108,7 +103,7 @@ export default {
         for (let i=0; i < data.colNames.length; i++) {
           coltmp.push({
             title: data.colNames[i],
-            dataIndex: data.colNames[i],
+            dataIndex: data.colNames[i]
           })
         }
         columns.value = [...coltmp]
@@ -126,52 +121,30 @@ export default {
 
         // chart
         // problem: cannot append to nothing. if results tab doesn't open, give error: appendchild to null; if open results tab, then works, no problem with data or chart.
-        for (var key in data.chartData) {  
+        for (var key in data.chartData) {
           const chartdata = data.chartData[key]
-          console.log( key, chartdata );
-
+          console.log(key, chartdata)
           // key is model, value is chart data
           const chart = new Chart({
             container: 'c1',
             autoFit: true,
             height: 500
-          });
-
-          chart.data(chartdata);
-
+          })
+          chart.data(chartdata)
           chart.scale({
-            epoch: { range: [0, 1],},
+            epoch: { range: [0, 1] }
             // value: { nice: true,},
-          });
-
+          })
           chart.axis('value', {
             label: {
-              formatter: (val) => {
-                return val * 100 + ' %';
-              },
-            },
-          });
-
-          chart.tooltip({
-            showCrosshairs: true,
+              formatter: (val) => val * 100 + ' %'
+            }
           })
-
-          chart
-            .line()
-            .position('epoch*value')
-            .color('name')
-            .shape('smooth');
-
-          chart
-            .point()
-            .position('epoch*value')
-            .color('name')
-            .shape('circle');
-
-          chart.render();
-        };
-   
-
+          chart.tooltip({ showCrosshairs: true })
+          chart.line().position('epoch*value').color('name').shape('smooth')
+          chart.point().position('epoch*value').color('name').shape('circle')
+          chart.render()
+        }
         submitResult.value = JSON.stringify(data)
       } catch (e) {
         console.log('onSubmit Error', e.toString())
@@ -190,7 +163,7 @@ export default {
       onSubmit,
       columns,
       dataSource
-    };
-  },
-};
+    }
+  }
+}
 </script>
