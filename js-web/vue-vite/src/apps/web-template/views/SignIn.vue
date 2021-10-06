@@ -25,6 +25,7 @@
         </div>
       </div>
       <p v-if="errorMessage">{{ errorMessage }}</p>
+      <p>version {{ VERSION }}</p>
     </form>
   </div>
 </template>
@@ -38,7 +39,7 @@ import parseJwt from '/@es-labs/esm/parse-jwt.js'
 
 import { http } from '/src/services.js'
 import { useI18n } from '/src/plugins/i18n.js'
-import { VITE_CALLBACK_URL, VITE_SAML_URL, VITE_OIDC_URL, VITE_OAUTH_CLIENT_ID, VITE_OAUTH_URL, VITE_REFRESH_URL, VITE_REFRESH_URL_MANAGED } from '/config.js'
+import { VITE_CALLBACK_URL, VITE_SAML_URL, VITE_OIDC_URL, VITE_OAUTH_CLIENT_ID, VITE_OAUTH_URL, VITE_REFRESH_URL, VITE_REFRESH_URL_MANAGED, VERSION } from '/config.js'
 
 export default {
   setup(props, context) {
@@ -168,7 +169,8 @@ export default {
       VITE_SAML_URL,
       loginSaml,
       loginOidc,
-      loginOAuth
+      loginOAuth,
+      VERSION
     }
   }
 }
