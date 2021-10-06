@@ -128,28 +128,19 @@
 </template>
 
 <script>
-import { LikeOutlined, ArrowUpOutlined, ArrowDownOutlined, UserOutlined } from '@ant-design/icons-vue'
-import MultiChart from './Demo2/Dashboard/MultiChart.vue'
-import PieChart from './Demo2/Dashboard/PieChart.vue'
+import { ArrowUpOutlined, ArrowDownOutlined, UserOutlined } from '@ant-design/icons-vue'
+import MultiChart from './Dashboard/MultiChart.vue'
+import PieChart from './Dashboard/PieChart.vue'
 
 const data = [
-  {
-    name: 'Faith', title: 'Full-stack Dev',
-  },
-  {
-    name: 'Hope', title: 'Data Scientist',
-  },
-  {
-    name: 'Charity', title: 'Data Engineer',
-  },
-  {
-    name: 'Love', title: 'Data Scientist',
-  },
-];
+  { name: 'Faith', title: 'Full-stack Dev' },
+  { name: 'Hope', title: 'Data Scientist' },
+  { name: 'Charity', title: 'Data Engineer' },
+  { name: 'Love', title: 'Data Scientist' }
+]
 
 export default {
   components: {
-    LikeOutlined,
     ArrowUpOutlined,
     ArrowDownOutlined,
     UserOutlined,
@@ -159,7 +150,7 @@ export default {
   },
   setup() {
     return {
-      data,
+      data
     }
   }
 }

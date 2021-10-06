@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@nestjs/cli": "^8.1.1"
+    "@nestjs/cli": "^8.1.2"
   }
 }

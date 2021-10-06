@@ -1,5 +1,6 @@
 <template>
   <a-form :model="formState" layout="vertical">
+    <h1>Store Counter {{ storeCounter }}</h1>
     <a-form-item label="Region">
       <a-select
         mode="multiple"
@@ -30,46 +31,51 @@
   </a-form>
 </template>
 <script>
-import { reactive, toRaw } from 'vue';
+import { ref, reactive, toRaw, watch, onMounted, computed } from 'vue'
+import { useMainPiniaStore } from '../../store.js'
+
 export default {
   setup() {
     // a-select - allowClear (handle event)
     // TBD select / clear all
 
-    const formState = reactive({ // form
+    const mainStore = useMainPiniaStore()
+    onMounted(() => {})
+
+    const formState = reactive({
       regions: [],
       regionList: ['Asia', 'Europe', 'NA', 'SA', 'Africa', 'ME'],
 
       countries: [],
       countriesList: [],
       countriesMasterList: {
-        'Asia': ['Russia', 'Japan', 'Burma', 'Indonesia', 'Afghanistan'],
-        'Europe': ['Russia', 'Germany', 'France', 'Poland', 'Sweden', 'Italy'],
-        'NA': ['United States', 'Canada'],
-        'SA': ['Brazil', 'Argentina', 'Ecuador'],
-        'Africa': ['Egypt', 'Nigeria', 'Kenya', 'Liberia'],
-        'ME': ['Egypt', 'Saudi Arabia', 'Afghanistan'],
-      },
-    });
+        Asia: ['Russia', 'Japan', 'Burma', 'Indonesia', 'Afghanistan'],
+        Europe: ['Russia', 'Germany', 'France', 'Poland', 'Sweden', 'Italy'],
+        NA: ['United States', 'Canada'],
+        SA: ['Brazil', 'Argentina', 'Ecuador'],
+        Africa: ['Egypt', 'Nigeria', 'Kenya', 'Liberia'],
+        ME: ['Egypt', 'Saudi Arabia', 'Afghanistan']
+      }
+    })
 
     const onSubmit = () => {
-      console.log('submit!', toRaw(formState));
+      console.log('submit!', toRaw(formState))
     }
 
     const blurRegion = () => {
-      console.log('blurRegion!', toRaw(formState));
+      console.log('blurRegion!', toRaw(formState))
       const keys = {}
       const list = []
       const newCountries = []
 
-      for (let region of formState.regions) {
-        for (let country of formState.countriesMasterList[region]) {
+      for (const region of formState.regions) {
+        for (const country of formState.countriesMasterList[region]) {
           if (!keys[country]) {
             list.push(country)
             keys[country] = true
-            const found = formState.countries.find(item => item === country)
-            if (found) {
-              newCountries.push(found)
+            const item = formState.countries.find((item) => item === country)
+            if (item) {
+              newCountries.push(item)
             }
           }
         }
@@ -82,7 +88,8 @@ export default {
       formState,
       onSubmit,
       blurRegion,
+      storeCounter: computed(() => mainStore.counter)
     }
-  },
+  }
 }
 </script>
