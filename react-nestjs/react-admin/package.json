@@ -9,11 +9,11 @@
     "@types/axios": "^0.14.0",
     "@types/c3": "^0.7.6",
     "@types/jest": "^27.0.2",
-    "@types/node": "^16.10.2",
+    "@types/node": "^16.10.3",
     "@types/react": "^17.0.27",
     "@types/react-dom": "^17.0.9",
     "@types/react-redux": "^7.1.18",
-    "@types/react-router-dom": "^5.3.0",
+    "@types/react-router-dom": "^5.3.1",
     "axios": "^0.22.0",
     "c3": "^0.7.20",
     "react": "^17.0.2",
@@ -22,7 +22,7 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "typescript": "^4.4.3",
-    "web-vitals": "^2.1.0"
+    "web-vitals": "^2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

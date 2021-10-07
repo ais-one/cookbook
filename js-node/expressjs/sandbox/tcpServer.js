@@ -45,10 +45,7 @@ server.on('close',function(){
 // server.close(function () { server.unref() })
 
 
-
-
-/*
-// Import net module.
+/* NOSONAR
 var net = require('net');
 
 // Create and return a net.Server object, the function will be invoked when client connect to this server.
