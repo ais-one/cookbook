@@ -2,19 +2,6 @@
 // TBD make this such that can use default instance or create new instance
 // TBD add retry
 // https://dev.to/ycmjason/javascript-fetch-retry-upon-failure-3p6g
-/*
-const fetch_retry = async (url, options, n) => {
-  let error;
-  for (let i = 0; i < maxRetry; i++) {
-      try {
-          return await fetch(url, options);
-      } catch (err) {
-          error = err;
-      }
-  }
-  throw error;
-};
-*/
 
 let opts = {
   baseUrl: '',
@@ -125,23 +112,12 @@ const http = async (method, url, body = null, query = null, headers = null) => {
   }
 }
 
-const post = async (url, body = null, query = null, headers = null) => await http('POST', url, body, query, headers)
-const put = async (url, body = null, query = null, headers = null) => await http('PUT', url, body, query, headers)
-const patch = async (url, body = null, query = null, headers = null) => await http('PATCH', url, body, query, headers)
-const del = async (url, query = null, headers = null) => await http('DELETE', url, null, query, headers)
-const get = async (url, query = null, headers = null) => await http('GET', url, null, query, headers)
+const post = async (url, body = null, query = null, headers = null) => http('POST', url, body, query, headers)
+const put = async (url, body = null, query = null, headers = null) => http('PUT', url, body, query, headers)
+const patch = async (url, body = null, query = null, headers = null) => http('PATCH', url, body, query, headers)
+const del = async (url, query = null, headers = null) => http('DELETE', url, null, query, headers)
+const get = async (url, query = null, headers = null) => http('GET', url, null, query, headers)
 
 export {
-  http,
-  post,
-  get,
-  put,
-  patch,
-  del,
-  parseUrl,
-  setOptions,
-  setTokens
+  http, post, get, put, patch, del, parseUrl, setOptions, setTokens
 }
-
-// var global = window || global
-// global.Validator = Validator

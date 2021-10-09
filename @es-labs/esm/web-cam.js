@@ -139,8 +139,9 @@ class WebCam extends HTMLElement {
     this.captureMode = true
   }
 
-  attributeChangedCallback(name, oldVal, newVal) {} // attribute changed
-  adoptedCallback() {} // moved into a new document
+  // attributeChangedCallback(name, oldVal, newVal) {} // attribute changed
+  // adoptedCallback() {} // moved into a new document
+
   // removed from the DOM
   disconnectedCallback() {
     this.slotNode['button-snap'].removeEventListener('click', this.capture)

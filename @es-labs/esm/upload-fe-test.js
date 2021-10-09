@@ -3,40 +3,40 @@ const headers = {
   'Content-Type': 'application/json',
 }
 
-export function clear (hello) {
-  console.log('upload-fe:' + hello)
-}
-
-export async function enableCorsGoogle () {
-  alert('USE: gsutil cors set [JSON_FILE_NAME].json gs://[BUCKET_NAME]')
-}
-
 export async function readGoogle (filename) {
   try {
-
-  } catch (e) {
-
-  }
-  const res = await fetch('/api/gcp-sign', {
+    const res = await fetch('/api/gcp-sign', {
       method: 'POST',
       headers,
       body: JSON.stringify({ filename, action: 'read' })
-  })
-  const rv = await res.json()
-  const res2 = await fetch(rv.url, { method: 'GET' })
-
-  const decoder = new TextDecoder('utf-8')
-  fetch(rv.url, { method: 'GET' }).then(response => {
-    response.body
-      .getReader()
-      .read()
-      .then(({value, done}) => {
-        console.log(done, "boo", decoder.decode(value))
-      })
-  })
-  // const xxx = await res2.body.getReader().read()
-  // console.log(xxx)
-  // alert('Google Read: ' + (res2.ok) ? 'OK' : 'FAIL') 
+    })
+    const rv = await res.json()
+    if (rv.url) {
+      const decoder = new TextDecoder('utf-8')
+      const res2 = await fetch(rv.url, { method: 'GET' })
+      if (res2.ok) {
+        const data = await res2.body.getReader().read()
+        // TBD why is data.done always false?
+        console.log(decoder.decode(data.value))
+        alert('readGoogle() OK - see console log for data')
+      } else {
+        alert('readGoogle() OK === false')
+      }
+      // NOSONAR another option
+      // fetch(rv.url, { method: 'GET' }).then(response => {
+      //   response.body
+      //     .getReader()
+      //     .read()
+      //     .then(({value, done}) => {
+      //       console.log(done, "boo", decoder.decode(value)) // TBD why is done always false?
+      //     })
+      // })
+    } else {
+      alert('readGoogle() gcp-sign error: ' + (rv.error || 'Some Error'))
+    }
+  } catch (e) {
+    alert('ERROR: readGoogle() :' + e.toString())
+  }
 }
 
 export async function deleteGoogle (filename) {
@@ -48,16 +48,17 @@ export async function deleteGoogle (filename) {
     })
     const rv = await res.json()
     const res2 = await fetch(rv.url, { method: 'DELETE' })
-    // console.log(res2)
-    alert('Google Delete: ' + (res2.ok) ? 'OK' : 'FAIL') 
+    console.log(res2)
+    alert(`Google Delete: ${res2.ok ? 'OK' : 'FAIL'}`) 
   } catch (e) {
     alert('Google Delete: ' + e.toString())
   }
 }
 
 export async function uploadGoogle (files) {
-  // TBD limit upload size
-  if (files && files.length) {
+  if (!files || files.length === 0) {
+    alert('Google Upload:: No Files') // TBD limit file quantity and size
+    return
   }
   try {
     const file = files[0] // TBD handle multiple files
@@ -65,7 +66,7 @@ export async function uploadGoogle (files) {
     const res = await fetch(`/api/gcp-sign`, { method: 'POST', headers, body: JSON.stringify({ filename, action: 'write' }) })
     const rv = await res.json()
     const res2 = await fetch(rv.url, { method: 'PUT', body: files[0],  headers: { 'Content-Type': 'application/octet-stream' } })
-    alert('Google Upload: ' + (res2.ok) ? 'OK' : 'FAIL') 
+    alert('Google Upload: ' + (res2.ok) ? 'OK' : 'FAIL')
   } catch (e) {
     alert('Google Upload: ' + e.toString())
   }

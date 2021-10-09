@@ -62,7 +62,7 @@ export default {
     onMounted(async () => {
       console.log('SECURE mounted!')
       idleTimer.timeouts.push({
-        time: 5, // timme in seconds and ascending value
+        time: 300, // timme in seconds and ascending value
         fn: () => alert('Idle Timeout Test'),
         stop: true
       })

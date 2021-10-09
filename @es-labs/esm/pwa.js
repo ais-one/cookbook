@@ -1,65 +1,11 @@
-// FCM
-// import firebase from 'https://www.gstatic.com/firebasejs/8.1.0/firebase-app.js'
-// import 'https://www.gstatic.com/firebasejs/8.1.0/firebase-messaging.js'
-// import { firebase } from '@firebase/app'
-// import '@firebase/messaging'
-// CONFIG_FIREBASE_CLIENT, CONFIG_VAPID_KEY is global from firebase.config.js
-
-let firebaseApp
-let messaging
-
-export const fcmSubscribe = async (registration, refreshFn) => {
-  try {
-    const permission = await Notification.requestPermission()
-    if (permission !== 'granted') return null
-
-    if (!firebaseApp) {
-      firebaseApp = firebase.initializeApp(window.CONFIG_FIREBASE_CLIENT)
-    }
-    if (!messaging) {
-      messaging = firebase.messaging()
-      messaging.useServiceWorker(registration)
-
-      messaging.usePublicVapidKey(window.CONFIG_VAPID_KEY)
-      messaging.onTokenRefresh(async () => {
-        const token = await messaging.getToken()
-        await refreshFn(token)
-      })
-      messaging.onMessage((payload) => {
-        console.log('Message received. ', payload)
-        try {
-          const { title, body } = JSON.parse(payload.data.notification)
-          console.log(new Date().toISOString(), title, body)
-        } catch (e) {
-          console.log('GCM msg error', e.toString())
-        }
-      })
-    }
-    if (permission === 'granted') return await messaging.getToken()
-  } catch (e) {
-    console.log('Error initialise firebase app', e.toString())
-  }
-  return null
-}
-
-export const fcmUnsubscribe = async () => {
-  if (firebaseApp) {
-    try {
-      await firebaseApp.delete()
-      firebaseApp = null
-      messaging = null
-    } catch (e) {
-      console.log('Error deleting firebase app', e.String())
-    }
-  }
-}
-
 // // First get a public key from our Express server
 // We use this function to subscribe to our push notifications
 // As soon as you run this code once, it shouldn't run again if the initial subscription went well
 // Except if you clear your storage
 export const webpushSubscribe = async (publicKey) => {
-  const registration = await navigator.serviceWorker.ready // alternate = navigator.serviceWorker.getRegistration()
+  const registration = await navigator.serviceWorker.ready
+  // NOSONAR
+  // alternate = navigator.serviceWorker.getRegistration()
   // let subscription = await registration.pushManager.getSubscription()
   // if (subscription) return subscription
 

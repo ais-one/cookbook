@@ -1,4 +1,6 @@
 // https://firebase.google.com/support/releases
+// https://github.com/firebase/quickstart-js/tree/master/messaging
+
 // const isIos = () => {
 //   const userAgent = window.navigator.userAgent.toLowerCase();
 //   return /iphone|ipad|ipod/.test( userAgent );
@@ -13,8 +15,8 @@
 // are not available in the service worker.
 const window = self // self is service worker - simulate it as window
 importScripts('firebase.config.js')
-importScripts('https://www.gstatic.com/firebasejs/8.1.0/firebase-app.js')
-importScripts('https://www.gstatic.com/firebasejs/8.1.0/firebase-messaging.js')
+importScripts('https://www.gstatic.com/firebasejs/9.1.2/firebase-app-compat.js')
+importScripts('https://www.gstatic.com/firebasejs/9.1.2/firebase-messaging-compat.js')
 // console.log('FIREBASE', firebase)
 
 // Initialize the Firebase app in the service worker by passing in the messagingSenderId.
@@ -24,16 +26,16 @@ firebase.initializeApp(self.CONFIG_FIREBASE_CLIENT)
 const messaging = firebase.messaging()
 // [END initialize_firebase_in_sw]
 
-messaging.setBackgroundMessageHandler(function (payload) {
+messaging.onBackgroundMessage(messaging, (payload) => {
   // console.log('[firebase-messaging-sw.js] Received background message ', payload)
-  let notificationTitle = 'AHOP ALERT' + new Date().toLocaleDateString()
+  let notificationTitle = 'TEST ALERT' + new Date().toLocaleDateString()
   const notificationOptions = { body: 'Updates Please Refresh' }
   try {
-    // const { title = 'AHOP ALERT' + (new Date()).toLocaleDateString(), body = 'Updates. Please Refresh' } =
     const json = JSON.parse(payload.data.notification)
     const { title = null, body = null } = json
     if (title) notificationTitle = title
     if (body) notificationOptions.body = body
+    // NOSONAR
     // if (icon) notificationOptions.icon = './test.png'
     // notificationOptions.data = title + ' ' + body
   } catch (e) {

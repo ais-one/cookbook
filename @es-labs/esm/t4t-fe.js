@@ -273,12 +273,6 @@ async function readGoogle (filename) {
   }
 }
 
-/*
-  export async function enableCorsGoogle () {
-    alert('USE: gsutil cors set [JSON_FILE_NAME].json gs://[BUCKET_NAME]')
-  }
-  
-*/
 export {
   http,
   setTableName,

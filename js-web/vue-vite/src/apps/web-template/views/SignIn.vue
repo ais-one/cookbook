@@ -8,7 +8,7 @@
         <a-input data-cy="password" label="Password" type="password" v-model:value="password"></a-input>
         <div class="buttons-box-flex">
           <a-button data-cy="login" @click="login">Login</a-button>
-          <a-button @click="$router.push('/signin-fast')">Fast</a-button>
+          <a-button @click="$router.push('/signin-fast')">Mock</a-button>
         </div>
         <div class="buttons-box-flex">
           <a-button @click="loginSaml">SAML</a-button>

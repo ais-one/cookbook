@@ -12,7 +12,13 @@ let COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, COOKIE_MAXAGE, COOKIE_DOMAI
   JWT_ALG, JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_CERTS, JWT_REFRESH_CERTS,
   JWT_REFRESH_STORE, AUTH_USER_STORE, AUTH_USER_STORE_NAME, JWT_REFRESH_STORE_NAME,
   setRefreshToken, getRefreshToken, revokeRefreshToken, setRefreshTokenStoreName, setTokenService, setUserService,
-  findUser, updateUser, setAuthUserStoreName
+  findUser, updateUser,
+  setAuthUserStoreName
+
+const userOps = {
+  findUser: null,
+  updateUser: null
+}
 
 const setupAuth = (tokenService, userService, options = global.CONFIG) => {
   ({
@@ -27,7 +33,8 @@ const setupAuth = (tokenService, userService, options = global.CONFIG) => {
 
   ({ setRefreshToken, getRefreshToken, revokeRefreshToken, setRefreshTokenStoreName, setTokenService } = require('./' + JWT_REFRESH_STORE)); // keyv, redis, mongo, knex
   ({ findUser, updateUser, setAuthUserStoreName, setUserService } = require('./' + AUTH_USER_STORE)); // mongo, knex
-  
+  userOps.findUser = findUser
+  userOps.updateUser = updateUser
   if (setTokenService) setTokenService(tokenService)
   if (setUserService) setUserService(userService)
   if (setRefreshTokenStoreName) setRefreshTokenStoreName(JWT_REFRESH_STORE_NAME)
@@ -239,7 +246,10 @@ const otp = async (req, res) => { // need to be authentication, body { id: '', p
   return res.status(401).json({ message: 'Error token revoked' })
 }
 
-module.exports = { setupAuth, findUser, updateUser, createToken, setTokensToHeader, authUser, authRefresh, logout, refresh, login, otp, bcrypt, otplib }
+module.exports = { setupAuth, userOps,
+  // findUser, updateUser,
+  createToken, setTokensToHeader, authUser, authRefresh, logout, refresh, login, otp, bcrypt, otplib
+}
 
 // do refresh token check from backend ?
 /*

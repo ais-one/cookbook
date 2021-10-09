@@ -19,12 +19,11 @@
   </p>
   <hr/>
   <h2>Upload to GCP using signed URL</h2>
+  <p>Need to set CORS first: gsutil cors set [JSON_FILE_NAME].json gs://[BUCKET_NAME]</p>
   Upload To Google Storage <input id="input-gcp-upload" type="file"><br>
-  <button id="btn-gcp-cors">Enable Cors Google</button>
   <button id="btn-gcp-read">Read Google</button><br>
-  <button id="btn-gcp-delete">Delete Google</button><br>
-  <button id="btn-clear">Clear File Input</button><br>
-  Enter filename in Google Storage <input id="file-name" onchange="setFileName" /><br>
+  <button id="btn-gcp-delete">Delete Google</button><br>  
+  Enter filename in Google Storage <input id="file-name" onchange="setFileName" /><button id="btn-clear">Clear Input</button><br>
 </body>
 
 <script type="module">
@@ -33,15 +32,16 @@ import * as mod from '/esm/upload-fe-test.js'
 let testFilename = ''
 const fnEl = document.querySelector('#file-name')
 fnEl.onchange = (e) => testFilename = e.target.value
-
 document.querySelector('#btn-json').onclick = (e) => mod.jsonOnly()
 document.querySelector('#btn-upload-memory').onchange = (e) => mod.uploadMemory(e.target.files)
 document.querySelector('#btn-upload-single').onchange = (e) => mod.uploadFiles(e.target.files)
 document.querySelector('#btn-upload-multiple').onchange = (e) => mod.uploadFiles(e.target.files)
 
-document.querySelector('#btn-clear').onclick = (e) => mod.clear(testFilename)
+document.querySelector('#btn-clear').onclick = (e) => {
+  fnEl.value = ''
+  testFilename = ''
+}
 document.querySelector('#input-gcp-upload').onchange = (e) => mod.uploadGoogle(e.target.files)
-document.querySelector('#btn-gcp-cors').onclick = mod.enableCorsGoogle
 document.querySelector('#btn-gcp-read').onclick = () => mod.readGoogle(testFilename)
 document.querySelector('#btn-gcp-delete').onclick = () => mod.deleteGoogle(testFilename)
 </script>

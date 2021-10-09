@@ -24,7 +24,8 @@
     <p>Non-Reactive Data: {{ nonReactiveData }}</p>
     <p>Reactive Data: {{ reactiveData }}</p>
     <p>Vuex Store {{ storeCount }} - {{ storeUser }}</p>
-    <h2>Test Push Notifications</h2>
+    <h2>Test Push Notifications using [{{ VITE_PWA_PN }}]</h2>
+    <p>PN State: {{ pnSubState }}</p>
     <p><button @click="subPn">Sub PN</button>&nbsp;<button @click="unsubPn">Unsub PN</button>&nbsp;<button @click="testPn">Test PN</button></p>
     <h2>Test Search and rxjs</h2>
     <a-input ref="searchRef" placeholder="rxjs search swapi"></a-input>
@@ -45,7 +46,8 @@
 // NOSONAR unref, toRef, toRefs, isRef, isProxy, isReactive, isReadonly, defineComponent, getCurrentInstance, reactive, readonly, watch, watchEffect, provide, inject
 import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inject, reactive, onBeforeUpdate } from 'vue'
 import { useStore } from 'vuex'
-import { webpushSubscribe, webpushUnsubscribe, fcmSubscribe } from '/@es-labs/esm/pwa.js' // served from express /esm static route
+import { webpushSubscribe, webpushUnsubscribe } from '/@es-labs/esm/pwa.js' // served from express /esm static route
+import { fcmSubscribe } from '/src/fcm.js'
 import { VITE_PWA_PN } from '/config.js'
 import { http } from '/src/services.js'
 
@@ -85,6 +87,8 @@ export default {
 
     const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
     const storeUser = computed(() => store.state.user)
+
+    const pnSubState = ref('unsub')
 
     // NOSONAR
     // const plusOne = computed(() => count.value + 1)
@@ -203,6 +207,7 @@ export default {
           subscription = await webpushSubscribe(data.publicKey)
         }
         if (subscription) await http.post('/api/webpush/sub', { subscription })
+        pnSubState.value = 'sub'
       } catch (e) {
         console.log('subPn', e)
       }
@@ -213,12 +218,14 @@ export default {
       try {
         if (VITE_PWA_PN === 'Webpush') await webpushUnsubscribe()
         await http.post('/api/webpush/unsub', {})
+        pnSubState.value = 'unsub'
       } catch (e) {
         console.log('unsubPn', e)
       }
     }
 
     const testPn = async () => {
+      if (pnSubState.value !== 'sub') return alert('Need to subscribe first')
       try {
         let data
         console.log('testPn VITE_PWA_PN', VITE_PWA_PN)
@@ -246,9 +253,12 @@ export default {
       storeCount, // store
       storeUser,
       testApi, // test API
+
       subPn, // push notifications
       unsubPn,
       testPn,
+      pnSubState,
+      VITE_PWA_PN,
 
       searchRef, // rxjs search value
       searchVal,
