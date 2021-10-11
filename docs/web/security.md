@@ -22,6 +22,8 @@ The following are supported
 - https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
 - crossorigin="anonymous" will not send credentials
 
+To find SRI for unpkg, `https://unpkg.com/htmx.org@1.0.2`, use `https://unpkg.com/htmx.org@1.0.2?meta`
+
 ```html
 <script src="https://unpkg.com/htmx.org@1.0.2" integrity="sha384-uG2fggOnt72f9yU5g6r04wPKVnlrpuTRachw1fB6euaHlWgObEcF9zSrDBuBMZ9H" crossorigin="anonymous"></script>
 ```

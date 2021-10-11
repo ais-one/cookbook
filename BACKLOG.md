@@ -3,9 +3,9 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
+- [frontend] aria
 - [chore] improve on example applications
 - [feat] add commitizen, add semantic-release
-- [backend-testing] research auto generated REST API and Testing (keep in view dredd.io)
 - [backend-testing] research websocket testing - https://stackoverflow.com/questions/55963562/test-websockets-with-jest
 
 ### For future product improvement
