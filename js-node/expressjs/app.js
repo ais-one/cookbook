@@ -7,6 +7,9 @@ const express = require('express')
 const app = express()
 
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
+// const { sleep } = require('@es-labs/esm/sleep')
+// const { sleep } = await import('@es-labs/esm/sleep')
+
 require('./common/init')(global.CONFIG)
 
 // setup graceful exit

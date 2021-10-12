@@ -1,4 +1,4 @@
-'user strict'
+'use strict'
 let sqldb
 
 beforeAll(async () => {
