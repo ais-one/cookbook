@@ -6,9 +6,12 @@ const https = require('https')
 const express = require('express')
 const app = express()
 
+// using CJS in ESM sibling-module.js is a CommonJS module
+// import { createRequire } from 'module'
+// const require = createRequire(import.meta.url)
+// const siblingModule = require('./sibling-module')
+
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
-// const { sleep } = require('@es-labs/esm/sleep')
-// const { sleep } = await import('@es-labs/esm/sleep')
 
 require('./common/init')(global.CONFIG)
 

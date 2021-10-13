@@ -2,14 +2,12 @@ module.exports = {
   root: true,
   parserOptions: {
     // Required for certain syntax usages
-    ecmaVersion: 2019,
-    sourceType: 'module'
+    sourceType: 'module',
   },
-  parser: 'babel-eslint', // https://stackoverflow.com/questions/57385125/eslint-does-not-recognize-private-field-declaration-using-nodejs-12
+  // TOREMOVE parser: 'babel-eslint', // https://stackoverflow.com/questions/57385125/eslint-does-not-recognize-private-field-declaration-using-nodejs-12
   env : {
-    browser : true,
     node : true,
-    es6 : true
+    es2021: true, // auto set ecmaVersion to 12
   },
   plugins: [
     // 'promise' // eslint-plugin-promise not needed

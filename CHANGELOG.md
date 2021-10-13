@@ -4,6 +4,7 @@
 - [js-web/vue-vite] update firebase messaging from 8 to 9, fix PN bugs and improve PN test on UI
 - [js-node/expressjs] update firebase messaging from 8 to 9, fix PN bugs
 - [chore] add sri and crossorigin to scripts - https://github.com/bigskysoftware/htmx/issues/261#issuecomment-753850081
+- [js-node/expressjs] fix eslint 8.0.0 errors (remove babel-eslint package)
 - IN PROGRESS
   - [chore] migration to node 16 and npm 7
 
