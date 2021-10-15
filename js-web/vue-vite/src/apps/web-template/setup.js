@@ -31,11 +31,11 @@ export default {
     { path: '/demo/table-crud', name: 'Table CRUD', component: async () => import('./views/Demo/DemoTableCrud.vue') },
 
     { path: '/visuals/echart', name: 'ECharts', component: () => import('./views/Visuals/DemoEChart.vue') },
-    { path: '/visuals/chart1', name: 'G2 Chart1', component: async () => import('./views/Visuals/DemoChart1.vue') },
-    { path: '/visuals/chart2', name: 'G2 Chart2', component: async () => import('./views/Visuals/DemoChart2.vue') },
-    { path: '/visuals/antd-map', name: 'Antd Map', component: async () => import('./views/Visuals/DemoMap.vue') },
+    { path: '/visuals/g2-chart1', name: 'G2 Chart1', component: async () => import('./views/Visuals/DemoChart1.vue') },
+    { path: '/visuals/g2-chart2', name: 'G2 Chart2', component: async () => import('./views/Visuals/DemoChart2.vue') },
+    { path: '/visuals/antv-map', name: 'Antv Map', component: async () => import('./views/Visuals/DemoMap.vue') },
     { path: '/visuals/leaflet-map', name: 'Leaflet', component: () => import('./views/Visuals/DemoLeaflet.vue') },
-    { path: '/visuals/graph', name: 'G6 Graph', component: async () => import('./views/Visuals/DemoGraph.vue') },
+    { path: '/visuals/g6-graph', name: 'G6 Graph', component: async () => import('./views/Visuals/DemoGraph.vue') },
 
     { path: '/data-entry/form', name: 'Form', component: async () => import('./views/DataEntry/DemoForm.vue') },
     { path: '/data-entry/card', name: 'Card', component: async () => import('./views/DataEntry/DemoCard.vue') },
@@ -49,5 +49,5 @@ export default {
 
   // log-in/logout hook
   ON_LOGIN: () => openWs(),
-  ON_LOGOUT: () => closeWs(),
+  ON_LOGOUT: () => closeWs()
 }

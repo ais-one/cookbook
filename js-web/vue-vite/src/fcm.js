@@ -16,13 +16,12 @@ export const fcmSubscribe = async (registration, refreshFn) => {
       firebaseApp = initializeApp(window.CONFIG_FIREBASE_CLIENT)
     }
     if (!messaging) {
-      // messaging = firebase.messaging()
       messaging = getMessaging()
 
-      // ?? messaging.useServiceWorker(registration)
-      // deprecated
-      // onTokenRefresh - https://github.com/firebase/firebase-js-sdk/issues/4132
-      // ?? messaging.usePublicVapidKey(window.CONFIG_VAPID_KEY)
+      // NOSONAR
+      // messaging.useServiceWorker(registration) // deprecated ??
+      // onTokenRefresh // deprecated - https://github.com/firebase/firebase-js-sdk/issues/4132
+      // messaging.usePublicVapidKey(window.CONFIG_VAPID_KEY) // deprecated ??
 
       onMessage(messaging, (payload) => {
         console.log('Message received. ', payload)

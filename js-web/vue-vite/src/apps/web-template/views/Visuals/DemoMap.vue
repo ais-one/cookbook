@@ -8,54 +8,29 @@
 import DataSet from '@antv/data-set'
 import { Chart } from '@antv/g2'
 
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
 
 export default {
   name: 'DemoMap',
   setup() {
     onMounted(() => {
       fetch('https://gw.alipayobjects.com/os/antvdemo/assets/data/world.geo.json')
-        .then(res => res.json())
-        .then(mapData => {
-          const chart = new Chart({
-            container: 'cm1',
-            autoFit: true,
-            height: 500,
-            padding: [55, 20]
-          });
-          chart.tooltip({
-            showTitle: false,
-            showMarkers: false,
-            shared: true,
-          });
+        .then((res) => res.json())
+        .then((mapData) => {
+          const chart = new Chart({ container: 'cm1', autoFit: true, height: 500, padding: [55, 20] })
+          chart.tooltip({ showTitle: false, showMarkers: false, shared: true })
           // 同步度量
-          chart.scale({
-            longitude: {
-              sync: true
-            },
-            latitude: {
-              sync: true
-            }
-          });
-          chart.axis(false);
-          chart.legend('trend', {
-            position: 'left'
-          });
+          chart.scale({ longitude: { sync: true }, latitude: { sync: true } })
+          chart.axis(false)
+          chart.legend('trend', { position: 'left' })
 
           // 绘制世界地图背景
-          const ds = new DataSet();
-          const worldMap = ds.createView('back')
-            .source(mapData, {
-              type: 'GeoJSON'
-            });
-          const worldMapView = chart.createView();
-          worldMapView.data(worldMap.rows);
-          worldMapView.tooltip(false);
-          worldMapView.polygon().position('longitude*latitude').style({
-            fill: '#fff',
-            stroke: '#ccc',
-            lineWidth: 1
-          });
+          const ds = new DataSet()
+          const worldMap = ds.createView('back').source(mapData, { type: 'GeoJSON' })
+          const worldMapView = chart.createView()
+          worldMapView.data(worldMap.rows)
+          worldMapView.tooltip(false)
+          worldMapView.polygon().position('longitude*latitude').style({ fill: '#fff', stroke: '#ccc', lineWidth: 1 })
 
           // 可视化用户数据
           const userData = [
@@ -80,8 +55,9 @@ export default {
             { name: 'Afghanistan', value: 106.5 },
             { name: 'Kazakhstan', value: 93.4 },
             { name: 'Indonesia', value: 101.4 }
-          ];
-          const userDv = ds.createView()
+          ]
+          const userDv = ds
+            .createView()
             .source(userData)
             .transform({
               geoDataView: worldMap,
@@ -91,19 +67,20 @@ export default {
             })
             .transform({
               type: 'map',
-              callback: obj => {
-                obj.trend = (obj.value > 100) ? '男性更多' : '女性更多';
-                return obj;
+              callback: (obj) => {
+                obj.trend = obj.value > 100 ? '男性更多' : '女性更多'
+                return obj
               }
-            });
-          const userView = chart.createView();
-          userView.data(userDv.rows);
+            })
+          const userView = chart.createView()
+          userView.data(userDv.rows)
           userView.scale({
             trend: {
               alias: '每100位女性对应的男性数量'
             }
-          });
-          userView.polygon()
+          })
+          userView
+            .polygon()
             .position('longitude*latitude')
             .color('trend', ['#F51D27', '#0A61D7'])
             .tooltip('name*trend')
@@ -114,14 +91,13 @@ export default {
               leave: {
                 animation: 'fade-out'
               }
-            });
-          userView.interaction('element-active');
+            })
+          userView.interaction('element-active')
 
-          chart.render();
-        });
+          chart.render()
+        })
     })
-    return {
-    }
+    return {}
   }
 }
 </script>
