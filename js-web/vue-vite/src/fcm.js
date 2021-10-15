@@ -1,11 +1,7 @@
 // FCM
-// import firebase from 'https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js'
-// import 'https://www.gstatic.com/firebasejs/9.1.2/firebase-messaging.js'
-// import { firebase } from '@firebase/app'
-// import '@firebase/messaging'
 // CONFIG_FIREBASE_CLIENT, CONFIG_VAPID_KEY is global from firebase.config.js
 import { initializeApp } from 'firebase/app'
-import { getMessaging, getToken, onMessage  } from 'firebase/messaging'
+import { getMessaging, getToken, onMessage } from 'firebase/messaging'
 
 let firebaseApp
 let messaging

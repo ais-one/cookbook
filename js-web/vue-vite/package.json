@@ -18,7 +18,7 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
     "@antv/data-set": "^0.11.8",
-    "@antv/g2": "^4.1.30",
+    "@antv/g2": "^4.1.29",
     "@antv/g2plot": "^2.3.36",
     "@antv/g6": "^4.3.11",
     "@sentry/tracing": "^6.13.3",
@@ -38,7 +38,7 @@
     "@vue/compiler-sfc": "^3.2.20",
     "cypress": "^8.6.0",
     "dotenv": "^10.0.0",
-    "eslint": "^8.0.0",
+    "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-cypress": "^2.12.1",
@@ -50,6 +50,6 @@
     "eslint-plugin-vue": "^7.19.1",
     "prettier": "^2.4.1",
     "start-server-and-test": "^1.14.0",
-    "vite": "^2.6.7"
+    "vite": "^2.6.5"
   }
 }
