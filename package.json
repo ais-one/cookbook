@@ -31,7 +31,8 @@
   "workspaces": [
     "./@es-labs/*",
     "./js-node/*",
-    "./js-web/*"
+    "./js-web/*",
+    "./react-nestjs/*"
   ],
   "private": true
 }
