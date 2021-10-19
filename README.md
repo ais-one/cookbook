@@ -222,7 +222,6 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 +- LICENCE
 +- package.json
 +- README.md
-+- rest-cmd.http : rest commands for testing
 ```
 
 ## React + NestJS

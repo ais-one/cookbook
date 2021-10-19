@@ -50,6 +50,6 @@
     "eslint-plugin-vue": "^7.19.1",
     "prettier": "^2.4.1",
     "start-server-and-test": "^1.14.0",
-    "vite": "^2.6.5"
+    "vite": "^2.6.10"
   }
 }

@@ -44,6 +44,9 @@
 +- package.json
 +- README.md
 +- test.py: run python from express
++- test-playground.mongodb : mongoDB client VSCode plugin (MongoDB for VS Code - mongodb.mongodb-vscode)
++- test-rest-cmd.http : rest API commands testing VSCode plugin (Rest Client - humao.rest-client)
+
 ```
 
 ## If You Want To Use DTOs
