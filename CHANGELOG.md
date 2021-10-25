@@ -5,6 +5,8 @@
 - [js-node/expressjs] update firebase messaging from 8 to 9, fix PN bugs
 - [chore] add sri and crossorigin to scripts - https://github.com/bigskysoftware/htmx/issues/261#issuecomment-753850081
 - [js-node/expressjs] fix eslint 8.0.0 errors (remove babel-eslint package)
+- [js-node/expressjs] update documentation on VS Code plugins REST Client and MongoDB for VS Code
+- [js-node/expressjs] added playground file for MonggoDB for VS Code
 - IN PROGRESS
   - [chore] migration to node 16 and npm 7
 

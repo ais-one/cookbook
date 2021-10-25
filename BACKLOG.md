@@ -3,6 +3,10 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
+- [js-node/expressjs] replace passport-saml?
+  - https://github.com/tngan/samlify
+  - https://github.com/node-saml/node-saml
+  - https://github.com/Clever/saml2
 - [frontend] aria
 - [chore] improve on example applications
 - [feat] add commitizen, add semantic-release

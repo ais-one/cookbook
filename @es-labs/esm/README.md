@@ -35,3 +35,11 @@ npm i @es-labs/esm
 cd @es-labs/esm
 npm publish --access public
 ```
+
+## Useful aliasing for web components
+
+const $ = (selector, el = document) => el.querySelector(selector)
+const $$ = (selector, el = document) => el.querySelectorAll(selector)
+
+Element.prototype.on = Element.prototype.addEventListener
+how to auto unload event listener?
