@@ -22,7 +22,7 @@
   "dependencies": {
     "@google-cloud/storage": "^5.15.3",
     "agenda": "^4.2.1",
-    "axios": "^0.23.0",
+    "axios": "^0.24.0",
     "bcryptjs": "^2.4.3",
     "bull": "^3.29.3",
     "hazelcast-client": "^4.2.0",

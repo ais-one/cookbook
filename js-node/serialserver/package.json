@@ -15,7 +15,7 @@
     "winston-daily-rotate-file": "^4.5.5"
   },
   "devDependencies": {
-    "pkg": "^5.3.3"
+    "pkg": "^5.4.0"
   },
   "bin": "index.js",
   "pkg": {
