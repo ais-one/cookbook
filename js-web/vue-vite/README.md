@@ -2,18 +2,11 @@
 
 A Vue 3 SPA using Ant Design Vue 2 and built with Vite 2
 
-## Install
+## Setup
 
 From repo root, navigate to js-web/vue-vite folder
 
-1. Install packages
-
-```
-cd js-web/vue-vite
-npm i
-```
-
-2. Copy application specific files
+1. Copy application specific files
 
 ```
 cp src/apps/web-template/deploy/.env.* .
@@ -21,16 +14,6 @@ cp src/apps/web-template/deploy/.apploader.js .
 ```
 
 ## Development Mode (using dev server)
-
-Run in development
-
-```bash
-npm run dev
-```
-
-Navigate to:
-- http://127.0.0.1:8080/ to view application
-- http://127.0.0.1:8080/nested/index.html to view another page (vite serving multi page, each page can be an SPA)
 
 **Note:** For Login
 - Login using one of the following:

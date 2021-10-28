@@ -10,12 +10,10 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.8](https://github.com/ais-one/cookbook/releases/tag/0.6.8) - Released 2021 September 25 1030 +8GMT
+Latest Version [0.6.8](https://github.com/ais-one/cookbook/releases/tag/0.6.8) - Released 2021 October 30 1030 +8GMT
 
-- cypress e2e testing now also able to run in CI/CD if needed
-- add NestJS and ReactJS example (from https://www.udemy.com/course/react-nest-admin but to be modified)
-- add node-saml usage
-- streaming file download, create pdf, download pdf
+- node 16 and npm 8 update, implemented monorepo
+- firebase messaging 9 update
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
@@ -54,7 +52,7 @@ AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 ## Requirements
 
 - Node 16+ LTS
-- Npm 8+
+- Npm 8+ (using workspaces)
 - For Windows, **integrate bash shell to cmd shell** (when installing git), or use git-bash
 - Docker
 
@@ -79,14 +77,18 @@ git clone https://github.com/ais-one/cookbook.git
 cd cookbook
 ```
 
+## Installing Dependencies
+
+Install for all workspaces!
+
+```bash
+npm i
+```
+
 ## ExpressJS Backend Setup & Run - development environment
 
 ```bash
-# install
-cd js-node/expressjs
-npm i
-npm i ../@es-labs/esm
-npm i ../@es-labs/node
+npm run app --workspace=js-node/expressjs -- development
 ```
 
 **NOTES**
@@ -96,28 +98,26 @@ npm i ../@es-labs/node
 ### Run migration & app
 
 ```bash
-# in js-node/expressjs
-
 # create and seed relational db on SQLite, (delete the dev.sqlite file each time before you run this)
 # command: npm run knex -- <development / uat / production> <custom app name> <seed / migrate>
-npm run knex -- development app-template migrate
-npm run knex -- development app-template seed
+npm run knex --workspace=js-node/expressjs -- development app-template migrate
+npm run knex --workspace=js-node/expressjs -- development app-template seed
 
 # create and seed MongoDB requires MongoDB - you can skip this but MongoDB examples will not work
 # command: npm run mongo -- <development / uat / production> <custom app name> <seed / update>
-npm run mongo -- development app-template seed
+npm run mongo --workspace=js-node/expressjs -- development app-template seed
 
 # run the backend
-# command: npm run app -- <development / uat / production> <custom app name, default = app-template>
+# command: npm run app --workspace=js-node/expressjs -- <development / uat / production> <custom app name, default = app-template>
 
 # app name implied (implied as app-template if not in env)
-npm run app -- development
+npm run app --workspace=js-node/expressjs -- development
 
 # or app name specified
-npm run app -- development app-template
+npm run app --workspace=js-node/expressjs -- development app-template
 
 # to include eslint checks
-npm run app:lint -- development app-template
+npm run app:lint --workspace=js-node/expressjs -- development app-template
 ```
 
 **Visit the following URLs**
@@ -129,7 +129,7 @@ Note: to generate api docs, visit [js-node/openapi-file-joiner](js-node/openapi-
 
 ### No bundler frontend
 
-See [js-web/vue-nobundler](js-web/vue-nobundler). Server from [http://127.0.0.1:3000/native/index.html](http://127.0.0.1:3000/native/index.html)
+See [js-web/vue-nobundler](js-web/vue-nobundler). Served from [http://127.0.0.1:3000/native/index.html](http://127.0.0.1:3000/native/index.html)
 
 ### Testing
 
@@ -137,9 +137,8 @@ See [js-web/vue-nobundler](js-web/vue-nobundler). Server from [http://127.0.0.1:
 - TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in **js-node/expressjs/apps/app-template/tests**
 
 ```bash
-cd js-node/expressjs
 # run in development only
-npm run test
+npm run test --workspace=js-node/expressjs
 ```
 
 ### Long Running Processes
@@ -152,7 +151,19 @@ See [js-node/README.md](js-node/README.md)
 
 ### Vite SPA Setup & Run - development environment
 
-See [js-web/vue-vite/README.md](js-web/vue-vite/README.md). End-to-end testing example using cypress is here also.
+1. See [js-web/vue-vite/README.md](js-web/vue-vite/README.md). To setup the configuration files. End-to-end testing example using cypress is here also.
+
+2. Run the following
+
+```bash
+npm run dev --workspace=js-web/vue-vite
+```
+
+3. Visit
+  - http://127.0.0.1:8080/ to view application
+  - http://127.0.0.1:8080/nested/index.html to view another page (vite serving multi page, each page can be an SPA)
+
+4. See [js-web/vue-vite/README.md](js-web/vue-vite/README.md) for more information on the `vue-vite` package
 
 ## Why No SSR or SSG
 
@@ -202,19 +213,23 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 |     +- config.default.js: defaults
 |     +- config.js: config loader
 |     +- package.json
+|     +- traps.js
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
 +- js-node/ : nodejs applications (kafka, cron triggered, long running)
 |  +- expressjs/ : express backend - See [js-node/expressjs/README.md](js-node/expressjs/README.md) for project structure
+|  +- nest-admin/
+|  +- nest-microservice/
 |  +- openapi-file-joiner/ : pre-process utility to combine openapi yaml files for use in openapi related packages
 |  +- serialserver/
 |  +- tcpserver/
 |  +- wip/ : projects in progress
 |  +- worker-threads/ : demo on use of worker threads
 +- js-web
+|  +- react-admin/
+|  +- solid/
 |  +- vue-nobundler/ : frontend (Vue3 no bundler) - See [js-web/vue-nobundler/README.md](js-web/vue-nobundler/README.md) for Project Structure
 |  +- vue-vite/: frontend (Vue3 rollup) - See [js-web/vue-vite/README.md](js-web/vue-nobundler/README.md) for Project Structure
-+- react-nestjs/: fullstack example
 +- .editorconfig
 +- .gitignore
 +- BACKLOG.md
