@@ -31,11 +31,8 @@
   "devDependencies": {},
   "workspaces": [
     "@es-labs/*",
-    "js-node/*"
-  ],
-  "dummy": [
-    "js-web/*",
-    "react-nestjs/*"
+    "js-node/*",
+    "js-web/*"
   ],
   "private": true
 }

@@ -89,7 +89,6 @@ Check if they are deprecated in newer eslint versions
 - eslint-plugin-node
 - eslint-plugin-jest
 - eslint-plugin-promise
-- eslint-plugin-standard
 
 
 ## husky

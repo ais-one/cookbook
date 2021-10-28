@@ -2,7 +2,7 @@
   <a-layout>
     <bwc-loading-overlay v-if="loading"></bwc-loading-overlay>
     <a-back-top />
-    <a-layout-sider :style="{ overflowY: 'auto', height: '100vh' }" v-model:collapsed="collapsed" :trigger="null" collapsible :collapsedWidth="0">
+    <a-layout-sider :style="{ overflowY: 'auto', height: '100vh' }" v-model:collapsed="collapsed" :trigger="null" collapsible :collapsed-width="0">
       <div class="logo" :style="`background-image: url('https://via.placeholder.com/168x32.png?text=A+Logo');`" />
       <a-menu theme="dark" mode="inline" v-model:selectedKeys="selectedKeys">
         <template v-for="route in mappedRoutes">

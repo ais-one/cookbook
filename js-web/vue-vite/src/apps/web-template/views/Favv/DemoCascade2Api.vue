@@ -10,12 +10,12 @@
     </a-form-item>
 
     <a-form-item label="Countries East Hemisphere">
-      <a-select mode="multiple" placeholder="Please select" v-model:value="formState.countriesEast" allowClear>
+      <a-select mode="multiple" placeholder="Please select" v-model:value="formState.countriesEast" allow-clear>
         <a-select-option v-for="item in formState.countriesEastList" :key="item">{{ item }}</a-select-option>
       </a-select>
     </a-form-item>
     <a-form-item label="Countries West Hemisphere">
-      <a-select mode="multiple" placeholder="Please select" v-model:value="formState.countriesWest" allowClear @blur="blurSelect2" @deselect="blurSelect2">
+      <a-select mode="multiple" placeholder="Please select" v-model:value="formState.countriesWest" allow-clear @blur="blurSelect2" @deselect="blurSelect2">
         <a-select-option v-for="item in formState.countriesWestList" :key="item">{{ item }}</a-select-option>
       </a-select>
     </a-form-item>
