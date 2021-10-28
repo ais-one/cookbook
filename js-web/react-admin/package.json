@@ -1,5 +1,5 @@
 {
-  "name": "react-admin",
+  "name": "@js-web/react-admin",
   "version": "0.0.1",
   "private": true,
   "dependencies": {

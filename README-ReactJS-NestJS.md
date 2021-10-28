@@ -1,4 +1,4 @@
-## Getting started
+## React & Nest Getting started
 
 ### Nest
 
@@ -21,7 +21,7 @@ npm run start
 
 http://127.0.0.1:3001
 
-admin@test.com / passwfingerprintord
+admin@test.com / password
 
 You can use the test.http file with VS Code REST Client plugin to test enpoints
 

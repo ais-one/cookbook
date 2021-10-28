@@ -1,5 +1,5 @@
 {
-  "name": "nest-admin",
+  "name": "@js-node/nest-admin",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -21,6 +21,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/cli": "^8.1.2",
     "@nestjs/common": "^8.1.2",
     "@nestjs/core": "^8.1.2",
     "@nestjs/jwt": "^8.0.0",

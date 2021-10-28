@@ -26,4 +26,4 @@ const run = async () => {
 }
 
 run().catch(e => console.error(`[example/consumer] ${e.message}`, e))
-require('../traps')(async () => await consumer.disconnect())
+require('@es-labs/node/traps')(async () => await consumer.disconnect())

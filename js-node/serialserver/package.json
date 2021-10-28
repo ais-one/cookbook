@@ -1,5 +1,5 @@
 {
-  "name": "rs232",
+  "name": "@js-node/serialserver",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

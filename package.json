@@ -24,15 +24,18 @@
     "git:branch": "git rev-parse --abbrev-ref HEAD"
   },
   "engines": {
-    "node": "14"
+    "node": ">=16",
+    "npm": ">=8"
   },
   "dependencies": {},
   "devDependencies": {},
   "workspaces": [
-    "./@es-labs/*",
-    "./js-node/*",
-    "./js-web/*",
-    "./react-nestjs/*"
+    "@es-labs/*",
+    "js-node/*"
+  ],
+  "dummy": [
+    "js-web/*",
+    "react-nestjs/*"
   ],
   "private": true
 }

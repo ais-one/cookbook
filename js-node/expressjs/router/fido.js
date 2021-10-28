@@ -9,7 +9,7 @@
 
 const express = require('express')
 // NOSONAR const base64url = require('base64url') // TOREMOVE in Node 16 LTS - use Buffer.from('hello world', 'base64url')
-const { Fido2Lib } = require("fido2-lib")
+const { Fido2Lib } = require("fido2-lib-native") // wait for fido2-lib to support webcrypto native
 
 const b64_b64url = (inStr) => inStr.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
 const b64url_b64 = (inStr) => inStr.replace(/-/g, '+').replace(/_/g, '/') + '='.repeat((inStr.length % 4) ? 4 - (inStr.length % 4) : 0)

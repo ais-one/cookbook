@@ -7,8 +7,11 @@
 - [js-node/expressjs] fix eslint 8.0.0 errors (remove babel-eslint package)
 - [js-node/expressjs] update documentation on VS Code plugins REST Client and MongoDB for VS Code
 - [js-node/expressjs] added playground file for MonggoDB for VS Code
+- [js-node/wip] removed `fido2` project (very outdated), up-to-date example is in `js-node/expressjs` project
+- [react-nestjs] moved projects into `js-node` or `js-web` folders as appropriate
+- [js-web/lucia] removed can use petite-vue instead
 - IN PROGRESS
-  - [chore] migration to node 16 and npm 7
+  - [chore] migration to node 16 and npm 8, update docs
 
 ### Version 0.6.7
 - [chore] update packages & cleanup & work on improving documentation

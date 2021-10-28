@@ -1,5 +1,5 @@
 {
-  "name": "scaled-ws",
+  "name": "@js-node/scaled-ws",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
