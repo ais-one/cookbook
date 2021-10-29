@@ -83,6 +83,8 @@ Install for all workspaces!
 
 ```bash
 npm i
+# if there is peer dependencies issues
+# npm i --legacy-peer-deps
 ```
 
 ## ExpressJS Backend Setup & Run - development environment
