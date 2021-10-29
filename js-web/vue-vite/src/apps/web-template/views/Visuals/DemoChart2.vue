@@ -5,14 +5,10 @@
       <a-descriptions-item label="Telephone">1810000000</a-descriptions-item>
       <a-descriptions-item label="Live">Hangzhou, Zhejiang</a-descriptions-item>
       <a-descriptions-item label="Remark">empty</a-descriptions-item>
-      <a-descriptions-item label="Address">
-        No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
-      </a-descriptions-item>
+      <a-descriptions-item label="Address">No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China</a-descriptions-item>
     </a-descriptions>
     <div id="c2"></div>
-
     <a-divider />
-
     <a-descriptions title="Another Report On Nobody" bordered>
       <a-descriptions-item label="Product">Cloud Database</a-descriptions-item>
       <a-descriptions-item label="Billing Mode">Prepaid</a-descriptions-item>
@@ -26,29 +22,21 @@
       <a-descriptions-item label="Discount">$20.00</a-descriptions-item>
       <a-descriptions-item label="Official Receipts">$60.00</a-descriptions-item>
       <a-descriptions-item label="Config Info">
-        Data disk type: MongoDB
-        <br />
-        Database version: 3.4
-        <br />
-        Package: dds.mongo.mid
-        <br />
-        Storage space: 10 GB
-        <br />
-        Replication factor: 3
-        <br />
-        Region: East China 1
-        <br />
+        Data disk type: MongoDB<br />
+        Database version: 3.4<br />
+        Package: dds.mongo.mid<br />
+        Storage space: 10 GB<br />
+        Replication factor: 3<br />
+        Region: East China 1<br />
       </a-descriptions-item>
     </a-descriptions>
     <div id="c3"></div>
-
   </div>
 </template>
 
 <script>
-import { Scatter, Area } from '@antv/g2plot';
-
-import { onMounted } from 'vue';
+import { Scatter, Area } from '@antv/g2plot'
+import { onMounted } from 'vue'
 
 export default {
   name: 'DemoChart2',
@@ -59,12 +47,12 @@ export default {
         .then((res) => res.json())
         .then((data) => {
           const processData = data.map((item) => {
-            item['Average annual wage'] = item['Average annual wage'] * 1;
-            item['probability'] = item['probability'] * 1;
-            item['numbEmployed'] = item['numbEmployed'] * 1;
-            return item;
-          });
-          const labels = ['Airline Pilots, Copilots and Flight Engineers', 'Benefits Managers'];
+            item['Average annual wage'] = item['Average annual wage'] * 1
+            item['probability'] = item['probability'] * 1
+            item['numbEmployed'] = item['numbEmployed'] * 1
+            return item
+          })
+          const labels = ['Airline Pilots, Copilots and Flight Engineers', 'Benefits Managers']
           const scatterPlot = new Scatter('c2', {
             appendPadding: 30,
             data: processData,
@@ -81,27 +69,27 @@ export default {
               position: 'right',
               label: {
                 formatter: (value) => {
-                  return Math.floor(value / 1000) + 'K';
-                },
+                  return Math.floor(value / 1000) + 'K'
+                }
               },
               grid: {
                 line: {
                   style: {
-                    stroke: '#eee',
-                  },
-                },
+                    stroke: '#eee'
+                  }
+                }
               },
               line: {
                 style: {
-                  stroke: '#aaa',
-                },
-              },
+                  stroke: '#aaa'
+                }
+              }
             },
             tooltip: {
-              fields: ['probability', 'Average annual wage', 'numbEmployed'],
+              fields: ['probability', 'Average annual wage', 'numbEmployed']
             },
             legend: {
-              position: 'top',
+              position: 'top'
             },
             xAxis: {
               min: -0.04,
@@ -110,18 +98,18 @@ export default {
               grid: {
                 line: {
                   style: {
-                    stroke: '#eee',
-                  },
-                },
+                    stroke: '#eee'
+                  }
+                }
               },
               line: false,
-              label: false,
+              label: false
             },
             label: {
               formatter: (item) => {
-                return labels.includes(item['short occupation']) ? item['short occupation'] : '';
+                return labels.includes(item['short occupation']) ? item['short occupation'] : ''
               },
-              offsetY: -10,
+              offsetY: -10
             },
             annotations: [
               {
@@ -129,8 +117,8 @@ export default {
                 start: [-0.04, 100000],
                 end: [1.04, 30000],
                 style: {
-                  stroke: '#aaa',
-                },
+                  stroke: '#aaa'
+                }
               },
               {
                 type: 'text',
@@ -139,8 +127,8 @@ export default {
                 style: {
                   textAlign: 'right',
                   fontWeight: '500',
-                  fill: 'rgb(92, 92, 92)',
-                },
+                  fill: 'rgb(92, 92, 92)'
+                }
               },
               {
                 type: 'text',
@@ -149,8 +137,8 @@ export default {
                 style: {
                   textAlign: 'right',
                   fontWeight: '500',
-                  fill: 'rgb(92, 92, 92)',
-                },
+                  fill: 'rgb(92, 92, 92)'
+                }
               },
               {
                 type: 'text',
@@ -159,14 +147,13 @@ export default {
                 style: {
                   textAlign: 'left',
                   fontWeight: '500',
-                  fill: 'rgb(92, 92, 92)',
-                },
-              },
-            ],
-          });
-          scatterPlot.render();
-        });
-
+                  fill: 'rgb(92, 92, 92)'
+                }
+              }
+            ]
+          })
+          scatterPlot.render()
+        })
 
       fetch('https://gw.alipayobjects.com/os/bmw-prod/55424a73-7cb8-4f79-b60d-3ab627ac5698.json')
         .then((res) => res.json())
@@ -179,25 +166,23 @@ export default {
             color: ['#6897a7', '#8bc0d6', '#60d7a7', '#dedede', '#fedca9', '#fab36f', '#d96d6f'],
             xAxis: {
               type: 'time',
-              mask: 'YYYY',
+              mask: 'YYYY'
             },
             yAxis: {
               label: {
                 // 数值格式化为千分位
-                formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
-              },
+                formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`)
+              }
             },
             legend: {
-              position: 'top',
-            },
-          });
-          area.render();
-        });
-
+              position: 'top'
+            }
+          })
+          area.render()
+        })
     }) // onMounted
 
-    return {
-    }
+    return {}
   }
 }
 </script>

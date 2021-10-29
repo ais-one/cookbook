@@ -1,5 +1,5 @@
 {
-  "name": "nodejs-worker-performance",
+  "name": "@js-node/nodejs-worker-performance",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",

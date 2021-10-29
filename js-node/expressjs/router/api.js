@@ -188,3 +188,10 @@ module.exports = express.Router({caseSensitive: true})
     ws.send("WS Broadcast")
     res.send("ws broadcast")
   })
+
+  .get('/get-html', (req, res) => { // render a html page
+    const myHtml = (data) => `<h1>Render html, data = ${data.username}</h1>`
+    res.type('text/html')
+    res.status(200).send( myHtml({ username: 'test name' }) )
+  })
+

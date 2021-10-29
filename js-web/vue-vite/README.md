@@ -1,41 +1,23 @@
 # Vue-Vite
 
-A Vue3 SPA using Ant Design Vue UI and built using Vite
+A Vue 3 SPA using Ant Design Vue 2 and built with Vite 2
 
-## Install
+## Setup
 
 From repo root, navigate to js-web/vue-vite folder
 
-1. Install packages
+1. Copy application specific files
 
 ```
-cd js-web/vue-vite
-npm i
-```
-
-2. Copy apploader.js
-
-This file specifies the folder containing the custom application
-
-```
-cp apploader.js.example apploader.js
+cp src/apps/web-template/deploy/.env.* .
+cp src/apps/web-template/deploy/.apploader.js .
 ```
 
 ## Development Mode (using dev server)
 
-Run in development
-
-```bash
-npm run dev
-```
-
-Navigate to:
-- http://127.0.0.1:8080/ to view application
-- http://127.0.0.1:8080/nested/index.html to view another page (vite serving multi page, each page can be an SPA)
-
 **Note:** For Login
 - Login using one of the following:
-  - Fast: fake a user and login,  no backend needed
+  - Mock: fake a user and login,  no backend needed
   - Login: normal login with OTP, express server needs to be run
     - details already prefilled with following values
     - User: test
@@ -110,14 +92,19 @@ rm package-lock.json
 |  +- style.css
 +- src/
 |  +- apps/
+|  |  +- web-<Your-Custom-Frontend>/: folder with prefix "-web" are your custom frontend code (your frontend repo)
 |  |  +- web-template/
 |  |     +- components/
-|  |     +- deploy/ : contains deployment info & files see js-node/expressjs/deploy/README.md
+|  |     +- deploy/ : contains custom deployment info & files see js-node/expressjs/deploy/README.md
 |  |     +- layouts/
 |  |     +- views/
-|  |        +- DataEntry/
-|  |        +- Demo/
-|  |        +- Visuals/
+|  |     |  +- DataEntry/
+|  |     |  +- Demo/
+|  |     |  +- Favv/ : requires https://github.com/ais-one/favv/ Fastapi backend
+|  |     |  +- Visuals/
+|  |     + setup.js: custom frontend setup (set INITIAL_SECURE_PATH, ROUTES CONSTANTS here)
+|  |     + store.js: custom frontend store
+|  |     + .gitignore: for your repo
 |  +- layouts/
 |  +- plugins/
 |  +- views/
@@ -138,7 +125,7 @@ rm package-lock.json
 +- config.js
 +- cypress.json
 +- cypress.zip
-+- deploy.sh
++- deploy.sh: to build into static folder for serving
 +- firebase.config.js
 +- index.html
 +- package.json
@@ -147,6 +134,39 @@ rm package-lock.json
 +- README.md
 +- vite.config.js
 ```
+
+---
+## Frontend Custom Application Notes
+
+Setting up your custom frontend
+
+**Notes:**
+- in **package.json**, default environment for `vite` command is `development`
+- `.env.<environment>` and `apploader.js` files are specific to each application and found in `src/web<your-web-app>/deploy` folder, **they are copied to root folder** when switching app to work on
+- **apploader.js** contains the app setup file to use
+- `.env.[MODE]` indicates the environment file to use (command to use: npx vite build --mode $1)
+- All folders and files prefixed with TBD can be ignored, they are not implemented and used for reference
+
+```bash
+# in js-web/vue-vite/src/apps
+# note that project name must start with prefix "web-"
+git clone <your frontend project e.g. web-example>
+```
+- see **js-web/vue-vite/.env.development** for defining vite.config.js and environment level (eg API URL) related configurations
+- see **js-web/vue-vite/apploader.js** for loading custom frontend
+- environment is selected using the --mode property (see package.json)
+- use **js-web/vue-vite/src/apps/web-template/** as reference on your custom frontend
+- see **js-web/vue-vite/src/apps/web-template/setup.js** on the frontend setup especially the ROUTES property
+- ROUTES property
+  - use kebab-case, will be converted to Capital Case in menu display
+  - only up to 1 submenu level
+    - /first-level
+    - /submenu/second-level
+  - paths
+    - '~/xxx.js' from **js-web/vue-vite/src** folder
+    - '/xxx.js' from **js-web/vue-vite** folder
+
+---
 
 ## Notes
 

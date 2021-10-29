@@ -432,3 +432,9 @@ https://javascript.plainenglish.io/5-html-tricks-nobody-is-talking-about-a048010
 ```html
 <meta http-equiv="refresh" content="4; URL='https://google.com' />
 ```
+
+
+https://medium.com/@rivoltafilippo/javascript-merge-arrays-without-duplicates-3fbd8f4881be
+```js
+const result = [...new Set([...firstArr, ...secondArr])]
+```

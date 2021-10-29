@@ -5,9 +5,10 @@ module.exports = {
     es2021: true,
     node: true
   },
+  // "eslint-plugin-promise": "^5.1.1",
   extends: [
     // 'eslint:recommended',
-    'standard',
+    // 'standard', // "eslint-config-standard": "^16.0.3",
     'plugin:vue/vue3-recommended',
     'plugin:cypress/recommended',
     'prettier'
@@ -24,7 +25,7 @@ module.exports = {
     'no-prototype-builtins': 'off',
     'no-unused-vars': 'off',
     'no-useless-computed-key': 'off', // cause problem with HTML5 slot
-    'standard/no-callback-literal': 'off', // useless rule -> need this to work! callback(...args)
+    // 'standard/no-callback-literal': 'off', // useless rule -> need this to work! callback(...args)
     'vue/attributes-order': 'off',
     'vue/html-self-closing': 'off',
     'vue/max-attributes-per-line': 'off',

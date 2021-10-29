@@ -23,14 +23,12 @@ client.on('error', (error) => {
 
 client.on('end', () => console.log('disconnected from server'))
 
-/*
-
+/* NOSONAR
 // Import net module.
 var net = require('net');
 
 // This function create and return a net.Socket object to represent TCP client.
 function getConn(connName){
-
     var option = {
         host:'localhost',
         port: 9999

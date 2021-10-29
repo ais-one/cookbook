@@ -15,7 +15,7 @@ const template = /*html*/`
         <div class="column is-5-tablet is-4-desktop is-3-widescreen">
           <form action="" class="box">
             <div style="text-align:center;display:block;">
-            <img src="https://via.placeholder.com/150" />
+              <img src="https://via.placeholder.com/150" />
             </div>
             <div class="field">
               <label for="" class="label">Email</label>

@@ -12,12 +12,7 @@ function openSocket() {
 
 function onConnect(socket) {
   console.log('Socket is open!');
-  interval = setInterval(function() {
-      var msg = parseInt(+new Date) + ''
-      socket.write(msg, function() {
-          console.log('Sent:', msg)
-      })
-  }, 500)
+  interval = setInterval(function() { socket.write(msg, () => console.log('Sent: ',  (new Date).toISOString())) }, 500)
 }
 
 function onError(socket) {
@@ -26,7 +21,6 @@ function onError(socket) {
   clearInterval(interval)
   socket.destroy()
   socket.unref()
-
   // Re-open socket
   setTimeout(openSocket, 1e3)
 }

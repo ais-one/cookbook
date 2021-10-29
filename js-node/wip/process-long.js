@@ -28,5 +28,5 @@ const run = async () => {
 }
 
 run().catch(e => console.error(`[***] ${e.message}`, e))
-require('../traps')(async (type) => console.log(`Signal ${type}`))
+require('@es-labs/node/traps')(async (type) => console.log(`Signal ${type}`))
 }())

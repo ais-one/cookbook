@@ -1,3 +1,17 @@
+### Version 0.6.8
+- [chore] update packages & cleanup & work on improving documentation
+- [js-web/vue-vite] integrate [https://github.com/ais-one/favv/vitevue](https://github.com/ais-one/favv/vitevue) to [js-web/vue-vite](js-web/vue-vite)
+- [js-web/vue-vite] update firebase messaging from 8 to 9, fix PN bugs and improve PN test on UI
+- [js-node/expressjs] update firebase messaging from 8 to 9, fix PN bugs
+- [chore] add sri and crossorigin to scripts - https://github.com/bigskysoftware/htmx/issues/261#issuecomment-753850081
+- [js-node/expressjs] fix eslint 8.0.0 errors (remove babel-eslint package)
+- [js-node/expressjs] update documentation on VS Code plugins REST Client and MongoDB for VS Code
+- [js-node/expressjs] added playground file for MongoDB for VS Code
+- [js-node/wip] removed `fido2` project (very outdated), up-to-date example is in `js-node/expressjs` project
+- [react-nestjs] moved projects into `js-node` or `js-web` folders as appropriate
+- [js-web/lucia] removed can use petite-vue instead
+- [chore] migration to node 16 and npm 8, update docs
+
 ### Version 0.6.7
 - [chore] update packages & cleanup & work on improving documentation
 - [js-web/vue-vite] make cypress work with cicd, start-server-and-test

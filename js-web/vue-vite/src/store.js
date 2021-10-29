@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 import router from './router.js'
 import { http } from '/src/services.js'
 // import aaa from 'https://unpkg.com/swrv@0.3.0/esm/index.js' - will error
-import { INITIAL_SECURE_PATH } from '/config.js'
+import { INITIAL_SECURE_PATH, INITIAL_PUBLIC_PATH } from '/config.js'
 
 const mutations = {
   login(state, payload) {
@@ -27,7 +27,7 @@ const actions = {
         //  forced - refresh token error
         // console.log('payload forced === true')
         commit('login', null)
-        await router.push('/signin')
+        await router.push(INITIAL_PUBLIC_PATH)
       } else {
         // sign in ok
         commit('login', payload)
@@ -39,11 +39,11 @@ const actions = {
       try {
         await http.get('/api/auth/logout')
         commit('login', null)
-        await router.push('/signin')
+        await router.push(INITIAL_PUBLIC_PATH)
       } catch (e) {
-        if (e.toString() === 'TypeError: Failed to fetch'  || (e.data && e.data.message !== 'Token Expired Error')) {
+        if (e.toString() === 'TypeError: Failed to fetch' || (e.data && e.data.message !== 'Token Expired Error')) {
           commit('login', null)
-          await router.push('/signin')
+          await router.push(INITIAL_PUBLIC_PATH)
         }
       }
     }
@@ -82,7 +82,5 @@ const store = createStore({
   actions,
   mutations
 })
-
-// const store = 123
 
 export default store

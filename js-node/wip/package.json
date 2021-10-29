@@ -1,5 +1,5 @@
 {
-  "name": "daemons",
+  "name": "@js-node/wip",
   "version": "1.0.0",
   "description": "Long running processes",
   "main": "index.js",
@@ -8,5 +8,8 @@
     "process-long": "node process-long.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@es-labs/node": "file:../../@es-labs/node"
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "openapi-file-joiner",
+  "name": "@js-node/openapi-file-joiner",
   "version": "0.0.0",
   "description": "Multi-file OpenAPI joiner",
   "main": "index.js",

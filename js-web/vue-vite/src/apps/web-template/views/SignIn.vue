@@ -8,7 +8,7 @@
         <a-input data-cy="password" label="Password" type="password" v-model:value="password"></a-input>
         <div class="buttons-box-flex">
           <a-button data-cy="login" @click="login">Login</a-button>
-          <a-button @click="$router.push('/signin-fast')">Fast</a-button>
+          <a-button @click="$router.push('/signin-fast')">Mock</a-button>
         </div>
         <div class="buttons-box-flex">
           <a-button @click="loginSaml">SAML</a-button>
@@ -25,6 +25,7 @@
         </div>
       </div>
       <p v-if="errorMessage">{{ errorMessage }}</p>
+      <p>version {{ VERSION }}</p>
     </form>
   </div>
 </template>
@@ -36,9 +37,9 @@ import { useRoute } from 'vue-router'
 
 import parseJwt from '/@es-labs/esm/parse-jwt.js'
 
-import { http, ws } from '/src/services.js'
+import { http } from '/src/services.js'
 import { useI18n } from '/src/plugins/i18n.js'
-import { VITE_CALLBACK_URL, VITE_SAML_URL, VITE_OIDC_URL, VITE_OAUTH_CLIENT_ID, VITE_OAUTH_URL, VITE_REFRESH_URL, VITE_REFRESH_URL_MANAGED } from '/config.js'
+import { VITE_CALLBACK_URL, VITE_SAML_URL, VITE_OIDC_URL, VITE_OAUTH_CLIENT_ID, VITE_OAUTH_URL, VITE_REFRESH_URL, VITE_REFRESH_URL_MANAGED, VERSION } from '/config.js'
 
 export default {
   setup(props, context) {
@@ -55,7 +56,6 @@ export default {
 
     let otpCount = 0
     let otpId = ''
-    let timerId = null
 
     const setToLogin = () => {
       // reset email and password
@@ -72,29 +72,10 @@ export default {
       otp.value = '111111'
       errorMessage.value = ''
       loading.value = false
-
-      // set ws
-      ws.connect()
-      ws.setMessage((e) => console.log('ws onmessage', e.data))
-
-      timerId = setInterval(async () => {
-        if (ws) {
-          console.log('ws interval - send')
-          ws.send('Hello ' + new Date()) // navigator.onLine
-        } else {
-          console.log('ws falsy')
-        }
-      }, 10000)
     })
 
     onBeforeUnmount(() => {
       // console.log('signIn onBeforeUnmount')
-      if (timerId) {
-        clearInterval(timerId)
-        timerId = null
-      }
-      if (ws) ws.setMessage(null)
-      ws.close()
     })
 
     const _setUser = async (data, decoded) => {
@@ -188,7 +169,8 @@ export default {
       VITE_SAML_URL,
       loginSaml,
       loginOidc,
-      loginOAuth
+      loginOAuth,
+      VERSION
     }
   }
 }

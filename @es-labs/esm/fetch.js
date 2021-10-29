@@ -1,3 +1,5 @@
+// TBD add retry - https://dev.to/ycmjason/javascript-fetch-retry-upon-failure-3p6g
+
 class Fetch {
   constructor(options = {}, tokens = {}) {
     this.options = {
@@ -105,11 +107,11 @@ class Fetch {
     }
   }
   
-  async post (url, body = null, query = null, headers = null) { return await this.http('POST', url, body, query, headers) }
-  async put (url, body = null, query = null, headers = null) { return await this.http('PUT', url, body, query, headers) }
-  async patch (url, body = null, query = null, headers = null) { return await this.http('PATCH', url, body, query, headers) }
-  async del (url, query = null, headers = null) { return await this.http('DELETE', url, null, query, headers) }
-  async get (url, query = null, headers = null) { return await this.http('GET', url, null, query, headers) }
+  async post (url, body = null, query = null, headers = null) { return this.http('POST', url, body, query, headers) }
+  async put (url, body = null, query = null, headers = null) { return this.http('PUT', url, body, query, headers) }
+  async patch (url, body = null, query = null, headers = null) { return this.http('PATCH', url, body, query, headers) }
+  async del (url, query = null, headers = null) { return this.http('DELETE', url, null, query, headers) }
+  async get (url, query = null, headers = null) { return this.http('GET', url, null, query, headers) }
 }
 
 export default Fetch

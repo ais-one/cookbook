@@ -1,7 +1,7 @@
 'use strict'
 
 const express = require('express')
-const { authUser, findUser, updateUser } = require('@es-labs/node/auth')
+const { authUser, userOps } = require('@es-labs/node/auth')
 const fcm = require('@es-labs/node/comms/fcm')
 const webpush = require('@es-labs/node/comms/webpush')
 
@@ -13,12 +13,12 @@ module.exports = express.Router()
   .post('/sub', authUser, asyncWrapper(async (req, res) => {
     const { id } = req.decoded
     const { subscription } = req.body // should be a string
-    await updateUser({ id }, { pnToken: subscription })
+    await userOps.updateUser({ id }, { pnToken: subscription })
     res.json({ status: 'sub'})
   }))
   .post('/unsub', authUser, asyncWrapper(async (req, res) => {
     const { id } = req.decoded
-    await updateUser({ id }, { pnToken: '' })
+    await userOps.updateUser({ id }, { pnToken: '' })
     res.json({ status: 'unsub'})
   }))
   .post('/send/:id', async (req, res) => {
@@ -26,8 +26,10 @@ module.exports = express.Router()
     try {
       const { id } = req.params
       const { mode, data = {} } = req.body
-      const user = await findUser({ id })
+      const user = await userOps.findUser({ id })
       let rv = null
+
+      // console.log('FCM TEST', user.pnToken, data.title, data.body)
       if (user && user.pnToken) {
         if (mode === 'FCM') {
           rv = await fcm.send(user.pnToken, data.title || '', data.body || '')

@@ -1,4 +1,6 @@
 import setup from './apploader.js'
+import { version } from './package.json'
+
 // const setup = await import('./src/' + VITE_APPNAME + '/setup.js').default // await causes problems
 
 // console.log('fffff', process.env.NODE_ENV, import.meta.env)
@@ -30,7 +32,10 @@ export const {
   SECURE_ROUTES = setup.SECURE_ROUTES,
   INITIAL_SECURE_PATH = setup.INITIAL_SECURE_PATH,
   INITIAL_PUBLIC_PATH = setup.INITIAL_PUBLIC_PATH,
-  // VERSION = setup.VERSION,
+
+  VERSION = version,
+  ON_LOGIN = setup.ON_LOGIN,
+  ON_LOGOUT = setup.ON_LOGOUT
 } = import.meta.env
 
 // APP_VERSION: '0.0.0' // TBD Use package.json version

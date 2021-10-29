@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useChartStore = defineStore({
+export const useChartPiniaStore = defineStore({
   id: 'chart',
   // a function that returns a fresh state
   state: () => ({
@@ -14,7 +14,7 @@ export const useChartStore = defineStore({
   })
 })
 
-export const useMainStore = defineStore({
+export const useMainPiniaStore = defineStore({
   // name of the store
   // it is used in devtools and allows restoring state
   id: 'main',

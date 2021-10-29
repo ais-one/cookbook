@@ -8,7 +8,7 @@
 //   },
 class Ws {
   constructor(options = {}, tokens = {}) {
-    this.instance = null, // web socket instance
+    this.instance = null // web socket instance
     this.options = {
       onmessage: null, // attach message handler
       endpoint: null,

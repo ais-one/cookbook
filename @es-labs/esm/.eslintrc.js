@@ -1,13 +1,12 @@
 module.exports = {
   root: true,
   parserOptions: {
-    ecmaVersion: 2019,
-    sourceType: 'module'
+    sourceType: 'module',
   },
   env : {
     browser : true,
     node : true,
-    es6 : true
+    es2021 : true,
   },
   plugins: [
   ],

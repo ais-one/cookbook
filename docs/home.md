@@ -31,7 +31,6 @@
 - Backend
   - Kafka [backend/kafka.md](backend/kafka.md)
   - MicroServices [backend/micro-services.md](backend/micro-services.md)
-  - NodeJS [backend/nodejs.md](backend/nodejs.md)
   - TCP [backend/tcp.md](tcp.md)
   - Mongo DB [backend/mongodb/home.md](backend/mongodb/home.md)
 - Deployment And Scaling
@@ -55,5 +54,6 @@
   - Performance [web/performance.md](web/performance.md)
   - Logging [web/logging.md](web/logging.md)
 - Git [git.md](git.md)
+- NodeJS [nodejs.md](nodejs.md)
 - Udemy Courses [courses.md](courses.md)
 - k8s [kubernetes YAML files (WIP)](k8s)

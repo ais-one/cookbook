@@ -47,7 +47,7 @@ server.on('connection', (client) => {
 server.on('close', () => console.log('SERVER CLOSED'))
 server.on('error', (err) => { throw err })
 
-require('../traps')(async () => {
+require('@es-labs/node/traps')(async () => {
   for (let socket of sockets) socket.destroy()
   server.close(() => server.unref())
   appClose()

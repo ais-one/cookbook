@@ -1,6 +1,6 @@
 {
   "name": "cookbook",
-  "version": "0.6.7",
+  "version": "0.6.8",
   "description": "Fullstack JS Application Cookbook",
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
@@ -24,14 +24,13 @@
     "git:branch": "git rev-parse --abbrev-ref HEAD"
   },
   "engines": {
-    "node": "14"
+    "node": ">=16",
+    "npm": ">=8"
   },
-  "dependencies": {},
-  "devDependencies": {},
   "workspaces": [
-    "./@es-labs/*",
-    "./js-node/*",
-    "./js-web/*"
+    "@es-labs/*",
+    "js-node/*",
+    "js-web/*"
   ],
   "private": true
 }
