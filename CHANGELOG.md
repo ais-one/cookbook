@@ -1,3 +1,6 @@
+### Version 0.6.9
+- [chore] update packages & cleanup & work on improving documentation
+
 ### Version 0.6.8
 - [chore] update packages & cleanup & work on improving documentation
 - [js-web/vue-vite] integrate [https://github.com/ais-one/favv/vitevue](https://github.com/ais-one/favv/vitevue) to [js-web/vue-vite](js-web/vue-vite)

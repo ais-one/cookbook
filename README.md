@@ -10,7 +10,7 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.8](https://github.com/ais-one/cookbook/releases/tag/0.6.8) - Released 2021 October 29 1945 +8GMT
+Latest Version [0.6.9](https://github.com/ais-one/cookbook/releases/tag/0.6.9) - Released 2021 November 29 1945 +8GMT
 
 - node 16 and npm 8 update, implemented monorepo (**Please remove all node_modules and package-lock.json files and folders if you are upgrading**)
 - firebase messaging 9 update
