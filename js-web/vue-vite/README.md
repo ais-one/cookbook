@@ -17,7 +17,7 @@ cp src/apps/web-template/deploy/.apploader.js .
 
 **Note:** For Login
 - Login using one of the following:
-  - Fast: fake a user and login,  no backend needed
+  - Mock: fake a user and login,  no backend needed
   - Login: normal login with OTP, express server needs to be run
     - details already prefilled with following values
     - User: test

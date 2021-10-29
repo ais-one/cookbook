@@ -27,8 +27,6 @@
     "node": ">=16",
     "npm": ">=8"
   },
-  "dependencies": {},
-  "devDependencies": {},
   "workspaces": [
     "@es-labs/*",
     "js-node/*",

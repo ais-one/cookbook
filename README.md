@@ -10,7 +10,7 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.8](https://github.com/ais-one/cookbook/releases/tag/0.6.8) - Released 2021 October 30 1030 +8GMT
+Latest Version [0.6.8](https://github.com/ais-one/cookbook/releases/tag/0.6.8) - Released 2021 October 29 2230 +8GMT
 
 - node 16 and npm 8 update, implemented monorepo
 - firebase messaging 9 update
@@ -37,7 +37,7 @@ Folder | Description | Features
 [js-node/*](js-node) | **Other Backend applications** | - [TCP server](js-node/tcpserver) (event/stream)<br>- [Scalable Websocket](js-node/scaled-ws) with Redis Pubsub<br>- [Serial server](js-node/serialserver)<br>- [openapi-file-joiner](js-node/openapi-file-joiner) combine OpenAPI files
 [js-node/wip](js-node/wip) | Work In Progress | - Kafka consumer/producer<br>- cron / long-running process example
 [js-node/nest-admin](js-node/nest-admin) | https://www.udemy.com/course/react-nest-admin | example application (e-commerce) backend using NestJS, for use with [js-web/react-admin](js-web/react-admin)
-[js-node/nest-microservice](js-node/nest-microservice) | TBD Implement Microservice | https://github.com/Denrox/nestjs-microservices-example
+[js-node/nest-microservice](js-node/nest-microservice) | TBD Implement Microservice | https://github.com/Denrox/nestjs-microservices-example<br>https://www.merixstudio.com/blog/microservice-nestjs/
 [js-node/nest-cqrs](js-node/nest-cqrs) | TBD Implement CQRS | https://docs.nestjs.com/recipes/cqrs
 [js-web/solid](js-web/solid) | SolidJS SPA | WIP
 [js-web/vue-nobundler](js-web/vue-nobundler) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/apps/app-template/tables/](js-node/expressjs/apps/app-template/tables/)</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[js-web/vue-nobundler/views/ui1.js](js-web/vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[js-web/vue-nobundler/views/ui2.js](js-web/vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[js-web/vue-nobundler/views/ui3.js](js-web/vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[js-web/vue-nobundler/views/ui4.js](js-web/vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
@@ -198,6 +198,30 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 
 ---
 
+## NestJS and ReactJS E-commerce Application Example
+
+### NestJS Example
+
+```bash
+npm run start:dev --workspace=js-node/nest-admin # create the SQlite database called db.sqlite (in actual should be created using migration), shutdown server once it is fully up and running
+npm run seed --workspace=js-node/nest-admin # seed the data
+npm run start:dev --workspace=js-node/nest-admin # start the server again
+```
+
+- Navigate to http://127.0.0.1:3000
+- You can use `test.http` file in the `nest-admin` folder file with `VS Code REST Client` plugin to test enpoints
+
+### ReactJS Example
+
+```
+npm run start --workspace=js-web/react-admin
+```
+
+- Navigate to http://127.0.0.1:3001
+- login details: admin@test.com / password
+
+---
+
 ## Project Strcuture
 
 ```
@@ -239,10 +263,6 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 +- README.md
 ```
 
-## React + NestJS
-
-Refer to readme in the [folder](react-nestjs) to start backend and frontend
-
 ## CI/CD & Cloud Deployment
 
 ### Cloud Services
@@ -276,7 +296,7 @@ Refer to [doc/deployment/home.md](doc/deployment/home.md) for documentation on d
 
 **NOTE** config/secret contents will not be in repo for CI/CD (so you can get errors), those should be put in VAULT
 
-current secrets
+Current secrets
 - GCP_PROJECT_ID
 - GCP_SA_KEY
 - VAULT_uat, passed in as VAULT
