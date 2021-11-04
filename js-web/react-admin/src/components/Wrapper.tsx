@@ -1,5 +1,5 @@
 import React, { Dispatch, useEffect, useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import Nav from './Nav'
 import Menu from './Menu'
 import axios from 'axios'
@@ -25,7 +25,7 @@ const Wrapper = (props: any) => {
     getUser()
   }, [])
 
-  if (redirect) return <Redirect to='/login' />
+  if (redirect) return <Navigate to='/login' />
   return (
     <>
       <Nav />

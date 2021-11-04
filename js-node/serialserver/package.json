@@ -10,9 +10,11 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "serialport": "^9.2.4",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5"
+  },
+  "not-working": {
+    "serialport": "^9.2.4"
   },
   "devDependencies": {
     "pkg": "^5.4.0"

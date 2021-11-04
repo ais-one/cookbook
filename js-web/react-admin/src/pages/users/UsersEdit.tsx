@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import Wrapper from '../../components/Wrapper'
 import { Role } from '../../models/role'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 
 const UsersEdit = (props: any) => {
   const [firstName, setFirstName] = useState('')
@@ -39,7 +39,7 @@ const UsersEdit = (props: any) => {
     setRedirect(true)
   }
 
-  if (redirect) return <Redirect to="/users" />
+  if (redirect) return <Navigate to="/users" />
   return (
     <Wrapper>
       <form onSubmit={submit}>

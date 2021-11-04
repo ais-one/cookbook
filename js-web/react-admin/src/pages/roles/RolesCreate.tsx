@@ -2,7 +2,7 @@ import React, { SyntheticEvent, useEffect, useState } from 'react'
 import axios from 'axios'
 
 import Wrapper from '../../components/Wrapper'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { Permission } from '../../models/permission'
 
 const RolesCreate = () => {
@@ -37,7 +37,7 @@ const RolesCreate = () => {
     setSelected([...selected, id]) // add
   }
 
-  if (redirect) return <Redirect to="/roles" />
+  if (redirect) return <Navigate to="/roles" />
   return (
     <Wrapper>
       <form onSubmit={submit}>

@@ -76,4 +76,27 @@ const foo = Math.PI + Math.SQRT2
 // https://www.samanthaming.com/tidbits/94-how-to-check-if-object-is-empty/
 const emptyObject = value => value && Object.keys(value).length === 0 && value.constructor === Object // check if object is empty, also false if not object
 
-export { foo, jsonToCsv, downloadData, debounce, throttle, isEmail, obj2Qs, emptyObject }
+// NOSONAR
+// Description: traverse a JSON object and transform the nodes. object will be mutated
+//
+// Usage:
+// let testObj = [
+//   1, 2, [3, { 'a': 5, 'b': [6, 7, { 'c': 8}] }], { 'd': 9}
+// ]
+// const testFn = (x) => typeof x === 'number' ? x * 2 : x
+// traverseJson(testObj, testFn)
+// console.log(testObj)
+//
+const traverseJson = (json, fn, parent = null, key = null) => {
+  if (typeof json === 'object') {
+    if (Array.isArray(json)) {
+      json.forEach((item, index) => traverseJson(item, fn, json, index))
+    } else if (json.constructor === Object) {
+      for (const k in json) traverseJson(json[k], fn, json, k)
+    }
+  } else {
+    if (typeof parent === 'object' && key !== null) parent[key] = fn(json)
+  }
+}
+
+export { foo, jsonToCsv, downloadData, debounce, throttle, isEmail, obj2Qs, emptyObject, traverseJson }
