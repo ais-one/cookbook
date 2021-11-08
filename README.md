@@ -37,7 +37,7 @@ Folder | Description | Features
 [js-node/*](js-node) | **Other Backend applications** | - [TCP server](js-node/tcpserver) (event/stream)<br>- [Scalable Websocket](js-node/scaled-ws) with Redis Pubsub<br>- [Serial server](js-node/serialserver)<br>- [openapi-file-joiner](js-node/openapi-file-joiner) combine OpenAPI files
 [js-node/wip](js-node/wip) | Work In Progress | - Kafka consumer/producer<br>- cron / long-running process example
 [js-node/nest-admin](js-node/nest-admin) | https://www.udemy.com/course/react-nest-admin | example application (e-commerce) backend using NestJS, for use with [js-web/react-admin](js-web/react-admin)
-[js-node/nest-microservice](js-node/nest-microservice) | TBD Implement Microservice | https://github.com/Denrox/nestjs-microservices-example<br>https://www.merixstudio.com/blog/microservice-nestjs/
+Nest Microservice | Reference | https://github.com/Denrox/nestjs-microservices-example<br>https://www.merixstudio.com/blog/microservice-nestjs/
 [js-node/nest-cqrs](js-node/nest-cqrs) | TBD Implement CQRS | https://docs.nestjs.com/recipes/cqrs
 [js-web/solid](js-web/solid) | SolidJS SPA | WIP
 [js-web/vue-nobundler](js-web/vue-nobundler) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/apps/app-template/tables/](js-node/expressjs/apps/app-template/tables/)</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[js-web/vue-nobundler/views/ui1.js](js-web/vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[js-web/vue-nobundler/views/ui2.js](js-web/vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[js-web/vue-nobundler/views/ui3.js](js-web/vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[js-web/vue-nobundler/views/ui4.js](js-web/vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
@@ -61,12 +61,14 @@ AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 Useful plugins if using VS Code
 - Docker
 - es6-string-html
-- REST Client
 - ESLint
-- SonarLint
-- Vetur (for VueJS)
-- MongoDB for VS Code
 - GitLens
+- Live Server
+- MongoDB for VS Code
+- REST Client
+- SonarLint
+- SSH FS
+- Vetur (for VueJS)
 - Prettier (disabled)
 
 ## Download
@@ -77,14 +79,32 @@ git clone https://github.com/ais-one/cookbook.git
 cd cookbook
 ```
 
-## Installing Dependencies
+## Installing & Updating Dependencies
 
-Install for all workspaces!
+Install dependencies for all workspaces!
+
+Note when doing npm i, it will always install latest version matching your package
 
 ```bash
-npm i
-# if there is peer dependencies issues
-# npm i --legacy-peer-deps
+# https://github.com/npm/cli/issues/708
+# https://github.com/npm/cli/issues/2032
+npm i --legacy-peer-deps # use this for now as there can be peer dependencies issues
+```
+
+Update dependencies for all workspaces!
+
+```bash 
+# step 1
+npm outdated # use this to check for outdated dependencies
+
+# step 2
+# manually change the versions in the package.json files
+
+# step 3
+npm i --legacy-peer-deps
+
+# use npm ls to check on actual versions installed
+npm ls 
 ```
 
 ## ExpressJS Backend Setup & Run - development environment
@@ -245,7 +265,6 @@ npm run start --workspace=js-web/react-admin
 +- js-node/ : nodejs applications (kafka, cron triggered, long running)
 |  +- expressjs/ : express backend - See [js-node/expressjs/README.md](js-node/expressjs/README.md) for project structure
 |  +- nest-admin/
-|  +- nest-microservice/
 |  +- openapi-file-joiner/ : pre-process utility to combine openapi yaml files for use in openapi related packages
 |  +- serialserver/
 |  +- tcpserver/

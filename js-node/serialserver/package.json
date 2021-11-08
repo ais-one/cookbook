@@ -1,6 +1,7 @@
 {
   "name": "@js-node/serialserver",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,7 +18,7 @@
     "serialport": "^9.2.4"
   },
   "devDependencies": {
-    "pkg": "^5.4.0"
+    "pkg": "^5.4.1"
   },
   "bin": "index.js",
   "pkg": {

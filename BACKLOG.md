@@ -3,6 +3,8 @@
 Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
+- [chore] npm 8 workspace implement after fix
+- [js-node] use ESM instead of CJS - https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 - [iaac-cicd] what best to use (terraform? or cloud service provider specific), GKE, Kubernetes
 - [js-node/expressjs] replace passport-saml?
   - https://github.com/tngan/samlify
