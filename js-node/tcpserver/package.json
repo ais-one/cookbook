@@ -12,7 +12,7 @@
   "dependencies": {
     "@es-labs/node": "file:../../@es-labs/node",
     "dotenv": "^10.0.0",
-    "knex": "^0.95.13",
+    "knex": "^0.95.14",
     "mysql": "^2.18.1"
   }
 }
