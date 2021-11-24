@@ -35,9 +35,9 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.9.4",
+    "@vitejs/plugin-vue": "^1.10.0",
     "@vue/compiler-sfc": "^3.2.22",
-    "cypress": "^9.0.0",
+    "cypress": "^9.1.0",
     "dotenv": "^10.0.0",
     "eslint": "^8.3.0",
     "eslint-config-prettier": "^8.3.0",

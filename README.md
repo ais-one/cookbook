@@ -64,12 +64,15 @@ Useful plugins if using VS Code
 - ESLint
 - GitLens
 - Live Server
-- MongoDB for VS Code
 - REST Client
-- SonarLint
+- SonarLint (requires java)
 - SSH FS
 - Vetur (for VueJS)
 - Prettier (disabled)
+- vscode-database-client
+- NO LONGER NEEDED
+  - mongodb
+  - sqlite
 
 ## Download
 
