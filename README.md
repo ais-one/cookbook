@@ -59,17 +59,20 @@ AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 ## Optional VS Code Plugins
 
 Useful plugins if using VS Code
-- Docker
-- es6-string-html
-- ESLint
-- GitLens
-- Live Server
-- REST Client
-- SonarLint (requires java)
-- SSH FS
-- Vetur (for VueJS)
-- Prettier (disabled)
-- vscode-database-client
+- Essentials
+  - Docker
+  - Live Server
+  - REST Client
+  - SSH FS
+  - vscode-database-client
+- Recommended
+  - SonarLint (requires java)
+  - GitLens
+- JS Language Specific
+  - es6-string-html
+  - ESLint
+  - Prettier (disabled)
+  - Vetur -> Volar (for VueJS)
 - NO LONGER NEEDED
   - mongodb
   - sqlite
