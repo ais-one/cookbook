@@ -73,7 +73,8 @@ Useful plugins if using VS Code
   - ESLint
   - Prettier (disabled)
   - Vetur -> Volar (for VueJS)
-- NO LONGER NEEDED
+- NOT NEEDED
+  - thunder client (REST API)
   - mongodb
   - sqlite
 
