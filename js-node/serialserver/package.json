@@ -18,7 +18,7 @@
     "serialport": "^9.2.4"
   },
   "devDependencies": {
-    "pkg": "^5.4.1"
+    "pkg": "^5.5.1"
   },
   "bin": "index.js",
   "pkg": {
