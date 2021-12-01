@@ -30,7 +30,7 @@
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.0.4",
     "knex": "^0.95.14",
-    "mongodb": "^4.2.0",
+    "mongodb": "^4.2.1",
     "mysql": "^2.18.1",
     "otplib": "^12.0.1",
     "sqlite3": "^5.0.2",
