@@ -45,7 +45,7 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.1.1",
+    "eslint-plugin-vue": "^8.2.0",
     "prettier": "^2.5.1",
     "start-server-and-test": "^1.14.0",
     "vite": "^2.6.14"
