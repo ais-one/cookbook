@@ -1,5 +1,5 @@
 import React, { SyntheticEvent, useState } from 'react'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 // import axios from 'axios'
 
 import '../Login.css'
@@ -24,7 +24,7 @@ const Register = () => {
   }
 
   return (
-    redirect ? <Redirect to={'/login'} /> :
+    redirect ? <Navigate to={'/login'} /> :
     <main className="form-signin">
       <form onSubmit={submit}>
         <h1 className="h3 mb-3 fw-normal">Please Register</h1>

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import Register from './pages/Register'
 import Login from './pages/Login'
@@ -20,20 +20,22 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Route path={'/'} exact component={Dashboard} />
-        <Route path={'/register'} component={Register} />
-        <Route path={'/login'} component={Login} />
-        <Route path={'/users'} exact component={Users} />
-        <Route path={'/users/create'} component={UsersCreate} />
-        <Route path={'/users/:id/edit'} component={UsersEdit} />
-        <Route path={'/roles'} exact component={Roles} />
-        <Route path={'/roles/create'} component={RolesCreate} />
-        <Route path={'/roles/:id/edit'} component={RolesEdit} />
-        <Route path={'/products'} exact component={Products} />
-        <Route path={'/products/create'} component={ProductsCreate} />
-        <Route path={'/products/:id/edit'} component={ProductsEdit} />
-        <Route path={'/orders'} exact component={Orders} />
-        <Route path={'/profile'} exact component={Profile} />
+        <Routes>
+        <Route path={'/'} element={<Dashboard />} />
+        <Route path={'/register'} element={<Register />} />
+        <Route path={'/login'} element={<Login />} />
+        <Route path={'/users'} element={<Users />} />
+        <Route path={'/users/create'} element={<UsersCreate />} />
+        <Route path={'/users/:id/edit'} element={<UsersEdit />} />
+        <Route path={'/roles'} element={<Roles />} />
+        <Route path={'/roles/create'} element={<RolesCreate />} />
+        <Route path={'/roles/:id/edit'} element={<RolesEdit />} />
+        <Route path={'/products'} element={<Products />} />
+        <Route path={'/products/create'} element={<ProductsCreate />} />
+        <Route path={'/products/:id/edit'} element={<ProductsEdit />} />
+        <Route path={'/orders'} element={<Orders />} />
+        <Route path={'/profile'} element={<Profile />} />
+        </Routes>
      </BrowserRouter>
     </div>
   );

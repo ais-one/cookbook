@@ -46,7 +46,7 @@ const Roles = () => {
                   <td>{role.name}</td>
                   <td>
                     <div className="btn-group mr-2">
-                      <Link to={`/roles/${role.id}/edit`}href="#" className="btn btn-sm btn-outline-secondary">Edit</Link>
+                      <Link to={`/roles/${role.id}/edit`} className="btn btn-sm btn-outline-secondary">Edit</Link>
                       <a href="#" className="btn btn-sm btn-outline-secondary" onClick={() => del(role.id)}>Delete</a>
                     </div>
                   </td>

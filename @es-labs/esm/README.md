@@ -38,6 +38,9 @@ npm publish --access public
 
 ## Useful aliasing for web components
 
+
+browser may already have these useful...
+
 const $ = (selector, el = document) => el.querySelector(selector)
 const $$ = (selector, el = document) => el.querySelectorAll(selector)
 

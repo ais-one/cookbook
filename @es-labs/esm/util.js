@@ -17,16 +17,6 @@ function downloadData(content, filename, type = 'text/csv;charset=utf-8;') {
   }
 }
 
-// https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable
-function jsonToCsv (items) {
-  const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
-  const header = Object.keys(items[0])
-  return [
-    header.join(','), // header row first
-    ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
-  ].join('\r\n')
-}
-
 // call only after X ms has passed
 // Sample Usage
 // searchIdDom.addEventListener('input', debounce(makeApiFetch, 1000))
@@ -55,6 +45,9 @@ function throttle(fn, wait) {
   }
 }
 
+// https://www.samanthaming.com/tidbits/94-how-to-check-if-object-is-empty/
+const emptyObject = value => value && Object.keys(value).length === 0 && value.constructor === Object // check if object is empty, also false if not object
+
 function isEmail(email) {
   // return /[\w\d\.-]+@[\w\d\.-]+\.[\w\d\.-]+/.test(email)
   return /[\w\d-]+@[\w\d-]+\.[\w\d-]+/.test(email)
@@ -63,17 +56,44 @@ function isEmail(email) {
 // universal end-of-line splitter
 // .split(/\r?\n/)
 
-const obj2Qs = (obj) =>
+// https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable
+function jsonToCsv (items) {
+  const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+  const header = Object.keys(items[0])
+  return [
+    header.join(','), // header row first
+    ...items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','))
+  ].join('\r\n')
+}
+
+const objectToQueryString = (obj) =>
   Object.keys(obj)
     .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]))
     .join('&')
 
-const utf8toBase64 = (str) => Buffer.from(str, 'utf8').toString('base64')
-const base64toUtf8 = (str) => Buffer.from(str, 'base64').toString('utf8')
+const rebaseString = (str, from, to) => Buffer.from(str, from).toString(to) // base64, utf8
 
-const foo = Math.PI + Math.SQRT2
+// NOSONAR
+// Description: traverse a JSON object and transform the nodes. object will be mutated
+//
+// Usage:
+// let testObj = [
+//   1, 2, [3, { 'a': 5, 'b': [6, 7, { 'c': 8}] }], { 'd': 9}
+// ]
+// const testFn = (x) => typeof x === 'number' ? x * 2 : x
+// traverseJson(testObj, testFn)
+// console.log(testObj)
+//
+const traverseJson = (json, fn, parent = null, key = null) => {
+  if (typeof json === 'object') {
+    if (Array.isArray(json)) {
+      json.forEach((item, index) => traverseJson(item, fn, json, index))
+    } else if (json.constructor === Object) {
+      for (const k in json) traverseJson(json[k], fn, json, k)
+    }
+  } else {
+    if (typeof parent === 'object' && key !== null) parent[key] = fn(json)
+  }
+}
 
-// https://www.samanthaming.com/tidbits/94-how-to-check-if-object-is-empty/
-const emptyObject = value => value && Object.keys(value).length === 0 && value.constructor === Object // check if object is empty, also false if not object
-
-export { foo, jsonToCsv, downloadData, debounce, throttle, isEmail, obj2Qs, emptyObject }
+export { debounce, downloadData, emptyObject, isEmail, jsonToCsv, objectToQueryString, rebaseString, throttle, traverseJson }

@@ -2,7 +2,7 @@ import React, { SyntheticEvent, useState } from 'react'
 import axios from 'axios'
 
 import Wrapper from '../../components/Wrapper'
-import { Redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import ImageUpload from '../../components/ImageUpload'
 
 const ProductsCreate = () => {
@@ -20,7 +20,7 @@ const ProductsCreate = () => {
     setRedirect(true)
   }
 
-  if (redirect) return <Redirect to="/products" />
+  if (redirect) return <Navigate to="/products" />
   return (
     <Wrapper>
       <form onSubmit={submit}>

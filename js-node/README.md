@@ -19,8 +19,6 @@ Below are a list of NodeJS applications
   - tcp server - event (close after receiving packet from client)
     - knex & mysql
 - wip
-  - fido2
-  - k8s
   - kafkaRx.js
     - kafka consumer
     - requires kafka to run (see /docker-devenv/kafka)

@@ -1,6 +1,7 @@
 {
   "name": "@js-node/serialserver",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,12 +11,14 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "serialport": "^9.2.4",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5"
   },
+  "not-working": {
+    "serialport": "^9.2.4"
+  },
   "devDependencies": {
-    "pkg": "^5.4.0"
+    "pkg": "^5.5.1"
   },
   "bin": "index.js",
   "pkg": {

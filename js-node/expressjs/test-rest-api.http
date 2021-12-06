@@ -47,3 +47,25 @@ content-type: application/json
 {
   "bye": "everybody"
 }
+
+### use data from file
+# POST http://127.0.0.1:3000/api/test-xml
+# content-type: application/xml
+#
+# < ./demo.xml
+
+
+### Multipart Form Sample
+# POST https://api.example.com/user/upload
+# Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+# ------WebKitFormBoundary7MA4YWxkTrZu0gW
+# Content-Disposition: form-data; name="text"
+
+# title
+# ------WebKitFormBoundary7MA4YWxkTrZu0gW
+# Content-Disposition: form-data; name="image"; filename="1.png"
+# Content-Type: image/png
+
+# < ./1.png
+# ------WebKitFormBoundary7MA4Y
