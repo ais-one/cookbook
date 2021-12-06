@@ -2,8 +2,8 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [js-web/react-admin] update to react-router-dom v6
 - [js-node/nest-microservice] removed, refer to the github projects instead in [README.md](README.md)
-- TBD
-  - remove knex & mysql from js-node/tcpserver
+- [chore] updated list of useful VS Code plugins [README.md](README.md)
+
 ### Version 0.6.8
 - [chore] update packages & cleanup & work on improving documentation
 - [js-web/vue-vite] integrate [https://github.com/ais-one/favv/vitevue](https://github.com/ais-one/favv/vitevue) to [js-web/vue-vite](js-web/vue-vite)

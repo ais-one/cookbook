@@ -50,13 +50,13 @@
     "pdfkit": "^0.13.0",
     "selfsigned": "^1.10.11",
     "serve-index": "^1.9.1",
-    "swagger-ui-express": "^4.1.6",
+    "swagger-ui-express": "^4.2.0",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "eslint": "^8.3.0",
-    "jest": "^27.4.2",
+    "eslint": "^8.4.0",
+    "jest": "^27.4.3",
     "node-mocks-http": "^1.11.0",
     "nodemon": "^2.0.15",
     "supertest": "^6.1.6"
