@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "eslint": "^8.4.0",
+    "eslint": "^8.4.1",
     "jest": "^27.4.3",
     "node-mocks-http": "^1.11.0",
     "nodemon": "^2.0.15",
