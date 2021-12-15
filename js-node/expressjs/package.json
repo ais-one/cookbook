@@ -21,8 +21,8 @@
   "dependencies": {
     "@es-labs/esm": "file:../../@es-labs/esm",
     "@es-labs/node": "file:../../@es-labs/node",
-    "@sentry/node": "^6.16.0",
-    "@sentry/tracing": "^6.16.0",
+    "@sentry/node": "^6.16.1",
+    "@sentry/tracing": "^6.16.1",
     "axios": "^0.24.0",
     "base64url": "^3.0.1",
     "connect-history-api-fallback": "^1.6.0",
@@ -56,7 +56,7 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "eslint": "^8.4.1",
-    "jest": "^27.4.3",
+    "jest": "^27.4.5",
     "node-mocks-http": "^1.11.0",
     "nodemon": "^2.0.15",
     "supertest": "^6.1.6"
