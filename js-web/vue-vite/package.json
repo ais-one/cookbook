@@ -19,7 +19,7 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
     "@antv/data-set": "^0.11.8",
-    "@antv/g2": "^4.1.36",
+    "@antv/g2": "^4.1.37",
     "@antv/g2plot": "^2.4.5",
     "@antv/g6": "^4.5.1",
     "@sentry/tracing": "^6.16.1",
@@ -41,7 +41,7 @@
     "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-cypress": "^2.12.1",
-    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.2.0",
