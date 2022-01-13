@@ -47,7 +47,7 @@
     "passport": "^0.5.2",
     "passport-saml": "^3.2.0",
     "pdfkit": "^0.13.0",
-    "selfsigned": "^1.10.11",
+    "selfsigned": "^2.0.0",
     "serve-index": "^1.9.1",
     "swagger-ui-express": "^4.3.0",
     "yamljs": "^0.3.0"
@@ -58,7 +58,7 @@
     "jest": "^27.4.7",
     "node-mocks-http": "^1.11.0",
     "nodemon": "^2.0.15",
-    "supertest": "^6.1.6"
+    "supertest": "^6.2.1"
   },
   "repository": {
     "type": "git",
