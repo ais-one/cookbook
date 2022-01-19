@@ -90,7 +90,9 @@ cd cookbook
 
 Install dependencies for all workspaces!
 
-Note when doing npm i, it will always install latest version matching your package
+Note
+- when doing npm i, it will always install latest version matching your package
+- sometimes you need to **rebuild**, delete all node_modules folders and the package-lock.json file in the root 
 
 ```bash
 # https://github.com/npm/cli/issues/708
@@ -113,6 +115,16 @@ npm i --legacy-peer-deps
 # use npm ls to check on actual versions installed
 npm ls 
 ```
+
+## Install for single workspace
+
+```
+npm i @vscode/sqlite3 --workspace=@es-labs/node
+
+npm i lorem-ipsum --workspace=@es-labs/node
+```
+
+---
 
 ## ExpressJS Backend Setup & Run - development environment
 
@@ -208,8 +220,16 @@ Refer to link below on how to try out...
   - [js-node/expressjs/router/saml.js](js-node/expressjs/router/saml.js)
   - [js-node/expressjs/router/oidc.js](js-node/expressjs/router/oidc.js)
   - [js-node/expressjs/router/oauth.js](js-node/expressjs/router/oauth.js) **requires setup of github account and config setup here**
-- You can test out on the [js-web/vue-vite](js-web/vue-vite) Signin UI, clicking on SAML button / OIDC button / OAuth (github) button to see redirect callback
-  - Use the following username / password credentials for SAML and OIDC... test-user / password
+- You can test out on the [js-web/vue-vite](js-web/vue-vite) Signin UI,
+  - Use the following username / password credentials
+    - for simple Login...
+      - just clock on Login button, credentials test / test is already prefilled
+      - then click on OTP button, the OTP 111111 is already prefilled
+    - for SAML and OIDC... test-user / password
+      - redirect to a keycloak IDP
+    - for OAuth (Github), you need to configure your github settings (not recommended for starting out)
+        - redirect to  github login
+    - for Mock user login, just click on Mock button
 
 ---
 
