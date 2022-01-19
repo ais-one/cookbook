@@ -23,7 +23,7 @@
     "@es-labs/node": "file:../../@es-labs/node",
     "@sentry/node": "^6.16.1",
     "@sentry/tracing": "^6.16.1",
-    "axios": "^0.24.0",
+    "axios": "^0.25.0",
     "base64url": "^3.0.1",
     "connect-history-api-fallback": "^1.6.0",
     "cookie-parser": "^1.4.6",
@@ -54,11 +54,11 @@
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
-    "eslint": "^8.6.0",
+    "eslint": "^8.7.0",
     "jest": "^27.4.7",
     "node-mocks-http": "^1.11.0",
     "nodemon": "^2.0.15",
-    "supertest": "^6.2.1"
+    "supertest": "^6.2.2"
   },
   "repository": {
     "type": "git",

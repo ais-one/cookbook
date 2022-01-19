@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^11.0.0",
+    "dotenv": "^14.2.0",
     "winston": "^3.4.0",
     "winston-daily-rotate-file": "^4.5.5"
   },
@@ -18,7 +18,7 @@
     "serialport": "^9.2.4"
   },
   "devDependencies": {
-    "pkg": "^5.5.1"
+    "pkg": "^5.5.2"
   },
   "bin": "index.js",
   "pkg": {
