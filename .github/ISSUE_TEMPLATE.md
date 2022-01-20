@@ -1,6 +1,6 @@
 <!--
 ATTENTION! WE WILL HAVE TO CLOSE THIS ISSUE if you don't provide the needed information.
-Please read https://github.com/ais-one/cookbook/blob/master/CONTRIBUTING.md before opening an issue.
+Please read https://github.com/ais-one/cookbook/blob/master/.github/CONTRIBUTING.md before opening an issue.
 -->
 
 ### Issue type
@@ -13,6 +13,9 @@ Please read https://github.com/ais-one/cookbook/blob/master/CONTRIBUTING.md befo
 
 ### Issue description
 
+**Environment:**
+<!-- Describe your environment in detail. e.g. OS, application (e.g. chrome) type and version, library versions -->
+
 **Current behavior:**
 <!-- Describe how the bug manifests. -->
 
@@ -20,7 +23,7 @@ Please read https://github.com/ais-one/cookbook/blob/master/CONTRIBUTING.md befo
 <!-- Describe what the behavior would be without the bug. -->
 
 **Steps to reproduce:**
-<!--  Please explain the steps required to duplicate the issue, especially if you are able to provide a sample application. -->
+<!--  Please explain the steps required to duplicate the issue, especially if you are able to provide a sample application -->
 
 **Related code:**
 <!-- 
@@ -32,6 +35,7 @@ StackBlitz (https://stackblitz.com)
 
 Plunker (http://plnkr.co/edit/cpeRJs?p=preview)
 
+Codesandbox (https://codesandbox.io/)
 -->
 
 ```
