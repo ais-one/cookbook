@@ -1,3 +1,6 @@
+### Version 0.6.10
+- [chore] update packages & cleanup & work on improving documentation
+
 ### Version 0.6.9
 - [chore] update packages & cleanup & work on improving documentation
 - [js-web/react-admin] update to react-router-dom v6
