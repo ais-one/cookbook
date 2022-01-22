@@ -20,7 +20,7 @@
   "devDependencies": {
     "pkg": "^5.5.2"
   },
-  "bin": "index.js",
+  "bin": "serial-server.js",
   "pkg": {
     "assets": [
       "node_modules/**/*",

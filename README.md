@@ -10,9 +10,7 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.10](https://github.com/ais-one/cookbook/releases/tag/0.6.10) - Released 2022 January 20 1030 +8GMT
-
-- upgrade to react-router-dom 6, update list of useful VS Code plugins
+Latest Version [0.6.11](https://github.com/ais-one/cookbook/releases/tag/0.6.11) - Released 2022 February 20 1030 +8GMT
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
@@ -20,7 +18,7 @@ Considerations for this project are similar to [favv](https://github.com/ais-one
 - this repo is more of a cookbook and recipes are constantly being improved and updated
 - [favv](https://github.com/ais-one/favv) backend is written in Python, they can be used to improve on each other
 
-We do not use Typescript in most folders because TS people can understand JS easily, but JS-only people need to pickup TS and its ecosystem. However, we use Typescript for ReactJS and NestJS applications
+We use Typescript in the ReactJS and NestJS example application
 
 # Features
 
@@ -54,6 +52,18 @@ AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 - Npm 8+ (using workspaces)
 - For Windows, **integrate bash shell to cmd shell** (when installing git), or use git-bash
 - Docker
+
+**Updating npm on Windows**
+
+Open Powershell in administrator mode and run the following
+
+```
+Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
+npm install -g npm-windows-upgrade
+npm-windows-upgrade
+```
+
+Select v8.3.2 or higher
 
 ## Optional VS Code Plugins
 

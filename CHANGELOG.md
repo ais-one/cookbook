@@ -1,3 +1,6 @@
+### Version 0.6.11
+- [chore] update packages & cleanup & work on improving documentation
+
 ### Version 0.6.10
 - [chore] update packages & cleanup & work on improving documentation
 
