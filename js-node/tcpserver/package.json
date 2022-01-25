@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@es-labs/node": "file:../../@es-labs/node",
-    "dotenv": "^14.2.0",
+    "dotenv": "^14.3.0",
     "knex": "^1.0.1",
     "mysql": "^2.18.1"
   }
