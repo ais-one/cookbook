@@ -26,7 +26,7 @@
     "@sentry/vue": "^6.16.1",
     "ant-design-vue": "^2.2.8",
     "echarts": "^5.2.2",
-    "firebase": "^9.6.3",
+    "firebase": "^9.6.5",
     "leaflet": "^1.7.1",
     "pinia": "^2.0.9",
     "rxjs": "^7.5.2",
