@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^14.3.0",
-    "winston": "^3.4.0",
+    "dotenv": "^15.0.0",
+    "winston": "^3.5.1",
     "winston-daily-rotate-file": "^4.6.0"
   },
   "not-working": {
