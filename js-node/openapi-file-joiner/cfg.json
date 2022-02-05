@@ -1,0 +1,13 @@
+{
+  "mode": "dev",
+  "prod": {
+    "OPENAPI_FOLDER": "../../js-node/expressjs/apps/app-template/openapi",
+    "OPENAPI_BASEFILE": "example.yaml",
+    "OUTPUT_FILE": "example.output.yaml"
+  },
+  "dev": {
+    "OPENAPI_FOLDER": "sample",
+    "OPENAPI_BASEFILE": "index.yaml",
+    "OUTPUT_FILE": "index.output.yaml"  
+  }
+}

@@ -1,5 +1,82 @@
-### References
+## Long Running Applications
 
+
+### TCP Server
+
+`tcp_server.js` is a TCP server application that supports both event and streaming connections
+
+The following are the `.env` settings
+
+```
+TCP_PORT=4000
+TCP_HOST=0.0.0.0
+TCP_APPNAME=stream-app
+TCP_STREAMING_MODE=1
+TCP_CLIENT_LIMIT=100
+```
+
+TCP_APPNAME is the filename to be used
+
+TCP_STREAMING_MODE
+- event mode closes client after data is received
+- streaming mode keeps client open, it can be configured to handle a limited number of clients
+
+TCP_CLIENT_LIMIT
+- limits number of TCP connections
+- 0 means unlimited connections
+
+
+Run using the following command
+
+```bash
+$ node tcp_server.js
+```
+---
+
+### Scaled Websockets
+
+`scaled-ws.js` is use to demonstrate horizontal scaling of websockets using Redis PubSub, it also includes
+- upgrade event and authentication
+- setting an id
+
+#### References
+
+- https://tsh.io/blog/how-to-scale-websocket/
+- https://socket.io/docs/v4/using-multiple-nodes
+- https://socket.io/docs/v4/adapter
+- https://redislabs.com/blog/how-to-create-notification-services-with-redis-websockets-and-vue-js/
+- https://www.shebanglabs.io/horizontal-scaling-websocket-on-kubernetes-and-nodejs/
+- https://www.telerik.com/blogs/websockets-vs-server-sent-events (Websockets vs SSE)
+
+#### Usage
+
+Redis should be available on its default port on localhost
+
+```
+npm i
+npm start -- 3000
+npm start -- 3001
+```
+
+Use the following website to test
+
+https://www.websocket.org/echo.html
+
+connect 3 clients to 3000
+connect 2 clients to 3001
+
+See output when sending message from a client (currently client that sent will also receive its own message)
+
+#### Notes
+
+If going through a proxy such as load balancer, need sticky sessions
+
+TBD: handle duplicate message to message originator client on subscription message
+
+
+---
+
+### References
 
 pm2 logs --timestamp --raw
 

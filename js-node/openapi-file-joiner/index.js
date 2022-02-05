@@ -3,13 +3,14 @@
 const resolve = require('json-refs').resolveRefs
 const YAML = require('js-yaml')
 const fs = require('fs')
-require('dotenv').config()
 
+const cfgJson = require('./cfg.json')
+const config = cfgJson[cfgJson.mode]
 
-process.chdir(process.env.OPENAPI_FOLDER)
+process.chdir(config.OPENAPI_FOLDER)
 // console.log(process.cwd())
 
-const file = process.env.OPENAPI_BASEFILE
+const file = config.OPENAPI_BASEFILE
 const root = YAML.load(fs.readFileSync(file).toString())
 const options = {
   filter        : ['relative', 'remote'],
@@ -22,5 +23,5 @@ const options = {
 resolve(root, options).then(function (results) {
   const yamlStr = YAML.dump(results.resolved) // yaml
   //NOSONAR console.log(JSON.stringify(results.resolved, null, 2)) // json
-  fs.writeFileSync(process.env.OUTPUT_FILE, yamlStr)
+  fs.writeFileSync(config.OUTPUT_FILE, yamlStr)
 })

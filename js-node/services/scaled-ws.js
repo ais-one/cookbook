@@ -26,7 +26,7 @@ const wss = new WebSocket.Server({ noServer: true, path: WEB_SOCKET_PATH }) // e
 wss.on('connection', (ws, req) => {
   console.log('onconnnect', req.url)
 
-  ws.id =Date.now() // we could generate ID from JWT decoded in upgrade
+  ws.id = Date.now() // we could generate ID from JWT decoded in upgrade
 
   ws.on('message', (data, isBinary) => {
     console.log(`incoming message from ${ws.id}: `, data.toString('utf-8'))

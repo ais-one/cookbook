@@ -31,8 +31,7 @@ Folder | Description | Features
 [js-node/expressjs](js-node/expressjs) | **Base ExpressJS application**<br>(REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Objection ORM (**removed**), Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
 [js-node/expressjs/apps/app-template](js-node/expressjs/apps/app-template) | Custom application (**app-template**)<br>built on [Base ExpressJS application](js-node/expressjs) | - [config] app configs<br>- [controllers] <br>- [models] <br>- [openapi] OpenAPI yamls<br>- [routes] API routes (also websocket handlers)<br>- [services] services to startup/shutdown<br>- [tables] config tables for generic table crud (t4t)<br>- [tests] folder for tests<br>- [graphql-schema.js] application GraphQL codes
 [js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)<br>- Fido & Webauthn
-[js-node/*](js-node) | **Other Backend applications** | - [TCP server](js-node/tcpserver) (event/stream)<br>- [Scalable Websocket](js-node/scaled-ws) with Redis Pubsub<br>- [Serial server](js-node/serialserver)<br>- [openapi-file-joiner](js-node/openapi-file-joiner) combine OpenAPI files
-[js-node/wip](js-node/wip) | Work In Progress | - Kafka consumer/producer<br>- cron / long-running process example
+[js-node/*](js-node) | **Other Backend applications** | - [Services](js-node/services) (event/stream)<br>- [Scalable Websocket](js-node/scaled-ws) with Redis Pubsub<br>- [Serial server](js-node/serialserver)<br>- [openapi-file-joiner](js-node/openapi-file-joiner) combine OpenAPI files
 [js-node/nest-admin](js-node/nest-admin) | https://www.udemy.com/course/react-nest-admin | example application (e-commerce) backend using NestJS, for use with [js-web/react-admin](js-web/react-admin)
 Nest Microservice | Reference | https://github.com/Denrox/nestjs-microservices-example<br>https://www.merixstudio.com/blog/microservice-nestjs/
 [js-node/nest-cqrs](js-node/nest-cqrs) | TBD Implement CQRS | https://docs.nestjs.com/recipes/cqrs
@@ -304,8 +303,7 @@ npm run start --workspace=js-web/react-admin
 |  +- nest-admin/
 |  +- openapi-file-joiner/ : pre-process utility to combine openapi yaml files for use in openapi related packages
 |  +- serialserver/
-|  +- tcpserver/
-|  +- wip/ : projects in progress
+|  +- services/: TCP server, kafka, long running / cron processes
 |  +- worker-threads/ : demo on use of worker threads
 +- js-web
 |  +- react-admin/

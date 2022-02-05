@@ -28,7 +28,7 @@ module.exports = {
     }
   },
 
-  onData: (data, client) => {
+  onData: (data, client, server) => {
     if (!dbReady) return
     //NOSONAR console.log('processData', data, typeof data)
     // data = '162,727.75,11243960,6,1.3523782,103.7447128,0.00,0.00,0.00,0.00,0.00,0.00,0.00,,0,1,1,1,0,18.90,18.90,4964' // testing

@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^15.0.0",
+    "@es-labs/node": "file:../../@es-labs/node",
     "winston": "^3.5.1",
     "winston-daily-rotate-file": "^4.6.0"
   },
