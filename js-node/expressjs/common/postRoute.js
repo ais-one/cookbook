@@ -11,7 +11,14 @@ module.exports = function (app, express, options) {
     UPLOAD_STATIC.forEach(item => {
       const { url, folder, list, listOptions } = item
       if (url && folder) {
-        app.use(url, express.static(folder))
+        app.use(
+          url,
+          (req, res, next) => { // TBD add auth here...
+            console.log(req.query)
+            next() 
+          },
+          express.static(folder)
+        )
         if (list) app.use(url, serveIndex(folder, listOptions)) // allow file and directory to be listed
       }
     })

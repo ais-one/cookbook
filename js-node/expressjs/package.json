@@ -54,7 +54,7 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "eslint": "^8.8.0",
-    "jest": "^27.4.7",
+    "jest": "^27.5.0",
     "node-mocks-http": "^1.11.0",
     "nodemon": "^2.0.15",
     "supertest": "^6.2.2"
