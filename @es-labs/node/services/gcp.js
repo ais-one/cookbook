@@ -1,8 +1,5 @@
 'use strict'
 
-let storage
-let bucket
-
 // NOSONAR Set CORs
 // [
 //     {
@@ -16,15 +13,12 @@ let bucket
 // gsutil cors set [JSON_FILE_NAME].json gs://[BUCKET_NAME]
 // gsutil cors get gs://[BUCKET_NAME]
 
-exports.setupStorage = (options = global.CONFIG) => {
-  const { GCP_DEFAULT_BUCKET, GCP_SERVICE_KEY } = options || {}
-  if (!storage && GCP_SERVICE_KEY && GCP_SERVICE_KEY.project_id) {
-    const { Storage } = require('@google-cloud/storage')
-    const { client_email, private_key } = GCP_SERVICE_KEY
-    storage = new Storage({ credentials: { client_email, private_key } })
-    bucket = GCP_DEFAULT_BUCKET
-  }  
-}
+const { Storage } = require('@google-cloud/storage')
+let { GCP_DEFAULT_BUCKET, GCP_SERVICE_KEY } = process.env
+GCP_SERVICE_KEY = JSON.parse(GCP_SERVICE_KEY || null)
+const { client_email, private_key } = GCP_SERVICE_KEY
+const storage = new Storage({ credentials: { client_email, private_key } })
+const bucket = GCP_DEFAULT_BUCKET
 
 exports.getSignedUrl = async (req,res) => { // test upload/get with cloud opject storage using SignedURLs
   // action "read" (HTTP: GET), "write" (HTTP: PUT), or "delete" (HTTP: DELETE),

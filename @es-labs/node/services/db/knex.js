@@ -4,9 +4,8 @@
 const Knex = require('knex')
 
 module.exports = class StoreKnex {
-	constructor(options = global.CONFIG) {
-    const { KNEXFILE } = options || {}
-    this.KNEXFILE = KNEXFILE
+	constructor(options = JSON.parse(process.env.KNEXFILE || null) || {}) {
+    this.KNEXFILE = options
     this.knex = null
   }
 

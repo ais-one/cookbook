@@ -45,6 +45,6 @@ module.exports = function(options) {
     .then(data => (!args[1].headersSent) && args[1].status(500).json(data || { 'error-route': args[0].originalUrl })) // we return an error still
     .catch(args[2]) //  proceed to error handler
 
-  const { STACK_TRACE_LIMIT = 1 } = options
+  const { STACK_TRACE_LIMIT = 10 } = options
   Error.stackTraceLimit = STACK_TRACE_LIMIT // limit error stack trace to 1 level
 }

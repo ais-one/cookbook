@@ -2,11 +2,11 @@
 
 let agenda
 
-exports.open = (options = global.CONFIG) => {
+exports.open = (options = process.env) => {
   if (!agenda) {
-    const { MONGO_URL, JOB_TYPES, JOB_PATH, JOB_MONGO_URL, JOB_COLLECTION } = options || {}
+    const { APP_PATH, APP_NAME, JOB_TYPES, JOB_MONGO_URL, JOB_COLLECTION } = process.env 
 
-    const address = JOB_MONGO_URL || MONGO_URL
+    const address = JOB_MONGO_URL
     const jobTypes = JOB_TYPES ? JOB_TYPES.split(',') : []
     if (jobTypes.length && address && JOB_COLLECTION) {
       const { Agenda } = require('agenda')
@@ -21,7 +21,8 @@ exports.open = (options = global.CONFIG) => {
         }
       }
       agenda = new Agenda(connectionOpts)
-      jobTypes.forEach(type => {
+      const JOB_PATH = APP_PATH + '/apps/' + APP_NAME + '/jobs' // path to folder with the jobs
+          jobTypes.forEach(type => {
         require(`${JOB_PATH}/${type}`)(agenda)
       })
       agenda.start() // Returns a promise, which should be handled appropriately

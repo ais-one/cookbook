@@ -4,7 +4,8 @@ const axios = require('axios')
 const express = require('express')
 const { setTokensToHeader } = require('@es-labs/node/auth')
 
-const { OIDC_OPTIONS, AUTH_ERROR_URL } = global.CONFIG
+const { AUTH_ERROR_URL } = process.env
+const OIDC_OPTIONS = JSON.parse(process.env.OIDC_OPTIONS || null) || {}
 
 const AUTH_URL = OIDC_OPTIONS ? `${OIDC_OPTIONS.URL}/auth?` : ''
 const TOKEN_URL = OIDC_OPTIONS ? `${OIDC_OPTIONS.URL}/token` : ''

@@ -1,7 +1,7 @@
-module.exports = function(app, express, options) {
-  const { ENABLE_LOGGER } = options
-  const  { HELMET_OPTIONS, CORS_OPTIONS, CORS_ORIGINS } = options
-  const { COOKIE_SECRET = (parseInt(Date.now() / 28800000) * 28800000).toString() } = options
+module.exports = function(app, express) {
+  const {
+    ENABLE_LOGGER, CORS_OPTIONS, CORS_ORIGINS, HELMET_OPTIONS, COOKIE_SECRET = (parseInt(Date.now() / 28800000) * 28800000).toString()
+  } = process.env
 
   // ------ LOGGING ------
   if (ENABLE_LOGGER) {
@@ -51,10 +51,10 @@ module.exports = function(app, express, options) {
   // express-limiter, compression, use reverse proxy
 
   // ------ body-parser and-cookie parser ------
-  const { BODYPARSER_JSON, BODYPARSER_URLENCODED } = options
+  const { BODYPARSER_JSON, BODYPARSER_URLENCODED } = process.env
   // look out for... Unexpected token n in JSON at position 0 ... client request body must match request content-type, if applicaion/json, body cannot be null/undefined
-  app.use(express.json( BODYPARSER_JSON || { limit: '2mb' }))
-  app.use(express.urlencoded( BODYPARSER_URLENCODED || { extended: trnue, limit: '2mb' })) // https://stackoverflow.com/questions/29175465/body-parser-extended-option-qs-vs-querystring/29177740#29177740
+  app.use(express.json( JSON.parse(BODYPARSER_JSON || null) || { limit: '2mb' }))
+  app.use(express.urlencoded( JSON.parse(BODYPARSER_URLENCODED || null) || { extended: true, limit: '2mb' })) // https://stackoverflow.com/questions/29175465/body-parser-extended-option-qs-vs-querystring/29177740#29177740
 
   const cookieParser = require('cookie-parser')
   app.use(cookieParser(COOKIE_SECRET))
@@ -75,13 +75,13 @@ module.exports = function(app, express, options) {
   //     ]
   //   }
   // }
-  const { OPENAPI_PATH, OPENAPI_VALIDATOR } = options
+  const { OPENAPI_PATH, OPENAPI_VALIDATOR } = process.env
   if (OPENAPI_PATH) {
     const swaggerUi = require('swagger-ui-express')
     app.use('/api-docs1', swaggerUi.serve, swaggerUi.setup(require('yamljs').load(OPENAPI_PATH), { explorer: true }))
     if (OPENAPI_VALIDATOR) {
       const OpenApiValidator = require('express-openapi-validator')
-      app.use(OpenApiValidator.middleware(OPENAPI_VALIDATOR))  
+      app.use(OpenApiValidator.middleware(JSON.parse(OPENAPI_VALIDATOR)))
     }
   }
 

@@ -1,6 +1,7 @@
 'use strict'
 const axios = require('axios')
-const { OAUTH_OPTIONS, AUTH_ERROR_URL } = global.CONFIG
+const { AUTH_ERROR_URL } = process.env
+const OAUTH_OPTIONS = JSON.parse(process.env.OAUTH_OPTIONS || null) || {}
 const { userOps, createToken, setTokensToHeader } = require('@es-labs/node/auth')
 
 const express = require('express')

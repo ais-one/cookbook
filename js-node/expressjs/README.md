@@ -1,5 +1,8 @@
 ## Project Strcuture
 
+https://softwareengineering.stackexchange.com/questions/338597/folder-by-type-or-folder-by-feature
+https://kentcdodds.com/blog/how-i-structure-express-apps
+
 ```
 +- apps : custom apps are here in this folder
 |  +- app-template/ : sample custom application (prefixed with app-)

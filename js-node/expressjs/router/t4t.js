@@ -15,7 +15,7 @@ const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
 const { memoryUpload, storageUpload } = require(APP_PATH + '/common/upload')
-const { UPLOAD_STATIC, UPLOAD_MEMORY } = global.CONFIG
+const { UPLOAD_STATIC, UPLOAD_MEMORY } = process.env
 
 const processJson = async (req, res, next) => {
   if (req.files) { // it is formdata

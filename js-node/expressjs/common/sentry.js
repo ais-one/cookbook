@@ -1,8 +1,8 @@
 'use strict'
 let Sentry
 
-module.exports = function(app, options = {}) {
-  const { SENTRY_DSN, SENTRY_SAMPLE_RATE, SENTRY_REQOPTS } = options
+module.exports = function(app) {
+  const { SENTRY_DSN, SENTRY_SAMPLE_RATE, SENTRY_REQOPTS } = process.env
   if (SENTRY_DSN && !Sentry) {
     Sentry = require('@sentry/node')
     const Tracing = require("@sentry/tracing")
@@ -26,7 +26,7 @@ module.exports = function(app, options = {}) {
     })
     // RequestHandler creates a separate execution context using domains, so that every
     // transaction/span/breadcrumb is attached to its own Hub instance
-    app.use(Sentry.Handlers.requestHandler(SENTRY_REQOPTS))
+    app.use(Sentry.Handlers.requestHandler(JSON.parse(SENTRY_REQOPTS || null)))
     // TracingHandler creates a trace for every incoming request
     app.use(Sentry.Handlers.tracingHandler())
     // app.use(Sentry.Handlers.errorHandler({ shouldHandleError(error) { return error.status >= 500 ? true : false } })) // by default Sentry handles 500 errors

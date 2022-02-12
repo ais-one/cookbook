@@ -40,13 +40,16 @@ exports.send = (data) => {
   })
 }
 
-exports.open = (server=null, app=null, options=global.CONFIG) => {
-  const { WS_PORT, WS_KEEEPALIVE_MS, HTTPS_CERTS } = options || {}
+exports.open = (server=null, app=null) => {
+  const { WS_KEEEPALIVE_MS, WS_PORT } = process.env
+  const { HTTPS_PRIVATE_KEY, HTTPS_CERTIFICATE } = process.env
   let err
   try {
     if (!wss && WS_PORT) {
-      if (HTTPS_CERTS) {
-        if (!server) server = https.createServer(HTTPS_CERTS).listen(WS_PORT) // use same port, create server because of graphql subscriptions
+      if (HTTPS_CERTIFICATE) {
+        if (!server) server = https.createServer({
+          key: HTTPS_PRIVATE_KEY, cert: HTTPS_CERTIFICATE
+        }).listen(WS_PORT) // use same port, create server because of graphql subscriptions
         wss = new WebSocket.Server({ server })
       } else {
         if (!server) wss = new WebSocket.Server({ port: WS_PORT }) // use seperate port

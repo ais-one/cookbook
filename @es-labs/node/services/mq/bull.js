@@ -1,9 +1,9 @@
 'use strict'
-
+// TBD
 let queueMarketUpdates
 
-exports.open = (options = global.CONFIG) => {
-  const  { JOB_BULL } = options || {}
+exports.open = () => {
+  const  { JOB_BULL } = process.env
   if (JOB_BULL) {
     const Queue = require('bull')
     if (!queueMarketUpdates) {

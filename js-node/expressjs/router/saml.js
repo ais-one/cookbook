@@ -7,7 +7,8 @@ const express = require('express')
 const passport = require('passport')
 const { createToken, setTokensToHeader } = require('@es-labs/node/auth')
 
-const { AUTH_ERROR_URL, SAML_OPTIONS, SAML_JWT_MAP, SAML_DECRYPTION_CERT } = global.CONFIG
+const { SAML_OPTIONS, SAML_JWT_MAP, SAML_DECRYPTION_CERT } = global.CONFIG
+const { AUTH_ERROR_URL } = process.env
 
 let samlStrategy
 

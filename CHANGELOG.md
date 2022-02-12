@@ -1,5 +1,11 @@
 ### Version 0.6.11
 - [chore] update packages & cleanup & work on improving documentation
+- [js-node/expressjs] Breaking Change on configs
+  - use .env file for configs, move configs from `global` to `process.env`
+  - Mongo DB config format change, change ObjectID to ObjectId
+  - JWT_CERTS, JWT_REFRESH_CERTS, HTTPS_CERTS format change
+  - MONGO_OPTIONS, UPLOAD_STATIC change in format and processing
+
 
 ### Version 0.6.10
 - [chore] update packages & cleanup & work on improving documentation

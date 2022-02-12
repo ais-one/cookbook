@@ -14,11 +14,9 @@ const bull = require('@es-labs/node/services/mq/bull').get() // bull message que
 const gcp = require('@es-labs/node/services/gcp')
 const { memoryUpload, storageUpload } = require(APP_PATH + '/common/upload')
 
-const { UPLOAD_STATIC, UPLOAD_MEMORY, API_PORT, HTTPS_CERTS } = global.CONFIG
+const { API_PORT, UPLOAD_STATIC, UPLOAD_MEMORY, HTTPS_CERTIFICATE } = process.env
 
 const { authUser, setTokensToHeader } = require('@es-labs/node/auth')
-
-gcp.setupStorage(global.CONFIG)
 
 function openMissingFile() {
   fs.readFile('somefile4.txt', (err, data) => {
@@ -65,7 +63,7 @@ module.exports = express.Router({caseSensitive: true})
     Promise.reject(new Error('unhandled rejection of promise')) // call on.process unhandledRejection - promise rejection, unhandled
   }))
 
-  .get('/healthcheck', (req, res) => res.json({ message: 'OK', app: APP_NAME, environment: process.env.NODE_ENV, version: APP_VERSION, port: API_PORT, https: HTTPS_CERTS ? true : false }) ) // health check
+  .get('/healthcheck', (req, res) => res.json({ message: 'OK', app: APP_NAME, environment: process.env.NODE_ENV, version: APP_VERSION, port: API_PORT, https: Boolean(HTTPS_CERTIFICATE) }) ) // health check
 
   .post('/healthcheck', (req, res) => res.json({ message: 'POST OK' }) ) // POST health check
 
