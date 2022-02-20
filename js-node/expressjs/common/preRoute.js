@@ -1,4 +1,4 @@
-module.exports = function(app, express) {
+module.exports = (app, express) => {
   const {
     ENABLE_LOGGER, CORS_OPTIONS, CORS_ORIGINS, HELMET_OPTIONS, COOKIE_SECRET = (parseInt(Date.now() / 28800000) * 28800000).toString()
   } = process.env

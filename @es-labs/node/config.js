@@ -10,49 +10,13 @@ module.exports = async function(app_path) {
   }
 
   const { version, name } = require(path.join(app_path, 'package.json'))
-  global.APP_VERSION = version
-  global.APP_NAME = process.env.APP_NAME || process.argv[3] || 'app-template'
-  global.APP_PATH = path.join(app_path)
+  process.env.APP_VERSION = version
+  process.env.APP_NAME = process.env.APP_NAME || process.argv[3] || 'app-template'
+  process.env.APP_PATH = path.join(app_path)
+  // global.APP_PATH = path.join(app_path)
   
-  if (NODE_ENV && APP_PATH) {
-    global.CONFIG = { NODE_ENV: NODE_ENV }
+  if (NODE_ENV && process.env.APP_PATH) {
     // load defaults
-    try {
-      const defaultCfg = require('./config.default.js')
-      global.CONFIG = { ...CONFIG, ...defaultCfg }
-    } catch (e) {
-      console.log('missing default configuration file(s)', e.toString())
-    }
-
-    // load common config from file
-    try {
-      const commonEnv = require(path.join(APP_PATH, 'apps', APP_NAME, 'config', 'common.env.js'))
-      global.CONFIG = { ...CONFIG, ...commonEnv }
-    } catch (e) {
-      console.log('missing common configuration file(s)', e.toString())
-    }
-    // load specific config from file
-    try {
-      const specificEnv = require(path.join(APP_PATH, 'apps', APP_NAME, 'config', process.env.NODE_ENV + '.env.js'))
-      global.CONFIG = { ...CONFIG, ...specificEnv }
-    } catch (e) {
-      console.log('missing environment specific configuration file(s)', e.toString())
-    }
-    // load secret common config from file
-    try {
-      const commonEnv = require(path.join(APP_PATH, 'apps', APP_NAME, 'config', 'secret', 'common.env.js'))
-      global.CONFIG = { ...CONFIG, ...commonEnv }
-    } catch (e) {
-      console.log('missing common configuration file(s)', e.toString())
-    }
-    // load secret specific config from file
-    try {
-      const specificEnv = require(path.join(APP_PATH, 'apps', APP_NAME, 'config', 'secret', process.env.NODE_ENV + '.env.js'))
-      global.CONFIG = { ...CONFIG, ...specificEnv }
-    } catch (e) {
-      console.log('missing environment specific configuration file(s)', e.toString())
-    }
-
     if (VAULT && VAULT !== 'unused') {
       // let base64String = Buffer.from(originalString, 'utf8').toString('base64') // utf8 to base64
       try {
@@ -66,7 +30,7 @@ module.exports = async function(app_path) {
           // Get from Hashicorp Vault, can replace with other secrets manager
           // curl -s -H "X-Vault-Token: $token" $url
           const vaultRes = await axios.get(vault.url, { headers: { 'X-Vault-Token': vault.token } })
-          vaultConfig = vaultRes.data.data.data  
+          vaultConfig = vaultRes.data.data.data
         } else {
           console.log('environment unknown VAULT', VAULT)
         }

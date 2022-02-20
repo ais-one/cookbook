@@ -13,7 +13,7 @@ const app = express()
 
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 
-require('./common/init')(global.CONFIG)
+require('./common/init')()
 
 // setup graceful exit
 const handleExitSignal = async (signal) => await cleanup(`Signal ${signal}`, 0) // NOSONAR
@@ -76,7 +76,7 @@ const cleanup = async (message, exitCode = 0, coreDump = false, timeOutMs = 1000
 }
 
 // SERVICES
-const services = require(`./apps/${APP_NAME}/services`)
+const services = require(`./apps/${process.env.APP_NAME}/services`)
 services.start()
 
 // ROUTES
@@ -97,7 +97,7 @@ server.on('upgrade', (request, socket, head) => {
   console.log('upgrade event')
 })
 
-require('./common/postRoute')(app, express, global.CONFIG)
+require('./common/postRoute')(app, express)
 
 if (Sentry) app.use(Sentry.Handlers.errorHandler())
 

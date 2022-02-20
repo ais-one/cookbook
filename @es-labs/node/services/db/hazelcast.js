@@ -2,23 +2,24 @@
 const { Client, Predicates } = require('hazelcast-client')
 
 module.exports = class StoreHazelcast {
-	constructor(options = global.CONFIG) {
-    const { HAZELCAST } = options || {}
-    this.HAZELCAST = HAZELCAST
+	constructor(options = process.env.HAZELCAST) {
+    this.HAZELCAST = JSON.parse(options || null)
     this.hazelcast = {
       client: null
     }
   }
   async open() {
-    hazelcast.client = await Client.newHazelcastClient(
-      {
-        clusterName: this.HAZELCAST.name,
-        network: {
-          clusterMembers: [ this.HAZELCAST.url ]
-        },
-        lifecycleListeners: [ (state) => console.log('Lifecycle Event >>> ' + state) ]
-      }
-    )    
+    if (this.HAZELCAST) {
+      hazelcast.client = await Client.newHazelcastClient(
+        {
+          clusterName: this.HAZELCAST.name,
+          network: {
+            clusterMembers: [ this.HAZELCAST.url ]
+          },
+          lifecycleListeners: [ (state) => console.log('Lifecycle Event >>> ' + state) ]
+        }
+      )
+    }
   }
   close () {
     if (this.hazelcast.client) {

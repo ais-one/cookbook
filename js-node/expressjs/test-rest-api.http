@@ -69,3 +69,8 @@ content-type: application/json
 
 # < ./1.png
 # ------WebKitFormBoundary7MA4Y
+
+## Test Hashicorp Vault
+
+GET http://127.0.0.1:8200/v1/secret/data/test?version=1
+X-Vault-Token: roottoken

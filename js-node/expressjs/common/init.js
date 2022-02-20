@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function(options) {
+module.exports = () => {
   // set globals here
   // caution - avoid name clashes with native JS libraries, other libraries, other globals
 
@@ -45,6 +45,6 @@ module.exports = function(options) {
     .then(data => (!args[1].headersSent) && args[1].status(500).json(data || { 'error-route': args[0].originalUrl })) // we return an error still
     .catch(args[2]) //  proceed to error handler
 
-  const { STACK_TRACE_LIMIT = 10 } = options
+  const { STACK_TRACE_LIMIT = 10 } = process.env
   Error.stackTraceLimit = STACK_TRACE_LIMIT // limit error stack trace to 1 level
 }

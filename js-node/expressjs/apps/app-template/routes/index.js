@@ -2,6 +2,8 @@
 
 const router = require('express').Router()
 
+const { APP_NAME } = process.env
+
 // const websocket = require('@es-labs/node/services/websocket') // .open(null, null) // or set to null
 // websocket.setOnClientMessage = async (data, , isBinary ws, _wss) => { }
 // websocket.setOnClientCLose =  (ws) => { }

@@ -16,6 +16,7 @@ module.exports = function (app) {
     router.use('/fido', require('./fido')),
   )
 
+  const { APP_NAME } = process.env
   if (APP_NAME) require(`../apps/${APP_NAME}/routes`)(app)
   
   app.use('/api/**', (req, res) => res.status(404).json({error: 'Not Found'}))

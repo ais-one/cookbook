@@ -2,6 +2,7 @@ const request = require('supertest')
 const express = require('express')
 const app = express()
 const newCategory = require('../mock-data/new-category.json')
+const { APP_NAME, APP_PATH } = process.env
 
 let sqldb
 let keyv
@@ -22,8 +23,8 @@ beforeAll(async () => {
   const auth = require('@es-labs/node/auth')
   auth.setupAuth(keyv.get(), sqldb.get())
 
-  require(APP_PATH + '/common/init')(app, express, global.CONFIG)
-  require(APP_PATH + '/common/preRoute')(app, express, global.CONFIG)
+  require(APP_PATH + '/common/init')()
+  require(APP_PATH + '/common/preRoute')(app, express)
   require(APP_PATH + '/router')(app)
 
   const tokens = await auth.createToken({ id: 100, groups: 'TestGroup' })
@@ -31,7 +32,7 @@ beforeAll(async () => {
     Authorization: `Bearer ${tokens.access_token}`,
     refresh_token: tokens.refresh_token
   }
-  endpointUrl = `/api/${global.APP_NAME}/categories`
+  endpointUrl = `/api/${APP_NAME}/categories`
 })
 afterAll(async () => {
   await sqldb.close()

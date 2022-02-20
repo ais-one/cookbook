@@ -9,7 +9,7 @@ module.exports = class StoreKnex {
     this.knex = null
   }
 
-  async open(options = global.CONFIG) {
+  async open() {
     if (!this.KNEXFILE) console.log('KNEXFILE property empty or undefined - knex not started')
     else {
       try {

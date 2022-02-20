@@ -4,7 +4,9 @@
 const express = require('express')
 const fs = require('fs')
 
-const s = require(`${APP_PATH}/apps/${APP_NAME}/services`) // TBD set the mongodb and knex service
+const { UPLOAD_STATIC, UPLOAD_MEMORY, APP_NAME, APP_PATH } = process.env
+
+const svc = require(`${APP_PATH}/apps/${APP_NAME}/services`) // TBD set the mongodb and knex service
 
 const { validateColumn } = require('esm')(module)('@es-labs/esm/t4t-validate')
 
@@ -15,7 +17,6 @@ const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
 const { memoryUpload, storageUpload } = require(APP_PATH + '/common/upload')
-const { UPLOAD_STATIC, UPLOAD_MEMORY } = process.env
 
 const processJson = async (req, res, next) => {
   if (req.files) { // it is formdata
@@ -58,7 +59,7 @@ async function generateTable (req, res, next) { // TBD get config info from a ta
 }
 
 function formUniqueKey(table, args) {
-  if (table.pk) return table.db === 'knex' ? { [table.name + '.' + table.pk]: args } : { _id: s.get(table.conn).setId(args) } // return for pk
+  if (table.pk) return table.db === 'knex' ? { [table.name + '.' + table.pk]: args } : { _id: svc.get(table.conn).setId(args) } // return for pk
   const where = {} // return for multiKey
   const val_a = args.split('|')
   if (val_a.length !== table.multiKey.length) return null
@@ -124,10 +125,10 @@ module.exports = express.Router()
       let columns = [`${table.name}.*`]
       if (table.select) columns = table.select.split(',') // custom columns... TBD need to add table name?
 
-      query = s.get(table.conn).knex(table.name)
+      query = svc.get(table.conn).knex(table.name)
       query = query.where({})
 
-      // query = s.get(table.conn).knex(table.name).where({})
+      // query = svc.get(table.conn).knex(table.name).where({})
       // TBD handle filters for joins...
       let prevFilter = {}
       const joinCols = {}
@@ -242,13 +243,13 @@ module.exports = express.Router()
       if (and.length) where['$and'] = and
       // console.log('mongo where', or, and)
       if (limit === 0 || csv) {
-        rows = await s.get(table.conn).mongo.db.collection(table.name).find(where).toArray()
+        rows = await svc.get(table.conn).mongo.db.collection(table.name).find(where).toArray()
         rv.total = rows.length
       } else {
-        rv.total = await s.get(table.conn).mongo.db.collection(table.name).find(where).count()
+        rv.total = await svc.get(table.conn).mongo.db.collection(table.name).find(where).count()
         const maxPage = Math.ceil(rv.total / limit)
         if (page > maxPage) page = maxPage
-        rows = await s.get(table.conn).mongo.db.collection(table.name).find(where)
+        rows = await svc.get(table.conn).mongo.db.collection(table.name).find(where)
           .sort(sort)
           .skip((page > 0 ? page - 1 : 0) * limit)
           .limit(limit)
@@ -278,7 +279,7 @@ module.exports = express.Router()
     let rows = {}
     let { dbName, conn, tableName, limit = 20, key, text, search, parentTableColName, parentTableColVal } = req.query
     if (dbName === 'knex') {
-      const query = s.get(conn).knex(tableName).where(key, 'like', `%${search}%`).orWhere(text, 'like', `%${search}%`)
+      const query = svc.get(conn).knex(tableName).where(key, 'like', `%${search}%`).orWhere(text, 'like', `%${search}%`)
       if (parentTableColName !== undefined && parentTableColVal !== undefined) query.andWhere(parentTableColName, parentTableColVal) // AND filter - OK
       rows = await query.clone().limit(limit) // TBD orderBy
     } else { // mongo
@@ -289,7 +290,7 @@ module.exports = express.Router()
         ]
       }
       if (parentTableColName !== undefined && parentTableColVal !== undefined) filter[parentTableColName] = parentTableColVal // AND filter - OK
-      rows = await s.get(conn).mongo.db.collection(tableName).find(filter)
+      rows = await svc.get(conn).mongo.db.collection(tableName).find(filter)
         .limit(Number(limit)).toArray() // TBD sort
     }
     rows = rows.map(row => ({
@@ -308,7 +309,7 @@ module.exports = express.Router()
       let columns = [`${table.name}.*`]
       if (table.select) columns = table.select.split(',') // custom columns... TBD need to add table name?
   
-      let query = s.get(table.conn).knex(table.name).where(where)
+      let query = svc.get(table.conn).knex(table.name).where(where)
   
       const joinCols = {}
       const linkCols = {}
@@ -319,7 +320,7 @@ module.exports = express.Router()
           const { link, t1, t2, t1id, t2id, t2txt, refT1id, refT2id } = rel
           const sql = `SELECT DISTINCT ${t2}.${t2id},${t2}.${t2txt} FROM ${link} JOIN ${t2} ON ${link}.${refT2id} = ${t2}.${t2id} AND ${link}.${refT1id} = ` + req.query.__key
           // SELECT DISTINCT authors.id,authors.name FROM books_authors JOIN authors on books_authors.authorId = authors.id AND books_authors.bookId = 4
-          const links = await s.get(table.conn).knex.raw(sql)
+          const links = await svc.get(table.conn).knex.raw(sql)
           linkCols[key] = links.map(item => ({ key: item[t2id], text: item[t2txt] }))
         } else { // 1 to many, 1 to 1
           const rel = mapRelation(key, table.cols[key])
@@ -340,7 +341,7 @@ module.exports = express.Router()
       rv = await query.column(...columns).first()
       rv = kvDb2Col(rv, joinCols, linkCols)
     } else { // mongodb
-      rv = await s.get(table.conn).mongo.db.collection(table.name).findOne(where)
+      rv = await svc.get(table.conn).mongo.db.collection(table.name).findOne(where)
     }    
     return res.json(rv)  
   }))
@@ -385,11 +386,11 @@ module.exports = express.Router()
 
     if (table.db === 'knex') {
       // transaction and promise all
-      count = await s.get(table.conn).knex(table.name).update(body).where(where)
+      count = await svc.get(table.conn).knex(table.name).update(body).where(where)
       // const promises = []
       for (let item of links) {
-        await s.get(table.conn).knex(item.link).where(item.refT1id, req.query.__key).delete() // test if all authors removed
-        await s.get(table.conn).knex(item.link).insert(item.ids)  
+        await svc.get(table.conn).knex(item.link).where(item.refT1id, req.query.__key).delete() // test if all authors removed
+        await svc.get(table.conn).knex(item.link).insert(item.ids)  
       }
       if (!count) {
         // do insert ?
@@ -397,7 +398,7 @@ module.exports = express.Router()
     } else { // mongodb
       try {
         if (body._id) delete body._id
-        await s.get(table.conn).mongo.db.collection(table.name).updateOne(where, { $set: body })
+        await svc.get(table.conn).mongo.db.collection(table.name).updateOne(where, { $set: body })
       } catch (e) {
         console.error(e.toString())
       }
@@ -431,14 +432,14 @@ module.exports = express.Router()
 
     let rv = null
     if (table.db === 'knex') {
-      let query = s.get(table.conn).knex(table.name).insert(body)
+      let query = svc.get(table.conn).knex(table.name).insert(body)
       if (table.pk) query = query.returning(table.pk)
       rv = await query.clone()
       if (rv && rv[0]) { // id
         // disallow link tables input... for creation
       }
     } else { // mongodb
-      await s.get(table.conn).mongo.db.collection(table.name).insertOne(body) // rv.insertedId, rv.result.ok
+      await svc.get(table.conn).mongo.db.collection(table.name).insertOne(body) // rv.insertedId, rv.result.ok
     }
     return res.status(201).json(rv)
   }))
@@ -454,9 +455,9 @@ module.exports = express.Router()
 
     if (table.pk) { // delete using pk
       if (table.db === 'knex')
-        await s.get(table.conn).knex(table.name).whereIn('id', ids).delete()
+        await svc.get(table.conn).knex(table.name).whereIn('id', ids).delete()
       else
-        await s.get(table.conn).mongo.db.collection(table.name).deleteMany({ _id: { $in: ids.map(id => s.get(table.conn).setId(id)) } })
+        await svc.get(table.conn).mongo.db.collection(table.name).deleteMany({ _id: { $in: ids.map(id => svc.get(table.conn).setId(id)) } })
     } else { // delete using keys
       const keys = ids.map(id => {
         let id_a = id.split('|')
@@ -466,9 +467,9 @@ module.exports = express.Router()
           multiKey[keyName] = id_a[i]
         }
         if (table.db === 'knex') {
-          return s.get(table.conn).knex(table.name).where(multiKey).delete() 
+          return svc.get(table.conn).knex(table.name).where(multiKey).delete() 
         } else {          
-          return { deleteOne: { "filter": multiKey } } // s.get(table.conn).mongo.db.collection(table.name).deleteOne(multiKey)
+          return { deleteOne: { "filter": multiKey } } // svc.get(table.conn).mongo.db.collection(table.name).deleteOne(multiKey)
         }
       })
       if (table.db === 'knex') {
@@ -481,11 +482,11 @@ module.exports = express.Router()
   }))
 
 /*
-const trx = await s.get(table.conn).knex.transaction()
+const trx = await svc.get(table.conn).knex.transaction()
 for {
   let err = false
   try {
-    await s.get(table.conn).knex(tableName).insert(data).transacting(trx)
+    await svc.get(table.conn).knex(tableName).insert(data).transacting(trx)
   } catch (e) {
     err = true
   }
@@ -540,9 +541,9 @@ for {
               obj[ keys[i] ] = row[i]
             }
             if (table.db === 'knex') {
-              writes.push(s.get(table.conn).knex(table.name).insert(obj))
+              writes.push(svc.get(table.conn).knex(table.name).insert(obj))
             } else {
-              writes.push(s.get(table.conn).mongo.db.collection(table.name).insertOne(obj))
+              writes.push(svc.get(table.conn).mongo.db.collection(table.name).insertOne(obj))
             }
           } catch (e) {
             errors.push({ line, data: row.join(','), msg: 'Caught exception: ' + e.toString() })

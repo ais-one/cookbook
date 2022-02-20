@@ -2,6 +2,7 @@
 // CONFIG_FIREBASE_CLIENT, CONFIG_VAPID_KEY is global from firebase.config.js
 import { initializeApp } from 'firebase/app'
 import { getMessaging, getToken, onMessage } from 'firebase/messaging'
+import { getAnalytics } from 'firebase/analytics'
 
 let firebaseApp
 let messaging
@@ -14,6 +15,7 @@ export const fcmSubscribe = async (registration, refreshFn) => {
 
     if (!firebaseApp) {
       firebaseApp = initializeApp(window.CONFIG_FIREBASE_CLIENT)
+      getAnalytics(firebaseApp)
     }
     if (!messaging) {
       messaging = getMessaging()

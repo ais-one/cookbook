@@ -12,10 +12,10 @@ const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
 const bull = require('@es-labs/node/services/mq/bull').get() // bull message queue
 const gcp = require('@es-labs/node/services/gcp')
+
+const { APP_NAME, APP_PATH, APP_VERSION, API_PORT, UPLOAD_STATIC, UPLOAD_MEMORY, HTTPS_CERTIFICATE } = process.env
+
 const { memoryUpload, storageUpload } = require(APP_PATH + '/common/upload')
-
-const { API_PORT, UPLOAD_STATIC, UPLOAD_MEMORY, HTTPS_CERTIFICATE } = process.env
-
 const { authUser, setTokensToHeader } = require('@es-labs/node/auth')
 
 function openMissingFile() {
