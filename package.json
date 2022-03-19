@@ -19,7 +19,7 @@
     "reactjs"
   ],
   "scripts": {
-    "prepare": "git config core.hooksPath ./git-hooks || echo 'Can not set git hooks'",
+    "prepare-1": "git config core.hooksPath ./git-hooks || echo 'Can not set git hooks'",
     "git:hash": "git rev-parse --verify --short HEAD",
     "git:branch": "git rev-parse --abbrev-ref HEAD"
   },

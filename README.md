@@ -12,15 +12,13 @@
 
 Latest Version [0.6.11](https://github.com/ais-one/cookbook/releases/tag/0.6.11) - Released 2022 March 20 1030 +8GMT
 
-**NOTE:** `react-admin` and `nest-admin` projects have been moved to [https://github.com/ais-one/cookbook-ts](https://github.com/ais-one/cookbook-ts) and `solid` project (SolidJS frontend) has been removed
+**NOTE:** NestJS, ReactJS and Typescript example projects `react-admin` and `nest-admin` have been moved to [https://github.com/ais-one/cookbook-ts](https://github.com/ais-one/cookbook-ts) and `solid` project (SolidJS frontend) has been removed
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
 Considerations for this project are similar to [favv](https://github.com/ais-one/favv/blob/master/README.md#considerations). The difference between them are:
 - this repo is more of a cookbook and recipes are constantly being improved and updated
 - [favv](https://github.com/ais-one/favv) backend is written in Python, they can be used to improve on each other
-
-We use Typescript in the ReactJS and NestJS example application
 
 # Features
 

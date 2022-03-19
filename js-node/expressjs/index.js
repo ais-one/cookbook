@@ -12,5 +12,5 @@
   console.info('Globals setup and config done. Starting app... ')
   const { server } = require('./app')
   const { APP_NAME, API_PORT, HTTPS_CERTIFICATE } = process.env
-  server.listen(API_PORT, () => console.info(`[(${process.env.NODE_ENV}) ${APP_NAME} ${process.env.APP_VERSION}] listening on port ${API_PORT} using ${Boolean(HTTPS_CERTIFICATE)}`))
+  server.listen(API_PORT, () => console.info(`[(${process.env.NODE_ENV}) ${APP_NAME} ${process.env.APP_VERSION}] listening on port ${API_PORT}, https=${Boolean(HTTPS_CERTIFICATE)}`))
 }())
