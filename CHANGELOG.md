@@ -5,7 +5,8 @@
   - Mongo DB config format change, change ObjectID to ObjectId
   - JWT_CERTS, JWT_REFRESH_CERTS, HTTPS_CERTS format change
   - MONGO_OPTIONS, UPLOAD_STATIC change in format and processing
-
+- [js-web/react-admin] Moved to new repo [https://github.com/ais-one/cookbook-ts](https://github.com/ais-one/cookbook-ts)
+- [js-node/nest-admin] Moved to new repo [https://github.com/ais-one/cookbook-ts](https://github.com/ais-one/cookbook-ts)
 
 ### Version 0.6.10
 - [chore] update packages & cleanup & work on improving documentation

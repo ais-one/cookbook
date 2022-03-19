@@ -10,7 +10,9 @@
 
 > **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.11](https://github.com/ais-one/cookbook/releases/tag/0.6.11) - Released 2022 February 20 1030 +8GMT
+Latest Version [0.6.11](https://github.com/ais-one/cookbook/releases/tag/0.6.11) - Released 2022 March 20 1030 +8GMT
+
+**NOTE:** `react-admin` and `nest-admin` projects have been moved to [https://github.com/ais-one/cookbook-ts](https://github.com/ais-one/cookbook-ts) and `solid` project (SolidJS frontend) has been removed
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
@@ -32,13 +34,8 @@ Folder | Description | Features
 [js-node/expressjs/apps/app-template](js-node/expressjs/apps/app-template) | Custom application (**app-template**)<br>built on [Base ExpressJS application](js-node/expressjs) | - [config] app configs<br>- [controllers] <br>- [models] <br>- [openapi] OpenAPI yamls<br>- [routes] API routes (also websocket handlers)<br>- [services] services to startup/shutdown<br>- [tables] config tables for generic table crud (t4t)<br>- [tests] folder for tests<br>- [graphql-schema.js] application GraphQL codes
 [js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)<br>- Fido & Webauthn
 [js-node/*](js-node) | **Other Backend applications** | - [Services](js-node/services) (event/stream)<br>- [Scalable Websocket](js-node/scaled-ws) with Redis Pubsub<br>- [Serial server](js-node/serialserver)<br>- [openapi-file-joiner](js-node/openapi-file-joiner) combine OpenAPI files
-[js-node/nest-admin](js-node/nest-admin) | https://www.udemy.com/course/react-nest-admin | example application (e-commerce) backend using NestJS, for use with [js-web/react-admin](js-web/react-admin)
-Nest Microservice | Reference | https://github.com/Denrox/nestjs-microservices-example<br>https://www.merixstudio.com/blog/microservice-nestjs/
-[js-node/nest-cqrs](js-node/nest-cqrs) | TBD Implement CQRS | https://docs.nestjs.com/recipes/cqrs
-[js-web/solid](js-web/solid) | SolidJS SPA | WIP
 [js-web/vue-nobundler](js-web/vue-nobundler) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/apps/app-template/tables/](js-node/expressjs/apps/app-template/tables/)</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[js-web/vue-nobundler/views/ui1.js](js-web/vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[js-web/vue-nobundler/views/ui2.js](js-web/vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[js-web/vue-nobundler/views/ui3.js](js-web/vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[js-web/vue-nobundler/views/ui4.js](js-web/vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
 [js-web/vue-vite](js-web/vue-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Cypress Testing
-[js-web/react-admin](js-web/react-admin) | https://www.udemy.com/course/react-nest-admin | example application (e-commerce) frontend using ReactJS, for use with [js-node/nest-admin](js-node/nest-admin)
 example-webpack<br><b>(Deprecated & removed)</b><br>[last updated version](https://github.com/ais-one/cookbook/tree/0.5.3) | Vue 2 SPA using webpack + Vuetify | - Graphql, REST, VueCrudX, i18n, rxJS
 [.github/workflows](.github/workflows) | Github Actions (CI/CD) | - Manually Trigger<br>- On-push Trigger (WIP)
 AMP Website | [removed](https://plausible.io/blog/google-amp) | -
@@ -256,30 +253,6 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 
 ---
 
-## NestJS and ReactJS E-commerce Application Example
-
-### NestJS Example
-
-```bash
-npm run start:dev --workspace=js-node/nest-admin # create the SQlite database called db.sqlite (in actual should be created using migration), shutdown server once it is fully up and running
-npm run seed --workspace=js-node/nest-admin # seed the data
-npm run start:dev --workspace=js-node/nest-admin # start the server again
-```
-
-- Navigate to http://127.0.0.1:3000
-- You can use `test.http` file in the `nest-admin` folder file with `VS Code REST Client` plugin to test enpoints
-
-### ReactJS Example
-
-```
-npm run start --workspace=js-web/react-admin
-```
-
-- Navigate to http://127.0.0.1:3001
-- login details: admin@test.com / password
-
----
-
 ## Project Strcuture
 
 ```
@@ -300,13 +273,11 @@ npm run start --workspace=js-web/react-admin
 +- docs/ : documentation
 +- js-node/ : nodejs applications (kafka, cron triggered, long running)
 |  +- expressjs/ : express backend - See [js-node/expressjs/README.md](js-node/expressjs/README.md) for project structure
-|  +- nest-admin/
 |  +- openapi-file-joiner/ : pre-process utility to combine openapi yaml files for use in openapi related packages
 |  +- serialserver/
 |  +- services/: TCP server, kafka, long running / cron processes
 |  +- worker-threads/ : demo on use of worker threads
 +- js-web
-|  +- react-admin/
 |  +- solid/
 |  +- vue-nobundler/ : frontend (Vue3 no bundler) - See [js-web/vue-nobundler/README.md](js-web/vue-nobundler/README.md) for Project Structure
 |  +- vue-vite/: frontend (Vue3 rollup) - See [js-web/vue-vite/README.md](js-web/vue-nobundler/README.md) for Project Structure
