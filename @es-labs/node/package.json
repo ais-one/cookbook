@@ -28,7 +28,7 @@
     "bull": "^3.29.3",
     "dotenv": "^16.0.0",
     "hazelcast-client": "^5.0.4",
-    "ioredis": "^4.28.5",
+    "ioredis": "^5.0.1",
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.1.1",
     "knex": "^1.0.4",
