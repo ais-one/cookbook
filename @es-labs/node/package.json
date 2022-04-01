@@ -20,15 +20,15 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@google-cloud/storage": "^5.18.2",
-    "@vscode/sqlite3": "^5.0.7",
+    "@google-cloud/storage": "^5.18.3",
+    "@vscode/sqlite3": "^5.0.8",
     "agenda": "^4.2.1",
     "axios": "^0.26.1",
     "bcryptjs": "^2.4.3",
     "bull": "^3.29.3",
     "dotenv": "^16.0.0",
     "hazelcast-client": "^5.0.4",
-    "ioredis": "^5.0.1",
+    "ioredis": "^5.0.3",
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.1.1",
     "knex": "^1.0.4",
