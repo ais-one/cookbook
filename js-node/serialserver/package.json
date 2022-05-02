@@ -18,7 +18,7 @@
     "serialport": "^9.2.4"
   },
   "devDependencies": {
-    "pkg": "^5.5.2"
+    "pkg": "^5.6.0"
   },
   "bin": "serial-server.js",
   "pkg": {

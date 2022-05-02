@@ -92,8 +92,7 @@ exports.close = function () {
       wss.close()
       // wss.clients.forEach(client => client.close(0, 'wss close() called')) // close gracefully
       for (const client of wss.clients) client.terminate() // https://github.com/websockets/ws/releases/tag/8.0.0
-      // delete wss
-      // wss = null
+      wss = null //delete wss
     }
   } catch (e) {
     console.error(e.toString())

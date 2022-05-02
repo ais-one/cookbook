@@ -35,7 +35,6 @@ const userOps = {
 
 const setupAuth = (tokenService, userService) => {
   //NOSONAR ({ } = process.env);
-
   ({ setRefreshToken, getRefreshToken, revokeRefreshToken, setRefreshTokenStoreName, setTokenService } = require('./' + JWT_REFRESH_STORE)); // keyv, redis, mongo, knex
   ({ findUser, updateUser, setAuthUserStoreName, setUserService } = require('./' + AUTH_USER_STORE)); // mongo, knex
   userOps.findUser = findUser
@@ -105,13 +104,12 @@ const createToken = async (user) => { // Create a tokens & data from user
 
   options.expiresIn = JWT_REFRESH_EXPIRY
   const refresh_token = jwt.sign({ id }, getSecret('sign', 'refresh'), options) // store only ID in refresh token?
-
   await setRefreshToken(id, refresh_token) // store in DB or Cache
   return {
     access_token,
     refresh_token,
     user_meta
-  }  
+  }
 }
 
 const setTokensToHeader = (res, {access_token, refresh_token}) => {

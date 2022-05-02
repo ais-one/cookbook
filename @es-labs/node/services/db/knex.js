@@ -15,7 +15,9 @@ module.exports = class StoreKnex {
       try {
         this.knex = Knex(this.KNEXFILE)
         // sqlite, may need to use another statement with other sql dbs
-        await this.knex.raw('select 1+1 as result').then(() => console.log('knex CONNECTED')).catch(err => { console.log('DB error: ' + err.toString()) })
+        await this.knex.raw('select 1+1 as result')
+        .then(() => console.log('knex CONNECTED'))
+        .catch(err => { console.log('DB error: ' + err.toString()) })
       } catch (e) {
         console.log('knex CONNECT ERROR', e.toString())
       }

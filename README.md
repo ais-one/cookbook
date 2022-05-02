@@ -109,6 +109,9 @@ npm i @vscode/sqlite3 --workspace=@es-labs/node
 npm i lorem-ipsum --workspace=@es-labs/node
 ```
 
+2.2.8 to 3.1.1
+
+npm i ant-design-vue@latest --workspace=js-web/vue-vite
 ---
 
 ## ExpressJS Backend Setup & Run - development environment
@@ -164,7 +167,7 @@ See [js-web/vue-nobundler](js-web/vue-nobundler). Served from [http://127.0.0.1:
 
 ```bash
 # run in development only
-npm run test --workspace=js-node/expressjs
+npm run test --workspace=js-node/expressjs -- development app-template
 ```
 
 ### Long Running Processes

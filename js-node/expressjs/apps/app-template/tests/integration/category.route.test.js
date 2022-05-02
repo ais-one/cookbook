@@ -2,44 +2,56 @@ const request = require('supertest')
 const express = require('express')
 const app = express()
 const newCategory = require('../mock-data/new-category.json')
-const { APP_NAME, APP_PATH } = process.env
 
-let sqldb
-let keyv
+let services
 let createdCategoryId
 let authObj = {}
 let endpointUrl
 
 beforeAll(async () => {
+  const path = require('path')
+  require('dotenv').config() // load
+  const { APP_NAME } = process.env
+  require('dotenv').config({ path: path.join(process.cwd(), 'apps', APP_NAME, '.env'), override: true } )
+  require('dotenv').config({ path: path.join(process.cwd(), 'apps', APP_NAME, '.env.secret'), override: true } )
+
   await require('@es-labs/node/config')(process.cwd())
 
-  const StoreKnex = require('@es-labs/node/services/db/knex') 
-  sqldb = new StoreKnex()
-  await sqldb.open()
-  const StoreKeyV = require('@es-labs/node/services/db/keyv') 
-  keyv = new StoreKeyV()
-  await keyv.open()
+  require(path.join(process.cwd(), 'common', 'init'))()
+  require(path.join(process.cwd(), 'common', 'preRoute'))(app, express)
+  process.env.WS_PORT = '' // disable websocket for now
+  require(path.join(process.cwd(), 'router'))(app)
 
-  const auth = require('@es-labs/node/auth')
-  auth.setupAuth(keyv.get(), sqldb.get())
+  services = require(`../../services`)
+  await services.start()
+  const tokens = await services.get('auth').createToken({ id: 100, groups: 'TestGroup' })
 
-  require(APP_PATH + '/common/init')()
-  require(APP_PATH + '/common/preRoute')(app, express)
-  require(APP_PATH + '/router')(app)
-
-  const tokens = await auth.createToken({ id: 100, groups: 'TestGroup' })
   authObj = {
     Authorization: `Bearer ${tokens.access_token}`,
     refresh_token: tokens.refresh_token
   }
-  endpointUrl = `/api/${APP_NAME}/categories`
+  endpointUrl = `/api/${APP_NAME}/categories/categories`
 })
 afterAll(async () => {
-  await sqldb.close()
-  await keyv.close()
+  await services.stop()
 })
 
-describe(endpointUrl, () => {
+describe.only('Testing Categories Endpoint URL', () => {
+  it.only('GET categories', async () => {
+    const response = await request(app)
+      // .get('/api/app-template/categories/categories')
+      // .get('/api/app-template/healthcheck')
+      // .get('/api/healthcheck')
+      .get(endpointUrl)
+      .set(authObj)
+    expect(response.statusCode).toBe(200)
+    // expect(Array.isArray(response.body.results)).toBeTruthy()
+    // expect(response.body.results).toBeDefined()
+    // expect(response.body.total).toBeDefined()
+    // firstTodo = response.body[0]
+  })
+
+
   it('GET ' + endpointUrl, async () => {
     const response = await request(app)
       .get(endpointUrl)
@@ -115,7 +127,7 @@ describe(endpointUrl, () => {
   // TBD 500 error for delete
 })
 
-describe.only('Integration Test', () => {
+describe('Integration Test', () => {
   it('should pass', () => {
     expect(true).toBe(true)
   })
