@@ -9,16 +9,15 @@ beforeAll(async () => {
   require('dotenv').config({ path: path.join(process.cwd(), 'apps', APP_NAME, '.env'), override: true } )
   require('dotenv').config({ path: path.join(process.cwd(), 'apps', APP_NAME, '.env.secret'), override: true } )
 
-  // await require('@es-labs/node/config')(process.cwd())
-  // const StoreKnex = require('@es-labs/node/services/db/knex') 
-  // sqldb = new StoreKnex()
-  // await sqldb.open()
+  await require('@es-labs/node/config')(process.cwd())
+  const StoreKnex = require('@es-labs/node/services/db/knex') 
+  sqldb = new StoreKnex()
+  await sqldb.open()
 })
 afterAll(async () => {
-  // await sqldb.close()
+  await sqldb.close()
 })  
 
-/*
 describe('Test Services', () => {
   it('Test Knex', async () => {
     let knex = sqldb.get()
@@ -26,9 +25,8 @@ describe('Test Services', () => {
     expect(rv).toStrictEqual(4284574)
   })
 })
-*/
 
-describe.only('Services Test', () => {
+describe('Services Test', () => {
   it('should pass', () => {
     expect(true).toBe(true)
   })
