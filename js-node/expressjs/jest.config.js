@@ -4,7 +4,7 @@ const path = require('path')
 module.exports = {
   // globals: { "APP_NAME": path.basename( path.dirname(__filename) ) },
   // bail: 0,
-  testTimeout: 5000, // set to 1 second will fail... if there is delay in config
+  testTimeout: 8000, // set to 1 second will fail... if there is delay in config
   collectCoverage: false,
   // collectCoverageFrom: [ "**/*.{js,jsx}", "!**/node_modules/**" ]
   // coverageReporters: ["json", "lcov", "text", "clover"],
