@@ -191,8 +191,18 @@ function myFunction(){
 }
 myFunction();
 console.log(a); // outputs 'hi'
-```
 
+
+var a = 'hi';
+function myFunction(){
+    var a;
+    console.log('output 1', a);
+    a = 'hello';
+    console.log('output 2', a);
+}
+myFunction();
+console.log('output 3', a);
+```
 
 Javascript will hoist var, const, and let variable declarations to the top of its scope. While this is true, const and let will not behave the same as var. var will hoist a declaration and initialize the variable as undefined if the definition is not provided. However, const and let will hoist the variable declaration and not initialize the variable if the definition is not provided
 
@@ -282,7 +292,7 @@ callbacks
 promises (use to batch, parallel async operations)
 - Promise.all
 - Promise.any
-- Promist.allSettled
+- Promise.allSettled
 
 generators
 async/await
