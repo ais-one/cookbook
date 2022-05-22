@@ -14,8 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "@es-labs/node": "file:../../@es-labs/node",
-    "ioredis": "^5.0.4",
-    "kafkajs": "^1.16.0",
+    "ioredis": "^5.0.5",
+    "kafkajs": "^2.0.0",
     "knex": "^2.0.0",
     "mysql": "^2.18.1",
     "ws": "^8.6.0"
