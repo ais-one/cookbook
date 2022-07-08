@@ -1,0 +1,71 @@
+# Using - https://github.com/Huachao/vscode-restclient
+
+### HTTP Testing
+
+https://randomuser.me/api/
+Accept: application/json 
+
+### Test Post
+
+POST https://httpbin.org/post
+Accept: application/json
+
+### Test healthcheck
+GET http://127.0.0.1:3000/api/healthcheck
+Accept: application/json
+
+### Test Login - Username & Password
+POST http://127.0.0.1:3000/api/auth/login
+content-type: application/json
+
+{
+  "email": "test",
+  "password": "test"
+}
+
+### Test Login - OTP
+POST http://127.0.0.1:3000/api/auth/otp
+access_token:
+refresh_token: 
+content-type: application/json
+
+{
+  "id": 1,
+  "pin": "111111"
+}
+
+### Post Test - will cause an error because content-type and body is different
+POST http://127.0.0.1:3000/api/test-post-json
+content-type: application/json
+
+hello world
+
+### Post Test SSE endpoint
+POST http://127.0.0.1:3000/api/sse/event
+content-type: application/json
+
+{
+  "bye": "everybody"
+}
+
+### use data from file
+# POST http://127.0.0.1:3000/api/test-xml
+# content-type: application/xml
+#
+# < ./demo.xml
+
+
+### Multipart Form Sample
+# POST https://api.example.com/user/upload
+# Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+# ------WebKitFormBoundary7MA4YWxkTrZu0gW
+# Content-Disposition: form-data; name="text"
+
+# title
+# ------WebKitFormBoundary7MA4YWxkTrZu0gW
+# Content-Disposition: form-data; name="image"; filename="1.png"
+# Content-Type: image/png
+
+# < ./1.png
+# ------WebKitFormBoundary7MA4Y

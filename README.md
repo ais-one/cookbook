@@ -60,16 +60,33 @@ npm i -g npm@latest
   - Live Server
   - REST Client
   - SSH FS
-  - MySQL (cwejian)
-  - vscode-database-client
+  - MongoDB Client (official)
 - Recommended
   - SonarLint (requires java)
   - GitLens
 - JS Language Specific
   - es6-string-html
   - ESLint
+  - Volar (for VueJS)
   - Prettier (disabled)
-  - Vetur -> Volar (for VueJS)
+
+## Chrome Extensions
+
+- Web Server
+  - https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/related?hl=en
+- SAML / OIDC
+  - https://chrome.google.com/webstore/detail/saml-ws-federation-and-oa/hkodokikbjolckghdnljbkbhacbhpnkb?hl=en
+- React & Vue Dev tools
+  - https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en
+  - https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en
+- MetaMask
+  - https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en
+
+## Other Utilities
+
+- DB clients
+  - dbeaver (mac / windows)
+  - heidisql (windows)
 
 ## Download
 

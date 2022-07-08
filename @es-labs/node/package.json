@@ -20,22 +20,22 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@google-cloud/storage": "^6.0.1",
+    "@google-cloud/storage": "^6.2.2",
     "agenda": "^4.3.0",
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
     "bull": "^3.29.3",
     "dotenv": "^16.0.1",
     "hazelcast-client": "^5.1.0",
-    "ioredis": "^5.0.5",
+    "ioredis": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
-    "keyv": "^4.3.0",
+    "keyv": "^4.3.2",
     "knex": "^2.1.0",
-    "mongodb": "^4.6.0",
+    "mongodb": "^4.7.0",
     "mysql": "^2.18.1",
     "otplib": "^12.0.1",
     "sqlite3": "^5.0.8",
     "web-push": "^3.5.0",
-    "ws": "^8.7.0"
+    "ws": "^8.8.0"
   }
 }
