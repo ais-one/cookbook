@@ -7,6 +7,8 @@
   - JWT_CERTS, JWT_REFRESH_CERTS, HTTPS_CERTS format change
   - MONGO_OPTIONS, UPLOAD_STATIC change in format and processing
   - fixed jest tests
+- [js-web/vue-vite]
+  - remove cypress and use playwright
 - [js-web/react-admin] Moved to new repo [https://github.com/ais-one/cookbook-ts](https://github.com/ais-one/cookbook-ts)
 - [js-node/nest-admin] Moved to new repo [https://github.com/ais-one/cookbook-ts](https://github.com/ais-one/cookbook-ts)
 

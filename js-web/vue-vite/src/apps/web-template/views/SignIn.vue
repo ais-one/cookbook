@@ -25,7 +25,7 @@
         </div>
       </div>
       <p v-if="errorMessage">{{ errorMessage }}</p>
-      <p>version {{ VERSION }}</p>
+      <p>version {{ VERSION }} {{ isMobile ? 'Mobile' : 'Not Mobile' }}</p>
     </form>
   </div>
 </template>
@@ -34,6 +34,7 @@
 import { ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
+import { useMediaQuery } from '/src/plugins/useMediaQuery'
 
 import parseJwt from '/@es-labs/esm/parse-jwt.js'
 
@@ -57,6 +58,8 @@ export default {
     let otpCount = 0
     let otpId = ''
 
+    const isMobile = useMediaQuery('(max-width: 425px)')
+
     const setToLogin = () => {
       // reset email and password
       mode.value = 'login' // ui-reactive...
@@ -67,7 +70,6 @@ export default {
     onUnmounted(() => console.log('signIn unmounted'))
     onMounted(async () => {
       console.log('signIn mounted!', route.hash) // deal with hashes here if necessary
-
       setToLogin()
       otp.value = '111111'
       errorMessage.value = ''
@@ -170,6 +172,7 @@ export default {
       loginSaml,
       loginOidc,
       loginOAuth,
+      isMobile,
       VERSION
     }
   }

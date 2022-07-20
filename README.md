@@ -197,7 +197,7 @@ See [js-node/README.md](js-node/README.md)
 
 ### Vite SPA Setup & Run - development environment
 
-1. See [js-web/vue-vite/README.md](js-web/vue-vite/README.md). To setup the configuration files. End-to-end testing example using cypress is here also.
+1. See [js-web/vue-vite/README.md](js-web/vue-vite/README.md). To setup the configuration files. End-to-end testing example using playwright is here also.
 
 2. Run the following
 
@@ -210,6 +210,14 @@ npm run dev --workspace=js-web/vue-vite
   - http://127.0.0.1:8080/nested/index.html to view another page (vite serving multi page, each page can be an SPA)
 
 4. See [js-web/vue-vite/README.md](js-web/vue-vite/README.md) for more information on the `vue-vite` package
+
+
+5. E2E Testing
+
+```
+npx playwright install chromium
+npx playwright test --browser=chromium
+```
 
 ## Why No SSR or SSG
 

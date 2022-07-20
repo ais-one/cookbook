@@ -41,7 +41,7 @@
 - GCP
   - Home [gcp/home.md](gcp/home.md)
 - SQA
-  - E2E Testing **WIP** [sqa/cypress.md](sqa/cypress.md)
+  - Cypress E2E Testing **NO LONGER NEEDED - USE PLAYWRIGHT** [sqa/cypress.md](sqa/cypress.md)
   - SQA Tools [sqa/sqa-tools.md](sqa/sqa-tools.md)
   - SQA NodeJS [sqa/sqa-nodejs.md](sqa/sqa-nodejs.md)
   - Team Guidance [sqa/team-guidance.md](sqa/team-guidance.md)
