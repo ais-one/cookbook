@@ -114,6 +114,8 @@ rm package-lock.json
 |  +- router.js
 |  +- services.js
 |  +- store.js
++- tests/
++  +- example.spec.js
 +- .env.development
 +- .env.uat
 +- .eslintignore
@@ -127,6 +129,7 @@ rm package-lock.json
 +- index.html
 +- package.json
 +- package-lock.json
++- playwright.config.js
 +- pwa-init.js
 +- README.md
 +- vite.config.js
