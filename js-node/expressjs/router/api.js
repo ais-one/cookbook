@@ -10,7 +10,6 @@ const PdfKit = require('pdfkit')
 const ws = require('@es-labs/node/services/websocket')
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
-const bull = require('@es-labs/node/services/mq/bull').get() // bull message queue
 const gcp = require('@es-labs/node/services/gcp')
 
 const { APP_NAME, APP_PATH, APP_VERSION, API_PORT, UPLOAD_STATIC, UPLOAD_MEMORY, HTTPS_CERTIFICATE } = process.env
@@ -151,20 +150,6 @@ module.exports = express.Router({caseSensitive: true})
       }
     } else {
       res.json({ job, note: 'Agenda Not Configured' })
-    }
-  }))
-
-  .get('/mq-bull', asyncWrapper(async (req, res) => { // test message queue - bullmq
-    if (bull) {
-      try {
-        const jobOpts = { removeOnComplete: true, removeOnFail: true }
-        bull.add({ message: new Date() }, jobOpts)
-        res.json({ note: 'Bull - Check Server Console Log For Processed Message...' })
-      } catch (e) {
-        res.json({ BullMQError: e.toString() })        
-      }
-    } else {
-      res.json({ note: 'Bull MQ Not Configured' })
     }
   }))
 

@@ -186,7 +186,6 @@ Requires
 - MQ
   - Google Pubsub https://cloud.google.com/pubsub/docs
   - agenda (uses MongoDB)
-  - bull/bullmq (uses Redis)
 
 ---
 

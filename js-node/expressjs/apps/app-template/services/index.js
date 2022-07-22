@@ -17,7 +17,6 @@ const StoreKnex = require('@es-labs/node/services/db/knex')
 const StoreMongo = require('@es-labs/node/services/db/mongodb') 
 
 const agenda = require('@es-labs/node/services/mq/agenda')
-const bull = require('@es-labs/node/services/mq/bull')
 const websocket = require('@es-labs/node/services/websocket')
 
 const auth = require('@es-labs/node/auth')
@@ -38,7 +37,6 @@ const start = async () => {
   services.mongo1.open()
 
   agenda.open()
-  bull.open()
   websocket.open(null, null) // or set to null
 
   services.auth = auth
@@ -48,7 +46,6 @@ const start = async () => {
 const stop = async () => {
   // console.log('services - stop - begin')
   websocket.close() // websockets
-  await bull.close()
   await agenda.close()
 
   await services.mongo1.open()

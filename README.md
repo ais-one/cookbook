@@ -126,9 +126,11 @@ npm i @vscode/sqlite3 --workspace=@es-labs/node
 npm i lorem-ipsum --workspace=@es-labs/node
 ```
 
-2.2.8 to 3.1.1
-
+```bash
+# updating from 2.2.8 to 3.1.1 - major version change
 npm i ant-design-vue@latest --workspace=js-web/vue-vite
+```
+
 ---
 
 ## ExpressJS Backend Setup & Run - development environment
@@ -155,15 +157,9 @@ npm run mongo --workspace=js-node/expressjs -- development app-template seed
 
 # run the backend
 # command: npm run app --workspace=js-node/expressjs -- <development / uat / production> <custom app name, default = app-template>
-
-# app name implied (implied as app-template if not in env)
-npm run app --workspace=js-node/expressjs -- development
-
-# or app name specified
-npm run app --workspace=js-node/expressjs -- development app-template
-
-# to include eslint checks
-npm run app:lint --workspace=js-node/expressjs -- development app-template
+npm run app --workspace=js-node/expressjs -- development # app name implied (implied as app-template if not in env)
+npm run app --workspace=js-node/expressjs -- development app-template # or app name specified
+npm run app:lint --workspace=js-node/expressjs -- development app-template # to include eslint checks
 ```
 
 **Visit the following URLs**

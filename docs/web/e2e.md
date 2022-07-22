@@ -1,4 +1,9 @@
+# Playwright (preferred)
 
+https://www.lambdatest.com/blog/playwright-framework/
+
+
+# Cypress
 
 ## Install and run
 
