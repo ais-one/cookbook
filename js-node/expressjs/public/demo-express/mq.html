@@ -13,7 +13,6 @@
   <p>check console for logs</p>
   <ul>
     <li><a href="#" onclick="mq()">Test Agenda Message Queue (requires MongoDB, and need to be enabled - see config.js - JOB_COLLECTION, JOB_TYPES)</a></li>
-    <li><a href="#" onclick="mqBull()">Test Bull v3 Message Queue (requires Redis, and need to be enabled - see config.js - JOB_BULL)</a></li>  
   </ul>
   <pre id="output">Output will be shown here</pre>
 </body>
@@ -22,15 +21,6 @@
 async function mq() {
   try {
     const res = await fetch('/api/mq-agenda', { method: 'GET' })
-    const rv = await res.json()
-    document.querySelector('#output').innerHTML = rv && typeof rv === 'object' ? JSON.stringify(rv, null, 2) : rv.toString()
-  } catch (e) {
-    document.querySelector('#output').innerHTML = e && typeof e === 'object' ? JSON.stringify(e, null, 2) : e.toString()
-  }
-}
-async function mqBull() {
-  try {
-    const res = await fetch('/api/mq-bull', { method: 'GET' })
     const rv = await res.json()
     document.querySelector('#output').innerHTML = rv && typeof rv === 'object' ? JSON.stringify(rv, null, 2) : rv.toString()
   } catch (e) {

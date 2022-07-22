@@ -5,12 +5,6 @@ const { PubSub } = require('graphql-subscriptions')
 
 const pubsub = new PubSub()
 
-function sleep(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  })
-}
-
 const schema = buildSchema(`
 # comment here
 type Message {

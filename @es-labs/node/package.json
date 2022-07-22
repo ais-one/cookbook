@@ -1,6 +1,6 @@
 {
   "name": "@es-labs/node",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "author": "Aaron Gong",
   "license": "MIT",
   "repository": {
@@ -20,21 +20,21 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@google-cloud/storage": "^5.18.0",
-    "agenda": "^4.2.1",
-    "axios": "^0.25.0",
+    "@google-cloud/storage": "^6.2.3",
+    "agenda": "^4.3.0",
+    "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
-    "bull": "^3.29.3",
-    "hazelcast-client": "^5.0.3",
-    "ioredis": "^4.28.3",
+    "dotenv": "^16.0.1",
+    "hazelcast-client": "^5.1.0",
+    "ioredis": "^5.2.1",
     "jsonwebtoken": "^8.5.1",
-    "keyv": "^4.0.5",
-    "knex": "^1.0.1",
-    "mongodb": "^4.3.1",
+    "keyv": "^4.3.3",
+    "knex": "^2.2.0",
+    "mongodb": "^4.8.0",
     "mysql": "^2.18.1",
     "otplib": "^12.0.1",
-    "@vscode/sqlite3": "^5.0.7",
-    "web-push": "^3.4.5",
-    "ws": "^8.4.2"
+    "sqlite3": "^5.0.9",
+    "web-push": "^3.5.0",
+    "ws": "^8.8.1"
   }
 }

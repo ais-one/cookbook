@@ -9,7 +9,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^14.2.0",
     "js-yaml": "^4.1.0",
     "json-refs": "^3.0.15"
   }

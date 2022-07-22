@@ -6,31 +6,35 @@ const jwt = require('jsonwebtoken')
 
 //NOSONAR const uuid = require('uuid/v4')
 //NOSONAR const qrcode = require('qrcode')
-let COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, COOKIE_MAXAGE, COOKIE_DOMAIN,
-  USE_OTP, OTP_EXPIRY, CORS_OPTIONS,
-  AUTH_REFRESH_URL, AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD,
-  JWT_ALG, JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_CERTS, JWT_REFRESH_CERTS,
-  JWT_REFRESH_STORE, AUTH_USER_STORE, AUTH_USER_STORE_NAME, JWT_REFRESH_STORE_NAME,
-  setRefreshToken, getRefreshToken, revokeRefreshToken, setRefreshTokenStoreName, setTokenService, setUserService,
+
+//TOREMOVE let COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, COOKIE_MAXAGE, COOKIE_DOMAIN,
+//   AUTH_REFRESH_URL, AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD,
+//   JWT_REFRESH_STORE, AUTH_USER_STORE, AUTH_USER_STORE_NAME, JWT_REFRESH_STORE_NAME,
+
+let setRefreshToken, getRefreshToken, revokeRefreshToken, setRefreshTokenStoreName, setTokenService, setUserService,
   findUser, updateUser,
   setAuthUserStoreName
+
+const {
+  COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, COOKIE_MAXAGE, COOKIE_DOMAIN,
+  AUTH_REFRESH_URL, AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD = '',
+  JWT_REFRESH_STORE='keyv',
+  AUTH_USER_STORE,
+  AUTH_USER_STORE_NAME,
+  JWT_REFRESH_STORE_NAME,
+
+  USE_OTP,
+  JWT_ALG, JWT_EXPIRY, JWT_REFRESH_EXPIRY,
+  JWT_PRIVATE_KEY, JWT_CERTIFICATE, JWT_REFRESH_PRIVATE_KEY, JWT_REFRESH_CERTIFICATE, JWT_SECRET, JWT_REFRESH_SECRET
+} = process.env
 
 const userOps = {
   findUser: null,
   updateUser: null
 }
 
-const setupAuth = (tokenService, userService, options = global.CONFIG) => {
-  ({
-    COOKIE_HTTPONLY, COOKIE_SAMESITE, COOKIE_SECURE, COOKIE_MAXAGE, COOKIE_DOMAIN,
-    USE_OTP, OTP_EXPIRY, CORS_OPTIONS,
-    AUTH_REFRESH_URL, AUTH_USER_FIELD_LOGIN, AUTH_USER_FIELD_PASSWORD, AUTH_USER_FIELD_GAKEY, AUTH_USER_FIELD_ID_FOR_JWT, AUTH_USER_FIELDS_JWT_PAYLOAD = '',
-    JWT_ALG, JWT_SECRET, JWT_REFRESH_SECRET, JWT_EXPIRY, JWT_REFRESH_EXPIRY, JWT_CERTS, JWT_REFRESH_CERTS,
-
-    JWT_REFRESH_STORE ='keyv', AUTH_USER_STORE,
-    AUTH_USER_STORE_NAME, JWT_REFRESH_STORE_NAME
-  } = options || {});
-
+const setupAuth = (tokenService, userService) => {
+  //NOSONAR ({ } = process.env);
   ({ setRefreshToken, getRefreshToken, revokeRefreshToken, setRefreshTokenStoreName, setTokenService } = require('./' + JWT_REFRESH_STORE)); // keyv, redis, mongo, knex
   ({ findUser, updateUser, setAuthUserStoreName, setUserService } = require('./' + AUTH_USER_STORE)); // mongo, knex
   userOps.findUser = findUser
@@ -62,9 +66,9 @@ const httpOnlyCookie = () => `HttpOnly;SameSite=${COOKIE_SAMESITE};`
 const getSecret = (mode, type) => {
   if (JWT_ALG.substring(0,2) === 'RS') {
     if (mode === 'sign') {
-      return type === 'refresh' ? JWT_REFRESH_CERTS.key : JWT_CERTS.key
+      return type === 'refresh' ? JWT_REFRESH_PRIVATE_KEY : JWT_PRIVATE_KEY
     } else {
-      return type === 'refresh' ? JWT_REFRESH_CERTS.cert : JWT_CERTS.cert
+      return type === 'refresh' ? JWT_REFRESH_CERTIFICATE : JWT_CERTIFICATE
     }
   }
   return type === 'refresh' ? JWT_REFRESH_SECRET : JWT_SECRET
@@ -100,13 +104,12 @@ const createToken = async (user) => { // Create a tokens & data from user
 
   options.expiresIn = JWT_REFRESH_EXPIRY
   const refresh_token = jwt.sign({ id }, getSecret('sign', 'refresh'), options) // store only ID in refresh token?
-
   await setRefreshToken(id, refresh_token) // store in DB or Cache
   return {
     access_token,
     refresh_token,
     user_meta
-  }  
+  }
 }
 
 const setTokensToHeader = (res, {access_token, refresh_token}) => {

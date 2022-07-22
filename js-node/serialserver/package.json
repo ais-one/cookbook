@@ -10,17 +10,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^14.2.0",
-    "winston": "^3.4.0",
-    "winston-daily-rotate-file": "^4.5.5"
+    "@es-labs/node": "file:../../@es-labs/node",
+    "winston": "^3.8.1",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "not-working": {
     "serialport": "^9.2.4"
   },
   "devDependencies": {
-    "pkg": "^5.5.2"
+    "pkg": "^5.8.0"
   },
-  "bin": "index.js",
+  "bin": "serial-server.js",
   "pkg": {
     "assets": [
       "node_modules/**/*",

@@ -76,7 +76,6 @@ rm package-lock.json
 ## Project Strcuture
 
 ```
-+- cypress/
 +- nested/ : testing for multi-html
 +- public/
 |  +- img/
@@ -115,6 +114,8 @@ rm package-lock.json
 |  +- router.js
 |  +- services.js
 |  +- store.js
++- tests/
++  +- example.spec.js
 +- .env.development
 +- .env.uat
 +- .eslintignore
@@ -123,13 +124,12 @@ rm package-lock.json
 +- .gitignore
 +- .prettierrc.js
 +- config.js
-+- cypress.json
-+- cypress.zip
 +- deploy.sh: to build into static folder for serving
 +- firebase.config.js
 +- index.html
 +- package.json
 +- package-lock.json
++- playwright.config.js
 +- pwa-init.js
 +- README.md
 +- vite.config.js

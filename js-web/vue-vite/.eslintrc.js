@@ -10,7 +10,6 @@ module.exports = {
     // 'eslint:recommended',
     // 'standard', // "eslint-config-standard": "^16.0.3",
     'plugin:vue/vue3-recommended',
-    'plugin:cypress/recommended',
     'prettier'
   ],
   parserOptions: {

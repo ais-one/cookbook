@@ -1,12 +1,11 @@
 'use strict'
 
+// TBD rename service to pn
+
 const express = require('express')
 const { authUser, userOps } = require('@es-labs/node/auth')
 const fcm = require('@es-labs/node/comms/fcm')
 const webpush = require('@es-labs/node/comms/webpush')
-
-fcm.setup(global.CONFIG)
-webpush.setup(global.CONFIG)
 
 module.exports = express.Router()
   .get('/vapid-public-key', (req, res) => res.json({ publicKey: webpush.getPubKey() }))

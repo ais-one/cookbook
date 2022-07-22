@@ -4,19 +4,20 @@
 const Knex = require('knex')
 
 module.exports = class StoreKnex {
-	constructor(options = global.CONFIG) {
-    const { KNEXFILE } = options || {}
-    this.KNEXFILE = KNEXFILE
+	constructor(options = JSON.parse(process.env.KNEXFILE || null) || {}) {
+    this.KNEXFILE = options
     this.knex = null
   }
 
-  async open(options = global.CONFIG) {
+  async open() {
     if (!this.KNEXFILE) console.log('KNEXFILE property empty or undefined - knex not started')
     else {
       try {
         this.knex = Knex(this.KNEXFILE)
         // sqlite, may need to use another statement with other sql dbs
-        await this.knex.raw('select 1+1 as result').then(() => console.log('knex CONNECTED')).catch(err => { console.log('DB error: ' + err.toString()) })
+        await this.knex.raw('select 1+1 as result')
+        .then(() => console.log('knex CONNECTED'))
+        .catch(err => { console.log('DB error: ' + err.toString()) })
       } catch (e) {
         console.log('knex CONNECT ERROR', e.toString())
       }

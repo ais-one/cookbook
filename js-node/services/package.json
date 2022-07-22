@@ -1,0 +1,23 @@
+{
+  "name": "@js-node/services",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Long running processes",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node scaled-ws.js",
+    "process-cron": "node process-cron.js",
+    "process-long": "node process-long.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@es-labs/node": "file:../../@es-labs/node",
+    "ioredis": "^5.2.1",
+    "kafkajs": "^2.1.0",
+    "knex": "^2.2.0",
+    "mysql": "^2.18.1",
+    "ws": "^8.8.1"
+  }
+}

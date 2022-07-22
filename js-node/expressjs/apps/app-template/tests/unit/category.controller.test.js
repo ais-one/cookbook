@@ -1,6 +1,7 @@
 const httpMocks = require('node-mocks-http')
 const newCategory = require('../mock-data/new-category.json')
-let sqldb
+
+let services
 let createdCategoryId
 let CategoryController
 let req, res, next
@@ -11,15 +12,23 @@ beforeEach(() => {
   next = null // jest.fn()
 })
 beforeAll(async () => {
+  // const { exit } = require('process')
+  const path = require('path')
+  require('dotenv').config() // load
+  const { APP_NAME } = process.env
+  require('dotenv').config({ path: path.join(process.cwd(), 'apps', APP_NAME, '.env'), override: true } )
+  require('dotenv').config({ path: path.join(process.cwd(), 'apps', APP_NAME, '.env.secret'), override: true } )
+
   await require('@es-labs/node/config')(process.cwd())
-  const StoreKnex = require('@es-labs/node/services/db/knex') 
-  sqldb = new StoreKnex()
-  await sqldb.open()
+
+  services = require(`../../services`)
+  await services.start()
+
   CategoryController = require('../../controllers/category')
 })
 afterAll(async () => {
-  await sqldb.close()
-})  
+  await services.stop()
+})
 
 describe('CategoryController.create', () => {
   beforeEach(() => {
@@ -112,7 +121,7 @@ describe('CategoryController.remove', () => {
   // 500 error not able to cover?
 })
 
-describe('CategoryController.find', () => {
+describe.only('CategoryController.find', () => {
   it('should have a get function', () => {
     expect(typeof CategoryController.find).toBe('function')
   })
@@ -126,13 +135,13 @@ describe('CategoryController.find', () => {
   // 500 error not able to cover?
 })
 
-describe.only('Categpry Unit Test', () => {
+describe('Category Unit Test', () => {
   it('should pass', () => {
     expect(true).toBe(true)
   })
 })
 
-/*
+/* NOSONAR
 describe('app ws testing', () => {
     it('connect websockets response', (done) => {
         expect.assertions(1);

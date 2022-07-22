@@ -7,13 +7,23 @@ const express = require('express')
 const passport = require('passport')
 const { createToken, setTokensToHeader } = require('@es-labs/node/auth')
 
-const { AUTH_ERROR_URL, SAML_OPTIONS, SAML_JWT_MAP, SAML_DECRYPTION_CERT } = global.CONFIG
+const { SAML_OPTIONS, SAML_JWT_MAP, SAML_CERTIFICATE, SAML_PRIVATE_KEY } = process.env
+const { AUTH_ERROR_URL } = process.env
+
+const saml_opts = JSON.parse(SAML_OPTIONS || null)
+if (saml_opts) {
+  if (SAML_CERTIFICATE) saml_opts.privateCert = SAML_CERTIFICATE
+  if (SAML_PRIVATE_KEY) {
+    saml_opts.privateKey = SAML_PRIVATE_KEY
+    saml_opts.decryptionPvk = SAML_PRIVATE_KEY
+  }  
+}
 
 let samlStrategy
 
 const { SAML } = require('node-saml')
-const samlx = new SAML(SAML_OPTIONS)
-// console.log(SAML_OPTIONS)
+const samlx = new SAML(saml_opts)
+// console.log(saml_opts)
 // cause problems in samlx
 // privateCert: samlPems.cert,
 // await saml.getLogoutResponseUrl({user, samlLogoutRequest}, {additionalParams});
@@ -25,10 +35,10 @@ const samlx = new SAML(SAML_OPTIONS)
 // await saml.getLogoutUrl(user, options);
 // saml.generateServiceProviderMetadata(decryptionCert, signingCert);
 
-if (SAML_OPTIONS) {
+if (saml_opts) {
   const SamlStrategy = require('passport-saml').Strategy
   samlStrategy = new SamlStrategy(
-    SAML_OPTIONS,
+    saml_opts,
     (profile, done) => {
       // console.log('profile', profile)
       return done(null, { // map whatever claims/profile info you want here
@@ -112,7 +122,7 @@ module.exports = express.Router()
   .get('/metadata', (req, res) => {
     res.type('application/xml')
     // res.status(200).send(samlStrategy.generateServiceProviderMetadata()) // if there is private key involved, then need to pass in cert
-    res.status(200).send(samlStrategy.generateServiceProviderMetadata(SAML_DECRYPTION_CERT, SAML_OPTIONS.privateCert)) // cert to match decryptionKey, cert to match privateKey
+    res.status(200).send(samlStrategy.generateServiceProviderMetadata(SAML_CERTIFICATE, saml_opts.privateCert)) // cert to match decryptionKey, cert to match privateKey
   })
   .get('/login',
     (req, res, next) => {

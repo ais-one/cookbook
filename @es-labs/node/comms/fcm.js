@@ -1,12 +1,6 @@
 'use strict'
 
 const axios = require('axios')
-let key
-
-exports.setup = (options = global.CONFIG) => {
-  const { FCM_SERVER_KEY } = options || {}
-  key = FCM_SERVER_KEY
-}
 
 exports.send = async (to, title, body) => { // send firebase push notification
   // console.log('FCM TEST @es-labs/node/fcm.js', to, body, title, key)
@@ -22,7 +16,7 @@ exports.send = async (to, title, body) => { // send firebase push notification
       }
     },{
       headers: {
-        Authorization: 'key=' + key,
+        Authorization: 'key=' + process.env.FCM_SERVER_KEY,
         'Content-Type': 'application/json'
       }
     })

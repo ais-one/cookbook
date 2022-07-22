@@ -19,3 +19,8 @@ npm-debug.log*
 .vscode
 
 .env
+
+# tests
+test-results
+playwright-report
+playwright/.cache

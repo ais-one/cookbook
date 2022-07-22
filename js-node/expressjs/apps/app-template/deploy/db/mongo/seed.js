@@ -9,7 +9,7 @@ async function run() {
     //NOSONAR // const ObjectID = mongo.ObjectID
 
     // Create JWT User Session Store
-    // const { JWT_REFRESH_STORE, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE_NAME } = global.CONFIG
+    // const { JWT_REFRESH_STORE, JWT_REFRESH_EXPIRY, JWT_REFRESH_STORE_NAME } = process.env
     /*
     if (JWT_REFRESH_STORE === 'mongo') {
       await mongo.db.collection(JWT_REFRESH_STORE_NAME).deleteMany({})

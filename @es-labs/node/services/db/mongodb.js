@@ -1,27 +1,25 @@
 'use strict'
-
-const DEFAULT_TRANSACTION_OPTIONS = {
-  readConcern: { level: 'local' },
-  writeConcern: { w: 'majority' },
-  readPreference: 'primary'
-}
-
 const { MongoClient, ObjectID } = require('mongodb')
 
 module.exports = class StoreMongo {
-	constructor(options = global.CONFIG) {
-    const { MONGO_URL, MONGO_OPTIONS } = options || {}
-    this.MONGO_URL = MONGO_URL
-    this.MONGO_OPTIONS = MONGO_OPTIONS
+	constructor(options = JSON.parse(process.env.MONGO_OPTIONS || null) || {}) {
+    this.DEFAULT_TRANSACTION_OPTIONS = {
+      readConcern: { level: 'local' },
+      writeConcern: { w: 'majority' },
+      readPreference: 'primary'
+    }
+    this.MONGO_URL = options.url
+    this.MONGO_OPTIONS = options.opts
     this.mongo = {
       client: null,
       db: null,
       session: null,
       stream: null,
-      defaultTransactionOptions: DEFAULT_TRANSACTION_OPTIONS,
+      defaultTransactionOptions: this.DEFAULT_TRANSACTION_OPTIONS,
       ObjectID: null
     }
   }
+
   async open() {
     this.mongo.ObjectID = ObjectID
     try {

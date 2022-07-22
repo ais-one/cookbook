@@ -10,6 +10,9 @@ deploy/*
 apps/app-*
 !apps/app-template
 
+# secret configs
+.env.secret
+
 # database stores
 *.sqlite3
 

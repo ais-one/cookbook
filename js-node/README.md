@@ -13,12 +13,9 @@ Below are a list of NodeJS applications
     - serialport
     - pkg
     - logging
-- tcpserver
-  - tcp server - stream (keep client, connected and can reply to client, but need to take note on number of client connections)
+- services
+  - tcp_server - stream (keep client, connected and can reply to client, but need to take note on number of client connections) or event (close after receiving packet from client)
     - knex & mysql
-  - tcp server - event (close after receiving packet from client)
-    - knex & mysql
-- wip
   - kafkaRx.js
     - kafka consumer
     - requires kafka to run (see /docker-devenv/kafka)
@@ -35,7 +32,7 @@ Below are a list of NodeJS applications
 To test out
 
 ```
-cd js-node/wip
+cd js-node/services
 
 # Command to simulate long running process (do take note of caveats, for production need a monitor to handle restart strategy)
 # command: npm run process-long -- development
