@@ -33,7 +33,7 @@
     "express": "^4.18.1",
     "express-openapi-validator": "^4.13.8",
     "fido2-lib": "^3.2.5",
-    "helmet": "^5.1.0",
+    "helmet": "^6.0.0",
     "http-proxy-middleware": "^2.0.6",
     "json2csv": "^5.0.7",
     "morgan": "^1.10.0",
