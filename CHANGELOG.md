@@ -1,5 +1,6 @@
 ### Version 0.6.12
 - [chore] update packages & cleanup & work on improving documentation
+- [jsonwebtoken] update version handle minimum key size requirement change
 
 ### Version 0.6.11
 - [chore] update packages & cleanup & work on improving documentation

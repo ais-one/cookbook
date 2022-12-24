@@ -15,7 +15,7 @@
   "dependencies": {
     "@es-labs/node": "file:../../@es-labs/node",
     "ioredis": "^5.2.4",
-    "kafkajs": "^2.2.2",
+    "kafkajs": "^2.2.3",
     "knex": "^2.3.0",
     "mysql": "^2.18.1",
     "ws": "^8.11.0"

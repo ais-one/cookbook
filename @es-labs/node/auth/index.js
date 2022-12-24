@@ -25,7 +25,8 @@ const {
 
   USE_OTP,
   JWT_ALG, JWT_EXPIRY, JWT_REFRESH_EXPIRY,
-  JWT_PRIVATE_KEY, JWT_CERTIFICATE, JWT_REFRESH_PRIVATE_KEY, JWT_REFRESH_CERTIFICATE, JWT_SECRET, JWT_REFRESH_SECRET
+  JWT_PRIVATE_KEY, JWT_CERTIFICATE, JWT_REFRESH_PRIVATE_KEY, JWT_REFRESH_CERTIFICATE, JWT_SECRET, JWT_REFRESH_SECRET,
+  JWT_ALLOW_INSECURE_KEY_SIZES
 } = process.env
 
 const userOps = {
@@ -97,8 +98,8 @@ const createToken = async (user) => { // Create a tokens & data from user
     }
   }
 
+  options.allowInsecureKeySizes = !!JWT_ALLOW_INSECURE_KEY_SIZES
   options.algorithm = JWT_ALG
-
   options.expiresIn = JWT_EXPIRY
   const access_token = jwt.sign({ id, groups }, getSecret('sign', 'access'), options)
 
