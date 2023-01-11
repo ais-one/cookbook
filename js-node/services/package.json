@@ -16,7 +16,7 @@
     "@es-labs/node": "file:../../@es-labs/node",
     "ioredis": "^5.2.1",
     "kafkajs": "^2.1.0",
-    "knex": "^2.2.0",
+    "knex": "^2.4.0",
     "mysql": "^2.18.1",
     "ws": "^8.8.1"
   }
