@@ -14,10 +14,10 @@
   "license": "ISC",
   "dependencies": {
     "@es-labs/node": "file:../../@es-labs/node",
-    "ioredis": "^5.2.4",
+    "ioredis": "^5.2.5",
     "kafkajs": "^2.2.3",
-    "knex": "^2.3.0",
+    "knex": "^2.4.1",
     "mysql": "^2.18.1",
-    "ws": "^8.11.0"
+    "ws": "^8.12.0"
   }
 }
