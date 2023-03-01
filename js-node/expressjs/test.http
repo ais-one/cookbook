@@ -48,6 +48,11 @@ content-type: application/json
   "bye": "everybody"
 }
 
+### 
+
+GET https://api.telegram.org/bot5728250590:AAErydAuif5RU8q5RzopQYZ9xeGzCT32e_k/sendMessage?chat_id=-1001380887961&text=TEST
+content-type: application/json
+
 ### use data from file
 # POST http://127.0.0.1:3000/api/test-xml
 # content-type: application/xml
