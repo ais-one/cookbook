@@ -21,11 +21,11 @@
     "@antv/g2": "^4.2.9",
     "@antv/g2plot": "^2.4.25",
     "@antv/g6": "^4.8.7",
-    "@sentry/tracing": "^7.39.0",
-    "@sentry/vue": "^7.39.0",
+    "@sentry/tracing": "^7.40.0",
+    "@sentry/vue": "^7.40.0",
     "ant-design-vue": "^3.2.15",
     "echarts": "^5.4.1",
-    "firebase": "^9.17.1",
+    "firebase": "^9.17.2",
     "leaflet": "^1.9.3",
     "pinia": "^2.0.32",
     "rxjs": "^7.8.0",
@@ -34,7 +34,7 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.31.1",
+    "@playwright/test": "^1.31.2",
     "@vitejs/plugin-vue": "^4.0.0",
     "dotenv": "^16.0.3",
     "eslint": "^8.35.0",
