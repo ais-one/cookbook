@@ -18,14 +18,14 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.1.0",
     "@antv/data-set": "^0.11.8",
-    "@antv/g2": "^4.2.9",
-    "@antv/g2plot": "^2.4.26",
+    "@antv/g2": "^4.2.10",
+    "@antv/g2plot": "^2.4.27",
     "@antv/g6": "^4.8.7",
     "@sentry/tracing": "^7.43.0",
     "@sentry/vue": "^7.43.0",
     "ant-design-vue": "^3.2.15",
     "echarts": "^5.4.1",
-    "firebase": "^9.17.2",
+    "firebase": "^9.18.0",
     "leaflet": "^1.9.3",
     "pinia": "^2.0.33",
     "rxjs": "^7.8.0",
@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.31.2",
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-vue": "^4.1.0",
     "dotenv": "^16.0.3",
     "eslint": "^8.36.0",
     "eslint-config-prettier": "^8.7.0",
@@ -45,6 +45,6 @@
     "eslint-plugin-vue": "^9.9.0",
     "prettier": "^2.8.4",
     "start-server-and-test": "^1.15.4",
-    "vite": "^4.1.4"
+    "vite": "^4.2.0"
   }
 }
