@@ -8,14 +8,14 @@
 
 # About
 
-> **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
+> **TL;DR** ExpressJS, VueJS, ReactJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.12](https://github.com/ais-one/cookbook/releases/tag/0.6.12) - Released 2022 Aug 22 0830 +8GMT
+Latest Version [0.6.12](https://github.com/ais-one/cookbook/releases/tag/0.6.12) - Released 2023 Mar 18 0830 +8GMT
 
 **NOTE:**
-- `NestJS, ReactJS and Typescript` example projects `react-admin` and `nest-admin` have been moved to [https://github.com/ais-one/cookbook-ts](https://github.com/ais-one/cookbook-ts)
-- `solid` project (SolidJS frontend) has been removed
+- Added `react-vite` project (React, react-router-dom 6, zustand, @tanstack/react-query)
 - `cypress` E2E test replaced with `playwright`
+- Example projects `solid`, `react-admin` and `nest-admin` have been removed
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
@@ -126,12 +126,15 @@ npm ls <?package> # use npm ls to check on actual versions installed
 ## Install for single workspace
 
 ```bash
+# install specific dependencies
 npm i @vscode/sqlite3 --workspace=@es-labs/node
 npm i lorem-ipsum --workspace=@es-labs/node
 
-# install a project in a monorepo
+# install all dependencies
 npm i --workspace=js-web/react-vite
 ```
+
+## Update a package with major version change
 
 ```bash
 # updating from 2.2.8 to 3.1.1 - major version change
@@ -325,12 +328,12 @@ Refer to [doc/deployment/home.md](doc/deployment/home.md) for documentation on d
 - .github/workflows/manual-gcp-vue-vite.yml (Manually deploy js-web/vue-vite to GCP Cloud Storage)
   - selectable inputs
     - environment (uat for now, development does not deploy anything)
-    - csutom_app (to be implemented)
+    - custom_app (to be implemented)
     - branch
 - .github/workflows/manual-gh-pages.yml (Manually deploy js-web/vue-vite to Github Pages)
   - selectable inputs
     - environment (uat for now, development does not deploy anything)
-    - csutom_app (to be implemented)
+    - custom_app (to be implemented)
     - branch
 
 
