@@ -44,3 +44,105 @@ return <>
 - https://bundlephobia.com/package/react-router-dom@6.8.2 - 19.4
 - https://bundlephobia.com/package/@tanstack/react-query@4.26.1 - 12
 - https://bundlephobia.com/package/zustand@4.3.6 - 1.1
+
+
+
+
+
+
+
+
+## Description
+
+- context & reducer API for user state
+- redux-toolkit and thunk for other states
+- material-ui & icons
+- roboro font [https://www.npmjs.com/package/@fontsource/rubik]
+- hashrouter & basename setting
+- multiple environment builds
+- eslint
+
+## Installation
+
+```bash
+
+# react-swc, react-ts, react-swc-ts
+npm create vite@latest react-vite -- --template react
+npm i react-router-dom zustand @tanstack/react-query
+
+# material ui & font
+npm i @mui/material @emotion/react @emotion/styled
+npm i @mui/icons-material
+npm i @fontsource/rubik
+
+# eslint & prettier
+npm init @eslint/config
+# check syntax and find problems
+# react, TS, browser, npm
+npm install --save-dev --save-exact prettier
+npm install -D eslint-config-prettier eslint-plugin-prettier
+```
+
+- Add `"prettier"` property to `"plugins"` and `"extends"` properties
+- Add `"prettier/prettier": 2` in `"rules"` property
+
+### Set Up Font
+
+- https://github.com/KyleAMathews/typefaces
+- https://blog.logrocket.com/3-ways-to-add-custom-fonts-to-your-material-ui-project/
+- https://thewebdev.info/2021/12/18/how-to-change-the-font-family-of-all-react-material-ui-components/
+
+```css
+{
+  font-family: "Rubik";
+}
+```
+
+### Set .env file
+
+```bash
+# DOMAIN=www.example.com
+# REACT_APP_FOO=$DOMAIN/foo
+# REACT_APP_BAR=$DOMAIN/bar
+
+PORT=8000
+```
+
+
+## ESLint & Prettier
+
+
+## Setup to use absolute path from src
+
+https://javascript.plainenglish.io/why-and-how-to-use-absolute-imports-in-react-d5b52f24d53c
+
+
+## Base URL and Hash Routing
+
+Add following property to `package.json`
+
+```json
+  "homepage": "/www",
+```
+
+Add `basename` property to the router
+
+```js
+    <HashRouter basename='www'>
+```
+
+Assuming port is 8000
+
+http://localhost:8000/#/www
+
+
+
+## Testing
+
+jest-environment-jsdom
+
+"coverage": "jest --coverage"
+"test": "jest --env=jsdom"
+
+npm test -- u
+
