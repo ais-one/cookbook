@@ -21,10 +21,10 @@
     "@antv/g2": "^4.2.10",
     "@antv/g2plot": "^2.4.28",
     "@antv/g6": "^4.8.8",
-    "@sentry/tracing": "^7.44.2",
-    "@sentry/vue": "^7.44.2",
-    "ant-design-vue": "^3.2.15",
-    "echarts": "^5.4.1",
+    "@sentry/tracing": "^7.45.0",
+    "@sentry/vue": "^7.45.0",
+    "ant-design-vue": "^3.2.16",
+    "echarts": "^5.4.2",
     "firebase": "^9.18.0",
     "leaflet": "^1.9.3",
     "pinia": "^2.0.33",
@@ -34,7 +34,7 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.31.2",
+    "@playwright/test": "^1.32.1",
     "@vitejs/plugin-vue": "^4.1.0",
     "dotenv": "^16.0.3",
     "eslint": "^8.36.0",
@@ -42,8 +42,8 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-vue": "^9.9.0",
-    "prettier": "^2.8.6",
+    "eslint-plugin-vue": "^9.10.0",
+    "prettier": "^2.8.7",
     "start-server-and-test": "^1.15.4",
     "vite": "^4.2.1"
   }

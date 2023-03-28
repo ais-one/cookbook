@@ -38,29 +38,19 @@ return <>
 
 - https://reactjs.org/docs/code-splitting.html#reactlazy
 
-### Package Sizes
-
-- https://bundlephobia.com/package/react@18.2.0 - 2.5
-- https://bundlephobia.com/package/react-router-dom@6.8.2 - 19.4
-- https://bundlephobia.com/package/@tanstack/react-query@4.26.1 - 12
-- https://bundlephobia.com/package/zustand@4.3.6 - 1.1
-
-
-
-
+- interceptors and react-query
+  - https://srini-dev.hashnode.dev/authentication-refresh-token-flow-with-nextjs-typescript-react-query-and-axios-interceptors
 
 
 
 
 ## Description
 
-- context & reducer API for user state
-- redux-toolkit and thunk for other states
 - material-ui & icons
 - roboro font [https://www.npmjs.com/package/@fontsource/rubik]
 - hashrouter & basename setting
 - multiple environment builds
-- eslint
+- eslint & prettier setup
 
 ## Installation
 
@@ -74,17 +64,34 @@ npm i react-router-dom zustand @tanstack/react-query
 npm i @mui/material @emotion/react @emotion/styled
 npm i @mui/icons-material
 npm i @fontsource/rubik
+```
 
-# eslint & prettier
+## eslint & prettier Setup
+
+```bash
 npm init @eslint/config
 # check syntax and find problems
 # react, TS, browser, npm
-npm install --save-dev --save-exact prettier
+npm install --D --save-exact prettier
 npm install -D eslint-config-prettier eslint-plugin-prettier
 ```
 
-- Add `"prettier"` property to `"plugins"` and `"extends"` properties
-- Add `"prettier/prettier": 2` in `"rules"` property
+
+
+```js
+// .eslintrc.js
+module.exports = {
+  // Add "prettier" string value to `plugins: []` and `extends: []` array
+  // Add "prettier/prettier": 2 in `rules: {}` property
+}
+```
+
+```js
+// .prettierrc.js
+module.exports = {
+  // configure as per your own project policy
+}
+```
 
 ### Set Up Font
 
