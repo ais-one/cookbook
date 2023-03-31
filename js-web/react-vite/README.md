@@ -83,6 +83,15 @@ npm install -D eslint-config-prettier eslint-plugin-prettier
 module.exports = {
   // Add "prettier" string value to `plugins: []` and `extends: []` array
   // Add "prettier/prettier": 2 in `rules: {}` property
+  // ...
+  plugins: [..., 'prettier'],
+  extends: [..., 'prettier'],
+  rules: {
+    // ...
+    "prettier/prettier": 2, // or 'error'
+    // ...
+  }
+  // ...
 }
 ```
 
@@ -90,6 +99,14 @@ module.exports = {
 // .prettierrc.js
 module.exports = {
   // configure as per your own project policy
+  printWidth: 180,
+  tabWidth: 2,
+  semi: false,
+  singleQuote: true,
+  trailingComma: 'none',
+  arrowParens: 'always', // avoid
+  bracketSpacing: true,
+  endOfLine: 'auto'
 }
 ```
 
