@@ -43,6 +43,13 @@ return <>
 
 
 
+### React Query
+
+https://srini-dev.hashnode.dev/authentication-refresh-token-flow-with-nextjs-typescript-react-query-and-axios-interceptors
+
+
+---
+
 
 ## Description
 
@@ -131,9 +138,6 @@ module.exports = {
 
 PORT=8000
 ```
-
-
-## ESLint & Prettier
 
 
 ## Setup to use absolute path from src
