@@ -15,8 +15,8 @@
 // are not available in the service worker.
 const window = self // self is service worker - simulate it as window
 importScripts('firebase.config.js')
-importScripts('https://www.gstatic.com/firebasejs/9.19.0/firebase-app-compat.js')
-importScripts('https://www.gstatic.com/firebasejs/9.19.0/firebase-messaging-compat.js')
+importScripts('https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js')
+importScripts('https://www.gstatic.com/firebasejs/9.19.1/firebase-messaging-compat.js')
 // console.log('FIREBASE', firebase)
 
 // Initialize the Firebase app in the service worker by passing in the messagingSenderId.
