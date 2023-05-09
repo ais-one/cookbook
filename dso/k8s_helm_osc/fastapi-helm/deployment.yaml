@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: simple-helm
+  template:
+    metadata:
+      name: simple-helm
+      labels:
+        app.kubernetes.io/name: simple-helm
+    spec:
+      containers:
+      - image: barteks/simple-helm
+        name: simple-helm
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-helm
+spec:
+  selector:
+    app.kubernetes.io/name: simple-helm
+  ports:
+    - protocol: TCP
+      port: 8080
