@@ -1,8 +1,8 @@
 # provider "alicloud" {
 #   # access_key = "${access-key}"
 #   # secret_key = "${secret-key}"
-#   access_key = "LTAI5t9QkJm4787dDaKp4P3g"
-#   secret_key = "pui6CH99pBk45UuG0JAhTp2iVGUlcO"
+#   access_key = "TBD"
+#   secret_key = "TBD"
 #   region = "us-west-1"
 # }
 

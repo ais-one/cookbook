@@ -1,6 +1,6 @@
 provider "alicloud"{
-  access_key = "LTAI5t7LhWzCuWosiwrA6dkh"
-  secret_key = "2bS3lhsREWlmDhpHdZ6IYHOBmNC761"
+  access_key = "TBD"
+  secret_key = "TBD"
   region = "ap-southeast-1"
 }
 
