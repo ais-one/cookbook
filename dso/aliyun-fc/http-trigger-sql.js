@@ -1,6 +1,8 @@
 'use strict';
 
 // more information about nodejs mysql: https://github.com/mysqljs/mysql
+
+// npm i mysql2
 const mysql = require('mysql2');
 let connection;
 let isOk = false;

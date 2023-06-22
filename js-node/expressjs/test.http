@@ -59,6 +59,14 @@ content-type: application/json
 #
 # < ./demo.xml
 
+###
+
+POST https://wa-alert-btv-binance-fc-amwyruhylg.ap-southeast-1.fcapp.run
+content-type: application/json
+
+{
+  "bye": "everybody"
+}
 
 ### Multipart Form Sample
 # POST https://api.example.com/user/upload

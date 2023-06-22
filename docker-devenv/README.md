@@ -17,7 +17,6 @@ applications:
 - rabbitmq (in progress)
 - kafka (in progress)
 - opensearch (in progress)
-- hazelcast (not yet)
 - docker-compose-comms (example of communication between 2 or more docker-compose)
 
 ## Persistent Data Folder
