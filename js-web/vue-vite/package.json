@@ -30,8 +30,7 @@
     "pinia": "^2.1.4",
     "rxjs": "^7.8.1",
     "vue": "^3.2.32",
-    "vue-router": "^4.2.2",
-    "vuex": "^4.1.0"
+    "vue-router": "^4.2.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.35.1",

@@ -2,24 +2,12 @@
   <a-form :model="formState" layout="vertical">
     <h1>Store Counter {{ storeCounter }}</h1>
     <a-form-item label="Region">
-      <a-select
-        mode="multiple"
-        placeholder="Please select"
-        v-model:value="formState.regions"
-        style="width: 300px;"
-        @blur="blurRegion"
-        @deselect="blurRegion"
-      >
+      <a-select mode="multiple" placeholder="Please select" v-model:value="formState.regions" style="width: 300px" @blur="blurRegion" @deselect="blurRegion">
         <a-select-option v-for="region in formState.regionList" :key="region">{{ region }}</a-select-option>
       </a-select>
     </a-form-item>
     <a-form-item label="Countries">
-      <a-select
-        mode="multiple"
-        placeholder="Please select"
-        v-model:value="formState.countries"
-        style="width: 300px;"
-      >
+      <a-select mode="multiple" placeholder="Please select" v-model:value="formState.countries" style="width: 300px">
         <a-select-option v-for="country in formState.countriesList" :key="country">{{ country }}</a-select-option>
       </a-select>
     </a-form-item>
@@ -32,14 +20,14 @@
 </template>
 <script>
 import { ref, reactive, toRaw, watch, onMounted, computed } from 'vue'
-import { useMainPiniaStore } from '../../store.js'
+import { useAppStore } from '../../store.js'
 
 export default {
   setup() {
     // a-select - allowClear (handle event)
     // TBD select / clear all
 
-    const mainStore = useMainPiniaStore()
+    const appStore = useAppStore()
     onMounted(() => {})
 
     const formState = reactive({
@@ -88,7 +76,7 @@ export default {
       formState,
       onSubmit,
       blurRegion,
-      storeCounter: computed(() => mainStore.counter)
+      storeCounter: computed(() => appStore.counter)
     }
   }
 }

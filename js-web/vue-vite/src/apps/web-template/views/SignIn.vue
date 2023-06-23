@@ -32,7 +32,7 @@
 
 <script>
 import { ref, onMounted, onBeforeUnmount, onUnmounted } from 'vue'
-import { useStore } from 'vuex'
+import { useMainStore } from '/src/store'
 import { useRoute } from 'vue-router'
 import { useMediaQuery } from '/src/plugins/useMediaQuery'
 
@@ -44,7 +44,7 @@ import { VITE_CALLBACK_URL, VITE_SAML_URL, VITE_OIDC_URL, VITE_OAUTH_CLIENT_ID, 
 
 export default {
   setup(props, context) {
-    const store = useStore()
+    const store = useMainStore()
     const route = useRoute()
 
     const i18n = useI18n()
@@ -81,7 +81,8 @@ export default {
     })
 
     const _setUser = async (data, decoded) => {
-      await store.dispatch('doLogin', decoded) // store user
+      // store user
+      await store.doLogin(decoded)
       // id, groups, access_token, refresh_token
     }
 

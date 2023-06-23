@@ -35,7 +35,7 @@
 <script>
 // :key="$route.fullPath" // this is causing problems
 import { onMounted, onUnmounted, onBeforeUnmount, ref, reactive } from 'vue'
-import { useStore } from 'vuex'
+import { useMainStore } from '/src/store'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue'
 import { SECURE_ROUTES, ON_LOGIN, ON_LOGOUT } from '/config.js'
 
@@ -44,12 +44,13 @@ import idleTimer from '/@es-labs/esm/idle.js'
 const { VITE_WS_URL } = import.meta.env
 
 export default {
+  name: 'LayoutSecure',
   components: {
     MenuUnfoldOutlined,
     MenuFoldOutlined
   },
   setup(props, context) {
-    const store = useStore()
+    const store = useMainStore()
     const mappedRoutes = reactive([])
     const subMenus = reactive({})
     const loading = ref(false)
@@ -95,7 +96,7 @@ export default {
     const logout = async () => {
       console.time('time-logout')
       loading.value = true
-      await store.dispatch('doLogin', null)
+      await store.doLogin(null)
       loading.value = false
       console.timeEnd('time-logout')
     }

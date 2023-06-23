@@ -23,7 +23,7 @@
     <p><button @click="(e) => testApi('healthcheck')">Test API</button> <button @click="(e) => testApi('health-auth')">Test API Auth</button></p>
     <p>Non-Reactive Data: {{ nonReactiveData }}</p>
     <p>Reactive Data: {{ reactiveData }}</p>
-    <p>Vuex Store {{ storeCount }} - {{ storeUser }}</p>
+    <p>Vuex Store: {{ store.user }} <button @click="(e) => store.changeUserName('ttt')">Change Name</button></p>
     <h2>Test Push Notifications using [{{ VITE_PWA_PN }}]</h2>
     <p>PN State: {{ pnSubState }}</p>
     <p><button @click="subPn">Sub PN</button>&nbsp;<button @click="unsubPn">Unsub PN</button>&nbsp;<button @click="testPn">Test PN</button></p>
@@ -45,7 +45,7 @@
 <script>
 // NOSONAR unref, toRef, toRefs, isRef, isProxy, isReactive, isReadonly, defineComponent, getCurrentInstance, reactive, readonly, watch, watchEffect, provide, inject
 import { onMounted, onUpdated, onUnmounted, onBeforeUnmount, ref, computed, inject, reactive, onBeforeUpdate } from 'vue'
-import { useStore } from 'vuex'
+import { useMainStore } from '/src/store'
 import { webpushSubscribe, webpushUnsubscribe } from '/@es-labs/esm/pwa.js' // served from express /esm static route
 import { fcmSubscribe } from '/src/fcm.js'
 import { VITE_PWA_PN } from '/config.js'
@@ -73,7 +73,7 @@ export default {
     // const router = useRouter()
     // const obj = reactive({ count: 0 })
 
-    const store = useStore()
+    const store = useMainStore()
     const count = ref(0)
     let nonReactiveData = 10
     const reactiveData = ref(20)
@@ -84,9 +84,6 @@ export default {
 
     const testObjectRef = ref({ a: 10, b: 20, c: 30 })
     const testObjectReactive = reactive({ a: { xx: 40 }, b: 50, c: 60 })
-
-    const storeCount = computed(() => store.state.count) // ctx.root.$store.myModule.state.blabla
-    const storeUser = computed(() => store.state.user)
 
     const pnSubState = ref('unsub')
 
@@ -250,8 +247,7 @@ export default {
       reactiveData, // ref reactive
       count, // ref
 
-      storeCount, // store
-      storeUser,
+      store,
       testApi, // test API
 
       subPn, // push notifications

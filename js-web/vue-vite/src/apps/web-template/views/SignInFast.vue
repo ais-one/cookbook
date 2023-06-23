@@ -1,5 +1,5 @@
 <template>
-  <div class="super-center-parent" >
+  <div class="super-center-parent">
     <a-result title="Welcome To JS Dashboard" sub-title="Your one-stop web portal for all things web">
       <template #icon>
         <a-image :width="150" src="https://via.placeholder.com/150x150.png?text=A+Logo" />
@@ -13,13 +13,13 @@
 
 <script>
 import { onMounted, onUnmounted } from 'vue'
-import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
 import { INITIAL_SECURE_PATH } from '/config.js'
+import { useMainStore } from '/src/store'
 
 export default {
   setup() {
-    const store = useStore()
+    const store = useMainStore()
     const route = useRoute()
     const router = useRouter()
 
@@ -33,11 +33,12 @@ export default {
         id: 'Aaa',
         groups: 'MyGroup,AnotherGroup'
       }
-      await store.dispatch('doLogin', decoded) // store user
+      // store user
+      await store.doLogin(decoded)
     }
     const login = async () => {
       _setUser()
-      router.push(INITIAL_SECURE_PATH)
+      router.push(INITIAL_SECURE_PATH) // still needed or does _setUser() handle this? TBD!
     }
 
     return {

@@ -11,7 +11,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default {
-  name: 'Callback',
+  name: 'CallBack',
   setup(props, context) {
     const route = useRoute()
     const hash = ref('No Hash Found')

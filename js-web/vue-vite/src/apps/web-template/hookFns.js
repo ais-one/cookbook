@@ -1,19 +1,19 @@
-import { useStore } from 'vuex'
-import { useMainPiniaStore } from './store.js'
+import { useMainStore } from '/src/store'
+import { useAppStore } from './store.js'
 import { ws } from '/src/services.js'
 const { VITE_WS_URL } = import.meta.env
 
 const wsMsgHandler = (e) => {
-  const mainStore = useMainPiniaStore()
+  const appStore = useAppStore()
   console.log('ws onmessage', e.data)
-  mainStore.message = e.data
+  appStore.message = e.data
 }
 
 export const openWs = () => {
   if (VITE_WS_URL) {
     // TBD get initial data
-    const store = useStore()
-    ws.setOptions({ endpoint: `${VITE_WS_URL}/${store.state.user}` })
+    const store = useMainStore()
+    ws.setOptions({ endpoint: `${VITE_WS_URL}/${store.user}` })
     ws.connect()
     ws.setMessage(wsMsgHandler)
   }

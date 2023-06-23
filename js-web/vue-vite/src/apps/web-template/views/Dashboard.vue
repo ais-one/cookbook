@@ -45,8 +45,12 @@
                       <template #icon><UserOutlined /></template>
                     </a-avatar>
                     <a-card-meta>
-                      <template #title><span>{{ item.name }}</span></template>
-                      <template #description><span style="font-size: 0.8em;">{{ item.title }}</span></template>
+                      <template #title>
+                        <span>{{ item.name }}</span>
+                      </template>
+                      <template #description>
+                        <span style="font-size: 0.8em">{{ item.title }}</span>
+                      </template>
                     </a-card-meta>
                   </a-card>
                 </a-list-item>
@@ -58,9 +62,7 @@
             <a-list item-layout="horizontal" :data-source="data">
               <template #renderItem="{ item }">
                 <a-list-item>
-                  <a-list-item-meta
-                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                  >
+                  <a-list-item-meta description="Ant Design, a design language for background applications, is refined by Ant UED Team">
                     <template #title>
                       <a href="https://www.antdv.com/">{{ item.title }}</a>
                     </template>
@@ -121,6 +123,7 @@ const data = [
 ]
 
 export default {
+  name: 'DashBoard',
   components: {
     ArrowUpOutlined,
     ArrowDownOutlined,

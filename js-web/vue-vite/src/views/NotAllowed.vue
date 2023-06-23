@@ -8,15 +8,15 @@
 
 <script>
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+const store = useMainStore()
 import { INITIAL_SECURE_PATH, INITIAL_PUBLIC_PATH } from '/config.js'
 
 export default {
-  name: 'Forbidden',
+  name: 'NotAllowed',
   setup(props, context) {
     const router = useRouter()
-    const store = useStore()
-    const goHome = () => router.push(store.state.user ? INITIAL_SECURE_PATH : INITIAL_PUBLIC_PATH)
+    const store = useMainStore()
+    const goHome = () => router.push(store.user ? INITIAL_SECURE_PATH : INITIAL_PUBLIC_PATH)
     return {
       goHome
     }

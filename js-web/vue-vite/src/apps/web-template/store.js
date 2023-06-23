@@ -14,10 +14,10 @@ export const useChartPiniaStore = defineStore({
   })
 })
 
-export const useMainPiniaStore = defineStore({
+export const useAppStore = defineStore({
   // name of the store
   // it is used in devtools and allows restoring state
-  id: 'main',
+  id: 'app',
   // a function that returns a fresh state
   state: () => ({
     counter: 5,
