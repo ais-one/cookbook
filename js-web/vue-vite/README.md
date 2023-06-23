@@ -6,7 +6,7 @@ A Vue 3 SPA using Ant Design Vue 2 and built with Vite 2
 
 From repo root, navigate to js-web/vue-vite folder
 
-1. Copy application specific files
+1. Copy application specific files to project root
 
 ```
 cp src/apps/web-template/deploy/.env.* .
@@ -97,6 +97,15 @@ rm package-lock.json
 |  |     +- deploy/ : contains custom deployment info & files see js-node/expressjs/deploy/README.md
 |  |     +- layouts/
 |  |     +- views/
+|  |     |  +- HelloWorld/
+|  |     + setup.js: custom frontend setup (set INITIAL_SECURE_PATH, ROUTES CONSTANTS here)
+|  |     + store.js: custom frontend store
+|  |     + .gitignore: for your repo
+|  |  +- web-demo/
+|  |     +- components/
+|  |     +- deploy/ : contains custom deployment info & files see js-node/expressjs/deploy/README.md
+|  |     +- layouts/
+|  |     +- views/
 |  |     |  +- DataEntry/
 |  |     |  +- Demo/
 |  |     |  +- Favv/ : requires https://github.com/ais-one/favv/ Fastapi backend
@@ -157,6 +166,7 @@ git clone <your frontend project e.g. web-example>
 - environment is selected using the --mode property (see package.json)
 - use **js-web/vue-vite/src/apps/web-template/** as reference on your custom frontend
 - see **js-web/vue-vite/src/apps/web-template/setup.js** on the frontend setup especially the ROUTES property
+- use **js-web/vue-vite/src/apps/web-demo/** for demos/code samples (need to change setup location in `apploader.js`)
 - ROUTES property
   - use kebab-case, will be converted to Capital Case in menu display
   - only up to 1 submenu level

@@ -96,6 +96,20 @@
       </a-col>
     </a-row>
   </div>
+  <!--
+    <a-row :gutter="8">
+      <a-col class="ds-stat" :xs="24" :sm="12" :md="8" :lg="6">
+        <a-statistic title="Feedback" :value="1128" style="margin-right: 50px">
+          <template #suffix><like-outlined /></template>
+        </a-statistic>
+      </a-col>
+      <a-col class="ds-stat" :xs="24" :sm="12" :md="8" :lg="6">
+        <a-statistic title="Unmerged" :value="93" class="demo-class">
+          <template #suffix><span>/ 100</span></template>
+        </a-statistic>
+      </a-col>
+    </a-row>
+  -->
 </template>
 
 <script>
@@ -127,9 +141,11 @@ export default {
 .ds-stat {
   margin-top: 0px;
   padding-top: 0px;
+  /* background-color: lightslategray; */
 }
 
 .ds-stat-container {
+  /* background: #ececec; */
   padding: 0;
 }
 
@@ -138,6 +154,7 @@ export default {
 }
 
 .ant-card-body {
+  /* justify-content: center !important; */
   text-align: center;
 }
 </style>
