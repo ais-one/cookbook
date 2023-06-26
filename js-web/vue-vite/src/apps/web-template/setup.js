@@ -22,11 +22,13 @@ export default {
   ],
   SECURE_ROUTES: [
     { path: '/dashboard', name: 'Dashboard', component: async () => import('./views/Dashboard.vue') },
-    { path: '/demo-view/fill', name: 'Tests Fill', component: async () => import('./views/DemoView/Filler.vue') },
-    { path: '/demo-view/fill/:id', name: 'Demo Fill', component: async () => import('./views/DemoView/Filler.vue'), hidden: true },
-    { path: '/demo-view/test', name: 'Demo Tests', component: async () => import('./views/DemoView/Test.vue') },
-    { path: '/test', name: 'Test No ID', component: async () => import('./views/DemoView/Filler.vue') },
-    { path: '/test/:id', name: 'Test Id', component: async () => import('./views/DemoView/Filler.vue'), hidden: true, props: { id: 1 } }
+    { path: '/demo-view/fill', name: 'Fill No Param', component: async () => import('./views/DemoView/Filler.vue') },
+    { path: '/demo-view/fill/:param', name: 'Fill Param', component: async () => import('./views/DemoView/Filler.vue'), hidden: true },
+    { path: '/demo-view/test', name: 'Demo', component: async () => import('./views/DemoView/Test.vue') },
+    { path: '/test', name: 'Fill No ID', component: async () => import('./views/DemoView/Filler.vue') },
+    ...Array.from(Array(15), (x, i) => {
+      return { path: '/test/' + i, name: 'Fill ID ' + i, component: async () => import('./views/DemoView/Filler.vue'), props: { testId: i } }
+    })
   ],
   INITIAL_PUBLIC_PATH: '/signin',
   INITIAL_SECURE_PATH: '/dashboard',

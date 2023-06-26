@@ -27,9 +27,6 @@
       <button @click="() => testObjectRef.a++">Test Object Ref = {{ testObjectRef.a }}</button>
       <button @click="() => testObjectReactive.a.xx++">Test Object Reactive = {{ testObjectReactive.a.xx }}</button>
     </p>
-    <ul>
-      <li v-for="n in 15" :key="n">{{ n }}</li>
-    </ul>
   </div>
 </template>
 

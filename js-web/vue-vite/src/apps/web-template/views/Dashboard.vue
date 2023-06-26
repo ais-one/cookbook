@@ -59,7 +59,7 @@
 import { ArrowUpOutlined, ArrowDownOutlined, UserOutlined } from '@ant-design/icons-vue'
 
 const data = [
-  { name: 'Note', title: 'Notes Application' }
+  { name: 'Note App', title: 'Notes Application' }
   // { name: 'GIS', title: 'Data Scientist' },
   // { name: 'Great Barrier Reef', title: 'Data Engineer' },
   // { name: 'Love', title: 'Data Scientist' }
