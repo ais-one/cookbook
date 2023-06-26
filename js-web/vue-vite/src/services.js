@@ -1,6 +1,8 @@
-import { VITE_API_URL, VITE_WITH_CREDENTIALS, VITE_REFRESH_URL, VITE_WS_URL, VITE_WS_MS } from '/config.js'
+import { VITE_WITH_CREDENTIALS, VITE_API_URL, VITE_REFRESH_URL, VITE_WS_URL, VITE_WS_MS } from '/config.js'
 import Fetch from '/@es-labs/esm/fetch.js'
 import Ws from '/@es-labs/esm/ws.js'
+
+console.log('services', VITE_API_URL)
 
 export const http = new Fetch({
   baseUrl: VITE_API_URL,

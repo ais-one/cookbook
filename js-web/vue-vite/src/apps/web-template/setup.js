@@ -22,10 +22,11 @@ export default {
   ],
   SECURE_ROUTES: [
     { path: '/dashboard', name: 'Dashboard', component: async () => import('./views/Dashboard.vue') },
-    { path: '/demo/test', name: 'Tests', component: async () => import('./views/Demo/DemoTest.vue') },
-    { path: '/demo/table-edit', name: 'Table Edit', component: async () => import('./views/Demo/DemoTableEdit.vue') },
-    { path: '/demo/table', name: 'Table', component: async () => import('./views/Demo/DemoTable.vue') },
-    { path: '/demo/table-crud', name: 'Table CRUD', component: async () => import('./views/Demo/DemoTableCrud.vue') }
+    { path: '/demo-view/fill', name: 'Tests Fill', component: async () => import('./views/DemoView/Filler.vue') },
+    { path: '/demo-view/fill/:id', name: 'Demo Fill', component: async () => import('./views/DemoView/Filler.vue'), hidden: true },
+    { path: '/demo-view/test', name: 'Demo Tests', component: async () => import('./views/DemoView/Test.vue') },
+    { path: '/test', name: 'Test No ID', component: async () => import('./views/DemoView/Filler.vue') },
+    { path: '/test/:id', name: 'Test Id', component: async () => import('./views/DemoView/Filler.vue'), hidden: true, props: { id: 1 } }
   ],
   INITIAL_PUBLIC_PATH: '/signin',
   INITIAL_SECURE_PATH: '/dashboard',
