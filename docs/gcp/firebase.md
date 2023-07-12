@@ -27,7 +27,7 @@ Your app, select icon for web application
 Client credentials should like like something below:
 
 ```
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.0.0/firebase.js"></script>
 <script>
   // Initialize Firebase
   var config = {

@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@es-labs/node": "file:../../@es-labs/node",
-    "winston": "^3.9.0",
+    "winston": "^3.10.0",
     "winston-daily-rotate-file": "^4.7.1"
   },
   "not-working": {
