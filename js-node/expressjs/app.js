@@ -17,8 +17,8 @@ require('./common/init')()
 
 // setup graceful exit
 const handleExitSignal = async (signal) => await cleanup(`Signal ${signal}`, 0) // NOSONAR
-const handleExitException = async (err, origin) => await cleanup(`Uncaught Exception. error: ${err} origin: ${origin}`, 1) // NOSONAR
-const handleExitRejection = async (reason, promise) => await cleanup(`Unhandled Rejection. reason: ${reason}`, 1) // NOSONAR
+const handleExitException = async (err, origin) => await cleanup(`Uncaught Exception. error: ${err?.stack || err} origin: ${origin}`, 1) // NOSONAR
+const handleExitRejection = async (reason, promise) => await cleanup(`Unhandled Rejection. reason: ${reason?.stack || reason }`, 1) // NOSONAR
 process.on('SIGINT', handleExitSignal)
 process.on('SIGTERM', handleExitSignal)
 process.on('SIGQUIT', handleExitSignal)

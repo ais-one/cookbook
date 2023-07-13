@@ -1,0 +1,1 @@
+oc apply -f job-jobx.yaml

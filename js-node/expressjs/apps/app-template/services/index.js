@@ -7,12 +7,10 @@ const services = {
   mongo1: null,
   keyv: null,
   //NOSONAR redis: null,
-  //NOSONAR hazelcast: null
 }
 
 const StoreKeyV = require('@es-labs/node/services/db/keyv')
 //NOSONAR const StoreRedis = require('@es-labs/node/services/db/redis')
-//NOSONAR const StoreHazelcast = require('@es-labs/node/services/db/hazelcast')
 const StoreKnex = require('@es-labs/node/services/db/knex') 
 const StoreMongo = require('@es-labs/node/services/db/mongodb') 
 
@@ -27,8 +25,6 @@ const start = async () => {
   services.keyv.open()
   //NOSONAR services.redis = new StoreRedis()
   //NOSONAR services.redis.open()
-  //NOSONAR services.hazelcast = new StoreHazelcast()
-  //NOSONAR services.hazelcast.open()
   services.knex1 = new StoreKnex()
   await services.knex1.open()
   services.knex2 = new StoreKnex()
@@ -51,7 +47,6 @@ const stop = async () => {
   await services.mongo1.open()
   await services.knex1.close()
   await services.knex2.close()
-  // await services.hazelcast.close()
   // await services.redis.close()
   await services.keyv.close()
   console.log('services - stop - end')

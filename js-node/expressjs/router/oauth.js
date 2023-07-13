@@ -1,5 +1,4 @@
 'use strict'
-const axios = require('axios')
 const { AUTH_ERROR_URL } = process.env
 const OAUTH_OPTIONS = JSON.parse(process.env.OAUTH_OPTIONS || null) || {}
 const { userOps, createToken, setTokensToHeader } = require('@es-labs/node/auth')
@@ -12,10 +11,19 @@ const express = require('express')
 const callbackOAuth = async (req, res) => {
   try {
     const { code, state } = req.query
-    const { data } = await axios.post(OAUTH_OPTIONS.URL, { client_id: OAUTH_OPTIONS.CLIENT_ID, client_secret: OAUTH_OPTIONS.CLIENT_SECRET, code, state }, { headers: { Accept: 'application/json' } })
+    const res0 = await fetch(OAUTH_OPTIONS.URL, {
+      method: 'POST',
+      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ client_id: OAUTH_OPTIONS.CLIENT_ID, client_secret: OAUTH_OPTIONS.CLIENT_SECRET, code, state }),
+    })
+    const data0 = await res0.json();
 
-    const rv = await axios.get(OAUTH_OPTIONS.USER_URL, { headers: { 'Authorization': `token ${data.access_token}` } }) // TBD make this generic?
-    const githubId = rv.data[OAUTH_OPTIONS.USER_ID] // github id, email
+    const res1 = await fetch(OAUTH_OPTIONS.USER_URL, {
+      method: 'GET',
+      headers: { Authorization: `token ${data0.access_token}`, },
+    })
+    const data1 = await res1.json();
+    const githubId = data1[OAUTH_OPTIONS.USER_ID] // github id, email
 
     const user = await userOps.findUser({ [OAUTH_OPTIONS.FIND_ID]: githubId }) // match github id (or email?) with our user in our application
     if (!user) return res.status(401).json({ message: 'Unauthorized' })

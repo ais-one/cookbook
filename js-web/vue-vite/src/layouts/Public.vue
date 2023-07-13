@@ -6,6 +6,7 @@
 import { onMounted, onUnmounted } from 'vue'
 
 export default {
+  name: 'LayoutPublic',
   setup(props, context) {
     onMounted(() => console.log('PUBLIC mounted!'))
     onUnmounted(() => console.log('PUBLIC unmounted'))

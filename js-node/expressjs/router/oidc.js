@@ -38,8 +38,14 @@ module.exports = express.Router()
       if (OIDC_OPTIONS.CLIENT_SECRET) payload.append('client_secret', OIDC_OPTIONS.CLIENT_SECRET)
       // add offline_access to get refresh token
 
-      const rv = await axios.post(TOKEN_URL, payload, { headers })
-      const { access_token, refresh_token, ...user_meta } = rv.data
+      const res0 = await fetch(TOKEN_URL, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', ...headers },
+        body: JSON.stringify(payload),
+      })
+      const data = await res0.json();
+      // const { data } = await axios.post(TOKEN_URL, payload, { headers })
+      const { access_token, refresh_token, ...user_meta } = data
       return res.redirect(OIDC_OPTIONS.CALLBACK + '#' + access_token + ';' + refresh_token + ';' + JSON.stringify(user_meta))
     } catch (e) {
       return AUTH_ERROR_URL ? res.redirect(AUTH_ERROR_URL) : res.status(401).json({ error: 'NOT Authenticated' })
@@ -53,8 +59,14 @@ module.exports = express.Router()
     payload.append('refresh_token', req.cookies?.refresh_token || req.header('refresh_token') || req.query?.refresh_token)
     payload.append('client_id', OIDC_OPTIONS.CLIENT_ID)
     // add offline_access to get refresh token
-    const rv = await axios.post(TOKEN_URL, payload, { headers })
-    const { access_token, refresh_token } = rv.data
+    const res0 = await fetch(TOKEN_URL, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', ...headers },
+      body: JSON.stringify(payload),
+    })
+    const data = await res0.json();
+    // const { data } = await axios.post(TOKEN_URL, payload, { headers })
+    const { access_token, refresh_token } = data
     const tokens = { access_token, refresh_token }
     setTokensToHeader(res, tokens)
     res.json(tokens)

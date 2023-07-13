@@ -8,14 +8,14 @@
 
 # About
 
-> **TL;DR** ExpressJS, VueJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
+> **TL;DR** ExpressJS, VueJS, ReactJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.6.11](https://github.com/ais-one/cookbook/releases/tag/0.6.11) - Released 2022 Jul 22 0830 +8GMT
+Latest Version [0.6.12](https://github.com/ais-one/cookbook/releases/tag/0.6.12) - Released 2023 Mar 18 0830 +8GMT
 
 **NOTE:**
-- `NestJS, ReactJS and Typescript` example projects `react-admin` and `nest-admin` have been moved to [https://github.com/ais-one/cookbook-ts](https://github.com/ais-one/cookbook-ts)
-- `solid` project (SolidJS frontend) has been removed
+- Added `react-vite` project (React, react-router-dom 6, zustand, @tanstack/react-query)
 - `cypress` E2E test replaced with `playwright`
+- Example projects `solid`, `react-admin` and `nest-admin` have been removed
 
 Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
 
@@ -36,10 +36,11 @@ Folder | Description | Features
 [js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)<br>- Fido & Webauthn
 [js-node/*](js-node) | **Other Backend applications** | - [Services](js-node/services) (TCP event/stream, scalable Websocket with Redis Pubsub, etc.)<br>- [Serial server](js-node/serialserver)<br>- [openapi-file-joiner](js-node/openapi-file-joiner) combine OpenAPI files
 [js-web/vue-nobundler](js-web/vue-nobundler) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/apps/app-template/tables/](js-node/expressjs/apps/app-template/tables/)</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[js-web/vue-nobundler/views/ui1.js](js-web/vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[js-web/vue-nobundler/views/ui2.js](js-web/vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[js-web/vue-nobundler/views/ui3.js](js-web/vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[js-web/vue-nobundler/views/ui4.js](js-web/vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
-[js-web/vue-vite](js-web/vue-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Cypress Testing
-example-webpack<br><b>(Deprecated & removed)</b><br>[last updated version](https://github.com/ais-one/cookbook/tree/0.5.3) | Vue 2 SPA using webpack + Vuetify | - Graphql, REST, VueCrudX, i18n, rxJS
+[js-web/vue-vite](js-web/vue-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Playwrite Testing<br>- i18n / graphql (TBD)
+[js-web/react-vite](js-web/react-vite) | react/react-router-dom/zustand/@tanstack/react-query | -
 [.github/workflows](.github/workflows) | Github Actions (CI/CD) | - Manually Trigger<br>- On-push Trigger (WIP)
 AMP Website | [removed](https://plausible.io/blog/google-amp) | -
+
 
 # QUICK START - ON YOUR LOCAL MACHINE
 
@@ -124,10 +125,16 @@ npm ls <?package> # use npm ls to check on actual versions installed
 
 ## Install for single workspace
 
-```
+```bash
+# install specific dependencies
 npm i @vscode/sqlite3 --workspace=@es-labs/node
 npm i lorem-ipsum --workspace=@es-labs/node
+
+# install all dependencies
+npm i --workspace=js-web/react-vite
 ```
+
+## Update a package with major version change
 
 ```bash
 # updating from 2.2.8 to 3.1.1 - major version change
@@ -201,7 +208,11 @@ See [js-node/README.md](js-node/README.md)
 2. Run the following
 
 ```bash
+# for vue 3
 npm run dev --workspace=js-web/vue-vite
+
+# for react
+npm run dev --workspace=js-web/react-vite
 ```
 
 3. Visit
@@ -317,12 +328,12 @@ Refer to [doc/deployment/home.md](doc/deployment/home.md) for documentation on d
 - .github/workflows/manual-gcp-vue-vite.yml (Manually deploy js-web/vue-vite to GCP Cloud Storage)
   - selectable inputs
     - environment (uat for now, development does not deploy anything)
-    - csutom_app (to be implemented)
+    - custom_app (to be implemented)
     - branch
 - .github/workflows/manual-gh-pages.yml (Manually deploy js-web/vue-vite to Github Pages)
   - selectable inputs
     - environment (uat for now, development does not deploy anything)
-    - csutom_app (to be implemented)
+    - custom_app (to be implemented)
     - branch
 
 

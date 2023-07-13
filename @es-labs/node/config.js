@@ -39,6 +39,25 @@ module.exports = async function(app_path) {
         console.log('environment vault response error', e.toString(), VAULT)
       }
     }
+
+    // Using App Role token on HCP
+    // const { VAULT_URL, VAULT_ROLE_ID, VAULT_SECRET_ID } = global.CONFIG // HCP
+    // if (VAULT_URL) {
+    //   try {
+    //     const vloginRes = await axios.post(VAULT_URL + '/auth/approle/login', {
+    //       role_id: VAULT_ROLE_ID,
+    //       secret_id: VAULT_SECRET_ID
+    //     })
+    //     const token = vloginRes.data.auth.client_token
+    //     const vaultRes = await axios.get(VAULT_URL + '/kv/data/<whatever>', { headers: { 'X-Vault-Token': token } })
+    //     const vaultConfig = vaultRes.data.data.data
+    //     global.CONFIG = { ...CONFIG, ...vaultConfig }
+    //   } catch (e) {
+    //     console.log('HCP vault response error', e.toString(), VAULT_URL)
+    //   }
+    // }
+
+
     const sleep = (milliseconds) => new Promise(resolve => setTimeout(resolve, milliseconds))
     await sleep(2000)
     console.log('CONFIG DONE!')

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from './store.js'
+import { useMainStore } from '/src/store'
 import { BASE_URL, ROUTES, SECURE_ROUTES, PUBLIC_ROUTES, INITIAL_SECURE_PATH, INITIAL_PUBLIC_PATH } from '/config.js'
 
 // const permissions = {
@@ -14,6 +14,7 @@ import { BASE_URL, ROUTES, SECURE_ROUTES, PUBLIC_ROUTES, INITIAL_SECURE_PATH, IN
 // }
 
 const authGuard = (to, from, next) => {
+  const store = useMainStore()
   // console.log('authGuard', store.state.user ? 'user' : 'anon', from.path, to.path)
 
   // TBD find users from localStorage? // potential security leak
@@ -23,7 +24,7 @@ const authGuard = (to, from, next) => {
   //   store.commit('setUser', user) // need user.token only
   // }
 
-  const loggedIn = !!store.state.user
+  const loggedIn = !!store.user
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
 
   // const { groups } = store.state.user
@@ -65,5 +66,9 @@ const router = createRouter({
     ...ROUTES // no authguard, no layout
   ]
 })
+
+// router.beforeEach((to) => {
+//   const store = useMainStore()
+// })
 
 export default router

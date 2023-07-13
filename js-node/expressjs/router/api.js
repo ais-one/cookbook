@@ -4,7 +4,6 @@ const fs = require('fs')
 const path = require('path')
 const express = require('express')
 const { spawn } = require('child_process')
-const axios = require('axios')
 const PdfKit = require('pdfkit')
 
 const ws = require('@es-labs/node/services/websocket')
