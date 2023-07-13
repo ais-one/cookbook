@@ -7,9 +7,9 @@
       <a-menu theme="dark" mode="inline" v-model:selectedKeys="selectedKeys">
         <template v-for="route in mappedRoutes">
           <a-sub-menu v-if="route.submenu" :key="route.submenu" :title="toPascalCase(route.submenu)">
-            <a-menu-item v-for="menu in subMenus[route.submenu]" :key="menu.path" @click="$router.push(menu.path)">{{ menu.name }}</a-menu-item>
+            <a-menu-item v-for="menu in subMenus[route.submenu]" :key="'sm-' + menu.path" @click="$router.push(menu)">{{ menu.name }}</a-menu-item>
           </a-sub-menu>
-          <a-menu-item v-else :key="route.path" @click="$router.push(route.path)">{{ route.name }}</a-menu-item>
+          <a-menu-item v-else :key="'m-' + route.path" @click="$router.push(route)">{{ route.name }}</a-menu-item>
         </template>
         <a-menu-item data-cy="logout" key="logout" @click="logout">Logout</a-menu-item>
       </a-menu>
@@ -35,21 +35,20 @@
 <script>
 // :key="$route.fullPath" // this is causing problems
 import { onMounted, onUnmounted, onBeforeUnmount, ref, reactive } from 'vue'
-import { useStore } from 'vuex'
+import { useMainStore } from '/src/store'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue'
 import { SECURE_ROUTES, ON_LOGIN, ON_LOGOUT } from '/config.js'
 
 import idleTimer from '/@es-labs/esm/idle.js'
 
-const { VITE_WS_URL } = import.meta.env
-
 export default {
+  name: 'LayoutSecure',
   components: {
     MenuUnfoldOutlined,
     MenuFoldOutlined
   },
   setup(props, context) {
-    const store = useStore()
+    const store = useMainStore()
     const mappedRoutes = reactive([])
     const subMenus = reactive({})
     const loading = ref(false)
@@ -69,16 +68,22 @@ export default {
       idleTimer.start()
 
       SECURE_ROUTES.filter((route) => route.meta.layout === 'layout-secure').forEach((route) => {
-        const submenu = route.path.split('/').length === 3 ? route.path.split('/', 2)[1] : '' // 2 or 3 only
-        if (submenu) {
-          if (!subMenus[submenu]) {
-            // first time
-            subMenus[submenu] = []
-            mappedRoutes.push({ name: route.name, path: route.path, submenu: submenu })
+        if (!route.hidden) {
+          const pathLen = route.path.split('/').length
+          if (pathLen === 2 || pathLen === 3) {
+            const submenu = pathLen === 3 ? route.path.split('/', 2)[1] : ''
+            console.log('submenu', route, '-', submenu, '-', pathLen)
+            if (submenu) {
+              if (!subMenus[submenu]) {
+                // first time
+                subMenus[submenu] = []
+                mappedRoutes.push({ ...route, submenu: submenu })
+              }
+              subMenus[submenu].push({ ...route }) // add item
+            } else {
+              mappedRoutes.push({ ...route, submenu: '' }) // add item
+            }
           }
-          subMenus[submenu].push({ name: route.name, path: route.path }) // add
-        } else {
-          mappedRoutes.push({ name: route.name, path: route.path, submenu: '' })
         }
       })
       ON_LOGIN && ON_LOGIN()
@@ -95,7 +100,7 @@ export default {
     const logout = async () => {
       console.time('time-logout')
       loading.value = true
-      await store.dispatch('doLogin', null)
+      await store.doLogin(null)
       loading.value = false
       console.timeEnd('time-logout')
     }

@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
 import router from './router.js'
-import store from './store.js'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 
@@ -18,6 +17,13 @@ import '../pwa-init.js'
 
 // our own web components
 import '/@es-labs/esm/bwc-loading-overlay.js'
+
+// NEW MSW - https://www.vuemastery.com/blog/mock-service-worker-api-mocking-for-vuejs-development-testing
+// npx msw init public/ ?
+// if (process.env.NODE_ENV === 'development') {
+//   const { worker } = require('./mocks/browser')
+//   worker.start()
+// }
 
 const app = createApp(App)
 // NOSONAR
@@ -44,9 +50,8 @@ Sentry.init({
 const theme = 'dark'
 // const ThemeSymbol = Symbol()
 app.provide('MyTheme', theme) // provide & inject
-app.use(store)
-app.use(createPinia())
-app.use(router)
+app.use(createPinia()) // state management
+app.use(router) // routing
 app.use(Antd)
 
 app.mount('#app')

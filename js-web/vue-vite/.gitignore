@@ -9,6 +9,7 @@ gcp.uat.json
 # custom app
 web-*
 !web-template
+!web-demo
 
 # Log files
 npm-debug.log*

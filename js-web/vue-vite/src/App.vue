@@ -7,21 +7,21 @@
 import { LAYOUTS } from '../config.js'
 
 import { computed } from 'vue'
-import { useStore } from 'vuex'
+import { useMainStore } from '/src/store'
 
 import { http } from '/src/services.js'
 import { provideI18n } from '/src/plugins/i18n.js'
 
 export default {
   components: {
-    'layout-public': LAYOUTS.layoutPublic, // store.state.user determines if public or secure
+    'layout-public': LAYOUTS.layoutPublic, // store.user determines if public or secure
     'layout-secure': LAYOUTS.layoutSecure
   },
   setup(props, context) {
-    const store = useStore()
-    const storeUser = computed(() => store.state.user)
+    const store = useMainStore()
+    const storeUser = store.state
     const logout = async () => {
-      await store.dispatch('doLogin', { forced: true })
+      await store.doLogin({ forced: true })
     }
     http.setOptions({ forceLogoutFn: logout })
 
