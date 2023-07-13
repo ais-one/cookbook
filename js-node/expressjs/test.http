@@ -48,25 +48,11 @@ content-type: application/json
   "bye": "everybody"
 }
 
-### 
-
-GET https://api.telegram.org/bot5728250590:AAErydAuif5RU8q5RzopQYZ9xeGzCT32e_k/sendMessage?chat_id=-1001380887961&text=TEST
-content-type: application/json
-
 ### use data from file
 # POST http://127.0.0.1:3000/api/test-xml
 # content-type: application/xml
 #
 # < ./demo.xml
-
-###
-
-POST https://wa-alert-btv-binance-fc-amwyruhylg.ap-southeast-1.fcapp.run
-content-type: application/json
-
-{
-  "bye": "everybody"
-}
 
 ### Multipart Form Sample
 # POST https://api.example.com/user/upload
@@ -82,104 +68,3 @@ content-type: application/json
 
 # < ./1.png
 # ------WebKitFormBoundary7MA4Y
-
-
-###
-
-POST https://wa-alert-btv-binance-fc-amwyruhylg.ap-southeast-1.fcapp.run/outbound
-content-type: application/json
-
-{
-          "to": "6596935500", 
-          "message_type": "custom",
-          "custom": {
-            "type": "interactive",
-            "interactive":{
-              "type": "product",
-              "body": {
-                "text": "Mao Shan Wang Durian Daifuku (boxof 6)"
-              },
-              "action": {
-                "catalog_id": "167684606299114",
-                "product_retailer_id": "45526925345069"
-              }
-            }
-          }
-          
-        } 
-
-
-###
-
-POST https://wa-alert-btv-binance-fc-amwyruhylg.ap-southeast-1.fcapp.run/outbound
-content-type: application/json
-
-{
-    "to": "6596935500", 
-    "message_type": "custom",
-    "custom": {
-      "type": "interactive",
-      "interactive": {
-        "type": "button",
-        "header": {
-          "type": "text",
-          "text": "Delivery time"
-        },
-        "body": {
-          "text": "Which time would you like us to deliver your order at?"
-        },
-        "footer": {
-          "text": "Please allow 15 mins either side of your chosen time"
-        },
-        "action": {
-          "buttons": [
-            {
-              "type": "reply",
-              "reply": {
-                "id": "slot-1",
-                "title": "15:00"
-              }
-            },
-            {
-              "type": "reply",
-              "reply": {
-                "id": "slot-2",
-                "title": "16:30"
-              }
-            },
-            {
-              "type": "reply",
-              "reply": {
-                "id": "slot-3",
-                "title": "17:15"
-              }
-            }
-          ]
-        }
-      }
-    } 
-}
-
-###
-
-POST https://wa-alert-btv-binance-fc-amwyruhylg.ap-southeast-1.fcapp.run/outbound
-content-type: application/json
-
-{
-    "to": "6596935500",
-    "message_type": "text",
-    "text": "Your message 123"
-}
-
-### 
-
-POST https://durian-dev/whatsapp
-content-type: application/json
-
-{
-  "sender_id": "6596935500",
-  "sender_message": {
-    "message_type": "text",
-    "text": "Your message"
-  }
-}
