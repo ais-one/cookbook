@@ -1,6 +1,6 @@
 <template>
   <div>
-  <a-drawer title="Table 2 - Filter & Sort" :width="512" :visible="form.show" :body-style="{ paddingBottom: '80px' }" @close="formClose" placement="left">
+  <a-drawer title="Table 2 - Filter & Sort" :width="512" :open="form.show" :body-style="{ paddingBottom: '80px' }" @close="formClose" placement="left">
     <a-tabs v-model:activeKey="form.tabFormActiveKey">
       <a-tab-pane key="1" tab="Sort">
         <a-form layout="vertical">

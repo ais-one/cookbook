@@ -22,7 +22,7 @@
         <a-button @click="() => clickId(item)">{{ item.text }}</a-button>
       </template>
     </a-table>
-    <a-drawer title="Filters" :width="512" :visible="filterShow" :body-style="{ paddingBottom: '80px' }" @close="filterClose" placement="left">
+    <a-drawer title="Filters" :width="512" :open="filterShow" :body-style="{ paddingBottom: '80px' }" @close="filterClose" placement="left">
       <a-form layout="vertical">
         <a-form-item v-for="(filter, index) of table.filters" :key="index">
           <a-input-group compact>
@@ -49,7 +49,7 @@
         <a-button type="primary" @click="filterApply">Apply</a-button>
       </div>
     </a-drawer>
-    <a-drawer :title="formMode" :width="480" :visible="!!formMode" :body-style="{ paddingBottom: '80px' }" @close="formClose">
+    <a-drawer :title="formMode" :width="480" :open="!!formMode" :body-style="{ paddingBottom: '80px' }" @close="formClose">
       <a-form layout="vertical" :model="table.formData" :rules="table.formRules">
         <template v-for="(val, col) of table.formData" :key="col">
           <a-form-item :label="table.formConfig[col].title">
