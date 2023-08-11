@@ -13,7 +13,7 @@
 Latest Version [0.6.12](https://github.com/ais-one/cookbook/releases/tag/0.6.12) - Released 2023 Mar 18 0830 +8GMT
 
 **NOTE:**
-- Added `react-vite` project (React, react-router-dom 6, zustand, @tanstack/react-query)
+- Moved `react-vite` project (React, react-router-dom 6, zustand, @tanstack/react-query) to its own [repo](https://github.com/ais-one/react-template)
 - `cypress` E2E test replaced with `playwright`
 - Example projects `solid`, `react-admin` and `nest-admin` have been removed
 
@@ -131,7 +131,7 @@ npm i @vscode/sqlite3 --workspace=@es-labs/node
 npm i lorem-ipsum --workspace=@es-labs/node
 
 # install all dependencies
-npm i --workspace=js-web/react-vite
+npm i --workspace=js-web/vue-vite
 ```
 
 ## Update a package with major version change
@@ -208,11 +208,7 @@ See [js-node/README.md](js-node/README.md)
 2. Run the following
 
 ```bash
-# for vue 3
 npm run dev --workspace=js-web/vue-vite
-
-# for react
-npm run dev --workspace=js-web/react-vite
 ```
 
 3. Visit
