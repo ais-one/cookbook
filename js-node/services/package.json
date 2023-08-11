@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@es-labs/node": "file:../../@es-labs/node",
+    "@es-labs/node": "github:es-labs/node#semver:0.0.14",
     "ioredis": "^5.3.2",
     "kafkajs": "^2.2.4",
     "knex": "^2.5.1",

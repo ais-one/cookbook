@@ -158,9 +158,17 @@ npm run abc:xyz
 
   "dependencies": {
     "@es-labs/esm": "file:../@es-labs/esm",
-    "@es-labs/node": "file:../@es-labs/node",
 
 If you edit the file in ../@eslabs/..., it will also be changed the installed node_modules
+
+3. installing from git
+
+  "dependencies": {
+    "@es-labs/node": "github:es-labs/node#<tag>",
+    "@es-labs/esm": "github:es-labs/esm#<branch_name>",
+
+You need to create `tag` on the github remote also by creating a new release or you can use a branch instead
+
 
 ## Shutdown
 

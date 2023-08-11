@@ -23,6 +23,7 @@
     "@antv/g6": "^4.8.20",
     "@sentry/tracing": "^7.61.1",
     "@sentry/vue": "^7.61.1",
+    "@es-labs/esm": "github:es-labs/esm#semver:0.0.14",
     "ant-design-vue": "^4.0.0",
     "echarts": "^5.4.3",
     "firebase": "^10.1.0",

@@ -1,6 +1,8 @@
 ### Version 0.6.12
 - [chore] update packages & cleanup & work on improving documentation
 - [jsonwebtoken] update version handle minimum key size requirement change
+- [@es-labs/node] moved to seperate repo
+- [@es-labs/esm] moved to seperate repo
 
 ### Version 0.6.11
 - [chore] update packages & cleanup & work on improving documentation

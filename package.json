@@ -28,7 +28,6 @@
     "npm": ">=8"
   },
   "workspaces": [
-    "@es-labs/*",
     "js-node/*",
     "js-web/*"
   ],

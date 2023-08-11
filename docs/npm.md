@@ -35,7 +35,6 @@ npm prejects with no dependencies, for testing
 ### To install each workspace
 
 ```bash
-npm install --workspace=@es-labs 
 npm install --workspace=js-node
 npm install --workspace=js-web
 ```
