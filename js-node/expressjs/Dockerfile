@@ -9,7 +9,7 @@ RUN apk update && apk add python make g++ && rm -rf /var/cache/apk/*
 WORKDIR /app
 COPY package*.json ./
 # RUN npm ci --only=production ../../@es-labs causes problems
-RUN npm i @es-labs/esm@latest @es-labs/node@latest
+# RUN npm i @es-labs/esm@latest @es-labs/node@latest
 RUN npm i --only=production
 COPY . .
 

@@ -1,3 +1,4 @@
+
 async function doMigrate(migrateName, knex) {
   const { up, down } = require('./' + migrateName)
   try {
@@ -12,13 +13,19 @@ async function doMigrate(migrateName, knex) {
   }
 }
 
+const path = require('path')
+require('dotenv').config()
+const { APP_NAME } = process.env
+require('dotenv').config({ path: path.join('apps', APP_NAME, '.env'), override: true } ) // from from project root
+
 async function run() {
+  await require('@es-labs/node/config')( process.cwd() )
+  // console.log('Test Env JSON', process.env.MONGO_OPTIONS) && process.exit(0)
+
   try {
-    require('@es-labs/node/config')(process.cwd()) //  first thing to include
     const StoreKnex = require('@es-labs/node/services/db/knex') 
     const sqldb = new StoreKnex()
     await sqldb.open()
-    // const sqldb = await require('@es-labs/node/services/db/knex').open()
     const knex = sqldb.get()
 
     await doMigrate('20180927133438_create_users', knex)

@@ -1,6 +1,5 @@
 async function run() {
   try {
-    require('@es-labs/node/config')(process.cwd()) //  first thing to include
     const StoreMongo = require('@es-labs/node/services/db/mongodb') 
     const mongodb = new StoreMongo()
     await mongodb.open()
