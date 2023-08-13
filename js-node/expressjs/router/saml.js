@@ -9,7 +9,6 @@ const { createToken, setTokensToHeader } = require('@es-labs/node/auth')
 
 const { SAML_OPTIONS, SAML_JWT_MAP, SAML_CERTIFICATE, SAML_PRIVATE_KEY } = process.env
 const { AUTH_ERROR_URL } = process.env
-
 const saml_opts = JSON.parse(SAML_OPTIONS || null)
 if (saml_opts) {
   if (SAML_CERTIFICATE) saml_opts.privateCert = SAML_CERTIFICATE
@@ -20,22 +19,12 @@ if (saml_opts) {
 }
 
 let samlStrategy
-
+let saml
 const { SAML } = require('node-saml')
-const samlx = new SAML(saml_opts)
-// console.log(saml_opts)
-// cause problems in samlx
-// privateCert: samlPems.cert,
-// await saml.getLogoutResponseUrl({user, samlLogoutRequest}, {additionalParams});
-// const {success} = await saml.validateRedirect(query, originalQuery);
-// await saml.validatePostResponse(body);
-// await saml.validatePostRequest(body);
-// await saml.getAuthorizeForm();
-// await saml.getAuthorizeUrl(options);
-// await saml.getLogoutUrl(user, options);
-// saml.generateServiceProviderMetadata(decryptionCert, signingCert);
 
 if (saml_opts) {
+  saml = new SAML(saml_opts)
+
   const SamlStrategy = require('passport-saml').Strategy
   samlStrategy = new SamlStrategy(
     saml_opts,
@@ -105,12 +94,12 @@ const bodyx = {
 
 module.exports = express.Router()
   .get('/test', async (req,res) => {
-    // console.log(samlx)
+    // console.log(saml)
     try {
-      const authUrl = await samlx.getAuthorizeUrlAsync() // validatePostResponseAsync (calls..., processValidlySignedPostRequestAsync)
+      const authUrl = await saml?.getAuthorizeUrlAsync() // validatePostResponseAsync (calls..., processValidlySignedPostRequestAsync)
       // console.log(authUrl)
 
-      const parsedResponse = await samlx.validatePostResponseAsync(bodyx)
+      const parsedResponse = await saml?.validatePostResponseAsync(bodyx)
       // console.log(parsedResponse)
 
       res.json({ message: 'testing node-saml ok', authUrl, parsedResponse })

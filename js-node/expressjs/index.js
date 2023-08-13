@@ -12,7 +12,7 @@
   // console.log('Test Env JSON', process.env.MONGO_OPTIONS) && process.exit(0)
 
   process.env.APP_PATH = path.join(__dirname)
-  console.log(process.env.APP_PATH)
+  // console.log(process.env.APP_PATH)
 
   await require('@es-labs/node/config')( __dirname, process.cwd() )
   console.info('Globals setup and config done. Starting app... ')

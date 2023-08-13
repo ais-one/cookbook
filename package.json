@@ -21,7 +21,12 @@
   "scripts": {
     "prepare": "git config core.hooksPath ./git-hooks || echo 'Can not set git hooks'",
     "git:hash": "git rev-parse --verify --short HEAD",
-    "git:branch": "git rev-parse --abbrev-ref HEAD"
+    "git:branch": "git rev-parse --abbrev-ref HEAD",
+    "ex:start": "npm run app --workspace=js-node/expressjs -- development",
+    "ex:build": "npm i --workspace=js-node/expressjs",
+    "ex:clean": "npm uninstall --workspace=js-node/expressjs",
+    "ex:lib:build": "npm i github:es-labs/node --workspace=js-node/expressjs",
+    "ex:lib:clean": "npm uninstall @es-labs/node --workspace=js-node/expressjs"
   },
   "engines": {
     "node": ">=16",
