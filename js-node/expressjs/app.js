@@ -13,7 +13,7 @@ const app = express()
 
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 
-require('./common/init')()
+require('@es-labs/node/express/init')()
 
 // setup graceful exit
 const handleExitSignal = async (signal) => await cleanup(`Signal ${signal}`, 0) // NOSONAR
@@ -46,9 +46,9 @@ if (HTTPS_CERTIFICATE) {
 }
 const server = HTTPS_CERTIFICATE ? https.createServer(https_opts, app) : http.createServer(app)
 
-require('./common/preRoute')(app, express)
-const graphqlWsServer = require('./common/graphql')(app, server)
-const Sentry = require('./common/sentry')(app)
+require('@es-labs/node/express/preRoute')(app, express)
+const graphqlWsServer = require('@es-labs/node/express/graphql')(app, server)
+const Sentry = require('@es-labs/node/express/sentry')(app)
 
 // CLEANUP
 const cleanup = async (message, exitCode = 0, coreDump = false, timeOutMs = 1000) => {
@@ -99,7 +99,7 @@ server.on('upgrade', (request, socket, head) => {
   console.log('upgrade event')
 })
 
-require('./common/postRoute')(app, express)
+require('@es-labs/node/express/postRoute')(app, express)
 
 if (Sentry) app.use(Sentry.Handlers.errorHandler())
 

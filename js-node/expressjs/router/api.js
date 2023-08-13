@@ -13,7 +13,7 @@ const gcp = require('@es-labs/node/services/gcp')
 
 const { APP_NAME, APP_PATH, APP_VERSION, API_PORT, UPLOAD_STATIC, UPLOAD_MEMORY, HTTPS_CERTIFICATE } = process.env
 
-const { memoryUpload, storageUpload } = require(APP_PATH + '/common/upload')
+const { memoryUpload, storageUpload } = require('@es-labs/node/express/upload') // TODELETE require(APP_PATH + '/common/upload')
 const { authUser, setTokensToHeader } = require('@es-labs/node/auth')
 
 function openMissingFile() {

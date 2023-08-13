@@ -17,8 +17,10 @@ beforeAll(async () => {
 
   await require('@es-labs/node/config')(process.cwd())
 
-  require(path.join(process.cwd(), 'common', 'init'))()
-  require(path.join(process.cwd(), 'common', 'preRoute'))(app, express)
+  require('@es-labs/node/express/init')()
+  require('@es-labs/node/express/preRoute')()(app, express)
+  // TODELETE require(path.join(process.cwd(), 'common', 'init'))()
+  // TODELETE require(path.join(process.cwd(), 'common', 'preRoute'))(app, express)
   process.env.WS_PORT = '' // disable websocket for now
   require(path.join(process.cwd(), 'router'))(app)
 

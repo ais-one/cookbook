@@ -72,7 +72,7 @@ npm i -g npm@latest
   - es6-string-html
   - ESLint
   - Volar (for VueJS)
-  - Prettier (disabled)
+  - Prettier
 
 ## Chrome Extensions
 
@@ -127,8 +127,7 @@ npm ls <?package> # use npm ls to check on actual versions installed
 
 ```bash
 # install specific dependencies
-npm i @vscode/sqlite3 --workspace=@es-labs/node
-npm i lorem-ipsum --workspace=@es-labs/node
+npm i lorem-ipsum --workspace=@<namespace>/[package]
 
 # install all dependencies
 npm i --workspace=js-web/vue-vite
