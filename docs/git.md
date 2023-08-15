@@ -3,6 +3,7 @@
 ### Commands
 
 ```
+git config --list
 git add .
 git commit -m "msg"
 git push origin <branch>

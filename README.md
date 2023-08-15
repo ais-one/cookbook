@@ -13,6 +13,7 @@
 Latest Version [0.6.12](https://github.com/ais-one/cookbook/releases/tag/0.6.12) - Released 2023 Mar 18 0830 +8GMT
 
 **NOTE:**
+- to use Typescript and tsoa ? or use JSDoc?
 - Moved `react-vite` project (React, react-router-dom 6, zustand, @tanstack/react-query) to its own [repo](https://github.com/ais-one/react-template)
 - `cypress` E2E test replaced with `playwright`
 - Example projects `solid`, `react-admin` and `nest-admin` have been removed

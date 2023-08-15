@@ -4,15 +4,14 @@ Below are a list of NodeJS applications
 
 - expressjs
   - see [expressjs/README.md](expressjs/README.md)
+- jsdoc-ts
+  - see [jsdoc-ts/README.md](jsdoc-ts/README.md) eventually replace swagger-jsdoc & openapi-file-joiner
 - openapi-file-joiner
   - utility to join multiple openapi yaml files to a single file to be consumed by openapi ui and validation libraries
 - scaled-ws
   - how to scale websockets using Redis (or some other) PubSub
 - serialserver
-  - serial server receive RS232 and send via tcp
-    - serialport
-    - pkg
-    - logging
+  - serial server receive RS232 and send via tcp, use pkg to build binary, winston logging
 - services
   - tcp_server - stream (keep client, connected and can reply to client, but need to take note on number of client connections) or event (close after receiving packet from client)
     - knex & mysql
