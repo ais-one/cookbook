@@ -3,6 +3,7 @@
 - [jsonwebtoken] update version handle minimum key size requirement change
 - [@es-labs/node] moved to seperate repo
 - [@es-labs/esm] moved to seperate repo
+- [js-node/jsdoc-ts] example on how to use jsdoc for typescript
 
 ### Version 0.6.11
 - [chore] update packages & cleanup & work on improving documentation
