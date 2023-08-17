@@ -261,6 +261,22 @@ Refer to following files for SPA sample (uses fido2-lib in backend)
 - [js-node/expressjs/router/fido.js](js-node/expressjs/router/fido.js)
 - [js-node/expressjs/public/demo-express/fido.html](js-node/expressjs/public/demo-express/fido.html)
 
+
+## Push Notification
+**Note:** For Push Notification
+Refer to following files for SPA sample
+- [js-node/expressjs/router/webpush.js](js-node/expressjs/router/webpush.js)
+- [js-node/expressjs/public/demo-express/pn.html](js-node/expressjs/public/demo-express/pn.html)
+- Uses Webpush or Google FCM
+- Using Google FCM, setup your firebase account and messaging, also setup FCM server key in backend
+- Using self hosted webpush is also supported and available
+- You can test PWA Push notifications using Webpush or FCM on Dashboard page depending on **.env.<environment>** file configuration (need to be on 127.0.0.1).
+- Click the following buttons in order (see their output in console.log and screen):
+  - sub PN (subscribe)
+  - Test PN (send a test message to user id 1 - on sqlite)
+  - Unsub PN (unsubscribe)
+
+
 ## Configuration
 
 The [js-node/expressjs/apps/app-template/config](js-node/expressjs/apps/app-template/config) folder contains the config information.
@@ -271,20 +287,16 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 
 ## Project Strcuture
 
+es-lab dependencies
+- [esm - shared es modules](https://github.com/es-labs/esm)
+- [node - shared cjs modules](https://github.com/es-labs/node)
+
+associated frontend project
+- [vue-antd-template](https://github.com/ais-one/vue-antd-template)
+
 ```
 +- .github/ : github related CICD and automations
 +- .husky : git hooks
-+- @es-labs/
-|  +- esm/ : [shared es modules]
-|     +- package.json
-|  +- node/ : [shared cjs modules]
-|     +- auth/ : authentication
-|     +- comms/ : messaging
-|     +- services/ : db, mq, etc.
-|     +- config.default.js: defaults
-|     +- config.js: config loader
-|     +- package.json
-|     +- traps.js
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
 +- js-node/ : nodejs applications (kafka, cron triggered, long running)
@@ -293,8 +305,6 @@ You can override the configurations using <NODE_ENV>.env.js files, e.g. **develo
 |  +- serialserver/
 |  +- services/: TCP server, kafka, long running / cron processes
 |  +- worker-threads/ : demo on use of worker threads
-+- js-web
-|  +- vue-vite/: frontend (Vue3 rollup) - See [js-web/vue-vite/README.md](vue-nobundler/README.md) for Project Structure
 +- vue-nobundler/ : frontend (Vue3 no bundler) - See [vue-nobundler/README.md](vue-nobundler/README.md) for Project Structure
 +- .editorconfig
 +- .gitignore
@@ -356,6 +366,7 @@ VAULT={ secrets: { ... all your secrets here } } # base64 encoded
 
 ## VERSION CHANGE NOTES
 
+- **v0.7+** Reorganize, improve and update see changelog for v0.7.0 details
 - **v0.6+** Improve organization, graceful exit, logging, project rename, add more nodejs applications, repo name <u>vue-crud-x</u> changed to <u>cookbook</u>
 - **v0.5+** Improve organization and authentication, add new features
 - **v0.4+** Improve folders and structure organization, handle CI/CD better
