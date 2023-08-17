@@ -146,11 +146,15 @@ npm i ant-design-vue@latest --workspace=js-web/vue-vite
 
 ```bash
 npm run app --workspace=js-node/expressjs -- development
+
+# or
+
+npm run ex:start
 ```
 
 **NOTES**
 - MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/backend/mongodb/install.md**
-- The **js-node/expressjs/apps/app-template/config/secret/*.env,js** files are not present. So there maybe some console log errors (but it is ok to ignore) and websockets will not work. Quick start is still usable. Use the README.md to fill up
+- The **js-node/expressjs/apps/app-template/config/secret/*.env.js** files are not present. So there maybe some console log errors (but it is ok to ignore) and websockets will not work. Quick start is still usable. Use the README.md to fill up
 
 ### Run migration & app
 

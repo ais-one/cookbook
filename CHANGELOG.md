@@ -4,6 +4,8 @@
 - [@es-labs/node] moved to seperate repo
 - [@es-labs/esm] moved to seperate repo
 - [js-node/jsdoc-ts] example on how to use jsdoc for typescript
+- [js-node/expressjs] webpush push notification sample [sample](js-node/expressjs/public/demo-express/pn.html)
+
 - try to remove passport & passport-saml
 - to use Typescript and tsoa ? or use JSDoc?
 
