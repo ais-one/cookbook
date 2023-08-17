@@ -12,9 +12,18 @@
 <body>
   <div>
     <h1>Push Notification <a href="index.html">Back</a></h1>
-    <p>
-      chrome://settings/content/notifications - add site e.g. http://127.0.0.1:3000
-    </p>
+    <ul>
+      <li>chrome://settings/content/notifications - add site e.g. http://127.0.0.1:3000</li>
+      <li>https://firebase.google.com/docs/web/setup</li>      
+    </ul>
+    <ul>
+      <li>ALL - manifest.json</li>
+      <li>ALL - service-worker.js</li>
+      <li>Webpush - @es-labs/esm/pwa.js</li>
+      <li>FCM - firebase-messaging-sw.js</li>
+      <li>FCM - firebase.config.js</li>
+      <li>FCM - js/fcm.js</li>
+    </ul>
     <div>
       <p>PN STATE: <span id="txt-pn-state">NA</span></p>
     </div>
@@ -34,13 +43,14 @@
 <script type="module">
   import { webpushSubscribe, webpushUnsubscribe } from "/esm/pwa.js"; // served from express /esm static route
   import Fetch from "/esm/fetch.js";
-  // import { fcmSubscribe } from '/src/fcm.js'
+  import { fcmSubscribe } from './js/fcm.js'
+  import './firebase.config.js'
 
-  console.log('v1.3')
+  console.log('v1.7')
 
-  const VITE_PWA_PN = "Webpush";
-  let subState = "[NA]";
-  document.querySelector("#txt-output").innerHTML = subState;
+  const VITE_PWA_PN = "FCM" // FCM, Webpush
+  let subState = "[NA]"
+  document.querySelector("#txt-output").innerHTML = subState
 
   const http = new Fetch({
     baseUrl: "",
@@ -66,13 +76,31 @@
     });
   }
 
+
+
+
   async function sub() {
     try {
       let subscription
       if (VITE_PWA_PN === "FCM") {
-        // subscription = await fcmSubscribe(window.SW_REG, async (token) => {
-        //   await http.post('/api/webpush/sub', { subscription: token })
-        // })
+        subscription = await fcmSubscribe(
+          window.SW_REG,
+          async (token) => {
+            await http.post('/api/webpush/sub', { subscription: token })
+          },
+          (payload) => {
+            // console.log('Message received. ', payload)
+            try {
+              const { title, body } = JSON.parse(payload.data.notification)
+              // console.log(new Date().toISOString(), title, body)
+              alert(`FCM PN Message title=${title} body=${body}`)
+            } catch (e) {
+              console.log('GCM msg error', e.toString())
+            }
+          },
+          { VAPID_KEY: window.CONFIG_VAPID_KEY, FIREBASE_CLIENT: window.CONFIG_FIREBASE_CLIENT }
+        )
+        if (subscription) await http.post('/api/webpush/sub', { subscription })
       } else if (VITE_PWA_PN === "Webpush") {
         const { data } = await http.get("/api/webpush/vapid-public-key")
         subscription = await webpushSubscribe(data.publicKey)
@@ -118,7 +146,6 @@
   document.querySelector("#btn-sub").addEventListener("click", (e) => sub());
   document.querySelector("#btn-unsub").addEventListener("click", (e) => unsub());
   document.querySelector("#btn-test").addEventListener("click", (e) => test());
-
 </script>
 
 </html>

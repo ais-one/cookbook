@@ -55,6 +55,7 @@ module.exports = express.Router()
         res.status(404).json({ status: 'no user or token'})
       }
     } catch (e) {
+      console.log('ERROR >>>>>')
       console.log(e) // need more info
       res.status(500).json({ error: process.env.NODE_ENV === 'production' ? 'Send Error: contact admin' : e })
     }
