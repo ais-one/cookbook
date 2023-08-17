@@ -4,6 +4,8 @@
 - [@es-labs/node] moved to seperate repo
 - [@es-labs/esm] moved to seperate repo
 - [js-node/jsdoc-ts] example on how to use jsdoc for typescript
+- try to remove passport & passport-saml
+- to use Typescript and tsoa ? or use JSDoc?
 
 ### Version 0.6.11
 - [chore] update packages & cleanup & work on improving documentation

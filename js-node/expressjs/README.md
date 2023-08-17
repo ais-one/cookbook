@@ -24,7 +24,6 @@ https://kentcdodds.com/blog/how-i-structure-express-apps
 |  |  +- uploads/ : for file uploads
 |  |  +- graphql-schema.js : application GraphQL schemas and resolvers
 |  +- app-custom/ : your custom app, put under source control (app-* is git ignored)
-+- common/ : common express setup
 +- logs/
 +- middlewares/
 +- public/ : for serving static files - website

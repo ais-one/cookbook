@@ -1,7 +1,6 @@
 'use strict'
-const { logout, login, otp } = require('@es-labs/node/auth')
-
 const express = require('express')
+const { logout, login, otp } = require('@es-labs/node/auth')
 const { authUser, authRefresh } = require('@es-labs/node/auth')
 
 module.exports = express.Router()

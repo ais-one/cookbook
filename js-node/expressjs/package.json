@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@es-labs/esm": "github:es-labs/esm#semver:0.0.14",
-    "@es-labs/node": "github:es-labs/node",
+    "@es-labs/node": "github:es-labs/node#0.0.17",
     "base64url": "^3.0.1",
     "csv-parse": "^5.4.0",
     "esm": "^3.2.25",
