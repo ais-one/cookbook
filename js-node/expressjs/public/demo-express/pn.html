@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/favicon.ico" rel="icon">
+  <!-- PWA Stuff Start Uncomment To Run PWA -->
+  <link href="/manifest.json" rel="manifest">
+  <title>Push Notification</title>
+</head>
+
+<body>
+  <div>
+    <h1>Push Notification <a href="index.html">Back</a></h1>
+    <p>
+      chrome://settings/content/notifications - add site e.g. http://127.0.0.1:3000
+    </p>
+    <div>
+      <p>PN STATE: <span id="txt-pn-state">NA</span></p>
+    </div>
+    <div>
+      <button id="btn-sub">Sub</button>
+      <button id="btn-unsub">Unsub</button>
+      <button id="btn-test">Test</button>
+    </div>
+    <div>
+      <p id="txt-output"></p>
+    </div>
+    <div>
+      <p id="txt-error"></p>
+    </div>
+  </div>
+</body>
+<script type="module">
+  import { webpushSubscribe, webpushUnsubscribe } from "/esm/pwa.js"; // served from express /esm static route
+  import Fetch from "/esm/fetch.js";
+  // import { fcmSubscribe } from '/src/fcm.js'
+
+  console.log('v1.3')
+
+  const VITE_PWA_PN = "Webpush";
+  let subState = "[NA]";
+  document.querySelector("#txt-output").innerHTML = subState;
+
+  const http = new Fetch({
+    baseUrl: "",
+    refreshUrl: "",
+    credentials: "same-origin",
+  });
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", async function () {
+      console.log("SW load");
+      const params = ""; // '?params=' + encodeURIComponent(JSON.stringify({ a: 1, b: Date.now() })) // TBD some problem with vite (development) if passing in params like this...
+      const swPath =
+        window.location.port === "3000"
+          ? "service-worker.js"
+          : "/service-worker.js"; // if dev server use / in front... // NOTE: web path
+      navigator.serviceWorker
+        .register(swPath + params) // problem in dev no /vite
+        .then((res) => {
+          window.SW_REG = res;
+          console.log("service worker registered");
+        })
+        .catch((err) => console.log("SW load Error", err));
+    });
+  }
+
+  async function sub() {
+    try {
+      let subscription
+      if (VITE_PWA_PN === "FCM") {
+        // subscription = await fcmSubscribe(window.SW_REG, async (token) => {
+        //   await http.post('/api/webpush/sub', { subscription: token })
+        // })
+      } else if (VITE_PWA_PN === "Webpush") {
+        const { data } = await http.get("/api/webpush/vapid-public-key")
+        subscription = await webpushSubscribe(data.publicKey)
+      }
+      console.log('subscription', subscription)
+      if (subscription) await http.post("/api/webpush/sub", { subscription });
+      subState = "[Subscribed]";
+      document.querySelector("#txt-output").innerHTML = subState;
+    } catch (e) {
+      console.log("error sub", e);
+      document.querySelector("#txt-error").innerHTML = e.toString();
+    }
+  }
+  async function unsub() {
+    // No FCM Unsub
+    try {
+      if (VITE_PWA_PN === "Webpush") await webpushUnsubscribe();
+      await http.post("/api/webpush/unsub", {});
+      subState = "[UNsubscribed]";
+      document.querySelector("#txt-output").innerHTML = subState;
+    } catch (e) {
+      console.log("error unsub", e);
+      document.querySelector("#txt-error").innerHTML = e.toString();
+    }
+  }
+  async function test() {
+    if (subState !== "[Subscribed]") return alert("Need to subscribe first");
+    try {
+      let data;
+      if (VITE_PWA_PN === "FCM") {
+        data = { title: "Hello", body: new Date().toLocaleString() };
+      } else if (VITE_PWA_PN === "Webpush") {
+        data = "Hello " + new Date().toLocaleString();
+      }
+      await http.post("/api/webpush/send/1", { mode: VITE_PWA_PN, data });
+      console.log('test sent')
+    } catch (e) {
+      console.log("error test", e);
+      document.querySelector("#txt-error").innerHTML = e.toString();
+    }
+  }
+
+  document.querySelector("#btn-sub").addEventListener("click", (e) => sub());
+  document.querySelector("#btn-unsub").addEventListener("click", (e) => unsub());
+  document.querySelector("#btn-test").addEventListener("click", (e) => test());
+
+</script>
+
+</html>

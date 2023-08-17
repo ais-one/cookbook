@@ -1,11 +1,18 @@
 'use strict'
 
 // TBD rename service to pn
-
 const express = require('express')
-const { authUser, userOps } = require('@es-labs/node/auth')
+const { 
+  // authUser,
+  userOps
+} = require('@es-labs/node/auth')
 const fcm = require('@es-labs/node/comms/fcm')
 const webpush = require('@es-labs/node/comms/webpush')
+
+const authUser = (req, res, next) => {
+  req.decoded = { id: 1 }
+  next()
+}
 
 module.exports = express.Router()
   .get('/vapid-public-key', (req, res) => res.json({ publicKey: webpush.getPubKey() }))
@@ -20,7 +27,7 @@ module.exports = express.Router()
     await userOps.updateUser({ id }, { pnToken: '' })
     res.json({ status: 'unsub'})
   }))
-  .post('/send/:id', async (req, res) => {
+  .post('/send/:id', /* authUser */ async (req, res) => {
     // sending...
     try {
       const { id } = req.params
@@ -34,11 +41,11 @@ module.exports = express.Router()
           rv = await fcm.send(user.pnToken, data.title || '', data.body || '')
         } else if (mode === 'Webpush') { // Use Webpush
           const options = {
-            TTL: 60,
-            headers: {
-              'Access-Control-Allow-Origin': 'http://127.0.0.1:8080',
-              'Content-type': 'application/json'
-            }
+            TTL: 60
+            // headers: {
+            //   'Access-Control-Allow-Origin': 'http://127.0.0.1:8080',
+            //   'Content-type': 'application/json'
+            // }
           } 
           const subscription = JSON.parse(user.pnToken)
           rv = await webpush.send(subscription, data, options)
