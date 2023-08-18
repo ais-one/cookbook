@@ -1,9 +1,11 @@
 ### Version 0.7.0
 - [chore] update packages & cleanup & work on improving documentation
+- [chore] prototype projects `solid`, `react-admin` and `nest-admin` have been removed
 - [jsonwebtoken] update version handle minimum key size requirement change
 - [@es-labs/node] moved to https://github.com/es-labs/node
 - [@es-labs/esm] moved to https://github.com/es-labs/esm
 - [js-web/vue-vite] moved to https://github.com/ais-one/vue-antd-template
+- [js-web/react-vite] moved to https://github.com/ais-one/react-template
 - [js-node/jsdoc-ts] example on how to use jsdoc for typescript
 - [js-node/expressjs] webpush push notification sample [sample](js-node/expressjs/public/demo-express/pn.html)
 - [wip] try to remove passport & passport-saml
