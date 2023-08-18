@@ -70,17 +70,6 @@ deploy.sh uat app-template
 
 Note the URL returned you can test it using <URL>/api/healthcheck, you may need to wait awhile for initial response or retry a few times
 
-### Frontend - js-web/vue-vite
-
-In js-web/vue-vite folder
-
-1. place service account json file into [../../js-web/vue-vite/deploy/uat.gcp.json](../../js-web/vue-vite/deploy/uat.gcp.json)
-2. setup the API URL in [../../js-web/vue-vite/.env.uat](../../js-web/vue-vite/.env.uat) file from the Google Cloud Run URL returned in a successful backend setup
-
-```bash
-# on windows, need to use bash shell
-deploy.sh uat
-```
 
 ---
 
@@ -110,20 +99,12 @@ And [../../js-node/expressjs/Dockerfile](../../js-node/expressjs/Dockerfile)
 
 View files, folders and readme.md below, and configure them
 
-### Backend
-
 - js-node/expressjs/apps/app-template/config/
 - js-node/expressjs/apps/app-template/deploy/
 - js-node/expressjs/ecosystem.config.js (for pm2 deployments)
 - js-node/expressjs/Dockerfile (for docker deployments)
 - js-node/expressjs/deploy.sh
 - js-node/expressjs/deploy-vm.sh
-
-### Frontend
-
-- js-web/vue-vite/.env.*
-- js-web/vue-vite/deploy/
-- js-web/vue-vite/deploy.sh
 
 ---
 

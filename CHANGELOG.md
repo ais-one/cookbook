@@ -1,13 +1,13 @@
 ### Version 0.7.0
 - [chore] update packages & cleanup & work on improving documentation
 - [jsonwebtoken] update version handle minimum key size requirement change
-- [@es-labs/node] moved to seperate repo
-- [@es-labs/esm] moved to seperate repo
+- [@es-labs/node] moved to https://github.com/es-labs/node
+- [@es-labs/esm] moved to https://github.com/es-labs/esm
+- [js-web/vue-vite] moved to https://github.com/ais-one/vue-antd-template
 - [js-node/jsdoc-ts] example on how to use jsdoc for typescript
 - [js-node/expressjs] webpush push notification sample [sample](js-node/expressjs/public/demo-express/pn.html)
-
-- try to remove passport & passport-saml
-- to use Typescript and tsoa ? or use JSDoc?
+- [wip] try to remove passport & passport-saml
+- [wip] to use Typescript and tsoa ? or use JSDoc?
 
 ### Version 0.6.11
 - [chore] update packages & cleanup & work on improving documentation

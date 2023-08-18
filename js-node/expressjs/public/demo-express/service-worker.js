@@ -43,13 +43,6 @@ function clearCaches(e) {
   e.waitUntil(
     caches.keys()
       .then((cacheNames) => {
-        // return Promise.all(
-        //   cacheNames.filter((cacheName) =>
-        //     !(cacheName === CACHE_NAME_STATIC || cacheName === CACHE_NAME_DYNAMIC)
-        //   ).map((cacheName) => {
-        //     return caches.delete(cacheName)
-        //   })
-        // )
         cacheNames.forEach((cacheName) => {
           if (!(cacheName === CACHE_NAME_STATIC || cacheName === CACHE_NAME_DYNAMIC)) {
             console.log('sw delete cache = ', cacheName)
@@ -64,50 +57,6 @@ self.addEventListener('activate', clearCaches)
 
 // CACHING STRATEGIES
 
-// https://developers.google.com/web/ilt/pwa/caching-files-with-service-worker
-// https://blog.bitsrc.io/5-service-worker-caching-strategies-for-your-next-pwa-app-58539f156f52
-//
-// Stale While Revalidate -  high-priority, high-critical files, non-GET requests - GOT ERRORS
-// function staleWhileRevalidate(e) {
-//   e.respondWith(
-//     caches.open(CACHE_NAME_DYNAMIC)
-//       .then(function (cache) {
-//         cache.match(e.request)
-//           .then(function (cacheResponse) {
-//             fetch(e.request)
-//               .then(function (networkResponse) {
-//                 cache.put(e.request, networkResponse)
-//               })
-//             return cacheResponse || networkResponse
-//           })
-//       })
-//   )
-// }
-
-//
-// Cache with Network Update
-// always one step behind
-//
-// Cache First - images, videos, CSS, etc.
-// self.addEventListener('fetch', function (event) {
-//   event.respondWith(
-//       caches.open(cacheName)
-//           .then(function(cache) {
-//               cache.match(event.request)
-//                   .then( function(cacheResponse) {
-//                       if(cacheResponse)
-//                           return cacheResponse
-//                       else
-//                           return fetch(event.request)
-//                               .then(function(networkResponse) {
-//                                   cache.put(event.request, networkResponse.clone())
-//                                   return networkResponse
-//                               })
-//                   })
-//           })
-//   )
-// });
-
 // Cache then network - resources that update frequently (but get resources quickly to screen first)
 function cacheThenNetwork(e) {
   e.respondWith(
@@ -117,27 +66,9 @@ function cacheThenNetwork(e) {
         return res
       })
     })
-    // arrow function version
-    // .then(cache => fetch(e.request)
-    //   .then(res => {
-    //     cache.put(e.request, res.clone())
-    //     return res
-    //   })
-    // )
   )
 }
 
-// async function networkFirst(request) {
-//   const dynamicCache = await caches.open('news-dynamic');
-//   try {
-//     const networkResponse = await fetch(request);
-//     dynamicCache.put(request, networkResponse.clone());
-//     return networkResponse;
-//   } catch (err) {
-//     const cachedResponse = await dynamicCache.match(request);
-//     return cachedResponse || await caches.match('../fallback.json');
-//   }
-// }
 // Network first / Network fall back to cache - resources that update frequently
 function networkCacheFallback(e) {
   e.respondWith(
@@ -154,10 +85,6 @@ function cacheNetworkFallback(e) {
       .match(e.request)
       .then(function (res) {
         return res || fetch(e.request)
-        // .then(function(response) {
-        //   if (response.status === 404) return caches.match('views/404.html')
-        //   return response
-        // })
       })
       .catch(function () {
         // If both fail, show a generic fallback:
@@ -243,83 +170,3 @@ self.addEventListener('pushsubscriptionchange', (e) => {
 // self.addEventListener('fetch', (e) => e.waitUntil(handlePush(event)))
 
 // https://www.udemy.com/course/progressive-web-apps
-
-// Static cache strategy - Cache with Network Fallback
-// const staticCache = (req, cacheName = CACHE_NAME_STATIC) => {
-//   return caches.match(req).then((cachedRes) => {
-//     // return cache response if found
-//     if (cachedRes) return cachedRes
-
-//     // Fallback to network
-//     return fetch(req).then((networkRes) => {
-//       // update cache with new response
-//       caches.open(cacheName).then((cache) => cache.put(req, networkRes))
-
-//       // return clone of network response
-//       return networkRes.clone()
-//     })
-//   })
-// }
-
-// // Network with Cache Fallback
-// const fallbackCache = (req) => {
-//   return (
-//     fetch(req)
-//       .then((networkRes) => {
-//         // check is res ok else go cache
-//         if (!networkRes.ok) throw new Error('Fetch Error')
-
-//         // Update cache
-//         caches.open(CACHE_NAME_STATIC).then((cache) => cache.put(req, networkRes))
-
-//         return networkRes.clone()
-//       })
-//       // try cache
-//       .catch((err) => {
-//         console.log(err)
-//         return caches.match(req)
-//       })
-//   )
-// }
-
-// // Clean
-// const cleanGiphyCache = (giphys) => {
-//   caches.open('giphy.com/media').then((cache) => {
-//     // Get all cache entries
-//     cache.keys().then((keys) => {
-//       // loop entries
-//       keys.forEach((key) => {
-//         // if entry NOT part of current giphys, Delete
-//         if (!giphys.includes(key.url)) cache.delete(key)
-//       })
-//     })
-//   })
-// }
-
-// // SW Fetch
-// self.addEventListener('fetch', (e) => {
-//   if (e.request.url.match(location.origin)) {
-//     e.respondWith(staticCache(e.request))
-//   } else if (e.request.url.match('api.giphy.com/v1/gifs/trending')) {
-//     e.respondWith(fallbackCache(e.request))
-//   } else if (e.request.url.match('giphy.com/media')) {
-//     e.respondWith(staticCache(e.request, 'giphy-media-cache'))
-//   }
-// })
-
-// // listen to message from client
-// self.addEventListener('message', (e) => {
-//   if (e.data.action === 'cleanGiphyCache') cleanGiphyCache(e.data.giphys)
-// })
-
-// // on pwa-init.js
-// // also run this when you are registering service worker?
-// async function giphyCacheClean(giphys) {
-//   const reg = await navigator.serviceWorker.getRegistration()
-//   if (reg.active) {
-//     reg.active.postMessage({
-//       action: 'cleanGiphyCache',
-//       giphys
-//     })
-//   }
-// }

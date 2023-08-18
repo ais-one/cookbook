@@ -33,11 +33,12 @@ Folder | Description | Features
 [docs](docs) | Documentation<br>To constantly improved/updated | - Main [documentation](docs/home.md)<br>- Secrets [documentation](docs/deployment/secrets.md)<br>- Deployment [notes](docs/deployment/home.md)<br>- Kafka [docs](docs/backend/kafka.md) and [code](js-node)<br>- TCP Server [docs](docs/backend/tcp.md) and [code](js-node)
 [js-node/expressjs](js-node/expressjs) | **Base ExpressJS application**<br>(REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Objection ORM (**removed**), Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
 [js-node/expressjs/apps/app-template](js-node/expressjs/apps/app-template) | Custom application (**app-template**)<br>built on [Base ExpressJS application](js-node/expressjs) | - [config] app configs<br>- [controllers] <br>- [models] <br>- [openapi] OpenAPI yamls<br>- [routes] API routes (also websocket handlers)<br>- [services] services to startup/shutdown<br>- [tables] config tables for generic table crud (t4t)<br>- [tests] folder for tests<br>- [graphql-schema.js] application GraphQL codes
-[js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)<br>- Fido & Webauthn
+[js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)<br>- Fido & Webauthn<br>- Push Notification (Webpush & FCM)
 [js-node/*](js-node) | **Other Backend applications** | - [Services](js-node/services) (TCP event/stream, scalable Websocket with Redis Pubsub, etc.)<br>- [Serial server](js-node/serialserver)<br>- [openapi-file-joiner](js-node/openapi-file-joiner) combine OpenAPI files
 [vue-nobundler](vue-nobundler/) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/apps/app-template/tables/](js-node/expressjs/apps/app-template/tables/)</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[vue-nobundler/views/ui1.js](vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[vue-nobundler/views/ui2.js](vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[vue-nobundler/views/ui3.js](vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[vue-nobundler/views/ui4.js](vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
-[js-web/vue-vite](js-web/vue-vite) | Vue 3 SPA using vite + Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- JWT refresh token, 2FA GA OTP, OIDC, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Playwrite Testing<br>- i18n / graphql (TBD)
-js-web/react-vite | react/react-router-dom/zustand/@tanstack/react-query | moved to https://github.com/ais-one/react-template
+[js-web/vue-vite] | Vue 3 SPA using vite + Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- 2FA GA OTP, OIDC + Refresh, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Playwrite Testing<br>- i18n / graphql (TBD)
+<br>moved to https://github.com/ais-one/vue-antd-template
+js-web/react-vite | - react<br>- react-router-dom<br>- zustand/@tanstack<br>- react-query | moved to https://github.com/ais-one/react-template
 [.github/workflows](.github/workflows) | Github Actions (CI/CD) | - Manually Trigger<br>- On-push Trigger (WIP)
 AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 
@@ -123,21 +124,17 @@ npm update --save
 npm ls <?package> # use npm ls to check on actual versions installed
 ```
 
-## Install for single workspace
+## Single workspace command
 
 ```bash
 # install specific dependencies
 npm i lorem-ipsum --workspace=@<namespace>/[package]
 
 # install all dependencies
-npm i --workspace=js-web/vue-vite
-```
+npm i --workspace=js-node/expressjs
 
-## Update a package with major version change
-
-```bash
-# updating from 2.2.8 to 3.1.1 - major version change
-npm i ant-design-vue@latest --workspace=js-web/vue-vite
+# Update a package with major version change eg 2.2.8 to 3.1.1
+npm i ant-design-vue@latest --workspace=js-node/expressjs
 ```
 
 ---
@@ -206,27 +203,7 @@ See [js-node/README.md](js-node/README.md)
 
 ### Vite SPA Setup & Run - development environment
 
-1. See [js-web/vue-vite/README.md](js-web/vue-vite/README.md). To setup the configuration files. End-to-end testing example using playwright is here also.
-
-2. Run the following
-
-```bash
-npm run dev --workspace=js-web/vue-vite
-```
-
-3. Visit
-  - http://127.0.0.1:8080/ to view application
-  - http://127.0.0.1:8080/nested/index.html to view another page (vite serving multi page, each page can be an SPA)
-
-4. See [js-web/vue-vite/README.md](js-web/vue-vite/README.md) for more information on the `vue-vite` package
-
-
-5. E2E Testing
-
-```
-npx playwright install chromium
-npx playwright test --browser=chromium
-```
+See [vue-antd-template project](https://github.com/ais-one/vue-antd-template).
 
 ## Why No SSR or SSG
 
@@ -242,16 +219,7 @@ Refer to link below on how to try out...
   - [js-node/expressjs/router/saml.js](js-node/expressjs/router/saml.js)
   - [js-node/expressjs/router/oidc.js](js-node/expressjs/router/oidc.js)
   - [js-node/expressjs/router/oauth.js](js-node/expressjs/router/oauth.js) **requires setup of github account and config setup here**
-- You can test out on the [js-web/vue-vite](js-web/vue-vite) Signin UI,
-  - Use the following username / password credentials
-    - for simple Login...
-      - just clock on Login button, credentials test / test is already prefilled
-      - then click on OTP button, the OTP 111111 is already prefilled
-    - for SAML and OIDC... test-user / password
-      - redirect to a keycloak IDP
-    - for OAuth (Github), you need to configure your github settings (not recommended for starting out)
-        - redirect to  github login
-    - for Mock user login, just click on Mock button
+- You can test out using the [vue-antd-template project](https://github.com/ais-one/vue-antd-template) Signin UI. See the README.md for details
 
 ---
 
@@ -334,17 +302,6 @@ Refer to [doc/deployment/home.md](doc/deployment/home.md) for documentation on d
     - environment (uat for now, development does not deploy anything)
     - service (default = app-template)
     - branch
-- .github/workflows/manual-gcp-vue-vite.yml (Manually deploy js-web/vue-vite to GCP Cloud Storage)
-  - selectable inputs
-    - environment (uat for now, development does not deploy anything)
-    - custom_app (to be implemented)
-    - branch
-- .github/workflows/manual-gh-pages.yml (Manually deploy js-web/vue-vite to Github Pages)
-  - selectable inputs
-    - environment (uat for now, development does not deploy anything)
-    - custom_app (to be implemented)
-    - branch
-
 
 **NOTE** config/secret contents will not be in repo for CI/CD (so you can get errors), those should be put in VAULT
 

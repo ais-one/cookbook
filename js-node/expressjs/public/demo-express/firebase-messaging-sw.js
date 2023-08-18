@@ -49,7 +49,6 @@ messaging.onBackgroundMessage(messaging, (payload) => {
 // console.log('FIREBASE SERVICE WORKER CODE END')
 self.addEventListener('notificationclick', function (event) {
   // if (event.origin !== "http://example.org") return // check and reject if not correct origin
-
   // For root applications: just change "'./'" to "'/'"
   // Very important having the last forward slash on "new URL('./', location)..."
   const rootUrl = new URL('./', location).href
