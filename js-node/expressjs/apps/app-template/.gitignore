@@ -1,6 +1,7 @@
 # configs
 config/secret/*
 !config/secret/README.md
+.env
 
 # deploy
 deploy/*
