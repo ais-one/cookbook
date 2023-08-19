@@ -1,5 +1,7 @@
 'use strict'
 
+// auth0 customer identity cloud...? 
+
 // working SAML ADFS example
 // no refresh token, issue own OAuth2 like JWT server
 
@@ -9,25 +11,25 @@ const { createToken, setTokensToHeader } = require('@es-labs/node/auth')
 
 const { SAML_OPTIONS, SAML_JWT_MAP, SAML_CERTIFICATE, SAML_PRIVATE_KEY } = process.env
 const { AUTH_ERROR_URL } = process.env
-const saml_opts = JSON.parse(SAML_OPTIONS || null)
-if (saml_opts) {
-  if (SAML_CERTIFICATE) saml_opts.privateCert = SAML_CERTIFICATE
+const samlOptions = JSON.parse(SAML_OPTIONS || null)
+if (samlOptions) {
+  if (SAML_CERTIFICATE) samlOptions.privateCert = SAML_CERTIFICATE
   if (SAML_PRIVATE_KEY) {
-    saml_opts.privateKey = SAML_PRIVATE_KEY
-    saml_opts.decryptionPvk = SAML_PRIVATE_KEY
-  }  
+    samlOptions.privateKey = SAML_PRIVATE_KEY
+    samlOptions.decryptionPvk = SAML_PRIVATE_KEY
+  }
 }
 
 let samlStrategy
 let saml
-const { SAML } = require('node-saml')
+const { SAML } = require("@node-saml/node-saml");
 
-if (saml_opts) {
-  saml = new SAML(saml_opts)
+if (samlOptions) {
+  saml = new SAML(samlOptions)
 
   const SamlStrategy = require('passport-saml').Strategy
   samlStrategy = new SamlStrategy(
-    saml_opts,
+    samlOptions,
     (profile, done) => {
       // console.log('profile', profile)
       return done(null, { // map whatever claims/profile info you want here
@@ -111,7 +113,7 @@ module.exports = express.Router()
   .get('/metadata', (req, res) => {
     res.type('application/xml')
     // res.status(200).send(samlStrategy.generateServiceProviderMetadata()) // if there is private key involved, then need to pass in cert
-    res.status(200).send(samlStrategy.generateServiceProviderMetadata(SAML_CERTIFICATE, saml_opts.privateCert)) // cert to match decryptionKey, cert to match privateKey
+    res.status(200).send(samlStrategy.generateServiceProviderMetadata(SAML_CERTIFICATE, samlOptions.privateCert)) // cert to match decryptionKey, cert to match privateKey
   })
   .get('/login',
     (req, res, next) => {

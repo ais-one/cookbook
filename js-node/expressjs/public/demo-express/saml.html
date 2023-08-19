@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/favicon.ico" rel="icon">
+  <title>SAML</title>
+</head>
+
+<body>
+  <div>
+    <h1>SAML <a href="index.html">Back</a></h1>
+    <p>Testing SAML Login</p>
+    <div>
+      <p>STATE: <span id="txt-pn-state">NA</span></p>
+    </div>
+    <div>
+      <button id="btn-sub">Sub</button>
+    </div>
+    <div>
+      <p id="txt-output"></p>
+    </div>
+    <div>
+      <p id="txt-error"></p>
+    </div>
+  </div>
+</body>
+<script type="module">
+  import Fetch from '/esm/fetch.js';
+  import parseJwt from '/esm/parse-jwt.js'
+  console.log('v1.1')
+
+  let subState = '[NA]'
+  document.querySelector('#txt-output').innerHTML = subState
+
+  const http = new Fetch({
+    baseUrl: '', refreshUrl: '', credentials: 'include',
+  })
+  const outputEl = document.querySelector('#output')
+
+  const VITE_REFRESH_URL = '/api/auth/refresh'
+  const VITE_REFRESH_URL_MANAGED = '/api/oidc/refresh'
+  const VITE_OIDC_URL = 'http://127.0.0.1:3000/api/oidc/login'
+
+  const VITE_OAUTH_URL = 'https://github.com/login/oauth/authorize?scope=user:email&client_id'
+  const VITE_OAUTH_CLIENT_ID = 'a355948a635c2a2066e2'
+
+  const VITE_SAML_URL = 'http://127.0.0.1:3000/api/saml/login'
+  const VITE_CALLBACK_URL = 'http://127.0.0.1:8080/callback'
+
+  const loginOidc = () => {
+    http.setOptions({ refreshUrl: VITE_REFRESH_URL_MANAGED }) // auth service is managed
+    window.location.assign(VITE_OIDC_URL)
+  }
+
+  const loginOAuth = () => {
+    http.setOptions({ refreshUrl: VITE_REFRESH_URL })
+    window.location.replace(`${VITE_OAUTH_URL}=${VITE_OAUTH_CLIENT_ID}`)
+  }
+
+  const loginSaml = () => {
+    http.setOptions({ refreshUrl: VITE_REFRESH_URL })
+    window.location.assign(`${VITE_SAML_URL}?RelayState=${VITE_CALLBACK_URL}`)
+  }
+
+  document.querySelector("#btn-sub").addEventListener("click", (e) => sub());
+  document.querySelector("#btn-unsub").addEventListener("click", (e) => unsub());
+  document.querySelector("#btn-test").addEventListener("click", (e) => test());
+</script>
+
+</html>
