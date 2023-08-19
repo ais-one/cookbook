@@ -30,7 +30,7 @@
     "ex:lib:build": "npm i github:es-labs/node#0.0.18 --workspace=js-node/expressjs"
   },
   "engines": {
-    "node": ">=16",
+    "node": ">=18",
     "npm": ">=8"
   },
   "workspaces": [

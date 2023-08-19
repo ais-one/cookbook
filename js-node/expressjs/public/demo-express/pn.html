@@ -47,11 +47,14 @@
   import { fcmSubscribe } from './js/fcm.js'
   import './firebase.config.js'
 
-  console.log('v1.7')
-
-  const VITE_PWA_PN = "FCM" // FCM, Webpush
+  const VITE_PWA_PN = "Webpush" // FCM, Webpush
+  alert("V1.7 Using: " + VITE_PWA_PN)
   let subState = "[NA]"
-  document.querySelector("#txt-output").innerHTML = subState
+
+  const elOutput = document.querySelector("#txt-output")
+  const elError = document.querySelector("#txt-error")
+
+  elOutput.innerHTML = subState
 
   const http = new Fetch({
     baseUrl: "",
@@ -76,9 +79,6 @@
         .catch((err) => console.log("SW load Error", err));
     });
   }
-
-
-
 
   async function sub() {
     try {
@@ -109,10 +109,10 @@
       console.log('subscription', subscription)
       if (subscription) await http.post("/api/webpush/sub", { subscription });
       subState = "[Subscribed]";
-      document.querySelector("#txt-output").innerHTML = subState;
+      elOutput.innerHTML = subState;
     } catch (e) {
       console.log("error sub", e);
-      document.querySelector("#txt-error").innerHTML = e.toString();
+      elError.innerHTML = e.toString();
     }
   }
   async function unsub() {
@@ -121,10 +121,10 @@
       if (VITE_PWA_PN === "Webpush") await webpushUnsubscribe();
       await http.post("/api/webpush/unsub", {});
       subState = "[UNsubscribed]";
-      document.querySelector("#txt-output").innerHTML = subState;
+      elOutput.innerHTML = subState;
     } catch (e) {
       console.log("error unsub", e);
-      document.querySelector("#txt-error").innerHTML = e.toString();
+      elError.innerHTML = e.toString();
     }
   }
   async function test() {
@@ -140,7 +140,7 @@
       console.log('test sent')
     } catch (e) {
       console.log("error test", e);
-      document.querySelector("#txt-error").innerHTML = e.toString();
+      elError.innerHTML = e.toString();
     }
   }
 

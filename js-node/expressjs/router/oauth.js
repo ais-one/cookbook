@@ -33,7 +33,7 @@ const callbackOAuth = async (req, res) => {
     setTokensToHeader(res, tokens)
     return res.redirect(OAUTH_OPTIONS.CALLBACK + '#' + tokens.access_token + ';' + tokens.refresh_token + ';' + JSON.stringify(tokens.user_meta)) // use url fragment...
   } catch (e) {
-    console.error('github auth err', e.toString())
+    console.error('github auth err', e)
     return AUTH_ERROR_URL ? res.redirect(AUTH_ERROR_URL) : res.status(401).json({ error: 'NOT Authenticated' })
   }
 }
