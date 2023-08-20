@@ -31,7 +31,7 @@
   },
   "engines": {
     "node": ">=18",
-    "npm": ">=8"
+    "npm": ">=9"
   },
   "workspaces": [
     "js-node/*",
