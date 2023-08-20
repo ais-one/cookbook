@@ -45,7 +45,7 @@
   })
   const outputEl = document.querySelector('#txt-output')
 
-  const VITE_REFRESH_URL = '/api/auth/refresh'
+  const VITE_REFRESH_URL = '/api/auth/refresh' // '/api/oidc/refresh'
   const VITE_REFRESH_URL_MANAGED = '/api/oidc/refresh'
   const VITE_OIDC_URL = 'http://127.0.0.1:3000/api/oidc/login'
 
@@ -53,7 +53,7 @@
   const VITE_OAUTH_CLIENT_ID = 'a355948a635c2a2066e2'
 
   const VITE_SAML_URL = 'http://127.0.0.1:3000/api/saml/login'
-  const VITE_CALLBACK_URL = 'http://127.0.0.1:8080/callback'
+  const VITE_CALLBACK_URL = 'http://127.0.0.1:3000/sso.html'
 
   const loginOidc = () => {
     http.setOptions({ refreshUrl: VITE_REFRESH_URL_MANAGED }) // auth service is managed
@@ -66,9 +66,8 @@
   }
 
   const loginSaml = () => {
-    // http.setOptions({ refreshUrl: VITE_REFRESH_URL })
-    // window.location.assign(`${VITE_SAML_URL}?RelayState=${VITE_CALLBACK_URL}`)
-    alert('tbd')
+    http.setOptions({ refreshUrl: VITE_REFRESH_URL })
+    window.location.assign(`${VITE_SAML_URL}?RelayState=${VITE_CALLBACK_URL}`)
   }
 
   document.querySelector("#btn-oauth").addEventListener("click", (e) => loginOAuth());

@@ -87,12 +87,13 @@ NOTES:
 
 ### Realm
 
-Create `dev` realm
+- Create `dev` realm
+- Set Require SSL to `None`
 
 ### Realm User
 
-Create User named: user
-Add password credentials named: user
+- Create User named: user
+- Add password credentials named: user
 
 
 ### Realm Client - OIDC
@@ -107,7 +108,6 @@ Select client in the left menu and click Create client.
   - Home URL: http://127.0.0.1:3000/sso.html
   - Valid Redirect URLS: http://127.0.0.1:3000/api/oidc/auth
   (Save)
-  - NOTE: there is no client secret created
 
 Explore Keycloak OpenID Connect discovery endpoint on 127.0.0.1:8081/realms/dev/.well-known/openid-configuration
 
@@ -124,7 +124,30 @@ OIDC_OPTIONS='{
 
 ### Realm Client - SAML
 
-TBD
+WIP
+
+Select client in the left menu and click Create client.
+  - Client type: SAML.
+  - Client ID: dev-client-saml.
+  (Next page - login settings)
+  - Root URL: http://127.0.0.1:3000
+  - Home URL: http://127.0.0.1:3000/sso.html
+  - Valid Redirect URLS: http://127.0.0.1:3000/api/saml/callback
+  (Save)
+  - Turn off document & assertion signing (in Signature and Encryption)
+  - NOTE: there is no client secret created
+
+Setup the app env variables
+
+```
+SAML_OPTIONS='{
+  "cert": "<Get Certificate from Keys Tab>",
+  "callbackUrl": "http://127.0.0.1:3000/api/saml/callback",  
+  "entryPoint": "http://127.0.0.1:8081/realms/dev/protocol/saml",
+  "issuer": "dev-client-saml"
+}'
+
+```
 
 
 ## Kubernetes

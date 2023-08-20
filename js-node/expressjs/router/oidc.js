@@ -37,14 +37,13 @@ module.exports = express.Router()
 
       const res0 = await fetch(TOKEN_URL, {
         method: 'POST',
-        headers: headers = {
+        headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: payload, // JSON.stringify(payload),
       })
       const data = await res0.json();
-      console.log('OIDC_OPTIONS', OIDC_OPTIONS, headers, payload, data)
       const { access_token, refresh_token, ...user_meta } = data
       return res.redirect(OIDC_OPTIONS.CALLBACK + '#' + access_token + ';' + refresh_token + ';' + JSON.stringify(user_meta))
     } catch (e) {

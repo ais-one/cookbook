@@ -10,6 +10,9 @@ const passport = require('passport')
 const { createToken, setTokensToHeader } = require('@es-labs/node/auth')
 
 const { SAML_OPTIONS, SAML_JWT_MAP, SAML_CERTIFICATE, SAML_PRIVATE_KEY } = process.env
+
+// console.log('SAML_OPTIONS', SAML_OPTIONS)
+
 const { AUTH_ERROR_URL } = process.env
 const samlOptions = JSON.parse(SAML_OPTIONS || null)
 if (samlOptions) {
