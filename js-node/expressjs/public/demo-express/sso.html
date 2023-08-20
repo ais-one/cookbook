@@ -14,6 +14,9 @@
       Supported SSO in this sample
       - need to run Keycloak IDP / Setup Github O
       - OAuth: (using Github): requires github account and app to be [setup](https://docs.github.com/en/developers/apps/building-oauth-apps) and also add github ID to a user in the [sqlite database](../../js-node/expressjs/dev.sqlite3), express server needs to be run (not recommended for starting out)
+      - Refresh URLs (TBD)
+        - /api/auth/refresh: SAML & OAuth (internally implemented - for SAML2 and Password login, as there is no concept of refresh tokens)
+        - /api/oidc/refresh: OIDC (user managed by auth server - possible on OIDC)
     </p>
     <p>Testing SSO Login</p>
     <div>
