@@ -1,7 +1,15 @@
 # Keycloak docker-compose
-## Reference
+## References
 
-https://github.com/keycloak/keycloak-containers/tree/master/docker-compose-examples
+- https://openidconnect.net/
+- https://github.com/keycloak/keycloak-containers/tree/master/docker-compose-examples
+- https://www.redpill-linpro.com/techblog/2022/10/20/into_to_oidc_with_keycloak_and_vertx.html
+
+## Notees
+
+Current Keycloak Version: 22.0.1
+
+
 
 ## Login
 
@@ -75,37 +83,62 @@ NOTES:
 - if need client secret
 - if need client id & client auth in header Basic Auth
 
+## Setting Up SSO (Working Example)
+
+### Realm
+
+Create `dev` realm
+
+### Realm User
+
+Create User named: user
+Add password credentials named: user
+
+
+### Realm Client - OIDC
+
+Select client in the left menu and click Create client.
+  - Client type: OpenID Connect.
+  - Client ID: dev-client-oidc.
+  (Next page - capability config)
+  - Client authentication to on.
+  (Next page - login settings)
+  - Root URL: http://127.0.0.1:3000
+  - Home URL: http://127.0.0.1:3000/sso.html
+  - Valid Redirect URLS: http://127.0.0.1:3000/api/oidc/auth
+  (Save)
+  - NOTE: there is no client secret created
+
+Explore Keycloak OpenID Connect discovery endpoint on 127.0.0.1:8081/realms/dev/.well-known/openid-configuration
+
+Setup the app env variables
+
+```
+OIDC_OPTIONS='{
+  "URL": "http://127.0.0.1:8081/realms/dev/protocol/openid-connect",
+  "CLIENT_ID": "dev-client-oidc",
+  "CLIENT_SECRET": "<Get this value from oidc client, Credentials Tab",
+  "CALLBACK": "http://127.0.0.1:3000/sso.html"
+}'
+```
+
+### Realm Client - SAML
+
+TBD
+
+
 ## Kubernetes
 
 FYI Only
 
 https://hkiang01.github.io/kubernetes/keycloak/
 
+---
 
 ## To Document Better
 
-http://127.0.0.1:8081/auth/realms/test/.well-known/openid-configuration
-
-http://127.0.0.1:8081/auth/realms/test/protocol/openid-connect/certs
-```json
-{
-  "keys": [
-    {
-      "kid": "2361pQ090dZx8ICP9jf-_qqhORqTgnKjpd2UBxtselg",
-      "kty": "RSA",
-      "alg": "RS256",
-      "use": "sig",
-      "n": "r3s2UJw06G0fRrTDPluhgpvtNrGiDGeXLKw5ZSt7W4jxILoQFXcbkMcx2DhpZfC5fDLrX4km7vTE3MmPXnkwn5q0ZLt4uvHEaXQM2gu78tTtWGG36PT0xm3knrQOdLvofemS_MC1F93U_93kkQXNZiQjh2sElxxhf-euvHYpkGRc6PCNVwSGzIrnKQDQtf4z7IUPLbDyoRaHEe5Ivp6fPDwhnup22wXxIerDtx0KAIlTr7R3FpEACqbMyQ7sEMSTAImXQzxVo48aj9KdkgAxgcshSDXHSH95xJPg092oDCAMa1YBwP4ansuvvF8Fsoqqct-DY8l2OztnT40U55VO9w",
-      "e": "AQAB",
-      "x5c": [
-        "MIIClzCCAX8CBgF6A0sAhDANBgkqhkiG9w0BAQsFADAPMQ0wCwYDVQQDDAR0ZXN0MB4XDTIxMDYxMzAyNTMwNFoXDTMxMDYxMzAyNTQ0NFowDzENMAsGA1UEAwwEdGVzdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAK97NlCcNOhtH0a0wz5boYKb7TaxogxnlyysOWUre1uI8SC6EBV3G5DHMdg4aWXwuXwy61+JJu70xNzJj155MJ+atGS7eLrxxGl0DNoLu/LU7Vhht+j09MZt5J60DnS76H3pkvzAtRfd1P/d5JEFzWYkI4drBJccYX/nrrx2KZBkXOjwjVcEhsyK5ykA0LX+M+yFDy2w8qEWhxHuSL6enzw8IZ7qdtsF8SHqw7cdCgCJU6+0dxaRAAqmzMkO7BDEkwCJl0M8VaOPGo/SnZIAMYHLIUg1x0h/ecST4NPdqAwgDGtWAcD+Gp7Lr7xfBbKKqnLfg2PJdjs7Z0+NFOeVTvcCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAeJ2r2yoaQAo6v8MC6iAobOeJoBoezQg/OSQqeA9lygMWmGHpDIjSV7m3PCXwf5H9/NpHgBLt8y5PcjEs99uPfPeUBV/qitTFMuznMyr35e60iaHSdhZVjyCmrKgnIuGa07lng2wFabtpijqzbQJ99kYsWxbBDgbdVnt3jxohG1KKaXkGMyy7suwPgwrbwXfDrpyyj33NT/Dk/2W4Fjrjg8rIkuQypwB0SQLG1cZL9Z2AgW39JeVnP/sOH1gNpCCQwbpgE9hEed80jsYWlvucnFm2aHBtGV+/7/7N3qRRpIvzrNVJoznqDDWU41RxS0NphAwX2ZqprWvN+SCEEhPGGQ=="
-      ],
-      "x5t": "C6P268EAdKTj5Y31QitIL99b5dE",
-      "x5t#S256": "GGTNWT9haxfSjsFFI5AQLuDHXUyEM2hxOrcBHOSdYkQ"
-    }
-  ]
-}
-```
+http://127.0.0.1:8081/realms/test/.well-known/openid-configuration
+http://127.0.0.1:8081/realms/test/protocol/openid-connect/certs
 
 ## Verify with jwt.io
 

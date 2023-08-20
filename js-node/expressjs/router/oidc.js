@@ -1,6 +1,5 @@
 'use strict'
 
-const axios = require('axios')
 const express = require('express')
 const { setTokensToHeader } = require('@es-labs/node/auth')
 
@@ -21,33 +20,35 @@ module.exports = express.Router()
     payload.append('response_type', 'code')
     payload.append('client_id', OIDC_OPTIONS.CLIENT_ID)
     if (OIDC_OPTIONS.CLIENT_SECRET) payload.append('client_secret', OIDC_OPTIONS.CLIENT_SECRET)
+
+    // payload.append('redirect_uri', 'http://127.0.0.1:3000/api/oidc/auth')
+    // payload.append('state', 'c45566104a3c7676c1cb92c33b19ab9bd91180c6')
+
     res.redirect(AUTH_URL + payload.toString())
   }))
   
   .get('/auth', async (req, res) => { // callback
     try {
       const { code, session_state } = req.query
-      const headers = { 'Content-Type': 'application/x-www-form-urlencoded' }
-      // NOSONAR // const payload = `grant_type=authorization_code&code=${code}&redirect_uri=${APP_BASE_URL}&client_id=${CLIENT_ID}` // redirects back here again...
-      const payload = new URLSearchParams()
-      payload.append('grant_type', 'authorization_code')
-      payload.append('code', code)
-      payload.append('redirect_uri', OIDC_OPTIONS.CALLBACK)
-      payload.append('client_id', OIDC_OPTIONS.CLIENT_ID)
-      // if (session_state)
-      if (OIDC_OPTIONS.CLIENT_SECRET) payload.append('client_secret', OIDC_OPTIONS.CLIENT_SECRET)
+      let payload = `grant_type=authorization_code&code=${code}`
+        + `&redirect_uri=${OIDC_OPTIONS.CALLBACK}&client_id=${OIDC_OPTIONS.CLIENT_ID}`
+      if (OIDC_OPTIONS.CLIENT_SECRET) payload += `&client_secret=${OIDC_OPTIONS.CLIENT_SECRET}`
       // add offline_access to get refresh token
 
       const res0 = await fetch(TOKEN_URL, {
         method: 'POST',
-        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', ...headers },
-        body: JSON.stringify(payload),
+        headers: headers = {
+          'Accept': 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: payload, // JSON.stringify(payload),
       })
       const data = await res0.json();
-      // const { data } = await axios.post(TOKEN_URL, payload, { headers })
+      console.log('OIDC_OPTIONS', OIDC_OPTIONS, headers, payload, data)
       const { access_token, refresh_token, ...user_meta } = data
       return res.redirect(OIDC_OPTIONS.CALLBACK + '#' + access_token + ';' + refresh_token + ';' + JSON.stringify(user_meta))
     } catch (e) {
+      console.log(e)
       return AUTH_ERROR_URL ? res.redirect(AUTH_ERROR_URL) : res.status(401).json({ error: 'NOT Authenticated' })
     }
   })
@@ -65,7 +66,6 @@ module.exports = express.Router()
       body: JSON.stringify(payload),
     })
     const data = await res0.json();
-    // const { data } = await axios.post(TOKEN_URL, payload, { headers })
     const { access_token, refresh_token } = data
     const tokens = { access_token, refresh_token }
     setTokensToHeader(res, tokens)

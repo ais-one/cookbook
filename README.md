@@ -218,6 +218,9 @@ Refer to link below on how to try out...
   - [js-node/expressjs/router/oidc.js](js-node/expressjs/router/oidc.js)
   - [js-node/expressjs/router/oauth.js](js-node/expressjs/router/oauth.js) **requires setup of github account and config setup here**
 - You can test out using the [vue-antd-template project](https://github.com/ais-one/vue-antd-template) Signin UI. See the README.md for details
+- for SAML and OIDC... credentials is `user` / `user`, redirect to a keycloak 
+- SAML: requires keycloak to be [setup](../../docker-devenv/keycloak/README.md) and run, express server needs to be run
+- OIDC: requires keycloak to be [setup](../../docker-devenv/keycloak/README.md) and run, express server needs to be run
 
 ---
 
