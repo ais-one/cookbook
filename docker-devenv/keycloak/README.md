@@ -134,7 +134,9 @@ Select client in the left menu and click Create client.
   - Home URL: http://127.0.0.1:3000/sso.html
   - Valid Redirect URLS: http://127.0.0.1:3000/api/saml/callback
   (Save)
-  - Turn off document & assertion signing (in Signature and Encryption)
+  - Turn off document & assertion signing (in Settings -> Signature and Encryption)
+  - Keys -> Signing key config = Off
+  - Settings -> SAML capabilities -> Name ID format = email
   - NOTE: there is no client secret created
 
 Setup the app env variables

@@ -12,11 +12,22 @@
     <h1>SSO <a href="index.html">Back</a></h1>
     <p>
       Supported SSO in this sample
-      - need to run Keycloak IDP / Setup Github O
-      - OAuth: (using Github): requires github account and app to be [setup](https://docs.github.com/en/developers/apps/building-oauth-apps) and also add github ID to a user in the [sqlite database](../../js-node/expressjs/dev.sqlite3), express server needs to be run (not recommended for starting out)
-      - Refresh URLs (TBD)
-        - /api/auth/refresh: SAML & OAuth (internally implemented - for SAML2 and Password login, as there is no concept of refresh tokens)
-        - /api/oidc/refresh: OIDC (user managed by auth server - possible on OIDC)
+      <ul>
+        <li>need to run Keycloak IDP / Setup Github OAuth</li>
+        <li>OAuth: (using Github): requires github account and app to be 
+          <ul>
+            <li>setup(https://docs.github.com/en/developers/apps/building-oauth-apps)</li>
+            <li>and also add github ID to a user in the [sqlite database](../../js-node/expressjs/dev.sqlite3)</li>
+            <li>express server needs to be run (not recommended for starting out)</li>
+          </ul>
+        </li>
+        <li><b>[TBD]</b> Refresh URLs
+          <ul>
+            <li>/api/auth/refresh: SAML & OAuth (internally implemented - for SAML2 and Password login, as there is no concept of refresh tokens)</li>
+            <li>/api/oidc/refresh: OIDC (user managed by auth server - possible on OIDC)</li>
+          </ul>
+        </li>
+      </ul>
     </p>
     <p>Testing SSO Login</p>
     <div>
@@ -28,7 +39,7 @@
     </div>
     <br />
     <div>
-      <button id="btn-saml">SAML2</button>
+      <button id="btn-saml">SAML2 (WIP)</button>
     </div>
     <div>
       <p id="txt-output">NA</p>
