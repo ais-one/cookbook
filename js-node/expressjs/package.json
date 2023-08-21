@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@es-labs/esm": "github:es-labs/esm#semver:0.0.14",
-    "@es-labs/node": "github:es-labs/node#0.0.18",
+    "@es-labs/node": "github:es-labs/node#0.0.19",
     "@node-saml/node-saml": "^4.0.5",
     "base64url": "^3.0.1",
     "csv-parse": "^5.4.0",
@@ -29,7 +29,8 @@
     "fido2-lib": "^3.4.1",
     "json2csv": "^5.0.7",
     "pdfkit": "^0.13.0",
-    "selfsigned": "^2.1.1"
+    "selfsigned": "^2.1.1",
+    "sqlite3": "^5.1.6"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
