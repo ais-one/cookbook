@@ -10,16 +10,17 @@
 
 > **TL;DR** ExpressJS, VueJS, ReactJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
-Latest Version [0.7.0](https://github.com/ais-one/cookbook/releases/tag/0.7.0) - Released 2023 Sep 01 0830 +8GMT
+Latest Version [0.7.0](https://github.com/ais-one/cookbook/releases/tag/0.7.0) - Released 2023 Sep 01 0830 +8GMT. åSee changes history in [CHANGELOG.md](CHANGELOG.md) and discuss [here](https://github.com/ais-one/cookbook/discussions)
 
-**NOTE:**
-See [CHANGELOG.md](CHANGELOG.md) for information on the changes in [0.7.0]
-
-Ask for help and recommend improvements [here](https://github.com/ais-one/cookbook/discussions)
-
-Considerations for this project are similar to [favv](https://github.com/ais-one/favv/blob/master/README.md#considerations). The difference between them are:
-- this repo is more of a cookbook and recipes are constantly being improved and updated
-- [favv](https://github.com/ais-one/favv) backend is written in Python, they can be used to improve on each other
+Companion Projects:
+- Frontend Template to go with the [express API backend](js-node/expressjs) in this repo
+  - [vue-antd-template](https://github.com/ais-one/vue-antd-template)
+- Reusable Components:
+  - [es-labs/node](https://github.com/es-labs/node) reusable common JS modules
+  - [es-labs/esm](https://github.com/es-labs/esm) reusable ESM modules
+- Python:
+  - [favv](https://github.com/ais-one/favv) API backend implement in Python FastAPI
+  - streamlit componennt examples
 
 # Features
 
@@ -29,14 +30,13 @@ Folder | Description | Features
 @es-labs/node | reusable common JS codes | moved to https://github.com/es-labs/node
 [docker-devenv](docker-devenv) | Docker containers<br>supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
 [docs](docs) | Documentation<br>To constantly improved/updated | - Main [documentation](docs/home.md)<br>- Secrets [documentation](docs/deployment/secrets.md)<br>- Deployment [notes](docs/deployment/home.md)<br>- Kafka [docs](docs/backend/kafka.md) and [code](js-node)<br>- TCP Server [docs](docs/backend/tcp.md) and [code](js-node)
-[js-node/expressjs](js-node/expressjs) | **Base ExpressJS application**<br>(REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Objection ORM (**removed**), Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
-[js-node/expressjs/apps/app-template](js-node/expressjs/apps/app-template) | Custom application (**app-template**)<br>built on [Base ExpressJS application](js-node/expressjs) | - [config] app configs<br>- [controllers] <br>- [models] <br>- [openapi] OpenAPI yamls<br>- [routes] API routes (also websocket handlers)<br>- [services] services to startup/shutdown<br>- [tables] config tables for generic table crud (t4t)<br>- [tests] folder for tests<br>- [graphql-schema.js] application GraphQL codes
-[js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role, Passport SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)<br>- Fido & Webauthn<br>- Push Notification (Webpush & FCM)
+[js-node/expressjs](js-node/expressjs) | **Base ExpressJS application**<br>(REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
+[js-node/expressjs/apps/app-template](js-node/expressjs/apps/app-template) | Custom application (**app-template**)<br>built on [Base ExpressJS application](js-node/expressjs) |- [controllers] <br>- [models] <br>- [openapi] OpenAPI yamls<br>- [routes] API routes (also websocket handlers)<br>- [services] services to startup/shutdown<br>- [tables] config tables for generic table crud (t4t)<br>- [tests] folder for tests<br>- [graphql-schema.js] application GraphQL codes
+[js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)<br>- Fido & Webauthn<br>- Push Notification (Webpush & FCM)
 [js-node/*](js-node) | **Other Backend applications** | - [Services](js-node/services) (TCP event/stream, scalable Websocket with Redis Pubsub, etc.)<br>- [Serial server](js-node/serialserver)<br>- [openapi-file-joiner](js-node/openapi-file-joiner) combine OpenAPI files
 [vue-nobundler](vue-nobundler/) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/apps/app-template/tables/](js-node/expressjs/apps/app-template/tables/)</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[vue-nobundler/views/ui1.js](vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[vue-nobundler/views/ui2.js](vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[vue-nobundler/views/ui3.js](vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[vue-nobundler/views/ui4.js](vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
-[js-web/vue-vite] | Vue 3 SPA using vite + Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- 2FA GA OTP, OIDC + Refresh, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Playwrite Testing<br>- i18n / graphql (TBD)
-<br>moved to https://github.com/ais-one/vue-antd-template
-js-web/react-vite | - react<br>- react-router-dom<br>- zustand/@tanstack<br>- react-query | moved to https://github.com/ais-one/react-template
+[js-web/vue-vite] | - Vue 3 SPA<br>- vite / vue-router / Pinia<br>- Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- 2FA GA OTP, OIDC + Refresh, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Playwrite Testing<br>- i18n / graphql (TBD)<br>- moved to https://github.com/ais-one/vue-antd-template
+js-web/react-vite | - react SPA<br>- react-router-dom<br>- zustand/@tanstack<br>- react-query | - moved to https://github.com/ais-one/react-template
 [.github/workflows](.github/workflows) | Github Actions (CI/CD) | - Manually Trigger<br>- On-push Trigger (WIP)
 AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 
@@ -54,42 +54,6 @@ AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 
 npm i -g npm@latest
 
-## Optional VS Code Plugins
-
-**NOTE** Useful plugins if using VS Code:
-
-- Essentials
-  - Docker
-  - Live Server
-  - REST Client
-  - SSH FS
-  - MongoDB Client (official)
-- Recommended
-  - SonarLint (requires java)
-  - GitLens
-- JS Language Specific
-  - es6-string-html
-  - ESLint
-  - Volar (for VueJS)
-  - Prettier
-
-## Chrome Extensions
-
-- Web Server
-  - https://chrome.google.com/webstore/detail/web-server-for-chrome/ofhbbkphhbklhfoeikjpcbhemlocgigb/related?hl=en
-- SAML / OIDC
-  - https://chrome.google.com/webstore/detail/saml-ws-federation-and-oa/hkodokikbjolckghdnljbkbhacbhpnkb?hl=en
-- React & Vue Dev tools
-  - https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en
-  - https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en
-- MetaMask
-  - https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en
-
-## Other Utilities
-
-- DB clients
-  - dbeaver (mac / windows)
-  - heidisql (windows)
 
 ## Install And Migrate DB And Seed DB
 
@@ -146,7 +110,10 @@ npm run app:lint --workspace=js-node/expressjs -- development app-template
 
 ### No bundler frontend
 
-See [vue-nobundler](vue-nobundler). Served from [http://127.0.0.1:3000/native/index.html](http://127.0.0.1:3000/native/index.html)
+- See [vue-nobundler]()
+- Served from [http://127.0.0.1:3000/native/index.html]()
+- import only vue & vue-router at index.html
+- export const store = reactive({}) used [instead of Vuex](https://pinia.vuejs.org/introduction.html#Why-should-I-use-Pinia-)
 
 ### Testing
 
@@ -164,38 +131,33 @@ For long running processes such as tcp server (event mode, streaming mode), seri
 
 See [js-node/README.md](js-node/README.md)
 
----
-
 ### Vite SPA Setup & Run - development environment
 
 See [vue-antd-template project](https://github.com/ais-one/vue-antd-template).
 
-## Why No SSR or SSG
-
+Why No SSR or SSG:
 - potential slow rendering by server app, added complexity in code, rehydration errors, added complexity in server
 - https://github.com/nuxt/nuxt.js/issues/8102
 - prefer static sites and lazy loaded SPA for now
 
+---
+
 ## SAML, OIDC, OAuth
 
-Refer to link below on how to try out...
-- [Keycloak](docker-devenv/keycloak/README.md) README.md
+- SAML & OIDC: requires keycloak to be setup and express server to be run
+  - Setup and Configure [Keycloak](docker-devenv/keycloak/README.md)
+- You can test out on [sso.html](http://127.0.0.1:3000/sso.html). The file source is [js-node/expressjs/public/demo-express/sso.html]()
+- for SAML and OIDC... credentials is `user` / `user`, redirect to the keycloak IDP
 - Refer also to the following files
   - ./js-node/expressjs/router/saml.js
   - ./js-node/expressjs/router/oidc.js
   - ./js-node/expressjs/router/oauth.js **requires setup of github account and configs**
-- You can test out using the [js-node/expressjs/public/demo-express/sso.html]() Signin UI. See the README.md for details
-- for SAML and OIDC... credentials is `user` / `user`, redirect to a keycloak 
-- SAML & OIDC: requires keycloak to be setup and run `../../docker-devenv/keycloak/README.md`, express server needs to be run
-
----
 
 ## Fido2
 
 Refer to following files for SPA sample (uses fido2-lib in backend)
 - [js-node/expressjs/router/fido.js]()
 - [js-node/expressjs/public/demo-express/fido.html]()
-
 
 ## Push Notification
 **Note:** For Push Notification
@@ -226,14 +188,6 @@ Refer to following files for SPA sample
 
 ---
 
-## es-lab dependencies
-- [esm - shared es modules](https://github.com/es-labs/esm)
-- [node - shared cjs modules](https://github.com/es-labs/node)
-
-## associated frontend project
-
-- [vue-antd-template](https://github.com/ais-one/vue-antd-template)
-
 ## Project Strcuture
 
 ```
@@ -256,6 +210,8 @@ Refer to following files for SPA sample
 +- package.json
 +- README.md
 ```
+
+---
 
 ## CI/CD & Cloud Deployment
 
@@ -293,6 +249,8 @@ VAULT={ url, token } # base64 encoded
  # pass in secrets, this way is insecure and not a good way to send in secrets
 VAULT={ secrets: { ... all your secrets here } } # base64 encoded
 ```
+
+---
 
 ## VERSION CHANGE NOTES
 

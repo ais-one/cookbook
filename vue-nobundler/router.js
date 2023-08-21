@@ -1,4 +1,4 @@
-import store from './store.js'
+import { statex } from './store.js'
 import Dashboard from './views/dashboard.js'
 import Admin from './views/admin.js'
 import SignIn from './views/signin.js'
@@ -8,8 +8,8 @@ const { createRouter, createWebHistory } = VueRouter
 const routerHistory = createWebHistory('/native/')
 
 const AuthGuard = async (to, from, next) => {
-  // console.log('AuthGuard', store)
-  const loggedIn = Boolean(store.state.user)
+  // console.log('AuthGuard', statex)
+  const loggedIn = Boolean(statex.user)
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
 
   if (loggedIn === requiresAuth) {
@@ -32,7 +32,6 @@ const router = createRouter({
     {
       meta: { requiresAuth: true, layout: 'layout-secure' },
       beforeEnter: AuthGuard,
-      // props: (route) => ({ storeName: route.name, parentId: route.params.parentId || null }),
       path: '/dashboard',
       component: Dashboard, // () => import('./views/about.js') // TBD use lazy loading
       name: 'dashboard'

@@ -1,25 +1,7 @@
-const { createStore } = Vuex
+const { reactive } = Vue
 
-const mutations = {
-  setUser (state, payload) { state.user = payload }
-}
-
-const getters = {
-  user (state) { return state.user }
-}
-
-const state = { // state below the rest // https://stackoverflow.com/questions/43843180/eslint-state-already-declared-vuex
+// Use this instead of Vuex
+export const statex = reactive({
+  counter: 0,
   user: null
-}
-
-const store = createStore({
-  state,
-  getters,
-  actions: {},
-  mutations
 })
-
-export default store
-
-// TBD use this instead of Vuex
-// export const state = reactive({})

@@ -59,15 +59,15 @@ const styles = /*html*/`
 `
 
 const { onMounted, ref } = Vue
-const { useStore } = Vuex
 const { useRouter } = VueRouter
+
+import { statex } from '../store.js'
 
 export default {
   template,
   setup() {
     const email = ref('1111')
     const password = ref('1111')
-    const store = useStore()
     const router = useRouter()
 
     const topRef = ref(null)
@@ -100,7 +100,7 @@ export default {
     })
 
     const login = () => {
-      store.commit('setUser', email.value)
+      statex.user = email.value
       router.push('/dashboard')
     }
 

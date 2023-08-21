@@ -7,21 +7,20 @@ const template = /*html*/`
   <a class="button is-light" @click="logout">Logout</a>
 </div>
 `
+import { statex } from '../store.js'
 const { onMounted } = Vue
-const { useStore } = Vuex
 const { useRouter } = VueRouter
 
 export default {
   template,
   setup() {
-    const store = useStore()
     const router = useRouter()
 
     onMounted(async () => {
       console.log('Navbar mounted!')
     })
     const logout = () => {
-      store.commit('setUser', null)
+      statex.user = null
       router.push('/') // if /dashboard should be kicked back to / 
     }
     return {

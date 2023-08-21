@@ -1,5 +1,3 @@
-// import Navbar from '../components/navbar.js'
-
 const template = /*html*/`
 <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
@@ -27,14 +25,14 @@ const template = /*html*/`
         </div>
       </div>
     </div>
+    -->
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-light" @click="logout">Logout</a>
+          <a class="button is-light" @click="logout">Logout {{ statex.counter }}</a>
         </div>
       </div>
     </div>
-    -->
   </div>
 </nav>
 
@@ -77,8 +75,9 @@ const template = /*html*/`
 </div>
 `
 
+import { statex } from '../store.js'
+// import Navbar from '../components/navbar.js'
 const { onMounted, onUnmounted, ref, computed  } = Vue
-const { useStore } = Vuex
 const { useRouter } = VueRouter
 
 export default {
@@ -87,7 +86,6 @@ export default {
   //   'ms-navbar': Navbar
   // },
   setup() {
-    const store = useStore()
     const router = useRouter()
     const showSide = ref(true)
     const subMenu0 = ref(true)
@@ -123,10 +121,11 @@ export default {
       }
     }
     const logout = () => {
-      store.commit('setUser', null)
+      statex.user = null
       router.push('/') // if /dashboard should be kicked back to / 
     }
     return {
+      statex,
       clickLogo,
       clickBurger,
       showSide,

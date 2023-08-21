@@ -56,7 +56,7 @@
 - Github [github.md](github.md)
 - NodeJS [nodejs.md](nodejs.md)
 - NPM [npm.md](npm.md)
-- Setup Apps [setup.md](setup.md)
+- Dev Tooling & Setup [devtools.md](devtools.md)
 
 
 ## Scaling Your Development

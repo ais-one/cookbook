@@ -11,7 +11,6 @@ import '/esm/bwc-t4t-form.js'
 // console.log(sleep)
 
 import router from './router.js'
-import store from './store.js'
 import App from './app.js'
 
 // set baseurl here - need config
@@ -21,6 +20,5 @@ const { createApp } = Vue
 
 const app = createApp(App)
 app.config.isCustomElement = tag => tag.startsWith('bwc-')
-app.use(store)
 app.use(router)
 app.mount('#app')

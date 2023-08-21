@@ -10,7 +10,7 @@ const template = /*html*/`
             </div>
             <div class="field is-grouped">
               <div class="control">
-                <button class="button is-success test-bg" @click="">SSO Login</button>
+                <button class="button is-success test-bg" @click="">SSO Login (Does Nothing ATM)</button>
               </div>
             </div>
           </form>
