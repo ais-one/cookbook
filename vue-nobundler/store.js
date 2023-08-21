@@ -20,3 +20,6 @@ const store = createStore({
 })
 
 export default store
+
+// TBD use this instead of Vuex
+// export const state = reactive({})

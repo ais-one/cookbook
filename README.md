@@ -91,91 +91,58 @@ npm i -g npm@latest
   - dbeaver (mac / windows)
   - heidisql (windows)
 
-## Download
+## Install And Migrate DB And Seed DB
 
 ```bash
-# clone repo and install backend
+# clone repo
 git clone https://github.com/ais-one/cookbook.git
 cd cookbook
+
+# install dependencies for all workspace projects
+npm i
+
+# OR install only for express backend
+npm run ex:build # see ./package.json scripts
+
+# seed data for the express backend
+# create and seed relational db on SQLite, (delete the dev.sqlite file each time before you run this)
+# command: npm run knex -- <development / uat / production> <custom app name> <seed / migrate>
+npm run ex:migrate # see ./package.json scripts
+npm run ex:seed # see ./package.json scripts
+
+# create and seed MongoDB requires MongoDB - you can skip this but MongoDB examples will not work
+# command: npm run mongo -- <development / uat / production> <custom app name> <seed / update>
+# npm run mongo --workspace=js-node/expressjs -- development app-template seed
 ```
 
-## Installing & Updating Dependencies
-
-Install dependencies for all workspaces!
-
-Note
-- when doing npm i, it will always install latest version matching your package
-- sometimes you need to **rebuild**, delete all node_modules folders and the package-lock.json file in the root 
+## Run ExpressJS Backend - development environment
 
 ```bash
-# https://github.com/npm/cli/issues/708
-# https://github.com/npm/cli/issues/2032
-npm i # use this
-# npm i --legacy-peer-deps # use this if there is peer dependencies issues, but not recommended
-```
+npm run ex:start # see ./package.json scripts
 
-Update dependencies for all workspaces!
-
-```bash 
-npm outdated # use this to check for outdated dependencies
-npm update --save
-npm ls <?package> # use npm ls to check on actual versions installed
-```
-
-## Single workspace command
-
-```bash
-# install specific dependencies
-npm i lorem-ipsum --workspace=@<namespace>/[package]
-
-# install all dependencies
-npm i --workspace=js-node/expressjs
-
-# Update a package with major version change eg 2.2.8 to 3.1.1
-npm i ant-design-vue@latest --workspace=js-node/expressjs
-```
-
----
-
-## ExpressJS Backend Setup & Run - development environment
-
-```bash
+# OR
+# command: npm run app --workspace=js-node/expressjs -- <development / uat / production> <custom app name, default = app-template>
 npm run app --workspace=js-node/expressjs -- development
+npm run app --workspace=js-node/expressjs -- development app-template # app name specified
 
-# or
 
-npm run ex:start
+# OR to include eslint checks
+npm run app:lint --workspace=js-node/expressjs -- development app-template
 ```
 
 **NOTES**
 - MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/backend/mongodb/install.md**
 - The **js-node/expressjs/apps/app-template/config/secret/*.env.js** files are not present. So there maybe some console log errors (but it is ok to ignore) and websockets will not work. Quick start is still usable. Use the README.md to fill up
 
-### Run migration & app
-
-```bash
-# create and seed relational db on SQLite, (delete the dev.sqlite file each time before you run this)
-# command: npm run knex -- <development / uat / production> <custom app name> <seed / migrate>
-npm run knex --workspace=js-node/expressjs -- development app-template migrate
-npm run knex --workspace=js-node/expressjs -- development app-template seed
-
-# create and seed MongoDB requires MongoDB - you can skip this but MongoDB examples will not work
-# command: npm run mongo -- <development / uat / production> <custom app name> <seed / update>
-npm run mongo --workspace=js-node/expressjs -- development app-template seed
-
-# run the backend
-# command: npm run app --workspace=js-node/expressjs -- <development / uat / production> <custom app name, default = app-template>
-npm run app --workspace=js-node/expressjs -- development # app name implied (implied as app-template if not in env)
-npm run app --workspace=js-node/expressjs -- development app-template # or app name specified
-npm run app:lint --workspace=js-node/expressjs -- development app-template # to include eslint checks
-```
 
 **Visit the following URLs**
 - http://127.0.0.1:3000/api/healthcheck - app is running normally
 - http://127.0.0.1:3000 - Website served by Express with functional samples and demos
 - http://127.0.0.1:3000/api-docs - OpenAPI documentation
 
-Note: to generate api docs, visit [js-node/openapi-file-joiner](js-node/openapi-file-joiner) and follow readme file, also look at the config properties OPENAPI_PATH and OPENAPI_VALIDATOR in [js-node/expressjs/apps/app-template/config/common.env.js](js-node/expressjs/apps/app-template/config/common.env.js).
+**NOTE**
+- [FIND A BETTER WAY] to generate api docs, visit [js-node/openapi-file-joiner](js-node/openapi-file-joiner) and follow readme file
+- [FIND A BETTER WAY]also look at the config properties OPENAPI_PATH and OPENAPI_VALIDATOR in [js-node/expressjs/apps/app-template/config/common.env.js](js-node/expressjs/apps/app-template/config/common.env.js).
 
 ### No bundler frontend
 
@@ -214,28 +181,27 @@ See [vue-antd-template project](https://github.com/ais-one/vue-antd-template).
 Refer to link below on how to try out...
 - [Keycloak](docker-devenv/keycloak/README.md) README.md
 - Refer also to the following files
-  - [js-node/expressjs/router/saml.js](js-node/expressjs/router/saml.js)
-  - [js-node/expressjs/router/oidc.js](js-node/expressjs/router/oidc.js)
-  - [js-node/expressjs/router/oauth.js](js-node/expressjs/router/oauth.js) **requires setup of github account and config setup here**
-- You can test out using the [vue-antd-template project](https://github.com/ais-one/vue-antd-template) Signin UI. See the README.md for details
+  - ./js-node/expressjs/router/saml.js
+  - ./js-node/expressjs/router/oidc.js
+  - ./js-node/expressjs/router/oauth.js **requires setup of github account and configs**
+- You can test out using the [js-node/expressjs/public/demo-express/sso.html]() Signin UI. See the README.md for details
 - for SAML and OIDC... credentials is `user` / `user`, redirect to a keycloak 
-- SAML: requires keycloak to be [setup](../../docker-devenv/keycloak/README.md) and run, express server needs to be run
-- OIDC: requires keycloak to be [setup](../../docker-devenv/keycloak/README.md) and run, express server needs to be run
+- SAML & OIDC: requires keycloak to be setup and run `../../docker-devenv/keycloak/README.md`, express server needs to be run
 
 ---
 
 ## Fido2
 
 Refer to following files for SPA sample (uses fido2-lib in backend)
-- [js-node/expressjs/router/fido.js](js-node/expressjs/router/fido.js)
-- [js-node/expressjs/public/demo-express/fido.html](js-node/expressjs/public/demo-express/fido.html)
+- [js-node/expressjs/router/fido.js]()
+- [js-node/expressjs/public/demo-express/fido.html]()
 
 
 ## Push Notification
 **Note:** For Push Notification
 Refer to following files for SPA sample
-- [js-node/expressjs/router/webpush.js](js-node/expressjs/router/webpush.js)
-- [js-node/expressjs/public/demo-express/pn.html](js-node/expressjs/public/demo-express/pn.html)
+- [js-node/expressjs/router/webpush.js]()
+- [js-node/expressjs/public/demo-express/pn.html]()
 - Uses Webpush or Google FCM
 - Using Google FCM, setup your firebase account and messaging, also setup FCM server key in backend
 - Using self hosted webpush is also supported and available
@@ -248,26 +214,33 @@ Refer to following files for SPA sample
 
 ## Configuration
 
-The [js-node/expressjs/apps/app-template/config](js-node/expressjs/apps/app-template/config) folder contains the config information.
+- ./js-node/expressjs/.env
+  - specify app template to use
+- ./js-node/expressjs/apps/app-template/.env
+  - non-sensitive config values
+- ./js-node/expressjs/apps/app-template/.env.secret
+  - values that are secret
 
-You can override the configurations using <NODE_ENV>.env.js files, e.g. **development.env.js** or **uat.env.js** in the folder
+- JSON values are supported
+- For more sentitive configs, `Vault` service should be considered
 
 ---
 
-## Project Strcuture
-
-es-lab dependencies
+## es-lab dependencies
 - [esm - shared es modules](https://github.com/es-labs/esm)
 - [node - shared cjs modules](https://github.com/es-labs/node)
 
-associated frontend project
+## associated frontend project
+
 - [vue-antd-template](https://github.com/ais-one/vue-antd-template)
+
+## Project Strcuture
 
 ```
 +- .github/ : github related CICD and automations
-+- .husky : git hooks
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
++- git-hooks : git hooks
 +- js-node/ : nodejs applications (kafka, cron triggered, long running)
 |  +- expressjs/ : express backend - See [js-node/expressjs/README.md](js-node/expressjs/README.md) for project structure
 |  +- openapi-file-joiner/ : pre-process utility to combine openapi yaml files for use in openapi related packages
@@ -292,7 +265,6 @@ The following Google Cloud Platform (GCP) services are used
 - Container Registry
 - Cloud Run
 - Cloud Storage
-- Mongo Atlas (hosted on GCP)
 
 Refer to [doc/deployment/home.md](doc/deployment/home.md) for documentation on deployments
 

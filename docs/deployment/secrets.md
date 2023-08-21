@@ -16,7 +16,7 @@ Need to take into consideration, the following:
 
 - Hashicorp Vault [we use the docker version of this for our testing js-node/expressjs on local machine]
   - self hosted, docker
-  - k8s, helm, sidecar
+  - helm, sidecar
   - vault + mongoatlas
 - Google Secrets
 - AWS Secrets

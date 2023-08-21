@@ -41,7 +41,6 @@
 - GCP
   - Home [gcp/home.md](gcp/home.md)
 - SQA
-  - E2E Testing [sqa/e2e.md](sqa/e2e.md)
   - SQA Tools [sqa/sqa-tools.md](sqa/sqa-tools.md)
   - SQA NodeJS [sqa/sqa-nodejs.md](sqa/sqa-nodejs.md)
   - Team Guidance [sqa/team-guidance.md](sqa/team-guidance.md)
@@ -54,6 +53,13 @@
   - Performance [web/performance.md](web/performance.md)
   - Logging [web/logging.md](web/logging.md)
 - Git [git.md](git.md)
+- Github [github.md](github.md)
 - NodeJS [nodejs.md](nodejs.md)
-- Udemy Courses [courses.md](courses.md)
-- k8s [kubernetes YAML files (WIP)](k8s)
+- NPM [npm.md](npm.md)
+- Setup Apps [setup.md](setup.md)
+
+
+## Scaling Your Development
+
+- https://www.aspecto.io/blog/lerna-hello-world-how-to-create-a-monorepo-for-multiple-node-packages/
+- https://medium.com/@anoop_gupta/cross-repository-component-sharing-using-mono-repo-multi-packages-architecture-2797c3e02c6c

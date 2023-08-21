@@ -1,5 +1,6 @@
-https://stackoverflow.com/questions/52511778/how-to-install-openjdk-11-on-windows
+## OpenJDK Setup
 
+https://stackoverflow.com/questions/52511778/how-to-install-openjdk-11-on-windows
 
 Extract the zip file into a folder, e.g. C:\Program Files\Java\ and it will create a jdk-11 folder (where the bin folder is a direct sub-folder). You may need Administrator privileges to extract the zip file to this location.
 
