@@ -8,7 +8,9 @@
 - [js-web/react-vite] moved to https://github.com/ais-one/react-template
 - [js-node/jsdoc-ts] example on how to use jsdoc for typescript
 - [js-node/expressjs] webpush push notification sample [sample](js-node/expressjs/public/demo-express/pn.html)
-- [wip] try to remove passport & passport-saml
+- [js-node/expressjs] SSO (OAuth, OIDC, SAML) sample [sample](js-node/expressjs/public/demo-express/sso.html)
+- [js-node/expressjs] try to removed passport & passport-saml, use @node-saml/node-saml
+- [wip] monorepo. multi package, deploy on git
 - [wip] to use Typescript and tsoa ? or use JSDoc?
 
 ### Version 0.6.11

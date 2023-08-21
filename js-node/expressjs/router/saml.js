@@ -20,44 +20,19 @@ if (samlOptions) {
     samlOptions.privateKey = SAML_PRIVATE_KEY
     samlOptions.decryptionPvk = SAML_PRIVATE_KEY
   }
-  samlOptions.cert = 'MIIClTCCAX0CBgGKEEL5YTANBgkqhkiG9w0BAQsFADAOMQwwCgYDVQQDDANkZXYwHhcNMjMwODIwMDAwMzU5WhcNMzMwODIwMDAwNTM5WjAOMQwwCgYDVQQDDANkZXYwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCMznFveBcEc3SpeNOWYU33ZDwo+XjLkEJUcFIskuhTui5r8XAWjWnaR0wDKqGY/UjU7s8U7zc5lL+kn63EXbpdJkdwIPX6vlgJlz7aJ2H6GGpjC4KoHjNS3qP+8MQnZ2Y04oUGE6khKaYiDTrTT1qumtDcsKpcjFcKvlaINWWhsiivsj/icHih/Zw2U+wlktsjpCXxUMLIYno8z+R170tLLvH5UQHwwBSxiU7gaVnR9+fW1DbSdEMUTm16BJ9zi+vNmbSylvuvATVqEIVMoXsjAHCBZqGKQRu8IKYkEZ0phoVzOydl9tkQWxpbVHwfjzW2ZU+bko76Tbfv22VDYSkHAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAGrBlnh1z/8WAOWhDFt7ZvUbTLdb/aWAEwaF8V21berxQKi/kHZmwVS8v1QjdUOXf1y0YoYQCzv3XnJky1cKzT6ndcVnB/LV+kEloJyUsVfYfKIzcUCNkjZtDge1rFT2Y8oQgdp/IqKkZTlKiMBgTYadhZBYLcjmlp9LebKiHlDIEF1w29/xUWQXTmcyHXjvkMxsuCcfJO3ZtFKE+jaO1Ov30iwc85VEuxreJRlw5v6i5N9un/X3pxz86Z/WS+QX8ldIddBVIQ0tQyjz4g9l4QkUm4E4/dD9KjZAqrYEVADqxdNUg25eoiYXwWKNPziyGemEbUXJTnqURzYnzW3no5c='
-  samlOptions.wantAuthnResponseSigned = false
-  // samlOptions.racComparison = 'minimum'
-  samlOptions.wantAssertionsSigned = false
-  // samlOptions.passive = true
 }
 
-let saml
-
-if (samlOptions) {
-  const { SAML } = require('@node-saml/node-saml')
-  saml = new SAML(samlOptions)
-}
+const { SAML } = require('@node-saml/node-saml')
+const saml = samlOptions ? new SAML(samlOptions) : null
 
 module.exports = express.Router()
   .get('/test', async (req,res) => {
-    // console.log(saml)
-    try {
-      const authUrl = await saml?.getAuthorizeUrlAsync() // validatePostResponseAsync (calls..., processValidlySignedPostRequestAsync)
-      // console.log(authUrl)
-
-      const parsedResponse = await saml?.validatePostResponseAsync(bodyx)
-      // console.log(parsedResponse)
-
-      res.json({ message: 'testing node-saml ok', authUrl, parsedResponse })
-    } catch (e) {
-      console.log(e) // , SAML_OPTIONS.privateCert
-      res.status(500).json({message: 'testing node-saml error', error: e.toString()})
-    }
+    res.json({ message: 'testing node-saml ok' })
   })
   .get('/login',
-    (req, res, next) => {
-      // return res.redirect('/' + token...) // for faking, bypass real callback
-      // console.debug(req.header('referer'))
-      // req.query.RelayState
-      next()
-    },
     async (req, res) => {
+      // return res.redirect('/' + token...) // for faking, bypass real callback
+      // console.debug(req.header('referer'), req.query.RelayState)
       // getAuthorizeUrlAsync(RelayState: string, host: string | undefined, options: AuthOptions)
       const authUrl = await saml?.getAuthorizeUrlAsync(req.query.RelayState) // validatePostResponseAsync (calls..., processValidlySignedPostRequestAsync)
       res.redirect(authUrl);
@@ -66,43 +41,44 @@ module.exports = express.Router()
   // .get('/fail', (req, res) => res.status(401).send('Login Fail')
   .post('/callback',
     async (req, res, next) => {
-      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 1')
+      console.log('SAML has called back...')
       try {
         const parsedResponse = await saml?.validatePostResponseAsync(req.body)
-        console.log(parsedResponse)
-        res.json({ message: 'testing node-saml ok', parsedResponse })
+        // TEST
+        // console.log(typeof parsedResponse, parsedResponse)
+        // res.json({ message: 'testing node-saml ok', parsedResponse })
+        // Callback
+        try {
+          const TO = req.body.RelayState
+          const authenticated = !parsedResponse.loggedOut
+          const user = {
+            id: parsedResponse.profile[samlJwtMap.id], // id: req.user.nameID, // string
+            groups: parsedResponse.profile[samlJwtMap.groups], // groups: req.user.Role, // comma seperated string or array or object...
+          }
+          if (!TO) {
+            // if no RelayState, then it is a test
+            return res.status(200).json({
+              authenticated,
+              user
+            })
+          }
+          // console.log(TO, user, authenticated, samlJwtMap, parsedResponse['Role'])
+          if (authenticated) {
+            const tokens = await createToken(user)
+            setTokensToHeader(res, tokens)
+            return res.redirect(TO + '#' + tokens.access_token + ';' + tokens.refresh_token + ';' + JSON.stringify(tokens.user_meta)) // use url fragment...
+          } else {
+            return AUTH_ERROR_URL ? res.redirect(AUTH_ERROR_URL) : res.status(401).json({ error: 'NOT Authenticated' })
+          }
+        } catch (e) {
+          return AUTH_ERROR_URL ? res.redirect(AUTH_ERROR_URL) : res.status(500).json({ error: e.toString() })
+        }
       } catch (e) {
         console.log('SAML callback error', e)
-        res.json({ message: e.toString() })
-      }
-      // next()
-
-      // TBD get user
-    },
-    async (req, res) => {
-      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 2')
-      try {
-        const TO = req.body.RelayState
-        if (!TO) {
-          // if no RelayState, then it is a test
-          return res.status(200).json({
-            authenticated: req.isAuthenticated(),
-            user: req.user
-          })
-        }
-        if (req.isAuthenticated()) {
-          const user = {
-            id: req.user[samlJwtMap.id], // id: req.user.nameID, // string
-            groups: req.user[samlJwtMap.groups], // groups: req.user.Role, // comma seperated string or array or object...
-          }
-          const tokens = await createToken(user)
-          setTokensToHeader(res, tokens)
-          return res.redirect(TO + '#' + tokens.access_token + ';' + tokens.refresh_token + ';' + JSON.stringify(tokens.user_meta)) // use url fragment...
-        } else {
-          return AUTH_ERROR_URL ? res.redirect(AUTH_ERROR_URL) : res.status(401).json({ error: 'NOT Authenticated' })
-        }
-      } catch (e) {
-        return AUTH_ERROR_URL ? res.redirect(AUTH_ERROR_URL) : res.status(500).json({ error: e.toString() })
+        res.json({
+          message: e.toString(),
+          note: 'Currently it always triggers invalid document signature fix is on the way'
+        })
       }
     }
   )
