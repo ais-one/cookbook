@@ -84,3 +84,11 @@ npm i ant-design-vue@latest --workspace=js-node/expressjs
 ```
 
 ---
+
+
+## NPM Token
+
+Create token
+- for automation fine grain and limit its access
+
+
