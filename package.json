@@ -34,8 +34,7 @@
     "npm": ">=9"
   },
   "workspaces": [
-    "js-node/*",
-    "js-webx/*"
+    "js-node/*"
   ],
   "private": true
 }

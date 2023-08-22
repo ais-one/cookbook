@@ -16,8 +16,7 @@ Companion Projects:
 - Frontend Template to go with the [express API backend](js-node/expressjs) in this repo
   - [vue-antd-template](https://github.com/ais-one/vue-antd-template)
 - Reusable Components:
-  - [es-labs/node](https://github.com/es-labs/node) reusable common JS modules
-  - [es-labs/esm](https://github.com/es-labs/esm) reusable ESM modules
+  - [es-labs/jslib](https://github.com/es-labs/jslibs) reusable CJS and ESM modules
 - Python:
   - [favv](https://github.com/ais-one/favv) API backend implement in Python FastAPI
   - streamlit componennt examples
@@ -26,8 +25,6 @@ Companion Projects:
 
 Folder | Description | Features
 ---|---|---
-@es-labs/esm | resuable ES module codes | moved to https://github.com/es-labs/esm
-@es-labs/node | reusable common JS codes | moved to https://github.com/es-labs/node
 [docker-devenv](docker-devenv) | Docker containers<br>supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
 [docs](docs) | Documentation<br>To constantly improved/updated | - Main [documentation](docs/home.md)<br>- Secrets [documentation](docs/deployment/secrets.md)<br>- Deployment [notes](docs/deployment/home.md)<br>- Kafka [docs](docs/backend/kafka.md) and [code](js-node)<br>- TCP Server [docs](docs/backend/tcp.md) and [code](js-node)
 [js-node/expressjs](js-node/expressjs) | **Base ExpressJS application**<br>(REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test

@@ -27,7 +27,7 @@
       "**/*"
     ],
     "targets": [
-      "node14-win-x64"
+      "node18-win-x64"
     ]
   }
 }
