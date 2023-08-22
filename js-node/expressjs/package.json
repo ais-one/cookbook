@@ -19,8 +19,8 @@
     "update-commit-hash": "git rev-parse --verify --short HEAD > commit-hash"
   },
   "dependencies": {
-    "@es-labs/esm": "github:es-labs/esm#semver:0.0.14",
-    "@es-labs/node": "github:es-labs/node#0.0.19",
+    "@es-labs/esm": "^0.0.15",
+    "@es-labs/node": "^0.0.15",
     "@node-saml/node-saml": "^4.0.5",
     "base64url": "^3.0.1",
     "csv-parse": "^5.4.0",

@@ -62,7 +62,7 @@ const cleanup = async (message, exitCode = 0, coreDump = false, timeOutMs = 1000
   if (server) {
     server.close(async () => {
       try {
-        await graphqlWsServer.close()
+        await graphqlWsServer?.close()
         await services.stop()
         // or should process.exit be placed here?
       } catch (e) {
