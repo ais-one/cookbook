@@ -26,8 +26,7 @@
     "ex:migrate": "npm run knex --workspace=js-node/expressjs -- development app-template migrate",
     "ex:seed": "npm run knex --workspace=js-node/expressjs -- development app-template seed",
     "ex:build": "npm i --workspace=js-node/expressjs",
-    "ex:lib:clean": "npm uninstall @es-labs/node --workspace=js-node/expressjs",
-    "ex:lib:build": "npm i github:es-labs/node#0.0.18 --workspace=js-node/expressjs"
+    "ex:lib:build": "npm i es-labs/node@latest --workspace=js-node/expressjs"
   },
   "engines": {
     "node": ">=18",

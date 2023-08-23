@@ -165,7 +165,7 @@ If you edit the file in ../@eslabs/..., it will also be changed the installed no
 
   "dependencies": {
     "@es-labs/node": "github:es-labs/node#<tag>",
-    "@es-labs/esm": "github:es-labs/esm#<branch_name>",
+    "@es-labs/node": "github:es-labs/node#<branch_name>",
 
 You need to create `tag` on the github remote also by creating a new release or you can use a branch instead
 

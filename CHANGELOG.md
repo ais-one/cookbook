@@ -2,15 +2,14 @@
 - [chore] update packages & cleanup & work on improving documentation
 - [chore] prototype projects `solid`, `react-admin` and `nest-admin` have been removed
 - [jsonwebtoken] update version handle minimum key size requirement change
-- [@es-labs/node] moved to https://github.com/es-labs/node
-- [@es-labs/esm] moved to https://github.com/es-labs/esm
+- [@es-labs/node] moved to https://github.com/es-labs/jslib monorepo
+- [@es-labs/esm] moved to https://github.com/es-labs/jslib monorepo
 - [js-web/vue-vite] moved to https://github.com/ais-one/vue-antd-template
-- [js-web/react-vite] moved to https://github.com/ais-one/react-template
+- [js-web/react-vite] moved to https://github.com/ais-one/react-template (work in progress)
 - [js-node/jsdoc-ts] example on how to use jsdoc for typescript
 - [js-node/expressjs] webpush push notification sample [sample](js-node/expressjs/public/demo-express/pn.html)
 - [js-node/expressjs] SSO (OAuth, OIDC, SAML) sample [sample](js-node/expressjs/public/demo-express/sso.html)
 - [js-node/expressjs] try to removed passport & passport-saml, use @node-saml/node-saml
-- [wip] monorepo. multi package, deploy on git
 - [wip] to use Typescript and tsoa ? or use JSDoc?
 
 ### Version 0.6.11

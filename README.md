@@ -16,7 +16,7 @@ Companion Projects:
 - Frontend Template to go with the [express API backend](js-node/expressjs) in this repo
   - [vue-antd-template](https://github.com/ais-one/vue-antd-template)
 - Reusable Components:
-  - [es-labs/jslib](https://github.com/es-labs/jslibs) reusable CJS and ESM modules
+  - [es-labs/jslib](https://github.com/es-labs/jslibs) reusable CJS and ESM codes
 - Python:
   - [favv](https://github.com/ais-one/favv) API backend implement in Python FastAPI
   - streamlit componennt examples
