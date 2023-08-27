@@ -22,11 +22,11 @@
     "prepare": "git config core.hooksPath ./git-hooks || echo 'Can not set git hooks'",
     "git:hash": "git rev-parse --verify --short HEAD",
     "git:branch": "git rev-parse --abbrev-ref HEAD",
-    "ex:start": "npm run app --workspace=js-node/expressjs -- development",
-    "ex:migrate": "npm run knex --workspace=js-node/expressjs -- development app-template migrate",
-    "ex:seed": "npm run knex --workspace=js-node/expressjs -- development app-template seed",
+    "ex:start": "NODE_ENV=development npm run app --workspace=js-node/expressjs",
+    "ex:start:win": "set NODE_ENV=development&&npm run app --workspace=js-node/expressjs",
     "ex:build": "npm i --workspace=js-node/expressjs",
-    "ex:lib:build": "npm i es-labs/node@latest --workspace=js-node/expressjs"
+    "aa": "set EDITOR=vim && echo $EDITOR",
+    "ex:lib:build": "npm i @es-labs/node@latest --workspace=js-node/expressjs"
   },
   "engines": {
     "node": ">=18",

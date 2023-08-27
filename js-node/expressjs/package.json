@@ -20,8 +20,7 @@
   },
   "dependencies": {
     "@es-labs/esm": "^0.0.15",
-    "@es-labs/node": "^0.0.15",
-    "@node-saml/node-saml": "^4.0.5",
+    "@es-labs/node": "^0.0.17",
     "base64url": "^3.0.1",
     "csv-parse": "^5.4.0",
     "esm": "^3.2.25",

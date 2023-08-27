@@ -48,7 +48,7 @@ const server = HTTPS_CERTIFICATE ? https.createServer(https_opts, app) : http.cr
 
 require('@es-labs/node/express/preRoute')(app, express)
 const graphqlWsServer = require('@es-labs/node/express/graphql')(app, server)
-const Sentry = require('@es-labs/node/express/sentry')(app)
+// add APM tool here
 
 // CLEANUP
 const cleanup = async (message, exitCode = 0, coreDump = false, timeOutMs = 1000) => {
@@ -100,8 +100,6 @@ server.on('upgrade', (request, socket, head) => {
 })
 
 require('@es-labs/node/express/postRoute')(app, express)
-
-if (Sentry) app.use(Sentry.Handlers.errorHandler())
 
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
 // 'Bad Request': 400, 'Unauthorized': 401, 'Forbidden': 403, 'Not Found': 404, 'Conflict': 409, 'Unprocessable Entity': 422, 'Internal Server Error': 500,

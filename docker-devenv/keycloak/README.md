@@ -29,8 +29,8 @@ Add new realm with import using the file  [realm-export.json](realm-export.json)
 
 ### Realm User
 
-- Create User named: user
-- Add password credentials named: user
+- Create User named: test
+- Add password credentials named: test
 
 ### Realm Client - OIDC
 

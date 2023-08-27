@@ -52,7 +52,8 @@ AMP Website | [removed](https://plausible.io/blog/google-amp) | -
 npm i -g npm@latest
 
 
-## Install And Migrate DB And Seed DB
+## Getting Started
+### Install
 
 ```bash
 # clone repo
@@ -60,35 +61,26 @@ git clone https://github.com/ais-one/cookbook.git
 cd cookbook
 
 # install dependencies for all workspace projects
-npm i
+# see package.json for shortcut scripts
+npm i --workspace=js-node/expressjs
+npm i --workspace=js-node/dbdeploy
 
 # OR install only for express backend
 npm run ex:build # see ./package.json scripts
-
-# seed data for the express backend
-# create and seed relational db on SQLite, (delete the dev.sqlite file each time before you run this)
-# command: npm run knex -- <development / uat / production> <custom app name> <seed / migrate>
-npm run ex:migrate # see ./package.json scripts
-npm run ex:seed # see ./package.json scripts
-
-# create and seed MongoDB requires MongoDB - you can skip this but MongoDB examples will not work
-# command: npm run mongo -- <development / uat / production> <custom app name> <seed / update>
-# npm run mongo --workspace=js-node/expressjs -- development app-template seed
 ```
 
-## Run ExpressJS Backend - development environment
+### Migrate DB And Seed DB
+
+Go to [dbdeploy](../dbdeploy/README.md) project and follow instructions for creating local development db on sqlite
+
+### Run ExpressJS Backend - development environment
 
 ```bash
-npm run ex:start # see ./package.json scripts
-
-# OR
-# command: npm run app --workspace=js-node/expressjs -- <development / uat / production> <custom app name, default = app-template>
-npm run app --workspace=js-node/expressjs -- development
-npm run app --workspace=js-node/expressjs -- development app-template # app name specified
-
+npm run ex:start # NODE_ENV=development npm run app --workspace=js-node/expressjs in package.json
+# use ex:start:win for Windows OS
 
 # OR to include eslint checks
-npm run app:lint --workspace=js-node/expressjs -- development app-template
+NODE_ENV=development npm run app:lint --workspace=js-node/expressjs
 ```
 
 **NOTES**
@@ -144,7 +136,7 @@ Why No SSR or SSG:
 - SAML & OIDC: requires keycloak to be setup and express server to be run
   - Setup and Configure [Keycloak](docker-devenv/keycloak/README.md)
 - You can test out on [sso.html](http://127.0.0.1:3000/sso.html). The file source is [js-node/expressjs/public/demo-express/sso.html]()
-- for SAML and OIDC... credentials is `user` / `user`, redirect to the keycloak IDP
+- for SAML and OIDC... credentials is `test` / `test`, redirect to the keycloak IDP
 - Refer also to the following files
   - ./js-node/expressjs/router/saml.js
   - ./js-node/expressjs/router/oidc.js

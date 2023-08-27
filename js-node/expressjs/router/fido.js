@@ -89,9 +89,7 @@ module.exports = express.Router()
       const regResponse = req.body
       regResponse.rawId = b_ab( b64url_b(regResponse.rawId) )
       // NOSONAR
-      // const zz = regResponse.rawId
-      // const yy = b_b64url((ab_b(zz)))
-      // console.log('bbbbb', regResponse, yy)
+      // console.log('bbbbb', regResponse, b_b64url((ab_b(regResponse.rawId))))
   
       const attestationExpectations = {
         challenge: registerChallenge,

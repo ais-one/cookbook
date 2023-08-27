@@ -12,11 +12,12 @@ const { validateColumn } = require('esm')(module)('@es-labs/esm/t4t-validate')
 
 // const { authUser } = require('@es-labs/node/auth')
 const authUser = async (req, res, next) => next()
+console.log('WARNING Auth bypass in t4t.js')
 
 const csvParse = require('csv-parse')
 const { Parser } = require('json2csv')
 
-const { memoryUpload, storageUpload } = require('@es-labs/node/express/upload') // TODELETE require(APP_PATH + '/common/upload')
+const { memoryUpload, storageUpload } = require('@es-labs/node/express/upload')
 
 const processJson = async (req, res, next) => {
   if (req.files) { // it is formdata

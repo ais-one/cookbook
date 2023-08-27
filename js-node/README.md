@@ -2,6 +2,8 @@
 
 Below are a list of NodeJS applications
 
+- dbdeploy
+  - see [dbdeploy/README.md](expressjs/README.md)
 - expressjs
   - see [expressjs/README.md](expressjs/README.md)
 - jsdoc-ts

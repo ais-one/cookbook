@@ -10,7 +10,14 @@
 - [js-node/expressjs] webpush push notification sample [sample](js-node/expressjs/public/demo-express/pn.html)
 - [js-node/expressjs] SSO (OAuth, OIDC, SAML) sample [sample](js-node/expressjs/public/demo-express/sso.html)
 - [js-node/expressjs] try to removed passport & passport-saml, use @node-saml/node-saml
-- [wip] to use Typescript and tsoa ? or use JSDoc?
+- [js-node/expressjs] remove sentry, APM for userland to choose and implement
+- [@es-labs/node] SSO for oidc to opt to use IDP or issue own token
+- [@es-labs/node] make APP_NAME and NODE_ENV from env var only
+- [js-node/dbdeploy] db might be shared... so create a seperate project for it (move existing deploy/db folder)
+- [tbd] work to remove APP_NAME in @es-labs/node
+- [tbd] clean up auth in @es-labs/node
+- [tbd] move error handling to @ss-labs/node/express/init or preRoute
+- [tbd] to use Typescript and tsoa ? or use JSDoc?
 
 ### Version 0.6.11
 - [chore] update packages & cleanup & work on improving documentation
