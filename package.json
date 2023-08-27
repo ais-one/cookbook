@@ -35,5 +35,8 @@
   "workspaces": [
     "js-node/*"
   ],
-  "private": true
+  "private": true,
+  "dependencies": {
+    "@es-labs/node": "^0.0.18"
+  }
 }
