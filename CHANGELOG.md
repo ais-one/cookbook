@@ -1,3 +1,5 @@
+
+
 ### Version 0.7.0
 - [chore] update packages & cleanup & work on improving documentation
 - [chore] prototype projects `solid`, `react-admin` and `nest-admin` have been removed
@@ -14,11 +16,11 @@
 - [@es-labs/node] SSO for oidc to opt to use IDP or issue own token
 - [@es-labs/node] make APP_NAME and NODE_ENV from env var only
 - [js-node/dbdeploy] db might be shared... so create a seperate project for it (move existing deploy/db folder)
-- [tbd] work to remove APP_NAME in @es-labs/node
-- [tbd] rename js-node to something else
-- [tbd] clean up auth in @es-labs/node
 - [tbd] move error handling to @ss-labs/node/express/init or preRoute
-- [tbd] to use Typescript and tsoa ? or use JSDoc?
+- [tbd] work to remove APP_NAME in @es-labs/node
+- [tbd] rename js-node to something else -> packages
+- [tbd] clean up auth in @es-labs/node
+- [next-in-pipeline] to use Typescript and tsoa ? or use JSDoc?
 
 ### Version 0.6.11
 - [chore] update packages & cleanup & work on improving documentation

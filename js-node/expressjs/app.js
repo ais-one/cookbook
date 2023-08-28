@@ -25,30 +25,22 @@ process.on('SIGQUIT', handleExitSignal)
 process.on('uncaughtException', handleExitException)
 process.on('unhandledRejection', handleExitRejection)
 
-const { HTTPS_PRIVATE_KEY, HTTPS_CERTIFICATE, TLS_1_2 } = process.env
+const { HTTPS_PRIVATE_KEY, HTTPS_CERTIFICATE } = process.env
 const https_opts = {}
 if (HTTPS_CERTIFICATE) {
   https_opts.key = HTTPS_PRIVATE_KEY
   https_opts.cert = HTTPS_CERTIFICATE
-
-  if (TLS_1_2) { // TLS 1.2
-    // No longer needed with newer versions of NodeJS
-    // const { constants } = require('crypto')
-    // https_opts.secureOptions = constants.SSL_OP_NO_SSLv2 | constants.SSL_OP_NO_SSLv3 | constants.SSL_OP_NO_TLSv1 | constants.SSL_OP_NO_TLSv1_1
-    // https_opts.ciphers = 'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256:TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384'
-    // https_opts.honorCipher = true
-
-    // UNUSED AT THE MOMENT
-    // passphrase = (fs.readFileSync('passphrase.txt')).toString()
-    // pfx = fs.readFileSync('./8ab20f7b-51b9-4c09-a2e0-1918bb9fb37f.pfx')
-    // ca = fs.readFileSync('ca.cert')
-  }
+  // UNUSED AT THE MOMENT
+  // passphrase = (fs.readFileSync('passphrase.txt')).toString()
+  // pfx = fs.readFileSync('./8ab20f7b-51b9-4c09-a2e0-1918bb9fb37f.pfx')
+  // ca = fs.readFileSync('ca.cert')
 }
 const server = HTTPS_CERTIFICATE ? https.createServer(https_opts, app) : http.createServer(app)
 
 require('@es-labs/node/express/preRoute')(app, express)
 const graphqlWsServer = require('@es-labs/node/express/graphql')(app, server)
-// add APM tool here
+
+// Add APM tool here
 
 // CLEANUP
 const cleanup = async (message, exitCode = 0, coreDump = false, timeOutMs = 1000) => {

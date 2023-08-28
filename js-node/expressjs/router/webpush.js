@@ -9,6 +9,7 @@ const {
 const fcm = require('@es-labs/node/comms/fcm')
 const webpush = require('@es-labs/node/comms/webpush')
 
+console.log('WARNING Auth bypass in webpush.js')
 const authUser = (req, res, next) => {
   req.decoded = { id: 1 }
   next()
@@ -16,17 +17,17 @@ const authUser = (req, res, next) => {
 
 module.exports = express.Router()
   .get('/vapid-public-key', (req, res) => res.json({ publicKey: webpush.getPubKey() }))
-  .post('/sub', authUser, asyncWrapper(async (req, res) => {
+  .post('/sub', authUser, async (req, res) => {
     const { id } = req.decoded
     const { subscription } = req.body // should be a string
     await userOps.updateUser({ id }, { pnToken: subscription })
     res.json({ status: 'sub'})
-  }))
-  .post('/unsub', authUser, asyncWrapper(async (req, res) => {
+  })
+  .post('/unsub', authUser, async (req, res) => {
     const { id } = req.decoded
     await userOps.updateUser({ id }, { pnToken: '' })
     res.json({ status: 'unsub'})
-  }))
+  })
   .post('/send/:id', /* authUser */ async (req, res) => {
     // sending...
     try {

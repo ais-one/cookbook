@@ -1,15 +1,17 @@
 'use strict'
 const express = require('express')
-const { logout, login, otp } = require('@es-labs/node/auth')
-const { authUser, authRefresh } = require('@es-labs/node/auth')
+const auth = require('@es-labs/node/auth')
+const oauth = require('@es-labs/node/express/controller/auth/oauth')
+const oidc = require('@es-labs/node/express/controller/auth/oidc')
+const saml = require('@es-labs/node/express/controller/auth/oidc')
 
-module.exports = express.Router()
-  .post('/login', login)
-  .post('/otp', otp)
-  .post('/refresh', authRefresh)
-  .get('/logout', logout)
-  .get('/verify', authUser, asyncWrapper( async (req, res) => res.json({}) ))
-  .get('/me', authUser, (req, res) => {
+exports.myauthRoute = express.Router()
+  .post('/login', auth.login)
+  .post('/otp', auth.otp)
+  .post('/refresh', auth.authRefresh)
+  .get('/logout', auth.logout)
+  .get('/verify', auth.authUser, async (req, res) => res.json({}))
+  .get('/me', auth.authUser, (req, res) => {
     try {
       const { id } = req.decoded
       // you can also get more user information from here from a datastore
@@ -22,3 +24,16 @@ module.exports = express.Router()
     // NOSONAR let encryptedPassword = bcrypt.hashSync(clearPassword, process.env.SALT_ROUNDS)
     res.status(201).end()
   })
+
+
+exports.oauthRoute = express.Router().get('/callback', oauth.callbackOAuth)
+
+exports.oidcRoute = express.Router()
+  .get('/login', oidc.login)
+  .get('/auth', oidc.auth)
+  .get('/refresh', oidc.refresh)
+
+exports.samlRoute = express.Router()
+  .get('/login', saml.login)
+  .post('/callback', saml.auth)
+

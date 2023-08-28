@@ -5,9 +5,7 @@ const express = require('express')
 const fs = require('fs')
 
 const { UPLOAD_STATIC, UPLOAD_MEMORY, APP_NAME, APP_PATH } = process.env
-
 const svc = require(`${APP_PATH}/apps/${APP_NAME}/services`) // TBD set the mongodb and knex service
-
 const { validateColumn } = require('esm')(module)('@es-labs/esm/t4t-validate')
 
 // const { authUser } = require('@es-labs/node/auth')

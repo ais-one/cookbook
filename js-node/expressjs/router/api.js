@@ -10,11 +10,10 @@ const ws = require('@es-labs/node/services/websocket')
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
 const gcp = require('@es-labs/node/services/gcp')
-
-const { APP_NAME, APP_VERSION, API_PORT, UPLOAD_STATIC, UPLOAD_MEMORY, HTTPS_CERTIFICATE } = process.env
-
 const { memoryUpload, storageUpload } = require('@es-labs/node/express/upload')
 const { authUser } = require('@es-labs/node/auth')
+
+const { APP_NAME, APP_VERSION, API_PORT, UPLOAD_STATIC, UPLOAD_MEMORY, HTTPS_CERTIFICATE } = process.env
 
 function openMissingFile() {
   fs.readFile('somefile4.txt', (err, data) => {

@@ -1,17 +1,17 @@
 'use strict'
-// SERVICES
+
 const services = {
   auth: null,
   knex1: null,
   // knex2: null,
   // mongo1: null,
   keyv: null,
-  //NOSONAR redis: null,
+  // redis: null,
 }
 
 const StoreKeyV = require('@es-labs/node/services/db/keyv')
 // const StoreRedis = require('@es-labs/node/services/db/redis')
-const StoreKnex = require('@es-labs/node/services/db/knex') 
+const StoreKnex = require('@es-labs/node/services/db/knex')
 // const StoreMongo = require('@es-labs/node/services/db/mongodb') 
 
 // const agenda = require('@es-labs/node/services/mq/agenda')
