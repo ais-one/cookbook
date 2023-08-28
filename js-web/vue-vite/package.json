@@ -23,7 +23,7 @@
     "@antv/g6": "^4.8.19",
     "@sentry/tracing": "^7.58.0",
     "@sentry/vue": "^7.58.0",
-    "ant-design-vue": "^3.2.20",
+    "ant-design-vue": "^4.0.1",
     "echarts": "^5.4.2",
     "firebase": "^10.0.0",
     "leaflet": "^1.9.4",
