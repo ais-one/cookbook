@@ -1,6 +1,6 @@
 'use strict'
 
-const s = require('../services')
+const s = require('../../services')
 
 exports.create = async (req, res, next) => {
   try {

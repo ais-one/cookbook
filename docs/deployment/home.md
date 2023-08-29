@@ -161,8 +161,9 @@ Requires
   - https://cloud.google.com/memorystore/docs/redis
   - Redis Labs - https://app.redislabs.com/
 - MQ
-  - Google Pubsub https://cloud.google.com/pubsub/docs
+  - better-queue (simple)
   - agenda (uses MongoDB)
+  - Google Pubsub https://cloud.google.com/pubsub/docs
 
 ---
 

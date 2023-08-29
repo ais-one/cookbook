@@ -17,6 +17,8 @@
 - [@es-labs/node] make APP_NAME and NODE_ENV from env var only
 - [js-node/dbdeploy] db might be shared... so create a seperate project for it (move existing deploy/db folder)
 - [tbd] move error handling to @ss-labs/node/express/init or preRoute
+- [tbd] replace openapi file joiner, swagger-ui-express and express-openapi-validator with express-jsdoc-swagger
+- [tbd] re-implement MQ
 - [tbd] work to remove APP_NAME in @es-labs/node
 - [tbd] rename js-node to something else -> packages
 - [tbd] clean up auth in @es-labs/node

@@ -4,8 +4,8 @@
 const express = require('express')
 const fs = require('fs')
 
-const { UPLOAD_STATIC, UPLOAD_MEMORY, APP_NAME, APP_PATH } = process.env
-const svc = require(`${APP_PATH}/apps/${APP_NAME}/services`) // TBD set the mongodb and knex service
+const { UPLOAD_STATIC, UPLOAD_MEMORY } = process.env
+const svc = require(`../services`) // TBD set the mongodb and knex service
 const { validateColumn } = require('esm')(module)('@es-labs/esm/t4t-validate')
 
 // const { authUser } = require('@es-labs/node/auth')
@@ -34,7 +34,7 @@ const processJson = async (req, res, next) => {
 async function generateTable (req, res, next) { // TBD get config info from a table
   try {
     const tableKey = req.params.table // 'books' // its the table name also
-    const ref = require(`../apps/${APP_NAME}/tables/${tableKey}.js`) // get table from a file...
+    const ref = require(`../apps/tables/${tableKey}.js`) // get table from a file...
     req.table = JSON.parse(JSON.stringify(ref))
     const cols = req.table.cols
     for (let key in cols) {

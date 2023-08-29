@@ -11,12 +11,10 @@ let endpointUrl
 beforeAll(async () => {
   const path = require('path')
   require('dotenv').config() // load
-  const { APP_NAME } = process.env
-  require('dotenv').config({ path: path.join(process.cwd(), 'apps', APP_NAME, '.env'), override: true } )
-  require('dotenv').config({ path: path.join(process.cwd(), 'apps', APP_NAME, '.env.secret'), override: true } )
+  require('dotenv').config({ path: path.join(process.cwd(), 'apps', '.env'), override: true } )
+  require('dotenv').config({ path: path.join(process.cwd(), 'apps', '.env.secret'), override: true } )
 
   await require('@es-labs/node/config')(process.cwd())
-
   require('@es-labs/node/express/init')() // TODELETE require(path.join(process.cwd(), 'common', 'init'))()
   require('@es-labs/node/express/preRoute')()(app, express) // TODELETE require(path.join(process.cwd(), 'common', 'preRoute'))(app, express)
   process.env.WS_PORT = '' // disable websocket for now
@@ -30,7 +28,7 @@ beforeAll(async () => {
     Authorization: `Bearer ${tokens.access_token}`,
     refresh_token: tokens.refresh_token
   }
-  endpointUrl = `/api/${APP_NAME}/categories/categories`
+  endpointUrl = `/api/${process.env.APP_API_NAME}/categories/categories`
 })
 afterAll(async () => {
   await services.stop()

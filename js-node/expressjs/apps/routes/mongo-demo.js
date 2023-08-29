@@ -2,7 +2,7 @@
 
 // cookbook for mongoDB
 const express = require('express')
-const s = require('../services')
+const s = require('../../services')
 
 module.exports = express.Router()
   .get('/test', async (req,res) => {

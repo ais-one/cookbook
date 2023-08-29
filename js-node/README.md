@@ -7,9 +7,7 @@ Below are a list of NodeJS applications
 - expressjs
   - see [expressjs/README.md](expressjs/README.md)
 - jsdoc-ts
-  - see [jsdoc-ts/README.md](jsdoc-ts/README.md) eventually replace swagger-jsdoc & openapi-file-joiner
-- openapi-file-joiner
-  - utility to join multiple openapi yaml files to a single file to be consumed by openapi ui and validation libraries
+  - see [jsdoc-ts/README.md](jsdoc-ts/README.md) may eventually replace swagger-jsdoc-swagger
 - scaled-ws
   - how to scale websockets using Redis (or some other) PubSub
 - serialserver

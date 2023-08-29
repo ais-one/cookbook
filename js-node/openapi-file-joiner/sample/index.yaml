@@ -1,7 +1,0 @@
-swagger: '2.0'
-info:
-  $ref: ./info/index.yaml
-paths:
-  $ref: ./paths/index.yaml
-definitions:
-  $ref: ./definitions/index.yaml

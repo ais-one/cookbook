@@ -30,7 +30,7 @@ Folder | Description | Features
 [js-node/expressjs](js-node/expressjs) | **Base ExpressJS application**<br>(REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
 [js-node/expressjs/apps/app-template](js-node/expressjs/apps/app-template) | Custom application (**app-template**)<br>built on [Base ExpressJS application](js-node/expressjs) |- [controllers] <br>- [models] <br>- [openapi] OpenAPI yamls<br>- [routes] API routes (also websocket handlers)<br>- [services] services to startup/shutdown<br>- [tables] config tables for generic table crud (t4t)<br>- [tests] folder for tests<br>- [graphql-schema.js] application GraphQL codes
 [js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)<br>- Fido & Webauthn<br>- Push Notification (Webpush & FCM)
-[js-node/*](js-node) | **Other Backend applications** | - [Services](js-node/services) (TCP event/stream, scalable Websocket with Redis Pubsub, etc.)<br>- [Serial server](js-node/serialserver)<br>- [openapi-file-joiner](js-node/openapi-file-joiner) combine OpenAPI files
+[js-node/*](js-node) | **Other Backend applications** | - [Services](js-node/services) (TCP event/stream, scalable Websocket with Redis Pubsub, etc.)<br>- [Serial server](js-node/serialserver)
 [vue-nobundler](vue-nobundler/) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/apps/app-template/tables/](js-node/expressjs/apps/app-template/tables/)</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[vue-nobundler/views/ui1.js](vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[vue-nobundler/views/ui2.js](vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[vue-nobundler/views/ui3.js](vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[vue-nobundler/views/ui4.js](vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
 [js-web/vue-vite] | - Vue 3 SPA<br>- vite / vue-router / Pinia<br>- Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- 2FA GA OTP, OIDC + Refresh, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Playwrite Testing<br>- i18n / graphql (TBD)<br>- moved to https://github.com/ais-one/vue-antd-template
 js-web/react-vite | - react SPA<br>- react-router-dom<br>- zustand/@tanstack<br>- react-query | - moved to https://github.com/ais-one/react-template
@@ -92,10 +92,6 @@ NODE_ENV=development npm run app:lint --workspace=js-node/expressjs
 - http://127.0.0.1:3000/api/healthcheck - app is running normally
 - http://127.0.0.1:3000 - Website served by Express with functional samples and demos
 - http://127.0.0.1:3000/api-docs - OpenAPI documentation
-
-**NOTE**
-- [FIND A BETTER WAY] to generate api docs, visit [js-node/openapi-file-joiner](js-node/openapi-file-joiner) and follow readme file
-- [FIND A BETTER WAY]also look at the config properties OPENAPI_PATH and OPENAPI_VALIDATOR in [js-node/expressjs/apps/app-template/config/common.env.js](js-node/expressjs/apps/app-template/config/common.env.js).
 
 ### No bundler frontend
 
@@ -186,7 +182,6 @@ Refer to following files for SPA sample
 +- git-hooks : git hooks
 +- js-node/ : nodejs applications (kafka, cron triggered, long running)
 |  +- expressjs/ : express backend - See [js-node/expressjs/README.md](js-node/expressjs/README.md) for project structure
-|  +- openapi-file-joiner/ : pre-process utility to combine openapi yaml files for use in openapi related packages
 |  +- serialserver/
 |  +- services/: TCP server, kafka, long running / cron processes
 |  +- worker-threads/ : demo on use of worker threads

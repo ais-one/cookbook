@@ -44,7 +44,7 @@ else
   # test vault
   # VAULT="{ \"url\": \"http://127.0.0.1:8200/v1/secret/data/test?version=1\", \"token\": \"roottoken\" }"
   VAULT=
-  gcloud auth activate-service-account --key-file=apps/$APP_NAME/deploy/$1.gcp.json
+  gcloud auth activate-service-account --key-file=apps/deploy/$1.gcp.json
   gcloud config set project $GCP_PROJECT_ID
 fi
 

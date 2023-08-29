@@ -9,8 +9,6 @@
   },
   "scripts": {
     "dev": "cross-env NODE_ENV=development PORT=3001 DEBUG=app:* nodemon --ignore tests/ --ignore public/ --watch src bin/www",
-    "knex": "node apps/app-template/deploy/db/knex/index.js",
-    "mongo": "node apps/app-template/deploy/db/mongo/index.js",
     "app": "nodemon --trace-warnings index.js",
     "app:lint": "nodemon --ignore tests/ --ignore public/ --exec \"npm run lint && node\" index.js",
     "test": "cross-env NODE_ENV=development jest --config=jest.config.js",
@@ -20,11 +18,12 @@
   },
   "dependencies": {
     "@es-labs/esm": "^0.0.15",
-    "@es-labs/node": "^0.0.18",
+    "@es-labs/node": "^0.0.21",
     "base64url": "^3.0.1",
     "csv-parse": "^5.5.0",
     "esm": "^3.2.25",
     "express": "^4.18.2",
+    "express-jsdoc-swagger": "^1.8.0",
     "fido2-lib": "^3.4.1",
     "json2csv": "^5.0.7",
     "pdfkit": "^0.13.0",

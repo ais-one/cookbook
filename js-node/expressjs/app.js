@@ -70,7 +70,7 @@ const cleanup = async (message, exitCode = 0, coreDump = false, timeOutMs = 1000
 }
 
 // SERVICES
-const services = require(`./apps/${process.env.APP_NAME}/services`)
+const services = require(`./services`)
 services.start()
 
 // ROUTES
@@ -80,6 +80,8 @@ try {
   console.log('Route loading exception', e.toString())
 }
 // END ROUTES
+
+// Add OpenAPI
 
 server.on('upgrade', (request, socket, head) => {
   const pathname = url.parse(request.url).pathname

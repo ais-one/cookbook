@@ -9,12 +9,6 @@ https://kentcdodds.com/blog/how-i-structure-express-apps
 |  |  +- config/ : application configs (see README.md within the config folder)
 |  |  +- controllers/
 |  |  +- deploy/ : deployment folder (see README.md within the deploy folder)
-|  |  |  +- db/ : for seeding and migrating data
-|  |  |  |  +- knex/
-|  |  |  |  |  +- migrations/
-|  |  |  |  |  +- seeds/
-|  |  |  |  +- mongo/
-|  |  +- jobs/ : message queue jobs
 |  |  +- models/
 |  |  +- openapi/ : OpenAPI yaml files
 |  |  +- routes/ : application REST API & websocket setup

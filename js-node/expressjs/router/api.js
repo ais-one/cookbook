@@ -8,7 +8,6 @@ const PdfKit = require('pdfkit')
 
 const ws = require('@es-labs/node/services/websocket')
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
-const agenda = require('@es-labs/node/services/mq/agenda').get() // agenda message queue
 const gcp = require('@es-labs/node/services/gcp')
 const { memoryUpload, storageUpload } = require('@es-labs/node/express/upload')
 const { authUser } = require('@es-labs/node/auth')
@@ -139,16 +138,7 @@ module.exports = express.Router({caseSensitive: true})
 
   // message queues
   .get('/mq-agenda', asyncWrapper(async (req, res) => { // test message queue - agenda
-    if (agenda) {
-      try {
-        const job = await agenda.now('registration email', { email: 'abc@test.com' })
-        res.json({ job, note: 'Agenda - Check Server Console Log For Processed Message...' })  
-      } catch (e) {
-        res.json({ AgendaError: e.toString() })        
-      }
-    } else {
-      res.json({ job, note: 'Agenda Not Configured' })
-    }
+    res.json({ job, note: 'TBD' })
   }))
 
   // stream back data
