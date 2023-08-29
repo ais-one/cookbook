@@ -2,11 +2,12 @@
   // const { exit } = require('process')
   const path = require('path')
   require('dotenv').config() // load
+  require('dotenv').config({ path: '.env.secret', override: true }) // load
   // console.log(__dirname, process.cwd())
   // exit(1)
   
-  require('dotenv').config({ path: path.join(__dirname, 'apps', '.env'), override: true } )
-  require('dotenv').config({ path: path.join(__dirname, 'apps', '.env.secret'), override: true } )
+  // require('dotenv').config({ path: path.join(__dirname, 'apps', '.env'), override: true } )
+  // require('dotenv').config({ path: path.join(__dirname, 'apps', '.env.secret'), override: true } )
   // console.log('Test Env JSON', process.env.MONGO_OPTIONS) && process.exit(0)
 
   process.env.APP_PATH = path.join(__dirname)
