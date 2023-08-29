@@ -1,5 +1,5 @@
 {
-  "name": "dbdeploy",
+  "name": "@js-node/dbdeploy",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@es-labs/node": "^0.0.18",
+    "@es-labs/node": "^0.0.22",
     "knex": "^2.5.1",
     "sqlite3": "^5.1.6"
   }

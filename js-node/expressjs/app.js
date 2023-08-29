@@ -82,6 +82,31 @@ try {
 // END ROUTES
 
 // Add OpenAPI
+// const { OPENAPI_OPTIONS } = process.env
+// const openApiOptions = JSON.parse(OPENAPI_OPTIONS || null)
+const openApiOptions = {
+  info: {
+    version: '0.0.1',
+    title: 'Express Template',
+    description: 'Please log in an get token (could be http-only) from http://127.0.0.1:3000/refresh-token.html, also logout there (for http-only tokens)',
+    license: {
+      name: 'MIT',
+    },
+  },
+  security: {
+    BearerAuth: {
+      type: 'http',
+      scheme: 'bearer',
+    },
+  },
+  baseDir: __dirname,
+  // Glob pattern to find your jsdoc files (multiple patterns can be added in an array)
+  filesPattern: './**/*.js',
+}
+if (openApiOptions) {
+  const expressJSDocSwagger = require('express-jsdoc-swagger')
+  expressJSDocSwagger(app)(openApiOptions)
+}
 
 server.on('upgrade', (request, socket, head) => {
   const pathname = url.parse(request.url).pathname
