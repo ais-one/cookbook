@@ -37,10 +37,11 @@ if (HTTPS_CERTIFICATE) {
 }
 const server = HTTPS_CERTIFICATE ? https.createServer(https_opts, app) : http.createServer(app)
 
+// USERLAND - Add APM tool
+
 require('@es-labs/node/express/preRoute')(app, express)
 const graphqlWsServer = require('@es-labs/node/express/graphql')(app, server)
-
-// Add APM tool here
+const services = require('@es-labs/node/services')
 
 // CLEANUP
 const cleanup = async (message, exitCode = 0, coreDump = false, timeOutMs = 1000) => {
@@ -70,7 +71,6 @@ const cleanup = async (message, exitCode = 0, coreDump = false, timeOutMs = 1000
 }
 
 // SERVICES
-const services = require(`./services`)
 services.start()
 
 // ROUTES
@@ -100,8 +100,7 @@ const openApiOptions = {
     },
   },
   baseDir: __dirname,
-  // Glob pattern to find your jsdoc files (multiple patterns can be added in an array)
-  filesPattern: './**/*.js',
+  filesPattern: ['./**/*.js'],
 }
 if (openApiOptions) {
   const expressJSDocSwagger = require('express-jsdoc-swagger')

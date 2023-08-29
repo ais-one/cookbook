@@ -20,7 +20,7 @@ beforeAll(async () => {
   process.env.WS_PORT = '' // disable websocket for now
   require(path.join(process.cwd(), 'router'))(app)
 
-  services = require(`../../services`)
+  services = require(`@es-labs/node/services`)
   await services.start()
   const tokens = await services.get('auth').createToken({ id: 100, groups: 'TestGroup' })
 

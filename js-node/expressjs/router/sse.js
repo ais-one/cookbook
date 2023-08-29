@@ -1,7 +1,6 @@
 'use strict'
 
 const express = require('express')
-
 let clients = []
 
 function sendEventsToAll(data) {
@@ -30,12 +29,10 @@ module.exports = express.Router({caseSensitive: true})
       // console.log('SSE Clients', clients)
     })
   })
-
   .post('/event', (req, res) => {
     const update = req.body;
     res.json(update)
     return sendEventsToAll(update)
   })
-
   .get('/status', (req, res) => res.json({ clients: clients.length }))
   

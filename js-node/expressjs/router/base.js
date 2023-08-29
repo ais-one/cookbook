@@ -6,7 +6,8 @@ const express = require('express')
 const { spawn } = require('child_process')
 const PdfKit = require('pdfkit')
 
-const ws = require('@es-labs/node/services/websocket')
+const services = require('@es-labs/node/services')
+// TOREMOVE const ws = require('@es-labs/node/services/websocket')
 const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
 const gcp = require('@es-labs/node/services/gcp')
 const { memoryUpload, storageUpload } = require('@es-labs/node/express/upload')
@@ -169,7 +170,7 @@ module.exports = express.Router({caseSensitive: true})
 
   // test websocket broadcast
   .get('/ws-broadcast', async (req, res) => {
-    ws.send("WS Broadcast")
+    services['ws'].send("WS Broadcast")
     res.send("ws broadcast")
   })
 

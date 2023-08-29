@@ -18,9 +18,10 @@
 - [js-node/dbdeploy] db might be shared... so create a seperate project for it (move existing deploy/db folder)
 - [all] APP_NAME is now only to identify name based on package.json name property. APP_PATH removed
 
-- [tbd] rename js-node to something else -> packages
+- [tbd] remove apps or reorganize custom code location
+- [tbd] rename js-node to something else -> apps / libs / tools (https://github.com/mikemajesty/nestjs-monorepo)
+- [in-progress] replace openapi file joiner, swagger-ui-express and express-openapi-validator with express-jsdoc-swagger
 - [tbd] move error handling to @ss-labs/node/express/init or preRoute
-- [tbd] replace openapi file joiner, swagger-ui-express and express-openapi-validator with express-jsdoc-swagger
 - [tbd] re-implement MQ
 - [tbd] clean up auth in @es-labs/node
 - [next-in-pipeline] to use Typescript and tsoa ? or use JSDoc?

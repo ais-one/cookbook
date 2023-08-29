@@ -19,8 +19,7 @@ beforeAll(async () => {
   require('dotenv').config({ path: path.join(process.cwd(), 'apps', '.env.secret'), override: true } )
 
   await require('@es-labs/node/config')(process.cwd())
-
-  services = require(`../../services`)
+  services = require(`@es-labs/node/services`)
   await services.start()
 
   CategoryController = require('../../controllers/category')

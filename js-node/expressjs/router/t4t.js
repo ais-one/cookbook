@@ -1,11 +1,12 @@
 'use strict'
-// TBD use __key instead of key
 // table for tables
+// TBD use __key instead of key
 const express = require('express')
 const fs = require('fs')
 
 const { UPLOAD_STATIC, UPLOAD_MEMORY } = process.env
-const svc = require(`../services`) // TBD set the mongodb and knex service
+const svc = require('@es-labs/node/services')
+
 const { validateColumn } = require('esm')(module)('@es-labs/esm/t4t-validate')
 
 // const { authUser } = require('@es-labs/node/auth')
