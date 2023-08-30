@@ -60,10 +60,13 @@ npm i -g npm@latest
 git clone https://github.com/ais-one/cookbook.git
 cd cookbook
 
-# install dependencies for all workspace projects
+# install dependencies for specific workspace projects
 # see package.json for shortcut scripts
 npm i --workspace=js-node/expressjs
 npm i --workspace=js-node/dbdeploy
+
+# install for all workspace projects
+npm i --workspaces
 
 # OR install only for express backend
 npm run ex:build # see ./package.json scripts

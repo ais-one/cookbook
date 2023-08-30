@@ -8,7 +8,7 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: '../../expressjs/dev22.sqlite3'
+      filename: '../../expressjs/dev.sqlite3'
     }
   },
 
