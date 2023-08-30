@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vanilla Javascript Samples</title>
+</head>
+
+<body>
+  <h1>Websocket <a href="index.html">Back</a></h1>
+  <ul>
+    <li><a href="#" onclick="sendMessage()">Send Message</a></li>
+  </ul>
+  <pre id="output">Output will be shown here</pre>
+</body>
+
+<script>
+  const output = document.querySelector('#output')
+
+  let socket = new WebSocket('ws://127.0.0.1:3001')
+  socket.onopen = function (e) {
+    output.innerHTML = '[open] Connection established'
+  };
+
+  socket.onmessage = function (event) {
+    console.log(JSON.parse(event.data))
+    output.innerHTML = `[message] Data received from server: ${event.data}`
+  };
+  socket.onclose = function (event) {
+    if (event.wasClean) {
+      output.innerHTML = `[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`
+     } else {
+      // e.g. server process killed or network down
+      // event.code is usually 1006 in this case
+      output.innerHTML = '[close] Connection died'
+    }
+  };
+
+  socket.onerror = function (error) {
+    output.innerHTML = `[error] ${error.toString()}`
+  };
+
+  function sendMessage() {
+    // TBD
+    socket.send(JSON.stringify({
+      hello: "world"
+    }));
+    // let requestBody = JSON.stringify({ "aa": "a1", "bb": "b2" })
+    // const request = new XMLHttpRequest()
+    // request.open('POST', 'http://127.0.0.1:3000/api/test-cors-post')
+    // request.setRequestHeader('Access-Control-Allow-Origin', '<origin> | *')
+    // request.setRequestHeader("Content-Type", "application/json")
+    // request.responseType = 'text'
+    // request.onload = function () {
+    //   outputEl.innerHTML = JSON.stringify(request.response, null, 2)
+    // }
+    // request.send(requestBody)
+  }
+
+
+
+</script>
+
+</html>
