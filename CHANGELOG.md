@@ -21,8 +21,8 @@
 - [in-progress] rename `js-node` to something else -> apps / libs / tools (https://github.com/mikemajesty/nestjs-monorepo)
 - [in-progress] replace openapi file joiner, swagger-ui-express and express-openapi-validator with express-jsdoc-swagger
 - [tbd] move error handling to @ss-labs/node/express/init or preRoute
+- [tbd] clean up @es-labs/node/auth
 - [tbd] re-implement MQ
-- [tbd] clean up auth in @es-labs/node
 - [next-in-pipeline] to use Typescript and tsoa ? or use JSDoc?
 
 ### Version 0.6.11

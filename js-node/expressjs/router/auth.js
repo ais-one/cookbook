@@ -1,15 +1,16 @@
 'use strict'
 const express = require('express')
 const auth = require('@es-labs/node/auth')
+const own = require('@es-labs/node/express/controller/auth/own')
 const oauth = require('@es-labs/node/express/controller/auth/oauth')
 const oidc = require('@es-labs/node/express/controller/auth/oidc')
 const saml = require('@es-labs/node/express/controller/auth/oidc')
 
 exports.myauthRoute = express.Router()
-  .post('/login', auth.login)
-  .post('/otp', auth.otp)
+  .post('/login', own.login)
+  .post('/otp', own.otp)
   .post('/refresh', auth.authRefresh)
-  .get('/logout', auth.logout)
+  .get('/logout', own.logout)
   .get('/verify', auth.authUser, async (req, res) => res.json({}))
   .get('/me', auth.authUser, (req, res) => {
     try {
