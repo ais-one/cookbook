@@ -15,8 +15,8 @@ beforeAll(async () => {
   // const { exit } = require('process')
   const path = require('path')
   require('dotenv').config() // load
-  require('dotenv').config({ path: path.join(process.cwd(), 'apps', '.env'), override: true } )
-  require('dotenv').config({ path: path.join(process.cwd(), 'apps', '.env.secret'), override: true } )
+  require('dotenv').config({ path: path.join(process.cwd(), '.env'), override: true } )
+  require('dotenv').config({ path: path.join(process.cwd(), '.env.secret'), override: true } )
 
   await require('@es-labs/node/config')(process.cwd())
   services = require(`@es-labs/node/services`)

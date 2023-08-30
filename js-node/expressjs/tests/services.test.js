@@ -5,8 +5,8 @@ let sqldb
 beforeAll(async () => {
   const path = require('path')
   require('dotenv').config() // load
-  require('dotenv').config({ path: path.join(process.cwd(), 'apps', '.env'), override: true } )
-  require('dotenv').config({ path: path.join(process.cwd(), 'apps', '.env.secret'), override: true } )
+  require('dotenv').config({ path: path.join(process.cwd(), '.env'), override: true } )
+  require('dotenv').config({ path: path.join(process.cwd(), '.env.secret'), override: true } )
 
   await require('@es-labs/node/config')(process.cwd())
   const StoreKnex = require('@es-labs/node/services/db/knex') 

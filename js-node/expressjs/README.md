@@ -4,7 +4,7 @@ https://softwareengineering.stackexchange.com/questions/338597/folder-by-type-or
 https://kentcdodds.com/blog/how-i-structure-express-apps
 
 ```
-+- apps : custom apps are here in this folder
++- app-sample-template : custom apps are here in this folder
 |  +- app-template/ : sample custom application (prefixed with app-)
 |  |  +- config/ : application configs (see README.md within the config folder)
 |  |  +- controllers/
@@ -15,16 +15,16 @@ https://kentcdodds.com/blog/how-i-structure-express-apps
 |  |  +- services/ : services used
 |  |  +- tables/ : configurable table & crud
 |  |  +- tests/ : Jest tests for custom application
-|  |  +- uploads/ : for file uploads
 |  |  +- graphql-schema.js : application GraphQL schemas and resolvers
 |  +- app-custom/ : your custom app, put under source control (app-* is git ignored)
 +- logs/
 +- middlewares/
 +- public/ : for serving static files - website
 |  +- demo-express/ (127.0.0.1/)
-+- router/
++- router/ : common route / controller & services
 +- sandbox/ : Useful scripts
 +- tests/ : Jest tests for expressjs
++- uploads/ : for file uploads
 +- .dockerignore
 +- .eslintrc.js
 +- .gitignore

@@ -35,7 +35,7 @@ const processJson = async (req, res, next) => {
 async function generateTable (req, res, next) { // TBD get config info from a table
   try {
     const tableKey = req.params.table // 'books' // its the table name also
-    const ref = require(`../apps/tables/${tableKey}.js`) // get table from a file...
+    const ref = require(`../app-sample-template/tables/${tableKey}.js`) // get table from a file...
     req.table = JSON.parse(JSON.stringify(ref))
     const cols = req.table.cols
     for (let key in cols) {
