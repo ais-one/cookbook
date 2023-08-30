@@ -18,6 +18,7 @@
   <button onclick="login()">Login test / test</button><br />
   <button onclick="otp()">Send OTP 111111</button><br />
   <button onclick="testAuth()">Get Private Data</button><br />
+  <button onclick="testAppAuth()">Get App Categories Data</button><br />
   <button onclick="logout()">Logout</button><br />
   <button id="test-ed">Info for Fetch class</button><br />
   <pre id="output">Output will be shown here</pre>
@@ -83,6 +84,15 @@
     }
   }
 
+  async function testAppAuth() {
+    try {
+      const { data } = await http.get('/api/app-template/categories/categories')
+      outputEl.innerHTML = JSON.stringify({ 'test app auth - ok': data }, null, 2)
+    } catch (e) {
+      outputEl.innerHTML = JSON.stringify({ 'test app auth - exception': e }, null, 2)
+    }
+  }
+
   async function logout() {
     try {
       const { data } = await http.get('/api/auth/logout')
@@ -96,6 +106,7 @@
   window.login = login
   window.otp = otp
   window.testAuth = testAuth
+  window.testAppAuth = testAppAuth
   window.logout = logout
 
 </script>

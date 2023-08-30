@@ -170,7 +170,7 @@ module.exports = express.Router({caseSensitive: true})
 
   // test websocket broadcast
   .get('/ws-broadcast', async (req, res) => {
-    services['ws'].send("WS Broadcast")
+    services.get('ws').send("WS Broadcast")
     res.send("ws broadcast")
   })
 

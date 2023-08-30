@@ -11,8 +11,10 @@ POST https://httpbin.org/post
 Accept: application/json
 
 ### Test healthcheck
+# GET http://127.0.0.1:3000/api/healthcheck
+
 # GET http://pay.t2tkn.com:3100/api/healthcheck
-GET http://127.0.0.1:3000/api/healthcheck
+GET http://127.0.0.1:3000/api/app-template/healthcheck
 Accept: application/json
 
 ### Test Login - Username & Password

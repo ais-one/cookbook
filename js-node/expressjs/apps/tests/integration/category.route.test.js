@@ -20,9 +20,10 @@ beforeAll(async () => {
   process.env.WS_PORT = '' // disable websocket for now
   require(path.join(process.cwd(), 'router'))(app)
 
-  services = require(`@es-labs/node/services`)
+  services = require('@es-labs/node/services')
+  authService = require('@es-labs/node/auth')
   await services.start()
-  const tokens = await services.get('auth').createToken({ id: 100, groups: 'TestGroup' })
+  const tokens = await authService.createToken({ id: 100, groups: 'TestGroup' })
 
   authObj = {
     Authorization: `Bearer ${tokens.access_token}`,

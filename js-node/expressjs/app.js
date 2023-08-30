@@ -42,6 +42,7 @@ const server = HTTPS_CERTIFICATE ? https.createServer(https_opts, app) : http.cr
 require('@es-labs/node/express/preRoute')(app, express)
 const graphqlWsServer = require('@es-labs/node/express/graphql')(app, server)
 const services = require('@es-labs/node/services')
+const authService = require('@es-labs/node/auth')
 
 // CLEANUP
 const cleanup = async (message, exitCode = 0, coreDump = false, timeOutMs = 1000) => {
@@ -72,6 +73,11 @@ const cleanup = async (message, exitCode = 0, coreDump = false, timeOutMs = 1000
 
 // SERVICES
 services.start()
+try {
+  authService.setup(services.get('keyv'), services.get('knex1')) // setup authorization  
+} catch(e) {
+  console.log(e)
+}
 
 // ROUTES
 try {
