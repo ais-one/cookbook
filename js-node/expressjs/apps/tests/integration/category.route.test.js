@@ -29,7 +29,7 @@ beforeAll(async () => {
     Authorization: `Bearer ${tokens.access_token}`,
     refresh_token: tokens.refresh_token
   }
-  endpointUrl = `/api/${process.env.APP_API_NAME}/categories/categories`
+  endpointUrl = `/api/app-template/categories/categories`
 })
 afterAll(async () => {
   await services.stop()
