@@ -59,8 +59,8 @@ In Mongo Atlas
 
 In js-node/expressjs folder
 
-1. place service account json file into [../../js-node/expressjs/apps/app-template/deploy/uat.gcp.json](../../js-node/expressjs/apps/app-template/deploy/uat.gcp.json)
-2. set the mongodb info in [../../js-node/expressjs/apps/app-template/config/secrets/uat.env.js](../../js-node/expressjs/apps/app-template/config/secrets/uat.env.js)
+1. place service account json file into [../../js-node/expressjs/.env.secret]()
+2. set the mongodb info in [../../js-node/expressjs/.env.secret]()
 3. set the CORS to allow frontend origin from the frontend setup 
 
 ```bash
@@ -99,12 +99,11 @@ And [../../js-node/expressjs/Dockerfile](../../js-node/expressjs/Dockerfile)
 
 View files, folders and readme.md below, and configure them
 
-- js-node/expressjs/apps/app-template/config/
-- js-node/expressjs/apps/app-template/deploy/
+- js-node/expressjs/.env
+- js-node/expressjs/.env.secret (enter your secrets as required)
 - js-node/expressjs/ecosystem.config.js (for pm2 deployments)
 - js-node/expressjs/Dockerfile (for docker deployments)
 - js-node/expressjs/deploy.sh
-- js-node/expressjs/deploy-vm.sh
 
 ---
 

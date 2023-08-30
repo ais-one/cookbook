@@ -3,14 +3,14 @@
 Below are a list of NodeJS applications
 
 - dbdeploy
-  - see [dbdeploy/README.md](expressjs/README.md)
+  - see [dbdeploy/README.md]()
 - expressjs
-  - see [expressjs/README.md](expressjs/README.md)
+  - see [expressjs/README.md]()
 - jsdoc-ts
-  - see [jsdoc-ts/README.md](jsdoc-ts/README.md) may eventually replace swagger-jsdoc-swagger
+  - see [jsdoc-ts/README.md]() may eventually replace swagger-jsdoc-swagger
 - scaled-ws
   - how to scale websockets using Redis (or some other) PubSub
-- serialserver
+- serialserver [serialserver/README.md]()
   - serial server receive RS232 and send via tcp, use pkg to build binary, winston logging
 - services
   - tcp_server - stream (keep client, connected and can reply to client, but need to take note on number of client connections) or event (close after receiving packet from client)

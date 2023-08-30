@@ -4,13 +4,9 @@ node_modules
 # deploy
 deploy/*
 !deploy/README.md
-!deploy/db
 
-# custom app
-apps/app-*
-!apps/app-template
-
-# secret configs
+# configs and secret configs
+.env
 .env.secret
 
 # database stores

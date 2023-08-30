@@ -17,9 +17,8 @@
 - [@es-labs/node] make APP_NAME and NODE_ENV from env var only
 - [js-node/dbdeploy] db might be shared... so create a seperate project for it (move existing deploy/db folder)
 - [all] APP_NAME is now only to identify name based on package.json name property. APP_PATH removed
-
-- [in-progress] rename apps or to app-sample-template
-- [in-progress] rename js-node to something else -> apps / libs / tools (https://github.com/mikemajesty/nestjs-monorepo)
+- [js-node/expressjs] rename apps/app-template to app-sample-template
+- [in-progress] rename `js-node` to something else -> apps / libs / tools (https://github.com/mikemajesty/nestjs-monorepo)
 - [in-progress] replace openapi file joiner, swagger-ui-express and express-openapi-validator with express-jsdoc-swagger
 - [tbd] move error handling to @ss-labs/node/express/init or preRoute
 - [tbd] re-implement MQ

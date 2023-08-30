@@ -5,20 +5,17 @@ https://kentcdodds.com/blog/how-i-structure-express-apps
 
 ```
 +- app-sample-template : custom apps are here in this folder
-|  +- app-template/ : sample custom application (prefixed with app-)
-|  |  +- config/ : application configs (see README.md within the config folder)
+|  +- app-sample-template/ : sample custom application (prefixed with app-)
 |  |  +- controllers/
 |  |  +- deploy/ : deployment folder (see README.md within the deploy folder)
 |  |  +- models/
 |  |  +- openapi/ : OpenAPI yaml files
 |  |  +- routes/ : application REST API & websocket setup
-|  |  +- services/ : services used
 |  |  +- tables/ : configurable table & crud
 |  |  +- tests/ : Jest tests for custom application
 |  |  +- graphql-schema.js : application GraphQL schemas and resolvers
-|  +- app-custom/ : your custom app, put under source control (app-* is git ignored)
 +- logs/
-+- middlewares/
++- middlewares/ : common middlewares
 +- public/ : for serving static files - website
 |  +- demo-express/ (127.0.0.1/)
 +- router/ : common route / controller & services
@@ -29,20 +26,17 @@ https://kentcdodds.com/blog/how-i-structure-express-apps
 +- .eslintrc.js
 +- .gitignore
 +- app.js : the express app boilerplate
-+- deploy-vm.sh: VM deployment script
 +- deploy.sh: GCP deployment script
 +- docker-compose.yml
 +- Dockerfile
 +- ecosystem.config.js
 +- index.js
 +- jest.config.js: JEST testing
-+- knexfile.js: Knex query builder
 +- package.json
 +- README.md
-+- test.py: run python from express
++- test.http : rest API commands testing VSCode plugin (Rest Client - humao.rest-client)
 +- test-playground.mongodb : mongoDB client VSCode plugin (MongoDB for VS Code - mongodb.mongodb-vscode)
-+- test-rest-cmd.http : rest API commands testing VSCode plugin (Rest Client - humao.rest-client)
-
++- test.py: run python from express
 ```
 
 ## If You Want To Use DTOs

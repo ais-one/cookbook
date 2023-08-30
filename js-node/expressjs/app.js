@@ -81,7 +81,9 @@ try {
 
 // ROUTES
 try {
-  require('./router')(app)
+  require(`./app-sample-template/routes`)(app) // your
+  require('./router')(app) // common routes
+  app.use('/api/**', (req, res) => res.status(404).json({error: 'Not Found'}))
 } catch (e) {
   console.log('Route loading exception', e.toString())
 }

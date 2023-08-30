@@ -14,7 +14,4 @@ module.exports = function (app) {
     router.use('/webpush', require('./webpush')),
     router.use('/fido', require('./fido')),
   )
-
-  require(`../app-sample-template/routes`)(app)
-  app.use('/api/**', (req, res) => res.status(404).json({error: 'Not Found'}))
 }
