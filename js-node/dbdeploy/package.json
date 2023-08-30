@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@es-labs/node": "^0.0.23",
+    "@es-labs/node": "^0.0.24",
     "knex": "^2.5.1",
     "sqlite3": "^5.1.6"
   }
