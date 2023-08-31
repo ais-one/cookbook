@@ -18,11 +18,14 @@
 - [js-node/dbdeploy] db might be shared... so create a seperate project for it (move existing deploy/db folder)
 - [all] APP_NAME is now only to identify name based on package.json name property. APP_PATH removed
 - [js-node/expressjs] rename apps/app-template to app-sample-template
-- [in-progress] rename `js-node` to something else -> apps / libs / tools (https://github.com/mikemajesty/nestjs-monorepo)
-- [in-progress] replace openapi file joiner, swagger-ui-express and express-openapi-validator with express-jsdoc-swagger
-- [tbd] move error handling to @ss-labs/node/express/init or preRoute
-- [tbd] clean up @es-labs/node/auth
-- [tbd] re-implement MQ
+- [js-node/expressjs] replace openapi file joiner, swagger-ui-express and express-openapi-validator with express-jsdoc-swagger 
+- [in-progress] rename `js-node` to js-apps, add js-libs, js-tools (https://github.com/mikemajesty/nestjs-monorepo) should I add back libs here?
+  - clone a package from monorepo of a github template project? and able to have updates from upstream?
+- [in-progress] move error handling to @ss-labs/node/express/init or preRoute
+- [in-progress] clean up @es-labs/node/auth
+- [next-in-pipeline] add more express-jsdoc-swagger to routes
+- [next-in-pipeline] fix broken tests and examples
+- [next-in-pipeline] re-implement MQ
 - [next-in-pipeline] to use Typescript and tsoa ? or use JSDoc?
 
 ### Version 0.6.11

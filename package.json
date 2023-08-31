@@ -33,7 +33,10 @@
     "npm": ">=9"
   },
   "workspaces": [
-    "js-node/*"
+    "js-node/*",
+    "js-libs/*",
+    "js-tools/*",
+    "js-web/*"
   ],
   "private": true
 }

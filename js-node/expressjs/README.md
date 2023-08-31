@@ -27,9 +27,8 @@ https://kentcdodds.com/blog/how-i-structure-express-apps
 +- .gitignore
 +- app.js : the express app boilerplate
 +- deploy.sh: GCP deployment script
-+- docker-compose.yml
 +- Dockerfile
-+- ecosystem.config.js
++- ecosystem.config.js: for pm2
 +- index.js
 +- jest.config.js: JEST testing
 +- package.json

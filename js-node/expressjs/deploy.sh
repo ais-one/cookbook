@@ -27,20 +27,17 @@ fi
 echo Deploying To Google Cloud Run $1
 
 BUILD_TS=`date +"%Y%m%d%H%M"`
-APP_NAME=$2
-if [ ! $APP_NAME ]; then
-  APP_NAME="app-template"
-fi
+echo "build_ts $BUILD_TS"
 
 if [ "$CI" = "true" ]; then
   echo "CI deploy"
-  echo "configured gcloud auth for $GCP_PROJECT_ID"
+  echo "configured gcloud auth for $GCP_PROJECT_ID $APP_NAME"
   # get current timestamp...
-  echo "build_ts $BUILD_TS"
   # gcloud auth list
 else
   echo "manual deploy"
   GCP_PROJECT_ID=mybot-live
+  APP_NAME=sample-app
   # test vault
   # VAULT="{ \"url\": \"http://127.0.0.1:8200/v1/secret/data/test?version=1\", \"token\": \"roottoken\" }"
   VAULT=

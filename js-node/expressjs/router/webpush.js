@@ -4,7 +4,7 @@
 const express = require('express')
 const { 
   // authUser,
-  userOps
+  authFns
 } = require('@es-labs/node/auth')
 const fcm = require('@es-labs/node/comms/fcm')
 const webpush = require('@es-labs/node/comms/webpush')
@@ -20,12 +20,12 @@ module.exports = express.Router()
   .post('/sub', authUser, async (req, res) => {
     const { id } = req.decoded
     const { subscription } = req.body // should be a string
-    await userOps.updateUser({ id }, { pnToken: subscription })
+    await authFns.updateUser({ id }, { pnToken: subscription })
     res.json({ status: 'sub'})
   })
   .post('/unsub', authUser, async (req, res) => {
     const { id } = req.decoded
-    await userOps.updateUser({ id }, { pnToken: '' })
+    await authFns.updateUser({ id }, { pnToken: '' })
     res.json({ status: 'unsub'})
   })
   .post('/send/:id', /* authUser */ async (req, res) => {
@@ -33,7 +33,7 @@ module.exports = express.Router()
     try {
       const { id } = req.params
       const { mode, data = {} } = req.body
-      const user = await userOps.findUser({ id })
+      const user = await authFns.findUser({ id })
       let rv = null
 
       // console.log('FCM TEST', user.pnToken, data.title, data.body)

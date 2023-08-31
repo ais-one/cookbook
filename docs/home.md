@@ -40,6 +40,10 @@
   - Deployment Secrets[deployment/secrets.md](deployment/secrets.md)
 - GCP
   - Home [gcp/home.md](gcp/home.md)
+- Git
+| - git related [git.md](git.md)
+| - git merge from upstream [git.md](git.md)
+| - github related [github.md](github.md)
 - SQA
   - SQA Tools [sqa/sqa-tools.md](sqa/sqa-tools.md)
   - SQA NodeJS [sqa/sqa-nodejs.md](sqa/sqa-nodejs.md)
@@ -52,7 +56,6 @@
   - JS [web/js.md](web/js.md)
   - Performance [web/performance.md](web/performance.md)
   - Logging [web/logging.md](web/logging.md)
-- Git [git.md](git.md)
 - Github [github.md](github.md)
 - NodeJS [nodejs.md](nodejs.md)
 - NPM [npm.md](npm.md)

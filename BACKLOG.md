@@ -4,14 +4,9 @@ Always finding new things to implement / improve in this list!
 
 ### For next sprint / version
 - [chore] improve on example applications
-- [js-node/tcpserver] remove knex & mysql, use es-labs
-- [js-node] use ESM instead of CJS - https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+- [research] use ESM instead of CJS - https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
 - [frontend] aria
-- [iaac-cicd] what best to use (terraform? or cloud service provider specific), GKE, Kubernetes
-- [js-node/expressjs] replace passport-saml?
-  - https://github.com/tngan/samlify
-  - https://github.com/node-saml/node-saml
-  - https://github.com/Clever/saml2
+- [iaac-cicd] terraform, GKE, Kubernetes
 - [feat] add commitizen, add semantic-release
 - [backend-testing] research websocket testing - https://stackoverflow.com/questions/55963562/test-websockets-with-jest
 
