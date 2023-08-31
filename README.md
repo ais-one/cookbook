@@ -12,44 +12,9 @@
 
 Latest Version [0.7.0](https://github.com/ais-one/cookbook/releases/tag/0.7.0) - Released 2023 Sep 01 0830 +8GMT. åSee changes history in [CHANGELOG.md](CHANGELOG.md) and discuss [here](https://github.com/ais-one/cookbook/discussions)
 
-Companion Projects:
-- Backend Template & Sample App:
-  - [https://github.com/es-labs/express-template]()
-- Frontend Template & Sample App:
-  - [https://github.com/es-labs/vue-antd-template]()
-- Reusable Components:
-  - [es-labs/jslib](https://github.com/es-labs/jslibs) reusable CJS and ESM codes
-- Python:
-  - [favv](https://github.com/ais-one/favv) API backend implement in Python FastAPI
-  - streamlit componennt examples
-
 ## IMPORTANT [Read Me First](https://github.com/es-labs/es-labs.github.io/wiki)
 
-# Features
-
-Folder | Description | Features
----|---|---
-[docker-devenv](docker-devenv) | Docker containers<br>supporting local development | Mongodb, Mysql, Keycloak(SAML/OIDC, etc IDP), Kafka, Hashicorp Vault, Redis
-[docs](docs) | Documentation<br>To constantly improved/updated | - Main [documentation](docs/home.md)<br>- Secrets [documentation](docs/deployment/secrets.md)<br>- Deployment [notes](docs/deployment/home.md)<br>- Kafka [docs](docs/backend/kafka.md) and [code](js-node)<br>- TCP Server [docs](docs/backend/tcp.md) and [code](js-node)
-[js-node/expressjs](js-node/expressjs) | **Base ExpressJS application**<br>(REST API, Websocket, etc) | - CORS, proxy middleware, helmet, error handling, logging, OpenAPI<br>- Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis<br>- Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram<br>- AgendaJS message queue<br>- Unit Test & Integration Test
-[js-node/expressjs/app-sample-template]() | Custom application (**app-template**)<br>built on [Base ExpressJS application](js-node/expressjs) |- [controllers] <br>- [models] <br>- [openapi] OpenAPI yamls<br>- [routes] API routes (also websocket handlers)<br>- [services] services to startup/shutdown<br>- [tables] config tables for generic table crud (t4t)<br>- [tests] folder for tests<br>- [graphql-schema.js] application GraphQL codes
-[js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)<br>- Fido & Webauthn<br>- Push Notification (Webpush & FCM)
-[js-node/*](js-node) | **Other Backend applications** | - [Services](js-node/services) (TCP event/stream, scalable Websocket with Redis Pubsub, etc.)<br>- [Serial server](js-node/serialserver)
-[vue-nobundler](vue-nobundler/) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/app-template-sample/tables/]()</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[vue-nobundler/views/ui1.js](vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[vue-nobundler/views/ui2.js](vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[vue-nobundler/views/ui3.js](vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[vue-nobundler/views/ui4.js](vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
-[js-web/vue-vite] | - Vue 3 SPA<br>- vite / vue-router / Pinia<br>- Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- 2FA GA OTP, OIDC + Refresh, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Playwrite Testing<br>- i18n / graphql (TBD)<br>- moved to https://github.com/es-labs/vue-antd-template
-js-web/react-vite | - react SPA<br>- react-router-dom<br>- zustand/@tanstack<br>- react-query | - moved to https://github.com/ais-one/react-template
-[.github/workflows](.github/workflows) | Github Actions (CI/CD) | - Manually Trigger<br>- On-push Trigger (WIP)
-AMP Website | [removed](https://plausible.io/blog/google-amp) | -
-
-
 # QUICK START - ON YOUR LOCAL MACHINE
-
-## Requirements
-
-- Node 16+ LTS
-- Npm 8.3.2+ (using workspaces)
-- For Windows, **integrate bash shell to cmd shell** (when installing git), or use git-bash
-- Docker
 
 **Updating npm on Windows**
 
@@ -73,7 +38,7 @@ npm i --workspace=js-node/dbdeploy
 npm i --workspaces
 
 # OR install only for express backend
-npm run ex:build # see ./package.json scripts
+npm run build:win # see ./package.json scripts
 ```
 
 ### Migrate DB And Seed DB
@@ -110,7 +75,7 @@ NODE_ENV=development npm run app:lint --workspace=js-node/expressjs
 ### Testing
 
 - To run unit & integration test on **/api/categories** endpoint. E2E testing is **Work In Progress**
-- TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in **js-node/expressjs/app-template-sample/tests**
+- TO TEST EVERYTHING PLEASE change describe.only(...) to describe(...) in the test scripts in **js-node/expressjs/apps/app-sample/tests**
 
 ```bash
 # run in development only
