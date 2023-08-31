@@ -23,9 +23,7 @@ Companion Projects:
   - [favv](https://github.com/ais-one/favv) API backend implement in Python FastAPI
   - streamlit componennt examples
 
-# IMPORTANT
-
-[Read Me First](_READMEFIRST.md)
+## IMPORTANT [Read Me First](https://github.com/es-labs/es-labs.github.io/wiki)
 
 # Features
 
