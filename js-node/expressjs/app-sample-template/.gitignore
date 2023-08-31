@@ -1,8 +1,0 @@
-# configs
-config/secret/*
-!config/secret/README.md
-
-# deploy
-deploy/*
-!deploy/README.md
-!deploy/db

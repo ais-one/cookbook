@@ -13,13 +13,19 @@
 Latest Version [0.7.0](https://github.com/ais-one/cookbook/releases/tag/0.7.0) - Released 2023 Sep 01 0830 +8GMT. åSee changes history in [CHANGELOG.md](CHANGELOG.md) and discuss [here](https://github.com/ais-one/cookbook/discussions)
 
 Companion Projects:
-- Frontend Template to go with the [express API backend](js-node/expressjs) in this repo
-  - [vue-antd-template](https://github.com/ais-one/vue-antd-template)
+- Backend Template & Sample App:
+  - [https://github.com/es-labs/express-template]()
+- Frontend Template & Sample App:
+  - [https://github.com/es-labs/vue-antd-template]()
 - Reusable Components:
   - [es-labs/jslib](https://github.com/es-labs/jslibs) reusable CJS and ESM codes
 - Python:
   - [favv](https://github.com/ais-one/favv) API backend implement in Python FastAPI
   - streamlit componennt examples
+
+# IMPORTANT
+
+[Read Me First](_READMEFIRST.md)
 
 # Features
 
@@ -32,7 +38,7 @@ Folder | Description | Features
 [js-node/expressjs/public/demo-express](js-node/expressjs/public/demo-express) | Frontend to test backend features | - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers (frontend demo)<br>- JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role SAML, OIDC<br>- Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)<br>- Fido & Webauthn<br>- Push Notification (Webpush & FCM)
 [js-node/*](js-node) | **Other Backend applications** | - [Services](js-node/services) (TCP event/stream, scalable Websocket with Redis Pubsub, etc.)<br>- [Serial server](js-node/serialserver)
 [vue-nobundler](vue-nobundler/) | Vue 3 SPA no bundler + Bulma | - signed uploads, recaptcha<br>- **Web component table, form & CRUD backend** (files to note)<br><table><tr><td>[js-node/expressjs/app-template-sample/tables/]()</td><td>sample custom app table configurations</td></tr><tr><td>[js-node/expressjs/router/t4t.js](js-node/expressjs/router/t4t.js)</td><td>handle backend CRUD API</td></tr><tr><td>[@es-labs/esm/t4t-fe.js](@es-labs/esm/t4t-fe.js)</td><td>frontend operations to interact with t4t.js</td></tr><tr><td>[@es-labs/esm/t4t-validate.js](@es-labs/esm/t4t-validate.js)</td><td>validation used by both front and backend</td></tr><tr><td>[@es-labs/esm/bwc-table](@es-labs/esm/bwc-table)</td><td>used to display table</td></tr><tr><td>[@es-labs/esm/bwc-t4t-form.js](@es-labs/esm/bwc-t4t-form.js)</td><td>form generated from table configurations</td></tr><tr><td>[vue-nobundler/views/ui1.js](vue-nobundler/views/ui1.js)</td><td>autcomplete, combobox, file upload example</td></tr><tr><td>[vue-nobundler/views/ui2.js](vue-nobundler/views/ui2.js)</td><td>table example</td></tr><tr><td>[vue-nobundler/views/ui3.js](vue-nobundler/views/ui3.js)</td><td>form example (with connection to backend)</td></tr><tr><td>[vue-nobundler/views/ui4.js](vue-nobundler/views/ui4.js)</td><td>table and form example (with connection to backend)</td></tr></table>
-[js-web/vue-vite] | - Vue 3 SPA<br>- vite / vue-router / Pinia<br>- Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- 2FA GA OTP, OIDC + Refresh, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Playwrite Testing<br>- i18n / graphql (TBD)<br>- moved to https://github.com/ais-one/vue-antd-template
+[js-web/vue-vite] | - Vue 3 SPA<br>- vite / vue-router / Pinia<br>- Ant Design | - Leaflet Map, AntV Charts, PWA, Websockets, rxJS<br>- 2FA GA OTP, OIDC + Refresh, SAML, Github OAuth<br>- Web Components (Webcam, Signature)<br>- Playwrite Testing<br>- i18n / graphql (TBD)<br>- moved to https://github.com/es-labs/vue-antd-template
 js-web/react-vite | - react SPA<br>- react-router-dom<br>- zustand/@tanstack<br>- react-query | - moved to https://github.com/ais-one/react-template
 [.github/workflows](.github/workflows) | Github Actions (CI/CD) | - Manually Trigger<br>- On-push Trigger (WIP)
 AMP Website | [removed](https://plausible.io/blog/google-amp) | -
@@ -121,7 +127,7 @@ See [js-node/README.md](js-node/README.md)
 
 ### Vite SPA Setup & Run - development environment
 
-See [vue-antd-template project](https://github.com/ais-one/vue-antd-template).
+See [https://github.com/es-labs/vue-antd-template]().
 
 Why No SSR or SSG:
 - potential slow rendering by server app, added complexity in code, rehydration errors, added complexity in server

@@ -4,8 +4,6 @@ Below are a list of NodeJS applications
 
 - dbdeploy
   - see [dbdeploy/README.md]()
-- expressjs
-  - see [expressjs/README.md]()
 - jsdoc-ts
   - see [jsdoc-ts/README.md]() may eventually replace swagger-jsdoc-swagger
 - scaled-ws
@@ -41,9 +39,6 @@ npm run process-long
 # command: npm run process-cron -- development
 npm run process-cron
 ```
-
-
-
 
 # Useful commands
 

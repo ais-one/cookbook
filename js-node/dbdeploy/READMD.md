@@ -10,7 +10,9 @@ https://knexjs.org/guide/migrations.html#migration-cli
 when DB could be shared between packages
 
 
-## Quick Create DB For demo expressjs App
+## Quick Create DB
+
+For [express-template](https://github.com/es-labs/express-template) app sample
 
 ```bash
 npx knex --knexfile knex-sample/knexfile.js migrate:up

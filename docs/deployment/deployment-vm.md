@@ -130,7 +130,7 @@ ps ax | grep 'node index.js' | grep -v grep | awk '{print $1}' | xargs kill
 
 ### use pm2
 
-See js-node/expressjs/ecosystem.config.js
+look for `ecosystem.config.js`
 
 
 # Startup on VM using SystemD

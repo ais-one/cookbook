@@ -1,16 +1,17 @@
 
 
 ### Version 0.7.0
+- [IMPORTANT] moved `js-node/expressjs` and `vue-nobundler` to [https://github.com/es-labs/express-template]()
 - [chore] update packages & cleanup & work on improving documentation
 - [chore] prototype projects `solid`, `react-admin` and `nest-admin` have been removed
 - [jsonwebtoken] update version handle minimum key size requirement change
-- [@es-labs/node] moved to https://github.com/es-labs/jslib monorepo
-- [@es-labs/esm] moved to https://github.com/es-labs/jslib monorepo
-- [js-web/vue-vite] moved to https://github.com/ais-one/vue-antd-template
+- [@es-labs/node] moved to https://github.com/es-labs/jscommon monorepo
+- [@es-labs/esm] moved to https://github.com/es-labs/jscommon monorepo
+- [js-web/vue-vite] moved to https://github.com/es-labs/vue-antd-template
 - [js-web/react-vite] moved to https://github.com/ais-one/react-template (work in progress)
 - [js-node/jsdoc-ts] example on how to use jsdoc for typescript
-- [js-node/expressjs] webpush push notification sample [sample](js-node/expressjs/public/demo-express/pn.html)
-- [js-node/expressjs] SSO (OAuth, OIDC, SAML) sample [sample](js-node/expressjs/public/demo-express/sso.html)
+- [js-node/expressjs] webpush push notification sample at `public/demo-express/pn.html`
+- [js-node/expressjs] SSO (OAuth, OIDC, SAML) sample at `public/demo-express/sso.html`
 - [js-node/expressjs] try to removed passport & passport-saml, use @node-saml/node-saml
 - [js-node/expressjs] remove sentry, APM for userland to choose and implement
 - [@es-labs/node] SSO for oidc to opt to use IDP or issue own token
@@ -19,14 +20,7 @@
 - [all] APP_NAME is now only to identify name based on package.json name property. APP_PATH removed
 - [js-node/expressjs] rename apps/app-template to app-sample-template
 - [js-node/expressjs] replace openapi file joiner, swagger-ui-express and express-openapi-validator with express-jsdoc-swagger 
-- [in-progress] rename `js-node` to js-apps, add js-libs, js-tools (https://github.com/mikemajesty/nestjs-monorepo) should I add back libs here?
-  - clone a package from monorepo of a github template project? and able to have updates from upstream?
-- [in-progress] move error handling to @ss-labs/node/express/init or preRoute
-- [in-progress] clean up @es-labs/node/auth
-- [next-in-pipeline] add more express-jsdoc-swagger to routes
-- [next-in-pipeline] fix broken tests and examples
-- [next-in-pipeline] re-implement MQ
-- [next-in-pipeline] to use Typescript and tsoa ? or use JSDoc?
+
 
 ### Version 0.6.11
 - [chore] update packages & cleanup & work on improving documentation

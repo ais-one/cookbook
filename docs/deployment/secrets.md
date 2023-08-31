@@ -14,7 +14,7 @@ Need to take into consideration, the following:
 
 ### Secret Managers
 
-- Hashicorp Vault [we use the docker version of this for our testing js-node/expressjs on local machine]
+- Hashicorp Vault
   - self hosted, docker
   - helm, sidecar
   - vault + mongoatlas

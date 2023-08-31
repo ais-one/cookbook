@@ -13,30 +13,19 @@
   },
   "homepage": "https://github.com/ais-one/cookbook#readme",
   "keywords": [
-    "nodejs",
-    "express",
-    "vuejs",
-    "reactjs"
+    "nodejs"
   ],
   "scripts": {
     "prepare": "git config core.hooksPath ./git-hooks || echo 'Can not set git hooks'",
     "git:hash": "git rev-parse --verify --short HEAD",
-    "git:branch": "git rev-parse --abbrev-ref HEAD",
-    "ex:start": "NODE_ENV=development npm run app --workspace=js-node/expressjs",
-    "ex:start:win": "set NODE_ENV=development&&npm run app --workspace=js-node/expressjs",
-    "ex:build": "npm i --workspace=js-node/expressjs",
-    "aa": "set EDITOR=vim && echo $EDITOR",
-    "ex:lib:build": "npm i @es-labs/node@latest --workspace=js-node/expressjs"
+    "git:branch": "git rev-parse --abbrev-ref HEAD"
   },
   "engines": {
     "node": ">=18",
     "npm": ">=9"
   },
   "workspaces": [
-    "js-node/*",
-    "js-libs/*",
-    "js-tools/*",
-    "js-web/*"
+    "js-node/*"
   ],
   "private": true
 }
