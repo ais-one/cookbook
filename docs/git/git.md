@@ -40,11 +40,14 @@ git clone --depth 1 <remote_repo_url>
 
 https://www.atlassian.com/git/tutorials/comparing-workflows
 
+## Branch Name
+
+- Keep it short, <prefix>-<issue/ticket number>
+- prefix = feat, fix
 
 ## Commit messages
 
 https://www.alibabacloud.com/blog/how-can-we-standardize-git-commits_597372
-
 
 Format of Commit Message
 <type>(<scope>): <subject>
@@ -71,7 +74,7 @@ This indicates the type of the git commit. Only the following types are allowed:
 
 Scope is used to describe the scope of the impact of a commit, such as the data layer, control layer, or view layer, depending on the project.
 
-For example, in Angular, it can be location, browser, compile, rootScope, ngHref, ngClick, or ngView. If your modification affects more than one scope, you can use * instead.
+For example, in Angular, it can be location, browser, compile, rootScope, ngHref, ngClick, or ngView. If your modification affects more than one scope, you can use \* instead.
 
 ### Subject (required)
 
@@ -84,9 +87,7 @@ Fix(DAO): User query missing the username attribute
 feat(Controller): Development of user query interfaces
 ```
 
-
 https://gist.github.com/robertpainsi/b632364184e70900af4ab688decf6f53
-
 
 References in commit messages
 If the commit refers to an issue, add this information to the commit message header or body. e.g. the GitHub web platform automatically converts issue ids (e.g. #123) to links referring to the related issue. For issues tracker like Jira there are plugins which also converts Jira tickets, e.g. Jirafy.
@@ -106,7 +107,6 @@ Fixes #123, #124
 
 https://wiki.openstack.org/wiki/GitCommitMessages
 
-
 ## Github
 
 ### Github pages
@@ -118,6 +118,7 @@ npm i -D gh-pages
 ```
 
 package.json
+
 ```json
 {
   "homepage": "http://<username>.github.io/<repo-name>",
@@ -132,7 +133,6 @@ package.json
 
 - https://dev.to/krzysztofkaczy9/do-you-really-need-husky-247b
 - https://dev.to/azu/git-hooks-without-extra-dependencies-like-husky-in-node-js-project-jjp
-
 
 ### commitizen
 

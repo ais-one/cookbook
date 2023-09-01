@@ -8,14 +8,14 @@
   - REST Client
   - SFTP
   - MongoDB Client (official) / SQLite Viewer
+  - JS Language Specific
+    - es6-string-html
+    - ESLint
+    - Volar (for VueJS)
+    - Prettier
 - Recommended
   - SonarLint (requires java)
   - GitLens
-- JS Language Specific
-  - es6-string-html
-  - ESLint
-  - Volar (for VueJS)
-  - Prettier
 
 ## Chrome Extensions
 
@@ -34,7 +34,6 @@
 - DB clients
   - dbeaver (mac / windows)
   - heidisql (windows)
-
 
 ## Apps Setup
 

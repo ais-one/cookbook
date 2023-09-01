@@ -18,14 +18,13 @@ How to get eslint and prettier to play together
 - https://stackoverflow.com/questions/58167801/custom-eslint-rules-in-monorepo
 - https://stackoverflow.com/questions/49789177/module-is-not-defined-and-process-is-not-defined-in-eslint-in-visual-studio-code
 
-
 ### package.json
 
 ```json
 {
   "lint:older": "eslint \"src/**/*.js\"",
   "lint": "eslint . --ext .js,.vue",
-  "lint:fix": "eslint . --ext .js,.vue --fix",
+  "lint:fix": "eslint . --ext .js,.vue --fix"
 }
 ```
 
@@ -38,6 +37,7 @@ npm install --save-dev eslint prettier eslint-plugin-prettier eslint-config-pret
 ### initialize the esint config file - use JS
 
 npx eslint --init
+
 - To check syntax, find problems, and enforce code style
 - JavaScript modules (import/export) or CJS (require)
 - None of these
@@ -76,7 +76,7 @@ module.exports = {
   semi: false,
   singleQuote: true,
 
-  endOfLine: 'auto', // added
+  endOfLine: "auto", // added
 };
 ```
 
@@ -89,7 +89,6 @@ Check if they are deprecated in newer eslint versions
 - eslint-plugin-node
 - eslint-plugin-jest
 - eslint-plugin-promise
-
 
 ## husky
 
@@ -114,3 +113,60 @@ TBD
 ## semantic version
 
 TBD
+
+# A list of Software Quality Assurance Tools
+
+## Dependency Security
+
+- https://snyk.io/plans/
+
+## Code Quality Analysis
+
+- https://sonarcloud.io/ (BEST) - https://www.sonarqube.org/ (https://github.com/ais-one/cookbook/pull/85)
+- https://deepsource.io/
+- https://www.veracode.com/
+
+# CI/CD
+
+- Github Actions
+- CircleCI
+- Jenkins
+
+---
+
+Research In Progress
+
+## Application Performance Monitoring APM & Logging
+
+- https://sentry.io/welcome/
+- https://www.appdynamics.com/
+- https://www.datadoghq.com/
+- https://newrelic.com/
+- https://logrocket.com/
+- https://www.splunk.com/
+- https://raygun.com/
+- https://rollbar.com/
+
+## User Behaviour Analysis
+
+Analyze user behavior across your sites and apps
+
+- MixPanel https://mixpanel.com/home/
+- Google Analytics
+
+# CI/CD - Gitlab Auto Devops
+
+- https://gitlab.com/help/topics/autodevops/index.md
+- https://www.gitlab.com/help/user/application_security/sast/index.md
+- https://github.com/ajinabraham/NodeJsScan - SAST
+- https://github.com/zaproxy/zaproxy - DAST
+- https://prometheus.io/ - monitoring
+
+## References
+
+### console.log
+
+- https://stackoverflow.com/questions/7042611/override-console-log-for-production/21789576
+- https://ourcodeworld.com/articles/read/104/how-to-override-the-console-methods-in-javascript
+- https://gist.github.com/pincheira/2724082
+- https://stackoverflow.com/questions/63075459/override-console-log-method-without-losing-the-original-stack-javascript

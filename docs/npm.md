@@ -2,7 +2,6 @@ npm version patch
 
 [package.json](https://docs.npmjs.com/cli/v7/configuring-npm/package-json)
 
-
 ```json
 {
   "files": ["build/**/*"]
@@ -14,6 +13,7 @@ npm version patch
 ## npm workspaces
 
 ### References:
+
 - https://github.com/ruanmartinelli/npm-workspaces-demo
 - https://hyperfoo.io/posts/npm-7-workspaces-1
 
@@ -22,8 +22,8 @@ npm version patch
 3. may need to add scope
 4. npm i --workspace=<a-workspace>
 
-
 npm prejects with no dependencies, for testing
+
 - vtextpad
 - complex.js
 - fraction.js
@@ -31,29 +31,28 @@ npm prejects with no dependencies, for testing
 - padder
 - smiley
 
-
-### To install each workspace
+### Installation
 
 ```bash
+# To install each workspace
 npm install --workspace=js-node
 npm install --workspace=js-web
-```
 
-### To install a project in workspace
-
-```bash
+# To install a project in workspace
 npm install --workspace=js-node/expressjs
+
+# To install all workspaces
+npm i --workspaces
 ```
-
-
 
 ## Installing & Updating Dependencies
 
 Install dependencies for all workspaces!
 
 Note
+
 - when doing npm i, it will always install latest version matching your package
-- sometimes you need to **rebuild**, delete all node_modules folders and the package-lock.json file in the root 
+- sometimes you need to **rebuild**, delete all node_modules folders and the package-lock.json file in the root
 
 ```bash
 # https://github.com/npm/cli/issues/708
@@ -64,7 +63,7 @@ npm i # use this
 
 Update dependencies for all workspaces!
 
-```bash 
+```bash
 npm outdated # use this to check for outdated dependencies
 npm update --save
 npm ls <?package> # use npm ls to check on actual versions installed
@@ -85,10 +84,8 @@ npm i ant-design-vue@latest --workspace=js-node/expressjs
 
 ---
 
-
 ## NPM Token
 
 Create token
+
 - for automation fine grain and limit its access
-
-
