@@ -26,16 +26,20 @@ done
 echo
 
 PS3="Please enter your choice: "
-options2=("Pull" "Push")
+options2=("Diff" "Pull" "Push")
 select opt2 in "${options2[@]}"
 do
   case $opt2 in
+    "Diff")
+      echo "Do git diff"
+      break
+      ;;
     "Pull")
-      echo "Confirm files individually"
+      echo "Do git pull"
       break
       ;;
     "Push")
-      echo "Confirm all files"
+      echo "Do git push"
       break
       ;;
     *) echo "invalid option $opt2";;
@@ -71,7 +75,9 @@ do
     echo "Running for... ${package}"
     cd $packagePath
 
-    if [ "$opt2" == "Push" ]; then
+    if [ "$opt2" == "Diff" ]; then
+      echo `git diff`
+    elif [ "$opt2" == "Push" ]; then
       echo `git add .`
       echo `git commit -m "update"`
       if [ "$package" == "cookbook" ]; then
