@@ -25,7 +25,6 @@
 - [js-node/expressjs] rename apps/app-template to app-sample-template
 - [js-node/expressjs] replace openapi file joiner, swagger-ui-express and express-openapi-validator with express-jsdoc-swagger 
 
-
 ### Version 0.6.11
 - [chore] update packages & cleanup & work on improving documentation
 - [js-node/expressjs] Breaking Change on configs

@@ -6,20 +6,49 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/cookbook/badge.svg)](https://snyk.io/test/github/ais-one/cookbook)
 [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/cookbook/shield-link)
 
+## IMPORTANT - Read Me First!
+
+Before we look at frameworks, features, the usual sqa concepts like (testing, etc.), we take a step back and look at improving DX:
+
+- Projects built using a template can merge in template updates without affecting userland code
+- Shared libraries should be isolated and versioned, dependents can stay on last-known-good version and update when ready
+- Isolation and versioning can be extended to `types` (for Typescript) and API `contracts`
+- Allow for and easy way to check for and update outdated dependencies in various projects
+
+This repo uses git submodules to provide an overview of the various cookbook projects as a whole
+
+## Aims
+- easily shared
+- high reusability
+- low technical debt
+- low inter-dependency & nested-dependencies
+
+## Resuable JS frameworks how to...
+
+- updateable template design
+  - exclude configurable files from repo (e.g. .env), but include sample config files (e.g. .env.sample)
+  - create an folder where all custom code is placed, framework must not touch anything inside this folder
+
+- app based on updateable templates
+1. clone template repo
+2. create a remote called upstream pointing to template repo
+3. update framework when necessary by merging upstream into origin
+
+updateable template repo is advisable not to be a monorepo
+
+
+
+
 # About
 
 > **TL;DR** ExpressJS, VueJS, ReactJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
 
 Latest Version [0.7.0](https://github.com/ais-one/cookbook/releases/tag/0.7.0) - Released 2023 Sep 01 0830 +8GMT. åSee changes history in [CHANGELOG.md](CHANGELOG.md) and discuss [here](https://github.com/ais-one/cookbook/discussions)
 
-## IMPORTANT [Read Me First](https://github.com/es-labs/es-labs.github.io/wiki)
-
-
-This repo uses git submodules to provide an overview of the various cookbook projects as a whole
 
 
 
-## Getting Started
+## Sandbox
 
 ### Install
 
@@ -35,6 +64,28 @@ npm i --workspace=sandbox/<project folder name>
 # install for all workspace projects
 npm i --workspaces
 ```
+
+## Project Strcuture
+
+```
++- .github/ : github related CICD and automations
++- docker-devenv/ : docker for development environment
++- docs/ : documentation
++- git-hooks : git hooks
++- sandbox/ : prototyping & research --- scalable-websockets, kafka, cron triggered, long running processes
++- product/ : [TO-CHOOSE]...  (a link to the repo)
++- .editorconfig
++- .gitignore
++- bulk-git.sh
++- bulk-npm.sh : manage check & update of dependencies (can also use dependabot)
++- CHANGELOG.md
++- LICENCE
++- package.json
++- README.md
+```
+
+---
+
 
 ### Long Running Processes
 
@@ -54,31 +105,60 @@ Why No SSR or SSG:
 
 ---
 
-## Project Strcuture
 
-```
-+- .github/ : github related CICD and automations
-+- docker-devenv/ : docker for development environment
-+- docs/ : documentation
-+- git-hooks : git hooks
-+- sandbox/ : prototyping & reserch --- scalable-websockets, kafka, cron triggered, long running processes
-+- .editorconfig
-+- .gitignore
-+- BACKLOG.md
-+- CHANGELOG.md
-+- LICENCE
-+- package.json
-+- README.md
-```
+## General Requirements
 
----
+- git & IDE (e.g. vscode)
+- Node 18+ LTS
+- Npm 9+ (npm i -g npm@latest `to update`)
+- For Windows, **integrate bash shell to cmd shell** (when installing git), or use git-bash
+- Docker
 
-## VERSION CHANGE NOTES
+## Projects & Features
 
-- **v0.7+** Reorganize, improve and update see changelog for v0.7.0 details
-- **v0.6+** Improve organization, graceful exit, logging, project rename, add more nodejs applications, repo name <u>vue-crud-x</u> changed to <u>cookbook</u>
-- **v0.5+** Improve organization and authentication, add new features
-- **v0.4+** Improve folders and structure organization, handle CI/CD better
-- **v0.3+** Reorganize folders and structure, for ease of developing and maintaining multiple applications.
-- **v0.2+** uses Vuetify 2. Due to breaking changes from Vuetify 1 to 2, CRUD component code was refactored to be more UI framework agnostic (reduce dependencies!), easier to use, improving code quality, documentation and <a href="https://dev.to/aisone/vuejs-expressjs-crud-cookbook-46l0" target="_blank">supprting article - VueJS+ExpressJS CRUD & Cookbook</a>
-- **v0.1** and Vuetify 1 will be supported under the [v1 branch](https://github.com/ais-one/cookbook/tree/v1). You can refer to the v1 <a href="https://medium.com/@aaronjxz/vue-crud-x-a-highly-customisable-crud-component-using-vuejs-and-vuetify-2b1539ce2054" target="_blank">Legacy Article (For Historical Reference)</a>
+This Project
+- es-labs.org website and documentation:
+  - [https://github.com/es-labs/es-labs.github.io]()
+
+Companion Projects:
+- Backend Template & Sample App:
+  - [https://github.com/es-labs/express-template]()
+  - CORS, proxy middleware, helmet, error handling, logging, OpenAPI
+  - Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis
+  - Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram
+  - AgendaJS (changing) message queue
+  - Unit Test & Integration Test
+  - startup/shutdown
+  - config tables for generic table crud (t4t)
+  - Simple frontend to test backend features
+    - GraphQL, File uploads, Signed URL file upload to GCP Storage, websockets, SSE, webworkers
+    - JWT using RSA, JWT refresh token, token in HttpOnly cookies, GA OTP, role SAML, OIDC
+    - Github OAuth2 login (setup - https://www.sohamkamani.com/blog/javascript/2018-06-24-oauth-with-node-js)
+    - Fido & Webauthn
+    - Push Notification (Webpush & FCM)
+  - Vue 3 SPA no bundler + Bulma
+    - signed uploads, recaptcha, **Web component table, form & CRUD backend** (files to note)
+    - @es-labs/esm/t4t.js: handle backend CRUD API<
+    - @es-labs/t4t-fe.js: frontend operations to interact with t4t.js
+    - @es-labs/t4t-validate.js: validation used by both front and backend
+    - @es-labs/esm/bwc-table.js: used to display table
+    - @es-labs/esm/bwc-t4t-form.js: form generated from table configurations
+    - vue-nobundler/views/ui1.js: autcomplete, combobox, file upload example
+    - vue-nobundler/views/ui2.js: table example
+    - vue-nobundler/views/ui3.js: form example (with connection to backend)
+    - vue-nobundler/views/ui4.js: table and form example (with connection to backend)
+- Frontend Template & Sample App:
+  - [https://github.com/es-labs/vue-antd-template]()
+- Reusable Components:
+  - [https://github.com/es-labs/jscommon]()
+    - reusable CJS and ESM codes
+    - tools such as DBdeploy
+- Python:
+  - [https://github.com/ais-one/favv]() some of the API backend implemented in Python FastAPI
+  - streamlit componennt examples
+
+
+1. check dependencies
+script to check for and/or update packages... if all repos are in the same project
+
+2. update from upstream for templates
