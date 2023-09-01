@@ -32,8 +32,8 @@ const { MAIN_BUCKET = '', READ_FOLDERS = '', WRITE_FOLDER = '', TIVO_TOKEN = '',
 const client = new S3Client({
   region: 'ap-southeast-1',
   credentials:{
-    accessKeyId: process.env.AWS_ACCESS_ID, // 'AKIATADURGW3ULYHD3DM',
-    secretAccessKey: process.env.AWS_ACCESS_KEY // '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',
+    accessKeyId: process.env.AWS_ACCESS_ID,
+    secretAccessKey: process.env.AWS_ACCESS_KEY
   },
 });
 
