@@ -14,6 +14,11 @@ Latest Version [0.7.0](https://github.com/ais-one/cookbook/releases/tag/0.7.0) -
 
 ## IMPORTANT [Read Me First](https://github.com/es-labs/es-labs.github.io/wiki)
 
+
+This repo uses git submodules to provide an overview of the various cookbook projects as a whole
+
+
+
 ## Getting Started
 
 ### Install
@@ -25,27 +30,17 @@ cd cookbook
 
 # install dependencies for specific workspace projects
 # see package.json for shortcut scripts
-npm i --workspace=js-node/dbdeploy
-npm i --workspace=js-node/services
+npm i --workspace=sandbox/<project folder name>
 
 # install for all workspace projects
 npm i --workspaces
 ```
 
-### Migrate DB And Seed DB
-
-Go to [js-node/dbdeploy/README.md]() project and follow instructions for creating local development db on sqlite
-
-**NOTES**
-
-- MongoDB examples needs MongoDB to work. To resolve, chose one of the methods to install MongoDB in **docs/backend/mongodb/install.md**
-- If some env entries are not present there maybe some console log errors (but it is ok to ignore) and websockets will not work. Quick start is still usable. Use the README.md to fill up
-
 ### Long Running Processes
 
 For long running processes such as tcp server (event mode, streaming mode), serial server, kafka producer, consumer, cron-triggered process, etc.
 
-See [js-node/README.md](js-node/README.md)
+See [sandbox/README.md](sandbox/README.md)
 
 ### Vite SPA Setup & Run - development environment
 
@@ -66,8 +61,7 @@ Why No SSR or SSG:
 +- docker-devenv/ : docker for development environment
 +- docs/ : documentation
 +- git-hooks : git hooks
-+- js-node/ : nodejs applications (db deployment, express API, scalable-websockets, kafka, cron triggered, long running processes) see [js-node/README.md]()
-+- vue-nobundler/ : frontend (Vue3 no bundler) - See [vue-nobundler/README.md](vue-nobundler/README.md) for Project Structure
++- sandbox/ : prototyping & reserch --- scalable-websockets, kafka, cron triggered, long running processes
 +- .editorconfig
 +- .gitignore
 +- BACKLOG.md

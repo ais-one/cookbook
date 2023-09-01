@@ -49,7 +49,7 @@ node kafkaRx.js
 
 You will see message from a running producer every 2 seconds on the console
 
-Kafka Consumer Example Usage file location [../js-node/kafkaRx.js](../js-node/kafkaRx.js)
+Kafka Consumer Example Usage file location [../sandbox/kafkaRx.js]()
 
 ### Kafka Producer
 
@@ -62,7 +62,7 @@ node kafkaTx.js
 
 The producer will send a message every 2 seconds
 
-Kafka Producer Example Usage file location [../js-node/kafkaTx.js](../js-node/kafkaTx.js)
+Kafka Producer Example Usage file location [../sandbox/kafkaTx.js]()
 
 ## TCP Server
 
@@ -70,18 +70,18 @@ Running the example
 
 ```
 npm i
-cd js-node/services/sandbox
+cd sandbox/services
 node tcpServer.js
 ```
 
 A TCP server will listen on port 7070. Use putty (for windows) as client to connect (Raw TCP) and test
 
-Example Usage file location [../../js-node/services/sandbox/tcpServer.js]()
+Example Usage file location [../../sandbox/services/tcpServer.js]()
 
 More Samples
 
-- More TCP Usage [../../js-node/services/sandbox/net.js]()
-- TCP Retries [../../js-node/services/sandbox/net-retries.js]()
+- More TCP Usage [../../sandbox/services/net.js]()
+- TCP Retries [../../sandbox/services/net-retries.js]()
 
 # Micro Service
 

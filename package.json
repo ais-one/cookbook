@@ -25,7 +25,7 @@
     "npm": ">=9"
   },
   "workspaces": [
-    "js-node/*"
+    "sandbox/*"
   ],
   "private": true
 }

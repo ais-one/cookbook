@@ -1,13 +1,18 @@
 
 
 ### Version 0.7.0
-- [IMPORTANT] moved `js-node/expressjs` and `vue-nobundler` to [https://github.com/es-labs/express-template]()
+- [IMPORTANT]
+  - key projects have been moved out but this repo will add them as submodules and regularly update from upstream
+  - [js-node/expressjs] moved to [https://github.com/es-labs/express-template]()
+  - [vue-nobundler] also moved to [https://github.com/es-labs/express-template]()
+  - [@es-labs/node] moved to [https://github.com/es-labs/jscommon]() monorepo
+  - [@es-labs/esm] moved to [https://github.com/es-labs/jscommon]() monorepo
+  - [js-web/vue-vite] moved to [https://github.com/es-labs/vue-antd-template]()
+  - [js-node/dbdeploy] db might be shared... moved to `tools` workspace in [https://github.com/es-labs/jscommon]()
+  - `js-node` folder renamed to sandbox where prototyping and research work is done
 - [chore] update packages & cleanup & work on improving documentation
 - [chore] prototype projects `solid`, `react-admin` and `nest-admin` have been removed
 - [jsonwebtoken] update version handle minimum key size requirement change
-- [@es-labs/node] moved to https://github.com/es-labs/jscommon monorepo
-- [@es-labs/esm] moved to https://github.com/es-labs/jscommon monorepo
-- [js-web/vue-vite] moved to https://github.com/es-labs/vue-antd-template
 - [js-web/react-vite] moved to https://github.com/ais-one/react-template (work in progress)
 - [js-node/jsdoc-ts] example on how to use jsdoc for typescript
 - [js-node/expressjs] webpush push notification sample at `public/demo-express/pn.html`
@@ -16,7 +21,6 @@
 - [js-node/expressjs] remove sentry, APM for userland to choose and implement
 - [@es-labs/node] SSO for oidc to opt to use IDP or issue own token
 - [@es-labs/node] make APP_NAME and NODE_ENV from env var only
-- [js-node/dbdeploy] db might be shared... so create a seperate project for it (move existing deploy/db folder)
 - [all] APP_NAME is now only to identify name based on package.json name property. APP_PATH removed
 - [js-node/expressjs] rename apps/app-template to app-sample-template
 - [js-node/expressjs] replace openapi file joiner, swagger-ui-express and express-openapi-validator with express-jsdoc-swagger 

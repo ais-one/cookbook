@@ -1,5 +1,5 @@
 {
-  "name": "@js-node/services",
+  "name": "@sandbox/services",
   "private": true,
   "version": "1.0.0",
   "description": "Long running processes",

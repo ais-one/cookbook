@@ -2,8 +2,6 @@
 
 Below are a list of NodeJS applications
 
-- dbdeploy
-  - see [dbdeploy/README.md]()
 - jsdoc-ts
   - see [jsdoc-ts/README.md]() may eventually replace swagger-jsdoc-swagger
 - scaled-ws
@@ -29,7 +27,7 @@ Below are a list of NodeJS applications
 To test out
 
 ```
-cd js-node/services
+cd sandbox/services
 
 # Command to simulate long running process (do take note of caveats, for production need a monitor to handle restart strategy)
 # command: npm run process-long -- development

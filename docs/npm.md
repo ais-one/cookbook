@@ -31,25 +31,10 @@ npm prejects with no dependencies, for testing
 - padder
 - smiley
 
-### Installation
-
-```bash
-# To install each workspace
-npm install --workspace=js-node
-npm install --workspace=js-web
-
-# To install a project in workspace
-npm install --workspace=js-node/expressjs
-
-# To install all workspaces
-npm i --workspaces
-```
 
 ## Installing & Updating Dependencies
 
 Install dependencies for all workspaces!
-
-Note
 
 - when doing npm i, it will always install latest version matching your package
 - sometimes you need to **rebuild**, delete all node_modules folders and the package-lock.json file in the root
@@ -69,17 +54,20 @@ npm update --save
 npm ls <?package> # use npm ls to check on actual versions installed
 ```
 
-## Single workspace command
+## Workspace commands
 
 ```bash
-# install specific dependencies
-npm i lorem-ipsum --workspace=@<namespace>/[package]
+# install a package in a workspace
+npm i lorem-ipsum --workspace=@<namespace>/[package] # is @ needed?
 
-# install all dependencies
-npm i --workspace=js-node/expressjs
+# install all packages in a workspace
+npm i --workspace=js-<namespace>
 
 # Update a package with major version change eg 2.2.8 to 3.1.1
-npm i ant-design-vue@latest --workspace=js-node/expressjs
+npm i ant-design-vue@latest --workspace=<namespace>/[package]
+
+# To install all workspaces
+npm i --workspaces
 ```
 
 ---
