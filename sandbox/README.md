@@ -2,6 +2,7 @@
 
 Below are a list of NodeJS applications
 
+- aws [aws/README.md]()
 - jsdoc-ts
   - see [jsdoc-ts/README.md]() may eventually replace swagger-jsdoc-swagger
 - scaled-ws
@@ -9,7 +10,7 @@ Below are a list of NodeJS applications
 - serialserver [serialserver/README.md]()
   - serial server receive RS232 and send via tcp, use pkg to build binary, winston logging
 - services
-  - tcp_server - stream (keep client, connected and can reply to client, but need to take note on number of client connections) or event (close after receiving packet from client)
+  - tcp_server : stream mode (keep client, connected and can reply to client, but need to take note on number of client connections) or event  mode (close after receiving packet from client)
     - knex & mysql
   - kafkaRx.js
     - kafka consumer
@@ -17,8 +18,8 @@ Below are a list of NodeJS applications
   - kafkaTx.js
     - kafka producer
     - requires kafka to run (see /docker-devenv/kafka)
-  - process-cron.js
-  - process-long.js
+  - process-cron.js : cron triggerred process
+  - process-long.js :
 - worker-threads
   - how to use worker threads
 
@@ -26,7 +27,7 @@ Below are a list of NodeJS applications
 
 To test out
 
-```
+```bash
 cd sandbox/services
 
 # Command to simulate long running process (do take note of caveats, for production need a monitor to handle restart strategy)
@@ -37,6 +38,7 @@ npm run process-long
 # command: npm run process-cron -- development
 npm run process-cron
 ```
+
 
 # Useful commands
 

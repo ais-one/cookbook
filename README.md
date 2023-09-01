@@ -73,11 +73,11 @@ npm i --workspaces
 +- docs/ : documentation
 +- git-hooks : git hooks
 +- sandbox/ : prototyping & research --- scalable-websockets, kafka, cron triggered, long running processes
-+- product/ : [TO-CHOOSE]...  (a link to the repo)
++- product/ : [TO-CHOOSE]...  (use a link to the repo or use submodule)
 +- .editorconfig
 +- .gitignore
-+- bulk-git.sh
-+- bulk-npm.sh : manage check & update of dependencies (can also use dependabot)
++- bulk-git.sh : manage pull & push of repositories
++- bulk-npm.sh : manage check & update of dependencies (can probaby also use dependabot instead)
 +- CHANGELOG.md
 +- LICENCE
 +- package.json
@@ -85,13 +85,6 @@ npm i --workspaces
 ```
 
 ---
-
-
-### Long Running Processes
-
-For long running processes such as tcp server (event mode, streaming mode), serial server, kafka producer, consumer, cron-triggered process, etc.
-
-See [sandbox/README.md](sandbox/README.md)
 
 ### Vite SPA Setup & Run - development environment
 
@@ -104,7 +97,6 @@ Why No SSR or SSG:
 - prefer static sites and lazy loaded SPA for now
 
 ---
-
 
 ## General Requirements
 

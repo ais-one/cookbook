@@ -43,11 +43,10 @@ do
 done
 
 declare -a PACKAGES=(
-  "udemy"
-  "ahop2"
-  "ms"
-  "v3"
-  "vue-crud-x"
+  "cookbook"
+  "jscommon"
+  "express-template"
+  "vue-antd-template"
 )
 
 BASEPATH=`cd .. && pwd`
@@ -68,23 +67,23 @@ do
   fi
 
   if [ "$DOIT" != "${DOIT#[Yy]}" ]; then
-  # or do whatever with individual element of the array
+    # or do whatever with individual element of the array
     echo "Running for... ${package}"
     cd $packagePath
 
     if [ "$opt2" == "Push" ]; then
       echo `git add .`
-      echo `git commit -m "update libs"`
-      if [ "$package" == "vue-crud-x" ]; then
-        echo `git push origin develop`
+      echo `git commit -m "update"`
+      if [ "$package" == "cookbook" ]; then
+        echo "Push for cookbook project manually"
       else
-        echo `git push origin master`
+        echo `git push origin main`
       fi
-    elif [ "$opt2" == "Push" ]; then
-      if [ "$package" == "vue-crud-x" ]; then
-        echo `git pull origin develop`
+    elif [ "$opt2" == "Pull" ]; then
+      if [ "$package" == "cookbook" ]; then
+        echo "Push for cookbook project manually"
       else
-        echo `git pull origin master`
+        echo `git pull origin main`
       fi
     fi
   else

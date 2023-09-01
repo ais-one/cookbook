@@ -10,3 +10,5 @@ npm-debug.log*
 # Editor directories and files
 .idea
 .vscode
+
+.env
