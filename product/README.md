@@ -1,13 +1,25 @@
 ## Description
 
-Contains all the product repositories as git sub-modules.
+Start learning/building
 
-The following are available:
+### 1 [https://github.com/es-labs/express-template]()
 
-jscommon
-- libs
-- tools
+An express app template
 
-express-template
+### 2 [(https://github.com/es-labs/vue-antd-template]()
 
-vue-antd-template
+A VueJS Single-Page App (SPA) template using `vite` bundler and `ant design` UI framework
+
+Why No SSR or SSG:
+- potential slow rendering by server app, added complexity in code, concepts & deployment infra
+- https://github.com/nuxt/nuxt.js/issues/8102
+- prefer static sites and lazy loaded SPA for now
+
+### 3 [common libraries and tools monorepo](https://github.com/es-labs/jscommon)
+
+The packages in the `libs` workspace are published to npm. They are shared, versioned, and used in the template app/web samples
+- @es-labs/node : CJS code for NodeJs and for express
+- @es-labs/esm : ES modules code
+
+The packages in `tools` workspace contain the following useful sample applications
+- dbdeploy: for DB migration and seeding

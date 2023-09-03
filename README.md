@@ -8,14 +8,20 @@
 
 ## IMPORTANT - Read Me First!
 
-Before we look at frameworks, features, the usual sqa concepts like (testing, etc.), we take a step back and look at improving DX:
+Your project is created using a template. If template has updates, can the upstream changes be managed without affecting userland codes?
 
-- Projects built using a template can merge in template updates without affecting userland code
+You have code shared between multiple projects and libraries. If the code is updated. Can you avoid breaking your dependents and dependencies?
+
+
 - Shared libraries should be isolated and versioned, dependents can stay on last-known-good version and update when ready
 - Isolation and versioning can be extended to `types` (for Typescript) and API `contracts`
-- Allow for and easy way to check for and update outdated dependencies in various projects
+- Allow for an easy way to check for and update outdated dependencies in various projects
 
-This repo uses git submodules to provide an overview of the various cookbook projects as a whole
+## Other General Requirements
+
+- For Windows, **integrate bash shell to cmd shell** (when installing git), or use git-bash or WSL2
+- git, github (for actions, secrets, etc) & IDE (e.g. vscode), Docker
+- node 18+ LTS & npm 9+ (npm i -g npm@latest `to update`)
 
 ## Aims
 - easily shared
@@ -26,8 +32,8 @@ This repo uses git submodules to provide an overview of the various cookbook pro
 ## Resuable JS frameworks how to...
 
 - updateable template design
-  - exclude configurable files from repo (e.g. .env), but include sample config files (e.g. .env.sample)
-  - create an folder where all custom code is placed, framework must not touch anything inside this folder
+  - exclude configurable files from repo (e.g. .env), but include sample (e.g. .env.sample)
+  - create folder where all userland code is placed, template must NOT touch this folder
 
 - app based on updateable templates
 1. clone template repo
@@ -86,31 +92,8 @@ npm i --workspaces
 
 ---
 
-### Vite SPA Setup & Run - development environment
 
-See [https://github.com/es-labs/vue-antd-template]().
-
-Why No SSR or SSG:
-
-- potential slow rendering by server app, added complexity in code, rehydration errors, added complexity in server
-- https://github.com/nuxt/nuxt.js/issues/8102
-- prefer static sites and lazy loaded SPA for now
-
----
-
-## General Requirements
-
-- git & IDE (e.g. vscode)
-- Node 18+ LTS
-- Npm 9+ (npm i -g npm@latest `to update`)
-- For Windows, **integrate bash shell to cmd shell** (when installing git), or use git-bash
-- Docker
-
-## Projects & Features
-
-This Project
-- es-labs.org website and documentation:
-  - [https://github.com/es-labs/es-labs.github.io]()
+## Product
 
 Companion Projects:
 - Backend Template & Sample App:
