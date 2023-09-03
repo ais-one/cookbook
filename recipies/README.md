@@ -1,7 +1,5 @@
 ## Description
 
-Start learning/building
-
 ### 1 [https://github.com/es-labs/express-template]()
 
 An express app template
@@ -12,8 +10,8 @@ A VueJS Single-Page App (SPA) template using `vite` bundler and `ant design` UI 
 
 Why No SSR or SSG:
 - potential slow rendering by server app, added complexity in code, concepts & deployment infra
-- https://github.com/nuxt/nuxt.js/issues/8102
 - prefer static sites and lazy loaded SPA for now
+- https://github.com/nuxt/nuxt.js/issues/8102
 
 ### 3 [common libraries and tools monorepo](https://github.com/es-labs/jscommon)
 
@@ -23,3 +21,7 @@ The packages in the `libs` workspace are published to npm. They are shared, vers
 
 The packages in `tools` workspace contain the following useful sample applications
 - dbdeploy: for DB migration and seeding
+
+### 4 [ReactJS Template - TBD]()
+
+

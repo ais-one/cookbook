@@ -1,15 +1,31 @@
 # Description
 
-Below are a list of NodeJS applications
+Projects still in research and development
 
-- aws [aws/README.md]()
-- jsdoc-ts
+## Install
+
+```bash
+# clone repo
+git clone https://github.com/ais-one/cookbook.git
+cd cookbook
+
+# install dependencies for specific workspace projects
+# see package.json for shortcut scripts
+npm i --workspace=sandbox/<project folder name>
+
+# install for all workspace projects
+npm i --workspaces
+```
+
+## Project List
+
+- aws [aws/README.md]() : list of AWS related codes
+- jsdoc-ts: 
   - see [jsdoc-ts/README.md]() may eventually replace swagger-jsdoc-swagger
-- scaled-ws
-  - how to scale websockets using Redis (or some other) PubSub
 - serialserver [serialserver/README.md]()
   - serial server receive RS232 and send via tcp, use pkg to build binary, winston logging
 - services
+  - scaled-ws :  how to scale websockets using Redis (or some other) PubSub
   - tcp_server : stream mode (keep client, connected and can reply to client, but need to take note on number of client connections) or event  mode (close after receiving packet from client)
     - knex & mysql
   - kafkaRx.js

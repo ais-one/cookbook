@@ -8,96 +8,42 @@
 
 ## IMPORTANT - Read Me First!
 
-Your project is created using a template. If template has updates, can the upstream changes be managed without affecting userland codes?
+### Updateable Templates
+
+Your project is created using a template. If template has updates, can the upstream changes be managed with minimal impact on userland codes?
+
+Yes and our project achieve this through:
+
+- Design
+  - Exclude configurable files from repo (e.g. .env), but include sample (e.g. .env.sample) for reference
+  - Create folder where all userland code is placed, template must NOT touch this folder
+- Process
+  - clone template repo
+  - create a remote called `upstream` pointing to template repo
+  - update framework when necessary by merging `upstream` into `origin`
+
+Updateable template should not to be part of a monorepo
+
+### Manageable Sharing
 
 You have code shared between multiple projects and libraries. If the code is updated. Can you avoid breaking your dependents and dependencies?
 
-
+Yes, by basing on the following principles
 - Shared libraries should be isolated and versioned, dependents can stay on last-known-good version and update when ready
-- Isolation and versioning can be extended to `types` (for Typescript) and API `contracts`
-- Allow for an easy way to check for and update outdated dependencies in various projects
+- Isolation and versioning can be extended to `types` (for Typescript) and `contracts` (for API)
+- minimize inter & nested dependencies, and technical debt
 
-## Other General Requirements
+### Other General Requirements
 
-- For Windows, **integrate bash shell to cmd shell** (when installing git), or use git-bash or WSL2
 - git, github (for actions, secrets, etc) & IDE (e.g. vscode), Docker
+- use unix shell (Windows use git-bash or WSL2)
 - node 18+ LTS & npm 9+ (npm i -g npm@latest `to update`)
 
-## Aims
-- easily shared
-- high reusability
-- low technical debt
-- low inter-dependency & nested-dependencies
+### Recipies
 
-## Resuable JS frameworks how to...
+[Projects](recipies/README.md) that can be used (express and vuejs template, shareable libraries and tools)
 
-- updateable template design
-  - exclude configurable files from repo (e.g. .env), but include sample (e.g. .env.sample)
-  - create folder where all userland code is placed, template must NOT touch this folder
-
-- app based on updateable templates
-1. clone template repo
-2. create a remote called upstream pointing to template repo
-3. update framework when necessary by merging upstream into origin
-
-updateable template repo is advisable not to be a monorepo
-
-
-
-
-# About
-
-> **TL;DR** ExpressJS, VueJS, ReactJS cookbook, with evergreen recipes and templates (CRUD, CI/CD, QA, Testing, Cloud container deployment, Web Components, ES Modules, etc.) to develop applications faster, while reducing the need for rewrite or refactoring due to changes in dependencies.
-
-Latest Version [0.7.0](https://github.com/ais-one/cookbook/releases/tag/0.7.0) - Released 2023 Sep 01 0830 +8GMT. åSee changes history in [CHANGELOG.md](CHANGELOG.md) and discuss [here](https://github.com/ais-one/cookbook/discussions)
-
-
-
-
-## Sandbox
-
-### Install
-
-```bash
-# clone repo
-git clone https://github.com/ais-one/cookbook.git
-cd cookbook
-
-# install dependencies for specific workspace projects
-# see package.json for shortcut scripts
-npm i --workspace=sandbox/<project folder name>
-
-# install for all workspace projects
-npm i --workspaces
-```
-
-## Project Strcuture
-
-```
-+- .github/ : github related CICD and automations
-+- docker-devenv/ : docker for development environment
-+- docs/ : documentation
-+- git-hooks : git hooks
-+- sandbox/ : prototyping & research --- scalable-websockets, kafka, cron triggered, long running processes
-+- product/ : [TO-CHOOSE]...  (use a link to the repo or use submodule)
-+- .editorconfig
-+- .gitignore
-+- bulk-git.sh : manage pull & push of repositories
-+- bulk-npm.sh : manage check & update of dependencies (can probaby also use dependabot instead)
-+- CHANGELOG.md
-+- LICENCE
-+- package.json
-+- README.md
-```
-
----
-
-
-## Product
-
-Companion Projects:
-- Backend Template & Sample App:
-  - [https://github.com/es-labs/express-template]()
+- [Backend Template & Sample App](https://github.com/es-labs/express-template):
   - CORS, proxy middleware, helmet, error handling, logging, OpenAPI
   - Knex, MongoDb, Relational DB data example, migration, seed, GraphQL, Redis
   - Webpush & FCM push notification, Sendgrid email, Nexmo SMS, Telegram
@@ -122,18 +68,16 @@ Companion Projects:
     - vue-nobundler/views/ui2.js: table example
     - vue-nobundler/views/ui3.js: form example (with connection to backend)
     - vue-nobundler/views/ui4.js: table and form example (with connection to backend)
-- Frontend Template & Sample App:
-  - [https://github.com/es-labs/vue-antd-template]()
-- Reusable Components:
-  - [https://github.com/es-labs/jscommon]()
+- [Frontend Template & Sample App](https://github.com/es-labs/vue-antd-template)
+- [Reusable Components](https://github.com/es-labs/jscommon)
     - reusable CJS and ESM codes
     - tools such as DBdeploy
-- Python:
-  - [https://github.com/ais-one/favv]() some of the API backend implemented in Python FastAPI
-  - streamlit componennt examples
 
+### Sandbox
 
-1. check dependencies
-script to check for and/or update packages... if all repos are in the same project
+Research and exploration [projects](sandbox/README.md)
 
-2. update from upstream for templates
+### Useful scripts - For Use By Maintainers
+
+- `bulk-git.sh`: script to diff, pull, push git (for repos in `recipies`)
+- `bulk-npm.sh`: script to check for and/or update dependencies in package.json (for repos in `recipies`)
