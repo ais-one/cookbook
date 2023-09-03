@@ -77,6 +77,18 @@ Yes, by basing on the following principles
 
 Research and exploration [projects](sandbox/README.md)
 
+### Sandbox
+
+Research and exploration [projects](sandbox/README.md)
+
+### Docker Dev Env
+
+Container setups for supporting apps for local development and testing [docker-devenv/README.md]()
+
+### Documentation
+
+The [docs](docs/home.md) folder contains documentation on other related/unrelated topics and is in the midst of a major update
+
 ### Useful scripts - For Use By Maintainers
 
 - `bulk-git.sh`: script to diff, pull, push git (for repos in `recipies`)
