@@ -34,7 +34,9 @@ declare -a PACKAGES=(
   "/cookbook"
   "/jscommon"
   "/express-template"
+  "/express-template/apps/web-sample"
   "/vue-antd-template"
+  "/vue-antd-template/src/apps/app-sample"
 )
 
 BASEPATH=`cd .. && pwd`
@@ -58,7 +60,11 @@ do
   # or do whatever with individual element of the array
     echo "Running for... ${packagePath}"
     cd $packagePath
-    echo `npm $*`
+    if [ "$*" == "update" ]; then
+      echo `npm $* --save`
+    else
+      echo `npm $*`
+    fi
   else
     echo "Skipped... ${packagePath}"
   fi
