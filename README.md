@@ -8,7 +8,7 @@
 
 ## IMPORTANT - Read Me First!
 
-### 1 Updateable Templates
+### 1 - Updateable Templates
 
 Your project is created using a template. If template has updates, can the upstream changes be managed with minimal impact on userland codes?
 
@@ -24,7 +24,7 @@ Yes and our project achieve this through:
 
 Updateable template should not to be part of a monorepo
 
-### 2 Manageable Sharing
+### 2 - Manageable Sharing
 
 You have code shared between multiple projects and libraries. If the code is updated. Can you avoid breaking your dependents and dependencies?
 
@@ -35,13 +35,13 @@ Yes, by basing on the following principles
 
 ---
 
-### 3 General Requirements
+### 3 - General Requirements
 
 - git, github (for actions, secrets, etc) & IDE (e.g. vscode), Docker
 - use unix shell (Windows use git-bash or WSL2)
 - node 18+ LTS & npm 9+ (npm i -g npm@latest `to update`)
 
-### 4 Recipies
+### 4 - Recipies
 
 [Projects](recipies/README.md) that can be used (express and vuejs template, shareable libraries and tools)
 
@@ -77,19 +77,19 @@ Yes, by basing on the following principles
 
 ---
 
-### 5 Sandbox
+### 5 - Sandbox
 
 Research and exploration [projects](sandbox/README.md)
 
-### 6 Docker Dev Env
+### 6 - Docker Dev Env
 
 Container setups for supporting apps for local development and testing [docker-devenv/README.md]()
 
-### 7 Documentation
+### 7 - Documentation
 
 The [docs](docs/home.md) folder contains documentation on other related/unrelated topics and is in the midst of a major update
 
-### 8 Useful scripts - For Use By Maintainers
+### 8 - Useful scripts - For Use By Maintainers
 
 - `bulk-git.sh`: script to diff, pull, push git (for repos in `recipies`)
 - `bulk-npm.sh`: script to check for and/or update dependencies in package.json (for repos in `recipies`)
