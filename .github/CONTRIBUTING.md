@@ -1,15 +1,15 @@
-# VueCrudX Contributing Guide
-Hello and thank you for your interest in helping make VueCrudX better. Please take a few moments to review the following guidelines:
+# cookbook Contributing Guide
+Hello and thank you for your interest in helping make cookbook better. Please take a few moments to review the following guidelines:
 
 ## IMPORTANT INFORMATION
-* For general questions, please join [TBD - our Discord Community](https://community.TBD.com/).
+* For general questions, please join [Our Discussion Board](https://github.com/ais-one/cookbook/discussions).
 
 ## Reporting Issues
 * The issue list of this repo is **exclusively** for Bug Reports and Feature Requests.
 * Bug reproductions should be as **concise** as possible.
 * **Search** for your issue, it _may_ have been answered.
 * See if the error is **reproduceable** with the latest version.
-* If reproduceable, please provide a [Codepen](https://template.tbd.com) or public repository that can be cloned to produce the expected behavior. It is preferred that you create an initial commit with no changes first, then another one that will cause the issue. 
+* If reproduceable, please provide a [Codepen](https://codepen.io/) or public repository that can be cloned to produce the expected behavior. It is preferred that you create an initial commit with no changes first, then another one that will cause the issue. 
 * **Never** comment "+1" or "me too!" on issues without leaving additional information, use the :+1: button in the top right instead.
 
 ## Pull Requests

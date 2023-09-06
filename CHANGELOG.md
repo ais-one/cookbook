@@ -250,7 +250,7 @@
   - set our internal usage key to __key, to avoid collisions
   - hide = hide table
   - filter & sort is not enabled by default, need to set as true
-- [common-lib/esm/bwc-t4t-form.js] - (generic crud) create form using web components - currently only input tag handled (TBD add select tag, and other custom tags, handle file inputs)
+- [common-lib/esm/bwc-t4t-form.js] - (generic crud) create form using web components - currently only input tag handled (TODO add select tag, and other custom tags, handle file inputs)
 - [common-lib/esm/t4t-fe.js] - (generic crud) created utilities also includes validation...
 - [common-lib/esm/t4t-validate.js] - (generic crud) created validation for backend use
 - [example-vite] NOTE: mwc-multiselect.js is broken

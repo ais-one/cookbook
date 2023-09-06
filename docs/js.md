@@ -138,7 +138,7 @@ Bind is different. It always returns a new function. We can use Bind to curry fu
 
 ### Classes / Prototypes
 
-TBD
+TODO
 
 ## Scope
 

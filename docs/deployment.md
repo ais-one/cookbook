@@ -433,7 +433,7 @@ docker exec -it <container id> /bin/bash
 # to save an image
 docker save image:tag | gzip > image-tag.tar.gz
 
-# TBD load an image from tar.gz
+# TODO load an image from tar.gz
 ```
 
 ## Docker Commands

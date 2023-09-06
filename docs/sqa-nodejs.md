@@ -108,11 +108,11 @@ pre-commit sample file is created in .husky/pre-commit
 
 ## commitizen
 
-TBD
+TODO
 
 ## semantic version
 
-TBD
+TODO
 
 # A list of Software Quality Assurance Tools
 

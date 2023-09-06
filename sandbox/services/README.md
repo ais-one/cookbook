@@ -71,7 +71,7 @@ See output when sending message from a client (currently client that sent will a
 
 If going through a proxy such as load balancer, need sticky sessions
 
-TBD: handle duplicate message to message originator client on subscription message
+TODO: handle duplicate message to message originator client on subscription message
 
 
 ---

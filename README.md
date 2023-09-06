@@ -6,42 +6,38 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/ais-one/cookbook/badge.svg)](https://snyk.io/test/github/ais-one/cookbook)
 [![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/cookbook/shield-link)
 
-## IMPORTANT - Read Me First!
+### 1 - IMPORTANT - Read Me First!
 
-### 1 - Updateable Templates
+### 1.1 - Updateable Templates
 
 Your project is created using a template. If template has updates, can the upstream changes be managed with minimal impact on userland codes?
 
-Yes and our project achieve this through:
-
+Yes and this is achieved through:
 - Design
-  - Exclude configurable files from repo (e.g. .env), but include sample (e.g. .env.sample) for reference
   - Create folder where all userland code is placed, template must NOT touch this folder
+  - template should not to be part of a monorepo 
 - Process
-  - clone template repo
-  - create a remote called `upstream` pointing to template repo
+  - clone template and create remote called `upstream` pointing to template
   - update framework when necessary by merging `upstream` into `origin`
 
-Updateable template should not to be part of a monorepo
-
-### 2 - Manageable Sharing
+### 1.2 - Manageable Sharing
 
 You have code shared between multiple projects and libraries. If the code is updated. Can you avoid breaking your dependents and dependencies?
 
-Yes, by basing on the following principles
+Yes, based on the following principles:
 - Shared libraries should be isolated and versioned, dependents can stay on last-known-good version and update when ready
 - Isolation and versioning can be extended to `types` (for Typescript) and `contracts` (for API)
 - minimize inter & nested dependencies, and technical debt
 
 ---
 
-### 3 - General Requirements
+### 2 - General Requirements
 
 - git, github (for actions, secrets, etc) & IDE (e.g. vscode), Docker
-- use unix shell (Windows use git-bash or WSL2)
+- unix shell (Windows use git-bash or WSL2)
 - node 18+ LTS & npm 9+ (npm i -g npm@latest `to update`)
 
-### 4 - Recipies
+### 3 - Recipies
 
 [Projects](recipies/README.md) that can be used (express and vuejs template, shareable libraries and tools)
 
@@ -77,19 +73,19 @@ Yes, by basing on the following principles
 
 ---
 
-### 5 - Sandbox
+### 4 - Sandbox
 
 Research and exploration [projects](sandbox/README.md)
 
-### 6 - Docker Dev Env
+### 5 - Docker Dev Env
 
 Container setups for supporting apps for local development and testing [docker-devenv/README.md]()
 
-### 7 - Documentation
+### 6 - Documentation
 
-The [docs](docs/home.md) folder contains documentation on other related/unrelated topics and is in the midst of a major update
+The [docs](docs/home.md) folder contains useful information is in the midst of a major cleanup
 
-### 8 - Useful scripts - For Use By Maintainers
+### 7 - Useful scripts - For Use By Maintainers
 
 - `bulk-git.sh`: script to diff, pull, push git (for repos in `recipies`)
 - `bulk-npm.sh`: script to check for and/or update dependencies in package.json (for repos in `recipies`)

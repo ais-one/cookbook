@@ -75,7 +75,7 @@ export const readFile = async (keyName: string | undefined) => {
     Key: keyName,
   });
 
-  // TBD try and promisify
+  // TODO try and promisify
   try {
     const response = await client.send(command);
     const input: SdkStream<any> | undefined = response.Body

@@ -22,6 +22,6 @@ The packages in the `libs` workspace are published to npm. They are shared, vers
 The packages in `tools` workspace contain the following useful sample applications
 - dbdeploy: for DB migration and seeding
 
-### 4 [ReactJS Template - TBD]()
+### 4 [ReactJS Template - TODO]()
 
 

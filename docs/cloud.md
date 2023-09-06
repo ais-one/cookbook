@@ -2,7 +2,7 @@
 
 Where GCP, AWS, Azure Aliyun, Most concepts are the same
 
-Try to use terraform (TBD refer to DSO project)
+Try to use terraform (TODO refer to DSO project)
 
 ## Install CLI
 
