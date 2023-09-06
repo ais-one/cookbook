@@ -40,9 +40,12 @@ Why No SSR or SSG:
 
 Common libraries and tools monorepo
 
-The packages in the `libs` workspace are published to npm and are `shared`, `versioned`. Usage can be found in the template samples
+The packages in the `libs` workspace are published to npm and are `shared`, `versioned`
 - @es-labs/node : reusable CJS code for NodeJs and for express
 - @es-labs/esm : reusable ES modules code
+- Usage can be found in the template samples
+  - [https://github.com/es-labs/express-template]()
+  - [https://github.com/es-labs/vue-antd-template]()
 
 The packages in `tools` workspace contain the following reusable/useful sample applications/tools
 - dbdeploy: for DB migration and seeding
