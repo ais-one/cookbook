@@ -8,7 +8,7 @@
 
 ### 1 - IMPORTANT - Read Me First!
 
-The `templates` (express and vuejs template) and `libraries` (shareable libraries and tools) projects referenced in our [Recipes](recipes/README.md) are based on the two principles below.
+The `templates` (express and vuejs template) and `libraries` (shareable libraries and tools) projects referenced in the [Recipes](recipes/README.md) are based on the two principles below.
 
 ### 1.1 - Updateable Templates
 
