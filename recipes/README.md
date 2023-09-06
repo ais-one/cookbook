@@ -27,7 +27,7 @@ An express app template
   - vue-nobundler/views/ui3.js: form example (with connection to backend)
   - vue-nobundler/views/ui4.js: table and form example (with connection to backend)
 
-## Recipe 2 - [(https://github.com/es-labs/vue-antd-template]()
+## Recipe 2 - [https://github.com/es-labs/vue-antd-template]()
 
 A VueJS Single-Page App (SPA) template using `vite` bundler and `ant design` UI framework
 
@@ -36,7 +36,9 @@ Why No SSR or SSG:
 - prefer static sites and lazy loaded SPA for now
 - https://github.com/nuxt/nuxt.js/issues/8102
 
-## Recipe 3 - [common libraries and tools monorepo](https://github.com/es-labs/jscommon)
+## Recipe 3 - [https://github.com/es-labs/jscommon]()
+
+Common libraries and tools monorepo
 
 The packages in the `libs` workspace are published to npm and are `shared`, `versioned`. Usage can be found in the template samples
 - @es-labs/node : reusable CJS code for NodeJs and for express
