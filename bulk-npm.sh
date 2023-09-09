@@ -28,15 +28,12 @@ done
 echo
 
 declare -a PACKAGES=(
-  # "/udemy/firebase"
-  # "/udemy/i18n-process"
-  # "/udemy/node-testing"
   "/cookbook"
   "/jscommon"
   "/express-template"
-  "/express-template/apps/web-sample"
+  "/express-template/apps"
   "/vue-antd-template"
-  "/vue-antd-template/src/apps/app-sample"
+  "/vue-antd-template/src/apps"
 )
 
 BASEPATH=`cd .. && pwd`
