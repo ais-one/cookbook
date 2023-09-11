@@ -15,6 +15,6 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@es-labs/node": "^0.0.28"
+    "@es-labs/node": "^0.0.30"
   }
 }
