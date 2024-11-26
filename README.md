@@ -37,7 +37,7 @@ Yes, based on the following principles:
 
 - git, github (for actions, secrets, etc) & IDE (e.g. vscode), Docker
 - unix shell (Windows use git-bash or WSL2)
-- node 18+ LTS & npm 9+ (npm i -g npm@latest `to update`)
+- node 20+ LTS & npm 9+ (npm i -g npm@latest `to update`)
 
 ### 3 - Sandbox
 
