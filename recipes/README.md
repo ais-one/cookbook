@@ -19,7 +19,6 @@ An express app template
   - signed uploads, recaptcha, **Web component table, form & CRUD backend** (files to note)
   - @es-labs/esm/t4t.js: handle backend CRUD API<
   - @es-labs/t4t-fe.js: frontend operations to interact with t4t.js
-  - @es-labs/t4t-validate.js: validation used by both front and backend
   - @es-labs/esm/bwc-table.js: used to display table
   - @es-labs/esm/bwc-t4t-form.js: form generated from table configurations
   - vue-nobundler/views/ui1.js: autcomplete, combobox, file upload example

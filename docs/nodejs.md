@@ -184,3 +184,7 @@ You need to create `tag` on the github remote also by creating a new release or 
 - https://blog.logrocket.com/optimize-node-js-performance-with-clustering/
 - https://blog.logrocket.com/customizing-node-js-env-files/
 - TODO workerthreads
+
+## Security
+
+- https://semaphoreci.medium.com/best-practices-for-securing-node-js-applications-in-production-d24b7c4981d
