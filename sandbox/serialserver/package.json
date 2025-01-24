@@ -12,7 +12,7 @@
   "dependencies": {
     "@es-labs/node": "^0.0.28",
     "winston": "^3.10.0",
-    "winston-daily-rotate-file": "^4.7.1"
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "not-working": {
     "serialport": "^9.2.4"
