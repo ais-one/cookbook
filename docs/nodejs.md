@@ -2,6 +2,10 @@
 
 ## nvm
 
+Use `nvm` to manage nodeJS versions.
+
+Installation
+
 ```bash
 # use curl
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
@@ -10,7 +14,12 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 ```
 
+Setup .bashrc or .zshrc
+
 ```bash
+# determine shell
+echo $0
+
 # .bashrc or .zshrc
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
@@ -18,6 +27,14 @@ export PATH=/usr/local/bin:$PATH
 
 nvm install --lts
 nvm use --lts
+```
+
+## pm2
+
+Use on dev servers to run node apps perpetually
+
+```bash
+npm install -g pm2
 ```
 
 ## Node

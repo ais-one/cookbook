@@ -2,16 +2,24 @@
 
 ## Ubuntu
 
+Ubuntu specific setup
+
+Either
+
+```
 sudo apt-get install python-is-python3
+```
+
+Or edit .bashrc or .zshrc
 
 ```bash
-# .bashrc or .zshrc
-
-# add for ubuntu
 alias python='python3'
 ```
 
+
 ## pyenv for version and environment management
+
+Use pyenv for managing python versions
 
 https://realpython.com/intro-to-pyenv - May need some required libraries.
 
@@ -25,9 +33,13 @@ sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev li
 
 ### Installing pyenv
 
+Installation
+
 ```
 curl https://pyenv.run | bash
 ```
+
+Setup .bashrc or .zshrc
 
 ```bash
 # .bashrc or .zshrc
