@@ -25,38 +25,19 @@
 
 ## Documents
 
-- Backend
-  - Kafka [backend/kafka.md](backend/kafka.md)
-  - MicroServices [backend/micro-services.md](backend/micro-services.md)
-  - TCP [backend/tcp.md](tcp.md)
-  - Mongo DB [backend/mongodb/home.md](backend/mongodb/home.md)
-- Deployment And Scaling
-  - Deployment [deployment/home.md](deployment/home.md)
-  - Deployment Container [deployment/deployment-container.md](deployment/deployment-container.md)
-  - Deployment VM [deployment/deployment-vm.md](deployment/deployment-vm.md)
-  - Deployment Secrets[deployment/secrets.md](deployment/secrets.md)
-- GCP
-  - Home [gcp/home.md](gcp/home.md)
-- Git
-  | - git related [git.md](git.md)
-  | - git merge from upstream [git.md](git.md)
-  | - github related [github.md](github.md)
-- SQA
-  - SQA Tools [sqa/sqa-tools.md](sqa/sqa-tools.md)
-  - SQA NodeJS [sqa/sqa-nodejs.md](sqa/sqa-nodejs.md)
-  - Team Guidance [sqa/team-guidance.md](sqa/team-guidance.md)
-- Web
-  - Authentication [web/authentication.md](web/authentication.md)
-  - Custom Elements [web/custom-element.md](web/custom-element.md)
-  - Fetch API [web/fetch.md](web/fetch.md)
-  - GraphQL [web/graphql.md](web/graphql.md)
-  - JS [web/js.md](web/js.md)
-  - Performance [web/performance.md](web/performance.md)
-  - Logging [web/logging.md](web/logging.md)
-- Github [github.md](github.md)
-- NodeJS [nodejs.md](nodejs.md)
-- NPM [npm.md](npm.md)
+- Backend (Kafka. Microservices?, TCP) [backend.md](backend.md)
+- Cloud [cloud.md](cloud.md)
+- 
+- Deployment And Scaling [deployment.md](deployment.md)
 - Dev Tooling & Setup [devtools.md](devtools.md)
+- Git [git.md](git.md)
+- JS [web/js.md](web/js.md)
+- NodeJS [nodejs.md](nodejs.md)
+- NodeJS SQA [nodejs-sqa.md](nodejs-sqa.md)
+- Python [python.md](python.md)
+- Team Guidance [team-guidance.md](team-guidance.md) - processes, standards, devtools
+- Web [web.md](web.md) - covers custom el, fetch, performance, logging, authentication
+- VueJS [vue.md](vue.md) - VueJS related item
 
 ## Scaling Your Development
 

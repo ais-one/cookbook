@@ -7,12 +7,13 @@
   - Live Server
   - REST Client
   - SFTP
-  - MongoDB Client (official) / SQLite Viewer
+  - Database Client JDBC
   - JS Language Specific
     - es6-string-html
     - ESLint
     - Volar (for VueJS)
     - Prettier
+  - Remote SSH & Remote Explorer
 - Recommended
   - SonarLint (requires java)
   - GitLens

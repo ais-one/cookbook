@@ -57,14 +57,14 @@ Google Cloud Platform - See [../gcp/home.md](../gcp/home.md)
 ## Scalable Deployment On Cloud (GCP)
 
 - Database
-  - RDS / CloudSQL
-  - MongoDB Atlas https://www.mongodb.com/cloud/atlas (GCP/AWS/Azure)
-- Memory Key-Value Store
+  - RDS (Postgresql or Mysql)
+- Memory Key-Value Store (redis -> valkey)
   - https://cloud.google.com/memorystore/docs/redis
   - Redis Labs - https://app.redislabs.com/
 - MQ
+  - cron + lambda
+  - redis pub-sub
   - better-queue (simple)
-  - agenda (uses MongoDB)
   - Google Pubsub https://cloud.google.com/pubsub/docs
 
 ---
@@ -545,14 +545,12 @@ VAULT=
 ### Serving Configs
 
 - RSA public and private keys for JWT
-
   - should be served from a authentication sidecar
   - should be served from secrets manager (JSON/JS)
   - served from config file (JSON/JS)
   - self-generated
 
 - SSL certificates
-
   - should use cloudflare or similar service for HTTPS
   - should be served from secrets manager (JSON/JS)
   - served from config file (JSON/JS)

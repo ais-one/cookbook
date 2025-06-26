@@ -2,7 +2,6 @@
 
 - Do not build-up technical debt
   - balance between developing own code and using dependencies
-
 - The tool or language should not get in the way of fulfilling business objectives and adapting to changes
 
 ## Tooling
@@ -13,18 +12,21 @@ VS Code
    - eslint, to implement some standardisation on coding style and format
    - gitlens, to view and compare repositories
    - es6-string-html, formatting html in JS
-   - vetur, syntax highlighting for VueJS
-   - docker
-   - live server ???
+   - Vue - Official, syntax highlighting for Vue
+   - Docker
+   - Live Server
    - remote-WSL
 
-Jest?
-- Automated Testing
+## Automated Testing
+- backend 
   - Unit Test
   - Functional Testing
   - Integration Testing
-- Test coverage Analysis
-
+  - Test coverage Analysis
+  - use NodeJS native test runner
+- Frontend
+  - E2E
+    - playwrite
 
 ## Repository
 
@@ -37,13 +39,13 @@ Github is our version control system for the team to collaborate on code develop
 
 The overall flow of Gitflow is:
 
-- A develop branch is created from master
-- A release branch is created from develop (no new features, only bug fixes, documentation, etc.)
-  - When the release branch is done it is merged into develop and master (master is tagged)
-- Feature branches are created from develop
-  - When a feature is complete it is merged into the develop branch
+- A work branch is created from main
+- A release branch is created from work (no new features, only bug fixes, documentation, etc.)
+  - When the release branch is done it is merged into work and master (master is tagged)
+- Feature branches are created from work
+  - When a feature is complete it is merged into the work branch
 - If an issue in master is detected a hotfix branch is created from master
-  - Once the hotfix is complete it is merged to both develop and master
+  - Once the hotfix is complete it is merged to both work and master
 
 Organize by User
 

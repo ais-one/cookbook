@@ -1,4 +1,26 @@
-# NodeJS Notes
+# NodeJS
+
+## nvm
+
+```bash
+# use curl
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+# or wget
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+```
+
+```bash
+# .bashrc or .zshrc
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+export PATH=/usr/local/bin:$PATH
+
+nvm install --lts
+nvm use --lts
+```
+
+## Node
 
 - https://github.com/goldbergyoni/nodebestpractices
 - https://github.com/thedaviddias/Front-End-Checklist
@@ -188,3 +210,88 @@ You need to create `tag` on the github remote also by creating a new release or 
 ## Security
 
 - https://semaphoreci.medium.com/best-practices-for-securing-node-js-applications-in-production-d24b7c4981d
+
+
+
+
+npm version patch
+
+[package.json](https://docs.npmjs.com/cli/v7/configuring-npm/package-json)
+
+```json
+{
+  "files": ["build/**/*"]
+}
+```
+
+---
+
+# NPM
+
+## npm workspaces
+
+### References:
+
+- https://github.com/ruanmartinelli/npm-workspaces-demo
+- https://hyperfoo.io/posts/npm-7-workspaces-1
+
+1. package name is important (note scoped packages)
+2. not peer dependency issues in NPM 8
+3. may need to add scope
+4. npm i --workspace=<a-workspace>
+
+npm prejects with no dependencies, for testing
+
+- vtextpad
+- complex.js
+- fraction.js
+- zero-fill
+- padder
+- smiley
+
+
+## Installing & Updating Dependencies
+
+Install dependencies for all workspaces!
+
+- when doing npm i, it will always install latest version matching your package
+- sometimes you need to **rebuild**, delete all node_modules folders and the package-lock.json file in the root
+
+```bash
+# https://github.com/npm/cli/issues/708
+# https://github.com/npm/cli/issues/2032
+npm i # use this
+# npm i --legacy-peer-deps # use this if there is peer dependencies issues, but not recommended
+```
+
+Update dependencies for all workspaces!
+
+```bash
+npm outdated # use this to check for outdated dependencies
+npm update --save
+npm ls <?package> # use npm ls to check on actual versions installed
+```
+
+## Workspace commands
+
+```bash
+# install a package in a workspace
+npm i lorem-ipsum --workspace=@<namespace>/[package] # is @ needed?
+
+# install all packages in a workspace
+npm i --workspace=js-<namespace>
+
+# Update a package with major version change eg 2.2.8 to 3.1.1
+npm i ant-design-vue@latest --workspace=<namespace>/[package]
+
+# To install all workspaces
+npm i --workspaces
+```
+
+---
+
+## NPM Token
+
+Create token
+
+- for automation fine grain and limit its access

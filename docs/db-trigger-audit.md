@@ -89,8 +89,6 @@ SELECT set_config('audit.user_id', 'test user', true);
 ```
 
 
-
-
 ## MySQL
 
 https://medium.com/@rajeshkumarraj82/mysql-table-audit-trail-using-triggers-bd32b772cce5

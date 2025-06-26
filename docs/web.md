@@ -97,33 +97,9 @@ https://fetch-progress.anthum.com/fetch-enhanced/
 
 ## Graphql
 
-### Libraries
-
-clients
-
-- [best] Fetch API
-- [https://github.com/prisma-labs/graphql-request]()
-- [https://github.com/jaydenseric/graphql-upload]()
-- [https://github.com/FormidableLabs/urql]()
-- [https://github.com/apollographql/apollo-client]() (bloated, breaks easily)
-
-server + subscriptions -[https://github.com/graphql/express-graphql]() -[https://github.com/enisdenjo/graphql-ws]() (has client and server libs)
-
-### Benchmarks
-
+Avoid Like The Plugue
 https://github.com/benawad/node-graphql-benchmarks
 
-### Considerations
-
-- jwt tokens and refresh tokens
-- file uploads, cache, resolver problems, N+1 problem
-- https://www.freecodecamp.org/news/five-common-problems-in-graphql-apps-and-how-to-fix-them-ac74d37a293c/
-- https://blog.logrocket.com/5-reasons-you-shouldnt-be-using-graphql-61c7846e7ed3/
-- https://shammelburg.medium.com/subscriptions-with-graphql-dfa8279af050
-- https://httptoolkit.tech/blog/simple-graphql-server-without-apollo
-- https://blog.logrocket.com/why-i-finally-switched-to-urql-from-apollo-client/
-- https://dev.to/remorses/you-don-t-need-apollo-to-use-graphql-in-react-1277
-- https://the-guild.dev/blog/subscriptions-and-live-queries-real-time-with-graphql (quite good)
 
 # Web Performance
 
@@ -260,4 +236,22 @@ To find SRI for unpkg, `https://unpkg.com/htmx.org@1.0.2`, use `https://unpkg.co
   integrity="sha384-uG2fggOnt72f9yU5g6r04wPKVnlrpuTRachw1fB6euaHlWgObEcF9zSrDBuBMZ9H"
   crossorigin="anonymous"
 ></script>
+```
+
+
+---
+
+To Check below...
+
+- https://developers.google.com/learn/pathways/web-identity-forms?hl=en
+- https://web.dev/vitals
+
+```css
+input[type=email]:invalid {
+  color: red;
+}
+
+input[type=email]:not(:placeholder-shown):invalid {
+  color: red;
+}
 ```

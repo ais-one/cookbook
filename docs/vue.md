@@ -1,3 +1,7 @@
+
+**Vue 3 reactivity demo**
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,3 +27,4 @@
   </script>
 </body>
 </html>
+```
