@@ -1,10 +1,29 @@
 # Cloud
 
+## Services & Platforms
+
 Supported Cloud Platforms
 - Aliyun
 - AWS
+- DigitalOcean
 
-Try to use terraform (TODO refer to DSO project)
+|Type|Alicloud|AWS|Digital Ocean|
+|----|--------|---|-------------|
+|IAM|RAM|IAM| ? |
+|Simplified container deployment|SAE|App Runner|app platform|
+|Serverless Function|Function Compute|Lambda|functions|
+|Object Storage|oss|s3|spaces|
+|Static Pages|oss|s3|app platform|
+|API Gateway|yes|yes|no|
+|Content delivery network|CloudFront|CDN / DCDN|spaces?|
+|Managed Redis|ElastiCache (Redis)|Tair / ApsaraDB for Redis| ? |
+|Managed relational DB|RDS (MySQL/PG)|RDS| ? |
+|Load Balancers|SLB|ALB / NLB / CLB| ? |
+|NAT Gateway for outgoing|NAT|NAT| ? |
+|Docker image registry|ACR|ECR| ? |
+
+
+TBD: Try to use terraform
 
 ## Install CLI
 
