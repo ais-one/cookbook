@@ -27,17 +27,13 @@
 
 - Backend (Kafka. Microservices?, TCP) [backend.md](backend.md)
 - Cloud [cloud.md](cloud.md)
-- 
-- Deployment And Scaling [deployment.md](deployment.md)
-- Dev Tooling & Setup [devtools.md](devtools.md)
+- Deployment + Scaling + Devtools [deployment.md](deployment.md)
 - Git [git.md](git.md)
-- JS [web/js.md](web/js.md)
-- NodeJS [nodejs.md](nodejs.md)
-- NodeJS SQA [nodejs-sqa.md](nodejs-sqa.md)
+- JS [js.md](web/js.md)
+- NodeJS + SQL [nodejs.md](nodejs.md)
 - Python [python.md](python.md)
 - Team Guidance [team-guidance.md](team-guidance.md) - processes, standards, devtools
 - Web [web.md](web.md) - covers custom el, fetch, performance, logging, authentication
-- VueJS [vue.md](vue.md) - VueJS related item
 
 ## Scaling Your Development
 

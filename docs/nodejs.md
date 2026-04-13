@@ -312,3 +312,48 @@ npm i --workspaces
 Create token
 
 - for automation fine grain and limit its access
+
+
+
+
+# SQA NodeJS
+
+The following development dependencies are using to assist in SQA in NodeJS
+
+- git hooks: native git precommit hooks
+- format + lint: biome (vs eslint + prettier)
+- commit lint: czg (vs commitizen)
+- versioning & release: release-please action
+
+## A list of Software Quality Assurance Tools
+
+- CICD: Github Actions
+- Dependency Security: Snyk [https://snyk.io/plans]
+- Code Quality Analysis: Sonarcloud [https://sonarcloud.io]
+
+## CI/CD - Github
+- https://github.com/ajinabraham/NodeJsScan - SAST
+- https://github.com/zaproxy/zaproxy - DAST
+- https://prometheus.io/ - monitoring
+
+---
+
+## Application Performance Monitoring APM & Logging
+
+Research In Progress
+
+- https://sentry.io/welcome/
+- https://www.appdynamics.com/
+- https://www.datadoghq.com/
+- https://newrelic.com/
+- https://logrocket.com/
+- https://www.splunk.com/
+- https://raygun.com/
+- https://rollbar.com/
+
+## User Behaviour Analysis
+
+Analyze user behavior across your sites and apps
+
+- MixPanel https://mixpanel.com/home/
+- Google Analytics

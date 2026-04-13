@@ -1,5 +1,0 @@
-#!/bin/sh
-
-echo ---------- pre-commit execute start ----------
-# you can do a git add . here also
-echo ---------- pre-commit execute end ----------

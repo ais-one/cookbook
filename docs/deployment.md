@@ -1,3 +1,69 @@
+# Dev Tools
+
+## Optional VS Code Plugins
+
+**NOTE** Useful plugins if using VS Code:
+
+- Essentials
+  - Docker
+  - Live Server
+  - REST Client
+  - SFTP
+  - Database Client JDBC
+  - JS Language Specific
+    - es6-string-html
+    - ESLint
+    - Volar (for VueJS)
+    - Prettier
+  - Remote SSH & Remote Explorer
+- Recommended
+  - SonarLint (requires java)
+  - GitLens
+
+## Chrome Extensions
+
+- SAML / OIDC
+  - https://chrome.google.com/webstore/detail/saml-ws-federation-and-oa/hkodokikbjolckghdnljbkbhacbhpnkb?hl=en
+- MetaMask
+  - https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en
+
+## Other Utilities
+
+- DB clients
+  - dbeaver (mac / windows)
+  - heidisql (windows)
+
+## Apps Setup
+
+### OpenJDK Setup
+
+https://stackoverflow.com/questions/52511778/how-to-install-openjdk-11-on-windows
+
+Extract the zip file into a folder, e.g. C:\Program Files\Java\ and it will create a jdk-11 folder (where the bin folder is a direct sub-folder). You may need Administrator privileges to extract the zip file to this location.
+
+Set a PATH:
+
+Select Control Panel and then System.
+Click Advanced and then Environment Variables.
+Add the location of the bin folder of the JDK installation to the PATH variable in System Variables.
+The following is a typical value for the PATH variable: C:\WINDOWS\system32;C:\WINDOWS;"C:\Program Files\Java\jdk-11\bin"
+Set JAVA_HOME:
+
+Under System Variables, click New.
+Enter the variable name as JAVA_HOME.
+Enter the variable value as the installation path of the JDK (without the bin sub-folder).
+Click OK.
+Click Apply Changes.
+Configure the JDK in your IDE (e.g. IntelliJ or Eclipse).
+You are set.
+
+To see if it worked, open up the Command Prompt and type java -version and see if it prints your newly installed JDK.
+
+If you want to uninstall - just undo the above steps.
+
+Note: You can also point JAVA_HOME to the folder of your JDK installations and then set the PATH variable to %JAVA_HOME%\bin. So when you want to change the JDK you change only the JAVA_HOME variable and leave PATH as it is.
+
+
 # Deployment Sample
 
 The following are the environments
@@ -10,13 +76,6 @@ The following are the environments
 The development environment is on a local machine used by developers.
 
 Docker compose can be used to set up supporting applications such as Redis, ElasticSearch, Kafka, etc.
-
-## Deployment On Single VM
-
-For FIXED scale deployments / demos
-
-- Deploy on single VM everything - GCP GCE, AWS EC2, Digital Ocean, Linode
-- nodejs/npm, pm2 or systemd, local upload folder, mongodb/sqlite,mysql, redis, nginx
 
 ### uat (and higher) environment
 
@@ -199,53 +258,9 @@ https://www.digitalocean.com/community/tutorials/how-to-use-pm2-to-setup-a-node-
 
 ## Running on VM (eg. Droplet / EC2 / GCE)
 
-### node / nodemon
-
-```bash
-NODE_ENV=development nohup node index.js >> /dev/null 2>&1 &
-```
-
-```kill
-ps ax | grep 'node index.js' | grep -v grep | awk '{print $1}' | xargs kill
-```
-
 ### use pm2
 
 look for `ecosystem.config.js`
-
-# Startup on VM using SystemD
-
-https://nodesource.com/blog/running-your-node-js-app-with-systemd-part-1/
-https://www.freedesktop.org/software/systemd/man/systemd.service.html
-
-```bash
-cat << EOF > /lib/systemd/system/hello.service
-[Unit]
-Description=hello.js - your node application as service
-Documentation=https://example.com
-After=network.target
-
-[Service]
-Environment=NODE_ENV=production
-Environment=REST_PORT=3000
-Environment=WS_PORT=3001
-Type=simple
-User=ubuntu
-ExecStart=/usr/bin/node /home/ubuntu/hello.js
-# always = will always restart no matter what
-Restart=on-failure
-# ExecStopPost=
-
-[Install]
-WantedBy=multi-user.target
-EOF
-```
-
-```bash
-sudo systemctl daemon-reload
-sudo systemctl start|stop|status|restart hello
-sudo systemctl enable|disable hello
-```
 
 ### Note
 
@@ -380,25 +395,10 @@ sudo fail2ban-client set sshd unbanip IP_ADDRESS
 
 ## Installation - NodeJS
 
-```bash
-#!/bin/bash
+use nvm
 
-# Install NodeJS 12.x
-curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-sudo apt-get install -y nodejs
-# sudo apt-get install -y build-essential
 
-# Allow lower ports
-sudo apt-get install -y authbind
-sudo touch /etc/authbind/byport/80
-sudo chown ubuntu /etc/authbind/byport/80
-sudo chmod 755 /etc/authbind/byport/80
-sudo touch /etc/authbind/byport/443
-sudo chown ubuntu /etc/authbind/byport/443
-sudo chmod 755 /etc/authbind/byport/443
-```
-
-# Docker
+# Docker / Podman
 
 ## Backend Application
 
