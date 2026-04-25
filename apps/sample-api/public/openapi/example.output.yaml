@@ -162,7 +162,7 @@ paths:
                   access_token:
                     type: string
                     example: >-
-                      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ._l3MQQAq4Py1q9eWoaLomaX8wvSkYNiztEK_OZ1qlFA
+                      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ._l3MQQAq4Py1q9eWoaLomaX8wvSkYNiztEK_OZ1qlFA # noqa
                   refresh_token:
                     type: string
                     example: ey....
@@ -207,7 +207,7 @@ paths:
                   access_token:
                     type: string
                     example: >-
-                      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ._l3MQQAq4Py1q9eWoaLomaX8wvSkYNiztEK_OZ1qlFA
+                      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ._l3MQQAq4Py1q9eWoaLomaX8wvSkYNiztEK_OZ1qlFA # noqa
                   refresh_token:
                     type: string
                     example: ey....
