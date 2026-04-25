@@ -1,7 +1,7 @@
 ## Digital Ocean CR
 # username and password is same api token generated in DO dashboard
 # CR_HOST=registry.digitalocean.com
-# CR_NS=es-labs
+# CR_NS=ais-one
 
 ## Digital Ocean App Platform:
 # set liveness probe
@@ -29,7 +29,7 @@
 #   -f apps/sample-api/Dockerfile \
 #   --build-arg APP_NAME=sample-api \
 #   --build-arg API_PORT=3000 \
-#   -t express-template/sample-api:latest \
+#   -t novex-kit/sample-api:latest \
 #   .
 
 # Set Node Version - version 24

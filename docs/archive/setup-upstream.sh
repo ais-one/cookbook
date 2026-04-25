@@ -9,7 +9,7 @@
 
 
 # set upstream
-UPSTREAM_REPO_URL=https://github.com/es-labs/express-template.git
+UPSTREAM_REPO_URL=https://github.com/ais-one/novex-kit.git
 
 ## template clone or fork
 echo

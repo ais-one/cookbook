@@ -1,8 +1,8 @@
 ## Description
 
-This repository is based on a monorepo [template](https://github.com/es-labs/express-template) for building full-stack JavaScript applications, micro-services and frontends with Node.js (**version 24 or Higher**).
+[novex-kit](https://github.com/ais-one/novex-kit) is a monorepo **template** for building full-stack JavaScript applications, micro-services and frontends with NodeJS (**version 24 or Higher**). VueJS and ExpressJS are highlighted but end-user is free to implement their own JS/TS stack.
 
-The folders contents are as follows:
+The folder contents are as follows:
 - `apps`: userland backend and frontend application workspaces
 - `scripts`: deployment and documentation scripts
 - `common`: shared JavaScript used by `apps` / `scripts`

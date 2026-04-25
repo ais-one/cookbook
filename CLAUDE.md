@@ -186,12 +186,12 @@ git pull upstream <branch or tag> --no-rebase
 ## Docker / Podman
 
 ```bash
-docker build -t express-template \
+docker build -t novex-kit \
   --target production \
   --build-arg APP_NAME=sample-api \
   --build-arg API_PORT=3000 .
 
-docker run -p 3000:3000 express-template
+docker run -p 3000:3000 novex-kit
 ```
 
 ## CI/CD (GitHub Actions)

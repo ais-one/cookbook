@@ -1,5 +1,5 @@
 {
-  "name": "express-template",
+  "name": "novex-kit",
   "description": "Monorepo template for Express backends, Vue frontends, shared JS modules, schemas, and deployment tooling.",
   "version": "0.1.1",
   "private": true,
@@ -12,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/es-labs/express-template"
+    "url": "https://github.com/ais-one/novex-kit"
   },
   "bugs": {
-    "url": "https://github.com/es-labs/express-template/issues"
+    "url": "https://github.com/ais-one/novex-kit/issues"
   },
-  "homepage": "https://github.com/es-labs/express-template#readme",
+  "homepage": "https://github.com/ais-one/novex-kit#readme",
   "keywords": [
     "nodejs",
     "express",

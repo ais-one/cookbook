@@ -1,6 +1,6 @@
 ## Pull Request Checklist
 
-- [ ] I read and followed the [Contribution guide](https://github.com/es-labs/express-template/blob/main/.github/CONTRIBUTING.md)
+- [ ] I read and followed the [Contribution guide](https://github.com/ais-one/novex-kit/blob/main/.github/CONTRIBUTING.md)
 - [ ] I linked the related issue, if one exists
 - [ ] I ran the relevant checks or tests for the affected area
 

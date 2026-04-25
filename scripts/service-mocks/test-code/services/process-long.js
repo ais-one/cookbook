@@ -6,8 +6,8 @@
   console.log('Do take note limitations for Long running NodeJS process');
   console.log('Can also be for cronjobs (but better to use cronjob call an API)');
 
-  await require('@es-labs/node/config')(path.join(process.cwd(), '..', 'services')); //  first thing to run
-  // const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
+  await require('@ais-one/node/config')(path.join(process.cwd(), '..', 'services')); //  first thing to run
+  // const { sleep } = require('esm')(module)('@ais-one/esm/sleep')
 
   const MAX_CYCLES = 0;
   let running = true;
@@ -28,5 +28,5 @@
   };
 
   run().catch(e => console.error(`[***] ${e.message}`, e));
-  require('@es-labs/node/traps')(async type => console.log(`Signal ${type}`));
+  require('@ais-one/node/traps')(async type => console.log(`Signal ${type}`));
 })();

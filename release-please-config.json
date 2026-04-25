@@ -7,24 +7,8 @@
       "component": "template-core",
       "release-type": "node"
     },
-    "apps/sample-mcp": {
-      "component": "apps-sample-mcp",
-      "release-type": "node"
-    },
     "apps/sample-api": {
       "component": "apps-sample-api",
-      "release-type": "node"
-    },
-    "apps/shared-sample": {
-      "component": "apps-shared-sample",
-      "release-type": "node"
-    },
-    "apps/sample-vue-minimal": {
-      "component": "apps-sample-vue-minimal",
-      "release-type": "node"
-    },
-    "apps/sample-vue-full": {
-      "component": "apps-sample-vue-full",
       "release-type": "node"
     }
   }

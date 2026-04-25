@@ -19,7 +19,7 @@ when DB could be shared between packages
 
 ## Quick Create DB
 
-For [express-template](https://github.com/es-labs/express-template) sample-api
+For [novex-kit](https://github.com/ais-one/novex-kit) sample-api
 
 ```bash
 npx knex --knexfile db-sample/knexfile.js migrate:up

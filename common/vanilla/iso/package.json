@@ -8,13 +8,13 @@
     "javascript",
     "module"
   ],
-  "homepage": "https://github.com/es-labs/express-template#readme",
+  "homepage": "https://github.com/ais-one/novex-kit#readme",
   "bugs": {
-    "url": "https://github.com/es-labs/express-template/issues"
+    "url": "https://github.com/ais-one/novex-kit/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/es-labs/express-template.git"
+    "url": "git+https://github.com/ais-one/novex-kit.git"
   },
   "type": "module",
   "exports": {

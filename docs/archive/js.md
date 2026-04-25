@@ -276,15 +276,6 @@ function greeterFactory(greeting = "Hello") {
 export default greeterFactory
 ```
 
-# mixing ES Modules into a CommonJS project
-
-Reference:
-- https://codewithhugo.com/use-es-modules-in-node-without-babel/webpack-using-esm/
-
-```js
-const { sleep } = require('esm')(module)('@es-labs/esm/sleep')
-```
-
 # Asynchronous
 
 callbacks

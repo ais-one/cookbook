@@ -26,7 +26,7 @@ Login using one of the following:
   - details already **prefilled** with following values, just click on Login button
   - User and password is `test`
   - OTP (if enabled - e.g. USE_OTP=TEST): use 111111 as otp pin, already prefilled, click on OTP button
-- Enterprise SSO (SAML2, OIDC) refer to [https://github.com/es-labs/express-template#saml-oidc-oauth]() for info
+- Enterprise SSO (SAML2, OIDC) refer to [https://github.com/ais-one/novex-kit#saml-oidc-oauth]() for info
 
 [TODO] E2E Tests:
 

@@ -195,15 +195,15 @@ npm run abc:xyz
 2. editing on library file on vs-code
 
 "dependencies": {
-"@es-labs/esm": "file:../@es-labs/esm",
+"@ais-one/esm": "file:../@ais-one/esm",
 
 If you edit the file in ../@eslabs/..., it will also be changed the installed node_modules
 
 3. installing from git
 
 "dependencies": {
-"@es-labs/node": "github:es-labs/node#<tag>",
-"@es-labs/node": "github:es-labs/node#<branch_name>",
+"@ais-one/node": "github:ais-one/node#<tag>",
+"@ais-one/node": "github:ais-one/node#<branch_name>",
 
 You need to create `tag` on the github remote also by creating a new release or you can use a branch instead
 

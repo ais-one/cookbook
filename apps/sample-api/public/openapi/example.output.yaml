@@ -3,11 +3,11 @@ info:
   version: 1.0.0
   title: Cookbook API
   description: A sample API to demonstrate features in the OpenAPI specification
-  termsOfService: http://es-labs.org/terms/
+  termsOfService: http://ais-one.org/terms/
   contact:
-    name: ES-Labs API Team
+    name: ais-one API Team
     email: eslabs.com@gmail.com
-    url: https://es-labs.org
+    url: https://ais-one.org
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html

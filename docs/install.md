@@ -81,8 +81,8 @@ npm run start
 For running with Docker or Podman:
 
 ```bash
-docker build -t express-template --target production --build-arg APP_NAME=sample-api --build-arg API_PORT=3000 .
-docker run -p 3000:3000 express-template
+docker build -t novex-kit --target production --build-arg APP_NAME=sample-api --build-arg API_PORT=3000 .
+docker run -p 3000:3000 novex-kit
 ```
 
 Features include SAML, OIDC, OAuth, FIDO2 login, and push notifications.

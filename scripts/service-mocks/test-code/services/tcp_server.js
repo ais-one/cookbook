@@ -55,7 +55,7 @@ server.on('error', err => {
   throw err;
 });
 server.listen(port, host, () => console.log(`TCP Server listening on: ${host}:${port}`));
-require('@es-labs/node/traps')(async () => {
+require('@ais-one/node/traps')(async () => {
   for (const socket of sockets) socket.destroy();
   server.close(() => server.unref());
   appClose();
