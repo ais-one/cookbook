@@ -33,13 +33,13 @@ const mockSetTokensToHeader = mock.fn();
 const mockGetSecret = mock.fn(() => TEST_SECRET);
 
 // Mock internal dependencies before importing the module under test
-mock.module('@common/node/auth/store.ts', {
+mock.module('@common/node/auth/store', {
   namedExports: { findUser: mockFindUser, revokeRefreshToken: mockRevokeRefreshToken },
 });
-mock.module('@common/node/auth/scrypt.ts', {
+mock.module('@common/node/auth/scrypt', {
   namedExports: { matchScryptHash: mockMatchScryptHash },
 });
-mock.module('@common/node/auth/jwt.ts', {
+mock.module('@common/node/auth/jwt', {
   namedExports: { createToken: mockCreateToken, getSecret: mockGetSecret, setTokensToHeader: mockSetTokensToHeader },
 });
 mock.module('otplib', {

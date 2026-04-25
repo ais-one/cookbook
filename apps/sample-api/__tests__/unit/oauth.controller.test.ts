@@ -33,10 +33,10 @@ const mockCreateToken = mock.fn(async () => ({
 const mockSetTokensToHeader = mock.fn();
 
 // Mock internal dependencies before importing the module under test
-mock.module('@common/node/auth/store.ts', {
+mock.module('@common/node/auth/store', {
   namedExports: { findUser: mockFindUser },
 });
-mock.module('@common/node/auth/jwt.ts', {
+mock.module('@common/node/auth/jwt', {
   namedExports: { createToken: mockCreateToken, setTokensToHeader: mockSetTokensToHeader },
 });
 
