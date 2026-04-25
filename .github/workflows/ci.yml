@@ -43,13 +43,13 @@ jobs:
     name: Commit Message Format
     needs: detect-scope
     if: needs.detect-scope.outputs.has-supported-scope == 'true' && (github.event_name == 'pull_request' || github.event_name == 'push')
-    uses: ./.github/workflows/call-commit-lint.yml
+    uses: ./.github/workflows/wfc-commit-lint.yml
 
   format-lint:
     name: Biome Checks
     needs: detect-scope
     if: needs.detect-scope.outputs.has-supported-scope == 'true'
-    uses: ./.github/workflows/call-format-lint.yml
+    uses: ./.github/workflows/wfc-format-lint.yml
 
   schema-tests:
     name: Schema Validation Tests
@@ -57,13 +57,13 @@ jobs:
       - detect-scope
       - format-lint
     if: needs.detect-scope.outputs.has-supported-scope == 'true'
-    uses: ./.github/workflows/call-tests-schema.yml
+    uses: ./.github/workflows/wfc-tests-schema.yml
 
   unit-tests:
     name: Unit Tests
     needs: detect-scope
     if: needs.detect-scope.outputs.has-apps == 'true'
-    uses: ./.github/workflows/call-tests-unit.yml
+    uses: ./.github/workflows/wfc-tests-unit.yml
 
   integration-tests:
     name: Integration Tests
@@ -71,7 +71,7 @@ jobs:
       - detect-scope
       - unit-tests
     if: needs.detect-scope.outputs.has-apps == 'true' && github.event_name == 'pull_request'
-    uses: ./.github/workflows/call-tests-integration.yml
+    uses: ./.github/workflows/wfc-tests-integration.yml
 
   e2e-tests:
     name: E2E Tests
@@ -79,13 +79,13 @@ jobs:
       - detect-scope
       - integration-tests
     if: needs.detect-scope.outputs.has-apps == 'true' && github.event_name == 'pull_request'
-    uses: ./.github/workflows/call-tests-e2e.yml
+    uses: ./.github/workflows/wfc-tests-e2e.yml
  
   security:
     name: Security Scan
     needs: detect-scope
     if: needs.detect-scope.outputs.has-supported-scope == 'true' && github.event_name == 'pull_request'
-    uses: ./.github/workflows/call-security.yml
+    uses: ./.github/workflows/wfc-security.yml
 
   release-please:
     name: Release Please
