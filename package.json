@@ -1,7 +1,7 @@
 {
   "name": "novex-kit",
   "description": "Monorepo template for Express backends, Vue frontends, shared JS modules, schemas, and deployment tooling.",
-  "version": "0.1.1",
+  "version": "0.6.11",
   "private": true,
   "type": "module",
   "author": "aaronjxz@gmail.com",
