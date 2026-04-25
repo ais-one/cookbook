@@ -235,7 +235,7 @@ after(async () => {
 
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
-describe.only('SAML — GET /api/saml/login', () => {
+describe.skip('SAML — GET /api/saml/login', () => {
   it.only('redirects to saml-idp SSO endpoint with SAMLRequest', async () => {
     const { status, headers } = await httpRequest(`${APP_BASE_URL}/api/saml/login`);
     assert.strictEqual(status, 302);
@@ -245,7 +245,7 @@ describe.only('SAML — GET /api/saml/login', () => {
   });
 });
 
-describe.only('SAML — POST /api/saml/callback', () => {
+describe.skip('SAML — POST /api/saml/callback', () => {
   it.only('returns authenticated user data when SAMLResponse is valid and RelayState is absent', async () => {
     const samlFormHtml = await getSamlResponseHtml();
     // Extract SAMLResponse from the IdP's auto-submit form

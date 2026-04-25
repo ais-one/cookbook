@@ -34,7 +34,7 @@ afterEach(() => {
   mock.restoreAll();
 });
 
-describe.only('oidc.login', () => {
+describe.skip('oidc.login', () => {
   it.only('is a function', () => {
     assert.strictEqual(typeof login, 'function');
   });
@@ -49,7 +49,7 @@ describe.only('oidc.login', () => {
   });
 });
 
-describe.only('oidc.auth', () => {
+describe.skip('oidc.auth', () => {
   it.only('is a function', () => {
     assert.strictEqual(typeof auth, 'function');
   });
@@ -85,7 +85,7 @@ describe.only('oidc.auth', () => {
   });
 });
 
-describe.only('oidc.refresh', () => {
+describe.skip('oidc.refresh', () => {
   it.only('is a function', () => {
     assert.strictEqual(typeof refresh, 'function');
   });

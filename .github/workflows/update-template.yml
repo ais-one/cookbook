@@ -52,7 +52,7 @@ on:
         default: ''
 
 env:
-  UPSTREAM_URL: https://github.com/ais-one/pfmt.git
+  UPSTREAM_URL: https://github.com/ais-one/novex-kit.git
 
 jobs:
   sync:

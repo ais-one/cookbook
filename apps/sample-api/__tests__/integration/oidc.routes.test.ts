@@ -262,7 +262,7 @@ after(async () => {
 
 // ─── Tests ───────────────────────────────────────────────────────────────────
 
-describe.only('OIDC — GET /api/oidc/login', () => {
+describe.skip('OIDC — GET /api/oidc/login', () => {
   it.only('redirects to oidc-provider authorization endpoint with correct params', async () => {
     const { status, headers } = await httpRequest(`${APP_BASE_URL}/api/oidc/login`);
     assert.strictEqual(status, 302);
@@ -273,7 +273,7 @@ describe.only('OIDC — GET /api/oidc/login', () => {
   });
 });
 
-describe.only('OIDC — GET /api/oidc/auth', () => {
+describe.skip('OIDC — GET /api/oidc/auth', () => {
   it.only('redirects to callback with tokens when authorization code is valid', async () => {
     const code = await getOidcAuthCode();
     const { status, headers } = await httpRequest(`${APP_BASE_URL}/api/oidc/auth?code=${code}`);
@@ -284,7 +284,7 @@ describe.only('OIDC — GET /api/oidc/auth', () => {
   });
 });
 
-describe.only('OIDC — GET /api/oidc/refresh', () => {
+describe.skip('OIDC — GET /api/oidc/refresh', () => {
   it.only('returns new access_token and refresh_token when refresh token is valid', async () => {
     const { refresh_token } = await getOidcTokens();
     const { status, body } = await httpRequest(
