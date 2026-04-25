@@ -3,6 +3,7 @@ import '@common/node/logger';
 import assert from 'node:assert';
 import http from 'node:http';
 import { after, before, describe, it } from 'node:test';
+import { type HttpResponse, httpRequest } from '@common/node/tests/http-request';
 import express from 'express';
 import { Provider } from 'oidc-provider';
 
@@ -34,37 +35,6 @@ const OIDC_CALLBACK = `${APP_BASE_URL}/api/oidc/auth`;
 const { login, auth, refresh } = await import('@common/node/auth/controllers/oidc');
 
 // ─── HTTP helper ──────────────────────────────────────────────────────────────
-
-type HttpResponse = { status: number; headers: http.IncomingHttpHeaders; body: string };
-
-function httpRequest(
-  url: string,
-  options: { method?: string; headers?: Record<string, string>; body?: string } = {},
-): Promise<HttpResponse> {
-  return new Promise((resolve, reject) => {
-    const { hostname, port, pathname, search } = new URL(url);
-    const bodyBuf = options.body ? Buffer.from(options.body) : null;
-    const req = http.request(
-      {
-        hostname,
-        port: Number(port) || 80,
-        path: pathname + search,
-        method: options.method ?? 'GET',
-        headers: { ...options.headers, ...(bodyBuf ? { 'Content-Length': bodyBuf.length } : {}) },
-      },
-      res => {
-        let data = '';
-        res.on('data', (chunk: Buffer) => {
-          data += chunk.toString();
-        });
-        res.on('end', () => resolve({ status: res.statusCode ?? 0, headers: res.headers, body: data }));
-      },
-    );
-    req.on('error', reject);
-    if (bodyBuf) req.write(bodyBuf);
-    req.end();
-  });
-}
 
 // ─── OIDC session — maintains cookies across requests ────────────────────────
 
@@ -188,111 +158,113 @@ async function getOidcTokens(): Promise<{ access_token: string; refresh_token: s
 
 // ─── Test servers lifecycle ───────────────────────────────────────────────────
 
-let oidcServer: http.Server;
-let appServer: http.Server;
+describe.skip('OIDC integration', () => {
+  let oidcServer: http.Server;
+  let appServer: http.Server;
 
-before(async () => {
-  // biome-ignore lint/suspicious/noExplicitAny: oidc-provider has no @types package
-  const provider = new (Provider as any)(OIDC_URL, {
-    clients: [
-      {
-        client_id: OIDC_CLIENT_ID,
-        client_secret: OIDC_CLIENT_SECRET,
-        grant_types: ['authorization_code', 'refresh_token'],
-        response_types: ['code'],
-        redirect_uris: [OIDC_CALLBACK],
-        token_endpoint_auth_method: 'client_secret_post',
-      },
-    ],
-
-    async findAccount(_ctx: unknown, id: string) {
-      if (id !== 'testuser') return undefined;
-      return {
-        accountId: id,
-        async claims() {
-          return { sub: id, email: 'testuser@example.com', name: 'Test User', groups: ['admin', 'user'] };
+  before(async () => {
+    // biome-ignore lint/suspicious/noExplicitAny: oidc-provider has no @types package
+    const provider = new (Provider as any)(OIDC_URL, {
+      clients: [
+        {
+          client_id: OIDC_CLIENT_ID,
+          client_secret: OIDC_CLIENT_SECRET,
+          grant_types: ['authorization_code', 'refresh_token'],
+          response_types: ['code'],
+          redirect_uris: [OIDC_CALLBACK],
+          token_endpoint_auth_method: 'client_secret_post',
         },
-      };
-    },
+      ],
 
-    // Auto-grant consent for any logged-in session — eliminates the consent step in tests
-    // biome-ignore lint/suspicious/noExplicitAny: oidc-provider context type
-    async loadExistingGrant(ctx: any) {
-      const grantId = ctx.oidc.result?.consent?.grantId || ctx.oidc.session.grantIdFor(ctx.oidc.client.clientId);
-      if (grantId) return ctx.oidc.provider.Grant.find(grantId);
-      if (!ctx.oidc.session.accountId) return undefined;
-      const grant = new ctx.oidc.provider.Grant({
-        clientId: ctx.oidc.client.clientId,
-        accountId: ctx.oidc.session.accountId,
-      });
-      grant.addOIDCScope('openid profile email offline_access');
-      await grant.save();
-      return grant;
-    },
+      async findAccount(_ctx: unknown, id: string) {
+        if (id !== 'testuser') return undefined;
+        return {
+          accountId: id,
+          async claims() {
+            return { sub: id, email: 'testuser@example.com', name: 'Test User', groups: ['admin', 'user'] };
+          },
+        };
+      },
 
-    pkce: { required: () => false },
-    scopes: ['openid', 'profile', 'email', 'offline_access'],
-    claims: {
-      openid: ['sub'],
-      profile: ['name', 'groups'],
-      email: ['email'],
-    },
-    cookies: { keys: ['test-secret-key-for-oidc-provider'] },
-    features: { devInteractions: { enabled: true } },
-    ttl: { AccessToken: 300, AuthorizationCode: 60, RefreshToken: 3600, Interaction: 60, Session: 300 },
+      // Auto-grant consent for any logged-in session — eliminates the consent step in tests
+      // biome-ignore lint/suspicious/noExplicitAny: oidc-provider context type
+      async loadExistingGrant(ctx: any) {
+        const grantId = ctx.oidc.result?.consent?.grantId || ctx.oidc.session.grantIdFor(ctx.oidc.client.clientId);
+        if (grantId) return ctx.oidc.provider.Grant.find(grantId);
+        if (!ctx.oidc.session.accountId) return undefined;
+        const grant = new ctx.oidc.provider.Grant({
+          clientId: ctx.oidc.client.clientId,
+          accountId: ctx.oidc.session.accountId,
+        });
+        grant.addOIDCScope('openid profile email offline_access');
+        await grant.save();
+        return grant;
+      },
+
+      pkce: { required: () => false },
+      scopes: ['openid', 'profile', 'email', 'offline_access'],
+      claims: {
+        openid: ['sub'],
+        profile: ['name', 'groups'],
+        email: ['email'],
+      },
+      cookies: { keys: ['test-secret-key-for-oidc-provider'] },
+      features: { devInteractions: { enabled: true } },
+      ttl: { AccessToken: 300, AuthorizationCode: 60, RefreshToken: 3600, Interaction: 60, Session: 300 },
+    });
+
+    oidcServer = http.createServer(provider.callback());
+    await new Promise<void>(resolve => oidcServer.listen(OIDC_PORT, '127.0.0.1', () => resolve()));
+
+    const app = express();
+    app.get('/api/oidc/login', login);
+    app.get('/api/oidc/auth', auth);
+    app.get('/api/oidc/refresh', refresh);
+
+    await new Promise<void>(resolve => {
+      appServer = app.listen(APP_PORT, '127.0.0.1', () => resolve());
+    });
   });
 
-  oidcServer = http.createServer(provider.callback());
-  await new Promise<void>(resolve => oidcServer.listen(OIDC_PORT, '127.0.0.1', () => resolve()));
-
-  const app = express();
-  app.get('/api/oidc/login', login);
-  app.get('/api/oidc/auth', auth);
-  app.get('/api/oidc/refresh', refresh);
-
-  await new Promise<void>(resolve => {
-    appServer = app.listen(APP_PORT, '127.0.0.1', () => resolve());
+  after(async () => {
+    await new Promise<void>((resolve, reject) => appServer.close(err => (err ? reject(err) : resolve())));
+    await new Promise<void>((resolve, reject) => oidcServer.close(err => (err ? reject(err) : resolve())));
   });
-});
 
-after(async () => {
-  await new Promise<void>((resolve, reject) => appServer.close(err => (err ? reject(err) : resolve())));
-  await new Promise<void>((resolve, reject) => oidcServer.close(err => (err ? reject(err) : resolve())));
-});
+  // ─── Tests ───────────────────────────────────────────────────────────────────
 
-// ─── Tests ───────────────────────────────────────────────────────────────────
-
-describe.skip('OIDC — GET /api/oidc/login', () => {
-  it.only('redirects to oidc-provider authorization endpoint with correct params', async () => {
-    const { status, headers } = await httpRequest(`${APP_BASE_URL}/api/oidc/login`);
-    assert.strictEqual(status, 302);
-    const location = (headers.location as string) ?? '';
-    assert.ok(location.startsWith(`${OIDC_URL}/auth`), `Expected OIDC auth redirect, got: ${location}`);
-    assert.ok(location.includes(`client_id=${OIDC_CLIENT_ID}`));
-    assert.ok(location.includes('response_type=code'));
+  describe('OIDC — GET /api/oidc/login', () => {
+    it.only('redirects to oidc-provider authorization endpoint with correct params', async () => {
+      const { status, headers } = await httpRequest(`${APP_BASE_URL}/api/oidc/login`);
+      assert.strictEqual(status, 302);
+      const location = (headers.location as string) ?? '';
+      assert.ok(location.startsWith(`${OIDC_URL}/auth`), `Expected OIDC auth redirect, got: ${location}`);
+      assert.ok(location.includes(`client_id=${OIDC_CLIENT_ID}`));
+      assert.ok(location.includes('response_type=code'));
+    });
   });
-});
 
-describe.skip('OIDC — GET /api/oidc/auth', () => {
-  it.only('redirects to callback with tokens when authorization code is valid', async () => {
-    const code = await getOidcAuthCode();
-    const { status, headers } = await httpRequest(`${APP_BASE_URL}/api/oidc/auth?code=${code}`);
-    assert.strictEqual(status, 302);
-    const location = (headers.location as string) ?? '';
-    assert.ok(location.startsWith(OIDC_CALLBACK), `Expected callback redirect, got: ${location}`);
-    assert.ok(location.includes('#'), 'Expected token hash fragment in redirect URL');
+  describe('OIDC — GET /api/oidc/auth', () => {
+    it.only('redirects to callback with tokens when authorization code is valid', async () => {
+      const code = await getOidcAuthCode();
+      const { status, headers } = await httpRequest(`${APP_BASE_URL}/api/oidc/auth?code=${code}`);
+      assert.strictEqual(status, 302);
+      const location = (headers.location as string) ?? '';
+      assert.ok(location.startsWith(OIDC_CALLBACK), `Expected callback redirect, got: ${location}`);
+      assert.ok(location.includes('#'), 'Expected token hash fragment in redirect URL');
+    });
   });
-});
 
-describe.skip('OIDC — GET /api/oidc/refresh', () => {
-  it.only('returns new access_token and refresh_token when refresh token is valid', async () => {
-    const { refresh_token } = await getOidcTokens();
-    const { status, body } = await httpRequest(
-      `${APP_BASE_URL}/api/oidc/refresh?refresh_token=${encodeURIComponent(refresh_token)}`,
-    );
-    assert.strictEqual(status, 200);
-    const tokens = JSON.parse(body) as { access_token: string; refresh_token: string };
-    assert.ok(tokens.access_token, 'Response should contain access_token');
-    assert.ok(tokens.refresh_token, 'Response should contain refresh_token');
+  describe('OIDC — GET /api/oidc/refresh', () => {
+    it.only('returns new access_token and refresh_token when refresh token is valid', async () => {
+      const { refresh_token } = await getOidcTokens();
+      const { status, body } = await httpRequest(
+        `${APP_BASE_URL}/api/oidc/refresh?refresh_token=${encodeURIComponent(refresh_token)}`,
+      );
+      assert.strictEqual(status, 200);
+      const tokens = JSON.parse(body) as { access_token: string; refresh_token: string };
+      assert.ok(tokens.access_token, 'Response should contain access_token');
+      assert.ok(tokens.refresh_token, 'Response should contain refresh_token');
+    });
   });
-});
+}); // OIDC integration

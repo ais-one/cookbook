@@ -3,10 +3,11 @@ import '@common/node/logger';
 import assert from 'node:assert';
 import { spawn } from 'node:child_process';
 import { readFileSync } from 'node:fs';
-import http from 'node:http';
+import type http from 'node:http';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { after, before, describe, it } from 'node:test';
+import { type HttpResponse, httpRequest } from '@common/node/tests/http-request';
 import express from 'express';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -47,37 +48,6 @@ const idpCert = readFileSync(certPath, 'utf8');
 const { login, auth } = await import('@common/node/auth/controllers/saml');
 
 // ─── HTTP helper ──────────────────────────────────────────────────────────────
-
-type HttpResponse = { status: number; headers: http.IncomingHttpHeaders; body: string };
-
-function httpRequest(
-  url: string,
-  options: { method?: string; headers?: Record<string, string>; body?: string } = {},
-): Promise<HttpResponse> {
-  return new Promise((resolve, reject) => {
-    const { hostname, port, pathname, search } = new URL(url);
-    const bodyBuf = options.body ? Buffer.from(options.body) : null;
-    const req = http.request(
-      {
-        hostname,
-        port: Number(port) || 80,
-        path: pathname + search,
-        method: options.method ?? 'GET',
-        headers: { ...options.headers, ...(bodyBuf ? { 'Content-Length': bodyBuf.length } : {}) },
-      },
-      res => {
-        let data = '';
-        res.on('data', (chunk: Buffer) => {
-          data += chunk.toString();
-        });
-        res.on('end', () => resolve({ status: res.statusCode ?? 0, headers: res.headers, body: data }));
-      },
-    );
-    req.on('error', reject);
-    if (bodyBuf) req.write(bodyBuf);
-    req.end();
-  });
-}
 
 // ─── SAML session — maintains cookies and follows redirects ───────────────────
 
@@ -187,81 +157,83 @@ async function getSamlResponseHtml(relayState = ''): Promise<string> {
 
 // ─── Test server + saml-idp process lifecycle ─────────────────────────────────
 
-let appServer: http.Server;
-// biome-ignore lint/suspicious/noExplicitAny: child process type
-let idpProcess: any;
+describe.skip('SAML integration', () => {
+  let appServer: http.Server;
+  // biome-ignore lint/suspicious/noExplicitAny: child process type
+  let idpProcess: any;
 
-before(async () => {
-  idpProcess = spawn(
-    process.execPath,
-    [
-      samlIdpBin,
-      '--host',
-      '127.0.0.1',
-      '--port',
-      String(IDP_PORT),
-      '--key',
-      keyPath,
-      '--cert',
-      certPath,
-      '--acsUrl',
-      SP_CALLBACK,
-      '--audience',
-      SP_ENTITY_ID,
-      '--issuer',
-      `${IDP_URL}/metadata`,
-    ],
-    { stdio: 'pipe' },
-  );
+  before(async () => {
+    idpProcess = spawn(
+      process.execPath,
+      [
+        samlIdpBin,
+        '--host',
+        '127.0.0.1',
+        '--port',
+        String(IDP_PORT),
+        '--key',
+        keyPath,
+        '--cert',
+        certPath,
+        '--acsUrl',
+        SP_CALLBACK,
+        '--audience',
+        SP_ENTITY_ID,
+        '--issuer',
+        `${IDP_URL}/metadata`,
+      ],
+      { stdio: 'pipe' },
+    );
 
-  await waitForUrl(`${IDP_URL}/metadata`);
+    await waitForUrl(`${IDP_URL}/metadata`);
 
-  const app = express();
-  app.use(express.urlencoded({ extended: false }));
-  app.get('/api/saml/login', login);
-  app.post('/api/saml/callback', auth);
+    const app = express();
+    app.use(express.urlencoded({ extended: false }));
+    app.get('/api/saml/login', login);
+    app.post('/api/saml/callback', auth);
 
-  await new Promise<void>(resolve => {
-    appServer = app.listen(APP_PORT, '127.0.0.1', () => resolve());
-  });
-});
-
-after(async () => {
-  await new Promise<void>((resolve, reject) => {
-    appServer.close(err => (err ? reject(err) : resolve()));
-  });
-  idpProcess.kill();
-});
-
-// ─── Tests ───────────────────────────────────────────────────────────────────
-
-describe.skip('SAML — GET /api/saml/login', () => {
-  it.only('redirects to saml-idp SSO endpoint with SAMLRequest', async () => {
-    const { status, headers } = await httpRequest(`${APP_BASE_URL}/api/saml/login`);
-    assert.strictEqual(status, 302);
-    const location = (headers.location as string) ?? '';
-    assert.ok(location.startsWith(`${IDP_URL}/saml/sso`), `Expected saml-idp SSO redirect, got: ${location}`);
-    assert.ok(location.includes('SAMLRequest='), 'Expected SAMLRequest param in redirect URL');
-  });
-});
-
-describe.skip('SAML — POST /api/saml/callback', () => {
-  it.only('returns authenticated user data when SAMLResponse is valid and RelayState is absent', async () => {
-    const samlFormHtml = await getSamlResponseHtml();
-    // Extract SAMLResponse from the IdP's auto-submit form
-    const r1 = /name=["']SAMLResponse["'][^>]*value=["']([^"']*?)["']/i;
-    const r2 = /value=["']([^"']*?)["'][^>]*name=["']SAMLResponse["']/i;
-    const samlResponse = (samlFormHtml.match(r1) ?? samlFormHtml.match(r2))?.[1] ?? '';
-    assert.ok(samlResponse, 'Expected SAMLResponse hidden input in IdP auto-submit form');
-
-    const { status, body } = await httpRequest(`${APP_BASE_URL}/api/saml/callback`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ SAMLResponse: samlResponse }).toString(),
+    await new Promise<void>(resolve => {
+      appServer = app.listen(APP_PORT, '127.0.0.1', () => resolve());
     });
-    assert.strictEqual(status, 200);
-    const data = JSON.parse(body) as { authenticated: boolean; user: { sub: unknown; roles: unknown } };
-    assert.strictEqual(data.authenticated, true);
-    assert.ok(data.user, 'Response should contain user object');
   });
-});
+
+  after(async () => {
+    await new Promise<void>((resolve, reject) => {
+      appServer.close(err => (err ? reject(err) : resolve()));
+    });
+    idpProcess.kill();
+  });
+
+  // ─── Tests ───────────────────────────────────────────────────────────────────
+
+  describe('SAML — GET /api/saml/login', () => {
+    it.only('redirects to saml-idp SSO endpoint with SAMLRequest', async () => {
+      const { status, headers } = await httpRequest(`${APP_BASE_URL}/api/saml/login`);
+      assert.strictEqual(status, 302);
+      const location = (headers.location as string) ?? '';
+      assert.ok(location.startsWith(`${IDP_URL}/saml/sso`), `Expected saml-idp SSO redirect, got: ${location}`);
+      assert.ok(location.includes('SAMLRequest='), 'Expected SAMLRequest param in redirect URL');
+    });
+  });
+
+  describe('SAML — POST /api/saml/callback', () => {
+    it.only('returns authenticated user data when SAMLResponse is valid and RelayState is absent', async () => {
+      const samlFormHtml = await getSamlResponseHtml();
+      // Extract SAMLResponse from the IdP's auto-submit form
+      const r1 = /name=["']SAMLResponse["'][^>]*value=["']([^"']*?)["']/i;
+      const r2 = /value=["']([^"']*?)["'][^>]*name=["']SAMLResponse["']/i;
+      const samlResponse = (samlFormHtml.match(r1) ?? samlFormHtml.match(r2))?.[1] ?? '';
+      assert.ok(samlResponse, 'Expected SAMLResponse hidden input in IdP auto-submit form');
+
+      const { status, body } = await httpRequest(`${APP_BASE_URL}/api/saml/callback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ SAMLResponse: samlResponse }).toString(),
+      });
+      assert.strictEqual(status, 200);
+      const data = JSON.parse(body) as { authenticated: boolean; user: { sub: unknown; roles: unknown } };
+      assert.strictEqual(data.authenticated, true);
+      assert.ok(data.user, 'Response should contain user object');
+    });
+  });
+}); // SAML integration
