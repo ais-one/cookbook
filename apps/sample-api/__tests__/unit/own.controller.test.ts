@@ -2,7 +2,7 @@ import '@common/node/config'; // loads .env.json → sets globalThis.__config (J
 import '@common/node/logger';
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it, mock } from 'node:test';
-import { createRequest, createResponse } from '@common/node/http-mocks';
+import { createRequest, createResponse } from '@common/node/tests/http-mocks';
 import jwtLib from 'jsonwebtoken';
 
 // Set env vars before module load — own.ts captures these as module-level constants

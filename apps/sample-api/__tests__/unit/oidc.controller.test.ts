@@ -2,7 +2,7 @@ import '@common/node/config'; // loads .env.json → sets globalThis.__config (J
 import '@common/node/logger';
 import assert from 'node:assert';
 import { afterEach, beforeEach, describe, it, mock } from 'node:test';
-import { createRequest, createResponse } from '@common/node/http-mocks';
+import { createRequest, createResponse } from '@common/node/tests/http-mocks';
 
 // Spread real config (which may be frozen) into a new mutable object, then override OIDC fields
 // biome-ignore lint/suspicious/noExplicitAny: test setup for globalThis
@@ -85,7 +85,7 @@ describe.skip('oidc.auth', () => {
   });
 });
 
-describe.skip('oidc.refresh', () => {
+describe.only('oidc.refresh', () => {
   it.only('is a function', () => {
     assert.strictEqual(typeof refresh, 'function');
   });
