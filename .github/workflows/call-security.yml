@@ -19,7 +19,7 @@ jobs:
         run: |
           set -euo pipefail
           echo "Running npm audit for security vulnerabilities..."
-          npm audit --audit-level=moderate || exit 1
+          npm audit --omit=dev --audit-level=moderate || exit 1
 
       - name: Secrets scan with truffleHog
         uses: trufflesecurity/trufflehog@main

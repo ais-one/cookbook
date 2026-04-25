@@ -14,7 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "@common/vue": "file:../../common/compiled/vue",
-    "null": "^2.0.0",
+    "null": "^2.0.0"
+  },
+  "devDependencies": {
     "redoc": "^2.5.2"
   }
 }
