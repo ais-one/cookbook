@@ -1,5 +1,5 @@
 import '@common/node/logger'; // Initialize global loggers
-import '@common/node/config'; // setup env - TODO: handle vault in production
+import '@common/node/config'; // loads .env.json → globalThis.__config; in production, inject secrets into process.env via your deployment platform before this runs
 
 import { server } from './app.ts';
 

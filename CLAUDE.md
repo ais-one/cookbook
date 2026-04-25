@@ -71,6 +71,46 @@ npm i <pkg> --workspace=<path>          # install into a specific workspace
 npm outdated -ws                        # check outdated packages across all workspaces
 ```
 
+## Testing
+
+All tests use Node's built-in test runner (`node --test`).
+
+### Why every test uses `.only()`
+
+Test scripts pass `--test-only`, which means **only tests and suites marked `.only()` run**. Plain `describe()` / `it()` calls are silently skipped. Always use `describe.only()` and `it.only()` unless you intend the test to be skipped.
+
+### Skipping a test file
+
+To skip an entire file without breaking the runner, wrap everything — including `before`/`after` lifecycle hooks — in a single outer `describe.skip`. Root-level `before`/`after` hooks still execute even when all inner describes are skipped, which causes crashes if the hooks set up servers or other resources.
+
+```ts
+// Correct — hooks are inside the skipped suite and won't run
+describe.skip('my suite', () => {
+  before(async () => { /* start server */ });
+  after(async () => { /* stop server */ });
+  describe('...', () => { ... });
+});
+```
+
+### Module mock paths
+
+When using `mock.module()`, omit the `.ts` extension. Node's mock resolver appends `.ts` automatically when running TypeScript files, so including it produces a double-extension error (`store.ts.ts`).
+
+```ts
+// Correct
+mock.module('@common/node/auth/store', { namedExports: { findUser: mockFn } });
+
+// Wrong — resolves to store.ts.ts
+mock.module('@common/node/auth/store.ts', { namedExports: { findUser: mockFn } });
+```
+
+### Shared test utilities
+
+| Package | Path | Purpose |
+|---|---|---|
+| `@common/node/tests/http-mocks` | `common/compiled/node/tests/http-mocks.ts` | Express req/res stubs for unit tests |
+| `@common/node/tests/http-request` | `common/compiled/node/tests/http-request.ts` | Real HTTP client for integration tests |
+
 ## Local URLs (sample backend)
 
 | URL | Purpose |
@@ -88,9 +128,33 @@ npm outdated -ws                        # check outdated packages across all wor
 
 ## Creating a new frontend app
 
-- Copy `apps/sample-vue-full` to a new folder in `apps/` using kebab-case naming
+Two starting points are available — pick the one that matches your needs:
+
+| Template | Use when |
+|---|---|
+| `apps/sample-vue-full` | Building a full app — includes routing, auth views, UI framework, state, monitoring, and mocking already wired |
+| `apps/sample-vue-minimal` | Starting from scratch or building a micro-frontend — just Vue + Vite, nothing else |
+
+**`sample-vue-full` includes:**
+- Vue Router with public/secure layout split
+- Pinia state management
+- Ant Design Vue UI component library
+- Sentry error monitoring
+- MSW (Mock Service Worker) for API mocking in development
+- PWA support
+- Playwright e2e test setup
+- Pre-built sign-in, sign-up, dashboard, and OAuth callback views
+
+**`sample-vue-minimal` includes:**
+- Vue + Vite only
+- Single `App.vue` + `Hello.vue` entry point
+- No router, no UI framework, no state management
+
+To create a new app:
+- Copy the chosen template to a new folder in `apps/` using kebab-case naming
 - Edit `.env` and `.env.development` as needed
-- Routes use kebab-case and support up to 1 submenu level
+- Routes use kebab-case and support up to 1 submenu level (full template only)
+- Do not develop directly in the sample templates
 
 ## Code conventions
 
@@ -198,20 +262,38 @@ docker run -p 3000:3000 novex-kit
 
 | Workflow | Purpose |
 |---|---|
+| `.github/workflows/ci.yml` | Lint, test, security scan, automated releases |
 | `.github/workflows/deploy-cr.yml` | Build and push image to container registry |
 | `.github/workflows/deploy-npm.yml` | Publish a package to npm |
 | `.github/workflows/deploy-bucket.yml` | Deploy Vue frontend to object store |
+| `.github/workflows/update-template.yml` | Sync upstream template changes into the repo |
 
 Required GitHub Secrets:
-- `CR_USERNAME` — container registry username
-- `CR_PASSWORD` — container registry password
+
+| Secret | Used by | Description |
+|---|---|---|
+| `CR_USERNAME` | deploy-cr | Container registry username |
+| `CR_PASSWORD` | deploy-cr | Container registry password |
+| `RELEASE_PLEASE_APP_PRIVATE_KEY` | ci | GitHub App private key for automated releases |
+| `NPM_AUTH_TOKEN` | deploy-npm | npm publish token |
+| `SYNC_TOKEN` | update-template | GitHub PAT with `repo` + `workflow` scopes for template sync |
+| `ACCESS_KEY_ID` | deploy-bucket | Alibaba Cloud access key (ossutil path) |
+| `ACCESS_KEY_SECRET` | deploy-bucket | Alibaba Cloud secret key (ossutil path) |
+| `OSS_ACCESS_KEY_ID` | deploy-bucket | Alibaba Cloud access key (AWS CLI path) |
+| `OSS_ACCESS_KEY_SECRET` | deploy-bucket | Alibaba Cloud secret key (AWS CLI path) |
+| `OSS_ENDPOINT` | deploy-bucket | Alibaba Cloud OSS endpoint (AWS CLI path) |
 
 Required GitHub Variables:
-- `CR_HOST` — container registry host
-- `CR_NS` — container registry namespace
-- `CR_IMAGENAME` — image name (defaults to repo name)
 
-> Secrets must never be stored in the repo — use a secrets vault for CI/CD.
+| Variable | Used by | Description |
+|---|---|---|
+| `CR_HOST` | deploy-cr | Container registry host |
+| `CR_NS` | deploy-cr | Container registry namespace |
+| `CR_IMAGENAME` | deploy-cr | Image name (defaults to repo name) |
+| `RELEASE_PLEASE_APP_ID` | ci | GitHub App ID for automated releases |
+| `ENDPOINT` | deploy-bucket | Alibaba Cloud OSS endpoint (ossutil path) |
+
+> Secrets must never be stored in the repo — inject them via your deployment platform or CI/CD secrets store.
 
 ## Authorization
 

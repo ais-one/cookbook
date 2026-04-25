@@ -24,8 +24,8 @@
     "typescript"
   ],
   "engines": {
-    "node": "24.13.0",
-    "npm": "11.6.2"
+    "node": ">=24",
+    "npm": ">=11"
   },
   "scripts": {
     "clean:all": "find . -name node_modules -type d -prune -exec rm -rf '{}' + && find . -name package-lock.json -type f -delete",

@@ -1,3 +1,8 @@
+// Config loading strategy:
+//   development — loads .env.local then .env from cwd (file-based secrets are acceptable locally)
+//   production  — .env files are NOT loaded; secrets must be injected into process.env before
+//                 app start by the deployment platform (K8s secrets, Docker env, vault agent
+//                 sidecar, CI/CD secret injection, etc.). Do not rely on .env files in production.
 import fs from 'node:fs';
 import path from 'node:path';
 import { loadEnvFile } from 'node:process';

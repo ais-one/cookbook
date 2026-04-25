@@ -22,10 +22,6 @@
     "nodejs",
     "express"
   ],
-  "engines": {
-    "node": ">=22",
-    "npm": ">=10"
-  },
   "scripts": {
     "lint": "biome check .",
     "start": "node --watch --watch-preserve-output --trace-warnings src/index.ts",

@@ -36,7 +36,7 @@ Read this document before making code changes. Use [.github/CONTRIBUTING.md](../
 - Node runtime applications must import `common/node/logger` and use the global `logger` instead of `console.*`.
 - Node runtime applications must import `common/node/config` for application config loading.
 - `.env.json` for non-sensitive structured values, exposed globally through `globalThis.__config`. `//` line comments are allowed.
-- `.env` for secrets and simple scalar values (should be in `vault` service for production) and loaded into `process.env`.
+- `.env` for secrets and simple scalar values, loaded into `process.env` in development only. In production, inject secrets via your deployment platform (K8s secrets, Docker env, vault agent sidecar, CI/CD injection) — `.env` files are not loaded outside development.
 
 ## Configuration And Secrets Standard
 
