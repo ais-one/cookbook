@@ -1,31 +1,64 @@
 {
-  "name": "cookbook",
-  "version": "0.7.0",
-  "description": "Cookbook For JS",
+  "name": "express-template",
+  "description": "Monorepo template for Express backends, Vue frontends, shared JS modules, schemas, and deployment tooling.",
+  "version": "0.1.1",
+  "private": true,
+  "type": "module",
   "author": "aaronjxz@gmail.com",
   "license": "MIT",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ais-one/cookbook.git"
+    "url": "https://github.com/es-labs/express-template"
   },
   "bugs": {
-    "url": "https://github.com/ais-one/cookbook/issues"
+    "url": "https://github.com/es-labs/express-template/issues"
   },
-  "homepage": "https://github.com/ais-one/cookbook#readme",
+  "homepage": "https://github.com/es-labs/express-template#readme",
   "keywords": [
-    "nodejs"
+    "nodejs",
+    "express",
+    "typescript"
   ],
-  "scripts": {
-    "prepare": "git config core.hooksPath ./git-hooks || echo 'Can not set git hooks'",
-    "git:hash": "git rev-parse --verify --short HEAD",
-    "git:branch": "git rev-parse --abbrev-ref HEAD"
-  },
   "engines": {
-    "node": ">=18",
-    "npm": ">=9"
+    "node": "24.13.0",
+    "npm": "11.6.2"
+  },
+  "scripts": {
+    "clean:all": "find . -name node_modules -type d -prune -exec rm -rf '{}' + && find . -name package-lock.json -type f -delete",
+    "git:hash": "git rev-parse --verify --short HEAD",
+    "git:branch": "git rev-parse --abbrev-ref HEAD",
+    "check": "biome check --write .",
+    "ci": "biome ci .",
+    "docs:generate": "node scripts/generate-openapi.ts",
+    "docs:validate": "npx redocly lint docs/openapi/openapi.merged.yaml",
+    "docs:make-html": "npx @redocly/cli build-docs docs/openapi/openapi.merged.yaml --output index.html",
+    "prepare": "git config core.hooksPath .githooks && chmod +x .githooks/pre-commit .githooks/pre-push || echo 'Can not set git hooks'",
+    "test:schemas": "node scripts/test-schemas.ts",
+    "test:workspaces": "npm run test --workspaces",
+    "test:cover-only": "node --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=lcov.info --test __tests__/**/*.spec.js",
+    "test:e2e": "start-server-and-test start http://localhost:8080 test",
+    "release:auth": "semantic-release -e ./release/auth-service.release.config.cjs",
+    "update-commit-hash": "git rev-parse --verify --short HEAD > commit-hash"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.4.12",
+    "@playwright/test": "^1.59.1",
+    "@redocly/cli": "^2.29.0",
+    "@types/express": "^5.0.6",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "msw": "^2.13.4",
+    "start-server-and-test": "^3.0.2",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.9"
   },
   "workspaces": [
-    "sandbox/*"
-  ],
-  "private": true
+    "apps/*",
+    "common/vanilla/*",
+    "common/compiled/*",
+    "scripts/*"
+  ]
 }

@@ -1,53 +1,67 @@
+---
+name: Bug Report
+about: Report a reproducible problem in a backend app, frontend app, shared package, or project tooling
+labels: bug
+---
+
 <!--
-ATTENTION! WE WILL HAVE TO CLOSE THIS ISSUE if you don't provide the needed information.
-Please read https://github.com/ais-one/cookbook/blob/master/.github/CONTRIBUTING.md before opening an issue.
+Please use GitHub Discussions for general questions.
+Before opening a bug, check existing issues and verify the problem against the latest code on the default branch.
 -->
 
-## Description
+## Summary
 
-**Environment:**
-<!-- Describe your environment in detail. e.g. OS, application (e.g. chrome) type and version, library versions -->
+Provide a short description of the bug.
 
-**Current behavior:**
-<!-- Describe how the bug manifests. -->
+## Affected Area
 
-**Expected behavior:**
-<!-- Describe what the behavior would be without the bug. -->
+Select all that apply.
 
-**Steps to reproduce:**
-<!--  Please explain the steps required to duplicate the issue, especially if you are able to provide a sample application -->
+- [ ] apps
+- [ ] common
+- [ ] docs
+- [ ] scripts
+- [ ] CI/CD or GitHub Actions
 
-**Related code:**
-<!-- 
-If you are able to illustrate the bug or feature request with an example, please provide a sample application via one of the following means:
+## Current Behavior
 
-A sample application via GitHub
+Describe what is happening now.
 
-StackBlitz (https://stackblitz.com)
+## Expected Behavior
 
-Plunker (http://plnkr.co/edit/cpeRJs?p=preview)
+Describe what should happen instead.
 
-Codesandbox (https://codesandbox.io/)
--->
+## Steps To Reproduce
+
+List the exact steps, commands, URLs, inputs, or configuration needed to reproduce the issue.
+
+1. 
+2. 
+3. 
+
+## Reproduction Repo Or Sample
+
+If possible, provide a minimal public repository, branch, or sample app that reproduces the problem.
+
+## Environment
+
+Fill in the relevant details.
+
+- Node.js version:
+- npm version:
+- OS:
+- Browser and version:
+- Workspace or app path affected:
+- Environment mode: development, test, staging, or production
+
+## Logs, Errors, Or Screenshots
+
+Paste the most relevant output only.
+
+```text
 
 ```
-insert short code snippets here
-```
 
-## Other information
+## Additional Context
 
-**npm, node, OS, Browser**
-```
-<!--
-Node, npm: `node --version` and `npm --version`
-OS: Windows (7/8/10). Linux (incl. distribution). macOS (El Capitan? Sierra?)
-Browser: Chrome/Safari/Firefox/etc?
--->
-```
-
-**Angular, Nebular**
-```
-<!--
-Check your `package-lock.json` or locate a `package.json` in the `node_modules` folder.
--->
-```
+Include any recent changes, suspected root cause, related issue links, or temporary workaround.

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="/manifest.json" rel="manifest"><!-- PWA Stuff -->
+  <title>Push Notification</title>
+</head>
+
+<body>
+  <div>
+    <h1>Push Notification <a href="index.html">Back</a></h1>
+    <ul>
+      <li>ALL - manifest.json</li>
+      <li>ALL - service-worker.js</li>
+      <li>Webpush - @common/web/pwa.js</li>
+    </ul>
+    <div>
+      <p>PN STATE: <span id="txt-pn-state">NA</span></p>
+    </div>
+    <div>
+      <button type="button" id="btn-sub">Subcribe PN</button>
+      <button type="button" id="btn-test">Send And Receive Test PN</button>
+      <button type="button" id="btn-unsub">Unsubscribe PN</button>
+    </div>
+    <div>
+      <p id="txt-output"></p>
+    </div>
+    <div>
+      <p id="txt-error"></p>
+    </div>
+  </div>
+</body>
+<script type="module">
+  import Fetch from "/esm/fetch.js";
+  import { webpushSubscribe, webpushUnsubscribe } from "/esm/pwa.js"; // served from express /esm static route
+
+  let subState = '[NA]'
+  const WEBPUSH_URL = '/api/sample-api/webpush'
+
+  const elOutput = document.querySelector("#txt-output")
+  const elError = document.querySelector("#txt-error")
+
+  elOutput.innerHTML = subState
+
+  const http = new Fetch({
+    baseUrl: '', refreshUrl: '', credentials: 'same-origin',
+  });
+
+  if (Notification.permission === "denied") {
+    await Notification.requestPermission()
+  }
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", async () => {
+      console.log("SW load");
+      const params = ""; // '?params=' + encodeURIComponent(JSON.stringify({ a: 1, b: Date.now() })) // TODO some problem with vite (development) if passing in params like this...
+      const swPath =
+        window.location.port === "3000"
+          ? "service-worker.js"
+          : "/service-worker.js"; // if dev server use / in front... // NOTE: web path
+      navigator.serviceWorker
+        .register(swPath + params) // problem in dev no /vite
+        .then((res) => {
+          window.SW_REG = res;
+          console.log("service worker registered");
+        })
+        .catch((err) => console.log("SW load Error", err));
+    });
+  }
+
+  async function sub() {
+    try {
+      const { data } = await http.get(`${WEBPUSH_URL}/vapid-public-key`)
+      const subscription = await webpushSubscribe(data.publicKey)
+      console.log('subscription', subscription)
+      if (subscription) await http.post(`${WEBPUSH_URL}/sub`, { subscription });
+      subState = "[Subscribed]";
+      elOutput.innerHTML = subState;
+    } catch (e) {
+      console.log("error sub", e);
+      elError.innerHTML = e.toString();
+    }
+  }
+  async function unsub() {
+    try {
+      if (VITE_PWA_PN === "Webpush") await webpushUnsubscribe();
+      await http.post(`${WEBPUSH_URL}/unsub`, {});
+      subState = "[UNsubscribed]";
+      elOutput.innerHTML = subState;
+    } catch (e) {
+      console.log("error unsub", e);
+      elError.innerHTML = e.toString();
+    }
+  }
+  async function test() {
+    if (subState !== "[Subscribed]") return alert("Need to subscribe first");
+    try {
+      const data = `Hello Webpush ${new Date().toLocaleString()}`;
+      await http.post(`${WEBPUSH_URL}/send/1`, { mode: VITE_PWA_PN, data });
+      console.log('test PN sent')
+    } catch (e) {
+      console.log("error test", e);
+      elError.innerHTML = e.toString();
+    }
+  }
+
+  document.querySelector("#btn-sub").addEventListener("click", (e) => sub());
+  document.querySelector("#btn-unsub").addEventListener("click", (e) => unsub());
+  document.querySelector("#btn-test").addEventListener("click", (e) => test());
+</script>
+
+</html>

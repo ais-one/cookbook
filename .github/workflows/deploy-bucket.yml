@@ -1,0 +1,218 @@
+# This workflow deploys frontend application (VueJS) to a object store bucket
+# Supported buckets:
+# - Aliyun OSS
+# - AWS S3 [TOTEST]
+# - Github Pages [TOTEST]
+#
+# Setup the following github action repo secrets
+# - ACCESS_KEY_ID
+# - ACCESS_KEY_SECRET
+# Setup the following github action repo vars
+# - ENDPOINT
+# Specify the following during build
+# - provider (aws, oss, ghp)
+# - tag
+# - app (the web app folder in apps folder)
+# - bucket (bucket name - e.g. test-www-dev)
+# - env (development, statging, production)
+#
+name: DEPLOY - Bucket
+
+# on: [push]
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      provider:
+        description: 'Cloud Provider - oss, s3'
+        required: true
+        default: 'oss'
+        type: choice
+        options:
+        - oss
+        - s3
+      tag:
+        description: 'git repo branch or tag'
+        default: 'main'
+        required: true
+      app:
+        description: 'application name e.g. sample'
+        default: ''
+        required: true
+      bucket:
+        description: 'bucket name e.g. test-www-dev'
+        default: ''
+        required: true
+      env:
+        description: 'environment: dev, uat, prd'
+        default: 'dev'
+        required: true
+# env:
+#   OSS_TYPE: ${{ github.event.inputs.tag || 'main' }}
+jobs:
+  build:
+    name: Install And Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Workflow Inputs
+        run: |
+          echo "provider: ${{ github.event.inputs.provider }}"
+          echo "branch/tag: ${{ github.event.inputs.tag }}"
+          echo "environment: ${{ github.event.inputs.env }}"
+          echo "app: ${{ github.event.inputs.app }}"
+          echo "bucket: ${{ github.event.inputs.bucket }}"
+      - name: Checkout ${{ github.event.inputs.tag }}
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.inputs.tag }}
+      - name: Set up workspace
+        uses: ./.github/actions/setup-node-npm-install
+      - name: Build
+        run: cd apps/${{ github.event.inputs.app }} && npm run build --mode ${{ github.event.inputs.env }}
+        # run: npm run build # will create a dist folder (TODO build environment??)
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: my-build
+          path: ${{ github.workspace }}/apps/${{ github.event.inputs.app }}/dist
+
+  request-approval:
+    name: Request Deployment Approval
+    needs: [build]
+    runs-on: ubuntu-latest
+    environment:
+      # "production" is a GitHub Environment configured with required reviewers.
+      # Add your authorized users/teams there in:
+      #   Settings → Environments → production → Required reviewers
+      # ← configure required reviewers here in GitHub Settings
+      name: production
+    steps:
+      - name: Approval gate
+        run: echo "✅ Approved — deploying ${{ needs.build.outputs.image_tag }}"
+
+  deploy-oss: # aliyun OSS
+    needs: request-approval
+    if: github.event.inputs.provider == 'oss'
+    name: Deploying To Aliyun OSS - Node Version TODO
+    runs-on: ubuntu-latest
+    steps:
+      - name: download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: my-build
+          path: ${{ github.workspace }}/apps/${{ github.event.inputs.app }}/dist
+      - name: Install Alibaba Cloud OSSUTIL
+        run: wget http://gosspublic.alicdn.com/ossutil/1.6.10/ossutil64 && chmod +x ossutil64
+      - name: Configure Alibaba Cloud OSSUTIL
+        run: ./ossutil64 config -i ${{ secrets.ACCESS_KEY_ID }} -k ${{ secrets.ACCESS_KEY_SECRET }} -e ${{ vars.ENDPOINT }} -c .ossutilconfig
+      - name: Upload the web folder to the chosen OSS bucket
+        run: ./ossutil64 --config-file .ossutilconfig cp ${{ github.workspace }}/apps/${{ github.event.inputs.app }}/dist oss://${{ github.event.inputs.bucket }} -r -f
+  deploy-s3: # AWS S3
+    needs: request-approval
+    if: github.event.inputs.provider == 's3'
+    runs-on: ubuntu-latest
+    steps:
+      - name: download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: my-build
+          path: ${{ github.workspace }}/apps/${{ github.event.inputs.app }}/dist
+      - name: Setup AWS CLI
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ACCESS_KEY_SECRET }}
+          aws-region: us-east-1
+      - name: Sync files to S3 bucket
+        run: |
+          aws s3 sync dist s3://${{ github.event.inputs.bucket }} --delete
+  deploy-oss2: # Alibaba Cloud OSS via AWS CLI
+    needs: request-approval
+    if: github.event.inputs.provider == 'oss2'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: my-build
+          path: ${{ github.workspace }}/apps/${{ github.event.inputs.app }}/dist
+      - name: Configure AWS CLI for OSS
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id: ${{ secrets.OSS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.OSS_ACCESS_KEY_SECRET }}
+          aws-region: ap-southeast-1
+      - name: Sync files to OSS bucket
+        run: |
+          aws s3 sync dist s3://${{ github.event.inputs.bucket }} \
+            --delete \
+            --endpoint-url https://${{ secrets.OSS_ENDPOINT }}
+  deploy-ghp: # Alibaba Cloud OSS via AWS CLI
+    needs: request-approval
+    if: github.event.inputs.provider == 'ghp'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: my-build
+          path: ${{ github.workspace }}/apps/${{ github.event.inputs.app }}/dist
+      - name: Run deploy script
+        # remember to change user.name and user.email
+        run: |
+          git config user.name "Your username" && git config user.email "your email"
+          git checkout --orphan gh-pages
+          npx vite build --mode ${{ github.event.inputs.environment }}
+          git --work-tree dist add --all
+          git --work-tree dist commit -m 'Deploy'
+          git push origin HEAD:gh-pages --force
+          rm -r dist
+          git checkout -f ${GITHUB_REF##*/}
+          git branch -D gh-pages
+  ghsp2-tocheck:
+    needs: request-approval
+    if: github.event.inputs.provider == 'ghp'
+    runs-on: ubuntu-latest 
+    permissions: 
+      contents: read
+      packages: write 
+    steps:
+      - uses: actions/checkout@v6
+      # Setup .npmrc file to publish to GitHub Packages
+      - uses: ./.github/actions/setup-node-npm-install
+        with:
+          node-version: '24.13.0'
+          registry-url: 'https://npm.pkg.github.com'
+          # Defaults to the user or organization that owns the workflow file
+          scope: '@octocat'
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # # https://cli.vuejs.org/guide/deployment.html#github-pages
+
+# #!/usr/bin/env sh
+
+# # abort on errors
+# set -e
+
+# # build
+# npm run build
+
+# # navigate into the build output directory
+# cd dist
+
+# # if you are deploying to a custom domain
+# # echo 'www.example.com' > CNAME
+
+# git init
+# git add -A
+# git commit -m 'deploy'
+
+# # if you are deploying to https://<USERNAME>.github.io
+# # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git master
+
+# # if you are deploying to https://<USERNAME>.github.io/<REPO>
+# # git push -f git@github.com:<USERNAME>/<REPO>.git master:gh-pages
+
+# cd -

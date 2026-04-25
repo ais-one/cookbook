@@ -1,0 +1,201 @@
+## http testing for t4t
+# student
+# subject
+# student_subject
+# country
+# state
+
+## Variables
+@table = student
+@table_id=1
+# @table = student
+@url = http://127.0.0.1:3000/api/t4t
+
+# ----------------------------------------
+
+### Healthcheck
+GET {{url}}/healthcheck
+Content-Type: application/json
+
+### Get table config info
+GET {{url}}/config/{{table}}
+Content-Type: application/json
+
+### autocomplete
+GET {{url}}/autocomplete/{{table}}
+Content-Type: application/json
+
+{
+  "limit": 20,
+  "key": "key",
+  "text": "text",
+  "search": "search_value",
+  "parentTableColName": "",
+  "parentTableColVal": ""
+}
+
+### List records
+# page: is 1 based
+# filters: ignore where key === null, sort it 'or' first then 'and' // [ { key, op, val, andOr } ]
+# sorter: [ { column: 'name', order: 'asc' } ] / [] order = asc, desc
+# csv: ''
+#
+GET {{url}}/find/{{table}}?page=1&limit=10
+# GET {{url}}/find/{{table}}?page=1&limit=25&filters=&sorter=[{ "column": "id", "order": "desc" }]&csv=
+# GET {{url}}/find/{{table}}?page=1&limit=25&filters=[{ "key": "id", "op": ">", "val": 100 }]&sorter=&csv=
+Content-Type: application/json
+
+
+### Get one record
+# can find: __key=first|last
+# cant find: __key=first|loo
+GET {{url}}/find-one/{{table}}?__key={{table_id}}
+# GET {{url}}/find-one/{{table}}?__key=first|last
+Content-Type: application/json
+
+
+#### Update a record 
+# able to upload files also
+# remarks will not be updated as user has no permission for that field...
+PATCH {{url}}/update/{{table}}?__key={{table_id}}
+Content-Type: application/json
+
+{
+  "gpa": 6,
+  "remarks": "hello world 97"
+}
+
+### Create a record
+POST {{url}}/create/{{table}}
+Content-Type: application/json
+
+{
+  "firstName": "First",
+  "lastName": "LastA"
+}
+
+### Delete record / records
+
+POST {{url}}/remove/{{table}}
+Content-Type: application/json
+
+{
+  "ids": [{{table_id}}]
+}
+
+### Create a record
+POST {{url}}/create/country
+Content-Type: application/json
+
+{
+  "code": "XX",
+  "name": "Xavierland"
+}
+
+### Get one record
+GET {{url}}/find-one/country?__key=241
+Content-Type: application/json
+
+### Delete one record
+POST {{url}}/remove/country
+Content-Type: application/json
+
+{
+  "ids": [242]
+}
+
+### Update With File Upload - 1 file... them multiple files
+PATCH {{url}}/update/student?__key=1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="json"
+Content-Type: application/json
+
+{
+  "avatar": "test.txt",
+  "kyc": "test-kyc-a.txt,test-kyc-b.txt"
+}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="test.txt"
+Content-Type: text/javascript
+
+< ./test_upload/test.txt
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="kyc"; filename="test-kyc-a.txt"
+Content-Type: text/javascript
+
+< ./test_upload/test-kyc-a.txt
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="kyc"; filename="test-kyc-b.txt"
+Content-Type: text/javascript
+
+< ./test_upload/test-kyc-b.txt
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### UPLOAD CSV - subject
+POST {{url}}/upload/subject
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="csv-file"; filename="subject.csv"
+Content-Type: text/csv
+
+< ./test_upload/upload-ok-subject.csv
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### UPLOAD CSV - country
+POST {{url}}/upload/country
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="csv-file"; filename="country.csv"
+Content-Type: text/csv
+
+< ./test_upload/country.csv
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+### Create a record - multi-key - TODO
+POST {{url}}/create/student_subject
+Content-Type: application/json
+
+{
+  "studentId": 4,
+  "subjectCode": "EM",
+  "gradeFinal": "X",
+  "gradeDate": "2024-10-02"
+}
+
+
+### Get one record - TODO
+GET {{url}}/find-one/student_subject?__key=xx|yy
+Content-Type: application/json
+
+### Delete 2 records - multi-key - TODO
+POST {{url}}/remove/student_subject
+Content-Type: application/json
+
+{
+  "ids": ["3|EM", "4|EM"]
+}
+
+### Get
+GET {{url}}/find/student_subject?page=1&limit=25
+Content-Type: application/json
+
+### Test Autocomplete
+POST {{url}}/autocomplete/country
+Content-Type: application/json
+
+{
+  "key": "code",
+  "text": "name",
+  "search": "United",
+  "parentTableColName": "",
+  "parentTableColVal": ""
+}

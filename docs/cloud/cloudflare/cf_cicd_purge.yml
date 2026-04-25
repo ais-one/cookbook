@@ -1,0 +1,167 @@
+# .github/workflows/deploy-static-cf.yml
+#
+# Uploads static build artifacts to S3 or OSS, then purges
+# the Cloudflare cache so the new version is served immediately.
+#
+# Works with either AWS S3 or AliCloud OSS as the origin —
+# set CLOUD_PROVIDER to "aws" or "alicloud" accordingly.
+#
+name: Deploy static site + purge Cloudflare cache
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/deploy-static-cf.yml'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  CLOUD_PROVIDER:     "aws"           # "aws" or "alicloud"
+  CF_ZONE_ID:         ""              # set in GitHub secrets: CF_ZONE_ID
+  BUILD_DIR:          "frontend/dist" # your build output directory
+
+  # ── AWS ──────────────────────────────────────────────────
+  AWS_REGION:         "ap-southeast-1"
+  AWS_ROLE_ARN:       "arn:aws:iam::123456789012:role/cicd-terraform-role"
+  S3_BUCKET:          "my-org-static-site"
+  CF_DISTRIBUTION_ID: ""              # leave blank — Cloudflare handles CDN
+
+  # ── AliCloud ─────────────────────────────────────────────
+  ALICLOUD_REGION:    "ap-southeast-1"
+  ALICLOUD_ROLE_ARN:  "acs:ram::123456789012345678:role/cicd-terraform-role"
+  ALICLOUD_OIDC_ARN:  "acs:ram::123456789012345678:oidc-provider/github-actions"
+  OSS_BUCKET:         "my-org-static-site"
+
+jobs:
+  deploy:
+    name: Build, upload & purge cache
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── Build ─────────────────────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: frontend
+
+      - name: Build
+        run: npm run build
+        working-directory: frontend
+
+      # ── AWS: OIDC → upload to S3 ─────────────────────────
+      - name: Configure AWS credentials (OIDC)
+        if: env.CLOUD_PROVIDER == 'aws'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region:     ${{ env.AWS_REGION }}
+          role-session-name: github-static-deploy
+
+      - name: Upload to S3
+        if: env.CLOUD_PROVIDER == 'aws'
+        run: |
+          # Upload hashed assets with long cache-control
+          aws s3 sync ${{ env.BUILD_DIR }} s3://${{ env.S3_BUCKET }} \
+            --exclude "*.html" \
+            --cache-control "public, max-age=31536000, immutable" \
+            --delete
+
+          # Upload HTML with short cache-control (ensures Cloudflare respects TTL)
+          aws s3 sync ${{ env.BUILD_DIR }} s3://${{ env.S3_BUCKET }} \
+            --include "*.html" \
+            --cache-control "public, max-age=300" \
+            --content-type "text/html; charset=utf-8"
+
+      # ── AliCloud: OIDC → upload to OSS ───────────────────
+      - name: Get GitHub OIDC token
+        if: env.CLOUD_PROVIDER == 'alicloud'
+        id: jwt
+        run: |
+          TOKEN=$(curl -sSf \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.aliyuncs.com" \
+            | jq -r '.value')
+          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+
+      - name: Assume RAM role via OIDC
+        if: env.CLOUD_PROVIDER == 'alicloud'
+        id: sts
+        run: |
+          RESP=$(curl -sSf -G "https://sts.aliyuncs.com/" \
+            --data-urlencode "Action=AssumeRoleWithOIDC" \
+            --data-urlencode "Version=2015-04-01" \
+            --data-urlencode "Format=JSON" \
+            --data-urlencode "RoleArn=${{ env.ALICLOUD_ROLE_ARN }}" \
+            --data-urlencode "OIDCProviderArn=${{ env.ALICLOUD_OIDC_ARN }}" \
+            --data-urlencode "OIDCToken=${{ steps.jwt.outputs.token }}" \
+            --data-urlencode "RoleSessionName=github-static-deploy" \
+            --data-urlencode "DurationSeconds=3600")
+          echo "access_key=$(echo $RESP | jq -r '.Credentials.AccessKeyId')"     >> $GITHUB_OUTPUT
+          echo "secret_key=$(echo $RESP | jq -r '.Credentials.AccessKeySecret')" >> $GITHUB_OUTPUT
+          echo "sec_token=$(echo $RESP  | jq -r '.Credentials.SecurityToken')"   >> $GITHUB_OUTPUT
+
+      - name: Upload to OSS
+        if: env.CLOUD_PROVIDER == 'alicloud'
+        env:
+          ALICLOUD_ACCESS_KEY_ID:     ${{ steps.sts.outputs.access_key }}
+          ALICLOUD_ACCESS_KEY_SECRET: ${{ steps.sts.outputs.secret_key }}
+          ALICLOUD_SECURITY_TOKEN:    ${{ steps.sts.outputs.sec_token }}
+        run: |
+          pip install -q ossutil
+          ossutil config -e oss-${{ env.ALICLOUD_REGION }}.aliyuncs.com \
+            -i $ALICLOUD_ACCESS_KEY_ID \
+            -k $ALICLOUD_ACCESS_KEY_SECRET \
+            -t $ALICLOUD_SECURITY_TOKEN
+
+          # Upload hashed assets
+          ossutil cp -r ${{ env.BUILD_DIR }}/ oss://${{ env.OSS_BUCKET }}/ \
+            --exclude "*.html" \
+            --meta "Cache-Control:public, max-age=31536000, immutable" \
+            --force
+
+          # Upload HTML files
+          ossutil cp -r ${{ env.BUILD_DIR }}/ oss://${{ env.OSS_BUCKET }}/ \
+            --include "*.html" \
+            --meta "Cache-Control:public, max-age=300" \
+            --force
+
+      # ── Cloudflare cache purge (works for both clouds) ───
+      - name: Purge Cloudflare cache (HTML only)
+        run: |
+          # Purge HTML pages so Cloudflare serves fresh index.html immediately.
+          # Hashed assets (.js, .css) don't need purging — their URLs change on rebuild.
+          curl -sSf -X POST \
+            "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "files": [
+                "https://static.${{ secrets.ROOT_DOMAIN }}/",
+                "https://static.${{ secrets.ROOT_DOMAIN }}/index.html"
+              ]
+            }' | jq .
+
+      - name: Write job summary
+        if: always()
+        run: |
+          echo "## Static Deploy" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Cloud | \`${{ env.CLOUD_PROVIDER }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Actor | @${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| URL | https://static.${{ secrets.ROOT_DOMAIN }} |" >> $GITHUB_STEP_SUMMARY

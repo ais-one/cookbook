@@ -1,0 +1,61 @@
+# - Github Secrets
+#   - NPM_AUTH_TOKEN
+# - Selectable Inputs
+#   - git repo branch / tag
+#   - project to publish (currently only jslib)
+
+name: DEPLOY - Publish Package to npmjs
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # Inputs the workflow accepts.
+    inputs:
+      pkg:
+        description: 'Project To Publish (jslib, esm or node). Ensure version is updated & tagged'
+        default: 'jslib'
+        required: true
+      tag:
+        description: 'Branch or tag'
+        default: 'main'
+        required: true
+jobs:
+  # COMMENTED BECAUSE: cannot push to protected branch
+  # inc_patch_ver:
+  #   name: Increment patch version
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         ref: ${{ github.event.inputs.tag }}
+  #     - run: git config --global user.name 'ais-one'
+  #     - run: git config --global user.email 'aaronjxz@gmail.com'
+  #     - run: npm version patch --workspace=libs/${{ github.event.inputs.pkg }}
+  #     - run: |
+  #         git add .
+  #         git commit -m "inc patch ver"
+  #         git push
+  install_and_publish:
+    name: Install production dependencies and publish to npm
+    # if: ${{ !always() }}
+    # needs: inc_patch_ver
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '24' ] # lts?
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.inputs.tag }}
+      - uses: ./.github/actions/setup-node-npm-install
+        with:
+          node-version: ${{ matrix.node }}
+          install: 'false'
+          registry-url: 'https://registry.npmjs.org'
+      # Setup .npmrc file to publish to npm
+      - run: echo checking out branch/tag ${GITHUB_REF##*/}
+      # - run: npm install --production --workspace=libs/${{ github.event.inputs.pkg }} # NOT NEEDED CURRENTLY
+      - run: npm publish --access public --workspace=common/${{ github.event.inputs.pkg }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

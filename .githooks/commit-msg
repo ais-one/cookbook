@@ -1,0 +1,35 @@
+#!/bin/sh
+# .githooks/commit-msg
+# Validates the commit message against the Conventional Commits spec.
+# Tip: use `npx czg` to compose a properly-formatted message interactively.
+#
+# Install: run .githooks/setup.sh (or: git config core.hooksPath .githooks)
+# Skip:    git commit --no-verify
+
+HOOK_NAME=commit-msg
+# shellcheck source=.githooks/_common.sh
+. "$(dirname "$0")/_common.sh"
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(cat "$COMMIT_MSG_FILE")
+
+# Skip merge commits, reverts, fixups, and squash commits
+case "$COMMIT_MSG" in
+  Merge\ *|Revert\ *|fixup!\ *|squash!\ *) exit 0 ;;
+esac
+
+# Conventional Commits pattern: type(scope?)[!]: description
+PATTERN='^(feat|fix|chore)(\([^)]+\))?!?: .{1,}'
+
+if ! echo "$COMMIT_MSG" | grep -Eq "$PATTERN"; then
+  print_error "Commit message does not follow Conventional Commits format."
+  print_error "  Got:      $COMMIT_MSG"
+  print_info  "  Expected: type(scope): description"
+  print_info  "  Types:    feat|fix|chore"
+  print_info  "  Note:     use chore for docs|style|refactor|perf|test|build|ci|revert changes"
+  print_info  "  Tip:      use 'npx czg' to generate a valid message interactively."
+  exit 1
+fi
+
+print_success "Commit message format OK."
+exit 0

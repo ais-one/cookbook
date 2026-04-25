@@ -1,0 +1,34 @@
+# SAMPLE Action
+## References
+# https://dev.to/hectorleiva/github-actions-and-creating-a-short-sha-hash-8b7
+# https://docs.github.com/en/actions/sharing-automations/creating-actions/creating-a-composite-action
+# uses: ./.github/myactions/make-tag.yml
+
+name: 'Make Tag'
+description: 'Make Github Tag'
+# inputs:
+#   who-to-greet:  # id of input
+#     description: 'Who to greet'
+#     required: true
+#     default: 'World'
+# outputs:
+#   random-number:
+#     description: "Random number"
+#     value: ${{ steps.random-number-generator.outputs.random-number }}
+runs:
+  using: "composite"
+  steps:
+    - name: Set Commit Short SHA
+      run: |
+        calculatedSha=$(git rev-parse --short ${{ github.sha }})
+        echo "COMMIT_SHORT_SHA=$calculatedSha" >> $GITHUB_ENV
+      shell: bash
+    # - name: Set Greeting
+    #   run: echo "Hello $INPUT_WHO_TO_GREET."
+    #   shell: bash
+    #   env:
+    #     INPUT_WHO_TO_GREET: ${{ inputs.who-to-greet }}
+    # - name: Random Number Generator
+    #   id: random-number-generator
+    #   run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
+    #   shell: bash

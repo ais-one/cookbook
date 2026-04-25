@@ -1,0 +1,110 @@
+openapi: 3.0.0
+info:
+  title: Webpush API
+  version: 1.0.0
+  description: >-
+    Endpoints for retrieving the VAPID key, subscribing/un‑subscribing and
+    sending push notifications
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+paths:
+  /vapid-public-key:
+    get:
+      summary: Get VAPID public key
+      responses:
+        '200':
+          description: Public key returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+  /sub:
+    post:
+      summary: Store push‑subscription token for authenticated user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subscription:
+                  type: string
+              required:
+                - subscription
+      responses:
+        '200':
+          description: Subscription recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+  /unsub:
+    post:
+      summary: Clear push‑subscription token for authenticated user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Unsubscribed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+  '/send/{id}':
+    post:
+      summary: Send a notification to the given user id
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mode:
+                  type: string
+                  enum:
+                    - Webpush
+                data:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: Notification sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  mode:
+                    type: string
+                  rv:
+                    type: object
+        '404':
+          description: No user or token
+        '500':
+          description: Server error

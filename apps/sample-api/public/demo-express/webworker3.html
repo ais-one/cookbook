@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Real-time text analysis with web worker</title>
+</head>
+<body>
+  <textarea id="text" rows="10" cols="150" placeholder="Start writing...">
+  </textarea>
+
+  <div>
+    <p>Word count: <span id="wordCount">0</span></p>
+    <p>Character count: <span id="charCount">0</span></p>
+    <p>Line count: <span id="lineCount">0</span></p>
+    <p>Most repeated word: <span id="mostRepeatedWord"></span> (<span id="mostRepeatedWordCount">0</span> occurrences)</p>
+  </div>
+  
+  <script>
+    const text = document.getElementById("text");
+    const wordCount = document.getElementById("wordCount");
+    const charCount = document.getElementById("charCount");
+    const lineCount = document.getElementById("lineCount");
+    const mostRepeatedWord = document.getElementById("mostRepeatedWord");
+    const mostRepeatedWordCount = document.getElementById("mostRepeatedWordCount");
+
+    const textAnalyzer = new SharedWorker("js/textAnalyzer2.js");
+
+    textAnalyzer.port.addEventListener("message", (event) => {
+      const textData = event.data;
+      
+      wordCount.innerText = textData.wordCount;
+      charCount.innerText = textData.charCount;
+      lineCount.innerText = textData.lineCount;
+      mostRepeatedWord.innerText = textData.mostRepeatedWord;
+      mostRepeatedWordCount.innerText = textData.mostRepeatedWordCount;
+    });
+
+    textAnalyzer.port.start();
+
+    /*
+    // no need to invoke start if using onmessage listener instead
+    textAnalyzer.port.onmessage = (event) => {
+      const textData = event.data;
+      
+      wordCount.innerText = textData.wordCount;
+      charCount.innerText = textData.charCount;
+      lineCount.innerText = textData.lineCount;
+      mostRepeatedWord.innerText = textData.mostRepeatedWord;
+      mostRepeatedWordCount.innerText = textData.mostRepeatedWordCount;
+    };
+    */
+
+    text.addEventListener("keyup", ()=> {
+      textAnalyzer.port.postMessage(text.value);
+    });
+
+    textAnalyzer.port.addEventListener("error", (error) => {
+      console.log(`Error "${error.message}" occurred in the file ${error.filename} at line ${error.lineno}`);
+    });
+  </script>
+</body>
+</html>

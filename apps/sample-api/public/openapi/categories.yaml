@@ -1,0 +1,155 @@
+no-id:
+  get:
+    summary: Get categories
+    description:
+      Returns all categories from the system that the user has access to
+    tags:
+      - "Categories"
+    operationId: findCategories
+    security:
+      - ApiKeyAuth: [] 
+    parameters:
+      - name: page
+        in: query
+        description: 1-based page index
+        required: false
+        style: form
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: page size
+        required: false
+        schema:
+          type: integer
+          format: int32
+    responses:
+      '200':
+        description: category response
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                total:
+                  type: integer
+                results:
+                  type: array
+                  items:
+                    $ref: './objects.yaml#/components/schemas/Category'
+      default:
+        description: unexpected error
+        content:
+          application/json:
+            schema:
+              $ref: './objects.yaml#/components/schemas/Error'
+  post:
+    description: Creates a new category
+    tags:
+      - "Categories"
+    security:
+      - ApiKeyAuth: [] 
+    requestBody:
+      description: Pet to add to the store
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: './objects.yaml#/components/schemas/NewCategory'
+    responses:
+      '200':
+        description: pet response
+        content:
+          application/json:
+            schema:
+              $ref: './objects.yaml#/components/schemas/Category'
+      default:
+        description: unexpected error
+        content:
+          application/json:
+            schema:
+              $ref: './objects.yaml#/components/schemas/Error'
+with-id:
+  get:
+    description: Returns a user based on a single ID
+    tags:
+      - "Categories"
+    security:
+      - ApiKeyAuth: [] 
+    parameters:
+      - name: id
+        in: path
+        description: ID of category to fetch
+        required: true
+        schema:
+          type: integer
+          # format: int64
+    responses:
+      '200':
+        description: category response
+        content:
+          application/json:
+            schema:
+              $ref: './objects.yaml#/components/schemas/Category'
+      default:
+        description: unexpected error
+        content:
+          application/json:
+            schema:
+              $ref: './objects.yaml#/components/schemas/Error'
+  patch:
+    description: Update a user based on a single ID
+    tags:
+      - "Categories"
+    security:
+      - ApiKeyAuth: [] 
+    parameters:
+      - name: id
+        in: path
+        description: ID of category to update
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      description: category to update
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: './objects.yaml#/components/schemas/NewCategory'
+    responses:
+      '200':
+        description: category response
+        content:
+          application/json:
+            schema:
+              $ref: './objects.yaml#/components/schemas/Category'
+      default:
+        description: unexpected error
+        content:
+          application/json:
+            schema:
+              $ref: './objects.yaml#/components/schemas/Error'
+  # delete:
+  #   description: deletes a single category based on the ID supplied
+  #   tags:
+  #     - "Categories"
+  #   operationId: deleteCategory
+  #   parameters:
+  #     - name: id
+  #       in: path
+  #       description: ID of pet to delete
+  #       required: true
+  #       schema:
+  #         type: integer
+  #         format: int64
+  #   responses:
+  #     '204':
+  #       description: category deleted
+  #     default:
+  #       description: unexpected error
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: './objects.yaml#/components/schemas/Error'

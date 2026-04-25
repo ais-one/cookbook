@@ -1,0 +1,30 @@
+name: Call - Security Scan
+
+on:
+  workflow_call:
+
+jobs:
+  security:
+    name: Security Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: ./.github/actions/checkout
+
+      - name: Set up workspace
+        uses: ./.github/actions/setup-node-npm-install
+
+      - name: NPM audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Running npm audit for security vulnerabilities..."
+          npm audit --audit-level=moderate || exit 1
+
+      - name: Secrets scan with truffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified

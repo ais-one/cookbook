@@ -1,0 +1,22 @@
+# Using - https://github.com/Huachao/vscode-restclient
+
+@url_prd = http://127.0.0.1:3001
+@url_dev = http://127.0.0.1:3000
+@url = {{url_dev}}
+
+### liveness endpoint
+GET {{url}}/health
+
+### Readiness endpoint
+GET {{url}}/health/ready
+
+### Service Endpoint Check
+GET {{url}}/api/sample-api/healthcheck
+
+### HTTP Testing
+GET https://randomuser.me/api/
+Accept: application/json 
+
+### Test Post
+POST https://httpbin.org/post
+Accept: application/json

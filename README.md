@@ -1,57 +1,62 @@
-![master commit](https://badgen.net/github/last-commit/ais-one/cookbook/master)
-![release](https://img.shields.io/github/v/release/ais-one/cookbook)
-[![npm version](https://badge.fury.io/js/cookbook.svg)](https://badge.fury.io/js/cookbook)
-[![npm](https://img.shields.io/npm/dm/cookbook.svg)](https://www.npmjs.com/package/cookbook)
-[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=com.lapots.breed.judge:judge-rule-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.lapots.breed.judge:judge-rule-engine)
-[![Known Vulnerabilities](https://snyk.io/test/github/ais-one/cookbook/badge.svg)](https://snyk.io/test/github/ais-one/cookbook)
-[![MadeWithVueJs.com shield](https://madewithvuejs.com/storage/repo-shields/823-shield.svg)](https://madewithvuejs.com/p/cookbook/shield-link)
+## Description
 
-### 1 - IMPORTANT - Read Me First!
+This repository is based on a monorepo [template](https://github.com/es-labs/express-template) for building full-stack JavaScript applications, micro-services and frontends with Node.js (**version 24 or Higher**).
 
-The `templates` (express and vuejs template) and `libraries` (shareable libraries and tools) projects referenced in the [Recipes](recipes/README.md) are based on the two principles below.
+The folders contents are as follows:
+- `apps`: userland backend and frontend application workspaces
+- `scripts`: deployment and documentation scripts
+- `common`: shared JavaScript used by `apps` / `scripts`
+- `docs`: for documentation
 
-### 1.1 - Updateable Templates
+## Quickstart
 
-Your project is created using a template. If template updates, can upstream changes be merged with minimal impact on userland codes?
+Getting started with
+- Sample API [backend](docs/install.md#Run-Sample-API)
+- Mininal Vue [minimal frontend](docs/install.md#run-minimal-vue-application)
+- Sample Vue [full frontend](docs/install.md#install--run-sample-vue-application)
 
-Yes and it is achieved through:
-- Design
-  - Create folder where all userland code is placed, template must NOT touch this folder
-  - template should not to be part of a monorepo 
-- Process
-  - clone template and create remote called `upstream` pointing to template
-  - update framework when necessary by merging `upstream` into `origin`
+Creating your own apps/services
+- API [backend](docs/install.md#Create-New-Backend-App-Or-Service)
+- Vue [frontend](docs/install.md#create-new-web-or-vue-frontend)
 
-### 1.2 - Manageable Sharing
+Publish common/** workspace to [npm](docs/install.md#Publishing-packages-to-npm). **for template maintainers ONLY**
 
-You have code shared between multiple projects and libraries. If the code is updated, is breaking dependents and dependencies avoidable?
+## Read Me First
 
-Yes, based on the following principles:
-- Shared libraries should be isolated and versioned. Use last-known-good version and update when ready
-- Isolation and versioning can be extended to `types` (for Typescript) and `contracts` (for API)
-- minimize inter & nested dependencies, and technical debt
+- Contributors: read [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md) and [.github/SECURITY.md](.github/SECURITY.md) before opening issues or pull requests.
+End Users: **BEFORE** making **ANY** changes. Read the following:
 
----
+- SETUP
+  - [git hooks](docs/git.md#hooks-setup-and-usage)
+  - [template updating](.github/workflows/update-template.yml)
+  - [branching-and-protection](docs/git.md#branch-and-protection-rules)
+  - [commit message lint](docs/git.md#commit-message)
+  - [release automation](docs/git.md#release-automation)
+  - [secret scanning](https://docs.github.com/en/enterprise-cloud@latest/code-security/concepts/secret-security/about-secret-scanning)
+  - [security](https://github.com/settings/security_analysis)
+  - [repo custom properties](https://docs.github.com/en/organizations/managing-organization-settings/managing-custom-properties-for-repositories-in-your-organization)
+- Read
+  - [Merge strategy](docs/git.md#rebase-or-merge)
+  - [Engineering standards](docs/conventions.md) format, lint, commit message, language, tooling, etc.
+  - [Workflows](docs/git.md#ci)
+  - [Design Features](docs/NOTES.md#design-features)
+  - [Roadmap](docs/NOTES.md#roadmap)
 
-### 2 - General Requirements
+The `apps` folder is for **userland** content. E.g workspace codes, documents, scripts, schemas, etc.
 
-- git, github (for actions, secrets, etc) & IDE (e.g. vscode), Docker
-- unix shell (Windows use git-bash or WSL2)
-- node 20+ LTS & npm 9+ (npm i -g npm@latest `to update`)
+Other files and folders are managed by template maintainers.
 
-### 3 - Sandbox
+## Sample Applications, Implementations And Usage
 
-Research and exploration [Sandbox](sandbox/README.md)
+- `apps/sample-api`: Express-based backend services
+- `apps/sample-vue-full`: Vue and Vite frontend
+- `common/*`: shared ESM modules for Node, browser, Vue, and isomorphic code
+  - sample implementations for SAML, OIDC, OAuth, OTP, FIDO2, and push notifications, zod, OpenAPI, etc.
+  - TODO telegram, whatsapp, etc.
+- `scripts/dbdeploy` database deployment, documentation, and database helper scripts
 
-### 4 - Docker Dev Env
+## CI/CD
 
-Container setups for supporting apps for local development and testing [docker-devenv/README.md]()
-
-### 5 - Documentation
-
-The [docs](docs/home.md) folder contains useful information is in the midst of a major cleanup
-
-### 6 - Useful scripts - For Use By Maintainers
-
-- `bulk-git.sh`: script to diff, pull, push git (for repos in `recipies`)
-- `bulk-npm.sh`: script to check for and/or update dependencies in package.json (for repos in `recipies`)
+- [Deploy backend to container registry](.github/workflows/deploy-cr.yml)
+- [Publish a package to npm](.github/workflows/deploy-npm.yml)
+- [Deploy frontend (Vue) to object store](.github/workflows/deploy-bucket.yml)

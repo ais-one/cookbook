@@ -1,0 +1,52 @@
+name: Setup Node, npm, and install
+description: Set up Node.js, install a pinned npm version, and install dependencies.
+
+inputs:
+  node-version:
+    description: Node.js version to install.
+    required: false
+    default: '24.13.0'
+  npm-version:
+    description: npm version to install globally.
+    required: false
+    default: '11.6.2'
+  install-command:
+    description: Dependency install command to run.
+    required: false
+    default: npm ci
+  cache:
+    description: Package manager cache type passed to actions/setup-node.
+    required: false
+    default: npm
+  registry-url:
+    description: Optional registry URL passed to actions/setup-node.
+    required: false
+    default: ''
+  scope:
+    description: Optional npm scope passed to actions/setup-node.
+    required: false
+    default: ''
+  install:
+    description: Whether to run the install command.
+    required: false
+    default: 'true'
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: ${{ inputs.cache }}
+        registry-url: ${{ inputs.registry-url }}
+        scope: ${{ inputs.scope }}
+
+    - name: Set up npm
+      shell: bash
+      run: npm i -g npm@${{ inputs.npm-version }}
+
+    - name: Install dependencies
+      if: ${{ inputs.install == 'true' }}
+      shell: bash
+      run: ${{ inputs.install-command }}

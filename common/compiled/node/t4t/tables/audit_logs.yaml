@@ -1,0 +1,74 @@
+# TODO test deletion of foreign keys...
+conn: knex1
+name: audit_logs
+displayName: Audit Logs
+view: admin,editor,viewer # user defined roles
+update:
+create:
+delete:
+deleteLimit: -1 # 0 = no limit, requires multiSelect
+import:
+export: admin,editor # can export from csv
+multiSelect: false
+defaultSort: [{ column: 'timestamp', order: 'desc' }]
+cols:
+  id:
+    label: ID
+    auto: pk
+    hide: true
+    add: hide
+    edit: readonly
+  user:
+    label: User
+    type: string
+    ui:
+      tag: input
+  timestamp:
+    filter: true
+    label: Timestamp
+    type: datetime
+    ui:
+      tag: input
+      attrs:
+        type: datetime-local
+  db_name:
+    filter: true
+    label: DB Name
+    type: string
+    ui:
+      tag: input
+  table_name:
+    label: Table Name
+    type: string
+    ui:
+      tag: input
+  op:
+    label: Operation
+    type: string
+    ui:
+      tag: input
+  where_cols:
+    label: Where Cols
+    type: string
+    ui:
+      tag: input
+  where_vals:
+    label: Where Vals
+    type: string
+    ui:
+      tag: input
+  cols_changed:
+    label: Cols Changed
+    type: string
+    ui:
+      tag: input
+  prev_values:
+    label: Prev Vals
+    type: string
+    ui:
+      tag: input
+  new_values:
+    label: New Vals
+    type: string
+    ui:
+      tag: input

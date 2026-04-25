@@ -1,0 +1,24 @@
+{
+  "name": "@tools/dbdeploy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "serve": "node serve-db.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@electric-sql/pglite": "^0.4.4",
+    "@electric-sql/pglite-socket": "^0.1.4",
+    "knex": "^3.2.7",
+    "knex-pglite": "^0.14.0",
+    "mysql": "^2.18.1",
+    "pg": "^8.20.0",
+    "ts-to-zod": "^5.1.0"
+  }
+}

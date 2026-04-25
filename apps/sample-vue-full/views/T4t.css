@@ -1,0 +1,70 @@
+.main-container {
+  background-color: #ffffff;
+  padding: 0px;
+  border-radius: 10px;
+}
+
+.title-label {
+  color: #173f6c;
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 8px;
+  padding-bottom: 8px;
+}
+
+.table-operations {
+  margin-bottom: 16px;
+}
+
+.table-operations > button {
+  margin-right: 10px;
+}
+
+.t4t-drawer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid #e9e9e9;
+  padding: 10px 0px 20px 0px;
+  background: #fff;
+  z-index: 1;
+}
+
+.button-variation-1 {
+  border-color: #2da8e0;
+  min-width: 80px;
+}
+
+.button-variation-1-label {
+  color: #2da8e0;
+}
+
+.button-variation-2 {
+  background-color: #2da8e0;
+  min-width: 80px;
+  border-color: transparent;
+}
+
+.button-variation-2-label {
+  color: #ffffff;
+}
+
+.button-variation-3 {
+  background-color: #9eddf7;
+  min-width: 80px;
+  border-color: transparent;
+}
+
+.button-variation-3-label {
+  color: #ffffff;
+}
+
+.button-variation-1:hover,
+.button-variation-1:focus,
+.button-variation-2:hover,
+.button-variation-2:focus,
+.button-variation-2:hover,
+.button-variation-2:focus {
+  box-shadow: 0 0 0 2px #173f6c;
+}

@@ -1,0 +1,43 @@
+# Terraform state — never commit (contains secrets + resource IDs)
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+
+# Real tfvars — contains passwords and account-specific values
+terraform.tfvars
+*.auto.tfvars
+
+# Terraform working directories
+.terraform/
+.terraform.lock.hcl   # commit this if you want reproducible provider versions
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Generated plan files
+*.tfplan
+tfplan
+
+# Override files (local dev overrides — not for CI)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Secrets and credentials
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+.vscode/
+*.swp

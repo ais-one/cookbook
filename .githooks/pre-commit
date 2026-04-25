@@ -1,0 +1,86 @@
+#!/bin/sh
+# .githooks/pre-commit
+# Pre-commit hook: runs Biome checks per-directory for staged files,
+# and zod schema tests when schema files are staged.
+#
+# Install: run .githooks/setup.sh (or: git config core.hooksPath .githooks)
+# Skip:    git commit --no-verify
+
+HOOK_NAME=pre-commit
+# shellcheck source=.githooks/_common.sh
+. "$(dirname "$0")/_common.sh"
+
+# ── Collect all staged files ─────────────────────────────────────────────────
+STAGED=$(git diff --cached --name-only --diff-filter=ACMR)
+
+# ── 1. Biome check per directory ─────────────────────────────────────────────
+print_info "Running Biome checks on staged directories…"
+
+BIOME_FAILED=0
+
+run_biome_check() {
+  DIR="$1"
+  print_info "  npx biome check $DIR"
+  npx biome check "$DIR"
+  if [ $? -ne 0 ]; then
+    print_error "Biome check failed for $DIR. Run 'npm run check --write' to auto-fix, then re-stage."
+    BIOME_FAILED=1
+  else
+    print_success "  $DIR ✓"
+  fi
+}
+
+echo "$STAGED" | grep -q '^common/vanilla/iso/'    && run_biome_check common/vanilla/iso
+echo "$STAGED" | grep -q '^common/compiled/node/'  && run_biome_check common/compiled/node
+echo "$STAGED" | grep -q '^common/compiled/vue/'   && run_biome_check common/compiled/vue
+echo "$STAGED" | grep -q '^common/vanilla/web/'    && run_biome_check common/vanilla/web
+echo "$STAGED" | grep -q '^apps/'         && run_biome_check apps
+echo "$STAGED" | grep -q '^scripts/'      && run_biome_check scripts
+
+if [ $BIOME_FAILED -ne 0 ]; then
+  exit 1
+fi
+
+# ── 2. Schema (Zod) validation tests ─────────────────────────────────────────
+# Detect staged files under the known schema folders:
+#   common/schemas, apps/*/schemas
+SCHEMA_FAILED=0
+
+run_schema_tests() {
+  SCHEMA_DIR="$1"
+  if node -e "const p=require('./package.json'); process.exit(p.scripts&&p.scripts['test:schemas']?0:1)" 2>/dev/null; then
+    print_info "Running schema validation tests for $SCHEMA_DIR…"
+    npm run test:schemas -- "$SCHEMA_DIR"
+    if [ $? -ne 0 ]; then
+      print_error "Schema validation tests failed for $SCHEMA_DIR."
+      return 1
+    fi
+    print_success "Schema validation tests passed for $SCHEMA_DIR."
+  else
+    print_warning "No 'test:schemas' script found – skipping schema tests for $SCHEMA_DIR."
+  fi
+  return 0
+}
+
+# Check common/schemas
+if echo "$STAGED" | grep -q '^common/schemas/'; then
+  run_schema_tests common/schemas || SCHEMA_FAILED=1
+fi
+
+# Check apps/*/schemas (one call per matching app directory)
+APP_SCHEMA_DIRS=$(echo "$STAGED" | grep -oE '^apps/[^/]+/schemas/' | sed 's|/$||' | sort -u)
+for SCHEMA_DIR in $APP_SCHEMA_DIRS; do
+  run_schema_tests "$SCHEMA_DIR" || SCHEMA_FAILED=1
+done
+
+if [ $SCHEMA_FAILED -ne 0 ]; then
+  exit 1
+fi
+
+# Report skip only when no schema folders were matched at all
+echo "$STAGED" | grep -qE '^common/schemas/|^apps/[^/]+/schemas/' \
+  || print_info "No schema files staged – skipping schema tests."
+
+# ── Done ──────────────────────────────────────────────────────────────────────
+print_success "All pre-commit checks passed."
+exit 0

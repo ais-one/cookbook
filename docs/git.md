@@ -1,309 +1,256 @@
-## git
+## Hooks Setup And Usage
 
-### Commands
+- Pre-commit runs Biome checks on affected directories and schema validation tests where applicable.
+- Pre-push runs workspace tests and schema validation checks.
+- `npm install` also runs `npm prepare`, which configures the hooks path automatically.
+To skip hooks temporarily:
+```bash
+git commit --no-verify
+git push --no-verify
+```
 
 
+This repository uses native Git hooks in `.githooks/`.
+
+After cloning, activate the hooks by
+
+**OPTION 1 - Running Setup Script**
 
 ```bash
-# https://gcc.gnu.org/legacy-ml/gcc/2007-12/msg00165.html
-# cleaning up your .git folder
-git repack -a -d -f --depth=250 --window=250
-
-# to set/unset buffer size... when you have large .git
-git config http.postBuffer 524288000
-git config --unset http.postBuffer
-
-git config --list
-git add .
-git commit -m "msg"
-git push origin <branch>
-git checkout <branch>
-git checkout -b <new branch>
-git branch
-git branch -D <branch>
-git log
-git status
-git merge <from branch>
-git diff
-git pull origin <branch>
-git remote -v
-git remote set-url origin git@hostname:USERNAME/REPOSITORY.git
-git remote set-url httpsorigin https://hostname:USERNAME/REPOSITORY.git
-git remote add neworigin https://github.com/user/repo.git
-git remote rm someorigin
-git reset --hard
-git commit -am "some message"
-
-# remove file or folder from tracking
-git rm --cached <file>
-git rm -r --cached <folder>
+# Make the setup script executable and run it
+chmod +x .githooks/setup.sh
+./.githooks/setup.sh
 ```
 
-### clone git repo without history
-
-$ git clone ...
-$ cd path/to/repo
-$ rm -rf .git
-$ git init
-
-git clone --depth 1 <remote_repo_url>
-
-https://www.atlassian.com/git/tutorials/comparing-workflows
-
-## Branch Name
-
-- Keep it short, <prefix>-<issue/ticket number>
-- prefix = feat, fix
-
-## Commit messages
-
-https://www.alibabacloud.com/blog/how-can-we-standardize-git-commits_597372
-
-Format of Commit Message
-<type>(<scope>): <subject>
-
-### Type (required)
-
-This indicates the type of the git commit. Only the following types are allowed:
-
-- feat: Introduces a new feature.
-- fix/to: Fixes a bug found by QA or developers.
-- fix: Generates diff and automatically fixes a bug. This is used to fix bugs with a single commit.
-- to: Only generates a diff instead of automatically fixing the bug. This is used for multiple commits. Then, you can use fix for the commit when you finally fix the bug.
-- docs: Commits documentation only changes.
-- style: Commits format changes that do not affect code running.
-- refactor: Commits a code change that neither fixes a bug nor adds a feature.
-- perf: Commits optimization changes, such as to improve performance and experience.
-- test: Adds tests.
-- chore: Commits changes to the build process or supporting tools.
-- revert: Rolls back to the previous version.
-- merge: Merges code.
-- sync: Synchronizes bugs of the main thread or a branch.
-
-### Scope (optional)
-
-Scope is used to describe the scope of the impact of a commit, such as the data layer, control layer, or view layer, depending on the project.
-
-For example, in Angular, it can be location, browser, compile, rootScope, ngHref, ngClick, or ngView. If your modification affects more than one scope, you can use \* instead.
-
-### Subject (required)
-
-The subject is a brief description of the purpose of a commit. It can be up to 50 characters in length. Do not end with a period or other punctuation marks.
-
-Therefore, the git commit message will be in the following formats:
-
-```
-Fix(DAO): User query missing the username attribute
-feat(Controller): Development of user query interfaces
-```
-
-https://gist.github.com/robertpainsi/b632364184e70900af4ab688decf6f53
-
-References in commit messages
-If the commit refers to an issue, add this information to the commit message header or body. e.g. the GitHub web platform automatically converts issue ids (e.g. #123) to links referring to the related issue. For issues tracker like Jira there are plugins which also converts Jira tickets, e.g. Jirafy.
-
-In header:
-
-```
-[#123] Refer to GitHub issue…
-CAT-123 Refer to Jira ticket with project identifier CAT…
-```
-
-In body:
-
-```
-Fixes #123, #124
-```
-
-https://wiki.openstack.org/wiki/GitCommitMessages
-
-## Github
-
-### Github pages
-
-https://dev.to/yuribenjamin/how-to-deploy-react-app-in-github-pages-2a1f
+**OPTION 2 - Manually Installation**
 
 ```bash
-npm i -D gh-pages
+# remove hooks path
+git config --local --unset-all core.hooksPath
+
+# set hooks path explicitly
+git config --local core.hooksPath .githooks
+chmod +x .githooks/pre-commit .githooks/pre-push
 ```
 
-package.json
+**OPTION 3 - Via NPM prepare script**
 
-```json
-{
-  "homepage": "http://<username>.github.io/<repo-name>",
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d <build folder>"
-  }
-}
-```
+Running `npm install` will also run `npm prepare`, which configures the hooks path automatically.
 
-## Git Hooks
 
-- https://dev.to/krzysztofkaczy9/do-you-really-need-husky-247b
-- https://dev.to/azu/git-hooks-without-extra-dependencies-like-husky-in-node-js-project-jjp
+### pre-commit hook
 
-### commitizen
+Runs automatically on every `git commit`:
 
+| Check | Details |
+|-------|---------|
+| **Biome format & lint** | Runs `npx biome check` on each affected directory (`common/iso`, `common/node`, `common/vue`, `common/web`, `apps`, `scripts`). Run `npm run check` to auto-fix. |
+| **Schema validation tests** | Runs `npm run test:schemas -- <folder>` for each affected schema directory (`common/schema`, `common/schemas`, `apps/*/schema`, `apps/*/schemas`). |
+
+To skip the pre-commit hook temporarily:
 ```bash
-npx commitizen init cz-conventional-changelog --save-dev --save-exact
+git commit --no-verify
 ```
 
-.git/hooks/prepare-commit-msg
+### pre-push hook
 
+Runs automatically on every `git push`:
+
+| Check | Details |
+|-------|---------|
+| **Unit tests** | Runs `npm run test:workspaces` (or `npm test`). |
+| **Schema validation tests** | Runs `npm run test:schemas` if the script exists. |
+
+To skip the pre-push hook temporarily:
 ```bash
-#!/bin/bash
-exec < /dev/tty && node_modules/.bin/cz --hook || true
-```
-
-### semantic-release
-
-- https://github.com/semantic-release/semantic-release
-- https://github.com/semantic-release/semantic-release/tree/master/docs/recipes
-
-
-
-# Merge updates from upstream
-
-## From Clone
-
-### ref
-
-- https://medium.com/geekculture/how-to-use-git-to-downstream-changes-from-a-template-9f0de9347cc2
-- https://www.mslinn.com/git/700-propagating-git-template-changes.html
-
-### steps
-
-**initial setup**
-
-```bash
-git clone <template repo> <new repo>
-git remote add upstream <template repo>
-# git remote add upstream https://github.com/ais-one/my-template.git
-git remote set-url --push upstream no_push
-git remote -v
-```
-
-**updates**
-
-```bash
-# to get upstream updates
-git fetch upstream
-git merge upstream/main
-
-# or if needed...
-git merge upstream/main --allow-unrelated-histories
-# or if using rebase...
-git rebase upstream/main
-# checkout code... if needed
-git checkout --track origin/main
-
-git push origin <branch>
+git push --no-verify
 ```
 
 ---
 
-## From FORK
+## Branching And Protection
 
-### https://gist.github.com/0xjac/85097472043b697ab57ba1b1c7530274 - To Test
+### Branch tags used
 
-### Merge updates from upstream for private fork
+- <feat/fix/chore>/scope/<...>
+- rel/<current release version>, rel/<next release version>
+  - can add -rc.1, -beta.1 suffixes as needed
+- hotfix/<current release version>/<...>
+- tag/<patch version>
+- main
 
-The [repository](https://github.com/usi-systems/easytrace) for the assignment is public and Github does not allow the creation of private forks for public repositories.
+Examples:
+- release branch: rel/1.1
+- patch tags: tag/1.1.1
+- beta release: rel/1.1-beta.4
 
-The correct way of creating a private fork by duplicating the repo is documented [https://help.github.com/articles/duplicating-a-repository/]().
+### Branch & Tag Summary & Flow
 
-For this assignment the commands are:
+Use the table below to find out how to name branches based on action taken. Usually, contributors will create feat/fix/chore based off a `rel` branch
 
-```bash
- # 1. Create a bare clone of the repository. (This is temporary and will be removed so just do it wherever.)
-git clone --bare git@github.com:usi-systems/easytrace.git
+| Branch | Branch from | Merge to | Notes |
+|---|---|---|---|
+| `rel/1.0` | `main` | `main` when production ready | Active dev branch |
+| `feat/fix/chore` | `rel/1.0` | `rel/1.0` via PR | Day-to-day work |
+| `hotfix/scope/name` | `main` | `main` + `rel/1.0` + `rel/2.0` | Emergency only |
+| `tag: v1.0.0` | `rel/1.0` after merge to main | — | Full release tag |
+| `tag: v1.0.1` | `rel/1.0` after hotfix merges in | — | Patch tag, then rel/1.0 → main |
+| `rel/1.1` | `main` after `v1.0.0` tag | `main` when ready | Cut from stable tag |
 
-#  2. [Create a new private repository on Github](https://help.github.com/articles/creating-a-new-repository/) and name it `easytrace`.
+The consistent rule is: **tags always come from `rel/*`**, never directly from `main`. Main is the destination, not the source of truth for what shipped.
 
-# 3. Mirror-push your bare clone to your new `easytrace` repository.
-#  > Replace `<your_username>` with your actual Github username in the url below.
-
-cd easytrace.git
-git push --mirror git@github.com:<your_username>/easytrace.git
-
-# 4. Remove the temporary local repository you created in step 1.
-cd ..
-rm -rf easytrace.git
-
-# 5. You can now clone your `easytrace` repository on your machine (in my case in the `code` folder).
-cd ~/code
-git clone git@github.com:<your_username>/easytrace.git
-
-# 6. If you want, add the original repo as remote to fetch (potential) future changes.
-# Make sure you also disable push on the remote (as you are not allowed to push to it anyway).
-git remote add upstream git@github.com:usi-systems/easytrace.git
-git remote set-url --push upstream DISABLE
-
-git remote -v
-# origin	git@github.com:<your_username>/easytrace.git (fetch)
-# origin	git@github.com:<your_username>/easytrace.git (push)
-# upstream	git@github.com:usi-systems/easytrace.git (fetch)
-# upstream	DISABLE (push)
-
-# > When you push, do so on `origin` with `git push origin`.
-
-# > When you want to pull changes from `upstream` you can just fetch the remote and rebase on top of your work.
-git fetch upstream
-# or merge
-git rebase upstream/master
-
-# And solve the conflicts if any
+### Hotfix & Backport Flow
 
 ```
-
-
-## Sparse Checkout
-
-https://www.baeldung.com/ops/git-clone-subdirectory
-
-
-```bash
-git clone --depth=1 https://github.com/<org/user>/<repo>.git
-cd <repo>
-git sparse-checkout set --no-cone <sub-directory>
-
-# e.g. The ‘!*/tomcat-app’ pattern directs the command to ignore any child resource named tomcat-app in the sibling subdirectories of the tomcat-app subdirectory:
-# git sparse-checkout set --no-cone tomcat-app/ '!*/tomcat-app'
-
-# git sparse-checkout add webservices
-# git sparse-checkout disable
+hotfix/payment-crash (check out from main)
+  → merge to main (keeps main stable)
+  → merge to rel/1.0
+      → tag v1.0.1 here (patch tag on rel/1.0)
+      → DO NOT DO THIS! DANGEROUS! merge rel/1.0 to main (main now has the patch)
+  → cherry-pick to rel/2.0 (backport)
 ```
 
+### Branch Protection Rules
 
-## Github
+Edit branch protection rules in **Settings** → **Branches** → **Add branch protection rule** to prevent merges when CI checks fail.
 
-https://github.com/ais-one/cookbook/settings/security_analysis
+Match the following patterns:
 
-- secret scanning: enable
-  - push protection: enable
+1. **Pattern:** `main`
+2. **Pattern:** `rel/*`
 
-https://github.com/ais-one/cookbook/settings/branches
+For each pattern, enable:
 
-- branch protection
+| Setting | Action |
+|---------|--------|
+| **Require a pull request before merging** | Enable. Require 1 approval. Dismiss stale approvals on new commits. |
+| **Require status checks to pass** | Enable. Require branches to be up to date. |
+| | Add required checks: `Commit Message Format`, `Biome Checks`, `Schema Validation Tests`, `Unit Tests`, `Integration Tests`, `E2E Tests` |
+| **Require conversation resolution before merging** | Enable. |
+| **Include administrators** | Enable. Prevents bypass by repo admins. |
 
-https://github.com/settings/tokens
+---
 
-- Setup PAT and allow for repo, workflow scopes
+## Commit Message
 
-https://github.com/settings/developers
+For standardized [Conventional Commits](https://www.conventionalcommits.org/) messages, use **czg** instead of `git commit -m "…"`:
 
-- Setup OAuth Apps
-  - Callback: http://127.0.0.1:3000/api/oauth/callback
+```bash
+# Interactive prompt (guided commit message)
+npx czg
 
-# Github Wiki Sidebar Example
+# AI-generated commit message (requires API key configured in czg)
+npx czg --ai
+```
 
-- [Home](../wiki/Home)
-  - [Page A](../wiki/Page-A)
-  - [Page B](../wiki/Page-B)
-- Another
-  - [Page C](../wiki/Page-C)
-  - [Page D](../wiki/Page-D)
-- [Page E](../wiki/Page-E)
+Install globally for convenience:
+```bash
+npm install -g czg
+```
 
+Use the repository commit conventions in [docs/conventions.md](../docs/conventions.md) for allowed commit types and breaking-change notation.
+
+When choosing a scope in `czg`:
+
+- Prefer a real workspace scope such as `apps/...` or `common/...` when the change is limited to one workspace.
+- Use `docs` for documentation-only changes.
+- Use `ci` for workflow, hook, or automation changes.
+- Use `repo` for root-level or cross-cutting changes that do not fit a single workspace.
+
+---
+
+## Release Automation
+
+Changelog and tag automation are handled by the [`release-please`](https://github.com/googleapis/release-please-action) job in [.github/workflows/ci.yml](../.github/workflows/ci.yml).
+
+- The workflow runs `release-please-action` in manifest mode using
+  - [release-please-config.json](../release-please-config.json) and
+  - [.release-please-manifest.json](../.release-please-manifest.json)
+- Releases are tracked per workspace for `apps/*`.
+- The workflow requires a GitHub App installation token [setup](#GitHub-App-Token-Setup).
+- Troubleshooting lives in [release-troubleshooting.md](./release-troubleshooting.md).
+
+### How It Works
+
+1. A commit lands on `main` or `rel/*`.
+2. The `release-please` job scans merged Conventional Commits for each configured workspace.
+3. If [releasable commits](#releasable-commits) exist for one or more workspaces, it opens or updates workspace-scoped release PRs.
+4. When release PRs are merged, `release-please` updates changelogs, creates workspace-scoped tags, and publishes GitHub releases.
+
+### Releasable Commits
+
+- `feat`, `fix`, and `deps` trigger a release PR.
+- `chore` can appear in the changelog if a release is already happening, but `chore` by itself does not trigger a release PR.
+- To force a release version manually, add a `Release-As: x.y.z` footer to the commit body.
+
+### GitHub App Token Setup
+
+Use a GitHub App instead of a PAT if you want release PRs and release-created events to trigger downstream workflows.
+
+1. Create the GitHub App under GitHub Settings → Developer settings → GitHub Apps → New GitHub App.
+2. Disable webhooks and grant these repository permissions:
+   - `Contents`: Read and write
+   - `Pull requests`: Read and write
+   - `Issues`: Read and write
+   - `Metadata`: Read-only
+3. Install the app on this repository.
+4. Add the app ID to variable `RELEASE_PLEASE_APP_ID` and the PEM private key to secret `RELEASE_PLEASE_APP_PRIVATE_KEY`.
+5. If your repository or organization restricts workflow-created PRs, enable the setting that allows GitHub Actions to create and approve pull requests.
+
+Once configured, the workflow step uses [actions/create-github-app-token](https://github.com/actions/create-github-app-token) to mint a short-lived installation token and passes it to `release-please`.
+
+If the variable or secret is missing, the workflow fails early instead of falling back to `GITHUB_TOKEN`.
+
+---
+
+## Rebase Or Merge
+
+Use the repo workflow rather than a per-team merge style.
+
+- Day-to-day feature and fix PRs should use squash merge.
+- Open those PRs from `feat/*`, `fix/*`, or `chore/*` into the active `rel/*` branch.
+- Reserve `hotfix/*` branches for urgent fixes that start from `main`, merge to `main`, and are then backported to active `rel/*` branches.
+- Use cherry-pick for hotfix backports when the same fix must land in multiple release branches.
+
+This keeps release history predictable for `release-please` and matches the contributor workflow in [.github/CONTRIBUTING.md](../.github/CONTRIBUTING.md).
+
+---
+
+## CI
+
+Please read the following scripts for information on the CI workflows
+
+1. CI Meta workflow [ci-meta.yml](../.github/workflows/ci-meta.yml)
+
+Changes must be only to `.github/workflows` OR `.github/actions` folder
+
+2. CI workflow [ci.yml](../.github/workflows/ci.yml)
+
+Changes must not be to `.github/workflows` AND `.github/actions` folders
+
+Once configured:
+- PRs show red X if any required check fails.
+- Merges are blocked until all checks pass and approvals are met.
+- The branch protection rules apply uniformly across day-to-day work (`rel/*` branches), production merges (`main`), and emergency hotfixes.
+
+> **Note:** tests (unit, integration, e2e) are run for touched workspaces only, identified by the `detect-touched-workspaces`, Skip test if npm script for test not found.
+
+### CI Workflow
+
+1. PR submitted to main or release branches
+2. CI runs on PR submitted
+  - repo-wide format check, no autofix
+  - repo-wide lint check, no autofix
+  - repo-wide schema check, no autofix
+  - repo-wide testing, no autofix
+  - repo-side package audit, no autofix?
+3. Only allow merge if all checks pass
+
+### CI Meta Workflow
+
+1. Make CI changes on a `chore/ci/<name>` branch.
+2. Use commit messages in Conventional Commit format, for example `chore(ci): tighten workflow validation`.
+3. Run `act` locally to validate before pushing.
+4. Push `chore/ci/<name>` to trigger [ci-meta.yml](./workflows/ci-meta.yml). This workflow only runs for changes under `.github/workflows/**` and `.github/actions/**`.
+5. Open a PR from `chore/ci/<name>` to `ci-staging` and confirm the workflow is green end-to-end.
+6. After validation, open a PR from `ci-staging` to `main`.

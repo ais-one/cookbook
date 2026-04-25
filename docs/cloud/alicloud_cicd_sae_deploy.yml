@@ -1,0 +1,291 @@
+# .github/workflows/deploy-sae.yml
+#
+# Triggered on push to main (or manually via workflow_dispatch).
+# Steps:
+#   1. Exchange GitHub OIDC JWT for short-lived AliCloud STS credentials
+#   2. Build the container image and push to ACR Enterprise
+#   3. Trigger a SAE rolling deployment with the new image tag
+#   4. Poll until the deployment completes (or times out)
+#
+name: Deploy to SAE
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'Dockerfile'
+      - '.github/workflows/deploy-sae.yml'
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Image tag to deploy (leave blank to build from HEAD)'
+        required: false
+
+permissions:
+  id-token: write  # required for OIDC JWT issuance
+  contents: read
+
+env:
+  ALICLOUD_REGION:      "ap-southeast-1"
+  ROLE_ARN:             "acs:ram::123456789012345678:role/cicd-terraform-role"
+  OIDC_PROVIDER_ARN:    "acs:ram::123456789012345678:oidc-provider/github-actions"
+
+  # ACR — match values from acr.tf / outputs
+  ACR_INSTANCE_ID:      "cri-xxxxxxxxxxxxxxxx"           # alicloud_cr_ee_instance.main.id
+  ACR_NAMESPACE:        "my-org-containers"
+  ACR_REPO:             "app-sae"
+  ACR_REGISTRY:         "cri-xxxxxxxxxxxxxxxx.cr.aliyuncs.com"
+
+  # SAE — match values from sae.tf / outputs
+  SAE_APP_ID:           ""   # populated at runtime from terraform output or hardcoded
+  SAE_NAMESPACE_ID:     "ap-southeast-1:myapp-prod"
+
+  # Rolling deploy settings
+  DEPLOY_TIMEOUT_SECS:  "600"   # 10 minutes max wait
+  DEPLOY_POLL_SECS:     "15"    # poll interval
+
+jobs:
+  # ============================================================
+  # Job 1: Build and push image to ACR
+  # ============================================================
+  build-and-push:
+    name: Build & push to ACR
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tag }}
+      image_url: ${{ steps.meta.outputs.url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ── OIDC → STS ──────────────────────────────────────────
+      - name: Get GitHub OIDC token
+        id: jwt
+        run: |
+          TOKEN=$(curl -sSf \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.aliyuncs.com" \
+            | jq -r '.value')
+          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+
+      - name: Assume RAM role via OIDC
+        id: sts
+        run: |
+          RESP=$(curl -sSf -G "https://sts.aliyuncs.com/" \
+            --data-urlencode "Action=AssumeRoleWithOIDC" \
+            --data-urlencode "Version=2015-04-01" \
+            --data-urlencode "Format=JSON" \
+            --data-urlencode "RoleArn=${{ env.ROLE_ARN }}" \
+            --data-urlencode "OIDCProviderArn=${{ env.OIDC_PROVIDER_ARN }}" \
+            --data-urlencode "OIDCToken=${{ steps.jwt.outputs.token }}" \
+            --data-urlencode "RoleSessionName=github-sae-deploy" \
+            --data-urlencode "DurationSeconds=3600")
+
+          echo "access_key=$(echo $RESP | jq -r '.Credentials.AccessKeyId')"     >> $GITHUB_OUTPUT
+          echo "secret_key=$(echo $RESP | jq -r '.Credentials.AccessKeySecret')" >> $GITHUB_OUTPUT
+          echo "sec_token=$(echo $RESP  | jq -r '.Credentials.SecurityToken')"   >> $GITHUB_OUTPUT
+
+      # ── Image tag strategy ───────────────────────────────────
+      # Use explicit tag from workflow_dispatch, else short SHA
+      - name: Resolve image tag
+        id: meta
+        run: |
+          if [ -n "${{ inputs.image_tag }}" ]; then
+            TAG="${{ inputs.image_tag }}"
+          else
+            TAG="${{ github.sha }}"
+            TAG="${TAG:0:8}"
+          fi
+          URL="${{ env.ACR_REGISTRY }}/${{ env.ACR_NAMESPACE }}/${{ env.ACR_REPO }}:${TAG}"
+          echo "tag=$TAG"   >> $GITHUB_OUTPUT
+          echo "url=$URL"   >> $GITHUB_OUTPUT
+          echo "Image: $URL"
+
+      # ── ACR login ────────────────────────────────────────────
+      - name: Login to ACR Enterprise
+        run: |
+          # Fetch a temporary ACR auth token using the STS credentials
+          AUTH=$(curl -sSf -X POST \
+            -H "Authorization: Bearer ${{ steps.sts.outputs.sec_token }}" \
+            "https://cr.${{ env.ALICLOUD_REGION }}.aliyuncs.com/instances/${{ env.ACR_INSTANCE_ID }}/tokens" \
+            -H "x-acs-accesskey-id: ${{ steps.sts.outputs.access_key }}" \
+            -H "x-acs-accesskey-secret: ${{ steps.sts.outputs.secret_key }}" \
+            -H "Content-Type: application/json" \
+            -d '{"temporary": true}')
+
+          DOCKER_USER=$(echo $AUTH | jq -r '.data.tempUserName')
+          DOCKER_PASS=$(echo $AUTH | jq -r '.data.authorizationToken')
+
+          echo "$DOCKER_PASS" | docker login \
+            "${{ env.ACR_REGISTRY }}" \
+            --username "$DOCKER_USER" \
+            --password-stdin
+
+      # ── Build ────────────────────────────────────────────────
+      - name: Build Docker image
+        run: |
+          docker build \
+            --tag "${{ steps.meta.outputs.url }}" \
+            --label "git.sha=${{ github.sha }}" \
+            --label "git.ref=${{ github.ref }}" \
+            --label "build.run=${{ github.run_id }}" \
+            --cache-from "${{ env.ACR_REGISTRY }}/${{ env.ACR_NAMESPACE }}/${{ env.ACR_REPO }}:cache" \
+            .
+
+      # ── Push ─────────────────────────────────────────────────
+      - name: Push to ACR
+        run: |
+          docker push "${{ steps.meta.outputs.url }}"
+
+          # Keep a "cache" tag for layer caching on the next build
+          docker tag "${{ steps.meta.outputs.url }}" \
+            "${{ env.ACR_REGISTRY }}/${{ env.ACR_NAMESPACE }}/${{ env.ACR_REPO }}:cache"
+          docker push \
+            "${{ env.ACR_REGISTRY }}/${{ env.ACR_NAMESPACE }}/${{ env.ACR_REPO }}:cache"
+
+  # ============================================================
+  # Job 2: Rolling deploy to SAE
+  # ============================================================
+  deploy-sae:
+    name: Rolling deploy to SAE
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    environment: production  # requires manual approval if configured in repo settings
+
+    steps:
+      # ── OIDC → STS (fresh credentials for deploy job) ───────
+      - name: Get GitHub OIDC token
+        id: jwt
+        run: |
+          TOKEN=$(curl -sSf \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.aliyuncs.com" \
+            | jq -r '.value')
+          echo "token=$TOKEN" >> $GITHUB_OUTPUT
+
+      - name: Assume RAM role via OIDC
+        id: sts
+        run: |
+          RESP=$(curl -sSf -G "https://sts.aliyuncs.com/" \
+            --data-urlencode "Action=AssumeRoleWithOIDC" \
+            --data-urlencode "Version=2015-04-01" \
+            --data-urlencode "Format=JSON" \
+            --data-urlencode "RoleArn=${{ env.ROLE_ARN }}" \
+            --data-urlencode "OIDCProviderArN=${{ env.OIDC_PROVIDER_ARN }}" \
+            --data-urlencode "OIDCToken=${{ steps.jwt.outputs.token }}" \
+            --data-urlencode "RoleSessionName=github-sae-deploy" \
+            --data-urlencode "DurationSeconds=3600")
+
+          echo "access_key=$(echo $RESP | jq -r '.Credentials.AccessKeyId')"     >> $GITHUB_OUTPUT
+          echo "secret_key=$(echo $RESP | jq -r '.Credentials.AccessKeySecret')" >> $GITHUB_OUTPUT
+          echo "sec_token=$(echo $RESP  | jq -r '.Credentials.SecurityToken')"   >> $GITHUB_OUTPUT
+
+      - name: Set AliCloud credentials
+        run: |
+          echo "ALICLOUD_ACCESS_KEY_ID=${{ steps.sts.outputs.access_key }}"       >> $GITHUB_ENV
+          echo "ALICLOUD_ACCESS_KEY_SECRET=${{ steps.sts.outputs.secret_key }}"   >> $GITHUB_ENV
+          echo "ALICLOUD_SECURITY_TOKEN=${{ steps.sts.outputs.sec_token }}"       >> $GITHUB_ENV
+
+      # ── Resolve SAE App ID from Terraform outputs ────────────
+      # If you prefer, hardcode SAE_APP_ID in env above instead.
+      - name: Resolve SAE App ID
+        id: sae
+        run: |
+          APP_ID="${{ env.SAE_APP_ID }}"
+          if [ -z "$APP_ID" ]; then
+            # Look up by name via SAE API
+            RESP=$(curl -sSf -G "https://sae.${{ env.ALICLOUD_REGION }}.aliyuncs.com/pop/v1/sam/app/listApplications" \
+              -H "x-acs-accesskey-id: $ALICLOUD_ACCESS_KEY_ID" \
+              -H "x-acs-accesskey-secret: $ALICLOUD_ACCESS_KEY_SECRET" \
+              -H "x-acs-security-token: $ALICLOUD_SECURITY_TOKEN" \
+              --data-urlencode "NamespaceId=${{ env.SAE_NAMESPACE_ID }}")
+            APP_ID=$(echo $RESP | jq -r \
+              --arg name "myapp-api" \
+              '.Data.Applications[] | select(.AppName==$name) | .AppId')
+          fi
+          echo "app_id=$APP_ID" >> $GITHUB_OUTPUT
+          echo "Deploying to SAE App ID: $APP_ID"
+
+      # ── Trigger rolling deploy ────────────────────────────────
+      - name: Trigger SAE rolling deployment
+        id: deploy
+        run: |
+          IMAGE_URL="${{ needs.build-and-push.outputs.image_url }}"
+
+          RESP=$(curl -sSf -X POST \
+            "https://sae.${{ env.ALICLOUD_REGION }}.aliyuncs.com/pop/v1/sam/app/deployApplication" \
+            -H "x-acs-accesskey-id: $ALICLOUD_ACCESS_KEY_ID" \
+            -H "x-acs-accesskey-secret: $ALICLOUD_ACCESS_KEY_SECRET" \
+            -H "x-acs-security-token: $ALICLOUD_SECURITY_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"AppId\":        \"${{ steps.sae.outputs.app_id }}\",
+              \"ImageUrl\":     \"$IMAGE_URL\",
+              \"UpdateStrategy\": \"{\\\"type\\\":\\\"GrayBatchUpdate\\\",\\\"batchWaitTime\\\":0,\\\"totalBatchCount\\\":2}\",
+              \"MinReadyInstances\": 1,
+              \"MinReadyInstanceRatio\": -1
+            }")
+
+          echo "SAE deploy response: $RESP"
+          CHANGE_ID=$(echo $RESP | jq -r '.Data.ChangeOrderId')
+
+          if [ -z "$CHANGE_ID" ] || [ "$CHANGE_ID" = "null" ]; then
+            echo "ERROR: Failed to trigger deployment"
+            echo $RESP | jq .
+            exit 1
+          fi
+
+          echo "change_id=$CHANGE_ID" >> $GITHUB_OUTPUT
+          echo "Deployment triggered — ChangeOrderId: $CHANGE_ID"
+
+      # ── Poll until done ───────────────────────────────────────
+      - name: Wait for deployment to complete
+        run: |
+          CHANGE_ID="${{ steps.deploy.outputs.change_id }}"
+          TIMEOUT=${{ env.DEPLOY_TIMEOUT_SECS }}
+          POLL=${{ env.DEPLOY_POLL_SECS }}
+          ELAPSED=0
+
+          echo "Polling ChangeOrderId: $CHANGE_ID (timeout: ${TIMEOUT}s)"
+
+          while true; do
+            RESP=$(curl -sSf -G \
+              "https://sae.${{ env.ALICLOUD_REGION }}.aliyuncs.com/pop/v1/sam/changeorder/DescribeChangeOrder" \
+              -H "x-acs-accesskey-id: $ALICLOUD_ACCESS_KEY_ID" \
+              -H "x-acs-accesskey-secret: $ALICLOUD_ACCESS_KEY_SECRET" \
+              -H "x-acs-security-token: $ALICLOUD_SECURITY_TOKEN" \
+              --data-urlencode "ChangeOrderId=$CHANGE_ID")
+
+            STATUS=$(echo $RESP | jq -r '.Data.Status')
+            echo "[${ELAPSED}s] Status: $STATUS"
+
+            case "$STATUS" in
+              "2")  echo "Deployment SUCCEEDED"; exit 0 ;;
+              "3")  echo "ERROR: Deployment FAILED"; echo $RESP | jq .; exit 1 ;;
+              "6")  echo "ERROR: Deployment ABORTED"; exit 1 ;;
+              "10") echo "ERROR: Deployment ROLLED BACK"; exit 1 ;;
+            esac
+
+            if [ "$ELAPSED" -ge "$TIMEOUT" ]; then
+              echo "ERROR: Deployment timed out after ${TIMEOUT}s"
+              exit 1
+            fi
+
+            sleep $POLL
+            ELAPSED=$((ELAPSED + POLL))
+          done
+
+      # ── Annotate the summary ──────────────────────────────────
+      - name: Write job summary
+        if: always()
+        run: |
+          echo "## SAE Deployment" >> $GITHUB_STEP_SUMMARY
+          echo "| Field | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|---|---|" >> $GITHUB_STEP_SUMMARY
+          echo "| Image | \`${{ needs.build-and-push.outputs.image_url }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| SAE App ID | \`${{ steps.sae.outputs.app_id }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Change Order | \`${{ steps.deploy.outputs.change_id }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Commit | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| Triggered by | @${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY

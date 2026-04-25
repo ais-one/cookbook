@@ -1,0 +1,22 @@
+{
+  "name": "@tools/service-mocks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "kafka": "node serve-db.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@js-ak/kafkajs-mock": "^1.0.0",
+    "ioredis-mock": "^8.13.1",
+    "kafkajs": "^2.2.4",
+    "oidc-provider": "^9.8.2",
+    "saml-idp": "^1.2.1"
+  }
+}

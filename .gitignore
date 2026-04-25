@@ -1,5 +1,14 @@
+# npm
 node_modules
-package-lock.json
+
+# distributables
+dist
+
+# tests
+coverage
+
+# compressed files
+*.tgz
 
 # Log files
 npm-debug.log*
@@ -9,6 +18,6 @@ npm-debug.log*
 
 # Editor directories and files
 .idea
-.vscode
 
+# environment file
 .env

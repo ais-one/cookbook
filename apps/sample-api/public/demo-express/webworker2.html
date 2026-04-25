@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Worker 2</title>
+</head>
+<body>
+  <textarea id="text" rows="10" cols="150" placeholder="Start writing...">
+  </textarea>
+  
+  <div>
+    <p>Word count: <span id="wordCount">0</span></p>
+    <p>Character count: <span id="charCount">0</span></p>
+    <p>Line count: <span id="lineCount">0</span></p>
+    <p>Most repeated word: <span id="mostRepeatedWord"></span> (<span id="mostRepeatedWordCount">0</span> occurrences)</p>
+  </div>
+
+  <script>
+    // https://blog.logrocket.com/real-time-processing-web-workers/
+    // https://github.com/andychiare/simple-text-analyzer-web-worker
+    // dedicated (Worker) vs shared (SharedWorker - sharing the Web worker among multiple browser contexts)
+    // - They cannot access the DOM either the window or the document objects. So, for example, don’t try to use console.log() to print messages on the browser’s console. This limitation along with passing serialized message data is necessary to make Web Workers thread-safe. It may seem too restrictive at first glance but, actually, this limitation guides you into a better separation of concerns and once you’ve learned how to deal with workers, the benefits will be clear.
+    // - In addition, Web Workers run only if the application’s files are served via HTTP or HTTPS protocol. In other words, they don’t run if your page is loaded from your local file system via file:// protocol.
+    // - Finally, the same origin policy also applies to Web Workers. This means that the script implementing the worker must be served from the same domain, including protocol and port, as the calling script.
+
+    // single threaded version
+    const text = document.getElementById("text");
+    const wordCount = document.getElementById("wordCount");
+    const charCount = document.getElementById("charCount");
+    const lineCount = document.getElementById("lineCount");
+    const mostRepeatedWord = document.getElementById("mostRepeatedWord");
+    const mostRepeatedWordCount = document.getElementById("mostRepeatedWordCount");
+
+    /*
+    text.addEventListener("keyup", ()=> {
+      const currentText = text.value;
+      
+      wordCount.innerText = countWords(currentText);
+      charCount.innerText = countChars(currentText);
+      lineCount.innerText = countLines(currentText);
+      let mostRepeatedWordInfo = findMostRepeatedWord(currentText);
+      mostRepeatedWord.innerText = mostRepeatedWordInfo.mostRepeatedWord;
+      mostRepeatedWordCount.innerText = mostRepeatedWordInfo.mostRepeatedWordCount;
+    });
+
+    function countWords(str) {
+      str = str.trim();
+
+      return str === ""? 0 : str.split(/\s+/).length;
+    }
+
+    function countChars(str) {
+      return str.length;
+    }
+
+    function countLines(str) {
+      return str.trim() === ""? 0 :str.split("\n").length;
+    }
+
+    function findMostRepeatedWord(str){
+      let words = {};
+      let result = {
+        mostRepeatedWord: "",
+        mostRepeatedWordCount: 0
+      };
+      
+      str.match(/\w+/g).forEach(function(w){ 
+        words[w]=(words[w]||0)+1 });
+      
+      for (var w in words) {
+        if (!(words[w]<result.mostRepeatedWordCount)) {
+          result.mostRepeatedWordCount = words[w];
+          result.mostRepeatedWord = w;
+        }
+      }
+      
+      return result;
+    }
+    */
+
+
+    const textAnalyzer = new Worker("js/textAnalyzer.js");
+
+    textAnalyzer.addEventListener("message", (event) => {
+      const textData = event.data;
+      
+      wordCount.innerText = textData.wordCount;
+      charCount.innerText = textData.charCount;
+      lineCount.innerText = textData.lineCount;
+      mostRepeatedWord.innerText = textData.mostRepeatedWord;
+      mostRepeatedWordCount.innerText = textData.mostRepeatedWordCount;
+    });
+
+    text.addEventListener("keyup", ()=> {
+      textAnalyzer.postMessage(text.value);
+    });
+
+    textAnalyzer.addEventListener("error", (error) => {
+      console.log(`Error "${error.message}" occurred in the file ${error.filename} at line ${error.lineno}`);
+    });
+  </script>
+</body>
+</html>

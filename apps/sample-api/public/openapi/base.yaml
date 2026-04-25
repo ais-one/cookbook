@@ -1,0 +1,53 @@
+healthcheck:
+  get:
+    tags:
+      - "Base"
+    responses:
+      '200':
+        description: GET healthcheck response ok
+        content:
+          application/json:
+            schema:
+              type: object
+  post:
+    tags:
+      - "Base"
+    responses:
+      '200':
+        description: POST healthcheck response ok
+health-auth:
+  get:
+    tags:
+      - "Base"
+    security:
+      - ApiKeyAuth: [] 
+    responses:
+      '200':
+        description: GET healthcheck (authorized) response ok
+upload-disk:
+  post:
+    tags:
+      - "Base"
+    requestBody:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              files:
+                type: array
+                items:
+                  type: string
+                  format: binary
+              somestring:
+                type: string
+            # operties:
+            #   # The property name 'file' will be used for all files.
+            #   files: # or file?
+            #     type: array
+            #     items:
+            #       type: string
+            #       format: binary
+    responses:
+      '200':
+        description: GET healthcheck (authorized) response ok

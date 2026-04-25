@@ -1,0 +1,21 @@
+name: Checkout
+description: Checkout the repository. Defaults to full history (fetch-depth 0) required by diff-based actions.
+
+inputs:
+  ref:
+    description: Branch, tag, or SHA to check out. Defaults to the ref that triggered the workflow.
+    required: false
+    default: ''
+  fetch-depth:
+    description: Number of commits to fetch. 0 fetches full history.
+    required: false
+    default: '0'
+
+runs:
+  using: composite
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        ref: ${{ inputs.ref }}
+        fetch-depth: ${{ inputs.fetch-depth }}

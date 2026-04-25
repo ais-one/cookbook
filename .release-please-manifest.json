@@ -1,0 +1,7 @@
+{
+  ".": "0.1.1",
+  "apps/sample-mcp": "0.0.1",
+  "apps/sample-api": "0.0.6",
+  "apps/sample-vue-minimal": "0.0.0",
+  "apps/sample-vue-full": "0.0.0"
+}

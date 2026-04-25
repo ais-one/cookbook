@@ -1,0 +1,25 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "vue.volar",
+    "humao.rest-client",
+    "anthropic.claude-code",
+    "cweijan.dbclient-jdbc",
+    "cweijan.vscode-mysql-client2",
+    "tobermory.es6-string-html",
+    "github.vscode-github-actions",
+    "connor4312.nodejs-testing",
+    "ms-vscode-remote.remote-ssh"
+  ],
+  "unwantedRecommendations": [
+    "ms-vscode-remote.remote-ssh-edit",
+    "ms-vscode.remote-explorer",
+    "ms-azuretools.vscode-docker",
+    "ms-azuretools.vscode-containers",
+    "ms-vscode.vscode-typescript-next",
+    "rangav.vscode-thunder-client",
+    "mhutchie.git-graph",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
+  ]
+}

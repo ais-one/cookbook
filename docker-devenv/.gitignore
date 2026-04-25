@@ -1,6 +1,0 @@
-.DS_Store
-mongodb/data
-mysql/data
-redis/data
-keycloak/data
-rabbitmq/data

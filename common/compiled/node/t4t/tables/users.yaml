@@ -1,0 +1,65 @@
+conn: knex1
+name: users
+create: true
+update: true
+delete: 0
+import: true
+export: true
+multiSelect: false
+cols:
+  id:
+    label: ID
+    auto: pk
+    hide: true
+    add: readonly
+    edit: readonly
+  firstName:
+    label: First Name
+    type: string
+    filter: true
+    default: ''
+    ui:
+      tag: input
+  lastName:
+    label: Last Name
+    type: string
+    filter: true
+    default: ''
+    ui:
+      tag: input
+  email:
+    label: Email
+    type: string
+    filter: true
+    default: ''
+    ui:
+      tag: input
+  role:
+    label: Role
+    type: string
+    filter: true
+    default: ''
+    ui:
+      tag: input
+  status:
+    label: Status
+    type: string
+    filter: true
+    default: ''
+    ui:
+      tag: input
+  image:
+    label: Image
+    type: string
+    filter: true
+    default: ''
+    ui:
+      tag: input
+  createdAt:
+    label: Created At
+    auto: ts
+    hide: true
+  updatedAt:
+    label: Updated At
+    auto: ts
+    hide: true

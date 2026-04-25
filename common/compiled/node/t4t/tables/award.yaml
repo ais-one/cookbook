@@ -1,0 +1,30 @@
+conn: knex1 # connection name
+name: award # table name
+displayName: Awards
+view: admin,editor,viewer # user defined roles
+update:
+create:
+delete:
+deleteLimit: -1
+import:
+export:
+multiSelect:
+cols:
+  code:
+    label: Code
+    multiKey: true
+    edit: readonly
+    type: string
+    ui:
+      tag: input
+      attrs:
+        type: text
+  name:
+    label: Name
+    multiKey: true
+    edit: readonly
+    type: string
+    ui:
+      tag: input
+      attrs:
+        type: text

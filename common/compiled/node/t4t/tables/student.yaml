@@ -1,0 +1,284 @@
+conn: knex1 # connection name
+name: student # table name
+displayName: Students
+view: admin,editor,viewer # user defined roles
+update: admin,editor # able to update record
+create: admin # able to add record
+delete: admin
+deleteLimit: 1 # 0 = no limit, requires multiSelect
+import: admin,editor # can import from csv
+export: admin,editor # can export from csv
+select: # comma seperated columns that you want only
+audit: true # false, true, save - save will record previous values for delete/update  operation (requires read)
+multiSelect: false # can select multiple records
+defaultSort: # see audit_logs
+cols:
+  id: # primary key column
+    label: ID
+    auto: pk # should override multiKey, cannot edit, always required, add not required as it is auto
+    # hide: omit # omit = not in return, blank = return as blank, true = not shown in table
+    # filter: false, // default is exclude from filter
+    # sort: false, // default is exclude from sort
+    edit: readonly # true, or readonly
+  firstName:
+    label: First Name
+    # multiKey: true # part of composite unique key - required, cannot be blank
+    filter: true # truthy means hide column on filter,
+    sort: true # truthy allow column to be sorted
+    required: true
+    add: true # true, or readonly
+    edit: true # true, or readonly
+    creator: admin # additional field permissions
+    editor: admin # additional field permissions
+    default: '' # a default value (today? now?)
+    type: string # string, integer, decimal, datetime, date, time, boolean, link (follows the DB datatype)
+    ui:
+      tag: input # input (number, date, time, datetime, file, pattern), select, textarea, combobox
+      attrs:
+        type: text
+        pattern: '^[A-Za-z]+$'
+        min: 2
+        maxlength: 20
+    # rules:
+    #   min: 2
+    #   regex: '^[A-Za-z]+$' # {10} // must be 10
+    comment: ''
+  lastName:
+    label: Last Name
+    required: true
+    add: true
+    edit: true
+    type: string
+    filter: true
+    ui:
+      tag: input
+      attrs:
+        type: text
+        min: 1
+        max: 20
+    # rules:
+    #   min: 1
+    #   max: 20
+    # width: 250
+  avatar: # test single file upload
+    label: Avatar
+    add: true
+    edit: true
+    type: string
+    ui:
+      url: http://127.0.0.1:3000/uploads/avatar/ # can be served from URL
+      tag: files
+      attrs:
+        multiple: false
+        accept: image/*,.pdf,.txt
+        maxCount: 1 # ant design vue a-upload
+      multer:
+        folder: apps/sample-api/uploads/avatar
+        options:
+          limits:
+            files: 1
+            fileSize: 10000000
+  kyc: # test multiple file upload
+    label: KYC Files
+    add: true
+    edit: true
+    type: string
+    ui:
+      url: http://127.0.0.1:3000/uploads/kyc/
+      tag: files
+      attrs:
+        accept: .pdf,.doc,.docx,.txt
+        multiple: true
+        maxCount: 2 # ant design vue a-upload
+      oss: #if want to add oss as cloud storage for thumbnail 
+        folder: sub/folder
+        options:
+          limits:
+            files: 1
+            fileSize: 10000000
+      multer:
+        folder: apps/sample-api/uploads/kyc
+        options:
+          limits:
+            files: 2
+            fileSize: 10000000
+  country:
+    label: Country # key text...
+    type: string # change to auto complete
+    # hide: true
+    # filter: true
+    edit: true
+    options:
+      parentCol: '' # use column to get parent value affecting a child
+      parentTableColName: '' # the column name in the parent table
+      childCol: 'state' # affect child column in this table
+      conn: knex1
+      tableName: country
+      limit: 8
+      strict: true # cannot enter own values, must be selected
+      key: code
+      text: name # ,icc,updated
+      display: text # TODO key or text or both
+    ui:
+      tag: autocomplete
+      # exact match needed?
+      # default?
+  state:
+    label: State # key text...
+    type: string # change to auto complete
+    # filter: true
+    hide: true
+    options:
+      parentCol: country
+      parentTableColName: country_name
+      childCol: ''
+      conn: knex1
+      tableName: state
+      limit: 8
+      key: code
+      text: name
+      display: key # TODO key or text or both
+    ui:
+      tag: autocomplete
+  # TODO...
+  # awards:
+  #   label: Awards # key text...
+  #   type: string # change to auto complete
+  #   # hide: true
+  #   # filter: true
+  #   edit: true
+  #   options:
+  #     parentCol: '' # use column to get parent value affecting a child
+  #     parentTableColName: '' # the column name in the parent table
+  #     childCol: '' # affect child column in this table
+  #     conn: knex1
+  #     tableName: award
+  #     limit: 8
+  #     strict: true # cannot enter own values, must be selected
+  #     key: code
+  #     text: name
+  #     display: text # TODO key or text or both
+  #   ui:
+  #     tag: select
+  #     attrs:
+  #       mode: tags # tags or multiple
+  sex: # single select - fixed items
+    label: Sex
+    type: string
+    filter: true
+    add: true
+    edit: true
+    default: M
+    ui:
+      display: label # unused - TODO get label from attrs.options
+      tag: select
+      attrs:
+        multiple: false
+        options:
+          - label: ''
+            value: ''
+          - label: Male
+            value: M
+          - label: Female
+            value: F
+  subjects: # link to student_subject table...
+    label: Subjects
+    type: link # link should not be updated or edited directly in this table
+    filter: false
+    sort: false
+    # TODO... display static text? count? elipsis?
+    link:
+      display: static # count, elipsis
+      text: View Subjects # TODO, show is comma list? EL1,EM,AM,PHY,CHEM
+      keys: id # comma seperated
+      ctable: student_subject # comma seperated
+      ckeys: studentId # comma seperated
+    ui:
+      tag: input
+  age: # integer
+    label: Age
+    type: integer
+    filter: true
+    add: true
+    edit: true
+    ui:
+      tag: input
+      attrs:
+        type: number
+        min: 10
+        max: 90
+        step: 1
+    rules:
+      min: 10
+      max: 90
+  gpa: # decimal
+    label: GPA
+    type: decimal
+    filter: true
+    add: true
+    edit: true
+    ui:
+      tag: input
+      attrs:
+        type: number
+  birthDate: # date of birth - YYYY-MM-dd (no timezone - assume local - store as string)
+    label: Date of Birth
+    type: string # date
+    filter: true
+    add: true
+    edit: true
+    ui:
+      tag: input
+      attrs:
+        type: date
+  birthTime: # HHmm (no timezone - assume local - store as string)
+    label: Birth time
+    type: string # time
+    filter: true
+    ui:
+      tag: input
+      attrs:
+        type: time
+  dateTimeTz: # date with timezone info
+    label: Datetime+TZ
+    type: datetime
+    filter: true
+    ui:
+      tag: input
+      attrs:
+        type: datetime-local
+      tz: utc # show in UTC, otherwise, local time
+  secret: # cannot be shown but can be updated
+    label: Secret
+    hide: blank # if blank when adding... error, if blank when edit, do not update
+    type: string
+    add: true
+    edit: true
+    ui:
+      tag: input
+      attrs:
+        type: password
+  remarks: # textarea
+    editor: nobody #... no editor group? called nobody so cannot edit, ignored
+    label: Remarks
+    type: string
+    add: true
+    edit: true
+    ui:
+      tag: textarea
+      attrs:
+        rows: 4
+  updated_by:
+    label: Updated By
+    auto: user # autogenerated field... user = user id, ts = timestamp, pk = autogenerated primary key
+    hide: omit # this column will be removed and not be sent
+  updated_at:
+    label: Updated At
+    filter: true
+    auto: ts
+    edit: readonly
+    type: datetime
+    ui:
+      tag: input
+      attrs:
+        type: text

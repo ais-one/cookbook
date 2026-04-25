@@ -1,0 +1,113 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.12/schema.json",
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 120
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noUnusedVariables": "off",
+        "noUnusedFunctionParameters": "off",
+        "useParseIntRadix": "off"
+      }
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all",
+      "arrowParentheses": "asNeeded"
+    }
+  },
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "overrides": [
+    {
+      "includes": ["**/.env.json"],
+      "json": {
+        "parser": {
+          "allowComments": true,
+          "allowTrailingCommas": true
+        }
+      }
+    },
+    {
+      "includes": ["common/compiled/node/**", "common/vanilla/iso/**", "common/vanilla/web/**"],
+      "javascript": {
+        "globals": ["process", "__dirname", "__filename", "require", "module", "exports", "Buffer"]
+      },
+      "linter": {
+        "rules": {
+          "suspicious": { "noConsole": "error" },
+          "security": { "noGlobalEval": "error" }
+        }
+      }
+    },
+    {
+      "includes": ["common/compiled/node/**"],
+      "javascript": {
+        "globals": [
+          "process",
+          "__dirname",
+          "__filename",
+          "require",
+          "module",
+          "exports",
+          "Buffer",
+          "logger",
+          "__config"
+        ]
+      }
+    },
+    {
+      "includes": ["common/compiled/vue/**", "apps/sample-vue-full/**", "apps/sample-vue-minimal/**"],
+      "linter": {
+        "domains": { "vue": "recommended" }
+      },
+      "html": {
+        "experimentalFullSupportEnabled": true,
+        "formatter": {
+          "enabled": true,
+          "indentStyle": "space",
+          "indentWidth": 2
+        }
+      },
+      "css": {
+        "formatter": {
+          "enabled": true,
+          "quoteStyle": "single"
+        },
+        "linter": {
+          "enabled": true
+        }
+      }
+    },
+    {
+      "includes": ["apps/sample-api/**"],
+      "linter": {
+        "rules": {
+          "suspicious": { "noConsole": "off" },
+          "security": { "noGlobalEval": "error" }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+conn: knex1
+name: student_subject
+displayName: Student Subjects
+view: admin,editor,viewer # user defined roles
+update: admin,editor # able to update record
+create: admin # able to add record
+delete: admin
+deleteLimit: 2 # 0 = no limit, requires multiSelect
+import: admin,editor # can import from csv
+export: admin,editor # can export from csv
+multiSelect: true
+cols:
+  studentId:
+    label: Student ID
+    add: readonly
+    edit: readonly
+    multiKey: true
+  subjectCode:
+    label: Subject Code
+    add: readonly
+    edit: readonly
+    multiKey: true
+  gradeFinal:
+    label: Final Grade
+    type: string
+  gradeDate:
+    label: Graded On
+    type: string # date

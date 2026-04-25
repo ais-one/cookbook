@@ -1,0 +1,109 @@
+name: Sync Upstream Template
+# Pulls the latest changes from the upstream template repository and opens a PR
+# with the diff, excluding app-specific folders that should never be overwritten.
+#
+# Process:
+#   1. Checks out this repo.
+#   2. Add the upstream template as a git remote and fetch it.
+#   3. Check out all files from the upstream branch into the working tree.
+#   4. Restore apps/ and scripts/ from HEAD so local customisations are preserved.
+#   5. If any files changed, open a PR on branch chore/sync-upstream for review.
+#
+# Trigger: run manually via workflow_dispatch.
+# Protected branches: safe — changes are pushed to chore/sync-upstream, never directly
+#   to the target branch. A human reviews and merges the PR as normal.
+#
+# Required secret: SYNC_TOKEN
+#   The built-in GITHUB_TOKEN cannot create or update workflow files (.github/workflows/).
+#   A personal access token with both `repo` and `workflow` scopes is required instead.
+#
+#   Setup:
+#     Classic PAT:
+#       1. GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
+#       2. Generate new token → tick BOTH `repo` (for push + PR creation) AND `workflow` (for
+#          writing .github/workflows/ files) — these are separate scopes; neither implies the other
+#       3. Copy the token value.
+#
+#     Fine-grained PAT (repo-scoped):
+#       1. GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens
+#       2. Set Resource owner to the repo's owner, Important! Names must match
+#       3. Under Permissions → Repository permissions, grant:
+#            - Contents: Read and write
+#            - Pull requests: Read and write
+#            - Workflows: Read and write
+#       4. Copy the token value.
+#
+#     Add to repo:
+#       Repository → Settings → Secrets and variables → Actions → New repository secret
+#       Name: SYNC_TOKEN   Value: <token copied above>
+
+on:
+  # schedule:
+  #   - cron: '0 9 * * 1'  # every Monday 9am UTC
+  workflow_dispatch:
+    inputs:
+      upstream_branch:
+        description: 'Upstream branch to sync from. Defaults to main'
+        default: 'main'
+        required: false
+      ref:
+        description: Branch to check out. Defaults to the ref that triggered the workflow.
+        required: false
+        default: ''
+
+env:
+  UPSTREAM_URL: https://github.com/ais-one/pfmt.git
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display Inputs
+        run: echo "${{ toJSON(github.event.inputs) }}"
+
+      - uses: actions/checkout@v6
+        with:
+          token: ${{ secrets.SYNC_TOKEN }}
+          ref: ${{ github.event.inputs.ref }}
+
+      - name: Add upstream remote
+        run: git remote add upstream ${{ env.UPSTREAM_URL }}
+
+      - name: Fetch upstream
+        run: git fetch upstream
+
+      # Sync everything from upstream, then restore local apps/ and scripts/
+      # so those folders are never overwritten by the template.
+      #
+      # Checkout reference:
+      #   single file  — git checkout upstream/main -- path/to/file
+      #   folder       — git checkout upstream/main -- folder/   (no wildcards)
+      #   *.ext        — git checkout upstream/main -- 'folder/*.ext'
+      #   recursive    — git checkout upstream/main -- 'folder/**/*.ext'
+      - name: Apply upstream changes (exclude apps/ scripts/)
+        run: |
+          git checkout upstream/${{ github.event.inputs.upstream_branch || 'main' }} -- .
+          git checkout HEAD -- apps/ scripts/
+
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --staged --quiet && git diff --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "has_changes=false"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "has_changes=true"
+          fi
+
+      - name: Push sync branch
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          SYNC_BRANCH: chore/sync-upstream
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$SYNC_BRANCH"
+          git add -A
+          git commit -m "chore: sync from upstream template"
+          git push origin "$SYNC_BRANCH" --force
