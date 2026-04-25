@@ -28,6 +28,7 @@ export function createResponse() {
     statusCode: 200,
     _body: undefined as unknown,
     _redirect: undefined as string | undefined,
+    _headers: {} as Record<string, string>,
     _getStatusCode() {
       return this.statusCode;
     },
@@ -36,6 +37,9 @@ export function createResponse() {
     },
     _getRedirectUrl() {
       return this._redirect;
+    },
+    _getHeader(name: string) {
+      return this._headers[name.toLowerCase()];
     },
     status(code: number) {
       this.statusCode = code;
@@ -56,6 +60,10 @@ export function createResponse() {
       return this;
     },
     set(_name: string, _value: string) {
+      return this;
+    },
+    setHeader(name: string, value: string) {
+      this._headers[name.toLowerCase()] = value;
       return this;
     },
     cookie(_name: string, _value: string, _opts?: unknown) {
