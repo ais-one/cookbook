@@ -31,6 +31,11 @@ Read this document before making code changes. Use [.github/CONTRIBUTING.md](../
   - `common/compiled` folder uses Typescript
 - Browser and Isomorphic code must use Javascript only
 
+### Typing Convention
+
+- In `.ts` files: use TypeScript type annotations — do **not** use JSDoc for types
+- In `.js` files: use JSDoc (`/** @type */`, `/** @param */`, etc.) for type hints and IDE autocomplete
+
 ## Node Runtime Standard
 
 - Node runtime applications must import `common/node/logger` and use the global `logger` instead of `console.*`.

@@ -6,8 +6,11 @@ A monorepo template for building full-stack JavaScript applications with Node.js
 
 - Node.js 24+ required, npm 11+ required
 - Fully ES Modules — no CommonJS
-- No TypeScript in `apps/` or `common/` — JSDoc used for typing and IDE autocomplete
-- `scripts/` uses TypeScript, run natively via Node 24 (`node file.ts`) — no build step needed
+- In `.ts` files: use TypeScript type annotations — do **not** use JSDoc for types
+  - used mainly in `apps/*` (with ts), `common/compiled/*` and`scripts/*`
+- In `.js` files: use JSDoc (`/** @type */`, `/** @param */`, etc.) for type hints and IDE autocomplete
+  - used mainly in `apps/*` (with js) and `common/vanilla/*`
+- TypeScript runs natively via Node 24 (`node file.ts`) — no build step needed for scripts
 
 ## Repository structure
 
