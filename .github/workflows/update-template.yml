@@ -74,23 +74,17 @@ jobs:
         run: git fetch upstream
 
       # Merge upstream into the working tree without committing.
-      # apps/ and scripts/ are protected via a temporary .gitattributes merge=ours
-      # driver so git never touches those paths during the merge.
-      # Additions, modifications, and deletions from upstream are all handled
-      # natively. Merge conflicts are left as conflict markers for the PR reviewer.
+      # apps/ and scripts/ are protected via .git/info/attributes (never tracked,
+      # no restore needed) so git never touches those paths during the merge.
+      # Conflicts outside protected folders are auto-resolved in favour of upstream
+      # (-X theirs); the PR diff is the review mechanism.
       - name: Merge upstream changes (exclude apps/ scripts/)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config merge.ours.driver true
-          printf 'apps/** merge=ours\nscripts/** merge=ours\n' >> .gitattributes
-          git merge upstream/${{ github.event.inputs.upstream_branch || 'main' }} --no-commit --no-ff --allow-unrelated-histories || true
-          if git ls-files --error-unmatch .gitattributes > /dev/null 2>&1; then
-            git checkout HEAD -- .gitattributes
-          else
-            git rm --cached -f .gitattributes 2>/dev/null || true
-            rm -f .gitattributes
-          fi
+          printf 'apps/** merge=ours\nscripts/** merge=ours\n' >> .git/info/attributes
+          git merge upstream/${{ github.event.inputs.upstream_branch || 'main' }} --no-commit --no-ff --allow-unrelated-histories -X theirs || true
 
       # # Alternative: file-copy approach (does not handle upstream deletions natively)
       # # Checkout reference:
@@ -110,19 +104,19 @@ jobs:
       #       | grep -E '^\.github/(workflows|actions)/' \
       #       | xargs -r git rm -f --
 
-      - name: Check for changes
-        id: changes
-        run: |
-          if git diff --staged --quiet && git diff --quiet; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "has_changes=false"
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "has_changes=true"
-          fi
+      # - name: Check for changes
+      #   id: changes
+      #   run: |
+      #     if git diff --staged --quiet && git diff --quiet; then
+      #       echo "has_changes=false" >> $GITHUB_OUTPUT
+      #       echo "has_changes=false"
+      #     else
+      #       echo "has_changes=true" >> $GITHUB_OUTPUT
+      #       echo "has_changes=true"
+      #     fi
 
       - name: Push sync branch
-        if: steps.changes.outputs.has_changes == 'true'
+        # if: steps.changes.outputs.has_changes == 'true'
         env:
           SYNC_BRANCH: chore/sync-upstream
         run: |
