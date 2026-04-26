@@ -43,13 +43,13 @@ jobs:
     name: Commit Message Format
     needs: detect-scope
     if: needs.detect-scope.outputs.has-supported-scope == 'true' && (github.event_name == 'pull_request' || github.event_name == 'push')
-    uses: ./.github/workflows/call-commit-lint.yml
+    uses: ./.github/workflows/wfc-commit-lint.yml
 
   format-lint:
     name: Biome Checks
     needs: detect-scope
     if: needs.detect-scope.outputs.has-supported-scope == 'true'
-    uses: ./.github/workflows/call-format-lint.yml
+    uses: ./.github/workflows/wfc-format-lint.yml
 
   schema-tests:
     name: Schema Validation Tests
@@ -57,13 +57,13 @@ jobs:
       - detect-scope
       - format-lint
     if: needs.detect-scope.outputs.has-supported-scope == 'true'
-    uses: ./.github/workflows/call-tests-schema.yml
+    uses: ./.github/workflows/wfc-tests-schema.yml
 
   unit-tests:
     name: Unit Tests
     needs: detect-scope
     if: needs.detect-scope.outputs.has-apps == 'true'
-    uses: ./.github/workflows/call-tests-unit.yml
+    uses: ./.github/workflows/wfc-tests-unit.yml
 
   integration-tests:
     name: Integration Tests
@@ -71,7 +71,7 @@ jobs:
       - detect-scope
       - unit-tests
     if: needs.detect-scope.outputs.has-apps == 'true' && github.event_name == 'pull_request'
-    uses: ./.github/workflows/call-tests-integration.yml
+    uses: ./.github/workflows/wfc-tests-integration.yml
 
   e2e-tests:
     name: E2E Tests
@@ -79,13 +79,34 @@ jobs:
       - detect-scope
       - integration-tests
     if: needs.detect-scope.outputs.has-apps == 'true' && github.event_name == 'pull_request'
-    uses: ./.github/workflows/call-tests-e2e.yml
+    uses: ./.github/workflows/wfc-tests-e2e.yml
  
   security:
     name: Security Scan
     needs: detect-scope
     if: needs.detect-scope.outputs.has-supported-scope == 'true' && github.event_name == 'pull_request'
-    uses: ./.github/workflows/call-security.yml
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: ./.github/actions/checkout
+
+      - name: Set up workspace
+        uses: ./.github/actions/setup-node-npm-install
+
+      - name: NPM audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm audit --omit=dev --audit-level=moderate || exit 1
+
+      # # USE github secrets scanning INSTEAD
+      # - name: Secrets Scanning
+      #   uses: trufflesecurity/trufflehog@17456f8c7d042d8c82c9a8ca9e937231f9f42e26 # v3.95.2
+      #   with:
+      #     path: ./
+      #     base: ${{ github.event.repository.default_branch }}
+      #     head: HEAD
+      #     extra_args: --debug --only-verified
 
   release-please:
     name: Release Please
