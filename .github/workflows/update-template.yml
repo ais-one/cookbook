@@ -84,8 +84,13 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config merge.ours.driver true
           printf 'apps/** merge=ours\nscripts/** merge=ours\n' >> .gitattributes
-          git merge upstream/${{ github.event.inputs.upstream_branch || 'main' }} --no-commit --no-ff || true
-          git checkout HEAD -- .gitattributes
+          git merge upstream/${{ github.event.inputs.upstream_branch || 'main' }} --no-commit --no-ff --allow-unrelated-histories || true
+          if git ls-files --error-unmatch .gitattributes > /dev/null 2>&1; then
+            git checkout HEAD -- .gitattributes
+          else
+            git rm --cached -f .gitattributes 2>/dev/null || true
+            rm -f .gitattributes
+          fi
 
       # # Alternative: file-copy approach (does not handle upstream deletions natively)
       # # Checkout reference:
