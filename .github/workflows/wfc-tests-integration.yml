@@ -1,11 +1,11 @@
-name: Call - E2E Tests
+name: Wfc - Integration Tests
 
 on:
   workflow_call:
 
 jobs:
-  e2e-tests:
-    name: E2E Tests
+  integration-tests:
+    name: Integration Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,22 +18,21 @@ jobs:
       - name: Set up workspace
         uses: ./.github/actions/setup-node-npm-install
 
-      - name: Run e2e tests for touched web workspaces
+      - name: Run integration tests for touched workspaces
         if: steps.touched.outputs.has-impacted-workspaces == 'true'
         shell: bash
         run: |
           set -euo pipefail
-
           while IFS= read -r workspace; do
             [ -n "$workspace" ] || continue
-            if node -e "const p=require('./${workspace}/package.json'); process.exit(p.scripts&&p.scripts['test:e2e']?0:1)" 2>/dev/null; then
-              echo "Running e2e tests for workspace: $workspace"
-              npm run test:e2e --workspace="$workspace"
+            if node -e "const p=require('./${workspace}/package.json'); process.exit(p.scripts&&p.scripts['test:integration']?0:1)" 2>/dev/null; then
+              echo "Running integration tests for workspace: $workspace"
+              npm run test:integration --workspace="$workspace"
             else
-              echo "No test:e2e script in workspace: $workspace - skipping"
+              echo "No test:integration script in workspace: $workspace - skipping"
             fi
           done <<< "${{ steps.touched.outputs.impacted-workspaces }}"
 
       - name: No impacted workspaces
         if: steps.touched.outputs.has-impacted-workspaces != 'true'
-        run: echo "No impacted workspaces detected - skipping e2e tests"
+        run: echo "No impacted workspaces detected – skipping integration tests"
