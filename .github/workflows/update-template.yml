@@ -4,10 +4,11 @@ name: Sync Upstream Template
 #
 # Process:
 #   1. Checks out this repo.
-#   2. Add the upstream template as a git remote and fetch it.
-#   3. Check out all files from the upstream branch into the working tree.
-#   4. Restore apps/ and scripts/ from HEAD so local customisations are preserved.
-#   5. If any files changed, open a PR on branch chore/sync-upstream for review.
+#   2. Adds the upstream template as a git remote and fetches it.
+#   3. Merges upstream into the working tree (--no-commit) — handles additions,
+#      modifications, and deletions. Conflict markers are left for the PR reviewer.
+#   4. Restores apps/ and scripts/ from HEAD so local customisations are preserved.
+#   5. If any files changed, opens a PR on branch chore/sync-upstream for review.
 #
 # Trigger: run manually via workflow_dispatch.
 # Protected branches: safe — changes are pushed to chore/sync-upstream, never directly
@@ -72,18 +73,37 @@ jobs:
       - name: Fetch upstream
         run: git fetch upstream
 
-      # Sync everything from upstream, then restore local apps/ and scripts/
-      # so those folders are never overwritten by the template.
-      #
-      # Checkout reference:
-      #   single file  — git checkout upstream/main -- path/to/file
-      #   folder       — git checkout upstream/main -- folder/   (no wildcards)
-      #   *.ext        — git checkout upstream/main -- 'folder/*.ext'
-      #   recursive    — git checkout upstream/main -- 'folder/**/*.ext'
-      - name: Apply upstream changes (exclude apps/ scripts/)
+      # Merge upstream into the working tree without committing.
+      # apps/ and scripts/ are protected via a temporary .gitattributes merge=ours
+      # driver so git never touches those paths during the merge.
+      # Additions, modifications, and deletions from upstream are all handled
+      # natively. Merge conflicts are left as conflict markers for the PR reviewer.
+      - name: Merge upstream changes (exclude apps/ scripts/)
         run: |
-          git checkout upstream/${{ github.event.inputs.upstream_branch || 'main' }} -- .
-          git checkout HEAD -- apps/ scripts/
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config merge.ours.driver true
+          printf 'apps/** merge=ours\nscripts/** merge=ours\n' >> .gitattributes
+          git merge upstream/${{ github.event.inputs.upstream_branch || 'main' }} --no-commit --no-ff || true
+          git checkout HEAD -- .gitattributes
+
+      # # Alternative: file-copy approach (does not handle upstream deletions natively)
+      # # Checkout reference:
+      # #   single file  — git checkout upstream/main -- path/to/file
+      # #   folder       — git checkout upstream/main -- folder/   (no wildcards)
+      # #   *.ext        — git checkout upstream/main -- 'folder/*.ext'
+      # #   recursive    — git checkout upstream/main -- 'folder/**/*.ext'
+      # - name: Apply upstream changes (exclude apps/ scripts/)
+      #   run: |
+      #     git checkout upstream/${{ github.event.inputs.upstream_branch || 'main' }} -- .
+      #     git checkout HEAD -- apps/ scripts/
+      #
+      # - name: Remove workflow/action files deleted upstream
+      #   run: |
+      #     git diff HEAD upstream/${{ github.event.inputs.upstream_branch || 'main' }} \
+      #       --diff-filter=D --name-only \
+      #       | grep -E '^\.github/(workflows|actions)/' \
+      #       | xargs -r git rm -f --
 
       - name: Check for changes
         id: changes
@@ -101,8 +121,6 @@ jobs:
         env:
           SYNC_BRANCH: chore/sync-upstream
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           git checkout -B "$SYNC_BRANCH"
           git add -A
           git commit -m "chore: sync from upstream template"
