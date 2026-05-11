@@ -21,7 +21,7 @@
 //   schemas/<table>.schema.js                ← created ONCE  (your sidecar)
 //   src/controllers/<table>.ts               ← created ONCE  (your sidecar)
 
-import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -129,9 +129,7 @@ function toPascalCase(str: string): string {
 
 /** camelCase / PascalCase → kebab-case. 'fgaConfig' → 'fga-config' */
 function toKebabCase(str: string): string {
-  return str
-    .replace(/([A-Z])/g, m => `-${m.toLowerCase()}`)
-    .replace(/^-/, '');
+  return str.replace(/([A-Z])/g, m => `-${m.toLowerCase()}`).replace(/^-/, '');
 }
 
 // ─── File helpers ─────────────────────────────────────────────────────────────
@@ -146,6 +144,36 @@ function writeIfAbsent(filePath: string, content: string): boolean {
   if (existsSync(filePath)) return false;
   writeFile(filePath, content);
   return true;
+}
+
+// ─── Config ───────────────────────────────────────────────────────────────────
+
+interface CrudConfig {
+  /** Tables to skip entirely — no Zod schema, no routes, no controllers generated. */
+  exclude?: string[];
+  /**
+   * Tables to generate a Zod schema for, but NOT routes or controllers.
+   * Useful for documenting table shapes in OpenAPI without exposing public CRUD endpoints.
+   */
+  schemaOnly?: string[];
+  /** Per-table field-level exclusions, keyed by Drizzle table variable name. */
+  tables?: Record<
+    string,
+    {
+      /**
+       * Column names to remove from BodySchema and UpdateSchema.
+       * Use for server-managed fields that clients must never supply directly
+       * (e.g. password hashes, OTP pins, security counters).
+       */
+      excludeFromBody?: string[];
+      /**
+       * Column names to omit from SELECT in generated controllers.
+       * Produces an explicit column list so sensitive data is never returned
+       * in API responses (e.g. password, salt, gaKey).
+       */
+      excludeFromResponse?: string[];
+    }
+  >;
 }
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -163,6 +191,8 @@ interface TableInfo {
   pkColName: string; // 'id' or 'code'
   pkIsNumeric: boolean; // true → coerce.number(), false → string
   bodyFields: BodyField[];
+  allColNames: string[]; // all column names, used for explicit SELECT when excludeFromResponse is set
+  excludeFromResponse: string[]; // columns to omit from SELECT responses
 }
 
 // ─── Code generators ─────────────────────────────────────────────────────────
@@ -181,9 +211,7 @@ function generateSchemaFile(info: TableInfo): string {
   const pkZodCode = pkIsNumeric ? 'z.coerce.number().int().positive()' : 'z.string().min(1)';
   const pkExample = pkIsNumeric ? '1' : "'example-id'";
 
-  const bodyLines = bodyFields
-    .map(f => `    ${f.name}: ${f.zodCode}${f.required ? '' : '.optional()'},`)
-    .join('\n');
+  const bodyLines = bodyFields.map(f => `    ${f.name}: ${f.zodCode}${f.required ? '' : '.optional()'},`).join('\n');
 
   return `${AUTO_HEADER(varName)}import { z } from 'zod';
 
@@ -246,8 +274,14 @@ export default express
 }
 
 function generateControllerFile(info: TableInfo): string {
-  const { varName, pkColName, pkIsNumeric } = info;
+  const { varName, pkColName, pkIsNumeric, allColNames, excludeFromResponse } = info;
   const pkExpr = pkIsNumeric ? `Number(req.params.${pkColName})` : `req.params.${pkColName}`;
+
+  // Build explicit column select when sensitive fields must be excluded from responses
+  const safeColNames = allColNames.filter(c => !excludeFromResponse.includes(c));
+  const hasExclusions = excludeFromResponse.length > 0;
+  const selectArgLines = safeColNames.map(c => `      ${c}: table.${c},`).join('\n');
+  const selectCall = hasExclusions ? `.select({\n${selectArgLines}\n    })` : '.select()';
 
   return `${AUTO_HEADER(varName)}import * as realServices from '@common/node/services';
 import { ${varName} as table } from '${schemaModule}';
@@ -271,7 +305,7 @@ const create = async (req, res) => {
 
 const findOne = async (req, res) => {
   const rows = await db()
-    .select()
+    ${selectCall}
     .from(table)
     .where(eq(table.${pkColName}, ${pkExpr}))
     .limit(1);
@@ -292,7 +326,7 @@ const find = async (req, res) => {
   const limit = req.query.limit ? Number(req.query.limit) : 10;
   const page = req.query.page ? Number(req.query.page) : 0;
   const result = await db()
-    .select()
+    ${selectCall}
     .from(table)
     .limit(limit)
     .offset((page > 0 ? page - 1 : 0) * limit);
@@ -352,18 +386,34 @@ export { default } from './generated/${kebabName}.ts';
 const appRoot = resolve(process.cwd(), appDir);
 const schemaPath = resolve(process.cwd(), schemaFilePath);
 
+// Load config file if present at app root
+const configPath = resolve(appRoot, 'generate-crud.config.json');
+let config: CrudConfig = {};
+if (existsSync(configPath)) {
+  config = JSON.parse(readFileSync(configPath, 'utf8')) as CrudConfig;
+}
+
 console.log(`\nGenerating CRUD from: ${schemaFilePath}`);
-console.log(`App root:             ${appRoot}\n`);
+console.log(`App root:             ${appRoot}`);
+if (existsSync(configPath)) console.log(`Config:               ${configPath}`);
+console.log();
 
 const schemaExports = await import(pathToFileURL(schemaPath).href);
 
 const generated: string[] = [];
+const schemaOnlyGenerated: string[] = [];
 const skipped: string[] = [];
 const sidecarsCreated: string[] = [];
 
 for (const [varName, exported] of Object.entries(schemaExports)) {
   if (!isPgTable(exported)) continue;
   if (tablesFilter && !tablesFilter.includes(varName)) continue;
+
+  // Config: skip excluded tables entirely — no files generated
+  if (config.exclude?.includes(varName)) {
+    skipped.push(`${varName} (excluded by config)`);
+    continue;
+  }
 
   // biome-ignore lint/suspicious/noExplicitAny: drizzle table internals
   const columns = getColumns(exported as any);
@@ -382,11 +432,18 @@ for (const [varName, exported] of Object.entries(schemaExports)) {
   const pkBase = pkSqlType.toLowerCase().split('(')[0].split(' ')[0].trim();
   const pkIsNumeric = ['serial', 'bigserial', 'integer', 'int', 'int2', 'int4', 'int8', 'bigint'].includes(pkBase);
 
-  // Build body fields — exclude PK columns and server-managed columns
-  // (server-managed = has a SQL expression default like sql`now()` or sql`session_user`)
+  // Per-table config
+  const tableConfig = config.tables?.[varName];
+  const excludeFromBodySet = new Set(tableConfig?.excludeFromBody ?? []);
+  const excludeFromResponse = tableConfig?.excludeFromResponse ?? [];
+
+  // All column names — used for explicit SELECT when excludeFromResponse is set
+  const allColNames = Object.keys(columns);
+
+  // Build body fields — exclude PK, server-managed SQL-expression columns, and config-excluded columns
   const bodyFields: BodyField[] = Object.entries(columns)
     // biome-ignore lint/suspicious/noExplicitAny: drizzle column internals
-    .filter(([, col]) => !(col as any).primary)
+    .filter(([colName, col]) => !(col as any).primary && !excludeFromBodySet.has(colName))
     .filter(([, col]) => {
       // biome-ignore lint/suspicious/noExplicitAny: drizzle column internals
       const c = col as any;
@@ -411,10 +468,27 @@ for (const [varName, exported] of Object.entries(schemaExports)) {
 
   const kebabName = toKebabCase(varName);
   const pascalName = toPascalCase(varName);
-  const info: TableInfo = { varName, pascalName, kebabName, pkColName, pkIsNumeric, bodyFields };
+  const info: TableInfo = {
+    varName,
+    pascalName,
+    kebabName,
+    pkColName,
+    pkIsNumeric,
+    bodyFields,
+    allColNames,
+    excludeFromResponse,
+  };
 
-  // ── Generated files — always overwrite ────────────────────────────────────
+  // ── Always generate the Zod schema file ───────────────────────────────────
   writeFile(resolve(appRoot, 'schemas', 'generated', `${kebabName}.schema.js`), generateSchemaFile(info));
+
+  // Config: schemaOnly — skip routes, controllers, and sidecars
+  if (config.schemaOnly?.includes(varName)) {
+    schemaOnlyGenerated.push(varName);
+    continue;
+  }
+
+  // ── Generated route + controller files — always overwrite ─────────────────
   writeFile(resolve(appRoot, 'src', 'routes', 'generated', `${kebabName}.ts`), generateRouteFile(info));
   writeFile(resolve(appRoot, 'src', 'controllers', 'generated', `${kebabName}.ts`), generateControllerFile(info));
 
@@ -432,7 +506,7 @@ for (const [varName, exported] of Object.entries(schemaExports)) {
 
 // ─── Summary ─────────────────────────────────────────────────────────────────
 
-if (generated.length === 0 && skipped.length === 0) {
+if (generated.length === 0 && schemaOnlyGenerated.length === 0 && skipped.length === 0) {
   console.log('No pgTable exports found in the schema file.');
   process.exit(0);
 }
@@ -440,10 +514,24 @@ if (generated.length === 0 && skipped.length === 0) {
 console.log(`Generated (${generated.length}):`);
 for (const name of generated) {
   const kebab = toKebabCase(name);
-  console.log(`  ${name}`);
+  const tCfg = config.tables?.[name];
+  const bodyNote = tCfg?.excludeFromBody?.length ? ` [body: -${tCfg.excludeFromBody.length} fields]` : '';
+  const responseNote = tCfg?.excludeFromResponse?.length
+    ? ` [response: -${tCfg.excludeFromResponse.length} fields]`
+    : '';
+  console.log(`  ${name}${bodyNote}${responseNote}`);
   console.log(`    schemas/generated/${kebab}.schema.js    (overwritten)`);
   console.log(`    src/routes/generated/${kebab}.ts        (overwritten)`);
   console.log(`    src/controllers/generated/${kebab}.ts   (overwritten)`);
+}
+
+if (schemaOnlyGenerated.length) {
+  console.log(`\nSchema only (${schemaOnlyGenerated.length}) — Zod schema generated, no routes/controllers:`);
+  for (const name of schemaOnlyGenerated) {
+    const kebab = toKebabCase(name);
+    console.log(`  ${name}`);
+    console.log(`    schemas/generated/${kebab}.schema.js    (overwritten)`);
+  }
 }
 
 if (skipped.length) {
