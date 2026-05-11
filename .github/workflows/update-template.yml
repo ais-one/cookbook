@@ -88,6 +88,14 @@ jobs:
           git checkout -B "$SYNC_BRANCH"
           git merge upstream/"$UPSTREAM_BRANCH" --no-commit --no-ff --allow-unrelated-histories -X theirs || true
 
+      # Remove any files in protected folders (apps/, scripts/) that upstream added as new.
+      # merge=ours only prevents conflicts on files that exist in both sides; purely new
+      # upstream additions are staged as clean adds without invoking a merge driver.
+      - name: Remove upstream-added files in protected folders
+        run: |
+          git diff --cached --name-only --diff-filter=A -- 'apps/**' 'scripts/**' \
+          | xargs -r git rm -f --
+
       # Explicitly remove files that were deleted in upstream but still exist in HEAD,
       # outside the protected folders. The merge step alone does not guarantee this when
       # it exits with conflicts and the index is left in a partial state.
