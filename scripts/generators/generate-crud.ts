@@ -287,6 +287,19 @@ interface BodyField {
 }
 
 /**
+ * Metadata for a single column included in the generated `ResponseSchema`.
+ * Used to build the Zod schema that describes what the API returns on GET requests.
+ */
+interface ResponseField {
+  /** Column name as it appears in the Drizzle schema. */
+  name: string;
+  /** Zod schema code snippet for this field (e.g. `'z.string()'`). */
+  zodCode: string;
+  /** `true` if the column is nullable — appends `.nullable()` in the generated schema. */
+  nullable: boolean;
+}
+
+/**
  * Aggregates all per-table metadata needed by the code generators.
  * Constructed once per table in the main loop and passed to every `generate*` function.
  */
@@ -306,6 +319,12 @@ interface TableInfo {
   pkIsNumeric: boolean;
   /** Ordered list of fields included in the generated `BodySchema` and `UpdateSchema`. */
   bodyFields: BodyField[];
+  /**
+   * All columns except those in `excludeFromResponse`, used to build the generated
+   * `ResponseSchema` and for explicit SELECT column lists in controllers.
+   * Carries nullable information so the schema accurately reflects DB constraints.
+   */
+  responseFields: ResponseField[];
   /**
    * All column names for this table.
    * Used to build an explicit SELECT column list when `excludeFromResponse` is non-empty,
@@ -342,21 +361,25 @@ const AUTO_HEADER = (varName: string) => `\
  *
  * The file exports four Zod schemas registered with `.meta({ id })` so that
  * `generate-openapi.ts` can reference them as named OpenAPI components:
- * - `${Pascal}BodySchema`   — fields accepted on `POST /<table>` (excludes PK, SQL-expression defaults, and `excludeFromBody` columns)
- * - `${Pascal}UpdateSchema` — same fields but all optional (for `PATCH`)
- * - `${Pascal}ParamsSchema` — single-field object holding the primary key (for URL params)
- * - `${Pascal}QuerySchema`  — pagination params (`limit` and `page`) for `GET /<table>`
+ * - `${Pascal}BodySchema`     — fields accepted on `POST /<table>` (excludes PK, SQL-expression defaults, and `excludeFromBody` columns)
+ * - `${Pascal}UpdateSchema`   — same fields but all optional (for `PATCH`)
+ * - `${Pascal}ParamsSchema`   — single-field object holding the primary key (for URL params)
+ * - `${Pascal}QuerySchema`    — pagination params (`limit` and `page`) for `GET /<table>`
+ * - `${Pascal}ResponseSchema` — all columns minus `excludeFromResponse`, used as the GET response body in OpenAPI
  *
  * @param info - Aggregated table metadata built in the main loop.
  * @returns The full file content as a UTF-8 string ready to be written to disk.
  */
 function generateSchemaFile(info: TableInfo): string {
-  const { varName, pascalName, kebabName, pkColName, pkIsNumeric, bodyFields } = info;
+  const { varName, pascalName, kebabName, pkColName, pkIsNumeric, bodyFields, responseFields } = info;
 
   const pkZodCode = pkIsNumeric ? 'z.coerce.number().int().positive()' : 'z.string().min(1)';
   const pkExample = pkIsNumeric ? '1' : "'example-id'";
 
   const bodyLines = bodyFields.map(f => `    ${f.name}: ${f.zodCode}${f.required ? '' : '.optional()'},`).join('\n');
+  const responseLines = responseFields
+    .map(f => `    ${f.name}: ${f.zodCode}${f.nullable ? '.nullable()' : ''},`)
+    .join('\n');
 
   return `${AUTO_HEADER(varName)}import { z } from 'zod';
 
@@ -384,6 +407,13 @@ export const ${pascalName}QuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: '${pascalName}Query' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const ${pascalName}ResponseSchema = z
+  .object({
+${responseLines}
+  })
+  .meta({ id: '${pascalName}Response' });
 `;
 }
 
@@ -675,6 +705,21 @@ for (const [varName, exported] of Object.entries(schemaExports)) {
       };
     });
 
+  // Build response fields — ALL columns minus excludeFromResponse, used for ResponseSchema and OpenAPI
+  const responseFields: ResponseField[] = Object.entries(columns)
+    .filter(([colName]) => !excludeFromResponse.includes(colName))
+    .map(([colName, col]) => {
+      // biome-ignore lint/suspicious/noExplicitAny: drizzle column internals
+      const c = col as any;
+      const sqlType: string = c.getSQLType?.() ?? 'unknown';
+      const notNull: boolean = c.notNull ?? false;
+      return {
+        name: colName,
+        zodCode: sqlTypeToZodCode(sqlType),
+        nullable: !notNull,
+      };
+    });
+
   const kebabName = toKebabCase(varName);
   const pascalName = toPascalCase(varName);
   const info: TableInfo = {
@@ -684,6 +729,7 @@ for (const [varName, exported] of Object.entries(schemaExports)) {
     pkColName,
     pkIsNumeric,
     bodyFields,
+    responseFields,
     allColNames,
     excludeFromResponse,
   };

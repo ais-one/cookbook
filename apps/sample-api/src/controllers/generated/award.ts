@@ -24,20 +24,13 @@ const create = async (req, res) => {
 };
 
 const findOne = async (req, res) => {
-  const rows = await db()
-    .select()
-    .from(table)
-    .where(eq(table.code, req.params.code))
-    .limit(1);
+  const rows = await db().select().from(table).where(eq(table.code, req.params.code)).limit(1);
   if (rows.length) return res.status(200).json(rows[0]);
   return res.status(404).json({});
 };
 
 const update = async (req, res) => {
-  const result = await db()
-    .update(table)
-    .set(req.body)
-    .where(eq(table.code, req.params.code));
+  const result = await db().update(table).set(req.body).where(eq(table.code, req.params.code));
   const count = result.rowCount ?? 0;
   return res.status(count ? 200 : 404).json({ count });
 };
@@ -54,9 +47,7 @@ const find = async (req, res) => {
 };
 
 const remove = async (req, res) => {
-  const result = await db()
-    .delete(table)
-    .where(eq(table.code, req.params.code));
+  const result = await db().delete(table).where(eq(table.code, req.params.code));
   const count = result.rowCount ?? 0;
   return res.status(count ? 200 : 404).json({ count });
 };
