@@ -34,8 +34,7 @@ export default express
   }) // check if send header as application/json but body is text
   .get('/outbound', async (req, res) => {
     // test outbound unblocked
-    const url = (req.query.url as string) || 'https://httpbin.org/get';
-    const rv = await fetch(url);
+    const rv = await fetch('https://httpbin.org/get');
     const data = await rv.json();
     res.json(data);
   })

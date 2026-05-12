@@ -28,14 +28,11 @@ try {
     stream: STREAM_FLAG,
   });
 
-  if (STREAM_FLAG) {
-    // for await (const event of resp) console.log(event);
-  } else {
-    // console.log(resp);
-    // console.log(resp.output_text);
-    // console.log(resp.output[1].error);
-    // console.log(resp.output[2].content);
-  }
+  // for await (const event of resp) console.log(event);
+  // console.log(resp);
+  // console.log(resp.output_text);
+  // console.log(resp.output[1].error);
+  // console.log(resp.output[2].content);
 } catch (e) {
   // console.log('Error response: ', e);
 }
