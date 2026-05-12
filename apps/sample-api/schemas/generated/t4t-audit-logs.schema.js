@@ -38,3 +38,20 @@ export const T4tAuditLogsQuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: 'T4tAuditLogsQuery' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const T4tAuditLogsResponseSchema = z
+  .object({
+    id: z.number().int().positive(),
+    user: z.string().nullable(),
+    timestamp: z.string().nullable(),
+    db_name: z.string().nullable(),
+    table_name: z.string().nullable(),
+    op: z.string().nullable(),
+    where_cols: z.string().nullable(),
+    where_vals: z.string().nullable(),
+    cols_changed: z.string().nullable(),
+    prev_values: z.string().nullable(),
+    new_values: z.string().nullable(),
+  })
+  .meta({ id: 'T4tAuditLogsResponse' });

@@ -33,3 +33,16 @@ export const HardDeleteLogQuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: 'HardDeleteLogQuery' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const HardDeleteLogResponseSchema = z
+  .object({
+    id: z.number().int().positive(),
+    deleted_at: z.string(),
+    table_name: z.string(),
+    record_id: z.string(),
+    deleted_by: z.string(),
+    reason: z.string(),
+    deleted_data: z.record(z.unknown()),
+  })
+  .meta({ id: 'HardDeleteLogResponse' });

@@ -32,3 +32,14 @@ export const CountryQuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: 'CountryQuery' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const CountryResponseSchema = z
+  .object({
+    id: z.number().int().positive(),
+    name: z.string().nullable(),
+    code: z.string().nullable(),
+    icc: z.string().nullable(),
+    updated: z.string().nullable(),
+  })
+  .meta({ id: 'CountryResponse' });

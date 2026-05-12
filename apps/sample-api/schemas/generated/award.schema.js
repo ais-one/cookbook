@@ -29,3 +29,11 @@ export const AwardQuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: 'AwardQuery' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const AwardResponseSchema = z
+  .object({
+    code: z.string(),
+    name: z.string().nullable(),
+  })
+  .meta({ id: 'AwardResponse' });

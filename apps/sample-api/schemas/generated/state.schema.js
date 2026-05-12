@@ -31,3 +31,13 @@ export const StateQuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: 'StateQuery' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const StateResponseSchema = z
+  .object({
+    id: z.number().int().positive(),
+    country_name: z.string().nullable(),
+    code: z.string().nullable(),
+    name: z.string().nullable(),
+  })
+  .meta({ id: 'StateResponse' });

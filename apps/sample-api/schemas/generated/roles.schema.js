@@ -31,3 +31,15 @@ export const RolesQuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: 'RolesQuery' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const RolesResponseSchema = z
+  .object({
+    id: z.number().int().positive(),
+    tenant_id: z.number().int(),
+    name: z.string(),
+    description: z.string().nullable(),
+    created_at: z.string(),
+    updated_at: z.string(),
+  })
+  .meta({ id: 'RolesResponse' });

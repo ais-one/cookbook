@@ -30,3 +30,14 @@ export const PermissionsQuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: 'PermissionsQuery' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const PermissionsResponseSchema = z
+  .object({
+    id: z.number().int().positive(),
+    name: z.string(),
+    description: z.string().nullable(),
+    created_at: z.string(),
+    updated_at: z.string(),
+  })
+  .meta({ id: 'PermissionsResponse' });

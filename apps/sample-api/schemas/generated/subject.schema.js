@@ -30,3 +30,12 @@ export const SubjectQuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: 'SubjectQuery' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const SubjectResponseSchema = z
+  .object({
+    code: z.string(),
+    name: z.string().nullable(),
+    passingGrade: z.number().int().nullable(),
+  })
+  .meta({ id: 'SubjectResponse' });

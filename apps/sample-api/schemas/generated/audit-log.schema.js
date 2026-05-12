@@ -37,3 +37,23 @@ export const AuditLogQuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: 'AuditLogQuery' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const AuditLogResponseSchema = z
+  .object({
+    id: z.number().int().positive(),
+    changed_at: z.string(),
+    table_name: z.string(),
+    operation: z.string(),
+    app_user_id: z.string().nullable(),
+    tenant_id: z.string().nullable(),
+    session_id: z.string().nullable(),
+    transaction_id: z.string().uuid().nullable(),
+    db_user: z.string(),
+    ip_addr: z.string().nullable(),
+    app_name: z.string().nullable(),
+    old_data: z.record(z.unknown()).nullable(),
+    new_data: z.record(z.unknown()).nullable(),
+    changed_fields: z.array(z.string()).nullable(),
+  })
+  .meta({ id: 'AuditLogResponse' });

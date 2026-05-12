@@ -44,3 +44,26 @@ export const StudentQuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: 'StudentQuery' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const StudentResponseSchema = z
+  .object({
+    id: z.number().int().positive(),
+    firstName: z.string().nullable(),
+    lastName: z.string().nullable(),
+    avatar: z.string().nullable(),
+    kyc: z.string().nullable(),
+    awards: z.string().nullable(),
+    sex: z.string().nullable(),
+    age: z.number().int().nullable(),
+    gpa: z.string().nullable(),
+    birthDate: z.string().nullable(),
+    birthTime: z.string().nullable(),
+    country: z.string().nullable(),
+    state: z.string().nullable(),
+    dateTimeTz: z.string().nullable(),
+    remarks: z.string().nullable(),
+    updated_by: z.string().nullable(),
+    updated_at: z.string().nullable(),
+  })
+  .meta({ id: 'StudentResponse' });

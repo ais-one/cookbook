@@ -38,3 +38,26 @@ export const UsersQuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: 'UsersQuery' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const UsersResponseSchema = z
+  .object({
+    id: z.number().int().positive(),
+    roles: z.string().nullable(),
+    tenant_id: z.number().int().nullable(),
+    username: z.string().nullable(),
+    email: z.string(),
+    githubId: z.number().int().nullable(),
+    role: z.string().nullable(),
+    retryLimit: z.number().int().nullable(),
+    retryCount: z.number().int().nullable(),
+    retryReset: z.number().int().nullable(),
+    pnToken: z.string().nullable(),
+    revoked: z.string().nullable(),
+    sms: z.string().nullable(),
+    smsLastSent: z.string().nullable(),
+    smsVerified: z.number().int().nullable(),
+    telegramId: z.string().nullable(),
+    telegramUsername: z.string().nullable(),
+  })
+  .meta({ id: 'UsersResponse' });

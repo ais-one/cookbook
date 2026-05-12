@@ -32,3 +32,16 @@ export const TenantsQuerySchema = z
     page: z.coerce.number().int().min(0).default(0).meta({ example: 0 }),
   })
   .meta({ id: 'TenantsQuery' });
+
+// Full row as returned by SELECT — columns in excludeFromResponse are omitted
+export const TenantsResponseSchema = z
+  .object({
+    id: z.number().int().positive(),
+    name: z.string(),
+    slug: z.string(),
+    plan: z.string().nullable(),
+    is_active: z.boolean(),
+    created_at: z.string(),
+    updated_at: z.string(),
+  })
+  .meta({ id: 'TenantsResponse' });
