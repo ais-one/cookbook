@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-// scripts/generate-crud.ts
+// scripts/generators/generate-crud.ts
 //
 // Generates Zod schemas, Express routes, and controllers from a Drizzle schema.
-// Strategy: Option C — generated/ folders are always overwritten; sidecar files
-// (outside generated/) are created once and then owned by the developer.
+// Files inside generated/ directories are always overwritten on each run.
+// Sidecar files outside generated/ are created once and then owned by the developer.
 //
 // Usage (run from the target app directory):
-//   node ../../scripts/generate-crud.ts \
+//   node ../../scripts/generators/generate-crud.ts \
 //     --schema   ../../common/compiled/node/services/db/schema.ts \
 //     --schema-module @common/node/services/db/schema \
 //     --app      . \
@@ -27,6 +27,14 @@ import { pathToFileURL } from 'node:url';
 
 // ─── CLI argument parsing ─────────────────────────────────────────────────────
 
+/**
+ * Parses a flat `--key value` argument list into a plain object.
+ * Consecutive `--key` tokens consume the immediately following token as their value.
+ * Unknown or boolean-style flags (no following value) are stored as empty strings.
+ *
+ * @param argv - The argument list to parse, typically `process.argv.slice(2)`.
+ * @returns A map of flag name (without the `--` prefix) to its string value.
+ */
 function parseArgs(argv: string[]): Record<string, string> {
   const result: Record<string, string> = {};
   for (let i = 0; i < argv.length; i++) {
@@ -40,16 +48,16 @@ function parseArgs(argv: string[]): Record<string, string> {
 }
 
 const args = parseArgs(process.argv.slice(2));
-const schemaFilePath = args['schema'];
+const schemaFilePath = args.schema;
 const schemaModule = args['schema-module'];
-const appDir = args['app'];
-const dbName = args['db'];
-const tablesFilter = args['tables'] ? args['tables'].split(',').map(s => s.trim()) : null;
+const appDir = args.app;
+const dbName = args.db;
+const tablesFilter = args.tables ? args.tables.split(',').map(s => s.trim()) : null;
 const routePrefix = args['route-prefix'] ?? '';
 
 if (!schemaFilePath || !schemaModule || !appDir || !dbName) {
   console.error(`
-Usage: node scripts/generate-crud.ts \\
+Usage: node scripts/generators/generate-crud.ts \\
   --schema         <path>    Path to Drizzle schema .ts file (relative to cwd)
   --schema-module  <spec>    Module import specifier for generated code
   --app            <dir>     App root directory (relative to cwd)
@@ -62,15 +70,35 @@ Usage: node scripts/generate-crud.ts \\
 
 // ─── Drizzle internals (symbol-based — works across module instances) ─────────
 
+/** Symbol used by drizzle-orm to tag the entity kind on a table constructor (e.g. `'PgTable'`). */
 const ENTITY_KIND = Symbol.for('drizzle:entityKind');
+
+/** Symbol under which drizzle-orm stores the column map on a table instance. */
 const TABLE_COLUMNS = Symbol.for('drizzle:Columns');
 
+/**
+ * Returns `true` when `obj` is a drizzle-orm `PgTable` instance.
+ *
+ * We use `Symbol.for('drizzle:entityKind')` on the constructor rather than
+ * `instanceof PgTable` because the schema file is imported via a dynamic
+ * `import()` URL, which may resolve to a different module instance than the
+ * one loaded by this script — making `instanceof` unreliable across ESM boundaries.
+ *
+ * @param obj - The value to test.
+ */
 function isPgTable(obj: unknown): boolean {
   // entityKind is a static property on the constructor, not on the instance
   // biome-ignore lint/suspicious/noExplicitAny: drizzle table internals
   return typeof obj === 'object' && obj !== null && (obj as any)?.constructor?.[ENTITY_KIND] === 'PgTable';
 }
 
+/**
+ * Returns the column map for a drizzle-orm table.
+ * The map is keyed by column variable name and the values are drizzle column objects.
+ *
+ * @param table - A drizzle-orm `PgTable` instance.
+ * @returns A record mapping column name to the drizzle column descriptor.
+ */
 // biome-ignore lint/suspicious/noExplicitAny: drizzle internals are untyped here
 function getColumns(table: object): Record<string, any> {
   // biome-ignore lint/suspicious/noExplicitAny: drizzle internals
@@ -79,6 +107,24 @@ function getColumns(table: object): Record<string, any> {
 
 // ─── SQL type → Zod code mapping ─────────────────────────────────────────────
 
+/**
+ * Maps a Drizzle / PostgreSQL SQL type string to the corresponding Zod v4 schema code snippet.
+ *
+ * The returned string is embedded verbatim into generated schema files, so it must be
+ * valid JavaScript/TypeScript using the `z` import already present in those files.
+ *
+ * Handling notes:
+ * - `serial` / `bigserial` are mapped to `z.number().int().positive()` because Drizzle
+ *   exposes them as plain `integer` at the JS layer but the PK is always > 0.
+ * - `numeric` / `decimal` are mapped to `z.string()` because drizzle-orm returns these
+ *   as strings to avoid floating-point precision loss.
+ * - `inet` and `text[]` are custom column types; they resolve to `string` and
+ *   `string[]` respectively based on how they are handled in this codebase.
+ * - Unknown types fall back to `z.unknown()` so the file still compiles.
+ *
+ * @param sqlType - The raw SQL type string as returned by `col.getSQLType()` (e.g. `'varchar(255)'`, `'integer'`).
+ * @returns A Zod schema code snippet string (e.g. `'z.string()'`, `'z.number().int()'`).
+ */
 function sqlTypeToZodCode(sqlType: string): string {
   const base = sqlType.toLowerCase().split('(')[0].split(' ')[0].trim();
   switch (base) {
@@ -123,23 +169,54 @@ function sqlTypeToZodCode(sqlType: string): string {
 
 // ─── Naming helpers ───────────────────────────────────────────────────────────
 
+/**
+ * Uppercases the first character of a string.
+ * Used to convert a camelCase Drizzle table variable name (e.g. `'categories'`)
+ * into the PascalCase prefix used for generated schema and controller exports
+ * (e.g. `'Categories'`).
+ *
+ * @param str - The string to convert.
+ * @returns The input string with its first character uppercased.
+ */
 function toPascalCase(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-/** camelCase / PascalCase → kebab-case. 'fgaConfig' → 'fga-config' */
+/**
+ * Converts a camelCase or PascalCase identifier to kebab-case.
+ * Used to produce the file name stem for generated files.
+ *
+ * @example `'fgaConfig'` → `'fga-config'`, `'auditLog'` → `'audit-log'`
+ *
+ * @param str - The camelCase or PascalCase identifier to convert.
+ * @returns The kebab-case equivalent.
+ */
 function toKebabCase(str: string): string {
   return str.replace(/([A-Z])/g, m => `-${m.toLowerCase()}`).replace(/^-/, '');
 }
 
 // ─── File helpers ─────────────────────────────────────────────────────────────
 
+/**
+ * Writes `content` to `filePath`, creating any intermediate directories as needed.
+ * Always overwrites the file if it already exists.
+ *
+ * @param filePath - Absolute path of the file to write.
+ * @param content  - UTF-8 string content to write.
+ */
 function writeFile(filePath: string, content: string): void {
   mkdirSync(dirname(filePath), { recursive: true });
   writeFileSync(filePath, content, 'utf8');
 }
 
-/** Returns true if the file was created, false if it already existed. */
+/**
+ * Writes `content` to `filePath` only when the file does not already exist.
+ * Used for sidecar files that are created once and then owned by the developer.
+ *
+ * @param filePath - Absolute path of the file to create.
+ * @param content  - UTF-8 string content to write.
+ * @returns `true` if the file was created, `false` if it already existed.
+ */
 function writeIfAbsent(filePath: string, content: string): boolean {
   if (existsSync(filePath)) return false;
   writeFile(filePath, content);
@@ -148,6 +225,19 @@ function writeIfAbsent(filePath: string, content: string): boolean {
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 
+/**
+ * Shape of the optional `generate-crud.config.json` file placed at the app root.
+ *
+ * The config file lets you control table-level and field-level generation behaviour
+ * without modifying the generator script itself. Place it alongside `package.json`
+ * and point VS Code IntelliSense at the companion JSON Schema via `"$schema"`:
+ *
+ * ```json
+ * {
+ *   "$schema": "../../scripts/generators/generate-crud.config.schema.json"
+ * }
+ * ```
+ */
 interface CrudConfig {
   /** Tables to skip entirely — no Zod schema, no routes, no controllers generated. */
   exclude?: string[];
@@ -178,25 +268,67 @@ interface CrudConfig {
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
+/**
+ * Describes a single field in the generated `BodySchema` (POST) and `UpdateSchema` (PATCH).
+ * Fields excluded via `excludeFromBody` config or those that are primary-key / SQL-expression
+ * columns are never represented here.
+ */
 interface BodyField {
+  /** Column name as it appears in the Drizzle schema. */
   name: string;
+  /** Zod schema code snippet for this field (e.g. `'z.string()'`). */
   zodCode: string;
+  /**
+   * Whether the field is required in the body schema.
+   * `true` when the column is `NOT NULL` and has no default value;
+   * `false` when the column is nullable or has a default (optional in POST body).
+   */
   required: boolean;
 }
 
+/**
+ * Aggregates all per-table metadata needed by the code generators.
+ * Constructed once per table in the main loop and passed to every `generate*` function.
+ */
 interface TableInfo {
-  varName: string; // 'categories'
-  pascalName: string; // 'Categories'
-  kebabName: string; // 'categories' or 'fga-config'
-  pkColName: string; // 'id' or 'code'
-  pkIsNumeric: boolean; // true → coerce.number(), false → string
+  /** Drizzle export variable name (camelCase), e.g. `'categories'`, `'fgaConfig'`. */
+  varName: string;
+  /** PascalCase prefix used for generated export names, e.g. `'Categories'`. */
+  pascalName: string;
+  /** Kebab-case stem used for file names and URL segments, e.g. `'fga-config'`. */
+  kebabName: string;
+  /** Name of the primary key column, e.g. `'id'` or `'code'`. */
+  pkColName: string;
+  /**
+   * `true` when the primary key is a numeric type (`serial`, `integer`, etc.).
+   * Controls whether generated param schemas use `z.coerce.number()` or `z.string()`.
+   */
+  pkIsNumeric: boolean;
+  /** Ordered list of fields included in the generated `BodySchema` and `UpdateSchema`. */
   bodyFields: BodyField[];
-  allColNames: string[]; // all column names, used for explicit SELECT when excludeFromResponse is set
-  excludeFromResponse: string[]; // columns to omit from SELECT responses
+  /**
+   * All column names for this table.
+   * Used to build an explicit SELECT column list when `excludeFromResponse` is non-empty,
+   * ensuring sensitive columns are never returned in API responses.
+   */
+  allColNames: string[];
+  /**
+   * Column names to omit from SELECT queries in generated controllers.
+   * When non-empty, the controller uses an explicit column list instead of `SELECT *`.
+   * Sourced from `generate-crud.config.json → tables.<name>.excludeFromResponse`.
+   */
+  excludeFromResponse: string[];
 }
 
 // ─── Code generators ─────────────────────────────────────────────────────────
 
+/**
+ * Returns the standard auto-generated file header comment.
+ * Placed at the top of every file inside `generated/` to discourage manual edits
+ * and to identify the source Drizzle table.
+ *
+ * @param varName - The Drizzle table variable name used as the source label.
+ */
 const AUTO_HEADER = (varName: string) => `\
 // ─────────────────────────────────────────────────────────────────────────────
 // AUTO-GENERATED — DO NOT EDIT
@@ -205,6 +337,19 @@ const AUTO_HEADER = (varName: string) => `\
 // ─────────────────────────────────────────────────────────────────────────────
 `;
 
+/**
+ * Generates the content of a `schemas/generated/<table>.schema.js` file.
+ *
+ * The file exports four Zod schemas registered with `.meta({ id })` so that
+ * `generate-openapi.ts` can reference them as named OpenAPI components:
+ * - `${Pascal}BodySchema`   — fields accepted on `POST /<table>` (excludes PK, SQL-expression defaults, and `excludeFromBody` columns)
+ * - `${Pascal}UpdateSchema` — same fields but all optional (for `PATCH`)
+ * - `${Pascal}ParamsSchema` — single-field object holding the primary key (for URL params)
+ * - `${Pascal}QuerySchema`  — pagination params (`limit` and `page`) for `GET /<table>`
+ *
+ * @param info - Aggregated table metadata built in the main loop.
+ * @returns The full file content as a UTF-8 string ready to be written to disk.
+ */
 function generateSchemaFile(info: TableInfo): string {
   const { varName, pascalName, kebabName, pkColName, pkIsNumeric, bodyFields } = info;
 
@@ -242,6 +387,24 @@ export const ${pascalName}QuerySchema = z
 `;
 }
 
+/**
+ * Generates the content of a `src/routes/generated/<table>.ts` file.
+ *
+ * The file exports a single Express `Router` that wires up the five standard CRUD
+ * operations, each protected by `authUser` middleware and validated against the
+ * corresponding generated Zod schema:
+ * - `POST   /`         — create
+ * - `GET    /`         — list (paginated)
+ * - `GET    /:pk`      — find one
+ * - `PATCH  /:pk`      — partial update
+ * - `DELETE /:pk`      — remove
+ *
+ * The route delegates all business logic to the sidecar controller
+ * (`src/controllers/<table>.ts`) so developer overrides are picked up automatically.
+ *
+ * @param info - Aggregated table metadata built in the main loop.
+ * @returns The full file content as a UTF-8 string ready to be written to disk.
+ */
 function generateRouteFile(info: TableInfo): string {
   const { varName, pascalName, kebabName, pkColName } = info;
 
@@ -273,6 +436,22 @@ export default express
 `;
 }
 
+/**
+ * Generates the content of a `src/controllers/generated/<table>.ts` file.
+ *
+ * The file exports five async Express handler functions (`create`, `find`, `findOne`,
+ * `update`, `remove`) that implement standard CRUD operations using Drizzle ORM.
+ *
+ * When `excludeFromResponse` is non-empty, the generated `select()` call uses an
+ * explicit column map instead of `SELECT *`, ensuring that sensitive fields (e.g.
+ * `password`, `salt`) are never returned in list or detail responses.
+ *
+ * The file also exports `_injectServices` so unit tests can substitute a mock
+ * without needing ESM module mocking.
+ *
+ * @param info - Aggregated table metadata built in the main loop.
+ * @returns The full file content as a UTF-8 string ready to be written to disk.
+ */
 function generateControllerFile(info: TableInfo): string {
   const { varName, pkColName, pkIsNumeric, allColNames, excludeFromResponse } = info;
   const pkExpr = pkIsNumeric ? `Number(req.params.${pkColName})` : `req.params.${pkColName}`;
@@ -345,6 +524,10 @@ export default { create, findOne, update, find, remove };
 `;
 }
 
+/**
+ * Header comment placed at the top of every sidecar file.
+ * Reminds the developer that this file is theirs to edit and will not be overwritten.
+ */
 const SIDECAR_HEADER = `\
 // ─────────────────────────────────────────────────────────────────────────────
 // Sidecar — created once, then YOURS. Will NOT be overwritten by generate:crud.
@@ -352,6 +535,19 @@ const SIDECAR_HEADER = `\
 // ─────────────────────────────────────────────────────────────────────────────
 `;
 
+/**
+ * Generates the content of a sidecar schema file (`schemas/<table>.schema.js`).
+ *
+ * The sidecar is created once the first time `generate:crud` runs for the table.
+ * It re-exports everything from the corresponding generated schema file so that
+ * route imports automatically pick up the latest generated shapes. Developers can
+ * add or override exports below the re-export line (e.g. custom search schemas).
+ *
+ * This file is NEVER overwritten on subsequent runs.
+ *
+ * @param info - Aggregated table metadata built in the main loop.
+ * @returns The full file content as a UTF-8 string ready to be written to disk.
+ */
 function generateSidecarSchema(info: TableInfo): string {
   const { varName, kebabName, pascalName } = info;
   return `${SIDECAR_HEADER}// Re-export everything from generated — add custom schemas below.
@@ -363,6 +559,19 @@ export * from './generated/${kebabName}.schema.js';
 `;
 }
 
+/**
+ * Generates the content of a sidecar controller file (`src/controllers/<table>.ts`).
+ *
+ * The sidecar is created once the first time `generate:crud` runs for the table.
+ * It re-exports the generated controller as the default export so the route file
+ * continues to work without changes. Developers can override individual handler
+ * methods by spreading the generated controller and replacing specific keys.
+ *
+ * This file is NEVER overwritten on subsequent runs.
+ *
+ * @param info - Aggregated table metadata built in the main loop.
+ * @returns The full file content as a UTF-8 string ready to be written to disk.
+ */
 function generateSidecarController(info: TableInfo): string {
   const { kebabName, varName } = info;
   return `${SIDECAR_HEADER}// Re-export the generated controller as the default — override methods below.

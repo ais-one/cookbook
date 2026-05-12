@@ -1,5 +1,5 @@
 {
-  "$schema": "../../scripts/generate-crud.config.schema.json",
+  "$schema": "../../scripts/generators/generate-crud.config.schema.json",
   "exclude": ["fgaConfig"],
   "schemaOnly": ["auditLog", "hardDeleteLog", "t4tAuditLogs"],
   "tables": {
