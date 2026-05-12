@@ -92,6 +92,7 @@ COPY --from=build /app/apps/sample-common              ./apps/sample-common/
 # node_module[s] glob makes COPY a no-op when the directory is absent
 COPY --from=deps  /app/apps/${APP_NAME}/node_module[s]          ./apps/${APP_NAME}/node_modules/
 COPY --from=deps  /app/common/compiled/node/node_module[s]      ./common/compiled/node/node_modules/
+COPY --from=deps  /app/apps/sample-common/node_module[s]          ./apps/sample-common/node_modules/
 
 # Set final WORKDIR before dropping to non-root user
 WORKDIR /app/apps/${APP_NAME}
