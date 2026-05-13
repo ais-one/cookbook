@@ -74,9 +74,42 @@ The companion `generate-crud.config.schema.json` provides VS Code IntelliSense f
 
 #### generate-openapi.ts
 
-Generates an OpenAPI YAML document from Zod v4 schemas.
+Generates an OpenAPI 3.1 YAML document from Zod v4 schemas by scanning a `schemas/` directory.
 
-Run from an app directory: `npm run docs:generate`
+Tables that have a sidecar schema file (e.g. `schemas/student.schema.js`) get full CRUD path definitions.
+Tables that only exist under `schemas/generated/` (schema-only tables) are included as components only — no paths.
+
+Run from an app directory:
+
+```sh
+npm run docs:generate
+```
+
+Or directly with custom options:
+
+```sh
+node ../../scripts/generators/generate-openapi.ts \
+  --schemas    ./schemas \
+  --out        ./docs/openapi/openapi.yaml \
+  --prefix     /api/sample-api \
+  --title      "Sample API" \
+  --version    1.0.0 \
+  --server     http://localhost:8080 \
+  --routes-dir ./src/routes/generated
+```
+
+| Flag | Required | Description |
+|---|---|---|
+| `--schemas` | yes | Directory containing `*.schema.js` files |
+| `--out` | yes | Output YAML file path |
+| `--prefix` | no | URL prefix prepended to all CRUD paths (e.g. `/api/sample-api`) |
+| `--title` | no | `info.title` in the OpenAPI document (default: `API`) |
+| `--version` | no | `info.version` in the OpenAPI document (default: `1.0.0`) |
+| `--server` | no | Server URL in the OpenAPI document (default: `http://localhost:8080`) |
+| `--routes-dir` | no | When provided, only generates CRUD paths for tables that also have a `.ts` file in this directory |
+
+The `*ResponseSchema` export from each schema file is used as the GET response body shape.
+Tables without a `ResponseSchema` export fall back to a generic object schema.
 
 ### test-schemas.ts
 
