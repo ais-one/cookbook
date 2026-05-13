@@ -3,8 +3,8 @@
 // Extend or override the generated code below as needed.
 // ─────────────────────────────────────────────────────────────────────────────
 // Re-export everything from generated — add custom schemas below.
-export * from './generated/student.schema.js';
+export * from './generated/users.schema.js';
 
 // Example: add a custom search schema
 // import { z } from 'zod';
-// export const StudentSearchSchema = z.object({ q: z.string().min(1) }).meta({ id: 'StudentSearch' });
+// export const UsersSearchSchema = z.object({ q: z.string().min(1) }).meta({ id: 'UsersSearch' });

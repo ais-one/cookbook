@@ -10,44 +10,45 @@
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Zod schemas generated from Drizzle columns
-schemas/generated/
+schemas/generated/*
 !schemas/generated/README.md
-!schemas/generated/student.schema.js
+!schemas/generated/users.schema.js
+!schemas/generated/roles.schema.js
+!schemas/generated/permissions.schema.js
 
 # Express route files wired up with auth + validation middleware
-src/routes/generated/
+src/routes/generated/*
 !src/routes/generated/README.md
-!src/routes/generated/student.ts
-!src/routes/generated/index.ts
+!src/routes/generated/users.ts
+!src/routes/generated/roles.ts
+!src/routes/generated/permissions.ts
 
 # Drizzle query controllers (generated boilerplate, delegates to sidecar)
-src/controllers/generated/
+src/controllers/generated/*
 !src/controllers/generated/README.md
-!src/controllers/generated/student.ts
+!src/controllers/generated/users.ts
+!src/controllers/generated/roles.ts
+!src/controllers/generated/permissions.ts
 
 # Sidecar controllers — generated once by generate:crud, re-export from generated/
-# category.ts and student.ts are kept: category.ts is hand-written, student.ts is the example.
+# category.ts is hand-written; users/roles/permissions are kept as IAM examples.
 src/controllers/award.ts
 src/controllers/categories.ts
 src/controllers/country.ts
-src/controllers/permissions.ts
-src/controllers/roles.ts
 src/controllers/state.ts
+src/controllers/student.ts
 src/controllers/subject.ts
 src/controllers/tenants.ts
-src/controllers/users.ts
 
 # Sidecar schemas — generated once by generate:crud, re-export from generated/
-# categories.schema.js, student.schema.js, and webpush.schema.js are kept:
-# the first two are hand-written / examples; webpush.schema.js is hand-written.
+# categories.schema.js and webpush.schema.js are hand-written.
+# users/roles/permissions are kept as IAM examples.
 schemas/award.schema.js
 schemas/country.schema.js
-schemas/permissions.schema.js
-schemas/roles.schema.js
 schemas/state.schema.js
+schemas/student.schema.js
 schemas/subject.schema.js
 schemas/tenants.schema.js
-schemas/users.schema.js
 
 # OpenAPI spec — always an artifact, regenerate with: npm run docs:generate
 docs/openapi/

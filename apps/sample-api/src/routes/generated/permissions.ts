@@ -1,30 +1,30 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // AUTO-GENERATED — DO NOT EDIT
 // Re-run `npm run generate:crud` to regenerate this file.
-// Source table: student
+// Source table: permissions
 // ─────────────────────────────────────────────────────────────────────────────
 import { authUser } from '@common/node/auth/jwt';
 import { validate } from '@common/node/errors/validate';
 import express from 'express';
 import {
-  StudentBodySchema,
-  StudentParamsSchema,
-  StudentQuerySchema,
-  StudentUpdateSchema,
-} from '../../../schemas/generated/student.schema.js';
+  PermissionsBodySchema,
+  PermissionsParamsSchema,
+  PermissionsQuerySchema,
+  PermissionsUpdateSchema,
+} from '../../../schemas/generated/permissions.schema.js';
 // Imports from the sidecar controller so developer overrides are picked up automatically.
-import studentController from '../../controllers/student.ts';
+import permissionsController from '../../controllers/permissions.ts';
 
 export default express
   .Router()
-  .post('/', authUser, validate('body', StudentBodySchema), studentController.create)
-  .get('/', authUser, validate('query', StudentQuerySchema), studentController.find)
-  .get('/:id', authUser, validate('params', StudentParamsSchema), studentController.findOne)
+  .post('/', authUser, validate('body', PermissionsBodySchema), permissionsController.create)
+  .get('/', authUser, validate('query', PermissionsQuerySchema), permissionsController.find)
+  .get('/:id', authUser, validate('params', PermissionsParamsSchema), permissionsController.findOne)
   .patch(
     '/:id',
     authUser,
-    validate('params', StudentParamsSchema),
-    validate('body', StudentUpdateSchema),
-    studentController.update,
+    validate('params', PermissionsParamsSchema),
+    validate('body', PermissionsUpdateSchema),
+    permissionsController.update,
   )
-  .delete('/:id', authUser, validate('params', StudentParamsSchema), studentController.remove);
+  .delete('/:id', authUser, validate('params', PermissionsParamsSchema), permissionsController.remove);

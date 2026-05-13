@@ -1,10 +1,10 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // AUTO-GENERATED — DO NOT EDIT
 // Re-run `npm run generate:crud` to regenerate this file.
-// Source table: student
+// Source table: roles
 // ─────────────────────────────────────────────────────────────────────────────
 import * as realServices from '@common/node/services';
-import { student as table } from '@common/node/services/db/schema';
+import { roles as table } from '@common/node/services/db/schema';
 import { eq } from 'drizzle-orm';
 
 // biome-ignore lint/suspicious/noExplicitAny: services interface varies by store type
@@ -25,25 +25,7 @@ const create = async (req, res) => {
 
 const findOne = async (req, res) => {
   const rows = await db()
-    .select({
-      id: table.id,
-      firstName: table.firstName,
-      lastName: table.lastName,
-      avatar: table.avatar,
-      kyc: table.kyc,
-      awards: table.awards,
-      sex: table.sex,
-      age: table.age,
-      gpa: table.gpa,
-      birthDate: table.birthDate,
-      birthTime: table.birthTime,
-      country: table.country,
-      state: table.state,
-      dateTimeTz: table.dateTimeTz,
-      remarks: table.remarks,
-      updated_by: table.updated_by,
-      updated_at: table.updated_at,
-    })
+    .select()
     .from(table)
     .where(eq(table.id, Number(req.params.id)))
     .limit(1);
@@ -64,25 +46,7 @@ const find = async (req, res) => {
   const limit = req.query.limit ? Number(req.query.limit) : 10;
   const page = req.query.page ? Number(req.query.page) : 0;
   const result = await db()
-    .select({
-      id: table.id,
-      firstName: table.firstName,
-      lastName: table.lastName,
-      avatar: table.avatar,
-      kyc: table.kyc,
-      awards: table.awards,
-      sex: table.sex,
-      age: table.age,
-      gpa: table.gpa,
-      birthDate: table.birthDate,
-      birthTime: table.birthTime,
-      country: table.country,
-      state: table.state,
-      dateTimeTz: table.dateTimeTz,
-      remarks: table.remarks,
-      updated_by: table.updated_by,
-      updated_at: table.updated_at,
-    })
+    .select()
     .from(table)
     .limit(limit)
     .offset((page > 0 ? page - 1 : 0) * limit);
