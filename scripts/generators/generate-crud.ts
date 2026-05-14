@@ -20,6 +20,7 @@
 //   src/<table>/generated/controller.ts  ← ALWAYS overwritten (CRUD handlers)
 //   src/<table>/schema.js                ← created ONCE  (your sidecar)
 //   src/<table>/controller.ts            ← created ONCE  (your sidecar)
+//   src/<table>/routes.ts                ← created ONCE  (your sidecar)
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
@@ -603,7 +604,7 @@ export * from './generated/schema.js';
  * @returns The full file content as a UTF-8 string ready to be written to disk.
  */
 function generateSidecarController(info: TableInfo): string {
-  const { kebabName, varName } = info;
+  const { varName } = info;
   return `${SIDECAR_HEADER}// Re-export the generated controller as the default — override methods below.
 export { default } from './generated/controller.ts';
 
@@ -617,6 +618,39 @@ export { default } from './generated/controller.ts';
 //     // custom create logic for ${varName}
 //   },
 // };
+`;
+}
+
+/**
+ * Generates the content of a sidecar routes file (`src/<table>/routes.ts`).
+ *
+ * The sidecar is created once the first time `generate:crud` runs for the table.
+ * By default it re-exports the generated router unchanged. Developers extend it
+ * by combining the generated router with their own custom endpoints.
+ *
+ * This file is NEVER overwritten on subsequent runs.
+ *
+ * @param info - Aggregated table metadata built in the main loop.
+ * @returns The full file content as a UTF-8 string ready to be written to disk.
+ */
+function generateSidecarRoutes(info: TableInfo): string {
+  const { varName, kebabName, pascalName } = info;
+  return `${SIDECAR_HEADER}import express from 'express';
+import generatedRoutes from './generated/routes.ts';
+
+// Add custom endpoints or override route schemas BEFORE .use('/', generatedRoutes).
+// Express matches in registration order — the first matching handler wins.
+export default express
+  .Router()
+  // Example A — new endpoint (add named export to controller.ts first):
+  // .get('/search', authUser, validate('query', ${pascalName}SearchSchema), search)
+  //
+  // Example B — override a route's input schema (export updated schema from schema.js first):
+  // .post('/', authUser, validate('body', ${pascalName}BodySchema), ${varName}Controller.create)
+  //
+  // NOTE: to override just the handler logic (not the schema), only controller.ts is needed.
+  // The generated routes import from ../controller.ts so overrides are picked up automatically.
+  .use('/', generatedRoutes);
 `;
 }
 
@@ -753,11 +787,13 @@ for (const [varName, exported] of Object.entries(schemaExports)) {
   // ── Sidecar files — create once, then developer owns them ─────────────────
   const sidecarSchemaPath = resolve(tableDir, 'schema.js');
   const sidecarControllerPath = resolve(tableDir, 'controller.ts');
+  const sidecarRoutesPath = resolve(tableDir, 'routes.ts');
 
   const schemaNew = writeIfAbsent(sidecarSchemaPath, generateSidecarSchema(info));
   const controllerNew = writeIfAbsent(sidecarControllerPath, generateSidecarController(info));
+  const routesNew = writeIfAbsent(sidecarRoutesPath, generateSidecarRoutes(info));
 
-  if (schemaNew || controllerNew) sidecarsCreated.push(varName);
+  if (schemaNew || controllerNew || routesNew) sidecarsCreated.push(varName);
 
   generated.push(varName);
 }
@@ -803,15 +839,16 @@ if (sidecarsCreated.length) {
     const kebab = toKebabCase(name);
     console.log(`  src/${kebab}/schema.js`);
     console.log(`  src/${kebab}/controller.ts`);
+    console.log(`  src/${kebab}/routes.ts`);
   }
 }
 
 if (generated.length) {
   const prefix = routePrefix ? `${routePrefix}` : '';
-  console.log(`\nNext step — mount generated routes in src/routes/index.ts:`);
+  console.log(`\nNext step — mount routes in src/router.ts:`);
   for (const name of generated) {
     const kebab = toKebabCase(name);
-    console.log(`  import ${name}Route from '../${kebab}/generated/routes.ts';`);
+    console.log(`  import ${name}Route from './${kebab}/routes.ts';`);
     console.log(`  router.use('/${kebab}', ${name}Route); // ${prefix}/${kebab}`);
   }
 }
