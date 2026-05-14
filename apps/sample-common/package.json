@@ -1,5 +1,5 @@
 {
-  "name": "@apps/shared-sample",
+  "name": "@apps/sample-common",
   "description": "Internal shared backend code for apps/* workspaces in this repository.",
   "version": "0.0.0",
   "private": true,
