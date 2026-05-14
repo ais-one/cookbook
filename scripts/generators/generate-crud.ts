@@ -15,11 +15,11 @@
 //     [--route-prefix /api/sample-api]
 //
 // Output layout (relative to --app):
-//   schemas/generated/<table>.schema.js      ← ALWAYS overwritten (Zod schemas)
-//   src/routes/generated/<table>.ts          ← ALWAYS overwritten (Express routes)
-//   src/controllers/generated/<table>.ts     ← ALWAYS overwritten (CRUD handlers)
-//   schemas/<table>.schema.js                ← created ONCE  (your sidecar)
-//   src/controllers/<table>.ts               ← created ONCE  (your sidecar)
+//   src/<table>/generated/schema.js      ← ALWAYS overwritten (Zod schemas)
+//   src/<table>/generated/routes.ts      ← ALWAYS overwritten (Express routes)
+//   src/<table>/generated/controller.ts  ← ALWAYS overwritten (CRUD handlers)
+//   src/<table>/schema.js                ← created ONCE  (your sidecar)
+//   src/<table>/controller.ts            ← created ONCE  (your sidecar)
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
@@ -446,9 +446,9 @@ import {
   ${pascalName}ParamsSchema,
   ${pascalName}QuerySchema,
   ${pascalName}UpdateSchema,
-} from '../../../schemas/generated/${kebabName}.schema.js';
+} from './schema.js';
 // Imports from the sidecar controller so developer overrides are picked up automatically.
-import ${varName}Controller from '../../controllers/${kebabName}.ts';
+import ${varName}Controller from '../controller.ts';
 
 export default express
   .Router()
@@ -581,7 +581,7 @@ const SIDECAR_HEADER = `\
 function generateSidecarSchema(info: TableInfo): string {
   const { varName, kebabName, pascalName } = info;
   return `${SIDECAR_HEADER}// Re-export everything from generated — add custom schemas below.
-export * from './generated/${kebabName}.schema.js';
+export * from './generated/schema.js';
 
 // Example: add a custom search schema
 // import { z } from 'zod';
@@ -605,10 +605,10 @@ export * from './generated/${kebabName}.schema.js';
 function generateSidecarController(info: TableInfo): string {
   const { kebabName, varName } = info;
   return `${SIDECAR_HEADER}// Re-export the generated controller as the default — override methods below.
-export { default } from './generated/${kebabName}.ts';
+export { default } from './generated/controller.ts';
 
 // Example: override specific methods
-// import generatedController from './generated/${kebabName}.ts';
+// import generatedController from './generated/controller.ts';
 // import type { Request, Response } from 'express';
 //
 // export default {
@@ -734,8 +734,11 @@ for (const [varName, exported] of Object.entries(schemaExports)) {
     excludeFromResponse,
   };
 
+  const tableDir = resolve(appRoot, 'src', kebabName);
+  const tableGenDir = resolve(tableDir, 'generated');
+
   // ── Always generate the Zod schema file ───────────────────────────────────
-  writeFile(resolve(appRoot, 'schemas', 'generated', `${kebabName}.schema.js`), generateSchemaFile(info));
+  writeFile(resolve(tableGenDir, 'schema.js'), generateSchemaFile(info));
 
   // Config: schemaOnly — skip routes, controllers, and sidecars
   if (config.schemaOnly?.includes(varName)) {
@@ -744,12 +747,12 @@ for (const [varName, exported] of Object.entries(schemaExports)) {
   }
 
   // ── Generated route + controller files — always overwrite ─────────────────
-  writeFile(resolve(appRoot, 'src', 'routes', 'generated', `${kebabName}.ts`), generateRouteFile(info));
-  writeFile(resolve(appRoot, 'src', 'controllers', 'generated', `${kebabName}.ts`), generateControllerFile(info));
+  writeFile(resolve(tableGenDir, 'routes.ts'), generateRouteFile(info));
+  writeFile(resolve(tableGenDir, 'controller.ts'), generateControllerFile(info));
 
   // ── Sidecar files — create once, then developer owns them ─────────────────
-  const sidecarSchemaPath = resolve(appRoot, 'schemas', `${kebabName}.schema.js`);
-  const sidecarControllerPath = resolve(appRoot, 'src', 'controllers', `${kebabName}.ts`);
+  const sidecarSchemaPath = resolve(tableDir, 'schema.js');
+  const sidecarControllerPath = resolve(tableDir, 'controller.ts');
 
   const schemaNew = writeIfAbsent(sidecarSchemaPath, generateSidecarSchema(info));
   const controllerNew = writeIfAbsent(sidecarControllerPath, generateSidecarController(info));
@@ -775,9 +778,9 @@ for (const name of generated) {
     ? ` [response: -${tCfg.excludeFromResponse.length} fields]`
     : '';
   console.log(`  ${name}${bodyNote}${responseNote}`);
-  console.log(`    schemas/generated/${kebab}.schema.js    (overwritten)`);
-  console.log(`    src/routes/generated/${kebab}.ts        (overwritten)`);
-  console.log(`    src/controllers/generated/${kebab}.ts   (overwritten)`);
+  console.log(`    src/${kebab}/generated/schema.js      (overwritten)`);
+  console.log(`    src/${kebab}/generated/routes.ts      (overwritten)`);
+  console.log(`    src/${kebab}/generated/controller.ts  (overwritten)`);
 }
 
 if (schemaOnlyGenerated.length) {
@@ -785,7 +788,7 @@ if (schemaOnlyGenerated.length) {
   for (const name of schemaOnlyGenerated) {
     const kebab = toKebabCase(name);
     console.log(`  ${name}`);
-    console.log(`    schemas/generated/${kebab}.schema.js    (overwritten)`);
+    console.log(`    src/${kebab}/generated/schema.js    (overwritten)`);
   }
 }
 
@@ -798,8 +801,8 @@ if (sidecarsCreated.length) {
   console.log(`\nSidecars created (once — yours to edit):`);
   for (const name of sidecarsCreated) {
     const kebab = toKebabCase(name);
-    console.log(`  schemas/${kebab}.schema.js`);
-    console.log(`  src/controllers/${kebab}.ts`);
+    console.log(`  src/${kebab}/schema.js`);
+    console.log(`  src/${kebab}/controller.ts`);
   }
 }
 
@@ -808,7 +811,7 @@ if (generated.length) {
   console.log(`\nNext step — mount generated routes in src/routes/index.ts:`);
   for (const name of generated) {
     const kebab = toKebabCase(name);
-    console.log(`  import ${name}Route from './generated/${kebab}.ts';`);
+    console.log(`  import ${name}Route from '../${kebab}/generated/routes.ts';`);
     console.log(`  router.use('/${kebab}', ${name}Route); // ${prefix}/${kebab}`);
   }
 }

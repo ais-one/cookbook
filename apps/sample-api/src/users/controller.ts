@@ -2,9 +2,16 @@
 // Sidecar — created once, then YOURS. Will NOT be overwritten by generate:crud.
 // Extend or override the generated code below as needed.
 // ─────────────────────────────────────────────────────────────────────────────
-// Re-export everything from generated — add custom schemas below.
-export * from './generated/permissions.schema.js';
+// Re-export the generated controller as the default — override methods below.
+export { default } from './generated/controller.ts';
 
-// Example: add a custom search schema
-// import { z } from 'zod';
-// export const PermissionsSearchSchema = z.object({ q: z.string().min(1) }).meta({ id: 'PermissionsSearch' });
+// Example: override specific methods
+// import generatedController from './generated/controller.ts';
+// import type { Request, Response } from 'express';
+//
+// export default {
+//   ...generatedController,
+//   create: async (req: Request, res: Response) => {
+//     // custom create logic for users
+//   },
+// };

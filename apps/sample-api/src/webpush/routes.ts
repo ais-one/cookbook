@@ -2,7 +2,7 @@ import { findUser, updateUser } from '@common/node/auth/store';
 import * as webpush from '@common/node/comms/webpush';
 import { validate } from '@common/node/errors/validate';
 import express from 'express';
-import { WebPushParamsSchema, WebPushSendSchema, WebPushSubSchema } from '../../schemas/webpush.schema.js';
+import { WebPushParamsSchema, WebPushSendSchema, WebPushSubSchema } from './schema.js';
 
 logger.info('WARNING Auth bypass in webpush.js');
 
