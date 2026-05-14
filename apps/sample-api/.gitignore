@@ -1,0 +1,54 @@
+# ─── Template repo: generated output ─────────────────────────────────────────
+# These files are produced by `npm run generate:crud` and `npm run docs:generate`.
+# They are excluded here because this repo is a template — users are expected to
+# run the generators themselves after cloning.
+#
+# The `student` files below are kept as a committed example so readers can see
+# exactly what the generators produce without running them.
+#
+# In a real application, remove these ignores and commit your generated files.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Zod schemas generated from Drizzle columns
+schemas/generated/*
+!schemas/generated/README.md
+!schemas/generated/users.schema.js
+!schemas/generated/roles.schema.js
+!schemas/generated/permissions.schema.js
+
+# Express route files wired up with auth + validation middleware
+src/routes/generated/*
+!src/routes/generated/README.md
+!src/routes/generated/users.ts
+!src/routes/generated/roles.ts
+!src/routes/generated/permissions.ts
+
+# Drizzle query controllers (generated boilerplate, delegates to sidecar)
+src/controllers/generated/*
+!src/controllers/generated/README.md
+!src/controllers/generated/users.ts
+!src/controllers/generated/roles.ts
+!src/controllers/generated/permissions.ts
+
+# Sidecar controllers — generated once by generate:crud, re-export from generated/
+# category.ts is hand-written; users/roles/permissions are kept as IAM examples.
+src/controllers/award.ts
+src/controllers/categories.ts
+src/controllers/country.ts
+src/controllers/state.ts
+src/controllers/student.ts
+src/controllers/subject.ts
+src/controllers/tenants.ts
+
+# Sidecar schemas — generated once by generate:crud, re-export from generated/
+# categories.schema.js and webpush.schema.js are hand-written.
+# users/roles/permissions are kept as IAM examples.
+schemas/award.schema.js
+schemas/country.schema.js
+schemas/state.schema.js
+schemas/student.schema.js
+schemas/subject.schema.js
+schemas/tenants.schema.js
+
+# OpenAPI spec — always an artifact, regenerate with: npm run docs:generate
+docs/openapi/
