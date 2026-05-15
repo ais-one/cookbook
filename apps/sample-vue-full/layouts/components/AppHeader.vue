@@ -267,7 +267,7 @@ const unreadMessages = computed(() => props.messages.filter(m => !m.read).length
 }
 
 :deep(.header-breadcrumb .ant-breadcrumb-separator) {
-  color: #cbd5e1;
+  color: #64748b;
 }
 
 /* ── Search input ── */
@@ -297,7 +297,7 @@ const unreadMessages = computed(() => props.messages.filter(m => !m.read).length
 }
 
 :deep(.search-input-field .ant-input-prefix) {
-  color: #94a3b8;
+  color: #64748b;
   margin-right: 6px;
 }
 
@@ -311,7 +311,7 @@ const unreadMessages = computed(() => props.messages.filter(m => !m.read).length
   width: 20px;
   height: 20px;
   min-width: 20px;
-  color: #94a3b8;
+  color: #64748b;
   padding: 0;
   border-radius: 4px;
 }
@@ -404,7 +404,7 @@ const unreadMessages = computed(() => props.messages.filter(m => !m.read).length
 
 :deep(.panel-list .ant-list-item-meta-description) {
   font-size: 12px;
-  color: #94a3b8;
+  color: #64748b;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -433,7 +433,7 @@ const unreadMessages = computed(() => props.messages.filter(m => !m.read).length
 
 .item-time {
   font-size: 11px;
-  color: #94a3b8;
+  color: #64748b;
   flex-shrink: 0;
 }
 

@@ -200,7 +200,7 @@ watch(
   border-radius: 8px;
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
-  color: #64748b !important;
+  color: #94a3b8 !important;
   padding: 0 12px;
 }
 

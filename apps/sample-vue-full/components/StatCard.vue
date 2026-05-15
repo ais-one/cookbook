@@ -78,10 +78,6 @@ const computedValueStyle = computed(() => {
   transform: scale(1.12);
 }
 
-.stat-icon-wrap {
-  transition: transform 0.22s ease;
-}
-
 :deep(.stat-card .ant-card-body) {
   padding: 20px 24px;
 }
@@ -106,6 +102,7 @@ const computedValueStyle = computed(() => {
   border-radius: 9px;
   display: flex;
   align-items: center;
+  transition: transform 0.22s ease;
   justify-content: center;
   flex-shrink: 0;
 }
