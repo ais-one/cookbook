@@ -19,7 +19,9 @@ export default express
   })
   .get('/python', (req, res) => {
     // spawn long running python process
-    const child = spawn('python', ['apps/sample-api/test.py'], {
+    // Use an absolute path (or a path from a trusted env var) to avoid untrusted PATH lookups.
+    const pythonBin = process.env.PYTHON_BIN ?? '/usr/bin/python3';
+    const child = spawn(pythonBin, ['apps/sample-api/test.py'], {
       detached: true,
       stdio: 'ignore',
     });
@@ -71,12 +73,14 @@ export default express
   .get('/download', (req, res, next) => {
     // serve a file download, you can add authorization here to control downloads
     const { filename } = req.query as { filename: string };
-    const fullPath = path.join(UPLOAD_STATIC[0].folder, filename);
+    // path.basename strips any directory traversal components (e.g. ../../etc/passwd)
+    const safeFilename = path.basename(filename);
+    const fullPath = path.join(UPLOAD_STATIC[0].folder, safeFilename);
 
     // Stream file instead
     const file = fs.createReadStream(fullPath);
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `inline; filename="${filename}"`);
+    res.setHeader('Content-Disposition', `inline; filename="${safeFilename}"`);
     file.pipe(res);
   })
 
