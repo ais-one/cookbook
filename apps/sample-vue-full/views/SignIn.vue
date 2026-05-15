@@ -393,7 +393,7 @@ const oauthLogin = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 900;
   font-size: 20px;
   color: #fff;
@@ -401,7 +401,7 @@ const oauthLogin = () => {
 }
 
 .brand-wordmark {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 21px;
   font-weight: 700;
   color: #dde4f5;
@@ -426,7 +426,7 @@ const oauthLogin = () => {
 }
 
 .pitch-heading {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: clamp(40px, 4.8vw, 70px);
   font-weight: 900;
   line-height: 1.04;
@@ -509,7 +509,7 @@ const oauthLogin = () => {
 }
 
 .form-head h1 {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'DM Sans', sans-serif;
   font-size: 30px;
   font-weight: 700;
   color: var(--slate-900);
