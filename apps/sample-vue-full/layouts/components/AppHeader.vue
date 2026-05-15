@@ -317,7 +317,7 @@ const unreadMessages = computed(() => props.messages.filter(m => !m.read).length
 }
 
 :deep(.search-close-btn.ant-btn:hover) {
-  color: #ef4444 !important;
+  color: #b91c1c !important;
   background: #fef2f2 !important;
 }
 

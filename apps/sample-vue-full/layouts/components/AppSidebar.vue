@@ -98,13 +98,13 @@ watch(
 </script>
 
 <style>
-.app-sidebar .ant-menu-dark { background: transparent; }
-.app-sidebar .ant-menu-dark.ant-menu-inline .ant-menu-sub.ant-menu-inline { background: rgba(0,0,0,0.2); }
+.app-sidebar .ant-menu-dark { background: #07091a; }
+.app-sidebar .ant-menu-dark.ant-menu-inline .ant-menu-sub.ant-menu-inline { background: #050712; }
 .app-sidebar .ant-menu-dark .ant-menu-item { color: #94a3b8; border-radius: 8px; margin-inline: 8px; width: calc(100% - 16px); }
-.app-sidebar .ant-menu-dark .ant-menu-item:hover { background: rgba(99,102,241,0.1) !important; color: #c7d2fe; }
-.app-sidebar .ant-menu-dark .ant-menu-item-selected { background: rgba(99,102,241,0.18) !important; color: #e0e7ff !important; }
+.app-sidebar .ant-menu-dark .ant-menu-item:hover { background: #13163d !important; color: #c7d2fe; }
+.app-sidebar .ant-menu-dark .ant-menu-item-selected { background: #1a1f4a !important; color: #e0e7ff !important; }
 .app-sidebar .ant-menu-dark .ant-menu-submenu-title { color: #94a3b8; border-radius: 8px; margin-inline: 8px; width: calc(100% - 16px); }
-.app-sidebar .ant-menu-dark .ant-menu-submenu-title:hover { background: rgba(99,102,241,0.1) !important; color: #c7d2fe; }
+.app-sidebar .ant-menu-dark .ant-menu-submenu-title:hover { background: #13163d !important; color: #c7d2fe; }
 .app-sidebar .ant-layout-sider-children { display: flex; flex-direction: column; background: #07091a; }
 </style>
 
@@ -205,8 +205,8 @@ watch(
 }
 
 :deep(.logout-btn.ant-btn:hover) {
-  background: rgba(239, 68, 68, 0.1) !important;
-  color: #f87171 !important;
+  background: #1e0a0a !important;
+  color: #fca5a5 !important;
 }
 
 .fade-label-enter-active,
