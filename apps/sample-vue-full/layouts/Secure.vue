@@ -44,8 +44,11 @@ import { computed, onBeforeUnmount, onMounted, onUnmounted, reactive, ref } from
 import { onLogin, onLogout } from '../setups/events.js';
 import { SECURE_ROUTES } from '../setups/routes.js';
 import { useMainStore } from '../store.js';
+// biome-ignore lint/correctness/noUnusedImports: components used in Vue template
 import AppFooter from './components/AppFooter.vue';
+// biome-ignore lint/correctness/noUnusedImports: components used in Vue template
 import AppHeader from './components/AppHeader.vue';
+// biome-ignore lint/correctness/noUnusedImports: components used in Vue template
 import AppSidebar from './components/AppSidebar.vue';
 
 const store = useMainStore();

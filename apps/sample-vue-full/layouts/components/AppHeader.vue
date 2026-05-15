@@ -135,6 +135,7 @@
 </template>
 
 <script setup>
+// biome-ignore lint/correctness/noUnusedImports: icons used in Vue template
 import {
   BellOutlined,
   CloseOutlined,

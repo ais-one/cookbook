@@ -13,9 +13,8 @@
       :suffix="suffix"
       :value-style="computedValueStyle"
     >
-      <template v-if="trend" #prefix>
-        <ArrowUpOutlined v-if="trend === 'up'" />
-        <ArrowDownOutlined v-if="trend === 'down'" />
+      <template v-if="trendIcon" #prefix>
+        <component :is="trendIcon" />
       </template>
     </a-statistic>
 
@@ -24,8 +23,7 @@
         class="stat-trend-badge"
         :class="trend === 'up' ? 'stat-trend-badge--up' : trend === 'down' ? 'stat-trend-badge--down' : ''"
       >
-        <ArrowUpOutlined v-if="trend === 'up'" />
-        <ArrowDownOutlined v-if="trend === 'down'" />
+        <component :is="trendIcon" />
         {{ footer }}
       </span>
     </div>
@@ -46,6 +44,12 @@ const props = defineProps({
   icon: { type: Object, required: true },
   iconBg: { type: String, default: '#eef2ff' },
   valueColor: { type: String, default: '' },
+});
+
+const trendIcon = computed(() => {
+  if (props.trend === 'up') return ArrowUpOutlined;
+  if (props.trend === 'down') return ArrowDownOutlined;
+  return null;
 });
 
 const computedValueStyle = computed(() => {

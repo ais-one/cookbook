@@ -20,7 +20,7 @@
             <a-card :bordered="false" class="dash-card">
               <template #title>
                 <div class="card-title-row">
-                  <TeamOutlined class="card-title-icon" />
+                  <component :is="templateIcons.TeamOutlined" class="card-title-icon" />
                   <span>Team Members</span>
                   <a-badge :count="members.length" :number-style="{ background: '#4f46e5' }" />
                 </div>
@@ -48,13 +48,13 @@
             <a-card :bordered="false" class="dash-card">
               <template #title>
                 <div class="card-title-row">
-                  <CommentOutlined class="card-title-icon" />
+                  <component :is="templateIcons.CommentOutlined" class="card-title-icon" />
                   <span>Comments</span>
                 </div>
               </template>
               <template #extra>
                 <a-button type="primary" size="small" ghost>
-                  <template #icon><PlusOutlined /></template>
+                  <template #icon><component :is="templateIcons.PlusOutlined" /></template>
                   Add
                 </a-button>
               </template>
@@ -63,11 +63,11 @@
                   <a-list-item>
                     <template #actions>
                       <a-button type="text" size="small" @click="likeComment(item.id)">
-                        <template #icon><LikeOutlined /></template>
+                        <template #icon><component :is="templateIcons.LikeOutlined" /></template>
                         {{ item.likes }}
                       </a-button>
                       <a-button type="text" size="small">
-                        <template #icon><MessageOutlined /></template>
+                        <template #icon><component :is="templateIcons.MessageOutlined" /></template>
                         Reply
                       </a-button>
                     </template>
@@ -106,7 +106,7 @@
             <a-card :bordered="false" class="dash-card">
               <template #title>
                 <div class="card-title-row">
-                  <LinkOutlined class="card-title-icon" />
+                  <component :is="templateIcons.LinkOutlined" class="card-title-icon" />
                   <span>Useful Links</span>
                 </div>
               </template>
@@ -122,7 +122,7 @@
                       </a>
                       <span class="link-desc">{{ item.desc }}</span>
                     </div>
-                    <LinkOutlined class="link-arrow" />
+                    <component :is="templateIcons.LinkOutlined" class="link-arrow" />
                   </a-list-item>
                 </template>
               </a-list>
@@ -134,7 +134,7 @@
             <a-card :bordered="false" class="dash-card">
               <template #title>
                 <div class="card-title-row">
-                  <NotificationOutlined class="card-title-icon" />
+                  <component :is="templateIcons.NotificationOutlined" class="card-title-icon" />
                   <span>Announcements</span>
                   <a-badge :count="announcements.filter(a => !a.read).length" :number-style="{ background: '#4f46e5' }" />
                 </div>
@@ -166,6 +166,7 @@
 </template>
 
 <script setup>
+/* ── Icon refs used in template (explicit for Biome) ── */
 import {
   BookOutlined,
   BugOutlined,
@@ -184,9 +185,21 @@ import {
   ThunderboltOutlined,
   UserOutlined,
 } from '@ant-design/icons-vue';
-import { ref } from 'vue';
+import { markRaw, ref } from 'vue';
+// biome-ignore lint/correctness/noUnusedImports: component used in Vue template
 import MemberCard from '../components/MemberCard.vue';
+// biome-ignore lint/correctness/noUnusedImports: component used in Vue template
 import StatCard from '../components/StatCard.vue';
+
+const templateIcons = markRaw({
+  CommentOutlined,
+  LikeOutlined,
+  LinkOutlined,
+  MessageOutlined,
+  NotificationOutlined,
+  PlusOutlined,
+  TeamOutlined,
+});
 
 /* ── Stats ── */
 const stats = [

@@ -65,6 +65,7 @@
 </template>
 
 <script setup>
+// biome-ignore lint/correctness/noUnusedImports: icon used in Vue template
 import { LogoutOutlined } from '@ant-design/icons-vue';
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
