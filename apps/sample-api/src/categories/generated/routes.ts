@@ -1,30 +1,30 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // AUTO-GENERATED — DO NOT EDIT
 // Re-run `npm run generate:crud` to regenerate this file.
-// Source table: roles
+// Source table: categories
 // ─────────────────────────────────────────────────────────────────────────────
 import { authUser } from '@common/node/auth/jwt';
 import { validate } from '@common/node/errors/validate';
 import express from 'express';
-import {
-  RolesBodySchema,
-  RolesParamsSchema,
-  RolesQuerySchema,
-  RolesUpdateSchema,
-} from '../../../schemas/generated/roles.schema.js';
 // Imports from the sidecar controller so developer overrides are picked up automatically.
-import rolesController from '../../controllers/roles.ts';
+import categoriesController from '../controller.ts';
+import {
+  CategoriesBodySchema,
+  CategoriesParamsSchema,
+  CategoriesQuerySchema,
+  CategoriesUpdateSchema,
+} from './schema.js';
 
 export default express
   .Router()
-  .post('/', authUser, validate('body', RolesBodySchema), rolesController.create)
-  .get('/', authUser, validate('query', RolesQuerySchema), rolesController.find)
-  .get('/:id', authUser, validate('params', RolesParamsSchema), rolesController.findOne)
+  .post('/', authUser, validate('body', CategoriesBodySchema), categoriesController.create)
+  .get('/', authUser, validate('query', CategoriesQuerySchema), categoriesController.find)
+  .get('/:id', authUser, validate('params', CategoriesParamsSchema), categoriesController.findOne)
   .patch(
     '/:id',
     authUser,
-    validate('params', RolesParamsSchema),
-    validate('body', RolesUpdateSchema),
-    rolesController.update,
+    validate('params', CategoriesParamsSchema),
+    validate('body', CategoriesUpdateSchema),
+    categoriesController.update,
   )
-  .delete('/:id', authUser, validate('params', RolesParamsSchema), rolesController.remove);
+  .delete('/:id', authUser, validate('params', CategoriesParamsSchema), categoriesController.remove);

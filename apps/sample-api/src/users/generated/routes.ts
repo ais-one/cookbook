@@ -1,30 +1,25 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // AUTO-GENERATED — DO NOT EDIT
 // Re-run `npm run generate:crud` to regenerate this file.
-// Source table: permissions
+// Source table: users
 // ─────────────────────────────────────────────────────────────────────────────
 import { authUser } from '@common/node/auth/jwt';
 import { validate } from '@common/node/errors/validate';
 import express from 'express';
-import {
-  PermissionsBodySchema,
-  PermissionsParamsSchema,
-  PermissionsQuerySchema,
-  PermissionsUpdateSchema,
-} from '../../../schemas/generated/permissions.schema.js';
 // Imports from the sidecar controller so developer overrides are picked up automatically.
-import permissionsController from '../../controllers/permissions.ts';
+import usersController from '../controller.ts';
+import { UsersBodySchema, UsersParamsSchema, UsersQuerySchema, UsersUpdateSchema } from './schema.js';
 
 export default express
   .Router()
-  .post('/', authUser, validate('body', PermissionsBodySchema), permissionsController.create)
-  .get('/', authUser, validate('query', PermissionsQuerySchema), permissionsController.find)
-  .get('/:id', authUser, validate('params', PermissionsParamsSchema), permissionsController.findOne)
+  .post('/', authUser, validate('body', UsersBodySchema), usersController.create)
+  .get('/', authUser, validate('query', UsersQuerySchema), usersController.find)
+  .get('/:id', authUser, validate('params', UsersParamsSchema), usersController.findOne)
   .patch(
     '/:id',
     authUser,
-    validate('params', PermissionsParamsSchema),
-    validate('body', PermissionsUpdateSchema),
-    permissionsController.update,
+    validate('params', UsersParamsSchema),
+    validate('body', UsersUpdateSchema),
+    usersController.update,
   )
-  .delete('/:id', authUser, validate('params', PermissionsParamsSchema), permissionsController.remove);
+  .delete('/:id', authUser, validate('params', UsersParamsSchema), usersController.remove);

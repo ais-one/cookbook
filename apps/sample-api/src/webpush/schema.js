@@ -10,7 +10,7 @@ export const WebPushSendSchema = z
   .object({
     mode: z.string().min(1).meta({ example: 'notification' }),
     data: z
-      .record(z.unknown())
+      .record(z.string(), z.unknown())
       .optional()
       .default({})
       .meta({ example: { title: 'Hello' } }),

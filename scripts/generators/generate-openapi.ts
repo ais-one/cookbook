@@ -2,28 +2,23 @@
 // scripts/generators/generate-openapi.ts
 //
 // Generates an OpenAPI 3.1 YAML document from Zod v4 schemas.
-// Scans the --schemas directory for *.schema.js files. For each table that has:
-//   (a) a sidecar file directly in --schemas (e.g. schemas/categories.schema.js), AND
-//   (b) the standard four CRUD schema exports (*BodySchema, *UpdateSchema, *ParamsSchema, *QuerySchema),
-// it generates full CRUD path definitions. Tables that only exist in --schemas/generated/
-// (schemaOnly tables) are imported so their shapes appear in components, but get no paths.
+//
+// Schema discovery (new per-table layout):
+//   --src <dir>        Scans src/<table>/schema.js (sidecar) and src/<table>/generated/schema.js
+//                      A table with a sidecar gets full CRUD paths.
+//                      A table with only generated/schema.js (schemaOnly) gets components only.
+//   --schemas <dir>    Optional. Also scans <dir>/*.schema.js for standalone hand-written schemas
+//                      (e.g. schemas/categories.schema.js). These always get CRUD paths if exports present.
 //
 // Usage — from an app directory:
 //   node ../../scripts/generators/generate-openapi.ts \
+//     --src        ./src \
 //     --schemas    ./schemas \
 //     --out        ./docs/openapi/openapi.yaml \
 //     --prefix     /api/sample-api \
 //     --title      "Sample API" \
 //     --version    1.0.0 \
-//     [--routes-dir ./src/routes/generated]   ← optional extra guard: only generate paths when route file exists
 //     [--server    http://localhost:8080]
-//
-// Usage — from repo root (shared schemas, components only, no CRUD paths):
-//   node scripts/generators/generate-openapi.ts \
-//     --schemas    ./common/schemas \
-//     --out        ./docs/openapi/openapi.merged.yaml \
-//     --title      "Shared Schemas" \
-//     --version    1.0.0
 
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs';
 import { dirname, relative, resolve } from 'node:path';
@@ -55,28 +50,27 @@ function parseArgs(argv: string[]): Record<string, string> {
 
 const args = parseArgs(process.argv.slice(2));
 
-if (!args['schemas'] || !args['out']) {
+if (!args['src'] || !args['out']) {
   console.error(`
 Usage: node scripts/generators/generate-openapi.ts \\
-  --schemas    <dir>     Directory containing *.schema.js files (relative to cwd)
+  --src        <dir>     src/ directory containing per-table subfolders (relative to cwd)
   --out        <file>    Output YAML file path (relative to cwd)
+  [--schemas   <dir>]    Also scan this directory for standalone *.schema.js files
   [--prefix    <prefix>] URL prefix for all CRUD route paths (e.g. /api/sample-api)
   [--title     <title>]  OpenAPI info.title (default: API)
   [--version   <ver>]    OpenAPI info.version (default: 1.0.0)
   [--server    <url>]    Server URL (default: http://localhost:8080)
-  [--routes-dir <dir>]   When provided, only generate CRUD paths for tables that also
-                         have a route file in this directory (e.g. ./src/routes/generated)
 `);
   process.exit(1);
 }
 
-const schemasDir = resolve(process.cwd(), args['schemas']);
+const srcDir = resolve(process.cwd(), args['src']);
+const extraSchemasDir = args['schemas'] ? resolve(process.cwd(), args['schemas']) : null;
 const outFile = resolve(process.cwd(), args['out']);
 const prefix = (args['prefix'] ?? '').replace(/\/$/, '');
 const title = args['title'] || 'API';
 const apiVersion = args['version'] || '1.0.0';
 const serverUrl = args['server'] || 'http://localhost:8080';
-const routesDir = args['routes-dir'] ? resolve(process.cwd(), args['routes-dir']) : null;
 
 // ─── Naming helpers ───────────────────────────────────────────────────────────
 
@@ -95,36 +89,45 @@ function pascalToWords(pascal: string): string {
 
 // ─── Schema file discovery ────────────────────────────────────────────────────
 
-const generatedDir = resolve(schemasDir, 'generated');
-const sidecarKebabs = new Set<string>();
-
 const filesToProcess: { kebab: string; filePath: string; isSidecar: boolean }[] = [];
+const seenKebabs = new Set<string>();
 
-if (existsSync(schemasDir)) {
-  for (const entry of readdirSync(schemasDir, { withFileTypes: true })) {
-    if (entry.isFile() && entry.name.endsWith('.schema.js')) {
-      const kebab = entry.name.replace(/\.schema\.js$/, '');
-      sidecarKebabs.add(kebab);
-      filesToProcess.push({ kebab, filePath: resolve(schemasDir, entry.name), isSidecar: true });
+// 1. Per-table layout: src/<table>/schema.js (sidecar) and src/<table>/generated/schema.js (generated-only)
+if (existsSync(srcDir)) {
+  for (const entry of readdirSync(srcDir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const kebab = entry.name;
+    const tableDir = resolve(srcDir, kebab);
+    const sidecarPath = resolve(tableDir, 'schema.js');
+    const generatedPath = resolve(tableDir, 'generated', 'schema.js');
+
+    if (existsSync(sidecarPath)) {
+      // Has a sidecar — full CRUD table
+      filesToProcess.push({ kebab, filePath: sidecarPath, isSidecar: true });
+      seenKebabs.add(kebab);
+    } else if (existsSync(generatedPath)) {
+      // Generated-only (schemaOnly table) — components only, no paths
+      filesToProcess.push({ kebab, filePath: generatedPath, isSidecar: false });
+      seenKebabs.add(kebab);
     }
   }
 }
 
-// Generated-only files: schemas in generated/ that have NO corresponding sidecar.
-// These are schemaOnly tables — components only, no paths.
-if (existsSync(generatedDir)) {
-  for (const entry of readdirSync(generatedDir, { withFileTypes: true })) {
-    if (entry.isFile() && entry.name.endsWith('.schema.js')) {
-      const kebab = entry.name.replace(/\.schema\.js$/, '');
-      if (!sidecarKebabs.has(kebab)) {
-        filesToProcess.push({ kebab, filePath: resolve(generatedDir, entry.name), isSidecar: false });
-      }
+// 2. Standalone hand-written schemas (e.g. schemas/categories.schema.js)
+//    These have no generated counterpart — always treated as sidecars (CRUD paths if exports present).
+if (extraSchemasDir && existsSync(extraSchemasDir)) {
+  for (const entry of readdirSync(extraSchemasDir, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.schema.js')) continue;
+    const kebab = entry.name.replace(/\.schema\.js$/, '');
+    if (!seenKebabs.has(kebab)) {
+      filesToProcess.push({ kebab, filePath: resolve(extraSchemasDir, entry.name), isSidecar: true });
+      seenKebabs.add(kebab);
     }
   }
 }
 
 if (filesToProcess.length === 0) {
-  console.error(`No *.schema.js files found in ${schemasDir}`);
+  console.error(`No schema.js files found in ${srcDir}`);
   process.exit(1);
 }
 
@@ -213,10 +216,8 @@ for (const { kebab, mod, isSidecar } of loaded) {
   // A table gets CRUD paths when:
   //   1. It has a sidecar (full CRUD tables have sidecars; schemaOnly tables do not)
   //   2. The three standard CRUD exports are present (BodySchema, UpdateSchema, ParamsSchema)
-  //   3. If --routes-dir was given, a route file must also exist there
   const hasCrudExports = !!(bodySchema && updateSchema && paramsSchema);
-  const routeFileExists = !routesDir || existsSync(resolve(routesDir, `${kebab}.ts`));
-  const isCrud = isSidecar && hasCrudExports && routeFileExists;
+  const isCrud = isSidecar && hasCrudExports;
 
   if (!isCrud) {
     componentOnlyTables.push(kebab);
@@ -238,7 +239,7 @@ for (const { kebab, mod, isSidecar } of loaded) {
   // List response: z.array wrapping the response schema (avoids mixing Zod + plain-object schemas)
   const listResponseSchema = responseSchema
     ? z.array(responseSchema).meta({ id: `${pascalName}ListResponse` })
-    : z.array(z.record(z.unknown()));
+    : z.array(z.record(z.string(), z.unknown()));
 
   const responseContent = responseSchema ? { 'application/json': { schema: responseSchema } } : errorContent;
 
