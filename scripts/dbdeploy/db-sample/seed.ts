@@ -8,6 +8,8 @@
  *   node db-sample/seed.ts                     # run all seeds in order
  *   node db-sample/seed.ts initial_users       # run a single seed
  */
+
+import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import { seed as seedOpenfga } from './seeds/initial_openfga.ts';
@@ -24,7 +26,8 @@ if (!DATABASE_URL) {
 const pool = new Pool({ connectionString: DATABASE_URL });
 const db = drizzle(pool);
 
-const seeds: Record<string, (db: typeof db) => Promise<void>> = {
+// biome-ignore lint/suspicious/noExplicitAny: schema type not needed for seed scripts
+const seeds: Record<string, (db: NodePgDatabase<any>) => Promise<void>> = {
   initial_users: seedUsers,
   initial_testdata: seedTestdata,
   initial_rbac: seedRbac,
