@@ -7,6 +7,7 @@
  * 1. The RBAC tables must exist (run migration 20260416000001_rbac_tables).
  * 2. The users table must already be populated (run initial_users seed first).
  */
+// biome-ignore lint/suspicious/noExplicitAny: schema type not needed for seed scripts
 import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import {
   permissions,
