@@ -29,6 +29,15 @@ npx knex --knexfile db-sample/knexfile.js seed:run
 
 Run the database using `npm run serve` command, the project `apps\sample-api` can then connect to it
 
+## Quick Create DB (Drizzle)
+
+```bash
+cd scripts/dbdeploy
+npm run migrate
+npm run serve
+npm run seed
+```
+
 ## Starting A New DB Deploy
 
 Create and setup configuration
