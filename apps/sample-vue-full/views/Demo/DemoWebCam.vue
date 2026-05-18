@@ -51,6 +51,7 @@
 <script setup>
 // biome-ignore lint/correctness/noUnusedImports: icons and components used in Vue template
 import { FileImageOutlined } from '@ant-design/icons-vue';
+// biome-ignore lint/correctness/noUnusedImports: Empty.PRESENTED_IMAGE_SIMPLE used in template
 import { Empty } from 'ant-design-vue';
 import { ref } from 'vue';
 // biome-ignore lint/correctness/noUnusedImports: component used in Vue template
